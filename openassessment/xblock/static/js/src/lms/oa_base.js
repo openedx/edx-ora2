@@ -194,6 +194,30 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
+     *Install click handler for the LaTeX preview button.
+     *
+     * @param {element} parentElement JQuery selector for the container element.
+     */
+    bindLatexPreview: function(parentElement) {
+        // keep the preview as display none at first
+        parentElement.find('.submission__preview__item').hide();
+        parentElement.find('.submission__preview').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                var previewName = $(eventObject.target).data("input");
+                // extract typed-in response and replace newline with br
+                var previewText = parentElement.find('textarea[data-preview="' + previewName + '"]').val();
+                var previewContainer = parentElement.find('.preview_content[data-preview="' + previewName + '"]');
+                previewContainer.html(previewText.replace(/\r\n|\r|\n/g,"<br />"));
+
+                // Render in mathjax
+                parentElement.find('.submission__preview__item').show();
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, previewContainer[0]]);
+            }
+        );
+    },
+
+    /**
      * Get usage key of an XBlock.
      */
     getUsageID: function() {
