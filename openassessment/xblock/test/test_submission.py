@@ -25,7 +25,7 @@ from .base import XBlockHandlerTestCase, scenario
 
 class SubmissionTest(XBlockHandlerTestCase):
     SUBMISSION = json.dumps({
-        "submission": ["This is my answer to the first question!", "This is my answer to the second question!"]
+        "submission": ["This is my answer to the first prompt!", "This is my answer to the second prompt!"]
     })
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
@@ -37,8 +37,8 @@ class SubmissionTest(XBlockHandlerTestCase):
     def test_submit_answer_too_long(self, xblock):
         # Maximum answer length is 100K, once the answer has been JSON-encoded
         long_submission = json.dumps({
-            "submission": ["This is my answer to the first question!" * 100000,
-                           "This is my answer to the second question!"]
+            "submission": ["This is my answer to the first prompt!" * 100000,
+                           "This is my answer to the second prompt!"]
         })
         resp = self.request(xblock, 'submit', long_submission, response_format='json')
         self.assertFalse(resp[0])
@@ -576,7 +576,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     def test_integration(self, xblock):
         # Expect that the response step is open and displays the deadline
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        self.assertIn('Enter your response to the question', resp)
+        self.assertIn('Enter your response to the prompt', resp)
         self.assertIn('2999-05-06T00:00:00+00:00', resp)
 
         # Create a submission for the user

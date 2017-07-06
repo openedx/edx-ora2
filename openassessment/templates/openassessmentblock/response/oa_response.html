@@ -46,7 +46,7 @@
         <div class="wrapper--step__content">
             <div class="step__instruction">
                 <p>
-                    {% trans "Enter your response to the question." %}
+                    {% trans "Enter your response to the prompt." %}
                     {% if submission_due %}
                     {% trans "You can save your progress and return to complete your response at any time before the due date" %}
                     (<span class="step__deadline">
@@ -89,7 +89,7 @@
                                         class="submission__answer__part__text__value"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
-                                        placeholder="{% trans "Enter your response to the question above." %}"
+                                        placeholder="{% trans "Enter your response to the prompt above." %}"
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>

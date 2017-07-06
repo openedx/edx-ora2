@@ -146,7 +146,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Verify that prompts intentionally left empty don't create DOM elements
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
-        present_prompt_text = "you'll provide a response to the question"
+        present_prompt_text = "you'll provide a response to the prompt"
         missing_article = u'<article class="submission__answer__part__prompt'
         self.assertIn(present_prompt_text, body_html)
         self.assertNotIn(missing_article, body_html)

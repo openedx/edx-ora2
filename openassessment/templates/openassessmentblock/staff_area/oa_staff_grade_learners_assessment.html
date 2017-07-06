@@ -22,7 +22,7 @@
                             </h4>
                         </header>
 
-                        {% trans "The learner's response to the question above" as translated_label %}
+                        {% trans "The learner's response to the prompt above" as translated_label %}
                         {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
                         {% trans "Associated Files" as translated_header %}
