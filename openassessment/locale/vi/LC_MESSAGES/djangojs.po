@@ -8,13 +8,13 @@
 # Nguyen Don Binh <donbinhvn@gmail.com>, 2014
 # NGUYEN HOANG AN <neyugn2909@gmail.com>, 2014
 # Nguyen Nhat Quang <technicalmanager@gmail.com>, 2016
-# Ton Nu Quy Thien <thien.tonnu1001@gmail.com>, 2015
+# Theodora. Tôn Nữ Quý Thiện <thien.tonnu1001@gmail.com>, 2015
 # Trung V. Nguyen <trung.ngvan@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-21 16:10+0000\n"
+"POT-Creation-Date: 2017-07-06 14:23+0000\n"
 "PO-Revision-Date: 2017-06-02 17:49+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/open-edx/edx-platform/language/vi/)\n"

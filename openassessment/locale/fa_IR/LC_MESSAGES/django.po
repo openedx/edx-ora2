@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Eisa rezaei <rezaeiphd@gmail.com>, 2016
+# mr ash <mrash14@gmail.com>, 2017
 # Siavash Kavousi <siavash.kavousi.sk@gmail.com>, 2016
 # Sina Shirinpour <sshirinpoor@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-21 16:10+0000\n"
-"PO-Revision-Date: 2017-04-28 14:17+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-07-06 14:23+0000\n"
+"PO-Revision-Date: 2017-06-27 00:20+0000\n"
+"Last-Translator: mr ash <mrash14@gmail.com>\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

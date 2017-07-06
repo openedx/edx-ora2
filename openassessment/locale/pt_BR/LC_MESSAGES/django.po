@@ -16,7 +16,7 @@
 # lukassem <lucas_sem@hotmail.com>, 2014
 # Mariana Baroni <maribaroni@gmail.com>, 2014
 # Mariana Jó de Souza <mariana.jsouza@gmail.com>, 2015
-# Matheus Gomes Correia <matheus.gomes03@hotmail.com>, 2016
+# Matheus Gomes Correia, 2016
 # Monica Farias <monifar.tp@gmail.com>, 2015-2016
 # Nayse Hillesheim <nayse.hillesheim@gmail.com>, 2016
 # Pitty Bull <pitty.2000@gmail.com>, 2014
@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-21 16:10+0000\n"
+"POT-Creation-Date: 2017-07-06 14:23+0000\n"
 "PO-Revision-Date: 2017-04-28 14:17+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/edx-platform/language/pt_BR/)\n"
