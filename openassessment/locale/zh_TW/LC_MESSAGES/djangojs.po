@@ -8,6 +8,7 @@
 # KUN-MIN SYU <qwer20108@gmail.com>, 2014-2015
 # Lin Yu-Chun <iftwoplustwoequalsfive@gmail.com>, 2014
 # LIU,SHU-HAO <jeremy55662004@gmail.com>, 2015
+# Mose Chen <mosechen@gmail.com>, 2017
 # vincent <orzkng2007@yahoo.com.tw>, 2015
 # Xaver Y.R. Chen <yrchen@atcity.org>, 2014
 # Ya-chi Chang <yacchang@mail.fcu.edu.tw>, 2016
@@ -17,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-21 16:10+0000\n"
-"PO-Revision-Date: 2017-06-02 17:49+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-07-06 14:23+0000\n"
+"PO-Revision-Date: 2017-06-22 15:08+0000\n"
+"Last-Translator: Mose Chen <mosechen@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
