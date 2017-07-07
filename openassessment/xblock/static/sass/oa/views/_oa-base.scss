@@ -580,6 +580,8 @@
     }
 
     .response__submission__content {
+      @extend %action-items;
+
       margin-bottom: $baseline-v;
 
       label {

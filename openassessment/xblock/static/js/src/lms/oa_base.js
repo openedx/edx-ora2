@@ -211,7 +211,7 @@ OpenAssessment.BaseView.prototype = {
                 previewContainer.html(previewText.replace(/\r\n|\r|\n/g,"<br />"));
 
                 // Render in mathjax
-                parentElement.find('.submission__preview__item').show();
+                previewContainer.parent().parent().parent().show();
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, previewContainer[0]]);
             }
         );
