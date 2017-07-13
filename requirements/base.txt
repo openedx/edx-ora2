@@ -18,7 +18,7 @@ django-extensions==1.5.9
 django-model-utils==2.3.1
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework==3.6.3
 dogapi==1.2.1
-jsonfield==1.0.3
+jsonfield==2.0.1
 lazy==1.1
 libsass==0.10.0
 loremipsum==1.0.5
