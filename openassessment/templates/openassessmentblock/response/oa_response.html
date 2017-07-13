@@ -87,13 +87,16 @@
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
                                         class="submission__answer__part__text__value"
-                                        data-preview="submission"
+                                        data-preview="submission__{{ forloop.counter }}"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the prompt above." %}"
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>
+                                {% with forloop.counter|stringformat:"s" as submission_num %}
+                                    {% include "openassessmentblock/oa_latex_preview.html" with id="submission__"|add:xblock_id|add:submission_num elem="div" preview_name="submission__"|add:submission_num %}
+                                {% endwith %}
                                 {% endif %}
                             </li>
                         {% endfor %}
@@ -116,7 +119,6 @@
                                             {{ save_status }}
                                         </div>
                                     </li>
-                                    {% include "openassessmentblock/oa_latex_preview.html" with id="submission__"|add:xblock_id elem="li" preview_name="submission" %}
                                 </ul>
                             </div>
                         </li>
