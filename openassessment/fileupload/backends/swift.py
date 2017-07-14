@@ -17,11 +17,9 @@ import swiftclient
 import urlparse
 import requests
 
-
-logger = logging.getLogger("openassessment.fileupload.api")
-
 from .base import BaseBackend
 from ..exceptions import FileUploadInternalError
+logger = logging.getLogger("openassessment.fileupload.api")
 
 
 class Backend(BaseBackend):

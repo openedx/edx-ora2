@@ -2,10 +2,9 @@ import boto
 import logging
 from django.conf import settings
 
-logger = logging.getLogger("openassessment.fileupload.api")
-
 from .base import BaseBackend
 from ..exceptions import FileUploadInternalError
+logger = logging.getLogger("openassessment.fileupload.api")
 
 
 class Backend(BaseBackend):
@@ -70,5 +69,3 @@ def _connect_to_s3():
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key
     )
-
-
