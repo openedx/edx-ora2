@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-06 14:23+0000\n"
+"POT-Creation-Date: 2017-07-14 13:12+0000\n"
 "PO-Revision-Date: 2017-06-19 10:59+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Czech (http://www.transifex.com/open-edx/edx-platform/language/cs/)\n"
@@ -109,7 +109,7 @@ msgid "The submission could not be removed from the grading pool."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_base.js:300
+#: openassessment/xblock/static/js/src/lms/oa_base.js:324
 msgid "Unable to load"
 msgstr ""
 
@@ -191,98 +191,98 @@ msgid "Back to Full List"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_peer.js:190
+#: openassessment/xblock/static/js/src/lms/oa_peer.js:193
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:143
+#: openassessment/xblock/static/js/src/lms/oa_response.js:129
 msgid ""
 "After you upload new files all your previously uploaded files will be "
 "overwritten. Continue?"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:294
+#: openassessment/xblock/static/js/src/lms/oa_response.js:280
 msgid "Status of Your Response"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:369
+#: openassessment/xblock/static/js/src/lms/oa_response.js:355
 msgid "This response has not been saved."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:373
+#: openassessment/xblock/static/js/src/lms/oa_response.js:359
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:391
+#: openassessment/xblock/static/js/src/lms/oa_response.js:377
 msgid "Saving..."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:413
+#: openassessment/xblock/static/js/src/lms/oa_response.js:399
 msgid "This response has been saved but not submitted."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:418
+#: openassessment/xblock/static/js/src/lms/oa_response.js:404
 msgid "Error"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:441
+#: openassessment/xblock/static/js/src/lms/oa_response.js:427
 msgid "Do you want to upload your file before submitting?"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:519
+#: openassessment/xblock/static/js/src/lms/oa_response.js:505
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:561
+#: openassessment/xblock/static/js/src/lms/oa_response.js:547
 msgid "File size must be 10MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:554
+#: openassessment/xblock/static/js/src/lms/oa_response.js:561
 #: openassessment/xblock/static/js/src/lms/oa_response.js:568
-#: openassessment/xblock/static/js/src/lms/oa_response.js:575
-#: openassessment/xblock/static/js/src/lms/oa_response.js:582
 msgid "You can upload files with these file types: "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:590
+#: openassessment/xblock/static/js/src/lms/oa_response.js:576
 msgid "File type is not allowed."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:632
-#: openassessment/xblock/static/js/src/lms/oa_response.js:638
+#: openassessment/xblock/static/js/src/lms/oa_response.js:618
+#: openassessment/xblock/static/js/src/lms/oa_response.js:624
 msgid "Describe "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:632
+#: openassessment/xblock/static/js/src/lms/oa_response.js:618
 msgid "(required):"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:652
+#: openassessment/xblock/static/js/src/lms/oa_response.js:638
 msgid "Thumbnail view of "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_self.js:121
+#: openassessment/xblock/static/js/src/lms/oa_self.js:124
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
@@ -326,17 +326,17 @@ msgstr ""
 msgid "Not Selected"
 msgstr ""
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:149
 msgid "Couldn't Save This Assignment"
 msgstr ""
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:150
 msgid "Please correct the outlined fields."
 msgstr ""
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:184
 msgid ""
 "This problem has already been released. Any changes will apply only to "

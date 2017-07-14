@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-06 14:23+0000\n"
-"PO-Revision-Date: 2017-04-28 14:17+0000\n"
+"POT-Creation-Date: 2017-07-14 13:12+0000\n"
+"PO-Revision-Date: 2017-07-14 13:13+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -730,8 +730,8 @@ msgstr "%(num_points)s نقطة"
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
-msgid "Your peer's response to the question above"
-msgstr "ردّ زميلك على السؤال أعلاه"
+msgid "Your peer's response to the prompt above"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -834,17 +834,17 @@ msgstr "\nيتم فحص الواجب. مازلت بحاجة لإكمال خطو�
 #, python-format
 msgid ""
 "\n"
-"                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\nشارفت صفحة تقديمات الواجب على الإغلاق. وبالتالي لتحصل على درجة، عليك أوّلًا الردّ على السؤال، ثمّ استكمال الخطوات الموجودة تحت حقل %(start_tag)sردّك%(end_tag)s."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
 msgid ""
 "\n"
-"                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\nلهذه المهمة عدة خطوات، عليك في الخطوة الأولى أن تزوّد ردًا على السؤال لتظهر الخطوات التالية تحت حقل %(start_tag)sردّك%(end_tag)s."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -857,13 +857,25 @@ msgstr "لم يمكن تحميل التعليمات الخاصة بهذه الخ
 #: openassessment/templates/openassessmentblock/oa_base.html:15
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
-"response to the question. The other steps appear below the Your Response "
+"response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "ينطوي هذا الواجب على عدّة خطوات. وستجيب في الخطوة الأولى على السؤال. ثمّ تظهر بقيّة الخطوات تحت حقل \"ردّك\"."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
 msgstr "جاري التحميل"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
+msgid "Preview in LaTeX"
+msgstr "عرض بصيغة لاتخ"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
+msgid "Click to preview your submission in LaTeX."
+msgstr "انقر هنا لاستعراض تقديمك بصيغة LaTeX."
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
+msgid "Preview Response"
+msgstr "معاينة الردّ"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
@@ -894,9 +906,6 @@ msgstr "قيِّم الزملاء"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#. Translators: This string displays a date to the user, then tells them the
-#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
-#. 45 minutes)"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:24
 #: openassessment/templates/openassessmentblock/response/oa_response.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:20
@@ -910,9 +919,6 @@ msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" dat
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
 #. and 45 minutes)"
-#. Translators: This string displays a date to the user, then tells them the
-#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
-#. minutes)"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
@@ -1046,8 +1052,8 @@ msgid "In Progress"
 msgstr "جاري التقييم"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
-msgid "Enter your response to the question."
-msgstr "يُرجى إدخال ردّك على السؤال."
+msgid "Enter your response to the prompt."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1076,55 +1082,43 @@ msgstr ""
 msgid "Your response (optional)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:92
-msgid "Enter your response to the question above."
-msgstr "يُرجى إدخال ردّك على السؤال المبيّن أعلاه"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:93
+msgid "Enter your response to the prompt above."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:103
+#: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
 msgstr "عذرًا، لم نستطع حفظ التقدّم الذي أحرزته."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:110
+#: openassessment/templates/openassessmentblock/response/oa_response.html:114
 msgid "Save your progress"
 msgstr "حفظ التقدّم الذي أحرزته"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:114
+#: openassessment/templates/openassessmentblock/response/oa_response.html:118
 msgid "Your Submission Status"
 msgstr "حالة تقديمك"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:122
-msgid "Preview in LaTeX"
-msgstr "عرض بصيغة لاتخ"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:125
-msgid "Click to preview your submission in LaTeX."
-msgstr "انقر هنا لاستعراض تقديمك بصيغة LaTeX."
-
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
-msgid "Preview Response"
-msgstr "معاينة الردّ"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:149
+#: openassessment/templates/openassessmentblock/response/oa_response.html:134
 msgid "Select a file to upload for this submission."
 msgstr "اختر ملفًا لتحميله مع هذا التقديم"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: openassessment/templates/openassessmentblock/response/oa_response.html:136
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:160
+#: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "You may continue to work on your response until you submit it."
 msgstr "يمكنك مواصلة العمل على ردّك حتى لحظة تقديمك له."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:167
+#: openassessment/templates/openassessmentblock/response/oa_response.html:152
 msgid "We could not submit your response"
 msgstr "عذرًا، لم نتمكّن من تقديم ردّك."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:177
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Submit your response and move to the next step"
 msgstr "يُرجى تقديم ردّك ثمّ الانتقال إلى الخطوة التالية."
 
@@ -1384,8 +1378,8 @@ msgstr "ردّ المتعلّم"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
-msgid "The learner's response to the question above"
-msgstr "ردّ المتعلم على السؤال أعلاه"
+msgid "The learner's response to the prompt above"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1620,8 +1614,8 @@ msgid ""
 msgstr "يختلف تقييمك لهذا الردّ عن تقييم موجّه المساق له. يُرجى مراجعة الرد والنظر في الأسباب المحتملة لاختلاف التقييمين، ثمّ حاول إجراء التقييم مجدّدًا."
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
-msgid "The response to the question above:"
-msgstr "الرد على السؤال أعلاه:"
+msgid "The response to the prompt above:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"

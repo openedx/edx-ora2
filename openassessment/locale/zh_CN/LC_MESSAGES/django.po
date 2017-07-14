@@ -33,9 +33,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-06 14:23+0000\n"
-"PO-Revision-Date: 2017-05-13 02:32+0000\n"
-"Last-Translator: jsgang <jsgang9@gmail.com>\n"
+"POT-Creation-Date: 2017-07-14 13:12+0000\n"
+"PO-Revision-Date: 2017-07-14 13:13+0000\n"
+"Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -736,7 +736,7 @@ msgstr "%(num_points)s分"
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
-msgid "Your peer's response to the question above"
+msgid "Your peer's response to the prompt above"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
@@ -840,17 +840,17 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n作业提交将即将关闭。想要得到分数，请先提交该问题的答案，然后完成下面%(start_tag)s你的答案%(end_tag)s区域中的其它步骤 。"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
 msgid ""
 "\n"
-"                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n该作业包含若干步骤。你需要先提交该问题的答案，其它步骤会在你提交之后出现在下面%(start_tag)s你的答案%(end_tag)s区域中。"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -863,13 +863,25 @@ msgstr "此步骤的指示无法加载"
 #: openassessment/templates/openassessmentblock/oa_base.html:15
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
-"response to the question. The other steps appear below the Your Response "
+"response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "该作业包含若干步骤。首先，你应当提交自己的答案。其他步骤会在你提交后会出现。"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
 msgstr "正在加载"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
+msgid "Preview in LaTeX"
+msgstr "在 LaTeX 中预览"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
+msgid "Click to preview your submission in LaTeX."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
+msgid "Preview Response"
+msgstr "预览回复"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
@@ -900,9 +912,6 @@ msgstr "为同学评分"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#. Translators: This string displays a date to the user, then tells them the
-#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
-#. 45 minutes)"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:24
 #: openassessment/templates/openassessmentblock/response/oa_response.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:20
@@ -916,9 +925,6 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
 #. and 45 minutes)"
-#. Translators: This string displays a date to the user, then tells them the
-#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
-#. minutes)"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
@@ -1052,8 +1058,8 @@ msgid "In Progress"
 msgstr "正在进行中"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
-msgid "Enter your response to the question."
-msgstr "请输入你的答案"
+msgid "Enter your response to the prompt."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1082,55 +1088,43 @@ msgstr ""
 msgid "Your response (optional)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:92
-msgid "Enter your response to the question above."
-msgstr "请对上面的问题作答。"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:93
+msgid "Enter your response to the prompt above."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:103
+#: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
 msgstr "我们无法保存你的进度。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:110
+#: openassessment/templates/openassessmentblock/response/oa_response.html:114
 msgid "Save your progress"
 msgstr "保存你的进度"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:114
+#: openassessment/templates/openassessmentblock/response/oa_response.html:118
 msgid "Your Submission Status"
 msgstr "你的提交状态"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:122
-msgid "Preview in LaTeX"
-msgstr "在 LaTeX 中预览"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:125
-msgid "Click to preview your submission in LaTeX."
-msgstr ""
-
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
-msgid "Preview Response"
-msgstr "预览回复"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:149
+#: openassessment/templates/openassessmentblock/response/oa_response.html:134
 msgid "Select a file to upload for this submission."
 msgstr "选择一个要为此提交上传的文件。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: openassessment/templates/openassessmentblock/response/oa_response.html:136
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:160
+#: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "You may continue to work on your response until you submit it."
 msgstr "在提交之前，你可以继续对答案进行修改。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:167
+#: openassessment/templates/openassessmentblock/response/oa_response.html:152
 msgid "We could not submit your response"
 msgstr "我们无法提交你的答案"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:177
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Submit your response and move to the next step"
 msgstr "提交你的答案并进行下一步"
 
@@ -1390,7 +1384,7 @@ msgstr "学员回复"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
-msgid "The learner's response to the question above"
+msgid "The learner's response to the prompt above"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
@@ -1621,8 +1615,8 @@ msgid ""
 msgstr "你的评判与导师的评估存在差异。重新检查答案，弄明白导师为什么给出了不同的评判。然后尝试重新评判。"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
-msgid "The response to the question above:"
-msgstr "对上述问题的回复："
+msgid "The response to the prompt above:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"

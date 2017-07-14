@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-06 14:23+0000\n"
+"POT-Creation-Date: 2017-07-14 13:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -854,8 +854,8 @@ msgstr "%(num_points)s pöïnts Ⱡ#"
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
-msgid "Your peer's response to the question above"
-msgstr "Ýöür péér's réspönsé tö thé qüéstïön äßövé Ⱡ'σяєм ιρѕυ#"
+msgid "Your peer's response to the prompt above"
+msgstr "Ýöür péér's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -994,23 +994,23 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
 msgstr ""
 "\n"
-"                    Àssïgnmént süßmïssïöns wïll çlösé söön. Tö réçéïvé ä grädé, fïrst prövïdé ä réspönsé tö thé qüéstïön, thén çömplété thé stéps ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
-"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂#"
+"                    Àssïgnmént süßmïssïöns wïll çlösé söön. Tö réçéïvé ä grädé, fïrst prövïdé ä réspönsé tö thé prömpt, thén çömplété thé stéps ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ #"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
 msgid ""
 "\n"
-"                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
 msgstr ""
 "\n"
-"                    Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä réspönsé tö thé qüéstïön. Thé öthér stéps äppéär ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
-"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂#"
+"                    Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє#"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -1023,16 +1023,28 @@ msgstr "Thé ïnstrüçtïöns för thïs stép çöüld nöt ßé löädéd. �
 #: openassessment/templates/openassessmentblock/oa_base.html:15
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
-"response to the question. The other steps appear below the Your Response "
+"response to the prompt. The other steps appear below the Your Response "
 "field."
 msgstr ""
 "Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä "
-"réspönsé tö thé qüéstïön. Thé öthér stéps äppéär ßélöw thé Ýöür Réspönsé "
-"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕ#"
+"réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé Ýöür Réspönsé "
+"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρι#"
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
 msgstr "Löädïng #"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
+msgid "Preview in LaTeX"
+msgstr "Prévïéw ïn LäTéX Ⱡ'σ#"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
+msgid "Click to preview your submission in LaTeX."
+msgstr "Çlïçk tö prévïéw ýöür süßmïssïön ïn LäTéX. Ⱡ'σяєм ιρѕυ#"
+
+#: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
+msgid "Preview Response"
+msgstr "Prévïéw Réspönsé Ⱡ'σ#"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
@@ -1067,9 +1079,6 @@ msgstr "Àsséss Péérs Ⱡ#"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#. Translators: This string displays a date to the user, then tells them the
-#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
-#. 45 minutes)"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:24
 #: openassessment/templates/openassessmentblock/response/oa_response.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:20
@@ -1086,9 +1095,6 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
 #. and 45 minutes)"
-#. Translators: This string displays a date to the user, then tells them the
-#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
-#. minutes)"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
@@ -1256,8 +1262,8 @@ msgid "In Progress"
 msgstr "Ìn Prögréss Ⱡ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
-msgid "Enter your response to the question."
-msgstr "Éntér ýöür réspönsé tö thé qüéstïön. Ⱡ'σяєм ιρ#"
+msgid "Enter your response to the prompt."
+msgstr "Éntér ýöür réspönsé tö thé prömpt. Ⱡ'σяєм ιρ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1290,57 +1296,45 @@ msgstr "Ýöür réspönsé (réqüïréd) Ⱡ'σяє#"
 msgid "Your response (optional)"
 msgstr "Ýöür réspönsé (öptïönäl) Ⱡ'σяє#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:92
-msgid "Enter your response to the question above."
-msgstr "Éntér ýöür réspönsé tö thé qüéstïön äßövé. Ⱡ'σяєм ιρѕυ#"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:93
+msgid "Enter your response to the prompt above."
+msgstr "Éntér ýöür réspönsé tö thé prömpt äßövé. Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:103
+#: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
 msgstr "Wé çöüld nöt sävé ýöür prögréss Ⱡ'σяєм ι#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:110
+#: openassessment/templates/openassessmentblock/response/oa_response.html:114
 msgid "Save your progress"
 msgstr "Sävé ýöür prögréss Ⱡ'σ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:114
+#: openassessment/templates/openassessmentblock/response/oa_response.html:118
 msgid "Your Submission Status"
 msgstr "Ýöür Süßmïssïön Stätüs Ⱡ'σяє#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:122
-msgid "Preview in LaTeX"
-msgstr "Prévïéw ïn LäTéX Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:125
-msgid "Click to preview your submission in LaTeX."
-msgstr "Çlïçk tö prévïéw ýöür süßmïssïön ïn LäTéX. Ⱡ'σяєм ιρѕυ#"
-
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
-msgid "Preview Response"
-msgstr "Prévïéw Réspönsé Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "We could not upload files"
 msgstr "Wé çöüld nöt üplöäd fïlés Ⱡ'σяєм#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:149
+#: openassessment/templates/openassessmentblock/response/oa_response.html:134
 msgid "Select a file to upload for this submission."
 msgstr "Séléçt ä fïlé tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: openassessment/templates/openassessmentblock/response/oa_response.html:136
 msgid "Upload files"
 msgstr "Ûplöäd fïlés Ⱡ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:160
+#: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 "Ýöü mäý çöntïnüé tö wörk ön ýöür réspönsé üntïl ýöü süßmït ït. Ⱡ'σяєм ιρѕυм "
 "∂σłσя#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:167
+#: openassessment/templates/openassessmentblock/response/oa_response.html:152
 msgid "We could not submit your response"
 msgstr "Wé çöüld nöt süßmït ýöür réspönsé Ⱡ'σяєм ι#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:177
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Submit your response and move to the next step"
 msgstr "Süßmït ýöür réspönsé änd mövé tö thé néxt stép Ⱡ'σяєм ιρѕυм #"
 
@@ -1642,8 +1636,8 @@ msgstr "Léärnér Réspönsé Ⱡ'σ#"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
-msgid "The learner's response to the question above"
-msgstr "Thé léärnér's réspönsé tö thé qüéstïön äßövé Ⱡ'σяєм ιρѕυм#"
+msgid "The learner's response to the prompt above"
+msgstr "Thé léärnér's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1926,8 +1920,8 @@ msgstr ""
 "¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє#"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
-msgid "The response to the question above:"
-msgstr "Thé réspönsé tö thé qüéstïön äßövé: Ⱡ'σяєм ιρ#"
+msgid "The response to the prompt above:"
+msgstr "Thé réspönsé tö thé prömpt äßövé: Ⱡ'σяєм ι#"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"
