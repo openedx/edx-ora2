@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import django.utils.timezone
-import django_extensions.db.fields
-import openassessment.assessment.models.ai
 
 
 class Migration(migrations.Migration):
@@ -14,54 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='AIClassifier',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('classifier_data', models.FileField(upload_to=openassessment.assessment.models.ai.upload_to_path)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='AIClassifierSet',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now, db_index=True)),
-                ('algorithm_id', models.CharField(max_length=128, db_index=True)),
-                ('course_id', models.CharField(max_length=40, db_index=True)),
-                ('item_id', models.CharField(max_length=128, db_index=True)),
-            ],
-            options={
-                'ordering': ['-created_at', '-id'],
-            },
-        ),
-        migrations.CreateModel(
-            name='AIGradingWorkflow',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('uuid', django_extensions.db.fields.UUIDField(db_index=True, unique=True, version=1, editable=False, blank=True)),
-                ('course_id', models.CharField(max_length=40, db_index=True)),
-                ('item_id', models.CharField(max_length=128, db_index=True)),
-                ('scheduled_at', models.DateTimeField(default=django.utils.timezone.now, db_index=True)),
-                ('completed_at', models.DateTimeField(null=True, db_index=True)),
-                ('algorithm_id', models.CharField(max_length=128, db_index=True)),
-                ('submission_uuid', models.CharField(max_length=128, db_index=True)),
-                ('essay_text', models.TextField(blank=True)),
-                ('student_id', models.CharField(max_length=40, db_index=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='AITrainingWorkflow',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('uuid', django_extensions.db.fields.UUIDField(db_index=True, unique=True, version=1, editable=False, blank=True)),
-                ('course_id', models.CharField(max_length=40, db_index=True)),
-                ('item_id', models.CharField(max_length=128, db_index=True)),
-                ('scheduled_at', models.DateTimeField(default=django.utils.timezone.now, db_index=True)),
-                ('completed_at', models.DateTimeField(null=True, db_index=True)),
-                ('algorithm_id', models.CharField(max_length=128, db_index=True)),
-                ('classifier_set', models.ForeignKey(related_name='+', default=None, to='assessment.AIClassifierSet', null=True)),
-            ],
-        ),
         migrations.CreateModel(
             name='Assessment',
             fields=[
@@ -234,41 +184,6 @@ class Migration(migrations.Migration):
             model_name='assessment',
             name='rubric',
             field=models.ForeignKey(to='assessment.Rubric'),
-        ),
-        migrations.AddField(
-            model_name='aitrainingworkflow',
-            name='training_examples',
-            field=models.ManyToManyField(related_name='+', to='assessment.TrainingExample'),
-        ),
-        migrations.AddField(
-            model_name='aigradingworkflow',
-            name='assessment',
-            field=models.ForeignKey(related_name='+', default=None, to='assessment.Assessment', null=True),
-        ),
-        migrations.AddField(
-            model_name='aigradingworkflow',
-            name='classifier_set',
-            field=models.ForeignKey(related_name='+', default=None, to='assessment.AIClassifierSet', null=True),
-        ),
-        migrations.AddField(
-            model_name='aigradingworkflow',
-            name='rubric',
-            field=models.ForeignKey(related_name='+', to='assessment.Rubric'),
-        ),
-        migrations.AddField(
-            model_name='aiclassifierset',
-            name='rubric',
-            field=models.ForeignKey(related_name='+', to='assessment.Rubric'),
-        ),
-        migrations.AddField(
-            model_name='aiclassifier',
-            name='classifier_set',
-            field=models.ForeignKey(related_name='classifiers', to='assessment.AIClassifierSet'),
-        ),
-        migrations.AddField(
-            model_name='aiclassifier',
-            name='criterion',
-            field=models.ForeignKey(related_name='+', to='assessment.Criterion'),
         ),
         migrations.AlterUniqueTogether(
             name='studenttrainingworkflowitem',
