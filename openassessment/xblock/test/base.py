@@ -3,20 +3,19 @@
 Base class for handler-level testing of the XBlock.
 """
 import copy
-import mock
-import os.path
-import json
 from functools import wraps
+import json
+import os.path
 
-from submissions import api as submissions_api
+import mock
+import webob
+from workbench.runtime import WorkbenchRuntime
 
-from openassessment.workflow import api as workflow_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
-
-from workbench.runtime import WorkbenchRuntime
-import webob
+from openassessment.workflow import api as workflow_api
+from submissions import api as submissions_api
 
 # Sample peer assessments
 PEER_ASSESSMENTS = [

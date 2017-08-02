@@ -1,14 +1,17 @@
 """
 Create dummy submissions and assessments for testing.
 """
-from uuid import uuid4
 import copy
-from django.core.management.base import BaseCommand, CommandError
+from uuid import uuid4
+
 import loremipsum
-from submissions import api as sub_api
-from openassessment.workflow import api as workflow_api
+
+from django.core.management.base import BaseCommand, CommandError
+
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.workflow import api as workflow_api
+from submissions import api as sub_api
 
 STEPS = ['peer', 'self']
 

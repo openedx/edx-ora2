@@ -2,8 +2,7 @@ import abc
 
 from django.conf import settings
 
-from ..exceptions import FileUploadInternalError
-from ..exceptions import FileUploadRequestError
+from ..exceptions import FileUploadInternalError, FileUploadRequestError
 
 
 class Settings(object):

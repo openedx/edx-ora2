@@ -502,7 +502,6 @@
                 "student_training",
                 "peer_assessment",
                 "self_assessment",
-                "example_based_assessment",
                 "staff_assessment"
             ]
         },
@@ -668,7 +667,6 @@
                 "student_training",
                 "peer_assessment",
                 "self_assessment",
-                "example_based_assessment",
                 "staff_assessment"
             ]
         },

@@ -68,11 +68,6 @@
         {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="self" assessments=self_assessment %}
     {% endif %}
 
-    {% if example_based_assessment %}
-        {% trans "Example-Based Assessment" as translated_title %}
-        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="example_based" assessments=example_based_assessment %}
-    {% endif %}
-
     {% if staff_assessment %}
         {% trans "Staff Assessment for This Learner" as translated_title %}
         {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="staff" assessments=staff_assessment %}

@@ -3,16 +3,15 @@ import logging
 
 from xblock.core import XBlock
 
-from submissions import api
+from data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
+from submissions import api
+from validation import validate_submission
 
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-
-from data_conversion import create_submission_dict, prepare_submission_for_serialization
-from validation import validate_submission
 
 logger = logging.getLogger(__name__)
 

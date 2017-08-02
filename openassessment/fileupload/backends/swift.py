@@ -12,14 +12,20 @@ ORA2_SWIFT_KEY should correspond to Meta Temp-Url-Key configure in swift. Run
 '''
 
 import logging
-from django.conf import settings
-import swiftclient
 import urlparse
-import requests
 
-from .base import BaseBackend
+import requests
+import swiftclient
+
+from django.conf import settings
+
 from ..exceptions import FileUploadInternalError
+from .base import BaseBackend
+
 logger = logging.getLogger("openassessment.fileupload.api")
+
+# prefix paths with current version, in case we need to roll it at some point
+SWIFT_BACKEND_VERSION = 1
 
 
 class Backend(BaseBackend):
@@ -32,10 +38,11 @@ class Backend(BaseBackend):
         key, url = get_settings()
         try:
             temp_url = swiftclient.utils.generate_temp_url(
-                path='%s/%s/%s' % (url.path, bucket_name, key_name),
+                path='/v%s%s/%s/%s' % (SWIFT_BACKEND_VERSION, url.path, bucket_name, key_name),
                 key=key,
                 method='PUT',
-                seconds=self.UPLOAD_URL_TIMEOUT)
+                seconds=self.UPLOAD_URL_TIMEOUT
+            )
             return '%s://%s%s' % (url.scheme, url.netloc, temp_url)
         except Exception as ex:
             logger.exception(
@@ -48,10 +55,11 @@ class Backend(BaseBackend):
         key, url = get_settings()
         try:
             temp_url = swiftclient.utils.generate_temp_url(
-                path='%s/%s/%s' % (url.path, bucket_name, key_name),
+                path='/v%s%s/%s/%s' % (SWIFT_BACKEND_VERSION, url.path, bucket_name, key_name),
                 key=key,
                 method='GET',
-                seconds=self.DOWNLOAD_URL_TIMEOUT)
+                seconds=self.DOWNLOAD_URL_TIMEOUT
+            )
             download_url = '%s://%s%s' % (url.scheme, url.netloc, temp_url)
             response = requests.get(download_url)
             return download_url if response.status_code == 200 else ""

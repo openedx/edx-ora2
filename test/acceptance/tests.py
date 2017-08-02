@@ -3,20 +3,19 @@ UI-level acceptance tests for OpenAssessment.
 """
 from __future__ import absolute_import
 
-import ddt
-import os
-import unittest
-import time
 from functools import wraps
+import os
+import time
+import unittest
+
+from bok_choy.promise import BrokenPromise, EmptyPromise
+from bok_choy.web_app_test import WebAppTest
+import ddt
+from nose.plugins.attrib import attr
 from pyinstrument import Profiler
 
 from acceptance.auto_auth import AutoAuthPage
-from acceptance.pages import (
-    SubmissionPage, AssessmentPage, GradePage, StaffAreaPage
-)
-from bok_choy.web_app_test import WebAppTest
-from bok_choy.promise import BrokenPromise, EmptyPromise
-from nose.plugins.attrib import attr
+from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, SubmissionPage
 
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)

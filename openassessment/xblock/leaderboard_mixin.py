@@ -1,15 +1,15 @@
 """
 Leaderboard step in the OpenAssessment XBlock.
 """
-from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
-from submissions import api as sub_api
+from django.utils.translation import ugettext as _
 
-from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
+from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
+from submissions import api as sub_api
 
 
 class LeaderboardMixin(object):

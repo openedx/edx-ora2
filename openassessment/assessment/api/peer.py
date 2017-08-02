@@ -5,22 +5,17 @@ the workflow for a given submission.
 
 """
 import logging
-from django.utils import timezone
-from django.db import DatabaseError, IntegrityError, transaction
-from dogapi import dog_stats_api
 
-from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
-)
-from openassessment.assessment.serializers import (
-    AssessmentFeedbackSerializer, RubricSerializer,
-    full_assessment_dict, rubric_from_dict, serialize_assessments,
-    InvalidRubric
-)
-from openassessment.assessment.errors import (
-    PeerAssessmentRequestError, PeerAssessmentWorkflowError, PeerAssessmentInternalError
-)
+from django.db import DatabaseError, IntegrityError, transaction
+from django.utils import timezone
+
+from dogapi import dog_stats_api
+from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
+                                              PeerAssessmentWorkflowError)
+from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentPart, InvalidRubricSelection,
+                                              PeerWorkflow, PeerWorkflowItem)
+from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, RubricSerializer,
+                                                   full_assessment_dict, rubric_from_dict, serialize_assessments)
 from submissions import api as sub_api
 
 logger = logging.getLogger("openassessment.assessment.api.peer")

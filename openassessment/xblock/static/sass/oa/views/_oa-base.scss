@@ -1086,7 +1086,7 @@
     }
 
     .action--save {
-      @extend %action-button
+      @extend %action-button !optional
     }
 
     .feedback {

@@ -8,12 +8,11 @@ from django.db import DatabaseError
 
 from openassessment.assessment.errors import PeerAssessmentError, PeerAssessmentInternalError
 from submissions import api as sub_api
+
+from .errors import (AssessmentWorkflowError, AssessmentWorkflowInternalError, AssessmentWorkflowNotFoundError,
+                     AssessmentWorkflowRequestError)
 from .models import AssessmentWorkflow, AssessmentWorkflowCancellation
-from .serializers import AssessmentWorkflowSerializer, AssessmentWorkflowCancellationSerializer
-from .errors import (
-    AssessmentWorkflowError, AssessmentWorkflowInternalError,
-    AssessmentWorkflowRequestError, AssessmentWorkflowNotFoundError
-)
+from .serializers import AssessmentWorkflowCancellationSerializer, AssessmentWorkflowSerializer
 
 logger = logging.getLogger(__name__)
 

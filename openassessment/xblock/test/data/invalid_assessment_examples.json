@@ -71,59 +71,5 @@
                 "must_be_graded_by": 3
             }
         ]
-    },
-
-    "example_based_no_training_examples": {
-        "rubric": {
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "vocabulary",
-                    "prompt": "how good is the vocabulary?",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 0,
-                            "name": "poor",
-                            "explanation": "poor job!"
-                        },
-                        {
-                            "order_num": 1,
-                            "points": 1,
-                            "name": "good",
-                            "explanation": "good job!"
-                        }
-                    ]
-                },
-                {
-                    "order_num": 1,
-                    "name": "grammar",
-                    "prompt": "how good is the grammar?",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 0,
-                            "name": "poor",
-                            "explanation": "poor job!"
-                        },
-                        {
-                            "order_num": 1,
-                            "points": 1,
-                            "name": "good",
-                            "explanation": "good job!"
-                        }
-                    ]
-                }
-            ]
-        },
-        "assessments": [
-            {
-                "name": "example-based-assessment",
-                "start": null,
-                "due": null,
-                "algorithm_id": "ease",
-                "examples": []
-            }
-        ]
     }
 }

@@ -1312,30 +1312,6 @@
         ],
         "assessments": [
             {
-                "name": "example-based-assessment",
-                "algorithm_id": "sample-algorithm-id",
-                "examples": [
-                    {
-                        "answer": "тєѕт αηѕωєя",
-                        "options_selected": [
-                            {
-                                "criterion": "Test criterion",
-                                "option": "No"
-                            }
-                        ]
-                    },
-                    {
-                        "answer": "тєѕт αηѕωєя TWO",
-                        "options_selected": [
-                            {
-                                "criterion": "Test criterion",
-                                "option": "Yes"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
                 "name": "peer-assessment",
                 "start": "2014-02-27T09:46:28",
                 "due": "2014-03-01T00:00:00",
@@ -1356,20 +1332,6 @@
             "<openassessment text_response=\"required\">",
             "<title>Foo</title>",
             "<assessments>",
-                "<assessment name=\"example-based-assessment\" algorithm_id=\"sample-algorithm-id\">",
-                    "<example>",
-                        "<answer>",
-                            "<part>тєѕт αηѕωєя</part>",
-                        "</answer>",
-                        "<select criterion=\"Test criterion\" option=\"No\" />",
-                    "</example>",
-                    "<example>",
-                        "<answer>",
-                            "<part>тєѕт αηѕωєя TWO</part>",
-                        "</answer>",
-                        "<select criterion=\"Test criterion\" option=\"Yes\" />",
-                    "</example>",
-                "</assessment>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
                 "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" />",
                 "<assessment name=\"staff-assessment\" required=\"True\" />",

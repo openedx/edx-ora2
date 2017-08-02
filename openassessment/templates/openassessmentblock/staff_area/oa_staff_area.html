@@ -33,51 +33,6 @@
                     <div class="openassessment__student-info staff-info__student__report"></div>
                 </div>
 
-                {% if display_schedule_training %}
-                    <div class="staff-info__classifierset ui-staff__content__section">
-                        {% if classifierset %}
-                            <table class="staff-info__classifierset__table">
-                                <caption class="title">{% trans "Classifier set" %}</caption>
-                                <thead>
-                                <th abbr="Field" scope="col">{% trans "Field" %}</th>
-                                <th abbr="Value" scope="col">{% trans "Value" %}</th>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="value">{% trans "Created at" %}</td>
-                                    <td class="value">{{ classifierset.created_at }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="value">{% trans "Algorithm ID" %}</td>
-                                    <td class="value">{{ classifierset.algorithm_id }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="value">{% trans "Course ID" %}</td>
-                                    <td class="value">{{ classifierset.course_id }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="value">{% trans "Item ID" %}</td>
-                                    <td class="value">{{ classifierset.item_id }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        {% else %}
-                            {% trans "No classifiers are available for this problem" %}
-                        {% endif %}
-                    </div>
-
-                    <div class="staff-info__status ui-staff__content__section">
-                        <button class="action--submit action--submit-training">{% trans "Schedule Example-Based Assessment Training" %}</button>
-                        <div class="schedule_training_message"></div>
-                    </div>
-                {% endif %}
-
-                {% if display_reschedule_unfinished_tasks %}
-                    <div class="staff-info__status ui-staff__content__section">
-                        <button class="action--submit action--submit-unfinished-tasks">{% trans "Reschedule All Unfinished Example-Based Assessment Grading Tasks" %}</button>
-                        <div class="reschedule_unfinished_tasks_message"></div>
-                    </div>
-                {% endif %}
             </div>
         </div>
     </div>

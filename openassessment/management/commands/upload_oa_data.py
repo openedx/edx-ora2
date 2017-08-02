@@ -1,17 +1,19 @@
 """
 Generate CSV files for submission and assessment data, then upload to S3.
 """
-import sys
+import datetime
 import os
 import os.path
-import datetime
 import shutil
-import tempfile
+import sys
 import tarfile
-import boto
-from boto.s3.key import Key
-from django.core.management.base import BaseCommand, CommandError
+import tempfile
+
+import boto3
+
 from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
+
 from openassessment.data import CsvWriter
 
 
@@ -135,16 +137,24 @@ class Command(BaseCommand):
         # environment vars or configuration files instead.
         aws_access_key_id = getattr(settings, 'AWS_ACCESS_KEY_ID', None)
         aws_secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
-        conn = boto.connect_s3(
+        client = boto3.client(
+            's3',
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key
         )
+        bucket = client.create_bucket(Bucket=s3_bucket)
 
-        bucket = conn.get_bucket(s3_bucket)
         key_name = os.path.join(course_id, os.path.split(file_path)[1])
-        key = Key(bucket=bucket, name=key_name)
-        key.set_contents_from_filename(file_path)
-        url = key.generate_url(self.URL_EXPIRATION_HOURS * 3600)
+        client.put_object(Bucket=s3_bucket, Key=key_name, Body=open(file_path, 'rb'))
+        url = client.generate_presigned_url(
+            ExpiresIn=self.URL_EXPIRATION_HOURS * 3600,
+            ClientMethod='get_object',
+            Params={
+                'Bucket': s3_bucket,
+                'Key': key_name
+            },
+            HttpMethod="GET"
+        )
 
         # Store the key and url in the history
         self._history.append({'key': key_name, 'url': url})

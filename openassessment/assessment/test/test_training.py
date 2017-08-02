@@ -2,12 +2,16 @@
 """
 Tests for training models and serializers (common to student and AI training).
 """
+from collections import OrderedDict
 import copy
+
 import mock
+
 from django.db import IntegrityError
-from openassessment.test_utils import CacheResetTest
+
 from openassessment.assessment.models import TrainingExample
 from openassessment.assessment.serializers import deserialize_training_examples, serialize_training_example
+from openassessment.test_utils import CacheResetTest
 
 
 class TrainingExampleSerializerTest(CacheResetTest):
@@ -63,17 +67,17 @@ class TrainingExampleSerializerTest(CacheResetTest):
                 u" 𝖜𝖍𝖊𝖓 𝖆 𝖒𝖆𝖓 𝖙𝖆𝖐𝖊𝖘 𝖙𝖍𝖎𝖘 𝖜𝖍𝖔𝖑𝖊 𝖚𝖓𝖎𝖛𝖊𝖗𝖘𝖊 𝖋𝖔𝖗 𝖆 𝖛𝖆𝖘𝖙 𝖕𝖗𝖆𝖈𝖙𝖎𝖈𝖆𝖑 𝖏𝖔𝖐𝖊, 𝖙𝖍𝖔𝖚𝖌𝖍 𝖙𝖍𝖊 𝖜𝖎𝖙 𝖙𝖍𝖊𝖗𝖊𝖔𝖋"
                 u" 𝖍𝖊 𝖇𝖚𝖙 𝖉𝖎𝖒𝖑𝖞 𝖉𝖎𝖘𝖈𝖊𝖗𝖓𝖘, 𝖆𝖓𝖉 𝖒𝖔𝖗𝖊 𝖙𝖍𝖆𝖓 𝖘𝖚𝖘𝖕𝖊𝖈𝖙𝖘 𝖙𝖍𝖆𝖙 𝖙𝖍𝖊 𝖏𝖔𝖐𝖊 𝖎𝖘 𝖆𝖙 𝖓𝖔𝖇𝖔𝖉𝖞'𝖘 𝖊𝖝𝖕𝖊𝖓𝖘𝖊 𝖇𝖚𝖙 𝖍𝖎𝖘 𝖔𝖜𝖓."
             ),
-            'options_selected': {
+            'options_selected': OrderedDict({
                 u"vøȼȺƀᵾłȺɍɏ": u"𝓰𝓸𝓸𝓭",
                 u"ﻭɼค๓๓คɼ": u"𝒑𝒐𝒐𝒓",
-            }
+            })
         },
         {
             'answer': u"Tőṕ-héávӳ ẃáś thé śhíṕ áś á díńńéŕĺéśś śtúdéńt ẃíth áĺĺ Áŕíśtőtĺé íń híś héád.",
-            'options_selected': {
+            'options_selected': OrderedDict({
                 u"vøȼȺƀᵾłȺɍɏ": u"𝒑𝒐𝒐𝒓",
                 u"ﻭɼค๓๓คɼ": u"єχ¢єℓℓєηт",
-            }
+            })
         },
         {
             'answer': (
@@ -82,10 +86,10 @@ class TrainingExampleSerializerTest(CacheResetTest):
                 u"azure..... Consider all this; and then turn to this green, gentle, and most docile earth; "
                 u"consider them both, the sea and the land; and do you not find a strange analogy to something in yourself?"
             ),
-            'options_selected': {
+            'options_selected': OrderedDict({
                 u"vøȼȺƀᵾłȺɍɏ": u"𝒑𝒐𝒐𝒓",
                 u"ﻭɼค๓๓คɼ": u"єχ¢єℓℓєηт",
-            }
+            })
         },
     ]
 
@@ -156,8 +160,8 @@ class TrainingExampleSerializerTest(CacheResetTest):
         for example in (first_examples + second_examples):
             self.assertIn(example, db_examples)
 
-    @mock.patch.object(TrainingExample.objects, 'get')
-    @mock.patch.object(TrainingExample, 'create_example')
+    @mock.patch('openassessment.assessment.models.TrainingExample.objects.get')
+    @mock.patch('openassessment.assessment.models.TrainingExample.create_example')
     def test_deserialize_integrity_error(self, mock_create, mock_get):
         # Simulate an integrity error when creating the training example
         # This can occur when using repeatable-read isolation mode.

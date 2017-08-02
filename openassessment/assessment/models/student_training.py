@@ -1,9 +1,11 @@
 """
 Django models specific to the student training assessment type.
 """
-from django.db import models, transaction, IntegrityError
+from django.db import IntegrityError, models, transaction
 from django.utils import timezone
+
 from submissions import api as sub_api
+
 from .training import TrainingExample
 
 

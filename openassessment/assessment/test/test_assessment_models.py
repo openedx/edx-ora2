@@ -2,14 +2,19 @@
 """
 Tests for the assessment Django models.
 """
-import copy, ddt
-from openassessment.test_utils import CacheResetTest
-from openassessment.assessment.serializers import rubric_from_dict
-from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
-from .constants import RUBRIC
+import copy
+
+import ddt
+
 from openassessment.assessment.api.self import create_assessment
-from submissions.api import create_submission
 from openassessment.assessment.errors import SelfAssessmentRequestError
+from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
+from openassessment.assessment.serializers import rubric_from_dict
+from openassessment.test_utils import CacheResetTest
+from submissions.api import create_submission
+
+from .constants import RUBRIC
+
 
 @ddt.ddt
 class AssessmentTest(CacheResetTest):

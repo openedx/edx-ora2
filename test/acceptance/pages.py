@@ -5,7 +5,7 @@ Page objects for UI-level acceptance tests.
 import os
 
 from bok_choy.page_object import PageObject
-from bok_choy.promise import EmptyPromise, BrokenPromise
+from bok_choy.promise import BrokenPromise, EmptyPromise
 
 ORA_SANDBOX_URL = os.environ.get('ORA_SANDBOX_URL')
 
@@ -273,6 +273,7 @@ class AssessmentMixin(object):
         def criterion_selected():
             for criterion_num, option_num in enumerate(options_selected):
                 sel = selector(criterion_num, option_num)
+                self.wait_for_element_visibility(self._bounded_selector(sel), "Criterion option visible")
                 if not self.q(css=self._bounded_selector(sel))[0].is_selected():
                     return False
             return True

@@ -1,29 +1,25 @@
 # -*- coding: utf-8 -*-
 
-import boto
-from boto.s3.key import Key
-import ddt
-
 import json
-from mock import patch, Mock
 import os
 import shutil
 import tempfile
 import urllib
 from urlparse import urlparse
 
-from django.conf import settings
-from django.test import TestCase
-from django.test.utils import override_settings
-from django.core.urlresolvers import reverse
-from django.contrib.auth import get_user_model
-
+import boto3
+import ddt
+from mock import Mock, patch
 from moto import mock_s3
-from mock import patch
 from nose.tools import raises
 
-from openassessment.fileupload import api
-from openassessment.fileupload import exceptions
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse_lazy
+from django.test import TestCase
+from django.test.utils import override_settings
+
+from openassessment.fileupload import api, exceptions, urls
 from openassessment.fileupload import views_filesystem as views
 from openassessment.fileupload.backends.base import Settings as FileUploadSettings
 from openassessment.fileupload.backends.filesystem import get_cache as get_filesystem_cache
@@ -39,8 +35,8 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     def test_get_upload_url(self):
-        conn = boto.connect_s3()
-        conn.create_bucket('mybucket')
+        s3 = boto3.resource('s3')
+        s3.create_bucket(Bucket='mybucket')
         uploadUrl = api.get_upload_url("foo", "bar")
         self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", uploadUrl)
 
@@ -51,11 +47,9 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     def test_get_download_url(self):
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/foo"
-        key.set_contents_from_string("How d'ya do?")
+        s3 = boto3.resource('s3')
+        s3.create_bucket(Bucket='mybucket')
+        s3.Object('mybucket', 'submissions_attachments/foo').put(Body="How d'ya do?")
         downloadUrl = api.get_download_url("foo")
         self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", downloadUrl)
 
@@ -66,11 +60,9 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     def test_remove_file(self):
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/foo"
-        key.set_contents_from_string("Test")
+        s3 = boto3.resource('s3')
+        s3.create_bucket(Bucket='mybucket')
+        s3.Object('mybucket', 'submissions_attachments/foo').put(Body="Test")
         result = api.remove_file("foo")
         self.assertTrue(result)
         result = api.remove_file("foo")
@@ -90,7 +82,7 @@ class TestFileUploadService(TestCase):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @patch.object(boto, 'connect_s3')
+    @patch.object(boto3, 'client')
     @raises(exceptions.FileUploadInternalError)
     def test_get_upload_url_error(self, mock_s3):
         mock_s3.side_effect = Exception("Oh noes")
@@ -102,7 +94,7 @@ class TestFileUploadService(TestCase):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @patch.object(boto, 'connect_s3')
+    @patch.object(boto3, 'client')
     @raises(exceptions.FileUploadInternalError, mock_s3)
     def test_get_download_url_error(self, mock_s3):
         mock_s3.side_effect = Exception("Oh noes")
@@ -272,7 +264,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertEqual('application/octet-stream', download_response["Content-Type"])
 
     def test_upload_with_unauthorized_key(self):
-        upload_url = reverse("openassessment-filesystem-storage", kwargs={'key': self.key_name})
+        upload_url = reverse_lazy("openassessment-filesystem-storage", kwargs={'key': self.key_name})
 
         cache_before_request = get_filesystem_cache().get(self.key_name)
         upload_response = self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
@@ -282,7 +274,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertIsNone(cache_after_request)
 
     def test_download_url_with_unauthorized_key(self):
-        download_url = reverse("openassessment-filesystem-storage", kwargs={'key': self.key_name})
+        download_url = reverse_lazy("openassessment-filesystem-storage", kwargs={'key': self.key_name})
         views.save_to_file(self.key_name, "uploaded content")
         download_response = self.client.get(download_url)
 
@@ -327,7 +319,7 @@ class TestSwiftBackend(TestCase):
         result = urlparse(url)
         self.assertEqual(result.scheme, u'http')
         self.assertEqual(result.netloc, u'www.example.com:12345')
-        self.assertEqual(result.path, u'/bucket_name/submissions_attachments/foo')
+        self.assertEqual(result.path, u'/v1/bucket_name/submissions_attachments/foo')
         self.assertIn(result.params, 'temp_url_sig=')
         self.assertIn(result.params, 'temp_url_expires=')
 

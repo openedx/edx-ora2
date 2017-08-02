@@ -3,9 +3,11 @@
 Test that the student can save a response.
 """
 import json
+
 import ddt
 
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
+
 from .base import XBlockHandlerTestCase, scenario
 
 

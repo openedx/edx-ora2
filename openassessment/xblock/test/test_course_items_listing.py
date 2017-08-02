@@ -6,7 +6,8 @@ Tests for course items listing handlers.
 import json
 
 from mock import patch
-from .base import scenario, XBlockHandlerTestCase, SubmitAssessmentsMixin
+
+from .base import SubmitAssessmentsMixin, XBlockHandlerTestCase, scenario
 
 
 class TestCourseItemsListingHandlers(XBlockHandlerTestCase, SubmitAssessmentsMixin):
