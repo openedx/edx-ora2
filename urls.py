@@ -1,19 +1,19 @@
+import workbench.urls
+
 from django.conf import settings
-from django.conf.urls import include, patterns, url
-from django.views.i18n import javascript_catalog
+from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.i18n import javascript_catalog
 
 import openassessment.assessment.urls
 import openassessment.fileupload.urls
-import workbench.urls
 
 # Packages to include in the JavaScript i18n strings
 JS_INFO_DICT = {
     'packages': ('openassessment.xblock',),
 }
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     # Django built-in
     url(r'^admin/', include(admin.site.urls)),
 
@@ -24,11 +24,11 @@ urlpatterns = patterns(
     url(r'^peer/evaluations/', include(openassessment.assessment.urls)),
 
     # JavaScript i18n
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', JS_INFO_DICT),
+    url(r'^jsi18n/$', javascript_catalog, JS_INFO_DICT),
 
     # File upload to local filesystem
     url(r'^openassessment/storage', include(openassessment.fileupload.urls)),
-)
+]
 
 # We need to do explicit setup of the Django debug toolbar because autodiscovery
 # causes problems when you mix debug toolbar >= 1.0 + django < 1.7, and the
@@ -36,6 +36,4 @@ urlpatterns = patterns(
 # http://django-debug-toolbar.readthedocs.org/en/1.0/installation.html#explicit-setup
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
+    urlpatterns.append(url(r'^__debug__/', include(debug_toolbar.urls)))

@@ -3,10 +3,8 @@ Base settings for ORA2.
 """
 
 import os
-from celery import Celery
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('admin', 'admin'),
@@ -70,29 +68,18 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-# Additional locations of static files
-STATICFILES_DIRS = (
-# Put strings here, like "/home/html/static" or "C:/www/django/static".
-# Always use forward slashes, even on Windows.
-# Don't forget to use absolute paths, not relative paths.
-)
-
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')68&amp;-c!+og)cy$o9pju_$c707+fett&amp;ph%t%gqgu-@5)!cl$cr'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'debug': DEBUG,
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -120,7 +107,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     # Third party
-    'django_extensions',
+    'django_nose',
 
     # XBlock
     'workbench',
@@ -149,14 +136,6 @@ CACHES = {
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
-# Celery initialization and configuration
+LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
 
-class Config:
-    # We run Celery in "always eager" mode in the test suite and local dev,
-    # which executes tasks synchronously instead of using the task queue.
-    CELERY_ALWAYS_EAGER = True
-    CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
-
-APP = Celery()
-APP.config_from_object(Config)
-APP.autodiscover_tasks(lambda: INSTALLED_APPS)
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
