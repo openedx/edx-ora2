@@ -400,24 +400,20 @@ class SubmissionMixin(object):
         """
         urls = []
         if 'file_keys' in submission['answer']:
-            keys = submission['answer'].get('file_keys', [])
+            file_keys = submission['answer'].get('file_keys', [])
             descriptions = submission['answer'].get('files_descriptions', [])
-            for idx, key in enumerate(keys):
-                url = self._get_url_by_file_key(key)
-                if url:
-                    description = ''
-                    try:
-                        description = descriptions[idx]
-                    except IndexError:
-                        pass
-                    urls.append((url, description))
+            for idx, key in enumerate(file_keys):
+                file_download_url = self._get_url_by_file_key(key)
+                if file_download_url:
+                    file_description = descriptions[idx].strip() if idx < len(descriptions) else ''
+                    urls.append((file_download_url, file_description))
                 else:
                     break
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
-            url = self._get_url_by_file_key(key)
-            if url:
-                urls.append((url, ''))
+            file_download_url = self._get_url_by_file_key(key)
+            if file_download_url:
+                urls.append((file_download_url, ''))
         return urls
 
     @staticmethod
