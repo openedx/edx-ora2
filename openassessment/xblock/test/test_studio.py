@@ -3,12 +3,14 @@ View-level tests for Studio view of OpenAssessment XBlock.
 """
 
 import copy
-import json
 import datetime as dt
-import pytz
+import json
+
 from ddt import ddt, file_data
 from mock import MagicMock
-from .base import scenario, XBlockHandlerTestCase
+import pytz
+
+from .base import XBlockHandlerTestCase, scenario
 
 
 @ddt
@@ -97,15 +99,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         }
     ]
 
-    EXAMPLE_BASED_ASSESSMENT_EXAMPLES = '<examples>' + \
-                                        '<example>' + \
-                                        '<answer> TEST ANSWER </answer>' + \
-                                        '<select criterion="Test criterion" option="Test option" />' + \
-                                        '</example>' + \
-                                        '</examples>'
-
     ASSESSMENT_CSS_IDS = {
-        "example-based-assessment": "oa_ai_assessment_editor",
         "peer-assessment": "oa_peer_assessment_editor",
         "self-assessment": "oa_self_assessment_editor",
         "student-training": "oa_student_training_editor",
@@ -126,11 +120,6 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_render_studio_with_training(self, xblock):
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
-
-    @scenario('data/example_based_only.xml')
-    def test_render_studio_with_ai(self, xblock):
-        frag = self.runtime.render(xblock, 'studio_view')
-        self.assertTrue('ai_assessment_settings_editor' in frag.body_html())
 
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
@@ -155,27 +144,6 @@ class StudioViewTest(XBlockHandlerTestCase):
             "self-assessment",
             "staff-assessment",
         ]
-        xblock.runtime.modulestore = MagicMock()
-        xblock.runtime.modulestore.has_published_version.return_value = False
-        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
-        self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
-
-    @scenario('data/basic_scenario.xml')
-    def test_update_editor_context_saves_assessment_order_with_ai(self, xblock):
-        # Update the XBlock with a different editor assessment order
-        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
-        data['assessments'] = [{
-            'name': 'example-based-assessment',
-            'examples_xml': self.EXAMPLE_BASED_ASSESSMENT_EXAMPLES
-        }]
-        data['editor_assessments_order'] = [
-            "example-based-assessment",
-            "student-training",
-            "peer-assessment",
-            "self-assessment",
-            "staff-assessment",
-            ]
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')

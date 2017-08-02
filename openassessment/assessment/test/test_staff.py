@@ -3,29 +3,25 @@
 Tests for staff assessments.
 """
 import copy
-import mock
 from datetime import timedelta
 
-from django.db import DatabaseError
-from django.test.utils import override_settings
-from django.utils.timezone import now
-from ddt import ddt, data, unpack
+from ddt import data, ddt, unpack
+import mock
 
-from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
-from openassessment.assessment.test.test_ai import (
-    ALGORITHM_ID,
-    AI_ALGORITHMS,
-    AIGradingTest,
-    train_classifiers
-)
-from openassessment.test_utils import CacheResetTest
-from openassessment.assessment.api import staff as staff_api, ai as ai_api, peer as peer_api
-from openassessment.assessment.api.self import create_assessment as self_assess
+from django.db import DatabaseError
+from django.utils.timezone import now
+
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api.peer import create_assessment as peer_assess
-from openassessment.assessment.models import Assessment, StaffWorkflow
-from openassessment.assessment.errors import StaffAssessmentRequestError, StaffAssessmentInternalError
+from openassessment.assessment.api.self import create_assessment as self_assess
+from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
+from openassessment.assessment.models import StaffWorkflow
+from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
+
+from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
 
 
 @ddt
@@ -39,17 +35,6 @@ class TestStaffAssessment(CacheResetTest):
 
     # This is due to ddt not playing nicely with list comprehensions
     ASSESSMENT_SCORES_DDT = [key for key in OPTIONS_SELECTED_DICT]
-
-    @staticmethod
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def _ai_assess(sub):
-        """
-        Helper to fulfill ai assessment requirements.
-        """
-        # Note that CLASSIFIER_SCORE_OVERRIDES matches OPTIONS_SELECTED_DICT['most'] scores
-        train_classifiers(RUBRIC, AIGradingTest.CLASSIFIER_SCORE_OVERRIDES)
-        ai_api.on_init(sub, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
-        return ai_api.get_latest_assessment(sub)
 
     @staticmethod
     def _peer_assess(scores):
@@ -67,7 +52,6 @@ class TestStaffAssessment(CacheResetTest):
             'staff',
             lambda sub, scorer_id, scores: staff_api.create_assessment(sub, scorer_id, scores, dict(), "", RUBRIC)
         ),
-        ('ai', lambda sub, scorer_id, scores: TestStaffAssessment._ai_assess(sub))
     ]
 
     def _verify_done_state(self, uuid, requirements, expect_done=True):
@@ -377,7 +361,7 @@ class TestStaffAssessment(CacheResetTest):
             )
         self.assertEqual(str(context_manager.exception), u"Invalid options were selected in the rubric.")
 
-    @mock.patch.object(Assessment.objects, 'filter')
+    @mock.patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_database_filter_error_handling(self, mock_filter):
         # Create a submission
         tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
@@ -403,7 +387,7 @@ class TestStaffAssessment(CacheResetTest):
             u"Error getting staff assessment scores for {}".format(tim_sub["uuid"])
         )
 
-    @mock.patch.object(Assessment, 'create')
+    @mock.patch('openassessment.assessment.models.Assessment.create')
     def test_database_create_error_handling(self, mock_create):
         mock_create.side_effect = DatabaseError("KABOOM!")
 
@@ -531,7 +515,5 @@ class TestStaffAssessment(CacheResetTest):
             steps = problem_steps
         if 'peer' in steps:
             peer_api.on_start(submission["uuid"])
-        if 'ai' in steps:
-            init_params['ai'] = {'rubric': RUBRIC, 'algorithm_id': ALGORITHM_ID}
         workflow_api.create_workflow(submission["uuid"], steps, init_params)
         return submission, new_student_item

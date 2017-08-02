@@ -4,9 +4,8 @@ Create factories for assessments and all of their related models.
 import factory
 from factory.django import DjangoModelFactory
 
-from openassessment.assessment.models import (
-    Assessment, AssessmentPart, Rubric, Criterion, CriterionOption, AssessmentFeedbackOption, AssessmentFeedback
-)
+from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
+                                              Criterion, CriterionOption, Rubric)
 
 
 class RubricFactory(DjangoModelFactory):

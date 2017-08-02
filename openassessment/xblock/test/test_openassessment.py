@@ -1,20 +1,21 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
-import ddt
-import json
-
+from StringIO import StringIO
 from collections import namedtuple
 import datetime as dt
-from freezegun import freeze_time
-import pytz
-from mock import Mock, patch, MagicMock, PropertyMock
-from lxml import etree
-from StringIO import StringIO
+import json
 
-from openassessment.xblock import openassessmentblock
-from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
+import ddt
+from freezegun import freeze_time
+from lxml import etree
+from mock import MagicMock, Mock, PropertyMock, patch
+import pytz
+
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock import openassessmentblock
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+
 from .base import XBlockHandlerTestCase, scenario
 
 

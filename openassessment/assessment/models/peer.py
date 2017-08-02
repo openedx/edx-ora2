@@ -7,16 +7,16 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.assessment --auto
 
 """
-import random
 from datetime import timedelta
+import logging
+import random
 
-from django.db import models, DatabaseError
+from django.db import DatabaseError, models
 from django.utils.timezone import now
 
+from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentWorkflowError
 from openassessment.assessment.models.base import Assessment
-from openassessment.assessment.errors import PeerAssessmentWorkflowError, PeerAssessmentInternalError
 
-import logging
 logger = logging.getLogger("openassessment.assessment.models")
 
 

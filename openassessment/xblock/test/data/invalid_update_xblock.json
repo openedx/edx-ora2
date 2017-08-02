@@ -1225,7 +1225,7 @@
         ],
         "editor_assessments_order": [
             "student-training", "peer-assessment",
-            "self-assessment", "example-based-assessment", "staff-assessment",
+            "self-assessment", "staff-assessment",
             "NOT A VALID ASSESSMENT"
         ]
     },
@@ -1278,7 +1278,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1331,7 +1331,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1406,7 +1406,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1461,7 +1461,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },

@@ -3,6 +3,7 @@ Serializers are created to ensure models do not have to be accessed outside the
 scope of the ORA2 APIs.
 """
 from rest_framework import serializers
+
 from openassessment.workflow.models import AssessmentWorkflow, AssessmentWorkflowCancellation
 
 

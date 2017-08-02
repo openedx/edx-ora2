@@ -3,15 +3,15 @@ Test resolving unspecified dates and date strings to datetimes.
 """
 
 import datetime
-from django.test import TestCase
-import ddt
-from mock import MagicMock
-from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
-from openassessment.xblock.user_data import get_user_preferences
 
+import ddt
 import pytz
 from workbench.runtime import WorkBenchUserService
 
+from django.test import TestCase
+
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, resolve_dates
+from openassessment.xblock.user_data import get_user_preferences
 
 STUB_I18N = lambda x: x
 

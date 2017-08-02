@@ -8,4 +8,3 @@ from .peer import *
 from .self import *
 from .staff import *
 from .student_training import *
-from .ai import *

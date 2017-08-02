@@ -2,8 +2,9 @@
 Resolve unspecified dates and date strings to datetimes.
 """
 import datetime as dt
-import pytz
+
 from dateutil.parser import parse as parse_date
+import pytz
 
 
 class InvalidDateFormat(Exception):

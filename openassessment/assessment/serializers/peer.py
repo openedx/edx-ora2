@@ -2,11 +2,11 @@
 Serializers specific to peer assessment.
 """
 from rest_framework import serializers
+
+from openassessment.assessment.models import (AssessmentFeedback, AssessmentFeedbackOption, PeerWorkflow,
+                                              PeerWorkflowItem)
+
 from .base import AssessmentSerializer
-from openassessment.assessment.models import (
-    AssessmentFeedback, AssessmentFeedbackOption,
-    PeerWorkflow, PeerWorkflowItem
-)
 
 
 class AssessmentFeedbackOptionSerializer(serializers.ModelSerializer):

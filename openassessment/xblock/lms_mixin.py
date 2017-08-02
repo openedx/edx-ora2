@@ -2,7 +2,7 @@
 Fields and methods used by the LMS and Studio.
 """
 
-from xblock.fields import String, Float, Scope, DateTime
+from xblock.fields import DateTime, Float, Scope, String
 
 
 class LmsCompatibilityMixin(object):

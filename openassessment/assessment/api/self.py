@@ -2,20 +2,15 @@
 Public interface for self-assessment.
 """
 import logging
+
 from django.db import DatabaseError, transaction
+
 from dogapi import dog_stats_api
-
-from submissions.api import get_submission_and_student, SubmissionNotFoundError
-from openassessment.assessment.serializers import (
-    InvalidRubric, full_assessment_dict, rubric_from_dict, serialize_assessments
-)
-from openassessment.assessment.models import (
-    Assessment, AssessmentPart, InvalidRubricSelection
-)
-from openassessment.assessment.errors import (
-    SelfAssessmentRequestError, SelfAssessmentInternalError
-)
-
+from openassessment.assessment.errors import SelfAssessmentInternalError, SelfAssessmentRequestError
+from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
+from openassessment.assessment.serializers import (InvalidRubric, full_assessment_dict, rubric_from_dict,
+                                                   serialize_assessments)
+from submissions.api import SubmissionNotFoundError, get_submission_and_student
 
 # Assessments are tagged as "self-evaluation"
 SELF_TYPE = "SE"

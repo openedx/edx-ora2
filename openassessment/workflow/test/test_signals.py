@@ -1,14 +1,16 @@
 """
 Tests for Django signals and receivers defined by the workflow API.
 """
-import mock
-from django.db import DatabaseError
 import ddt
-from submissions import api as sub_api
+import mock
+
+from django.db import DatabaseError
+
+from openassessment.assessment.signals import assessment_complete_signal
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflow
-from openassessment.assessment.signals import assessment_complete_signal
+from submissions import api as sub_api
 
 
 @ddt.ddt
@@ -54,7 +56,7 @@ class UpdateWorkflowSignalTest(CacheResetTest):
             mock_update.assert_called_once_with(None)
 
     @ddt.data(DatabaseError, IOError)
-    @mock.patch.object(AssessmentWorkflow.objects, 'get')
+    @mock.patch('openassessment.workflow.models.AssessmentWorkflow.objects.get')
     def test_errors(self, error, mock_call):
         # Start a workflow for the submission
         workflow_api.create_workflow(self.submission_uuid, ['self'])

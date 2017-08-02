@@ -238,19 +238,6 @@ describe("OpenAssessment edit assessment views", function() {
         });
     });
 
-    describe("OpenAssessment.EditExampleBasedAssessmentView", function() {
-        var view = null;
-
-        beforeEach(function() {
-            var element = $("#oa_ai_assessment_editor").get(0);
-            view = new OpenAssessment.EditExampleBasedAssessmentView(element);
-        });
-
-        it("Enables and disables", function() { testEnableAndDisable(view); });
-        it("Loads a description", function() { testLoadXMLExamples(view); });
-        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
-    });
-
     describe("OpenAssessment.EditStaffAssessmentView", function() {
         var view = null;
 

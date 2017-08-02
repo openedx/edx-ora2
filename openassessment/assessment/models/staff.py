@@ -3,10 +3,9 @@ Models for managing staff assessments.
 """
 from datetime import timedelta
 
-from django.db import models, DatabaseError
+from django.db import DatabaseError, models
 from django.utils.timezone import now
 
-from openassessment.assessment.models.base import Assessment
 from openassessment.assessment.errors import StaffAssessmentInternalError
 
 

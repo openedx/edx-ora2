@@ -1,11 +1,13 @@
 """
 Django models for training (both student and AI).
 """
-import json
 from hashlib import sha1
+import json
+
 from django.core.cache import cache
 from django.db import models
-from .base import Rubric, CriterionOption
+
+from .base import CriterionOption, Rubric
 
 
 class TrainingExample(models.Model):

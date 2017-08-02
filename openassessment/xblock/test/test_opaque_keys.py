@@ -4,6 +4,7 @@ Tests for opaque key transition in the LMS runtime.
 See https://github.com/edx/edx-platform/wiki/Opaque-Keys
 """
 import mock
+
 from .base import XBlockHandlerTestCase, scenario
 
 

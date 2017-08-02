@@ -3,7 +3,9 @@ UI-level acceptance tests for OpenAssessment accessibility.
 """
 import os
 import unittest
-from tests import OpenAssessmentTest, StaffAreaPage, FullWorkflowMixin, MultipleOpenAssessmentMixin
+
+from tests import FullWorkflowMixin, MultipleOpenAssessmentMixin, OpenAssessmentTest, StaffAreaPage
+
 from pages import MultipleAssessmentPage
 
 

@@ -82,7 +82,6 @@ describe("OpenAssessment.Server", function() {
         "student_training",
         "peer_assessment",
         "self_assessment",
-        "example_based_assessment"
     ];
 
     var TITLE = 'This is the title.';

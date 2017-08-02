@@ -1,3 +1,0 @@
-locustio==0.7.0
-loremipsum==1.0.5
-pyzmq==14.0.1

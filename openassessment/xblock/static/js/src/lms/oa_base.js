@@ -208,7 +208,7 @@ OpenAssessment.BaseView.prototype = {
                 // extract typed-in response and replace newline with br
                 var previewText = parentElement.find('textarea[data-preview="' + previewName + '"]').val();
                 var previewContainer = parentElement.find('.preview_content[data-preview="' + previewName + '"]');
-                previewContainer.html(previewText.replace(/\r\n|\r|\n/g,"<br />"));
+                previewContainer.html(previewText.replace(/\r\n|\r|\n/g, "<br />"));
 
                 // Render in mathjax
                 previewContainer.parent().parent().parent().show();

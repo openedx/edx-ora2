@@ -1,9 +1,10 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    'openassessment.assessment.views',
+from openassessment.assessment import views
+
+urlpatterns = [
     url(
         r'^(?P<student_id>[^/]+)/(?P<course_id>[^/]+)/(?P<item_id>[^/]+)$',
-        'get_evaluations_for_student_item'
+        views.get_evaluations_for_student_item
     ),
-)
+]

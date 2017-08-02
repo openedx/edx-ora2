@@ -13,21 +13,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='aiclassifierset',
-            name='course_id',
-            field=models.CharField(max_length=255, db_index=True),
-        ),
-        migrations.AlterField(
-            model_name='aigradingworkflow',
-            name='course_id',
-            field=models.CharField(max_length=255, db_index=True),
-        ),
-        migrations.AlterField(
-            model_name='aitrainingworkflow',
-            name='course_id',
-            field=models.CharField(max_length=255, db_index=True),
-        ),
-        migrations.AlterField(
             model_name='peerworkflow',
             name='course_id',
             field=models.CharField(max_length=255, db_index=True),

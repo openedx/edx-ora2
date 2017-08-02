@@ -4,13 +4,10 @@ Django admin models for openassessment
 import json
 
 from django.contrib import admin
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.utils import html
 
-from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric,
-    AIGradingWorkflow, AITrainingWorkflow, AIClassifierSet, AIClassifier
-)
+from openassessment.assessment.models import Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric
 from openassessment.assessment.serializers import RubricSerializer
 
 
@@ -92,7 +89,7 @@ class AssessmentAdmin(admin.ModelAdmin):
         """
         Returns the rubric link for this assessment.
         """
-        url = reverse(
+        url = reverse_lazy(
             'admin:assessment_rubric_change',
             args=[assessment_obj.rubric.id]
         )
@@ -141,7 +138,7 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
         """
         links = [
             u'<a href="{}">{}</a>'.format(
-                reverse('admin:assessment_assessment_change', args=[asmt.id]),
+                reverse_lazy('admin:assessment_assessment_change', args=[asmt.id]),
                 html.escape(asmt.scorer_id)
             )
             for asmt in assessment_feedback.assessments.all()
@@ -150,44 +147,7 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
     assessments_by.allow_tags = True
 
 
-class AIGradingWorkflowAdmin(admin.ModelAdmin):
-    """
-    Django admin model for AIGradingWorkflows.
-    """
-    list_display = ('uuid', 'submission_uuid')
-    search_fields = ('uuid', 'submission_uuid', 'student_id', 'item_id', 'course_id')
-    readonly_fields = ('uuid', 'submission_uuid', 'student_id', 'item_id', 'course_id')
-
-
-class AITrainingWorkflowAdmin(admin.ModelAdmin):
-    """
-    Django admin model for AITrainingWorkflows.
-    """
-    list_display = ('uuid',)
-    search_fields = ('uuid', 'course_id', 'item_id',)
-    readonly_fields = ('uuid', 'course_id', 'item_id',)
-
-
-class AIClassifierInline(admin.TabularInline):
-    """
-    Django admin model for AIClassifiers.
-    """
-    model = AIClassifier
-
-
-class AIClassifierSetAdmin(admin.ModelAdmin):
-    """
-    Django admin model for AICLassifierSets.
-    """
-    list_display = ('id',)
-    search_fields = ('id',)
-    inlines = [AIClassifierInline]
-
-
 admin.site.register(Rubric, RubricAdmin)
 admin.site.register(PeerWorkflow, PeerWorkflowAdmin)
 admin.site.register(Assessment, AssessmentAdmin)
 admin.site.register(AssessmentFeedback, AssessmentFeedbackAdmin)
-admin.site.register(AIGradingWorkflow, AIGradingWorkflowAdmin)
-admin.site.register(AITrainingWorkflow, AITrainingWorkflowAdmin)
-admin.site.register(AIClassifierSet, AIClassifierSetAdmin)

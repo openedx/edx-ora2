@@ -2,24 +2,14 @@
 Public interface for staff grading, used by students/course staff.
 """
 import logging
+
 from django.db import DatabaseError, transaction
 from django.utils.timezone import now
-from dogapi import dog_stats_api
 
+from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
+from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
+from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
 from submissions import api as submissions_api
-
-from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidRubricSelection, StaffWorkflow,
-)
-from openassessment.assessment.serializers import (
-    AssessmentFeedbackSerializer, RubricSerializer,
-    full_assessment_dict, rubric_from_dict, serialize_assessments,
-    InvalidRubric
-)
-from openassessment.assessment.errors import (
-    StaffAssessmentRequestError, StaffAssessmentInternalError
-)
 
 logger = logging.getLogger("openassessment.assessment.api.staff")
 
