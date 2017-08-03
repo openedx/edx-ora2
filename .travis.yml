@@ -17,9 +17,6 @@ matrix:
       env: TOXENV=js
 before_install:
   - "pip install -U pip"
-cache:
-    directories:
-        - $HOME/.cache/pip
 install:
   - "pip install tox"
 script:
