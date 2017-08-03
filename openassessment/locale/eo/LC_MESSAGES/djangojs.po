@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-14 13:12+0000\n"
+"POT-Creation-Date: 2017-08-03 15:55+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -342,18 +342,18 @@ msgstr "Ûnnäméd Öptïön Ⱡ'#"
 msgid "Not Selected"
 msgstr "Nöt Séléçtéd Ⱡ#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:149
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
 msgid "Couldn't Save This Assignment"
 msgstr "Çöüldn't Sävé Thïs Àssïgnmént Ⱡ'σяєм #"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:150
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
 msgid "Please correct the outlined fields."
 msgstr "Pléäsé çörréçt thé öütlïnéd fïélds. Ⱡ'σяєм ιρ#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:184
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."

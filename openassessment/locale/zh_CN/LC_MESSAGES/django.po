@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-14 13:12+0000\n"
-"PO-Revision-Date: 2017-07-14 13:13+0000\n"
+"POT-Creation-Date: 2017-08-03 15:55+0000\n"
+"PO-Revision-Date: 2017-08-03 15:56+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -43,34 +43,34 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: openassessment/assessment/api/student_training.py:180
+#: openassessment/assessment/api/student_training.py:176
 msgid "Could not parse serialized rubric"
 msgstr "不能解析串化评分标准"
 
-#: openassessment/assessment/api/student_training.py:192
+#: openassessment/assessment/api/student_training.py:188
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
 msgstr "如果您的作业包含学生评分训练步骤，则评分标准必须至少包含一个得分点，并且该得分点必须至少含一个分值选项。"
 
-#: openassessment/assessment/api/student_training.py:204
+#: openassessment/assessment/api/student_training.py:200
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "样例答案{example_number} 出现验证错误: {error}"
 
-#: openassessment/assessment/api/student_training.py:218
+#: openassessment/assessment/api/student_training.py:214
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "样例答案 {example_number}的“{criterion_name}”得分点中存在无效的分值选项：“{option_name}”"
 
-#: openassessment/assessment/api/student_training.py:228
+#: openassessment/assessment/api/student_training.py:224
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "样例答案 {example_number}的“{criterion_name}”得分点存在额外的分值选项"
 
-#: openassessment/assessment/api/student_training.py:241
+#: openassessment/assessment/api/student_training.py:237
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "样例答案{example_number} 的“{criterion_name}”得分点缺少分值选项"
@@ -223,19 +223,7 @@ msgid ""
 "learners."
 msgstr "指定您要显示的最佳答复的数量。有效值介于0到99之间。如果设置为0，最佳答复部分将不会显示给学生。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:185
-msgid ""
-"In this assignment, you can include learner training, peer assessment, self "
-"assessment, example based assessment, and staff assessment steps. Select the"
-" steps that you want below, and then drag them into the order you want. If "
-"you include an example based assessment step, it must precede all other "
-"steps. If you include a learner training step, it must precede peer and self"
-" assessment steps. If you include a staff assessment step, it must be the "
-"final step. After you release an ORA assignment, you cannot change the type "
-"and number of assessment steps."
-msgstr "在此任务中，你可以列入学员训练、同学评估、自我评估、基于示例的评估、员工评估步骤。选择你下面需要的步骤，然后按照你需要的顺序进行拖拽。如果你列入一个以基于示例的评估步骤，则它必须在所有其他步骤之前。如果你列入一个学员训练步骤，则它必须在同学评估和自我评估步骤之前。如果你列入一个员工评估步骤，则它必须为最后步骤。在你发布了一个 ORA 任务之后，你不能更改评估步骤的类型和数目。"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:187
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:184
 msgid ""
 "In this assignment, you can include learner training, peer assessment, self "
 "assessment, and staff assessment steps. Select the steps that you want "
@@ -245,16 +233,16 @@ msgid ""
 "assignment, you cannot change the type and number of assessment steps."
 msgstr "在此任务中，你可以列入学员训练、同学评估、自我评估和员工评估步骤。选择你下面需要的步骤，然后按照你需要的顺序进行拖拽。如果你列入一个学员训练步骤，则它必须在所有其他步骤之前。如果你列入一个员工评估步骤，则它必须为最后步骤。在你发布了一个 ORA 任务之后，你不能更改评估步骤的类型和数目。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:204
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
 msgid "Save"
 msgstr "保存"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:208
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:204
 msgid "Cancel"
 msgstr "取消"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:105
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
 msgstr "得分点"
@@ -287,19 +275,19 @@ msgid "Feedback for This Criterion"
 msgstr "此得分点的评语"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:47
 msgid "None"
 msgstr "无"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:49
+#: openassessment/xblock/studio_mixin.py:46
 msgid "Optional"
 msgstr "可选的"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:92
-#: openassessment/xblock/studio_mixin.py:48
+#: openassessment/xblock/studio_mixin.py:45
 msgid "Required"
 msgstr "必要的"
 
@@ -308,25 +296,6 @@ msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
 msgstr "选择以上其中一个选项。这描述了学员是否需要提供标准反馈。"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:8
-msgid "Step: Example-Based Assessment"
-msgstr "步骤：基于样本的自动评分"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:12
-msgid ""
-"An algorithm assesses learners' responses by comparing the responses to pre-"
-"assessed sample responses that the instructor provides."
-msgstr "算法通过将回复与导师提供的预评估示例回复进行比较，来评估学员的回复。"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:16
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
-msgid ""
-"Enter one or more sample responses that you've created, and then specify the"
-" options that you would choose for each criterion in your rubric. Note that "
-"you must add your rubric to the Rubric tab before you can complete this "
-"step."
-msgstr "请输入一或多个样例答案，设置评分标准的每个得分点及其分值选项。注意在你完成此步骤之前必须先在评分标准面板添加的评分标准。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
@@ -395,7 +364,7 @@ msgstr "请输入同伴互评的日期和时间"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:137
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:92
 msgid "Due Date"
 msgstr "截止日期"
 
@@ -501,6 +470,14 @@ msgid ""
 "match your scores. Note that if you add this step, you must also add a peer "
 "assessment step. This step must come before the peer assessment step."
 msgstr "学员通过对你提供的预先评估示例回复进行评分来学习如何评估回复。当学员给出的分数与你的分数相匹配时，学员继续进行下一步骤。请注意，如果你添加了此步骤，则你必须也添加一个同学评估步骤。此步骤必须在同学评估步骤之前。"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
+msgid ""
+"Enter one or more sample responses that you've created, and then specify the"
+" options that you would choose for each criterion in your rubric. Note that "
+"you must add your rubric to the Rubric tab before you can complete this "
+"step."
+msgstr "请输入一或多个样例答案，设置评分标准的每个得分点及其分值选项。注意在你完成此步骤之前必须先在评分标准面板添加的评分标准。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
 msgid "Add Sample Response"
@@ -714,7 +691,7 @@ msgstr "你已完成你在该任务中的步骤，但是某些评估仍然需要
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
 msgid "Grade Available Responses"
 msgstr "对提供的回复评分"
 
@@ -912,6 +889,9 @@ msgstr "为同学评分"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:24
 #: openassessment/templates/openassessmentblock/response/oa_response.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:20
@@ -925,6 +905,9 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
 #. and 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
@@ -972,7 +955,7 @@ msgstr "我们无法提交你的评判。"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:19
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:109
+#: openassessment/xblock/staff_assessment_mixin.py:106
 msgid "Cancelled"
 msgstr "已取消"
 
@@ -1031,8 +1014,8 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:102
-#: openassessment/xblock/staff_assessment_mixin.py:126
+#: openassessment/xblock/staff_assessment_mixin.py:99
+#: openassessment/xblock/staff_assessment_mixin.py:123
 msgid "Not Available"
 msgstr "操作条件不满足"
 
@@ -1174,8 +1157,8 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:18
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:116
-#: openassessment/xblock/staff_assessment_mixin.py:137
+#: openassessment/xblock/staff_assessment_mixin.py:113
+#: openassessment/xblock/staff_assessment_mixin.py:134
 msgid "Complete"
 msgstr "已经完成"
 
@@ -1258,7 +1241,7 @@ msgid ""
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:345
+#: openassessment/xblock/grade_mixin.py:335
 msgid "Staff Grade"
 msgstr "员工评分"
 
@@ -1268,13 +1251,13 @@ msgid "Manage Individual Learners"
 msgstr "管理个别学员"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:7
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:44
 msgid "View Assignment Statistics"
 msgstr "查看任务统计数据"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:87
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:169
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:124
 msgid "Close"
 msgstr "关闭"
 
@@ -1286,77 +1269,37 @@ msgstr "输入学生个人的用户名或邮箱"
 msgid "Submit"
 msgstr "提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:40
-msgid "Classifier set"
-msgstr "分类集"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
-msgid "Field"
-msgstr "域"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:43
-msgid "Value"
-msgstr "值"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:47
-msgid "Created at"
-msgstr "创建于"
-
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
-msgid "Algorithm ID"
-msgstr "算法编号"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:55
-msgid "Course ID"
-msgstr "课程编号"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:59
-msgid "Item ID"
-msgstr "项目编号"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:65
-msgid "No classifiers are available for this problem"
-msgstr "该问题没有适合的分类"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:70
-msgid "Schedule Example-Based Assessment Training"
-msgstr "安排基于样本自动评判的训练"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:77
-msgid "Reschedule All Unfinished Example-Based Assessment Grading Tasks"
-msgstr "重新安排所有未完成的基于样本自动评判的训练"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:96
 msgid "Response total"
 msgstr "答案总数"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:102
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:57
 msgid "Location"
 msgstr "位置"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:63
 msgid "Learner Progress"
 msgstr "学员进度"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:112
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:135
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:67
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
 msgid "Problem Step"
 msgstr "问题步骤"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:68
 msgid "Active Learners in Step"
 msgstr "步骤中的激活学员"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:131
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:86
 msgid "Dates"
 msgstr "日期"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:136
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:91
 msgid "Release Date"
 msgstr "公开日期"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:149
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:155
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:104
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:110
 msgid "N/A"
 msgstr "不适用"
 
@@ -1465,18 +1408,14 @@ msgid "Learner's Self Assessment"
 msgstr "学生自评"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:72
-msgid "Example-Based Assessment"
-msgstr "基于样本的自动评判"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:77
 msgid "Staff Assessment for This Learner"
 msgstr "此学员的员工评估"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:86
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Final Grade"
 msgstr "学员的最终评分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:95
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:90
 #, python-format
 msgid ""
 "\n"
@@ -1484,11 +1423,11 @@ msgid ""
 "                        "
 msgstr "\n                           最终评分：%(points_earned)s（总分 %(points_possible)s\n）"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:97
 msgid "Final Grade Details"
 msgstr "最终评分详情"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:117
 #, python-format
 msgid ""
 "\n"
@@ -1500,56 +1439,56 @@ msgid_plural ""
 "                                    "
 msgstr[0] "\n                                        %(assessment_label)s - %(points)s 分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:137
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:132
 msgid "Feedback Recorded"
 msgstr "反馈已记录"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:143
 msgid "The submission is waiting for assessments."
 msgstr "提交正在等待评估。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员的提交已从同学评估中撤销。除非你删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:156
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
 msgid "The problem has not been started."
 msgstr "此问题尚未开始。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:160
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:155
 msgid "The problem has not been completed."
 msgstr "此问题尚未完成。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:167
 msgid "Submit Assessment Grade Override"
 msgstr "提交评估评分覆盖"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:188
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:183
 msgid "Remove Submission From Peer Grading"
 msgstr "删除同学评分的提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:192
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "注意：此操作不可撤销"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:193
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "删除学员提交的操作不可撤销，所以应谨慎操作。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:203
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid "Comments:"
 msgstr "评论："
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:207
 msgid "Remove submission"
 msgstr "移除提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:227
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:222
 msgid "A response was not found for this learner."
 msgstr "未找到针对此学员的回复。"
 
@@ -1670,75 +1609,67 @@ msgstr "你必须在评估中提供整体反馈。"
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "你必须在评估中提供对标准的反馈。"
 
-#: openassessment/xblock/grade_mixin.py:75
+#: openassessment/xblock/grade_mixin.py:73
 #: openassessment/xblock/leaderboard_mixin.py:52
-#: openassessment/xblock/self_assessment_mixin.py:39
-#: openassessment/xblock/student_training_mixin.py:56
-#: openassessment/xblock/student_training_mixin.py:207
+#: openassessment/xblock/self_assessment_mixin.py:40
+#: openassessment/xblock/student_training_mixin.py:57
+#: openassessment/xblock/student_training_mixin.py:208
 msgid "An unexpected error occurred."
 msgstr "发生了意外错误。"
 
-#: openassessment/xblock/grade_mixin.py:173
+#: openassessment/xblock/grade_mixin.py:164
 msgid "Peer Assessment"
 msgstr "学生互评"
 
-#: openassessment/xblock/grade_mixin.py:175
+#: openassessment/xblock/grade_mixin.py:166
 msgid "Self Assessment"
 msgstr "自我评分"
 
-#: openassessment/xblock/grade_mixin.py:208
+#: openassessment/xblock/grade_mixin.py:199
 msgid "Assessment feedback could not be saved."
 msgstr "评判评语无法保存。"
 
-#: openassessment/xblock/grade_mixin.py:219
+#: openassessment/xblock/grade_mixin.py:210
 msgid "Feedback saved."
 msgstr "评语已保存。"
 
-#: openassessment/xblock/grade_mixin.py:346
-#: openassessment/xblock/grade_mixin.py:494
+#: openassessment/xblock/grade_mixin.py:336
+#: openassessment/xblock/grade_mixin.py:479
 msgid "Staff Comments"
 msgstr "员工评论"
 
-#: openassessment/xblock/grade_mixin.py:352
+#: openassessment/xblock/grade_mixin.py:342
 msgid "Peer Median Grade"
 msgstr "同伴平均分数"
 
-#: openassessment/xblock/grade_mixin.py:357
-#: openassessment/xblock/grade_mixin.py:501
+#: openassessment/xblock/grade_mixin.py:347
+#: openassessment/xblock/grade_mixin.py:486
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "同学{peer_index}"
 
-#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:348
 msgid "Peer Comments"
 msgstr "同学评论"
 
-#: openassessment/xblock/grade_mixin.py:368
-msgid "Example-Based Grade"
-msgstr "基于样本的分数"
-
-#: openassessment/xblock/grade_mixin.py:368
-msgid "Example-Based Comments"
-msgstr "基于示例的评论"
-
-#: openassessment/xblock/grade_mixin.py:371
+#: openassessment/xblock/grade_mixin.py:358
 msgid "Self Assessment Grade"
 msgstr "自我评分分数"
 
-#: openassessment/xblock/grade_mixin.py:371
+#: openassessment/xblock/grade_mixin.py:358
 msgid "Your Self Assessment"
 msgstr "自我评分结果"
 
-#: openassessment/xblock/grade_mixin.py:372
-#: openassessment/xblock/grade_mixin.py:513
+#: openassessment/xblock/grade_mixin.py:359
+#: openassessment/xblock/grade_mixin.py:498
 msgid "Your Comments"
 msgstr "你的评论"
 
-#: openassessment/xblock/grade_mixin.py:466
+#: openassessment/xblock/grade_mixin.py:451
 msgid "Waiting for peer reviews"
 msgstr "等待同学评语"
 
-#: openassessment/xblock/grade_mixin.py:506
+#: openassessment/xblock/grade_mixin.py:491
 msgid "Peer"
 msgstr "同学"
 
@@ -1758,7 +1689,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "你的学生互评无法提交"
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:213
+#: openassessment/xblock/student_training_mixin.py:214
 msgid "Could not update workflow status."
 msgstr "无法更新工作流状态。"
 
@@ -1779,364 +1710,320 @@ msgstr "提交你的评分并进行下一步"
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "提交你的评分并跳转到第{response_number}个回复"
 
-#: openassessment/xblock/resolve_dates.py:50
+#: openassessment/xblock/resolve_dates.py:51
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "“{date}”是一个无效的日期格式，请确保日期的格式为“YYYY-MM-DDTHH:MM:SS”。"
 
-#: openassessment/xblock/resolve_dates.py:56
+#: openassessment/xblock/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
 msgstr "“{date}”必须是日期字符串或日期时间"
 
-#: openassessment/xblock/resolve_dates.py:209
+#: openassessment/xblock/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "这一步的开始日期“{start}”不能早于上一步骤的开始日期“{prev}”。"
 
-#: openassessment/xblock/resolve_dates.py:217
+#: openassessment/xblock/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "这一步的截止日期“{due}”不能晚于下一个步骤的截止日期“{prev}”。"
 
-#: openassessment/xblock/resolve_dates.py:233
+#: openassessment/xblock/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "起始日期“{start}”不能晚于到截止日期“{due}”"
 
-#: openassessment/xblock/self_assessment_mixin.py:135
+#: openassessment/xblock/self_assessment_mixin.py:136
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "在进行自我评分之前你必须提交自己的答案"
 
-#: openassessment/xblock/self_assessment_mixin.py:157
-#: openassessment/xblock/self_assessment_mixin.py:164
+#: openassessment/xblock/self_assessment_mixin.py:158
+#: openassessment/xblock/self_assessment_mixin.py:165
 msgid "Your self assessment could not be submitted."
 msgstr "自我评分无法提交"
 
-#: openassessment/xblock/staff_area_mixin.py:50
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to schedule training"
 msgstr "你没有权限来安排练习"
 
-#: openassessment/xblock/staff_area_mixin.py:51
+#: openassessment/xblock/staff_area_mixin.py:44
 msgid "You do not have permission to reschedule tasks."
 msgstr "你没有权限来重新安排任务。"
 
-#: openassessment/xblock/staff_area_mixin.py:78
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access the ORA staff area"
 msgstr "你无权访问教员信息"
 
-#: openassessment/xblock/staff_area_mixin.py:79
+#: openassessment/xblock/staff_area_mixin.py:72
 msgid "You do not have permission to access ORA learner information."
 msgstr "你无权访问学生信息。"
 
-#: openassessment/xblock/staff_area_mixin.py:80
+#: openassessment/xblock/staff_area_mixin.py:73
 msgid "You do not have permission to access ORA staff grading."
 msgstr "你无权访问教员评分"
 
-#: openassessment/xblock/staff_area_mixin.py:212
-#, python-brace-format
-msgid "Training scheduled with new Workflow UUID: {uuid}"
-msgstr "训练安排了新工作流程UUID：{uuid}"
-
-#: openassessment/xblock/staff_area_mixin.py:217
-#, python-brace-format
-msgid "An error occurred scheduling classifier training: {error}"
-msgstr "安排分类器训练时发生错误：{error}"
-
-#: openassessment/xblock/staff_area_mixin.py:223
-msgid "Example Based Assessment is not configured for this location."
-msgstr "此处没有配置基于样本的自动评判"
-
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:180
 msgid "Error getting learner information."
 msgstr "无法获取学生列表"
 
-#: openassessment/xblock/staff_area_mixin.py:281
+#: openassessment/xblock/staff_area_mixin.py:217
 msgid "Error loading the checked out learner response."
 msgstr "无法加载已读学生回复"
 
-#: openassessment/xblock/staff_area_mixin.py:283
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
 msgstr "目前没有可用的学生回复"
 
-#: openassessment/xblock/staff_area_mixin.py:286
+#: openassessment/xblock/staff_area_mixin.py:222
 msgid "Error getting staff grade information."
 msgstr "无法获取教员评分信息"
 
-#: openassessment/xblock/staff_area_mixin.py:307
+#: openassessment/xblock/staff_area_mixin.py:243
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "获得不合格和已检验的员工评分计数出现错误。"
 
-#: openassessment/xblock/staff_area_mixin.py:494
-msgid ""
-"All AI tasks associated with this item have been rescheduled successfully."
-msgstr "此处所有的人工智能任务已顺利重新安排。"
-
-#: openassessment/xblock/staff_area_mixin.py:499
-msgid "An error occurred while rescheduling tasks: {}"
-msgstr "重新安排任务时出错：{}"
-
-#: openassessment/xblock/staff_area_mixin.py:553
+#: openassessment/xblock/staff_area_mixin.py:440
 msgid "Please enter valid reason to remove the submission."
 msgstr "请输入合理的理由以移除该提交。"
 
-#: openassessment/xblock/staff_area_mixin.py:577
+#: openassessment/xblock/staff_area_mixin.py:464
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员提交已从同学评估中删除。除非你删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:42
+#: openassessment/xblock/staff_assessment_mixin.py:39
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "未找到正在评估的提交的提交 ID。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:68
-#: openassessment/xblock/staff_assessment_mixin.py:75
+#: openassessment/xblock/staff_assessment_mixin.py:65
+#: openassessment/xblock/staff_assessment_mixin.py:72
 msgid "Your staff assessment could not be submitted."
 msgstr "无法提交你的员工评估。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:127
+#: openassessment/xblock/staff_assessment_mixin.py:124
 msgid "Waiting for a Staff Grade"
 msgstr "等待员工评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:128
+#: openassessment/xblock/staff_assessment_mixin.py:125
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "稍后返回检查，以查看课程工作人员是否已评估你的回复。你将在评估完成后获得你的评分。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:139
+#: openassessment/xblock/staff_assessment_mixin.py:136
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "你必须完成上述步骤才可查看你的评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:140
+#: openassessment/xblock/staff_assessment_mixin.py:137
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
 "problem."
 msgstr "虽然课程工作人员已评估了你的回复，但是只有在你已完成此问题的全部所需步骤后，你才能获得评分。"
 
-#: openassessment/xblock/student_training_mixin.py:170
+#: openassessment/xblock/student_training_mixin.py:171
 msgid "Missing options_selected key in request"
 msgstr "请求中缺少可选选项"
 
-#: openassessment/xblock/student_training_mixin.py:172
+#: openassessment/xblock/student_training_mixin.py:173
 msgid "options_selected must be a dictionary"
 msgstr "选中的分值必须是一个字典"
 
-#: openassessment/xblock/student_training_mixin.py:197
-#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:198
+#: openassessment/xblock/student_training_mixin.py:203
 msgid "Your scores could not be checked."
 msgstr "无法查看你的得分。"
 
-#: openassessment/xblock/studio_mixin.py:182
-#: openassessment/xblock/studio_mixin.py:197
+#: openassessment/xblock/studio_mixin.py:179
+#: openassessment/xblock/studio_mixin.py:191
 msgid "Error updating XBlock configuration"
 msgstr "更新XBlock配置出错"
 
-#: openassessment/xblock/studio_mixin.py:200
+#: openassessment/xblock/studio_mixin.py:194
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:203
+#: openassessment/xblock/studio_mixin.py:197
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:206
+#: openassessment/xblock/studio_mixin.py:200
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:229
-msgid ""
-"Validation error: There was an error in the XML definition of the examples "
-"provided by the user. Please correct the XML definition before saving."
-msgstr "验证错误：你提供的XML在定义样本时存在错误。保存前请更正XML定义。"
-
-#: openassessment/xblock/studio_mixin.py:234
-msgid ""
-"Validation error: No examples were provided for example based assessment."
-msgstr "验证错误：没有为基于样本的自动评分提供样本。"
-
-#: openassessment/xblock/studio_mixin.py:251
+#: openassessment/xblock/studio_mixin.py:224
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "验证错误: {error}"
 
-#: openassessment/xblock/studio_mixin.py:276
+#: openassessment/xblock/studio_mixin.py:249
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: openassessment/xblock/submission_mixin.py:77
+#: openassessment/xblock/submission_mixin.py:76
 msgid "\"submission\" required to submit answer."
 msgstr "要交答案，必须有“submission\"。"
 
-#: openassessment/xblock/submission_mixin.py:98
+#: openassessment/xblock/submission_mixin.py:97
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "要提交答案，请在预览或实时模式查看该组件。"
 
-#: openassessment/xblock/submission_mixin.py:104
+#: openassessment/xblock/submission_mixin.py:103
 msgid "Multiple submissions are not allowed."
 msgstr "不允许批量提交。"
 
-#: openassessment/xblock/submission_mixin.py:147
+#: openassessment/xblock/submission_mixin.py:146
 msgid "API returned unclassified exception."
 msgstr "API返回的未分类的异常"
 
-#: openassessment/xblock/submission_mixin.py:189
+#: openassessment/xblock/submission_mixin.py:188
 msgid "This response could not be saved."
 msgstr "该答案无法保存。"
 
-#: openassessment/xblock/submission_mixin.py:193
+#: openassessment/xblock/submission_mixin.py:192
 msgid "This response was not submitted."
 msgstr "该答案提交不成功。"
 
-#: openassessment/xblock/submission_mixin.py:222
+#: openassessment/xblock/submission_mixin.py:221
 msgid "Files descriptions could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:226
+#: openassessment/xblock/submission_mixin.py:225
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:288
+#: openassessment/xblock/submission_mixin.py:287
 msgid "There was an error uploading your file."
 msgstr "你的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:296
+#: openassessment/xblock/submission_mixin.py:295
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "内容格式必须是 GIF、 PNG 或 JPG。"
 
-#: openassessment/xblock/submission_mixin.py:299
+#: openassessment/xblock/submission_mixin.py:298
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "内容格式必须是 PDF、GIF、 PNG 或 JPG。"
 
-#: openassessment/xblock/submission_mixin.py:302
+#: openassessment/xblock/submission_mixin.py:301
 msgid "File type must be one of the following types: {}"
 msgstr "文件类型必须为以下类型中的一种：{}"
 
-#: openassessment/xblock/submission_mixin.py:306
+#: openassessment/xblock/submission_mixin.py:305
 msgid "File type is not allowed."
 msgstr "文件类型不可用。"
 
-#: openassessment/xblock/submission_mixin.py:313
+#: openassessment/xblock/submission_mixin.py:312
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:455
+#: openassessment/xblock/submission_mixin.py:454
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:456
+#: openassessment/xblock/submission_mixin.py:455
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:117
 msgid "This problem must include at least one assessment."
 msgstr "该题目至少应包括一项评估。"
 
-#: openassessment/xblock/validation.py:125
+#: openassessment/xblock/validation.py:121
 msgid "The assessment order you selected is invalid."
 msgstr "你选择的评分次序无效。"
 
-#: openassessment/xblock/validation.py:135
+#: openassessment/xblock/validation.py:131
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "在学生互评中，“须评”值必须为正整数。"
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:134
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "在学生互评中，“被评”的值必须为正整数。"
 
-#: openassessment/xblock/validation.py:142
+#: openassessment/xblock/validation.py:138
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "在学生互评中，“须评”的值必须大于或等于“被评”的值。"
 
-#: openassessment/xblock/validation.py:151
+#: openassessment/xblock/validation.py:147
 msgid "You must provide at least one example response for learner training."
 msgstr "你必须为学员训练提供至少一个示例回复。"
 
-#: openassessment/xblock/validation.py:154
+#: openassessment/xblock/validation.py:150
 msgid "Each example response for learner training must be unique."
 msgstr "学员训练的每一个示例回复必须独一无二。"
 
-#: openassessment/xblock/validation.py:161
-msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
-msgstr "“algorithm_id”值必须设置为“ease”或“fake”"
-
-#: openassessment/xblock/validation.py:167
+#: openassessment/xblock/validation.py:157
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "如果员工评估是唯一步骤，则\"要求\"值必须为真值。"
 
-#: openassessment/xblock/validation.py:171
+#: openassessment/xblock/validation.py:161
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "题目公开之后，不能再修改评分次数。"
 
-#: openassessment/xblock/validation.py:176
+#: openassessment/xblock/validation.py:166
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "题目公开之后，不能再修改评分类型。"
 
-#: openassessment/xblock/validation.py:200
+#: openassessment/xblock/validation.py:189
 msgid "This rubric definition is not valid."
 msgstr "这个评分标准的定义无效。"
 
-#: openassessment/xblock/validation.py:206
+#: openassessment/xblock/validation.py:195
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "得分点“{criterion}”中存在重复分值(名称)：{duplicates}"
 
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:203
 msgid "Criteria with no options must require written feedback."
 msgstr "没有分值的得分点必须要求填写评语。"
 
-#: openassessment/xblock/validation.py:223
-msgid "Example-based assessments cannot have duplicate point values."
-msgstr "基于样本的自动评判不能包含分值重复的评分点。"
-
-#: openassessment/xblock/validation.py:232
+#: openassessment/xblock/validation.py:212
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "无法在一道题目已经公开之后创建或删除提示。"
 
-#: openassessment/xblock/validation.py:236
+#: openassessment/xblock/validation.py:216
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "题目公开后，得分点的数量不能被修改。"
 
-#: openassessment/xblock/validation.py:249
+#: openassessment/xblock/validation.py:229
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "题目公开后，得分点的名称不能被修改。"
 
-#: openassessment/xblock/validation.py:254
+#: openassessment/xblock/validation.py:234
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "题目公开后，分值的数目不能被修改。"
 
-#: openassessment/xblock/validation.py:259
+#: openassessment/xblock/validation.py:239
 msgid "Point values cannot be changed after a problem is released."
 msgstr "题目公开后，各评分点的分值不能再改变了。"
 
-#: openassessment/xblock/validation.py:310
-msgid ""
-"Learner training and example-based assessments must have at least one "
-"training example."
-msgstr "学员训练和基于例子的评估必须有至少一个训练示例。"
+#: openassessment/xblock/validation.py:290
+msgid "Learner training must have at least one training example."
+msgstr ""
 
-#: openassessment/xblock/validation.py:373
+#: openassessment/xblock/validation.py:352
 msgid "Leaderboard number is invalid."
 msgstr "排行榜号码是无效的。"
 
-#: openassessment/xblock/validation.py:396
+#: openassessment/xblock/validation.py:375
 msgid "The submission format is invalid."
 msgstr "提交的格式不正确"
