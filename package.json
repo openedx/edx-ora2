@@ -1,11 +1,11 @@
 {
   "name": "edx-ora2",
-  "version": "0.2.0",
+  "version": "2.0.0",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
     "backbone": "~1.2.3",
     "backgrid ": "~0.3.8",
-    "edx-ui-toolkit": "1.5.1",
+    "edx-ui-toolkit": "1.5.3",
     "moment": "^2.15.1",
     "moment-timezone": "~0.5.5",
     "requirejs": "~2.3.2",
@@ -13,20 +13,20 @@
   },
   "devDependencies": {
     "jasmine": "^2.3.0",
-    "jscs": "2.6.0",
-    "jshint": "2.8.0",
-    "karma": "^0.12.16",
-    "karma-chrome-launcher": "^0.1.4",
-    "karma-coverage": "^0.2.6",
-    "karma-jasmine": "^0.3.6",
-    "karma-jasmine-html-reporter": "~0.1",
+    "jscs": "3.0.7",
+    "jshint": "2.9.5",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "~0.2",
     "karma-jasmine-jquery": "^0.1.1",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.3",
-    "karma-spec-reporter": "^0.0.20",
-    "phantomjs": "^1.9.11",
-    "sinon": "^1.10.3",
-    "uglify-js": "^2.6.3"
+    "karma-spec-reporter": "^0.0.31",
+    "phantomjs-prebuilt": "^2.1.14",
+    "sinon": "^3.0.0",
+    "uglify-js": "^3.0.27"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage"

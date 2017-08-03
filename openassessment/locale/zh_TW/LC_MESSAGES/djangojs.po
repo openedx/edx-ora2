@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-14 13:12+0000\n"
-"PO-Revision-Date: 2017-06-22 15:08+0000\n"
+"POT-Creation-Date: 2017-08-03 15:55+0000\n"
+"PO-Revision-Date: 2017-07-24 21:03+0000\n"
 "Last-Translator: Mose Chen <mosechen@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -335,18 +335,18 @@ msgstr "未命名的選項"
 msgid "Not Selected"
 msgstr "未選取"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:149
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
 msgid "Couldn't Save This Assignment"
 msgstr "不能儲存這作業"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:150
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
 msgid "Please correct the outlined fields."
 msgstr "請更正系統顯示的欄位。"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:184
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
