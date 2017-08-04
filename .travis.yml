@@ -38,6 +38,6 @@ script:
 branches:
     only:
       - master
-      - ora-staff-grading
+      - release_branch/1.4.9
 after_success:
   coveralls
