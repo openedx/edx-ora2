@@ -13,7 +13,6 @@ class AssessmentWorkflowSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssessmentWorkflow
         fields = (
-            'uuid',
             'submission_uuid',
             'status',
             'created',
