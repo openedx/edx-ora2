@@ -413,7 +413,6 @@
     "model": "workflow.assessmentworkflow",
     "fields": {
       "status": "done",
-      "uuid": "997dd6ca-d1f9-11e3-9c70-14109fd8dc43",
       "created": "2014-05-02T12:59:30.346Z",
       "submission_uuid": "99765973-d1f9-11e3-841a-14109fd8dc43",
       "modified": "2014-05-02T12:59:50.217Z",
@@ -427,7 +426,6 @@
     "model": "workflow.assessmentworkflow",
     "fields": {
       "status": "done",
-      "uuid": "8c5b94d1-d1f9-11e3-9ca3-14109fd8dc43",
       "created": "2014-05-02T12:59:08.311Z",
       "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
       "modified": "2014-05-02T12:59:54.943Z",

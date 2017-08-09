@@ -88,7 +88,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     STAFF_ANNOTATION_TYPE = "staff_defined"
 
     submission_uuid = models.CharField(max_length=36, db_index=True, unique=True)
-    uuid = models.UUIDField(db_index=True, unique=True, default=uuid4)
 
     # These values are used to find workflows for a particular item
     # in a course without needing to look up the submissions for that item.

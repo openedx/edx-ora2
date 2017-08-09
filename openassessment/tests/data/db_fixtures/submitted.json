@@ -4,7 +4,6 @@
     "model": "workflow.assessmentworkflow",
     "fields": {
       "status": "done",
-      "uuid": "178beedc-d0ae-11e3-afc3-14109fd8dc43",
       "created": "2014-04-30T21:26:28.917Z",
       "submission_uuid": "cf5190b8-d0aa-11e3-a734-14109fd8dc43",
       "modified": "2014-04-30T21:28:49.284Z",
