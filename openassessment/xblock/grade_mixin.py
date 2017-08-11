@@ -374,7 +374,7 @@ class GradeMixin(object):
         if len(assessments) > 0:
             first_assessment = assessments[0]
             option = first_assessment['option']
-            if option and option.get('points'):
+            if option and option.get('points', None) != None:
                 first_assessment['points'] = option['points']
 
         return assessments

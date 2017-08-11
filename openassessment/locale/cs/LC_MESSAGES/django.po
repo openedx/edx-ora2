@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Anna Chromá <anicka.chroma@gmail.com>, 2017
 # Jiří Šedý <jsedy7@gmail.com>, 2015
 # TomHermanek <T.Hermanovsky@seznam.cz>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-03 15:55+0000\n"
-"PO-Revision-Date: 2017-08-03 15:56+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-08-10 19:51+0000\n"
+"PO-Revision-Date: 2017-08-04 10:06+0000\n"
+"Last-Translator: Anna Chromá <anicka.chroma@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/open-edx/edx-platform/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

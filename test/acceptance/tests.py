@@ -643,8 +643,8 @@ class StaffAreaTest(OpenAssessmentTest):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEquals(
-            ['Poor - 0 points', 'Fair',
-             'Fair - 1 point', 'Good'],
+            [u'Poor - 0 points', u'Fair',
+             u'Fair - 1 point', u'Good'],
             self.staff_area_page.learner_final_score_table_values
         )
 
@@ -1067,8 +1067,8 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEquals(
-            ['Poor - 0 points', 'Waiting for peer reviews',
-             'Fair - 1 point', 'Waiting for peer reviews'],
+            [u'Poor - 0 points', u'Waiting for peer reviews',
+             u'Fair - 1 point', u'Waiting for peer reviews'],
             self.staff_area_page.learner_final_score_table_values
         )
         self.verify_grade_entries(

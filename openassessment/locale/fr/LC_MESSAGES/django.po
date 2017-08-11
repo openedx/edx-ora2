@@ -15,7 +15,7 @@
 # JulietteFUN, 2014
 # JulietteFUN, 2014
 # Kévin SEVERIN <kevin.severin@laposte.net>, 2015
-# Régis Millet <kulgar@ct2c.fr>, 2015
+# Régis Millet <regmillet@ct2c.fr>, 2015
 # laurentFUN <laurent.at.fun@gmail.com>, 2014,2016
 # laurentFUN <laurent.at.fun@gmail.com>, 2014,2016
 # MP55 <martine.pergent@gmail.com>, 2014
@@ -24,7 +24,7 @@
 # MP55 <martine.pergent@gmail.com>, 2014
 # rafcha <raphael.chay@gmail.com>, 2014
 # rafcha <raphael.chay@gmail.com>, 2014
-# Régis Millet <kulgar@ct2c.fr>, 2015
+# Régis Millet <regmillet@ct2c.fr>, 2015
 # Richard Moch <richard.moch@gmail.com>, 2015-2016
 # tgeorges225 <georges.tope@outlook.com>, 2014
 # Thomas Fradet <t.fradet8@gmail.com>, 2015
@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-03 15:55+0000\n"
-"PO-Revision-Date: 2017-08-03 15:56+0000\n"
+"POT-Creation-Date: 2017-08-10 19:51+0000\n"
+"PO-Revision-Date: 2017-08-03 16:03+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
