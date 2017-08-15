@@ -202,6 +202,7 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_remove_all_uploaded_files(self, xblock):
         """ Test remove all user files """
+        self.maxDiff = None
         s3 = boto3.resource('s3')
         s3.create_bucket(Bucket='mybucket')
         s3.Object('mybucket', 'submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id).put(
@@ -212,7 +213,6 @@ class SubmissionTest(XBlockHandlerTestCase):
             course_id='test_course',
             anonymous_student_id='test_student',
         )
-
         download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
         self.assertTrue(resp['success'])
