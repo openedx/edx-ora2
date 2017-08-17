@@ -666,7 +666,7 @@ OpenAssessment.ResponseView.prototype = {
         var filesDescriptions = [];
 
         $(this.element).find('.file__description').each(function() {
-            var filesDescriptionVal = $(this).val();
+            var filesDescriptionVal = $.trim($(this).val());
             if (filesDescriptionVal) {
                 filesDescriptions.push(filesDescriptionVal);
             } else {

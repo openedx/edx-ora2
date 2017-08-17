@@ -626,6 +626,10 @@ describe("OpenAssessment.ResponseView", function() {
         function getFileUploadField() {
             return $(view.element).find('.file__upload').first();
         }
+        function expectFileUploadButton(disabled) {
+            view.checkFilesDescriptions();
+            expect(getFileUploadField().is(':disabled')).toEqual(disabled);
+        }
 
         spyOn(view, 'updateFilesDescriptionsFields').and.callThrough();
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
@@ -634,26 +638,36 @@ describe("OpenAssessment.ResponseView", function() {
 
         expect(getFileUploadField().is(':disabled')).toEqual(true);
         expect(view.updateFilesDescriptionsFields).toHaveBeenCalledWith(files, undefined, 'image');
-
-        // set the first description field (the second is still empty)
-        // and check that upload button is disabled
         var firstDescriptionField1 = $(view.element).find('.file__description__0').first();
-        $(firstDescriptionField1).val('test');
-        view.checkFilesDescriptions();
-        expect(getFileUploadField().is(':disabled')).toEqual(true);
-
-        // set the second description field (now both descriptions are not empty)
-        // and check that upload button is enabled
         var firstDescriptionField2 = $(view.element).find('.file__description__1').first();
+
+        // Only set the first description field and the second field remain empty.
+        // and check that upload button is disabled
+        $(firstDescriptionField1).val('test1');
+        $(firstDescriptionField2).val('');
+        expectFileUploadButton(true);
+
+        // Set the second description field to be only spaces (given first description has value).
+        // and check that upload button is disabled
+        $(firstDescriptionField2).val('  ');
+        expectFileUploadButton(true)
+
+        // Set the both description fields to contain only spaces.
+        // and check that upload button is disabled
+        $(firstDescriptionField1).val(' ');
+        $(firstDescriptionField2).val(' ');
+        expectFileUploadButton(true)
+
+        // set the both description field to contain non empty values.
+        // and check that upload button is enabled
+        $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('test2');
-        view.checkFilesDescriptions();
-        expect(getFileUploadField().is(':disabled')).toEqual(false);
+        expectFileUploadButton(false)
 
         // remove value in the first upload field
         // and check that upload button is disabled
         $(firstDescriptionField1).val('');
-        view.checkFilesDescriptions();
-        expect(getFileUploadField().is(':disabled')).toEqual(true);
+        expectFileUploadButton(true)
     });
 
     it("removes description fields after files upload", function() {

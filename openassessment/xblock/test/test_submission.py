@@ -175,8 +175,6 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
 
         self.assertTrue(resp['success'])
-        print download_url
-        print resp['url']
         self.assertEqual(download_url, resp['url'])
 
     @mock_s3
@@ -212,11 +210,10 @@ class SubmissionTest(XBlockHandlerTestCase):
             course_id='test_course',
             anonymous_student_id='test_student',
         )
-
         download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
         self.assertTrue(resp['success'])
-        self.assertEqual(download_url, resp['url'])
+        self.assertTrue(resp['url'].startswith(download_url))
 
         resp = self.request(xblock, 'remove_all_uploaded_files', json.dumps(dict()), response_format='json')
         self.assertTrue(resp['success'])
