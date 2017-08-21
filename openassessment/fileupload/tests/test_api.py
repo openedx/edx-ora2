@@ -7,7 +7,8 @@ import tempfile
 import urllib
 from urlparse import urlparse
 
-import boto3
+import boto
+from boto.s3.key import Key
 import ddt
 from mock import Mock, patch
 from moto import mock_s3
@@ -35,8 +36,8 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     def test_get_upload_url(self):
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
+        conn = boto.connect_s3()
+        conn.create_bucket('mybucket')
         uploadUrl = api.get_upload_url("foo", "bar")
         self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", uploadUrl)
 
@@ -47,9 +48,11 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     def test_get_download_url(self):
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
-        s3.Object('mybucket', 'submissions_attachments/foo').put(Body="How d'ya do?")
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket)
+        key.key = "submissions_attachments/foo"
+        key.set_contents_from_string("How d'ya do?")
         downloadUrl = api.get_download_url("foo")
         self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", downloadUrl)
 
@@ -60,9 +63,11 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     def test_remove_file(self):
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
-        s3.Object('mybucket', 'submissions_attachments/foo').put(Body="Test")
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket)
+        key.key = "submissions_attachments/foo"
+        key.set_contents_from_string("Test")
         result = api.remove_file("foo")
         self.assertTrue(result)
         result = api.remove_file("foo")
@@ -82,7 +87,7 @@ class TestFileUploadService(TestCase):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @patch.object(boto3, 'client')
+    @patch.object(boto, 'connect_s3')
     @raises(exceptions.FileUploadInternalError)
     def test_get_upload_url_error(self, mock_s3):
         mock_s3.side_effect = Exception("Oh noes")
@@ -94,7 +99,7 @@ class TestFileUploadService(TestCase):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @patch.object(boto3, 'client')
+    @patch.object(boto, 'connect_s3')
     @raises(exceptions.FileUploadInternalError, mock_s3)
     def test_get_download_url_error(self, mock_s3):
         mock_s3.side_effect = Exception("Oh noes")
