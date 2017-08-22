@@ -93,7 +93,7 @@ class OpenAssessmentPage(BaseAssessmentPage):
         """
         submit_button_selector = self._bounded_selector(button_css)
         EmptyPromise(
-            lambda: False == any(self.q(css=submit_button_selector).attrs('disabled')),
+            lambda: not any(self.q(css=submit_button_selector).attrs('disabled')),
             "Submit button is enabled."
         ).fulfill()
 
@@ -286,7 +286,7 @@ class AssessmentMixin(object):
         attempts = 0
         while not criterion_selected() and attempts < 5:
             select_criterion()
-            attempts+=1
+            attempts += 1
 
         self.submit_assessment()
         return self
@@ -695,14 +695,20 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         self.q(css=student_input_css).fill(username)
         submit_button = self.q(css=self._bounded_selector(".action--submit-username"))
         submit_button.first.click()
-        self.wait_for_element_visibility(self._bounded_selector(".staff-info__student__report"), "Student report is present")
+        self.wait_for_element_visibility(
+            self._bounded_selector(".staff-info__student__report"),
+            "Student report is present"
+        )
 
     def expand_staff_grading_section(self):
         """
         Clicks the staff grade control to expand staff grading section for use in staff required workflows.
         """
         self.q(css=self._bounded_selector(".staff__grade__show-form")).first.click()
-        self.wait_for_element_visibility(".staff-full-grade__assessment__rubric__question--0", "staff grading is present")
+        self.wait_for_element_visibility(
+            ".staff-full-grade__assessment__rubric__question--0",
+            "staff grading is present"
+        )
 
     @property
     def available_checked_out_numbers(self):
@@ -718,7 +724,8 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
 
     def verify_available_checked_out_numbers(self, expected_value):
         """
-        Waits until the expected value for available and checked out numbers appears. If it does not appear, fails the test.
+        Waits until the expected value for available and checked out numbers appears. If it does not appear, fails the
+        test.
 
         expected_value should be a tuple as described in the available_checked_out_numbers property above.
         """
@@ -863,7 +870,9 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
 
         Returns: the text present in "Overall Feedback"
         """
-        return self.q(css=self._bounded_selector(".staff-info__{} .student__answer__display__content".format(section))).text[0]
+        return self.q(
+            css=self._bounded_selector(".staff-info__{} .student__answer__display__content".format(section))
+        ).text[0]
 
     def _get_table_text(self, selector):
         """

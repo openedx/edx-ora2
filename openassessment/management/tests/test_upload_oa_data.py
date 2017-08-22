@@ -2,9 +2,10 @@
 """
 Tests for management command that uploads submission/assessment data.
 """
+from StringIO import StringIO
 import tarfile
 
-import boto3
+import boto
 import moto
 
 from openassessment.management.commands import upload_oa_data
@@ -30,8 +31,8 @@ class UploadDataTest(CacheResetTest):
     @moto.mock_s3
     def test_upload(self):
         # Create an S3 bucket using the fake S3 implementation
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket=self.BUCKET_NAME)
+        conn = boto.connect_s3()
+        conn.create_bucket(self.BUCKET_NAME)
 
         # Create some submissions to ensure that we cover
         # the progress indicator code.
@@ -54,10 +55,12 @@ class UploadDataTest(CacheResetTest):
 
         # Retrieve the uploaded file from the fake S3 implementation
         self.assertEqual(len(cmd.history), 1)
-        s3.Object(self.BUCKET_NAME, cmd.history[0]['key']).download_file("tmp-test-file.tar.gz")
+        bucket = conn.get_all_buckets()[0]
+        key = bucket.get_key(cmd.history[0]['key'])
+        contents = StringIO(key.get_contents_as_string())
 
         # Expect that the contents contain all the expected CSV files
-        with tarfile.open("tmp-test-file.tar.gz", mode="r:gz") as tar:
+        with tarfile.open(mode="r:gz", fileobj=contents) as tar:
             file_sizes = {
                 member.name: member.size
                 for member in tar.getmembers()
@@ -68,4 +71,4 @@ class UploadDataTest(CacheResetTest):
 
         # Expect that we generated a URL for the bucket
         url = cmd.history[0]['url']
-        self.assertIn("https://s3.amazonaws.com/{}".format(self.BUCKET_NAME), url)
+        self.assertIn("https://{}".format(self.BUCKET_NAME), url)

@@ -6,7 +6,8 @@ Test submission to the OpenAssessment XBlock.
 import datetime as dt
 import json
 
-import boto3
+import boto
+from boto.s3.key import Key
 from mock import Mock, patch
 from moto import mock_s3
 import pytz
@@ -157,14 +158,11 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_download_url(self, xblock):
         """ Test generate correct download URL with existing file. should create a file and get the download URL """
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
-        s3.Object(
-            'mybucket',
-            'submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id
-        ).put(
-            Body="How d'ya do?"
-        )
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket)
+        key.key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
+        key.set_contents_from_string("How d'ya do?")
         download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
 
         xblock.xmodule_runtime = Mock(
@@ -189,7 +187,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
 
         self.assertTrue(resp['success'])
-        self.assertIn(u'https://mybucket.s3.amazonaws.com/submissions_attachments', resp['url'])
+        self.assertEqual(u'', resp['url'])
 
     @mock_s3
     @override_settings(
@@ -200,11 +198,11 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_remove_all_uploaded_files(self, xblock):
         """ Test remove all user files """
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
-        s3.Object('mybucket', 'submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id).put(
-            Body="How d'ya do?"
-        )
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket)
+        key.key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
+        key.set_contents_from_string("How d'ya do?")
 
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
@@ -221,7 +219,7 @@ class SubmissionTest(XBlockHandlerTestCase):
 
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
         self.assertTrue(resp['success'])
-        self.assertIn(u'https://mybucket.s3.amazonaws.com/submissions_attachments', resp['url'])
+        self.assertEqual(u'', resp['url'])
 
     @mock_s3
     @override_settings(

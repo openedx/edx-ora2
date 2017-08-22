@@ -20,6 +20,7 @@ from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, Submissio
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
 
+
 def retry(tries=2, delay=4, backoff=2):
     """
     Retry decorator with exponential backoff.

@@ -6,7 +6,8 @@ import json
 from random import randint
 from urlparse import urlparse
 
-import boto3
+import boto
+from boto.s3.key import Key
 import mock
 from moto import mock_s3
 
@@ -146,15 +147,15 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
     @scenario('data/leaderboard_show.xml')
     def test_non_text_submission(self, xblock):
         # Create a mock bucket
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
         # Create a non-text submission (the submission dict doesn't contain 'text')
         file_download_url = api.get_download_url('s3key')
         self._create_submissions_and_scores(xblock, [('s3key', 1)], submission_key='file_key')
 
         # Expect that we default to an empty string for content
         self._assert_scores(xblock, [
-            {'score': 1, 'files': [(file_download_url, '')], 'submission': ''}
+            {'score': 1, 'files': [], 'submission': ''}
         ])
 
     @mock_s3
@@ -171,10 +172,11 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         file_keys = ['foo', 'bar']
         file_descriptions = ['{}-description'.format(file_key) for file_key in file_keys]
 
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
         for file_key in file_keys:
-            s3.Object('mybucket', 'submissions_attachments/{}'.format(file_key)).put(Body="How d'ya do?")
+            key = Key(bucket, 'submissions_attachments/{}'.format(file_key))
+            key.set_contents_from_string("How d'ya do?")
             files_url_and_description = [
                 (api.get_download_url(file_key), file_descriptions[idx])
                 for idx, file_key in enumerate(file_keys)
@@ -210,9 +212,10 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         Tests that text and image submission works as expected
         """
         # Create a file and get the download URL
-        s3 = boto3.resource('s3')
-        s3.create_bucket(Bucket='mybucket')
-        s3.Object('mybucket', 'submissions_attachments/foo').put(Body="How d'ya do?")
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket, 'submissions_attachments/foo')
+        key.set_contents_from_string("How d'ya do?")
 
         file_download_url = [(api.get_download_url('foo'), '')]
         # Create a image and text submission
