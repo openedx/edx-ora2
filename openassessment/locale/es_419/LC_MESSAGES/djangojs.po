@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Cristian Salamea <ovnicraft@gmail.com>, 2015
+# Diego Rojas <diego.rojas@edunext.co>, 2017
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2016-2017
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2014
 # Morphyne <cirrosis60@gmail.com>, 2014
@@ -13,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-10 19:52+0000\n"
-"PO-Revision-Date: 2017-08-03 16:03+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-08-22 13:58+0000\n"
+"PO-Revision-Date: 2017-08-19 00:17+0000\n"
+"Last-Translator: Juan Camilo Montoya Franco <juan.montoya@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,7 +99,7 @@ msgstr "No se pudo recuperar la url de subida."
 #: openassessment/xblock/static/js/src/oa_server.js:528
 #: openassessment/xblock/static/js/src/oa_server.js:548
 msgid "Server error."
-msgstr ""
+msgstr "Error en el servidor."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -160,7 +161,7 @@ msgstr "Auto"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:72
 msgid "Waiting"
-msgstr ""
+msgstr "Esperando"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:76
@@ -206,7 +207,7 @@ msgstr "Si abandona esta página sin enviar su trabajo, perderá todos los cambi
 msgid ""
 "After you upload new files all your previously uploaded files will be "
 "overwritten. Continue?"
-msgstr ""
+msgstr "Después de subir nuevos archivos, todos sus archivos subidos anteriormente serán borrados. ¿Proceder?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:280
@@ -255,7 +256,7 @@ msgstr "Está a punto de subir su respuesta para esta tarea. Después de subirla
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:547
 msgid "File size must be 10MB or less."
-msgstr ""
+msgstr "Tamaño del archivo debe ser de 10MB como máximo."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:554
@@ -273,17 +274,17 @@ msgstr "Tipo de archivo no permitido."
 #: openassessment/xblock/static/js/src/lms/oa_response.js:618
 #: openassessment/xblock/static/js/src/lms/oa_response.js:624
 msgid "Describe "
-msgstr ""
+msgstr "Describir"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:618
 msgid "(required):"
-msgstr ""
+msgstr "(requerido):"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:638
 msgid "Thumbnail view of "
-msgstr ""
+msgstr "Vista miniatura de"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:124
