@@ -259,6 +259,14 @@ OpenAssessment.ResponseView.prototype = {
     previewEnabled: function(enabled) {
         return this.baseView.buttonEnabled('.submission__preview', enabled);
     },
+    /**
+      Check if there is a file selected but not uploaded yet
+      Returns:
+      boolean: if we have pending files or not.
+     **/
+    hasPendingUploadFiles: function() {
+        return this.files !== null && !this.filesUploaded;
+    },
 
     /**
      Set the save status message.
@@ -422,8 +430,7 @@ OpenAssessment.ResponseView.prototype = {
         var baseView = this.baseView;
         var fileDefer = $.Deferred();
 
-        // check if there is a file selected but not uploaded yet
-        if (view.files !== null && !view.filesUploaded) {
+        if (view.hasPendingUploadFiles()) {
             var msg = gettext('Do you want to upload your file before submitting?');
             if (confirm(msg)) {
                 fileDefer = view.uploadFiles();
@@ -533,7 +540,6 @@ OpenAssessment.ResponseView.prototype = {
         var fileType = null;
         var fileName = '';
         var errorCheckerTriggered = false;
-        var sel = $('.step--response', this.element);
 
         for (var i = 0; i < files.length; i++) {
             totalSize += files[i].size;
@@ -582,12 +588,14 @@ OpenAssessment.ResponseView.prototype = {
 
         if (!errorCheckerTriggered) {
             this.baseView.toggleActionError('upload', null);
-            this.files = files;
+            if (files.length > 0) {
+                this.files = files;
+            }
             this.updateFilesDescriptionsFields(files, descriptions, uploadType);
         }
 
         if (this.files === null) {
-            sel.find('.file__upload').prop('disabled', true);
+            $(this.element).find('.file__upload').prop('disabled', true);
         }
     },
 
