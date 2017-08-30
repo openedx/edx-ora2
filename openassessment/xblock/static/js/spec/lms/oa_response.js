@@ -679,4 +679,27 @@ describe("OpenAssessment.ResponseView", function() {
         view.uploadFiles();
         expect($(view.element).find('.file__description').length).toEqual(0);
     });
+
+    it("prevents user from submitting response when files selection is cancelled", function() {
+        // Set fileupload to be required.
+        view.fileUploadResponse = 'required';
+
+        // Change the response text
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
+        view.handleResponseChanged();
+        // Expect the unsaved warning to be enabled and save progress button is enabled.
+        expect(view.saveEnabled()).toBe(true);
+        expect(view.saveStatus()).toContain('This response has not been saved.');
+
+        // Assume user has selected no files (cancelled the file select pop-up) the event will
+        // trigger with no files selected. Expect Submit response button is disabled.
+        view.prepareUpload([], 'image', []);
+
+        expect(view.submitEnabled()).toBe(false);
+
+        // Expect there are no pending upload files & file upload button is disabled.
+        expect(view.hasPendingUploadFiles()).toEqual(false);
+        expect(view.files).toEqual(null);
+        expect($(view.element).find('.file__upload').first().is(':disabled')).toEqual(true);
+    });
 });
