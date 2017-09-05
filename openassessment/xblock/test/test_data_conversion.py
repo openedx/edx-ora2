@@ -55,6 +55,8 @@ class DataConversionTest(TestCase):
 
     @ddt.data(
         ([{'answer': 'Ans'}], [{'answer': {'parts': [{'text': 'Ans'}]}}]),
+        ([{'answer': ['Ans']}], [{'answer': {'parts': [{'text': 'Ans'}]}}]),
+        ([{'answer': []}], [{'answer': []}]),
     )
     @ddt.unpack
     def test_update_assessments_format(self, input, output):

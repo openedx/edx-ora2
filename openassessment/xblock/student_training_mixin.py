@@ -129,7 +129,11 @@ class StudentTrainingMixin(object):
                 examples
             )
             if example:
-                context['training_essay'] = create_submission_dict({'answer': example['answer']}, self.prompts)
+                # EDUCATOR-1263: some entries may be in an incorrect format, load them anyways
+                if isinstance(example, dict) and isinstance(example['answer'], list) and isinstance(example['answer'][0], basestring):
+                    context['training_essay'] = create_submission_dict({'answer': {'parts': [{'text': example['answer'][0]}]}}, self.prompts)
+                else:
+                    context['training_essay'] = create_submission_dict({'answer': example['answer']}, self.prompts)
                 context['training_rubric'] = {
                     'criteria': example['rubric']['criteria'],
                     'points_possible': example['rubric']['points_possible']
