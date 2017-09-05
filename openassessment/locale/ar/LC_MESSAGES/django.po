@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:58+0000\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
 "PO-Revision-Date: 2017-08-03 16:03+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -1596,15 +1596,15 @@ msgstr "حدث خطأ أثناء تحميل أمثلة تدريب المتعلّ
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "تعذّر تحميل خطوة تدريب المتعلّم لهذا الواجب."
 
-#: openassessment/xblock/data_conversion.py:238
+#: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
 msgstr "يجب أن تحدّد الخيارات المنتقاة في التقييم."
 
-#: openassessment/xblock/data_conversion.py:241
+#: openassessment/xblock/data_conversion.py:247
 msgid "You must provide overall feedback in the assessment."
 msgstr "يجب أن تحدّد الآراء والملاحظات الإجمالية ضمن التقييم."
 
-#: openassessment/xblock/data_conversion.py:244
+#: openassessment/xblock/data_conversion.py:250
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "يجب أن تحدّد الآراء والملاحظات بشأن المعايير في التقييم."
 
@@ -1612,7 +1612,7 @@ msgstr "يجب أن تحدّد الآراء والملاحظات بشأن الم
 #: openassessment/xblock/leaderboard_mixin.py:52
 #: openassessment/xblock/self_assessment_mixin.py:40
 #: openassessment/xblock/student_training_mixin.py:57
-#: openassessment/xblock/student_training_mixin.py:208
+#: openassessment/xblock/student_training_mixin.py:212
 msgid "An unexpected error occurred."
 msgstr "نأسف لحدوث خطأ غير متوقّع."
 
@@ -1688,7 +1688,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "عذرًا، لم يمكن تقديم تقييمك للزملاء. "
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:214
+#: openassessment/xblock/student_training_mixin.py:218
 msgid "Could not update workflow status."
 msgstr "عذرًا، لم يمكن تحديث حالة سير العمل."
 
@@ -1830,16 +1830,16 @@ msgid ""
 "problem."
 msgstr "يجب أن تكمل جميع الخطوات المطلوبة لهذه المسألة أولًا لتحصل على درجتك حتى لو قيّم أحد أعضاء الفريق ردّك قبل ذلك."
 
-#: openassessment/xblock/student_training_mixin.py:171
+#: openassessment/xblock/student_training_mixin.py:175
 msgid "Missing options_selected key in request"
 msgstr "مفتاح الخيارات المنتقاة options_selected غير موجود ضمن الطلب المقدّم"
 
-#: openassessment/xblock/student_training_mixin.py:173
+#: openassessment/xblock/student_training_mixin.py:177
 msgid "options_selected must be a dictionary"
 msgstr "يجب أن تكون الخيارات المنتقاة options_selected قاموسًا. "
 
-#: openassessment/xblock/student_training_mixin.py:198
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:207
 msgid "Your scores could not be checked."
 msgstr "عذرًا، لم يمكن التحقّق من درجاتك."
 

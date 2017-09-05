@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:58+0000\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
 "PO-Revision-Date: 2017-08-03 16:03+0000\n"
 "Last-Translator: Mose Chen <mosechen@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -214,79 +214,79 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:280
+#: openassessment/xblock/static/js/src/lms/oa_response.js:288
 msgid "Status of Your Response"
 msgstr "您的作答之狀態"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:355
+#: openassessment/xblock/static/js/src/lms/oa_response.js:363
 msgid "This response has not been saved."
 msgstr "作答尚未儲存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:359
+#: openassessment/xblock/static/js/src/lms/oa_response.js:367
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "如果你沒有儲存或提交你的作答而離開這個頁面，你將遺失你任何已作答的作業。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:377
+#: openassessment/xblock/static/js/src/lms/oa_response.js:385
 msgid "Saving..."
 msgstr "儲存中"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:399
+#: openassessment/xblock/static/js/src/lms/oa_response.js:407
 msgid "This response has been saved but not submitted."
 msgstr "這一份作答已經儲存了，但仍未提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:404
+#: openassessment/xblock/static/js/src/lms/oa_response.js:412
 msgid "Error"
 msgstr "錯誤"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:427
+#: openassessment/xblock/static/js/src/lms/oa_response.js:434
 msgid "Do you want to upload your file before submitting?"
 msgstr "你想在提交前上傳您的檔案？"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:505
+#: openassessment/xblock/static/js/src/lms/oa_response.js:512
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "您即將送出你的作答，一旦送出作答就不能修改，也無法重新送出新的作答。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:547
+#: openassessment/xblock/static/js/src/lms/oa_response.js:553
 msgid "File size must be 10MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:554
-#: openassessment/xblock/static/js/src/lms/oa_response.js:561
-#: openassessment/xblock/static/js/src/lms/oa_response.js:568
+#: openassessment/xblock/static/js/src/lms/oa_response.js:560
+#: openassessment/xblock/static/js/src/lms/oa_response.js:567
+#: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "You can upload files with these file types: "
 msgstr "您可以上傳這些類型的檔案："
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:576
+#: openassessment/xblock/static/js/src/lms/oa_response.js:582
 msgid "File type is not allowed."
 msgstr "檔案類型是不允許的。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:618
-#: openassessment/xblock/static/js/src/lms/oa_response.js:624
+#: openassessment/xblock/static/js/src/lms/oa_response.js:626
+#: openassessment/xblock/static/js/src/lms/oa_response.js:632
 msgid "Describe "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:618
+#: openassessment/xblock/static/js/src/lms/oa_response.js:626
 msgid "(required):"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:638
+#: openassessment/xblock/static/js/src/lms/oa_response.js:646
 msgid "Thumbnail view of "
 msgstr ""
 

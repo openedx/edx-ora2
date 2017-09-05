@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:58+0000\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
 "PO-Revision-Date: 2017-08-03 16:03+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -1590,15 +1590,15 @@ msgstr "載入評分訓練發生錯誤"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "評分訓練步驟的任務無法載入。"
 
-#: openassessment/xblock/data_conversion.py:238
+#: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:241
+#: openassessment/xblock/data_conversion.py:247
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:244
+#: openassessment/xblock/data_conversion.py:250
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
@@ -1606,7 +1606,7 @@ msgstr ""
 #: openassessment/xblock/leaderboard_mixin.py:52
 #: openassessment/xblock/self_assessment_mixin.py:40
 #: openassessment/xblock/student_training_mixin.py:57
-#: openassessment/xblock/student_training_mixin.py:208
+#: openassessment/xblock/student_training_mixin.py:212
 msgid "An unexpected error occurred."
 msgstr "ㄧ個未預期的錯誤發生。"
 
@@ -1682,7 +1682,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "無法送出您的同儕評量。"
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:214
+#: openassessment/xblock/student_training_mixin.py:218
 msgid "Could not update workflow status."
 msgstr "無法更新工作流程狀態。"
 
@@ -1824,16 +1824,16 @@ msgid ""
 "problem."
 msgstr ""
 
-#: openassessment/xblock/student_training_mixin.py:171
+#: openassessment/xblock/student_training_mixin.py:175
 msgid "Missing options_selected key in request"
 msgstr "需求中缺少了options_selected的值"
 
-#: openassessment/xblock/student_training_mixin.py:173
+#: openassessment/xblock/student_training_mixin.py:177
 msgid "options_selected must be a dictionary"
 msgstr "options_selected 的值必須是個目錄"
 
-#: openassessment/xblock/student_training_mixin.py:198
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:207
 msgid "Your scores could not be checked."
 msgstr "無法檢查您的分數。"
 

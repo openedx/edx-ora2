@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:58+0000\n"
-"PO-Revision-Date: 2017-08-22 06:24+0000\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
+"PO-Revision-Date: 2017-09-02 09:36+0000\n"
 "Last-Translator: Kyoto University <edxkyotoux@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -34,41 +34,41 @@ msgstr "シリアル化されたルーブリックを解析することができ
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
-msgstr ""
+msgstr "課題に受講生用トレーニングが含まれている場合、ルーブリックには少なくとも一つ評価基準が必要であり、その基準には少なくとも一つ選択肢が必要です。"
 
 #: openassessment/assessment/api/student_training.py:200
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr ""
+msgstr "例 {example_number} に認証エラーがあります: {error}"
 
 #: openassessment/assessment/api/student_training.py:214
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr ""
+msgstr "例 {example_number} の\"{criterion_name}\"に無効な選択肢があります: \"{option_name}\""
 
 #: openassessment/assessment/api/student_training.py:224
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
-msgstr ""
+msgstr "例 {example_number} の\"{criterion_name}\"に不要な選択肢があります"
 
 #: openassessment/assessment/api/student_training.py:237
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr ""
+msgstr "例 {example_number} の\"{criterion_name}\"に選択肢が足りません。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
 msgid "Open Response Assessment"
-msgstr ""
+msgstr "ORA"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
 msgid "Settings"
-msgstr ""
+msgstr "設定"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:15
 msgid "Rubric"
-msgstr ""
+msgstr "ルーブリック"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
@@ -77,54 +77,54 @@ msgstr "問題"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
 msgid "Rubric Change Impacts Settings Section"
-msgstr ""
+msgstr "ルーブリックの変更はセクション設定に影響を与えます。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
 msgid ""
 "A change that you made to this assessment's rubric has an impact on some "
 "examples laid out in the settings tab. For more information, go to the "
 "Settings section and fix the areas highlighted in red."
-msgstr ""
+msgstr "このアセスメントのルーブリックに変更を行うと、設定タブ内にある例に影響します。詳細を見るには、設定画面へ移動し、赤くハイライトされた項目を修正してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "close alert"
-msgstr ""
+msgstr "警告を閉じる"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:41
 msgid "Display Name "
-msgstr ""
+msgstr "表示名"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid "The display name for this component."
-msgstr ""
+msgstr "本コンポーネントの表示名"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
 msgid "Response Start Date"
-msgstr ""
+msgstr "解答開始日"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:64
 msgid "Response Start Time"
-msgstr ""
+msgstr "解答開始時刻"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:73
 msgid "The date and time when learners can begin submitting responses."
-msgstr ""
+msgstr "解答提出の開始日時。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:80
 msgid "Response Due Date"
-msgstr ""
+msgstr "解答締切日"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:93
 msgid "Response Due Time"
-msgstr ""
+msgstr "解答締切時刻"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
 msgid "The date and time when learners can no longer submit responses."
-msgstr ""
+msgstr "解答提出の締切日時。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Text Response"
-msgstr ""
+msgstr "テキスト解答"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
 msgid ""
@@ -134,7 +134,7 @@ msgstr "受講者がこの問題に対してテキストベースの解答をし
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
-msgstr ""
+msgstr "ファイルをアップロードする解答"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
 msgid ""
@@ -144,7 +144,7 @@ msgstr "解答の一部としてファイルをアップロードできるか否
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
 msgid "File Upload Types"
-msgstr ""
+msgstr "アップロードファイルの種類"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
 msgid "PDF or Image Files"
@@ -156,7 +156,7 @@ msgstr "画像ファイル"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
 msgid "Custom File Types"
-msgstr ""
+msgstr "カスタムファイルタイプ"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:139
 msgid ""
@@ -165,46 +165,46 @@ msgid ""
 " PDF files and images. Select Custom File Types to allow files with "
 "extensions that you specify below. (Use the Select Custom File Types option "
 "with caution.)"
-msgstr "テキスト回答と一緒にファイルを提出できるか否かを設定します。JPG, GIFまたはPNGファイルを提出できるようにするには'画像'を、PDFファイルおよび画像なら'PDFまたは画像'を、以下に特記する拡張子のファイルなら’カスタムファイルタイプ’を選択してください。('カスタムファイルタイプ'を選択する際は慎重にお願いします。)"
+msgstr "テキスト解答と一緒にファイルを提出できるか否かを設定します。JPG, GIFまたはPNGファイルを提出できるようにするには'画像'を、PDFファイルおよび画像なら'PDFまたは画像'を、以下に特記する拡張子のファイルなら’カスタムファイルタイプ’を選択してください。('カスタムファイルタイプ'を選択する際は慎重にお願いします。)"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
 msgid "File Types"
-msgstr "ファイルの種類"
+msgstr "ファイルタイプ"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:151
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr ""
+msgstr "受講者がアップロードできるファイル拡張子をコンマ区切りで入力してください。例: pdf,doc,docx"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
 msgid "Allow LaTeX Responses"
-msgstr ""
+msgstr "LaTeX形式の解答を許可する"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:161
 msgid "False"
-msgstr ""
+msgstr "False"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:162
 msgid "True"
-msgstr ""
+msgstr "True"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:165
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr ""
+msgstr "受講者がLaTeX形式の文字列を書き込めるどうか設定してください"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:169
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
-msgstr ""
+msgstr "上位の解答"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:178
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
-msgstr ""
+msgstr "表示する得点上位の解答数を0～99までの数で指定してください。表示させない場合は0を入力してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:184
 msgid ""
@@ -214,97 +214,97 @@ msgid ""
 "training step, it must precede all other steps. If you include a staff "
 "assessment step, it must be the final step. After you release an ORA "
 "assignment, you cannot change the type and number of assessment steps."
-msgstr "この課題では、受講者用トレーニング、ピア・アセスメント、自己評価およびスタッフ評価を設定することができます。以下に希望するステップを選択し、希望の順序になるようドラッグします。受講者用トレーニングを含む場合は、その他のステップの前に実施してください。スタッフ評価を含む場合は最後に実施してください。ORA課題が公開されると、評価ステップの種類や数を変更することはできません。"
+msgstr "この課題では、受講者用トレーニング、ピア・アセスメント、セルフ・アセスメントおよびスタッフ・アセスメントを設定することができます。以下に希望するステップを選択し、希望の順序になるようドラッグします。受講者用トレーニングを含む場合は、全ステップの前に実施してください。スタッフ・アセスメントを含む場合は最後に実施してください。ORA課題が公開されると、評価ステップの種類や数を変更することはできません。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:204
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr ""
+msgstr "評価基準"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr ""
+msgstr "課題公開後は評価基準を削除することができません。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:10
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr ""
+msgstr "削除"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr ""
+msgstr "評価基準名"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr ""
+msgstr "評価基準の説明"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:44
 msgid "Add Option"
-msgstr ""
+msgstr "選択肢を追加"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr ""
+msgstr "この評価基準についてのフィードバック"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
 #: openassessment/xblock/studio_mixin.py:47
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
 #: openassessment/xblock/studio_mixin.py:46
 msgid "Optional"
-msgstr ""
+msgstr "オプション"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:92
 #: openassessment/xblock/studio_mixin.py:45
 msgid "Required"
-msgstr ""
+msgstr "必須"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:61
 msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
-msgstr ""
+msgstr "評価基準のフィードバックを実施するか否かを示しています。上の選択肢から１つ選んでください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr ""
+msgstr "選択肢"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr ""
+msgstr "選択肢名"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:29
 msgid "Option Points"
-msgstr ""
+msgstr "選択肢の点数"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr ""
+msgstr "選択肢の説明"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:9
 msgid "Step: Peer Assessment"
-msgstr ""
+msgstr "ステップ：ピア・アセスメント"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:13
 msgid ""
 "Learners assess a specified number of other learners' responses using the "
 "rubric for the assignment."
-msgstr ""
+msgstr "受講者はこの課題のルーブリックを用いて規定数の他の受講者の解答を評価します。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
 msgid "Specify the following values for the peer assessment step."
@@ -312,7 +312,7 @@ msgstr "ピア・アセスメントについての次の値を設定してくだ
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:22
 msgid "Must Grade"
-msgstr ""
+msgstr "評価必須数"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:25
 msgid ""
@@ -322,39 +322,39 @@ msgstr "各受講者が何名のピア・アセスメントをする必要があ
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Graded By"
-msgstr ""
+msgstr "被評価数"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
-msgstr ""
+msgstr "何名の受講者から評価を受けなくてはならないかを0～99までの数で指定してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
 msgid "Start Date"
-msgstr ""
+msgstr "開始日"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:31
 msgid "Start Time"
-msgstr ""
+msgstr "開始時間"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
 msgid ""
 "Enter the date and time when learners can begin assessing peer responses."
-msgstr ""
+msgstr "他の受講者の解答の評価を開始する日時を入力してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:92
 msgid "Due Date"
-msgstr ""
+msgstr "締切日"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:66
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:52
 msgid "Due Time"
-msgstr ""
+msgstr "締切時間"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:74
 msgid "Enter the date and time when all peer assessments must be complete."
@@ -368,7 +368,7 @@ msgstr "課題公開後は問題を削除することができません。"
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr "問題。サンプル文章は自由に編集してください。詳細はORAマニュアルを参照してください。"
+msgstr "問題。文章例は自由に編集してください。詳細はORAマニュアルを参照してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
@@ -380,29 +380,29 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr ""
+msgstr "ルーブリックは１つ以上の選択肢を含む評価基準で構成されます。各選択肢には点数を設定します。このテンプレートには2つの評価基準と選択肢を設定しておりますが、適宜編集してください。詳細はORAマニュアルをご参照ください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
 msgid "Add Criterion"
-msgstr ""
+msgstr "評価基準を入力"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
 msgid "Feedback for This Response"
-msgstr ""
+msgstr "この解答へのフィードバック"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
 msgid "Feedback Instructions"
-msgstr ""
+msgstr "フィードバックの説明"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr ""
+msgstr "採点した解答へのフィードバックを記入するよう受講者に促してください。文章例は自由に編集してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
 msgid "Default Feedback Text"
-msgstr ""
+msgstr "デフォルトフィードバック"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:50
 msgid ""
@@ -412,35 +412,35 @@ msgstr "受講者が自分のフィードバックを入力する前に表示さ
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:9
 msgid "Step: Self Assessment"
-msgstr ""
+msgstr "ステップ：セルフ・アセスメント"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
 msgid ""
 "Learners assess their own responses using the rubric for the assignment."
-msgstr ""
+msgstr "受講者は課題のルーブリックを用いて自分の解答を自ら評価します。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
 msgid "Specify start and due dates for the self assessment step."
-msgstr ""
+msgstr "セルフ・アセスメントの開始日および締切を指定してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
 msgid ""
 "Enter the date and time when learners can begin assessing their responses."
-msgstr ""
+msgstr "受講者が自分の解答の評価を開始できる日時を入力してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
 msgid "Enter the date and time when all self assessments must be complete."
-msgstr ""
+msgstr "セルフ・アセスメントの締切日時を入力してください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
-msgstr ""
+msgstr "ステップ：スタッフ・アセスメント"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
 msgid ""
 "Staff members assess learners' responses using the rubric for the "
 "assignment."
-msgstr ""
+msgstr "スタッフは課題のルーブリックを用いて受講者の解答を評価します。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
@@ -452,7 +452,7 @@ msgid ""
 "that you provide. Learners move to the next step when the scores they give "
 "match your scores. Note that if you add this step, you must also add a peer "
 "assessment step. This step must come before the peer assessment step."
-msgstr "受講者は、あなたが提出したサンプルを評価することにより、評価の仕方を学びます。あなたの評価結果と合致した時、受講者は次のステップに進みます。このステップを追加すると、ピア・アセスメントも追加しなければならないのでご注意ください。このステップはピア・アセスメントの前に実施することが必須です。"
+msgstr "受講者は、あなたが提示した事前評価サンプルを採点することにより、解答の評価の仕方を学びます。あなたの評価結果と合致すると、受講者は次のステップに進めます。このステップを追加すると、ピア・アセスメントを必ず追加しなければならないのでご注意ください。このステップはピア・アセスメントの前に実施することが必須です。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
 msgid ""
@@ -460,33 +460,33 @@ msgid ""
 " options that you would choose for each criterion in your rubric. Note that "
 "you must add your rubric to the Rubric tab before you can complete this "
 "step."
-msgstr ""
+msgstr "あなたが作成したサンプルを１つ以上入力してください。すると、ルーブリック内の各評価基準であなたが選択するであろう選択肢を指定してください。このステップを完了する前にルーブリックタブにルーブリックを入力しておく必要がありますので、ご注意ください。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
 msgid "Add Sample Response"
-msgstr ""
+msgstr "サンプル解答を入力"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
-msgstr ""
+msgstr "採点済の解答"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:16
 msgid "Response Score"
-msgstr ""
+msgstr "解答の得点"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:27
 msgid "Response"
-msgstr ""
+msgstr "解答"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr ""
+msgstr "未選択"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: openassessment/templates/openassessmentblock/oa_rubric.html:37
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:127
 msgid "points"
-msgstr ""
+msgstr "点"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_feedback.html:8
 #, python-format
@@ -511,7 +511,7 @@ msgstr[0] "\n                      %(assessment_title)s - %(points)s 点\n      
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr ""
+msgstr "%(name)s についての追加情報"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:8
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:9
@@ -520,7 +520,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:8
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:8
 msgid "Your Grade"
-msgstr ""
+msgstr "あなたの成績"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:13
 #, python-format
@@ -532,7 +532,7 @@ msgstr "\n                                         %(points_possible)s点中%(po
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:32
 msgid "Your submission has been cancelled."
-msgstr ""
+msgstr "提出はキャンセルされました。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:13
 #, python-format
@@ -545,7 +545,7 @@ msgstr "\n                                         %(points_possible)s点中%(po
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:32
 #: openassessment/templates/openassessmentblock/response/oa_response.html:16
 msgid "Your Response"
-msgstr ""
+msgstr "あなたの解答"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:35
 msgid "Your Upload"
@@ -553,20 +553,20 @@ msgstr "あなたのアップロード"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:40
 msgid "Assessments of Your Response"
-msgstr ""
+msgstr "解答の評価"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:53
 msgid "Overall Grade"
-msgstr ""
+msgstr "総合成績"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:58
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
 msgid "Points"
-msgstr ""
+msgstr "点"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:84
 msgid "Additional comments on your response"
-msgstr ""
+msgstr "解答に関する追加コメント"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:105
 msgid "Provide feedback on peer assessments"
@@ -574,7 +574,7 @@ msgstr "ピア・アセスメントのフィードバックを入力"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
 msgid "Submitting Feedback"
-msgstr ""
+msgstr "フィードバックを提出中"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:120
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:4
@@ -591,19 +591,19 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:28
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "ステータス"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:122
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr ""
+msgstr "フィードバックが提出されました。講座スタッフは講座レコードを確認する際、この内容を見ることができます。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:128
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
-msgstr ""
+msgstr "講座スタッフは講座レコードを確認する際、ここで入力したフィードバックを見ることができます。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
@@ -613,32 +613,32 @@ msgstr "ピア・アセスメントでのあなたの体験に最もあてはま
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:143
 msgid "These assessments were useful."
-msgstr ""
+msgstr "この評価は役に立った。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:152
 msgid "These assessments were not useful."
-msgstr ""
+msgstr "この評価は役に立たなかった。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:161
 msgid "I disagree with one or more of the peer assessments of my response."
-msgstr "私の解答に対するピア・アセスメントのうち１つ以上に異論がある。"
+msgstr "私の解答に対するピア・アセスメントのうち１つ以上に異論があります。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:170
 msgid "Some comments I received were inappropriate."
-msgstr ""
+msgstr "受け取ったコメントに不適切なものがありました。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:175
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
-msgstr ""
+msgstr "他の受講者による採点やコメントに対してフィードバックを記入してください。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:178
 msgid "I feel the feedback I received was..."
-msgstr ""
+msgstr "私が受け取ったフィードバックは..."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:188
 msgid "We could not submit your feedback"
-msgstr ""
+msgstr "フィードバックを提出できませんでした"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:194
 msgid "Submit feedback on peer assessments"
@@ -646,23 +646,23 @@ msgstr "ピア・アセスメントのフィードバックを提出する"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:10
 msgid "Not Completed"
-msgstr ""
+msgstr "未完了"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:21
 msgid "You have not completed all the steps of this problem."
-msgstr ""
+msgstr "あなたはこの課題の全ステップを完了していません。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:10
 msgid "Not Started"
-msgstr ""
+msgstr "開始前"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:21
 msgid "You have not started this problem yet."
-msgstr ""
+msgstr "まだ問題を始めていません。"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:10
 msgid "Waiting for Assessments"
-msgstr ""
+msgstr "評価待ち"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:21
 msgid ""
@@ -670,34 +670,34 @@ msgid ""
 "need to be done on your response. When the assessments of your response are "
 "complete, you will see feedback from everyone who assessed your response, "
 "and you will receive your final grade."
-msgstr "課題は終了しましたが、解答の評価はこれからです。評価が修了すると、あなたの解答を評価した全員からのフィードバックを見ることができ、最終成績を受け取ることができます。"
+msgstr "課題は終了しましたが、解答の評価はこれからです。評価が終了すると、あなたの解答を評価した全員からのフィードバックを見ることができ、最終成績を受け取ることができます。"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
 msgid "Grade Available Responses"
-msgstr "採点済回答"
+msgstr "採点済解答"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr "採点済回答は見ることができません。この項目にはスタッフ評価が設定されていません。"
+msgstr "採点済解答は見ることができません。この項目にはスタッフ・アセスメントが設定されていません。"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "お待ちください"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
-msgstr ""
+msgstr "%(num_points)s 点"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the prompt above"
-msgstr "上記の問題に対するピアの回答"
+msgstr "上記の問題に対する他の受講者の解答"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -754,7 +754,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    %(start_strong)sこの課題は進行中です。自己評価ステップはまもなく閉じられます。%(end_strong)s  %(start_link)s自己評価%(end_link)s ステップを完了させてください。\n                                "
+msgstr "\n                                    %(start_strong)sこの課題は進行中です。セルフ・アセスメントステップはまもなく閉じられます。%(end_strong)s  %(start_link)sセルフ・アセスメント%(end_link)sステップを完了させてください。\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
@@ -762,7 +762,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    この課題は進行中です。%(start_link)s自己評価%(end_link)s ステップを完了させてください。\n                                "
+msgstr "\n                                    この課題は進行中です。%(start_link)sセルフ・アセスメント%(end_link)sステップを完了させてください。\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -770,7 +770,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    この課題は進行中です。%(start_strong)sピア・アセスメントステップはまもなく閉じられます。%(end_strong)s 提出されたピアの解答の評価はすべて完了しました。後ほど戻ってきて、より多くの受講者の解答が提出済かどうか確認してください。 %(start_link)sピア・アセスメント%(end_link)s ステップを完了させてください。\n                                "
+msgstr "\n                                    この課題は進行中です。%(start_strong)sピア・アセスメントステップはまもなく閉じられます。%(end_strong)s 提出済の他の受講者の解答の評価はすべて完了しました。後ほど戻ってきて、さらに解答が提出されていないかどうか確認してください。 %(start_link)sピア・アセスメント%(end_link)sステップを完了させてください。\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -778,7 +778,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    この課題は進行中です。提出されたピアの解答の評価はすべて完了しました。後ほど、更に解答が提出されていないかどうか確認してください。 引き続き%(start_link)sピア・アセスメント%(end_link)s ステップを完了させてください。\n                                "
+msgstr "\n                                    この課題は進行中です。提出済の他の受講者の解答の評価はすべて完了しました。後ほど、更に解答が提出されていないかどうか確認してください。 引き続き%(start_link)sピア・アセスメント%(end_link)sステップを完了させてください。\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -786,7 +786,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    この課題は進行中です。%(start_strong)sピア・アセスメントステップはまもなく閉じられます。%(end_strong)s引き続き %(start_link)sピア・アセスメント%(end_link)s ステップを完了させてください。\n                                "
+msgstr "\n                                    この課題は進行中です。%(start_strong)sピア・アセスメントステップはまもなく閉じられます。%(end_strong)s引き続き %(start_link)sピア・アセスメント%(end_link)sステップを完了させてください。\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
@@ -794,7 +794,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    この課題は進行中です。引き続き%(start_link)sピア・アセスメント%(end_link)s ステップを完了させてください。\n                                "
+msgstr "\n                                    この課題は進行中です。引き続き%(start_link)sピア・アセスメント%(end_link)sステップを完了させてください。\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -802,7 +802,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n                    課題の提出期限が迫っています。採点されるためには、問題の解答を提出し、%(start_tag)sあなたの解答%(end_tag)s 欄の下のステップを完了してください。\n                "
+msgstr "\n                    課題の提出期限が迫っています。成績を受け取るためには、問題の解答を提出し、%(start_tag)sあなたの解答%(end_tag)s欄の下のステップを完了してください。\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -810,15 +810,15 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n                    この課題にはいくつかのステップがあります。１つ目のステップでは問題の解答を提出します。 その後、次のステップが%(start_tag)sあなたの解答%(end_tag)s 欄の下に表示されます。\n                "
+msgstr "\n                    この課題にはいくつかのステップがあります。１つ目のステップでは問題の解答を提出します。 その後、次のステップが%(start_tag)sあなたの解答%(end_tag)s欄の下に表示されます。\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
-msgstr ""
+msgstr "説明がありません"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:6
 msgid "The instructions for this step could not be loaded."
-msgstr ""
+msgstr "このステップの説明を読み込めませんでした。"
 
 #: openassessment/templates/openassessmentblock/oa_base.html:15
 msgid ""
@@ -829,11 +829,11 @@ msgstr "この課題にはいくつかのステップがあります。１つ目
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
-msgstr ""
+msgstr "読込中"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
 msgid "Preview in LaTeX"
-msgstr ""
+msgstr "LaTexでプレビュー"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
@@ -845,7 +845,7 @@ msgstr "解答をプレビュー"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
-msgstr ""
+msgstr "コメント"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
 msgid "The question for this section"
@@ -860,11 +860,11 @@ msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr "注意：これらのファイルは別の講座の受講者によってアップロードされ、サイト管理者による認証、保護、承認、審査、推奨はされていません。ファイルにアクセスする場合は、ご自身の責任でお願いします。)"
+msgstr "注意: これらのファイルは別の講座の受講者によってアップロードされ、サイト管理者による認証、保護、承認、審査、推奨はされていません。ファイルにアクセスする場合は、ご自身の責任でお願いします。)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
 msgid "Assess Peers"
-msgstr "ピアを評価する"
+msgstr "他の受講者を評価する"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
@@ -915,7 +915,7 @@ msgstr "\n                        進行中 ( %(num_must_grade)s回中%(review_n
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:59
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:43
 msgid "Read and assess the following response from one of your peers."
-msgstr "以下にあるピアの解答を読んで評価してください。"
+msgstr "以下にある他の受講者の解答を読んで評価してください。"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:71
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:54
@@ -932,7 +932,7 @@ msgstr "関連ファイル"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:40
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
 msgid "We could not submit your assessment"
-msgstr ""
+msgstr "評価を提出できませんでした"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html:19
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:19
@@ -940,7 +940,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
 #: openassessment/xblock/staff_assessment_mixin.py:106
 msgid "Cancelled"
-msgstr ""
+msgstr "キャンセル済"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:18
 #, python-format
@@ -948,7 +948,7 @@ msgid ""
 "\n"
 "            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\n未完了(%(num_must_grade)s件中%(num_graded)s件)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:33
 msgid ""
@@ -959,7 +959,7 @@ msgstr "このステップは締切を過ぎたため、閉じられています
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
-msgstr ""
+msgstr "完了"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:29
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:39
@@ -968,15 +968,15 @@ msgid ""
 "You have successfully completed all of the required peer assessments for "
 "this assignment. You may assess additional peer responses if you want to. "
 "Completing additional assessments will not affect your final grade."
-msgstr "この課題に必要な数のピア・アセスメントを完了しました。さらにピアの解答の評価を実施することも可能です。追加の評価は完了しなくても最終成績には影響しません。"
+msgstr "この課題に必要な数のピア・アセスメントを完了しました。さらに他の受講者の解答の評価を実施することも可能です。追加の評価は完了しなくても最終成績には影響しません。"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:34
 msgid "We could not retrieve additional submissions for assessment"
-msgstr ""
+msgstr "アセスメントの提出物の追加分を復旧できませんでした"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:41
 msgid "Continue Assessing Peers"
-msgstr "ピアの評価を続ける"
+msgstr "他の受講者の評価を続ける"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:18
@@ -985,13 +985,13 @@ msgid ""
 "\n"
 "        Complete (%(num_graded)s)\n"
 "      "
-msgstr ""
+msgstr "\n完了(%(num_graded)s件)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:36
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr "ピアの提出済の解答を全て評価しました。後ほど、更に解答が提出されていないかどうか確認してください。"
+msgstr "提出済の他の受講者の解答を全て評価しました。後ほど、更に解答が提出されていないかどうか確認してください。"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
@@ -1000,7 +1000,7 @@ msgstr "ピアの提出済の解答を全て評価しました。後ほど、更
 #: openassessment/xblock/staff_assessment_mixin.py:99
 #: openassessment/xblock/staff_assessment_mixin.py:123
 msgid "Not Available"
-msgstr ""
+msgstr "不可"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:18
 #, python-format
@@ -1016,12 +1016,12 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr "ピアの提出済の解答を全て評価しました。後ほど、更に解答が提出されていないかどうか確認してください。この課題の全ステップを完了し、ピアがあなたの解答を評価すると、成績を受け取ることができます。"
+msgstr "他の受講者の提出済の解答を全て評価しました。後ほど、更に解答が提出されていないかどうか確認してください。この課題の全ステップを完了し、他の受講者があなたの解答を評価すると、成績を受け取ることができます。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:37
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:39
 msgid "In Progress"
-msgstr ""
+msgstr "進行中"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the prompt."
@@ -1031,16 +1031,16 @@ msgstr "問題に対するあなたの解答を入力してください。"
 msgid ""
 "You can save your progress and return to complete your response at any time "
 "before the due date"
-msgstr ""
+msgstr "締切前であればいつでも記入途中の解答を一時保存して後から提出することができます"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:56
 msgid ""
 "You can save your progress and return to complete your response at any time."
-msgstr ""
+msgstr "記入途中の解答を一時保存して後から提出することができます。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:58
 msgid "After you submit your response, you cannot edit it"
-msgstr ""
+msgstr "解答を提出した後は、編集できません"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
@@ -1056,19 +1056,19 @@ msgstr "あなたの解答(オプション)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Enter your response to the prompt above."
-msgstr "上記の問題に対するあなたの回答を入力してください。"
+msgstr "上の問題に対するあなたの解答を入力してください。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
-msgstr ""
+msgstr "進捗を保存できませんでした"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:114
 msgid "Save your progress"
-msgstr ""
+msgstr "進捗を保存"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:118
 msgid "Your Submission Status"
-msgstr ""
+msgstr "あなたの提出物ステータス"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "We could not upload files"
@@ -1076,7 +1076,7 @@ msgstr "ファイルをアップロードできませんでした"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:134
 msgid "Select a file to upload for this submission."
-msgstr ""
+msgstr "アップロードするファイルを選択してください。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:136
 msgid "Upload files"
@@ -1084,15 +1084,15 @@ msgstr "ファイルをアップロード"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "You may continue to work on your response until you submit it."
-msgstr ""
+msgstr "提出するまでは解答を編集できます。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:152
 msgid "We could not submit your response"
-msgstr ""
+msgstr "解答を提出できませんでした"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Submit your response and move to the next step"
-msgstr ""
+msgstr "解答を提出して、次のステップに進む"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:32
 msgid "Your submission was cancelled. "
@@ -1104,7 +1104,7 @@ msgid ""
 "\n"
 "                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                        あなたの提出物は%(removed_datetime)sに%(removed_by_username)sによってキャンセルされました\n                    "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:39
 #, python-format
@@ -1120,13 +1120,13 @@ msgid ""
 "\n"
 "                            Comments: %(comments)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            コメント: %(comments)s\n                        "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:17
 msgid "Incomplete"
-msgstr ""
+msgstr "未完了"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:30
 msgid ""
@@ -1143,7 +1143,7 @@ msgstr "このステップは締切を過ぎたため、閉じられています
 #: openassessment/xblock/staff_assessment_mixin.py:113
 #: openassessment/xblock/staff_assessment_mixin.py:134
 msgid "Complete"
-msgstr ""
+msgstr "完了"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:28
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:49
@@ -1168,7 +1168,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
 "                    "
-msgstr "\n                        引き続き%(peer_start_tag)sピア・アセスメント%(end_tag)s と %(self_start_tag)s自己評価%(end_tag)s ステップを完了させてください。\n                    "
+msgstr "\n                        引き続き%(peer_start_tag)sピア・アセスメント%(end_tag)sと%(self_start_tag)sセルフ・アセスメント%(end_tag)sステップを完了させてください。\n                    "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:36
 #, python-format
@@ -1176,7 +1176,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
 "                    "
-msgstr "\n                        引き続き%(start_tag)sピア・アセスメント%(end_tag)s ステップを完了させてください。\n                    "
+msgstr "\n                        引き続き%(start_tag)sピア・アセスメント%(end_tag)sステップを完了させてください。\n                    "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:40
 #, python-format
@@ -1184,11 +1184,11 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
-msgstr "\n                        引き続き%(start_tag)s自己評価%(end_tag)s ステップを完了させてください。\n                    "
+msgstr "\n                        引き続き%(start_tag)sセルフ・アセスメント%(end_tag)sステップを完了させてください。\n                    "
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:17
 msgid "Assess Your Response"
-msgstr ""
+msgstr "あなたの解答を評価する"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1214,14 +1214,14 @@ msgstr "\n                            <span class=\"date ora-datetime\" data-dat
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:72
 msgid "Submit your assessment"
-msgstr ""
+msgstr "セルフ・アセスメントを提出する"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr "このステップは締切を過ぎたため、閉じられています。今後は自己評価をしたり、この課題を継続することはできません。あなたの成績は'未完了'となります。"
+msgstr "このステップは締切を過ぎたため、閉じられています。今後はセルフ・アセスメントをしたり、この課題を継続することはできません。あなたの成績は'未完了'となります。"
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:335
@@ -1242,57 +1242,57 @@ msgstr "課題に関する統計を見る"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:124
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "Enter an individual learner's username or email"
-msgstr ""
+msgstr "受講者のユーザー名またはメールを入力してください"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:29
 msgid "Submit"
-msgstr ""
+msgstr "提出"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
 msgid "Response total"
-msgstr ""
+msgstr "総解答数"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:57
 msgid "Location"
-msgstr ""
+msgstr "ロケーション"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:63
 msgid "Learner Progress"
-msgstr ""
+msgstr "受講者の進捗状況"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:67
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
 msgid "Problem Step"
-msgstr ""
+msgstr "問題のステップ"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:68
 msgid "Active Learners in Step"
-msgstr ""
+msgstr "各ステップにおけるアクティブな受講者数"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:86
 msgid "Dates"
-msgstr ""
+msgstr "日付"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:91
 msgid "Release Date"
-msgstr ""
+msgstr "公開日"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:104
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:110
 msgid "N/A"
-msgstr ""
+msgstr "なし"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
-msgstr ""
+msgstr "スタッフ・アセスメント"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:7
 msgid "Give this learner a grade using the problem's rubric."
-msgstr "問題のルーブリックを使用してこの受講者の採点をしてください。"
+msgstr "問題のルーブリックを使用して、この受講者の採点をしてください。"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 #, python-format
@@ -1305,18 +1305,18 @@ msgstr "\n                                        解答: %(student_username)s\n
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
 msgid "Learner Response"
-msgstr ""
+msgstr "受講者の解答"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr "上記の問題に対する受講者の回答"
+msgstr "上の問題に対する受講者の解答"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
 msgid "Submit assessment"
-msgstr ""
+msgstr "評価を提出する"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
 msgid "Submit assessment and continue grading"
@@ -1328,11 +1328,11 @@ msgid ""
 "\n"
 "                %(ungraded)s Available and %(in_progress)s Checked Out\n"
 "            "
-msgstr "\n                %(ungraded)s 可能で %(in_progress)s チェックアウト済\n            "
+msgstr "\n                %(ungraded)s件可能で%(in_progress)s件チェックアウト済\n            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:6
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr "問題のルーブリックを使用してこの受講者の現在の成績を優先する"
+msgstr "問題のルーブリックを使用して、この受講者の現在の成績を無効にする。"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:15
 #, python-format
@@ -1348,7 +1348,7 @@ msgid ""
 "\n"
 "                Viewing learner: %(learner)s\n"
 "            "
-msgstr ""
+msgstr "\n                閲覧中の受講者: %(learner)s\n            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:21
 msgid "Learner's Response"
@@ -1360,7 +1360,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr "\n                            %(removed_datetime)s に %(removed_by_username)s により削除された受講者の提出物\n                        "
+msgstr "\n                            %(removed_datetime)sに%(removed_by_username)sが削除した受講者の提出物\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:33
 #, python-format
@@ -1368,7 +1368,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr "\n                            %(removed_datetime)s に削除された受講者の提出物\n                        "
+msgstr "\n                            %(removed_datetime)sに削除された受講者の提出物\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:40
 #, python-format
@@ -1376,7 +1376,7 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr ""
+msgstr "\n                       コメント: %(comments)s\n                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "Peer Assessments for This Learner"
@@ -1388,11 +1388,11 @@ msgstr "この受講者が実施したピア・アセスメント"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:67
 msgid "Learner's Self Assessment"
-msgstr ""
+msgstr "受講者のセルフ・アセスメント"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:72
 msgid "Staff Assessment for This Learner"
-msgstr ""
+msgstr "この受講者のスタッフ・アセスメント"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Final Grade"
@@ -1424,7 +1424,7 @@ msgstr[0] "\n                                        %(assessment_label)s - %(po
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:132
 msgid "Feedback Recorded"
-msgstr "フィードバック記録"
+msgstr "フィードバック記録済"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:143
 msgid "The submission is waiting for assessments."
@@ -1435,7 +1435,7 @@ msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "受講者の提出物はピア・アセスメントから削除されました。あなたが実施内容をリセットし再提出させない限り、０点となります。"
+msgstr "受講者の提出物はピア・アセスメントから削除されました。あなたが実施内容をリセットして再提出を許可しない限り、この受講者は０点となります。"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
 msgid "The problem has not been started."
@@ -1451,11 +1451,11 @@ msgstr "優先する成績を提出する"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:183
 msgid "Remove Submission From Peer Grading"
-msgstr ""
+msgstr "'相互採点'から提出物を削除する"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:192
 msgid "Caution: This Action Cannot Be Undone"
-msgstr "注意: この操作はできません"
+msgstr "注意: この操作は取消できません"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:193
 msgid ""
@@ -1465,11 +1465,11 @@ msgstr "受講者の提出物を削除すると元には戻せませんので、
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid "Comments:"
-msgstr ""
+msgstr "コメント: "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:207
 msgid "Remove submission"
-msgstr ""
+msgstr "提出物を削除"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:222
 msgid "A response was not found for this learner."
@@ -1489,23 +1489,23 @@ msgstr "評価の詳細"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "選択された選択肢"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
-msgstr ""
+msgstr "フィードバック"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
-msgstr ""
+msgstr "配点"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
-msgstr ""
+msgstr "全体フィードバック"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:16
 msgid "Learn to Assess Responses"
-msgstr ""
+msgstr "評価方法の学習"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:41
 #, python-format
@@ -1518,7 +1518,7 @@ msgstr "\n                        進行中 (%(training_available_num)s回中%(c
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:57
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:65
 msgid "Learning to Assess Responses"
-msgstr ""
+msgstr "評価方法の学習"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:60
 msgid ""
@@ -1527,43 +1527,43 @@ msgid ""
 "already assessed. If you select the same options for the response that the "
 "instructor selected, you'll move to the next step. If you don't select the "
 "same options, you'll review the response and try again."
-msgstr "他の受講者の解答の評価を行う前に、講師が事前に評価した解答を見て評価方法を学習しましょう。講師と同じ選択肢を選択をすると、次のステップへ進むことができます。同じ選択肢を選択しなかった場合は、もう一度解答を見て再試行してください。"
+msgstr "他の受講者の解答の評価を行う前に、講師が事前に評価した解答を見て評価方法を学習しましょう。講師と同じ選択肢を選択をすると、次のステップへ進むことができます。同じ選択肢を選択しなかった場合は、解答を見直して再試行してください。"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:68
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
-msgstr ""
+msgstr "あなたの評価は講師の評価と一致していません。解答を見直し、なぜ講師が違う評価をしたのかを考察しましょう。そしてもう一度評価を行ってください。"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
 msgid "The response to the prompt above:"
-msgstr "上記の問題に対する回答:"
+msgstr "上記の問題に対する解答:"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"
-msgstr ""
+msgstr "選択された選択肢が一致します"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:100
 msgid "The option you selected is the option that the instructor selected."
-msgstr ""
+msgstr "あなたが選択した選択肢は講師と同じです。"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:104
 msgid "Selected Options Differ"
-msgstr ""
+msgstr "選択された選択肢が違います"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:107
 msgid ""
 "The option you selected is not the option that the instructor selected."
-msgstr ""
+msgstr "あなたが選択した選択肢は講師と違います。"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:143
 msgid "We could not check your assessment"
-msgstr ""
+msgstr "評価を確認できませんでした"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:150
 msgid "Compare your selections with the instructor's selections"
-msgstr ""
+msgstr "あなたの選択と講師の選択を比較しましょう"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:29
 msgid ""
@@ -1574,31 +1574,31 @@ msgstr "このステップは締切を過ぎたため、閉じられています
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
-msgstr "受講者用トレーニング例の読み込みエラー。"
+msgstr "受講者用トレーニング例の読込エラー"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "この課題の受講者用トレーニングステップが読み込めませんでした。"
 
-#: openassessment/xblock/data_conversion.py:238
-msgid "You must provide options selected in the assessment."
-msgstr "選択オプションを入力してください。"
-
-#: openassessment/xblock/data_conversion.py:241
-msgid "You must provide overall feedback in the assessment."
-msgstr "全体のフィードバックを書いてください。"
-
 #: openassessment/xblock/data_conversion.py:244
+msgid "You must provide options selected in the assessment."
+msgstr "評価で選択した選択肢を入力してください。"
+
+#: openassessment/xblock/data_conversion.py:247
+msgid "You must provide overall feedback in the assessment."
+msgstr "全体のフィードバックを入力してください。"
+
+#: openassessment/xblock/data_conversion.py:250
 msgid "You must provide feedback for criteria in the assessment."
-msgstr "評価基準に関するフィードバックを書いてください。"
+msgstr "評価基準に関するフィードバックを入力してください。"
 
 #: openassessment/xblock/grade_mixin.py:73
 #: openassessment/xblock/leaderboard_mixin.py:52
 #: openassessment/xblock/self_assessment_mixin.py:40
 #: openassessment/xblock/student_training_mixin.py:57
-#: openassessment/xblock/student_training_mixin.py:208
+#: openassessment/xblock/student_training_mixin.py:212
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "予期せぬエラーが発生しました。"
 
 #: openassessment/xblock/grade_mixin.py:164
 msgid "Peer Assessment"
@@ -1606,15 +1606,15 @@ msgstr "ピア・アセスメント"
 
 #: openassessment/xblock/grade_mixin.py:166
 msgid "Self Assessment"
-msgstr ""
+msgstr "セルフ・アセスメント"
 
 #: openassessment/xblock/grade_mixin.py:199
 msgid "Assessment feedback could not be saved."
-msgstr ""
+msgstr "フィードバックが保存できませんでした。"
 
 #: openassessment/xblock/grade_mixin.py:210
 msgid "Feedback saved."
-msgstr ""
+msgstr "フィードバックが保存されました。"
 
 #: openassessment/xblock/grade_mixin.py:336
 #: openassessment/xblock/grade_mixin.py:479
@@ -1623,25 +1623,25 @@ msgstr "スタッフのコメント"
 
 #: openassessment/xblock/grade_mixin.py:342
 msgid "Peer Median Grade"
-msgstr "ピアの成績中央値"
+msgstr "他の受講者の成績中央値"
 
 #: openassessment/xblock/grade_mixin.py:347
 #: openassessment/xblock/grade_mixin.py:486
 #, python-brace-format
 msgid "Peer {peer_index}"
-msgstr "ピア {peer_index}"
+msgstr "他の受講者 {peer_index}"
 
 #: openassessment/xblock/grade_mixin.py:348
 msgid "Peer Comments"
-msgstr "ピアのコメント"
+msgstr "他の受講者のコメント"
 
 #: openassessment/xblock/grade_mixin.py:358
 msgid "Self Assessment Grade"
-msgstr "スタッフ評価点"
+msgstr "セルフ・アセスメントの成績"
 
 #: openassessment/xblock/grade_mixin.py:358
 msgid "Your Self Assessment"
-msgstr ""
+msgstr "セルフ・アセスメント"
 
 #: openassessment/xblock/grade_mixin.py:359
 #: openassessment/xblock/grade_mixin.py:498
@@ -1650,11 +1650,11 @@ msgstr "あなたのコメント"
 
 #: openassessment/xblock/grade_mixin.py:451
 msgid "Waiting for peer reviews"
-msgstr "ピアのレビュー待ち"
+msgstr "他の受講者のレビュー待ち"
 
 #: openassessment/xblock/grade_mixin.py:491
 msgid "Peer"
-msgstr "ピア"
+msgstr "他の受講者"
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
@@ -1664,17 +1664,17 @@ msgstr "ピア・アセスメントを実施する前に解答を提出してく
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
-msgstr ""
+msgstr "このフィードバックはすでに提出済み、あるいは提出物がキャンセルされています。"
 
 #: openassessment/xblock/peer_assessment_mixin.py:100
 #: openassessment/xblock/peer_assessment_mixin.py:105
 msgid "Your peer assessment could not be submitted."
-msgstr "ピア・アセスメントを提出することができませんでした。"
+msgstr "ピア・アセスメントを提出できませんでした。"
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:214
+#: openassessment/xblock/student_training_mixin.py:218
 msgid "Could not update workflow status."
-msgstr ""
+msgstr "ワークフローステータスを更新できませんでした。"
 
 #: openassessment/xblock/peer_assessment_mixin.py:128
 msgid "Could not load peer assessment."
@@ -1682,56 +1682,56 @@ msgstr "ピア・アセスメントを読み込めませんでした。"
 
 #: openassessment/xblock/peer_assessment_mixin.py:210
 msgid "Submit your assessment and review another response"
-msgstr ""
+msgstr "評価を提出し、別の解答を見る"
 
 #: openassessment/xblock/peer_assessment_mixin.py:214
 msgid "Submit your assessment and move to next step"
-msgstr ""
+msgstr "評価を提出し、次のステップへ進む"
 
 #: openassessment/xblock/peer_assessment_mixin.py:218
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
-msgstr ""
+msgstr "評価を提出し、解答#{response_number}へ"
 
 #: openassessment/xblock/resolve_dates.py:51
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
-msgstr ""
+msgstr "'{date}' は無効な日付フォーマットです。 YYYY-MM-DDTHH:MM:SS のフォーマットで記述してください。"
 
 #: openassessment/xblock/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
-msgstr ""
+msgstr "'{date}' は日付の文字列または日時でなければいけません"
 
 #: openassessment/xblock/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
-msgstr ""
+msgstr "このステップの開始日 '{start}' は前のステップの開始日 '{prev}' よりも後でなければいけません。"
 
 #: openassessment/xblock/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
-msgstr ""
+msgstr "このステップの締切 '{due}' は次のステップの締切 '{prev}' より前でなければいけません。"
 
 #: openassessment/xblock/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr ""
+msgstr "開始日 '{start}' は締切 '{due}' より前でなければいけません"
 
 #: openassessment/xblock/self_assessment_mixin.py:136
 msgid "You must submit a response before you can perform a self-assessment."
-msgstr ""
+msgstr "セルフ・アセスメントを行う前に、解答を提出してください。"
 
 #: openassessment/xblock/self_assessment_mixin.py:158
 #: openassessment/xblock/self_assessment_mixin.py:165
 msgid "Your self assessment could not be submitted."
-msgstr ""
+msgstr "あなたのセルフ・アセスメントは提出できませんでした。"
 
 #: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to schedule training"
@@ -1739,15 +1739,15 @@ msgstr "トレーニングをスケジューリングする権限がありませ
 
 #: openassessment/xblock/staff_area_mixin.py:44
 msgid "You do not have permission to reschedule tasks."
-msgstr ""
+msgstr "タスクの再スケジューリングをする権限がありません。"
 
 #: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access the ORA staff area"
-msgstr ""
+msgstr "ORAスタッフ情報へのアクセス権がありません"
 
 #: openassessment/xblock/staff_area_mixin.py:72
 msgid "You do not have permission to access ORA learner information."
-msgstr ""
+msgstr "ORA受講者情報へのアクセス権がありません。"
 
 #: openassessment/xblock/staff_area_mixin.py:73
 msgid "You do not have permission to access ORA staff grading."
@@ -1759,7 +1759,7 @@ msgstr "受講者情報の取得エラー。"
 
 #: openassessment/xblock/staff_area_mixin.py:217
 msgid "Error loading the checked out learner response."
-msgstr "チェックアウト済受講者の解答の読み込みエラー。"
+msgstr "チェックアウト済受講者の解答の読込エラー。"
 
 #: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
@@ -1775,14 +1775,14 @@ msgstr "スタッフ採点の未採点およびチェックアウト済の数の
 
 #: openassessment/xblock/staff_area_mixin.py:440
 msgid "Please enter valid reason to remove the submission."
-msgstr ""
+msgstr "提出物を削除する正当な理由を入力してください。"
 
 #: openassessment/xblock/staff_area_mixin.py:464
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "受講者の提出物はピア・アセスメントから削除されました。あなたが実施内容をリセットし再提出させない限り、０点となります。"
+msgstr "受講者の提出物はピア・アセスメントから削除されました。あなたが実施内容をリセットして再提出を許可しない限り、この受講者は０点となります。"
 
 #: openassessment/xblock/staff_assessment_mixin.py:39
 msgid "The submission ID of the submission being assessed was not found."
@@ -1791,21 +1791,21 @@ msgstr "評価中の提出物の提出物IDが見つかりませんでした。"
 #: openassessment/xblock/staff_assessment_mixin.py:65
 #: openassessment/xblock/staff_assessment_mixin.py:72
 msgid "Your staff assessment could not be submitted."
-msgstr "スタッフ評価が提出できませんでした。"
+msgstr "スタッフ・アセスメントが提出できませんでした。"
 
 #: openassessment/xblock/staff_assessment_mixin.py:124
 msgid "Waiting for a Staff Grade"
-msgstr ""
+msgstr "スタッフからの採点待ち"
 
 #: openassessment/xblock/staff_assessment_mixin.py:125
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
-msgstr "後ほど、講座スタッフがアナらの解答を評価したかどうか確認してください。評価が終了すると成績を受け取ることができます。"
+msgstr "後ほど、講座スタッフがあなたの解答を評価したかどうか確認してください。評価が終了すると成績を受け取ることができます。"
 
 #: openassessment/xblock/staff_assessment_mixin.py:136
 msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr "成績を見るには、上記のステップを完了させてください。"
+msgstr "成績を見るには、上のステップを完了させてください。"
 
 #: openassessment/xblock/staff_assessment_mixin.py:137
 msgid ""
@@ -1814,72 +1814,72 @@ msgid ""
 "problem."
 msgstr "講座スタッフの評価は完了しましたが、成績を受け取ることができるのはこの問題に必要な全ステップを終了した後です。"
 
-#: openassessment/xblock/student_training_mixin.py:171
+#: openassessment/xblock/student_training_mixin.py:175
 msgid "Missing options_selected key in request"
-msgstr ""
+msgstr "option_selected キーがありません"
 
-#: openassessment/xblock/student_training_mixin.py:173
+#: openassessment/xblock/student_training_mixin.py:177
 msgid "options_selected must be a dictionary"
-msgstr ""
+msgstr "option_selectedはディクショナリでなければいけません"
 
-#: openassessment/xblock/student_training_mixin.py:198
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:207
 msgid "Your scores could not be checked."
-msgstr ""
+msgstr "あなたの得点は確認できませんでした。"
 
 #: openassessment/xblock/studio_mixin.py:179
 #: openassessment/xblock/studio_mixin.py:191
 msgid "Error updating XBlock configuration"
-msgstr ""
+msgstr "XBlock設定の更新エラー"
 
 #: openassessment/xblock/studio_mixin.py:194
 msgid "Error: both text and file upload responses can't be disabled"
-msgstr "エラー：テキストもファイルアップロードによる解答もできません。"
+msgstr "エラー: テキストもファイルアップロードによる解答もできません"
 
 #: openassessment/xblock/studio_mixin.py:197
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
-msgstr "エラー：テキストによる解答ができない場合は、ファイルアップロードによる解答をしてください。"
+msgstr "エラー: テキストによる解答ができない場合は、ファイルアップロードによる解答をしてください"
 
 #: openassessment/xblock/studio_mixin.py:200
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
-msgstr "エラー：ファイルアップロードによる解答ができない場合は、テキストによる解答をしてください。"
+msgstr "エラー: ファイルアップロードによる解答ができない場合は、テキストによる解答をしてください"
 
 #: openassessment/xblock/studio_mixin.py:224
 #, python-brace-format
 msgid "Validation error: {error}"
-msgstr ""
+msgstr "認証エラー: {error}"
 
 #: openassessment/xblock/studio_mixin.py:249
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
+msgstr "OpenAssessment XBlockの更新完了"
 
 #: openassessment/xblock/submission_mixin.py:76
 msgid "\"submission\" required to submit answer."
-msgstr ""
+msgstr "\"提出\"には解答の提出が必要です。"
 
 #: openassessment/xblock/submission_mixin.py:97
 msgid "To submit a response, view this component in Preview or Live mode."
-msgstr ""
+msgstr "解答を提出するには、このコンポーネントをプレビューまたはライブモードで表示してください。"
 
 #: openassessment/xblock/submission_mixin.py:103
 msgid "Multiple submissions are not allowed."
-msgstr ""
+msgstr "複数回の提出は許可されていません。"
 
 #: openassessment/xblock/submission_mixin.py:146
 msgid "API returned unclassified exception."
-msgstr ""
+msgstr "APIが分類されていない例外を返しました。"
 
 #: openassessment/xblock/submission_mixin.py:188
 msgid "This response could not be saved."
-msgstr ""
+msgstr "この解答を保存することができませんでした。"
 
 #: openassessment/xblock/submission_mixin.py:192
 msgid "This response was not submitted."
-msgstr ""
+msgstr "この解答は提出されませんでした。"
 
 #: openassessment/xblock/submission_mixin.py:221
 msgid "Files descriptions could not be saved."
@@ -1891,57 +1891,57 @@ msgstr "ファイルの詳細説明が提出されませんでした。"
 
 #: openassessment/xblock/submission_mixin.py:287
 msgid "There was an error uploading your file."
-msgstr ""
+msgstr "ファイルのアップロード時にエラーが発生しました。"
 
 #: openassessment/xblock/submission_mixin.py:295
 msgid "Content type must be GIF, PNG or JPG."
-msgstr ""
+msgstr "コンテンツファイルはGIF、PNGまたはJPGでなければいけません。"
 
 #: openassessment/xblock/submission_mixin.py:298
 msgid "Content type must be PDF, GIF, PNG or JPG."
-msgstr ""
+msgstr "コンテンツファイルはPDF、GIF、PNGまたはJPGでなければいけません。"
 
 #: openassessment/xblock/submission_mixin.py:301
 msgid "File type must be one of the following types: {}"
-msgstr ""
+msgstr "ファイルタイプは次のいずれかでなければいけません: {}"
 
 #: openassessment/xblock/submission_mixin.py:305
 msgid "File type is not allowed."
-msgstr ""
+msgstr "ファイルタイプが正しくありません。"
 
 #: openassessment/xblock/submission_mixin.py:312
 msgid "Error retrieving upload URL."
-msgstr ""
+msgstr "アップロードURLの取得エラー。"
 
 #: openassessment/xblock/submission_mixin.py:450
 msgid "This response has been saved but not submitted."
-msgstr ""
+msgstr "この解答は一時保存されていますが、提出されていません。"
 
 #: openassessment/xblock/submission_mixin.py:451
 msgid "This response has not been saved."
-msgstr ""
+msgstr "この解答は保存されていません。"
 
 #: openassessment/xblock/validation.py:117
 msgid "This problem must include at least one assessment."
-msgstr ""
+msgstr "この問題はアセスメントを１つ以上含む必要があります。"
 
 #: openassessment/xblock/validation.py:121
 msgid "The assessment order you selected is invalid."
-msgstr ""
+msgstr "あなたが選択したアセスメントの順序は正しくありません。"
 
 #: openassessment/xblock/validation.py:131
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr "ピア・アセスメントの必要評価数は整数でなければいけません。"
+msgstr "ピア・アセスメントの\"必要評価数\"は整数でなければいけません。"
 
 #: openassessment/xblock/validation.py:134
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
-msgstr "ピア・アセスメントの被評価数は整数でなければいけません。"
+msgstr "ピア・アセスメントの\"被評価数\"は整数でなければいけません。"
 
 #: openassessment/xblock/validation.py:138
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
-msgstr "ピア・アセスメントの必要評価数は、被評価数と同数あるいはより大きい値でなければいけません。"
+msgstr "ピア・アセスメントの\"必要評価数\"は、\"被評価数\"と同数あるいはより大きい値でなければいけません。"
 
 #: openassessment/xblock/validation.py:147
 msgid "You must provide at least one example response for learner training."
@@ -1953,31 +1953,31 @@ msgstr "受講者用トレーニングの解答例はオリジナルでなけれ
 
 #: openassessment/xblock/validation.py:157
 msgid "The \"required\" value must be true if staff assessment is the only step."
-msgstr "スタッフ評価のみ必要な場合、\"必須\"欄はtrueにしてください。"
+msgstr "スタッフ・アセスメントのみ必要な場合、\"必須\"欄はtrueにしてください。"
 
 #: openassessment/xblock/validation.py:161
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr ""
+msgstr "問題が公開された後に、アセスメントの数を変更することはできません。"
 
 #: openassessment/xblock/validation.py:166
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr ""
+msgstr "問題が公開された後に、アセスメントの種類を変更することはできません。"
 
 #: openassessment/xblock/validation.py:189
 msgid "This rubric definition is not valid."
-msgstr ""
+msgstr "このルーブリック設定は有効ではありません。"
 
 #: openassessment/xblock/validation.py:195
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr ""
+msgstr "'{criterion}'の選択肢の名前(複数の場合あり)が重複しています: {duplicates}"
 
 #: openassessment/xblock/validation.py:203
 msgid "Criteria with no options must require written feedback."
-msgstr ""
+msgstr "選択肢のない評価基準ではフィードバックの記入が必要です。"
 
 #: openassessment/xblock/validation.py:212
 msgid "Prompts cannot be created or deleted after a problem is released."
@@ -1985,19 +1985,19 @@ msgstr "問題が公開された後は問題を作成したり削除したりす
 
 #: openassessment/xblock/validation.py:216
 msgid "The number of criteria cannot be changed after a problem is released."
-msgstr ""
+msgstr "課題公開後、評価基準数は変更できません。"
 
 #: openassessment/xblock/validation.py:229
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr ""
+msgstr "課題公開後、評価基準名は変更できません。"
 
 #: openassessment/xblock/validation.py:234
 msgid "The number of options cannot be changed after a problem is released."
-msgstr ""
+msgstr "課題公開後は選択肢の数を変更することができません。"
 
 #: openassessment/xblock/validation.py:239
 msgid "Point values cannot be changed after a problem is released."
-msgstr ""
+msgstr "課題公開後、点数は変更できません。"
 
 #: openassessment/xblock/validation.py:290
 msgid "Learner training must have at least one training example."
@@ -2005,8 +2005,8 @@ msgstr "受講者用トレーニングには少なくとも1つ例が必要で�
 
 #: openassessment/xblock/validation.py:352
 msgid "Leaderboard number is invalid."
-msgstr ""
+msgstr "リーダーボードの数が無効です。"
 
 #: openassessment/xblock/validation.py:375
 msgid "The submission format is invalid."
-msgstr ""
+msgstr "提出フォーマットが無効です。"
