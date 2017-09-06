@@ -58,6 +58,66 @@ class StudentTrainingMixin(object):
         else:
             return self.render_assessment(path, context)
 
+    def _parse_answer_dict(self, answer):
+        """
+        Helper to parse answer as a fully-qualified dict.
+        """
+        parts = answer.get('parts', [])
+        logger.error(parts)
+        if parts and isinstance(parts[0], dict):
+            logger.error(parts[0])
+            if isinstance(parts[0].get('text'), basestring):
+                logger.error(parts[0].get('text'))
+                return create_submission_dict({'answer': answer}, self.prompts)
+
+
+    def _parse_answer_list(self, answer):
+        """
+        Helper to parse answer as a list of strings.
+        """
+        if answer and isinstance(answer[0], basestring):
+            return self._parse_answer_string(answer[0])
+
+
+    def _parse_answer_string(self, answer):
+        """
+        Helper to parse answer as a plain string
+        """
+        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.prompts)
+
+
+    def _parse_example(self, example):
+        """
+        EDUCATOR-1263: examples are serialized in a myriad of different ways, we need to be robust to all of them.
+
+        Types of serialized example['answer'] we handle here:
+        -fully specified: {'answer': {'parts': [{'text': <response_string>}]}}
+        -list of string: {'answer': [<response_string>]}
+        -just a string: {'answer': <response_string>}
+        """
+        if not example:
+            return (
+                {},
+                "No training example was returned from the API for student with Submission UUID {}".format(
+                    self.submission_uuid
+                )
+            )
+        answer = example['answer']
+        submission_dict = None
+        logger.error(answer)
+        if isinstance(answer, basestring):
+            submission_dict = self._parse_answer_string(answer)
+        elif isinstance(answer, dict):
+            submission_dict = self._parse_answer_dict(answer)
+        elif isinstance(answer, list):
+            submission_dict = self._parse_answer_list(answer)
+
+        logger.error(submission_dict)
+        return (submission_dict, "") or (
+            {},
+            "Improperly formatted example, cannot render student training. Example: {}".format(example)
+        )
+
     def training_path_and_context(self):
         """
         Return the template path and context used to render the student training step.
@@ -128,23 +188,18 @@ class StudentTrainingMixin(object):
                 },
                 examples
             )
-            if example:
-                # EDUCATOR-1263: some entries may be in an incorrect format, load them anyways
-                if isinstance(example, dict) and isinstance(example['answer'], list) and isinstance(example['answer'][0], basestring):
-                    context['training_essay'] = create_submission_dict({'answer': {'parts': [{'text': example['answer'][0]}]}}, self.prompts)
-                else:
-                    context['training_essay'] = create_submission_dict({'answer': example['answer']}, self.prompts)
+
+            training_essay_context, error_message = self._parse_example(example)
+            if error_message:
+                logger.error(error_message)
+                template = "openassessmentblock/student_training/student_training_error.html"
+            else:
+                context['training_essay'] = training_essay_context
                 context['training_rubric'] = {
                     'criteria': example['rubric']['criteria'],
                     'points_possible': example['rubric']['points_possible']
                 }
                 template = 'openassessmentblock/student_training/student_training.html'
-            else:
-                logger.error(
-                    "No training example was returned from the API for student "
-                    "with Submission UUID {}".format(self.submission_uuid)
-                )
-                template = "openassessmentblock/student_training/student_training_error.html"
 
         return template, context
 
