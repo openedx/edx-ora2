@@ -63,11 +63,8 @@ class StudentTrainingMixin(object):
         Helper to parse answer as a fully-qualified dict.
         """
         parts = answer.get('parts', [])
-        logger.error(parts)
         if parts and isinstance(parts[0], dict):
-            logger.error(parts[0])
             if isinstance(parts[0].get('text'), basestring):
-                logger.error(parts[0].get('text'))
                 return create_submission_dict({'answer': answer}, self.prompts)
 
 
@@ -77,6 +74,8 @@ class StudentTrainingMixin(object):
         """
         if answer and isinstance(answer[0], basestring):
             return self._parse_answer_string(answer[0])
+        elif len(answer) == 0:
+            return self._parse_answer_string("")
 
 
     def _parse_answer_string(self, answer):
@@ -104,7 +103,6 @@ class StudentTrainingMixin(object):
             )
         answer = example['answer']
         submission_dict = None
-        logger.error(answer)
         if isinstance(answer, basestring):
             submission_dict = self._parse_answer_string(answer)
         elif isinstance(answer, dict):
@@ -112,7 +110,6 @@ class StudentTrainingMixin(object):
         elif isinstance(answer, list):
             submission_dict = self._parse_answer_list(answer)
 
-        logger.error(submission_dict)
         return (submission_dict, "") or (
             {},
             "Improperly formatted example, cannot render student training. Example: {}".format(example)
