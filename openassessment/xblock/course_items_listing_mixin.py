@@ -8,7 +8,6 @@ import json
 from webob import Response
 from xblock.core import XBlock
 
-from openassessment.data import OraAggregateData
 from openassessment.xblock.staff_area_mixin import require_course_staff
 
 
@@ -25,5 +24,6 @@ class CourseItemsListingMixin(object):
         Get information about all ora2 blocks in the course with response count for each step.
 
         """
+        from openassessment.data import OraAggregateData
         responses = OraAggregateData.collect_ora2_responses(unicode(self.course_id))
         return Response(json.dumps(responses), content_type='application/json')

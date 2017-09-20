@@ -7,7 +7,6 @@ from openassessment.assessment.api.student_training import validate_training_exa
 from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 from openassessment.xblock.resolve_dates import DateValidationError, InvalidDateFormat, resolve_dates
-from submissions.api import MAX_TOP_SUBMISSIONS
 
 
 def _match_by_order(items, others):
@@ -315,6 +314,7 @@ def validator(oa_block, _, strict_post_release=True):
     Returns:
         callable, of a form that can be passed to `update_from_xml`.
     """
+    from submissions.api import MAX_TOP_SUBMISSIONS
 
     def _inner(rubric_dict, assessments, leaderboard_show=0, submission_start=None, submission_due=None):
 

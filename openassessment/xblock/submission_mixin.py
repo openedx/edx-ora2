@@ -7,7 +7,6 @@ from data_conversion import create_submission_dict, prepare_submission_for_seria
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
-from submissions import api
 from validation import validate_submission
 
 from .resolve_dates import DISTANT_FUTURE
@@ -69,6 +68,7 @@ class SubmissionMixin(object):
                 associated status tag (str), and status text (unicode).
 
         """
+        from submissions import api
         if 'submission' not in data:
             return (
                 False,
@@ -225,6 +225,7 @@ class SubmissionMixin(object):
         return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
     def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None):
+        from submissions import api
 
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
@@ -433,6 +434,7 @@ class SubmissionMixin(object):
                 the front end.
 
         """
+        from submissions import api
         try:
             return api.get_submission(submission_uuid)
         except api.SubmissionRequestError:

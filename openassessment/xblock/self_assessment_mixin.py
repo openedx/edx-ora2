@@ -5,7 +5,6 @@ from xblock.core import XBlock
 
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
-from submissions import api as submission_api
 
 from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
                               verify_assessment_parameters)
@@ -53,6 +52,7 @@ class SelfAssessmentMixin(object):
             SubmissionError: Error occurred while retrieving the current submission.
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
+        from submissions import api as submission_api
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")

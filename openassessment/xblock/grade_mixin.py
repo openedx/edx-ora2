@@ -9,11 +9,7 @@ from xblock.core import XBlock
 from django.utils.translation import ugettext as _
 
 from data_conversion import create_submission_dict
-from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import self as self_api
-from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
-from submissions import api as sub_api
 
 
 class GradeMixin(object):
@@ -41,6 +37,8 @@ class GradeMixin(object):
         Returns:
             unicode: HTML content of the grade step.
         """
+        from submissions import api as sub_api
+
         # Retrieve the status of the workflow.  If no workflows have been
         # started this will be an empty dict, so status will be None.
         workflow = self.get_workflow_info()
@@ -84,6 +82,11 @@ class GradeMixin(object):
         Returns:
             tuple of context (dict), template_path (string)
         """
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.assessment.api import self as self_api
+        from openassessment.assessment.api import staff as staff_api
+        from submissions import api as sub_api
+
         # Peer specific stuff...
         assessment_steps = self.assessment_steps
         submission_uuid = workflow['submission_uuid']
@@ -186,6 +189,8 @@ class GradeMixin(object):
             Dict with keys 'success' (bool) and 'msg' (unicode)
 
         """
+        from openassessment.assessment.api import peer as peer_api
+
         feedback_text = data.get('feedback_text', u'')
         feedback_options = data.get('feedback_options', list())
 
@@ -245,6 +250,10 @@ class GradeMixin(object):
                 ...
             }
         """
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.assessment.api import self as self_api
+        from openassessment.assessment.api import staff as staff_api
+
         criteria = copy.deepcopy(self.rubric_criteria_with_labels)
 
         def has_feedback(assessments):
@@ -391,6 +400,8 @@ class GradeMixin(object):
             The option for the median peer grade.
 
         """
+        from openassessment.assessment.api import peer as peer_api
+
         median_scores = peer_api.get_assessment_median_scores(submission_uuid)
         median_score = median_scores.get(criterion['name'], None)
 
