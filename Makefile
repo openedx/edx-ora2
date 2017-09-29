@@ -43,7 +43,7 @@ extract_translations:
 
 # compiles the *.po & *.mo files
 compile_translations:
-	i18n_tool generate -v
+	cd ./openassessment/ && i18n_tool generate -v && cd ..
 
 # generate dummy translations
 generate_dummy_translations:
