@@ -9,7 +9,6 @@ from openassessment.assessment.errors import PeerAssessmentError, SelfAssessment
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
-from submissions import api as sub_api
 
 
 class LeaderboardMixin(object):
@@ -37,6 +36,7 @@ class LeaderboardMixin(object):
         Returns:
             unicode: HTML content of the leaderboard.
         """
+        from submissions import api as sub_api
         # Retrieve the status of the workflow.  If no workflows have been
         # started this will be an empty dict, so status will be None.
         workflow = self.get_workflow_info()
@@ -63,6 +63,7 @@ class LeaderboardMixin(object):
         Returns:
             template_path (string), tuple of context (dict)
         """
+        from submissions import api as sub_api
 
         # Retrieve top scores from the submissions API
         # Since this uses the read-replica and caches the results,

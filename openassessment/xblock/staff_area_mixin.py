@@ -8,15 +8,10 @@ import logging
 
 from xblock.core import XBlock
 
-from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import self as self_api
-from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.errors import PeerAssessmentInternalError
-from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from submissions import api as submission_api
 
 from .user_data import get_user_preferences
 
@@ -152,6 +147,7 @@ class StaffAreaMixin(object):
         """
         Returns a context with staff assessment "ungraded" and "in-progress" counts.
         """
+        from openassessment.assessment.api import staff as staff_api
         grading_stats = staff_api.get_staff_grading_statistics(course_id, item_id)
 
         return {
@@ -187,6 +183,8 @@ class StaffAreaMixin(object):
 
         Must be course staff to render this view.
         """
+        from openassessment.assessment.api import staff as staff_api
+        from submissions import api as submission_api
         try:
             student_item_dict = self.get_student_item_dict()
             course_id = student_item_dict.get('course_id')
@@ -286,6 +284,8 @@ class StaffAreaMixin(object):
         Args:
             student_username (unicode): The username of the student to report.
         """
+        from submissions import api as submission_api
+
         anonymous_user_id = None
         student_item = None
         submissions = None
@@ -323,6 +323,10 @@ class StaffAreaMixin(object):
             submission_uuid (unicode): The uuid of the submission, should NOT be None.
             context: the context to update with additional information
         """
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.assessment.api import self as self_api
+        from openassessment.assessment.api import staff as staff_api
+
         assessment_steps = self.assessment_steps
 
         self_assessment = None
@@ -392,6 +396,7 @@ class StaffAreaMixin(object):
         for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
         and pass through to the submissions API to orphan the submission so that the user can create a new one.
         """
+        from submissions import api as submission_api
         # Note that student_item cannot be constructed using get_student_item_dict, since we're in a staff context
         student_item = {
             'course_id': course_id,
@@ -447,6 +452,7 @@ class StaffAreaMixin(object):
 
         If requesting_user is not provided, we will use the user to which this xblock is currently bound.
         """
+        from openassessment.workflow import api as workflow_api
         try:
             assessment_requirements = self.workflow_requirements()
             if requesting_user_id is None:
