@@ -74,7 +74,10 @@ dummy_locales:
 
 # Directories we don't search for strings.
 ignore_dirs:
+    - .tox
+    - build
     - docs
+    - edx-ora2
     - logs
     - node_modules
     - performance
