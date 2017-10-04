@@ -68,6 +68,7 @@ class SubmissionMixin(object):
                 associated status tag (str), and status text (unicode).
 
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api
         if 'submission' not in data:
             return (
@@ -225,6 +226,7 @@ class SubmissionMixin(object):
         return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
     def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None):
+        # Import is placed here to avoid model import at project startup.
         from submissions import api
 
         # Store the student's response text in a JSON-encodable dict
@@ -434,6 +436,7 @@ class SubmissionMixin(object):
                 the front end.
 
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api
         try:
             return api.get_submission(submission_uuid)

@@ -314,6 +314,7 @@ def validator(oa_block, _, strict_post_release=True):
     Returns:
         callable, of a form that can be passed to `update_from_xml`.
     """
+    # Import is placed here to avoid model import at project startup.
     from submissions.api import MAX_TOP_SUBMISSIONS
 
     def _inner(rubric_dict, assessments, leaderboard_show=0, submission_start=None, submission_due=None):

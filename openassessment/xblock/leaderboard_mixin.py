@@ -36,6 +36,7 @@ class LeaderboardMixin(object):
         Returns:
             unicode: HTML content of the leaderboard.
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api as sub_api
         # Retrieve the status of the workflow.  If no workflows have been
         # started this will be an empty dict, so status will be None.
@@ -63,6 +64,7 @@ class LeaderboardMixin(object):
         Returns:
             template_path (string), tuple of context (dict)
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api as sub_api
 
         # Retrieve top scores from the submissions API
