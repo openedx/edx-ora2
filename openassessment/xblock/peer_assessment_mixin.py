@@ -8,7 +8,6 @@ import logging
 from webob import Response
 from xblock.core import XBlock
 
-from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
                                               PeerAssessmentWorkflowError)
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -56,6 +55,8 @@ class PeerAssessmentMixin(object):
             and "msg" (unicode) containing additional information if an error occurs.
 
         """
+        # Import is placed here to avoid model import at project startup.
+        from openassessment.assessment.api import peer as peer_api
         if self.submission_uuid is None:
             return {
                 'success': False, 'msg': self._('You must submit a response before you can perform a peer assessment.')
@@ -164,6 +165,8 @@ class PeerAssessmentMixin(object):
             tuple of (template_path, context_dict)
 
         """
+        # Import is placed here to avoid model import at project startup.
+        from openassessment.assessment.api import peer as peer_api
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
@@ -274,6 +277,8 @@ class PeerAssessmentMixin(object):
             dict: The serialized submission model.
 
         """
+        # Import is placed here to avoid model import at project startup.
+        from openassessment.assessment.api import peer as peer_api
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(

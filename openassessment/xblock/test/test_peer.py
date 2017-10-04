@@ -645,7 +645,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             xblock.get_workflow_info = mock.Mock(return_value=workflow_info)
 
         # Simulate that we've either finished or not finished required grading
-        patched_module = 'openassessment.xblock.peer_assessment_mixin.peer_api'
+        patched_module = 'openassessment.assessment.api.peer'
         with mock.patch(patched_module + '.has_finished_required_evaluating') as mock_finished:
             mock_finished.return_value = (was_graded_enough, 1)
             path, context = xblock.peer_path_and_context(continue_grading)
@@ -775,13 +775,13 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             expect_failure=True
         )
 
-    @mock.patch('openassessment.xblock.peer_assessment_mixin.peer_api')
+    @mock.patch('openassessment.assessment.api.peer')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_request_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentRequestError
         self._submit_peer_assessment(xblock, u"Sally", u"Bob", self.ASSESSMENT, expect_failure=True)
 
-    @mock.patch('openassessment.xblock.peer_assessment_mixin.peer_api')
+    @mock.patch('openassessment.assessment.api.peer')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_internal_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentInternalError
