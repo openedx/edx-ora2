@@ -37,6 +37,7 @@ class GradeMixin(object):
         Returns:
             unicode: HTML content of the grade step.
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api as sub_api
 
         # Retrieve the status of the workflow.  If no workflows have been
@@ -82,6 +83,7 @@ class GradeMixin(object):
         Returns:
             tuple of context (dict), template_path (string)
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
         from openassessment.assessment.api import staff as staff_api
@@ -189,6 +191,7 @@ class GradeMixin(object):
             Dict with keys 'success' (bool) and 'msg' (unicode)
 
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
 
         feedback_text = data.get('feedback_text', u'')
@@ -250,6 +253,7 @@ class GradeMixin(object):
                 ...
             }
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
         from openassessment.assessment.api import staff as staff_api
@@ -400,6 +404,7 @@ class GradeMixin(object):
             The option for the median peer grade.
 
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
 
         median_scores = peer_api.get_assessment_median_scores(submission_uuid)

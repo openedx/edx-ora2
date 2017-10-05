@@ -147,6 +147,7 @@ class StaffAreaMixin(object):
         """
         Returns a context with staff assessment "ungraded" and "in-progress" counts.
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import staff as staff_api
         grading_stats = staff_api.get_staff_grading_statistics(course_id, item_id)
 
@@ -183,6 +184,7 @@ class StaffAreaMixin(object):
 
         Must be course staff to render this view.
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import staff as staff_api
         from submissions import api as submission_api
         try:
@@ -284,6 +286,7 @@ class StaffAreaMixin(object):
         Args:
             student_username (unicode): The username of the student to report.
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
 
         anonymous_user_id = None
@@ -323,6 +326,7 @@ class StaffAreaMixin(object):
             submission_uuid (unicode): The uuid of the submission, should NOT be None.
             context: the context to update with additional information
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
         from openassessment.assessment.api import staff as staff_api
@@ -396,6 +400,7 @@ class StaffAreaMixin(object):
         for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
         and pass through to the submissions API to orphan the submission so that the user can create a new one.
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
         # Note that student_item cannot be constructed using get_student_item_dict, since we're in a staff context
         student_item = {
@@ -452,6 +457,7 @@ class StaffAreaMixin(object):
 
         If requesting_user is not provided, we will use the user to which this xblock is currently bound.
         """
+        # Import is placed here to avoid model import at project startup.
         from openassessment.workflow import api as workflow_api
         try:
             assessment_requirements = self.workflow_requirements()

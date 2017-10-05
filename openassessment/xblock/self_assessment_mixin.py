@@ -52,6 +52,7 @@ class SelfAssessmentMixin(object):
             SubmissionError: Error occurred while retrieving the current submission.
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
+        # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
