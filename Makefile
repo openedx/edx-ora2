@@ -53,6 +53,10 @@ generate_dummy_translations:
 detect_changed_source_translations:
 	i18n_tool changed
 
+# pull translations from Transifex
+pull_translations: 
+	cd ./openassessment/ && tx pull -af --mode reviewed
+
 # extract, compile, and check if translation files are up-to-date
 validate_translations: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations
 
