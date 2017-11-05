@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-03 15:55+0000\n"
-"PO-Revision-Date: 2017-08-03 15:56+0000\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
+"PO-Revision-Date: 2017-09-23 22:12+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
@@ -1579,15 +1579,15 @@ msgstr "Hitilafu Kupakia Mifano ya Mafunzo ya Mwanafunzi"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Hatua za Mafunzo ya Mwanafunzi katika zoezi hili haikuweza kupakiwa. "
 
-#: openassessment/xblock/data_conversion.py:238
+#: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
 msgstr "Lazima utoe hiari zilizochaguliwa katika tathmini."
 
-#: openassessment/xblock/data_conversion.py:241
+#: openassessment/xblock/data_conversion.py:247
 msgid "You must provide overall feedback in the assessment."
 msgstr "Lazima utoe mrejesho wa jumla katika tathmini."
 
-#: openassessment/xblock/data_conversion.py:244
+#: openassessment/xblock/data_conversion.py:250
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "Lazima utoe mrejesho kwa kigezo katika tathmini."
 
@@ -1595,7 +1595,7 @@ msgstr "Lazima utoe mrejesho kwa kigezo katika tathmini."
 #: openassessment/xblock/leaderboard_mixin.py:52
 #: openassessment/xblock/self_assessment_mixin.py:40
 #: openassessment/xblock/student_training_mixin.py:57
-#: openassessment/xblock/student_training_mixin.py:208
+#: openassessment/xblock/student_training_mixin.py:212
 msgid "An unexpected error occurred."
 msgstr "Hitilafu isiyotarajiwa imetokea."
 
@@ -1671,7 +1671,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "Tathmini yako ya pamoja  haikuweza kutumwa. "
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:214
+#: openassessment/xblock/student_training_mixin.py:218
 msgid "Could not update workflow status."
 msgstr "Haikuweza kutengeneza upya hali ya mtiririko wa kazi."
 
@@ -1813,16 +1813,16 @@ msgid ""
 "problem."
 msgstr "Ingawa mwalimu wa kozi amekadiria jibu lako, utapokea daraja lako pindi baada ya kumaliza hatua zote zihitajikazo kwa swali hili.  "
 
-#: openassessment/xblock/student_training_mixin.py:171
+#: openassessment/xblock/student_training_mixin.py:175
 msgid "Missing options_selected key in request"
 msgstr "Hiari zinazokosekana_ufunguo uliyochaguliwa unahitajika"
 
-#: openassessment/xblock/student_training_mixin.py:173
+#: openassessment/xblock/student_training_mixin.py:177
 msgid "options_selected must be a dictionary"
 msgstr "hiari_kilichochaguliwa lazima kiwe ni kamusi"
 
-#: openassessment/xblock/student_training_mixin.py:198
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:207
 msgid "Your scores could not be checked."
 msgstr "Alama zako hazikuweza kuhakikiwa."
 
@@ -1912,11 +1912,11 @@ msgstr "Aina ya faili haihitajiki."
 msgid "Error retrieving upload URL."
 msgstr "Hitilafu imetokea wakati kurudisha upakiaji wa URL."
 
-#: openassessment/xblock/submission_mixin.py:454
+#: openassessment/xblock/submission_mixin.py:450
 msgid "This response has been saved but not submitted."
 msgstr "Jibu hili limehifadhiwa lakini halijawasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:455
+#: openassessment/xblock/submission_mixin.py:451
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 

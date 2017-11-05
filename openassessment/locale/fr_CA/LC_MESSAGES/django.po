@@ -63,13 +63,13 @@
 # PETIT Yannick <yannick.petit@gmail.com>, 2013
 # Philippe Chiu <philippe.chiu@gmail.com>, 2013
 # Pierre-Emmanuel Colas <pecolas44@gmail.com>, 2015
-# Pierre Mailhot <pierre.mailhot@gmail.com>, 2016
+# Pierre Mailhot <pierre.mailhot@gmail.com>, 2016-2017
 # Pierre Roland Bonvin <pierre@bonvin.name>, 2016
 # qcappart <quentin.c@swing.be>, 2014
 # rafcha <raphael.chay@gmail.com>, 2014
 # Ramarohetra Malalatiana <mtiana8@gmail.com>, 2014
 # Régis Behmo <transifex.stuff@behmo.com>, 2016
-# Régis Millet <kulgar@ct2c.fr>, 2015
+# Régis Millet <regmillet@ct2c.fr>, 2015
 # Richard Moch <richard.moch@gmail.com>, 2014-2016
 # SALHI Aissam <ais.salhy@gmail.com>, 2014
 # samuel <samuelecin@gmail.com>, 2014
@@ -94,9 +94,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-03 15:55+0000\n"
-"PO-Revision-Date: 2017-08-03 15:56+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
+"PO-Revision-Date: 2017-09-23 21:24+0000\n"
+"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -776,7 +776,7 @@ msgstr "%(num_points)s points"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "La réponse de vos pairs à l'invite ci-dessus"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -881,7 +881,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                    La possibilité de remettre des devoirs va bientôt se terminer. Pour recevoir une note, fournissez d'abord une réponse à l'invite, puis suivez les étapes sous le champ %(start_tag)sVotre Réponse%(end_tag)s.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -889,7 +889,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                   Ce devoir comporte plusieurs étapes. Dans la première étape, vous fournirez une réponse à l'invite. Les autres étapes apparaissent sous le champ %(start_tag)sVotre Réponse%(end_tag)s.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -904,7 +904,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "Ce devoir comprend plusieurs étapes. Dans la première, vous fournissez une réponse à l'invite. Les autres étapes apparaissent alors en dessous du champ \"Votre Réponse\"."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -1104,7 +1104,7 @@ msgstr "En cours"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "Entrez votre réponse à l'invite."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1135,7 +1135,7 @@ msgstr "Votre réponse (optionnel)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "Entrez votre réponse à l'invite ci-dessus."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
@@ -1390,7 +1390,7 @@ msgstr "Réponse de l'apprenant"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "La réponse de l'apprenant à l'invite ci-dessus"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1618,7 +1618,7 @@ msgstr "Votre évaluation est différente de celle de l'enseignant pour cette r�
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
 msgid "The response to the prompt above:"
-msgstr ""
+msgstr "La réponse à l'invite ci-dessus :"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"
@@ -1660,15 +1660,15 @@ msgstr "Erreur lors du chargement des exemples d'entrainement des étudiants"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Impossible de récupérer les étapes d'entrainement de cette évaluation."
 
-#: openassessment/xblock/data_conversion.py:238
+#: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
 msgstr "Vous devez fournir les options sélectionnées dans l'évaluation."
 
-#: openassessment/xblock/data_conversion.py:241
+#: openassessment/xblock/data_conversion.py:247
 msgid "You must provide overall feedback in the assessment."
 msgstr "Vous devez fournir un commentaire global dans l'évaluation."
 
-#: openassessment/xblock/data_conversion.py:244
+#: openassessment/xblock/data_conversion.py:250
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "Vous devez fournir un commentaire sur les critères dans l'évaluation."
 
@@ -1676,7 +1676,7 @@ msgstr "Vous devez fournir un commentaire sur les critères dans l'évaluation."
 #: openassessment/xblock/leaderboard_mixin.py:52
 #: openassessment/xblock/self_assessment_mixin.py:40
 #: openassessment/xblock/student_training_mixin.py:57
-#: openassessment/xblock/student_training_mixin.py:208
+#: openassessment/xblock/student_training_mixin.py:212
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s'est produite."
 
@@ -1752,7 +1752,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "Votre évaluation entre pairs n'a pas pu être soumise."
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:214
+#: openassessment/xblock/student_training_mixin.py:218
 msgid "Could not update workflow status."
 msgstr "Impossible de mettre à jour l'état du workflow."
 
@@ -1894,16 +1894,16 @@ msgid ""
 "problem."
 msgstr "Bien qu'un membre de l'équipe pédagogique aie évalué votre réponses, vous ne recevrez de note qu'après avoir complété toutes les étapes requises du problème."
 
-#: openassessment/xblock/student_training_mixin.py:171
+#: openassessment/xblock/student_training_mixin.py:175
 msgid "Missing options_selected key in request"
 msgstr "Il manque à la requête la clef options_selected "
 
-#: openassessment/xblock/student_training_mixin.py:173
+#: openassessment/xblock/student_training_mixin.py:177
 msgid "options_selected must be a dictionary"
 msgstr "options_selected doit être un disctionnaire"
 
-#: openassessment/xblock/student_training_mixin.py:198
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:207
 msgid "Your scores could not be checked."
 msgstr "Vos notes n'ont pu être vérifiés."
 
@@ -1993,11 +1993,11 @@ msgstr "Type de fichier non supporté."
 msgid "Error retrieving upload URL."
 msgstr "Une erreur s'est produite lors de la récupération de l'URL de chargement."
 
-#: openassessment/xblock/submission_mixin.py:454
+#: openassessment/xblock/submission_mixin.py:450
 msgid "This response has been saved but not submitted."
 msgstr "Cette réponse a été enregistrée mais n'a pas été soumise."
 
-#: openassessment/xblock/submission_mixin.py:455
+#: openassessment/xblock/submission_mixin.py:451
 msgid "This response has not been saved."
 msgstr "Cette réponse n'a pas été enregistrée."
 
@@ -2081,7 +2081,7 @@ msgstr "Le nombre de points ne peut pas être modifié une fois le problème pub
 
 #: openassessment/xblock/validation.py:290
 msgid "Learner training must have at least one training example."
-msgstr ""
+msgstr "La formation des apprenants doit avoir au moins un exemple de formation."
 
 #: openassessment/xblock/validation.py:352
 msgid "Leaderboard number is invalid."
