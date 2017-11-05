@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-03 15:55+0000\n"
-"PO-Revision-Date: 2017-08-03 15:56+0000\n"
+"POT-Creation-Date: 2017-09-05 18:08+0000\n"
+"PO-Revision-Date: 2017-09-23 21:24+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
 "MIME-Version: 1.0\n"
@@ -1574,15 +1574,15 @@ msgstr "მსმენელის სასწავლო მაგალი�
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "ამ დავალებისთვის ვერ მოხერხდა მსმენელის სწავლების საფეხურის ჩატვირთვა"
 
-#: openassessment/xblock/data_conversion.py:238
+#: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
 msgstr "თქვენ უნდა უზრუნველყოთ შეფასებისას გამოყენებული ვარიანტები."
 
-#: openassessment/xblock/data_conversion.py:241
+#: openassessment/xblock/data_conversion.py:247
 msgid "You must provide overall feedback in the assessment."
 msgstr "შეფასებაში უნდა უზრუნველყოთ სრული უკუკავშირის მიწოდება."
 
-#: openassessment/xblock/data_conversion.py:244
+#: openassessment/xblock/data_conversion.py:250
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "თქვენ უნდა უზრუნველყოთ უკუკავშირის შეფასების კრიტერიუმისთვის."
 
@@ -1590,7 +1590,7 @@ msgstr "თქვენ უნდა უზრუნველყოთ უკუ
 #: openassessment/xblock/leaderboard_mixin.py:52
 #: openassessment/xblock/self_assessment_mixin.py:40
 #: openassessment/xblock/student_training_mixin.py:57
-#: openassessment/xblock/student_training_mixin.py:208
+#: openassessment/xblock/student_training_mixin.py:212
 msgid "An unexpected error occurred."
 msgstr "დაფიქსირდა გაუთვალისწინებელი შეცდომა."
 
@@ -1666,7 +1666,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "თქვენი შესრულებული ურთიერთშეფასების გაგზავნა ვერ მოხერხდა."
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:214
+#: openassessment/xblock/student_training_mixin.py:218
 msgid "Could not update workflow status."
 msgstr "სამუშაო პროცესის სტატუსის განახლება ვერ მოხერხდა."
 
@@ -1808,16 +1808,16 @@ msgid ""
 "problem."
 msgstr "მიუხედავად იმისა, რომ თანამშრომელმა თქვენი პასუხი შეაფასა, ქულას მხოლოდ მოცემული ამოცანის ყველა სავალდებულო საფეხურის შესრულების შემდეგ მიიღებთ."
 
-#: openassessment/xblock/student_training_mixin.py:171
+#: openassessment/xblock/student_training_mixin.py:175
 msgid "Missing options_selected key in request"
 msgstr "მოთხოვნაში გამოტოვებულია options_selected გასაღები"
 
-#: openassessment/xblock/student_training_mixin.py:173
+#: openassessment/xblock/student_training_mixin.py:177
 msgid "options_selected must be a dictionary"
 msgstr "options_selected უნდა იყოს ლექსიკონი"
 
-#: openassessment/xblock/student_training_mixin.py:198
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:202
+#: openassessment/xblock/student_training_mixin.py:207
 msgid "Your scores could not be checked."
 msgstr "თქვენი ქულების შემოწმება ვერ მოხერხდა."
 
@@ -1907,11 +1907,11 @@ msgstr "ფაილის ტიპი დაშვებული არ ა�
 msgid "Error retrieving upload URL."
 msgstr "ატვირთვის URL-ის ამოღების შეცდომა."
 
-#: openassessment/xblock/submission_mixin.py:454
+#: openassessment/xblock/submission_mixin.py:450
 msgid "This response has been saved but not submitted."
 msgstr "ეს პასუხი შენახულია, მაგრამ არ გაგზავნილა."
 
-#: openassessment/xblock/submission_mixin.py:455
+#: openassessment/xblock/submission_mixin.py:451
 msgid "This response has not been saved."
 msgstr "პასუხი არ შენახულა."
 
