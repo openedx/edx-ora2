@@ -6,7 +6,7 @@
 # Anggun Dewara, 2014
 # Eka Y Saputra <ekajogja@ymail.com>, 2014
 # Fikry Maulana <fikry.maulana@gmail.com>, 2014
-# sony wiliyanto <sonywiliyanto@hotmail.com>, 2015
+# Sony Wiliyanto <sonywiliyanto@hotmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
