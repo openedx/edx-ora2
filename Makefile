@@ -31,12 +31,9 @@ javascript: update-npm-requirements
 sass:
 	python scripts/compile_sass.py
 
-verify-generated-files:
-	@git diff --quiet || (echo 'Modifications exist locally! Run `make javascript` or `make sass` to update bundled files.'; exit 1)
-
 ################
 #Translations Handling
-################    
+################
 # creates the django-partial.po & django-partial.mo files
 extract_translations:
 	i18n_tool extract -v
@@ -54,7 +51,7 @@ detect_changed_source_translations:
 	i18n_tool changed
 
 # pull translations from Transifex
-pull_translations: 
+pull_translations:
 	cd ./openassessment/ && tx pull -af --mode reviewed
 
 # extract, compile, and check if translation files are up-to-date
