@@ -195,6 +195,7 @@ OpenAssessment.StudioView.prototype = {
 
         this.server.updateEditorContext({
             prompts: view.promptsView.promptsDefinition(),
+            prompts_type: view.promptsView.promptsType(),
             feedbackPrompt: view.rubricView.feedbackPrompt(),
             feedback_default_text: view.rubricView.feedback_default_text(),
             criteria: view.rubricView.criteriaDefinition(),
@@ -277,6 +278,133 @@ OpenAssessment.StudioView.prototype = {
         this.promptsView.clearValidationErrors();
     }
 };
+
+/* Get tinyMCE comfig */
+/* jshint unused:false */
+function oaTinyMCE(options) {
+    var CUSTOM_FONTS, STANDARD_FONTS, _getFonts, _this = this;
+
+    CUSTOM_FONTS = "Default='Open Sans', Verdana, Arial, Helvetica, sans-serif;";
+    STANDARD_FONTS = "Andale Mono=andale mono,times;" +
+        "Arial=arial,helvetica,sans-serif;" +
+        "Arial Black=arial black,avant garde;" +
+        "Book Antiqua=book antiqua,palatino;" +
+        "Comic Sans MS=comic sans ms,sans-serif;" +
+        "Courier New=courier new,courier;" +
+        "Georgia=georgia,palatino;" +
+        "Helvetica=helvetica;" +
+        "Impact=impact,chicago;" +
+        "Symbol=symbol;" +
+        "Tahoma=tahoma,arial,helvetica,sans-serif;" +
+        "Terminal=terminal,monaco;" +
+        "Times New Roman=times new roman,times;" +
+        "Trebuchet MS=trebuchet ms,geneva;" +
+        "Verdana=verdana,geneva;" +
+        "Webdings=webdings;" +
+        "Wingdings=wingdings,zapf dingbats";
+
+    _getFonts = function() {
+        return CUSTOM_FONTS + STANDARD_FONTS;
+    };
+
+    this.initInstanceCallback = function(ed) {
+        return oaTinyMCE.prototype.initInstanceCallback.apply(_this, arguments);
+    };
+
+    this.saveLink = function(data) {
+        return oaTinyMCE.prototype.saveLink.apply(_this, arguments);
+    };
+
+    this.editLink = function(data) {
+        return oaTinyMCE.prototype.editLink.apply(_this, arguments);
+    };
+
+    this.saveImage = function(data) {
+        return oaTinyMCE.prototype.saveImage.apply(_this, arguments);
+    };
+
+    this.editImage = function(data) {
+        return oaTinyMCE.prototype.editImage.apply(_this, arguments);
+    };
+
+    this.setupTinyMCE = function(ed) {
+        return oaTinyMCE.prototype.setupTinyMCE.apply(_this, arguments);
+    };
+
+    oaTinyMCE.prototype.setupTinyMCE = function(ed) {
+        ed.on('SaveImage', this.saveImage);
+        ed.on('EditImage', this.editImage);
+        ed.on('SaveLink', this.saveLink);
+        ed.on('EditLink', this.editLink);
+    };
+
+    oaTinyMCE.prototype.editImage = function(data) {
+        if (data.src) {
+            /* jshint undef:false */
+            data.src = rewriteStaticLinks(data.src, this.base_asset_url, '/static/');
+        }
+    };
+
+    oaTinyMCE.prototype.saveImage = function(data) {
+        if (data.src) {
+            data.src = rewriteStaticLinks(data.src, '/static/', this.base_asset_url);
+        }
+    };
+
+    oaTinyMCE.prototype.editLink = function(data) {
+        if (data.href) {
+            data.href = rewriteStaticLinks(data.href, this.base_asset_url, '/static/');
+        }
+    };
+
+    oaTinyMCE.prototype.saveLink = function(data) {
+        if (data.href) {
+            data.href = rewriteStaticLinks(data.href, '/static/', this.base_asset_url);
+        }
+    };
+
+    oaTinyMCE.prototype.initInstanceCallback = function(ed) {
+        ed.setContent(rewriteStaticLinks(ed.getContent({
+            no_events: 1
+        }), '/static/', this.base_asset_url));
+        return ed.focus();
+    };
+
+    this.base_asset_url =  options.base_asset_url;
+
+    return {
+        height: "300",
+        font_formats: _getFonts(),
+        theme: "modern",
+        skin: 'studio-tmce4',
+        schema: "html5",
+        convert_urls: false,
+        directionality: $(".wrapper-view, .window-wrap").prop('dir'),
+        formats: {
+            code: {inline: 'code'}
+        },
+        visual: false,
+        plugins: "textcolor, link, image, media",
+        image_advtab: true,
+        toolbar: "formatselect | fontselect | bold italic underline forecolor | " +
+                 "bullist numlist outdent indent blockquote | link unlink image media",
+        block_formats: gettext("Paragraph") + "=p;" +
+            gettext("Preformatted") + "=pre;" +
+            gettext("Heading 3") + "=h3;" +
+            gettext("Heading 4") + "=h4;" +
+            gettext("Heading 5") + "=h5;" +
+            gettext("Heading 6") + "=h6",
+        menubar: false,
+        statusbar: false,
+        valid_children: "+body[style]",
+        valid_elements: "*[*]",
+        extended_valid_elements: "*[*]",
+        invalid_elements: "",
+        setup: this.setupTinyMCE,
+        init_instance_callback: this.initInstanceCallback,
+        browser_spellcheck: true
+    };
+}
 
 /* XBlock entry point for Studio view */
 /* jshint unused:false */

@@ -53,6 +53,18 @@ OpenAssessment.EditPromptsView.prototype = {
     },
 
     /**
+     Get available prompts mode. In case if tinyMCE is enabled is is "html" mode
+     Otherwise it is 'text' mode.
+
+     Returns:
+     string: "html" or "text"
+     **/
+    promptsType: function() {
+        var firstPrompt = this.promptsContainer.getItem(0);
+        return (firstPrompt && firstPrompt.tinyMCEEnabled) ? 'html' : 'text';
+    },
+
+    /**
      Add a new prompt.
      Uses a client-side template to create the new prompt.
      **/

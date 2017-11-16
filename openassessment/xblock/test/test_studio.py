@@ -23,6 +23,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "text_response": "required",
         "file_upload_response": None,
         "prompts": [{"description": "Test prompt"}],
+        "prompts_type": "html",
         "feedback_prompt": "Test feedback prompt",
         "feedback_default_text": "Test feedback default text",
         "submission_start": "4014-02-10T09:46",
@@ -175,6 +176,16 @@ class StudioViewTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertFalse(resp['success'])
         self.assertIn(expected_error, resp['msg'].lower())
+
+    @scenario('data/basic_scenario_html_prompts_type.xml')
+    def test_update_context_with_prompts_type(self, xblock):
+
+        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
+        data['prompts_type'] = 'text'
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
+        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
 
     @file_data('data/invalid_rubric.json')
     @scenario('data/basic_scenario.xml')
