@@ -76,11 +76,36 @@ OpenAssessment.ItemUtilities = {
  OpenAssessment.Prompt
  **/
 OpenAssessment.Prompt = function(element, notifier) {
+    if (this.tinyMCEEnabled) {
+        element = this.attachWysiwygToPrompt(element);
+    }
     this.element = element;
     this.notifier = notifier;
 };
 
 OpenAssessment.Prompt.prototype = {
+    tinyMCEEnabled: window.tinyMCE !== undefined,
+
+    /**
+     Attach Wysiwyg editor to the textarea field.
+
+     Args:
+     el (OpenAssessment.Container): The container that the prompt is a member of.
+
+     Returns:
+     Updated OpenAssessment.Container
+
+     **/
+    attachWysiwygToPrompt: function(el) {
+        var elId = $(el).find('textarea').attr('id');
+        if (!elId) {
+            /* jshint undef:false */
+            var newElId = Date.now() + '-textarea-' + (Math.random() * 100);
+            $(el).find('textarea').attr('id', newElId).tinymce(tinymceCfg());
+        }
+        return $(el);
+    },
+
     /**
      Finds the values currently entered in the Prompts's fields, and returns them.
 
@@ -109,7 +134,17 @@ OpenAssessment.Prompt.prototype = {
      **/
     description: function(text) {
         var sel = $('.openassessment_prompt_description', this.element);
-        return OpenAssessment.Fields.stringField(sel, text);
+
+        if (!this.tinyMCEEnabled) {
+            return OpenAssessment.Fields.stringField(sel, text);
+        }
+
+        var tinyEl = window.tinyMCE.get(sel.attr('id'));
+        if (text) {
+            tinyEl.setContent(text);
+        } else {
+            return tinyEl.getContent();
+        }
     },
 
     addEventListeners: function() {},
