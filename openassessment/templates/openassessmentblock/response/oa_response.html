@@ -74,7 +74,7 @@
                                 <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
                                 <article class="submission__answer__part__prompt">
                                     <div class="submission__answer__part__prompt__copy">
-                                        {{ part.prompt.description|linebreaks }}
+                                        {% autoescape off %}{{ part.prompt.description }}{% endautoescape %}
                                     </div>
                                 </article>
 
