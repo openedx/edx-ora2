@@ -2,11 +2,17 @@
 {% spaceless %}
     <li id="openassessment__grade__{{ xblock_id }}" class="openassessment__steps__step step--grade is--complete is--showing has--grade ui-slidable__container {% if allow_latex %}allow--latex{% endif %}" tabindex="-1">
         <header class="step__header ui-slidable__control">
-            <h4 class="step__title">
-                <button class="ui-slidable" aria-expanded="true" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content">
+            <span>
+                <button class="ui-slidable" aria-expanded="true" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content" aria-labeledby="oa_step_title_grade">
+                    <span class="icon fa fa-caret-down" aria-hidden="false"/>
+                </button>
+            </span>
+
+            <span>
+                <h4 class="step__title">
                     <span class="wrapper--copy">
                         {% if score %}
-                            <span class="step__label">{% trans "Your Grade" %}: </span>
+                            <span id="oa_step_title_grade" class="step__label">{% trans "Your Grade" %}: </span>
                             <span class="grade__value">
                                 <span class="grade__value__title">
                                     {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
@@ -17,11 +23,11 @@
                                 </span>
                             </span>
                         {% else %}
-                            <span class="step__label">{% trans "Your Grade" %}</span>
+                            <span id="oa_step_title" class="step__label">{% trans "Your Grade" %}</span>
                         {% endif %}
                     </span>
-                </button>
-            </h4>
+                </h4>
+            </span>
         </header>
 
         <div class="ui-slidable__content" id="oa_grade_{{ xblock_id }}_content" aria-labelledby="oa_grade_{{ xblock_id }}">

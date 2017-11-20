@@ -94,7 +94,7 @@
 
     // step title
     .step__title {
-      display: block;
+      display: inline;
       margin-bottom: ($baseline-v/2);
       width: 100%;
       margin-bottom: 0;
@@ -186,21 +186,21 @@
         margin-top: 0;
         @include float(right);
         position: relative;
-        top: -($baseline-v/2) - 2;
+        top: -($baseline-v) - 12;
       }
 
       @include media($bp-dl) {
         margin-top: 0;
         @include float(right);
         position: relative;
-        top: -($baseline-v/2) - 2;
+        top: -($baseline-v) - 12;
       }
 
       @include media($bp-dx) {
         margin-top: 0;
         @include float(right);
         position: relative;
-        top: -($baseline-v/2) - 2;
+        top: -($baseline-v) - 12;
       }
 
       .step__status__value {
@@ -483,7 +483,7 @@
       @extend %btn-reset;
       background: none;
       border-radius: ($baseline-v/4);
-      padding: 0px;
+      padding: 5px;
 
       &:active, &:focus:not(:disabled), &:hover:not(:disabled) {
         background: none;
@@ -808,7 +808,7 @@
       }
 
       .step__label, .grade__value {
-        display: inline-block;
+        display: inline;
         vertical-align: middle;
       }
 

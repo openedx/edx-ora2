@@ -23,20 +23,19 @@
                     <li class="{{ assessment.class_id }} openassessment__steps__step is--loading">
                         <header class="step__header ui-slidable__container">
                             <h4 class="step__title">
-                                <button class="ui-slidable" aria-expanded="false" disabled>
+                                <button class="ui-slidable" aria-expanded="false" aria-describedby="oa_step_status oa_step_deadline" disabled>
                                     <span class="step__counter"></span>
                                     <span class="wrapper--copy">
                                         <span class="step__label">{% trans assessment.title %}</span>
                                     </span>
                                 </button>
-
-                                <span class="step__status">
-                                    <span class="step__status__value">
-                                      <span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span>
-                                      <span class="copy">{% trans "Loading" %}</span>
-                                    </span>
-                                </span>
                             </h4>
+                            <span class="step__status">
+                                <span id="oa_step_status" class="step__status__value">
+                                  <span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span>
+                                  <span class="copy">{% trans "Loading" %}</span>
+                                </span>
+                            </span>
                         </header>
                     </li>
                 {% endfor %}

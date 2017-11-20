@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block button %}
-    <button class="ui-slidable" aria-expanded="false" disabled>
+    <button class="ui-slidable" aria-expanded="false" aria-labeledby="oa_step_title_self" disabled/>
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__value">
+  <span id="oa_step_status_self" class="step__status__value">
     <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">{% trans "Complete" %}</span>
   </span>

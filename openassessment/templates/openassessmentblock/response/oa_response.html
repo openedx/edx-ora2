@@ -7,38 +7,45 @@
 {% endblock %}
 
     <header class="step__header ui-slidable__control">
-        <h4 class="step__title">
+        <span>
             {% block button %}
-            <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content">
+                <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content" aria-labeledby="oa_step_title_response">
+                    <span class="icon fa fa-caret-down" aria-hidden="false"/>
+                </button>
             {% endblock %}
+        </span>
+
+        <span>
+            <h4 class="step__title">
                 <span class="step__counter"></span>
                 <span class="wrapper--copy">
-                    <span class="step__label">{% trans "Your Response" %}</span>
-                    {% if submission_start %}
-                    <span class="step__deadline">
-                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with start_date=submission_start|timezone:"UTC"|date:"c" time_until=submission_start|timeuntil %}
-                        <span class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
-                        {% endblocktrans %}
-                    </span>
-                    {% elif submission_due %}
-                    <span class="step__deadline">
-                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with due_date=submission_due|timezone:"UTC"|date:"c" time_until=submission_due|timeuntil %}
-                        <span class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
-                        {% endblocktrans %}
-                    </span>
-                    {% endif %}
+                    <span id="oa_step_title_response" class="step__label" aria-describedby="oa_step_status_response oa_step_deadline_response">{% trans "Your Response" %}</span>
                 </span>
-            </button>
-            {%  block title %}
-            <span class="step__status">
-                <span class="step__status__value">
-                    <span class="copy">{% trans "In Progress" %}</span>
-                </span>
+            </h4>
+        </span>
+
+        {% if submission_start %}
+        <span class="step__deadline">
+            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
+            {% blocktrans with start_date=submission_start|timezone:"UTC"|date:"c" time_until=submission_start|timeuntil %}
+            <span id="oa_step_deadline_response" class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+            {% endblocktrans %}
+        </span>
+        {% elif submission_due %}
+        <span class="step__deadline">
+            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
+            {% blocktrans with due_date=submission_due|timezone:"UTC"|date:"c" time_until=submission_due|timeuntil %}
+            <span id="oa_step_deadline_response" class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+            {% endblocktrans %}
+        </span>
+        {% endif %}
+        {%  block title %}
+        <span class="step__status">
+            <span id="oa_step_status_response" class="step__status__value">
+                <span class="copy">{% trans "In Progress" %}</span>
             </span>
-            {% endblock %}
-        </h4>
+        </span>
+        {% endblock %}
     </header>
 
     {% block body %}
@@ -50,7 +57,7 @@
                     {% if submission_due %}
                     {% trans "You can save your progress and return to complete your response at any time before the due date" %}
                     (<span class="step__deadline">
-                        <span class="date ora-datetime" data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}" data-timezone="{{ user_timezone }}" data-format="longDateTime" data-language="{{ user_language }}"></span>
+                        <span id="oa_step_deadline_response" class="date ora-datetime" data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}" data-timezone="{{ user_timezone }}" data-format="longDateTime" data-language="{{ user_language }}"></span>
                     </span>).
                     {% else %}
                     {% trans "You can save your progress and return to complete your response at any time." %}

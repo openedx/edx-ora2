@@ -9,44 +9,43 @@
 <header class="step__header ui-slidable__control">
     <h4 class="step__title">
         {% block button %}
-        <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content">
+        <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content" aria-describedby="oa_step_status oa_step_deadline">
         {% endblock %}
         <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Learn to Assess Responses" %}</span>
-                {% if training_start %}
-                    <span class="step__deadline">
-                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with start_date=training_start|timezone:"UTC"|date:"c" time_until=training_start|timeuntil %}
-                        <span class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
-                        {% endblocktrans %}
-                    </span>
-                {% elif training_due %}
-                    <span class="step__deadline">
-                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with due_date=training_due|timezone:"UTC"|date:"c" time_until=training_due|timeuntil %}
-                        <span class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
-                        {% endblocktrans %}
-                    </span>
-                </span>
-                {% endif %}
             </span>
         </button>
-
-        {% block title %}
-            <span class="step__status">
-              <span class="step__status__value">
-                  <span class="copy">
-                      {%  with training_num_current_string=training_num_current|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
-                      {% blocktrans with current_progress_num='<span class="step__status__number--current">'|safe|add:training_num_current_string|add:'</span>'|safe training_available_num='<span class="step__status__value--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
-                          In Progress ({{ current_progress_num }} of {{ training_available_num }})
-                      {% endblocktrans %}
-                      {% endwith %}
-                  </span>
-              </span>
-            </span>
-        {% endblock %}
     </h4>
+    {% block title %}
+        <span class="step__status">
+          <span id="oa_step_status" class="step__status__value">
+              <span class="copy">
+                  {%  with training_num_current_string=training_num_current|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
+                  {% blocktrans with current_progress_num='<span class="step__status__number--current">'|safe|add:training_num_current_string|add:'</span>'|safe training_available_num='<span class="step__status__value--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
+                      In Progress ({{ current_progress_num }} of {{ training_available_num }})
+                  {% endblocktrans %}
+                  {% endwith %}
+              </span>
+          </span>
+        </span>
+    {% endblock %}
+    {% if training_start %}
+        <span class="step__deadline">
+            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
+            {% blocktrans with start_date=training_start|timezone:"UTC"|date:"c" time_until=training_start|timeuntil %}
+            <span id="oa_step_deadline" class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+            {% endblocktrans %}
+        </span>
+    {% elif training_due %}
+        <span class="step__deadline">
+            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
+            {% blocktrans with due_date=training_due|timezone:"UTC"|date:"c" time_until=training_due|timeuntil %}
+            <span id="oa_step_deadline" class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+            {% endblocktrans %}
+        </span>
+    </span>
+    {% endif %}
 </header>
 
 {% block body %}

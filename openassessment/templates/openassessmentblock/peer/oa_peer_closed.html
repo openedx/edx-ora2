@@ -6,12 +6,14 @@
 {% endblock %}
 
 {% block button %}
-    <button class="ui-slidable" aria-expanded="true" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content">
+    <button class="ui-slidable" aria-expanded="true" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content" aria-labeledby="oa_step_title_peer">
+        <span class="icon fa fa-caret-down" aria-hidden="false"/>
+    </button>
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__value">
+  <span id="oa_step_status_peer" class="step__status__value">
     <span class="copy">
     <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
         {% with graded_string=graded|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}

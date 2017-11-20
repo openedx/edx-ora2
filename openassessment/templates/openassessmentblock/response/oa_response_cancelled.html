@@ -9,12 +9,14 @@
 {% endblock %}
 
 {% block button %}
-    <button class="ui-slidable" aria-expanded="false" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content">
+    <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content" aria-labeledby="oa_step_title_response">
+        <span class="icon fa fa-caret-down" aria-hidden="false"/>
+    </button>
 {% endblock %}
 
 {% block title %}
     <span class="step__status">
-        <span class="step__status__value">
+        <span id="oa_step_status_response" class="step__status__value">
             <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
             <span class="copy">{% trans "Cancelled" %}</span>
         </span>
