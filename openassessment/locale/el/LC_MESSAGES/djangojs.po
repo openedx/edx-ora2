@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2017-09-28 13:21+0000\n"
+"PO-Revision-Date: 2017-11-23 17:08+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -112,7 +112,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:595
 msgid "The submission could not be removed from the grading pool."
-msgstr ""
+msgstr "Η υποβληθείσα εργασία δεν ήταν δυνατόν να εξαιρεθεί από την διαδικασία βαθμολόγησης"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_base.js:324
@@ -213,19 +213,19 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:288
 msgid "Status of Your Response"
-msgstr "Κατάσταση του Δοκιμίου σας"
+msgstr "Κατάσταση της εργασίας σας"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:363
 msgid "This response has not been saved."
-msgstr "ΤΟ ΔΟΚΙΜΙΟ ΣΑΣ ΔΕΝ ΕΧΕΙ ΑΠΟΘΗΚΕΥΤΕΙ."
+msgstr "ΔΕΝ ΕΧΕΤΕ ΑΠΟΘΗΚΕΥΣΕΙ ΤΗΝ ΕΡΓΑΣΙΑ ΣΑΣ."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:367
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "Αν αφήσετε αυτή τη σελίδα χωρίς να σώσετε ή να υποβάλετε την εργασία σας, θα χάσετε οποιαδήποτε αλλαγή έχετε πραγματοποιήσει σε αυτή."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:385
@@ -235,7 +235,7 @@ msgstr "ΓΙΝΕΤΑΙ ΑΠΟΘΗΚΕΥΣΗ..."
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:407
 msgid "This response has been saved but not submitted."
-msgstr "ΤΟ ΔΟΚΙΜΙΟ ΣΑΣ ΕΧΕΙ ΑΠΟΘΗΚΕΥΤΕΙ ΑΛΛΑ ΔΕΝ ΕΧΕΙ ΥΠΟΒΛΗΘΕΙ."
+msgstr "Η ΕΡΓΑΣΙΑ ΣΑΣ ΕΧΕΙ ΑΠΟΘΗΚΕΥΤΕΙ ΑΛΛΑ ΔΕΝ ΕΧΕΙ ΥΠΟΒΛΗΘΕΙ."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:412
@@ -252,7 +252,7 @@ msgstr ""
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr ""
+msgstr "Είστε έτοιμος/η να υποβάλετε την εργασία σας. Αφού την υποβάλετε δεν μπορείτε να πραγματοποιήσετε αλλαγές σε αυτή ή να υποβάλετε νέα εργασία."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:553
@@ -292,7 +292,7 @@ msgstr ""
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Αν αφήσετε αυτή τη σελίδα χωρίς να υποβάλετε την αυτοαξιολόγησή σας, θα χάσετε οποιαδήποτε εργασία έχετε κάνει."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:129
