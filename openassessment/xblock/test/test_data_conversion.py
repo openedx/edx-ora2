@@ -56,6 +56,7 @@ class DataConversionTest(TestCase):
     @ddt.data(
         ([{'answer': 'Ans'}], [{'answer': {'parts': [{'text': 'Ans'}]}}]),
         ([{'answer': ['Ans']}], [{'answer': {'parts': [{'text': 'Ans'}]}}]),
+        ([{'answer': ['Ans', 'Ans1']}], [{'answer': {'parts': [{'text': 'Ans'},{'text': 'Ans1'}]}}]),
         ([{'answer': []}], [{'answer': []}]),
     )
     @ddt.unpack

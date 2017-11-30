@@ -95,7 +95,7 @@ def update_assessments_format(assessments):
                 if isinstance(example, dict) and isinstance(example['answer'], list) and example['answer']:
                     example['answer'] = {
                         'parts': [
-                            {'text': example['answer'][0]}
+                            {'text': example_answer} for example_answer in example['answer']
                         ]
                     }
     return assessments
