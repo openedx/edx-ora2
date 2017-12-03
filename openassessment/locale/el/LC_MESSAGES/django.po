@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2017-11-23 17:37+0000\n"
+"PO-Revision-Date: 2017-11-27 19:23+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -714,7 +714,7 @@ msgstr ""
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "Το βήμα αυτό δεν είναι ακόμη διαθέσιμο. Επανέλθετε για να γράψετε την εργασία σας, μόλις ανοίξει αυτό το πεδίο."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
@@ -799,7 +799,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nΗ εργασία είναι σε εξέλιξη. Θα πρέπει να ολοκληρώσετε άμεσα τη διαδικασία %(start_link)sαλληλοαξιολόγησης%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -1021,7 +1021,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "Έχουν αξιολογηθεί όλες οι μέχρι τώρα υποβληθείσες εργασίες. Επανέλθετε για να ελέγξετε κατά πόσο έχουν υποβάλει εργασία και άλλοι συμφοιτητές σας. Θα λάβετε το βαθμό σας αφού ολοκληρώσετε όλα τα βήματα αυτής της διαδικασίας και οι συμφοιτητές σας αξιολογήσουν την εργασία σας."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:37
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:39
@@ -1045,7 +1045,7 @@ msgstr "Μπορείτε να αποθηκεύσετε την εργασία σ�
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:58
 msgid "After you submit your response, you cannot edit it"
-msgstr "Αφού υποβάλετε την εργασία σας, δεν θα μπορείτε πλέον να την  επεξεργαστείτε"
+msgstr "Αφού υποβάλετε την εργασία σας, δεν θα μπορείτε πλέον να την επεξεργαστείτε"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
