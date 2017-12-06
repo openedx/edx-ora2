@@ -5,24 +5,23 @@
         <h4 class="step__title">
             <button class="ui-slidable" {{ button_active }}
                 {% if message_title %}
-                    id="oa_staff_grade_{{ xblock_id }}" aria-controls="oa_staff_grade_{{ xblock_id }}_content"
+                    id="oa_staff_grade_{{ xblock_id }}" aria-controls="oa_staff_grade_{{ xblock_id }}_content" aria-describedby="oa_step_status oa_step_deadline"
                 {% endif %}
             >
                 <span class="step__counter"></span>
                 <span class="wrapper--copy">
                     <span class="step__label">{% trans "Staff Grade" %} </span>
                 </span>
-            </button>
-
-            <span class="step__status">
-              <span class="step__status__value">
-                  {% if icon_class %}
-                  <span class="icon fa {{ icon_class }}" aria-hidden="true"></span>
-                  {% endif %}
-                  <span class="copy">{{ status_value }}</span>
-              </span>
-            </span>
+            </button>            
         </h4>
+        <span class="step__status">
+          <span id="oa_step_status" class="step__status__value">
+              {% if icon_class %}
+              <span class="icon fa {{ icon_class }}" aria-hidden="true"></span>
+              {% endif %}
+              <span class="copy">{{ status_value }}</span>
+          </span>
+        </span>
     </header>
 
     {% if message_title %}

@@ -7,7 +7,7 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__value">
+  <span id="oa_step_status_peer" class="step__status__value">
     <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">
       <span class="step__status__value--completed">{{ graded }}</span> {% trans "Completed" %}
@@ -17,7 +17,9 @@
 {% endblock %}
 
 {% block button %}
-    <button class="ui-slidable" aria-expanded="false" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content">
+    <button class="ui-slidable" aria-expanded="false" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content" aria-labeledby="oa_step_title_peer">
+        <span class="icon fa fa-caret-down" aria-hidden="false"/>
+    </button>
 {% endblock %}
 
 {% block body %}

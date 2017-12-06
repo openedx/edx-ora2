@@ -2,16 +2,22 @@
 {% spaceless %}
 <li id="openassessment__grade__{{ xblock_id }}" class="openassessment__steps__step step--grade is--showing {{ is_waiting_staff }} ui-slidable__container" tabindex="-1">
     <header class="step__header ui-slidable__control">
-        <h4 class="step__title">
-            <button class="ui-slidable" aria-expanded="true" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content">
+        <span>
+            <button class="ui-slidable" aria-expanded="false" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content" aria-labeledby="oa_step_title_grade">
+                <span class="icon fa fa-caret-down" aria-hidden="false"/>
+            </button>
+        </span>
+
+        <span>
+            <h4 class="step__title">
                 <span class="wrapper--copy">
-                    <span class="step__label">{% trans "Your Grade" %}:</span>
+                    <span id="oa_step_title_grade" class="step__label">{% trans "Your Grade" %}: </span>
                     <span class="grade__value">
                         <span class="grade__value__title">{% trans "Waiting for Assessments" %}</span>
                     </span>
                 </span>
-            </button>
-        </h4>
+            </h4>
+        </span>
     </header>
 
     <div class="ui-slidable__content" aria-labelledby="oa_grade_{{ xblock_id }}" id="oa_grade_{{ xblock_id }}_content">
