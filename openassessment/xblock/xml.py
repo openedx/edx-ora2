@@ -2,6 +2,7 @@
 Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
 from uuid import uuid4 as uuid
+import logging
 
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
@@ -9,6 +10,9 @@ import lxml.etree as etree
 import pytz
 
 from openassessment.xblock.data_conversion import update_assessments_format
+
+
+log = logging.getLogger(__name__)
 
 
 class UpdateFromXmlError(Exception):
@@ -606,9 +610,21 @@ def serialize_training_examples(examples, assessment_el):
 
         # Answer provided in the example (default to empty string)
         answer_el = etree.SubElement(example_el, 'answer')
-        for part in example_dict.get('answer', {}).get('parts', []):
-            part_el = etree.SubElement(answer_el, 'part')
-            part_el.text = unicode(part.get('text', u''))
+        try:
+            answer = example_dict.get('answer')
+            if answer is None:
+                parts = []
+            elif isinstance(answer, dict):
+                parts = answer.get('parts', [])
+            elif isinstance(answer, list):
+                parse = answer
+
+            for part in example_dict.get('answer', {}).get('parts', []):
+                part_el = etree.SubElement(answer_el, 'part')
+                part_el.text = unicode(part.get('text', u''))
+        except: # excuse the bare-except, looking for more information on EDUCATOR-1817
+            log.exception('Error parsing training exapmle: %s', example_dict)
+            raise
 
         # Options selected from the rubric
         options_selected = example_dict.get('options_selected', [])
