@@ -617,13 +617,13 @@ def serialize_training_examples(examples, assessment_el):
             elif isinstance(answer, dict):
                 parts = answer.get('parts', [])
             elif isinstance(answer, list):
-                parse = answer
+                parts = answer
 
-            for part in example_dict.get('answer', {}).get('parts', []):
+            for part in parts:
                 part_el = etree.SubElement(answer_el, 'part')
                 part_el.text = unicode(part.get('text', u''))
         except: # excuse the bare-except, looking for more information on EDUCATOR-1817
-            log.exception('Error parsing training exapmle: %s', example_dict)
+            log.exception('Error parsing training example: %s', example_dict)
             raise
 
         # Options selected from the rubric
