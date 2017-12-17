@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2017-10-22 19:14+0000\n"
+"PO-Revision-Date: 2017-12-14 12:11+0000\n"
 "Last-Translator: Irene Korotkova <irca.gav@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/open-edx/edx-platform/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -41,14 +41,14 @@ msgstr ""
 #: openassessment/assessment/api/student_training.py:200
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr ""
+msgstr "Приклад {example_number} має помилку перевірки: {error} "
 
 #: openassessment/assessment/api/student_training.py:214
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr ""
+msgstr "Приклад {example_number} має недійсний параметр для \"{criterion_name}\": \"{option_name}\""
 
 #: openassessment/assessment/api/student_training.py:224
 #, python-brace-format
