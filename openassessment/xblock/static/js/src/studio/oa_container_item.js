@@ -100,8 +100,15 @@ OpenAssessment.Prompt.prototype = {
         var elId = $(el).find('textarea').attr('id');
         if (!elId) {
             /* jshint undef:false */
+            var textarea = $(el).find('textarea');
+            var text = $(textarea).val();
+            var type = $(textarea).data('type');
+            if (text && (type === 'text')) {
+                text = _.escape(text).replace(/(?:\r\n|\r|\n)/g, '<br />');
+                $(textarea).val(text);
+            }
             var newElId = Date.now() + '-textarea-' + (Math.random() * 100);
-            $(el).find('textarea').attr('id', newElId).tinymce(tinymceCfg());
+            $(textarea).attr('id', newElId).tinymce(tinymceCfg());
         }
         return $(el);
     },

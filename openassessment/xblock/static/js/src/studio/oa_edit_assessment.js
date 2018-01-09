@@ -368,7 +368,7 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
         this.dueDatetimeControl.clearValidationErrors();
-    },
+    }
 };
 
 /**
