@@ -52,6 +52,11 @@ OpenAssessment.EditPromptsView.prototype = {
         return prompts;
     },
 
+    promptsType: function() {
+        var firstPrompt = this.promptsContainer.getItem(0);
+        return (firstPrompt && firstPrompt.tinyMCEEnabled) ? 'html': 'text';
+    },
+
     /**
      Add a new prompt.
      Uses a client-side template to create the new prompt.

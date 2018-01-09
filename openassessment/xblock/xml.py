@@ -733,6 +733,8 @@ def serialize_content_to_xml(oa_block, root):
     prompts_root = etree.SubElement(root, 'prompts')
     _serialize_prompts(prompts_root, oa_block.prompts)
 
+    root.set('prompts_type', unicode(oa_block.prompts_type))
+
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')
     serialize_rubric(rubric_root, oa_block)
@@ -884,6 +886,10 @@ def parse_from_xml(root):
     # Retrieve the prompts
     prompts = _parse_prompts_xml(root)
 
+    prompts_type = 'text'
+    if 'prompts_type' in root.attrib:
+        prompts_type = unicode(root.attrib['prompts_type'])
+
     # Retrieve the leaderboard if it exists, otherwise set it to 0
     leaderboard_show = 0
     if 'leaderboard_show' in root.attrib:
@@ -902,6 +908,7 @@ def parse_from_xml(root):
     return {
         'title': title,
         'prompts': prompts,
+        'prompts_type': prompts_type,
         'rubric_criteria': rubric['criteria'],
         'rubric_assessments': assessments,
         'rubric_feedback_prompt': rubric['feedbackprompt'],

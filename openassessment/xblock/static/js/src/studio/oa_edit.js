@@ -195,6 +195,7 @@ OpenAssessment.StudioView.prototype = {
 
         this.server.updateEditorContext({
             prompts: view.promptsView.promptsDefinition(),
+            prompts_type: view.promptsView.promptsType(),
             feedbackPrompt: view.rubricView.feedbackPrompt(),
             feedback_default_text: view.rubricView.feedback_default_text(),
             criteria: view.rubricView.criteriaDefinition(),
