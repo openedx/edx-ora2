@@ -229,7 +229,7 @@ class StudioMixin(object):
         self.title = data['title']
         self.display_name = data['title']
         self.prompts = data['prompts']
-        self.prompt_type = data['prompt_type']
+        self.prompts_type = data['prompts_type']
         self.rubric_criteria = data['criteria']
         self.rubric_assessments = data['assessments']
         self.editor_assessments_order = data['editor_assessments_order']
