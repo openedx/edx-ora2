@@ -125,7 +125,7 @@ class SubmissionTest(XBlockHandlerTestCase):
     def test_prompt_line_breaks(self, xblock):
         # Verify that prompts with multiple lines retain line breaks
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        expected_prompt = u"Line 1\n\nLine 2\n\n\nLine 3"
+        expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
         self.assertIn(expected_prompt, resp)
 
     @mock_s3
