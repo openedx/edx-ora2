@@ -434,6 +434,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('update_editor_context');
             var payload = JSON.stringify({
                 prompts: options.prompts,
+                prompts_type: options.prompts_type,
                 feedback_prompt: options.feedbackPrompt,
                 feedback_default_text: options.feedback_default_text,
                 title: options.title,
