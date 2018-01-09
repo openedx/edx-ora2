@@ -56,6 +56,12 @@ def datetime_validator(value):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 
 
+PROMPTS_TYPES = [
+    u'text',
+    u'html',
+]
+
+
 NECESSITY_OPTIONS = [
     u'required',
     u'optional',
@@ -83,6 +89,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             Required('description'): utf8_validator,
         })
     ],
+    Required('prompts_type', default='text'): Any(All(utf8_validator, In(PROMPTS_TYPES)), None),
     Required('title'): utf8_validator,
     Required('feedback_prompt'): utf8_validator,
     Required('feedback_default_text'): utf8_validator,

@@ -9,7 +9,11 @@
             </div>
             <article class="submission__answer__part__prompt">
                 <div class="submission__answer__part__prompt__value">
-                    {% autoescape off %}{{ part.prompt.description }}{% endautoescape %}
+                    {% if prompts_type == 'html' %}
+                        {% autoescape off %}{{ part.prompt.description }}{% endautoescape %}
+                    {% else %}
+                        {{ part.prompt.description|linebreaks }}
+                    {% endif %}
                 </div>
             </article>
             {% if part.text %}
