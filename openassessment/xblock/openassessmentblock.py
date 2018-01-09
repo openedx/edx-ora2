@@ -179,7 +179,7 @@ class OpenAssessmentBlock(MessageMixin,
     prompts_type = String(
         default='text',
         scope=Scope.content,
-        help="The type of prompt (available options: 'text', 'html')."
+        help="The type of prompt (possible options: 'text', 'html')."
     )
 
     rubric_criteria = List(
