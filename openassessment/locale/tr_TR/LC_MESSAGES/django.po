@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-01-05 21:00+0000\n"
+"PO-Revision-Date: 2018-01-08 12:11+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Seri olarak yayınlanmış rubrik ayrıştırılamaz."
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
-msgstr "Eğer ödeviniz öğrenci eğitim basamağı içeriyorsa, rubrik en az bir tane kritere sahip olmalıdır, ve bu kriter en az bir seçeneğe sahip olmalıdır."
+msgstr "Eğer ödeviniz öğrenci eğitim basamağı içeriyorsa, rubrik en az bir tane ölçüte sahip olmalıdır, ve bu ölçek en az bir seçeneğe sahip olmalıdır."
 
 #: openassessment/assessment/api/student_training.py:200
 #, python-brace-format
@@ -88,7 +88,7 @@ msgid ""
 "A change that you made to this assessment's rubric has an impact on some "
 "examples laid out in the settings tab. For more information, go to the "
 "Settings section and fix the areas highlighted in red."
-msgstr ""
+msgstr "Bu değerlendirmenin rubriğine yapılmış bir değişiklik ayarlar sekmesi üzerindeki bazı örneklere etki eder: Daha fazla bilgi için, Ayarlar bölümüne git ve kırmızı renkle işaretlenmiş alanları düzelt."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "close alert"
@@ -128,7 +128,7 @@ msgstr "Öğrencilerin artık cevaplarını yükleyemediği tarih ve zaman."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Text Response"
-msgstr ""
+msgstr "Metin Yanıtı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
 msgid ""
@@ -148,15 +148,15 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
 msgid "File Upload Types"
-msgstr ""
+msgstr "Yüklenebilir Dosya Türleri"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "PDF veya Görüntü Dosyaları"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:134
 msgid "Image Files"
-msgstr ""
+msgstr "Görüntü Dosyaları"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
 msgid "Custom File Types"
@@ -169,7 +169,7 @@ msgid ""
 " PDF files and images. Select Custom File Types to allow files with "
 "extensions that you specify below. (Use the Select Custom File Types option "
 "with caution.)"
-msgstr ""
+msgstr "Öğrencilerin dosyaları kendi metin yanıtlarıyla yükleyip yüklemeyeceğini belirleyin. JPG, GIF veya PNG dosyalarına izin vermek için görsel seçin. PDF dosyalarına ve görsellere izin vermek için PDF veya görsel seçin. Aşağıda belirlediğiniz uzantılı dosyalara izin vermek için Özel Yapılmış Dosya Türleri'ni seçin. (Bu seçeneği dikkatli kullanın.)"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
 msgid "File Types"
@@ -183,7 +183,7 @@ msgstr "Öğrencilerin yüklemesinin mümkün olmasını istediğiniz dosya uzan
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
 msgid "Allow LaTeX Responses"
-msgstr "Latex Yanıtlarına İzin Ver"
+msgstr "LaTeX Yanıtlarına İzin Ver"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:161
 msgid "False"
@@ -195,7 +195,7 @@ msgstr "Doğru"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:165
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr "Öğrencilerin Latex formatlı dizileri düzenleyip düzenleyemeyeceğini belirle"
+msgstr "Öğrencilerin LaTeX formatlı dizileri düzenleyip düzenleyemeyeceğini belirle"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:169
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
@@ -247,7 +247,7 @@ msgstr "Kaldır"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr "Ölçüt adı"
+msgstr "Ölçüt Adı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
@@ -372,7 +372,7 @@ msgstr "Ödev yayımlandıktan sonra sufleyi silemezsiniz."
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr "Sufleler. Örnek metni kendi metniniz ile değiştiriniz. Daha fazla bilgi için, ORA dökümantasyonuna bakınız."
+msgstr "Sufleler. Örnek metni kendi metninizle değiştiriniz. Daha fazla bilgi için, ORA belgelendirmesine bakınız."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
@@ -384,7 +384,7 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr "Rubrikler kriterden oluşmaktadır, daima bir ya da daha fazla seçenek içerir. Her seçeneğin bir puan değeri vardır. bu şablon iki örnek kriter ve seçeneklerini içerir. kendi metniniz ile örnek metni değiştiriniz. Daha fazla bilgi için, ORA dökümantasyonuna bakınız."
+msgstr "Rubrikler ölçülerden oluşmaktadır, daima bir ya da daha fazla seçenek içerir. Her seçeneğin bir puan değeri vardır. Bu şablon iki örnek ölçüt ve seçeneklerini içerir. Kendi metniniz ile örnek metni değiştiriniz. Daha fazla bilgi için, ORA belgelendirmesine bakınız."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
 msgid "Add Criterion"
@@ -392,7 +392,7 @@ msgstr "Ölçüt Ekle"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
 msgid "Feedback for This Response"
-msgstr "Bu Cevap için Dönüt"
+msgstr "Bu Cevap için Geri Bildirim"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
 msgid "Feedback Instructions"
@@ -406,7 +406,7 @@ msgstr "Öğrencileri notlandırıldıkları cevaplardan geri bildirim sağlamak
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
 msgid "Default Feedback Text"
-msgstr "Varsayılan Dönüt Metni"
+msgstr "Varsayılan Geri Bildirim Metni"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:50
 msgid ""
@@ -532,7 +532,7 @@ msgid ""
 "\n"
 "                                        %(points_earned)s out of %(points_possible)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        %(points_possible)s üzerinden %(points_earned)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:32
 msgid "Your submission has been cancelled."
@@ -549,7 +549,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:32
 #: openassessment/templates/openassessmentblock/response/oa_response.html:16
 msgid "Your Response"
-msgstr "Cevabınız:"
+msgstr "Cevabınız"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:35
 msgid "Your Upload"
@@ -574,7 +574,7 @@ msgstr "Cevabınıza yönelik ek yorumlar"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:105
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "Kişi değerlendirmeleri üzerinde geri bildirim sağla"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
 msgid "Submitting Feedback"
@@ -841,7 +841,7 @@ msgstr "Latex'de Önizleme"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "Yüklemenizin LaTeX'teki önizlemesine tıklayınız."
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
 msgid "Preview Response"
@@ -853,7 +853,7 @@ msgstr "Yorumlar"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
 msgid "The question for this section"
-msgstr ""
+msgstr "Bu bölüm için soru"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
 msgid "View the files associated with this submission:"
@@ -1052,7 +1052,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:81
 msgid "Your response (required)"
-msgstr ""
+msgstr "Cevabınız (gerekli)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:83
 msgid "Your response (optional)"
