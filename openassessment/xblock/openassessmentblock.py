@@ -135,7 +135,7 @@ class OpenAssessmentBlock(MessageMixin,
     )
 
     allow_file_upload = Boolean(
-        default=None,
+        default=False,
         scope=Scope.content,
         help="Do not use. For backwards compatibility only."
     )
