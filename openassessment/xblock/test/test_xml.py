@@ -6,6 +6,7 @@ import copy
 
 import dateutil.parser
 import ddt
+import json
 import lxml.etree as etree
 import mock
 import pytz
@@ -131,6 +132,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.white_listed_file_types = data.get('white_listed_file_types')
         self.oa_block.allow_latex = data.get('allow_latex')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
+        self.oa_block.group_access = json.loads(data.get('group_access', "{}"))
 
     @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):
