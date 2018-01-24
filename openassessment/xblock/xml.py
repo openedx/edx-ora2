@@ -872,7 +872,6 @@ def parse_from_xml(root):
     if 'allow_latex' in root.attrib:
         allow_latex = _parse_boolean(unicode(root.attrib['allow_latex']))
 
-    from nose.tools import set_trace; set_trace()
     group_access = {}
     if 'group_access' in root.attrib:
         # group_access keys *must* be ints, not strings

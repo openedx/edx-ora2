@@ -677,7 +677,6 @@ class OpenAssessmentBlock(MessageMixin,
         Inherited by XBlock core.
 
         """
-        from nose.tools import set_trace; set_trace()
         config = parse_from_xml(node)
         block = runtime.construct_xblock_from_class(cls, keys)
 
