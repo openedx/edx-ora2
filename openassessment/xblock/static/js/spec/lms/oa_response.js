@@ -702,4 +702,20 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.files).toEqual(null);
         expect($(view.element).find('.file__upload').first().is(':disabled')).toEqual(true);
     });
+
+     it("prevents user from uploading files when file is moved or deleted", function() {
+
+         spyOn(view.baseView, 'toggleActionError').and.callThrough();
+         view.fileUploadResponse = 'optional';
+
+         var file = [{type: 'image/jpeg', size: 0, name: 'picture.jpg', data: ''}];
+         view.prepareUpload(file, 'image', ['test1']);
+         view.uploadFiles();
+
+         expect(view.hasAllUploadFiles()).toEqual(false);
+         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
+            "Your file " + file[0].name + " has been deleted or path has been changed.");
+
+
+    });
 });
