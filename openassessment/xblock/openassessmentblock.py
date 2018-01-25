@@ -704,6 +704,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.white_listed_file_types_string = config['white_listed_file_types']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
+        block.group_access = config['group_access']
 
         return block
 

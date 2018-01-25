@@ -3,6 +3,7 @@ Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
 from uuid import uuid4 as uuid
 import logging
+import json
 
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
@@ -10,7 +11,7 @@ import lxml.etree as etree
 import pytz
 
 from openassessment.xblock.data_conversion import update_assessments_format
-
+from openassessment.xblock.lms_mixin import GroupAccessDict
 
 log = logging.getLogger(__name__)
 
@@ -721,6 +722,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.allow_latex is not None:
         root.set('allow_latex', unicode(oa_block.allow_latex))
 
+    # Set group access setting if not empty
+    if oa_block.group_access:
+        root.set('group_access', json.dumps(GroupAccessDict().to_json(oa_block.group_access)))
+
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
     title.text = unicode(oa_block.title)
@@ -867,6 +872,10 @@ def parse_from_xml(root):
     if 'allow_latex' in root.attrib:
         allow_latex = _parse_boolean(unicode(root.attrib['allow_latex']))
 
+    group_access = {}
+    if 'group_access' in root.attrib:
+        group_access = GroupAccessDict().from_json(json.loads(root.attrib['group_access']))
+
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
@@ -914,6 +923,7 @@ def parse_from_xml(root):
         'file_upload_type': file_upload_type,
         'white_listed_file_types': white_listed_file_types,
         'allow_latex': allow_latex,
+        'group_access': group_access,
         'leaderboard_show': leaderboard_show
     }
 
