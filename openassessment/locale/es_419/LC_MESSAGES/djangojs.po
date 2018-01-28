@@ -3,6 +3,7 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
+# Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018
 # Cristian Salamea <ovnicraft@gmail.com>, 2015
 # Diego Rojas <diego.rojas@edunext.co>, 2017
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2016-2017
@@ -15,8 +16,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2017-09-23 19:57+0000\n"
-"Last-Translator: Juan Camilo Montoya Franco <juan.montoya@edunext.co>\n"
+"PO-Revision-Date: 2018-01-26 20:09+0000\n"
+"Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -346,7 +347,7 @@ msgstr "Por favor corrija los campos resaltados."
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "Este problema ya ha sido liberado. Cualquier cambio en el mismo se aplicará solo a los envío futuros."
+msgstr "Este problema ya ha sido publicado. Cualquier cambio en el mismo se aplicará solo a los envío futuros."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
@@ -358,7 +359,7 @@ msgstr "Criterio añadido."
 msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr "Has agregado un criterio. Necesitarás seleccionar una opción par este en el entrenamiento de estudiantes. Para hacer esto, vaya a Configuraciones."
+msgstr "Ha añadido un nuevo criterio. Deberá seleccionar una opción para el criterio que se usará en el paso de entrenamiento del estudiante.  Para hacer esto, haga clic en la pestaña de Configuración. "
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
@@ -372,14 +373,14 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr "Has borrado esta opción. Esta opción ha sido eliminada del criterio en el ejemplo de respuestas en el entrenamiento de estudiantes. Puedes seleccionar una nueva opción para el criterio."
+msgstr "Has borrado esta opción. Esta opción ha sido removida del criterio en el ejemplo de respuestas en el paso de entrenamiento del estudiante. Es posible que tenga que seleccionar una nueva opción para el criterio."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr "Has eliminado todas las opciones para este criterio. El criterio ha sido eliminado del las respuestas ejemplo en el entrenamiento."
+msgstr "Has eliminado todas las opciones para este criterio. El criterio ha sido removido de las respuestas de ejemplo en el paso de entrenamiento del estudiante."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
@@ -391,7 +392,7 @@ msgstr "Criterio borrado."
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr "Has borrado un criterio. El criterio ha sido removido de los ejemplos de respuesta en el entrenador de estudiantes."
+msgstr "Ha borrado un criterio. El criterio ha sido removido de los ejemplos de respuesta en el paso de entrenamiento del estudiante."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
