@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-01-17 21:53+0000\n"
+"PO-Revision-Date: 2018-01-26 20:09+0000\n"
 "Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -176,7 +176,7 @@ msgid ""
 " PDF files and images. Select Custom File Types to allow files with "
 "extensions that you specify below. (Use the Select Custom File Types option "
 "with caution.)"
-msgstr "Especifique si los estudiantes pueden subir archivos junto con sus respuestas. Seleccione Imágenes para aceptar archivos con formato JPG, GIF, o PNG. Seleccione PDF o Imágenes para aceptar archivos con las extensiones que especificó abajo. (Use con cuidado la opción Seleccionar tipo de Archivo personalizado)."
+msgstr "Especifique si los estudiantes pueden subir archivos junto con sus respuestas. Seleccione Imágenes para aceptar archivos con formato JPG, GIF, o PNG. Seleccione PDF o Imágenes para aceptar archivos con las extensiones que especificó en la parte de abajo. (Use con cuidado la opción Seleccionar tipo de Archivo personalizado)."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
 msgid "File Types"
@@ -186,7 +186,7 @@ msgstr "Tipos de archivos"
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr "Ingrese las extensiones de archivo separadas por comas, que los estudiantes podrán cargar. Por ejemplo: pdf,doc,docx."
+msgstr "Ingrese separadas por comas las extensiones de archivo que los estudiantes podrán cargar. Por ejemplo: pdf,doc,docx."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
 msgid "Allow LaTeX Responses"
@@ -215,7 +215,7 @@ msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
-msgstr "Especifique el número de respuestas con mayor puntaje para mostrar.  Los números válidos son de 0 a 99. Si el número es 0, no se mostrarán respuestas destacadas a los estudiantes."
+msgstr "Especifique el número de respuestas con el mejor puntaje para mostrar.  Los números válidos son de 0 a 99. Si el número es 0, los estudiantes no ven la sección de mejores respuestas."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:184
 msgid ""
@@ -225,7 +225,7 @@ msgid ""
 "training step, it must precede all other steps. If you include a staff "
 "assessment step, it must be the final step. After you release an ORA "
 "assignment, you cannot change the type and number of assessment steps."
-msgstr "En esta tarea, puede incluir pasos para entrenamiento de estudiantes, calificación por pares, auto calificación, y calificación por el equipo del curso. Seleccione los pasos que quiera utilizar y arrástrelos en el orden deseado. Si incluye el paso de entrenamiento de estudiantes, este debe preceder a los demás pasos de la calificación. Si incluye evaluación por el equipo del curso, este debe estar al final. Después de que usted libera un ejercicio ORA, ya no puede cambiar el tipo y número de pasos o etapas de la calificación."
+msgstr "En esta tarea, puede incluir pasos para entrenamiento de estudiantes, calificación por pares, auto calificación, y calificación por el equipo del curso. Seleccione los pasos que quiera utilizar y arrástrelos en el orden deseado. Si incluye el paso de entrenamiento de estudiantes, este debe preceder a los demás pasos de la calificación. Si incluye evaluación por el equipo del curso, este debe estar al final. Después de que usted publica un ejercicio ORA, ya no puede cambiar el tipo y número de pasos o etapas de la calificación."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
 msgid "Save"
@@ -243,7 +243,7 @@ msgstr "Criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr "No puedes borrar un criterio después que el ejercicio ha sido liberado."
+msgstr "No puedes borrar un criterio después que el ejercicio ha sido publicado."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
@@ -289,7 +289,7 @@ msgstr "Requerido"
 msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
-msgstr "Seleccione una de estas opciones. Esto describe si los estudiantes tendrán o no que dar un criterio de retroalimentación"
+msgstr "Seleccione una de estas opciones. Esto describe si los estudiantes tendrán o no que dar una retroalimentación"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
@@ -315,7 +315,7 @@ msgstr "Paso: Calificación por pares"
 msgid ""
 "Learners assess a specified number of other learners' responses using the "
 "rubric for the assignment."
-msgstr "Los estudiantes revisan y puntúan un cierto número de respuestas de otros estudiantes usando la rúbrica para la tarea."
+msgstr "Los estudiantes evalúan un número específico de respuestas de otros estudiantes usando la rúbrica para la tarea."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
 msgid "Specify the following values for the peer assessment step."
@@ -329,7 +329,7 @@ msgstr "Revisiones requeridas"
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
-msgstr "Defina el número de respuestas que cada estudiante debe revisar y puntuar. Los números válidos son de 0 a 99."
+msgstr "Defina el número de respuestas que cada estudiante debe evaluar. Los números válidos son de 0 a 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Graded By"
@@ -373,7 +373,7 @@ msgstr "Ingrese la fecha y hora en que todas as las calificaciones de pares debe
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr "No puede borrar una etiqueta después de que la tarea ha sido liberada."
+msgstr "No puede borrar una etiqueta después de que la tarea ha sido publicado."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
@@ -455,7 +455,7 @@ msgstr "Los miembros del equipo del curso califican las respuestas de estudiante
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
-msgstr "Paso: Entrenamiento de Estudiante"
+msgstr "Paso: Entrenamiento del Estudiante"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:14
 msgid ""
@@ -745,13 +745,13 @@ msgstr "Ha completado esta tarea. Revise su calificación y los detalles de su e
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr "Esta tarea está en proceso. El entrenamiento de estudiantes terminará pronto. Complete la fase de entrenamiento para poder avanzar."
+msgstr "Esta tarea está en proceso. El paso de entrenamiento del estudiante terminará pronto. Complete el paso de entrenamiento para avanzar."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr "El entrenamiento de estudiantes terminará pronto. Complete la fase de entrenamiento para poder avanzar."
+msgstr "Esta tarea está en proceso. Complete el paso de entrenamiento para avanzar."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
@@ -1591,7 +1591,7 @@ msgstr "Error cargando los ejemplos de práctica de estudiantes"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
-msgstr "No se pudo cargar el paso de entrenamiento de estudiantes para este problema."
+msgstr "No se pudo cargar el paso de entrenamiento del estudiante para este problema."
 
 #: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
