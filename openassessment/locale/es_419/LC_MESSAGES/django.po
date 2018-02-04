@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-01-26 20:09+0000\n"
+"PO-Revision-Date: 2018-01-29 16:25+0000\n"
 "Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -225,7 +225,7 @@ msgid ""
 "training step, it must precede all other steps. If you include a staff "
 "assessment step, it must be the final step. After you release an ORA "
 "assignment, you cannot change the type and number of assessment steps."
-msgstr "En esta tarea, puede incluir pasos para entrenamiento de estudiantes, calificación por pares, auto calificación, y calificación por el equipo del curso. Seleccione los pasos que quiera utilizar y arrástrelos en el orden deseado. Si incluye el paso de entrenamiento de estudiantes, este debe preceder a los demás pasos de la calificación. Si incluye evaluación por el equipo del curso, este debe estar al final. Después de que usted publica un ejercicio ORA, ya no puede cambiar el tipo y número de pasos o etapas de la calificación."
+msgstr "En esta tarea, puede incluir pasos para entrenamiento de estudiantes, calificación por pares, auto calificación, y calificación por el equipo del curso. Seleccione los pasos que quiera utilizar y arrástrelos en el orden deseado. Si incluye el paso de entrenamiento de estudiantes, este debe preceder a los demás pasos de la calificación. Si incluye evaluación por el equipo del curso, este debe estar al final. Después de que usted libera un ejercicio ORA, ya no puede cambiar el tipo y número de pasos o etapas de la calificación."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
 msgid "Save"
@@ -243,7 +243,7 @@ msgstr "Criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr "No puedes borrar un criterio después que el ejercicio ha sido publicado."
+msgstr "No puedes borrar un criterio después que el ejercicio ha sido liberado."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
@@ -373,7 +373,7 @@ msgstr "Ingrese la fecha y hora en que todas as las calificaciones de pares debe
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr "No puede borrar una etiqueta después de que la tarea ha sido publicado."
+msgstr "No puede borrar una etiqueta después de que la tarea ha sido liberado."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
@@ -1291,7 +1291,7 @@ msgstr "Fechas"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:91
 msgid "Release Date"
-msgstr "Fecha de publicación"
+msgstr "Fecha de liberación"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:104
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:110
@@ -1972,12 +1972,12 @@ msgstr "El valor \"requerido\" debe estar en true si la calificación de miembro
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr "El número de valoraciones no puede ser cambiado luego de que el problema haya sido publicado."
+msgstr "El número de valoraciones no puede ser cambiado luego de que el problema haya sido liberado."
 
 #: openassessment/xblock/validation.py:166
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr "El tipo de evaluación no se puede cambiar después de que se ha entregado."
+msgstr "El tipo de evaluación no se puede cambiar después de que el problema ha sido liberado."
 
 #: openassessment/xblock/validation.py:189
 msgid "This rubric definition is not valid."
