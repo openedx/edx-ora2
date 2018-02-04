@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-01-26 20:09+0000\n"
+"PO-Revision-Date: 2018-01-29 16:18+0000\n"
 "Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -347,7 +347,7 @@ msgstr "Por favor corrija los campos resaltados."
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "Este problema ya ha sido publicado. Cualquier cambio en el mismo se aplicará solo a los envío futuros."
+msgstr "Este problema ya ha sido liberado. Cualquier cambio en el mismo se aplicará solo a los envío futuros."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97

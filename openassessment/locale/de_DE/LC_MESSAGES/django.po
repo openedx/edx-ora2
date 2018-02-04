@@ -15,7 +15,7 @@
 # v4rp1ng <inactive+v4rp1ng@transifex.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
-# Rouven Wachhaus <rouvenwachhaus@live.de>, 2016
+# Rouven Wachhaus <inactive+rwchhs@transifex.com>, 2016
 # Андрей Поляков <polyakov.andrey@gmail.com>, 2016
 msgid ""
 msgstr ""
