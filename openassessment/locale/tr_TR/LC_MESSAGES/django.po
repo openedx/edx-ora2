@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-02-04 19:30+0000\n"
+"PO-Revision-Date: 2018-02-08 11:57+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -96,7 +96,7 @@ msgstr "uyarıyı kapat"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:41
 msgid "Display Name "
-msgstr "İsmi Göster:"
+msgstr "İsmi Göster"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid "The display name for this component."
@@ -384,7 +384,7 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr "Rubrikler ölçülerden oluşmaktadır, daima bir ya da daha fazla seçenek içerir. Her seçeneğin bir puan değeri vardır. Bu şablon iki örnek ölçüt ve seçeneklerini içerir. Kendi metniniz ile örnek metni değiştiriniz. Daha fazla bilgi için, ORA belgelendirmesine bakınız."
+msgstr "Rubrikler ölçütlerden oluşmaktadır, daima bir ya da daha fazla seçenek içerir. Her seçeneğin bir puan değeri vardır. Bu şablon iki örnek ölçüt ve seçeneklerini içerir. Kendi metniniz ile örnek metni değiştiriniz. Daha fazla bilgi için, ORA belgelendirmesine bakınız."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
 msgid "Add Criterion"
@@ -396,7 +396,7 @@ msgstr "Bu Cevap için Geri Bildirim"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
 msgid "Feedback Instructions"
-msgstr "Dönüt Yönergeleri"
+msgstr "Geri Bildirim Yönergeleri"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
 msgid ""
@@ -430,15 +430,15 @@ msgstr "Öz-değerlendirme adımı için başlangıç ve bitiş tarihlerini tan�
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
 msgid ""
 "Enter the date and time when learners can begin assessing their responses."
-msgstr "Öğrencilerin kişi yanıtlarını değerlendirmeye başladığı tarih ve zamanı giriniz."
+msgstr "Öğrencilerin kendi yanıtlarını değerlendirmeye başladığı tarih ve zamanı giriniz."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
 msgid "Enter the date and time when all self assessments must be complete."
-msgstr "Bütün öz değerlendirmelerin tamamlanmak zorunda olduğu tarih ve zamanı giriniz."
+msgstr "Bütün öz-değerlendirmelerin tamamlanmak zorunda olduğu tarih ve zamanı giriniz."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
-msgstr "Personel Değerlendirme Aşaması"
+msgstr "Aşama: Personel Değerlendirme"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
 msgid ""
@@ -464,7 +464,7 @@ msgid ""
 " options that you would choose for each criterion in your rubric. Note that "
 "you must add your rubric to the Rubric tab before you can complete this "
 "step."
-msgstr "Oluşturduğunuz bir ya da daha fazla yanıtı giriniz, ve sonra rubrikteki her ölçüt için seçenekler belirleyiniz. Bu adımı tamamlamadan önce Rubrik sekmesine kendi rubriğinizi eklemek gerektiğini unutmayınız."
+msgstr "Oluşturduğunuz bir ya da daha fazla yanıtı giriniz, ve sonra rubrikteki her ölçüt için seçenekler belirleyiniz. Bu adımı tamamlamadan önce Rubrik sekmesine kendi rubriğinizi eklemeniz gerektiğini unutmayınız."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
 msgid "Add Sample Response"
@@ -536,7 +536,7 @@ msgstr "\n                                        %(points_possible)s üzerinden
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:32
 msgid "Your submission has been cancelled."
-msgstr "Sizin yüklemeniz iptal edildi."
+msgstr "Yüklemeniz iptal edildi."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:13
 #, python-format
@@ -553,11 +553,11 @@ msgstr "Cevabınız"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:35
 msgid "Your Upload"
-msgstr "Yükleyiniz"
+msgstr "Yüklemeniz"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:40
 msgid "Assessments of Your Response"
-msgstr "Cevabınızın değerlendirmesi"
+msgstr "Cevabınızın Değerlendirmesi"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:53
 msgid "Overall Grade"
@@ -666,7 +666,7 @@ msgstr "Bu probleme henüz başlamadınız."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:10
 msgid "Waiting for Assessments"
-msgstr "Değerlendirme için bekleniyor."
+msgstr "Değerlendirme için Bekleniyor"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:21
 msgid ""

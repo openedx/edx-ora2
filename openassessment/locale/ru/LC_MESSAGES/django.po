@@ -6,7 +6,7 @@
 # Alexandr Kosharny <acosarnii@gmail.com>, 2016
 # ovoschee <all.spam.there@gmail.com>, 2014
 # Dmitriy <polevaiabrest@gmail.com>, 2014
-# Liubov Fomicheva <liubov.nelapa@gmail.com>, 2015-2017
+# Liubov Fomicheva <liubov.nelapa@gmail.com>, 2015-2018
 # Maksimenkova Olga <omaksimenkova@hse.ru>, 2014-2015
 # Maria Artemieva <maria.m.artemieva@gmail.com>, 2015
 # mcha121 <mcha-12-1@bk.ru>, 2014
@@ -24,7 +24,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2017-09-23 19:57+0000\n"
+"PO-Revision-Date: 2018-02-08 18:23+0000\n"
 "Last-Translator: Liubov Fomicheva <liubov.nelapa@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -559,7 +559,7 @@ msgstr "Ваш ответ"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:35
 msgid "Your Upload"
-msgstr "Загруженное вами"
+msgstr "Загруженный вами файл"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:40
 msgid "Assessments of Your Response"
@@ -701,7 +701,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
-msgstr "%(num_points)s баллы"
+msgstr "%(num_points)s баллов"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
