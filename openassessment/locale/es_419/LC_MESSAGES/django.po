@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-01-29 16:25+0000\n"
+"PO-Revision-Date: 2018-02-16 15:08+0000\n"
 "Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -84,11 +84,11 @@ msgstr "Rúbrica"
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr "Prompt"
+msgstr "Pregunta o planteamiento del ejercicio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
 msgid "Rubric Change Impacts Settings Section"
-msgstr "Los cambios en la rubrica impactan la configuración de la sección."
+msgstr "Los cambios en la rúbrica tienen un efecto en la sección de configuración."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
 msgid ""
@@ -141,7 +141,7 @@ msgstr "Respuesta de texto"
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr "Especifique si los estudiantes deben incluir una respuesta textual a esta pregunta."
+msgstr "Especifique si los estudiantes deben incluir una respuesta textual a esta pregunta o planteamiento del ejercicio."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
@@ -225,7 +225,7 @@ msgid ""
 "training step, it must precede all other steps. If you include a staff "
 "assessment step, it must be the final step. After you release an ORA "
 "assignment, you cannot change the type and number of assessment steps."
-msgstr "En esta tarea, puede incluir pasos para entrenamiento de estudiantes, calificación por pares, auto calificación, y calificación por el equipo del curso. Seleccione los pasos que quiera utilizar y arrástrelos en el orden deseado. Si incluye el paso de entrenamiento de estudiantes, este debe preceder a los demás pasos de la calificación. Si incluye evaluación por el equipo del curso, este debe estar al final. Después de que usted libera un ejercicio ORA, ya no puede cambiar el tipo y número de pasos o etapas de la calificación."
+msgstr "En esta tarea, puede incluir pasos para entrenamiento de estudiantes, calificación por pares, auto calificación, y calificación por el equipo del curso. Seleccione los pasos que quiera utilizar y arrástrelos en el orden deseado. Si incluye el paso de entrenamiento del estudiante, este debe estar antes que los demás pasos de la calificación. Si incluye evaluación por el equipo del curso, este debe ser el paso final. Después de que usted libera un ejercicio ORA, ya no puede cambiar el tipo y número de pasos de la calificación."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
 msgid "Save"
@@ -243,7 +243,7 @@ msgstr "Criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr "No puedes borrar un criterio después que el ejercicio ha sido liberado."
+msgstr "No puede borrar un criterio después de que el ejercicio ha sido liberado."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
@@ -258,7 +258,7 @@ msgstr "Nombre del criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr "Leyenda para el criterio"
+msgstr "Texto para describir el criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:44
 msgid "Add Option"
@@ -289,7 +289,7 @@ msgstr "Requerido"
 msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
-msgstr "Seleccione una de estas opciones. Esto describe si los estudiantes tendrán o no que dar una retroalimentación"
+msgstr "Seleccione una de estas opciones. Esto describe si los estudiantes tendrán o no que dar una retroalimentación para este criterio."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
@@ -323,13 +323,13 @@ msgstr "Especifique los siguientes valores para el paso de calificación por par
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:22
 msgid "Must Grade"
-msgstr "Revisiones requeridas"
+msgstr "Debe Calificar"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:25
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
-msgstr "Defina el número de respuestas que cada estudiante debe evaluar. Los números válidos son de 0 a 99."
+msgstr "Defina el número de respuestas que cada estudiante debe calificar. Los números válidos son de 0 a 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Graded By"
@@ -339,7 +339,7 @@ msgstr "Calificado por"
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
-msgstr "Defina el número de usuarios que deberá revisar cada respuesta. Los números válidos son de 0 a 99."
+msgstr "Defina el número de estudiantes que deberá calificar cada respuesta. Los números válidos son de 0 a 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
@@ -373,17 +373,17 @@ msgstr "Ingrese la fecha y hora en que todas as las calificaciones de pares debe
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr "No puede borrar una etiqueta después de que la tarea ha sido liberado."
+msgstr "No puede borrar la pregunta o planteamiento del ejercicio después de que la tarea ha sido liberada."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr "Etiquetas. Reemplace el texto de muestra con su propio texto.  Para mayor información, vea la documentación de ORA."
+msgstr "Preguntas y planteamientos del ejercicio. Reemplace el texto de muestra con su propio texto.  Para mayor información, vea la documentación de ORA."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
-msgstr "Añadir etiqueta"
+msgstr "Añadir pregunta o planteamiento del ejercicio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:14
 msgid ""
@@ -409,7 +409,7 @@ msgstr "Instrucciones para la retroalimentación"
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr "Motive a sus estudiantes a dar retroalimentación a las respuestas que ellos han calificado.  Puede reemplazar el texto de muestra por su propio texto."
+msgstr "Motive a los estudiantes a dar retroalimentación a las respuestas que ellos han calificado.  Puede reemplazar el texto de muestra por su propio texto."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
 msgid "Default Feedback Text"
@@ -428,7 +428,7 @@ msgstr "Paso: Auto Calificación"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
 msgid ""
 "Learners assess their own responses using the rubric for the assignment."
-msgstr "Los estudiantes mismos califican sus respuestas usando la rubrica para la tarea."
+msgstr "Los estudiantes califican sus propias respuestas usando la rúbrica para la tarea."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
 msgid "Specify start and due dates for the self assessment step."
@@ -451,7 +451,7 @@ msgstr "Paso: Evaluación del equipo del curso"
 msgid ""
 "Staff members assess learners' responses using the rubric for the "
 "assignment."
-msgstr "Los miembros del equipo del curso califican las respuestas de estudiantes usando la rúbrica para la tarea."
+msgstr "Los miembros del equipo del curso califican las respuestas de los estudiantes usando la rúbrica para la tarea."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
@@ -463,7 +463,7 @@ msgid ""
 "that you provide. Learners move to the next step when the scores they give "
 "match your scores. Note that if you add this step, you must also add a peer "
 "assessment step. This step must come before the peer assessment step."
-msgstr "Los estudiantes aprenden a calificar las respuestas de sus pares calificando una respuestas de muestra que usted les provee. Los estudiantes pueden comenzar a calificar, una vez sus puntuaciones a las respuestas de prueba coinciden con las puntuaciones predefinidas. Note que si añade este paso, también deberá añadir después el paso de calificación por pares. "
+msgstr "Los estudiantes aprenden a calificar las respuestas de sus pares calificando una respuestas de muestra que usted les provee. Los estudiantes pueden comenzar a calificar, una vez sus puntuaciones a las respuestas de prueba coinciden con las puntuaciones predefinidas. Note que si añade este paso, también deberá añadir después el paso de calificación por pares. Este paso debe estar antes que el paso de calificación por pares."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
 msgid ""
@@ -471,7 +471,7 @@ msgid ""
 " options that you would choose for each criterion in your rubric. Note that "
 "you must add your rubric to the Rubric tab before you can complete this "
 "step."
-msgstr "Ingrese una o mas respuestas de muestra que haya creado y luego especifique las opciones que desea para cada criterio en su calificación. Recuerde que debe añadir su firma en la pestaña de firmas antes de poder completar este paso."
+msgstr "Ingrese una o varias respuestas de muestra que haya creado y luego especifique las opciones que usted escogería para cada criterio en su rúbrica. Recuerde que debe añadir su rúbrica en la pestaña rúbrica antes de poder completar este paso."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
 msgid "Add Sample Response"
@@ -479,11 +479,11 @@ msgstr "Añadir respuesta de muestra"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
-msgstr "Respuesta puntuada"
+msgstr "Respuesta de muestra para calificar"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:16
 msgid "Response Score"
-msgstr "Puntuar respuesta"
+msgstr "Puntaje para la respuesta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:27
 msgid "Response"
@@ -709,7 +709,7 @@ msgstr "%(num_points)s puntos"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the prompt above"
-msgstr "La respuesta de tu compañero a la pregunta anterior"
+msgstr "La respuesta de su compañero a la pregunta o planteamiento anterior"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -814,7 +814,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n                    Las asignaciones se cerrarán pronto. Para recibir un grado, primero provee una respuesta lo prontamente. Luego completo los pasos abajo de el %(start_tag)sTu  campo de Respuesta%(end_tag)s.\n                "
+msgstr "\n                    Los envíos de las tareas cerrarán pronto. Para recibir una calificación, primero de una respuesta a la pregunta o planteamiento del ejercicio, luego complete los pasos debajo del campo%(start_tag)sSu Respuesta%(end_tag)s.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -822,7 +822,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n                    Esta asignación tiene algunos pasos. En el primer paso, proveerás una respuesta. Los otros pasos aparecen abajo de el %(start_tag)sTu campo de Repuesta%(end_tag)s.\n                "
+msgstr "\n                    Esta tarea tiene varios pasos. En el primer paso, dará una respuesta a la pregunta o planteamiento del ejercicio. Los otros pasos aparecen debajo del campo%(start_tag)sSu Repuesta%(end_tag)s.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -837,7 +837,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "Esta asignación tiene algunos pasos. En el primero, proveerás una respuesta a la pregunta. Los otros pasos aparecen abajo del campo Tu Respuesta."
+msgstr "Esta tarea tiene varios pasos. En el primero, dará una respuesta a la pregunta o planteamiento del ejercicio. Los otros pasos aparecen abajo del campo su Respuesta."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -1037,7 +1037,7 @@ msgstr "En proceso"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the prompt."
-msgstr "Ingrese su respuesta a la pregunta."
+msgstr "Ingrese su respuesta a la pregunta o planteamiento del ejercicio."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1056,7 +1056,7 @@ msgstr "Tras subir su respuesta no podrá editarla"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
-msgstr "El apunte para esta sección"
+msgstr "La pregunta o planteamiento del ejercicio para esta sección."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:81
 msgid "Your response (required)"
@@ -1068,7 +1068,7 @@ msgstr "Tu respuesta (opcional)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Enter your response to the prompt above."
-msgstr "Ingrese una respuesta a la pregunta abajo."
+msgstr "Ingrese una respuesta a la pregunta o planteamiento del ejercicio anterior."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
@@ -1323,7 +1323,7 @@ msgstr "Respuesta de estudiante"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr "La respuesta del estudiante al mensaje anterior."
+msgstr "La respuesta del estudiante a la pregunta o planteamiento del ejercicio anterior."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1551,7 +1551,7 @@ msgstr "Su evaluación difiere de la evaluación del instructor en esta respuest
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
 msgid "The response to the prompt above:"
-msgstr "Respuesta a la pregunta anterior:"
+msgstr "Respuesta a la pregunta o planteamiento del ejercicio anterior."
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"
@@ -1994,7 +1994,7 @@ msgstr "Criterios sin opciones deben requerir retroalimentación escrita."
 
 #: openassessment/xblock/validation.py:212
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr "Las etiquetas no se pueden crear o borrar luego de que un problema ha sido liberado."
+msgstr "Las preguntas o planteamientos del ejercicio no se pueden crear o borrar luego de que un problema ha sido liberado."
 
 #: openassessment/xblock/validation.py:216
 msgid "The number of criteria cannot be changed after a problem is released."
