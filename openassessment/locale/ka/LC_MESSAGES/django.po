@@ -6,13 +6,14 @@
 # Giorgi Goderdzishvili <biggeorgian@gmail.com>, 2016
 # Giorgi Goderdzishvili <biggeorgian@gmail.com>, 2017
 # ketevan Kokhreidze <k.kokhreidze@gmail.com>, 2016
+# Lasha Kokilashvili, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2017-09-23 21:24+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"PO-Revision-Date: 2018-02-23 23:21+0000\n"
+"Last-Translator: Lasha Kokilashvili\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,7 +91,7 @@ msgstr "სახელი"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid "The display name for this component."
-msgstr ""
+msgstr "კომპონენტის ხილვადი სახელი."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
 msgid "Response Start Date"
@@ -118,35 +119,35 @@ msgstr "თარიღი და საათი, რომლის შემ�
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Text Response"
-msgstr ""
+msgstr "პასუხი ტექსტური ფორმით"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "მიუთითეთ ტექსტური ფორმითაც უნდა უპასუხონ თუ არა სტუდენტებმა ამ საკითხს."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
-msgstr ""
+msgstr "პასუხი ფაილის ატვირთვის ფორმით"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "მიუთითეთ ამ საკითხზე პასუხის გასაცემად შეუძლიათ თუ არა სტუდენტებს ფაილის ატვირთვა."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
 msgid "File Upload Types"
-msgstr ""
+msgstr "ასატვირთი ფაილის ფორმატები"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "PDF ან სურათის ტიპის ფაილები"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:134
 msgid "Image Files"
-msgstr ""
+msgstr "სურათის ტიპის ფაილები"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
 msgid "Custom File Types"
@@ -159,7 +160,7 @@ msgid ""
 " PDF files and images. Select Custom File Types to allow files with "
 "extensions that you specify below. (Use the Select Custom File Types option "
 "with caution.)"
-msgstr ""
+msgstr "მიუთითეთ შეუძლიათ თუ არა სტუდენტებს პასუხის ტექსტური ფორმით გაცემასთან ერთად ფაილების ატვირთვაც. JPG, GIF და PNG ტიპის ფაილების ატვირთვის დასაშვებად აირჩიეთ ოფცია 'სურათები'.  PDF ტიპის ფაილების ატვირთვის დასაშვებად აირჩიეთ ოფცია 'PDF'. სხვა ტიპის ფაილების ატვირთვის დასაშვებად აირჩიეთ 'სხვა ტიპის ფაილები' (სიფრთხილით მოეკიდეთ ამ ბოლო ოფციის გამოყენებას)."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
 msgid "File Types"
@@ -534,7 +535,7 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr ""
+msgstr "\n%(points_earned)sშესაძლო%(points_possible)s-დან"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:32
 #: openassessment/templates/openassessmentblock/response/oa_response.html:16
@@ -676,11 +677,11 @@ msgstr "ხელმისაწვდომი პასუხების შ�
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr ""
+msgstr "შეფასებისთვის განკუთვნილი პასუხები არ მოიძებნა. ეს დავალება არ არის პერსონალის მიერ შეფასებისთვის დაკონფიგურირებული."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "გთხოვთ დაიცადოთ"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
@@ -691,7 +692,7 @@ msgstr "%(num_points)s ქულა"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "თქვენი ჯგუფელის პასუხი ზემოთ მოცემულ საკითხზე"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -796,7 +797,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\nდავალების შესრულების ვადა მალე ამოიწურება. იმისათვის, რომ მიიღოთ შეფასება, პირველ რიგში უპასუხეთ საკითხს, შემდეგ შეასრულეთ %(start_tag)sთქვენი პასუხის%(end_tag)s ქვემოთ მოყვანილი ნაბიჯები."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -804,7 +805,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\nეს დავალება რამოდენიმე ნაბიჯისგან შედგება. პირველ ნაბიჯზე უნდა უპასუხოთ მითითებულ საკითხს. დანარჩენი ნაბიჯები გამოჩნდება%(start_tag)sთქვენი პასუხის%(end_tag)sშეტანის ველის ქვემოთ."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -819,7 +820,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "ეს დავალება რამოდენიმე ნაბიჯისგან შედგება. პირველ ნაბიჯზე უნდა უპასუხოთ მითითებულ საკითხს. დანარჩენი ნაბიჯები გამოჩნდება თქვენი პასუხის შეტანის ველის ქვემოთ."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -847,14 +848,14 @@ msgstr "კითხვა ამ განყოფილებისათვ�
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "ამ პასუხთან დაკავშირებული ფაილების ნახვა"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:36
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr ""
+msgstr "გაფრთხილება: ეს ფაილი ატვირთულია კურსის სხვა მსმენელის მიერ და არ არის შემოწმებული, ნანახი, მიღებული, განხილული და დადასტურებული საიტის ადმინისტრატორის მიერ. თუ მაინც გადაწყვეტთ მასზე წვდომას, ამას საკუთარი პასუხისმგებლობით აკეთებთ.)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
 msgid "Assess Peers"
@@ -918,7 +919,7 @@ msgstr "წაიკითხეთ და შეაფასეთ თქვე
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
 msgid "Associated Files"
-msgstr ""
+msgstr "დაკავშირებული ფაილები"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:85
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:68
@@ -1019,7 +1020,7 @@ msgstr "მიმდინარეობს დამუშავება"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "უპასუხეთ მითითებულ საკითს."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1042,15 +1043,15 @@ msgstr "მინიშნება ამ განყოფილების�
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:81
 msgid "Your response (required)"
-msgstr ""
+msgstr "თქვენი პასუხი (სავალდებულოა)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:83
 msgid "Your response (optional)"
-msgstr ""
+msgstr "თქვენი პასუხი (არასავალდებულოა)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "უპასუხეთ ზემოთ მითითებულ საკითხს."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "We could not save your progress"
@@ -1066,7 +1067,7 @@ msgstr "თქვენი გაგზავნილი პასუხის 
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "We could not upload files"
-msgstr ""
+msgstr "ფაილების ატვირთვა ვერ მოხერხდა"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:134
 msgid "Select a file to upload for this submission."
@@ -1074,7 +1075,7 @@ msgstr "პასუხის გასაგზავნად აირჩი�
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:136
 msgid "Upload files"
-msgstr ""
+msgstr "ფაილების ატვირთვა"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "You may continue to work on your response until you submit it."
@@ -1106,7 +1107,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\nთქვენი პასუხის შეტანა გაუქმებულ იქნა %(removed_datetime)s"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:46
 #, python-format
@@ -1148,7 +1149,7 @@ msgstr "თქვენი პასუხი"
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:52
 msgid "Your Uploaded Files"
-msgstr ""
+msgstr "თქვენს მიერ ატვირთული ფაილები"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
 msgid ""
@@ -1305,7 +1306,7 @@ msgstr "მსმენელის პასუხი"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "სტუდენტის პასუხი ზემოთ მითითებულ საკითხზე:"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1532,7 +1533,7 @@ msgstr "თქვენი შეფასება განსხვავდ�
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
 msgid "The response to the prompt above:"
-msgstr ""
+msgstr "ზემოთ მითითებულ საკითხზე პასუხი:"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"
@@ -1828,19 +1829,19 @@ msgstr "XBlock-ის კონფიგურაციის განახლ
 
 #: openassessment/xblock/studio_mixin.py:194
 msgid "Error: both text and file upload responses can't be disabled"
-msgstr ""
+msgstr "დაფიქსირდა შეცდომა: პასუხის გაცემის ორივე ფორმის, ტქსტური და ფაილის ატვირთვით, გამორთვა არ შეიძლება"
 
 #: openassessment/xblock/studio_mixin.py:197
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
-msgstr ""
+msgstr "შეცდომა: იმ შემთხვევაში, როდესაც პასუხის გაცემა ტქსტური ფორმით გამორთულია, ფაილის ატვირთვის ფორმით მისი გაცემა ჩართული უნდა იყოს."
 
 #: openassessment/xblock/studio_mixin.py:200
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
-msgstr ""
+msgstr "შეცდომა: იმ შემთხვევაში, როდესაც პასუხის გაცემა ფაილის ატვირთვის ფორმით გამორთულია, ტექსტური ფორმით მისი გაცემა ჩართული უნდა იყოს."
 
 #: openassessment/xblock/studio_mixin.py:224
 #, python-brace-format
@@ -1877,11 +1878,11 @@ msgstr "პასუხის გაგზავნა ვერ მოხერ
 
 #: openassessment/xblock/submission_mixin.py:221
 msgid "Files descriptions could not be saved."
-msgstr ""
+msgstr "ფაილების აღწერების შენახვა ვერ მოხერხდა"
 
 #: openassessment/xblock/submission_mixin.py:225
 msgid "Files descriptions were not submitted."
-msgstr ""
+msgstr "ფაილების აღწერა არ იყო შეტანილი"
 
 #: openassessment/xblock/submission_mixin.py:287
 msgid "There was an error uploading your file."
@@ -1995,7 +1996,7 @@ msgstr "ამოცანის გაშვების შემდეგ ქ
 
 #: openassessment/xblock/validation.py:290
 msgid "Learner training must have at least one training example."
-msgstr ""
+msgstr "სტუდენტის ტრენინგი უნდა შეიცავდეს სულ მცირე ერთ მაგალითს . "
 
 #: openassessment/xblock/validation.py:352
 msgid "Leaderboard number is invalid."

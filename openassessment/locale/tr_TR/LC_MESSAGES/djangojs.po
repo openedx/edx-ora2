@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-01-06 22:23+0000\n"
+"PO-Revision-Date: 2018-02-23 10:11+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -94,7 +94,7 @@ msgstr "Sunucu ile bağlantı kurulamadı."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:508
 msgid "Could not retrieve upload url."
-msgstr "Yükleme linkine erişilemedi."
+msgstr "Yükleme URL'ine erişilemedi."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -123,12 +123,12 @@ msgstr "Yüklenemedi"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Unit Name"
-msgstr "Birim İsmi"
+msgstr "Ünite İsmi"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Units"
-msgstr "Birimler"
+msgstr "Üniteler:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
@@ -174,12 +174,12 @@ msgstr "Personel"
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:81
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:82
 msgid "Final Grade Received"
-msgstr ""
+msgstr "Final Notu Alındı"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:111
 msgid "List of Open Assessments is unavailable"
-msgstr ""
+msgstr "Açık Görevler listesi mevcut değil"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:212
@@ -253,7 +253,7 @@ msgstr " Göndermeden önce dosyanızı yüklemek istiyor musunuz?"
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr "Bu ödev için cevabını göndermek üzeresin. Cevabını gönderdikten sonra, cevabı değiştiremez veya yeni bir cevap ekleyemezsin."
+msgstr "Bu görev için cevabını göndermek üzeresin. Cevabını gönderdikten sonra, cevabı değiştiremez veya yeni bir cevap ekleyemezsin."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:553
@@ -321,7 +321,7 @@ msgstr "Bu sayfayı ekip değerlendirmenizi yazmadan terk etmeniz durumunda, yap
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_training.js:116
 msgid "Feedback available for selection."
-msgstr ""
+msgstr "Seçilenler için geri bildirim mümkün."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
@@ -336,7 +336,7 @@ msgstr "Seçilmedi"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:145
 msgid "Couldn't Save This Assignment"
-msgstr "Bu Ödevi Kaydedemedi"
+msgstr "Bu Görev Kaydedilemedi"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:146
@@ -405,7 +405,7 @@ msgstr "Uyarı"
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr "Ödevin bir parçası olarak seçili olmayan adımlardaki değişiklikler kaydedilmeyecek."
+msgstr "Görevin bir parçası olarak seçili olmayan adımlardaki değişiklikler kaydedilmeyecek."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:66
