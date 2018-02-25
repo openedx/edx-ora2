@@ -24,7 +24,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-02-08 18:23+0000\n"
+"PO-Revision-Date: 2018-02-21 18:54+0000\n"
 "Last-Translator: Liubov Fomicheva <liubov.nelapa@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -1026,7 +1026,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "Все работы однокурсников, сданные на проверку, уже оценены.  Вернитесь позже; возможно, другие слушатели к этому времени сдадут свои работы.  Вы получите оценку по завершении выполнения всех шагов этого задания, когда ваши однокурсники проверят вашу работу."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:37
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:39
