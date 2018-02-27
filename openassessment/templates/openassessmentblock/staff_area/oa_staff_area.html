@@ -99,13 +99,13 @@
                                 <td class="label">{{ item.step }}</td>
 
                                 {% if item.start %}
-                                    <td class="value">{{ item.start|utc|date:"N j, Y H:i e" }}</td>
+                                    <td class="value">{{ item.start|utc|date:"SHORT_DATETIME_FORMAT" }}</td>
                                 {% else %}
                                     <td class="value">{% trans "N/A" %}</td>
                                 {% endif %}
 
                                 {% if item.due %}
-                                    <td class="value">{{ item.due|utc|date:"N j, Y H:i e" }}</td>
+                                    <td class="value">{{ item.due|utc|date:"SHORT_DATETIME_FORMAT" }}</td>
                                 {% else %}
                                     <td class="value">{% trans "N/A" %}</td>
                                 {% endif %}
