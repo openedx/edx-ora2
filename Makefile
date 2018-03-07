@@ -47,6 +47,10 @@ compile_translations:
 generate_dummy_translations:
 	i18n_tool dummy
 
+# Test translation files
+validate_translations:
+	cd ./openassessment/ && i18n_tool validate -v
+
 # check if translation files are up-to-date
 detect_changed_source_translations:
 	i18n_tool changed
@@ -60,7 +64,7 @@ push_translations:
 	tx push -s
 
 # extract, compile, and check if translation files are up-to-date
-validate_translations: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations
+check_translations_up_to_date: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations
 
 ################
 #Tests and checks
