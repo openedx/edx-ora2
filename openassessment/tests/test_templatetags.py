@@ -6,6 +6,11 @@ import unittest
 @ddt.ddt
 class OAExtrasTests(unittest.TestCase):
 
+    template = Template(
+        "{% load oa_extras %}"
+        "{{ text|link_and_linebreak }}"
+    )
+
     @ddt.data(
         ("", ""),
         ('Check this https://dummy-url.com for details', 'https://dummy-url.com'),
@@ -16,11 +21,7 @@ class OAExtrasTests(unittest.TestCase):
     )
     @ddt.unpack
     def test_link_and_linebreak(self, text, link_text):
-        template = Template(
-            "{% load oa_extras %}"
-            "{{ text|link_and_linebreak }}"
-        )
-        rendered_template = template.render(Context({'text': text}))
+        rendered_template = self.template.render(Context({'text': text}))
         self.assertIn(link_text, rendered_template)
         if text:
             self.assertRegexpMatches(
@@ -28,12 +29,14 @@ class OAExtrasTests(unittest.TestCase):
                 r'<a.*target="_blank".*>{link_text}</a>'.format(link_text=link_text),
             )
 
-
-    # def test_html_tags(self):
-    #     template = Template(
-    #         "{% load oa_extras %}"
-    #         "{{ text|link_and_linebreak }}"
-    #     )
-    #     rendered_template = template.render(Context({'text': "hello http://dummy.com <script>alert('kkk')</script>"}))
-    #     from nose.tools import set_trace; set_trace()
-    #
+    @ddt.data(
+        ("hello <script></script>", "script"),
+        ("http://dummy-url.com <applet></applet>", "applet"),
+        ("<iframe></iframe>", "iframe"),
+        ("<link></link>", "link"),
+    )
+    @ddt.unpack
+    def test_html_tags(self, text, tag):
+        rendered_template = self.template.render(Context({'text': text}))
+        escaped_tag = "&lt;{tag}&gt;".format(tag=tag)
+        self.assertIn(escaped_tag, rendered_template)
