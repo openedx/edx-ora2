@@ -1,4 +1,3 @@
-import re
 import ddt
 from django.template import Context, Template
 import unittest
@@ -26,5 +25,5 @@ class OAExtrasTests(unittest.TestCase):
         if text:
             self.assertRegexpMatches(
                 rendered_template,
-                r'<a.*target.*>{link_text}</a>'.format(link_text=link_text),
+                r'<a.*target="_blank".*>{link_text}</a>'.format(link_text=link_text),
             )
