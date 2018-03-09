@@ -1,3 +1,4 @@
+import re
 import ddt
 from django.template import Context, Template
 import unittest
