@@ -23,13 +23,9 @@ class OAExtrasTests(unittest.TestCase):
         rendered_template = template.render(Context({'text': text}))
         self.assertIn(expected_text, rendered_template)
         if text:
-            self.assertIn("<a", rendered_template)
-            self.assertIn('target="_blank"', rendered_template)
-            self.assertIn("</a>", rendered_template)
-
-            # self.assertTrue(bool(
-            #     re.search(
-            #         "<a.*target.*href.*{text}.*</a>".format(text=text),
-            #         rendered_template
-            #     )
-            # ))
+            self.assertTrue(bool(
+                re.search(
+                    "<a.*target.*href.*</a>",
+                    rendered_template
+                )
+            ))
