@@ -1,5 +1,6 @@
 {% load tz %}
 {% load i18n %}
+{% load oa_extras %}
 {% spaceless %}
 {% block list_item %}
 <li class="openassessment__steps__step step--response is--in-progress is--showing ui-slidable__container"
@@ -99,7 +100,7 @@
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the prompt above." %}"
                                         maxlength="100000"
-                                    >{{ part.text }}</textarea>
+                                    >{{ part.text|escape|link_and_linebreak }}</textarea>
                                 </div>
                                 {% with forloop.counter|stringformat:"s" as submission_num %}
                                     {% include "openassessmentblock/oa_latex_preview.html" with id="submission__"|add:xblock_id|add:submission_num elem="div" preview_name="submission__"|add:submission_num %}
