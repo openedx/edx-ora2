@@ -8,8 +8,8 @@ class OAExtrasTests(unittest.TestCase):
 
     @ddt.data(
         ("", ""),
-        ('https://dummy-url.com', 'href="https://dummy-url.com">'),
-        ('http://dummy-url.com', 'href="http://dummy-url.com">'),
+        ('https://dummy-url.com', '<a target="_blank" href="https://dummy-url.com">https://dummy-url.com</a>'),
+        ('http://dummy-url.com', '<a target="_blank" href="http://dummy-url.com">http://dummy-url.com</a>'),
         ('http://dummy-url.org', 'href="http://dummy-url.org">'),
         ('http://dummy-url.ag', 'href="http://dummy-url.ag">'),
         ('dummy-url.com', 'href="http://dummy-url.com">')
