@@ -109,6 +109,7 @@ OpenAssessment.Prompt.prototype = {
             }
             var newElId = Date.now() + '-textarea-' + (Math.random() * 100);
             $(textarea).attr('id', newElId).tinymce(tinymceCfg());
+            window.tinyMCE.get(newElId).focus();
         }
         return $(el);
     },

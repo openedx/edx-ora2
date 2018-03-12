@@ -119,6 +119,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.file_upload_response = data.get('file_upload_response', None)
         self.oa_block.prompt = data.get('prompt')
         self.oa_block.prompts = create_prompts_list(data.get('prompt'))
+        self.oa_block.prompts_type = data.get('prompts_type', 'text')
         self.oa_block.rubric_feedback_prompt = data.get('rubric_feedback_prompt')
         self.oa_block.rubric_feedback_default_text = data.get('rubric_feedback_default_text')
         self.oa_block.start = _parse_date(data.get('start'))

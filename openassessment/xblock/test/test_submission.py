@@ -266,7 +266,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -292,7 +293,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'self_incomplete': True,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -314,7 +316,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -335,7 +338,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submit_enabled': False,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -362,7 +366,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -389,7 +394,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -411,7 +417,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'self_incomplete': True,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -446,7 +453,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                     'cancelled_by': mock_staff
                 },
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -475,7 +483,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'self_incomplete': True,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -490,7 +499,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -512,7 +522,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'self_incomplete': True,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -540,7 +551,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
@@ -568,7 +580,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'allow_latex': False,
                 'user_timezone': None,
-                'user_language': None
+                'user_language': None,
+                'prompts_type': 'text'
             }
         )
 
