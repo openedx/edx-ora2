@@ -130,9 +130,24 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertIn(expected_prompt, resp)
 
     @scenario('data/prompt_html.xml')
-    def test_prompt_html(self, xblock):
+    def test_prompt_html_to_text(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         expected_prompt = u"<code><strong>Question 123</strong></code>"
+        self.assertIn(expected_prompt, resp)
+
+        xblock.prompts_type = "text"
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        expected_prompt = "&lt;code&gt;&lt;strong&gt;Question 123&lt;/strong&gt;&lt;/code&gt;"
+        self.assertIn(expected_prompt, resp)
+
+    @scenario('data/prompt_text.xml')
+    def test_prompt_text_to_html(self, xblock):
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        expected_prompt = "Simple text"
+        self.assertIn(expected_prompt, resp)
+
+        xblock.prompts_type = "html"
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn(expected_prompt, resp)
 
     @mock_s3

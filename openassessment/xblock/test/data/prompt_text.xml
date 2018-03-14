@@ -1,14 +1,7 @@
-<openassessment text_response="required" file_upload_response="" group_access="{&quot;381451918&quot;: [1179773159]}" prompts_type="text">
-    <title>Open Assessment Test</title>
-    <prompts>
-        <prompt>
-            <description>Given the state of the world today, what do you think should be done to combat poverty? Please answer in a short essay of 200-300 words.</description>
-        </prompt>
-        <prompt>
-            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
-        </prompt>
-    </prompts>
+<openassessment prompts_type="text">
+    <title>Test the HTML/Text prompt type compatibility</title>
     <rubric>
+        <prompt>Simple text</prompt>
         <criterion>
             <name>Concise</name>
             <prompt>How concise is it?</prompt>
