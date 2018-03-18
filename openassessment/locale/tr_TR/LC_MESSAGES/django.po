@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-03-02 19:11+0000\n"
+"PO-Revision-Date: 2018-03-09 14:27+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -372,7 +372,7 @@ msgstr "Görev yayımlandıktan sonra sufleyi silemezsiniz."
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr "Sufleler. Örnek metni kendi metninizle değiştiriniz. Daha fazla bilgi için, ORA belgelendirmesine bakınız."
+msgstr "Sufleler. Örnek metni kendi metninizle değiştirin. Daha fazla bilgi için, ORA belgelendirmesine bakın."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
@@ -732,19 +732,19 @@ msgstr ""
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "Bu görevi tamamladınız. Notunuzu ve görev ayrıntılarınızı gözden geçirin."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "Bu görev devam ediyor. Öğrenci alıştırması yakında sona erecek. İlerlemek için öğrenci alıştırmasını tamamlayın."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "Bu görev devam ediyor. İlerlemek için öğrenci alıştırmasını tamamlayın."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
@@ -858,7 +858,7 @@ msgstr "Bu bölüm için soru"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "Bu gönderimle ilişkili dosyaları göster:"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:36
 msgid ""
@@ -1049,7 +1049,7 @@ msgstr "Cevabınızı yükledikten sonra, onu düzenleyemezsiniz"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
-msgstr ""
+msgstr "Bu bölüm için uyarı"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:81
 msgid "Your response (required)"
@@ -1101,7 +1101,7 @@ msgstr "Cevabınızı gönderin ve bir sonraki adıma ilerleyin"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:32
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "Gönderiminiz iptal edildi."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:35
 #, python-format
@@ -1305,7 +1305,7 @@ msgid ""
 "\n"
 "                                        Response for: %(student_username)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        %(student_username)s için cevap\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
@@ -1345,7 +1345,7 @@ msgid ""
 "\n"
 "                                    Response for: %(student_username)s\n"
 "                                "
-msgstr ""
+msgstr "\n                                        %(student_username)s için cevap \n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:10
 #, python-format
@@ -1445,7 +1445,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
 msgid "The problem has not been started."
-msgstr ""
+msgstr "Problem başlatılmadı."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:155
 msgid "The problem has not been completed."
@@ -1801,7 +1801,7 @@ msgstr ""
 
 #: openassessment/xblock/staff_assessment_mixin.py:124
 msgid "Waiting for a Staff Grade"
-msgstr ""
+msgstr "Personel Notu Bekleniyor"
 
 #: openassessment/xblock/staff_assessment_mixin.py:125
 msgid ""
