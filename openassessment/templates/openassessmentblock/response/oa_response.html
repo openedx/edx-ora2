@@ -75,7 +75,11 @@
                                 <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
                                 <article class="submission__answer__part__prompt">
                                     <div class="submission__answer__part__prompt__copy">
-                                        {{ part.prompt.description|linebreaks }}
+                                        {% if prompts_type == 'html' %}
+                                            {{ part.prompt.description|safe }}
+                                        {% else %}
+                                            {{ part.prompt.description|linebreaks }}
+                                        {% endif %}
                                     </div>
                                 </article>
 

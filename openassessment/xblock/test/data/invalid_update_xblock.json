@@ -58,7 +58,6 @@
                         "explanation": "Yes explanation"
                     }
                 ],
-                "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
                 "feedback": "optional"
             }
         ],
@@ -77,6 +76,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1629,5 +1629,60 @@
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
         "expected_error": "error: in case if file upload response is disabled text response must be required"
+    },
+
+    "invalid_prompt_type": {
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
+        "prompts_type": "not_text_or_html",
+        "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
+        "text_response": "required",
+        "file_upload_response": null,
+        "file_upload_type": null,
+        "allow_latex": false,
+        "leaderboard_show": 0,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "0",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "optional"
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "submission_due": "2014-02-27T09:46",
+        "submission_start": "2014-02-10T09:46"
     }
 }
