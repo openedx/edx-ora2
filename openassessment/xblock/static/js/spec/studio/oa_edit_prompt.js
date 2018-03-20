@@ -73,6 +73,24 @@ describe("OpenAssessment.EditPromptViews", function() {
         expect(OpenAssessment.Prompt.prototype.attachWysiwygToPrompt).toHaveBeenCalled();
         expect(OpenAssessment.Prompt.prototype.addHandler).toHaveBeenCalled();
     });
+
+    it("remove html prompts", function() {
+        $.each(view.getAllPrompts(), function() { view.removePrompt(this); });
+        OpenAssessment.Prompt.prototype.tinyMCEEnabled = true;
+        spyOn(OpenAssessment.Prompt.prototype, 'attachWysiwygToPrompt');
+        spyOn(OpenAssessment.Prompt.prototype, 'addHandler');
+
+        view.addPrompt();
+        view.addPrompt();
+        view.addPrompt();
+
+        expect(OpenAssessment.Prompt.prototype.attachWysiwygToPrompt).toHaveBeenCalled();
+
+        allPrompts = view.getAllPrompts();
+        view.removePrompt(allPrompts[2]);
+
+        expect(view.getAllPrompts().length).toEqual(allPrompts.length-1);
+    });
 });
 
 describe("OpenAssessment.EditPromptViews after release", function() {
