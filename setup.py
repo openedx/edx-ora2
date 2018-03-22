@@ -34,7 +34,7 @@ def load_requirements(*requirements_paths):
 
 setup(
     name='ora2',
-    version='2.1.11',
+    version='2.1.12',
     author='edX',
     url='http://github.com/edx/edx-ora2',
     description='edx-ora2',
@@ -46,7 +46,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
-    packages=find_packages(exclude=['*.test', '*.tests']),
+    packages=find_packages(include=['openassessment*'], exclude=['*.test', '*.tests']),
     include_package_data=True,
     install_requires=load_requirements('requirements/base.txt', "requirements/django.txt"),
     tests_require=load_requirements('requirements/test.txt'),
