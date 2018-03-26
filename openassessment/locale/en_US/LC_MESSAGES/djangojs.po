@@ -3,7 +3,7 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# EdX Team <info@edx.org>, 2014
+# EdX Team <info@edx.org>, 2014,2018
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
