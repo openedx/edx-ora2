@@ -152,6 +152,7 @@
         "XBlock",
 
         // ORA-specific globals
-        "OpenAssessment"
+        "OpenAssessment",
+        "rewriteStaticLinks"
     ]
 }

@@ -29,6 +29,10 @@ describe("OpenAssessment.EditPromptViews", function() {
         view = new OpenAssessment.EditPromptsView(element, notifier);
     });
 
+    afterEach(function() {
+        OpenAssessment.Prompt.prototype.tinyMCEEnabled = undefined;
+    });
+
     it("reads prompts from the editor", function() {
         // This assumes a particular structure of the DOM,
         // which is set by the HTML fixture.
@@ -58,6 +62,16 @@ describe("OpenAssessment.EditPromptViews", function() {
         expect(prompts[1]).toEqual({
             description: ""
         });
+    });
+
+    it("creates new html prompts", function() {
+        OpenAssessment.Prompt.prototype.tinyMCEEnabled = true;
+        spyOn(OpenAssessment.Prompt.prototype, 'attachWysiwygToPrompt');
+        spyOn(OpenAssessment.Prompt.prototype, 'addHandler');
+
+        view.addPrompt();
+        expect(OpenAssessment.Prompt.prototype.attachWysiwygToPrompt).toHaveBeenCalled();
+        expect(OpenAssessment.Prompt.prototype.addHandler).toHaveBeenCalled();
     });
 });
 

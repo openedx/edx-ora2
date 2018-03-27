@@ -498,6 +498,7 @@ class SubmissionMixin(object):
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
             "file_upload_response": self.file_upload_response,
+            "prompts_type": self.prompts_type,
         }
 
         # Due dates can default to the distant future, in which case
