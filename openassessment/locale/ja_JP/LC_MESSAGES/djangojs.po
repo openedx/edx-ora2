@@ -1,5 +1,6 @@
-# edX translation file.
-# Copyright (C) 2014 EdX
+# #-#-#-#-#  djangojs.po (edx-ora2)  #-#-#-#-#
+# edX translation file
+# Copyright (C) 2018 edX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
@@ -11,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: openedx-translation@googlegroups.com\n"
 "POT-Creation-Date: 2017-09-05 18:08+0000\n"
 "PO-Revision-Date: 2017-09-23 19:57+0000\n"
 "Last-Translator: Kyoto University <edxkyotoux@gmail.com>\n"
