@@ -36,7 +36,8 @@ sass:
 ################
 # creates the django-partial.po & django-partial.mo files
 extract_translations:
-	i18n_tool extract -v
+	python manage.py makemessages -l en -v1 --ignore=".tox/*" --ignore="build/*" --ignore="docs/*" --ignore="edx-ora2/*" --ignore="logs/*" --ignore="node_modules/*" --ignore="performance/*" --ignore="requirements/*" --ignore="scripts/*" --ignore="settings/*" --ignore="storage/*" -d django
+	python manage.py makemessages -l en -v1 --ignore=".tox/*" --ignore="build/*" --ignore="docs/*" --ignore="edx-ora2/*" --ignore="logs/*" --ignore="node_modules/*" --ignore="performance/*" --ignore="requirements/*" --ignore="scripts/*" --ignore="settings/*" --ignore="storage/*" -d djangojs
 
 # compiles the *.po & *.mo files
 compile_translations:
