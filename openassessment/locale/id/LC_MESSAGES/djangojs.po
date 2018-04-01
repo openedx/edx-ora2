@@ -12,10 +12,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
-"Report-Msgid-Bugs-To: openedx-translation@googlegroups.com\n"
-"POT-Creation-Date: 2017-09-05 18:08+0000\n"
-"PO-Revision-Date: 2018-03-07 06:11+0000\n"
-"Last-Translator: Aprisa Chrysantina <aprisa.chrysantina@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-29 13:04-0400\n"
+"PO-Revision-Date: 2018-03-29 23:00+0000\n"
+"Last-Translator: Nanang Riyadi\n"
 "Language-Team: Indonesian (http://www.transifex.com/open-edx/edx-platform/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,38 +77,38 @@ msgstr "Salah satu tugas penjadwalan telah gagal."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:459
+#: openassessment/xblock/static/js/src/oa_server.js:460
 msgid "This problem could not be saved."
 msgstr "Masalah ini tidak dapat disimpan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:481
+#: openassessment/xblock/static/js/src/oa_server.js:482
 msgid "The server could not be contacted."
 msgstr "Server tidak dapat dihubungi."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:508
+#: openassessment/xblock/static/js/src/oa_server.js:509
 msgid "Could not retrieve upload url."
 msgstr "Gagal mencapai url unggahan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:528
-#: openassessment/xblock/static/js/src/oa_server.js:548
+#: openassessment/xblock/static/js/src/oa_server.js:529
+#: openassessment/xblock/static/js/src/oa_server.js:549
 msgid "Server error."
 msgstr "Server error."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:569
+#: openassessment/xblock/static/js/src/oa_server.js:570
 msgid "Could not retrieve download url."
 msgstr "Gagal mencapai url unduhan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:595
+#: openassessment/xblock/static/js/src/oa_server.js:596
 msgid "The submission could not be removed from the grading pool."
 msgstr "Pengajuan tidak bisa dihapus dari kolom peringkat."
 
@@ -202,86 +202,91 @@ msgid ""
 msgstr "Jika Anda meninggalkan halaman ini tanpa mengirimkan penilaian sebaya Anda, Anda akan kehilangan pekerjaan yang Anda lakukan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:129
+#: openassessment/xblock/static/js/src/lms/oa_response.js:130
 msgid ""
 "After you upload new files all your previously uploaded files will be "
 "overwritten. Continue?"
 msgstr "Setelah Anda mengunggah berkas-berkas baru, semua berkas-berkas yang telah Anda unggah sebelumnya akan tertimpa. Lanjutkan?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:288
+#: openassessment/xblock/static/js/src/lms/oa_response.js:283
+msgid "Your file "
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:307
 msgid "Status of Your Response"
 msgstr "Status respon Anda"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:363
+#: openassessment/xblock/static/js/src/lms/oa_response.js:382
 msgid "This response has not been saved."
 msgstr "Respon belum disimpan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:367
+#: openassessment/xblock/static/js/src/lms/oa_response.js:386
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "Jika Anda meninggalkan halaman ini tanpa menyimpan atau mengirim tanggapan Anda, Anda akan kehilangan semua pekerjaan yang Anda buat pada tanggapan Anda."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:385
+#: openassessment/xblock/static/js/src/lms/oa_response.js:404
 msgid "Saving..."
 msgstr "Sedang menyimpan ..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:407
+#: openassessment/xblock/static/js/src/lms/oa_response.js:426
 msgid "This response has been saved but not submitted."
 msgstr "Respon ini akan disimpan namun tidak dikirimkan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:412
+#: openassessment/xblock/static/js/src/lms/oa_response.js:431
 msgid "Error"
 msgstr "Kesalahan"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:434
+#: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "Do you want to upload your file before submitting?"
 msgstr "Apakah Anda ingin mengunggah berkas Anda sebelum mengirimkan?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:512
+#: openassessment/xblock/static/js/src/lms/oa_response.js:533
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Anda akan mengirimkan tanggapan Anda untuk tugas ini. Setelah Anda mengirimkan tanggapan ini, Anda tidak dapat mengubah atau menyampaikan tanggapan baru."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:553
+#: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "File size must be 10MB or less."
 msgstr "Ukuran berkas harus 10MB atau kurang."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:560
-#: openassessment/xblock/static/js/src/lms/oa_response.js:567
-#: openassessment/xblock/static/js/src/lms/oa_response.js:574
+#: openassessment/xblock/static/js/src/lms/oa_response.js:581
+#: openassessment/xblock/static/js/src/lms/oa_response.js:588
+#: openassessment/xblock/static/js/src/lms/oa_response.js:595
 msgid "You can upload files with these file types: "
 msgstr "Anda dapat mengunggah berkas dengan jenis sebagai berikut:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:582
+#: openassessment/xblock/static/js/src/lms/oa_response.js:603
 msgid "File type is not allowed."
 msgstr "Jenis berkas ini tidak diperkenankan"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:626
-#: openassessment/xblock/static/js/src/lms/oa_response.js:632
+#: openassessment/xblock/static/js/src/lms/oa_response.js:647
+#: openassessment/xblock/static/js/src/lms/oa_response.js:653
 msgid "Describe "
 msgstr "Deskripsikan"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:626
+#: openassessment/xblock/static/js/src/lms/oa_response.js:647
 msgid "(required):"
 msgstr "(wajib diisi):"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:646
+#: openassessment/xblock/static/js/src/lms/oa_response.js:667
 msgid "Thumbnail view of "
 msgstr "Tampilan thumbnail dari"
 
@@ -319,6 +324,36 @@ msgstr "Jika Anda meninggalkan halaman tanpa mengirimkan hasil penilaian staf, A
 #: openassessment/xblock/static/js/src/lms/oa_training.js:116
 msgid "Feedback available for selection."
 msgstr "Umpan balik tersedia untuk pilihan Anda."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:391
+msgid "Paragraph"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:392
+msgid "Preformatted"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:393
+msgid "Heading 3"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:394
+msgid "Heading 4"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:395
+msgid "Heading 5"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:396
+msgid "Heading 6"
+msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
