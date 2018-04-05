@@ -1,6 +1,5 @@
 {% spaceless %}
 {% load i18n %}
-{% load oa_extras %}
 <ol class="submission__answer__display__content">
     {% for part in answer.parts %}
         <li class="submission__answer__part">
@@ -20,7 +19,7 @@
             <div class="submission__answer__part__text">
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
                 <div class="submission__answer__part__text__value">
-                    {{ part.text|escape|link_and_linebreak }}
+                    {{ part.text|linebreaks }}
                 </div>
             </div>
             {% endif %}
