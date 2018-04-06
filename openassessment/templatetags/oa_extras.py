@@ -9,12 +9,16 @@ import bleach
 register = template.Library()
 
 
-@register.filter(needs_autoescape=True)
+@register.filter()
 @stringfilter
-def link_and_linebreak(text, autoescape=True):
-
-    if text and len(text) > 0:
-        the_text = conditional_escape(text)
-        return mark_safe(linebreaks(bleach.linkify(the_text, callbacks=[callbacks.target_blank])))
-    else:
-        return text
+def link_and_linebreak(text):
+    """
+    Converts URLs in text into clickable links with their target attribute set to `_blank`.
+    It wraps givent tags into <p> tags and converts line breaks(\n) to <br> tags.
+    Args:
+        text: (str) Text having URLs to be converted
+    Returns: (str) Text with URLs convert to links
+    """
+    if text:
+        escaped_text = conditional_escape(text)
+        return mark_safe(linebreaks(bleach.linkify(escaped_text, callbacks=[callbacks.target_blank])))
