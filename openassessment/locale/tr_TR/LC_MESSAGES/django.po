@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-03-29 22:44+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"PO-Revision-Date: 2018-04-05 11:22+0000\n"
+"Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -715,19 +715,19 @@ msgstr "Bu görevin tüm adımlarını tamamladıktan sonra, kişilerden gelen e
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "Bu görev henüz mevcut değil. Bu bölüm açıldığında görevi tamamlamak için tekrar kontrol edin."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr ""
+msgstr "Bu görev kapandı. Bu görev için bir ya da daha fazla bitiş tarihi geçti. Bu ödev için tamamlanmamış not alacaksınız."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr ""
+msgstr "Bu görevi tamamladınız. Final notunuz cevabınızın değerlendirmeleri tamamlandığında görülebilir olacak."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
@@ -752,7 +752,7 @@ msgstr "Bu görev devam ediyor. İlerlemek için öğrenci alıştırmasını ta
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "Bu görev devam ediyor. Değerlendirme dönemi başladığında tekrar kontrol edin."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
@@ -816,7 +816,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                    Bu görev birkaç adım içeriyor. İlk adımda, soruya cevap vereceksiniz. Diğer adımlar %(start_tag)sCevabınız%(end_tag)s alanının altında görünecek.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -831,7 +831,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "Bu ödev birkaç adıma sahip. İlk adımda, soruya cevap vereceğiz. Diğer adımlar Cevabınız alanı altında görünecektir."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -866,7 +866,7 @@ msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr ""
+msgstr "Dikkat: Bu dosyalar başka bir ders öğrencisi tarafından yüklendi ve site yöneticisi tarafından doğrulanmadı, görüntülenmedi, uygun bulunmadı, gözden geçirilmedi veya tavsiye edilmedi. Dosyalara erişime karar verirseniz, bu kendi sorumluluğunuzdadır.)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:26
 msgid "Assess Peers"
@@ -881,7 +881,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -892,7 +892,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
@@ -900,7 +900,7 @@ msgid ""
 "\n"
 "                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                "
-msgstr ""
+msgstr "\n                    İşlem Sürüyor (%(num_must_grade)s'nın %(review_number)s)\n                "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:65
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:45
@@ -945,7 +945,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an kapalı. Artık kişi değerlendirmesini tamamlayamaz ya da bu ödev ile devam edemezsiniz ve eksik not alacaksınız."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
@@ -981,7 +981,7 @@ msgstr "\n        Tamamlanmış (%(num_graded)s)\n      "
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr ""
+msgstr "Tüm gönderilen kişi cevapları değerlendirildi. Daha çok öğrencinin cevap gönderdiğini görmek istiyorsanız daha sonra tekrar kontrol edin."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
@@ -1006,7 +1006,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "Mevcut tüm kişi cevapları değerlendirildi. Daha fazla öğrencinin cevap gönderip göndermediğini görmek için daha sonra tekrar kontrol edin. Bu problem için bütün adımları tamamladıktan sonra ve akranlarınız cevabınızı değerlendirdikten sonra notunuzu alacaksınız."
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1017,7 +1017,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1028,7 +1028,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:46
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
@@ -1037,7 +1037,7 @@ msgstr "İşlem sürüyor"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:57
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "Soruya cevabınızı giriniz."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:59
 msgid ""
@@ -1068,7 +1068,7 @@ msgstr "Cevabınız (isteğe bağlı)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:105
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "Üstteki soruya cevabınızı giriniz."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:119
 msgid "We could not save your progress"
@@ -1146,7 +1146,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr ""
+msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an kapalı. Artık cevap gönderemez ya da bu problem ile devam edemezsiniz ve eksik not alacaksınız. Eğer cevabı kaydedip de göndermediyseniz, cevap ders kayıtlarında görülecektir."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:20
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
@@ -1233,7 +1233,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an kapalı. Artık kendi değerlendirmenizi tamamlayamaz ya da bu görev ile devam edemezsiniz ve eksik not alacaksınız."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:348
@@ -1304,7 +1304,7 @@ msgstr "Personel Değerlendirme"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:7
 msgid "Give this learner a grade using the problem's rubric."
-msgstr ""
+msgstr "Problem rubrikini kullanarak bu öğrenciye not ver."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 #, python-format
@@ -1323,7 +1323,7 @@ msgstr "Öğrenci Yanıtı"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "Öğrencinin üstteki soruya cevabı"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1332,7 +1332,7 @@ msgstr "Değerlendirmeyi teslim et"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
 msgid "Submit assessment and continue grading"
-msgstr ""
+msgstr "Değerlendirmeyi gönder ve notlandırmaya devam et"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html:6
 #, python-format
@@ -1404,7 +1404,7 @@ msgstr "Öğrencinin Öz-değerlendirmesi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:72
 msgid "Staff Assessment for This Learner"
-msgstr ""
+msgstr "Bu Öğrenci için Personel Değerlendirmesi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Final Grade"
@@ -1416,7 +1416,7 @@ msgid ""
 "\n"
 "                            Final grade: %(points_earned)s out of %(points_possible)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Final notu: %(points_possible)s üzerinden %(points_earned)s\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:97
 msgid "Final Grade Details"
@@ -1498,7 +1498,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
 msgid "Assessment Details"
-msgstr ""
+msgstr "Değerlendirme Ayrıntıları"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
@@ -1573,7 +1573,7 @@ msgstr "Bu cevapta sizin değerlendirmeniz eğitmenin değerlendirmesinden farkl
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:74
 msgid "The response to the prompt above:"
-msgstr ""
+msgstr "Yukarıdaki soruya cevap:"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:96
 msgid "Selected Options Agree"
@@ -1786,11 +1786,11 @@ msgstr "ORA öğrenci bilgilerine erişim için izniniz yok."
 
 #: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA staff grading."
-msgstr ""
+msgstr "ORA görevli notlandırmalarına erişim için izniniz yok."
 
 #: openassessment/xblock/staff_area_mixin.py:177
 msgid "Error getting learner information."
-msgstr ""
+msgstr "Öğrenci bilgisini alırken hata oluştu."
 
 #: openassessment/xblock/staff_area_mixin.py:217
 msgid "Error loading the checked out learner response."
@@ -1802,7 +1802,7 @@ msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:222
 msgid "Error getting staff grade information."
-msgstr ""
+msgstr "Personel not bilgisini alırken hata oluştu."
 
 #: openassessment/xblock/staff_area_mixin.py:243
 msgid "Error getting staff grade ungraded and checked out counts."
@@ -1826,7 +1826,7 @@ msgstr ""
 #: openassessment/xblock/staff_assessment_mixin.py:65
 #: openassessment/xblock/staff_assessment_mixin.py:72
 msgid "Your staff assessment could not be submitted."
-msgstr ""
+msgstr "Personel değerlendirmeniz gönderilemedi."
 
 #: openassessment/xblock/staff_assessment_mixin.py:124
 msgid "Waiting for a Staff Grade"
