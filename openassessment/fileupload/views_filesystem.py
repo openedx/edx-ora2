@@ -43,8 +43,12 @@ def download_file(key):
         content_type = metadata.get("Content-Type", 'application/octet-stream')
     with open(file_path, 'r') as f:
         response = HttpResponse(f.read(), content_type=content_type)
-        file_name = os.path.basename(os.path.dirname(file_path))
-        response['Content-Disposition'] = 'attachment; filename=' + file_name
+
+    file_name = os.path.basename(os.path.dirname(file_path))
+    file_extension = Settings.FILE_EXTENSIONS_BY_TYPE.get(content_type, '')
+    if not file_name.endswith(file_extension):
+        file_name += file_extension
+    response['Content-Disposition'] = 'attachment; filename=' + file_name
     return response
 
 

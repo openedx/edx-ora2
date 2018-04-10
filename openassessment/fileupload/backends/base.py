@@ -20,6 +20,13 @@ class Settings(object):
         publicly viewable or all uploaded files will not be seen.
     """
     DEFAULT_FILE_UPLOAD_STORAGE_PREFIX = "submissions_attachments"
+    FILE_EXTENSIONS_BY_TYPE = {
+        'image/gif': '.gif',
+        'image/jpeg': '.jpg',
+        'image/pjpeg': '.jpg',
+        'image/png': '.png',
+        'application/pdf': '.pdf'
+    }
 
     @classmethod
     def get_bucket_name(cls):
