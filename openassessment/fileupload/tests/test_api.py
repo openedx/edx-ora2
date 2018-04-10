@@ -305,6 +305,17 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         result = self.backend.remove_file(self.key)
         self.assertFalse(result)
 
+    def test_file_extension_is_added_on_download(self):
+        self.set_key(u"myfile")
+        upload_url = self.backend.get_upload_url(self.key, self.content_type)
+        self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        download_url = self.backend.get_download_url(self.key)
+        download_response = self.client.get(download_url)
+        self.assertEqual(
+            "attachment; filename=myfile.jpg",
+            download_response.get('Content-Disposition')
+        )
+
 
 @override_settings(
     ORA2_FILEUPLOAD_BACKEND='swift',
@@ -457,3 +468,17 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # File no longer exists
         download_url = self.backend.get_download_url(self.key)
         self.assertIsNone(download_url)
+
+    # def test_file_extension_is_added_on_download(self):
+        # self.key = u"myfile"
+        # upload_url = self.backend.get_upload_url(self.key, self.content_type)
+        # self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        # download_url = self.backend.get_download_url(self.key)
+
+        # download_response = self.client.get(download_url)
+        # print download_url
+        # print download_response
+        # self.assertEqual(
+            # "attachment; filename=myfile.txt",
+            # download_response.get('Content-Disposition')
+        # )
