@@ -460,7 +460,7 @@ class OpenAssessmentBlock(MessageMixin,
             additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix]
         )
 
-    def grade_available_responses_view(self, context=None):
+    def grade_available_responses_view(self, context=None):  # pylint: disable=unused-argument
         """Grade Available Responses view.
 
         Auxiliary view which displays the staff grading area
@@ -1067,7 +1067,7 @@ class OpenAssessmentBlock(MessageMixin,
         )
 
     @XBlock.json_handler
-    def publish_event(self, data, suffix=''):
+    def publish_event(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Publish the given data to an event.
 

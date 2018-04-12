@@ -18,7 +18,7 @@ class MessageMixin(object):
     """
 
     @XBlock.handler
-    def render_message(self, data, suffix=''):
+    def render_message(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Render the message step.
 

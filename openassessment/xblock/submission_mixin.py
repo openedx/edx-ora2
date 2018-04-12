@@ -49,7 +49,7 @@ class SubmissionMixin(object):
     ]
 
     @XBlock.json_handler
-    def submit(self, data, suffix=''):
+    def submit(self, data, suffix=''):  # pylint: disable=unused-argument
         """Place the submission text into Openassessment system
 
         Allows submission of new responses.  Performs basic workflow validation
@@ -153,7 +153,7 @@ class SubmissionMixin(object):
         return status, status_tag, status_text
 
     @XBlock.json_handler
-    def save_submission(self, data, suffix=''):
+    def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Save the current student's response submission.
         If the student already has a response saved, this will overwrite it.
@@ -193,7 +193,7 @@ class SubmissionMixin(object):
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
     @XBlock.json_handler
-    def save_files_descriptions(self, data, suffix=''):
+    def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Save the descriptions for each uploaded file.
 
@@ -456,7 +456,7 @@ class SubmissionMixin(object):
             u'This response has not been saved.')
 
     @XBlock.handler
-    def render_submission(self, data, suffix=''):
+    def render_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """Renders the Submission HTML section of the XBlock
 
         Generates the submission HTML for the first section of an Open

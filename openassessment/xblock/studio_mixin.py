@@ -58,7 +58,7 @@ class StudioMixin(object):
         help="The order to display assessments in the editor."
     )
 
-    def studio_view(self, context=None):
+    def studio_view(self, context=None):  # pylint: disable=unused-argument
         """
         Render the OpenAssessment XBlock for editing in Studio.
 
@@ -157,7 +157,7 @@ class StudioMixin(object):
         }
 
     @XBlock.json_handler
-    def update_editor_context(self, data, suffix=''):
+    def update_editor_context(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Update the XBlock's configuration.
 
@@ -253,7 +253,7 @@ class StudioMixin(object):
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 
     @XBlock.json_handler
-    def check_released(self, data, suffix=''):
+    def check_released(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Check whether the problem has been released.
 
