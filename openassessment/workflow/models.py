@@ -711,7 +711,7 @@ class AssessmentWorkflowStep(models.Model):
 
 
 @receiver(assessment_complete_signal)
-def update_workflow_async(sender, **kwargs):
+def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
     """
     Register a receiver for the update workflow signal
     This allows asynchronous processes to update the workflow

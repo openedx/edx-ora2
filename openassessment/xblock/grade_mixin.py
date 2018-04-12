@@ -24,7 +24,7 @@ class GradeMixin(object):
     """
 
     @XBlock.handler
-    def render_grade(self, data, suffix=''):
+    def render_grade(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Render the grade step.
 
@@ -142,6 +142,7 @@ class GradeMixin(object):
             ),
             'file_upload_type': self.file_upload_type,
             'allow_latex': self.allow_latex,
+            'prompts_type': self.prompts_type,
             'file_urls': self.get_download_urls_from_submission(student_submission),
             'xblock_id': self.get_xblock_id()
         }
@@ -176,7 +177,7 @@ class GradeMixin(object):
         )
 
     @XBlock.json_handler
-    def submit_feedback(self, data, suffix=''):
+    def submit_feedback(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Submit feedback on an assessment.
 

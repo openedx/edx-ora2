@@ -36,7 +36,7 @@ class PeerAssessmentMixin(object):
 
     @XBlock.json_handler
     @verify_assessment_parameters
-    def peer_assess(self, data, suffix=''):
+    def peer_assess(self, data, suffix=''):  # pylint: disable=unused-argument
         """Place a peer assessment into OpenAssessment system
 
         Assess a Peer Submission.  Performs basic workflow validation to ensure
@@ -129,7 +129,7 @@ class PeerAssessmentMixin(object):
             return {'success': False, 'msg': self._('Could not load peer assessment.')}
 
     @XBlock.handler
-    def render_peer_assessment(self, data, suffix=''):
+    def render_peer_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
         """Renders the Peer Assessment HTML section of the XBlock
 
         Generates the peer assessment HTML for the first section of an Open
@@ -175,6 +175,7 @@ class PeerAssessmentMixin(object):
         context_dict = {
             "rubric_criteria": self.rubric_criteria_with_labels,
             "allow_latex": self.allow_latex,
+            "prompts_type": self.prompts_type,
             "user_timezone": user_preferences['user_timezone'],
             "user_language": user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),

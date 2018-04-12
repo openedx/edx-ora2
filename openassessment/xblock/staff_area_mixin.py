@@ -117,6 +117,7 @@ class StaffAreaMixin(object):
 
         # Include Latex setting
         context['allow_latex'] = self.allow_latex
+        context['prompts_type'] = self.prompts_type
 
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
@@ -262,7 +263,8 @@ class StaffAreaMixin(object):
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
             'user_timezone': user_preferences['user_timezone'],
-            'user_language': user_preferences['user_language']
+            'user_language': user_preferences['user_language'],
+            "prompts_type": self.prompts_type,
         }
 
         if submission:

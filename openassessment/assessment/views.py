@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 
 @login_required()
-def get_evaluations_for_student_item(request, course_id, student_id, item_id):
+def get_evaluations_for_student_item(request, course_id, student_id, item_id):  # pylint: disable=unused-argument
     """Retrieve all evaluations associated with the given student item.
 
     Developer utility for accessing all the evaluations associated with a

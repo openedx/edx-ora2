@@ -290,6 +290,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {
                 'topscores': scores,
                 'allow_latex': xblock.allow_latex,
+                'prompts_type': xblock.prompts_type,
                 'file_upload_type': xblock.file_upload_type,
                 'xblock_id': xblock.scope_ids.usage_id
             },

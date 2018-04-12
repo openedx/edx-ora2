@@ -18,7 +18,7 @@ SELF_TYPE = "SE"
 logger = logging.getLogger("openassessment.assessment.api.self")
 
 
-def submitter_is_finished(submission_uuid, self_requirements):
+def submitter_is_finished(submission_uuid, self_requirements):  # pylint: disable=unused-argument
     """
     Check whether a self-assessment has been completed for a submission.
 
@@ -57,7 +57,7 @@ def assessment_is_finished(submission_uuid, self_requirements):
     return submitter_is_finished(submission_uuid, self_requirements)
 
 
-def get_score(submission_uuid, self_requirements):
+def get_score(submission_uuid, self_requirements):  # pylint: disable=unused-argument
     """
     Get the score for this particular assessment.
 

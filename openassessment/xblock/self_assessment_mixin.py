@@ -61,6 +61,7 @@ class SelfAssessmentMixin(object):
 
         context = {
             'allow_latex': self.allow_latex,
+            'prompts_type': self.prompts_type,
             "xblock_id": self.get_xblock_id(),
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language']

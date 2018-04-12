@@ -23,7 +23,7 @@ class LeaderboardMixin(object):
     """
 
     @XBlock.handler
-    def render_leaderboard(self, data, suffix=''):
+    def render_leaderboard(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Render the leaderboard.
 
@@ -104,6 +104,7 @@ class LeaderboardMixin(object):
 
         context = {'topscores': scores,
                    'allow_latex': self.allow_latex,
+                   'prompts_type': self.prompts_type,
                    'file_upload_type': self.file_upload_type,
                    'xblock_id': self.get_xblock_id()}
 

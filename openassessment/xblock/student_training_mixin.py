@@ -67,7 +67,6 @@ class StudentTrainingMixin(object):
             if isinstance(parts[0].get('text'), basestring):
                 return create_submission_dict({'answer': answer}, self.prompts)
 
-
     def _parse_answer_list(self, answer):
         """
         Helper to parse answer as a list of strings.
@@ -77,13 +76,11 @@ class StudentTrainingMixin(object):
         elif len(answer) == 0:
             return self._parse_answer_string("")
 
-
     def _parse_answer_string(self, answer):
         """
         Helper to parse answer as a plain string
         """
         return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.prompts)
-
 
     def _parse_example(self, example):
         """
@@ -135,6 +132,7 @@ class StudentTrainingMixin(object):
 
         # add allow_latex field to the context
         context['allow_latex'] = self.allow_latex
+        context['prompts_type'] = self.prompts_type
         context['user_timezone'] = user_preferences['user_timezone']
         context['user_language'] = user_preferences['user_language']
 
