@@ -5,8 +5,8 @@
 # 
 # Translators:
 # Adam Banasiak <adam@cku.elblag.pl>, 2015
-# Fundacja Eduprojekt.org <maciej@eduprojekt.org>, 2015-2017
-# Fundacja Eduprojekt.org <maciej@eduprojekt.org>, 2014
+# Maciej Kolankowski <maciej@eduprojekt.org>, 2015-2017
+# Maciej Kolankowski <maciej@eduprojekt.org>, 2014
 # Tomasz Cholewa <tomasz@cholewa.pl>, 2014
 msgid ""
 msgstr ""
