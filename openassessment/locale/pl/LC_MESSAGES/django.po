@@ -9,7 +9,7 @@
 # Adrian Stępień <inactive+greatadrian@transifex.com>, 2015
 # Andrzej Batorski <bator54@gmail.com>, 2014
 # dwegiel <dwegiel@gmail.com>, 2015
-# Fundacja Eduprojekt.org <maciej@eduprojekt.org>, 2017
+# Maciej Kolankowski <maciej@eduprojekt.org>, 2017
 # Jakub Kopczyk <kuba5566@gmail.com>, 2014-2015
 # Mateusz <blue90pl@gmail.com>, 2014
 # MONIKA STEFAŃCZYK <monika_stefanczyk@wp.pl>, 2016
