@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ka\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: openassessment/assessment/api/student_training.py:176
 msgid "Could not parse serialized rubric"
@@ -503,6 +503,7 @@ msgid_plural ""
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
 msgstr[0] "\n                      %(assessment_title)s - %(points)s ქულა\n                  "
+msgstr[1] "\n                      %(assessment_title)s - %(points)s ქულა\n                  "
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -1423,6 +1424,7 @@ msgid_plural ""
 "                                        %(assessment_label)s - %(points)s points\n"
 "                                    "
 msgstr[0] "\n                                        %(assessment_label)s - %(points)s ქულა\n                                    "
+msgstr[1] "\n                                        %(assessment_label)s - %(points)s ქულა\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:132
 msgid "Feedback Recorded"
