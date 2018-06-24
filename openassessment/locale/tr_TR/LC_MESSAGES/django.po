@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-05-25 20:58+0000\n"
+"PO-Revision-Date: 2018-06-18 07:25+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -1116,7 +1116,7 @@ msgid ""
 "\n"
 "                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                                Gönderiminiz %(removed_by_username)s tarafından %(removed_datetime)s tarihinde iptal edildi\n                            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:41
 #, python-format
@@ -1124,7 +1124,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                               Gönderiminiz %(removed_datetime)s tarihinde iptal edildi\n                            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:48
 #, python-format
@@ -1717,16 +1717,16 @@ msgstr "Eş değerlendirme yüklenemedi."
 
 #: openassessment/xblock/peer_assessment_mixin.py:213
 msgid "Submit your assessment and review another response"
-msgstr ""
+msgstr "Değerlendirmenizi gönderin ve bir diğer cevabı inceleyin"
 
 #: openassessment/xblock/peer_assessment_mixin.py:217
 msgid "Submit your assessment and move to next step"
-msgstr ""
+msgstr "Değerlendirmenizi gönderin ve sonraki adıma geçin"
 
 #: openassessment/xblock/peer_assessment_mixin.py:221
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
-msgstr ""
+msgstr "Değerlendirmenizi gönderin ve #{response_number} numaralı cevaba geçin"
 
 #: openassessment/xblock/resolve_dates.py:51
 #, python-brace-format
