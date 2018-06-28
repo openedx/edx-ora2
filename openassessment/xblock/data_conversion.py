@@ -137,11 +137,15 @@ def create_prompts_list(prompt_or_serialized_prompts):
         decode_prompts = json.dumps(prompt_or_serialized_prompts, cls=LazyEncoder)
         prompts = json.loads(decode_prompts)
     else:
-        prompts = [
-            {
-                'description': prompt_or_serialized_prompts,
-            }
-        ]
+        try:
+            prompts = json.loads(prompt_or_serialized_prompts)
+        except Exception as e:
+
+            prompts = [
+                {
+                    'description': prompt_or_serialized_prompts,
+                }
+            ]
     return prompts
 
 
