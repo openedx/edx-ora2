@@ -138,14 +138,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("view assignment statistics", decoded_response)
 
         # Check all release dates.
-        self.assertIn("march 1, 2014", decoded_response)
-        self.assertIn("jan. 2, 2015", decoded_response)
-        self.assertIn("jan. 2, 2016", decoded_response)
+        self.assertIn("03/01/2014", decoded_response)
+        self.assertIn("01/02/2015", decoded_response)
+        self.assertIn("01/02/2016", decoded_response)
 
         # Check all due dates.
-        self.assertIn("april 1, 2014", decoded_response)
-        self.assertIn("april 1, 2015", decoded_response)
-        self.assertIn("april 1, 2016", decoded_response)
+        self.assertIn("04/01/2014", decoded_response)
+        self.assertIn("04/01/2015", decoded_response)
+        self.assertIn("04/01/2016", decoded_response)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_dates_distant_past_and_future(self, xblock):

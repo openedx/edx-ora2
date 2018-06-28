@@ -183,8 +183,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Expect that the page renders even if the update fails
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
-    @ddt.data(('utc', '2014-04-01T00:00:00+00:00'),
-              ('America/Los_Angeles', '2014-04-01T00:00:00+00:00'))
+    @ddt.data(('utc', '04/01/2014 midnight'),
+              ('America/Los_Angeles', '04/01/2014 midnight'))
     @ddt.unpack
     def test_load_student_view_with_dates(self, time_zone, expected_date):
         """OA XBlock returns some HTML to the user.
