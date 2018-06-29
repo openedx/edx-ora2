@@ -10,6 +10,9 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 
 class LazyEncoder(DjangoJSONEncoder):
+    """
+    Custom JSON enconder for Lazy translations
+    """
     def default(self, obj):
         if isinstance(obj, Promise):
             return force_text(obj)
@@ -130,7 +133,7 @@ def create_prompts_list(prompt_or_serialized_prompts):
     if prompt_or_serialized_prompts is None:
         prompt_or_serialized_prompts = ''
 
-    if type(prompt_or_serialized_prompts) is dict:
+    if isinstance(prompt_or_serialized_prompts, dict):
         # Lazy translation objects cannot be parsed to json normally
         # https://docs.djangoproject.com/en/1.8/topics/serialization/#serialization-formats-json
         # we need to pass it with a custom encoder.
@@ -139,8 +142,7 @@ def create_prompts_list(prompt_or_serialized_prompts):
     else:
         try:
             prompts = json.loads(prompt_or_serialized_prompts)
-        except Exception as e:
-
+        except Exception:
             prompts = [
                 {
                     'description': prompt_or_serialized_prompts,
@@ -163,7 +165,7 @@ def create_rubric_dict(prompts, criteria):
 
     """
     return {
-        "prompts" : prompts,
+        "prompts": prompts,
         "criteria": criteria
     }
 

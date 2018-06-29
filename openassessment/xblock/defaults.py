@@ -77,15 +77,19 @@ I think that this response...
 """)
 
 DEFAULT_EXAMPLE_ANSWER = (
-    ugettext_lazy("Replace this text with your own sample response for this assignment. "
-    "Then, under Response Score to the right, select an option for each criterion. "
-    "Learners practice performing peer assessments by assessing this response and comparing "
-    "the options that they select in the rubric with the options that you specified.")
+    ugettext_lazy(
+        "Replace this text with your own sample response for this assignment. "
+        "Then, under Response Score to the right, select an option for each criterion. "
+        "Learners practice performing peer assessments by assessing this response and comparing "
+        "the options that they select in the rubric with the options that you specified."
+    )
 )
 
 DEFAULT_EXAMPLE_ANSWER_2 = (
-    ugettext_lazy("Replace this text with another sample response, "
-    "and then specify the options that you would select for this response.")
+    ugettext_lazy(
+        "Replace this text with another sample response, "
+        "and then specify the options that you would select for this response."
+    )
 )
 
 DEFAULT_STUDENT_TRAINING = {
