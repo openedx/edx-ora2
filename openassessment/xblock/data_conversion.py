@@ -1,22 +1,7 @@
 """
 Data Conversion utility methods for handling ORA2 XBlock data transformations and validation.
-
 """
 import json
-
-from django.utils.functional import Promise
-from django.utils.encoding import force_text
-from django.core.serializers.json import DjangoJSONEncoder
-
-
-class LazyEncoder(DjangoJSONEncoder):
-    """
-    Custom JSON enconder for Lazy translations
-    """
-    def default(self, obj):
-        if isinstance(obj, Promise):
-            return force_text(obj)
-        return super(LazyEncoder, self).default(obj)
 
 
 def convert_training_examples_list_to_dict(examples_list):
@@ -133,21 +118,14 @@ def create_prompts_list(prompt_or_serialized_prompts):
     if prompt_or_serialized_prompts is None:
         prompt_or_serialized_prompts = ''
 
-    if isinstance(prompt_or_serialized_prompts, dict):
-        # Lazy translation objects cannot be parsed to json normally
-        # https://docs.djangoproject.com/en/1.8/topics/serialization/#serialization-formats-json
-        # we need to pass it with a custom encoder.
-        decode_prompts = json.dumps(prompt_or_serialized_prompts, cls=LazyEncoder)
-        prompts = json.loads(decode_prompts)
-    else:
-        try:
-            prompts = json.loads(prompt_or_serialized_prompts)
-        except Exception:
-            prompts = [
-                {
-                    'description': prompt_or_serialized_prompts,
-                }
-            ]
+    try:
+        prompts = json.loads(prompt_or_serialized_prompts)
+    except ValueError:
+        prompts = [
+            {
+                'description': prompt_or_serialized_prompts,
+            }
+        ]
     return prompts
 
 
