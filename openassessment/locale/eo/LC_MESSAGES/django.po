@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-29 13:04-0400\n"
+"POT-Creation-Date: 2018-07-05 18:33-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
-"Language: en\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1293,28 +1293,28 @@ msgstr ""
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
 #: openassessment/templates/openassessmentblock/response/oa_response.html
-#, python-format, python-brace-format
+#, python-format
 msgid ""
 "\n"
-"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available %(start_date)s (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 "\n"
-"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available %(start_date)s (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
 #: openassessment/templates/openassessmentblock/response/oa_response.html
-#, python-format, python-brace-format
+#, python-format
 msgid ""
 "\n"
-"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due %(due_date)s (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
 msgstr ""
 "\n"
-"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
+"            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due %(due_date)s (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
@@ -2086,6 +2086,199 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 "Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"\n"
+"    Censorship in the Libraries\n"
+"\n"
+"    'All of us can think of a book that we hope none of our children or any other children have taken off the shelf. But if I have the right to remove that book from the shelf -- that work I abhor -- then you also have exactly the same right and so does everyone else. And then we have no books left on the shelf for any of us.' --Katherine Paterson, Author\n"
+"\n"
+"    Write a persuasive essay to a newspaper reflecting your views on censorship in libraries. Do you believe that certain materials, such as books, music, movies, magazines, etc., should be removed from the shelves if they are found offensive? Support your position with convincing arguments from your own experience, observations, and/or reading.\n"
+"\n"
+"    Read for conciseness, clarity of thought, and form.\n"
+"  "
+msgstr ""
+"\n"
+"    Çénsörshïp ïn thé Lïßrärïés\n"
+"\n"
+"    'Àll öf üs çän thïnk öf ä ßöök thät wé höpé nöné öf öür çhïldrén ör äný öthér çhïldrén hävé täkén öff thé shélf. Büt ïf Ì hävé thé rïght tö rémövé thät ßöök fröm thé shélf -- thät wörk Ì äßhör -- thén ýöü älsö hävé éxäçtlý thé sämé rïght änd sö döés évérýöné élsé. Ànd thén wé hävé nö ßööks léft ön thé shélf för äný öf üs.' --Käthérïné Pätérsön, Àüthör\n"
+"\n"
+"    Wrïté ä pérsüäsïvé éssäý tö ä néwspäpér réfléçtïng ýöür vïéws ön çénsörshïp ïn lïßrärïés. Dö ýöü ßélïévé thät çértäïn mätérïäls, süçh äs ßööks, müsïç, mövïés, mägäzïnés, étç., shöüld ßé rémövéd fröm thé shélvés ïf théý äré föünd öffénsïvé? Süppört ýöür pösïtïön wïth çönvïnçïng ärgüménts fröm ýöür öwn éxpérïénçé, ößsérvätïöns, änd/ör réädïng.\n"
+"\n"
+"    Réäd för çönçïsénéss, çlärïtý öf thöüght, änd förm.\n"
+"  #"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "Ideas"
+msgstr "Ìdéäs Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/xblock/defaults.py
+msgid "Determine if there is a unifying theme or main idea."
+msgstr ""
+"Détérmïné ïf théré ïs ä ünïfýïng thémé ör mäïn ïdéä. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/defaults.py
+msgid "optional"
+msgstr "öptïönäl Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+#: openassessment/xblock/defaults.py
+msgid "Poor"
+msgstr "Pöör Ⱡ'σяєм ι#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Difficult for the reader to discern the main idea.  Too brief or too "
+"repetitive to establish or maintain a focus."
+msgstr ""
+"Dïffïçült för thé réädér tö dïsçérn thé mäïn ïdéä.  Töö ßrïéf ör töö "
+"répétïtïvé tö éstäßlïsh ör mäïntäïn ä föçüs. Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+#: openassessment/xblock/defaults.py
+msgid "Fair"
+msgstr "Fäïr Ⱡ'σяєм ι#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Presents a unifying theme or main idea, but may include minor tangents.  "
+"Stays somewhat focused on topic and task."
+msgstr ""
+"Présénts ä ünïfýïng thémé ör mäïn ïdéä, ßüt mäý ïnçlüdé mïnör tängénts.  "
+"Stäýs söméwhät föçüséd ön töpïç änd täsk. Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "Good"
+msgstr "Gööd Ⱡ'σяєм ι#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Presents a unifying theme or main idea without going off on tangents.  Stays"
+" completely focused on topic and task."
+msgstr ""
+"Présénts ä ünïfýïng thémé ör mäïn ïdéä wïthöüt göïng öff ön tängénts.  Stäýs"
+" çömplétélý föçüséd ön töpïç änd täsk. Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "Content"
+msgstr "Çöntént Ⱡ'σяєм ιρѕυм #"
+
+#: openassessment/xblock/defaults.py
+msgid "Assess the content of the submission"
+msgstr ""
+"Àsséss thé çöntént öf thé süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Includes little information with few or no details or unrelated details.  "
+"Unsuccessful in attempts to explore any facets of the topic."
+msgstr ""
+"Ìnçlüdés lïttlé ïnförmätïön wïth féw ör nö détäïls ör ünrélätéd détäïls.  "
+"Ûnsüççéssfül ïn ättémpts tö éxplöré äný fäçéts öf thé töpïç. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαвσяυм#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Includes little information and few or no details.  Explores only one or two"
+" facets of the topic."
+msgstr ""
+"Ìnçlüdés lïttlé ïnförmätïön änd féw ör nö détäïls.  Éxplörés önlý öné ör twö"
+" fäçéts öf thé töpïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Includes sufficient information and supporting details. (Details may not be "
+"fully developed; ideas may be listed.)  Explores some facets of the topic."
+msgstr ""
+"Ìnçlüdés süffïçïént ïnförmätïön änd süppörtïng détäïls. (Détäïls mäý nöt ßé "
+"füllý dévélöpéd; ïdéäs mäý ßé lïstéd.)  Éxplörés sömé fäçéts öf thé töpïç. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αη#"
+
+#: openassessment/xblock/defaults.py
+msgid "Excellent"
+msgstr "Éxçéllént Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Includes in-depth information and exceptional supporting details that are "
+"fully developed.  Explores all facets of the topic."
+msgstr ""
+"Ìnçlüdés ïn-dépth ïnförmätïön änd éxçéptïönäl süppörtïng détäïls thät äré "
+"füllý dévélöpéd.  Éxplörés äll fäçéts öf thé töpïç. Ⱡ'σяєм #"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"\n"
+"(Optional) What aspects of this response stood out to you? What did it do well? How could it be improved?\n"
+msgstr ""
+"\n"
+"(Öptïönäl) Whät äspéçts öf thïs réspönsé stööd öüt tö ýöü? Whät dïd ït dö wéll? Höw çöüld ït ßé ïmprövéd?\n"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#\n"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"\n"
+"I think that this response...\n"
+msgstr ""
+"\n"
+"Ì thïnk thät thïs réspönsé...\n"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#\n"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Replace this text with your own sample response for this assignment. Then, "
+"under Response Score to the right, select an option for each criterion. "
+"Learners practice performing peer assessments by assessing this response and"
+" comparing the options that they select in the rubric with the options that "
+"you specified."
+msgstr ""
+"Répläçé thïs téxt wïth ýöür öwn sämplé réspönsé för thïs ässïgnmént. Thén, "
+"ündér Réspönsé Sçöré tö thé rïght, séléçt än öptïön för éäçh çrïtérïön. "
+"Léärnérs präçtïçé pérförmïng péér ässéssménts ßý ässéssïng thïs réspönsé änd"
+" çömpärïng thé öptïöns thät théý séléçt ïn thé rüßrïç wïth thé öptïöns thät "
+"ýöü spéçïfïéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, "
+"ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм "
+"α∂ мιηιм #"
+
+#: openassessment/xblock/defaults.py
+msgid ""
+"Replace this text with another sample response, and then specify the options"
+" that you would select for this response."
+msgstr ""
+"Répläçé thïs téxt wïth änöthér sämplé réspönsé, änd thén spéçïfý thé öptïöns"
+" thät ýöü wöüld séléçt för thïs réspönsé. Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "student-training"
+msgstr "stüdént-träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "peer-assessment"
+msgstr "péér-ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "self-assessment"
+msgstr "sélf-ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/xblock/defaults.py openassessment/xblock/defaults.py
+msgid "staff-assessment"
+msgstr "stäff-ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: openassessment/xblock/grade_mixin.py
 #: openassessment/xblock/leaderboard_mixin.py
