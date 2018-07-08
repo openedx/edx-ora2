@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-06-18 07:25+0000\n"
+"PO-Revision-Date: 2018-07-06 14:56+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -1441,7 +1441,7 @@ msgstr "Geribildirim Kaydedildi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:143
 msgid "The submission is waiting for assessments."
-msgstr ""
+msgstr "Bu gönderim değerlendirme için bekliyor."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
 msgid ""
