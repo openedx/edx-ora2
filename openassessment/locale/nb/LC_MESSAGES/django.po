@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Erland Flaten <eflaten@vangenplotz.no>, 2015
-# Frode Arntsen <frode.arntsen@bibsys.no>, 2014,2016-2017
+# Frode Arntsen <frode.arntsen@unit.no>, 2014,2016-2017
 # Lene2015 <gundersen_lene@hotmail.com>, 2015
 # Joakim S. Johnson, 2016
 # Øyvind Eide <oaeide@gmail.com>, 2014
