@@ -384,6 +384,7 @@ class OpenAssessmentBlock(MessageMixin,
         else:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, item))
 
+    @XBlock.supports('multi_device')  # Mark as mobile-friendly
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
