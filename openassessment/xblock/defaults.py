@@ -17,46 +17,46 @@ DEFAULT_PROMPT = _("""
 
 DEFAULT_RUBRIC_CRITERIA = [
     {
-        'name': _("Ideas"),
+        'name': "Ideas",
         'label': _("Ideas"),
         'prompt': _("Determine if there is a unifying theme or main idea."),
         'order_num': 0,
         'feedback': _('optional'),
         'options': [
             {
-                'order_num': 0, 'points': 0, 'name': _('Poor'), 'label': _('Poor'),
+                'order_num': 0, 'points': 0, 'name': 'Poor', 'label': _('Poor'),
                 'explanation': _("""Difficult for the reader to discern the main idea.  Too brief or too repetitive to establish or maintain a focus.""")
             },
             {
-                'order_num': 1, 'points': 3, 'name': _('Fair'), 'label': _('Fair'),
+                'order_num': 1, 'points': 3, 'name': 'Fair', 'label': _('Fair'),
                 'explanation': _("""Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task.""")
             },
             {
-                'order_num': 2, 'points': 5, 'name': _('Good'), 'label': _('Good'),
+                'order_num': 2, 'points': 5, 'name': 'Good', 'label': _('Good'),
                 'explanation': _("""Presents a unifying theme or main idea without going off on tangents.  Stays completely focused on topic and task.""")
             },
         ],
     },
     {
-        'name': _("Content"),
+        'name': "Content",
         'label': _("Content"),
         'prompt': _("Assess the content of the submission"),
         'order_num': 1,
         'options': [
             {
-                'order_num': 0, 'points': 0, 'name': _('Poor'), 'label': _('Poor'),
+                'order_num': 0, 'points': 0, 'name': 'Poor', 'label': _('Poor'),
                 'explanation': _("""Includes little information with few or no details or unrelated details.  Unsuccessful in attempts to explore any facets of the topic.""")
             },
             {
-                'order_num': 1, 'points': 1, 'name': _('Fair'), 'label': _('Fair'),
+                'order_num': 1, 'points': 1, 'name': 'Fair', 'label': _('Fair'),
                 'explanation': _("""Includes little information and few or no details.  Explores only one or two facets of the topic.""")
             },
             {
-                'order_num': 2, 'points': 3, 'name': _('Good'), 'label': _('Good'),
+                'order_num': 2, 'points': 3, 'name': 'Good', 'label': _('Good'),
                 'explanation': _("""Includes sufficient information and supporting details. (Details may not be fully developed; ideas may be listed.)  Explores some facets of the topic.""")
             },
             {
-                'order_num': 3, 'points': 3, 'name': _('Excellent'), 'label': _('Excellent'),
+                'order_num': 3, 'points': 3, 'name': 'Excellent', 'label': _('Excellent'),
                 'explanation': _("""Includes in-depth information and exceptional supporting details that are fully developed.  Explores all facets of the topic.""")
             },
         ],
@@ -93,7 +93,7 @@ DEFAULT_EXAMPLE_ANSWER_2 = (
 )
 
 DEFAULT_STUDENT_TRAINING = {
-    "name": _("student-training"),
+    "name": "student-training",
     "start": None,
     "due": None,
     "examples": [
@@ -101,12 +101,12 @@ DEFAULT_STUDENT_TRAINING = {
             "answer": DEFAULT_EXAMPLE_ANSWER,
             "options_selected": [
                 {
-                    "criterion": _("Ideas"),
-                    "option": _("Fair")
+                    "criterion": "Ideas",
+                    "option": "Fair"
                 },
                 {
-                    "criterion": _("Content"),
-                    "option": _("Good")
+                    "criterion": "Content",
+                    "option": "Good"
                 }
             ]
         },
@@ -114,12 +114,12 @@ DEFAULT_STUDENT_TRAINING = {
             "answer": DEFAULT_EXAMPLE_ANSWER_2,
             "options_selected": [
                 {
-                    "criterion": _("Ideas"),
-                    "option": _("Poor")
+                    "criterion": "Ideas",
+                    "option": "Poor"
                 },
                 {
-                    "criterion": _("Content"),
-                    "option": _("Good")
+                    "criterion": "Content",
+                    "option": "Good"
                 }
             ]
         }
@@ -133,7 +133,7 @@ DEFAULT_DUE = "2029-01-01T00:00"
 # configured. If no configuration is specified, this is the default assessment
 # module(s) associated with the XBlock.
 DEFAULT_PEER_ASSESSMENT = {
-    "name": _("peer-assessment"),
+    "name": "peer-assessment",
     "start": DEFAULT_START,
     "due": DEFAULT_DUE,
     "must_grade": 5,
@@ -141,13 +141,13 @@ DEFAULT_PEER_ASSESSMENT = {
 }
 
 DEFAULT_SELF_ASSESSMENT = {
-    "name": _("self-assessment"),
+    "name": "self-assessment",
     "start": DEFAULT_START,
     "due": DEFAULT_DUE,
 }
 
 DEFAULT_STAFF_ASSESSMENT = {
-    "name": _("staff-assessment"),
+    "name": "staff-assessment",
     "start": DEFAULT_START,
     "due": DEFAULT_DUE,
     "required": False,
@@ -161,8 +161,8 @@ DEFAULT_ASSESSMENT_MODULES = [
 ]
 
 DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
-    _("student-training"),
-    _("peer-assessment"),
-    _("self-assessment"),
-    _("staff-assessment"),
+    "student-training",
+    "peer-assessment",
+    "self-assessment",
+    "staff-assessment",
 ]
