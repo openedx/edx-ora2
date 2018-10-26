@@ -101,7 +101,7 @@
 
       button.ui-slidable {
         @include text-align(left);
-        display:flex;
+        display: flex;
       }
 
       .step__counter, .wrapper--copy {
@@ -188,14 +188,14 @@
       display: inline;
       position: absolute;
       @include right(20px)
-      top:-1px;
+      top: -1px;
 
       @include media($bp-dm) {
         margin-top: 0;
         @include float(right);
         position: absolute;
         @include right(20px)
-        top:-1px;
+        top: -1px;
       }
 
       @include media($bp-dl) {
@@ -203,7 +203,7 @@
         @include float(right);
         position: absolute;
         @include right(20px)
-        top:-1px;
+        top: -1px;
       }
 
       @include media($bp-dx) {
@@ -211,7 +211,7 @@
         @include float(right);
         position: absolute;
         @include right(20px)
-        top:-1px;
+        top: -1px;
       }
 
       .step__status__value {
