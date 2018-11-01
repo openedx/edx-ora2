@@ -4,7 +4,4 @@ branch = True
 [report]
 include = openassessment/*
 omit =
-    **/__init__.py
-    **/tests/*
-    **/test/*
-    **/migrations/*
+    */migrations/*
