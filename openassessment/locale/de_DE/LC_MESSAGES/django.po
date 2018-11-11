@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-09-21 14:52+0000\n"
+"PO-Revision-Date: 2018-11-09 09:52+0000\n"
 "Last-Translator: Abstract Technology <stefania.trabucchi@abstract-technology.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -557,7 +557,7 @@ msgstr "\n                                            %(points_earned)s von %(po
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
 #: openassessment/templates/openassessmentblock/response/oa_response.html:23
 msgid "Your Response"
-msgstr "Deine Antwort"
+msgstr "Ihre Antwort"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
 msgid "Your Upload"
@@ -837,7 +837,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "Diese Aufgabe beinhaltet mehrere Schritte, welche erst ersichtlich werden, sobald Sie das Eingabefeld entsprechend ausfüllen."
+msgstr "Diese Aufgabe besteht aus mehreren Schritten. Im ersten Schritt geben Sie zunächst Ihre Antwort auf die Frage ein. Die anderen Schritte werden unten im Antwortfeld angezeigt."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -861,7 +861,7 @@ msgstr "Kommentare"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr "Die frage für diesen  Abschnitt"
+msgstr "Die Frage in diesem Abschnitt"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
 msgid "View the files associated with this submission:"
@@ -1012,7 +1012,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr "Alle möglichen Bewertungs-Antworten wurden beurteilt. Überprüfe später, ob noch mehr Teilnehmer ihre Antworten gesendet haben. Du wirst deine Benotung erfahren, sobald du alle Schritte dieser Aufgabe abgeschlossen hast und deine Antworten von der Gruppe beurteilt wurden. "
+msgstr "Alle verfügbaren Teilnehmer-Antworten wurden bewertet. Kontrollieren Sie später noch einmal, ob weitere Teilnehmer Antworten eingereicht haben. Sie erhalten Ihre Bewertung, nachdem Sie alle Schritte für diese Aufgabestellung abgeschlossen haben und Ihre KollegInnen Ihre Antwort bewertet haben."
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1043,7 +1043,7 @@ msgstr "In Bearbeitung"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:57
 msgid "Enter your response to the prompt."
-msgstr "Geben Sie Ihre Antwort in das Eingabefeld ein."
+msgstr "Geben Sie Ihre Antwort ein."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:59
 msgid ""
@@ -1062,7 +1062,7 @@ msgstr "Nachdem Sie Ihre Antwort übermittelt haben, können Sie diese nicht meh
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:75
 msgid "The prompt for this section"
-msgstr "Das Eingabefeld für diesen Abschnitt"
+msgstr "Die Aufgabenstellung für diesen Abschnitt."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Your response (required)"
@@ -1102,7 +1102,7 @@ msgstr "Hochladen von Dateien"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:157
 msgid "You may continue to work on your response until you submit it."
-msgstr "Sie können solange an Ihrer Antwort arbeiten, bis Sie diese einreichen. "
+msgstr "Sie können so lange an Ihrer Antwort arbeiten, bis Sie diese einreichen. "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:164
 msgid "We could not submit your response"
@@ -1454,7 +1454,7 @@ msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "Die Einreichungen des Teilnehmers wurden von der Gruppen-Beurteilung entfernt. Der Teilnehmer erhält somit 0 Punkte. Sie können dem Teilnehmer auch erlauben, die Aufgabe zu Wiederholen."
+msgstr "Die Einreichung des Teilnehmers wurden von der Partnerbewertung entfernt. Der Teilnehmer erhält somit 0 Punkte. Sie können dem Teilnehmer auch erlauben, die Aufgabe zu Wiederholen. "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
 msgid "The problem has not been started."
@@ -1823,7 +1823,7 @@ msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "Die Einreichungen des Teilnehmers wurden von der Gruppen-Beurteilung entfernt. Der Teilnehmer erhält somit 0 Punkte. Sie können dem Teilnehmer auch erlauben, die Aufgabe zu Wiederholen. "
+msgstr "Die Einreichung des Teilnehmers wurden von der Partnerbewertung entfernt. Der Teilnehmer erhält somit 0 Punkte. Sie können dem Teilnehmer auch erlauben, die Aufgabe zu Wiederholen. "
 
 #: openassessment/xblock/staff_assessment_mixin.py:39
 msgid "The submission ID of the submission being assessed was not found."
