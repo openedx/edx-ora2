@@ -8,6 +8,7 @@
 # Changyue Wang <peterwang.dut@gmail.com>, 2014
 # Dwi Sulfahnur <dwisulfahnur@gmail.com>, 2018
 # Haiyu Zhen <jennifer.zhy@hotmail.com>, 2015
+# ifLab <webmaster@iflab.org>, 2018
 # jg Ma <jg20040308@126.com>, 2016
 # Jiazhen Tan <jessie12@live.cn>, 2016
 # jsgang <jsgang9@gmail.com>, 2015,2017
@@ -20,8 +21,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-08-29 19:32+0000\n"
-"Last-Translator: Dwi Sulfahnur <dwisulfahnur@gmail.com>\n"
+"PO-Revision-Date: 2018-11-13 01:05+0000\n"
+"Last-Translator: ifLab <webmaster@iflab.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -104,7 +105,7 @@ msgstr "不能读取上传链接地址"
 #: openassessment/xblock/static/js/src/oa_server.js:529
 #: openassessment/xblock/static/js/src/oa_server.js:549
 msgid "Server error."
-msgstr ""
+msgstr "服务器错误。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -126,79 +127,79 @@ msgstr "不能加载"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Unit Name"
-msgstr ""
+msgstr "单元名"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Units"
-msgstr ""
+msgstr "单元"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
 msgid "Assessment"
-msgstr ""
+msgstr "评分"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
 msgid "Assessments"
-msgstr ""
+msgstr "评分"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:56
 msgid "Total Responses"
-msgstr ""
+msgstr "解答总数"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:60
 msgid "Training"
-msgstr ""
+msgstr "训练"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:64
 msgid "Peer"
-msgstr ""
+msgstr "同行"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:68
 msgid "Self"
-msgstr ""
+msgstr "自己"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:72
 msgid "Waiting"
-msgstr ""
+msgstr "等待"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:76
 msgid "Staff"
-msgstr ""
+msgstr "工作人员"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:81
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:82
 msgid "Final Grade Received"
-msgstr ""
+msgstr "最终收获得分"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:111
 msgid "List of Open Assessments is unavailable"
-msgstr ""
+msgstr "开放评估列表不可用"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:212
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:262
 msgid "Please wait"
-msgstr ""
+msgstr "请稍候"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:235
 msgid "Block view is unavailable"
-msgstr ""
+msgstr "块视图不可用"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:247
 msgid "Back to Full List"
-msgstr ""
+msgstr "返回完整列表"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_peer.js:193
@@ -212,12 +213,12 @@ msgstr "如果你离开本页时没有提交你的同学互评，你将丢失你
 msgid ""
 "After you upload new files all your previously uploaded files will be "
 "overwritten. Continue?"
-msgstr ""
+msgstr "上传新文件后，所有之前上传的文件都会被覆盖。继续吗?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:283
 msgid "Your file "
-msgstr ""
+msgstr "您的文件"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:307
@@ -266,7 +267,7 @@ msgstr "你将会提交对本次作业的答案。提交后，你将无法修改
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "File size must be 10MB or less."
-msgstr ""
+msgstr "文件大小不能超过10MB。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:581
@@ -284,17 +285,17 @@ msgstr "文件类型不可用。"
 #: openassessment/xblock/static/js/src/lms/oa_response.js:647
 #: openassessment/xblock/static/js/src/lms/oa_response.js:653
 msgid "Describe "
-msgstr ""
+msgstr "描述"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:647
 msgid "(required):"
-msgstr ""
+msgstr "(必须):"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:667
 msgid "Thumbnail view of "
-msgstr ""
+msgstr "缩略视图"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:124
@@ -329,37 +330,37 @@ msgstr "如果你未提交你的员工评估就离开此页面，你将丢失所
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_training.js:116
 msgid "Feedback available for selection."
-msgstr ""
+msgstr "可供选择的反馈。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:391
 msgid "Paragraph"
-msgstr ""
+msgstr "段落"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:392
 msgid "Preformatted"
-msgstr ""
+msgstr "格式化"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:393
 msgid "Heading 3"
-msgstr ""
+msgstr "标题 3"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:394
 msgid "Heading 4"
-msgstr ""
+msgstr "标题 4"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:395
 msgid "Heading 5"
-msgstr ""
+msgstr "标题 5"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:396
 msgid "Heading 6"
-msgstr ""
+msgstr "标题 6"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
