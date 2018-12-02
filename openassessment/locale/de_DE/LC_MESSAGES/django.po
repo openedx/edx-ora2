@@ -21,6 +21,7 @@
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Rouven Wachhaus <inactive+rwchhs@transifex.com>, 2016
 # Rouven Wachhaus <inactive+rwchhs@transifex.com>, 2016
+# Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018
 # v4rp1ng <inactive+v4rp1ng@transifex.com>, 2014
 # Андрей Поляков <polyakov.andrey@gmail.com>, 2016
 msgid ""
@@ -28,7 +29,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-11-09 09:52+0000\n"
+"PO-Revision-Date: 2018-11-26 11:46+0000\n"
 "Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -822,7 +823,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n                     Diese Aufgabe beinhaltet mehrere Schritte, welche erst ersichtlich werden, sobald Sie das Eingabefeld %(start_tag)s%(end_tag)s entsprechend ausfüllen.\n                "
+msgstr "\n                     Diese Aufgabe beinhaltet mehrere Schritte, welche erst ersichtlich werden, sobald Sie%(start_tag)sdas Eingabefeld %(end_tag)s entsprechend ausfüllen.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"

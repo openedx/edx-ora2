@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-10-05 10:05+0000\n"
+"PO-Revision-Date: 2018-11-30 09:22+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -125,7 +125,7 @@ msgstr "Cevap Teslim Zamanı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
 msgid "The date and time when learners can no longer submit responses."
-msgstr "Öğrencilerin artık cevaplarını yükleyemediği tarih ve zaman."
+msgstr "Öğrencilerin artık yanıtlarını yükleyemediği tarih ve zaman."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Text Response"
@@ -139,13 +139,13 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
-msgstr ""
+msgstr "Dosya Yüklemeleri Yanıtı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "Öğrencilerin yanıtlarının bir parçası olarak dosya yükleyip yükleyemeyeceklerini belirtin."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
 msgid "File Upload Types"
@@ -174,7 +174,7 @@ msgstr "Öğrencilerin dosyaları kendi metin yanıtlarıyla yükleyip yüklemey
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
 msgid "File Types"
-msgstr " Dosya Tipleri"
+msgstr " Dosya Türleri"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:151
 msgid ""
@@ -676,7 +676,7 @@ msgid ""
 "need to be done on your response. When the assessments of your response are "
 "complete, you will see feedback from everyone who assessed your response, "
 "and you will receive your final grade."
-msgstr ""
+msgstr "Görevinizdeki adımları tamamladınız, ancak yanıtınıza dair bazı değerlendirmelerin tamamlanması gerekiyor. Yanıtınızın değerlendirmesi tamamlandığında, değerlendirmeyi yapan eğitmenlerden geri bildirimlerin yanı sıra notunuzu alacaksınız."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
@@ -1033,7 +1033,7 @@ msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-da
 #: openassessment/templates/openassessmentblock/response/oa_response.html:46
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
 msgid "In Progress"
-msgstr "İşlem sürüyor"
+msgstr "İşlem Sürüyor"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:57
 msgid "Enter your response to the prompt."
@@ -1238,7 +1238,7 @@ msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an k
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:348
 msgid "Staff Grade"
-msgstr "Personel Derecesi"
+msgstr "Personel Notu"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
@@ -1291,7 +1291,7 @@ msgstr "Tarih"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:91
 msgid "Release Date"
-msgstr "Yayın Tarihi:"
+msgstr "Yayın Tarihi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:104
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:110
@@ -1494,7 +1494,7 @@ msgid ""
 "\n"
 "                            Assessment %(assessment_num)s:\n"
 "                        "
-msgstr ""
+msgstr "\n                            %(assessment_num)s Değerlendirme:\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
 msgid "Assessment Details"
@@ -1526,7 +1526,7 @@ msgid ""
 "\n"
 "                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                  "
-msgstr ""
+msgstr "\n                      İşlem Sürüyor (%(training_available_num)s işlemin%(current_progress_num)s kadarı)\n                  "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1617,7 +1617,7 @@ msgstr "Öğrenci Eğitim Adımındaki bu görev yüklenemedi."
 
 #: openassessment/xblock/data_conversion.py:244
 msgid "You must provide options selected in the assessment."
-msgstr ""
+msgstr "Değerlendirme için gerekli seçenekleri sağlamalısınız."
 
 #: openassessment/xblock/data_conversion.py:247
 msgid "You must provide overall feedback in the assessment."
@@ -1637,7 +1637,7 @@ msgstr "Beklenmeyen bir hata oluştu."
 
 #: openassessment/xblock/grade_mixin.py:169
 msgid "Peer Assessment"
-msgstr "Kişiyle Değerlendirme"
+msgstr "Akran Değerlendirmesi"
 
 #: openassessment/xblock/grade_mixin.py:171
 msgid "Self Assessment"
@@ -1658,7 +1658,7 @@ msgstr "Ekip Yorumları"
 
 #: openassessment/xblock/grade_mixin.py:355
 msgid "Peer Median Grade"
-msgstr ""
+msgstr "Akran Ortalama Notu"
 
 #: openassessment/xblock/grade_mixin.py:360
 #: openassessment/xblock/grade_mixin.py:502
@@ -1668,7 +1668,7 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:361
 msgid "Peer Comments"
-msgstr ""
+msgstr "Akran Yorumları"
 
 #: openassessment/xblock/grade_mixin.py:371
 msgid "Self Assessment Grade"
@@ -1681,11 +1681,11 @@ msgstr "Öz-değerlendirmeniz"
 #: openassessment/xblock/grade_mixin.py:372
 #: openassessment/xblock/grade_mixin.py:514
 msgid "Your Comments"
-msgstr "Sizin Yorumunuz"
+msgstr "Yorumunuz"
 
 #: openassessment/xblock/grade_mixin.py:467
 msgid "Waiting for peer reviews"
-msgstr ""
+msgstr "Akran incelemeleri bekleniyor"
 
 #: openassessment/xblock/grade_mixin.py:507
 msgid "Peer"
@@ -1836,7 +1836,7 @@ msgstr "Personel Notu Bekleniyor"
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
-msgstr ""
+msgstr "Yanıtınızın bir akademik personel tarafından değerlendirip değerlendirmediğini görmek için daha sonra tekrar kontrol edin. Değerlendirmeniz tamamlandığında notunuzu alacaksınız."
 
 #: openassessment/xblock/staff_assessment_mixin.py:136
 msgid "You Must Complete the Steps Above to View Your Grade"

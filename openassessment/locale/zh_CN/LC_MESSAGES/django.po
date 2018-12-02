@@ -12,13 +12,14 @@
 # GoodLuck <1833447072@qq.com>, 2014
 # hjuj_91 <hjuj_91@163.com>, 2014
 # bnw, 2014
+# HYY <wingyin.wong@outlook.com>, 2018
 # ifLab <webmaster@iflab.org>, 2018
 # jg Ma <jg20040308@126.com>, 2016
 # Jiatong Zhang <girlzjt@outlook.com>, 2015
 # Jiazhen Tan <jessie12@live.cn>, 2016
 # jsgang <jsgang9@gmail.com>, 2015,2017
 # Lian Pang <lian2902952@gmail.com>, 2016
-# Mobee Huang <wingyin.wong@outlook.com>, 2018
+# HYY <wingyin.wong@outlook.com>, 2018
 # quickeyes <quickeyes.2001@gmail.com>, 2014
 # Rom, 2015
 # louyihua <supermouselyh@hotmail.com>, 2015,2018
@@ -37,8 +38,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-11-25 08:51+0000\n"
-"Last-Translator: Mobee Huang <wingyin.wong@outlook.com>\n"
+"PO-Revision-Date: 2018-12-01 06:17+0000\n"
+"Last-Translator: HYY <wingyin.wong@outlook.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -717,7 +718,7 @@ msgstr "%(num_points)s分"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr "同学对上述题目的解答"
+msgstr "同学对上述题目的回复"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -741,7 +742,7 @@ msgstr "该作业已关闭。该作业的一个或多个截止日期已过。您
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr "您已经完成该作业。其他人对您的解答评分之后您将可以看到自己的实际得分。"
+msgstr "您已经完成该作业。其他人对您的回复评分之后您将可以看到自己的实际得分。"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
@@ -790,7 +791,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n该作业正在进行中。%(start_strong)s互评步骤即将关闭。%(end_strong)s 所有同学提交的解答已被评分。稍后返回查看是否有更多学员提交解答。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
+msgstr "\n该作业正在进行中。%(start_strong)s互评步骤即将关闭。%(end_strong)s 所有同学提交的回复已被评分。稍后返回查看是否有更多学员提交回复。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -798,7 +799,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n该作业正在进行中。所有同学提交的解答已被评分。稍后返回查看是否有更多学员提交解答。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
+msgstr "\n该作业正在进行中。所有同学提交的回复已被评分。稍后返回查看是否有更多学员提交回复。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -822,7 +823,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n作业提交即将关闭。为获得分数，请先对题目作答，然后完成 %(start_tag)s 你的解答%(end_tag)s区域下方的步骤。"
+msgstr "\n作业提交即将关闭。为获得分数，请先对题目作答，然后完成 %(start_tag)s 你的回复%(end_tag)s区域下方的步骤。"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -830,7 +831,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n该作业包含若干步骤。第一步，针对题目作答。其余步骤将显示在 %(start_tag)s 您的解答%(end_tag)s区域下方。"
+msgstr "\n该作业包含若干步骤。第一步，针对题目作答。其余步骤将显示在 %(start_tag)s 您的回复%(end_tag)s区域下方。"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -845,7 +846,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "该作业包含若干步骤。第一步，针对题目作答。其余步骤将显示在“您的解答”区域下方。"
+msgstr "该作业包含若干步骤。第一步，针对题目作答。其余步骤将显示在“您的回复”区域下方。"
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -995,7 +996,7 @@ msgstr "\n完成(%(num_graded)s)"
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr "所有同学提交的解答均被评分。稍后返回查看是否有更多学员提交解答。"
+msgstr "所有同学提交的回复均被评分。稍后返回查看是否有更多学员提交回复。"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
@@ -1020,7 +1021,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr "所有同学提交的解答均已被评分。稍后返回查看是否有更多学员提交解答。您将在完成此题目的所有步骤，且同学已对解答进行评分后获得分数。"
+msgstr "所有同学提交的回复均已被评分。稍后返回查看是否有更多学员提交回复。您将在完成此问题的所有步骤，且同学已对回复进行评分后获得分数。"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1051,7 +1052,7 @@ msgstr "正在进行中"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:57
 msgid "Enter your response to the prompt."
-msgstr "请输入您对该题目的解答"
+msgstr "请输入您对该题目的回复"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:59
 msgid ""
@@ -1074,15 +1075,15 @@ msgstr "题目要求"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Your response (required)"
-msgstr "您的解答（必答）"
+msgstr "您的回复（必答）"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:95
 msgid "Your response (optional)"
-msgstr "您的解答（选答）"
+msgstr "您的回复（选答）"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:105
 msgid "Enter your response to the prompt above."
-msgstr "请输入您对上述题目的解答"
+msgstr "请输入您对上述题目的回复"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:119
 msgid "We could not save your progress"
@@ -1160,7 +1161,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr "截止日期已过，该步骤已关闭。您已无法提交解答或继续此问题，且您的评分将被定为“未完成”。如果您已保存解答但尚未提交，解答会显示在课程记录中。"
+msgstr "截止日期已过，该步骤已关闭。您已无法提交回复或继续此问题，且您的评分将被定为“未完成”。如果您已保存但尚未提交，回复会显示在课程记录中。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:20
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
@@ -1175,7 +1176,7 @@ msgstr "已经完成"
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
-msgstr "您的解答"
+msgstr "您的回复"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:54
@@ -1186,7 +1187,7 @@ msgstr "您已上传的文件"
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr "您的解答已经提交。您将在完成所有步骤且解答被所有指定的同学评分后获得分数。"
+msgstr "您的回复已经提交。您将在完成所有步骤且回复被所有指定的同学评分后获得分数。"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:34
 #, python-format
@@ -1337,7 +1338,7 @@ msgstr "学员回复"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr "学员对上述题目的解答"
+msgstr "学员对上述题目的回复"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1586,7 +1587,7 @@ msgstr "你的评判与导师的评估存在差异。重新检查答案，弄明
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:74
 msgid "The response to the prompt above:"
-msgstr "针对上述题目的解答："
+msgstr "针对上述题目的回复："
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:96
 msgid "Selected Options Agree"

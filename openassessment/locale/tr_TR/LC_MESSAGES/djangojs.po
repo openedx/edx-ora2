@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-06-19 10:41+0000\n"
+"PO-Revision-Date: 2018-11-30 09:26+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "Personel değerlendirme formu yüklenemedi."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:156
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr ""
+msgstr "Notlandırılmamış ve kontrol edilmemiş cevapların görüntülenmesi yüklenemez."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -108,7 +108,7 @@ msgstr "Sunucu hatası."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:570
 msgid "Could not retrieve download url."
-msgstr "İndirme linkine erişilemedi."
+msgstr "İndirme bağlantısına erişilemedi."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -180,7 +180,7 @@ msgstr "Final Notu Alındı"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:111
 msgid "List of Open Assessments is unavailable"
-msgstr "Açık Görevler listesi mevcut değil"
+msgstr "Açık Değerlendirmeler Listesi mevcut değil"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:212
@@ -203,7 +203,7 @@ msgstr "Tam Listeye Dön"
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Bu sayfayı özdeğerlendirmenizi yazmadan terk etmeniz durumunda, yaptığınız tüm işleri kaybedeceksiniz."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:130
@@ -417,7 +417,7 @@ msgstr "Bir seçenek sildiniz. Sistem, Öğrenci Eğitimi adımında yer alan ö
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr "Bu ölçüt için tüm kriterleri sildiniz. Sistem, Öğrenci Eğitimi adımındaki örnek cevaplardan ölçüt kaldırıldı."
+msgstr "Bu ölçüt için tüm seçenekleri sildiniz. Öğrenci Eğitimi adımındaki örnek cevaplardan ölçüt kaldırıldı."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
