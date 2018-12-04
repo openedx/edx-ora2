@@ -1,0 +1,16 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_assessment_module_settings_editor" id="oa_ai_assessment_editor">
+    <div class="drag-handle action"></div>
+    <div class="openassessment_inclusion_wrapper">
+        <input type="checkbox" id="include_ai_assessment"
+            {% if assessments.ai_assessment.required %} checked="true" {% endif %}>
+        <label for="include_ai_assessment">{% trans "Step: AI Assessment" %}</label>
+    </div>
+    <div class="openassessment_assessment_module_editor">
+        <p class="openassessment_description">
+            {% trans "An AI api assess learners' responses for the assignment." %}
+        </p>
+    </div>
+</li>
+{% endspaceless %}

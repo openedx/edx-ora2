@@ -66,6 +66,12 @@ UI_MODELS = {
         "class_id": "step--staff-assessment",
         "title": "Staff Grade"
     },
+    "ai-assessment": {
+        "name": "ai-assessment",
+        "class_id": "step--ai-assessment",
+        "title": "AI Assessment"
+    },
+
     "grade": {
         "name": "grade",
         "class_id": "step--grade",
@@ -82,7 +88,8 @@ VALID_ASSESSMENT_TYPES = [
     "student-training",
     "peer-assessment",
     "self-assessment",
-    "staff-assessment"
+    "staff-assessment",
+    "ai-assessment",
 ]
 
 

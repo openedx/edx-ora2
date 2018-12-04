@@ -36,6 +36,7 @@ logger = logging.getLogger('openassessment.workflow.models')
 # that implements the corresponding assessment API.
 # For backwards compatibility, we provide a default configuration as well
 DEFAULT_ASSESSMENT_API_DICT = {
+    'ai': 'openassessment.assessment.api.ai',
     'peer': 'openassessment.assessment.api.peer',
     'self': 'openassessment.assessment.api.self',
     'training': 'openassessment.assessment.api.student_training',
@@ -64,6 +65,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         "waiting",  # User has done all necessary assessment but hasn't been
                     # graded yet -- we're waiting for assessments of their
                     # submission by others.
+        "error",  # There was an error calling ai assessment api.
         "done",  # Complete
         "cancelled"  # User submission has been cancelled.
     ]
@@ -79,7 +81,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     # We then use that score as the student's overall score.
     # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
     # in descending priority order.
-    DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']
+    DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self'] # Do we need to add score ?
     ASSESSMENT_SCORE_PRIORITY = getattr(
         settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
         DEFAULT_ASSESSMENT_SCORE_PRIORITY
@@ -104,8 +106,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
     def __init__(self, *args, **kwargs):
         super(AssessmentWorkflow, self).__init__(*args, **kwargs)
-        if 'staff' not in AssessmentWorkflow.STEPS:
-            new_list = ['staff']
+
+        missing_steps = list(set(ASSESSMENT_API_DICT.keys()) ^ set(AssessmentWorkflow.STEPS))
+
+        for step in missing_steps:
+            new_list = [step]
             new_list.extend(AssessmentWorkflow.STEPS)
             AssessmentWorkflow.STEPS = new_list
             AssessmentWorkflow.STATUS_VALUES = AssessmentWorkflow.STEPS + AssessmentWorkflow.STATUSES
