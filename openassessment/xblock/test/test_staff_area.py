@@ -1,28 +1,21 @@
 # coding=utf-8
+"""
+Tests for the staff area.
+"""
 from collections import namedtuple
 import json
-import datetime
 import urllib
-from mock import Mock, patch
-from django.test.utils import override_settings
+
+from mock import MagicMock, Mock, call, patch
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import staff as staff_api
-from openassessment.assessment.api import ai as ai_api
-from openassessment.workflow import api as workflow_api
-from openassessment.assessment.errors.ai import AIError, AIGradingInternalError
 from openassessment.fileupload.exceptions import FileUploadInternalError
-from submissions import api as sub_api
-
+from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
-from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
-
-ALGORITHM_ID = 'fake'
-
-AI_ALGORITHMS = {
-    'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm'
-}
+from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+from submissions import api as sub_api
 
 STUDENT_ITEM = dict(
     student_id="Bob",
@@ -53,7 +46,17 @@ class NullUserService(object):
     """
     @staticmethod
     def get_anonymous_user_id(username, _):
+        """
+        A convenience method.
+        """
         return username
+
+    @staticmethod
+    def get_current_user():
+        """
+        A convenience method.
+        """
+        return MagicMock(opt_attrs={})
 
 
 class TestCourseStaff(XBlockHandlerTestCase):
@@ -134,9 +137,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         decoded_response = resp.decode('utf-8').lower()
         self.assertIn("view assignment statistics", decoded_response)
 
-        # Confirm example-based-assessment does not show up; it is not date
-        # driven so its start / due dates are not relevant
-        self.assertNotIn("example-based-assessment", decoded_response)
         # Check all release dates.
         self.assertIn("march 1, 2014", decoded_response)
         self.assertIn("jan. 2, 2015", decoded_response)
@@ -177,7 +177,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -218,7 +218,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -253,7 +253,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -271,7 +271,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             {'criteria': xblock.rubric_criteria},
         )
 
-        _, context = xblock.get_student_info_path_and_context("Bob")
+        _, _ = xblock.get_student_info_path_and_context("Bob")  # pylint: disable=protected-access
         self.assertIn(
             "Good use of vocabulary!",
             self.request(
@@ -287,7 +287,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -329,7 +329,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -378,7 +378,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         xblock.submission_uuid = submission["uuid"]
-        path, context = xblock.peer_path_and_context(False)
+        path, _ = xblock.peer_path_and_context(False)
         self.assertEquals("openassessmentblock/peer/oa_peer_cancelled.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
@@ -387,7 +387,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -395,7 +395,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Create an image submission for Bob, and corresponding workflow.
         self._create_submission(bob_item, {
             'text': "Bob Answer",
-            'file_key': "test_key"
+            'file_keys': ["test_key"],
+            'files_descriptions': ["test_description"]
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
@@ -410,7 +411,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals('http://www.example.com/image.jpeg', context['staff_file_url'])
+            self.assertEquals([('http://www.example.com/image.jpeg', 'test_description')], context['staff_file_urls'])
             self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
@@ -419,7 +420,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
-    def test_staff_area_student_info_file_download_url_error(self, xblock):
+    def test_staff_area_student_info_many_images_submission(self, xblock):
+        """
+        Test multiple file uploads support
+        """
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -429,10 +433,59 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
 
+        file_keys = ["test_key0", "test_key1", "test_key2"]
+        files_descriptions = ["test_description0", "test_description1", "test_description2"]
+        images = ["http://www.example.com/image%d.jpeg" % i for i in range(3)]
+        file_keys_with_images = dict(zip(file_keys, images))
+
         # Create an image submission for Bob, and corresponding workflow.
         self._create_submission(bob_item, {
             'text': "Bob Answer",
-            'file_key': "test_key"
+            'file_keys': file_keys,
+            'files_descriptions': files_descriptions
+        }, ['self'])
+
+        # Mock the file upload API to avoid hitting S3
+        with patch("openassessment.xblock.submission_mixin.file_upload_api") as file_api:
+            file_api.get_download_url.return_value = Mock()
+            file_api.get_download_url.side_effect = lambda file_key: file_keys_with_images[file_key]
+
+            # also fake a file_upload_type so our patched url gets rendered
+            xblock.file_upload_type_raw = 'image'
+
+            __, context = xblock.get_student_info_path_and_context("Bob")
+
+            # Check that the right file key was passed to generate the download url
+            calls = [call("test_key%d" % i) for i in range(3)]
+            file_api.get_download_url.assert_has_calls(calls)
+
+            # Check the context passed to the template
+            self.assertEquals([(image, "test_description%d" % i) for i, image in enumerate(images)],
+                              context['staff_file_urls'])
+            self.assertEquals('image', context['file_upload_type'])
+
+            # Check the fully rendered template
+            payload = urllib.urlencode({"student_username": "Bob"})
+            resp = self.request(xblock, "render_student_info", payload)
+            for i in range(3):
+                self.assertIn("http://www.example.com/image%d.jpeg" % i, resp)
+                self.assertIn("test_description%d" % i, resp)
+
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_staff_area_student_info_file_download_url_error(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+
+        # Create an image submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {
+            'text': "Bob Answer",
+            'file_keys': ["test_key"]
         }, ['self'])
 
         # Mock the file upload API to simulate an error
@@ -449,24 +502,23 @@ class TestCourseStaff(XBlockHandlerTestCase):
             resp = self.request(xblock, "render_student_info", payload)
             self.assertIn("Bob Answer", resp)
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_full_workflow(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         # Commonly chosen options for assessments
         options_selected = {
-            "Ideas": "Good",
-            "Content": "Poor",
+            u"𝓒𝓸𝓷𝓬𝓲𝓼𝓮": u"Ġööḋ",
+            u"Form": u"Poor",
         }
 
         criterion_feedback = {
-            "Ideas": "Dear diary: Lots of creativity from my dream journal last night at 2 AM,",
-            "Content": "Not as insightful as I had thought in the wee hours of the morning!"
+            u"𝓒𝓸𝓷𝓬𝓲𝓼𝓮": u"Dear diary: Lots of creativity from my dream journal last night at 2 AM,",
+            u"Form": u"Not as insightful as I had thought in the wee hours of the morning!"
         }
 
         overall_feedback = "I think I should tell more people about how important worms are for the ecosystem."
@@ -508,148 +560,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Verify that we can render without error
         resp = xblock.render_student_info(request)
         self.assertIn("bob answer", resp.body.lower())
-
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_display_schedule_training(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-        path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
-        self.assertTrue(context['display_schedule_training'])
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_schedule_training(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-
-        # Schedule training
-        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
-        self.assertTrue(response['success'], msg=response.get('msg'))
-        self.assertIn('workflow_uuid', response)
-
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_not_displaying_schedule_training(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
-        self.assertFalse(context['display_schedule_training'])
-
-    @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_admin_schedule_training_no_permissions(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
-        self.assertFalse(response['success'])
-        self.assertTrue('permission' in response['msg'])
-
-    @patch.object(ai_api, "train_classifiers")
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_admin_schedule_training_error(self, xblock, mock_api):
-        mock_api.side_effect = AIError("Oh no!")
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
-        self.assertFalse(response['success'])
-        self.assertTrue('error' in response['msg'])
-
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_display_reschedule_unfinished_grading_tasks(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-        path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
-        self.assertTrue(context['display_reschedule_unfinished_tasks'])
-
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_reschedule_unfinished_grading_tasks_no_permissions(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        response = self.request(xblock, 'reschedule_unfinished_tasks', json.dumps({}), response_format='json')
-        self.assertFalse(response['success'])
-        self.assertTrue('permission' in response['msg'])
-
-    @patch.object(ai_api, "reschedule_unfinished_tasks")
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_reschedule_unfinished_grading_tasks_success(self, xblock, mock_api):
-        mock_api.side_effect = Mock()
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-        response = self.request(xblock, 'reschedule_unfinished_tasks', json.dumps({}), response_format='json')
-        self.assertTrue(response['success'])
-        self.assertTrue(u'All' in response['msg'])
-        mock_api.assert_called_with(
-            course_id=unicode(STUDENT_ITEM.get('course_id')), item_id=unicode(xblock.scope_ids.usage_id),
-            task_type=u"grade"
-        )
-
-    @patch.object(ai_api, "reschedule_unfinished_tasks")
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_reschedule_unfinished_grading_tasks_error(self, xblock, mock_api):
-        mock_api.side_effect = AIGradingInternalError("Oh Noooo!")
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-        response = self.request(xblock, 'reschedule_unfinished_tasks', json.dumps({}), response_format='json')
-        self.assertFalse(response['success'])
-        self.assertTrue('error' in response['msg'])
-
-    @scenario('data/peer_only_scenario.xml', user_id='Bob')
-    def test_no_example_based_assessment(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
-        self.assertFalse(response['success'])
-        self.assertTrue('not configured' in response['msg'])
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_classifier_set_info(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
-
-        # Initially, there should be no classifier set info
-        # because we haven't trained any classifiers for this problem
-        __, context = xblock.get_staff_path_and_context()
-        self.assertIn('classifierset', context)
-        self.assertIs(context['classifierset'], None)
-
-        # Schedule a training task, which should create classifiers
-        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
-        self.assertTrue(response['success'], msg=response.get('msg'))
-
-        # Now classifier info should be available in the context
-        __, context = xblock.get_staff_path_and_context()
-        self.assertIn('classifierset', context)
-        self.assertTrue(isinstance(context['classifierset']['created_at'], datetime.datetime))
-        self.assertEqual(context['classifierset']['algorithm_id'], ALGORITHM_ID)
-        self.assertEqual(context['classifierset']['course_id'], xblock.get_student_item_dict()['course_id'])
-        self.assertEqual(context['classifierset']['item_id'], xblock.get_student_item_dict()['item_id'])
-
-        # Verify that the classifier set appears in the rendered template
-        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertIn("classifier set", resp.decode('utf-8').lower())
-        self.assertIn(ALGORITHM_ID, resp.decode('utf-8'))
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_classifier_set_info_hidden_for_course_staff(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        __, context = xblock.get_staff_path_and_context()
-        self.assertNotIn('classifierset', context)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancel_submission_without_reason(self, xblock):
@@ -722,7 +632,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 1)
 
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_staff_assessment_counts_not_required(self, xblock):
         """
         Verify the staff assessment counts (ungraded and checked out) are
@@ -811,6 +721,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("response was not found", resp.body.lower())
 
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
+        """
+        Internal helper for common staff assessment context verification.
+        """
         self.assertEquals(required, context['staff_assessment_required'])
         if not required:
             self.assertNotIn('staff_assessment_ungraded', context)
@@ -828,6 +741,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
             user_is_beta=False,
             days_early_for_beta=0
     ):
+        """
+        Internal helper to define a mock runtime.
+        """
         mock_runtime = Mock(
             course_id='test_course',
             item_id=item_id,

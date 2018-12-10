@@ -14,6 +14,10 @@ OpenAssessment.PeerView = function(element, server, baseView) {
     this.server = server;
     this.baseView = baseView;
     this.rubric = null;
+    this.isRendering = false;
+    this.announceStatus = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
+
 };
 
 OpenAssessment.PeerView.prototype = {
@@ -26,15 +30,21 @@ OpenAssessment.PeerView.prototype = {
     load: function(usageID) {
         var view = this;
         var stepID = ".step--peer-assessment";
+        var focusID = "[id='oa_peer_" + usageID + "']";
+
+        view.isRendering = true;
         this.server.render('peer_assessment').done(
             function(html) {
                 // Load the HTML and install event handlers
                 $(stepID, view.element).replaceWith(html);
+                view.isRendering = false;
+
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers(false);
-                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
-                    $("[id='oa_peer_" + usageID + "']", view.element).focus();
-                }
+
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+                view.announceStatus = false;
+                view.dateFactory.apply();
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -52,16 +62,22 @@ OpenAssessment.PeerView.prototype = {
     **/
     loadContinuedAssessment: function(usageID) {
         var view = this;
+        var stepID = ".step--peer-assessment";
+        var focusID = "[id='oa_peer_" + usageID + "']";
+
         view.continueAssessmentEnabled(false);
+        view.isRendering = true;
         this.server.renderContinuedPeer().done(
             function(html) {
                 // Load the HTML and install event handlers
                 $('.step--peer-assessment', view.element).replaceWith(html);
                 view.server.renderLatex($('.step--peer-assessment', view.element));
+                view.isRendering = false;
+
                 view.installHandlers(true);
-                if (typeof usageID !== 'undefined') {
-                    $("[id='oa_peer_" + usageID + "']", view.element).focus();
-                }
+
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -81,12 +97,7 @@ OpenAssessment.PeerView.prototype = {
 
     **/
     continueAssessmentEnabled: function(enabled) {
-        var button = $('.action--continue--grading', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.action--continue--grading', enabled);
     },
 
     /**
@@ -103,6 +114,9 @@ OpenAssessment.PeerView.prototype = {
 
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
+
+        // Install click handler for the preview button
+        this.baseView.bindLatexPreview(sel);
 
         // Initialize the rubric
         var rubricSelector = $(".peer-assessment--001__assessment", this.element);
@@ -127,6 +141,9 @@ OpenAssessment.PeerView.prototype = {
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
+
+                //Status will change in update announce it to the Screen Reader after Render
+                view.announceStatus = true;
 
                 // Handle the click
                 if (!isContinuedAssessment) { view.peerAssess(); }
@@ -159,13 +176,7 @@ OpenAssessment.PeerView.prototype = {
      >> true
      **/
     peerSubmitEnabled: function(enabled) {
-        var button = $('.peer-assessment--001__assessment__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled);
-            return enabled;
-        }
+        return this.baseView.buttonEnabled('.peer-assessment--001__assessment__submit', enabled);
     },
 
     /**

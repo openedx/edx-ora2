@@ -5,7 +5,7 @@ Page objects for UI-level acceptance tests.
 import os
 
 from bok_choy.page_object import PageObject
-from bok_choy.promise import EmptyPromise, BrokenPromise
+from bok_choy.promise import BrokenPromise, EmptyPromise
 
 ORA_SANDBOX_URL = os.environ.get('ORA_SANDBOX_URL')
 
@@ -38,6 +38,16 @@ class BaseAssessmentPage(PageObject):
             loc=self._problem_location
         )
 
+    def get_sr_html(self):
+        return self.q(css='.sr.reader-feedback').html
+
+    def confirm_feedback_text(self, text):
+        def is_text_in_feedback():
+            return text in self.get_sr_html()[0]
+
+        self.wait_for(is_text_in_feedback, 'Waiting for %s, in %s' % (text, self.q(css='.sr.reader-feedback').html[0]))
+
+
 class MultipleAssessmentPage(BaseAssessmentPage):
     """
     Page object for subsection unit containing multiple ORA problems
@@ -63,7 +73,9 @@ class OpenAssessmentPage(BaseAssessmentPage):
 
         The default implementation just returns the selector
         """
-        return "{vertical_index_class} {selector}".format(vertical_index_class=self.vertical_index_class, selector=selector)
+        return "{vertical_index_class} {selector}".format(
+            vertical_index_class=self.vertical_index_class, selector=selector
+        )
 
     @property
     def vertical_index_class(self):
@@ -73,7 +85,6 @@ class OpenAssessmentPage(BaseAssessmentPage):
         """
         return ".vert-{vertical_index}".format(vertical_index=self.vertical_index)
 
-
     def submit(self, button_css=".action--submit"):
         """
         Click the submit button on the page.
@@ -82,7 +93,7 @@ class OpenAssessmentPage(BaseAssessmentPage):
         """
         submit_button_selector = self._bounded_selector(button_css)
         EmptyPromise(
-            lambda: 'is--disabled' not in " ".join(self.q(css=submit_button_selector).attrs('class')),
+            lambda: False == any(self.q(css=submit_button_selector).attrs('disabled')),
             "Submit button is enabled."
         ).fulfill()
 
@@ -147,6 +158,38 @@ class SubmissionPage(OpenAssessmentPage):
         self.wait_for_element_visibility(".submission__answer__upload", "File select button is present")
         self.q(css=".submission__answer__upload").results[0].send_keys(file_path_name)
 
+    def add_file_description(self, file_num, description):
+        """
+        Submit a description for some file.
+
+        Args:
+          file_num (integer): file number
+          description (string): file description
+        """
+        textarea_element = self._bounded_selector("textarea.file__description__%d" % file_num)
+        self.wait_for_element_visibility(textarea_element, "Textarea is present")
+        self.q(css=textarea_element).fill(description)
+
+    @property
+    def upload_file_button_is_enabled(self):
+        """
+        Check if 'Upload files' button is enabled
+
+        Returns:
+            bool
+        """
+        return self.q(css="button.file__upload")[0].is_enabled()
+
+    @property
+    def upload_file_button_is_disabled(self):
+        """
+        Check if 'Upload files' button is disabled
+
+        Returns:
+            bool
+        """
+        return self.q(css="button.file__upload").attrs('disabled') == ['true']
+
     def upload_file(self):
         """
         Upload the selected file
@@ -162,8 +205,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        preview_latex_button_class = self.q(css="button.submission__preview").attrs('class')[0]
-        return 'is--disabled' in preview_latex_button_class
+        return self.q(css="button.submission__preview").attrs('disabled') == ['true']
 
     @property
     def has_submitted(self):
@@ -186,14 +228,15 @@ class SubmissionPage(OpenAssessmentPage):
         return self.q(css="div.upload__error > div.message--error").visible
 
     @property
-    def has_file_uploaded(self):
+    def have_files_uploaded(self):
         """
-        Check whether file is successfully uploaded
+        Check whether files were successfully uploaded
 
         Returns:
             bool
         """
-        return self.q(css=".submission__custom__upload").visible
+        self.wait_for_element_visibility('.submission__custom__upload', 'Uploaded files block is presented')
+        return self.q(css=".submission__answer__files").visible
 
 
 class AssessmentMixin(object):
@@ -215,12 +258,36 @@ class AssessmentMixin(object):
         >>> page.assess([0, 2, 1])
 
         """
-        for criterion_num, option_num in enumerate(options_selected):
+        def selector(criterion_num, option_num):
             sel = ".rubric_{criterion_num}_{option_num}".format(
                 criterion_num=criterion_num,
                 option_num=option_num
             )
-            self.q(css=self._bounded_selector(sel)).first.click()
+            return sel
+
+        def select_criterion():
+            for criterion_num, option_num in enumerate(options_selected):
+                sel = selector(criterion_num, option_num)
+                self.q(css=self._bounded_selector(sel)).first.click()
+
+        def criterion_selected():
+            for criterion_num, option_num in enumerate(options_selected):
+                sel = selector(criterion_num, option_num)
+                self.wait_for_element_visibility(self._bounded_selector(sel), "Criterion option visible")
+                if not self.q(css=self._bounded_selector(sel))[0].is_selected():
+                    return False
+            return True
+
+        # When selecting the criteria for the 2nd training assessment, sometimes
+        # radio buttons are not selected after the click, causing the test to fail (because the
+        # Submit button never becomes enabled). Since tests that use training assessments tend
+        # to be very long (meaning there is a high cost to retrying the whole test),
+        # retry just selecting the criterion a few times before failing the whole test.
+        attempts = 0
+        while not criterion_selected() and attempts < 5:
+            select_criterion()
+            attempts+=1
+
         self.submit_assessment()
         return self
 
@@ -285,14 +352,6 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
             assessment_type=self._assessment_type
         )
         return self.q(css=css_class).is_present()
-
-    @property
-    def is_on_top(self):
-        # TODO: On top behavior needs to be better defined. It is defined here more accurately as "near-top".
-        # pos = self.browser.get_window_position()
-        # return pos['y'] < 100
-        # self.wait_for_element_visibility(".chapter.is-open", "Chapter heading is on visible", timeout=10)
-        return self.q(css=".chapter.is-open").visible
 
     @property
     def response_text(self):
@@ -391,9 +450,18 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         if self._assessment_type not in ['peer-assessment', 'student-training']:
             msg = "Only peer assessment and student training steps can retrieve the number completed"
             raise PageConfigurationError(msg)
+
         status_completed_css = self._bounded_selector(".step__status__value--completed")
-        candidates = [int(x) for x in self.q(css=status_completed_css).text]
-        return candidates[0] if len(candidates) > 0 else None
+        complete_candidates = [int(x) for x in self.q(css=status_completed_css).text]
+        if len(complete_candidates) > 0:
+            completed = complete_candidates[0]
+        else:
+            # The number completed is no longer available on this page, but can be inferred from the
+            # current review number.
+            status_current_css = self._bounded_selector(".step__status__number--current")
+            current_candidates = [int(y) for y in self.q(css=status_current_css).text]
+            completed = current_candidates[0] - 1 if len(current_candidates) > 0 and current_candidates[0] > 0 else None
+        return completed
 
     @property
     def label(self):
@@ -492,32 +560,29 @@ class GradePage(OpenAssessmentPage):
             pass
         return score_candidates[0] if len(score_candidates) > 0 else None
 
-    def grade_entry(self, question, column):
+    def grade_entry(self, question):
         """
-        Returns a tuple of source and value information for a specific grade source.
+        Returns a tuple of the text of all answer spans for a given question
 
         Args:
             question: the 0-based question for which to get grade information.
-            column: the 0-based column of data within a question. Each column corresponds
-                to a source of data (for example, staff, peer, or self).
 
-        Returns: the tuple of source and value information for the requested grade
+        Returns: a tuple containing all text elements.
 
         """
         self.wait_for_element_visibility(
-            self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1)),
-            "Grade entry was present",
+            self._bounded_selector('.question--{} .answer'.format(question + 1)),
+            "Answers not present",
             2
         )
-        source = self.q(
-            css=self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1))
-        )[column]
 
-        value = self.q(
-            css=self._bounded_selector('.question--{} .answer .answer__value__value'.format(question + 1))
-        )[column]
+        selector_str = ".question--{} .answer div span".format(question + 1)
+        span_text = self.q(
+            css=self._bounded_selector(selector_str)
+        )
 
-        return source.text.strip(), value.text.strip()
+        result = tuple(span_entry.text.strip() for span_entry in span_text if span_entry.text != '')
+        return result
 
     def feedback_entry(self, question, column):
         """

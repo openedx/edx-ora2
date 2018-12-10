@@ -50,15 +50,11 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
     var selfAssessmentView = new OpenAssessment.EditSelfAssessmentView(
         $("#oa_self_assessment_editor", this.element).get(0)
     );
-    var exampleBasedAssessmentView = new OpenAssessment.EditExampleBasedAssessmentView(
-        $("#oa_ai_assessment_editor", this.element).get(0)
-    );
     var assessmentLookupDictionary = {};
     assessmentLookupDictionary[staffAssessmentView.getID()] = staffAssessmentView;
     assessmentLookupDictionary[studentTrainingView.getID()] = studentTrainingView;
     assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
     assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;
-    assessmentLookupDictionary[exampleBasedAssessmentView.getID()] = exampleBasedAssessmentView;
 
     this.settingsView = new OpenAssessment.EditSettingsView(
         $("#oa_basic_settings_editor", this.element).get(0), assessmentLookupDictionary, data
@@ -195,6 +191,8 @@ OpenAssessment.StudioView.prototype = {
         this.runtime.notify('save', {state: 'start'});
 
         var view = this;
+        var fileUploadType = view.settingsView.fileUploadType();
+
         this.server.updateEditorContext({
             prompts: view.promptsView.promptsDefinition(),
             feedbackPrompt: view.rubricView.feedbackPrompt(),
@@ -204,7 +202,9 @@ OpenAssessment.StudioView.prototype = {
             submissionStart: view.settingsView.submissionStart(),
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
-            fileUploadType: view.settingsView.fileUploadType(),
+            textResponse: view.settingsView.textResponseNecessity(),
+            fileUploadResponse: view.settingsView.fileUploadResponseNecessity(),
+            fileUploadType: fileUploadType !== '' ? fileUploadType : null,
             fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),

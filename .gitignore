@@ -71,3 +71,5 @@ test/selenium/screenshots/*
 
 # logging
 logs/*.log*
+
+edx-ora2/

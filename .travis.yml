@@ -1,42 +1,31 @@
 addons:
   apt:
     packages:
-    - aspell
-    - aspell-en
-    - g++
-    - gcc
-    - git
-    - gfortran
-    - libblas3gf
-    - libblas-dev
-    - liblapack3gf
-    - liblapack-dev
-    - libatlas-base-dev
-    - libfontconfig1
-    - libmysqlclient-dev
-    - libxml2-dev
-    - libxslt1-dev
     - nodejs
-    - python2.7
-    - python2.7-dev
-    - python-pip
-    - python-software-properties
 language: python
 sudo: false
 python:
   - "2.7"
+env:
+  - TOXENV=django18
+  - TOXENV=django111
+matrix:
+  include:
+    - python: 2.7
+      env: TOXENV=quality
+    - python: 2.7
+      env: TOXENV=js
+before_install:
+  - "pip install -U pip"
+cache:
+    directories:
+        - $HOME/.cache/pip
 install:
-  - "pip install coveralls"
-  - "make install"
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - "pip install tox"
 script:
-  - "make test"
-  - "python manage.py makemessages -l eo"
+  - tox
 branches:
     only:
       - master
-      - ora-staff-grading
 after_success:
   coveralls

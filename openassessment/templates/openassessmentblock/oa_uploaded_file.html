@@ -4,24 +4,36 @@
 {% if file_upload_type %}
     {% if header %}
         <header class="{{ class_prefix }}__display__header">
-            <h3 class="{{ class_prefix }}__display__title">
+            <h5 class="{{ class_prefix }}__display__title">
                 {{ header }}
-            </h3>
+            </h5>
         </header>
     {% endif %}
 
-    <div class="{{ class_prefix }}__display__file {% if not file_url %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
-        {% if file_upload_type == "image" %}
-            <img class="submission__answer__file submission--image"
-                 alt="{% trans "The image associated with this submission." %}"
-                 src="{{ file_url }}" />
-        {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
-            <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
-                {% trans "View the file associated with this submission." %}
-            </a>
-            {% if show_warning %}
-                <p class="submission_file_warning">{% trans "(Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed, or endorsed by the site administrator. If you decide to access it, you do so at your own risk.)" %}</p>
+    <div class="{{ class_prefix }}__display__file {% if not file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
+        <div class="submission__answer__files">
+        {% for file_url, file_description in file_urls %}
+            <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}">
+            {% if file_upload_type == "image" %}
+                {% if file_description %}
+                <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}">{{ file_description }}:</div>
+                {% endif %}
+                <div><img class="submission__answer__file submission--image" src="{{ file_url }}"
+                          aria-labelledby="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}" /></div>
+            {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
+                <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
+                    {% if file_description %}
+                      {{ file_description }}
+                    {% else %}
+                      {% trans "View the files associated with this submission:" %} #{{ forloop.counter }}
+                    {% endif %}
+                </a>
             {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+        {% if show_warning %}
+            <p class="submission_file_warning">{% trans "Caution: These files were uploaded by another course learner and have not been verified, screened, approved, reviewed, or endorsed by the site administrator. If you access the files, you do so at your own risk.)" %}</p>
         {% endif %}
     </div>
 {% endif %}

@@ -2,11 +2,12 @@
 Validate changes to an XBlock before it is updated.
 """
 from collections import Counter
-from submissions.api import MAX_TOP_SUBMISSIONS
-from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
+
 from openassessment.assessment.api.student_training import validate_training_examples
-from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
+from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
+from openassessment.xblock.resolve_dates import DateValidationError, InvalidDateFormat, resolve_dates
+from submissions.api import MAX_TOP_SUBMISSIONS
 
 
 def _match_by_order(items, others):
@@ -48,11 +49,10 @@ def _duplicates(items):
 def _is_valid_assessment_sequence(assessments):
     """
     Check whether the sequence of assessments is valid. The rules enforced are:
-        -must have one of staff-, peer-, self-, or example-based-assessment listed
+        -must have one of staff-, peer-, or self- listed
         -in addition to those, only student-training is a valid entry
         -no duplicate entries
         -if staff-assessment is present, it must come last
-        -if example-based-assessment is present, it must come first
         -if student-training is present, it must be followed at some point by peer-assessment
 
     Args:
@@ -63,7 +63,7 @@ def _is_valid_assessment_sequence(assessments):
 
     """
     sequence = [asmnt.get('name') for asmnt in assessments]
-    required = ['example-based-assessment', 'staff-assessment', 'peer-assessment', 'self-assessment']
+    required = ['staff-assessment', 'peer-assessment', 'self-assessment']
     optional = ['student-training']
 
     # at least one of required?
@@ -80,10 +80,6 @@ def _is_valid_assessment_sequence(assessments):
 
     # if using staff-assessment, it must come last
     if 'staff-assessment' in sequence and 'staff-assessment' != sequence[-1]:
-        return False
-
-    # if using example-based, it must be first
-    if 'example-based-assessment' in sequence and 'example-based-assessment' != sequence[0]:
         return False
 
     # if using training, must be followed by peer at some point
@@ -154,12 +150,6 @@ def validate_assessments(assessments, current_assessments, is_released, _):
                     return False, _('Each example response for learner training must be unique.')
                 answers.append(example.get('answer'))
 
-        # Example-based assessment MUST specify 'ease' or 'fake' as the algorithm ID,
-        # at least for now.  Later, we may make this more flexible.
-        if assessment_dict.get('name') == 'example-based-assessment':
-            if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
-                return False, _('The "algorithm_id" value must be set to "ease" or "fake"')
-
         # Staff grading must be required if it is the only step
         if assessment_dict.get('name') == 'staff-assessment' and len(assessments) == 1:
             required = assessment_dict.get('required')
@@ -178,7 +168,7 @@ def validate_assessments(assessments, current_assessments, is_released, _):
     return True, u''
 
 
-def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _):
+def validate_rubric(rubric_dict, current_rubric, is_released, _):
     """
     Check that the rubric is semantically valid.
 
@@ -186,7 +176,6 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
         rubric_dict (dict): Serialized Rubric model representing the updated state of the rubric.
         current_rubric (dict): Serialized Rubric model representing the current state of the rubric.
         is_released (bool): True if and only if the problem has been released.
-        is_example_based (bool): True if and only if this is an example-based assessment.
         _ (function): The service function used to get the appropriate i18n text
 
     Returns:
@@ -198,14 +187,6 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
         return False, _(u'This rubric definition is not valid.')
-
-    # No duplicate criteria names
-    duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
-    if len(duplicates) > 0:
-        msg = _(u"Criteria duplicate name(s): {duplicates}").format(
-            duplicates=", ".join(duplicates)
-        )
-        return False, msg
 
     for criterion in rubric_dict['criteria']:
         # No duplicate option names within a criterion
@@ -221,15 +202,6 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
         if len(criterion['options']) == 0 and criterion.get('feedback', 'disabled') != 'required':
             msg = _(u'Criteria with no options must require written feedback.')
             return False, msg
-
-        # Example-based assessments impose the additional restriction
-        # that the point values for options must be unique within
-        # a particular rubric criterion.
-        if is_example_based:
-            duplicates = _duplicates([option['points'] for option in criterion['options']])
-            if len(duplicates) > 0:
-                msg = _(u"Example-based assessments cannot have duplicate point values.")
-                return False, msg
 
     # After a problem is released, authors are allowed to change text,
     # but nothing that would change the point value of a rubric.
@@ -308,14 +280,14 @@ def validate_assessment_examples(rubric_dict, assessments, _):
 
     """
     for asmnt in assessments:
-        if asmnt['name'] == 'student-training' or asmnt['name'] == 'example-based-assessment':
+        if asmnt['name'] == 'student-training':
 
             examples = convert_training_examples_list_to_dict(asmnt['examples'])
 
             # Must have at least one training example
             if len(examples) == 0:
                 return False, _(
-                    u"Learner training and example-based assessments must have at least one training example."
+                    u"Learner training must have at least one training example."
                 )
 
             # Delegate to the student training API to validate the
@@ -355,12 +327,11 @@ def validator(oa_block, _, strict_post_release=True):
             return False, msg
 
         # Rubric
-        is_example_based = 'example-based-assessment' in [asmnt.get('name') for asmnt in assessments]
         current_rubric = {
             'prompts': oa_block.prompts,
             'criteria': oa_block.rubric_criteria
         }
-        success, msg = validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _)
+        success, msg = validate_rubric(rubric_dict, current_rubric, is_released, _)
         if not success:
             return False, msg
 
@@ -386,7 +357,7 @@ def validator(oa_block, _, strict_post_release=True):
     return _inner
 
 
-def validate_submission(submission, prompts, _):
+def validate_submission(submission, prompts, _, text_response='required'):
     """
     Validate submission dict.
 
@@ -406,7 +377,7 @@ def validate_submission(submission, prompts, _):
     if type(submission) != list:
         return False, message
 
-    if len(submission) != len(prompts):
+    if text_response == 'required' and len(submission) != len(prompts):
         return False, message
 
     for submission_part in submission:

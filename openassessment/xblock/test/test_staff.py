@@ -2,16 +2,15 @@
 """
 Tests for staff assessment handlers in Open Assessment XBlock.
 """
-import json
-import mock
 import copy
+import json
+
+import mock
 
 from openassessment.assessment.api import staff as staff_api
 
-from .base import (
-    scenario, SubmitAssessmentsMixin, XBlockHandlerTestCase,
-    PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_GOOD_ASSESSMENT,
-)
+from .base import (PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_GOOD_ASSESSMENT, SubmitAssessmentsMixin,
+                   XBlockHandlerTestCase, scenario)
 
 
 class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):

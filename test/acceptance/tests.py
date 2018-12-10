@@ -3,20 +3,19 @@ UI-level acceptance tests for OpenAssessment.
 """
 from __future__ import absolute_import
 
-import ddt
-import os
-import unittest
-import time
 from functools import wraps
+import os
+import time
+import unittest
+
+from bok_choy.promise import BrokenPromise, EmptyPromise
+from bok_choy.web_app_test import WebAppTest
+import ddt
+from nose.plugins.attrib import attr
 from pyinstrument import Profiler
 
 from acceptance.auto_auth import AutoAuthPage
-from acceptance.pages import (
-    SubmissionPage, AssessmentPage, GradePage, StaffAreaPage
-)
-from bok_choy.web_app_test import WebAppTest
-from bok_choy.promise import BrokenPromise, EmptyPromise
-from nose.plugins.attrib import attr
+from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, SubmissionPage
 
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
@@ -299,9 +298,6 @@ class SelfAssessmentTest(OpenAssessmentTest):
     def test_self_assessment(self):
         # Submit a response
         self.do_self_assessment()
-
-        # Check browser scrolled back to top of assessment
-        self.assertTrue(self.self_asmnt_page.is_on_top)
 
     @retry()
     @attr('acceptance')
@@ -647,8 +643,8 @@ class StaffAreaTest(OpenAssessmentTest):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEquals(
-            ['Poor - 0 points', 'Fair',
-             'Fair - 1 point', 'Good'],
+            [u'Poor - 0 points', u'Fair',
+             u'Fair - 1 point', u'Good'],
             self.staff_area_page.learner_final_score_table_values
         )
 
@@ -741,10 +737,16 @@ class FileUploadTest(OpenAssessmentTest):
         self.assertTrue(self.submission_page.has_file_error)
 
         # trying to upload a acceptable file
-        self.submission_page.visit().select_file(os.path.dirname(os.path.realpath(__file__)) + '/README.rst')
+        readme = os.path.dirname(os.path.realpath(__file__)) + '/README.rst'
+        self.submission_page.visit().select_file(readme)
         self.assertFalse(self.submission_page.has_file_error)
+        self.assertTrue(self.submission_page.upload_file_button_is_disabled)
+
+        self.submission_page.add_file_description(0, 'file description 1')
+        self.assertTrue(self.submission_page.upload_file_button_is_enabled)
+
         self.submission_page.upload_file()
-        self.assertTrue(self.submission_page.has_file_uploaded)
+        self.assertTrue(self.submission_page.have_files_uploaded)
 
 
 class FullWorkflowMixin(object):
@@ -792,14 +794,20 @@ class FullWorkflowMixin(object):
         username, email = self.do_submission()
         EmptyPromise(self.submission_page.button(".step--student-training").is_focused(),
                      "Student training button should be focused")
+        self.submission_page.confirm_feedback_text('Your Response Complete')
+        self.submission_page.confirm_feedback_text('Learn to Assess Responses In Progress (1 of 2)')
 
         self.do_training()
         EmptyPromise(self.submission_page.button(".step--self-assessment").is_focused(),
                      "Self assessment button should be focused")
+        self.submission_page.confirm_feedback_text('Learn to Assess Responses Complete')
+        self.submission_page.confirm_feedback_text('Assess Your Response In Progress')
 
         self.submit_self_assessment(self.SELF_ASSESSMENT)
         EmptyPromise(self.submission_page.button(".step--grade").is_focused(),
                      "Grade button should be focused")
+        self.submission_page.confirm_feedback_text('Assess Your Response Complete')
+        self.submission_page.confirm_feedback_text('Assess Peers In Progress (1 of 1)')
 
         return username, email
 
@@ -849,20 +857,21 @@ class FullWorkflowMixin(object):
         self.refresh_page()
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS)
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
-
         if peer_grades_me:
-            self.verify_grade_entries([
-                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-                [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
-                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-            ])
+            self.verify_grade_entries(
+                [(u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
+                  u"YOUR SELF ASSESSMENT", u"Good"),
+                 (u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
+                 u"YOUR SELF ASSESSMENT", u"Excellent")]
+            )
         else:
-            self.verify_grade_entries([
-                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-                [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
-                 (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
-                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-            ])
+            self.verify_grade_entries(
+                [(u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE',
+                  u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Good"),
+                 (u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE',
+                  u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Excellent")
+                 ]
+            )
 
     def verify_staff_area_fields(self, username, peer_assessments, submitted_assessments, self_assessment):
         """
@@ -911,17 +920,14 @@ class FullWorkflowMixin(object):
 
     def verify_grade_entries(self, expected_entries):
         """
-        Verify the grade entries (sources and values) as shown in the
-        "Your Grade" section.
+        Verify the grade entries as shown in the "Your Grade" section.
 
         Args:
-            expected_entries: array of expected entries, with each entry being an array
-               consisting of the data for a particular source. Note that order is important.
+            expected_entries: array of expected entries, with each entry being an tuple
+               consisting of the data for a particular question. Note that order is important.
         """
-
         for index, expected_entry in enumerate(expected_entries):
-            self.assertEqual(expected_entry[0], self.grade_page.grade_entry(0, index))
-            self.assertEqual(expected_entry[1], self.grade_page.grade_entry(1, index))
+            self.assertEqual(expected_entry, self.grade_page.grade_entry(index))
 
 
 class MultipleOpenAssessmentMixin(FullWorkflowMixin):
@@ -992,10 +998,10 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.learner_final_score_table_values
         )
 
-        self.verify_grade_entries([
-            [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor"), (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor")],
-            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
-        ])
+        self.verify_grade_entries(
+            [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"),
+             (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent")]
+        )
 
         # Now do a staff override, changing the score (to 1).
         self.do_staff_override(learner)
@@ -1016,12 +1022,13 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
              'Fair - 1 point', 'Peer 1 - Poor', 'Excellent'],
             self.staff_area_page.learner_final_score_table_values
         )
-
-        self.verify_grade_entries([
-            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-            [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
-            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
-        ])
+        self.verify_grade_entries(
+            [(u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor",
+              u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"),
+             (u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE",
+              u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent")
+             ]
+        )
 
     @retry()
     @attr('acceptance')
@@ -1060,15 +1067,15 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEquals(
-            ['Poor - 0 points', 'Waiting for peer reviews',
-             'Fair - 1 point', 'Waiting for peer reviews'],
+            [u'Poor - 0 points', u'Waiting for peer reviews',
+             u'Fair - 1 point', u'Waiting for peer reviews'],
             self.staff_area_page.learner_final_score_table_values
         )
-
-        self.verify_grade_entries([
-            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-            [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'), (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
-        ])
+        self.verify_grade_entries(
+            [(u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
+             (u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE', u'Waiting for peer reviews')
+             ]
+        )
 
 
 @ddt.ddt
@@ -1100,6 +1107,7 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
 
         # Do staff assessment step
         self.staff_assessment(peer_grades_me)
+
 
 @ddt.ddt
 class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
@@ -1145,8 +1153,9 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         # Verify student-viewable grade report
         self.refresh_page()
         self.grade_page.wait_for_page()
-        self.assertEqual(self.grade_page.grade_entry(0, 0), (u'STAFF GRADE - 1 POINT', u'Yes'))  # Reported answer 1
-        self.assertEqual(self.grade_page.grade_entry(0, 1), (u'YOUR SELF ASSESSMENT', u'Yes'))  # Reported answer 2
+        self.verify_grade_entries(
+            [(u'STAFF GRADE - 1 POINT', u'Yes', u'YOUR SELF ASSESSMENT', u'Yes')]
+        )
         for i, assessment_type in enumerate(["staff", "self"]):
             # Criterion feedback first
             expected = self.generate_feedback(assessment_type, "criterion")

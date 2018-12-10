@@ -1,0 +1,26 @@
+<openassessment text_response="" file_upload_response="required" file_upload_type="pdf-and-image">
+    <title>Open Assessment Test</title>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty? Please answer in a short essay of 200-300 words.</description>
+        </prompt>
+    </prompts>
+    <rubric>
+        <criterion>
+            <name>Concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>Neal Stephenson (late)</name>
+                <explanation>Neal Stephenson explanation</explanation>
+            </option>
+            <option points="1">
+                <name>HP Lovecraft</name>
+                <explanation>HP Lovecraft explanation</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="1" must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>

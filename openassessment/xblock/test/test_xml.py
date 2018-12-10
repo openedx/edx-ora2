@@ -3,22 +3,21 @@
 Tests for serializing to/from XML.
 """
 import copy
-import datetime as dt
-import mock
-import lxml.etree as etree
-import pytz
-import dateutil.parser
-from django.test import TestCase
-import ddt
 
-from openassessment.xblock.data_conversion import create_prompts_list, update_assessments_format
+import dateutil.parser
+import ddt
+import lxml.etree as etree
+import mock
+import pytz
+
+from django.test import TestCase
+
+from openassessment.xblock.data_conversion import create_prompts_list
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.xml import (
-    serialize_content, parse_from_xml_str, _parse_prompts_xml, parse_rubric_xml,
-    parse_examples_xml, parse_assessments_xml,
-    serialize_rubric_to_xml_str, serialize_examples_to_xml_str,
-    serialize_assessments_to_xml_str, UpdateFromXmlError
-)
+from openassessment.xblock.xml import (UpdateFromXmlError, _parse_prompts_xml, parse_assessments_xml,
+                                       parse_examples_xml, parse_from_xml_str, parse_rubric_xml,
+                                       serialize_assessments_to_xml_str, serialize_content,
+                                       serialize_examples_to_xml_str, serialize_rubric_to_xml_str)
 
 
 def _parse_date(value):
@@ -115,6 +114,8 @@ class TestSerializeContent(TestCase):
 
     def _configure_xblock(self, data):
         self.oa_block.title = data.get('title', '')
+        self.oa_block.text_response = data.get('text_response', '')
+        self.oa_block.file_upload_response = data.get('file_upload_response', None)
         self.oa_block.prompt = data.get('prompt')
         self.oa_block.prompts = create_prompts_list(data.get('prompt'))
         self.oa_block.rubric_feedback_prompt = data.get('rubric_feedback_prompt')

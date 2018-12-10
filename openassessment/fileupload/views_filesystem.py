@@ -3,13 +3,13 @@ import json
 import os
 
 from django.conf import settings
-from django.shortcuts import HttpResponse, Http404
+from django.shortcuts import Http404, HttpResponse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
 from . import exceptions
-from .backends.filesystem import is_upload_url_available, is_download_url_available
 from .backends.base import Settings
+from .backends.filesystem import is_download_url_available, is_upload_url_available
 
 
 @require_http_methods(["PUT", "GET"])
@@ -88,6 +88,7 @@ def save_to_file(key, content, metadata=None):
         safe_remove(metadata_path)
         raise
 
+
 def safe_save(path, content):
     """
     Save content to path. Creates the appropriate directories, if required.
@@ -107,6 +108,7 @@ def safe_save(path, content):
     with open(path, 'w') as f:
         f.write(content)
 
+
 def safe_remove(path):
     """Remove a file if it exists.
 
@@ -114,6 +116,8 @@ def safe_remove(path):
     """
     if os.path.exists(path):
         os.remove(path)
+        return True
+    return False
 
 
 def get_file_path(key):

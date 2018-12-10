@@ -3,15 +3,19 @@
 Tests for the student training step in the Open Assessment XBlock.
 """
 import datetime
-import ddt
 import json
 import pprint
+
+import ddt
 from mock import Mock, patch
 import pytz
+
 from django.db import DatabaseError
+
 from openassessment.assessment.models import StudentTrainingWorkflow
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
+
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -66,7 +70,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @ddt.file_data('data/student_training_mixin.json')
     def test_correct(self, xblock, data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        data["expected_context"]['time_zone'] = pytz.utc
+        data["expected_context"]['user_timezone'] = None
+        data["expected_context"]['user_language'] = None
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
 
         # Agree with the course author's assessment
@@ -87,7 +92,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @ddt.file_data('data/student_training_mixin.json')
     def test_correct_with_error(self, xblock, data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        data["expected_context"]['time_zone'] = pytz.utc
+        data["expected_context"]['user_timezone'] = None
+        data["expected_context"]['user_language'] = None
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
 
         # Agree with the course author's assessment
@@ -111,7 +117,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @ddt.file_data('data/student_training_mixin.json')
     def test_incorrect(self, xblock, data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        data["expected_context"]['time_zone'] = pytz.utc
+        data["expected_context"]['user_timezone'] = None
+        data["expected_context"]['user_language'] = None
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
 
         # Disagree with the course author's assessment
@@ -134,7 +141,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        expected_context['time_zone'] = pytz.utc
+        expected_context['user_timezone'] = None
+        expected_context['user_language'] = None
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
         # Agree with the course author's assessment
@@ -182,7 +190,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         self.assertFalse(resp['corrections'])
         expected_context = {
             "allow_latex": False,
-            'time_zone': pytz.utc,
+            'user_timezone': None,
+            'user_language': None
         }
         expected_template = "openassessmentblock/student_training/student_training_complete.html"
         self.assert_path_and_context(xblock, expected_template, expected_context)
@@ -213,7 +222,9 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
-        expected_context['time_zone'] = pytz.utc
+        expected_context['user_timezone'] = None
+        expected_context['user_language'] = None
+
         self.assert_path_and_context(xblock, expected_template, expected_context)
         resp = self.request(xblock, 'training_assess', json.dumps({}), response_format='json')
         self.assertFalse(resp['success'], msg=resp.get('msg'))
@@ -230,7 +241,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
-        expected_context['time_zone'] = pytz.utc
+        expected_context['user_timezone'] = None
+        expected_context['user_language'] = None
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
         selected_data = {
@@ -317,7 +329,8 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00",
             'allow_latex': False,
-            'time_zone': pytz.utc,
+            'user_timezone': None,
+            'user_language': None
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
@@ -331,7 +344,8 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         expected_template = "openassessmentblock/student_training/student_training_cancelled.html"
         expected_context = {
             'allow_latex': False,
-            'time_zone': pytz.utc,
+            'user_timezone': None,
+            'user_language': None
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
@@ -350,6 +364,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),
             'allow_latex': False,
-            'time_zone': pytz.utc,
+            'user_timezone': None,
+            'user_language': None
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)

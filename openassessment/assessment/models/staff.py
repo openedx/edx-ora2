@@ -3,10 +3,9 @@ Models for managing staff assessments.
 """
 from datetime import timedelta
 
-from django.db import models, DatabaseError
+from django.db import DatabaseError, models
 from django.utils.timezone import now
 
-from openassessment.assessment.models.base import Assessment
 from openassessment.assessment.errors import StaffAssessmentInternalError
 
 
@@ -27,7 +26,7 @@ class StaffWorkflow(models.Model):
     TIME_LIMIT = timedelta(hours=8)
 
     scorer_id = models.CharField(max_length=40, db_index=True)
-    course_id = models.CharField(max_length=40, db_index=True)
+    course_id = models.CharField(max_length=255, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)

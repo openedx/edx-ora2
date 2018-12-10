@@ -2,7 +2,7 @@
 
 <li id="openassessment__staff-assessment__{{ xblock_id }}" class="openassessment__steps__step step--staff-assessment ui-slidable__container {{ step_classes }}" tabindex="-1">
     <header class="step__header ui-slidable__control">
-        <h2 class="step__title">
+        <h4 class="step__title">
             <button class="ui-slidable" {{ button_active }}
                 {% if message_title %}
                     id="oa_staff_grade_{{ xblock_id }}" aria-controls="oa_staff_grade_{{ xblock_id }}_content"
@@ -15,7 +15,6 @@
             </button>
 
             <span class="step__status">
-              <span class="step__status__label">{% trans "This step's status" %}:</span>
               <span class="step__status__value">
                   {% if icon_class %}
                   <span class="icon fa {{ icon_class }}" aria-hidden="true"></span>
@@ -23,14 +22,14 @@
                   <span class="copy">{{ status_value }}</span>
               </span>
             </span>
-        </h2>
+        </h4>
     </header>
 
     {% if message_title %}
     <div class="ui-slidable__content" aria-labelledby="oa_staff_grade_{{ xblock_id }}" id="oa_staff_grade_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__message message message--incomplete">
-                <h3 class="message__title">{{ message_title }}</h3>
+                <h5 class="message__title">{{ message_title }}</h5>
 
                 <div class="message__content">
                   <p>{{ message_content }}</p>

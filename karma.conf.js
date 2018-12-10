@@ -4,7 +4,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: 'openassessment/xblock/static/js',
+    basePath: 'openassessment/xblock/static/',
 
 
     plugins: [
@@ -25,37 +25,58 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'lib/jquery.min.js',
-      'lib/*.js',
-      'src/oa_shared.js',
-      'src/*.js',
-      'src/lms/*.js',
-      'src/studio/*.js',
-      'spec/test_shared.js',
-      'spec/*.js',
-      'spec/lms/*.js',
-      'spec/studio/*.js',
-
+      'js/lib/jquery.min.js',
+      'js/lib/codemirror.js',
+      'js/lib/jquery.timepicker.min.js',
+      'js/lib/jquery-ui-1.10.4.min.js',
+      'js/lib/underscore-min.js',
+      '../../../node_modules/backbone/backbone.js',
+      '../../../node_modules/backgrid/lib/backgrid.min.js',
+      '../../../node_modules/requirejs/require.js',
+      '../../../require-config.js',
+      {
+        pattern: '../../../node_modules/moment-timezone/builds/moment-timezone-with-data.min.js',
+        served: true, included: false
+      },
+      {
+        pattern: '../../../node_modules/moment/min/moment-with-locales.min.js',
+        served: true, included: false
+      },
+      {
+        pattern: '../../../node_modules/edx-ui-toolkit/src/js/utils/date-utils.js',
+        served: true, included: false
+      },
+      {
+        pattern: '../../../node_modules/edx-ui-toolkit/src/js/utils/string-utils.js',
+        served: true, included: false
+      },
+      //
+      'js/src/oa_shared.js',
+      'js/src/*.js',
+      'js/src/lms/*.js',
+      'js/src/studio/*.js',
+      'js/spec/test_shared.js',
+      'js/spec/*.js',
+      'js/spec/lms/*.js',
+      'js/spec/studio/*.js',
       // fixtures
       {
-        pattern: 'fixtures/*.html',
+        pattern: 'js/fixtures/*.html',
         served: true, included: false
       }
     ],
 
-
     // list of files to exclude
     exclude: [
-      'src/design*.js'
+      'js/src/design*.js'
     ],
-
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/*.js': 'coverage',
-      'src/lms/*.js': 'coverage',
-      'src/studio/*.js': 'coverage'
+      'js/src/*.js': 'coverage',
+      'js/src/lms/*.js': 'coverage',
+      'js/src/studio/*.js': 'coverage'
     },
 
 

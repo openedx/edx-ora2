@@ -1,14 +1,15 @@
 """
 Leaderboard step in the OpenAssessment XBlock.
 """
-from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
-from submissions import api as sub_api
+from django.utils.translation import ugettext as _
 
-from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
+from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 from openassessment.fileupload import api as file_upload_api
+from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
+from submissions import api as sub_api
 
 
 class LeaderboardMixin(object):
@@ -73,8 +74,20 @@ class LeaderboardMixin(object):
             self.leaderboard_show
         )
         for score in scores:
-            if 'file_key' in score['content']:
-                score['file'] = file_upload_api.get_download_url(score['content']['file_key'])
+            score['files'] = []
+            if 'file_keys' in score['content']:
+                file_keys = score['content'].get('file_keys', [])
+                descriptions = score['content'].get('files_descriptions', [])
+                for idx, key in enumerate(file_keys):
+                    file_download_url = self._get_file_download_url(key)
+                    if file_download_url:
+                        file_description = descriptions[idx] if idx < len(descriptions) else ''
+                        score['files'].append((file_download_url, file_description))
+
+            elif 'file_key' in score['content']:
+                file_download_url = self._get_file_download_url(score['content']['file_key'])
+                if file_download_url:
+                    score['files'].append((file_download_url, ''))
             if 'text' in score['content'] or 'parts' in score['content']:
                 submission = {'answer': score.pop('content')}
                 score['submission'] = create_submission_dict(submission, self.prompts)
@@ -101,3 +114,19 @@ class LeaderboardMixin(object):
             template_path (string), tuple of context (dict)
         """
         return 'openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {'xblock_id': self.get_xblock_id()}
+
+    def _get_file_download_url(self, file_key):
+        """
+        Internal function for retrieving the download url at which the file that corresponds
+        to the file_key can be downloaded.
+
+        Arguments:
+            file_key (string): Corresponding file key.
+        Returns:
+            file_download_url (string) or empty string in case of error.
+        """
+        try:
+            file_download_url = file_upload_api.get_download_url(file_key)
+        except FileUploadError:
+            file_download_url = ''
+        return file_download_url

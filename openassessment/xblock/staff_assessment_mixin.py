@@ -3,17 +3,14 @@ A mixin for staff grading.
 """
 import logging
 
-from staff_area_mixin import require_course_staff
 from xblock.core import XBlock
 
 from openassessment.assessment.api import staff as staff_api
+from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.workflow import api as workflow_api
-from openassessment.assessment.errors import (
-    StaffAssessmentRequestError, StaffAssessmentInternalError
-)
+from staff_area_mixin import require_course_staff
 
-from .data_conversion import create_rubric_dict
-from .data_conversion import clean_criterion_feedback, verify_assessment_parameters
+from .data_conversion import clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters
 
 logger = logging.getLogger(__name__)
 

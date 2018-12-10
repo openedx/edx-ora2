@@ -84,6 +84,11 @@
     }
   }
 
+  // STATE: is in-progress
+  &.is--in-progress {
+    border-top-color: $action-primary-color;
+  }
+
   // STATE: is complete
   &.is--complete {
     border-top-color: $color-complete;
@@ -148,6 +153,57 @@
   overflow-y: scroll;
 }
 
+%action-items {
+  .response__submission__label {
+    @extend %t-score;
+    color: $copy-color;
+    display: inline-block;
+    vertical-align: middle;
+    @include margin-left(($baseline-h/4));
+
+    .list--actions {
+      @include text-align(left);
+    }
+  }
+
+  .list--actions__item {
+    @include text-align(left);
+    margin-top: 5px;
+  }
+
+  .action--save {
+    @extend %btn--secondary;
+    @extend %action-2;
+    display: block;
+    margin-bottom: ($baseline-v/2);
+    min-width: 215px;
+
+    @include media($bp-ds) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dm) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dl) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dx) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+  }
+}
+
 // --------------------
 // UI: rubric
 // --------------------
@@ -202,7 +258,7 @@
       @extend %copy-3;
       @extend %t-strong;
       margin-bottom: 0; // FIX: need to reset base label style
-      color: $copy-secondary-color;
+      color: $copy-color;
     }
 
     .answer__value {
@@ -247,7 +303,7 @@
 
     @extend %copy-3;
     @include margin-right($baseline-v);
-    color: $copy-secondary-color;
+    color: $copy-color;
 
     @include media($bp-dm) {
       @include bidi-span-columns(6 of 8);
@@ -274,7 +330,7 @@
 
   .answer__points {
     @extend %t-score;
-    color: $copy-secondary-color;
+    color: $copy-color;
 
     @include media($bp-dm) {
       @include float(right);
@@ -295,7 +351,7 @@
   .answer__points__label {
     display: inline-block; // FIX: need to reset base label style
     @include margin-left(($baseline-v/4));
-    color: $copy-secondary-color;
+    color: $copy-color;
   }
 
   // ELEM: criterion selects

@@ -86,6 +86,9 @@
     {
         "template": "openassessmentblock/response/oa_response.html",
         "context": {
+            "text_response": "required",
+            "file_upload_response": "optional",
+            "file_upload_type": "pdf-and-image",
             "saved_response": {
                 "answer": {
                     "parts": [
@@ -96,7 +99,9 @@
             },
             "save_status": "This response has not been saved.",
             "submit_enabled": false,
-            "submission_due": ""
+            "submission_due": "",
+            "file_upload_type": "image",
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_response.html"
     },
@@ -339,7 +344,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_peer_assessment.html"
     },
@@ -420,7 +426,14 @@
             "title": "The most important of all questions.",
             "submission_start": "2014-01-02T12:15",
             "submission_due": "2014-10-01T04:53",
+            "text_response": "required",
+            "file_upload_response": "",
             "leaderboard_show": 12,
+            "necessity_options": {
+                "required": "Required",
+                "optional": "Optional",
+                "": "None"
+            },
             "criteria": [
                 {
                     "name": "criterion_1",
@@ -489,7 +502,6 @@
                 "student_training",
                 "peer_assessment",
                 "self_assessment",
-                "example_based_assessment",
                 "staff_assessment"
             ]
         },
@@ -502,7 +514,14 @@
             "title": "Test title",
             "submission_start": "2014-01-1T10:00:00",
             "submission_due": "2014-10-1T10:00:00",
+            "text_response": "required",
+            "file_upload_response": "",
             "leaderboard_show": 12,
+            "necessity_options": {
+                "required": "Required",
+                "optional": "Optional",
+                "": "None"
+            },
             "criteria": [
                 {
                     "name": "criterion_with_two_options",
@@ -648,7 +667,6 @@
                 "student_training",
                 "peer_assessment",
                 "self_assessment",
-                "example_based_assessment",
                 "staff_assessment"
             ]
         },
@@ -892,7 +910,9 @@
                 "cancelled_by": "staff",
                 "cancelled_at": "2015-10-01T04:53",
                 "comments": "Cancelled!"
-            }
+            },
+            "user_timezone": "utc",
+            "user_language": "en"
         },
         "output": "oa_staff_cancelled_submission.html"
     },
@@ -1003,7 +1023,8 @@
                     "feedback": "required",
                     "options": []
                 }
-            ]
+            ],
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_rubric.html"
     },
@@ -1194,5 +1215,43 @@
             "student_username": "mock_user_2"
         },
         "output": "oa_staff_grade_learners_assessment_2.html"
+    },
+    {
+        "template": "openassessmentblock/response/oa_response.html",
+        "context": {
+            "text_response": "required",
+            "file_upload_response": "",
+            "saved_response": {
+                "answer": {
+                    "parts": [
+                        { "text": "", "prompt": { "description": "Prompt 1" }},
+                        { "text": "", "prompt": { "description": "Prompt 2" }}
+                    ]
+                }
+            },
+            "save_status": "This response has not been saved.",
+            "submit_enabled": true,
+            "submission_due": "2020-01-01T00:00",
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
+        },
+        "output": "oa_response_date.html"
+    },
+    {
+        "template": "openassessmentblock/instructor_dashboard/oa_grade_available_responses.html",
+        "context": {
+            "title": "Test ABC",
+            "staff_assessment_required": true,
+            "staff_assessment_ungraded": 9,
+            "staff_assessment_in_progress": 2
+        },
+        "output": "oa_grade_available_responses_separate_view.html"
+    },
+    {
+        "template": "openassessmentblock/instructor_dashboard/oa_listing.html",
+        "context": {
+            "ora_item_view_enabled": "1",
+            "ora_items": ""
+        },
+        "output": "oa_listing_view.html"
     }
 ]

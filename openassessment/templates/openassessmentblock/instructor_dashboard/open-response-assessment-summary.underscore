@@ -1,0 +1,14 @@
+<table class="backgrid open-response-assessment-summary">
+    <tbody>
+    <tr>
+        <% for (var i = 0; i < oraSummary.length; i++) {
+            var s = oraSummary[i];
+        %>
+        <td class="string-cell renderable <%- s.class %>">
+            <div class="ora-summary-title"><%- s.title %></div>
+            <div class="ora-summary-value" title="<%- s.value %>"><%- s.value %></div>
+        </td>
+        <% } %>
+    </tr>
+    </tbody>
+</table>

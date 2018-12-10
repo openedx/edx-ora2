@@ -1,4 +1,4 @@
-<openassessment>
+<openassessment text_response="required" file_upload_response="optional" file_upload_type="pdf-and-image">
     <title>Open Assessment Test</title>
     <prompts>
         <prompt>

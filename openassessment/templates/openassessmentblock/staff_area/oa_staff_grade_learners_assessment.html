@@ -22,11 +22,11 @@
                             </h4>
                         </header>
 
-                        {% trans "The learner's response to the question above:" as translated_label %}
+                        {% trans "The learner's response to the prompt above" as translated_label %}
                         {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
-                        {% trans "Associated File" as translated_header %}
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header=translated_header class_prefix="staff-assessment" show_warning="true" %}
+                        {% trans "Associated Files" as translated_header %}
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=staff_file_urls header=translated_header class_prefix="staff-assessment" show_warning="true" including_template="staff_grade_learners_assessment" xblock_id=xblock_id %}
                     </div>
 
                     <form class="staff-assessment__assessment" method="post">
@@ -37,20 +37,20 @@
 
             <div>
                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                    <h4 class="message__title">{% trans "We could not submit your assessment" %}</h4>
+                    <h5 class="message__title">{% trans "We could not submit your assessment" %}</h5>
                     <div class="message__content"></div>
                 </div>
 
                 <ul class="list list--actions">
                     <li class="list--actions__item submit_assessment--action">
-                        <button type="submit" class="action action--submit is--disabled">
-                            <span class="copy">{% trans "Submit assessment" %}</span>
+                        <button type="submit" class="action action--submit" disabled>
+                            {% trans "Submit assessment" %}
                         </button>
                     </li>
 
                     <li class="list--actions__item submit_assessment--action">
-                        <button type="submit" class="action action--submit is--disabled continue_grading--action">
-                            <span class="copy">{% trans "Submit assessment and continue grading" %}</span>
+                        <button type="submit" class="action action--submit continue_grading--action" disabled>
+                            {% trans "Submit assessment and continue grading" %}
                         </button>
                     </li>
                 </ul>

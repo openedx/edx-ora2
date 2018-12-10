@@ -28,7 +28,7 @@
 
     @include placeholder {
       @extend %t-regular;
-      color: $copy-secondary-color;
+      color: $copy-color;
     }
 
     // STATE: focus
@@ -58,7 +58,7 @@
     .tip {
       display: block;
       @extend %copy-4;
-      color: $copy-secondary-color;
+      color: $copy-color;
     }
   }
 
@@ -102,7 +102,7 @@
       @extend %copy-3;
       @extend %t-strong;
       margin-bottom: 0; // FIX: need to reset base label style
-      color: $copy-secondary-color;
+      color: $copy-color;
     }
 
     .option__input {

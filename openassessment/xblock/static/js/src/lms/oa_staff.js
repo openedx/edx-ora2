@@ -9,6 +9,9 @@ OpenAssessment.StaffView = function(element, server, baseView) {
     this.element = element;
     this.server = server;
     this.baseView = baseView;
+    this.isRendering = false;
+    this.announceStatus = false;
+
 };
 
 OpenAssessment.StaffView.prototype = {
@@ -18,14 +21,16 @@ OpenAssessment.StaffView.prototype = {
      **/
     load: function(usageID) {
         var view = this;
+        var stepID = ".step--staff-assessment";
+        var focusID = "[id='oa_staff_grade_" + usageID + "']";
+        view.isRendering = true;
+
         this.server.render('staff_assessment').done(
             function(html) {
                 $('.step--staff-assessment', view.element).replaceWith(html);
+                view.isRendering = false;
                 view.installHandlers();
-                if (typeof usageID !== 'undefined' &&
-                    $(".step--staff-assessment", view.element).hasClass("is--showing")) {
-                    $("[id='oa_staff_grade_" + usageID + "']", view.element).focus();
-                }
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
             }
         ).fail(function() {
             view.baseView.showLoadError('staff-assessment');

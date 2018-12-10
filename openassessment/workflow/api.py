@@ -8,12 +8,11 @@ from django.db import DatabaseError
 
 from openassessment.assessment.errors import PeerAssessmentError, PeerAssessmentInternalError
 from submissions import api as sub_api
+
+from .errors import (AssessmentWorkflowError, AssessmentWorkflowInternalError, AssessmentWorkflowNotFoundError,
+                     AssessmentWorkflowRequestError)
 from .models import AssessmentWorkflow, AssessmentWorkflowCancellation
-from .serializers import AssessmentWorkflowSerializer, AssessmentWorkflowCancellationSerializer
-from .errors import (
-    AssessmentWorkflowError, AssessmentWorkflowInternalError,
-    AssessmentWorkflowRequestError, AssessmentWorkflowNotFoundError
-)
+from .serializers import AssessmentWorkflowCancellationSerializer, AssessmentWorkflowSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -408,7 +407,8 @@ def get_assessment_workflow_cancellation(submission_uuid):
         workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)
         return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
     except DatabaseError:
-        error_message = u"Error finding assessment workflow cancellation for submission UUID {}.".format(submission_uuid)
+        error_message = u"Error finding assessment workflow cancellation for submission UUID {}."\
+            .format(submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 

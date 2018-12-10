@@ -48,7 +48,7 @@ describe("OpenAssessment.StudioView", function() {
         feedbackPrompt: "",
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
-        fileUploadType: "",
+        fileUploadType: null,
         leaderboardNum: 12,
         criteria: [
             {
@@ -80,7 +80,7 @@ describe("OpenAssessment.StudioView", function() {
                 prompt: "Prompt for criterion with no options",
                 order_num: 1,
                 options: [],
-                feedback: "required",
+                feedback: "required"
             },
             {
                 name: "criterion_3",
@@ -96,7 +96,7 @@ describe("OpenAssessment.StudioView", function() {
                         label: "Good",
                         explanation: "Good explanation"
                     }
-                ],
+                ]
             }
         ],
         assessments: [
@@ -117,8 +117,7 @@ describe("OpenAssessment.StudioView", function() {
             "student-training",
             "peer-assessment",
             "self-assessment",
-            "example-based-assessment",
-            "staff-assessment",
+            "staff-assessment"
         ]
     };
 

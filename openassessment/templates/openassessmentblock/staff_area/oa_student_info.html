@@ -26,11 +26,11 @@
             {% if workflow_cancellation %}
                 <p>
                     {% if workflow_cancellation.cancelled_by %}
-                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|timezone:"UTC"|date:"Y-m-d H:i e" %}
                             Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
                         {% endblocktrans %}
                     {% else %}
-                        {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
+                        {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|timezone:"UTC"|date:"Y-m-d H:i e" %}
                             Learner submission removed on {{ removed_datetime }}
                         {% endblocktrans %}
                     {% endif %}
@@ -43,11 +43,11 @@
                 </p>
             {% else %}
                 <div class="wrapper--content">
-                    {% trans "The learner's response to the question above:" as translated_label %}
+                    {% trans "The learner's response to the prompt above" as translated_label %}
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
-                    {% trans "Associated File" as translated_header %}
-                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header=translated_header class_prefix="staff-assessment" show_warning="true" %}
+                    {% trans "Associated Files" as translated_header %}
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=staff_file_urls header=translated_header class_prefix="staff-assessment" show_warning="true" including_template="student_info" xblock_id=xblock_id %}
                 </div>
             {% endif %}
         </div>
@@ -66,11 +66,6 @@
     {% if self_assessment %}
         {% trans "Learner's Self Assessment" as translated_title %}
         {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="self" assessments=self_assessment %}
-    {% endif %}
-
-    {% if example_based_assessment %}
-        {% trans "Example-Based Assessment" as translated_title %}
-        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="example_based" assessments=example_based_assessment %}
     {% endif %}
 
     {% if staff_assessment %}
@@ -144,13 +139,21 @@
                     </tbody>
                 </table>
             {% elif workflow_status == "waiting" %}
-                <div class="staff-info__final__grade__score">{% trans "The submission is waiting for assessments." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The submission is waiting for assessments." %}</p>
+                </div>
             {% elif workflow_status == "cancelled" %}
-                <div class="staff-info__final__grade__score">{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
+                </div>
             {% elif workflow_status == None %}
-                <div class="staff-info__final__grade__score">{% trans "The problem has not been started." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The problem has not been started." %}</p>
+                </div>
             {% else %}
-                <div class="staff-info__final__grade__score">{% trans "The problem has not been completed." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The problem has not been completed." %}</p>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -186,7 +189,7 @@
                     <form data-submission-uuid="{{ submission.uuid }}">
 
                         <div class="step__message message message--warning">
-                            <h3 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h3>
+                            <h5 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h5>
                             <div class="message__content">{% trans "Removing a learner's submission cannot be undone and should be done with caution." %}</div>
                         </div>
 
@@ -200,8 +203,8 @@
                         <ul class="list list--actions">
                             <li class="list--actions__item">
                                 <button data-submission-uuid="{{ submission.uuid }}"
-                                    class="action--submit action--submit-cancel-submission is--disabled">
-                                    <span class="copy">{% trans "Remove submission" %}</span>
+                                    class="action--submit action--submit-cancel-submission" disabled>
+                                    {% trans "Remove submission" %}
                                 </button>
 
                                 <div class="cancel-submission-error"></div>

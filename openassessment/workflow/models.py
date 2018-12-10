@@ -9,19 +9,23 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
-import logging
 import importlib
+import logging
+from uuid import uuid4
+
 from django.conf import settings
-from django.db import models, transaction, DatabaseError
+from django.db import DatabaseError, models, transaction
 from django.dispatch import receiver
-from django_extensions.db.fields import UUIDField
 from django.utils.timezone import now
+
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
-from submissions import api as sub_api
-from openassessment.assessment.signals import assessment_complete_signal
-from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
+from openassessment.assessment.errors.base import AssessmentError
+from openassessment.assessment.signals import assessment_complete_signal
+from submissions import api as sub_api
+
+from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
 logger = logging.getLogger('openassessment.workflow.models')
 
@@ -35,7 +39,6 @@ DEFAULT_ASSESSMENT_API_DICT = {
     'peer': 'openassessment.assessment.api.peer',
     'self': 'openassessment.assessment.api.self',
     'training': 'openassessment.assessment.api.student_training',
-    'ai': 'openassessment.assessment.api.ai',
 }
 ASSESSMENT_API_DICT = getattr(
     settings, 'ORA2_ASSESSMENTS',
@@ -76,14 +79,16 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     # We then use that score as the student's overall score.
     # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
     # in descending priority order.
-    DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self', 'ai']
+    DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']
     ASSESSMENT_SCORE_PRIORITY = getattr(
         settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
         DEFAULT_ASSESSMENT_SCORE_PRIORITY
     )
 
+    STAFF_ANNOTATION_TYPE = "staff_defined"
+
     submission_uuid = models.CharField(max_length=36, db_index=True, unique=True)
-    uuid = UUIDField(version=1, db_index=True, unique=True)
+    uuid = models.UUIDField(db_index=True, unique=True, default=uuid4)
 
     # These values are used to find workflows for a particular item
     # in a course without needing to look up the submissions for that item.
@@ -95,6 +100,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     class Meta:
         ordering = ["-created"]
         # TODO: In migration, need a non-unique index on (course_id, item_id, status)
+        app_label = "workflow"
 
     def __init__(self, *args, **kwargs):
         super(AssessmentWorkflow, self).__init__(*args, **kwargs)
@@ -151,7 +157,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             item_id=submission_dict['student_item']['item_id']
         )
         workflow_steps = [
-            AssessmentWorkflowStep(
+            AssessmentWorkflowStep.objects.create(
                 workflow=workflow, name=step, order_num=i
             )
             for i, step in enumerate(step_names)
@@ -315,9 +321,12 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             # new_staff_score is just the most recent staff score, it may already be recorded in sub_api
             old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
             if (
-                    not old_score or # There is no recorded score
-                    not old_score.get('staff_id') or # The recorded score is not a staff score
-                    old_score['points_earned'] != new_staff_score['points_earned'] # Previous staff score doesn't match
+                    # Does a prior score exist? Is it a staff score? Do the points earned match?
+                    not old_score or
+                    not self.STAFF_ANNOTATION_TYPE in [
+                        annotation['annotation_type'] for annotation in old_score['annotations']
+                    ] or
+                    old_score['points_earned'] != new_staff_score['points_earned']
             ):
                 # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
@@ -390,12 +399,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         except AssessmentWorkflowStep.DoesNotExist:
             for step in list(self.steps.all()):
                 step.order_num += 1
+            staff_step, _ = AssessmentWorkflowStep.objects.get_or_create(
+                name=self.STATUS.staff,
+                order_num=0,
+                assessment_completed_at=now(),
+                workflow=self,
+            )
             self.steps.add(
-                AssessmentWorkflowStep(
-                    name=self.STATUS.staff,
-                    order_num=0,
-                    assessment_completed_at=now(),
-                )
+                staff_step
             )
 
         # Do not return steps that are not recognized in the AssessmentWorkflow.
@@ -426,21 +437,21 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 will be used in the event that this parameter is not provided.
 
         """
-        annotation_type = "staff_defined"
         if reason is None:
             reason = "A staff member has defined the score for this submission"
         sub_dict = sub_api.get_submission_and_student(self.submission_uuid)
         sub_api.reset_score(
             sub_dict['student_item']['student_id'],
             self.course_id,
-            self.item_id
+            self.item_id,
+            emit_signal=False
         )
         sub_api.set_score(
             self.submission_uuid,
             score["points_earned"],
             score["points_possible"],
             annotation_creator=score["staff_id"],
-            annotation_type=annotation_type,
+            annotation_type=self.STAFF_ANNOTATION_TYPE,
             annotation_reason=reason
         )
 
@@ -503,7 +514,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             if on_cancel_func is not None:
                 on_cancel_func(self.submission_uuid)
 
-        score = self.get_score(assessment_requirements, step_for_name)
+        try:
+            score = self.get_score(assessment_requirements, step_for_name)
+        except AssessmentError as exc:
+            logger.info("TNL-5799, exception in get_score during cancellation. {}".format(exc))
+            score = None
 
         # Set the points_earned to 0.
         if score is not None:
@@ -614,6 +629,7 @@ class AssessmentWorkflowStep(models.Model):
 
     class Meta:
         ordering = ["workflow", "order_num"]
+        app_label = "workflow"
 
     def is_submitter_complete(self):
         """
@@ -750,6 +766,7 @@ class AssessmentWorkflowCancellation(models.Model):
 
     class Meta:
         ordering = ["created_at", "id"]
+        app_label = "workflow"
 
     def __repr__(self):
         return (

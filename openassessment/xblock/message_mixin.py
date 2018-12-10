@@ -5,7 +5,6 @@ Message step in the OpenAssessment XBlock.
 import datetime as dt
 
 import pytz
-
 from xblock.core import XBlock
 
 

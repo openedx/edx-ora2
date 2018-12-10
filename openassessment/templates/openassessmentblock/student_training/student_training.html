@@ -2,12 +2,12 @@
 {% load tz %}
 {% spaceless %}
 {% block list_item %}
-<li class="openassessment__steps__step step--student-training is--showing ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
+<li class="openassessment__steps__step step--student-training is--showing is--in-progress ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
     tabindex="-1">
 {% endblock %}
 
 <header class="step__header ui-slidable__control">
-    <h2 class="step__title">
+    <h4 class="step__title">
         {% block button %}
         <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content">
         {% endblock %}
@@ -17,12 +17,16 @@
                 {% if training_start %}
                     <span class="step__deadline">
                         {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with start_date=training_start|timezone:time_zone|date:"N j, Y H:i e" time_until=training_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                        {% blocktrans with start_date=training_start|timezone:"UTC"|date:"c" time_until=training_start|timeuntil %}
+                        <span class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+                        {% endblocktrans %}
                     </span>
                 {% elif training_due %}
                     <span class="step__deadline">
                         {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with due_date=training_due|timezone:time_zone|date:"N j, Y H:i e" time_until=training_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                        {% blocktrans with due_date=training_due|timezone:"UTC"|date:"c" time_until=training_due|timeuntil %}
+                        <span class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+                        {% endblocktrans %}
                     </span>
                 </span>
                 {% endif %}
@@ -31,19 +35,18 @@
 
         {% block title %}
             <span class="step__status">
-              <span class="step__status__label">{% trans "This step's status" %}:</span>
               <span class="step__status__value">
                   <span class="copy">
-                      {% with training_num_completed_string=training_num_completed|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
-                      {% blocktrans with training_completed_num='<span class="step__status__value--completed">'|safe|add:training_num_completed_string|add:'</span>'|safe training_available_num='<span class="step__status__value--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
-                          In Progress ({{ training_completed_num }} of {{ training_available_num }})
+                      {%  with training_num_current_string=training_num_current|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
+                      {% blocktrans with current_progress_num='<span class="step__status__number--current">'|safe|add:training_num_current_string|add:'</span>'|safe training_available_num='<span class="step__status__value--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
+                          In Progress ({{ current_progress_num }} of {{ training_available_num }})
                       {% endblocktrans %}
                       {% endwith %}
                   </span>
               </span>
             </span>
         {% endblock %}
-    </h2>
+    </h4>
 </header>
 
 {% block body %}
@@ -51,7 +54,7 @@
         <div class="wrapper--step__content">
 
             <div class="openassessment__student-training--instructions step__message message message--correct">
-                <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
+                <h5 class="message__title">{% trans "Learning to Assess Responses" %}</h5>
 
                 <div class="message__content">
                     <p>{% trans "Before you begin to assess your peers' responses, you'll learn how to complete peer assessments by reviewing responses that instructors have already assessed. If you select the same options for the response that the instructor selected, you'll move to the next step. If you don't select the same options, you'll review the response and try again." %}</p>
@@ -59,7 +62,7 @@
             </div>
 
             <div class="openassessment__student-training--incorrect step__message message message--incorrect is--hidden">
-                <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
+                <h5 class="message__title">{% trans "Learning to Assess Responses" %}</h5>
 
                 <div class="message__content">
                     <p>{% trans "Your assessment differs from the instructor's assessment of this response. Review the response and consider why the instructor may have assessed it differently. Then, try the assessment again." %}</p>
@@ -68,19 +71,8 @@
 
             <div class="step__content">
                 <article class="student-training__display">
-                    <header class="student-training__display__header">
-                        {% with training_num_current=training_num_current training_num_available=training_num_available %}
-                        <h3 class="student-training__display__title">
-                            {% with training_num_current_string=training_num_current|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
-                            {% blocktrans with current_progress_num='<span class="student-training__number--current">'|safe|add:training_num_current_string|add:'</span>'|safe num_to_complete='<span class="student-training__number--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
-                                Training Assessment # {{ current_progress_num }} of {{ num_to_complete }}
-                            {% endblocktrans %}
-                            {% endwith %}
-                        </h3>
-                        {% endwith %}
-                    </header>
 
-                    {% trans "The response to the question above:" as translated_label %}
+                    {% trans "The response to the prompt above:" as translated_label %}
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=training_essay.answer answer_text_label=translated_label %}
 
                 </article>
@@ -93,49 +85,49 @@
                                 <li
                                     class="field field--radio is--required assessment__rubric__question has--options is--showing ui-slidable__container training__assessment__rubric__question--{{ criterion.order_num }}"
                                 >
-                                    <h4 class="question__title ui-slidable__control">
+                                    <div class="question__title ui-slidable__control">
                                         <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}_criterion--{{ criterion.order_num }}" aria-controls="oa_training_{{ xblock_id }}_content_criterion--{{  criterion.order_num }}">
                                             <span class="icon fa fa-caret-right" aria-hidden="true"></span>
                                             <span id="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}" class="question__title__copy">{{ criterion.prompt }}</span>
-                                            <span class="label--required sr">* ({% trans "Required" %})</span>
+                                            <span class="label--required sr">({% trans "Required" %})</span>
                                         </button>
-                                    </h4>
+                                    </div>
                                     <div class="ui-slidable__content" aria-labelledby="oa_training_{{ xblock_id }}_criterion--{{ criterion.order_num }}" id="oa_training_{{ xblock_id }}_content_criterion--{{  criterion.order_num }}">
-                                        <div class="step__message message message--correct is--hidden">
-                                            <h3 class="message__title">{% trans "Selected Options Agree" %}</h3>
+                                        <div id="training__assessment__rubric__correct__message--{{ criterion.order_num }}__{{ xblock_id }}" class="step__message message message--correct is--hidden">
+                                            <h5 class="message__title">{% trans "Selected Options Agree" %}</h5>
 
                                             <div class="message__content">
                                                 <p>{% trans "The option you selected is the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <div class="step__message message message--incorrect is--hidden">
-                                            <h3 class="message__title">{% trans "Selected Options Differ" %}</h3>
+                                        <div id="training__assessment__rubric__incorrect__message--{{ criterion.order_num }}__{{ xblock_id }}" class="step__message message message--incorrect is--hidden">
+                                            <h5 class="message__title">{% trans "Selected Options Differ" %}</h5>
 
                                             <div class="message__content">
                                                 <p>{% trans "The option you selected is not the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <div class="question__answers">
-                                            <div role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}">
-                                            {% for option in criterion.options %}
-                                                <div class="answer">
-                                                    <div class="wrapper--input">
-                                                        <input type="radio"
-                                                               data-criterion-name="{{ criterion.name }}"
-                                                               id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
-                                                               class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
-                                                               value="{{ option.name }}"
-                                                               name="training__assessment__rubric__question--{{ criterion.order_num }}"/>
-                                                        <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
-                                                               class="answer__label">{{ option.label }}</label>
-                                                    </div>
-                                                    <div class="wrapper--metadata">
-                                                        <span class="answer__tip">{{ option.explanation }}</span>
-                                                        <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
-                                                    </div>
+                                        <div class="question__answers" role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}">
+                                        {% for option in criterion.options %}
+                                            <div class="answer">
+                                                <div class="wrapper--input">
+                                                    <input type="radio"
+                                                           data-criterion-name="{{ criterion.name }}"
+                                                           id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                                           class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
+                                                           value="{{ option.name }}"
+                                                           name="training__assessment__rubric__question--{{ criterion.order_num }}"
+                                                           aria-describedby="training__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"/>
+                                                    <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                                           class="answer__label">{{ option.label }}</label>
                                                 </div>
-                                            {% endfor %}
+                                                <div class="wrapper--metadata"
+                                                     id="training__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}">
+                                                    <span class="answer__tip">{{ option.explanation }}</span>
+                                                    <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
+                                                </div>
                                             </div>
+                                        {% endfor %}
                                         </div>
                                     </div>
                                 </li>
@@ -148,14 +140,14 @@
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                    <h3 class="message__title">{% trans "We could not check your assessment" %}</h3>
+                    <h5 class="message__title">{% trans "We could not check your assessment" %}</h5>
                     <div class="message__content"></div>
                 </div>
 
                 <ul class="list list--actions">
                     <li class="list--actions__item">
-                        <button type="submit" class="student-training--001__assessment__submit action action--submit is--disabled">
-                            <span class="copy">{% trans "Compare your selections with the instructor's selections" %}</span>
+                        <button type="submit" class="student-training--001__assessment__submit action action--submit" disabled>
+                            {% trans "Compare your selections with the instructor's selections" %}
                         </button>
                     </li>
                 </ul>

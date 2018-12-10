@@ -49,7 +49,6 @@ describe("OpenAssessment.EditSettingsView", function() {
     // The Peer and Self Editor ID's
     var PEER = "oa_peer_assessment_editor";
     var SELF = "oa_self_assessment_editor";
-    var AI = "oa_ai_assessment_editor";
     var TRAINING = "oa_student_training_editor";
     var STAFF = "oa_staff_assessment_editor";
 
@@ -61,7 +60,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         assessmentViews = {};
         assessmentViews[SELF] = new StubView("self-assessment", "Self assessment description");
         assessmentViews[PEER] = new StubView("peer-assessment", "Peer assessment description");
-        assessmentViews[AI] = new StubView("ai-assessment", "Example Based assessment description");
         assessmentViews[TRAINING] = new StubView("student-training", "Student Training description");
         assessmentViews[STAFF] = new StubView("staff-assessment", "Staff assessment description");
 
@@ -93,14 +91,19 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("sets and loads the file upload state", function() {
+        view.fileUploadResponseNecessity('optional', true);
         view.fileUploadType('image');
         expect(view.fileUploadType()).toBe('image');
         view.fileUploadType('pdf-and-image');
         expect(view.fileUploadType()).toBe('pdf-and-image');
         view.fileUploadType('custom');
         expect(view.fileUploadType()).toBe('custom');
-        view.fileUploadType('');
+
+        view.fileUploadResponseNecessity('', true);
         expect(view.fileUploadType()).toBe('');
+
+        view.fileUploadResponseNecessity('required', true);
+        expect(view.fileUploadType()).toBe('custom');
     });
 
     it("sets and loads the file type white list", function() {
@@ -126,7 +129,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Disable all assessments, and expect an empty description
         assessmentViews[PEER].isEnabled(false);
         assessmentViews[SELF].isEnabled(false);
-        assessmentViews[AI].isEnabled(false);
         assessmentViews[TRAINING].isEnabled(false);
         assessmentViews[STAFF].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([]);
@@ -134,7 +136,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Enable the first assessment only
         assessmentViews[PEER].isEnabled(false);
         assessmentViews[SELF].isEnabled(true);
-        assessmentViews[AI].isEnabled(false);
         assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
@@ -146,7 +147,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Enable the second assessment only
         assessmentViews[PEER].isEnabled(true);
         assessmentViews[SELF].isEnabled(false);
-        assessmentViews[AI].isEnabled(false);
         assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
@@ -158,7 +158,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Enable both assessments
         assessmentViews[PEER].isEnabled(true);
         assessmentViews[SELF].isEnabled(true);
-        assessmentViews[AI].isEnabled(false);
         assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
@@ -242,6 +241,8 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("validates file upload type and white list fields", function() {
+        view.fileUploadResponseNecessity('optional', true);
+
         view.fileUploadType("image");
         expect(view.validate()).toBe(true);
         expect(view.validationErrors().length).toBe(0);

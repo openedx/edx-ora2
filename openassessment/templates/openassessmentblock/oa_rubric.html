@@ -6,13 +6,13 @@
         <li
             class="field field--radio is--required assessment__rubric__question is--showing ui-slidable__container {% if criterion.options %}has--options{% endif %} {{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
         >
-            <h4 class="question__title ui-slidable__control">
+            <div class="question__title ui-slidable__control">
                 <button class="ui-slidable" aria-expanded="true" id="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}" aria-controls="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}__content">
                     <span class="icon fa fa-caret-right" aria-hidden="true"></span>
                     <span id="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-slidable__control__copy question__title__copy">{{ criterion.prompt }}</span>
-                    <span class="label--required sr">* ({% trans "Required" %})</span>
+                    <span class="label--required sr">({% trans "Required" %})</span>
                 </button>
-            </h4>
+            </div>
 
             <div class="ui-slidable__content" aria-labelledby="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}" id="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}__content">
                 <div class="question__answers">
@@ -25,12 +25,14 @@
                                        class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
                                        id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
                                        value="{{ option.name }}"
-                                       name="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"/>
+                                       name="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
+                                       aria-describedby="{{ rubric_type }}__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"/>
                                 <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
                                        class="answer__label"
                                        >{{ option.label }}</label>
                             </div>
-                            <div class="wrapper--metadata">
+                            <div class="wrapper--metadata"
+                                 id="{{ rubric_type }}__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}">
                                 <span class="answer__tip">{{ option.explanation }}</span>
                                 <span class="answer__points">{{ option.points }} <span class="answer__points__label">{% trans "points" %}</span></span>
                             </div>
@@ -46,12 +48,14 @@
                                 class="answer__value"
                                 id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback__{{ xblock_id }}"
                                 value="{{ criterion.name }}"
+                                data-preview="criteria__{{ criterion.name }}"
                                 data-criterion-name="{{ criterion.name }}"
                                 aria-describedby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"
                                 maxlength="1000"
                                 {% if criterion.feedback == 'required' %}required{% endif %}
                                 >
                             </textarea>
+                            {% include "openassessmentblock/oa_latex_preview.html" with id="criteria__"|add:rubric_type|add:criterion.order_num elem="div" preview_name="criteria__"|add:criterion.name submit_enabled=True %}
                         </div>
                     </div>
                 </div>
@@ -68,10 +72,12 @@
                 <textarea
                     class="assessment__rubric__question--feedback__value"
                     id="{{ rubric_type }}__assessment__rubric__question--feedback__value__{{ xblock_id }}"
+                    data-preview="feedback"
                     placeholder="{{ rubric_feedback_default_text }}"
                     maxlength="1000"
                 >
                 </textarea>
+                {% include "openassessmentblock/oa_latex_preview.html" with id="feedback__"|add:rubric_type elem="div" preview_name="feedback" submit_enabled=True %}
             </div>
         </li>
     </ol>

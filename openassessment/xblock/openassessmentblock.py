@@ -5,39 +5,37 @@ import datetime as dt
 import json
 import logging
 import os
-import pkg_resources
 
-import pytz
-
-from django.conf import settings
-from django.template.context import Context
-from django.template.loader import get_template
-from webob import Response
 from lazy import lazy
-
+import pkg_resources
+import pytz
+from webob import Response
 from xblock.core import XBlock
-from xblock.fields import List, Scope, String, Boolean, Integer
+from xblock.fields import Boolean, Integer, List, Scope, String
 from xblock.fragment import Fragment
 
+from django.conf import settings
+from django.template.loader import get_template
+
+from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
+from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
+from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
-from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
-from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
-from openassessment.xblock.submission_mixin import SubmissionMixin
-from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
-from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
-from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
+from openassessment.xblock.studio_mixin import StudioMixin
+from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.validation import validator
-from openassessment.xblock.resolve_dates import resolve_dates, parse_date_value, DISTANT_PAST, DISTANT_FUTURE
-from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
-
+from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +80,6 @@ UI_MODELS = {
 
 VALID_ASSESSMENT_TYPES = [
     "student-training",
-    "example-based-assessment",
     "peer-assessment",
     "self-assessment",
     "staff-assessment"
@@ -97,21 +94,20 @@ def load(path):
 
 @XBlock.needs("i18n")
 @XBlock.needs("user")
-class OpenAssessmentBlock(
-    MessageMixin,
-    SubmissionMixin,
-    PeerAssessmentMixin,
-    SelfAssessmentMixin,
-    StaffAssessmentMixin,
-    StudioMixin,
-    GradeMixin,
-    LeaderboardMixin,
-    StaffAreaMixin,
-    WorkflowMixin,
-    StudentTrainingMixin,
-    LmsCompatibilityMixin,
-    XBlock,
-):
+class OpenAssessmentBlock(MessageMixin,
+                          SubmissionMixin,
+                          PeerAssessmentMixin,
+                          SelfAssessmentMixin,
+                          StaffAssessmentMixin,
+                          StudioMixin,
+                          GradeMixin,
+                          LeaderboardMixin,
+                          StaffAreaMixin,
+                          WorkflowMixin,
+                          StudentTrainingMixin,
+                          LmsCompatibilityMixin,
+                          CourseItemsListingMixin,
+                          XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
     public_dir = 'static'
@@ -124,6 +120,18 @@ class OpenAssessmentBlock(
     submission_due = String(
         default=DEFAULT_DUE, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission due date."
+    )
+
+    text_response_raw = String(
+        help="Specify whether learners must include a text based response to this problem's prompt.",
+        default="required",
+        scope=Scope.settings
+    )
+
+    file_upload_response_raw = String(
+        help="Specify whether learners are able to upload files as a part of their response.",
+        default=None,
+        scope=Scope.settings
     )
 
     allow_file_upload = Boolean(
@@ -216,6 +224,12 @@ class OpenAssessmentBlock(
         help="Saved response submission for the current user."
     )
 
+    saved_files_descriptions = String(
+        default=u"",
+        scope=Scope.user_state,
+        help="Saved descriptions for each uploaded file."
+    )
+
     no_peers = Boolean(
         default=False,
         scope=Scope.user_state,
@@ -225,6 +239,42 @@ class OpenAssessmentBlock(
     @property
     def course_id(self):
         return self._serialize_opaque_key(self.xmodule_runtime.course_id)  # pylint:disable=E1101
+
+    @property
+    def text_response(self):
+        """
+        Backward compatibility for existing blocks that were created without text_response
+        or file_upload_response fields. These blocks will be treated as required text.
+        """
+        if not self.file_upload_response and not self.text_response_raw:
+            return 'required'
+        else:
+            return self.text_response_raw
+
+    @text_response.setter
+    def text_response(self, value):
+        """
+        Setter for text_response_raw
+        """
+        self.text_response_raw = value if value else None
+
+    @property
+    def file_upload_response(self):
+        """
+        Backward compatibility for existing block before that were created without
+        'text_response' and 'file_upload_response_raw' fields.
+        """
+        if not self.file_upload_response_raw and (self.file_upload_type_raw is not None or self.allow_file_upload):
+            return 'optional'
+        else:
+            return self.file_upload_response_raw
+
+    @file_upload_response.setter
+    def file_upload_response(self, value):
+        """
+        Setter for file_upload_response_raw
+        """
+        self.file_upload_response_raw = value if value else None
 
     @property
     def file_upload_type(self):
@@ -361,8 +411,88 @@ class OpenAssessmentBlock(
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
-        context = Context(context_dict)
-        fragment = Fragment(template.render(context))
+
+        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+
+    def ora_blocks_listing_view(self, context=None):
+        """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
+        to display all available course ORA blocks.
+
+        Args:
+            context: contains two items:
+                "ora_items" - all course items with names and parents, example:
+                    [{"parent_name": "Vertical name",
+                      "name": "ORA Display Name",
+                      "url_grade_available_responses": "/grade_available_responses_view",
+                      "staff_assessment": false,
+                      "parent_id": "vertical_block_id",
+                      "url_base": "/student_view",
+                      "id": "openassessment_block_id"
+                     }, ...]
+                "ora_item_view_enabled" - enabled LMS API endpoint to serve XBlock view or not
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock.
+        """
+        ora_items = context.get('ora_items', []) if context else []
+        ora_item_view_enabled = context.get('ora_item_view_enabled', False) if context else False
+        context_dict = {
+            "ora_items": json.dumps(ora_items),
+            "ora_item_view_enabled": ora_item_view_enabled
+        }
+
+        template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
+
+        min_postfix = '.min' if settings.DEBUG else ''
+
+        return self._create_fragment(
+            template,
+            context_dict,
+            initialize_js_func='CourseOpenResponsesListingBlock',
+            additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
+            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix]
+        )
+
+    def grade_available_responses_view(self, context=None):
+        """Grade Available Responses view.
+
+        Auxiliary view which displays the staff grading area
+        (used in the Open Response Assessment tab in the Instructor Dashboard of LMS)
+
+        Args:
+            context: Not used for this view.
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock.
+        """
+        student_item = self.get_student_item_dict()
+        staff_assessment_required = "staff-assessment" in self.assessment_steps
+
+        context_dict = {
+            "title": self.title,
+            'staff_assessment_required': staff_assessment_required
+        }
+
+        if staff_assessment_required:
+            context_dict.update(
+                self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
+            )
+
+        template = get_template('openassessmentblock/instructor_dashboard/oa_grade_available_responses.html')
+
+        return self._create_fragment(template, context_dict, initialize_js_func='StaffAssessmentBlock')
+
+    def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None):
+        """
+        Creates a fragment for display.
+
+        """
+        fragment = Fragment(template.render(context_dict))
+
+        if additional_css is None:
+            additional_css = []
+        if additional_js is None:
+            additional_js = []
 
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
@@ -371,13 +501,22 @@ class OpenAssessmentBlock(
             css_url = "static/css/openassessment-ltr.css"
 
         if settings.DEBUG:
+            for css in additional_css:
+                fragment.add_css_url(self.runtime.local_resource_url(self, css))
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
+
+            for js in additional_js:
+                self.add_javascript_files(fragment, js)
             self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
             self.add_javascript_files(fragment, "static/js/src/oa_server.js")
             self.add_javascript_files(fragment, "static/js/src/lms")
         else:
             # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+            for css in additional_css:
+                fragment.add_css(load(css))
             fragment.add_css(load(css_url))
+
+            # minified additional_js should be already included in 'make javascript'
             fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
@@ -385,7 +524,7 @@ class OpenAssessmentBlock(
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
         }
-        fragment.initialize_js('OpenAssessmentBlock', js_context_dict)
+        fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
 
     @property
@@ -502,10 +641,6 @@ class OpenAssessmentBlock(
                 load('static/xml/unicode.xml')
             ),
             (
-                "OpenAssessmentBlock Example Based Rubric",
-                load('static/xml/example_based_example.xml')
-            ),
-            (
                 "OpenAssessmentBlock Poverty Rubric",
                 load('static/xml/poverty_rubric_example.xml')
             ),
@@ -562,6 +697,8 @@ class OpenAssessmentBlock(
         block.submission_due = config['submission_due']
         block.title = config['title']
         block.prompts = config['prompts']
+        block.text_response = config['text_response']
+        block.file_upload_response = config['file_upload_response']
         block.allow_file_upload = config['allow_file_upload']
         block.file_upload_type = config['file_upload_type']
         block.white_listed_file_types_string = config['white_listed_file_types']
@@ -679,8 +816,7 @@ class OpenAssessmentBlock(
             context_dict = {}
 
         template = get_template(path)
-        context = Context(context_dict)
-        return Response(template.render(context), content_type='application/html', charset='UTF-8')
+        return Response(template.render(context_dict), content_type='application/html', charset='UTF-8')
 
     def add_xml_to_node(self, node):
         """
@@ -698,7 +834,7 @@ class OpenAssessmentBlock(
         Returns:
             Response: A response object with an HTML body.
         """
-        context = Context({'error_msg': error_msg})
+        context = {'error_msg': error_msg}
         template = get_template('openassessmentblock/oa_error.html')
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 

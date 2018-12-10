@@ -24,7 +24,7 @@
 
     .message__content {
       @extend %copy-3;
-      color: $copy-secondary-color;
+      color: $copy-color;
 
       p {
         margin-bottom: ($baseline-v/2);
@@ -42,50 +42,40 @@
 
   // TYPE: error
   .message--error {
-    background: tint($color-error, 95%);
+    background: $color-error-back;
 
     .message__title {
-      color: $color-error;
+      color: $copy-color;
       border-bottom-color: $color-error;
     }
   }
 
   // TYPE: warning
   .message--warning {
-    background: tint($color-warning, 95%);
+    background: $color-warning-back;
 
     .message__title {
-      color: $color-warning;
+      color: $copy-color;
       border-bottom-color: $color-warning;
-    }
-  }
-
-  // TYPE: confirmation
-  .message--confirmation {
-    background: tint($color-confirm, 95%);
-
-    .message__title {
-      color: $color-confirm;
-      border-bottom-color: $color-confirm;
     }
   }
 
   // TYPE: complete
   .message--complete {
-    background: tint($color-complete, 95%);
+    background: $color-complete-back;
 
     .message__title {
-      color: $color-complete;
+      color: $copy-color;
       border-bottom-color: $color-complete;
     }
   }
 
   // TYPE: incomplete
   .message--incomplete {
-    background: tint($color-incomplete, 95%);
+    background: $color-incomplete-back;
 
     .message__title {
-      color: $color-incomplete;
+      color: $copy-color;
       border-bottom-color: $color-incomplete;
     }
   }
@@ -114,30 +104,26 @@
       margin-bottom: 0;
       border: none;
       padding-bottom: 0;
-      color: $white-t;
+      color: $copy-inverse-color;
     }
 
     &.message--error {
-      background: tint($color-error, 15%);
+      background: $color-error;
 
       .message__content {
-        color: tint($color-error, 90%);
+        color: $copy-inverse-color;
       }
     }
 
     &.message--warning {
-      background: tint($color-warning, 15%);
+      background: $color-warning;
 
       .message__content {
-        color: tint($color-warning, 90%);
+        color: $uxpl-gray-dark;
       }
-    }
 
-    &.message--confirm {
-      background: tint($color-warning, 15%);
-
-      .message__content {
-        color: tint($color-confirm, 90%);
+      .message__title {
+        color: $uxpl-gray-dark;
       }
     }
   }
@@ -162,7 +148,7 @@
 
       .icon, .copy {
         display: block;
-        color: $copy-secondary-color;
+        color: $copy-color;
       }
 
       .icon {

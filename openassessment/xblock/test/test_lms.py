@@ -2,7 +2,8 @@
 Tests for the LMS compatibility mixin for the OpenAssessment block.
 """
 from ddt import ddt
-from .base import scenario, XBlockHandlerTestCase
+
+from .base import XBlockHandlerTestCase, scenario
 
 
 @ddt

@@ -82,7 +82,6 @@ describe("OpenAssessment.Server", function() {
         "student_training",
         "peer_assessment",
         "self_assessment",
-        "example_based_assessment"
     ];
 
     var TITLE = 'This is the title.';
@@ -166,6 +165,34 @@ describe("OpenAssessment.Server", function() {
             contentType : jsonContentType
         });
     });
+
+    it("removes uploaded files", function() {
+        stubAjax(true, {'success': true, 'msg': ''});
+        var success = false;
+        server.removeUploadedFiles().done(function() { success = true; });
+        expect(success).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: "/remove_all_uploaded_files",
+            type: "POST",
+            data: JSON.stringify({}),
+            contentType : jsonContentType
+        });
+    });
+
+    it("saves files descriptions", function() {
+        stubAjax(true, {'success': true, 'msg': ''});
+        var success = false;
+        server.saveFilesDescriptions(['test1', 'test2']).done(function() { success = true; });
+        expect(success).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: "/save_files_descriptions",
+            type: "POST",
+            data: JSON.stringify({descriptions: ['test1', 'test2']}),
+            contentType : jsonContentType
+        });
+    });
+
+
 
     it("sends a peer-assessment to the XBlock", function() {
         stubAjax(true, {success: true, msg: ''});
@@ -253,7 +280,7 @@ describe("OpenAssessment.Server", function() {
             type: "POST",
             data: JSON.stringify({
                 feedback_text: "test feedback",
-                feedback_options: options,
+                feedback_options: options
             }),
             contentType : jsonContentType
         });

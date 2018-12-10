@@ -436,64 +436,6 @@
         ]
     },
 
-    "example_based_start_date": {
-        "xml": [
-            "<openassessment>",
-            "<title>foo</title>",
-            "<assessments>",
-                "<assessment name=\"example-based-assessment\" start=\"2020-01-01\">",
-                    "<example>",
-                        "<answer>тєѕт αηѕωєя</answer>",
-                        "<select criterion=\"Test criterion\" option=\"No\" />",
-                    "</example>",
-                    "<example>",
-                        "<answer>тєѕт αηѕωєя TWO</answer>",
-                        "<select criterion=\"Test criterion\" option=\"Yes\" />",
-                    "</example>",
-                "</assessment>",
-            "</assessments>",
-            "<rubric>",
-                "<prompt>test prompt</prompt>",
-                "<criterion>",
-                    "<name>test criterion</name>",
-                    "<prompt>test criterion prompt</prompt>",
-                    "<option points=\"0\"><name>no</name><explanation>no explanation</explanation></option>",
-                    "<option points=\"2\"><name>yes</name><explanation>yes explanation</explanation></option>",
-                "</criterion>",
-            "</rubric>",
-            "</openassessment>"
-        ]
-    },
-
-    "example_based_due_date": {
-        "xml": [
-            "<openassessment>",
-            "<title>foo</title>",
-            "<assessments>",
-                "<assessment name=\"example-based-assessment\" due=\"2020-01-01\">",
-                    "<example>",
-                        "<answer>тєѕт αηѕωєя</answer>",
-                        "<select criterion=\"Test criterion\" option=\"No\" />",
-                    "</example>",
-                    "<example>",
-                        "<answer>тєѕт αηѕωєя TWO</answer>",
-                        "<select criterion=\"Test criterion\" option=\"Yes\" />",
-                    "</example>",
-                "</assessment>",
-            "</assessments>",
-            "<rubric>",
-                "<prompt>test prompt</prompt>",
-                "<criterion>",
-                    "<name>test criterion</name>",
-                    "<prompt>test criterion prompt</prompt>",
-                    "<option points=\"0\"><name>no</name><explanation>no explanation</explanation></option>",
-                    "<option points=\"2\"><name>yes</name><explanation>yes explanation</explanation></option>",
-                "</criterion>",
-            "</rubric>",
-            "</openassessment>"
-        ]
-    },
-
     "leaderboard_num_not_integer": {
         "xml": [
             "<openassessment leaderboard_show=\"not_an_int\">",

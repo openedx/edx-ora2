@@ -13,7 +13,6 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">{% trans "Complete" %}</span>
@@ -26,13 +25,11 @@
     <div class="wrapper--step__content">
         <div class="step__content">
             <article class="submission__answer__display">
-                <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
-
-                {% trans "Your response to the question above:" as translated_label %}
+                {% trans "Your response" as translated_label %}
                 {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
 
-                {% trans "Your Uploaded File"  as translated_header %}
-                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=translated_header class_prefix="submission__answer" %}
+                {% trans "Your Uploaded Files"  as translated_header %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls header=translated_header class_prefix="submission__answer" including_template="response_graded" xblock_id=xblock_id %}
             </article>
         </div>
     </div>

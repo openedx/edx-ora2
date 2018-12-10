@@ -2,20 +2,18 @@
 Grade step in the OpenAssessment XBlock.
 """
 import copy
+
 from lazy import lazy
+from xblock.core import XBlock
 
 from django.utils.translation import ugettext as _
 
-from xblock.core import XBlock
-
-from openassessment.assessment.api import ai as ai_api
+from data_conversion import create_submission_dict
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import staff as staff_api
-from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
+from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 from submissions import api as sub_api
-
-from data_conversion import create_submission_dict
 
 
 class GradeMixin(object):
@@ -91,7 +89,6 @@ class GradeMixin(object):
         submission_uuid = workflow['submission_uuid']
 
         staff_assessment = None
-        example_based_assessment = None
         self_assessment = None
         feedback = None
         peer_assessments = []
@@ -109,11 +106,6 @@ class GradeMixin(object):
         if "self-assessment" in assessment_steps:
             self_assessment = self._assessment_grade_context(
                 self_api.get_assessment(submission_uuid)
-            )
-
-        if "example-based-assessment" in assessment_steps:
-            example_based_assessment = self._assessment_grade_context(
-                ai_api.get_latest_assessment(submission_uuid)
             )
 
         raw_staff_assessment = staff_api.get_latest_staff_assessment(submission_uuid)
@@ -141,12 +133,11 @@ class GradeMixin(object):
                 submission_uuid,
                 peer_assessments=peer_assessments,
                 self_assessment=self_assessment,
-                example_based_assessment=example_based_assessment,
                 staff_assessment=staff_assessment,
             ),
             'file_upload_type': self.file_upload_type,
             'allow_latex': self.allow_latex,
-            'file_url': self.get_download_url_from_submission(student_submission),
+            'file_urls': self.get_download_urls_from_submission(student_submission),
             'xblock_id': self.get_xblock_id()
         }
 
@@ -219,7 +210,7 @@ class GradeMixin(object):
             return {'success': True, 'msg': self._(u"Feedback saved.")}
 
     def grade_details(
-            self, submission_uuid, peer_assessments, self_assessment, example_based_assessment, staff_assessment,
+            self, submission_uuid, peer_assessments, self_assessment, staff_assessment,
             is_staff=False
     ):
         """
@@ -229,7 +220,6 @@ class GradeMixin(object):
             submission_uuid (str): The id of the submission being graded.
             peer_assessments (list of dict): Serialized assessment models from the peer API.
             self_assessment (dict): Serialized assessment model from the self API
-            example_based_assessment (dict): Serialized assessment model from the example-based API
             staff_assessment (dict): Serialized assessment model from the staff API
             is_staff (bool): True if the grade details are being displayed to staff, else False.
                 Default value is False (meaning grade details are being shown to the learner).
@@ -268,7 +258,10 @@ class GradeMixin(object):
                 Returns True if at least one assessment has feedback.
             """
             return any(
-                assessment.get('feedback', None) or has_feedback(assessment.get('individual_assessments', []))
+                (
+                    assessment and
+                    (assessment.get('feedback', None) or has_feedback(assessment.get('individual_assessments', [])))
+                )
                 for assessment in assessments
             )
 
@@ -279,8 +272,6 @@ class GradeMixin(object):
             median_scores = staff_api.get_assessment_scores_by_criteria(submission_uuid)
         elif "peer-assessment" in assessment_steps:
             median_scores = peer_api.get_assessment_median_scores(submission_uuid)
-        elif "example-based-assessment" in assessment_steps:
-            median_scores = ai_api.get_assessment_scores_by_criteria(submission_uuid)
         elif "self-assessment" in assessment_steps:
             median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
 
@@ -293,7 +284,6 @@ class GradeMixin(object):
                 assessment_steps,
                 staff_assessment,
                 peer_assessments,
-                example_based_assessment,
                 self_assessment,
                 is_staff=is_staff,
             )
@@ -322,7 +312,7 @@ class GradeMixin(object):
 
     def _graded_assessments(
             self, submission_uuid, criterion, assessment_steps, staff_assessment, peer_assessments,
-            example_based_assessment, self_assessment, is_staff=False
+            self_assessment, is_staff=False
     ):
         """
         Returns an array of assessments with their associated grades.
@@ -364,9 +354,6 @@ class GradeMixin(object):
             }
         else:
             peer_assessment_part = None
-        example_based_assessment_part = _get_assessment_part(
-            _('Example-Based Grade'), _('Example-Based Comments'), criterion_name, example_based_assessment
-        )
         self_assessment_part = _get_assessment_part(
             _('Self Assessment Grade') if is_staff else _('Your Self Assessment'),
             _('Your Comments'),  # This is only used in the LMS student-facing view
@@ -380,8 +367,6 @@ class GradeMixin(object):
             assessments.append(staff_assessment_part)
         if peer_assessment_part:
             assessments.append(peer_assessment_part)
-        if example_based_assessment_part:
-            assessments.append(example_based_assessment_part)
         if self_assessment_part:
             assessments.append(self_assessment_part)
 
@@ -389,7 +374,7 @@ class GradeMixin(object):
         if len(assessments) > 0:
             first_assessment = assessments[0]
             option = first_assessment['option']
-            if option:
+            if option and option.get('points', None) != None:
                 first_assessment['points'] = option['points']
 
         return assessments

@@ -12,7 +12,6 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
     <span class="copy">{% trans "Incomplete" %}</span>
@@ -25,10 +24,10 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--incomplete">
-            <h3 class="message__title">{% trans "The Due Date for This Step Has Passed" %}</h3>
+            <h5 class="message__title">{% trans "Status" %}</h5>
 
             <div class="message__content">
-              <p>{% trans "This step is now closed. You can no longer submit a response or continue with this problem, and you'll receive a grade of Incomplete. If you saved but did not submit a response, the response appears in the course records." %}</p>
+              <p>{% trans "The due date for this step has passed. This step is now closed. You can no longer submit a response or continue with this problem, and you will receive a grade of Incomplete. If you saved but did not submit a response, the response appears in the course records." %}</p>
             </div>
         </div>
     </div>

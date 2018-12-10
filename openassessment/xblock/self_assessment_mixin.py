@@ -1,14 +1,16 @@
 import logging
 
-from xblock.core import XBlock
 from webob import Response
+from xblock.core import XBlock
 
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
-from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
-from .data_conversion import (clean_criterion_feedback, create_submission_dict,
-                              create_rubric_dict, verify_assessment_parameters)
+
+from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
+                              verify_assessment_parameters)
+from .resolve_dates import DISTANT_FUTURE
+from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)
 
@@ -54,12 +56,13 @@ class SelfAssessmentMixin(object):
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
-        user_service = self.runtime.service(self, 'user')
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context = {
             'allow_latex': self.allow_latex,
             "xblock_id": self.get_xblock_id(),
-            'time_zone': get_current_time_zone(user_service)
+            'user_timezone': user_preferences['user_timezone'],
+            'user_language': user_preferences['user_language']
         }
 
         # We display the due date whether the problem is open or closed.
@@ -103,7 +106,7 @@ class SelfAssessmentMixin(object):
 
                 # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
                 context["file_upload_type"] = self.file_upload_type
-                context['self_file_url'] = self.get_download_url_from_submission(submission)
+                context['self_file_urls'] = self.get_download_urls_from_submission(submission)
 
                 path = 'openassessmentblock/self/oa_self_assessment.html'
         else:

@@ -13,7 +13,6 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">{% trans "Complete" %}</span>
@@ -26,9 +25,9 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--complete">
-            <h3 class="message__title">{% trans "Your Response Has Been Submitted" %}</h3>
+            <h5 class="message__title">{% trans "Status" %}</h5>
             <div class="message__content">
-                {% trans "You will receive your grade after all steps are complete and your response is fully assessed." %}
+                {% trans "Your response has been submitted. You will receive your grade after all steps are complete and your response is fully assessed." %}
                 {% if peer_incomplete and self_incomplete %}
                     {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment__'|add:xblock_id|add:'">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe %}
                         You still need to complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
@@ -47,13 +46,11 @@
 
         <div class="step__content">
             <article class="submission__answer__display">
-                <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
-
-                {% trans "Your response to the question above:" as translated_label %}
+                {% trans "Your response" as translated_label %}
                 {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
 
-                {% trans "Your Uploaded File"  as translated_header %}
-                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=translated_header class_prefix="submission__answer" %}
+                {% trans "Your Uploaded Files"  as translated_header %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls header=translated_header class_prefix="submission__answer" including_template="response_submitted" xblock_id=xblock_id %}
             </article>
         </div>
     </div>

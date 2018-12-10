@@ -1,29 +1,27 @@
 # coding=utf-8
+"""
+Tests for staff assessments.
+"""
 import copy
-import mock
 from datetime import timedelta
 
-from django.db import DatabaseError
-from django.test.utils import override_settings
-from django.utils.timezone import now
-from ddt import ddt, data, file_data, unpack
-from nose.tools import raises
+from ddt import data, ddt, unpack
+import mock
 
-from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
-from openassessment.assessment.test.test_ai import (
-    ALGORITHM_ID,
-    AI_ALGORITHMS,
-    AIGradingTest,
-    train_classifiers
-)
-from openassessment.test_utils import CacheResetTest
-from openassessment.assessment.api import staff as staff_api, ai as ai_api, peer as peer_api
-from openassessment.assessment.api.self import create_assessment as self_assess
+from django.db import DatabaseError
+from django.utils.timezone import now
+
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api.peer import create_assessment as peer_assess
-from openassessment.assessment.models import Assessment, PeerWorkflow, StaffWorkflow
-from openassessment.assessment.errors import StaffAssessmentRequestError, StaffAssessmentInternalError
+from openassessment.assessment.api.self import create_assessment as self_assess
+from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
+from openassessment.assessment.models import StaffWorkflow
+from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
+
+from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
 
 
 @ddt
@@ -39,24 +37,21 @@ class TestStaffAssessment(CacheResetTest):
     ASSESSMENT_SCORES_DDT = [key for key in OPTIONS_SELECTED_DICT]
 
     @staticmethod
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def _ai_assess(sub):
-        # Note that CLASSIFIER_SCORE_OVERRIDES matches OPTIONS_SELECTED_DICT['most'] scores
-        train_classifiers(RUBRIC, AIGradingTest.CLASSIFIER_SCORE_OVERRIDES)
-        ai_api.on_init(sub, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
-        return ai_api.get_latest_assessment(sub)
-
-    @staticmethod
-    def _peer_assess(sub, scorer_id, scores):
+    def _peer_assess(scores):
+        """
+        Helper to fulfill peer assessment requirements.
+        """
         bob_sub, bob = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer", problem_steps=['peer'])
         peer_api.get_submission_to_assess(bob_sub["uuid"], 1)
         return peer_assess(bob_sub["uuid"], bob["student_id"], scores, dict(), "", RUBRIC, 1)
 
     ASSESSMENT_TYPES_DDT = [
         ('self', lambda sub, scorer_id, scores: self_assess(sub, scorer_id, scores, dict(), "", RUBRIC)),
-        ('peer', lambda sub, scorer_id, scores: TestStaffAssessment._peer_assess(sub, scorer_id, scores)),
-        ('staff', lambda sub, scorer_id, scores: staff_api.create_assessment(sub, scorer_id, scores, dict(), "", RUBRIC)),
-        ('ai', lambda sub, scorer_id, scores: TestStaffAssessment._ai_assess(sub))
+        ('peer', lambda sub, scorer_id, scores: TestStaffAssessment._peer_assess(scores)),
+        (
+            'staff',
+            lambda sub, scorer_id, scores: staff_api.create_assessment(sub, scorer_id, scores, dict(), "", RUBRIC)
+        ),
     ]
 
     def _verify_done_state(self, uuid, requirements, expect_done=True):
@@ -79,7 +74,7 @@ class TestStaffAssessment(CacheResetTest):
         when staff scores are not required.
         """
         # Create assessment
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Staff assess it
         assessment = staff_api.create_assessment(
@@ -103,7 +98,7 @@ class TestStaffAssessment(CacheResetTest):
         when staff scores are required.
         """
         # Create assessment
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", problem_steps=['staff'])
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer", problem_steps=['staff'])
 
         # Verify that we're still waiting on a staff assessment
         self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF, expect_done=False)
@@ -260,7 +255,7 @@ class TestStaffAssessment(CacheResetTest):
         a bug that had been previously present.
         """
         # Tim(student) makes a submission, for a problem that requires peer assessment
-        tim_sub, tim = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer", problem_steps=['peer'])
+        tim_sub, _ = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer", problem_steps=['peer'])
         # Bob(student) also makes a submission for that problem
         bob_sub, bob = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer", problem_steps=['peer'])
 
@@ -269,13 +264,13 @@ class TestStaffAssessment(CacheResetTest):
 
         staff_score = "none"
         # Dumbledore(staff) uses override ability to provide a score for both submissions
-        tim_assessment = staff_api.create_assessment(
+        staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
             OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
             RUBRIC,
         )
-        bob_assessment = staff_api.create_assessment(
+        staff_api.create_assessment(
             bob_sub["uuid"],
             "Dumbledore",
             OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
@@ -302,9 +297,27 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(tim_workflow["score"], None)
         self.assertNotEqual(tim_workflow["status"], "done")
 
+    def test_update_with_override(self):
+        """
+        Test that, when viewing a submission with a staff override present, the workflow is not updated repeatedly.
+
+        See TNL-6092 for some historical context.
+        """
+        tim_sub, _ = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer", problem_steps=['self'])
+        staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT["none"]["options"], dict(), "",
+            RUBRIC,
+        )
+        workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
+        with mock.patch('openassessment.workflow.models.sub_api.reset_score') as mock_reset:
+            workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
+            self.assertFalse(mock_reset.called)
+
     def test_invalid_rubric_exception(self):
         # Create a submission
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Define invalid rubric
         invalid_rubric = copy.deepcopy(RUBRIC)
@@ -314,7 +327,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Try to staff assess with invalid rubric
         with self.assertRaises(StaffAssessmentRequestError) as context_manager:
-            staff_assessment = staff_api.create_assessment(
+            staff_api.create_assessment(
                 tim_sub["uuid"],
                 "Dumbledore",
                 OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
@@ -336,11 +349,11 @@ class TestStaffAssessment(CacheResetTest):
             dict_to_use[RUBRIC["criteria"][0]["name"]] = None
 
         # Create a submission
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Try to staff assess with invalid options selected
         with self.assertRaises(StaffAssessmentRequestError) as context_manager:
-            staff_assessment = staff_api.create_assessment(
+            staff_api.create_assessment(
                 tim_sub["uuid"],
                 "Dumbledore",
                 dict_to_use, dict(), "",
@@ -348,10 +361,10 @@ class TestStaffAssessment(CacheResetTest):
             )
         self.assertEqual(str(context_manager.exception), u"Invalid options were selected in the rubric.")
 
-    @mock.patch.object(Assessment.objects, 'filter')
+    @mock.patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_database_filter_error_handling(self, mock_filter):
         # Create a submission
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Note that we have to define this side effect *after* creating the submission
         mock_filter.side_effect = DatabaseError("KABOOM!")
@@ -374,13 +387,13 @@ class TestStaffAssessment(CacheResetTest):
             u"Error getting staff assessment scores for {}".format(tim_sub["uuid"])
         )
 
-    @mock.patch.object(Assessment, 'create')
+    @mock.patch('openassessment.assessment.models.Assessment.create')
     def test_database_create_error_handling(self, mock_create):
         mock_create.side_effect = DatabaseError("KABOOM!")
 
         # Try to create a staff assessment, handle database errors
         with self.assertRaises(StaffAssessmentInternalError) as context_manager:
-            staff_assessment = staff_api.create_assessment(
+            staff_api.create_assessment(
                 "000000",
                 "Dumbledore",
                 OPTIONS_SELECTED_DICT['most']['options'], dict(), "",
@@ -392,8 +405,8 @@ class TestStaffAssessment(CacheResetTest):
         )
 
     def test_fetch_next_submission(self):
-        bob_sub, bob = self._create_student_and_submission("bob", "bob's answer")
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, _ = self._create_student_and_submission("bob", "bob's answer")
+        _, tim = self._create_student_and_submission("Tim", "Tim's answer")
         submission = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
         self.assertIsNotNone(submission)
         self.assertEqual(bob_sub, submission)
@@ -429,30 +442,30 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(tim_to_grade, bob_to_grade)
 
     def test_next_submission_error(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        _, tim = self._create_student_and_submission("Tim", "Tim's answer")
         with mock.patch('openassessment.assessment.api.staff.submissions_api.get_submission') as patched_get_submission:
             patched_get_submission.side_effect = sub_api.SubmissionNotFoundError('Failed')
             with self.assertRaises(staff_api.StaffAssessmentInternalError):
-                submission = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
+                staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
 
     def test_no_available_submissions(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        _, tim = self._create_student_and_submission("Tim", "Tim's answer")
         # Use a non-existent course and non-existent item.
         submission = staff_api.get_submission_to_assess('test_course_id', 'test_item_id', tim['student_id'])
         self.assertIsNone(submission)
 
     def test_cancel_staff_workflow(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
         workflow_api.cancel_workflow(tim_sub['uuid'], "Test Cancel", "Bob", {})
         workflow = StaffWorkflow.objects.get(submission_uuid=tim_sub['uuid'])
         self.assertTrue(workflow.is_cancelled)
 
     def test_grading_statistics(self):
-        bob_sub, bob = self._create_student_and_submission("bob", "bob's answer")
+        _, bob = self._create_student_and_submission("bob", "bob's answer")
         course_id = bob['course_id']
         item_id = bob['item_id']
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
-        sue_sub, sue = self._create_student_and_submission("Sue", "Sue's answer")
+        _, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        self._create_student_and_submission("Sue", "Sue's answer")
         stats = staff_api.get_staff_grading_statistics(course_id, item_id)
         self.assertEqual(stats, {'graded': 0, 'ungraded': 3, 'in-progress': 0})
 
@@ -466,7 +479,7 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(stats, {'graded': 0, 'ungraded': 1, 'in-progress': 2})
 
         # Grade one of the submissions
-        staff_assessment = staff_api.create_assessment(
+        staff_api.create_assessment(
             tim_to_grade["uuid"],
             tim['student_id'],
             OPTIONS_SELECTED_DICT["all"]["options"], dict(), "",
@@ -502,7 +515,5 @@ class TestStaffAssessment(CacheResetTest):
             steps = problem_steps
         if 'peer' in steps:
             peer_api.on_start(submission["uuid"])
-        if 'ai' in steps:
-            init_params['ai'] = {'rubric':RUBRIC, 'algorithm_id':ALGORITHM_ID}
         workflow_api.create_workflow(submission["uuid"], steps, init_params)
         return submission, new_student_item
