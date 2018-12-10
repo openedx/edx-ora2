@@ -1,11 +1,13 @@
-import boto
 import logging
+
+import boto3
+
 from django.conf import settings
 
-logger = logging.getLogger("openassessment.fileupload.api")
-
-from .base import BaseBackend
 from ..exceptions import FileUploadInternalError
+from .base import BaseBackend
+
+logger = logging.getLogger("openassessment.fileupload.api")
 
 
 class Backend(BaseBackend):
@@ -13,15 +15,16 @@ class Backend(BaseBackend):
     def get_upload_url(self, key, content_type):
         bucket_name, key_name = self._retrieve_parameters(key)
         try:
-            conn = _connect_to_s3()
-            upload_url = conn.generate_url(
-                expires_in=self.UPLOAD_URL_TIMEOUT,
-                method='PUT',
-                bucket=bucket_name,
-                key=key_name,
-                headers={'Content-Length': '5242880', 'Content-Type': content_type}
+            client = _connect_to_s3()
+            return client.generate_presigned_url(
+                ExpiresIn=self.UPLOAD_URL_TIMEOUT,
+                ClientMethod='put_object',
+                Params={
+                    'Bucket': bucket_name,
+                    'Key': key_name
+                },
+                HttpMethod="PUT"
             )
-            return upload_url
         except Exception as ex:
             logger.exception(
                 u"An internal exception occurred while generating an upload URL."
@@ -31,10 +34,16 @@ class Backend(BaseBackend):
     def get_download_url(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)
         try:
-            conn = _connect_to_s3()
-            bucket = conn.get_bucket(bucket_name)
-            s3_key = bucket.get_key(key_name)
-            return s3_key.generate_url(expires_in=self.DOWNLOAD_URL_TIMEOUT) if s3_key else ""
+            client = _connect_to_s3()
+            return client.generate_presigned_url(
+                ExpiresIn=self.DOWNLOAD_URL_TIMEOUT,
+                ClientMethod='get_object',
+                Params={
+                    'Bucket': bucket_name,
+                    'Key': key_name
+                },
+                HttpMethod="GET"
+            )
         except Exception as ex:
             logger.exception(
                 u"An internal exception occurred while generating a download URL."
@@ -43,15 +52,16 @@ class Backend(BaseBackend):
 
     def remove_file(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)
-        conn = _connect_to_s3()
-        bucket = conn.get_bucket(bucket_name)
-        s3_key = bucket.get_key(key_name)
-
-        if s3_key:
-            bucket.delete_key(s3_key)
+        client = _connect_to_s3()
+        resp = client.delete_objects(
+            Bucket=bucket_name,
+            Delete={
+                'Objects': [{'Key':key_name}]
+            }
+        )
+        if 'Deleted' in resp and any(key_name == deleted_dict['Key'] for deleted_dict in resp['Deleted']):
             return True
-        else:
-            return False
+        return False
 
 
 def _connect_to_s3():
@@ -66,9 +76,8 @@ def _connect_to_s3():
     aws_access_key_id = getattr(settings, 'AWS_ACCESS_KEY_ID', None)
     aws_secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
 
-    return boto.connect_s3(
+    return boto3.client(
+        's3',
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key
     )
-
-

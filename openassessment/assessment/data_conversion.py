@@ -2,7 +2,6 @@
 Data Conversion utility methods for handling assessment data transformations.
 
 """
-import json
 
 
 def update_training_example_answer_format(answer):
@@ -14,7 +13,7 @@ def update_training_example_answer_format(answer):
     Returns:
         dict
     """
-    if isinstance(answer, unicode) or isinstance(answer, str):
+    if isinstance(answer, (str, unicode)):
         return {
             'parts': [
                 {'text': answer}

@@ -2,13 +2,14 @@
 Tests for student training models.
 """
 import mock
+
 from django.db import IntegrityError
-from submissions import api as sub_api
+
+from openassessment.assessment.models import StudentTrainingWorkflow, StudentTrainingWorkflowItem
 from openassessment.test_utils import CacheResetTest
-from openassessment.assessment.models import (
-    StudentTrainingWorkflow, StudentTrainingWorkflowItem
-)
-from .constants import STUDENT_ITEM, ANSWER, EXAMPLES
+from submissions import api as sub_api
+
+from .constants import ANSWER, EXAMPLES, STUDENT_ITEM
 
 
 class StudentTrainingWorkflowTest(CacheResetTest):
@@ -16,8 +17,8 @@ class StudentTrainingWorkflowTest(CacheResetTest):
     Tests for the student training workflow model.
     """
 
-    @mock.patch.object(StudentTrainingWorkflow.objects, 'get')
-    @mock.patch.object(StudentTrainingWorkflow.objects, 'get_or_create')
+    @mock.patch('openassessment.assessment.models.student_training.StudentTrainingWorkflow.objects.get')
+    @mock.patch('openassessment.assessment.models.student_training.StudentTrainingWorkflow.objects.get_or_create')
     def test_create_workflow_integrity_error(self, mock_create, mock_get):
         # Simulate a race condition in which someone creates a workflow
         # after we check if it exists.  This will violate the database uniqueness
@@ -37,7 +38,7 @@ class StudentTrainingWorkflowTest(CacheResetTest):
         workflow = StudentTrainingWorkflow.get_workflow(submission['uuid'])
         self.assertEqual(workflow, mock_workflow)
 
-    @mock.patch.object(StudentTrainingWorkflowItem.objects, 'create')
+    @mock.patch('openassessment.assessment.models.student_training.StudentTrainingWorkflowItem.objects.create')
     def test_create_workflow_item_integrity_error(self, mock_create):
         # Create a submission and workflow
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)

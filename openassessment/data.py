@@ -1,14 +1,15 @@
 """
 Aggregate data for openassessment.
 """
+from collections import defaultdict
 import csv
 import json
 
-from collections import defaultdict
 from django.conf import settings
-from submissions import api as sub_api
+
+from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.workflow.models import AssessmentWorkflow
-from openassessment.assessment.models import Assessment, AssessmentPart, AssessmentFeedback
+from submissions import api as sub_api
 
 
 class CsvWriter(object):

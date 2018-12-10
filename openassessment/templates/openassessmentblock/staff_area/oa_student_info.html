@@ -43,7 +43,7 @@
                 </p>
             {% else %}
                 <div class="wrapper--content">
-                    {% trans "The learner's response to the question above" as translated_label %}
+                    {% trans "The learner's response to the prompt above" as translated_label %}
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
                     {% trans "Associated Files" as translated_header %}
@@ -66,11 +66,6 @@
     {% if self_assessment %}
         {% trans "Learner's Self Assessment" as translated_title %}
         {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="self" assessments=self_assessment %}
-    {% endif %}
-
-    {% if example_based_assessment %}
-        {% trans "Example-Based Assessment" as translated_title %}
-        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="example_based" assessments=example_based_assessment %}
     {% endif %}
 
     {% if staff_assessment %}

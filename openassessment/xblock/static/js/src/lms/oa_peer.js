@@ -115,6 +115,9 @@ OpenAssessment.PeerView.prototype = {
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
 
+        // Install click handler for the preview button
+        this.baseView.bindLatexPreview(sel);
+
         // Initialize the rubric
         var rubricSelector = $(".peer-assessment--001__assessment", this.element);
         if (rubricSelector.size() > 0) {

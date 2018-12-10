@@ -1,20 +1,21 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
-import ddt
-import json
-
+from StringIO import StringIO
 from collections import namedtuple
 import datetime as dt
-from freezegun import freeze_time
-import pytz
-from mock import Mock, patch, MagicMock, PropertyMock
-from lxml import etree
-from StringIO import StringIO
+import json
 
-from openassessment.xblock import openassessmentblock
-from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
+import ddt
+from freezegun import freeze_time
+from lxml import etree
+from mock import MagicMock, Mock, PropertyMock, patch
+import pytz
+
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock import openassessmentblock
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -146,7 +147,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Verify that prompts intentionally left empty don't create DOM elements
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
-        present_prompt_text = "you'll provide a response to the question"
+        present_prompt_text = "you'll provide a response to the prompt"
         missing_article = u'<article class="submission__answer__part__prompt'
         self.assertIn(present_prompt_text, body_html)
         self.assertNotIn(missing_article, body_html)

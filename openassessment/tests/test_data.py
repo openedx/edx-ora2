@@ -3,23 +3,24 @@
 Tests for openassessment data aggregation.
 """
 
-import os.path
-
 from StringIO import StringIO
 import csv
-from django.core.management import call_command
+import os.path
+
 import ddt
-from submissions import api as sub_api
+
+from django.core.management import call_command
+
+import openassessment.assessment.api.peer as peer_api
+from openassessment.data import CsvWriter, OraAggregateData
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api
-from openassessment.data import CsvWriter, OraAggregateData
-import openassessment.assessment.api.peer as peer_api
-
+from submissions import api as sub_api
 
 COURSE_ID = "Test_Course"
 
-STUDENT_ID = "Student"
+STUDENT_ID = u"Student"
 
 SCORER_ID = "Scorer"
 
@@ -82,8 +83,8 @@ FEEDBACK_TEXT = u"𝓨𝓸𝓾 𝓼𝓱𝓸𝓾𝓵𝓭𝓷'𝓽 𝓰𝓲𝓿�
 FEEDBACK_OPTIONS = {
     "feedback_text": FEEDBACK_TEXT,
     "options": [
-        'I disliked this assessment',
-        'I felt this assessment was unfair',
+        u'I disliked this assessment',
+        u'I felt this assessment was unfair',
     ]
 }
 
@@ -363,6 +364,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
     def setUp(self):
         super(TestOraAggregateDataIntegration, self).setUp()
+        self.maxDiff = None
         # Create submissions and assessments
         self.submission = self._create_submission(STUDENT_ITEM)
         self.scorer_submission = self._create_submission(SCORER_ITEM)
@@ -370,6 +372,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.possible_points = 2
         peer_api.get_submission_to_assess(self.scorer_submission['uuid'], 1)
         self.assessment = self._create_assessment(self.scorer_submission['uuid'])
+        self.assertEqual(self.assessment['parts'][0]['criterion']['label'], "criterion_1")
 
         sub_api.set_score(self.submission['uuid'], self.earned_points, self.possible_points)
         self.score = sub_api.get_score(STUDENT_ITEM)
@@ -470,15 +473,15 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             ),
             u"Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
                 id=self.assessment['id'],
-                label=self.assessment['parts'][1]['criterion']['label'],
-                option_label=self.assessment['parts'][1]['criterion']['options'][0]['label'],
-                points=self.assessment['parts'][1]['criterion']['options'][0]['points'],
+                label=self.assessment['parts'][0]['criterion']['label'],
+                option_label=self.assessment['parts'][0]['criterion']['options'][0]['label'],
+                points=self.assessment['parts'][0]['criterion']['options'][0]['points'],
             ) +
             u"-- {label}: {option_label} ({points})\n-- feedback: {feedback}\n".format(
-                label=self.assessment['parts'][0]['criterion']['label'],
-                option_label=self.assessment['parts'][0]['criterion']['options'][1]['label'],
-                points=self.assessment['parts'][0]['criterion']['options'][1]['points'],
-                feedback=self.assessment['parts'][0]['feedback'],
+                label=self.assessment['parts'][1]['criterion']['label'],
+                option_label=self.assessment['parts'][1]['criterion']['options'][1]['label'],
+                points=self.assessment['parts'][1]['criterion']['options'][1]['points'],
+                feedback=self.assessment['parts'][1]['feedback'],
             ),
             self.score['created_at'],
             self.score['points_earned'],
@@ -532,19 +535,19 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.assertIn(item_id2, data)
         self.assertIn(item_id3, data)
         for item in [ITEM_ID, item_id2, item_id3]:
-            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done', 'ai', 'cancelled'},
+            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done', 'cancelled'},
                              set(data[item].keys()))
         self.assertEqual(data[ITEM_ID], {
             'total': 2, 'training': 0, 'peer': 2, 'self': 0, 'staff': 0, 'waiting': 0,
-            'done': 0, 'ai': 0, 'cancelled': 0
+            'done': 0, 'cancelled': 0
         })
         self.assertEqual(data[item_id2], {
             'total': 2, 'training': 0, 'peer': 1, 'self': 1, 'staff': 0, 'waiting': 0,
-            'done': 0, 'ai': 0, 'cancelled': 0
+            'done': 0, 'cancelled': 0
         })
         self.assertEqual(data[item_id3], {
             'total': 3, 'training': 0, 'peer': 1, 'self': 2, 'staff': 0, 'waiting': 0,
-            'done': 0, 'ai': 0, 'cancelled': 0
+            'done': 0, 'cancelled': 0
         })
 
         data = OraAggregateData.collect_ora2_responses(COURSE_ID, ['staff', 'peer'])

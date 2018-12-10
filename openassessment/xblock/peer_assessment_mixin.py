@@ -9,15 +9,15 @@ from webob import Response
 from xblock.core import XBlock
 
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.errors import (
-    PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
-)
+from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
+                                              PeerAssessmentWorkflowError)
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
-from .data_conversion import create_rubric_dict
+
+from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
+                              verify_assessment_parameters)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-from .data_conversion import clean_criterion_feedback, create_submission_dict, verify_assessment_parameters
 
 logger = logging.getLogger(__name__)
 

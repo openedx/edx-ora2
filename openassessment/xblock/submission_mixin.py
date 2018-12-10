@@ -3,16 +3,15 @@ import logging
 
 from xblock.core import XBlock
 
-from submissions import api
+from data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
+from submissions import api
+from validation import validate_submission
 
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-
-from data_conversion import create_submission_dict, prepare_submission_for_serialization
-from validation import validate_submission
 
 logger = logging.getLogger(__name__)
 
@@ -298,7 +297,7 @@ class SubmissionMixin(object):
         if self.file_upload_type == 'pdf-and-image' and content_type not in self.ALLOWED_FILE_MIME_TYPES:
             return {'success': False, 'msg': self._(u"Content type must be PDF, GIF, PNG or JPG.")}
 
-        if self.file_upload_type == 'custom' and file_ext not in self.white_listed_file_types:
+        if self.file_upload_type == 'custom' and file_ext.lower() not in self.white_listed_file_types:
             return {'success': False, 'msg': self._(u"File type must be one of the following types: {}").format(
                 ', '.join(self.white_listed_file_types))}
 

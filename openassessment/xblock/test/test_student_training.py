@@ -3,15 +3,19 @@
 Tests for the student training step in the Open Assessment XBlock.
 """
 import datetime
-import ddt
 import json
 import pprint
+
+import ddt
 from mock import Mock, patch
 import pytz
+
 from django.db import DatabaseError
+
 from openassessment.assessment.models import StudentTrainingWorkflow
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
+
 from .base import XBlockHandlerTestCase, scenario
 
 

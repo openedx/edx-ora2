@@ -3,6 +3,7 @@
 Test that the student can save a files descriptions.
 """
 import json
+
 import mock
 
 from .base import XBlockHandlerTestCase, scenario

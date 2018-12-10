@@ -3,20 +3,19 @@ UI-level acceptance tests for OpenAssessment.
 """
 from __future__ import absolute_import
 
-import ddt
-import os
-import unittest
-import time
 from functools import wraps
+import os
+import time
+import unittest
+
+from bok_choy.promise import BrokenPromise, EmptyPromise
+from bok_choy.web_app_test import WebAppTest
+import ddt
+from nose.plugins.attrib import attr
 from pyinstrument import Profiler
 
 from acceptance.auto_auth import AutoAuthPage
-from acceptance.pages import (
-    SubmissionPage, AssessmentPage, GradePage, StaffAreaPage
-)
-from bok_choy.web_app_test import WebAppTest
-from bok_choy.promise import BrokenPromise, EmptyPromise
-from nose.plugins.attrib import attr
+from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, SubmissionPage
 
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
@@ -299,9 +298,6 @@ class SelfAssessmentTest(OpenAssessmentTest):
     def test_self_assessment(self):
         # Submit a response
         self.do_self_assessment()
-
-        # Check browser scrolled back to top of assessment
-        self.assertTrue(self.self_asmnt_page.is_on_top)
 
     @retry()
     @attr('acceptance')
@@ -647,8 +643,8 @@ class StaffAreaTest(OpenAssessmentTest):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEquals(
-            ['Poor - 0 points', 'Fair',
-             'Fair - 1 point', 'Good'],
+            [u'Poor - 0 points', u'Fair',
+             u'Fair - 1 point', u'Good'],
             self.staff_area_page.learner_final_score_table_values
         )
 
@@ -1071,8 +1067,8 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEquals(
-            ['Poor - 0 points', 'Waiting for peer reviews',
-             'Fair - 1 point', 'Waiting for peer reviews'],
+            [u'Poor - 0 points', u'Waiting for peer reviews',
+             u'Fair - 1 point', u'Waiting for peer reviews'],
             self.staff_area_page.learner_final_score_table_values
         )
         self.verify_grade_entries(

@@ -117,7 +117,6 @@ describe("OpenAssessment.StudioView", function() {
             "student-training",
             "peer-assessment",
             "self-assessment",
-            "example-based-assessment",
             "staff-assessment"
         ]
     };

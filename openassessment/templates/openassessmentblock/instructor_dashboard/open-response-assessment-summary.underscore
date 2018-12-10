@@ -6,7 +6,7 @@
         %>
         <td class="string-cell renderable <%- s.class %>">
             <div class="ora-summary-title"><%- s.title %></div>
-            <div class="ora-summary-value"><%- s.value %></div>
+            <div class="ora-summary-value" title="<%- s.value %>"><%- s.value %></div>
         </td>
         <% } %>
     </tr>

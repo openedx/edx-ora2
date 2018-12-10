@@ -5,14 +5,13 @@ Tests for self-assessment API.
 
 import copy
 import datetime
+
+from mock import patch
 import pytz
 
 from django.db import DatabaseError
-from mock import patch
 
-from openassessment.assessment.api.self import (
-    create_assessment, submitter_is_finished, get_assessment
-)
+from openassessment.assessment.api.self import create_assessment, get_assessment, submitter_is_finished
 from openassessment.assessment.errors import SelfAssessmentInternalError, SelfAssessmentRequestError
 from openassessment.test_utils import CacheResetTest
 from submissions.api import create_submission
@@ -103,7 +102,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment for a submission that doesn't exist
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                'invalid_submission_uuid', u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                'deadbeef-1234-5678-9100-1234deadbeef', u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -115,7 +114,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment for the submission from a different user
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                'invalid_submission_uuid', u'another user',
+                'deadbeef-1234-5678-9100-1234deadbeef', u'another user',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )

@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# pylint: skip-file
 from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django.utils.timezone
+
 import model_utils.fields
-import django_extensions.db.fields
 
 
 class Migration(migrations.Migration):
@@ -22,7 +23,7 @@ class Migration(migrations.Migration):
                 ('status', model_utils.fields.StatusField(default=b'peer', max_length=100, verbose_name='status', no_check_for_status=True, choices=[(b'peer', b'peer'), (b'ai', b'ai'), (b'self', b'self'), (b'training', b'training'), (b'waiting', b'waiting'), (b'done', b'done'), (b'cancelled', b'cancelled')])),
                 ('status_changed', model_utils.fields.MonitorField(default=django.utils.timezone.now, verbose_name='status changed', monitor='status')),
                 ('submission_uuid', models.CharField(unique=True, max_length=36, db_index=True)),
-                ('uuid', django_extensions.db.fields.UUIDField(db_index=True, unique=True, version=1, editable=False, blank=True)),
+                ('uuid', models.UUIDField(db_index=True, unique=True, editable=False, blank=True)),
                 ('course_id', models.CharField(max_length=255, db_index=True)),
                 ('item_id', models.CharField(max_length=255, db_index=True)),
             ],

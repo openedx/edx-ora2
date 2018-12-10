@@ -2,12 +2,13 @@
 Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
 from uuid import uuid4 as uuid
-import lxml.etree as etree
-import pytz
+
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
-from data_conversion import update_assessments_format
-from defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
+import lxml.etree as etree
+import pytz
+
+from openassessment.xblock.data_conversion import update_assessments_format
 
 
 class UpdateFromXmlError(Exception):
@@ -531,10 +532,6 @@ def parse_assessments_xml(assessments_root):
         # Assessment start
         if 'start' in assessment.attrib:
 
-            # Example-based assessment is NOT allowed to have a start date
-            if assessment_dict['name'] == 'example-based-assessment':
-                raise UpdateFromXmlError('Example-based assessment cannot have a start date')
-
             # Other assessment types CAN have a start date
             parsed_start = parse_date(assessment.get('start'), name="{} start date".format(assessment_dict['name']))
 
@@ -545,10 +542,6 @@ def parse_assessments_xml(assessments_root):
 
         # Assessment due
         if 'due' in assessment.attrib:
-
-            # Example-based assessment is NOT allowed to have a due date
-            if assessment_dict['name'] == 'example-based-assessment':
-                raise UpdateFromXmlError('Example-based assessment cannot have a due date')
 
             # Other assessment types CAN have a due date
             parsed_due = parse_date(assessment.get('due'), name="{} due date".format(assessment_dict['name']))
@@ -586,13 +579,9 @@ def parse_assessments_xml(assessments_root):
         # Student training and AI Grading should always have examples set, even if it's an empty list.
         # (Validation rules, applied later, are responsible for
         # ensuring that users specify at least one example).
-        # All assessments except for Student Training and AI (example-based-assessment) types ignore examples.
+        # All assessments except for Student Training ignore examples.
         if assessment_dict['name'] == 'student-training':
             assessment_dict['examples'] = parse_examples_xml(examples)
-
-        if assessment_dict['name'] == 'example-based-assessment':
-            assessment_dict['examples'] = parse_examples_xml(examples)
-            assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id', 'ease'))
 
         # Update the list of assessments
         assessments_list.append(assessment_dict)
@@ -660,9 +649,6 @@ def serialize_assessments(assessments_root, oa_block):
 
         if assessment_dict.get('due') is not None:
             assessment.set('due', unicode(assessment_dict['due']))
-
-        if assessment_dict.get('algorithm_id') is not None:
-            assessment.set('algorithm_id', unicode(assessment_dict['algorithm_id']))
 
         if assessment_dict.get('required') is not None:
             assessment.set('required', unicode(assessment_dict['required']))

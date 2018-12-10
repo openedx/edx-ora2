@@ -99,7 +99,8 @@ def render_templates(root_dir, template_json):
     for template_dict in template_json:
         template = get_template(template_dict['template'])
         context = parse_dates(template_dict['context'])
-        rendered = template.render(Context(context))
+        print "Rendering template: {}".format(template_dict['template'])
+        rendered = template.render(context)
         output_path = os.path.join(root_dir, template_dict['output'])
 
         try:

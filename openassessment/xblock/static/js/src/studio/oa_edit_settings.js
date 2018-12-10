@@ -263,7 +263,7 @@ OpenAssessment.EditSettingsView.prototype = {
                 sel.val(0);
             }
         }
-        return sel.val() === 1;
+        return sel.val() === "1";
     },
     /**
     Get or set the number of scores to show in the leaderboard.

@@ -1,10 +1,10 @@
-from .base import BaseBackend
-from .. import exceptions
-
 from django.conf import settings
 import django.core.cache
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.utils.encoding import smart_text
+
+from .. import exceptions
+from .base import BaseBackend
 
 
 class Backend(BaseBackend):
@@ -47,7 +47,7 @@ class Backend(BaseBackend):
 
     def _get_url(self, key):
         key_name = self._get_key_name(key)
-        url = reverse("openassessment-filesystem-storage", kwargs={'key': key_name})
+        url = reverse_lazy("openassessment-filesystem-storage", kwargs={'key': key_name})
         return url
 
 
@@ -80,6 +80,7 @@ def make_upload_url_available(url_key_name, timeout):
         1, timeout
     )
 
+
 def make_download_url_available(url_key_name, timeout):
     """
     Authorize a download URL.
@@ -93,11 +94,13 @@ def make_download_url_available(url_key_name, timeout):
         1, timeout
     )
 
+
 def is_upload_url_available(url_key_name):
     """
     Return True if the corresponding upload URL is available.
     """
     return get_cache().get(smart_text(get_upload_cache_key(url_key_name))) is not None
+
 
 def is_download_url_available(url_key_name):
     """
@@ -105,8 +108,10 @@ def is_download_url_available(url_key_name):
     """
     return get_cache().get(smart_text(get_download_cache_key(url_key_name))) is not None
 
+
 def get_upload_cache_key(url_key_name):
     return "upload/" + url_key_name
+
 
 def get_download_cache_key(url_key_name):
     return "download/" + url_key_name

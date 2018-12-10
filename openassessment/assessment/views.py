@@ -1,7 +1,8 @@
 import logging
-from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
+
 from openassessment.assessment.api.peer import get_assessments
 from submissions.api import SubmissionRequestError, get_submissions
 

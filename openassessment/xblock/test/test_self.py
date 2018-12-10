@@ -3,13 +3,16 @@
 Tests for self assessment handlers in Open Assessment XBlock.
 """
 import copy
-import json
 import datetime
+import json
+
 import mock
 import pytz
+
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_rubric_dict
+
 from .base import XBlockHandlerTestCase, scenario
 
 

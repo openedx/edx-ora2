@@ -4,13 +4,11 @@ Test OpenAssessment XBlock data_conversion.
 """
 
 import ddt
-import mock
 
 from django.test import TestCase
 
-from openassessment.xblock.data_conversion import (
-    create_prompts_list, create_submission_dict, prepare_submission_for_serialization, update_assessments_format
-)
+from openassessment.xblock.data_conversion import (create_prompts_list, create_submission_dict,
+                                                   prepare_submission_for_serialization, update_assessments_format)
 
 
 @ddt.ddt

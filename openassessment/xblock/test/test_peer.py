@@ -3,13 +3,13 @@
 Tests for peer assessment handlers in Open Assessment XBlock.
 """
 from collections import namedtuple
-
 import copy
-import json
-import mock
 import datetime as dt
-import pytz
+import json
+
 import ddt
+import mock
+import pytz
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.workflow import api as workflow_api

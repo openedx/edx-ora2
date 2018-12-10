@@ -12,18 +12,19 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.assessment --auto
 
 """
-import math
 from collections import defaultdict
 from copy import deepcopy
 from hashlib import sha1
 import json
+import logging
+import math
+
+from lazy import lazy
 
 from django.core.cache import cache
 from django.db import models
 from django.utils.timezone import now
-from lazy import lazy
 
-import logging
 logger = logging.getLogger("openassessment.assessment.models")
 
 
@@ -789,7 +790,6 @@ class AssessmentPart(models.Model):
         if len(missing_criteria) > 0:
             msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
             raise InvalidRubricSelection(msg)
-
 
     @classmethod
     def _check_all_criteria_assessed(cls, rubric_index, selected_criteria, criteria_feedback):

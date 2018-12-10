@@ -2,8 +2,7 @@ import abc
 
 from django.conf import settings
 
-from ..exceptions import FileUploadInternalError
-from ..exceptions import FileUploadRequestError
+from ..exceptions import FileUploadInternalError, FileUploadRequestError
 
 
 class Settings(object):
@@ -123,7 +122,6 @@ class BaseBackend(object):
             raise FileUploadRequestError("Key required for URL request")
         return Settings.get_bucket_name(), self._get_key_name(key)
 
-
     def _get_key_name(self, key):
         """Construct a key name with the given string and configured prefix.
 
@@ -140,4 +138,3 @@ class BaseBackend(object):
             prefix=Settings.get_prefix(),
             key=key
         )
-

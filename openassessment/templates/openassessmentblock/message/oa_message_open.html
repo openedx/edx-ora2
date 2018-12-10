@@ -5,11 +5,11 @@
         <p>
             {% if approaching %}
                 {% blocktrans with start_tag='<strong>'|safe end_tag="</strong>"|safe %}
-                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the {{ start_tag }}Your Response{{ end_tag }} field.
+                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the {{ start_tag }}Your Response{{ end_tag }} field.
                 {% endblocktrans %}
             {% else %}
                 {% blocktrans with start_tag="<strong>"|safe end_tag="</strong>"|safe %}
-                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the {{ start_tag }}Your Response{{ end_tag }} field.
+                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the {{ start_tag }}Your Response{{ end_tag }} field.
                 {% endblocktrans %}
             {% endif %}
         </p>

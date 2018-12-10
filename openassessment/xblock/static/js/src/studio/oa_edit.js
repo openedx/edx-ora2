@@ -50,15 +50,11 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
     var selfAssessmentView = new OpenAssessment.EditSelfAssessmentView(
         $("#oa_self_assessment_editor", this.element).get(0)
     );
-    var exampleBasedAssessmentView = new OpenAssessment.EditExampleBasedAssessmentView(
-        $("#oa_ai_assessment_editor", this.element).get(0)
-    );
     var assessmentLookupDictionary = {};
     assessmentLookupDictionary[staffAssessmentView.getID()] = staffAssessmentView;
     assessmentLookupDictionary[studentTrainingView.getID()] = studentTrainingView;
     assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
     assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;
-    assessmentLookupDictionary[exampleBasedAssessmentView.getID()] = exampleBasedAssessmentView;
 
     this.settingsView = new OpenAssessment.EditSettingsView(
         $("#oa_basic_settings_editor", this.element).get(0), assessmentLookupDictionary, data

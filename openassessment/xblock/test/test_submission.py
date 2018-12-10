@@ -3,29 +3,29 @@
 Test submission to the OpenAssessment XBlock.
 """
 
-import json
 import datetime as dt
-import boto
-from boto.s3.key import Key
-from django.test.utils import override_settings
-from mock import patch, Mock
+import json
+
+import boto3
+from mock import Mock, patch
 from moto import mock_s3
 import pytz
 
-from submissions import api as sub_api
-from submissions.api import SubmissionRequestError, SubmissionInternalError
-from openassessment.fileupload import api
+from django.test.utils import override_settings
 
+from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
-from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
+from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+from submissions import api as sub_api
+from submissions.api import SubmissionInternalError, SubmissionRequestError
 
 from .base import XBlockHandlerTestCase, scenario
 
 
 class SubmissionTest(XBlockHandlerTestCase):
     SUBMISSION = json.dumps({
-        "submission": ["This is my answer to the first question!", "This is my answer to the second question!"]
+        "submission": ["This is my answer to the first prompt!", "This is my answer to the second prompt!"]
     })
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
@@ -37,8 +37,8 @@ class SubmissionTest(XBlockHandlerTestCase):
     def test_submit_answer_too_long(self, xblock):
         # Maximum answer length is 100K, once the answer has been JSON-encoded
         long_submission = json.dumps({
-            "submission": ["This is my answer to the first question!" * 100000,
-                           "This is my answer to the second question!"]
+            "submission": ["This is my answer to the first prompt!" * 100000,
+                           "This is my answer to the second prompt!"]
         })
         resp = self.request(xblock, 'submit', long_submission, response_format='json')
         self.assertFalse(resp[0])
@@ -157,11 +157,14 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_download_url(self, xblock):
         """ Test generate correct download URL with existing file. should create a file and get the download URL """
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
-        key.set_contents_from_string("How d'ya do?")
+        s3 = boto3.resource('s3')
+        s3.create_bucket(Bucket='mybucket')
+        s3.Object(
+            'mybucket',
+            'submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id
+        ).put(
+            Body="How d'ya do?"
+        )
         download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
 
         xblock.xmodule_runtime = Mock(
@@ -172,6 +175,8 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
 
         self.assertTrue(resp['success'])
+        print download_url
+        print resp['url']
         self.assertEqual(download_url, resp['url'])
 
     @mock_s3
@@ -182,11 +187,11 @@ class SubmissionTest(XBlockHandlerTestCase):
     )
     @scenario('data/file_upload_scenario.xml')
     def test_download_url_non_existing_file(self, xblock):
-        """ Test generate a download URL for non-existing file, should return empty string """
+        """ For non-existing file, a valid url will be returned, but it will 404 when followed. """
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
 
         self.assertTrue(resp['success'])
-        self.assertEqual(u'', resp['url'])
+        self.assertIn(u'https://mybucket.s3.amazonaws.com/submissions_attachments', resp['url'])
 
     @mock_s3
     @override_settings(
@@ -197,11 +202,11 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_remove_all_uploaded_files(self, xblock):
         """ Test remove all user files """
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
-        key.set_contents_from_string("How d'ya do?")
+        s3 = boto3.resource('s3')
+        s3.create_bucket(Bucket='mybucket')
+        s3.Object('mybucket', 'submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id).put(
+            Body="How d'ya do?"
+        )
 
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
@@ -219,7 +224,30 @@ class SubmissionTest(XBlockHandlerTestCase):
 
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
         self.assertTrue(resp['success'])
-        self.assertEqual(u'', resp['url'])
+        self.assertIn(u'https://mybucket.s3.amazonaws.com/submissions_attachments', resp['url'])
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
+    @scenario('data/custom_file_upload.xml')
+    def test_upload_files_with_uppercase_ext(self, xblock):
+        """
+        Tests that files with upper case extention uploaded successfully
+        """
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        resp = self.request(xblock, 'upload_url', json.dumps({'contentType': 'filename',
+                                                              'filename': 'test.PDF'}), response_format='json')
+        self.assertTrue(resp['success'])
+        self.assertTrue(resp['url'].startswith(
+            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' +
+            xblock.scope_ids.usage_id
+        ))
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
@@ -553,7 +581,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     def test_integration(self, xblock):
         # Expect that the response step is open and displays the deadline
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        self.assertIn('Enter your response to the question', resp)
+        self.assertIn('Enter your response to the prompt', resp)
         self.assertIn('2999-05-06T00:00:00+00:00', resp)
 
         # Create a submission for the user
