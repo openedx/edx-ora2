@@ -41,6 +41,7 @@ setup(
     license='AGPL',
     classifiers=[
         'Development Status :: 3 - Alpha',
+        'Framework :: Django :: 1.11',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',

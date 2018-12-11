@@ -12,7 +12,6 @@ boto>=2.39.0,<3.0.0
 python-swiftclient>=3.1.0,<4.0.0
 defusedxml>=0.4.1,<1.0.0
 django-model-utils>=2.3.1
-dogapi>=1.2.1,<2.0.0
 jsonfield>=2.0.2,<3.0.0
 lazy>=1.1,<2.0
 libsass>=0.10.0,<1.0.0

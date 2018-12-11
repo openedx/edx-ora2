@@ -9,7 +9,6 @@ import logging
 from django.db import DatabaseError, IntegrityError, transaction
 from django.utils import timezone
 
-from dogapi import dog_stats_api
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
                                               PeerAssessmentWorkflowError)
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentPart, InvalidRubricSelection,
@@ -874,44 +873,6 @@ def _log_assessment(assessment, scorer_workflow):
         )
     )
 
-    tags = [
-        u"course_id:{course_id}".format(course_id=scorer_workflow.course_id),
-        u"item_id:{item_id}".format(item_id=scorer_workflow.item_id),
-        u"type:peer",
-    ]
-
-    score_percentage = assessment.to_float()
-    if score_percentage is not None:
-        dog_stats_api.histogram('openassessment.assessment.score_percentage', score_percentage, tags=tags)
-
-    # Calculate the time spent assessing
-    # This is the time from when the scorer retrieved the submission
-    # (created the peer workflow item) to when they completed an assessment.
-    # By this point, the assessment *should* have an associated peer workflow item,
-    # but if not, we simply skip the event.
-    try:
-        workflow_item = assessment.peerworkflowitem_set.get()
-    except (
-        PeerWorkflowItem.DoesNotExist,
-        PeerWorkflowItem.MultipleObjectsReturned,
-        DatabaseError
-    ):
-        msg = u"Could not retrieve peer workflow item for assessment: {assessment}".format(
-            assessment=assessment.id
-        )
-        logger.exception(msg)
-        workflow_item = None
-
-    if workflow_item is not None:
-        time_delta = assessment.scored_at - workflow_item.started_at
-        dog_stats_api.histogram(
-            'openassessment.assessment.seconds_spent_assessing',
-            time_delta.total_seconds(),
-            tags=tags
-        )
-
-    dog_stats_api.increment('openassessment.assessment.count', tags=tags)
-
 
 def _log_workflow(submission_uuid, workflow):
     """
@@ -931,18 +892,6 @@ def _log_workflow(submission_uuid, workflow):
             workflow.student_id,
         )
     )
-
-    tags = [
-        u"course_id:{course_id}".format(course_id=workflow.course_id),
-        u"item_id:{item_id}".format(item_id=workflow.item_id),
-        u"type:peer"
-    ]
-
-    # Over-grading is always turned on
-    # Keep this tag for backwards-compatibility
-    tags.append(u"overgrading")
-
-    dog_stats_api.increment('openassessment.assessment.peer_workflow.count', tags=tags)
 
 
 def is_workflow_cancelled(submission_uuid):
