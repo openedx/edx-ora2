@@ -4,25 +4,29 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Alicia P., 2014
-# Juan Rodríguez de Vera Mouliaá <jrodriguez@um.es>, 2016
-# Mariangeles Fernandez <mariangelesfm@gmail.com>, 2015
-# Miguel Angel Cordova <miguel.angel.cordova.uned@gmail.com>, 2014
-# Raúl Aguilera Ortega <raguiler@db.uc3m.es>, 2014
-# Rubén Torres <r.torres@usal.es>, 2015
-# UAMx <uamx.dev@gmail.com>, 2014
+# Beatriz Magalhães <mbeatrizmagalhaes@gmail.com>, 2016
+# Beatriz Sousa <beatriz.sousa@bridgelk.com>, 2018
+# Cátia Lopes <catia.lopes@bridgelk.com>, 2018
+# Filipe Boleto <fboleto@gmail.com>, 2015
+# MS <manuelarodsilva@gmail.com>, 2018
+# MS <manuelarodsilva@gmail.com>, 2016
+# MS, 2016,2018
+# Nlaranjo <numicola@gmail.com>, 2014
+# Nlaranjo <numicola@gmail.com>, 2014
+# Rui Ribeiro <rui.ribeiro@fccn.pt>, 2019
+# Teresa Guerreiro <t.guerreiro@sapo.pt>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-12-20 16:24+0000\n"
-"Last-Translator: URJConline <online.mooc@urjc.es>\n"
-"Language-Team: Spanish (Spain) (http://www.transifex.com/open-edx/edx-platform/language/es_ES/)\n"
+"PO-Revision-Date: 2019-01-10 17:31+0000\n"
+"Last-Translator: Rui Ribeiro <rui.ribeiro@fccn.pt>\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
+"Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
@@ -31,37 +35,37 @@ msgstr ""
 #: openassessment/xblock/static/js/src/oa_server.js:89
 #: openassessment/xblock/static/js/src/oa_server.js:113
 msgid "This section could not be loaded."
-msgstr "Esta sección no ha podido cargarse."
+msgstr "Não foi possível carregar esta secção."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:134
 msgid "The staff assessment form could not be loaded."
-msgstr ""
+msgstr "Não foi possível carregar o formulário de avaliação da Equipa."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:156
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr ""
+msgstr "Não foi possível carregar a exibição de respostas entregues não classificadas."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:191
 msgid "This response could not be submitted."
-msgstr "Esta respuesta no ha podido enviarse."
+msgstr "Não foi possível submeter esta resposta."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:215
 msgid "This response could not be saved."
-msgstr "Esta respuesta no ha podido guardarse."
+msgstr "Não foi possível guardar esta resposta."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:241
 msgid "This feedback could not be submitted."
-msgstr "Los comentarios no han podido enviarse."
+msgstr "Não foi possível submeter este comentário."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -69,338 +73,338 @@ msgstr "Los comentarios no han podido enviarse."
 #: openassessment/xblock/static/js/src/oa_server.js:359
 #: openassessment/xblock/static/js/src/oa_server.js:383
 msgid "This assessment could not be submitted."
-msgstr "Este examen no ha podido enviarse."
+msgstr "Não foi possível submeter esta avaliação."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:407
 msgid "One or more rescheduling tasks failed."
-msgstr "Una o más tareas reprogramadas han fallado."
+msgstr "Ocorreu erro no reagendamento de uma ou mais tarefas."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:460
 msgid "This problem could not be saved."
-msgstr "Este ejercicio no ha podido guardarse."
+msgstr "Não foi possível gravar este problema."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:482
 msgid "The server could not be contacted."
-msgstr "No se pudo contactar con el servidor."
+msgstr "Não foi possível contactar o servidor."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:509
 msgid "Could not retrieve upload url."
-msgstr "No se ha podido obtener la url de subida"
+msgstr "Não foi possível recuperar o url de envio."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:529
 #: openassessment/xblock/static/js/src/oa_server.js:549
 msgid "Server error."
-msgstr ""
+msgstr "Erro de servidor."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:570
 msgid "Could not retrieve download url."
-msgstr "No se ha podido obtener la url de descarga."
+msgstr "Não foi possível obter os dados a partir do URL definido."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:596
 msgid "The submission could not be removed from the grading pool."
-msgstr "La entrega no pudo eliminarse del tablón de calificaciones."
+msgstr "Não foi possível remover a submissão da pool de classificação."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_base.js:324
 msgid "Unable to load"
-msgstr ""
+msgstr "Não foi possível carregar"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Unit Name"
-msgstr ""
+msgstr "Título da Unidade"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Units"
-msgstr ""
+msgstr "Unidades"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
 msgid "Assessment"
-msgstr ""
+msgstr "Avaliação"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
 msgid "Assessments"
-msgstr ""
+msgstr "Avaliações"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:56
 msgid "Total Responses"
-msgstr ""
+msgstr "Total de Respostas"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:60
 msgid "Training"
-msgstr ""
+msgstr "Formação"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:64
 msgid "Peer"
-msgstr ""
+msgstr "Par"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:68
 msgid "Self"
-msgstr ""
+msgstr "Auto"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:72
 msgid "Waiting"
-msgstr ""
+msgstr "A aguardar"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:76
 msgid "Staff"
-msgstr ""
+msgstr "Equipa"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:81
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:82
 msgid "Final Grade Received"
-msgstr ""
+msgstr "Nota Final Recebida"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:111
 msgid "List of Open Assessments is unavailable"
-msgstr ""
+msgstr "Lista de Avaliações Abertas não está disponível"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:212
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:262
 msgid "Please wait"
-msgstr ""
+msgstr "Aguarde, por favor"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:235
 msgid "Block view is unavailable"
-msgstr ""
+msgstr "A visualização em grelha não está disponível"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:247
 msgid "Back to Full List"
-msgstr ""
+msgstr "Voltar à lista completa"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_peer.js:193
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Caso saia desta página sem submeter o seu teste, irá perder todo o trabalho até aqui realizado."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:130
 msgid ""
 "After you upload new files all your previously uploaded files will be "
 "overwritten. Continue?"
-msgstr ""
+msgstr "Ao carregar os novos ficheiros, todos os ficheiros anteriormente carregados serão substituídos. Deseja continuar?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:283
 msgid "Your file "
-msgstr ""
+msgstr "O seu ficheiro "
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:307
 msgid "Status of Your Response"
-msgstr "Estado de tu respuesta"
+msgstr "Estado da sua Resposta"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:382
 msgid "This response has not been saved."
-msgstr "Esta respuesta no se ha guardado."
+msgstr "Esta resposta não foi guardada."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:386
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "Caso saia desta página sem gravar ou submeter a sua resposta, irá perder todo o trabalho até aqui realizado."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:404
 msgid "Saving..."
-msgstr "Guardando..."
+msgstr "A guardar..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:426
 msgid "This response has been saved but not submitted."
-msgstr "Esta respuesta se ha guardado pero no se ha enviado"
+msgstr "Esta resposta foi guardada mas não foi submetida."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:431
 msgid "Error"
-msgstr "Error"
+msgstr "Erro"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "Do you want to upload your file before submitting?"
-msgstr ""
+msgstr "Deseja carregar o seu ficheiro antes de submeter?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:533
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr "Estás a punto de enviar tu respuesta para este ejercicio. Después de enviar esta respuesta, no podrás cambiarla o enviar una nueva."
+msgstr "Está prestes a submeter a sua resposta para esta tarefa. Depois de a submeter, não é possível alterá-la ou submeter uma nova resposta."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "File size must be 10MB or less."
-msgstr ""
+msgstr "O tamanho do ficheiro deve ter, no máximo, 10MB."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:581
 #: openassessment/xblock/static/js/src/lms/oa_response.js:588
 #: openassessment/xblock/static/js/src/lms/oa_response.js:595
 msgid "You can upload files with these file types: "
-msgstr ""
+msgstr "Pode fazer o carregamento de ficheiros dos seguintes tipos: "
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:603
 msgid "File type is not allowed."
-msgstr ""
+msgstr "O tipo de ficheiro não é permitido."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:647
 #: openassessment/xblock/static/js/src/lms/oa_response.js:653
 msgid "Describe "
-msgstr ""
+msgstr "Descreva"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:647
 msgid "(required):"
-msgstr ""
+msgstr "(obrigatório):"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:667
 msgid "Thumbnail view of "
-msgstr ""
+msgstr "Visualização em miniatura de "
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:124
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Caso saia desta página sem submeter a sua auto-avaliação, irá perder todo o trabalho até aqui realizado."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:129
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:211
 msgid "Unexpected server error."
-msgstr ""
+msgstr "Erro do servidor."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:133
 msgid "You must provide a learner name."
-msgstr ""
+msgstr "Deve indicar o nome de um estudante."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:263
 msgid "Error getting the number of ungraded responses"
-msgstr ""
+msgstr "Erro ao obter o número de respostas sem classificação"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:497
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Caso saia desta página sem submeter a sua avaliação individual, irá perder todo o trabalho até aqui realizado."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_training.js:116
 msgid "Feedback available for selection."
-msgstr ""
+msgstr "Comentário disponível para a seleção."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:391
 msgid "Paragraph"
-msgstr ""
+msgstr "Parágrafo"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:392
 msgid "Preformatted"
-msgstr ""
+msgstr "Pré-formatado"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:393
 msgid "Heading 3"
-msgstr ""
+msgstr "Título 3"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:394
 msgid "Heading 4"
-msgstr ""
+msgstr "Título 4"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:395
 msgid "Heading 5"
-msgstr ""
+msgstr "Título 5"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:396
 msgid "Heading 6"
-msgstr ""
+msgstr "Título 6"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
 msgid "Unnamed Option"
-msgstr "Opción sin nombre"
+msgstr "Opção sem título"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
 msgid "Not Selected"
-msgstr "No seleccionado"
+msgstr "Não Selecionado"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:145
 msgid "Couldn't Save This Assignment"
-msgstr "No se ha podido guardar esta tarea"
+msgstr "Não é possível guardar esta tarefa"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:146
 msgid "Please correct the outlined fields."
-msgstr "Por favor, corrige los campos marcados."
+msgstr "Por favor, corrija os campos indicados."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:180
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "Este ejercicio ya se ha enviado. Cualquier otro cambio se aplicará solamente a calificaciones futuras."
+msgstr "Este problema já foi desbloqueado. Quaisquer alterações efetuadas posteriormente aplicam-se apenas a avaliações futuras."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
 msgid "Criterion Added"
-msgstr "Criterio añadido"
+msgstr "Critério Adicionado"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:98
 msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr ""
+msgstr "Adicionou um novo critério. Necessitará de selecionar uma opção para o critério, na etapa de Formação do Estudante. Para tal, clique no separador Configurações."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:179
 msgid "Option Deleted"
-msgstr "Opción eliminada"
+msgstr "Opção eliminada"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:145
@@ -408,26 +412,26 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr ""
+msgstr "Eliminou uma opção. Esta opção foi removida do seu critério nos exemplos de respostas da etapa Formação do Estudante. Deve selecionar uma nova opção para esse critério."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr ""
+msgstr "Eliminou todas as opções para este critério. O critério foi removido dos exemplos de resposta da etapa de Formação do Estudante."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
 msgid "Criterion Deleted"
-msgstr "Criterio eliminado"
+msgstr "Critério eliminado"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:207
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr ""
+msgstr "Eliminou um critério. O critério foi removido dos exemplos de resposta da etapa de Formação do Estudante."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
@@ -439,14 +443,14 @@ msgstr "Aviso"
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr "Los cambios en los pasos que no están seleccinados como parte de la actividad no se guardarán."
+msgstr "As alterações às etapas que não estão selecionados como parte da tarefa, não serão guardadas."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:66
 msgid "File types can not be empty."
-msgstr ""
+msgstr "Indique o tipo de ficheiro. "
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:76
 msgid "The following file types are not allowed: "
-msgstr ""
+msgstr "Os seguintes tipos de ficheiro não são permitidos: "
