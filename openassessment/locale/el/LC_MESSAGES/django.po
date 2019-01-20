@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2019-01-11 17:29+0000\n"
+"PO-Revision-Date: 2019-01-18 19:27+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -277,7 +277,7 @@ msgstr "Προαιρετικό"
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:91
 #: openassessment/xblock/studio_mixin.py:45
 msgid "Required"
-msgstr ""
+msgstr "Απαιτείται"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:61
 msgid ""
@@ -958,7 +958,7 @@ msgid ""
 "You have successfully completed all of the required peer assessments for "
 "this assignment. You may assess additional peer responses if you want to. "
 "Completing additional assessments will not affect your final grade."
-msgstr ""
+msgstr "Έχετε ολοκληρώσει επιτυχώς όλες τις απαιτούμενες αξιολογήσεις δοκιμίων συμφοιτητών σας. Μπορείτε αν το επιθυμείτε να συνεχίσετε να αξιολογείτε. Οι επιπλέον αυτές αξιολογήσεις δεν αυξάνουν την τελική σας βαθμολογία."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:36
 msgid "We could not retrieve additional submissions for assessment"
