@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Beatriz Sousa <beatriz.sousa@bridgelk.com>, 2018
-# Cátia Lopes <catia.lopes@bridgelk.com>, 2018
+# Cátia Lopes <catia.lopes@bridgelk.com>, 2018-2019
 # Developer QUEO <developer@queo.pt>, 2017
 # Waldo Luís Ribeiro, 2016
 # MS <manuelarodsilva@gmail.com>, 2018
@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2019-01-11 01:32+0000\n"
+"PO-Revision-Date: 2019-01-18 10:02+0000\n"
 "Last-Translator: Rui Ribeiro <rui.ribeiro@fccn.pt>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "No exemplo {example_number} está em falta uma opção para \"{criterion
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
 msgid "Open Response Assessment"
-msgstr "Avaliação de Resposta Aberta"
+msgstr "Questão de Resposta Aberta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
 msgid "Settings"
@@ -74,7 +74,7 @@ msgstr "Rúbrica"
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr "Lembrete"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
 msgid "Rubric Change Impacts Settings Section"
@@ -131,7 +131,7 @@ msgstr "Resposta de Texto"
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr "Especifique se os estudantes devem incluir uma resposta de texto para o lembrete deste problema."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
@@ -248,7 +248,7 @@ msgstr "Título do Critério"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr "Prazo do critério"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:44
 msgid "Add Option"
@@ -363,17 +363,17 @@ msgstr "Introduza a data e a hora em que todas as avaliações dos pares devem e
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr "Não é possível eliminar um lembrete após a publicação da tarefa."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr "Lembrete. Substitua o texto de exemplo pelo seu próprio texto. Para obter mais informações, consulte a documentação da resposta aberta."
+msgstr "Enunciados. Substitua o texto de exemplo pelo seu próprio texto. Para obter mais informações, consulte a documentação no OpenEDX do componente ORA - Open Response Assessment."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
-msgstr "Adicionar lembrete"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:14
 msgid ""
@@ -381,7 +381,7 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr "As rubricas são feitas de critérios, que geralmente contêm uma ou mais opções. Cada opção tem um valor de ponto. Este modelo contém dois critérios de exemplo e suas opções. Substitua o texto de exemplo pelo seu próprio texto. Para obter mais informações, consulte a documentação do ORA."
+msgstr "As rubricas são feitas de critérios, que geralmente contêm uma ou mais opções. Cada opção tem um valor de ponto. Este modelo contém dois critérios de exemplo e as respectivas opções. Substitua o texto de exemplo pelo seu próprio texto. Para obter mais informações, consulte a documentação OpenEDX relativamente ao ORA - Open Response Assessment."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
 msgid "Add Criterion"
@@ -699,7 +699,7 @@ msgstr "%(num_points)s pontos"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr "A resposta do seu par ao lembrete acima"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -804,7 +804,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\nO prazo para o envio das tarefas terminará em breve. Para receber uma classificação, primeiro deverá dar uma resposta ao lembrete e concluir as etapas abaixo nos campos de resposta %(start_tag)s %(end_tag)s."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -812,7 +812,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\nEsta tarefa contém várias etapas. Na primeira etapa, deverá dar uma resposta ao lembrete. Nas outras etapas, o campo para a resposta aparecerá abaixo %(start_tag)s %(end_tag)s ."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -827,7 +827,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "Esta tarefa contém várias etapas. Na primeira etapa, deverá dar uma resposta ao lembrete. Nas outras etapas, o campo para a resposta aparecerá abaixo."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -1033,7 +1033,7 @@ msgstr "Em progresso"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:57
 msgid "Enter your response to the prompt."
-msgstr "Introduza a sua resposta ao lembrete."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:59
 msgid ""
@@ -1044,7 +1044,7 @@ msgstr "Pode guardar o seu progresso e voltar a qualquer momento para concluir a
 #: openassessment/templates/openassessmentblock/response/oa_response.html:64
 msgid ""
 "You can save your progress and return to complete your response at any time."
-msgstr "Pode guardar o seu progresso e voltar a qualquer momento para concluir a sua resposta. ."
+msgstr "Pode guardar o seu progresso e voltar a qualquer momento para concluir a sua resposta."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:66
 msgid "After you submit your response, you cannot edit it"
@@ -1052,7 +1052,7 @@ msgstr "Depois de enviar a resposta, não será possível editá-la"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:75
 msgid "The prompt for this section"
-msgstr "O prazo para esta secção"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:93
 msgid "Your response (required)"
@@ -1064,7 +1064,7 @@ msgstr "A sua resposta (opcional)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:105
 msgid "Enter your response to the prompt above."
-msgstr "Introduza a sua resposta no lembrete acima."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:119
 msgid "We could not save your progress"
@@ -1319,7 +1319,7 @@ msgstr "Resposta do Estudante"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr "A resposta do estudante ao lembrete acima"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1569,7 +1569,7 @@ msgstr "A sua avaliação difere da avaliação do formador nesta resposta. Reve
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:74
 msgid "The response to the prompt above:"
-msgstr "A resposta ao lembrete acima:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:96
 msgid "Selected Options Agree"
@@ -2012,7 +2012,7 @@ msgstr "Os critérios sem opções de escolha devem requerer comentários escrit
 
 #: openassessment/xblock/validation.py:211
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr "Os prazos não podem ser criados ou eliminados após a publicação de um problema."
+msgstr ""
 
 #: openassessment/xblock/validation.py:215
 msgid "The number of criteria cannot be changed after a problem is released."
