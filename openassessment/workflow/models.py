@@ -325,8 +325,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     not old_score or
                     not self.STAFF_ANNOTATION_TYPE in [
                         annotation['annotation_type'] for annotation in old_score['annotations']
-                    ] or
-                    old_score['points_earned'] != new_staff_score['points_earned']
+                    ]
             ):
                 # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
