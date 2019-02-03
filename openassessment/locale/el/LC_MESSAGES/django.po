@@ -8,7 +8,7 @@
 # Dennis Miliopoulos, 2014
 # Dimosthenis Karakatsoulis <karakatsou@gmail.com>, 2015
 # Frog Princess <anna.wrt@gmail.com>, 2015
-# Katerina Ligkovanli <kaligova@gmail.com>, 2016-2017
+# Katerina Ligkovanli <kaligova@gmail.com>, 2016-2017,2019
 # LOUKAS SKOUROLIAKOS, 2015
 # Nick Gikopoulos, 2015,2017
 # Panagiotis Moutsopoulos <pmoutsop@gmail.com>, 2015
@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2019-01-18 19:27+0000\n"
+"PO-Revision-Date: 2019-02-01 16:37+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -338,7 +338,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
 msgid "Start Date"
-msgstr ""
+msgstr "Ημερομήνια Έναρξης"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:31
@@ -692,7 +692,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "Παρακαλούμε περιμένετε"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
@@ -1084,7 +1084,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "We could not upload files"
-msgstr ""
+msgstr "Η μεταφόρτωση του αρχείου σας δεν κατέστη δυνατή"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:146
 msgid "Select a file to upload for this submission."
@@ -1092,7 +1092,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:148
 msgid "Upload files"
-msgstr ""
+msgstr "Μεταφόρτωση αρχείων"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:157
 msgid "You may continue to work on your response until you submit it."
