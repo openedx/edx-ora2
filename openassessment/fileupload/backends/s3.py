@@ -66,8 +66,10 @@ def _connect_to_s3():
     # environment vars or configuration files instead.
     aws_access_key_id = getattr(settings, 'AWS_ACCESS_KEY_ID', None)
     aws_secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
+    aws_s3_host = getattr(settings, 'AWS_S3_HOST', None)
 
     return boto.connect_s3(
         aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
+        aws_secret_access_key=aws_secret_access_key,
+        host=aws_s3_host
     )
