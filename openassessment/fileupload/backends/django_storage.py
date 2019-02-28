@@ -2,7 +2,7 @@ import os
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 
 from .base import BaseBackend
 
@@ -15,7 +15,7 @@ class Backend(BaseBackend):
         """
         Return the URL pointing to the ORA2 django storage upload endpoint.
         """
-        return reverse_lazy("openassessment-django-storage", kwargs={'key': key})
+        return reverse("openassessment-django-storage", kwargs={'key': key})
 
     def get_download_url(self, key):
         """
