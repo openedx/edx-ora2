@@ -29,6 +29,7 @@
 # Richard Moch <richard.moch@gmail.com>, 2015-2016
 # tgeorges225 <georges.tope@outlook.com>, 2014
 # Thomas Fradet <t.fradet8@gmail.com>, 2015
+# willyedoo <willyedoo@gmail.com>, 2019
 # d6910e756eb8532754192e6021dc9f83, 2014
 # d6910e756eb8532754192e6021dc9f83, 2014
 msgid ""
@@ -36,8 +37,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-29 13:04-0400\n"
-"PO-Revision-Date: 2018-08-28 08:45+0000\n"
-"Last-Translator: moocit-france <contact@moocit.fr>\n"
+"PO-Revision-Date: 2019-03-14 11:06+0000\n"
+"Last-Translator: willyedoo <willyedoo@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1284,7 +1285,7 @@ msgstr "Réponses total"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:57
 msgid "Location"
-msgstr "Adresse"
+msgstr "Localisation"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:63
 msgid "Learner Progress"
