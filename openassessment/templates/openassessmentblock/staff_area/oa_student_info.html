@@ -159,21 +159,23 @@
     </div>
 
     {% if not workflow_cancellation %}
-        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
-            <div class="ui-slidable__control">
-                <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
-                    <h2 class="staff-info__title ui-staff__subtitle">
-                        <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                        <span>{% trans "Submit Assessment Grade Override" %}</span>
-                    </h2>
-                </button>
-            </div>
-            <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
-                <div class="wrapper--input">
-                    {% include "openassessmentblock/staff_area/oa_staff_override_assessment.html" %}
+        {% if not are_grades_frozen %}
+            <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
+                <div class="ui-slidable__control">
+                    <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
+                        <h2 class="staff-info__title ui-staff__subtitle">
+                            <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                            <span>{% trans "Submit Assessment Grade Override" %}</span>
+                        </h2>
+                    </button>
+                </div>
+                <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
+                    <div class="wrapper--input">
+                        {% include "openassessmentblock/staff_area/oa_staff_override_assessment.html" %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
             <div class="ui-slidable__control">

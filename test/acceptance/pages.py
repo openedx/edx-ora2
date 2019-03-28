@@ -4,10 +4,13 @@ Page objects for UI-level acceptance tests.
 
 import os
 
+from abc import abstractmethod
+from bok_choy.javascript import requirejs, js_defined
 from bok_choy.page_object import PageObject
 from bok_choy.promise import BrokenPromise, EmptyPromise
 
 ORA_SANDBOX_URL = os.environ.get('ORA_SANDBOX_URL')
+ORA_SANDBOX_STUDIO_URL = ORA_SANDBOX_URL.replace("@", "@studio-")
 
 
 class PageConfigurationError(Exception):
@@ -46,6 +49,98 @@ class BaseAssessmentPage(PageObject):
             return text in self.get_sr_html()[0]
 
         self.wait_for(is_text_in_feedback, 'Waiting for %s, in %s' % (text, self.q(css='.sr.reader-feedback').html[0]))
+
+
+class StudioPage(PageObject):
+    """
+    Base class for Studio page objects.
+    """
+    url_path = ""
+
+    def __init__(self, browser, course_id):
+        """
+        Configure a page object for a studio page.
+        """
+        super(StudioPage, self).__init__(browser)
+        self.base_url = ORA_SANDBOX_STUDIO_URL
+        self.course_id = course_id
+
+    @abstractmethod
+    def is_browser_on_page(self):
+        """
+        Verifies browser is on the correct page.
+        """
+        pass
+
+    @property
+    def url(self):
+        return "/".join([self.base_url, self.url_path, self.course_id])
+
+
+@requirejs('js/factories/settings')
+class StudioSettingsPage(StudioPage):
+    """
+    Course Schedule and Details Settings page.
+    """
+    url_path = "settings/details"
+    COURSE_END_DATE_CSS = "#course-end-date"
+
+    def is_browser_on_page(self):
+        return self.q(css='body.view-settings').visible
+
+    def get_element(self, css_selector):
+        """
+        Get element using given css selector
+        """
+        self.wait_for_element_presence(
+            css_selector,
+            'Element matching "{}" selector is present'.format(css_selector)
+        )
+        results = self.q(css=css_selector)
+        return results[0] if results else None
+
+    @js_defined('window.jQuery')
+    def save_changes(self):
+        """
+        Clicks save button
+        """
+        btn_css = u'div#page-notification button.action-save'
+        self.browser.execute_script(u"$('{}').focus().click()".format(btn_css))
+        self.wait_for_ajax()
+        self.wait_for_element_visibility(
+            '#alert-confirmation-title',
+            'Save confirmation message is visible'
+        )
+        # After visibility an ajax call is in process, waiting for that to complete
+        self.wait_for_ajax()
+
+    def set_course_end_date_value(self, end_date):
+        """
+        Sets course end date of course
+        """
+        self.wait_for_input_fields()
+        course_end_date = self.get_element(self.COURSE_END_DATE_CSS)
+        course_end_date.clear()
+        if end_date:
+            course_end_date.send_keys(end_date)
+        self.un_focus_input_field()
+        self.save_changes()
+
+    def un_focus_input_field(self):
+        """
+        Makes an input field un-focus by
+        clicking outside of it.
+        """
+        self.get_element('.title-2').click()
+
+    def wait_for_input_fields(self):
+        """
+        Wait for input fields to be loaded
+        """
+        EmptyPromise(
+            lambda: self.q(css='#course-organization').attrs('value')[0],
+            "Waiting for input fields to be loaded"
+        ).fulfill()
 
 
 class MultipleAssessmentPage(BaseAssessmentPage):
@@ -640,6 +735,19 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
 
     def is_browser_on_page(self):
         return self.q(css=".openassessment__staff-area").is_present()
+
+    def is_element_visible(self, selector):
+        """
+        Checks if element with given selector is present
+        """
+        element = self.q(css=self._bounded_selector(selector))
+        return element.is_present()
+
+    def is_staff_override_available(self):
+        """
+        Checks if staff override option is available
+        """
+        return self.is_element_visible(".staff-info__staff-override")
 
     @property
     def selected_button_names(self):

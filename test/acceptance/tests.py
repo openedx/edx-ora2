@@ -15,7 +15,8 @@ from nose.plugins.attrib import attr
 from pyinstrument import Profiler
 
 from acceptance.auto_auth import AutoAuthPage
-from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, SubmissionPage
+from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, SubmissionPage, StudioSettingsPage
+
 
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
@@ -490,6 +491,7 @@ class StaffAreaTest(OpenAssessmentTest):
     def setUp(self):
         super(StaffAreaTest, self).setUp('self_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+        self.studio_page = StudioSettingsPage(self.browser, self.TEST_COURSE_ID)
 
     @retry()
     @attr('acceptance')
@@ -603,7 +605,6 @@ class StaffAreaTest(OpenAssessmentTest):
         # Click on staff tools and search for user
         self.staff_area_page.show_learner('no-submission-learner')
         self.staff_area_page.verify_learner_report_text('A response was not found for this learner.')
-
     @retry()
     @attr('acceptance')
     def test_staff_override(self):
@@ -716,7 +717,27 @@ class StaffAreaTest(OpenAssessmentTest):
         self._verify_staff_grade_section("CANCELLED")
         self.assertIsNone(self.grade_page.wait_for_page().score)
 
+    @attr('acceptance')
+    @ddt.data(True, False)
+    def test_staff_override_availability_course_end(self, froze_grade):
+        """
+        Test that staff override option is only available when grades are not frozen.
+        Grades are considered frozen if course end date has passed 30 days.
+        """
+        end_date = '12/30/2018' if froze_grade else ''
+        username = self.do_self_assessment()
+        staff_override_visible = not froze_grade
 
+        self.studio_page.visit()
+        self.studio_page.set_course_end_date_value(end_date)
+
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+
+        self.assertEquals(
+            self.staff_area_page.is_staff_override_available(),
+            staff_override_visible
+        )
 class FileUploadTest(OpenAssessmentTest):
     """
     Test file upload
