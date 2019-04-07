@@ -14,7 +14,7 @@
 # Mariangeles Fernandez <mariangelesfm@gmail.com>, 2015
 # Miguel Angel Cordova <miguel.angel.cordova.uned@gmail.com>, 2014
 # Nacho Díaz <nachotheix@gmail.com>, 2015
-# Paco López <pacol@db.uc3m.es>, 2014
+# 06052463cea5d8c38d564d090d2691cb, 2014
 # Raúl Aguilera Ortega <raguiler@db.uc3m.es>, 2014
 # Rocío Pérez Venero <perezvenero.rocio@gmail.com>, 2015
 # Rubén Torres <r.torres@usal.es>, 2015
