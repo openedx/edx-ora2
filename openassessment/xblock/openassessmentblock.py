@@ -9,6 +9,7 @@ import os
 from lazy import lazy
 import pkg_resources
 import pytz
+from six import text_type
 from webob import Response
 from xblock.core import XBlock
 from xblock.fields import Boolean, Integer, List, Scope, String
@@ -244,7 +245,7 @@ class OpenAssessmentBlock(MessageMixin,
 
     @property
     def course_id(self):
-        return self._serialize_opaque_key(self.xmodule_runtime.course_id)  # pylint:disable=E1101
+        return text_type(self.xmodule_runtime.course_id)
 
     @property
     def text_response(self):
@@ -347,7 +348,7 @@ class OpenAssessmentBlock(MessageMixin,
                 includes the student id, item id, and course id.
         """
 
-        item_id = self._serialize_opaque_key(self.scope_ids.usage_id)
+        item_id = text_type(self.scope_ids.usage_id)
 
         # This is not the real way course_ids should work, but this is a
         # temporary expediency for LMS integration
@@ -362,7 +363,7 @@ class OpenAssessmentBlock(MessageMixin,
             if self.scope_ids.user_id is None:
                 student_id = None
             else:
-                student_id = unicode(self.scope_ids.user_id)
+                student_id = text_type(self.scope_ids.user_id)
 
         student_item_dict = dict(
             student_id=student_id,
@@ -1086,26 +1087,6 @@ class OpenAssessmentBlock(MessageMixin,
         self.runtime.publish(self, event_name, data)
         return {'success': True}
 
-    def _serialize_opaque_key(self, key):
-        """
-        Gracefully handle opaque keys, both before and after the transition.
-        https://github.com/edx/edx-platform/wiki/Opaque-Keys
-
-        Currently uses `to_deprecated_string()` to ensure that new keys
-        are backwards-compatible with keys we store in ORA2 database models.
-
-        Args:
-            key (unicode or OpaqueKey subclass): The key to serialize.
-
-        Returns:
-            unicode
-
-        """
-        if hasattr(key, 'to_deprecated_string'):
-            return key.to_deprecated_string()
-        else:
-            return unicode(key)
-
     def get_username(self, anonymous_user_id):
         """
         Return the username of the user associated with anonymous_user_id
@@ -1140,4 +1121,4 @@ class OpenAssessmentBlock(MessageMixin,
         """
         Returns the xblock id
         """
-        return self._serialize_opaque_key(self.scope_ids.usage_id)
+        return text_type(self.scope_ids.usage_id)
