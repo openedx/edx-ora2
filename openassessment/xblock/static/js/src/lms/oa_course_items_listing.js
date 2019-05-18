@@ -6,13 +6,11 @@
         var $section = $(element);
         var block = $section.find('.open-response-assessment-block');
         var itemViewEnabled = (parseInt(block.data('item-view-enabled')) === 1) && XBlock;
+        var dataRendered = parseInt(block.data('rendered'));
 
         this.$section = $section;
         this.runtime = runtime;
         this.oraData = $.parseJSON($("#open-response-assessment-items").text());
-
-        var block = $section.find('.open-response-assessment-block');
-        var dataRendered = parseInt(block.data('rendered'));
 
         if (!dataRendered) { // if rendered, we're returning after tabbing away
             $section.find(".open-response-assessment-content").hide();
