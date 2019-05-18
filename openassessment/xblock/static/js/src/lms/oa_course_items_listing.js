@@ -11,9 +11,14 @@
         this.runtime = runtime;
         this.oraData = $.parseJSON($("#open-response-assessment-items").text());
 
-        $section.find(".open-response-assessment-content").hide();
-        $section.find('.open-response-assessment-item').hide();
-        $section.find('.open-response-assessment-msg').show();
+        var block = $section.find('.open-response-assessment-block');
+        var dataRendered = parseInt(block.data('rendered'));
+
+        if (!dataRendered) { // if rendered, we're returning after tabbing away
+            $section.find(".open-response-assessment-content").hide();
+            $section.find('.open-response-assessment-item').hide();
+            $section.find('.open-response-assessment-msg').show();
+        }
 
         var AssessmentCell = Backgrid.UriCell.extend({
             staff: false,
