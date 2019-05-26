@@ -8,8 +8,8 @@
 # Cátia Lopes <catia.lopes@bridgelk.com>, 2018-2019
 # Developer QUEO <developer@queo.pt>, 2017
 # Waldo Luís Ribeiro, 2016
-# MS <manuelarodsilva@gmail.com>, 2018
-# MS <manuelarodsilva@gmail.com>, 2016
+# Manuela Silva <manuelarodsilva@gmail.com>, 2018
+# Manuela Silva <manuelarodsilva@gmail.com>, 2016
 # MS, 2016,2018
 # Rui Ribeiro <rui.ribeiro@fccn.pt>, 2018-2019
 # Waldo Luís Ribeiro, 2016
