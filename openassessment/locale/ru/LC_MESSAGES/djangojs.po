@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-29 13:04-0400\n"
+"POT-Creation-Date: 2019-05-28 16:01-0400\n"
 "PO-Revision-Date: 2018-11-15 07:30+0000\n"
 "Last-Translator: Андрей Гусев <gaussgss@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
@@ -330,6 +330,33 @@ msgid "Feedback available for selection."
 msgstr "Выбор вариантов обратной связи."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
+msgid "Unnamed Option"
+msgstr "Вариант без названия"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
+msgid "Not Selected"
+msgstr "Не выбрано"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
+msgid "Couldn't Save This Assignment"
+msgstr "Не удалось сохранить это задание "
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
+msgid "Please correct the outlined fields."
+msgstr "Пожалуйста, исправьте значения в выделенных полях."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
+msgid ""
+"This problem has already been released. Any changes will apply only to "
+"future assessments."
+msgstr "Задание уже выпущено. Любые внесённые изменения будут применены только к последующим запускам задания в будущем."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:391
 msgid "Paragraph"
 msgstr "Абзац"
@@ -358,33 +385,6 @@ msgstr "Заголовок 5"
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:396
 msgid "Heading 6"
 msgstr "Заголовок 6"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
-msgid "Unnamed Option"
-msgstr "Вариант без названия"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
-msgid "Not Selected"
-msgstr "Не выбрано"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
-msgid "Couldn't Save This Assignment"
-msgstr "Не удалось сохранить это задание "
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
-msgid "Please correct the outlined fields."
-msgstr "Пожалуйста, исправьте значения в выделенных полях."
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
-msgid ""
-"This problem has already been released. Any changes will apply only to "
-"future assessments."
-msgstr "Задание уже выпущено. Любые внесённые изменения будут применены только к последующим запускам задания в будущем."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97

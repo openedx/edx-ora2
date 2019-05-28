@@ -8,8 +8,8 @@
 # Beatriz Sousa <beatriz.sousa@bridgelk.com>, 2018
 # Cátia Lopes <catia.lopes@bridgelk.com>, 2018
 # Filipe Boleto <fboleto@gmail.com>, 2015
-# MS <manuelarodsilva@gmail.com>, 2018
-# MS <manuelarodsilva@gmail.com>, 2016
+# Manuela Silva <manuelarodsilva@gmail.com>, 2018
+# Manuela Silva <manuelarodsilva@gmail.com>, 2016
 # MS, 2016,2018
 # Nlaranjo <numicola@gmail.com>, 2014
 # Nlaranjo <numicola@gmail.com>, 2014
@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-29 13:04-0400\n"
+"POT-Creation-Date: 2019-05-28 16:01-0400\n"
 "PO-Revision-Date: 2019-01-10 17:31+0000\n"
 "Last-Translator: Rui Ribeiro <rui.ribeiro@fccn.pt>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
@@ -332,6 +332,33 @@ msgid "Feedback available for selection."
 msgstr "Comentário disponível para a seleção."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
+msgid "Unnamed Option"
+msgstr "Opção sem título"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
+msgid "Not Selected"
+msgstr "Não Selecionado"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
+msgid "Couldn't Save This Assignment"
+msgstr "Não é possível guardar esta tarefa"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
+msgid "Please correct the outlined fields."
+msgstr "Por favor, corrija os campos indicados."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
+msgid ""
+"This problem has already been released. Any changes will apply only to "
+"future assessments."
+msgstr "Este problema já foi desbloqueado. Quaisquer alterações efetuadas posteriormente aplicam-se apenas a avaliações futuras."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:391
 msgid "Paragraph"
 msgstr "Parágrafo"
@@ -360,33 +387,6 @@ msgstr "Título 5"
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:396
 msgid "Heading 6"
 msgstr "Título 6"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
-msgid "Unnamed Option"
-msgstr "Opção sem título"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
-msgid "Not Selected"
-msgstr "Não Selecionado"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
-msgid "Couldn't Save This Assignment"
-msgstr "Não é possível guardar esta tarefa"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
-msgid "Please correct the outlined fields."
-msgstr "Por favor, corrija os campos indicados."
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
-msgid ""
-"This problem has already been released. Any changes will apply only to "
-"future assessments."
-msgstr "Este problema já foi desbloqueado. Quaisquer alterações efetuadas posteriormente aplicam-se apenas a avaliações futuras."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97

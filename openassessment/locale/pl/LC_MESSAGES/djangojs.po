@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-29 13:04-0400\n"
+"POT-Creation-Date: 2019-05-28 16:01-0400\n"
 "PO-Revision-Date: 2018-03-29 23:00+0000\n"
 "Last-Translator: Adam Łukasiak <adamus160@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/open-edx/edx-platform/language/pl/)\n"
@@ -325,6 +325,33 @@ msgid "Feedback available for selection."
 msgstr "Komentarz zwrotny dostępny do wyboru."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
+msgid "Unnamed Option"
+msgstr "Bezimienna opcja"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
+msgid "Not Selected"
+msgstr "Nie wybrane"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
+msgid "Couldn't Save This Assignment"
+msgstr "Nie udało się zapisać tego zadania"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
+msgid "Please correct the outlined fields."
+msgstr "Proszę poprawić zaznaczone pola."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
+msgid ""
+"This problem has already been released. Any changes will apply only to "
+"future assessments."
+msgstr "To ćwiczenie zostało już opublikowane. Jakiekolwiek zmiany będą obowiązywać tylko dla przyszłych ocen."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:391
 msgid "Paragraph"
 msgstr ""
@@ -353,33 +380,6 @@ msgstr ""
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:396
 msgid "Heading 6"
 msgstr ""
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
-msgid "Unnamed Option"
-msgstr "Bezimienna opcja"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
-msgid "Not Selected"
-msgstr "Nie wybrane"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
-msgid "Couldn't Save This Assignment"
-msgstr "Nie udało się zapisać tego zadania"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
-msgid "Please correct the outlined fields."
-msgstr "Proszę poprawić zaznaczone pola."
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
-msgid ""
-"This problem has already been released. Any changes will apply only to "
-"future assessments."
-msgstr "To ćwiczenie zostało już opublikowane. Jakiekolwiek zmiany będą obowiązywać tylko dla przyszłych ocen."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
