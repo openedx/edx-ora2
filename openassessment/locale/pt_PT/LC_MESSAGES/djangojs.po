@@ -8,8 +8,8 @@
 # Beatriz Sousa <beatriz.sousa@bridgelk.com>, 2018
 # Cátia Lopes <catia.lopes@bridgelk.com>, 2018
 # Filipe Boleto <fboleto@gmail.com>, 2015
-# MS <manuelarodsilva@gmail.com>, 2018
-# MS <manuelarodsilva@gmail.com>, 2016
+# Manuela Silva <manuelarodsilva@gmail.com>, 2018
+# Manuela Silva <manuelarodsilva@gmail.com>, 2016
 # MS, 2016,2018
 # Nlaranjo <numicola@gmail.com>, 2014
 # Nlaranjo <numicola@gmail.com>, 2014
