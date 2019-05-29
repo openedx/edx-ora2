@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-29 13:04-0400\n"
+"POT-Creation-Date: 2019-05-29 07:16-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
-"Language: en\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -371,36 +371,6 @@ msgstr ""
 "Féédßäçk äväïläßlé för séléçtïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
-msgid "Paragraph"
-msgstr "Pärägräph Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
-msgid "Preformatted"
-msgstr "Préförmättéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
-msgid "Heading 3"
-msgstr "Héädïng 3 Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
-msgid "Heading 4"
-msgstr "Héädïng 4 Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
-msgid "Heading 5"
-msgstr "Héädïng 5 Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
-msgid "Heading 6"
-msgstr "Héädïng 6 Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: openassessment/xblock/static/js/openassessment-studio.min.js
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js
 msgid "Unnamed Option"
 msgstr "Ûnnäméd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
@@ -429,6 +399,36 @@ msgid ""
 msgstr ""
 "Thïs prößlém häs älréädý ßéén réléäséd. Àný çhängés wïll äpplý önlý tö "
 "fütüré ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js
+#: openassessment/xblock/static/js/src/studio/oa_edit.js
+msgid "Paragraph"
+msgstr "Pärägräph Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js
+#: openassessment/xblock/static/js/src/studio/oa_edit.js
+msgid "Preformatted"
+msgstr "Préförmättéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js
+#: openassessment/xblock/static/js/src/studio/oa_edit.js
+msgid "Heading 3"
+msgstr "Héädïng 3 Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js
+#: openassessment/xblock/static/js/src/studio/oa_edit.js
+msgid "Heading 4"
+msgstr "Héädïng 4 Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js
+#: openassessment/xblock/static/js/src/studio/oa_edit.js
+msgid "Heading 5"
+msgstr "Héädïng 5 Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js
+#: openassessment/xblock/static/js/src/studio/oa_edit.js
+msgid "Heading 6"
+msgstr "Héädïng 6 Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
