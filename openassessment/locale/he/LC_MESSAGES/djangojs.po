@@ -7,6 +7,7 @@
 # dana bublil <dana.bublil@gmail.com>, 2016
 # e2f_HE c1 <e2f_HE_c1@outlook.com>, 2017
 # ERAN RAVIV <eran.raviv.israelx@gmail.com>, 2016
+# Hodaya Zada <hodayaz@mse.gov.il>, 2019
 # Nadav Stark <nadav@yeda.org.il>, 2015
 # qualityalltext <quality@alltext.co.il>, 2016-2017
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2018
@@ -14,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-28 16:01-0400\n"
-"PO-Revision-Date: 2019-05-14 13:25+0000\n"
-"Last-Translator: Lee <leer@mse.gov.il>\n"
+"POT-Creation-Date: 2019-05-29 07:16-0400\n"
+"PO-Revision-Date: 2019-06-11 09:41+0000\n"
+"Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -268,7 +269,7 @@ msgstr ""
 #: openassessment/xblock/static/js/src/lms/oa_response.js:588
 #: openassessment/xblock/static/js/src/lms/oa_response.js:595
 msgid "You can upload files with these file types: "
-msgstr "ניתן להעלות קבצים באמצעות סוגי הקבצים הבאים: "
+msgstr "באפשרותך להעלות קבצים מסוגים אלו:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:603
@@ -279,7 +280,7 @@ msgstr "סוג הקובץ אינו מורשה."
 #: openassessment/xblock/static/js/src/lms/oa_response.js:647
 #: openassessment/xblock/static/js/src/lms/oa_response.js:653
 msgid "Describe "
-msgstr ""
+msgstr "תיאור"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:647
@@ -351,7 +352,7 @@ msgstr "אנא תקן את השדות המסומנים."
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "בעיה זו פורסמה כבר. כל שינוי יחול רק על הערכות עתידיות."
+msgstr "בעיה זו כבר פורסמה. כל שינוי יחול רק על הערכות עתידיות."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:391
@@ -438,7 +439,7 @@ msgstr "אזהרה"
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr "לא ישמרו שינויים לצעדים שלא נבחרו כשייכים למשימה. "
+msgstr "שינויים בשלבים שלא בחרתם לא יישמרו להגשת המטלה."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:66

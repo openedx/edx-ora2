@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-28 16:00-0400\n"
-"PO-Revision-Date: 2019-05-29 06:59+0000\n"
+"POT-Creation-Date: 2019-05-29 07:16-0400\n"
+"PO-Revision-Date: 2019-06-11 09:41+0000\n"
 "Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -133,17 +133,17 @@ msgstr ""
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "הגדירו אם על הלומדים לכלול תגובה מבוססת טקסט לבעיה זו."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
-msgstr ""
+msgstr "העלאת קובץ כתשובה"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "הגדירו אם על הלומדים להעלות קובץ כחלק מתשובה עבור בעיה זו."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
 msgid "File Upload Types"
@@ -703,7 +703,7 @@ msgstr "%(num_points)s נקודות"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "תגובה של העמית שלך להנחיה שלמעלה"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -831,7 +831,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "במטלה זו קיימים מספר שלבים. בשלב הראשון, תידרש לספק תשובה עבור השאלה. השלבים האחרים מופיעים מתחת לשדה תשובתך"
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -1084,7 +1084,7 @@ msgstr "מצב ההגשה שלך"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:141
 msgid "We could not upload files"
-msgstr ""
+msgstr "לא הצלחנו להעלות את הקבצים"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "Select a file to upload for this submission."
@@ -1575,7 +1575,7 @@ msgstr "הערכתך תשובה זו שונה מזו של המדריך. עבור
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:74
 msgid "The response to the prompt above:"
-msgstr ""
+msgstr "התגובה להנחיה הנ\"ל:"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:96
 msgid "Selected Options Agree"
@@ -1871,7 +1871,7 @@ msgstr "שגיאה בעדכון תצורת XBLOCK"
 
 #: openassessment/xblock/studio_mixin.py:197
 msgid "Error: both text and file upload responses can't be disabled"
-msgstr ""
+msgstr "שגיאה: לא ניתן לבטל את תגובות הטקסט והעלאת הקובץ"
 
 #: openassessment/xblock/studio_mixin.py:200
 msgid ""
