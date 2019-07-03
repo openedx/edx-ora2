@@ -137,6 +137,13 @@ FEEDBACK_OPTIONS = {
     ]
 }
 
+STEP_REQUIREMENTS = {
+    "peer": {
+        "must_grade": 0,
+        "must_be_graded_by": 1
+    }
+}
+
 
 @ddt.ddt
 class CsvWriterTest(TransactionCacheResetTest):
@@ -481,8 +488,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.assertEqual(self.assessment['parts'][0]['criterion']['label'], "criterion_1")
 
         sub_api.set_score(self.submission['uuid'], self.earned_points, self.possible_points)
-        self.score = sub_api.get_score(STUDENT_ITEM)
-        peer_api.get_score(self.submission['uuid'], {'must_be_graded_by': 1, 'must_grade': 0})
+        peer_api.get_score(self.submission['uuid'], STEP_REQUIREMENTS['peer'])
         self._create_assessment_feedback(self.submission['uuid'])
 
     def _create_submission(self, student_item_dict, steps=None):
@@ -531,6 +537,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         feedback_dict = FEEDBACK_OPTIONS.copy()
         feedback_dict['submission_uuid'] = submission_uuid
         peer_api.set_assessment_feedback(feedback_dict)
+        workflow_api.update_from_assessments(submission_uuid, STEP_REQUIREMENTS)
+        self.score = sub_api.get_score(STUDENT_ITEM)
 
     def _other_student(self, no_of_student):
         """
@@ -717,6 +725,72 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
         self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])
 
+    def test_collect_ora2_summary(self):
+        headers, data = OraAggregateData.collect_ora2_summary(COURSE_ID)
+
+        self.assertEqual(headers, [
+            'block_name',
+            'student_id',
+            'status',
+            'is_peer_complete',
+            'is_peer_graded',
+            'is_self_complete',
+            'is_self_graded',
+            'is_staff_complete',
+            'is_staff_graded',
+            'is_training_complete',
+            'is_training_graded',
+            'num_peers_graded',
+            'num_graded_by_peers',
+            'is_staff_grade_received',
+            'is_final_grade_received',
+            'final_grade_points_earned',
+            'final_grade_points_possible',
+        ])
+
+        # one row for each user, ora pair
+        self.assertEqual(len(data), 2)
+
+        self.assertEqual(data[0], [
+            ITEM_ID,
+            SCORER_ID,
+            'peer',
+            0,
+            0,
+            u'',
+            u'',
+            1,
+            1,
+            u'',
+            u'',
+            1,
+            0,
+            0,
+            0,
+            u'',
+            u'',
+        ])
+
+        self.assertEqual(data[1], [
+            ITEM_ID,
+            STUDENT_ID,
+            'done',
+            1,
+            1,
+            u'',
+            u'',
+            1,
+            1,
+            u'',
+            u'',
+            0,
+            1,
+            0,
+            1,
+            1,
+            2,
+        ])
+
     def test_collect_ora2_responses(self):
         item_id2 = self._other_item(2)
         item_id3 = self._other_item(3)
@@ -790,8 +864,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done', 'cancelled', 'teams'},
                              set(data[item].keys()))
         self.assertEqual(data[ITEM_ID], {
-            'total': 2, 'training': 0, 'peer': 2, 'self': 0, 'staff': 0, 'waiting': 0,
-            'done': 0, 'cancelled': 0, 'teams': 0
+            'total': 2, 'training': 0, 'peer': 1, 'self': 0, 'staff': 0, 'waiting': 0,
+            'done': 1, 'cancelled': 0, 'teams': 0
         })
         self.assertEqual(data[item_id2], {
             'total': 2, 'training': 0, 'peer': 1, 'self': 1, 'staff': 0, 'waiting': 0,
@@ -813,7 +887,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.assertIn(item_id3, data)
         for item in [ITEM_ID, item_id2, item_id3]:
             self.assertEqual({'total', 'peer', 'staff'}, set(data[item].keys()))
-        self.assertEqual(data[ITEM_ID], {'total': 2, 'peer': 2, 'staff': 0})
+        self.assertEqual(data[ITEM_ID], {'total': 1, 'peer': 1, 'staff': 0})
         self.assertEqual(data[item_id2], {'total': 1, 'peer': 1, 'staff': 0})
         self.assertEqual(data[item_id3], {'total': 1, 'peer': 1, 'staff': 0})
 

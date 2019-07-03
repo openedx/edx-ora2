@@ -227,6 +227,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         workflow is a key, and each key maps to a dictionary defining whether
         the step is complete (submitter requirements fulfilled) and graded (the
         submission has been assessed).
+
+        For the 'peer' step there will be extra keys in its mapped dictionary:
+        - 'peers_graded_count': how many peers the submitter has assessed
+        - 'graded_by_count': how many peers the submitter been assessed by
         """
         status_dict = {}
         steps = self._get_steps()
@@ -236,6 +240,12 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 "graded": step.is_assessment_complete(),
                 "skipped": step.skipped
             }
+            if step.name == 'peer':
+                # the number passed here is arbitrary and ignored
+                _, peers_graded_count = step.api().has_finished_required_evaluating(self.submission_uuid, 1)
+                graded_by_count = step.api().get_graded_by_count(self.submission_uuid)
+                status_dict[step.name]['peers_graded_count'] = peers_graded_count
+                status_dict[step.name]['graded_by_count'] = graded_by_count
         return status_dict
 
     def get_score(self, assessment_requirements, step_for_name):

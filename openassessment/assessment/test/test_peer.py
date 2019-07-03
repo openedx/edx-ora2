@@ -23,6 +23,7 @@ from openassessment.assessment.models import (
     PeerWorkflow,
     PeerWorkflowItem
 )
+from openassessment.workflow.models import AssessmentWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 
@@ -1423,6 +1424,70 @@ class TestPeerApi(CacheResetTest):
         # submission is cancelled.
         item = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
         self.assertIsNone(item)
+
+    def test_get_graded_by_count(self):
+        self.assertIsNone(peer_api.get_graded_by_count("DOESNOTEXIST"))
+
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, _ = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # buffy peer grades xander
+        peer_api.get_submission_to_assess(buffy_sub['uuid'], buffy['student_id'])
+        peer_api.create_assessment(
+            buffy_sub['uuid'],
+            buffy['student_id'],
+            ASSESSMENT_DICT_PASS['options_selected'],
+            ASSESSMENT_DICT_PASS['criterion_feedback'],
+            ASSESSMENT_DICT_PASS['overall_feedback'],
+            RUBRIC_DICT,
+            2
+        )
+
+        # buffy has not been peer graded, but xander has been graded by 1
+        self.assertEqual(peer_api.get_graded_by_count(xander_sub["uuid"]), 1)
+        self.assertEqual(peer_api.get_graded_by_count(buffy_sub["uuid"]), 0)
+
+    def test_status_details(self):
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, _ = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # buffy peer grades xander
+        peer_api.get_submission_to_assess(buffy_sub['uuid'], buffy['student_id'])
+        peer_api.create_assessment(
+            buffy_sub['uuid'],
+            buffy['student_id'],
+            ASSESSMENT_DICT_PASS['options_selected'],
+            ASSESSMENT_DICT_PASS['criterion_feedback'],
+            ASSESSMENT_DICT_PASS['overall_feedback'],
+            RUBRIC_DICT,
+            2
+        )
+
+        buffy_workflow = AssessmentWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        expected_status = {
+            u"peer": {
+                "peers_graded_count": 1,
+                "complete": False,
+                "graded_by_count": 0,
+                "graded": False,
+            },
+            u"self": {"complete": False, "graded": False},
+            u"staff": {"complete": True, "graded": True},
+        }
+        self.assertEqual(expected_status, buffy_workflow.status_details())
+
+        xander_workflow = AssessmentWorkflow.get_by_submission_uuid(xander_sub['uuid'])
+        expected_status = {
+            u"peer": {
+                "peers_graded_count": 0,
+                "complete": False,
+                "graded_by_count": 1,
+                "graded": False,
+            },
+            u"self": {"complete": False, "graded": False},
+            u"staff": {"complete": True, "graded": True},
+        }
+        self.assertEqual(expected_status, xander_workflow.status_details())
 
     def test_get_submission_to_assess_for_student_with_cancelled_submission(self):
         # Test that student with cancelled submission will not be able to
