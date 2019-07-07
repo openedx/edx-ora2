@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-29 07:16-0400\n"
-"PO-Revision-Date: 2019-06-25 06:46+0000\n"
+"PO-Revision-Date: 2019-07-04 06:18+0000\n"
 "Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -1060,11 +1060,11 @@ msgstr "ההנחיה לסעיף זה"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:92
 msgid "Your response (required)"
-msgstr ""
+msgstr "התגובה שלך (שדה חובה)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:94
 msgid "Your response (optional)"
-msgstr ""
+msgstr "התגובה שלך (לא חובה)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid "Enter your response to the prompt above."
