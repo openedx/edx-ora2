@@ -250,7 +250,15 @@ class SubmissionMixin(object):
                         except IndexError:
                             pass
                 except FileUploadError:
-                    pass
+                    logger.exception(
+                        u"FileUploadError for student_item: {student_item_dict}"
+                        u" and submission data: {student_sub_data} with file"
+                        "descriptions {files_descriptions}".format(
+                            student_item_dict=student_item_dict,
+                            student_sub_data=student_sub_data,
+                            files_descriptions=files_descriptions 
+                        )
+                    )
                 if key_to_save:
                     student_sub_dict['file_keys'].append(key_to_save)
                     student_sub_dict['files_descriptions'].append(file_description)
@@ -311,7 +319,7 @@ class SubmissionMixin(object):
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
-            logger.exception("Error retrieving upload URL.")
+            logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
             return {'success': False, 'msg': self._(u"Error retrieving upload URL.")}
 
     @XBlock.json_handler
