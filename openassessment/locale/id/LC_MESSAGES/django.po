@@ -4,7 +4,7 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Aprisa Chrysantina <aprisa.chrysantina@gmail.com>, 2018
+# Aprisa Chrysantina <aprisa.chrysantina@gmail.com>, 2018-2019
 # cholif yulian <cholifyulian123@gmail.com>, 2015
 # Farhanah Sheets <fsheets@edx.org>, 2018
 # Firnanda srimurni kurniawan <firnanda.srimurni.k@gmail.com>, 2018
@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-29 07:16-0400\n"
-"PO-Revision-Date: 2018-09-20 17:30+0000\n"
-"Last-Translator: Firnanda srimurni kurniawan <firnanda.srimurni.k@gmail.com>\n"
+"PO-Revision-Date: 2019-07-14 16:21+0000\n"
+"Last-Translator: Aprisa Chrysantina <aprisa.chrysantina@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/open-edx/edx-platform/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,7 @@ msgstr "Tidak dapat menguraikan rubrik serial"
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
-msgstr ""
+msgstr "Jika penugasan Anda meliputi langkah yang harus dilakukan oleh peserta, rubrik harus memiliki setidaknya satu kriteria, dan kriteria tersebut harus memiliki setidaknya satu opsi."
 
 #: openassessment/assessment/api/student_training.py:200
 #, python-brace-format
@@ -82,7 +82,7 @@ msgid ""
 "A change that you made to this assessment's rubric has an impact on some "
 "examples laid out in the settings tab. For more information, go to the "
 "Settings section and fix the areas highlighted in red."
-msgstr ""
+msgstr "Perubahan yang Anda buat pada rubrik penugasan ini memiliki pengaruh pada contoh yang terdapat pada tab penyetelan. Untuk informasi lebih lanjut, lihat bagian Penyetelan dan sesuaikan area yang dihighlight merah."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "close alert"
@@ -94,7 +94,7 @@ msgstr "Nama tampilan"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid "The display name for this component."
-msgstr ""
+msgstr "Nama tampilan untuk komponen ini"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
 msgid "Response Start Date"
@@ -106,7 +106,7 @@ msgstr "Waktu Mulai Tanggapan"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:73
 msgid "The date and time when learners can begin submitting responses."
-msgstr ""
+msgstr "Tanggal dan waktu bagi pembelajar untuk mulai menyerahkan respon"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:80
 msgid "Response Due Date"
@@ -118,43 +118,43 @@ msgstr "Batas waktu tanggapan"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
 msgid "The date and time when learners can no longer submit responses."
-msgstr ""
+msgstr "Tanggal dan waktu terakhir bagi pembelajar untuk menyerahkan semua respon"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Text Response"
-msgstr ""
+msgstr "Respon dalam bentuk teks"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "Tentukan apakah peserta harus meliputi teks berdasarkan respon terkait pertanyaan dalam permasalahan ini."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "File Uploads Response"
-msgstr ""
+msgstr "Respon dalam ungguhan file"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "Tentukan apakah peserta dapat meng unggah file sebagai bagian dari respon mereka."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
 msgid "File Upload Types"
-msgstr ""
+msgstr "Jenis File Unggah an"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "File PDF atau Gambar"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:134
 msgid "Image Files"
-msgstr ""
+msgstr "File gambar"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
 msgid "Custom File Types"
-msgstr ""
+msgstr "Jenis File Kustom"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:139
 msgid ""
@@ -163,21 +163,21 @@ msgid ""
 " PDF files and images. Select Custom File Types to allow files with "
 "extensions that you specify below. (Use the Select Custom File Types option "
 "with caution.)"
-msgstr ""
+msgstr "Tentukan apakah peserta dapat mengirimkan file bersama dengan respon teks. Pilih gambar untuk memperbolehkan file JPG, GIF, atau PNG. Pilih PDF atau Gambar untuk memperbolehkan file PDF dan gambar. Pilih Jenis File Kustom untuk memperbolehkan file dengan jenis yang Anda tentukan di bawah. (Pilih Jenis File Kustom dengan hati-hati.)"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
 msgid "File Types"
-msgstr ""
+msgstr "Tipe tipe file"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:151
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr ""
+msgstr "Masukkan ekstensi file yang Anda perbolehkan untuk unggah, dipisahkan dengan koma. Misalnya: pdf,doc,docx."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
 msgid "Allow LaTeX Responses"
-msgstr ""
+msgstr "Perbolehkan Respon LaTeX"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:161
 msgid "False"
@@ -189,7 +189,7 @@ msgstr "Benar"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:165
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr ""
+msgstr "Tentukan apakah peserta dapat menulis string dengan format LaTeX"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:169
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
@@ -202,7 +202,7 @@ msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
-msgstr ""
+msgstr "Tentukan jumlah respon nilai tertinggi yang akan ditampilkan. Jumlah yang valid adalah 0 sampai 99. Jika jumlahnya 0, maka bagian Respon Tertinggi tidak akan terlihat oleh peserta."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:184
 msgid ""
@@ -212,7 +212,7 @@ msgid ""
 "training step, it must precede all other steps. If you include a staff "
 "assessment step, it must be the final step. After you release an ORA "
 "assignment, you cannot change the type and number of assessment steps."
-msgstr ""
+msgstr "Pada penugasan ini, Anda dapat memasukkan langkah-langkah latihan peserta, penilaian sebaya, penilaian mandiri, dan penilaian oleh staf. Pilih langkah-langkah yang Anda inginkan di bawah ini, lalu urutkan berdasarkan keinginan Anda. Jika Anda memasukkan langkah latihan peserta, langkah ini harus dilakukan sebelum langkah lainnya. Jika Anda memasukkan langkah penilaian oleh staf, langkah ini harus menjadi langkah terakhir. Setelah Anda merilis penugasan ORA, Anda tidak dapat mengubah jenis dan jumlah langkah penilaian."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
 msgid "Save"
@@ -276,7 +276,7 @@ msgstr "Diperlukan"
 msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
-msgstr ""
+msgstr "Pilih satu dari pilihan di atas. Hal ini menentukan apakah peserta harus memberikan umpan balik kriteria."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
@@ -302,7 +302,7 @@ msgstr "Langkah: Penilaian Rekan"
 msgid ""
 "Learners assess a specified number of other learners' responses using the "
 "rubric for the assignment."
-msgstr ""
+msgstr "Peserta menilai beberapa respon peserta lainnya dengan menggunakan rubrik untuk penugasan."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
 msgid "Specify the following values for the peer assessment step."
@@ -316,7 +316,7 @@ msgstr "Harus Dinilai"
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
-msgstr ""
+msgstr "Tentukan jumlah penilaian sebaya yang harus diselesaikan setiap peserta. Jumlah yang valid adalah 0 sampai 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Graded By"
@@ -326,7 +326,7 @@ msgstr "Dinilai Oleh"
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
-msgstr ""
+msgstr "Tentukan jumlah peserta yang harus menilai setiap respon. Jumlah yang valid adalah 0 sampai 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
@@ -341,7 +341,7 @@ msgstr "Waktu Mulai"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
 msgid ""
 "Enter the date and time when learners can begin assessing peer responses."
-msgstr ""
+msgstr "Masukkan tanggal dan waktu peserta dapat mulai menilai respon peserta lainnya."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
@@ -396,7 +396,7 @@ msgstr "Instruski Umpan Balik"
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr ""
+msgstr "Dorong peserta untuk memberikan umpan balik terhadap respon yang telah mereka nilai. Anda dapat mengganti teks contoh dengan contoh Anda sendiri."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
 msgid "Default Feedback Text"
@@ -406,7 +406,7 @@ msgstr "Teks Umpan balik"
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
-msgstr ""
+msgstr "Masukkan teks umpan balik yang akan dilihat peserta sebelum mereka memasukkan umpan balik mereka sendiri. Gunakan teks ini untuk memberikan contoh penilaian sebaya yang baik bagi peserta."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:9
 msgid "Step: Self Assessment"
@@ -415,7 +415,7 @@ msgstr "Langkah: Penilaian Sendiri"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
 msgid ""
 "Learners assess their own responses using the rubric for the assignment."
-msgstr ""
+msgstr "Peserta menilai respon mereka sendiri menggunakan rubrik untuk penugasan."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
 msgid "Specify start and due dates for the self assessment step."
@@ -424,7 +424,7 @@ msgstr "Tentukan tanggal mulai dan batas untuk langkah penilaian diri."
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
 msgid ""
 "Enter the date and time when learners can begin assessing their responses."
-msgstr ""
+msgstr "Masukkan tanggal dan waktu peserta dapat mulai menilai respon mereka sendiri."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
 msgid "Enter the date and time when all self assessments must be complete."
@@ -432,17 +432,17 @@ msgstr "Masukkan tanggal dan waktu ketika semua penilaian sendiri harus lengkap.
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
-msgstr ""
+msgstr "Langkah: Penilaian oleh Staf"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
 msgid ""
 "Staff members assess learners' responses using the rubric for the "
 "assignment."
-msgstr ""
+msgstr "Anggota staf menilai respon peserta menggunakan rubrik untuk penugasan."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
-msgstr ""
+msgstr "Langkah: Latihan Peserta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:14
 msgid ""
@@ -450,7 +450,7 @@ msgid ""
 "that you provide. Learners move to the next step when the scores they give "
 "match your scores. Note that if you add this step, you must also add a peer "
 "assessment step. This step must come before the peer assessment step."
-msgstr ""
+msgstr "Peserta berlatih menilai respon dengan menilai contoh respon yang telah dinilai. Peserta boleh lanjut ke langkah berikutnya jika nilai yang mereka berikan cocok dengan nilai dari Anda. Jika Anda menambahkan langkah ini, Anda juga harus mengambahkan langkah penilaian sebaya. Langkah ini harus dilakukan sebelum langkah penilaian sebaya."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
 msgid ""
@@ -492,7 +492,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n              "
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
@@ -504,7 +504,7 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] ""
+msgstr[0] "\n                      %(assessment_title)s - %(points)s poin\n                  "
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -526,7 +526,7 @@ msgid ""
 "\n"
 "                                        %(points_earned)s out of %(points_possible)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        %(points_earned)s dari %(points_possible)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
@@ -538,7 +538,7 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr ""
+msgstr "\n                                            %(points_earned)s dari %(points_possible)s\n                                        "
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
 #: openassessment/templates/openassessmentblock/response/oa_response.html:22
@@ -547,7 +547,7 @@ msgstr "Tanggapan Anda"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
 msgid "Your Upload"
-msgstr ""
+msgstr "Unggahan Anda"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:46
 msgid "Assessments of Your Response"
@@ -568,7 +568,7 @@ msgstr "Komentar tambahan pada tanggapan Anda"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:111
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "Berikan umpan balik dalam penilaian sebaya"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:120
 msgid "Submitting Feedback"
@@ -607,7 +607,7 @@ msgstr "Staf kursus akan dapat melihat umpan balik yang Anda berikan di sini ket
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "Pilih pernyataan di bawah yang paling sesuai dengan pengalaman penilaian sebaya Anda."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:149
 msgid "These assessments were useful."
@@ -628,7 +628,7 @@ msgstr "Beberapa komentar yang saya terima tidak pantas."
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
-msgstr ""
+msgstr "Berikan umpan balik terhadap nilai atau komentar yang Anda terima dari peserta lain."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:184
 msgid "I feel the feedback I received was..."
@@ -640,7 +640,7 @@ msgstr "Kami tidak dapat mengirimkan umpan balik Anda"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "Submit feedback on peer assessments"
-msgstr ""
+msgstr "Kirimkan umpan balik dalam penilaian sebaya"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:16
 msgid "Not Completed"
@@ -668,19 +668,19 @@ msgid ""
 "need to be done on your response. When the assessments of your response are "
 "complete, you will see feedback from everyone who assessed your response, "
 "and you will receive your final grade."
-msgstr ""
+msgstr "Anda telah menyelesaikan semua langkah dalam penugasan, namun beberapa penugasan masih harus dilakukan dalam respon Anda. Jika penilaian dalam respon Anda telah lengkap, Anda akan melihat umpan balik dari semua rekan yang menilai respon Anda, dan Anda akan menerima nilai akhir Anda."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
 msgid "Grade Available Responses"
-msgstr ""
+msgstr "Beri Nilai Respon yang Tersedia"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr ""
+msgstr "Beri Nilai Respon yang Tersedia tidak dapat dilakukan. Item ini tidak dikonfigurasi untuk Penilaian oleh Staf."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
@@ -695,7 +695,7 @@ msgstr "%(num_points)s poin"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "Respon sebaya Anda untuk perintah di atas"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -707,44 +707,44 @@ msgstr "Setelah Anda menyelesaikan semua langkah dari tugas ini, Anda dapat meli
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "Tugas ini belum tersedia. Cek kembali untuk melengkapi penugasan setelah bagian ini dibuka."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr ""
+msgstr "Penugasan ini telah ditutup. Satu tenggat waktu atau lebih untuk penugasan ini telah lewat. Anda akan menerima nilai yang tidak lengkap untuk penugasan ini."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr ""
+msgstr "Anda telah menyelesaikan penugasan ini. Nilai akhir Anda akan tersedia setelah penilaian untuk respon Anda telah lengkap."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "Anda telah menyelesaikan penugasan ini. Tinjau nilai Anda dan rincian penilaian Anda."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "Penilaian ini sedang dalam proses. Latihan peserta akan segera ditutup. Selesaikan langkah latihan peserta untuk maju ke tahap selanjutnya."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "Penugasan sedang berlangsung. Selesaikan langkah latihan peserta untuk maju ke tahap selanjutnya."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "Penugasan sedang berlangsung. Cek kembali saat periode penilaian telah dimulai."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
@@ -752,7 +752,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    %(start_strong)sPenugasan sedang berlangsung. Langkah penilaian mandiri akan segera ditutup.%(end_strong)s Anda masih harus menyelesaikan langkah %(start_link)spenilaian mandiri%(end_link)s.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
@@ -760,7 +760,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Penugasan sedang berlangsung. Anda masih harus menyelesaikan langkah %(start_link)spenilaian mandiri%(end_link)s.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -768,7 +768,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Penugasan sedang berlangsung. %(start_strong)sLangkah penilaian sebaya akan segera ditutup.%(end_strong)s Semua respon sebaya yang telah dikirimkan telah dinilai. Cek kembali untuk melihat jika semua peserta telah mengirim respon. Anda masih harus menyelesaikan langkah %(start_link)spenilaian sebaya%(end_link)s.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -776,7 +776,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Penugasan sedang berlangsung. Semua respon sebaya yang telah dikirimkan telah dinilai. Cek kembali untuk melihat ada peserta lain yang mengirim respon. Anda masih harus menyelesaikan langkah %(start_link)spenilaian sebaya%(end_link)s.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -784,7 +784,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    %(start_strong)sPenugasan sedang berlangsung. Langkah penilaian sebaya akan segera ditutup.%(end_strong)s Anda masih harus menyelesaikan langkah %(start_link)spenilaian sebaya%(end_link)s.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
@@ -792,7 +792,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    Penugasan sedang berlangsung. Anda masih harus menyelesaikan langkah %(start_link)spenilaian sebaya%(end_link)s.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -800,7 +800,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                    Pengumpulan penugasan akan segera ditutup. Untuk menerima nilai, pertama memberikan tanggapan terhadap pertanyaan, maka lengkapi langkah-langkah di bawah kolom %(start_tag)sRespon Anda%(end_tag)s.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -808,7 +808,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n                    Tugas ini memiliki beberapa langkah. Pada langkah pertama, Anda akan memberikan tanggapan terhadap pertanyaan. Langkah-langkah lain muncul di bawah kolom %(start_tag)sRespon Anda%(end_tag)s.\n                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -823,7 +823,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "Penugasan ini terdiri dari beberapa langkah. Pada langkah pertama, Anda diharapkan memberikan respon terhadap soal. Langkah berikutnya akan tampak di bawah kolom Respon Anda."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -831,15 +831,15 @@ msgstr "Memuat"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
 msgid "Preview in LaTeX"
-msgstr ""
+msgstr "Pratinjau dalam LaTeX"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "Klik untuk pratinjau kiriman Anda dalam LaTeX."
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
 msgid "Preview Response"
-msgstr ""
+msgstr "Pratinjau Respon"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
@@ -847,11 +847,11 @@ msgstr "Komentar"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr ""
+msgstr "Pertanyaan untuk bagian ini"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "Lihat file yang terkait dengan kiriman ini:"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:36
 msgid ""
@@ -873,7 +873,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -884,7 +884,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
@@ -892,7 +892,7 @@ msgid ""
 "\n"
 "                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                "
-msgstr ""
+msgstr "\n                   Sedang Berlangsung (%(review_number)s dari %(num_must_grade)s)\n                "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:65
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:45
@@ -906,7 +906,7 @@ msgstr "Baca dan nilailah tanggapan berikut dari salah satu sebaya Anda."
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
 msgid "Associated Files"
-msgstr ""
+msgstr "File Terkait"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:91
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
@@ -990,7 +990,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\n          Sedang Berlangsung (%(review_number)s dari %(num_must_grade)s)\n        "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:37
 msgid ""
@@ -1009,7 +1009,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1020,7 +1020,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:45
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
@@ -1029,7 +1029,7 @@ msgstr "Sedang berlangsung"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:56
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "Masukkan respon Anda untuk soal ini."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:58
 msgid ""
@@ -1048,19 +1048,19 @@ msgstr "Setelah Anda mengirimkan tanggapan, Anda tidak dapat mengubahnya."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:74
 msgid "The prompt for this section"
-msgstr ""
+msgstr "Soal untuk bagian ini"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:92
 msgid "Your response (required)"
-msgstr ""
+msgstr "Respon Anda (wajib diisi)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:94
 msgid "Your response (optional)"
-msgstr ""
+msgstr "Respon Anda (opsional)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "Masukkan respon Anda terhadap soal di atas."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:118
 msgid "We could not save your progress"
@@ -1068,7 +1068,7 @@ msgstr "Kami tidak dapat menyimpan kemajuan Anda"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:125
 msgid "Save your progress"
-msgstr ""
+msgstr "Simpan kemajuan Anda"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:129
 msgid "Your Submission Status"
@@ -1076,15 +1076,15 @@ msgstr "Status Pengajuan Anda"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:141
 msgid "We could not upload files"
-msgstr ""
+msgstr "Kami tidak dapat menggunggah file"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:145
 msgid "Select a file to upload for this submission."
-msgstr ""
+msgstr "Pilih file untuk diunggah untuk kiriman ini."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:147
 msgid "Upload files"
-msgstr ""
+msgstr "Unggah file"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:156
 msgid "You may continue to work on your response until you submit it."
@@ -1100,7 +1100,7 @@ msgstr "Ajukan tanggapan Anda dan beralih ke langkah  berikutnya"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "Kiriman Anda dibatalkan"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:37
 #, python-format
@@ -1108,7 +1108,7 @@ msgid ""
 "\n"
 "                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                                Kiriman Anda telah dibatalkan oleh %(removed_by_username)s pada %(removed_datetime)s\n                            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:41
 #, python-format
@@ -1116,7 +1116,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n                               Kiriman Anda telah dibatalkan pada %(removed_datetime)s\n                            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:48
 #, python-format
@@ -1153,18 +1153,18 @@ msgstr "Selesai"
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
-msgstr ""
+msgstr "Respon Anda"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr ""
+msgstr "File yang Anda Unggah"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:32
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr ""
+msgstr "Respon Anda telah dikirimkan. Anda akan menerima nilai Anda setelah semua langkah selesai dan respon Anda dinilai."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:34
 #, python-format
@@ -1172,7 +1172,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
 "                    "
-msgstr ""
+msgstr "\n                        Anda masih harus menyelesaikan langkah %(peer_start_tag)spenilaian sebaya%(end_tag)s dan %(self_start_tag)spenilaian mandiri%(end_tag)s.\n                    "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:38
 #, python-format
@@ -1180,7 +1180,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
 "                    "
-msgstr ""
+msgstr "\n                        Anda masih harus menyelesaikan langkah %(start_tag)spenilaian sebaya%(end_tag)s.\n                    "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:42
 #, python-format
@@ -1188,7 +1188,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
-msgstr ""
+msgstr "\n                        Anda masih harus menyelesaikan langkah %(start_tag)spenilaian mandiri%(end_tag)s.\n                    "
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
@@ -1203,7 +1203,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n           "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1214,33 +1214,33 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n           "
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:78
 msgid "Submit your assessment"
-msgstr ""
+msgstr "Kirimkan penugasan Anda"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:32
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "Tenggat waktu untuk langkah ini telah lewat. Langkah ini telah ditutup. Anda tidak dapat menyelesaikan penilaian mandiri atau melanjutkan penugasan ini, dan Anda akan menerima nilai Tidak Lengkap."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:349
 msgid "Staff Grade"
-msgstr ""
+msgstr "Nilai dari Staf"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
 msgid "Manage Individual Learners"
-msgstr ""
+msgstr "Kelola Peserta"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:7
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:44
 msgid "View Assignment Statistics"
-msgstr ""
+msgstr "Lihat Statistik Penugasan"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
@@ -1250,7 +1250,7 @@ msgstr "Tutup"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "Enter an individual learner's username or email"
-msgstr ""
+msgstr "Masukkan nama pengguna peserta atau email"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:29
 msgid "Submit"
@@ -1266,7 +1266,7 @@ msgstr "Lokasi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:63
 msgid "Learner Progress"
-msgstr ""
+msgstr "Kemajuan Peserta"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:67
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
@@ -1275,7 +1275,7 @@ msgstr "Langkah Permasalahan"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:68
 msgid "Active Learners in Step"
-msgstr ""
+msgstr "Peserta yang Aktif pada Langkah"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:86
 msgid "Dates"
@@ -1292,11 +1292,11 @@ msgstr "N/A"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
-msgstr ""
+msgstr "Penilaian oleh Staf"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:7
 msgid "Give this learner a grade using the problem's rubric."
-msgstr ""
+msgstr "Berikan peserta ini nilai menggunakan rubrik permasalahan"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 #, python-format
@@ -1304,18 +1304,18 @@ msgid ""
 "\n"
 "                                        Response for: %(student_username)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        Respon untuk: %(student_username)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
 msgid "Learner Response"
-msgstr ""
+msgstr "Respon Peserta"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "Respon peserta untuk soal di atas"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1324,7 +1324,7 @@ msgstr "Ajukan penilaian"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
 msgid "Submit assessment and continue grading"
-msgstr ""
+msgstr "Kirimkan penilaian dan lanjutkan menilai"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html:6
 #, python-format
@@ -1332,11 +1332,11 @@ msgid ""
 "\n"
 "                %(ungraded)s Available and %(in_progress)s Checked Out\n"
 "            "
-msgstr ""
+msgstr "\n                %(ungraded)s Tersedia dan %(in_progress)s Telah Keluar\n            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:6
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr ""
+msgstr "Batalkan nilai peserta ini dan ganti dengan rubrik permasalahan."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:15
 #, python-format
@@ -1344,7 +1344,7 @@ msgid ""
 "\n"
 "                                    Response for: %(student_username)s\n"
 "                                "
-msgstr ""
+msgstr "\n                                        Respon untuk: %(student_username)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:10
 #, python-format
@@ -1352,11 +1352,11 @@ msgid ""
 "\n"
 "                Viewing learner: %(learner)s\n"
 "            "
-msgstr ""
+msgstr "\n                Melihat peserta: %(learner)s\n            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:21
 msgid "Learner's Response"
-msgstr ""
+msgstr "Respon Peserta"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:29
 #, python-format
@@ -1364,7 +1364,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                                Kiriman peserta telah dihapus oleh %(removed_by_username)s pada %(removed_datetime)s\n                            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:33
 #, python-format
@@ -1372,7 +1372,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                                Kiriman peserta telah dihapus pada %(removed_datetime)s\n                            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:40
 #, python-format
@@ -1384,19 +1384,19 @@ msgstr "\n                        Komentar: %(comments)s\n                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "Peer Assessments for This Learner"
-msgstr ""
+msgstr "Penilaian Sebaya untuk Peserta Ini"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:62
 msgid "Peer Assessments Completed by This Learner"
-msgstr ""
+msgstr "Penilaian Sebaya yang Diselesaikan Peserta Ini"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:67
 msgid "Learner's Self Assessment"
-msgstr ""
+msgstr "Penilaian Mandiri Peserta Ini"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:72
 msgid "Staff Assessment for This Learner"
-msgstr ""
+msgstr "Penilaian oleh Staf untuk Peserta Ini"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Final Grade"
@@ -1933,7 +1933,7 @@ msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:308
 msgid "File type is not allowed."
-msgstr ""
+msgstr "Jenis berkas ini tidak diperkenankan"
 
 #: openassessment/xblock/submission_mixin.py:315
 msgid "Error retrieving upload URL."

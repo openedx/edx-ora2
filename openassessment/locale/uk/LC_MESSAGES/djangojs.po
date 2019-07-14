@@ -9,7 +9,7 @@
 # Irene Korotkova <irca.gav@gmail.com>, 2017
 # IvanPrimachenko <jastudent1@gmail.com>, 2014
 # Natalia Vynogradenko <tannaha@gmail.com>, 2017
-# Nikita Grytsenko <nikita.gritsenko@gmail.com>, 2014
+# 557b934119df08e2e59a177854f0e6ac, 2014
 # fayçal fatihi <ofaycal.geo.x@gmail.com>, 2014
 # olexiim <olexiim@gmail.com>, 2016
 # Zapadenska <oruda@ymail.com>, 2014
