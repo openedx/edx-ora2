@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-29 07:16-0400\n"
-"PO-Revision-Date: 2018-09-17 07:57+0000\n"
+"PO-Revision-Date: 2019-07-09 10:26+0000\n"
 "Last-Translator: LTMC Latvijas Tiesnešu mācību centrs <ltmc.training@gmail.com>\n"
 "Language-Team: Latvian (http://www.transifex.com/open-edx/edx-platform/language/lv/)\n"
 "MIME-Version: 1.0\n"
@@ -120,7 +120,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
 msgid "Units"
-msgstr ""
+msgstr "Aktivitātes"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
