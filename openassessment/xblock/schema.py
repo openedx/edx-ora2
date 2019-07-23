@@ -2,8 +2,12 @@
 Schema for validating and sanitizing data received from the JavaScript client.
 """
 
+from __future__ import absolute_import
+
 import dateutil
 from pytz import utc
+import six
+
 from voluptuous import All, Any, In, Invalid, Range, Required, Schema
 
 
@@ -25,7 +29,7 @@ def utf8_validator(value):
         if isinstance(value, str):
             return value.decode('utf-8')
         else:
-            return unicode(value)
+            return six.text_type(value)
     except (ValueError, TypeError):
         raise Invalid(u"Could not load unicode from value \"{val}\"".format(val=value))
 
@@ -51,7 +55,7 @@ def datetime_validator(value):
 
         # Parse the date and interpret it as UTC
         value = dateutil.parser.parse(value).replace(tzinfo=utc)
-        return unicode(value.isoformat())
+        return six.text_type(value.isoformat())
     except (ValueError, TypeError):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 

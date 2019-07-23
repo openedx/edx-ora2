@@ -1,7 +1,12 @@
 """
 Validate changes to an XBlock before it is updated.
 """
+from __future__ import absolute_import
+
 from collections import Counter
+
+import six
+from six.moves import zip
 
 from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
@@ -27,7 +32,7 @@ def _match_by_order(items, others):
     """
     # Sort each dictionary by its "name" key, then zip them and return
     key_func = lambda x: x['order_num']
-    return zip(sorted(items, key=key_func), sorted(others, key=key_func))
+    return list(zip(sorted(items, key=key_func), sorted(others, key=key_func)))
 
 
 def _duplicates(items):
@@ -258,7 +263,7 @@ def validate_dates(start, end, date_ranges, _):
     try:
         resolve_dates(start, end, date_ranges, _)
     except (DateValidationError, InvalidDateFormat) as ex:
-        return False, unicode(ex)
+        return False, six.text_type(ex)
     else:
         return True, u''
 
@@ -382,7 +387,7 @@ def validate_submission(submission, prompts, _, text_response='required'):
         return False, message
 
     for submission_part in submission:
-        if type(submission_part) != unicode:
+        if type(submission_part) != six.text_type:
             return False, message
 
     return True, u''

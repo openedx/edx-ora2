@@ -1,6 +1,8 @@
 """
 Generate CSV files for submission and assessment data, then upload to S3.
 """
+from __future__ import absolute_import, print_function
+
 import datetime
 import os
 import os.path
@@ -9,12 +11,13 @@ import sys
 import tarfile
 import tempfile
 
-import boto
-from boto.s3.key import Key
+import six
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
+import boto
+from boto.s3.key import Key
 from openassessment.data import CsvWriter
 
 
@@ -69,14 +72,14 @@ class Command(BaseCommand):
         csv_dir = tempfile.mkdtemp()
 
         try:
-            print u"Generating CSV files for course '{}'".format(course_id)
+            print(u"Generating CSV files for course '{}'".format(course_id))
             self._dump_to_csv(course_id, csv_dir)
-            print u"Creating archive of CSV files in {}".format(csv_dir)
+            print(u"Creating archive of CSV files in {}".format(csv_dir))
             archive_path = self._create_archive(csv_dir)
-            print u"Uploading {} to {}/{}".format(archive_path, s3_bucket, course_id)
+            print(u"Uploading {} to {}/{}".format(archive_path, s3_bucket, course_id))
             url = self._upload(course_id, archive_path, s3_bucket)
-            print "== Upload successful =="
-            print u"Download URL (expires in {} hours):\n{}".format(self.URL_EXPIRATION_HOURS, url)
+            print("== Upload successful ==")
+            print(u"Download URL (expires in {} hours):\n{}".format(self.URL_EXPIRATION_HOURS, url))
         finally:
             # Assume that the archive was created in the directory,
             # so to clean up we just need to delete the directory.
@@ -95,7 +98,7 @@ class Command(BaseCommand):
         """
         output_streams = {
             name: open(os.path.join(csv_dir, rel_path), 'w')
-            for name, rel_path in self.OUTPUT_CSV_PATHS.iteritems()
+            for name, rel_path in six.iteritems(self.OUTPUT_CSV_PATHS)
         }
         csv_writer = CsvWriter(output_streams, self._progress_callback)
         csv_writer.write_to_csv(course_id)

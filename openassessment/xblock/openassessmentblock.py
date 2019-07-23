@@ -1,23 +1,21 @@
 """An XBlock where students can read a question and compose their response"""
 
+from __future__ import absolute_import
+
 import copy
 import datetime as dt
 import json
 import logging
 import os
 
-from lazy import lazy
 import pkg_resources
 import pytz
 from six import text_type
-from webob import Response
-from xblock.core import XBlock
-from xblock.fields import Boolean, Integer, List, Scope, String
-from xblock.fragment import Fragment
 
 from django.conf import settings
 from django.template.loader import get_template
 
+from lazy import lazy
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
@@ -37,6 +35,10 @@ from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+from webob import Response
+from xblock.core import XBlock
+from xblock.fields import Boolean, Integer, List, Scope, String
+from xblock.fragment import Fragment
 
 logger = logging.getLogger(__name__)
 

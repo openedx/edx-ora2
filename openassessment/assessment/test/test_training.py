@@ -2,10 +2,13 @@
 """
 Tests for training models and serializers (common to student and AI training).
 """
+from __future__ import absolute_import
+
 from collections import OrderedDict
 import copy
 
 import mock
+import six
 
 from django.db import IntegrityError
 
@@ -179,7 +182,7 @@ class TrainingExampleSerializerTest(CacheResetTest):
         """Test that legacy answer format in training example serialized correctly"""
         training_examples = deserialize_training_examples(self.EXAMPLES, self.RUBRIC)
         for example in training_examples:
-            self.assertIsInstance(example.answer, unicode)
+            self.assertIsInstance(example.answer, six.text_type)
             serialized_example = serialize_training_example(example)
             self.assertIsInstance(serialized_example["answer"], dict)
             expected_answer_dict = {'parts': [{'text': example.answer}]}

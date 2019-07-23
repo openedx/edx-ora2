@@ -4,6 +4,8 @@ The Peer Assessment Workflow API exposes all public actions required to complete
 the workflow for a given submission.
 
 """
+from __future__ import absolute_import
+
 import logging
 
 from django.db import DatabaseError, IntegrityError, transaction

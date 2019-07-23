@@ -1,15 +1,18 @@
 # coding=utf-8
+from __future__ import absolute_import
+
 import copy
 import datetime
 
 from ddt import ddt, file_data
 from mock import patch
-from nose.tools import raises
 import pytz
+from six.moves import range
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
 
+from nose.tools import raises
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
                                               PeerWorkflow, PeerWorkflowItem)

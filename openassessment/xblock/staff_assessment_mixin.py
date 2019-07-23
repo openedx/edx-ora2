@@ -1,16 +1,17 @@
 """""
 A mixin for staff grading.
 """
-import logging
+from __future__ import absolute_import
 
-from xblock.core import XBlock
+import logging
 
 from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.workflow import api as workflow_api
-from staff_area_mixin import require_course_staff
+from xblock.core import XBlock
 
 from .data_conversion import clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters
+from .staff_area_mixin import require_course_staff
 
 logger = logging.getLogger(__name__)
 

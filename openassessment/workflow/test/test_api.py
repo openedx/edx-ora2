@@ -1,10 +1,12 @@
+from __future__ import absolute_import
+
 import ddt
 from mock import patch
-from nose.tools import raises
 
 from django.db import DatabaseError
 from django.test.utils import override_settings
 
+from nose.tools import raises
 from openassessment.assessment.models import PeerWorkflow, StudentTrainingWorkflow
 from openassessment.test_utils import CacheResetTest
 import openassessment.workflow.api as workflow_api

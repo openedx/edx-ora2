@@ -1,8 +1,12 @@
 """
 Django models for training (both student and AI).
 """
+from __future__ import absolute_import
+
 from hashlib import sha1
 import json
+
+import six
 
 from django.core.cache import cache
 from django.db import models
@@ -54,7 +58,7 @@ class TrainingExample(models.Model):
 
         # This will raise `InvalidRubricSelection` if the selected options
         # do not match the rubric.
-        for criterion_name, option_name in options_selected.iteritems():
+        for criterion_name, option_name in six.iteritems(options_selected):
             option = rubric.index.find_option(criterion_name, option_name)
             example.options_selected.add(option)
         return example

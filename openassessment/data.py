@@ -1,9 +1,13 @@
 """
 Aggregate data for openassessment.
 """
+from __future__ import absolute_import
+
 from collections import defaultdict
 import csv
 import json
+
+import six
 
 from django.conf import settings
 
@@ -85,7 +89,7 @@ class CsvWriter(object):
         """
         self.writers = {
             key: csv.writer(file_handle)
-            for key, file_handle in output_streams.iteritems()
+            for key, file_handle in six.iteritems(output_streams)
             if key in self.MODELS
         }
         self._progress_callback = progress_callback
@@ -181,7 +185,7 @@ class CsvWriter(object):
         """
         Write the headers (first row) for each output stream.
         """
-        for name, writer in self.writers.iteritems():
+        for name, writer in six.iteritems(self.writers):
             writer.writerow(self.HEADERS[name])
 
     def _write_submission_to_csv(self, submission_uuid):
@@ -277,7 +281,7 @@ class CsvWriter(object):
 
         """
         options_string = ",".join([
-            unicode(option.id) for option in assessment_feedback.options.all()
+            six.text_type(option.id) for option in assessment_feedback.options.all()
         ])
 
         self._write_unicode('assessment_feedback', [
@@ -318,7 +322,7 @@ class CsvWriter(object):
         """
         writer = self.writers.get(output_name)
         if writer is not None:
-            encoded_row = [unicode(field).encode('utf-8') for field in row]
+            encoded_row = [six.text_type(field).encode('utf-8') for field in row]
             writer.writerow(encoded_row)
 
     def _use_read_replica(self, queryset):

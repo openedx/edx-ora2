@@ -1,14 +1,17 @@
 """
 Student training step in the OpenAssessment XBlock.
 """
+from __future__ import absolute_import
+
 import logging
 
-from webob import Response
-from xblock.core import XBlock
+import six
 
 from openassessment.assessment.api import student_training
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict, create_submission_dict
+from webob import Response
+from xblock.core import XBlock
 
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
@@ -64,14 +67,14 @@ class StudentTrainingMixin(object):
         """
         parts = answer.get('parts', [])
         if parts and isinstance(parts[0], dict):
-            if isinstance(parts[0].get('text'), basestring):
+            if isinstance(parts[0].get('text'), six.string_types):
                 return create_submission_dict({'answer': answer}, self.prompts)
 
     def _parse_answer_list(self, answer):
         """
         Helper to parse answer as a list of strings.
         """
-        if answer and isinstance(answer[0], basestring):
+        if answer and isinstance(answer[0], six.string_types):
             return self._parse_answer_string(answer[0])
         elif len(answer) == 0:
             return self._parse_answer_string("")
@@ -100,7 +103,7 @@ class StudentTrainingMixin(object):
             )
         answer = example['answer']
         submission_dict = None
-        if isinstance(answer, basestring):
+        if isinstance(answer, six.string_types):
             submission_dict = self._parse_answer_string(answer)
         elif isinstance(answer, dict):
             submission_dict = self._parse_answer_dict(answer)

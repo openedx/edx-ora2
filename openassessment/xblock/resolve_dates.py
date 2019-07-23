@@ -1,10 +1,14 @@
 """
 Resolve unspecified dates and date strings to datetimes.
 """
+from __future__ import absolute_import
+
 import datetime as dt
 
 from dateutil.parser import parse as parse_date
 import pytz
+import six
+from six.moves import range, zip
 
 
 class InvalidDateFormat(Exception):
@@ -43,7 +47,7 @@ def _parse_date(value, _):
     if isinstance(value, dt.datetime):
         return value.replace(tzinfo=pytz.utc)
 
-    elif isinstance(value, basestring):
+    elif isinstance(value, six.string_types):
         try:
             return parse_date(value).replace(tzinfo=pytz.utc)
         except ValueError:
@@ -226,7 +230,7 @@ def resolve_dates(start, end, date_ranges, _):
         prev_end = step_end
 
     # Combine the resolved dates back into a list of tuples
-    resolved_ranges = zip(resolved_starts, resolved_ends)
+    resolved_ranges = list(zip(resolved_starts, resolved_ends))
 
     # Now that we have resolved both start and end dates, we can safely compare them
     for resolved_start, resolved_end in resolved_ranges:

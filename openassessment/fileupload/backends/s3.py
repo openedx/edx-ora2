@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+
 import logging
 
-import boto
-
 from django.conf import settings
+
+import boto
 
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend

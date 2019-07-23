@@ -3,11 +3,15 @@
 Tests for openassessment data aggregation.
 """
 
+from __future__ import absolute_import, print_function
+
 from StringIO import StringIO
 import csv
 import os.path
 
 import ddt
+import six
+from six.moves import range, zip
 
 from django.core.management import call_command
 
@@ -100,7 +104,7 @@ class CsvWriterTest(TransactionCacheResetTest):
     @ddt.file_data('data/write_to_csv.json')
     def test_write_to_csv(self, data):
         # Create in-memory buffers for the CSV file data
-        output_streams = self._output_streams(data['expected_csv'].keys())
+        output_streams = self._output_streams(list(data['expected_csv'].keys()))
 
         # Load the database fixture
         # We use the database fixture to ensure that this test will
@@ -113,13 +117,13 @@ class CsvWriterTest(TransactionCacheResetTest):
         writer.write_to_csv(data['course_id'])
 
         # Check that the CSV matches what we expected
-        for output_name, expected_csv in data['expected_csv'].iteritems():
+        for output_name, expected_csv in six.iteritems(data['expected_csv']):
             output_buffer = output_streams[output_name]
             output_buffer.seek(0)
             actual_csv = csv.reader(output_buffer)
             for expected_row in expected_csv:
                 try:
-                    actual_row = actual_csv.next()
+                    actual_row = next(actual_csv)
                 except StopIteration:
                     actual_row = None
                 self.assertEqual(
@@ -129,7 +133,7 @@ class CsvWriterTest(TransactionCacheResetTest):
 
             # Check for extra rows
             try:
-                extra_row = actual_csv.next()
+                extra_row = next(actual_csv)
             except StopIteration:
                 extra_row = None
 
@@ -225,7 +229,7 @@ class CsvWriterTest(TransactionCacheResetTest):
         fixture_path = os.path.join(
             os.path.dirname(__file__), 'data', fixture_relpath
         )
-        print "Loading database fixtures from {}".format(fixture_path)
+        print("Loading database fixtures from {}".format(fixture_path))
         call_command('loaddata', fixture_path)
 
 

@@ -1,6 +1,8 @@
 """
 Test utilities
 """
+from __future__ import absolute_import
+
 from django.core.cache import cache
 from django.test import TestCase, TransactionTestCase
 

@@ -1,7 +1,9 @@
 """
 Leaderboard step in the OpenAssessment XBlock.
 """
-from xblock.core import XBlock
+from __future__ import absolute_import
+
+import six
 
 from django.utils.translation import ugettext as _
 
@@ -9,6 +11,7 @@ from openassessment.assessment.errors import PeerAssessmentError, SelfAssessment
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
+from xblock.core import XBlock
 
 
 class LeaderboardMixin(object):
@@ -94,7 +97,7 @@ class LeaderboardMixin(object):
             if 'text' in score['content'] or 'parts' in score['content']:
                 submission = {'answer': score.pop('content')}
                 score['submission'] = create_submission_dict(submission, self.prompts)
-            elif isinstance(score['content'], basestring):
+            elif isinstance(score['content'], six.string_types):
                 pass
             # Currently, we do not handle non-text submissions.
             else:

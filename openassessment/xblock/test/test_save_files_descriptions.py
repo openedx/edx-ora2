@@ -2,6 +2,8 @@
 """
 Test that the student can save a files descriptions.
 """
+from __future__ import absolute_import
+
 import json
 
 import mock

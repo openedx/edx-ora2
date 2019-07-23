@@ -1,4 +1,4 @@
-import workbench.urls
+from __future__ import absolute_import
 
 from django.conf import settings
 from django.conf.urls import include, url
@@ -7,6 +7,7 @@ from django.views.i18n import javascript_catalog
 
 import openassessment.assessment.urls
 import openassessment.fileupload.urls
+import workbench.urls
 
 # Packages to include in the JavaScript i18n strings
 JS_INFO_DICT = {

@@ -2,18 +2,20 @@
 """
 Tests for leaderboard handlers in Open Assessment XBlock.
 """
+from __future__ import absolute_import
+
 import json
 from random import randint
-from urlparse import urlparse
 
-import boto
-from boto.s3.key import Key
 import mock
-from moto import mock_s3
+from six.moves.urllib.parse import urlparse
 
 from django.core.cache import cache
 from django.test.utils import override_settings
 
+import boto
+from boto.s3.key import Key
+from moto import mock_s3
 from openassessment.fileupload import api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from submissions import api as sub_api

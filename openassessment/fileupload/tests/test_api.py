@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+
 import json
 import os
 import shutil
 import tempfile
-import urllib
-from urlparse import urlparse
 
-import boto
-from boto.s3.key import Key
 import ddt
 from mock import Mock, patch
-from moto import mock_s3
-from nose.tools import raises
+import six.moves.urllib.error
+import six.moves.urllib.parse
+from six.moves.urllib.parse import urlparse
+import six.moves.urllib.request
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -20,6 +20,10 @@ from django.core.urlresolvers import reverse_lazy
 from django.test import TestCase
 from django.test.utils import override_settings
 
+import boto
+from boto.s3.key import Key
+from moto import mock_s3
+from nose.tools import raises
 from openassessment.fileupload import api, exceptions, urls
 from openassessment.fileupload import views_filesystem as views
 from openassessment.fileupload.backends.base import Settings as FileUploadSettings
@@ -427,7 +431,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
 
         # Check updated download URL
         download_url = self.backend.get_download_url(self.key)
-        encoded_key = urllib.quote(self.key.encode('utf-8'))
+        encoded_key = six.moves.urllib.parse.quote(self.key.encode('utf-8'))
         self.assertEqual(u"submissions/{}".format(encoded_key), download_url)
 
     @ddt.data(u"noël.txt", "myfile.txt")
@@ -448,7 +452,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
 
         # File exists now
         download_url = self.backend.get_download_url(self.key)
-        encoded_key = urllib.quote(self.key.encode('utf-8'))
+        encoded_key = six.moves.urllib.parse.quote(self.key.encode('utf-8'))
         self.assertEqual(u"submissions/{}".format(encoded_key), download_url)
 
         # Remove file returns True now, and removes the file

@@ -2,10 +2,13 @@
 """
 Tests for grade handlers in Open Assessment XBlock.
 """
+from __future__ import absolute_import
+
 import copy
 import json
 
 import ddt
+from six.moves import zip
 
 from openassessment.assessment.api import peer as peer_api
 

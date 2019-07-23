@@ -2,20 +2,23 @@
 """
 Base class for handler-level testing of the XBlock.
 """
+from __future__ import absolute_import, print_function
+
 import copy
 from functools import wraps
 import json
 import os.path
 
 import mock
-import webob
-from workbench.runtime import WorkbenchRuntime
+from six.moves import zip
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
 from openassessment.workflow import api as workflow_api
 from submissions import api as submissions_api
+import webob
+from workbench.runtime import WorkbenchRuntime
 
 # Sample peer assessments
 PEER_ASSESSMENTS = [
@@ -102,7 +105,7 @@ def scenario(scenario_path, user_id=None):
                 if isinstance(self, XBlockHandlerTestCaseMixin):
 
                     # Print a debug message
-                    print "Loading scenario from {path}".format(path=scenario_path)
+                    print("Loading scenario from {path}".format(path=scenario_path))
 
                     # Configure the runtime with our user id
                     self.set_user(user_id)
