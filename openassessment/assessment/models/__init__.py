@@ -5,6 +5,6 @@ Export models from each Python module in this package.
 
 from .base import *
 from .peer import *
-from .training import *
-from .student_training import *
 from .staff import *
+from .student_training import *
+from .training import *

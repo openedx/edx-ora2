@@ -2,11 +2,16 @@
 """
 Tests for the staff area.
 """
+from __future__ import absolute_import
+
 from collections import namedtuple
 import json
-import urllib
 
 from mock import MagicMock, Mock, call, patch
+from six.moves import range, zip
+import six.moves.urllib.error
+import six.moves.urllib.parse
+import six.moves.urllib.request
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -277,7 +282,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.request(
                 xblock,
                 "render_student_info",
-                urllib.urlencode({"student_username": "Bob"})
+                six.moves.urllib.parse.urlencode({"student_username": "Bob"})
             )
         )
 
@@ -415,7 +420,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
-            payload = urllib.urlencode({"student_username": "Bob"})
+            payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload)
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
@@ -436,7 +441,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         file_keys = ["test_key0", "test_key1", "test_key2"]
         files_descriptions = ["test_description0", "test_description1", "test_description2"]
         images = ["http://www.example.com/image%d.jpeg" % i for i in range(3)]
-        file_keys_with_images = dict(zip(file_keys, images))
+        file_keys_with_images = dict(list(zip(file_keys, images)))
 
         # Create an image submission for Bob, and corresponding workflow.
         self._create_submission(bob_item, {
@@ -465,7 +470,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
-            payload = urllib.urlencode({"student_username": "Bob"})
+            payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload)
             for i in range(3):
                 self.assertIn("http://www.example.com/image%d.jpeg" % i, resp)
@@ -498,7 +503,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertNotIn('file_url', context['submission'])
 
             # Check the fully rendered template
-            payload = urllib.urlencode({"student_username": "Bob"})
+            payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload)
             self.assertIn("Bob Answer", resp)
 

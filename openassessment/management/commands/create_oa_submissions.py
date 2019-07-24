@@ -1,13 +1,17 @@
 """
 Create dummy submissions and assessments for testing.
 """
+from __future__ import absolute_import, print_function
+
 import copy
 from uuid import uuid4
 
-import loremipsum
+import six
+from six.moves import range
 
 from django.core.management.base import BaseCommand, CommandError
 
+import loremipsum
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
@@ -56,8 +60,8 @@ class Command(BaseCommand):
         if len(args) < 4:
             raise CommandError('Usage: create_oa_submissions <COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS> <PERCENTAGE>')
 
-        course_id = unicode(args[0])
-        item_id = unicode(args[1])
+        course_id = six.text_type(args[0])
+        item_id = six.text_type(args[1])
 
         try:
             num_submissions = int(args[2])
@@ -70,15 +74,15 @@ class Command(BaseCommand):
         except ValueError:
             raise CommandError('Percentage for completed submissions must be an integer or float')
 
-        print u"Creating {num} submissions for {item} in {course}".format(
+        print(u"Creating {num} submissions for {item} in {course}".format(
             num=num_submissions, item=item_id, course=course_id
-        )
+        ))
 
         assessments_created = 0
 
         for sub_num in range(num_submissions):
 
-            print "Creating submission {num}".format(num=sub_num)
+            print("Creating submission {num}".format(num=sub_num))
 
             # Create a dummy submission
             student_item = {
@@ -95,7 +99,7 @@ class Command(BaseCommand):
 
             # Create peer assessments
             for num in range(self.NUM_PEER_ASSESSMENTS):
-                print "-- Creating peer-workflow {num}".format(num=num)
+                print("-- Creating peer-workflow {num}".format(num=num))
 
                 scorer_id = 'test_{num}'.format(num=num)
 
@@ -109,7 +113,7 @@ class Command(BaseCommand):
                 # exactly which submission we want to score.
                 peer_api.create_peer_workflow_item(scorer_submission_uuid, submission_uuid)
                 if assessments_created < assessments_to_create:
-                    print "-- Creating peer-assessment {num}".format(num=num)
+                    print("-- Creating peer-assessment {num}".format(num=num))
                     # Create the peer assessment
                     peer_api.create_assessment(
                         scorer_submission_uuid,
@@ -122,12 +126,12 @@ class Command(BaseCommand):
 
             if self.self_assessment_required:
                 # Create a self-assessment
-                print "-- Creating self assessment"
+                print("-- Creating self assessment")
                 self_api.create_assessment(
                     submission_uuid, student_item['student_id'],
                     options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
                 )
-        print "%s assessments being completed for %s submissions" % (assessments_created, num_submissions)
+        print("%s assessments being completed for %s submissions" % (assessments_created, num_submissions))
 
     @property
     def student_items(self):

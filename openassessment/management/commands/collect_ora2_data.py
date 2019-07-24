@@ -6,8 +6,12 @@ This command differs from upload_oa_data in that it places all the data into one
 
 Generates the same format as the instructor dashboard downloads.
 """
+from __future__ import absolute_import
+
 import csv
 import os
+
+import six
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -22,7 +26,7 @@ class Command(BaseCommand):
     help = ("Usage: collect_ora2_data <course_id> --output-dir=<output_dir>")
 
     def add_arguments(self, parser):
-        parser.add_argument('course_id', nargs='+', type=unicode)
+        parser.add_argument('course_id', nargs='+', type=six.text_type)
         parser.add_argument(
             '-o',
             '--output-dir',
@@ -75,7 +79,7 @@ def _encode_row(data_list):
     processed_row = []
 
     for item in data_list:
-        new_item = unicode(item).encode('utf-8')
+        new_item = six.text_type(item).encode('utf-8')
         processed_row.append(new_item)
 
     return processed_row

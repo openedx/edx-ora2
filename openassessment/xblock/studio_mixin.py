@@ -1,15 +1,15 @@
 """
 Studio editing view for OpenAssessment XBlock.
 """
+from __future__ import absolute_import
+
 import copy
 import logging
 from uuid import uuid4
 
 import pkg_resources
-from voluptuous import MultipleInvalid
-from xblock.core import XBlock
-from xblock.fields import List, Scope
-from xblock.fragment import Fragment
+import six
+from six.moves import range, zip
 
 from django.conf import settings
 from django.template.loader import get_template
@@ -21,6 +21,10 @@ from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEF
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
+from voluptuous import MultipleInvalid
+from xblock.core import XBlock
+from xblock.fields import List, Scope
+from xblock.fragment import Fragment
 
 logger = logging.getLogger(__name__)
 
@@ -384,7 +388,7 @@ class StudioMixin(object):
 
         placeholder_id = uuid4().hex
         # create a dummy asset location with a fake but unique name. strip off the name, and return it
-        url_path = unicode(course_key.make_asset_key('asset', placeholder_id).for_branch(None))
+        url_path = six.text_type(course_key.make_asset_key('asset', placeholder_id).for_branch(None))
         if not url_path.startswith('/'):
             url_path = '/' + url_path
         return url_path.replace(placeholder_id, '')

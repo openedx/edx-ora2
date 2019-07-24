@@ -5,6 +5,8 @@ URLs to the new location.
 
 """
 
+from __future__ import absolute_import
+
 from . import backends
 
 

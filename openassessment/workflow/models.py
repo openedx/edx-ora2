@@ -9,6 +9,8 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
+from __future__ import absolute_import
+
 import importlib
 import logging
 from uuid import uuid4
@@ -58,7 +60,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     an after the fact recording of the last known state of that information so
     we can search easily.
     """
-    STEPS = ASSESSMENT_API_DICT.keys()
+    STEPS = list(ASSESSMENT_API_DICT.keys())
 
     STATUSES = [
         "waiting",  # User has done all necessary assessment but hasn't been

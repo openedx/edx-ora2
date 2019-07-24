@@ -1,4 +1,8 @@
+from __future__ import absolute_import
+
 import abc
+
+import six
 
 from django.conf import settings
 
@@ -36,11 +40,8 @@ class Settings(object):
         return getattr(settings, "FILE_UPLOAD_STORAGE_PREFIX", cls.DEFAULT_FILE_UPLOAD_STORAGE_PREFIX)
 
 
-class BaseBackend(object):
+class BaseBackend(six.with_metaclass(abc.ABCMeta, object)):
 
-    __metaclass__ = abc.ABCMeta
-
-    # Time (in seconds) before an upload url expires
     UPLOAD_URL_TIMEOUT = 3600
 
     # Time (in seconds) before a download url expires

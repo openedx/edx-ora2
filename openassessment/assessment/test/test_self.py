@@ -3,6 +3,8 @@
 Tests for self-assessment API.
 """
 
+from __future__ import absolute_import
+
 import copy
 import datetime
 

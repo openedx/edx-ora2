@@ -2,16 +2,17 @@
 The Staff Area View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
+from __future__ import absolute_import
+
 import copy
 from functools import wraps
 import logging
-
-from xblock.core import XBlock
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from xblock.core import XBlock
 
 from .user_data import get_user_preferences
 

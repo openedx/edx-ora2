@@ -22,12 +22,16 @@ where "templates.json" is a JSON file of the form:
 The rendered templates are saved to "output" relative to the
 templates.json file's directory.
 """
-import sys
-import os.path
+from __future__ import absolute_import, print_function
+
 import json
+import os.path
 import re
+import sys
+
 import dateutil.parser
 import pytz
+import six
 
 # This is a bit of a hack to ensure that the root repo directory
 # is in the front of the Python path, so Django can find the settings module.
@@ -69,14 +73,14 @@ def parse_dates(context):
     if isinstance(context, dict):
         return {
             key: parse_dates(value)
-            for key, value in context.iteritems()
+            for key, value in six.iteritems(context)
         }
     elif isinstance(context, list):
         return [
             parse_dates(item)
             for item in context
         ]
-    elif isinstance(context, basestring):
+    elif isinstance(context, six.string_types):
         if DATETIME_REGEX.match(context) is not None:
             return dateutil.parser.parse(context).replace(tzinfo=pytz.utc)
 
@@ -99,7 +103,7 @@ def render_templates(root_dir, template_json):
     for template_dict in template_json:
         template = get_template(template_dict['template'])
         context = parse_dates(template_dict['context'])
-        print "Rendering template: {}".format(template_dict['template'])
+        print("Rendering template: {}".format(template_dict['template']))
         rendered = template.render(context)
         output_path = os.path.join(root_dir, template_dict['output'])
 
@@ -107,7 +111,7 @@ def render_templates(root_dir, template_json):
             with open(output_path, 'w') as output_file:
                 output_file.write(rendered.encode('utf-8'))
         except IOError:
-            print "Could not write rendered template to file: {}".format(output_path)
+            print("Could not write rendered template to file: {}".format(output_path))
             sys.exit(1)
 
 
@@ -116,7 +120,7 @@ def main():
     Main entry point for the script.
     """
     if len(sys.argv) < 2:
-        print USAGE.format(sys.argv[0])
+        print(USAGE.format(sys.argv[0]))
         sys.exit(1)
 
     try:
@@ -124,11 +128,11 @@ def main():
             root_dir = os.path.dirname(sys.argv[1])
             render_templates(root_dir, json.load(template_json))
     except IOError as ex:
-        print u"Could not open template description file: {}".format(sys.argv[1])
+        print(u"Could not open template description file: {}".format(sys.argv[1]))
         print(ex)
         sys.exit(1)
     except ValueError as ex:
-        print u"Could not parse template description as JSON: {}".format(sys.argv[1])
+        print(u"Could not parse template description as JSON: {}".format(sys.argv[1]))
         print(ex)
         sys.exit(1)
 

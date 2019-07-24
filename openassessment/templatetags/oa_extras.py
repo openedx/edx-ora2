@@ -1,10 +1,12 @@
+from __future__ import absolute_import
+
 from django import template
 from django.template.defaultfilters import linebreaks, stringfilter
-from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
-from bleach import callbacks
+from django.utils.safestring import mark_safe
 
 import bleach
+from bleach import callbacks
 
 register = template.Library()
 

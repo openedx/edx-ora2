@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from django.conf.urls import url
 
 from openassessment.fileupload import views_django_storage, views_filesystem

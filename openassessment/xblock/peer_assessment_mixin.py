@@ -3,15 +3,16 @@ The Peer Assessment Mixin for all Peer Functionality.
 
 """
 
-import logging
+from __future__ import absolute_import
 
-from webob import Response
-from xblock.core import XBlock
+import logging
 
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
                                               PeerAssessmentWorkflowError)
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
+from webob import Response
+from xblock.core import XBlock
 
 from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
                               verify_assessment_parameters)

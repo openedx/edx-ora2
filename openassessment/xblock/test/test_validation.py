@@ -3,12 +3,15 @@
 Test OpenAssessment XBlock validation.
 """
 
+from __future__ import absolute_import
+
 import copy
 from datetime import datetime as dt
 
 import ddt
 import mock
 import pytz
+from six.moves import range
 
 from django.test import TestCase
 

@@ -1,9 +1,8 @@
-from . import s3
-from . import filesystem
-from . import swift
-from . import django_storage
+from __future__ import absolute_import
 
 from django.conf import settings
+
+from . import django_storage, filesystem, s3, swift
 
 
 def get_backend():

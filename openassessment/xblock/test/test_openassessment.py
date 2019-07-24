@@ -1,17 +1,20 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
+from __future__ import absolute_import
+
 from StringIO import StringIO
 from collections import namedtuple
 import datetime as dt
 import json
 
 import ddt
-from freezegun import freeze_time
-from lxml import etree
 from mock import MagicMock, Mock, PropertyMock, patch
 import pytz
+import six
 
+from freezegun import freeze_time
+from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
@@ -379,7 +382,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     def test_default_fields(self, xblock):
 
         # Reset all fields in the XBlock to their default values
-        for field_name, field in xblock.fields.iteritems():
+        for field_name, field in six.iteritems(xblock.fields):
             setattr(xblock, field_name, field.default)
 
         # Validate Submission Rendering.
@@ -392,7 +395,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # because that's what our models expect.
         student_item = xblock.get_student_item_dict()
         self.assertEqual(student_item['student_id'], '2')
-        self.assertIsInstance(student_item['item_id'], unicode)
+        self.assertIsInstance(student_item['item_id'], six.text_type)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_use_xmodule_runtime(self, xblock):

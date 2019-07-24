@@ -1,6 +1,8 @@
 """
 Serializers specific to peer assessment.
 """
+from __future__ import absolute_import
+
 from rest_framework import serializers
 
 from openassessment.assessment.models import (AssessmentFeedback, AssessmentFeedbackOption, PeerWorkflow,

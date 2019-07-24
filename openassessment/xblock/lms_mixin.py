@@ -2,6 +2,10 @@
 Fields and methods used by the LMS and Studio.
 """
 
+from __future__ import absolute_import
+
+import six
+
 from xblock.fields import DateTime, Dict, Float, Scope, String
 
 
@@ -13,7 +17,7 @@ class GroupAccessDict(Dict):
 
     def to_json(self, access_dict):
         if access_dict is not None:
-            return {unicode(k): access_dict[k] for k in access_dict}
+            return {six.text_type(k): access_dict[k] for k in access_dict}
 
 
 class LmsCompatibilityMixin(object):

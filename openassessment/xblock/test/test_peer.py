@@ -2,6 +2,8 @@
 """
 Tests for peer assessment handlers in Open Assessment XBlock.
 """
+from __future__ import absolute_import
+
 from collections import namedtuple
 import copy
 import datetime as dt

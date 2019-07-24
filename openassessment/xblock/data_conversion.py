@@ -2,7 +2,11 @@
 Data Conversion utility methods for handling ORA2 XBlock data transformations and validation.
 
 """
+from __future__ import absolute_import
+
 import json
+
+import six
 
 
 def convert_training_examples_list_to_dict(examples_list):
@@ -86,7 +90,7 @@ def update_assessments_format(assessments):
         if 'examples' in assessment and assessment['examples']:
             for example in assessment['examples']:
                 if (isinstance(example, dict) and
-                    (isinstance(example['answer'], unicode) or isinstance(example['answer'], str))):
+                    (isinstance(example['answer'], six.text_type) or isinstance(example['answer'], str))):
                     example['answer'] = {
                         'parts': [
                             {'text': example['answer']}

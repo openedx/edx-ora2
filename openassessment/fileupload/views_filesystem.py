@@ -1,6 +1,10 @@
+from __future__ import absolute_import
+
 import hashlib
 import json
 import os
+
+import six
 
 from django.conf import settings
 from django.shortcuts import Http404, HttpResponse
@@ -17,7 +21,7 @@ def filesystem_storage(request, key):
     """
     Uploading and download files to the local filesystem backend.
     """
-    if isinstance(key, unicode):
+    if isinstance(key, six.text_type):
         key = key.encode("utf-8")
     if request.method == "PUT":
         if not is_upload_url_available(key):

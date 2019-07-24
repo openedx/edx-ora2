@@ -3,7 +3,11 @@
 Tests for assessment models.
 """
 
+from __future__ import absolute_import
+
 import copy
+
+from six.moves import range
 
 from openassessment.assessment.models import Criterion, CriterionOption, InvalidRubricSelection, Rubric
 from openassessment.assessment.test.constants import RUBRIC

@@ -2,10 +2,12 @@
 Page objects for UI-level acceptance tests.
 """
 
-import os
+from __future__ import absolute_import
 
 from abc import abstractmethod
-from bok_choy.javascript import requirejs, js_defined
+import os
+
+from bok_choy.javascript import js_defined, requirejs
 from bok_choy.page_object import PageObject
 from bok_choy.promise import BrokenPromise, EmptyPromise
 

@@ -1,6 +1,8 @@
 """
 Tests for the LMS compatibility mixin for the OpenAssessment block.
 """
+from __future__ import absolute_import
+
 from ddt import ddt
 
 from .base import XBlockHandlerTestCase, scenario

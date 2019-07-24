@@ -1,22 +1,22 @@
 """
 UI-level acceptance tests for OpenAssessment.
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
 from functools import wraps
 import os
 import time
 import unittest
 
-from bok_choy.promise import BrokenPromise, EmptyPromise
-from bok_choy.web_app_test import WebAppTest
 import ddt
-from nose.plugins.attrib import attr
-from pyinstrument import Profiler
+from six.moves import range
 
 from acceptance.auto_auth import AutoAuthPage
-from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, SubmissionPage, StudioSettingsPage
-
+from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, StudioSettingsPage, SubmissionPage
+from bok_choy.promise import BrokenPromise, EmptyPromise
+from bok_choy.web_app_test import WebAppTest
+from nose.plugins.attrib import attr
+from pyinstrument import Profiler
 
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
@@ -43,7 +43,7 @@ def retry(tries=2, delay=4, backoff=2):
                     if attempt_num >= (tries - 1):
                         raise
                     else:
-                        print "Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay)
+                        print("Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay))
                         time.sleep(_delay)
                         _delay *= backoff
         return _inner

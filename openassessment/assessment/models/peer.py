@@ -7,6 +7,8 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.assessment --auto
 
 """
+from __future__ import absolute_import
+
 from datetime import timedelta
 import logging
 import random

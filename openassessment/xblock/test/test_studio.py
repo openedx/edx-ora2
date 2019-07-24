@@ -2,6 +2,8 @@
 View-level tests for Studio view of OpenAssessment XBlock.
 """
 
+from __future__ import absolute_import
+
 import copy
 import datetime as dt
 import json
@@ -9,6 +11,7 @@ import json
 from ddt import ddt, file_data
 from mock import MagicMock
 import pytz
+import six
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -281,7 +284,7 @@ class StudioViewTest(XBlockHandlerTestCase):
                 "index": rendered_html.find(asmnt_css_id)
             }
             for asmnt_name, asmnt_css_id
-            in self.ASSESSMENT_CSS_IDS.iteritems()
+            in six.iteritems(self.ASSESSMENT_CSS_IDS)
         ]
         actual_assessment_order = [
             index_dict['name']

@@ -2,12 +2,15 @@
 """
 Tests for management command that uploads submission/assessment data.
 """
+from __future__ import absolute_import
+
 from StringIO import StringIO
 import tarfile
 
+from six.moves import range
+
 import boto
 import moto
-
 from openassessment.management.commands import upload_oa_data
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api

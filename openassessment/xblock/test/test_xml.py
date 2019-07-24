@@ -2,17 +2,21 @@
 """
 Tests for serializing to/from XML.
 """
+from __future__ import absolute_import, print_function
+
 import copy
+import json
 
 import dateutil.parser
 import ddt
-import json
-import lxml.etree as etree
 import mock
 import pytz
+import six
+from six.moves import zip
 
 from django.test import TestCase
 
+import lxml.etree as etree
 from openassessment.xblock.data_conversion import create_prompts_list
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.xml import (UpdateFromXmlError, _parse_prompts_xml, parse_assessments_xml,
@@ -173,9 +177,9 @@ class TestSerializeContent(TestCase):
                 )
             )
             self.assertItemsEqual(
-                actual.items(), expected.items(),
+                list(actual.items()), list(expected.items()),
                 msg=u"Incorrect attributes for {tag}.  Expected {expected} but found {actual}".format(
-                    tag=actual.tag, expected=expected.items(), actual=actual.items()
+                    tag=actual.tag, expected=list(expected.items()), actual=list(actual.items())
                 )
             )
 
@@ -318,16 +322,16 @@ class TestSerializeContent(TestCase):
         Yields:
             dict
         """
-        for key, val in input_dict.iteritems():
+        for key, val in six.iteritems(input_dict):
 
             # Mutation #1: Remove the key
-            print "== Removing key {}".format(key)
-            yield {k: v for k, v in input_dict.iteritems() if k != key}
+            print("== Removing key {}".format(key))
+            yield {k: v for k, v in six.iteritems(input_dict) if k != key}
 
             if isinstance(val, dict):
 
                 # Mutation #2: Empty dict
-                print "== Emptying dict {}".format(key)
+                print("== Emptying dict {}".format(key))
                 yield self._mutate_dict(input_dict, key, dict())
 
                 # Mutation #3-5: value mutations
@@ -340,7 +344,7 @@ class TestSerializeContent(TestCase):
 
             elif isinstance(val, list):
                 # Mutation #2: Empty list
-                print "== Emptying list {}".format(key)
+                print("== Emptying list {}".format(key))
                 yield self._mutate_dict(input_dict, key, list())
 
                 # Mutation #3-5: value mutations
@@ -372,7 +376,7 @@ class TestSerializeContent(TestCase):
         Yields:
             list
         """
-        print "== Emptying list"
+        print("== Emptying list")
         yield list()
 
         # Mutation #3-5: value mutations
@@ -396,13 +400,13 @@ class TestSerializeContent(TestCase):
         Yields:
             dict
         """
-        print "== None value {}".format(key)
+        print("== None value {}".format(key))
         yield self._mutate_dict(input_dict, key, None)
 
-        print "== Unicode value {}".format(key)
+        print("== Unicode value {}".format(key))
         yield self._mutate_dict(input_dict, key, u"\u9731")
 
-        print "== int value {}".format(key)
+        print("== int value {}".format(key))
         yield self._mutate_dict(input_dict, key, 0)
 
     @staticmethod

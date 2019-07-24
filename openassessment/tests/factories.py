@@ -1,6 +1,8 @@
 """
 Create factories for assessments and all of their related models.
 """
+from __future__ import absolute_import
+
 import factory
 from factory.django import DjangoModelFactory
 

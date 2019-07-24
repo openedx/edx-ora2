@@ -1,6 +1,8 @@
 """
 Public interface for staff grading, used by students/course staff.
 """
+from __future__ import absolute_import
+
 import logging
 
 from django.db import DatabaseError, transaction

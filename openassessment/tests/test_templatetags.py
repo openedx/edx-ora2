@@ -1,6 +1,10 @@
-import ddt
-from django.template import Context, Template
+from __future__ import absolute_import
+
 import unittest
+
+import ddt
+
+from django.template import Context, Template
 
 
 @ddt.ddt

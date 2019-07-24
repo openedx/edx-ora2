@@ -2,7 +2,11 @@
 Public interface for the Assessment Workflow.
 
 """
+from __future__ import absolute_import
+
 import logging
+
+import six
 
 from django.db import DatabaseError
 
@@ -340,7 +344,7 @@ def _get_workflow_model(submission_uuid):
             problem.
 
     """
-    if not isinstance(submission_uuid, basestring):
+    if not isinstance(submission_uuid, six.string_types):
         raise AssessmentWorkflowRequestError("submission_uuid must be a string type")
 
     try:

@@ -11,13 +11,16 @@ ORA2_SWIFT_KEY should correspond to Meta Temp-Url-Key configure in swift. Run
 'swift stat -v' to get it.
 '''
 
+from __future__ import absolute_import
+
 import logging
-import urlparse
 
 import requests
-import swiftclient
+import six.moves.urllib.parse
 
 from django.conf import settings
+
+import swiftclient
 
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend
@@ -96,5 +99,5 @@ def get_settings():
 
     url = getattr(settings, 'ORA2_SWIFT_URL', None)
     key = getattr(settings, 'ORA2_SWIFT_KEY', None)
-    url = urlparse.urlparse(url)
+    url = six.moves.urllib.parse.urlparse(url)
     return key, url
