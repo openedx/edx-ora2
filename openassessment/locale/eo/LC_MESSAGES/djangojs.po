@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-29 07:16-0400\n"
+"POT-Creation-Date: 2019-09-03 16:09-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -363,6 +363,23 @@ msgid ""
 msgstr ""
 "Ìf ýöü léävé thïs pägé wïthöüt süßmïttïng ýöür stäff ässéssmént, ýöü wïll "
 "lösé äný wörk ýöü hävé döné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js
+#: openassessment/xblock/static/js/src/lms/oa_trackchanges.js
+msgid "Are you sure you want to clear your changes?"
+msgstr ""
+"Àré ýöü süré ýöü wänt tö çléär ýöür çhängés? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js
+#: openassessment/xblock/static/js/src/lms/oa_trackchanges.js
+msgid "Your Unedited Submission"
+msgstr "Ýöür Ûnédïtéd Süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js
+#: openassessment/xblock/static/js/src/lms/oa_trackchanges.js
+msgid "Showing response with:"
+msgstr "Shöwïng réspönsé wïth: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js
 #: openassessment/xblock/static/js/src/lms/oa_training.js
