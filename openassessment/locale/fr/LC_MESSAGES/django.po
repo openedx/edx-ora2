@@ -16,7 +16,7 @@
 # INARES <contact@inares.org>, 2014
 # JulietteFUN, 2014
 # JulietteFUN, 2014
-# Kévin SEVERIN <kevin.severin@laposte.net>, 2015
+# c3424d9a1a39134ef6c845e87726a328, 2015
 # Régis Millet <regmillet@ct2c.fr>, 2015
 # laurentFUN <laurent.at.fun@gmail.com>, 2014,2016
 # laurentFUN <laurent.at.fun@gmail.com>, 2014,2016
