@@ -12,7 +12,7 @@
 # franklinzhang <franklinzhang1985@gmail.com>, 2014
 # GoodLuck <1833447072@qq.com>, 2014
 # hjuj_91 <hjuj_91@163.com>, 2014
-# bnw, 2014
+# 5b4c6a53e2e9f6d66be0455f2c8d22a2, 2014
 # HYY <wingyin.wong@outlook.com>, 2018
 # ifLab <webmaster@iflab.org>, 2018
 # jg Ma <jg20040308@126.com>, 2016
