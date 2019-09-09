@@ -498,10 +498,10 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("selects too large of a file", function() {
         spyOn(view.baseView, 'toggleActionError').and.callThrough();
-        var files = [{type: 'image/jpeg', size: 12000000, name: 'huge-picture.jpg', data: ''}];
+        var files = [{type: 'image/jpeg', size: 22000000, name: 'huge-picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            'File size must be 10MB or less.');
+            'File size must be 20MB or less.');
     });
 
     it("selects the wrong image file type", function() {
@@ -543,10 +543,10 @@ describe("OpenAssessment.ResponseView", function() {
     it("selects one small and one large file", function() {
         spyOn(view.baseView, 'toggleActionError').and.callThrough();
         var files = [{type: 'image/jpeg', size: 1024, name: 'small-picture.jpg', data: ''},
-                     {type: 'image/jpeg', size: 11000000, name: 'huge-picture.jpg', data: ''}];
+                     {type: 'image/jpeg', size: 21000000, name: 'huge-picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            'File size must be 10MB or less.');
+            'File size must be 20MB or less.');
     });
 
     it("selects three files - one with invalid extension", function() {

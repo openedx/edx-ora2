@@ -41,8 +41,11 @@ OpenAssessment.ResponseView.prototype = {
     // before we can autosave.
     AUTO_SAVE_WAIT: 30000,
 
-    // Maximum size (10 MB) for all attached files.
-    MAX_FILES_SIZE: 10485760,
+    // Maximum size (20 * 2^20 bytes, approx. 20MB) for all attached files.
+    MAX_FILES_SIZE: 20971520,
+
+    // For user-facing upload limit text.
+    MAX_FILES_MB: 20,
 
     UNSAVED_WARNING_KEY: "learner-response",
 
@@ -571,7 +574,10 @@ OpenAssessment.ResponseView.prototype = {
             if (totalSize > this.MAX_FILES_SIZE) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("File size must be 10MB or less.")
+                    gettext("File size must be {max_files_mb}MB or less.").replace(
+                        '{max_files_mb}',
+                        this.MAX_FILES_MB
+                    )
                 );
                 errorCheckerTriggered = true;
                 break;
