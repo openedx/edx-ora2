@@ -97,3 +97,7 @@ test-a11y:
 	./scripts/test-acceptance.sh accessibility
 
 test-sandbox: test-acceptance test-a11y
+
+install-osx-requirements:
+	brew install gettext
+	brew link gettext --force
