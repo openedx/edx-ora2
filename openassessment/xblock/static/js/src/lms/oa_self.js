@@ -21,7 +21,7 @@ OpenAssessment.SelfView = function(element, server, baseView) {
 
 OpenAssessment.SelfView.prototype = {
 
-    UNSAVED_WARNING_KEY: "self-assessment",
+    UNSAVED_WARNING_KEY: 'self-assessment',
 
     /**
     Load the self assessment view.
@@ -29,7 +29,7 @@ OpenAssessment.SelfView.prototype = {
     load: function(usageID) {
         var view = this;
         var stepID = '.step--self-assessment';
-        var focusID = "[id='oa_self_" + usageID + "']";
+        var focusID = '[id=\'oa_self_' + usageID + '\']';
         view.isRendering = true;
         this.server.render('self_assessment').done(
             function(html) {
@@ -41,7 +41,6 @@ OpenAssessment.SelfView.prototype = {
                 view.installHandlers();
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.dateFactory.apply();
-
             }
         ).fail(function() {
             view.showLoadError('self-assessment');
@@ -62,12 +61,11 @@ OpenAssessment.SelfView.prototype = {
         this.baseView.bindLatexPreview(sel);
 
         // Initialize the rubric
-        var rubricSelector = $(".self-assessment--001__assessment", this.element);
+        var rubricSelector = $('.self-assessment--001__assessment', this.element);
         if (rubricSelector.size() > 0) {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
-        }
-        else {
+        } else {
             // If there was previously a rubric visible, clear the reference to it.
             this.rubric = null;
         }
@@ -121,7 +119,7 @@ OpenAssessment.SelfView.prototype = {
             this.baseView.unsavedWarningEnabled(
                 true,
                 this.UNSAVED_WARNING_KEY,
-                gettext("If you leave this page without submitting your self assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+                gettext('If you leave this page without submitting your self assessment, you will lose any work you have done.') // jscs:ignore maximumLineLength
             );
         }
     },
@@ -151,5 +149,5 @@ OpenAssessment.SelfView.prototype = {
             baseView.toggleActionError('self', errMsg);
             view.selfSubmitEnabled(true);
         });
-    }
+    },
 };

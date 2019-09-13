@@ -19,12 +19,12 @@ OpenAssessment.EditRubricView = function(element, notifier) {
 
     this.criteriaContainer = new OpenAssessment.Container(
         OpenAssessment.RubricCriterion, {
-            containerElement: $("#openassessment_criterion_list", this.element).get(0),
-            templateElement: $("#openassessment_criterion_template", this.element).get(0),
-            addButtonElement: $("#openassessment_rubric_add_criterion", this.element).get(0),
-            removeButtonClass: "openassessment_criterion_remove_button",
-            containerItemClass: "openassessment_criterion",
-            notifier: notifier
+            containerElement: $('#openassessment_criterion_list', this.element).get(0),
+            templateElement: $('#openassessment_criterion_template', this.element).get(0),
+            addButtonElement: $('#openassessment_rubric_add_criterion', this.element).get(0),
+            removeButtonClass: 'openassessment_criterion_remove_button',
+            containerItemClass: 'openassessment_criterion',
+            notifier: notifier,
         }
     );
     this.criteriaContainer.addEventListeners();
@@ -88,7 +88,7 @@ OpenAssessment.EditRubricView.prototype = {
 
      **/
     feedbackPrompt: function(text) {
-        var sel = $("#openassessment_rubric_feedback", this.element);
+        var sel = $('#openassessment_rubric_feedback', this.element);
         return OpenAssessment.Fields.stringField(sel, text);
     },
 
@@ -105,7 +105,7 @@ OpenAssessment.EditRubricView.prototype = {
 
      **/
     feedback_default_text: function(text) {
-        var sel = $("#openassessment_rubric_feedback_default_text", this.element);
+        var sel = $('#openassessment_rubric_feedback_default_text', this.element);
         return OpenAssessment.Fields.stringField(sel, text);
     },
 
@@ -221,10 +221,10 @@ OpenAssessment.EditRubricView.prototype = {
         var isValid = criteria.length > 0;
         if (!isValid) {
             this.criterionAddButton
-                .addClass("openassessment_highlighted_field")
+                .addClass('openassessment_highlighted_field')
                 .click(function() {
-                        $(this).removeClass("openassessment_highlighted_field");
-                    }
+                    $(this).removeClass('openassessment_highlighted_field');
+                }
                 );
         }
 
@@ -246,8 +246,8 @@ OpenAssessment.EditRubricView.prototype = {
     validationErrors: function() {
         var errors = [];
 
-        if (this.criterionAddButton.hasClass("openassessment_highlighted_field")) {
-            errors.push("The rubric must contain at least one criterion");
+        if (this.criterionAddButton.hasClass('openassessment_highlighted_field')) {
+            errors.push('The rubric must contain at least one criterion');
         }
 
         // Sub-validates the criteria defined by the rubric
@@ -262,10 +262,10 @@ OpenAssessment.EditRubricView.prototype = {
      Clear all validation errors from the UI.
      **/
     clearValidationErrors: function() {
-        this.criterionAddButton.removeClass("openassessment_highlighted_field");
+        this.criterionAddButton.removeClass('openassessment_highlighted_field');
 
         $.each(this.getAllCriteria(), function() {
             this.clearValidationErrors();
         });
-    }
+    },
 };

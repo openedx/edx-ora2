@@ -14,12 +14,12 @@ OpenAssessment.StudentTrainingListener.prototype = {
      */
     promptAdd: function() {
         var view = this.element;
-        $("#openassessment_training_example_part_template")
+        $('#openassessment_training_example_part_template')
             .children().first()
             .clone()
             .removeAttr('id')
             .toggleClass('is--hidden', false)
-            .appendTo(".openassessment_training_example_essay", view);
+            .appendTo('.openassessment_training_example_essay', view);
     },
 
     /**
@@ -27,7 +27,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
      */
     promptRemove: function(data) {
         var view = this.element;
-        $(".openassessment_training_example_essay li:nth-child(" + (data.index + 1) + ")", view).remove();
+        $('.openassessment_training_example_essay li:nth-child(' + (data.index + 1) + ')', view).remove();
     },
 
     /**
@@ -46,8 +46,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
             function() {
                 var criterion = this;
                 var option = $('option[value="' + data.name + '"]', criterion)
-                    .attr("data-points", data.points)
-                    .attr("data-label", data.label);
+                    .attr('data-points', data.points)
+                    .attr('data-label', data.label);
                 OpenAssessment.ItemUtilities.refreshOptionString(option);
             }
         );
@@ -82,10 +82,10 @@ OpenAssessment.StudentTrainingListener.prototype = {
             // Risky; making an assumption that options will remain simple.
             // updates could cause this to get out of sync with templates,
             // but this avoids overly complex templating code.
-            var option = $("<option></option>")
-                .attr("value", data.name)
-                .attr("data-points", data.points)
-                .attr("data-label", data.label);
+            var option = $('<option></option>')
+                .attr('value', data.name)
+                .attr('data-points', data.points)
+                .attr('data-label', data.label);
 
             // Sets the option's text description, and adds it to the criterion.
             OpenAssessment.ItemUtilities.refreshOptionString(option);
@@ -94,8 +94,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (criterionAdded) {
             this.displayAlertMsg(
-                gettext("Criterion Added"),
-                gettext("You have added a criterion. You will need to select an option for the criterion in the Learner Training step. To do this, click the Settings tab.")  // jscs:ignore maximumLineLength
+                gettext('Criterion Added'),
+                gettext('You have added a criterion. You will need to select an option for the criterion in the Learner Training step. To do this, click the Settings tab.') // jscs:ignore maximumLineLength
             );
         }
     },
@@ -121,10 +121,10 @@ OpenAssessment.StudentTrainingListener.prototype = {
         this._optionSel(data.criterionName).each(function() {
             var criterionOption = this;
             if ($(criterionOption).val() === data.name.toString()) {
-                $(criterionOption).val("")
-                    .addClass("openassessment_highlighted_field")
+                $(criterionOption).val('')
+                    .addClass('openassessment_highlighted_field')
                     .click(function() {
-                        $(criterionOption).removeClass("openassessment_highlighted_field");
+                        $(criterionOption).removeClass('openassessment_highlighted_field');
                     });
                 invalidated = true;
             }
@@ -133,7 +133,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
             // If all options have been removed from the Criterion, remove
             // the criterion entirely.
-            if ($("option", criterionOption).length === 1) {
+            if ($('option', criterionOption).length === 1) {
                 handler.removeAllOptions(data);
                 invalidated = false;
             }
@@ -141,8 +141,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (invalidated) {
             this.displayAlertMsg(
-                gettext("Option Deleted"),
-                gettext("You have deleted an option. That option has been removed from its criterion in the sample responses in the Learner Training step. You might have to select a new option for the criterion.")  // jscs:ignore maximumLineLength
+                gettext('Option Deleted'),
+                gettext('You have deleted an option. That option has been removed from its criterion in the sample responses in the Learner Training step. You might have to select a new option for the criterion.') // jscs:ignore maximumLineLength
             );
         }
     },
@@ -176,8 +176,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (changed) {
             this.displayAlertMsg(
-                gettext("Option Deleted"),
-                gettext("You have deleted all the options for this criterion. The criterion has been removed from the sample responses in the Learner Training step.")  // jscs:ignore maximumLineLength
+                gettext('Option Deleted'),
+                gettext('You have deleted all the options for this criterion. The criterion has been removed from the sample responses in the Learner Training step.') // jscs:ignore maximumLineLength
             );
         }
     },
@@ -203,8 +203,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (changed) {
             this.displayAlertMsg(
-                gettext("Criterion Deleted"),
-                gettext("You have deleted a criterion. The criterion has been removed from the example responses in the Learner Training step.")  // jscs:ignore maximumLineLength
+                gettext('Criterion Deleted'),
+                gettext('You have deleted a criterion. The criterion has been removed from the example responses in the Learner Training step.') // jscs:ignore maximumLineLength
             );
         }
     },
@@ -219,9 +219,9 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
      */
     displayAlertMsg: function(title, msg) {
-        if ($("#include_student_training", this.element).is(":checked") &&
-                // Check for at least more than one example, to exclude the template
-            $(".openassessment_training_example", this.element).length > 1) {
+        if ($('#include_student_training', this.element).is(':checked') &&
+        // Check for at least more than one example, to exclude the template
+            $('.openassessment_training_example', this.element).length > 1) {
             this.alert.setMessage(title, msg).show();
         }
     },
@@ -238,7 +238,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
         var sel = '.openassessment_training_example_criterion[data-criterion="' + data.criterionName + '"]';
         $(sel, this.element).each(
             function() {
-                $(".openassessment_training_example_criterion_name_wrapper", this)
+                $('.openassessment_training_example_criterion_name_wrapper', this)
                     .text(data.criterionLabel);
             }
         );
@@ -256,17 +256,17 @@ OpenAssessment.StudentTrainingListener.prototype = {
      */
     criterionAdd: function(data) {
         var view = this.element;
-        var criterion = $("#openassessment_training_example_criterion_template")
+        var criterion = $('#openassessment_training_example_criterion_template')
             .children().first()
             .clone()
             .removeAttr('id')
             .attr('data-criterion', data.criterionName)
             .toggleClass('is--hidden', false)
-            .appendTo(".openassessment_training_example_criteria_selections", view);
+            .appendTo('.openassessment_training_example_criteria_selections', view);
 
-        criterion.find(".openassessment_training_example_criterion_option")
+        criterion.find('.openassessment_training_example_criterion_option')
             .attr('data-criterion', data.criterionName);
-        criterion.find(".openassessment_training_example_criterion_name_wrapper")
+        criterion.find('.openassessment_training_example_criterion_name_wrapper')
             .text(data.label);
     },
 
@@ -290,13 +290,13 @@ OpenAssessment.StudentTrainingListener.prototype = {
      **/
     examplesCriteriaLabels: function() {
         var examples = [];
-        $(".openassessment_training_example_criteria_selections", this.element).each(
+        $('.openassessment_training_example_criteria_selections', this.element).each(
             function() {
                 var exampleDescription = {};
-                $(".openassessment_training_example_criterion", this).each(
+                $('.openassessment_training_example_criterion', this).each(
                     function() {
                         var criterionName = $(this).data('criterion');
-                        var criterionLabel = $(".openassessment_training_example_criterion_name_wrapper", this)
+                        var criterionLabel = $('.openassessment_training_example_criterion_name_wrapper', this)
                             .text().trim();
                         exampleDescription[criterionName] = criterionLabel;
                     }
@@ -338,14 +338,14 @@ OpenAssessment.StudentTrainingListener.prototype = {
      **/
     examplesOptionsLabels: function() {
         var examples = [];
-        $(".openassessment_training_example_criteria_selections", this.element).each(
+        $('.openassessment_training_example_criteria_selections', this.element).each(
             function() {
                 var exampleDescription = {};
-                $(".openassessment_training_example_criterion_option", this).each(
+                $('.openassessment_training_example_criterion_option', this).each(
                     function() {
                         var criterionName = $(this).data('criterion');
                         exampleDescription[criterionName] = {};
-                        $("option", this).each(
+                        $('option', this).each(
                             function() {
                                 var optionName = $(this).val();
                                 var optionLabel = $(this).text().trim();
@@ -358,7 +358,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
             }
         );
         return examples;
-    }
+    },
 };
 
 /**
@@ -373,12 +373,12 @@ OpenAssessment.AssessmentToggleListener = function() {
 OpenAssessment.AssessmentToggleListener.prototype = {
     toggleOff: function() {
         this.alert.setMessage(
-            gettext("Warning"),
-            gettext("Changes to steps that are not selected as part of the assignment will not be saved.")
+            gettext('Warning'),
+            gettext('Changes to steps that are not selected as part of the assignment will not be saved.')
         ).show();
     },
 
     toggleOn: function() {
         this.alert.hide();
-    }
+    },
 };

@@ -10,18 +10,18 @@
  **/
 OpenAssessment.EditPromptsView = function(element, notifier) {
     this.element = element;
-    this.editorElement = $(this.element).closest("#openassessment-editor");
+    this.editorElement = $(this.element).closest('#openassessment-editor');
     this.addRemoveEnabled = this.editorElement.attr('data-is-released') !== 'true';
 
     this.promptsContainer = new OpenAssessment.Container(
         OpenAssessment.Prompt, {
-            containerElement: $("#openassessment_prompts_list", this.element).get(0),
-            templateElement: $("#openassessment_prompt_template", this.element).get(0),
-            addButtonElement: $("#openassessment_prompts_add_prompt", this.element).get(0),
-            removeButtonClass: "openassessment_prompt_remove_button",
-            containerItemClass: "openassessment_prompt",
+            containerElement: $('#openassessment_prompts_list', this.element).get(0),
+            templateElement: $('#openassessment_prompt_template', this.element).get(0),
+            addButtonElement: $('#openassessment_prompts_add_prompt', this.element).get(0),
+            removeButtonClass: 'openassessment_prompt_remove_button',
+            containerItemClass: 'openassessment_prompt',
             notifier: notifier,
-            addRemoveEnabled: this.addRemoveEnabled
+            addRemoveEnabled: this.addRemoveEnabled,
         }
     );
     this.promptsContainer.addEventListeners();
@@ -138,5 +138,5 @@ OpenAssessment.EditPromptsView.prototype = {
     /**
      Clear all validation errors from the UI.
      **/
-    clearValidationErrors: function() {}
+    clearValidationErrors: function() {},
 };
