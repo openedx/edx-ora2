@@ -28,6 +28,7 @@
     ],
     "no-var": "off",
     "valid-jsdoc": "off",
-    "require-jsdoc": "off"
+    "require-jsdoc": "off",
+    "camelcase": ["error", { "properties": "never"}]
   }
 }
