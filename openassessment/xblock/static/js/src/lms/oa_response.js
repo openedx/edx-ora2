@@ -130,7 +130,8 @@ OpenAssessment.ResponseView.prototype = {
                 $('.submission__answer__display__file', view.element).removeClass('is--hidden');
                 if (view.hasAllUploadFiles()) {
                     if (previouslyUploadedFiles) {
-                        var msg = gettext('After you upload new files all your previously uploaded files will be overwritten. Continue?'); // jscs:ignore maximumLineLength
+                        // eslint-disable-next-line max-len
+                        var msg = gettext('After you upload new files all your previously uploaded files will be overwritten. Continue?');
                         if (confirm(msg)) {
                             view.uploadFiles();
                         }
@@ -384,7 +385,8 @@ OpenAssessment.ResponseView.prototype = {
             this.baseView.unsavedWarningEnabled(
                 true,
                 this.UNSAVED_WARNING_KEY,
-                gettext('If you leave this page without saving or submitting your response, you will lose any work you have done on the response.') // jscs:ignore maximumLineLength
+                // eslint-disable-next-line max-len
+                gettext('If you leave this page without saving or submitting your response, you will lose any work you have done on the response.')
             );
         }
 
@@ -448,6 +450,7 @@ OpenAssessment.ResponseView.prototype = {
 
         var view = this;
         var baseView = this.baseView;
+        // eslint-disable-next-line new-cap
         var fileDefer = $.Deferred();
 
         if (view.hasPendingUploadFiles()) {
@@ -529,8 +532,10 @@ OpenAssessment.ResponseView.prototype = {
      **/
     confirmSubmission: function() {
         // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-        var msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.'); // jscs:ignore maximumLineLength
+        // eslint-disable-next-line max-len
+        var msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
         // TODO -- UI for confirmation dialog instead of JS confirm
+        // eslint-disable-next-line new-cap
         return $.Deferred(function(defer) {
             if (confirm(msg)) {defer.resolve();} else {defer.reject();}
         });
@@ -557,14 +562,12 @@ OpenAssessment.ResponseView.prototype = {
         var totalSize = 0;
         var ext = null;
         var fileType = null;
-        var fileName = '';
         var errorCheckerTriggered = false;
 
         for (var i = 0; i < files.length; i++) {
             totalSize += files[i].size;
             ext = files[i].name.split('.').pop().toLowerCase();
             fileType = files[i].type;
-            fileName = files[i].name;
 
             if (totalSize > this.MAX_FILES_SIZE) {
                 this.baseView.toggleActionError(

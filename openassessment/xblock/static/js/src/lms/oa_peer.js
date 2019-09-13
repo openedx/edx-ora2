@@ -186,7 +186,8 @@ OpenAssessment.PeerView.prototype = {
             this.baseView.unsavedWarningEnabled(
                 true,
                 this.UNSAVED_WARNING_KEY,
-                gettext('If you leave this page without submitting your peer assessment, you will lose any work you have done.') // jscs:ignore maximumLineLength
+                // eslint-disable-next-line max-len
+                gettext('If you leave this page without submitting your peer assessment, you will lose any work you have done.')
             );
         }
     },

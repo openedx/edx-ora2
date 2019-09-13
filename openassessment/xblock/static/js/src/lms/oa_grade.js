@@ -92,7 +92,8 @@ OpenAssessment.GradeView.prototype = {
 
             // Check the selected options
             $.each(options, function(index, opt) {
-                $('[id=\'feedback__overall__value--' + opt + '__' + usageID + '\']', view.element).prop('checked', true);
+                $('[id=\'feedback__overall__value--' + opt + '__' + usageID + '\']', view.element)
+                    .prop('checked', true);
             });
         }
     },
@@ -158,7 +159,15 @@ OpenAssessment.GradeView.prototype = {
                 !this.isHidden(instructionsSel) && !this.isHidden(fieldsSel) && !this.isHidden(actionsSel)
             );
 
-            if (isOpen) {return 'open';} else if (isSubmitting) {return 'submitting';} else if (hasSubmitted) {return 'submitted';} else {throw 'Invalid feedback state';}
+            if (isOpen) {
+                return 'open';
+            } else if (isSubmitting) {
+                return 'submitting';
+            } else if (hasSubmitted) {
+                return 'submitted';
+            } else {
+                throw new Error('Invalid feedback state');
+            }
         } else {
             if (newState === 'open') {
                 containerSel.toggleClass('is--transitioning', false);
