@@ -26,6 +26,8 @@
         "allowSingleLine": true
       }
     ],
-    "no-var": "off"
+    "no-var": "off",
+    "valid-jsdoc": "off",
+    "require-jsdoc": "off"
   }
 }
