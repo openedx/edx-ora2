@@ -15,7 +15,6 @@
     "eslint": "^6.3.0",
     "eslint-config-google": "^0.14.0",
     "jasmine": "^2.3.0",
-    "jscs": "3.0.7",
     "jshint": "2.10.2",
     "karma": "^4.3.0",
     "karma-chrome-launcher": "^2.2.0",
