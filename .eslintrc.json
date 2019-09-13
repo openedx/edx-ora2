@@ -1,0 +1,30 @@
+{
+  "extends": "google",
+  "rules": {
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "max-len": [
+      2,
+      120
+    ],
+    "one-var": 0,
+    "camelcase": [
+      2,
+      {
+        "properties": "always"
+      }
+    ],
+    "brace-style": [
+      2,
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ]
+  }
+}
