@@ -97,6 +97,7 @@
         var dataRendered = parseInt(block.data('rendered'));
 
         if (!dataRendered || force) {
+            // eslint-disable-next-line new-cap
             return $.Deferred(
                 function(defer) {
                     $.ajax({
@@ -109,7 +110,7 @@
                     }).fail(function(data, textStatus) {
                         $section.find('.open-response-assessment-msg')
                             .text(gettext('List of Open Assessments is unavailable'));
-                        defer.rejectWith(this, [textStatus]);
+                        defer.rejectWith(self, [textStatus]);
                     });
                 }
             ).promise();
@@ -210,6 +211,7 @@
         $section.find('.open-response-assessment-content').hide();
         $section.find('.open-response-assessment-msg').text(gettext('Please wait')).show();
 
+        // eslint-disable-next-line new-cap
         return $.Deferred(
             function(defer) {
                 $.ajax({
@@ -234,7 +236,7 @@
                         .text(gettext('Block view is unavailable'));
 
                     self.renderBreadcrumbs();
-                    defer.rejectWith(this, [textStatus]);
+                    defer.rejectWith(self, [textStatus]);
                 });
             }
         ).promise();
