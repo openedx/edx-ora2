@@ -211,6 +211,7 @@ OpenAssessment.BaseView.prototype = {
 
                 // Render in mathjax
                 previewContainer.parent().parent().parent().show();
+                // eslint-disable-next-line new-cap
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, previewContainer[0]]);
             }
         );
@@ -393,6 +394,7 @@ OpenAssessment.BaseView.prototype = {
 
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
 /* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
 function OpenAssessmentBlock(runtime, element, data) {
     /**
     Render views within the base view on page load.
@@ -404,6 +406,7 @@ function OpenAssessmentBlock(runtime, element, data) {
 
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
 /* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
 function CourseOpenResponsesListingBlock(runtime, element, data) {
     var view = new OpenAssessment.CourseItemsListingView(runtime, element);
     view.refreshGrids();
@@ -411,6 +414,7 @@ function CourseOpenResponsesListingBlock(runtime, element, data) {
 
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
 /* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
 function StaffAssessmentBlock(runtime, element, data) {
     /**
     Render auxiliary view which displays the staff grading area
