@@ -279,6 +279,7 @@ OpenAssessment.StudioView.prototype = {
 
 /* Get tinyMCE comfig */
 /* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
 function oaTinyMCE(options) {
     var CUSTOM_FONTS, STANDARD_FONTS, _getFonts, _this = this;
 
@@ -406,6 +407,7 @@ function oaTinyMCE(options) {
 
 /* XBlock entry point for Studio view */
 /* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
 function OpenAssessmentEditor(runtime, element, data) {
     /**
      Initialize the editing interface on page load.
