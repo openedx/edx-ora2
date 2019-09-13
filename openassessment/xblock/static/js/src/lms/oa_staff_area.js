@@ -63,6 +63,7 @@
             var showFormError = function(errorMessage) {
                 $form.find('.form--error').text(errorMessage).focus();
             };
+            // eslint-disable-next-line new-cap
             var deferred = $.Deferred();
 
             // Clear any previous student information
@@ -79,6 +80,7 @@
                     // Install key handler for cancel submission button.
                     $manageLearnersTab.on('click', '.action--submit-cancel-submission', function(eventObject) {
                         eventObject.preventDefault();
+                        // eslint-disable-next-line no-invalid-this
                         view.cancelSubmission($(this).data('submission-uuid'));
                     });
 
@@ -149,6 +151,7 @@
             var $staffGradeControl = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CLASS);
             var $staffGradeContent = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTENT_CLASS);
             var $staffGradeContainer = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTAINER_CLASS);
+            // eslint-disable-next-line new-cap
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
                 $staffGradeTab.find('.staff__grade__form--error').text(errorMessage).focus();
@@ -490,7 +493,8 @@
                 this.baseView.unsavedWarningEnabled(
                     true,
                     key,
-                    gettext('If you leave this page without submitting your staff assessment, you will lose any work you have done.') // jscs:ignore maximumLineLength
+                    // eslint-disable-next-line max-len
+                    gettext('If you leave this page without submitting your staff assessment, you will lose any work you have done.')
                 );
             }
         },

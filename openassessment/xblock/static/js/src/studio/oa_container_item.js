@@ -47,16 +47,12 @@ OpenAssessment.ItemUtilities = {
         var finalLabel = '';
         if (name === '') {
             finalLabel = gettext('Not Selected');
-        }
-
-        // If the points are invalid, we'll be given NaN
-        // Don't show this to the user.
-        else if (isNaN(points)) {
+        } else if (isNaN(points)) {
+            // If the points are invalid, we'll be given NaN
+            // Don't show this to the user.
             finalLabel = label;
-        }
-
-        // Otherwise, set the text of the option element to be the properly conjugated, translated string.
-        else {
+        } else {
+            // Otherwise, set the text of the option element to be the properly conjugated, translated string.
             finalLabel = ngettext(singularString, multipleString, points);
         }
 
