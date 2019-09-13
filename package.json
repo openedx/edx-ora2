@@ -14,18 +14,18 @@
   "devDependencies": {
     "jasmine": "^2.3.0",
     "jscs": "3.0.7",
-    "jshint": "2.9.5",
-    "karma": "^1.7.0",
+    "jshint": "2.10.2",
+    "karma": "^4.3.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "~0.2",
-    "karma-jasmine-jquery": "^0.1.1",
+    "karma-jasmine-jquery": "git+https://github.com/nkoder/karma-jasmine-jquery.git#be1566e6a069c867812b3845a46c9c6ca73b1e9f",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.3",
     "karma-spec-reporter": "^0.0.31",
     "phantomjs-prebuilt": "^2.1.14",
-    "sinon": "^3.0.0",
+    "sinon": "^7.4.2",
     "uglify-js": "^3.5.15"
   },
   "scripts": {
