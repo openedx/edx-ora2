@@ -47,7 +47,7 @@ OpenAssessment.ResponseView.prototype = {
     // For user-facing upload limit text.
     MAX_FILES_MB: 20,
 
-    UNSAVED_WARNING_KEY: "learner-response",
+    UNSAVED_WARNING_KEY: 'learner-response',
 
     /**
      Load the response (submission) view.
@@ -55,7 +55,7 @@ OpenAssessment.ResponseView.prototype = {
     load: function(usageID) {
         var view = this;
         var stepID = '.step--response';
-        var focusID = "[id='oa_response_" + usageID + "']";
+        var focusID = '[id=\'oa_response_' + usageID + '\']';
 
         view.isRendering = true;
         this.server.render('submission').done(
@@ -90,10 +90,10 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install change handler for textarea (to enable submission button)
         this.savedResponse = this.response();
-        var handleChange = function() { view.handleResponseChanged(); };
+        var handleChange = function() {view.handleResponseChanged();};
         sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
 
-        var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files, uploadType); };
+        var handlePrepareUpload = function(eventData) {view.prepareUpload(eventData.target.files, uploadType);};
         sel.find('input[type=file]').on('change', handlePrepareUpload);
 
         var submit = $('.step--response__submit', this.element);
@@ -130,7 +130,8 @@ OpenAssessment.ResponseView.prototype = {
                 $('.submission__answer__display__file', view.element).removeClass('is--hidden');
                 if (view.hasAllUploadFiles()) {
                     if (previouslyUploadedFiles) {
-                        var msg = gettext('After you upload new files all your previously uploaded files will be overwritten. Continue?');  // jscs:ignore maximumLineLength
+                        // eslint-disable-next-line max-len
+                        var msg = gettext('After you upload new files all your previously uploaded files will be overwritten. Continue?');
                         if (confirm(msg)) {
                             view.uploadFiles();
                         }
@@ -157,8 +158,7 @@ OpenAssessment.ResponseView.prototype = {
                     this.AUTO_SAVE_POLL_INTERVAL
                 );
             }
-        }
-        else {
+        } else {
             if (this.autoSaveTimerId !== null) {
                 clearInterval(this.autoSaveTimerId);
             }
@@ -181,10 +181,10 @@ OpenAssessment.ResponseView.prototype = {
 
         filesFiledIsNotBlank = filesFiledIsNotBlank || false;
         $('.submission__answer__file', this.element).each(function() {
-            if (($(this).prop("tagName") === 'IMG') && ($(this).attr('src') !== '')) {
+            if (($(this).prop('tagName') === 'IMG') && ($(this).attr('src') !== '')) {
                 filesFiledIsNotBlank = true;
             }
-            if (($(this).prop("tagName") === 'A') && ($(this).attr('href') !== '')) {
+            if (($(this).prop('tagName') === 'A') && ($(this).attr('href') !== '')) {
                 filesFiledIsNotBlank = true;
             }
         });
@@ -283,7 +283,7 @@ OpenAssessment.ResponseView.prototype = {
             if (file.size === 0) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("Your file " + file.name + " has been deleted or path has been changed."));
+                    gettext('Your file ' + file.name + ' has been deleted or path has been changed.'));
                 this.submitEnabled(true);
                 return false;
             }
@@ -307,7 +307,7 @@ OpenAssessment.ResponseView.prototype = {
         } else {
             // Setting the HTML will overwrite the screen reader tag,
             // so prepend it to the message.
-            var label = gettext("Status of Your Response");
+            var label = gettext('Status of Your Response');
             sel.html('<span class="sr">' + _.escape(label) + ':' + '</span>\n' + msg);
         }
     },
@@ -345,7 +345,6 @@ OpenAssessment.ResponseView.prototype = {
         return this.response().some(function(element, index) {
             return element !== savedResponse[index];
         });
-
     },
 
     /**
@@ -386,7 +385,8 @@ OpenAssessment.ResponseView.prototype = {
             this.baseView.unsavedWarningEnabled(
                 true,
                 this.UNSAVED_WARNING_KEY,
-                gettext("If you leave this page without saving or submitting your response, you will lose any work you have done on the response.") // jscs:ignore maximumLineLength
+                // eslint-disable-next-line max-len
+                gettext('If you leave this page without saving or submitting your response, you will lose any work you have done on the response.')
             );
         }
 
@@ -426,7 +426,7 @@ OpenAssessment.ResponseView.prototype = {
             });
             if (currentResponseEqualsSaved) {
                 view.saveEnabled(false);
-                var msg = gettext("This response has been saved but not submitted.");
+                var msg = gettext('This response has been saved but not submitted.');
                 view.saveStatus(msg);
                 view.baseView.srReadTexts([msg]);
             }
@@ -436,7 +436,7 @@ OpenAssessment.ResponseView.prototype = {
 
             // Remember that an error occurred
             // so we can disable autosave
-            //(avoids repeatedly refreshing the error message)
+            // (avoids repeatedly refreshing the error message)
             view.errorOnLastSave = true;
         });
     },
@@ -450,13 +450,13 @@ OpenAssessment.ResponseView.prototype = {
 
         var view = this;
         var baseView = this.baseView;
+        // eslint-disable-next-line new-cap
         var fileDefer = $.Deferred();
 
         if (view.hasPendingUploadFiles()) {
             if (!view.hasAllUploadFiles()) {
                 return;
-            }
-            else {
+            } else {
                 var msg = gettext('Do you want to upload your file before submitting?');
                 if (confirm(msg)) {
                     fileDefer = view.uploadFiles();
@@ -494,10 +494,9 @@ OpenAssessment.ResponseView.prototype = {
                 // If the error is "multiple submissions", then we should move to the next
                 // step.  Otherwise, the user will be stuck on the current step with no
                 // way to continue.
-                if (errCode === 'ENOMULTI') { view.moveToNextStep(); }
-                else {
+                if (errCode === 'ENOMULTI') {view.moveToNextStep();} else {
                     // If there is an error message, display it
-                    if (errMsg) { baseView.toggleActionError('submit', errMsg); }
+                    if (errMsg) {baseView.toggleActionError('submit', errMsg);}
 
                     // Re-enable the submit button so the user can retry
                     view.submitEnabled(true);
@@ -533,11 +532,12 @@ OpenAssessment.ResponseView.prototype = {
      **/
     confirmSubmission: function() {
         // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-        var msg = gettext("You're about to submit your response for this assignment. After you submit this response, you can't change it or submit a new response.");  // jscs:ignore maximumLineLength
+        // eslint-disable-next-line max-len
+        var msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
         // TODO -- UI for confirmation dialog instead of JS confirm
+        // eslint-disable-next-line new-cap
         return $.Deferred(function(defer) {
-            if (confirm(msg)) { defer.resolve(); }
-            else { defer.reject(); }
+            if (confirm(msg)) {defer.resolve();} else {defer.reject();}
         });
     },
 
@@ -562,51 +562,49 @@ OpenAssessment.ResponseView.prototype = {
         var totalSize = 0;
         var ext = null;
         var fileType = null;
-        var fileName = '';
         var errorCheckerTriggered = false;
 
         for (var i = 0; i < files.length; i++) {
             totalSize += files[i].size;
             ext = files[i].name.split('.').pop().toLowerCase();
             fileType = files[i].type;
-            fileName = files[i].name;
 
             if (totalSize > this.MAX_FILES_SIZE) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("File size must be {max_files_mb}MB or less.").replace(
+                    gettext('File size must be {max_files_mb}MB or less.').replace(
                         '{max_files_mb}',
                         this.MAX_FILES_MB
                     )
                 );
                 errorCheckerTriggered = true;
                 break;
-            } else if (uploadType === "image" && this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1) {
+            } else if (uploadType === 'image' && this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("You can upload files with these file types: ") + "JPG, PNG or GIF"
+                    gettext('You can upload files with these file types: ') + 'JPG, PNG or GIF'
                 );
                 errorCheckerTriggered = true;
                 break;
-            } else if (uploadType === "pdf-and-image" && this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1) {
+            } else if (uploadType === 'pdf-and-image' && this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("You can upload files with these file types: ") + "JPG, PNG, GIF or PDF"
+                    gettext('You can upload files with these file types: ') + 'JPG, PNG, GIF or PDF'
                 );
                 errorCheckerTriggered = true;
                 break;
-            } else if (uploadType === "custom" && this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1) {
+            } else if (uploadType === 'custom' && this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("You can upload files with these file types: ") +
-                    this.data.FILE_TYPE_WHITE_LIST.join(", ")
+                    gettext('You can upload files with these file types: ') +
+                    this.data.FILE_TYPE_WHITE_LIST.join(', ')
                 );
                 errorCheckerTriggered = true;
                 break;
             } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("File type is not allowed.")
+                    gettext('File type is not allowed.')
                 );
                 errorCheckerTriggered = true;
                 break;
@@ -650,13 +648,13 @@ OpenAssessment.ResponseView.prototype = {
 
             divLabel = $('<div/>');
             divLabel.addClass('submission__file__description__label');
-            divLabel.text(gettext("Describe ") + files[i].name + ' ' + gettext("(required):"));
+            divLabel.text(gettext('Describe ') + files[i].name + ' ' + gettext('(required):'));
             divLabel.appendTo(mainDiv);
 
             divTextarea = $('<div/>');
             divTextarea.addClass('submission__file__description');
             textarea = $('<textarea />', {
-                'aria-label': gettext("Describe ") + files[i].name
+                'aria-label': gettext('Describe ') + files[i].name,
             });
             if ((this.filesDescriptions.indexOf(i) !== -1) && (this.filesDescriptions[i] !== '')) {
                 textarea.val(this.filesDescriptions[i]);
@@ -666,11 +664,11 @@ OpenAssessment.ResponseView.prototype = {
             textarea.addClass('file__description file__description__' + i);
             textarea.appendTo(divTextarea);
 
-            if (uploadType === "image") {
+            if (uploadType === 'image') {
                 img = $('<img/>', {
                     src: window.URL.createObjectURL(files[i]),
                     height: 80,
-                    alt: gettext("Thumbnail view of ") + files[i].name
+                    alt: gettext('Thumbnail view of ') + files[i].name,
                 });
                 img.onload = function() {
                     window.URL.revokeObjectURL(this.src);
@@ -685,7 +683,7 @@ OpenAssessment.ResponseView.prototype = {
             divTextarea.appendTo(mainDiv);
 
             mainDiv.appendTo(filesDescriptions);
-            textarea.on("change keyup drop paste", $.proxy(this, "checkFilesDescriptions"));
+            textarea.on('change keyup drop paste', $.proxy(this, 'checkFilesDescriptions'));
         }
 
         $(this.element).find('.file__upload').prop('disabled', !descriptionsExists);
@@ -832,7 +830,7 @@ OpenAssessment.ResponseView.prototype = {
             var file = null;
             var img = null;
             var fileBlock = null;
-            var fileBlockExists = sel.find("." + className).length ? true : false;
+            var fileBlockExists = sel.find('.' + className).length ? true : false;
             var div1 = null;
             var div2 = null;
             var ariaLabelledBy = null;
@@ -847,7 +845,7 @@ OpenAssessment.ResponseView.prototype = {
                 ariaLabelledBy = 'file_description_' + Math.random().toString(36).substr(2, 9);
 
                 div1 = $('<div/>', {
-                    id: ariaLabelledBy
+                    id: ariaLabelledBy,
                 });
                 div1.addClass('submission__file__description__label');
                 div1.text(view.filesDescriptions[filenum] + ':');
@@ -864,7 +862,7 @@ OpenAssessment.ResponseView.prototype = {
             } else {
                 file = $('<a />', {
                     href: url,
-                    text: view.filesDescriptions[filenum]
+                    text: view.filesDescriptions[filenum],
                 });
                 file.addClass('submission__answer__file submission--file');
                 file.attr('target', '_blank');
@@ -873,5 +871,5 @@ OpenAssessment.ResponseView.prototype = {
 
             return url;
         });
-    }
+    },
 };

@@ -20,8 +20,8 @@
 
     OpenAssessment.StaffAreaView.prototype = {
 
-        FULL_GRADE_UNSAVED_WARNING_KEY: "staff-grade",
-        OVERRIDE_UNSAVED_WARNING_KEY: "staff-override",
+        FULL_GRADE_UNSAVED_WARNING_KEY: 'staff-grade',
+        OVERRIDE_UNSAVED_WARNING_KEY: 'staff-override',
 
         /**
          * Load the staff area.
@@ -52,7 +52,7 @@
          * @param {string} classToExpand An optional CSS class. If present, the "slidable content"
          *     within the element with this class will be expanded after rendering the student
          *     info section.
-         * @returns {promise} A promise representing the successful loading
+         * @return {promise} A promise representing the successful loading
          *     of the student info section.
          */
         loadStudentInfo: function(classToExpand) {
@@ -63,6 +63,7 @@
             var showFormError = function(errorMessage) {
                 $form.find('.form--error').text(errorMessage).focus();
             };
+            // eslint-disable-next-line new-cap
             var deferred = $.Deferred();
 
             // Clear any previous student information
@@ -79,11 +80,12 @@
                     // Install key handler for cancel submission button.
                     $manageLearnersTab.on('click', '.action--submit-cancel-submission', function(eventObject) {
                         eventObject.preventDefault();
+                        // eslint-disable-next-line no-invalid-this
                         view.cancelSubmission($(this).data('submission-uuid'));
                     });
 
                     // Install change handler for textarea (to enable cancel submission button)
-                    var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
+                    var handleChange = function(eventData) {view.handleCommentChanged(eventData);};
                     $manageLearnersTab.find('.cancel_submission_comments').on('change keyup drop paste', handleChange);
 
                     // Initialize the rubric
@@ -140,7 +142,7 @@
          * Upon request, loads the staff grade/assessment section of the staff area.
          * This allows staff grading when staff assessment is a required step.
          *
-         * @returns {promise} A promise representing the successful loading
+         * @return {promise} A promise representing the successful loading
          * of the staff grade (assessment) section.
          */
         loadStaffGradeForm: function() {
@@ -149,6 +151,7 @@
             var $staffGradeControl = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CLASS);
             var $staffGradeContent = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTENT_CLASS);
             var $staffGradeContainer = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTAINER_CLASS);
+            // eslint-disable-next-line new-cap
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
                 $staffGradeTab.find('.staff__grade__form--error').text(errorMessage).focus();
@@ -159,8 +162,7 @@
                 $staffGradeContent.slideDown();
                 $staffGradeContainer.addClass(view.baseView.IS_SHOWING_CLASS);
                 deferred.resolve();
-            }
-            else {
+            } else {
                 this.staffGradeFormLoaded = true;
                 this.server.staffGradeForm().done(function(html) {
                     showFormError('');
@@ -237,8 +239,7 @@
                 // This is the case of submitting an assessment and NOT continuing with grading.
                 $staffGradeTab.find('.staff__grade__form').replaceWith('<div class="staff__grade__form"></div>');
                 this.updateStaffGradeCounts();
-            }
-            else {
+            } else {
                 // Just hide the form currently being shown (no need to update counts).
                 $staffGradeContent.slideUp();
             }
@@ -260,7 +261,7 @@
             }).fail(function() {
                 $staffGradeTab.find('.staff__grade__status').replaceWith(
                     '<span class="staff__grade__status"><span class="staff__grade__value"><span class="copy">' +
-                    gettext("Error getting the number of ungraded responses") +
+                    gettext('Error getting the number of ungraded responses') +
                     '</span></span></span>'
                 );
             });
@@ -323,7 +324,6 @@
                             $(button).focus();
                         }
                     });
-
                 }
             );
 
@@ -366,8 +366,7 @@
                     var wasShowing = $container.hasClass(view.baseView.IS_SHOWING_CLASS);
                     if (wasShowing) {
                         view.closeStaffGradeForm(false);
-                    }
-                    else {
+                    } else {
                         view.loadStaffGradeForm();
                     }
                 }
@@ -476,7 +475,7 @@
          * @param {element} scope An ancestor element for the submit button (to allow for shared
          *     classes in different form).
          * @param {boolean} enabled If specified, sets the state of the button.
-         * @returns {boolean} Whether the button is enabled
+         * @return {boolean} Whether the button is enabled
          */
         staffSubmitEnabled: function(scope, enabled) {
             return this.baseView.buttonEnabled('.wrapper--staff-assessment .action--submit', enabled);
@@ -494,7 +493,8 @@
                 this.baseView.unsavedWarningEnabled(
                     true,
                     key,
-                    gettext("If you leave this page without submitting your staff assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+                    // eslint-disable-next-line max-len
+                    gettext('If you leave this page without submitting your staff assessment, you will lose any work you have done.')
                 );
             }
         },
@@ -538,9 +538,8 @@
                 view.staffGradeFormLoaded = false;
                 if (continueGrading) {
                     view.loadStaffGradeForm();
-                    view.baseView.scrollToTop(".openassessment__staff-area");
-                }
-                else {
+                    view.baseView.scrollToTop('.openassessment__staff-area');
+                } else {
                     view.closeStaffGradeForm(true);
                 }
             };
@@ -568,6 +567,6 @@
                 scope.find(errorSelector).html(_.escape(errorMessage));
                 view.staffSubmitEnabled(scope, true);
             });
-        }
+        },
     };
 })(OpenAssessment);

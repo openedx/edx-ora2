@@ -91,7 +91,7 @@ OpenAssessment.Container.prototype = {
 
             // Find items already in the container and install click
             // handlers for the delete buttons.
-            $("." + this.removeButtonClass, this.containerElement).click(
+            $('.' + this.removeButtonClass, this.containerElement).click(
                 function(eventData) {
                     var item = container.createContainerItem(eventData.target);
                     container.remove(item);
@@ -99,12 +99,12 @@ OpenAssessment.Container.prototype = {
             );
         } else {
             $(this.addButtonElement).addClass('is--disabled');
-            $("." + this.removeButtonClass, this.containerElement).addClass('is--disabled');
+            $('.' + this.removeButtonClass, this.containerElement).addClass('is--disabled');
         }
 
         // Initialize existing items, in case they need to install their
         // own event handlers.
-        $("." + this.containerItemClass, this.containerElement).each(
+        $('.' + this.containerItemClass, this.containerElement).each(
             function(index, element) {
                 var item = container.createContainerItem(element);
                 item.addEventListeners();
@@ -132,7 +132,7 @@ OpenAssessment.Container.prototype = {
         // Since we just added the new element to the container,
         // it should be the last one.
         var container = this;
-        var containerItem = $("." + this.containerItemClass, this.containerElement).last();
+        var containerItem = $('.' + this.containerItemClass, this.containerElement).last();
 
         // Install a click handler for the delete button
         if (this.addRemoveEnabled) {
@@ -162,7 +162,7 @@ OpenAssessment.Container.prototype = {
 
     **/
     remove: function(item) {
-        var itemElement = $(item.element).closest("." + this.containerItemClass);
+        var itemElement = $(item.element).closest('.' + this.containerItemClass);
         var containerItem = this.createContainerItem(itemElement);
         containerItem.removeHandler();
         itemElement.remove();
@@ -180,7 +180,7 @@ OpenAssessment.Container.prototype = {
         var values = [];
         var container = this;
 
-        $("." + this.containerItemClass, this.containerElement).each(
+        $('.' + this.containerItemClass, this.containerElement).each(
             function(index, element) {
                 var containerItem = container.createContainerItem(element);
                 var fieldValues = containerItem.getFieldValues();
@@ -202,7 +202,7 @@ OpenAssessment.Container.prototype = {
 
     **/
     getItem: function(index) {
-        var element = $("." + this.containerItemClass, this.containerElement).get(index);
+        var element = $('.' + this.containerItemClass, this.containerElement).get(index);
         return (element !== undefined) ? this.createContainerItem(element) : null;
     },
 
@@ -215,7 +215,7 @@ OpenAssessment.Container.prototype = {
     **/
     getAllItems: function() {
         var container = this;
-        return $("." + this.containerItemClass, this.containerElement)
-            .map(function() { return container.createContainerItem(this); });
-    }
+        return $('.' + this.containerItemClass, this.containerElement)
+            .map(function() {return container.createContainerItem(this);});
+    },
 };

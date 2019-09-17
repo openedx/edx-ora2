@@ -43,5 +43,5 @@ OpenAssessment.Notifier.prototype = {
                 this.listeners[i][name](data);
             }
         }
-    }
+    },
 };

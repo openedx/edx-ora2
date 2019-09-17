@@ -3,14 +3,14 @@
  **/
 OpenAssessment.Fields = {
     stringField: function(sel, value) {
-        if (value !== undefined) { sel.val(value); }
+        if (value !== undefined) {sel.val(value);}
         return sel.val();
     },
 
     booleanField: function(sel, value) {
-        if (value !== undefined) { sel.prop("checked", value); }
-        return sel.prop("checked");
-    }
+        if (value !== undefined) {sel.prop('checked', value);}
+        return sel.prop('checked');
+    },
 };
 
 /**
@@ -71,12 +71,12 @@ OpenAssessment.IntField.prototype = {
         var isValid = !isNaN(value) && value >= this.min && value <= this.max;
 
         // Decimal values not allowed
-        if (this.input.val().indexOf(".") !== -1) {
+        if (this.input.val().indexOf('.') !== -1) {
             isValid = false;
         }
 
         if (!isValid) {
-            this.input.addClass("openassessment_highlighted_field");
+            this.input.addClass('openassessment_highlighted_field');
         }
         return isValid;
     },
@@ -85,7 +85,7 @@ OpenAssessment.IntField.prototype = {
      Clear any validation errors from the UI.
      **/
     clearValidationErrors: function() {
-        this.input.removeClass("openassessment_highlighted_field");
+        this.input.removeClass('openassessment_highlighted_field');
     },
 
     /**
@@ -97,9 +97,9 @@ OpenAssessment.IntField.prototype = {
 
      **/
     validationErrors: function() {
-        var hasError = this.input.hasClass("openassessment_highlighted_field");
-        return hasError ? ["Int field is invalid"] : [];
-    }
+        var hasError = this.input.hasClass('openassessment_highlighted_field');
+        return hasError ? ['Int field is invalid'] : [];
+    },
 };
 
 /**
@@ -141,8 +141,7 @@ OpenAssessment.ToggleControl.prototype = {
                 if (this.checked) {
                     control.notifier.notificationFired('toggleOn', {});
                     control.show();
-                }
-                else {
+                } else {
                     control.notifier.notificationFired('toggleOff', {});
                     control.hide();
                 }
@@ -159,7 +158,7 @@ OpenAssessment.ToggleControl.prototype = {
     hide: function() {
         this.shownSection.addClass('is--hidden');
         this.hiddenSection.removeClass('is--hidden');
-    }
+    },
 };
 
 /**
@@ -188,11 +187,11 @@ OpenAssessment.DatetimeControl.prototype = {
     install: function() {
         var dateString = $(this.datePicker, this.element).val();
         $(this.datePicker, this.element).datepicker({showButtonPanel: true})
-            .datepicker("option", "dateFormat", "yy-mm-dd")
-            .datepicker("setDate", dateString);
+            .datepicker('option', 'dateFormat', 'yy-mm-dd')
+            .datepicker('setDate', dateString);
         $(this.timePicker, this.element).timepicker({
             timeFormat: 'H:i',
-            step: 60
+            step: 60,
         });
         return this;
     },
@@ -211,9 +210,9 @@ OpenAssessment.DatetimeControl.prototype = {
     datetime: function(dateString, timeString) {
         var datePickerSel = $(this.datePicker, this.element);
         var timePickerSel = $(this.timePicker, this.element);
-        if (typeof(dateString) !== "undefined") { datePickerSel.val(dateString); }
-        if (typeof(timeString) !== "undefined") { timePickerSel.val(timeString); }
-        return datePickerSel.val() + "T" + timePickerSel.val();
+        if (typeof(dateString) !== 'undefined') {datePickerSel.val(dateString);}
+        if (typeof(timeString) !== 'undefined') {timePickerSel.val(timeString);}
+        return datePickerSel.val() + 'T' + timePickerSel.val();
     },
 
     /**
@@ -227,7 +226,7 @@ OpenAssessment.DatetimeControl.prototype = {
         var dateString = $(this.datePicker, this.element).val();
         var timeString = $(this.timePicker, this.element).val();
 
-        //date validation
+        // date validation
         var isDateValid = false;
 
         try {
@@ -238,14 +237,14 @@ OpenAssessment.DatetimeControl.prototype = {
             // isDateValid flag would remain false.
         }
         if (!isDateValid) {
-            $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
+            $(this.datePicker, this.element).addClass('openassessment_highlighted_field');
         }
 
-        //time validation
+        // time validation
         var matches = timeString.match(/^\d{2}:\d{2}$/g);
         var isTimeValid = (matches !== null);
         if (!isTimeValid) {
-            $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
+            $(this.timePicker, this.element).addClass('openassessment_highlighted_field');
         }
 
         return (isDateValid && isTimeValid);
@@ -255,8 +254,8 @@ OpenAssessment.DatetimeControl.prototype = {
      Clear all validation errors from the UI.
      **/
     clearValidationErrors: function() {
-        $(this.datePicker, this.element).removeClass("openassessment_highlighted_field");
-        $(this.timePicker, this.element).removeClass("openassessment_highlighted_field");
+        $(this.datePicker, this.element).removeClass('openassessment_highlighted_field');
+        $(this.timePicker, this.element).removeClass('openassessment_highlighted_field');
     },
 
     /**
@@ -269,14 +268,14 @@ OpenAssessment.DatetimeControl.prototype = {
      **/
     validationErrors: function() {
         var errors = [];
-        var dateHasError = $(this.datePicker, this.element).hasClass("openassessment_highlighted_field");
-        var timeHasError = $(this.timePicker, this.element).hasClass("openassessment_highlighted_field");
+        var dateHasError = $(this.datePicker, this.element).hasClass('openassessment_highlighted_field');
+        var timeHasError = $(this.timePicker, this.element).hasClass('openassessment_highlighted_field');
 
-        if (dateHasError) { errors.push("Date is invalid"); }
-        if (timeHasError) { errors.push("Time is invalid"); }
+        if (dateHasError) {errors.push('Date is invalid');}
+        if (timeHasError) {errors.push('Time is invalid');}
 
         return errors;
-    }
+    },
 };
 
 /**
@@ -334,7 +333,7 @@ OpenAssessment.SelectControl.prototype = {
                 }
             });
         }
-    }
+    },
 };
 
 /**
@@ -387,9 +386,9 @@ OpenAssessment.InputControl.prototype = {
         this.errors = this.validator(this.get());
 
         if (this.errors.length) {
-            this.input.addClass("openassessment_highlighted_field");
-            this.input.parent().nextAll('.message-status').text(this.errors.join(";"));
-            this.input.parent().nextAll('.message-status').addClass("is-shown");
+            this.input.addClass('openassessment_highlighted_field');
+            this.input.parent().nextAll('.message-status').text(this.errors.join(';'));
+            this.input.parent().nextAll('.message-status').addClass('is-shown');
         }
         return this.errors.length === 0;
     },
@@ -398,8 +397,8 @@ OpenAssessment.InputControl.prototype = {
      Clear any validation errors from the UI.
      **/
     clearValidationErrors: function() {
-        this.input.removeClass("openassessment_highlighted_field");
-        this.input.parent().nextAll('.message-status').removeClass("is-shown");
+        this.input.removeClass('openassessment_highlighted_field');
+        this.input.parent().nextAll('.message-status').removeClass('is-shown');
     },
 
     /**
@@ -412,5 +411,5 @@ OpenAssessment.InputControl.prototype = {
      **/
     validationErrors: function() {
         return this.errors;
-    }
+    },
 };

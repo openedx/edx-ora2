@@ -12,8 +12,9 @@
     "underscore": "^1.8.2"
   },
   "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-google": "^0.14.0",
     "jasmine": "^2.3.0",
-    "jscs": "3.0.7",
     "jshint": "2.10.2",
     "karma": "^4.3.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -29,6 +30,8 @@
     "uglify-js": "^3.5.15"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start --reporters spec,coverage"
+    "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
+    "lint": "eslint openassessment/xblock/static/js/src/**/*.js",
+    "lint-fix": "eslint --fix openassessment/xblock/static/js/src/**/*.js"
   }
 }
