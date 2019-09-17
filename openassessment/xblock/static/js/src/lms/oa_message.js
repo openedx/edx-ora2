@@ -24,12 +24,12 @@ OpenAssessment.MessageView.prototype = {
         var baseView = this.baseView;
         this.server.render('message').done(
             function(html) {
-                //Load the HTML
+                // Load the HTML
                 $('.openassessment__message', view.element).replaceWith(html);
                 view.server.renderLatex($('.openassessment__message', view.element));
             }
         ).fail(function(errMsg) {
             baseView.showLoadError('message', errMsg);
         });
-    }
+    },
 };

@@ -17,20 +17,19 @@ OpenAssessment.PeerView = function(element, server, baseView) {
     this.isRendering = false;
     this.announceStatus = false;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
-
 };
 
 OpenAssessment.PeerView.prototype = {
 
-    UNSAVED_WARNING_KEY: "peer-assessment",
+    UNSAVED_WARNING_KEY: 'peer-assessment',
 
     /**
     Load the peer assessment view.
     **/
     load: function(usageID) {
         var view = this;
-        var stepID = ".step--peer-assessment";
-        var focusID = "[id='oa_peer_" + usageID + "']";
+        var stepID = '.step--peer-assessment';
+        var focusID = '[id=\'oa_peer_' + usageID + '\']';
 
         view.isRendering = true;
         this.server.render('peer_assessment').done(
@@ -62,8 +61,8 @@ OpenAssessment.PeerView.prototype = {
     **/
     loadContinuedAssessment: function(usageID) {
         var view = this;
-        var stepID = ".step--peer-assessment";
-        var focusID = "[id='oa_peer_" + usageID + "']";
+        var stepID = '.step--peer-assessment';
+        var focusID = '[id=\'oa_peer_' + usageID + '\']';
 
         view.continueAssessmentEnabled(false);
         view.isRendering = true;
@@ -77,7 +76,6 @@ OpenAssessment.PeerView.prototype = {
                 view.installHandlers(true);
 
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
-
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -119,12 +117,11 @@ OpenAssessment.PeerView.prototype = {
         this.baseView.bindLatexPreview(sel);
 
         // Initialize the rubric
-        var rubricSelector = $(".peer-assessment--001__assessment", this.element);
+        var rubricSelector = $('.peer-assessment--001__assessment', this.element);
         if (rubricSelector.size() > 0) {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
-        }
-        else {
+        } else {
             // If there was previously a rubric visible, clear the reference to it.
             this.rubric = null;
         }
@@ -142,12 +139,11 @@ OpenAssessment.PeerView.prototype = {
                 // Override default form submission
                 eventObject.preventDefault();
 
-                //Status will change in update announce it to the Screen Reader after Render
+                // Status will change in update announce it to the Screen Reader after Render
                 view.announceStatus = true;
 
                 // Handle the click
-                if (!isContinuedAssessment) { view.peerAssess(); }
-                else { view.continuedPeerAssess(); }
+                if (!isContinuedAssessment) {view.peerAssess();} else {view.continuedPeerAssess();}
             }
         );
 
@@ -190,7 +186,8 @@ OpenAssessment.PeerView.prototype = {
             this.baseView.unsavedWarningEnabled(
                 true,
                 this.UNSAVED_WARNING_KEY,
-                gettext("If you leave this page without submitting your peer assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+                // eslint-disable-next-line max-len
+                gettext('If you leave this page without submitting your peer assessment, you will lose any work you have done.')
             );
         }
     },
@@ -205,7 +202,7 @@ OpenAssessment.PeerView.prototype = {
         this.peerAssessRequest(function() {
             baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
             baseView.loadAssessmentModules(usageID);
-            baseView.scrollToTop(".step--peer-assessment");
+            baseView.scrollToTop('.step--peer-assessment');
         });
     },
 
@@ -222,7 +219,7 @@ OpenAssessment.PeerView.prototype = {
             baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
             view.loadContinuedAssessment(usageID);
             gradeView.load();
-            baseView.scrollToTop(".step--peer-assessment");
+            baseView.scrollToTop('.step--peer-assessment');
         });
     },
 
@@ -260,7 +257,7 @@ OpenAssessment.PeerView.prototype = {
     Get uuid of a peer assessment.
     **/
     getUUID: function() {
-        var xBlockElement = $("div[data-usage-id='" + this.baseView.getUsageID() + "']");
+        var xBlockElement = $('div[data-usage-id=\'' + this.baseView.getUsageID() + '\']');
         return xBlockElement.find('.step--peer-assessment').data('submission-uuid');
-    }
+    },
 };

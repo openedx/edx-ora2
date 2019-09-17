@@ -11,7 +11,6 @@ OpenAssessment.StaffView = function(element, server, baseView) {
     this.baseView = baseView;
     this.isRendering = false;
     this.announceStatus = false;
-
 };
 
 OpenAssessment.StaffView.prototype = {
@@ -21,8 +20,8 @@ OpenAssessment.StaffView.prototype = {
      **/
     load: function(usageID) {
         var view = this;
-        var stepID = ".step--staff-assessment";
-        var focusID = "[id='oa_staff_grade_" + usageID + "']";
+        var stepID = '.step--staff-assessment';
+        var focusID = '[id=\'oa_staff_grade_' + usageID + '\']';
         view.isRendering = true;
 
         this.server.render('staff_assessment').done(

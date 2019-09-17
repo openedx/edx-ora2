@@ -23,7 +23,7 @@ OpenAssessment.DateTimeFactory.prototype = {
             datetime: el.data('datetime'),
             timezone: el.data('timezone'),
             language: el.data('language'),
-            format: ''
+            format: '',
         };
         return context;
     },
@@ -43,40 +43,39 @@ OpenAssessment.DateTimeFactory.prototype = {
             require([
                 'jquery',
                 'edx-ui-toolkit/js/utils/date-utils',
-                'edx-ui-toolkit/js/utils/string-utils'
-                ], function($, DateUtils, StringUtils) {
+                'edx-ui-toolkit/js/utils/string-utils',
+            ], function($, DateUtils, StringUtils) {
+                var context;
+                var localTimeString;
+                var displayDatetime;
+                var interpolateDict = {};
 
-                    var context;
-                    var localTimeString;
-                    var displayDatetime;
-                    var interpolateDict = {};
+                if (dtFactory.isValid(el.data('datetime'))) {
+                    context = dtFactory.determineContext(el);
+                    if (dtFactory.isValid(el.data('format'))) {
+                        context.format = DateUtils.dateFormatEnum[el.data('format')];
+                    }
 
-                    if (dtFactory.isValid(el.data('datetime'))) {
-                        context = dtFactory.determineContext(el);
-                        if (dtFactory.isValid(el.data('format'))) {
-                            context.format = DateUtils.dateFormatEnum[el.data('format')];
-                        }
+                    localTimeString = DateUtils.localize(context);
 
-                        localTimeString = DateUtils.localize(context);
+                    interpolateDict[dtFactory.determineDateToken(el)] = localTimeString;
 
-                        interpolateDict[dtFactory.determineDateToken(el)] = localTimeString;
-
-                        if (dtFactory.isValid(el.data('string'))) {
-                            displayDatetime = StringUtils.interpolate(
-                                el.data('string'),
-                                interpolateDict
-                            );
-                        } else {
-                            displayDatetime = localTimeString;
-                        }
-                    } else {
+                    if (dtFactory.isValid(el.data('string'))) {
                         displayDatetime = StringUtils.interpolate(
                             el.data('string'),
                             interpolateDict
                         );
+                    } else {
+                        displayDatetime = localTimeString;
                     }
-                    el.text(displayDatetime);
+                } else {
+                    displayDatetime = StringUtils.interpolate(
+                        el.data('string'),
+                        interpolateDict
+                    );
                 }
+                el.text(displayDatetime);
+            }
             );
         }).call(this, require || RequireJS.require);
     },
@@ -86,5 +85,5 @@ OpenAssessment.DateTimeFactory.prototype = {
             candidateVariable !== '' &&
             candidateVariable !== 'Invalid date' &&
             candidateVariable !== 'None';
-    }
+    },
 };

@@ -9,9 +9,9 @@
 
         this.$section = $section;
         this.runtime = runtime;
-        this.oraData = $.parseJSON($("#open-response-assessment-items").text());
+        this.oraData = $.parseJSON($('#open-response-assessment-items').text());
 
-        $section.find(".open-response-assessment-content").hide();
+        $section.find('.open-response-assessment-content').hide();
         $section.find('.open-response-assessment-item').hide();
         $section.find('.open-response-assessment-msg').show();
 
@@ -20,70 +20,70 @@
             render: function() {
                 this.$el.empty();
                 var url = this.model.get(this.staff ? 'url_grade_available_responses' : 'url_base');
-                var rawValue = this.model.get(this.column.get("name"));
+                var rawValue = this.model.get(this.column.get('name'));
                 var staffAssessment = this.model.get('staff_assessment');
                 var formattedValue = this.formatter.fromRaw(rawValue, this.model);
                 var link = null;
                 if (itemViewEnabled && (!this.staff || (this.staff && staffAssessment))) {
-                    link = $("<a>", {
+                    link = $('<a>', {
                         text: formattedValue,
-                        title: this.title || formattedValue
+                        title: this.title || formattedValue,
                     });
                     this.$el.append(link);
-                    link.on("click", $.proxy(self, "displayOraBlock", url));
+                    link.on('click', $.proxy(self, 'displayOraBlock', url));
                 } else {
                     this.$el.append(formattedValue);
                 }
                 this.delegateEvents();
                 return this;
-            }
+            },
         });
 
         var StaffCell = AssessmentCell.extend({
-            staff: true
+            staff: true,
         });
 
         this._columns = [
             {
-                name: 'parent_name', label: gettext("Unit Name"), label_summary: gettext("Units"),
-                cell: "string", num: false, editable: false
+                name: 'parent_name', label: gettext('Unit Name'), label_summary: gettext('Units'),
+                cell: 'string', num: false, editable: false,
             },
             {
-                name: 'name', label: gettext("Assessment"), label_summary: gettext("Assessments"),
-                cell: AssessmentCell, num: false, editable: false
+                name: 'name', label: gettext('Assessment'), label_summary: gettext('Assessments'),
+                cell: AssessmentCell, num: false, editable: false,
             },
             {
-                name: 'total', label: gettext("Total Responses"), label_summary: gettext("Total Responses"),
-                cell: "string", num: true, editable: false
+                name: 'total', label: gettext('Total Responses'), label_summary: gettext('Total Responses'),
+                cell: 'string', num: true, editable: false,
             },
             {
-                name: 'training', label: gettext("Training"), label_summary: gettext("Training"),
-                cell: "string", num: true, editable: false
+                name: 'training', label: gettext('Training'), label_summary: gettext('Training'),
+                cell: 'string', num: true, editable: false,
             },
             {
-                name: 'peer', label: gettext("Peer"), label_summary: gettext("Peer"),
-                cell: "string", num: true, editable: false
+                name: 'peer', label: gettext('Peer'), label_summary: gettext('Peer'),
+                cell: 'string', num: true, editable: false,
             },
             {
-                name: 'self', label: gettext("Self"), label_summary: gettext("Self"),
-                cell: "string", num: true, editable: false
+                name: 'self', label: gettext('Self'), label_summary: gettext('Self'),
+                cell: 'string', num: true, editable: false,
             },
             {
-                name: 'waiting', label: gettext("Waiting"), label_summary: gettext("Waiting"),
-                cell: "string", num: true, editable: false
+                name: 'waiting', label: gettext('Waiting'), label_summary: gettext('Waiting'),
+                cell: 'string', num: true, editable: false,
             },
             {
-                name: 'staff', label: gettext("Staff"), label_summary: gettext("Staff"),
-                cell: StaffCell, num: true, editable: false
+                name: 'staff', label: gettext('Staff'), label_summary: gettext('Staff'),
+                cell: StaffCell, num: true, editable: false,
             },
             {
                 name: 'done',
-                label: gettext("Final Grade Received"),
-                label_summary: gettext("Final Grade Received"),
-                cell: "string",
+                label: gettext('Final Grade Received'),
+                label_summary: gettext('Final Grade Received'),
+                cell: 'string',
                 num: true,
-                editable: false
-            }
+                editable: false,
+            },
         ];
     };
 
@@ -97,19 +97,20 @@
         var dataRendered = parseInt(block.data('rendered'));
 
         if (!dataRendered || force) {
+            // eslint-disable-next-line new-cap
             return $.Deferred(
                 function(defer) {
                     $.ajax({
                         type: 'GET',
                         dataType: 'json',
-                        url: dataUrl
+                        url: dataUrl,
                     }).done(function(data) {
                         self.renderGrids(data);
                         defer.resolve();
                     }).fail(function(data, textStatus) {
                         $section.find('.open-response-assessment-msg')
-                                .text(gettext('List of Open Assessments is unavailable'));
-                        defer.rejectWith(this, [textStatus]);
+                            .text(gettext('List of Open Assessments is unavailable'));
+                        defer.rejectWith(self, [textStatus]);
                     });
                 }
             ).promise();
@@ -156,17 +157,16 @@
         var summaryData = [];
         var summaryDataMap = {};
 
-        $section.find(".open-response-assessment-summary").empty();
+        $section.find('.open-response-assessment-summary').empty();
 
         $.each(this._columns, function(index, v) {
             summaryData.push({
                 title: v.label_summary,
                 value: 0,
                 num: v.num,
-                class: v.name
+                class: v.name,
             });
             summaryDataMap[v.name] = index;
-
         });
 
         $.each(data, function(index, obj) {
@@ -184,8 +184,8 @@
         });
 
         var templateData = _.template($('#open-response-assessment-summary-tpl').text());
-        $section.find(".open-response-assessment-summary").append(templateData({
-            oraSummary: summaryData
+        $section.find('.open-response-assessment-summary').append(templateData({
+            oraSummary: summaryData,
         }));
     };
 
@@ -194,29 +194,30 @@
         $section.find('.open-response-assessment-content').show();
         var collection = new Backbone.Collection(data);
 
-        $section.find(".open-response-assessment-main-table").empty();
+        $section.find('.open-response-assessment-main-table').empty();
 
         var grid = new Backgrid.Grid({
             columns: this._columns,
-            collection: collection
+            collection: collection,
         });
 
-        $section.find(".open-response-assessment-main-table").append(grid.render().el);
+        $section.find('.open-response-assessment-main-table').append(grid.render().el);
     };
 
     OpenAssessment.CourseItemsListingView.prototype.displayOraBlock = function(url) {
         var $section = this.$section;
         var self = this;
 
-        $section.find(".open-response-assessment-content").hide();
+        $section.find('.open-response-assessment-content').hide();
         $section.find('.open-response-assessment-msg').text(gettext('Please wait')).show();
 
+        // eslint-disable-next-line new-cap
         return $.Deferred(
             function(defer) {
                 $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: url
+                    url: url,
                 }).done(function(data) {
                     var el = $section.find('.open-response-assessment-item');
                     var block = el.find('.open-response-assessment-item-block');
@@ -232,10 +233,10 @@
                 }).fail(function(data, textStatus) {
                     $section.find('.open-response-assessment-item').show();
                     $section.find('.open-response-assessment-msg')
-                            .text(gettext('Block view is unavailable'));
+                        .text(gettext('Block view is unavailable'));
 
                     self.renderBreadcrumbs();
-                    defer.rejectWith(this, [textStatus]);
+                    defer.rejectWith(self, [textStatus]);
                 });
             }
         ).promise();
@@ -243,21 +244,21 @@
 
     OpenAssessment.CourseItemsListingView.prototype.renderBreadcrumbs = function() {
         var $section = this.$section;
-        var breadcrumbs = $section.find(".open-response-assessment-item-breadcrumbs");
+        var breadcrumbs = $section.find('.open-response-assessment-item-breadcrumbs');
         var text = gettext('Back to Full List');
-        var fullListItem = $("<a>", {
+        var fullListItem = $('<a>', {
             html: '&larr;&nbsp;' + text,
-            title: text
+            title: text,
         });
 
         breadcrumbs.append(fullListItem);
-        fullListItem.on("click", $.proxy(this, "backToOpenResponsesGrid"));
+        fullListItem.on('click', $.proxy(this, 'backToOpenResponsesGrid'));
     };
 
     OpenAssessment.CourseItemsListingView.prototype.backToOpenResponsesGrid = function() {
         var $section = this.$section;
-        $section.find(".open-response-assessment-item-breadcrumbs").empty();
-        $section.find(".open-response-assessment-item-block").empty();
+        $section.find('.open-response-assessment-item-breadcrumbs').empty();
+        $section.find('.open-response-assessment-item-block').empty();
         $section.find('.open-response-assessment-item').hide();
         $section.find('.open-response-assessment-msg').text(gettext('Please wait')).show();
         this.refreshGrids(true);

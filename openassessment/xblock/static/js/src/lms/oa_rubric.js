@@ -38,8 +38,7 @@ OpenAssessment.Rubric.prototype = {
                 if (typeof criterionFeedback !== 'undefined') {
                     $(sel).val(criterionFeedback[criterionName]);
                     feedback[criterionName] = criterionFeedback[criterionName];
-                }
-                else {
+                } else {
                     feedback[criterionName] = $(sel).val();
                 }
             }
@@ -66,8 +65,7 @@ OpenAssessment.Rubric.prototype = {
         var selector = '.assessment__rubric__question--feedback__value';
         if (typeof overallFeedback === 'undefined') {
             return $(selector, this.element).val();
-        }
-        else {
+        } else {
             $(selector, this.element).val(overallFeedback);
         }
     },
@@ -89,18 +87,17 @@ OpenAssessment.Rubric.prototype = {
 
     **/
     optionsSelected: function(optionsSelected) {
-        var selector = "input[type=radio]";
+        var selector = 'input[type=radio]';
         var rubric = this;
         if (typeof optionsSelected === 'undefined') {
             var options = {};
-            $(selector + ":checked", this.element).each(
+            $(selector + ':checked', this.element).each(
                 function(index, sel) {
                     options[rubric.getCriterionName(sel)] = sel.value;
                 }
             );
             return options;
-        }
-        else {
+        } else {
             // Uncheck all the options
             $(selector, this.element).prop('checked', false);
 
@@ -133,7 +130,7 @@ OpenAssessment.Rubric.prototype = {
 
         // Install a handler to update on change
         $(this.element).on('change keyup drop paste',
-            function() { callback(rubric.canSubmit()); }
+            function() {callback(rubric.canSubmit());}
         );
     },
 
@@ -151,7 +148,7 @@ OpenAssessment.Rubric.prototype = {
         var completedRequiredComments = true;
         $('textarea[required]', this.element).each(function() {
             var trimmedText = $.trim($(this).val());
-            if (trimmedText === "") {
+            if (trimmedText === '') {
                 completedRequiredComments = false;
             }
         });
@@ -173,14 +170,14 @@ OpenAssessment.Rubric.prototype = {
 
         // Install a handler to update on change
         $(this.element).on('change keyup drop paste',
-            function() { callback(rubric.changesExist()); }
+            function() {callback(rubric.changesExist());}
         );
     },
 
     /**
      * Helper method for determining of unsubmitted changes exist in the rubric.
      *
-     * @returns {boolean} true if unsubmitted changes exist.
+     * @return {boolean} true if unsubmitted changes exist.
      */
     changesExist: function() {
         var numChecked = $('input[type=radio]:checked', this.element).length;
@@ -188,7 +185,7 @@ OpenAssessment.Rubric.prototype = {
 
         $('textarea', this.element).each(function() {
             var trimmedText = $.trim($(this).val());
-            if (trimmedText !== "") {
+            if (trimmedText !== '') {
                 textExists = true;
             }
         });
@@ -209,12 +206,12 @@ OpenAssessment.Rubric.prototype = {
         True if there were errors found, False if there are no corrections.
      **/
     showCorrections: function(corrections) {
-        var selector = "input[type=radio]";
+        var selector = 'input[type=radio]';
         var hasErrors = false;
         var rubric = this;
         // Display appropriate messages for each selection
         $(selector, this.element).each(function(index, sel) {
-            var listItem = $(sel).parents(".assessment__rubric__question");
+            var listItem = $(sel).parents('.assessment__rubric__question');
             if (corrections.hasOwnProperty(rubric.getCriterionName(sel))) {
                 hasErrors = true;
                 listItem.find('.message--incorrect').removeClass('is--hidden');
@@ -231,9 +228,9 @@ OpenAssessment.Rubric.prototype = {
      * Gets the criterion name out of the data on the provided DOM element.
      *
      * @param {object} element
-     * @returns {String} value stored as data-criterion-name
+     * @return {String} value stored as data-criterion-name
      */
     getCriterionName: function(element) {
         return $(element).data('criterion-name');
-    }
+    },
 };

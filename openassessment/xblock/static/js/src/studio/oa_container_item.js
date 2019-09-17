@@ -15,7 +15,7 @@ OpenAssessment.ItemUtilities = {
     createUniqueName: function(selector, nameAttribute) {
         var index = 0;
         while (index <= selector.length) {
-            if (selector.parent().find("*[" + nameAttribute + "='" + index + "']").length === 0) {
+            if (selector.parent().find('*[' + nameAttribute + '=\'' + index + '\']').length === 0) {
                 return index.toString();
             }
             index++;
@@ -35,33 +35,29 @@ OpenAssessment.ItemUtilities = {
         var label = $(element).attr('data-label');
         var name = $(element).val();
         // We don't want the lack of a label to make it look like - 1 points.
-        if (label === "") {
+        if (label === '') {
             label = gettext('Unnamed Option');
         }
-        var singularString = label + " - " + points + " point";
-        var multipleString = label + " - " + points + " points";
+        var singularString = label + ' - ' + points + ' point';
+        var multipleString = label + ' - ' + points + ' points';
 
         // If the option's name value is the empty string, that indicates to us that it is not a user-specified option,
         // but represents the "Not Selected" option which all criterion drop-downs have. This is an acceptable
         // assumption because we require name (option value) to be a unique identifier for each option.
-        var finalLabel = "";
+        var finalLabel = '';
         if (name === '') {
             finalLabel = gettext('Not Selected');
-        }
-
-        // If the points are invalid, we'll be given NaN
-        // Don't show this to the user.
-        else if (isNaN(points)) {
+        } else if (isNaN(points)) {
+            // If the points are invalid, we'll be given NaN
+            // Don't show this to the user.
             finalLabel = label;
-        }
-
-        // Otherwise, set the text of the option element to be the properly conjugated, translated string.
-        else {
+        } else {
+            // Otherwise, set the text of the option element to be the properly conjugated, translated string.
             finalLabel = ngettext(singularString, multipleString, points);
         }
 
         $(element).text(finalLabel);
-    }
+    },
 };
 
 /**
@@ -110,7 +106,7 @@ OpenAssessment.Prompt.prototype = {
             var newElId = Date.now() + '-textarea-' + (Math.random() * 100);
             $(textarea).attr('id', newElId).tinymce(oaTinyMCE(
                 {
-                    base_asset_url: $('#openassessment_prompt_template').data("baseAssetUrl")
+                    base_asset_url: $('#openassessment_prompt_template').data('baseAssetUrl'),
                 }
             ));
         }
@@ -128,7 +124,7 @@ OpenAssessment.Prompt.prototype = {
      **/
     getFieldValues: function() {
         var fields = {
-            description: this.description()
+            description: this.description(),
         };
         return fields;
     },
@@ -166,9 +162,9 @@ OpenAssessment.Prompt.prototype = {
      */
     addHandler: function() {
         this.notifier.notificationFired(
-            "promptAdd",
+            'promptAdd',
             {
-                "index": this.element.index()
+                'index': this.element.index(),
             }
         );
     },
@@ -179,9 +175,9 @@ OpenAssessment.Prompt.prototype = {
      */
     removeHandler: function() {
         this.notifier.notificationFired(
-            "promptRemove",
+            'promptRemove',
             {
-                "index": this.element.index()
+                'index': this.element.index(),
             }
         );
     },
@@ -214,7 +210,7 @@ OpenAssessment.Prompt.prototype = {
     /**
      Clear all validation errors from the UI.
      **/
-    clearValidationErrors: function() {}
+    clearValidationErrors: function() {},
 };
 
 /**
@@ -232,7 +228,7 @@ OpenAssessment.RubricOption = function(element, notifier) {
     this.element = element;
     this.notifier = notifier;
     this.pointsField = new OpenAssessment.IntField(
-        $(".openassessment_criterion_option_points", this.element),
+        $('.openassessment_criterion_option_points', this.element),
         {min: 0, max: 999}
     );
 };
@@ -261,7 +257,7 @@ OpenAssessment.RubricOption.prototype = {
         var fields = {
             label: this.label(),
             points: this.points(),
-            explanation: this.explanation()
+            explanation: this.explanation(),
         };
 
         // New options won't have unique names assigned.
@@ -270,7 +266,7 @@ OpenAssessment.RubricOption.prototype = {
         var nameString = OpenAssessment.Fields.stringField(
             $('.openassessment_criterion_option_name', this.element)
         );
-        if (nameString !== "") { fields.name = nameString; }
+        if (nameString !== '') {fields.name = nameString;}
 
         return fields;
     },
@@ -301,7 +297,7 @@ OpenAssessment.RubricOption.prototype = {
 
      **/
     points: function(points) {
-        if (points !== undefined) { this.pointsField.set(points); }
+        if (points !== undefined) {this.pointsField.set(points);}
         return this.pointsField.get();
     },
 
@@ -325,29 +321,28 @@ OpenAssessment.RubricOption.prototype = {
 
      */
     addHandler: function() {
-
-        var criterionElement = $(this.element).closest(".openassessment_criterion");
+        var criterionElement = $(this.element).closest('.openassessment_criterion');
         var criterionName = $(criterionElement).data('criterion');
-        var criterionLabel = $(".openassessment_criterion_label", criterionElement).val();
-        var options = $(".openassessment_criterion_option", this.element.parent());
+        var criterionLabel = $('.openassessment_criterion_label', criterionElement).val();
+        var options = $('.openassessment_criterion_option', this.element.parent());
         // Create the unique name for this option.
-        var name = OpenAssessment.ItemUtilities.createUniqueName(options, "data-option");
+        var name = OpenAssessment.ItemUtilities.createUniqueName(options, 'data-option');
 
         // Set the criterion name and option name in the new rubric element.
         $(this.element)
-            .attr("data-criterion", criterionName)
-            .attr("data-option", name);
-        $(".openassessment_criterion_option_name", this.element).attr("value", name);
+            .attr('data-criterion', criterionName)
+            .attr('data-option', name);
+        $('.openassessment_criterion_option_name', this.element).attr('value', name);
 
         var fields = this.getFieldValues();
         this.notifier.notificationFired(
-            "optionAdd",
+            'optionAdd',
             {
-                "criterionName": criterionName,
-                "criterionLabel": criterionLabel,
-                "name": name,
-                "label": fields.label,
-                "points": fields.points
+                'criterionName': criterionName,
+                'criterionLabel': criterionLabel,
+                'name': name,
+                'label': fields.label,
+                'points': fields.points,
             }
         );
     },
@@ -360,10 +355,10 @@ OpenAssessment.RubricOption.prototype = {
         var criterionName = $(this.element).data('criterion');
         var optionName = $(this.element).data('option');
         this.notifier.notificationFired(
-            "optionRemove",
+            'optionRemove',
             {
-                "criterionName": criterionName,
-                "name": optionName
+                'criterionName': criterionName,
+                'name': optionName,
             }
         );
     },
@@ -380,12 +375,12 @@ OpenAssessment.RubricOption.prototype = {
         var optionLabel = fields.label;
         var optionPoints = fields.points;
         this.notifier.notificationFired(
-            "optionUpdated",
+            'optionUpdated',
             {
-                "criterionName": criterionName,
-                "name": optionName,
-                "label": optionLabel,
-                "points": optionPoints
+                'criterionName': criterionName,
+                'name': optionName,
+                'label': optionLabel,
+                'points': optionPoints,
             }
         );
     },
@@ -411,7 +406,7 @@ OpenAssessment.RubricOption.prototype = {
      **/
     validationErrors: function() {
         var hasError = (this.pointsField.validationErrors().length > 0);
-        return hasError ? ["Option points are invalid"] : [];
+        return hasError ? ['Option points are invalid'] : [];
     },
 
     /**
@@ -419,7 +414,7 @@ OpenAssessment.RubricOption.prototype = {
      **/
     clearValidationErrors: function() {
         this.pointsField.clearValidationErrors();
-    }
+    },
 };
 
 /**
@@ -440,12 +435,12 @@ OpenAssessment.RubricCriterion = function(element, notifier) {
     this.promptSel = $('.openassessment_criterion_prompt', this.element);
     this.optionContainer = new OpenAssessment.Container(
         OpenAssessment.RubricOption, {
-            containerElement: $(".openassessment_criterion_option_list", this.element).get(0),
-            templateElement: $("#openassessment_option_template").get(0),
-            addButtonElement: $(".openassessment_criterion_add_option", this.element).get(0),
-            removeButtonClass: "openassessment_criterion_option_remove_button",
-            containerItemClass: "openassessment_criterion_option",
-            notifier: this.notifier
+            containerElement: $('.openassessment_criterion_option_list', this.element).get(0),
+            templateElement: $('#openassessment_option_template').get(0),
+            addButtonElement: $('.openassessment_criterion_add_option', this.element).get(0),
+            removeButtonClass: 'openassessment_criterion_option_remove_button',
+            containerItemClass: 'openassessment_criterion_option',
+            notifier: this.notifier,
         }
     );
 };
@@ -486,7 +481,7 @@ OpenAssessment.RubricCriterion.prototype = {
             label: this.label(),
             prompt: this.prompt(),
             feedback: this.feedback(),
-            options: this.optionContainer.getItemValues()
+            options: this.optionContainer.getItemValues(),
         };
 
         // New criteria won't have unique names assigned.
@@ -495,7 +490,7 @@ OpenAssessment.RubricCriterion.prototype = {
         var nameString = OpenAssessment.Fields.stringField(
             $('.openassessment_criterion_name', this.element)
         );
-        if (nameString !== "") { fields.name = nameString; }
+        if (nameString !== '') {fields.name = nameString;}
 
         return fields;
     },
@@ -553,12 +548,12 @@ OpenAssessment.RubricCriterion.prototype = {
 
      */
     addHandler: function() {
-        var criteria = $(".openassessment_criterion", this.element.parent());
+        var criteria = $('.openassessment_criterion', this.element.parent());
         // Create the unique name for this option.
-        var name = OpenAssessment.ItemUtilities.createUniqueName(criteria, "data-criterion");
+        var name = OpenAssessment.ItemUtilities.createUniqueName(criteria, 'data-criterion');
         // Set the criterion name in the new rubric element.
-        $(this.element).attr("data-criterion", name);
-        $(".openassessment_criterion_name", this.element).attr("value", name);
+        $(this.element).attr('data-criterion', name);
+        $('.openassessment_criterion_name', this.element).attr('value', name);
     },
 
     /**
@@ -567,7 +562,7 @@ OpenAssessment.RubricCriterion.prototype = {
      */
     removeHandler: function() {
         var criterionName = $(this.element).data('criterion');
-        this.notifier.notificationFired("criterionRemove", {'criterionName': criterionName});
+        this.notifier.notificationFired('criterionRemove', {'criterionName': criterionName});
     },
 
     /**
@@ -579,7 +574,7 @@ OpenAssessment.RubricCriterion.prototype = {
         var criterionName = fields.name;
         var criterionLabel = fields.label;
         this.notifier.notificationFired(
-            "criterionUpdated",
+            'criterionUpdated',
             {'criterionName': criterionName, 'criterionLabel': criterionLabel}
         );
     },
@@ -593,10 +588,10 @@ OpenAssessment.RubricCriterion.prototype = {
      **/
     validate: function() {
         // The criterion prompt is required.
-        var isValid = (this.prompt() !== "");
+        var isValid = (this.prompt() !== '');
 
         if (!isValid) {
-            this.promptSel.addClass("openassessment_highlighted_field");
+            this.promptSel.addClass('openassessment_highlighted_field');
         }
 
         // All options must be valid
@@ -619,7 +614,7 @@ OpenAssessment.RubricCriterion.prototype = {
 
         // Criterion prompt errors
         if (this.promptSel.hasClass('openassessment_highlighted_field')) {
-            errors.push("Criterion prompt is invalid.");
+            errors.push('Criterion prompt is invalid.');
         }
 
         // Option errors
@@ -635,13 +630,13 @@ OpenAssessment.RubricCriterion.prototype = {
      **/
     clearValidationErrors: function() {
         // Clear criterion prompt errors
-        this.promptSel.removeClass("openassessment_highlighted_field");
+        this.promptSel.removeClass('openassessment_highlighted_field');
 
         // Clear option errors
         $.each(this.optionContainer.getAllItems(), function() {
             this.clearValidationErrors();
         });
-    }
+    },
 };
 
 /**
@@ -656,7 +651,7 @@ OpenAssessment.RubricCriterion.prototype = {
  **/
 OpenAssessment.TrainingExample = function(element) {
     this.element = element;
-    this.criteria = $(".openassessment_training_example_criterion_option", this.element);
+    this.criteria = $('.openassessment_training_example_criterion_option', this.element);
     this.answer = $('.openassessment_training_example_essay_part textarea', this.element);
 };
 
@@ -665,14 +660,13 @@ OpenAssessment.TrainingExample.prototype = {
      Returns the values currently stored in the fields associated with this training example.
      **/
     getFieldValues: function() {
-
         // Iterates through all of the options selected by the training example, and adds them
         // to a list.
         var optionsSelected = this.criteria.map(
             function() {
                 return {
                     criterion: $(this).data('criterion'),
-                    option: $(this).prop('value')
+                    option: $(this).prop('value'),
                 };
             }
         ).get();
@@ -681,13 +675,13 @@ OpenAssessment.TrainingExample.prototype = {
             answer: this.answer.map(function() {
                 return $(this).prop('value');
             }).get(),
-            options_selected: optionsSelected
+            options_selected: optionsSelected,
         };
     },
 
     addHandler: function() {
         // Goes through and instantiates the option description in the training example for each option.
-        $(".openassessment_training_example_criterion_option", this.element) .each(function() {
+        $('.openassessment_training_example_criterion_option', this.element) .each(function() {
             $('option', this).each(function() {
                 OpenAssessment.ItemUtilities.refreshOptionString($(this));
             });
@@ -709,11 +703,11 @@ OpenAssessment.TrainingExample.prototype = {
 
         this.criteria.each(
             function() {
-                var isOptionValid = ($(this).prop('value') !== "");
+                var isOptionValid = ($(this).prop('value') !== '');
                 isValid = isOptionValid && isValid;
 
                 if (!isOptionValid) {
-                    $(this).addClass("openassessment_highlighted_field");
+                    $(this).addClass('openassessment_highlighted_field');
                 }
             }
         );
@@ -733,9 +727,9 @@ OpenAssessment.TrainingExample.prototype = {
         var errors = [];
         this.criteria.each(
             function() {
-                var hasError = $(this).hasClass("openassessment_highlighted_field");
+                var hasError = $(this).hasClass('openassessment_highlighted_field');
                 if (hasError) {
-                    errors.push("Student training example is invalid.");
+                    errors.push('Student training example is invalid.');
                 }
             }
         );
@@ -751,7 +745,7 @@ OpenAssessment.TrainingExample.prototype = {
      **/
     clearValidationErrors: function() {
         this.criteria.each(
-            function() { $(this).removeClass("openassessment_highlighted_field"); }
+            function() {$(this).removeClass('openassessment_highlighted_field');}
         );
-    }
+    },
 };
