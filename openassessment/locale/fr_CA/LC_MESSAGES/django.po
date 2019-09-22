@@ -63,7 +63,7 @@
 # Pedro Guimarães Martins <pedrogmartins7@gmail.com>, 2014
 # PETIT Yannick <yannick.petit@gmail.com>, 2013
 # Philippe Chiu <philippe.chiu@gmail.com>, 2013
-# Pierre-Emmanuel Colas <pecolas44@gmail.com>, 2015
+# Pierre-Emmanuel Colas <transiflex@atnock.fr>, 2015
 # Pierre Mailhot <pierre.mailhot@gmail.com>, 2016-2018
 # Pierre Roland Bonvin <pierre@bonvin.name>, 2016
 # qcappart <quentin.c@swing.be>, 2014
