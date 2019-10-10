@@ -254,7 +254,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
         # Create all but the last peer assessment of the current user; no peer grade will be available
         graded_by = xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
-        for scorer_sub, scorer_name, assessment in zip(scorer_subs, self.PEERS, PEER_ASSESSMENTS)[:-1]:
+        for scorer_sub, scorer_name, assessment in list(zip(scorer_subs, self.PEERS, PEER_ASSESSMENTS))[:-1]:
             self.create_peer_assessment(
                 scorer_sub,
                 scorer_name,

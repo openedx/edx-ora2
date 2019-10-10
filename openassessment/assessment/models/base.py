@@ -109,7 +109,7 @@ class Rubric(models.Model):
         rubric_dict.pop("content_hash", None)
 
         canonical_form = json.dumps(rubric_dict, sort_keys=True)
-        return sha1(canonical_form).hexdigest()
+        return sha1(canonical_form.encode('utf-8')).hexdigest()
 
     @staticmethod
     def structure_hash_from_dict(rubric_dict):
@@ -141,7 +141,7 @@ class Rubric(models.Model):
             for criterion in rubric_dict.get('criteria', [])
         ]
         canonical_form = json.dumps(structure, sort_keys=True)
-        return sha1(canonical_form).hexdigest()
+        return sha1(canonical_form.encode('utf-8')).hexdigest()
 
 
 class Criterion(models.Model):
