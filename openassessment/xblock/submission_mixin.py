@@ -189,12 +189,26 @@ class SubmissionMixin(object):
                     "openassessmentblock.save_submission",
                     {"saved_response": self.saved_response}
                 )
+
+                # unique_uuid = get_uuid()
+
+                # uuid = celery_task_function(student_sub_data, unique_uuid)
+
+
+                # def celery_task_function(student_date, uuid):
+                #     resp = run_code(student_date)
+                #     save_response_to_cache(key=uuid, response=resp)
+
+
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
                 return {'success': True, 'msg': u''}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
+
+        # def get_result(uuid):
+        #     get_from_cache(key=uuid)
 
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -260,7 +274,7 @@ class SubmissionMixin(object):
                         "descriptions {files_descriptions}".format(
                             student_item_dict=student_item_dict,
                             student_sub_data=student_sub_data,
-                            files_descriptions=files_descriptions 
+                            files_descriptions=files_descriptions
                         )
                     )
                 if key_to_save:

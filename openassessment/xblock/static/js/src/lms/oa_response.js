@@ -64,11 +64,12 @@ OpenAssessment.ResponseView.prototype = {
                 $(stepID, view.element).replaceWith(html);
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
-                view.setAutoSaveEnabled(true);
+                view.setAutoSaveEnabled(false);
                 view.isRendering = false;
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
                 view.dateFactory.apply();
+                view.disableCodeOutputArea();
             }
         ).fail(function() {
             view.baseView.showLoadError('response');
@@ -89,7 +90,7 @@ OpenAssessment.ResponseView.prototype = {
         this.baseView.setUpCollapseExpand(sel);
 
         // Install change handler for textarea (to enable submission button)
-        this.savedResponse = this.response();
+        this.savedResponse = this.response('load');
         var handleChange = function() {view.handleResponseChanged();};
         sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
 
@@ -143,6 +144,32 @@ OpenAssessment.ResponseView.prototype = {
         );
     },
 
+    /*
+
+     */
+    getPrompts: function(){
+        return $('.response__submission .submission__answer__part__text__value', this.element);
+    },
+    /**
+     Disable every second prompt on loading ORA
+     **/
+    disableCodeOutputArea: function(){
+        var sel = $('.response__submission .submission__answer__part__text__value', this.element);
+        sel.map(function (index) {
+            if(index%2!==0){
+                $(this).prop('readonly', true);
+            }
+        });
+    },
+
+    /*
+    Update code area with run result
+     */
+    updateCodeOutput: function(output){
+    var sel = this.getPrompts();
+    $(sel[1]).val(output);
+    },
+
     /**
      Enable or disable autosave polling.
 
@@ -175,7 +202,7 @@ OpenAssessment.ResponseView.prototype = {
      *
      */
     checkSubmissionAbility: function(filesFiledIsNotBlank) {
-        var textFieldsIsNotBlank = !this.response().every(function(element) {
+        var textFieldsIsNotBlank = !this.response('save').every(function(element) {
             return $.trim(element) === '';
         });
 
@@ -208,7 +235,7 @@ OpenAssessment.ResponseView.prototype = {
      *
      */
     checkSaveAbility: function() {
-        var textFieldsIsNotBlank = !this.response().every(function(element) {
+        var textFieldsIsNotBlank = !this.response('save').every(function(element) {
             return $.trim(element) === '';
         });
 
@@ -322,17 +349,27 @@ OpenAssessment.ResponseView.prototype = {
      Returns:
      array of strings: The current response texts.
      **/
-    response: function(texts) {
+    response: function(action) {
         var sel = $('.response__submission .submission__answer__part__text__value', this.element);
-        if (typeof texts === 'undefined') {
+        if(action==='load' || action==='save'){
+            var out_list = $(sel[0]).val().split();
+            out_list.push(' ');
+            return out_list;
+        }
+        else if(action==='submit'){
             return sel.map(function() {
                 return $.trim($(this).val());
             }).get();
-        } else {
-            sel.map(function(index) {
-                $(this).val(texts[index]);
-            });
         }
+        // if (typeof texts === 'undefined') {
+        //     return sel.map(function() {
+        //         return $.trim($(this).val());
+        //     }).get()[0].split();
+        // } else {
+        //     sel.map(function(index) {
+        //         $(this).val(texts[index]);
+        //     });
+        // }
     },
 
     /**
@@ -342,7 +379,7 @@ OpenAssessment.ResponseView.prototype = {
      **/
     responseChanged: function() {
         var savedResponse = this.savedResponse;
-        return this.response().some(function(element, index) {
+        return this.response('save').some(function(element, index) {
             return element !== savedResponse[index];
         });
     },
@@ -411,7 +448,7 @@ OpenAssessment.ResponseView.prototype = {
         this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
 
         var view = this;
-        var savedResponse = this.response();
+        var savedResponse = this.response('save');
         this.server.save(savedResponse).done(function() {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
@@ -420,7 +457,7 @@ OpenAssessment.ResponseView.prototype = {
             // since hitting the save button.
             view.checkSubmissionAbility();
 
-            var currentResponse = view.response();
+            var currentResponse = view.response('load');
             var currentResponseEqualsSaved = currentResponse.every(function(element, index) {
                 return element === savedResponse[index];
             });
@@ -430,6 +467,7 @@ OpenAssessment.ResponseView.prototype = {
                 view.saveStatus(msg);
                 view.baseView.srReadTexts([msg]);
             }
+            view.updateCodeOutput(savedResponse[0]);
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
@@ -478,7 +516,7 @@ OpenAssessment.ResponseView.prototype = {
                     // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
                     // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
                     .pipe(function() {
-                        var submission = view.response();
+                        var submission = view.response('submit');
                         baseView.toggleActionError('response', null);
 
                         // Send the submission to the server, returning the promise.
