@@ -137,7 +137,7 @@ class TrainingExample(models.Model):
             'options_selected': options_selected,
             'rubric': rubric.id
         })
-        return sha1(contents).hexdigest()
+        return sha1(contents.encode('utf-8')).hexdigest()
 
     @classmethod
     def cache_key(cls, answer, options_selected, rubric):
