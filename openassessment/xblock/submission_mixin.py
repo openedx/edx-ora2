@@ -174,9 +174,9 @@ class SubmissionMixin(object):
         """
         if 'submission' in data:
             student_sub_data = data['submission']
-            success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-            if not success:
-                return {'success': False, 'msg': msg}
+            # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
+            # if not success:
+            #     return {'success': False, 'msg': msg}
             try:
                 self.saved_response = json.dumps(
                     prepare_submission_for_serialization(student_sub_data)

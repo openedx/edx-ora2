@@ -11,6 +11,46 @@
  Returns:
  OpenAssessment.ResponseView
  **/
+var IntervalManager;
+
+IntervalManager = function(ms, fn, timeoutFunc) {
+            this.ms = ms;
+            this.fn = fn;
+            this.timeoutFunc = timeoutFunc;
+            this.intervalID = null;
+            this.failedTries = 0;
+};
+
+IntervalManager.prototype = {
+
+        failed_retry_threshold: 5,
+
+        start : function() {
+            this.fn();
+            if (this.intervalID === null) {
+                this.intervalID = setInterval(this.fn, this.ms);
+                return this.intervalID;
+            }
+            return this.intervalID;
+        },
+
+        stop : function() {
+            clearInterval(this.intervalID);
+            this.intervalID = null;
+            this.failedTries = 0;
+            return this.intervalID;
+        },
+
+        backOff : function() {
+            this.failedTries++;
+            if (this.failedTries >= this.failed_retry_threshold) {
+                this.timeoutFunc();
+                this.stop();
+            }
+        }
+
+};
+
 OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, data) {
     this.element = element;
     this.server = server;
@@ -30,6 +70,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.announceStatus = false;
     this.isRendering = false;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
+    this.task_poller = null;
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -100,6 +141,11 @@ OpenAssessment.ResponseView.prototype = {
         var submit = $('.step--response__submit', this.element);
         this.textResponse = $(submit).attr('text_response');
         this.fileUploadResponse = $(submit).attr('file_upload_response');
+        this.task_poller = new IntervalManager(this.AUTO_SAVE_POLL_INTERVAL, function () {
+            return view.startPolling();
+        }, function () {
+            view.saveStatus('Request Timeout');
+        });
 
         // Install a click handler for submission
         sel.find('.step--response__submit').click(
@@ -160,6 +206,25 @@ OpenAssessment.ResponseView.prototype = {
                 $(this).prop('readonly', true);
             }
         });
+    },
+
+    startPolling: function(){
+    var view = this;
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:18000/api/courses/v1/blocks/"
+        // url: "http://localhost:18000/api/courses/v1/blocks/block-v1:Arbx+ed314+2018+type@course+block@course/?all_blocks=true&depth=all&block_types_filter=video&student_view_data=video"
+    }).done(function (response) {
+        view.task_poller.stop();
+        view.updateCodeOutput(response.root);
+        view.saveEnabled(true);
+        view.saveStatus("");
+    }).fail(function (response) {
+        console.log(response);
+        view.updateCodeOutput(response.responseText);
+        view.task_poller.backOff();
+    });
     },
 
     /*
@@ -353,12 +418,11 @@ OpenAssessment.ResponseView.prototype = {
         var sel = $('.response__submission .submission__answer__part__text__value', this.element);
         if(action==='load' || action==='save'){
             var out_list = $(sel[0]).val().split();
-            out_list.push(' ');
             return out_list;
         }
         else if(action==='submit'){
             return sel.map(function() {
-                return $.trim($(this).val());
+                return $(this).val();
             }).get();
         }
         // if (typeof texts === 'undefined') {
@@ -462,12 +526,12 @@ OpenAssessment.ResponseView.prototype = {
                 return element === savedResponse[index];
             });
             if (currentResponseEqualsSaved) {
-                view.saveEnabled(false);
-                var msg = gettext('This response has been saved but not submitted.');
+                var msg = gettext('Code Execution In Progress');
                 view.saveStatus(msg);
                 view.baseView.srReadTexts([msg]);
             }
-            view.updateCodeOutput(savedResponse[0]);
+            view.saveEnabled(false);
+            view.task_poller.start();
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
