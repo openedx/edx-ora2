@@ -208,6 +208,7 @@ OpenAssessment.StudioView.prototype = {
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder(),
+            teamsEnabled: view.settingsView.teamsEnabled(),
         }).done(
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.

@@ -33,6 +33,7 @@ from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.validation import validator
+from openassessment.xblock.waffle_mixin import WaffleMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from webob import Response
@@ -81,13 +82,6 @@ UI_MODELS = {
     }
 }
 
-VALID_ASSESSMENT_TYPES = [
-    "student-training",
-    "peer-assessment",
-    "self-assessment",
-    "staff-assessment"
-]
-
 
 def load(path):
     """Handy helper for getting resources from our kit."""
@@ -110,8 +104,20 @@ class OpenAssessmentBlock(MessageMixin,
                           StudentTrainingMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
+                          WaffleMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
+
+    VALID_ASSESSMENT_TYPES = [
+        "student-training",
+        "peer-assessment",
+        "self-assessment",
+        "staff-assessment",
+    ]
+
+    VALID_ASSESSMENT_TYPES_FOR_TEAMS = [  # pylint: disable=invalid-name
+        'staff-assessment',
+    ]
 
     public_dir = 'static'
 
@@ -245,6 +251,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="Indicates whether or not there are peers to grade."
     )
 
+    teams_enabled = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Whether team submissions are enabled for this case study.",
+    )
+
     @property
     def course_id(self):
         return text_type(self.xmodule_runtime.course_id)  # pylint: disable=no-member
@@ -351,7 +363,7 @@ class OpenAssessmentBlock(MessageMixin,
         # This is not the real way course_ids should work, but this is a
         # temporary expediency for LMS integration
         if hasattr(self, "xmodule_runtime"):
-            course_id = self.course_id  # pylint:disable=E1101
+            course_id = self.course_id
             if anonymous_user_id:
                 student_id = anonymous_user_id
             else:
@@ -763,9 +775,13 @@ class OpenAssessmentBlock(MessageMixin,
             list
 
         """
+        assessment_types = self.VALID_ASSESSMENT_TYPES
+        if self.teams_enabled:
+            assessment_types = self.VALID_ASSESSMENT_TYPES_FOR_TEAMS
+
         _valid_assessments = [
             asmnt for asmnt in self.rubric_assessments
-            if asmnt.get('name') in VALID_ASSESSMENT_TYPES
+            if asmnt.get('name') in assessment_types
         ]
         return update_assessments_format(copy.deepcopy(_valid_assessments))
 
@@ -1101,6 +1117,9 @@ class OpenAssessmentBlock(MessageMixin,
             return None
 
     def _adjust_start_date_for_beta_testers(self, start):
+        """
+        Returns the start date for a Beta tester.
+        """
         if hasattr(self, "xmodule_runtime"):
             days_early_for_beta = getattr(self.xmodule_runtime, 'days_early_for_beta', 0)  # pylint: disable=no-member
             if days_early_for_beta is not None:

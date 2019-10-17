@@ -448,7 +448,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 file_upload_type: options.fileUploadType,
                 white_listed_file_types: options.fileTypeWhiteList,
                 allow_latex: options.latexEnabled,
-                leaderboard_show: options.leaderboardNum
+                leaderboard_show: options.leaderboardNum,
+                teams_enabled: options.teamsEnabled
             });
             return $.Deferred(function(defer) {
                 $.ajax({
