@@ -52,6 +52,30 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         ])
     ).install();
 
+    this.teamsEnabledSelectControl = new OpenAssessment.SelectControl(
+        $('#openassessment_team_enabled_selector', this.element),
+        function(selectedValue) {
+            var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
+            var selfAssessmentElement = $('#oa_self_assessment_editor', self.element);
+            var peerAssessmentElement = $('#oa_peer_assessment_editor', self.element);
+            var trainingAssessmentElement = $('#oa_student_training_editor', self.element);
+            if (!selectedValue || selectedValue === '0') {
+                teamsetElement.addClass('is--hidden');
+                selfAssessmentElement.removeClass('is--hidden');
+                peerAssessmentElement.removeClass('is--hidden');
+                trainingAssessmentElement.removeClass('is--hidden');
+            } else {
+                teamsetElement.removeClass('is--hidden');
+                selfAssessmentElement.addClass('is--hidden');
+                peerAssessmentElement.addClass('is--hidden');
+                trainingAssessmentElement.addClass('is--hidden');
+            }
+        },
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener(),
+        ])
+    ).install();
+
     this.leaderboardIntField = new OpenAssessment.IntField(
         $('#openassessment_leaderboard_editor', this.element),
         {min: 0, max: 100}
@@ -247,15 +271,15 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    Enable / disable latex rendering.
+    Helper function that, given a selector element id,
+    gets or sets the enabled state of the selector.
 
     Args:
-        isEnabled(boolean, optional): if provided enable/disable latex rendering
-    Returns:
-        boolean
+        settingId(string, required): The identifier of the selector.
+        isEnabled(boolean, optional): if provided, enable/disable the setting.
     **/
-    latexEnabled: function(isEnabled) {
-        var sel = $('#openassessment_submission_latex_editor', this.settingsElement);
+    settingSelectorEnabled: function(settingId, isEnabled) {
+        var sel = $(settingId, this.settingsElement);
         if (isEnabled !== undefined) {
             if (isEnabled) {
                 sel.val(1);
@@ -264,6 +288,53 @@ OpenAssessment.EditSettingsView.prototype = {
             }
         }
         return sel.val() === '1';
+    },
+
+    /**
+    Enable / disable latex rendering.
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable latex rendering
+    Returns:
+        boolean
+    **/
+    latexEnabled: function(isEnabled) {
+        return this.settingSelectorEnabled('#openassessment_submission_latex_editor', isEnabled);
+    },
+    /**
+    Enable/disable team assignments.
+
+    Args:
+        isEnabled(boolean, optional): if provided, enable/disable team assignments.
+    Returns:
+        boolean
+    **/
+    teamsEnabled: function(isEnabled) {
+        if (isEnabled !== undefined) {
+            this.teamsEnabledSelectControl.change(isEnabled ? '1' : '0');
+        }
+        return this.settingSelectorEnabled('#openassessment_team_enabled_selector', isEnabled);
+    },
+    /**
+    Get or set the teamset.
+
+    Args:
+        teamset (string, optional): If provided, teams are enabled for the given teamset.
+
+    Returns:
+        string (teamset)
+
+    **/
+    teamset: function(teamsetIdentifier) {
+        if (this.teamsEnabled()) {
+            var sel = $('#openassessment_teamset_selector', this.settingsElement);
+            if (teamsetIdentifier !== undefined) {
+                sel.val(teamsetIdentifier);
+            }
+            return sel.val();
+        }
+
+        return '';
     },
     /**
     Get or set the number of scores to show in the leaderboard.

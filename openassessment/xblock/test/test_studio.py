@@ -9,7 +9,7 @@ import datetime as dt
 import json
 
 from ddt import ddt, file_data
-from mock import MagicMock
+from mock import MagicMock, patch
 import pytz
 import six
 
@@ -109,6 +109,24 @@ class StudioViewTest(XBlockHandlerTestCase):
         "student-training": "oa_student_training_editor",
         "staff-assessment": "oa_staff_assessment_editor",
     }
+
+    @classmethod
+    def setUpClass(cls):
+        super(StudioViewTest, cls).setUpClass()
+        cls.waffle_switch_patcher = patch(
+            'openassessment.xblock.waffle_mixin.import_waffle_switch'
+        )
+        cls.waffle_course_flag_patcher = patch(
+            'openassessment.xblock.waffle_mixin.import_course_waffle_flag'
+        )
+        cls.waffle_switch_patcher.start()
+        cls.waffle_course_flag_patcher.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        super(StudioViewTest, cls).tearDownClass()
+        cls.waffle_switch_patcher.stop()
+        cls.waffle_course_flag_patcher.stop()
 
     @scenario('data/basic_scenario.xml')
     def test_default_fields(self, xblock):

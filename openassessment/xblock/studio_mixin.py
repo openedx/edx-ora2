@@ -54,6 +54,10 @@ class StudioMixin(object):
         "": ugettext_lazy("None")
     }
 
+    STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'
+
+    BASE_EDITOR_ASSESSMENTS_ORDER = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
+
     # Since the XBlock problem definition contains only assessment
     # modules that are enabled, we need to keep track of the order
     # that the user left assessments in the editor, including
@@ -76,7 +80,7 @@ class StudioMixin(object):
             (Fragment): An HTML fragment for editing the configuration of this XBlock.
         """
         rendered_template = get_template(
-            'openassessmentblock/edit/oa_edit.html'
+            self.STUDIO_EDITING_TEMPLATE
         ).render(self.editor_context())
         fragment = Fragment(rendered_template)
         if settings.DEBUG:
@@ -95,13 +99,6 @@ class StudioMixin(object):
     def editor_context(self):
         """
         Update the XBlock's XML.
-
-        Args:
-            data (dict): Data from the request; should have a value for the key 'xml'
-                containing the XML for this XBlock.
-
-        Keyword Arguments:
-            suffix (str): Not used
 
         Returns:
             dict with keys
@@ -163,6 +160,8 @@ class StudioMixin(object):
                 make_django_template_key(asmnt)
                 for asmnt in self.editor_assessments_order
             ],
+            'teams_feature_enabled': self.team_submissions_enabled(),
+            'teams_enabled': self.teams_enabled,
             'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
         }
@@ -260,6 +259,7 @@ class StudioMixin(object):
             self.white_listed_file_types_string = None
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
+        self.teams_enabled = bool(data.get('teams_enabled', False))
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 
@@ -358,7 +358,7 @@ class StudioMixin(object):
         """
         # Start with the default order, to pick up any assessment types that have been added
         # since the user last saved their ordering.
-        effective_order = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
+        effective_order = copy.deepcopy(self.BASE_EDITOR_ASSESSMENTS_ORDER)
 
         # Account for changes the user has made to the default order
         user_order = copy.deepcopy(self.editor_assessments_order)

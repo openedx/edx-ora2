@@ -21,6 +21,7 @@ __pycache__
 # Various common editor backups
 *.orig
 .*.swp
+*~
 
 # Installer logs
 pip-log.txt
@@ -75,4 +76,5 @@ test/selenium/screenshots/*
 # logging
 logs/*.log*
 
+# virtualenvs
 edx-ora2/
