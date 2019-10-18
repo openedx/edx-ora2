@@ -534,13 +534,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Sends request to server to save descriptions for each uploaded file.
          */
-        saveFilesDescriptions: function(descriptions) {
+        saveFilesDescriptions: function(fileMetadata) {
             var url = this.url('save_files_descriptions');
             return $.Deferred(function(defer) {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({descriptions: descriptions}),
+                    data: JSON.stringify({fileMetadata: fileMetadata}),
                     contentType: jsonContentType
                 }).done(function(data) {
                     if (data.success) { defer.resolve(); }

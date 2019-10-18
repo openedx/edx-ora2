@@ -173,14 +173,14 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         file_keys = ['foo', 'bar']
         file_descriptions = ['{}-description'.format(file_key) for file_key in file_keys]
-
+        file_names = ['{}-file_name'.format(file_key) for file_key in file_keys]
         conn = boto.connect_s3()
         bucket = conn.create_bucket('mybucket')
         for file_key in file_keys:
             key = Key(bucket, 'submissions_attachments/{}'.format(file_key))
             key.set_contents_from_string("How d'ya do?")
             files_url_and_description = [
-                (api.get_download_url(file_key), file_descriptions[idx])
+                (api.get_download_url(file_key), file_descriptions[idx], file_names[idx])
                 for idx, file_key in enumerate(file_keys)
                 ]
 
@@ -188,7 +188,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_keys'] = file_keys
         submission[u'files_descriptions'] = file_descriptions
-
+        submission[u'files_name'] = file_names
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])
@@ -219,7 +219,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         key = Key(bucket, 'submissions_attachments/foo')
         key.set_contents_from_string("How d'ya do?")
 
-        file_download_url = [(api.get_download_url('foo'), '')]
+        file_download_url = [(api.get_download_url('foo'), '', '',)]
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_key'] = 'foo'
