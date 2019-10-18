@@ -21,6 +21,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.fileUploadResponse = '';
     this.files = null;
     this.filesDescriptions = [];
+    this.fileNames = [];
     this.filesType = null;
     this.lastChangeTime = Date.now();
     this.errorOnLastSave = false;
@@ -748,8 +749,13 @@ OpenAssessment.ResponseView.prototype = {
     saveFilesDescriptions: function() {
         var view = this;
         var sel = $('.step--response', this.element);
-
-        return this.server.saveFilesDescriptions(this.filesDescriptions).done(
+        var fileMetaData = [];
+        for (var i=0; i < this.filesDescriptions.length; i++) {
+            this.fileNames.push(this.files[i].name);
+            var entry = {description: this.filesDescriptions[i], fileName: this.files[i].name};
+            fileMetaData.push(entry);
+        }
+        return this.server.saveFilesDescriptions(fileMetaData).done(
             function() {
                 view.removeFilesDescriptions();
             }
@@ -862,7 +868,7 @@ OpenAssessment.ResponseView.prototype = {
             } else {
                 file = $('<a />', {
                     href: url,
-                    text: view.filesDescriptions[filenum],
+                    text: view.filesDescriptions[filenum] + ' (' + view.fileNames[filenum] + ')',
                 });
                 file.addClass('submission__answer__file submission--file');
                 file.attr('target', '_blank');

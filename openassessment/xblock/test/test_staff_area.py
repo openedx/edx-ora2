@@ -401,7 +401,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self._create_submission(bob_item, {
             'text': "Bob Answer",
             'file_keys': ["test_key"],
-            'files_descriptions': ["test_description"]
+            'files_descriptions': ["test_description"],
+            'files_name': ["test_fileName"]
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
@@ -416,7 +417,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals([('http://www.example.com/image.jpeg', 'test_description')], context['staff_file_urls'])
+            self.assertEquals(
+                [('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')], context['staff_file_urls']
+            )
             self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
@@ -440,6 +443,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         file_keys = ["test_key0", "test_key1", "test_key2"]
         files_descriptions = ["test_description0", "test_description1", "test_description2"]
+        files_name = ["fname0", "fname1", "fname2"]
         images = ["http://www.example.com/image%d.jpeg" % i for i in range(3)]
         file_keys_with_images = dict(list(zip(file_keys, images)))
 
@@ -447,7 +451,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self._create_submission(bob_item, {
             'text': "Bob Answer",
             'file_keys': file_keys,
-            'files_descriptions': files_descriptions
+            'files_descriptions': files_descriptions,
+            'files_name': files_name
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
@@ -465,7 +470,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_has_calls(calls)
 
             # Check the context passed to the template
-            self.assertEquals([(image, "test_description%d" % i) for i, image in enumerate(images)],
+            self.assertEquals([(image, "test_description%d" % i, "fname%d" % i) for i, image in enumerate(images)],
                               context['staff_file_urls'])
             self.assertEquals('image', context['file_upload_type'])
 
