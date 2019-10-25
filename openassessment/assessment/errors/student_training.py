@@ -2,6 +2,7 @@
 Errors for training assessment type.
 """
 
+
 class StudentTrainingError(Exception):
     """
     Error occurred in a training API call.

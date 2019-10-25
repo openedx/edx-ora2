@@ -1,6 +1,7 @@
 """
 UI-level acceptance tests for OpenAssessment.
 """
+# pylint: disable=arguments-differ, dangerous-default-value
 from __future__ import absolute_import, print_function
 
 from functools import wraps
@@ -11,8 +12,14 @@ import unittest
 import ddt
 from six.moves import range
 
-from acceptance.auto_auth import AutoAuthPage
-from acceptance.pages import AssessmentPage, GradePage, StaffAreaPage, StudioSettingsPage, SubmissionPage
+from acceptance.auto_auth import AutoAuthPage  # pylint: disable=import-error
+from acceptance.pages import (  # pylint: disable=import-error
+    AssessmentPage,
+    GradePage,
+    StaffAreaPage,
+    StudioSettingsPage,
+    SubmissionPage
+)
 from bok_choy.promise import BrokenPromise, EmptyPromise
 from bok_choy.web_app_test import WebAppTest
 from nose.plugins.attrib import attr
@@ -43,7 +50,7 @@ def retry(tries=2, delay=4, backoff=2):
                     if attempt_num >= (tries - 1):
                         raise
                     else:
-                        print("Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay))
+                        print(u"Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay))
                         time.sleep(_delay)
                         _delay *= backoff
         return _inner
@@ -87,13 +94,14 @@ class OpenAssessmentTest(WebAppTest):
     }
 
     SUBMISSION = u"This is a test submission."
-    LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx )[/mathjaxinline]"
+    # pylint: disable=anomalous-backslash-in-string
+    LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx )[/mathjaxinline]"  # nopep8
     OPTIONS_SELECTED = [1, 2]
     STAFF_OVERRIDE_OPTIONS_SELECTED = [0, 1]
     STAFF_OVERRIDE_SCORE = 1
     STAFF_GRADE_EXISTS = "COMPLETE"
-    STAFF_AREA_SCORE = "Final grade: {} out of 8"
-    STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE = "The problem has not been completed."
+    STAFF_AREA_SCORE = u"Final grade: {} out of 8"
+    STAFF_ASSESSMENT_NOT_COMPLETE = "The problem has not been completed."
     EXPECTED_SCORE = 6
     STUDENT_TRAINING_OPTIONS = [
         [1, 2],
@@ -135,6 +143,7 @@ class OpenAssessmentTest(WebAppTest):
         if PROFILING_ENABLED:
             self.profiler.stop()
             self.log_to_file()
+        super(OpenAssessmentTest, self).tearDown()
 
     def login_user(self, learner, email):
         """
@@ -199,7 +208,7 @@ class OpenAssessmentTest(WebAppTest):
                 try:
                     self.student_training_page.wait_for_num_completed(example_num)
                 except BrokenPromise:
-                    msg = "Did not complete at least {num} student training example(s).".format(num=example_num)
+                    msg = u"Did not complete at least {num} student training example(s).".format(num=example_num)
                     self.fail(msg)
 
             self.student_training_page.wait_for_page().wait_for_response().assess(options_selected)
@@ -257,12 +266,12 @@ class OpenAssessmentTest(WebAppTest):
         # Check out a submission.
         self.staff_area_page.expand_staff_grading_section()
         # Checked out number should increase, ungraded decrease.
-        ungraded = start_numbers[0]-1
-        checked_out = start_numbers[1]+1
+        ungraded = start_numbers[0] - 1
+        checked_out = start_numbers[1] + 1
         self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
         assessed = 0
         while number_to_assess == 0 or assessed < number_to_assess:
-            continue_after = False if number_to_assess-1 == assessed else ungraded > 0
+            continue_after = False if number_to_assess - 1 == assessed else ungraded > 0
             if feedback:
                 self.staff_area_page.provide_criterion_feedback(feedback("criterion"))
                 self.staff_area_page.provide_overall_feedback(feedback("overall"))
@@ -270,7 +279,7 @@ class OpenAssessmentTest(WebAppTest):
                 self.staff_area_page.staff_assess(options_selected, continue_after)
             assessed += 1
             if not continue_after:
-                self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out-1))
+                self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out - 1))
                 break
             else:
                 ungraded -= 1
@@ -346,6 +355,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
         self.assertEqual("Waiting for a Staff Grade", message_title)
 
         # Perform staff assessment
+        # pylint: disable=attribute-defined-outside-init
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
         self.do_staff_assessment()
 
@@ -605,6 +615,7 @@ class StaffAreaTest(OpenAssessmentTest):
         # Click on staff tools and search for user
         self.staff_area_page.show_learner('no-submission-learner')
         self.staff_area_page.verify_learner_report_text('A response was not found for this learner.')
+
     @retry()
     @attr('acceptance')
     def test_staff_override(self):
@@ -627,11 +638,11 @@ class StaffAreaTest(OpenAssessmentTest):
         # Check the learner's current score.
         self.staff_area_page.expand_learner_report_sections()
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.EXPECTED_SCORE))
-        self.assertEquals(
+        self.assertEqual(
             ['CRITERION', 'SELF ASSESSMENT GRADE'],
             self.staff_area_page.learner_final_score_table_headers
         )
-        self.assertEquals(
+        self.assertEqual(
             ['Fair - 3 points', 'Good - 3 points'], self.staff_area_page.learner_final_score_table_values
         )
 
@@ -640,11 +651,11 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Verify that the new student score is different from the original one.
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
-        self.assertEquals(
+        self.assertEqual(
             ['CRITERION', 'STAFF GRADE', 'SELF ASSESSMENT GRADE'],
             self.staff_area_page.learner_final_score_table_headers
         )
-        self.assertEquals(
+        self.assertEqual(
             [u'Poor - 0 points', u'Fair',
              u'Fair - 1 point', u'Good'],
             self.staff_area_page.learner_final_score_table_values
@@ -734,10 +745,12 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.visit()
         self.staff_area_page.show_learner(username)
 
-        self.assertEquals(
+        self.assertEqual(
             self.staff_area_page.is_staff_override_available(),
             staff_override_visible
         )
+
+
 class FileUploadTest(OpenAssessmentTest):
     """
     Test file upload
@@ -779,7 +792,7 @@ class FullWorkflowMixin(object):
     PEER_ASSESSMENT = [0, 0]
     STAFF_AREA_PEER_ASSESSMENT = ['Poor', u'', u'0', u'5', u'Poor', u'', u'0', u'3']
     PEER_ASSESSMENT_SCORE = 0
-    PEER_ASSESSMENT_STAFF_AREA_SCORE = "Final grade: 0 out of 8"
+    PEER_ASSESSMENT_SCORE_STRING = "Final grade: 0 out of 8"
 
     SELF_ASSESSMENT = [2, 3]
     STAFF_AREA_SELF_ASSESSMENT = ['Good', u'', u'5', u'5', u'Excellent', u'', u'3', u'3']
@@ -881,18 +894,29 @@ class FullWorkflowMixin(object):
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
         if peer_grades_me:
             self.verify_grade_entries(
-                [(u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
-                  u"YOUR SELF ASSESSMENT", u"Good"),
-                 (u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
-                 u"YOUR SELF ASSESSMENT", u"Excellent")]
+                [
+                    (
+                        u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
+                        u"YOUR SELF ASSESSMENT", u"Good"
+                    ),
+                    (
+                        u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
+                        u"YOUR SELF ASSESSMENT", u"Excellent"
+                    )
+                ]
             )
         else:
             self.verify_grade_entries(
-                [(u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE',
-                  u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Good"),
-                 (u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE',
-                  u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Excellent")
-                 ]
+                [
+                    (
+                        u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE',
+                        u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Good"
+                    ),
+                    (
+                        u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE',
+                        u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Excellent"
+                    )
+                ]
             )
 
     def verify_staff_area_fields(self, username, peer_assessments, submitted_assessments, self_assessment):
@@ -937,7 +961,7 @@ class FullWorkflowMixin(object):
 
         self.assertTrue(
             peer_grade_exists(),
-            "Learner still not graded after {} additional attempts".format(max_attempts)
+            u"Learner still not graded after {} additional attempts".format(max_attempts)
         )
 
     def verify_grade_entries(self, expected_entries):
@@ -1009,12 +1033,12 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.verify_staff_area_fields(
             learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
         )
-        self.staff_area_page.verify_learner_final_score(self.PEER_ASSESSMENT_STAFF_AREA_SCORE)
-        self.assertEquals(
+        self.staff_area_page.verify_learner_final_score(self.PEER_ASSESSMENT_SCORE_STRING)
+        self.assertEqual(
             ['CRITERION', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
             self.staff_area_page.learner_final_score_table_headers
         )
-        self.assertEquals(
+        self.assertEqual(
             ['Poor - 0 points\nPeer 1 - Poor', 'Good',
              'Poor - 0 points\nPeer 1 - Poor', 'Excellent'],
             self.staff_area_page.learner_final_score_table_values
@@ -1035,21 +1059,29 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
         )
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
-        self.assertEquals(
+        self.assertEqual(
             ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
             self.staff_area_page.learner_final_score_table_headers
         )
-        self.assertEquals(
-            ['Poor - 0 points', 'Peer 1 - Poor', 'Good',
-             'Fair - 1 point', 'Peer 1 - Poor', 'Excellent'],
+        self.assertEqual(
+
+            [
+                'Poor - 0 points', 'Peer 1 - Poor', 'Good',
+                'Fair - 1 point', 'Peer 1 - Poor', 'Excellent'
+            ],
             self.staff_area_page.learner_final_score_table_values
         )
         self.verify_grade_entries(
-            [(u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor",
-              u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"),
-             (u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE",
-              u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent")
-             ]
+            [
+                (
+                    u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor",
+                    u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"
+                ),
+                (
+                    u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE",
+                    u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent"
+                )
+            ]
         )
 
     @retry()
@@ -1065,13 +1097,13 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         And all fields in the staff area tool are correct
         """
         # Create only the initial submission before doing the staff override.
-        learner, learner_email = self.do_submission()
+        learner, _ = self.do_submission()
 
         # Verify no grade present (and no staff grade section), no assessment information in staff area.
         self.assertIsNone(self.grade_page.wait_for_page().score)
         self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
         self.verify_staff_area_fields(learner, [], [], [])
-        self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+        self.staff_area_page.verify_learner_final_score(self.STAFF_ASSESSMENT_NOT_COMPLETE)
 
         # Do staff override
         self.do_staff_override(learner)
@@ -1084,19 +1116,20 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
         self.verify_staff_area_fields(learner, [], [], [])
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
-        self.assertEquals(
+        self.assertEqual(
             ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE'],
             self.staff_area_page.learner_final_score_table_headers
         )
-        self.assertEquals(
+        self.assertEqual(
             [u'Poor - 0 points', u'Waiting for peer reviews',
              u'Fair - 1 point', u'Waiting for peer reviews'],
             self.staff_area_page.learner_final_score_table_values
         )
         self.verify_grade_entries(
-            [(u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
-             (u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE', u'Waiting for peer reviews')
-             ]
+            [
+                (u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
+                (u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE', u'Waiting for peer reviews')
+            ]
         )
 
 
@@ -1155,7 +1188,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
     @attr('acceptance')
     def test_feedback_only(self):
         # Make submission
-        user, pwd = self.do_submission()
+        user, _ = self.do_submission()
 
         # Make self assessment
         self.self_asmnt_page.visit()
@@ -1255,7 +1288,7 @@ if __name__ == "__main__":
 
     # Configure the screenshot directory
     if 'SCREENSHOT_DIR' not in os.environ:
-        tests_dir = os.path.dirname(__file__)
-        os.environ['SCREENSHOT_DIR'] = os.path.join(tests_dir, 'screenshots')
+        TESTS_DIR = os.path.dirname(__file__)
+        os.environ['SCREENSHOT_DIR'] = os.path.join(TESTS_DIR, 'screenshots')
 
     unittest.main()

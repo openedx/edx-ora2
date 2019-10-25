@@ -12,7 +12,7 @@ from .data_conversion import (clean_criterion_feedback, create_rubric_dict, crea
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class SelfAssessmentMixin(object):
@@ -28,13 +28,13 @@ class SelfAssessmentMixin(object):
     """
 
     @XBlock.handler
-    def render_self_assessment(self, data, suffix=''):
+    def render_self_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
         if "self-assessment" not in self.assessment_steps:
             return Response(u"")
 
         try:
             path, context = self.self_path_and_context()
-        except:
+        except Exception:  # pylint: disable=broad-except
             msg = u"Could not retrieve self assessment for submission {}".format(self.submission_uuid)
             logger.exception(msg)
             return self.render_error(self._(u"An unexpected error occurred."))
@@ -120,7 +120,7 @@ class SelfAssessmentMixin(object):
 
     @XBlock.json_handler
     @verify_assessment_parameters
-    def self_assess(self, data, suffix=''):
+    def self_assess(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Create a self-assessment for a submission.
 

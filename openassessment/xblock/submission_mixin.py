@@ -16,7 +16,7 @@ from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class SubmissionMixin(object):
@@ -192,7 +192,7 @@ class SubmissionMixin(object):
                     "openassessmentblock.save_submission",
                     {"saved_response": self.saved_response}
                 )
-            except:
+            except Exception:  # pylint: disable=broad-except
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
                 return {'success': True, 'msg': u''}
@@ -216,11 +216,15 @@ class SubmissionMixin(object):
         if 'fileMetadata' in data:
             file_data = data['fileMetadata']
 
-            if isinstance(file_data, list) and all([
-                isinstance(description['description'], six.string_types) and
-                isinstance(description['fileName'], six.string_types)
-                for description in file_data
-            ]):
+            if isinstance(file_data, list) and all(
+                    [all(
+                        [
+                            isinstance(description['description'], six.string_types),
+                            isinstance(description['fileName'], six.string_types)
+                        ]
+                    ) for description in file_data
+                    ]
+            ):
                 try:
                     self.saved_files_descriptions = json.dumps([desc['description'] for desc in file_data])
                     self.saved_files_names = json.dumps([desc['fileName'] for desc in file_data])
@@ -230,7 +234,7 @@ class SubmissionMixin(object):
                         "openassessmentblock.save_files_descriptions",
                         {"saved_response": self.saved_files_descriptions}
                     )
-                except:
+                except Exception:  # pylint: disable=broad-except
                     return {'success': False, 'msg': self._(u"Files descriptions could not be saved.")}
                 else:
                     return {'success': True, 'msg': u''}
@@ -269,11 +273,10 @@ class SubmissionMixin(object):
                     logger.exception(
                         u"FileUploadError for student_item: {student_item_dict}"
                         u" and submission data: {student_sub_data} with file"
-                        "descriptions {files_descriptions}".format(
+                        u"descriptions {files_descriptions}".format(
                             student_item_dict=student_item_dict,
                             student_sub_data=student_sub_data,
                             files_descriptions=files_descriptions,
-                            files_names=files_names,
                         )
                     )
                 if key_to_save:
@@ -337,7 +340,7 @@ class SubmissionMixin(object):
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
-            logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
+            logger.exception(u"FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
             return {'success': False, 'msg': self._(u"Error retrieving upload URL.")}
 
     @XBlock.json_handler
@@ -394,10 +397,9 @@ class SubmissionMixin(object):
             return u"{student_id}/{course_id}/{item_id}/{num}".format(
                 **student_item_dict
             )
-        else:
-            return u"{student_id}/{course_id}/{item_id}".format(
-                **student_item_dict
-            )
+        return u"{student_id}/{course_id}/{item_id}".format(
+            **student_item_dict
+        )
 
     def _get_url_by_file_key(self, key):
         """
@@ -409,7 +411,7 @@ class SubmissionMixin(object):
             if key:
                 url = file_upload_api.get_download_url(key)
         except FileUploadError:
-            logger.exception("Unable to generate download url for file key {}".format(key))
+            logger.exception(u"Unable to generate download url for file key {}".format(key))
         return url
 
     def get_download_urls_from_submission(self, submission):

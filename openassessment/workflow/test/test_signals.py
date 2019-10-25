@@ -31,6 +31,7 @@ class UpdateWorkflowSignalTest(CacheResetTest):
         """
         Create a submission.
         """
+        super(UpdateWorkflowSignalTest, self).setUp()
         submission = sub_api.create_submission(self.STUDENT_ITEM, "test answer")
         self.submission_uuid = submission['uuid']
 

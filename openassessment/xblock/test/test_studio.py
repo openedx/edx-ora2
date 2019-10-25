@@ -214,8 +214,8 @@ class StudioViewTest(XBlockHandlerTestCase):
         # that verify this extensively.
         self.assertEqual(xblock.title, old_title)
         self.assertEqual(xblock.prompts, old_prompts)
-        self.assertItemsEqual(xblock.rubric_assessments, old_assessments)
-        self.assertItemsEqual(xblock.rubric_criteria, old_criteria)
+        six.assertCountEqual(self, xblock.rubric_assessments, old_assessments)
+        six.assertCountEqual(self, xblock.rubric_criteria, old_criteria)
 
     @scenario('data/basic_scenario.xml')
     def test_check_released(self, xblock):

@@ -162,10 +162,7 @@ class GradeMixin(object):
             tuple of context (dict), template_path (string)
         """
         def _is_incomplete(step):
-            return (
-                step in workflow["status_details"] and
-                not workflow["status_details"][step]["complete"]
-            )
+            return step in workflow["status_details"] and not workflow["status_details"][step]["complete"]
 
         incomplete_steps = []
         if _is_incomplete("peer"):
@@ -224,6 +221,7 @@ class GradeMixin(object):
             self, submission_uuid, peer_assessments, self_assessment, staff_assessment,
             is_staff=False
     ):
+        # pylint: disable=unicode-format-string
         """
         Returns details about the grade assigned to the submission.
 
@@ -255,6 +253,7 @@ class GradeMixin(object):
                 }]
                 ...
             }
+
         """
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
@@ -275,8 +274,9 @@ class GradeMixin(object):
             """
             return any(
                 (
-                    assessment and
-                    (assessment.get('feedback', None) or has_feedback(assessment.get('individual_assessments', [])))
+                    assessment and (
+                        assessment.get('feedback', None) or has_feedback(assessment.get('individual_assessments', []))
+                    )
                 )
                 for assessment in assessments
             )
@@ -360,8 +360,8 @@ class GradeMixin(object):
                 'option': self._peer_median_option(submission_uuid, criterion),
                 'individual_assessments': [
                     _get_assessment_part(
-                        _('Peer {peer_index}').format(peer_index=index + 1),
-                        _('Peer Comments'),
+                        _(u'Peer {peer_index}').format(peer_index=index + 1),
+                        _(u'Peer Comments'),
                         criterion_name,
                         peer_assessment
                     )
@@ -387,10 +387,10 @@ class GradeMixin(object):
             assessments.append(self_assessment_part)
 
         # Include points only for the first assessment
-        if len(assessments) > 0:
+        if assessments:
             first_assessment = assessments[0]
             option = first_assessment['option']
-            if option and option.get('points', None) != None:
+            if option and option.get('points', None) != None:  # nopep8
                 first_assessment['points'] = option['points']
 
         return assessments
@@ -412,6 +412,7 @@ class GradeMixin(object):
 
         median_scores = peer_api.get_assessment_median_scores(submission_uuid)
         median_score = median_scores.get(criterion['name'], None)
+        median_score = -1 if not median_score else median_score
 
         def median_options():
             """
@@ -425,7 +426,7 @@ class GradeMixin(object):
               5. Options A=1, B=3 and C=5, a median score of 6 returns [C]
                  Note: 5 should not happen as a median should never be out of range.
             """
-            last_score = None
+            last_score = -1
             median_options = []
 
             # Sort the options first by name and then by points, so that if there
@@ -438,7 +439,7 @@ class GradeMixin(object):
                 current_score = option['points']
 
                 # If we have reached a new score, then decide what to do next
-                if current_score is not last_score:
+                if current_score != last_score:
 
                     # If the last score we saw was already larger than the median
                     # score, then we must have collected enough so return all
@@ -463,18 +464,17 @@ class GradeMixin(object):
         #  - If more than one match is found, return a dict with an aggregate label,
         #  - the median score, and no explanation (it is too verbose to show an aggregate).
         options = median_options()
-        if len(options) == 0:
+        if not options:
             # If we weren't able to get a median option when there should be one, show the following message
             # This happens when there are less than must_be_graded_by assessments made for the user
-            if len(criterion['options']) > 0:
+            if criterion['options']:
                 return {'label': _('Waiting for peer reviews')}
-            else:
-                return None
+            return None
         if len(options) == 1:
             return options[0]
         return {
             'label': u' / '.join([option['label'] for option in options]),
-            'points': median_score,
+            'points': median_score if median_score != -1 else None,
             'explanation': None,
         }
 
@@ -502,7 +502,7 @@ class GradeMixin(object):
             individual_feedback = []
             for peer_index, peer_assessment in enumerate(peer_assessments):
                 individual_feedback.append({
-                    'title': _('Peer {peer_index}').format(peer_index=peer_index + 1),
+                    'title': _(u'Peer {peer_index}').format(peer_index=peer_index + 1),
                     'feedback': peer_assessment.get('feedback')
                 })
             if any(assessment_feedback['feedback'] for assessment_feedback in individual_feedback):

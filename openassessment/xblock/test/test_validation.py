@@ -133,7 +133,8 @@ class AssessmentExamplesValidationTest(TestCase):
 class DateValidationTest(TestCase):
 
     def setUp(self):
-        self.DATES = {
+        super(DateValidationTest, self).setUp()
+        self.DATES = {  # pylint: disable=invalid-name
             (day - 1): dt(2014, 1, day).replace(tzinfo=pytz.UTC).isoformat()
             for day in range(1, 15)
         }
@@ -284,6 +285,7 @@ class ValidationIntegrationTest(TestCase):
         """
         Mock the OA XBlock and create a validator function.
         """
+        super(ValidationIntegrationTest, self).setUp()
         self.oa_block = mock.MagicMock(OpenAssessmentBlock)
         self.oa_block.is_released.return_value = False
         self.oa_block.rubric_assessments.return_value = []
@@ -343,10 +345,10 @@ class ValidationIntegrationTest(TestCase):
         """
         is_valid, msg = self.validator(self.RUBRIC, self.ASSESSMENTS, num)
         if expected_is_valid:
-            self.assertTrue(is_valid, msg="Leaderboard num {num} should be valid".format(num=num))
+            self.assertTrue(is_valid, msg=u"Leaderboard num {num} should be valid".format(num=num))
             self.assertEqual(msg, '')
         else:
-            self.assertFalse(is_valid, msg="Leaderboard num {num} should be invalid".format(num=num))
+            self.assertFalse(is_valid, msg=u"Leaderboard num {num} should be invalid".format(num=num))
             self.assertEqual(msg, 'Leaderboard number is invalid.')
 
 
@@ -358,23 +360,23 @@ class ValidationSubmissionTest(TestCase):
     PROMPT = [{"description": "A prompt."}, {"description": "Another prompt."}]
 
     def test_valid_submissions(self):
-        success, msg = validate_submission([u"A response."], [{"description": "A prompt."}], STUB_I18N)
+        success, _ = validate_submission([u"A response."], [{"description": "A prompt."}], STUB_I18N)
         self.assertTrue(success)
 
-        success, msg = validate_submission(
+        success, _ = validate_submission(
             [u"Response 1.", u"Response 2"], self.PROMPT, STUB_I18N
         )
         self.assertTrue(success)
 
     def test_invalid_submissions(self):
         # Submission is not list.
-        success, msg = validate_submission(u"A response.", self.PROMPT, STUB_I18N)
+        success, _ = validate_submission(u"A response.", self.PROMPT, STUB_I18N)
         self.assertFalse(success)
 
         # Submission count does not match prompt count.
-        success, msg = validate_submission([u"A response."], self.PROMPT, STUB_I18N)
+        success, _ = validate_submission([u"A response."], self.PROMPT, STUB_I18N)
         self.assertFalse(success)
 
         # Submission is not unicode.
-        success, msg = validate_submission([u"A response.", "Another response"], self.PROMPT, STUB_I18N)
+        success, _ = validate_submission([u"A response.", b"Another response"], self.PROMPT, STUB_I18N)
         self.assertFalse(success)

@@ -24,7 +24,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
 
         """
         resp = self.request(xblock, 'save_files_descriptions', json.dumps({}))
-        self.assertIn('descriptions were not submitted', resp)
+        self.assertIn('descriptions were not submitted', resp.decode('utf-8'))
 
     @scenario('data/save_scenario.xml', user_id="Perleman")
     def test_save_files_descriptions(self, xblock):
@@ -41,6 +41,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         self.assertEqual(resp['msg'], u'')
 
         # Reload the submission UI
+        # pylint: disable=protected-access
         xblock._get_download_url = mock.MagicMock(side_effect=lambda i: "https://img-url/%d" % i)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn(descriptions[0]['description'], resp.decode('utf-8'))
@@ -62,6 +63,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         self.request(xblock, 'save_files_descriptions', payload, response_format="json")
 
         # Reload the submission UI
+        # pylint: disable=protected-access
         xblock._get_download_url = mock.MagicMock(side_effect=lambda i: "https://img-url/%d" % i)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
 

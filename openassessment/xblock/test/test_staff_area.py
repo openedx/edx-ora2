@@ -9,9 +9,9 @@ import json
 
 from mock import MagicMock, Mock, call, patch
 from six.moves import range, zip
-import six.moves.urllib.error
-import six.moves.urllib.parse
-import six.moves.urllib.request
+import six.moves.urllib.error  # pylint: disable=import-error
+import six.moves.urllib.parse  # pylint: disable=import-error
+import six.moves.urllib.request  # pylint: disable=import-error
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -174,7 +174,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         request.params = {"student_id": "test_student"}
         # Verify that we can render without error
         resp = xblock.render_student_info(request)
-        self.assertIn("a response was not found for this learner.", resp.body.lower())
+        self.assertIn("a response was not found for this learner.", resp.body.decode('utf-8').lower())
 
     @scenario('data/peer_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_peer_only(self, xblock):
@@ -208,11 +208,11 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Now Bob should be fully populated in the student info view.
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+        self.assertEqual("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
         self.assertIsNone(context['staff_assessment'])
-        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
 
         # Bob still needs to assess other learners
         self.assertIsNone(context['grade_details'])
@@ -242,15 +242,15 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+        self.assertEqual("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNone(context['peer_assessments'])
         self.assertIsNotNone(context['self_assessment'])
         self.assertIsNone(context['staff_assessment'])
-        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
 
         grade_details = context['grade_details']
-        self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
-        self.assertEquals('Self Assessment Grade', grade_details['criteria'][0]['assessments'][0]['title'])
+        self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
+        self.assertEqual('Self Assessment Grade', grade_details['criteria'][0]['assessments'][0]['title'])
 
     @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob')
     def test_staff_area_student_info_staff_only_no_options(self, xblock):
@@ -283,7 +283,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 xblock,
                 "render_student_info",
                 six.moves.urllib.parse.urlencode({"student_username": "Bob"})
-            )
+            ).decode('utf-8')
         )
 
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
@@ -311,15 +311,15 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+        self.assertEqual("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
         self.assertIsNotNone(context['staff_assessment'])
-        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
 
         grade_details = context['grade_details']
-        self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
-        self.assertEquals('Staff Grade', grade_details['criteria'][0]['assessments'][0]['title'])
+        self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
+        self.assertEqual('Staff Grade', grade_details['criteria'][0]['assessments'][0]['title'])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_with_cancelled_submission(self, xblock):
@@ -351,9 +351,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+        self.assertEqual("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
-        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
@@ -384,7 +384,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         xblock.submission_uuid = submission["uuid"]
         path, _ = xblock.peer_path_and_context(False)
-        self.assertEquals("openassessmentblock/peer/oa_peer_cancelled.html", path)
+        self.assertEqual("openassessmentblock/peer/oa_peer_cancelled.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_image_submission(self, xblock):
@@ -417,14 +417,17 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals(
-                [('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')], context['staff_file_urls']
+            self.assertEqual(
+                [
+                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')
+                ],
+                context['staff_file_urls']
             )
-            self.assertEquals('image', context['file_upload_type'])
+            self.assertEqual('image', context['file_upload_type'])
 
             # Check the fully rendered template
             payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
-            resp = self.request(xblock, "render_student_info", payload)
+            resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
@@ -436,7 +439,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -470,13 +473,15 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_has_calls(calls)
 
             # Check the context passed to the template
-            self.assertEquals([(image, "test_description%d" % i, "fname%d" % i) for i, image in enumerate(images)],
-                              context['staff_file_urls'])
-            self.assertEquals('image', context['file_upload_type'])
+            self.assertEqual(
+                [(image, "test_description%d" % i, "fname%d" % i) for i, image in enumerate(images)],
+                context['staff_file_urls']
+            )
+            self.assertEqual('image', context['file_upload_type'])
 
             # Check the fully rendered template
             payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
-            resp = self.request(xblock, "render_student_info", payload)
+            resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             for i in range(3):
                 self.assertIn("http://www.example.com/image%d.jpeg" % i, resp)
                 self.assertIn("test_description%d" % i, resp)
@@ -509,7 +514,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             # Check the fully rendered template
             payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
-            resp = self.request(xblock, "render_student_info", payload)
+            resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("Bob Answer", resp)
 
     @scenario('data/grade_scenario.xml', user_id='Bob')
@@ -569,7 +574,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         request.params = {"student_username": "Bob"}
         # Verify that we can render without error
         resp = xblock.render_student_info(request)
-        self.assertIn("bob answer", resp.body.lower())
+        self.assertIn("bob answer", resp.body.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancel_submission_without_reason(self, xblock):
@@ -721,20 +726,20 @@ class TestCourseStaff(XBlockHandlerTestCase):
         request.params = {"student_username": 'Bob'}
         # Verify that we can see the student's grade
         resp = xblock.render_student_info(request)
-        self.assertIn("final grade", resp.body.lower())
+        self.assertIn("final grade", resp.body.decode('utf-8').lower())
 
         # Staff user Bob can clear his own submission
         xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, bob_item['student_id'])
 
         # Verify that the submission was cleared
         resp = xblock.render_student_info(request)
-        self.assertIn("response was not found", resp.body.lower())
+        self.assertIn("response was not found", resp.body.decode('utf-8').lower())
 
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         """
         Internal helper for common staff assessment context verification.
         """
-        self.assertEquals(required, context['staff_assessment_required'])
+        self.assertEqual(required, context['staff_assessment_required'])
         if not required:
             self.assertNotIn('staff_assessment_ungraded', context)
             self.assertNotIn('staff_assessment_in_progress', context)

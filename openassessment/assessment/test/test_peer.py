@@ -7,6 +7,7 @@ import datetime
 from ddt import ddt, file_data
 from mock import patch
 import pytz
+import six
 from six.moves import range
 
 from django.db import DatabaseError, IntegrityError
@@ -14,8 +15,14 @@ from django.utils import timezone
 
 from nose.tools import raises
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
-                                              PeerWorkflow, PeerWorkflowItem)
+from openassessment.assessment.models import (
+    Assessment,
+    AssessmentFeedback,
+    AssessmentFeedbackOption,
+    AssessmentPart,
+    PeerWorkflow,
+    PeerWorkflowItem
+)
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
@@ -455,7 +462,7 @@ class TestPeerApi(CacheResetTest):
         self.assertIsNone(score)
 
         for i in range(5):
-            self.assertEquals((False, i), peer_api.has_finished_required_evaluating(tim_sub['uuid'], REQUIRED_GRADED))
+            self.assertEqual((False, i), peer_api.has_finished_required_evaluating(tim_sub['uuid'], REQUIRED_GRADED))
             sub = peer_api.get_submission_to_assess(tim_sub['uuid'], REQUIRED_GRADED)
             peer_api.create_assessment(
                 tim_sub["uuid"], tim["student_id"],
@@ -466,7 +473,7 @@ class TestPeerApi(CacheResetTest):
                 REQUIRED_GRADED_BY,
             )
 
-        self.assertEquals((True, 5), peer_api.has_finished_required_evaluating(tim_sub['uuid'], REQUIRED_GRADED))
+        self.assertEqual((True, 5), peer_api.has_finished_required_evaluating(tim_sub['uuid'], REQUIRED_GRADED))
 
         # Tim should not have a score, because his submission does not have
         # enough assessments.
@@ -531,7 +538,7 @@ class TestPeerApi(CacheResetTest):
             "peer": {
                 "must_grade": REQUIRED_GRADED,
                 "must_be_graded_by": REQUIRED_GRADED_BY,
-                }
+            }
         }
         score = workflow_api.get_workflow_for_submission(
             tim_sub["uuid"], requirements
@@ -643,21 +650,21 @@ class TestPeerApi(CacheResetTest):
         # 3) Bob submits
         bob_sub, _ = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(angel_sub["uuid"], sub["uuid"])
+        self.assertEqual(angel_sub["uuid"], sub["uuid"])
 
         # 4) Sally submits
         sally_sub, _ = self._create_student_and_submission("Sally", "Sally's answer")
 
         # 5) Sally pulls Angel's Submission but never reviews it.
         sub = peer_api.get_submission_to_assess(sally_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(angel_sub["uuid"], sub["uuid"])
+        self.assertEqual(angel_sub["uuid"], sub["uuid"])
 
         # 6) Jim submits
         jim_sub, _ = self._create_student_and_submission("Jim", "Jim's answer")
 
         # 7) Jim also doesn't care about Angel and does not bother to review.
         sub = peer_api.get_submission_to_assess(jim_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(angel_sub["uuid"], sub["uuid"])
+        self.assertEqual(angel_sub["uuid"], sub["uuid"])
 
         # 8) Buffy comes along and she submits
         buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
@@ -665,7 +672,7 @@ class TestPeerApi(CacheResetTest):
         # 9) Buffy cares about Angel, but she won't get Angel's submission;
         # it's held by Bob, Sally, and Jim.
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(bob_sub["uuid"], sub["uuid"])
+        self.assertEqual(bob_sub["uuid"], sub["uuid"])
 
         # 10) Buffy goes on to review Bob, Sally, and Jim, but needs two more.
         peer_api.create_assessment(
@@ -677,7 +684,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(sally_sub["uuid"], sub["uuid"])
+        self.assertEqual(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             buffy_sub["uuid"], buffy["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -687,7 +694,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(jim_sub["uuid"], sub["uuid"])
+        self.assertEqual(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             buffy_sub["uuid"], buffy["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -703,7 +710,7 @@ class TestPeerApi(CacheResetTest):
         # 12) Xander means well, so Xander grades Bob, Sally, and Jim, but gets
         # lazy and doesn't grade Buffy when her submission comes along.
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(bob_sub["uuid"], sub["uuid"])
+        self.assertEqual(bob_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             xander_sub["uuid"], xander["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -713,7 +720,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(sally_sub["uuid"], sub["uuid"])
+        self.assertEqual(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             xander_sub["uuid"], xander["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -723,7 +730,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(jim_sub["uuid"], sub["uuid"])
+        self.assertEqual(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             xander_sub["uuid"], xander["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -736,7 +743,7 @@ class TestPeerApi(CacheResetTest):
         # 13) Buffy is waiting in the wings. She pulls Xander's submission and
         # grades it.
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(xander_sub["uuid"], sub["uuid"])
+        self.assertEqual(xander_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             buffy_sub["uuid"], buffy["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -751,7 +758,7 @@ class TestPeerApi(CacheResetTest):
 
         # 15) Spike reviews Bob, Sally, Jim, Buffy, and Xander.
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(bob_sub["uuid"], sub["uuid"])
+        self.assertEqual(bob_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             spike_sub["uuid"], spike["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -762,7 +769,7 @@ class TestPeerApi(CacheResetTest):
 
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(sally_sub["uuid"], sub["uuid"])
+        self.assertEqual(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             spike_sub["uuid"], spike["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -772,7 +779,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(jim_sub["uuid"], sub["uuid"])
+        self.assertEqual(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             spike_sub["uuid"], spike["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -782,7 +789,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(buffy_sub["uuid"], sub["uuid"])
+        self.assertEqual(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             spike_sub["uuid"], spike["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -792,7 +799,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(xander_sub["uuid"], sub["uuid"])
+        self.assertEqual(xander_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             spike_sub["uuid"], spike["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -804,7 +811,7 @@ class TestPeerApi(CacheResetTest):
 
         # 16) Buffy reviews Spike
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(spike_sub["uuid"], sub["uuid"])
+        self.assertEqual(spike_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             buffy_sub["uuid"], buffy["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -819,7 +826,7 @@ class TestPeerApi(CacheResetTest):
 
         # 18) Willow goes to grade, and should get Buffy
         sub = peer_api.get_submission_to_assess(willow_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(buffy_sub["uuid"], sub["uuid"])
+        self.assertEqual(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             willow_sub["uuid"], willow["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -831,7 +838,7 @@ class TestPeerApi(CacheResetTest):
 
         # 19) Xander comes back and gets Buffy's submission, and grades it.
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertEquals(buffy_sub["uuid"], sub["uuid"])
+        self.assertEqual(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
             xander_sub["uuid"], xander["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -891,7 +898,7 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(xander_answer["uuid"], item.submission_uuid)
 
         # Cancel the Xander's submission.
-        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
+        PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
         workflow_api.cancel_workflow(
             submission_uuid=xander_answer["uuid"], comments='Cancellation reason', cancelled_by_id=_['student_id'],
             assessment_requirements=STEP_REQUIREMENTS
@@ -906,7 +913,7 @@ class TestPeerApi(CacheResetTest):
         # Test that if student pulls the submission for review and the
         # submission is cancelled their assessment will not be accepted.
         buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+        xander_sub, __ = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Check for a workflow for Buffy.
         buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
@@ -990,7 +997,7 @@ class TestPeerApi(CacheResetTest):
 
     def test_get_submission_for_review(self):
         buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
+        xander_answer, __ = self._create_student_and_submission("Xander", "Xander's answer")
         self._create_student_and_submission("Willow", "Willow's answer")
 
         buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer['uuid'])
@@ -1078,13 +1085,13 @@ class TestPeerApi(CacheResetTest):
         )
         saved_feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
         self.assertIsNot(saved_feedback, None)
-        self.assertEquals(saved_feedback['submission_uuid'], assessment['submission_uuid'])
-        self.assertEquals(saved_feedback['feedback_text'], 'Bob is a jerk!')
-        self.assertItemsEqual(saved_feedback['options'], [
+        self.assertEqual(saved_feedback['submission_uuid'], assessment['submission_uuid'])
+        self.assertEqual(saved_feedback['feedback_text'], 'Bob is a jerk!')
+        six.assertCountEqual(self, saved_feedback['options'], [
             {'text': 'I disliked this assessment'},
             {'text': 'I felt this assessment was unfair'},
         ])
-        self.assertEquals(saved_feedback["assessments"][0]["submission_uuid"], assessment["submission_uuid"])
+        self.assertEqual(saved_feedback["assessments"][0]["submission_uuid"], assessment["submission_uuid"])
 
     def test_close_active_assessment(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
@@ -1119,7 +1126,7 @@ class TestPeerApi(CacheResetTest):
     @raises(peer_api.PeerAssessmentInternalError)
     def test_get_submitted_assessments_error(self, mock_filter):
         self._create_student_and_submission("Tim", "Tim's answer")
-        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        bob_sub, __ = self._create_student_and_submission("Bob", "Bob's answer")
         peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
         mock_filter.side_effect = DatabaseError("Oh no.")
         submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"])
@@ -1137,7 +1144,7 @@ class TestPeerApi(CacheResetTest):
     @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessment_feedback_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        tim_answer, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.get_assessment_feedback(tim_answer['uuid'])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflowItem.get_scored_assessments')
@@ -1161,7 +1168,7 @@ class TestPeerApi(CacheResetTest):
 
     @patch('openassessment.assessment.models.AssessmentFeedback.save')
     @raises(peer_api.PeerAssessmentRequestError)
-    def test_set_assessment_feedback_error_on_huge_save(self, mock_filter):
+    def test_set_assessment_feedback_error_on_huge_save(self, _):
         tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.set_assessment_feedback(
             {
@@ -1213,7 +1220,7 @@ class TestPeerApi(CacheResetTest):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
-        assessment = peer_api.create_assessment(
+        peer_api.create_assessment(
             bob_sub["uuid"], bob["student_id"],
             ASSESSMENT_DICT['options_selected'],
             ASSESSMENT_DICT['criterion_feedback'],
@@ -1256,6 +1263,7 @@ class TestPeerApi(CacheResetTest):
     @patch('openassessment.assessment.models.Assessment.objects.filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessments_db_error(self, mock_filter):
+        mock_filter.return_value = Assessment.objects.none()
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
         mock_filter.side_effect = DatabaseError("Bad things happened")
         peer_api.get_assessments(tim["uuid"])
@@ -1279,6 +1287,7 @@ class TestPeerApi(CacheResetTest):
     @patch('openassessment.assessment.models.Assessment.objects.filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_get_assessment(self, mock_filter):
+        mock_filter.return_value = Assessment.objects.none()
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 3)
@@ -1330,9 +1339,9 @@ class TestPeerApi(CacheResetTest):
 
         """
         bob_sub, bob = self._create_student_and_submission('Bob', 'Bob submission')
-        tim_sub, tim = self._create_student_and_submission('Tim', 'Tim submission')
-        sally_sub, sally = self._create_student_and_submission('Sally', 'Sally submission')
-        jane_sub, jane = self._create_student_and_submission('Jane', 'Jane submission')
+        tim_sub, __ = self._create_student_and_submission('Tim', 'Tim submission')
+        sally_sub, __ = self._create_student_and_submission('Sally', 'Sally submission')
+        jane_sub, __ = self._create_student_and_submission('Jane', 'Jane submission')
 
         # Create two workflow items.
         peer_api.create_peer_workflow_item(bob_sub['uuid'], tim_sub['uuid'])
@@ -1393,7 +1402,7 @@ class TestPeerApi(CacheResetTest):
         # Test that student will not be able to pull the cancelled
         # submission for review.
         buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+        xander_sub, __ = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Check for a workflow for Buffy.
         buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
@@ -1420,7 +1429,7 @@ class TestPeerApi(CacheResetTest):
     def test_get_submission_to_assess_for_student_with_cancelled_submission(self):
         # Test that student with cancelled submission will not be able to
         # review submissions by others.
-        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        buffy_sub, __ = self._create_student_and_submission("Buffy", "Buffy's answer")
         xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Check for a workflow for Buffy.
@@ -1621,6 +1630,7 @@ class AssessmentFeedbackTest(CacheResetTest):
     """
 
     def setUp(self):
+        super(AssessmentFeedbackTest, self).setUp()
         self.feedback = AssessmentFeedback.objects.create(
             submission_uuid='test_submission',
             feedback_text='test feedback',

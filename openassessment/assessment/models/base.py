@@ -12,7 +12,7 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.assessment --auto
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from collections import defaultdict
 from copy import deepcopy
@@ -25,11 +25,12 @@ import six
 
 from django.core.cache import cache
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from lazy import lazy
 
-logger = logging.getLogger("openassessment.assessment.models")
+logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
 
 
 class InvalidRubricSelection(Exception):
@@ -180,6 +181,7 @@ class Criterion(models.Model):
         return max(option_points) if option_points else 0
 
 
+@python_2_unicode_compatible
 class CriterionOption(models.Model):
     """What an assessor chooses when assessing against a Criteria.
 
@@ -224,7 +226,7 @@ class CriterionOption(models.Model):
             "name={0.name!r}, explanation={0.explanation!r})"
         ).format(self)
 
-    def __unicode__(self):
+    def __str__(self):
         return repr(self)
 
 
@@ -406,6 +408,7 @@ class RubricIndex(object):
         return self._criteria_without_options
 
 
+@python_2_unicode_compatible
 class Assessment(models.Model):
     """An evaluation made against a particular Submission and Rubric.
 
@@ -448,10 +451,9 @@ class Assessment(models.Model):
         """
         if self.points_possible == 0:
             return None
-        else:
-            return float(self.points_earned) / self.points_possible
+        return float(self.points_earned) / self.points_possible
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Assessment {}".format(self.id)
 
     @classmethod
@@ -544,11 +546,11 @@ class Assessment(models.Model):
         if total_criterion_scores == 0:
             median_score = 0
         elif total_criterion_scores % 2:
-            median_score = sorted_scores[median-1]
+            median_score = sorted_scores[median - 1]
         else:
             median_score = int(
                 math.ceil(
-                    sum(sorted_scores[median-1:median+1])/float(2)
+                    sum(sorted_scores[median - 1:median + 1]) / float(2)
                 )
             )
         return median_score
@@ -791,7 +793,7 @@ class AssessmentPart(models.Model):
             InvalidRubricSelection
         """
         missing_criteria = rubric_index.find_missing_criteria(selected_criteria)
-        if len(missing_criteria) > 0:
+        if missing_criteria:
             msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
             raise InvalidRubricSelection(msg)
 
@@ -816,12 +818,13 @@ class AssessmentPart(models.Model):
         """
         missing_option_selections = rubric_index.find_missing_criteria(selected_criteria)
         zero_option_criteria = set([c.name for c in rubric_index.find_criteria_without_options()])
-
+        # pylint: disable=invalid-name
         zero_option_criteria_missing_feedback = zero_option_criteria - set(criteria_feedback)
+        # pylint: disable=invalid-name
         optioned_criteria_missing_selection = missing_option_selections - zero_option_criteria
 
         missing_criteria = zero_option_criteria_missing_feedback | optioned_criteria_missing_selection
 
-        if len(missing_criteria) > 0:
+        if missing_criteria:
             msg = u"Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
             raise InvalidRubricSelection(msg)

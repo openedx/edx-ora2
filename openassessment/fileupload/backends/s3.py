@@ -9,7 +9,7 @@ import boto
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend
 
-logger = logging.getLogger("openassessment.fileupload.api")
+logger = logging.getLogger("openassessment.fileupload.api")  # pylint: disable=invalid-name
 
 
 class Backend(BaseBackend):
@@ -53,8 +53,7 @@ class Backend(BaseBackend):
         if s3_key:
             bucket.delete_key(s3_key)
             return True
-        else:
-            return False
+        return False
 
 
 def _connect_to_s3():

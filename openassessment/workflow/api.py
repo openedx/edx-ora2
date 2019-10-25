@@ -18,7 +18,7 @@ from .errors import (AssessmentWorkflowError, AssessmentWorkflowInternalError, A
 from .models import AssessmentWorkflow, AssessmentWorkflowCancellation
 from .serializers import AssessmentWorkflowCancellationSerializer, AssessmentWorkflowSerializer
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 def create_workflow(submission_uuid, steps, on_init_params=None):
@@ -59,6 +59,7 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
 
     """
     def sub_err_msg(specific_err_msg):
+        """ Submission error message"""
         return (
             u"Could not create assessment workflow: "
             u"retrieving submission {} failed: {}"
@@ -93,7 +94,7 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
         err_msg = u"Could not create assessment workflow for submission UUID: {}".format(submission_uuid)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
-    except:
+    except Exception:  # pylint: disable=broad-except
         err_msg = (
             u"An unexpected error occurred while creating "
             u"the workflow for submission UUID {}"
@@ -302,7 +303,8 @@ def get_status_counts(course_id, item_id, steps):
     # The AI status exists for workflow logic, but no student will ever be in
     # the AI status, so we should never return it.
     statuses = steps + AssessmentWorkflow.STATUSES
-    if 'ai' in statuses: statuses.remove('ai')
+    if 'ai' in statuses:
+        statuses.remove('ai')
     return [
         {
             "status": status,
@@ -354,7 +356,7 @@ def _get_workflow_model(submission_uuid):
     except Exception as exc:
         # Something very unexpected has just happened (like DB misconfig)
         err_msg = (
-            "Could not get assessment workflow with submission_uuid {} due to error: {}"
+            u"Could not get assessment workflow with submission_uuid {} due to error: {}"
             .format(submission_uuid, exc)
         )
         logger.exception(err_msg)

@@ -120,7 +120,7 @@ class StudentTrainingWorkflow(models.Model):
 
         # If we're already working on an item, then return that item
         incomplete_items = [item for item in items if not item.is_complete]
-        if len(incomplete_items) > 0:
+        if incomplete_items:
             return incomplete_items[0].training_example
 
         # Otherwise, pick an item that we have not completed
@@ -134,29 +134,28 @@ class StudentTrainingWorkflow(models.Model):
         ]
 
         # If there are no more items available, return None
-        if len(available_examples) == 0:
+        if not available_examples:
             return None
         # Otherwise, create a new workflow item for the example
         # and add it to the workflow
-        else:
-            order_num = len(items) + 1
-            next_example = available_examples[0]
+        order_num = len(items) + 1
+        next_example = available_examples[0]
 
-            try:
-                with transaction.atomic():
-                    StudentTrainingWorkflowItem.objects.create(
-                        workflow=self,
-                        order_num=order_num,
-                        training_example=next_example
-                    )
-            # If we get an integrity error, it means we've violated a uniqueness constraint
-            # (someone has created this object after we checked if it existed)
-            # Since the object already exists, we don't need to do anything
-            # Use the example passed into the function, because attempting to
-            # retrieve the stored example would result in an race condition.
-            except IntegrityError:
-                pass
-            return next_example
+        try:
+            with transaction.atomic():
+                StudentTrainingWorkflowItem.objects.create(
+                    workflow=self,
+                    order_num=order_num,
+                    training_example=next_example
+                )
+        # If we get an integrity error, it means we've violated a uniqueness constraint
+        # (someone has created this object after we checked if it existed)
+        # Since the object already exists, we don't need to do anything
+        # Use the example passed into the function, because attempting to
+        # retrieve the stored example would result in an race condition.
+        except IntegrityError:
+            pass
+        return next_example
 
     @property
     def current_item(self):
@@ -174,7 +173,7 @@ class StudentTrainingWorkflow(models.Model):
             completed_at__isnull=True
         ).order_by('order_num')[:1]
 
-        return None if len(next_incomplete) == 0 else next_incomplete[0]
+        return None if not next_incomplete else next_incomplete[0]
 
 
 class StudentTrainingWorkflowItem(models.Model):

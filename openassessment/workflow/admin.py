@@ -1,3 +1,4 @@
+""" Admin file of workflow app """
 from __future__ import absolute_import
 
 from django.contrib import admin
@@ -6,8 +7,10 @@ from .models import AssessmentWorkflow, AssessmentWorkflowStep
 
 
 class AssessmentWorkflowStepInline(admin.StackedInline):
+    """Assessment Workflow Step"""
     model = AssessmentWorkflowStep
     extra = 0
+
 
 class AssessmentWorkflowAdmin(admin.ModelAdmin):
     """Admin for the user's overall workflow through open assessment.
@@ -23,5 +26,6 @@ class AssessmentWorkflowAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     search_fields = ('submission_uuid', 'course_id', 'item_id')
     inlines = (AssessmentWorkflowStepInline,)
+
 
 admin.site.register(AssessmentWorkflow, AssessmentWorkflowAdmin)

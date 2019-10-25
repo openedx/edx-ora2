@@ -46,7 +46,6 @@ class Command(BaseCommand):
         super(Command, self).__init__(*args, **kwargs)
         self._student_items = list()
 
-
     def handle(self, *args, **options):
         """
         Execute the command.
@@ -82,7 +81,7 @@ class Command(BaseCommand):
 
         for sub_num in range(num_submissions):
 
-            print("Creating submission {num}".format(num=sub_num))
+            print(u"Creating submission {num}".format(num=sub_num))
 
             # Create a dummy submission
             student_item = {
@@ -99,7 +98,7 @@ class Command(BaseCommand):
 
             # Create peer assessments
             for num in range(self.NUM_PEER_ASSESSMENTS):
-                print("-- Creating peer-workflow {num}".format(num=num))
+                print(u"-- Creating peer-workflow {num}".format(num=num))
 
                 scorer_id = 'test_{num}'.format(num=num)
 
@@ -113,7 +112,7 @@ class Command(BaseCommand):
                 # exactly which submission we want to score.
                 peer_api.create_peer_workflow_item(scorer_submission_uuid, submission_uuid)
                 if assessments_created < assessments_to_create:
-                    print("-- Creating peer-assessment {num}".format(num=num))
+                    print(u"-- Creating peer-assessment {num}".format(num=num))
                     # Create the peer assessment
                     peer_api.create_assessment(
                         scorer_submission_uuid,
@@ -126,12 +125,12 @@ class Command(BaseCommand):
 
             if self.self_assessment_required:
                 # Create a self-assessment
-                print("-- Creating self assessment")
+                print(u"-- Creating self assessment")
                 self_api.create_assessment(
                     submission_uuid, student_item['student_id'],
                     options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
                 )
-        print("%s assessments being completed for %s submissions" % (assessments_created, num_submissions))
+        print(u"%s assessments being completed for %s submissions" % (assessments_created, num_submissions))
 
     @property
     def student_items(self):

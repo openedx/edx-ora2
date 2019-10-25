@@ -1,3 +1,6 @@
+""" Exceptions for FileUploads. """
+
+
 class FileUploadError(Exception):
     """An error related to uploading files
 

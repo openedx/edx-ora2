@@ -79,7 +79,7 @@ def _encode_row(data_list):
     processed_row = []
 
     for item in data_list:
-        new_item = six.text_type(item).encode('utf-8')
+        new_item = six.text_type(item).encode('utf-8') if six.PY2 else six.text_type(item)
         processed_row.append(new_item)
 
     return processed_row

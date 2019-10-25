@@ -12,6 +12,7 @@ import json
 import ddt
 import mock
 import pytz
+import six
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.workflow import api as workflow_api
@@ -53,8 +54,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
 
         # Validate Peer Rendering.
-        self.assertTrue("Sally".encode('utf-8') in peer_response.body or
-                        "Hal".encode('utf-8') in peer_response.body)
+        self.assertTrue(
+            "Sally".encode('utf-8') in peer_response.body or "Hal".encode('utf-8') in peer_response.body
+        )
 
     @mock.patch('openassessment.xblock.workflow_mixin.WorkflowMixin.workflow_requirements')
     @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
@@ -268,8 +270,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {'continue_grading': True}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
-        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"], peer_response.body.decode('utf-8'))
+        self.assertNotIn(submission["answer"]["parts"][1]["text"], peer_response.body.decode('utf-8'))
 
         peer_api.create_assessment(
             submission['uuid'],
@@ -286,9 +288,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {'continue_grading': True}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
-        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
-        self.assertIn("You have successfully completed", peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"], peer_response.body.decode('utf-8'))
+        self.assertNotIn(submission["answer"]["parts"][1]["text"], peer_response.body.decode('utf-8'))
+        self.assertIn("You have successfully completed", peer_response.body.decode('utf-8'))
 
 
 @ddt.ddt
@@ -629,10 +631,10 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         )
 
     def _assert_path_and_context(
-        self, xblock, expected_path, expected_context,
-        continue_grading=False, workflow_status=None,
-        graded_enough=False,
-        was_graded_enough=False,
+            self, xblock, expected_path, expected_context,
+            continue_grading=False, workflow_status=None,
+            graded_enough=False,
+            was_graded_enough=False,
     ):
         """
         Render the peer assessment step and verify:
@@ -666,7 +668,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
 
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
         self.assertEqual(path, expected_path)
-        self.assertItemsEqual(context, expected_context)
+        six.assertCountEqual(self, context, expected_context)
 
         # Verify that we render without error
         resp = self.request(xblock, 'render_peer_assessment', json.dumps({}))
@@ -684,7 +686,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
     }
 
-    ASSESSMENT_WITH_INVALID_SUBMISSION_UUID = {
+    ASSESSMENT_WITH_INVALID_SUBMISSION_UUID = {  # pylint: disable=invalid-name
         'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
         'criterion_feedback': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ı ʇɥonƃɥʇ ʇɥıs ʍɐs ʌǝɹʎ ɔouɔısǝ.'},
         'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
@@ -716,13 +718,16 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         self.assertEqual(assessment['score_type'], 'PE')
 
         self.assertEqual(len(assessment['parts']), 2)
-        parts = sorted(assessment['parts'])
+
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.peer_assess', assessment)
+
+        parts = assessment['parts']
+        parts.sort(key=lambda x: x['option']['name'])
+
         self.assertEqual(parts[0]['option']['criterion']['name'], u'Form')
         self.assertEqual(parts[0]['option']['name'], 'Fair')
         self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
-
-        self.assert_assessment_event_published(xblock, 'openassessmentblock.peer_assess', assessment)
 
     @scenario('data/feedback_per_criterion.xml', user_id='Bob')
     def test_peer_assess_feedback(self, xblock):
@@ -846,9 +851,8 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         if expect_failure:
             self.assertFalse(resp['success'])
             return None
-        else:
-            self.assertTrue(resp['success'])
+        self.assertTrue(resp['success'])
 
-            # Retrieve the peer assessment
-            retrieved_assessment = peer_api.get_assessments(submission['uuid'])[0]
-            return submission['uuid'], retrieved_assessment
+        # Retrieve the peer assessment
+        retrieved_assessment = peer_api.get_assessments(submission['uuid'])[0]
+        return submission['uuid'], retrieved_assessment

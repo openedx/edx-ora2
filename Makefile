@@ -72,7 +72,7 @@ check_translations_up_to_date: extract_translations compile_translations generat
 quality:
 	./node_modules/.bin/jshint $(STATIC_JS)/src -c .jshintrc --verbose
 	npm run lint
-	./scripts/run-pep8.sh
+	./scripts/run-pycodestyle.sh
 	./scripts/run-pylint.sh
 
 test-python:

@@ -15,9 +15,10 @@ from submissions import api as sub_api
 
 
 class CreateSubmissionsTest(TestCase):
+    """ Test the submissions of open assessments. """
 
     def test_create_submissions(self):
-
+        """ Tests create submission process. """
         # Create some submissions
         cmd = create_oa_submissions.Command(**{'self_assessment_required': True})
         cmd.handle("test_course", "test_item", "5", 100)

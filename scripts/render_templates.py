@@ -109,7 +109,10 @@ def render_templates(root_dir, template_json):
 
         try:
             with open(output_path, 'w') as output_file:
-                output_file.write(rendered.encode('utf-8'))
+                if six.PY2:
+                    output_file.write(rendered.encode('utf-8'))
+                else:
+                    output_file.write(rendered)
         except IOError:
             print("Could not write rendered template to file: {}".format(output_path))
             sys.exit(1)

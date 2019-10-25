@@ -18,7 +18,7 @@ from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api.peer import create_assessment as peer_assess
 from openassessment.assessment.api.self import create_assessment as self_assess
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
-from openassessment.assessment.models import StaffWorkflow
+from openassessment.assessment.models import Assessment, StaffWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
@@ -366,6 +366,7 @@ class TestStaffAssessment(CacheResetTest):
     @mock.patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_database_filter_error_handling(self, mock_filter):
         # Create a submission
+        mock_filter.return_value = Assessment.objects.none()
         tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Note that we have to define this side effect *after* creating the submission
@@ -436,6 +437,7 @@ class TestStaffAssessment(CacheResetTest):
         # Change the grading_started_at timestamp so that the 'lock' on the
         # problem is released.
         workflow = StaffWorkflow.objects.get(scorer_id="Tim")
+        # pylint: disable=unicode-format-string
         timestamp = (now() - (workflow.TIME_LIMIT + timedelta(hours=1))).strftime("%Y-%m-%d %H:%M:%S")
         workflow.grading_started_at = timestamp
         workflow.save()
@@ -493,6 +495,7 @@ class TestStaffAssessment(CacheResetTest):
         # When one of the 'locks' times out, verify that it is no longer
         # considered ungraded.
         workflow = StaffWorkflow.objects.get(scorer_id=bob['student_id'])
+        # pylint: disable=unicode-format-string
         timestamp = (now() - (workflow.TIME_LIMIT + timedelta(hours=1))).strftime("%Y-%m-%d %H:%M:%S")
         workflow.grading_started_at = timestamp
         workflow.save()

@@ -21,7 +21,7 @@ from openassessment.assessment.serializers import (InvalidRubric, InvalidTrainin
                                                    serialize_training_example, validate_training_example_format)
 from submissions import api as sub_api
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 def submitter_is_finished(submission_uuid, training_requirements):   # pylint:disable=W0613
@@ -187,7 +187,7 @@ def validate_training_examples(rubric, examples):
         for criterion_name, criterion_option_list in six.iteritems(criteria_options)
         if len(criterion_option_list) == 0
     ]
-    if len(set(criteria_options) - set(criteria_without_options)) == 0:
+    if not (set(criteria_options) - set(criteria_without_options)):
         return [_(
             "If your assignment includes a learner training step, "
             "the rubric must have at least one criterion, "
@@ -370,7 +370,7 @@ def get_training_example(submission_uuid, rubric, examples):
     try:
         # Validate the training examples
         errors = validate_training_examples(rubric, examples)
-        if len(errors) > 0:
+        if errors:
             msg = (
                 u"Training examples do not match the rubric (submission UUID is {uuid}): {errors}"
             ).format(uuid=submission_uuid, errors="\n".join(errors))
@@ -392,17 +392,16 @@ def get_training_example(submission_uuid, rubric, examples):
         return None if next_example is None else serialize_training_example(next_example)
     except (InvalidRubric, InvalidRubricSelection, InvalidTrainingExample) as ex:
         logger.exception(
-            "Could not deserialize training examples for submission UUID {}".format(submission_uuid)
+            u"Could not deserialize training examples for submission UUID {}".format(submission_uuid)
         )
         raise StudentTrainingRequestError(ex)
-    except sub_api.SubmissionNotFoundError as ex:
+    except sub_api.SubmissionNotFoundError:
         msg = u"Could not retrieve the submission with UUID {}".format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingRequestError(msg)
     except DatabaseError:
         msg = (
-            u"Could not retrieve a training example "
-            u"for the learner with submission UUID {}"
+            u"Could not retrieve a training example for the learner with submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
@@ -458,7 +457,7 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
 
         # Mark the item as complete if the student's selection
         # matches the instructor's selection
-        if update_workflow and len(corrections) == 0:
+        if update_workflow and not corrections:
             item.mark_complete()
         return corrections
     except StudentTrainingWorkflow.DoesNotExist:

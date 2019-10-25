@@ -3,7 +3,6 @@ Tests the Open Assessment XBlock functionality.
 """
 from __future__ import absolute_import
 
-from StringIO import StringIO
 from collections import namedtuple
 import datetime as dt
 import json
@@ -12,6 +11,7 @@ import ddt
 from mock import MagicMock, Mock, PropertyMock, patch
 import pytz
 import six
+from six import StringIO
 
 from freezegun import freeze_time
 from lxml import etree
@@ -42,29 +42,29 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Validate Submission Rendering.
         submission_response = xblock.render_submission({})
         self.assertIsNotNone(submission_response)
-        self.assertIn("step--response", submission_response.body)
+        self.assertIn("step--response", submission_response.body.decode('utf-8'))
 
         # Validate Peer Rendering.
         request = namedtuple('Request', 'params')
         request.params = {}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertIn("step--peer-assessment", peer_response.body)
+        self.assertIn("step--peer-assessment", peer_response.body.decode('utf-8'))
 
         # Validate Self Rendering.
         self_response = xblock.render_self_assessment(request)
         self.assertIsNotNone(self_response)
-        self.assertIn("step--self-assessment", self_response.body)
+        self.assertIn("step--self-assessment", self_response.body.decode('utf-8'))
 
         # Validate Staff Grade.
         staff_response = xblock.render_staff_assessment(request)
         self.assertIsNotNone(self_response)
-        self.assertIn("step--staff-assessment", staff_response.body)
+        self.assertIn("step--staff-assessment", staff_response.body.decode('utf-8'))
 
         # Validate Grading.
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)
-        self.assertIn("step--grade", grade_response.body)
+        self.assertIn("step--grade", grade_response.body.decode('utf-8'))
 
     def _staff_assessment_view_helper(self, xblock):
         """
@@ -117,7 +117,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
         sections = tree.xpath(xpath_query_to_get_main_section)
         self.assertEqual(len(sections), 1)
-        self.assertEquals(sections[0].get('data-item-view-enabled'), '0')
+        self.assertEqual(sections[0].get('data-item-view-enabled'), '0')
 
         scripts = tree.xpath(xpath_query_to_get_course_items)
         self.assertEqual(len(scripts), 1)
@@ -137,7 +137,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
         sections = tree.xpath(xpath_query_to_get_main_section)
         self.assertEqual(len(sections), 1)
-        self.assertEquals(sections[0].get('data-item-view-enabled'), '1')
+        self.assertEqual(sections[0].get('data-item-view-enabled'), '1')
 
         scripts = tree.xpath(xpath_query_to_get_course_items)
         self.assertEqual(len(scripts), 1)
@@ -206,8 +206,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Validate Submission Rendering.
             submission_response = xblock.render_submission({})
             self.assertIsNotNone(submission_response)
-            self.assertIn("step--response", submission_response.body)
-            self.assertIn(expected_date, submission_response.body)
+            self.assertIn("step--response", submission_response.body.decode('utf-8'))
+            self.assertIn(expected_date, submission_response.body.decode('utf-8'))
 
     def _set_up_start_date(self, start_date):
         """
@@ -256,7 +256,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 1, 1, 1, 1))
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_start_date, resp.body)
+            self.assertIn(expected_start_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-05-01T00:00:00+00:00'),
               ('America/Los_Angeles', '2014-05-01T00:00:00+00:00'))
@@ -269,7 +269,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set due dates'
             xblock = self._set_up_end_date(dt.datetime(2014, 5, 1))
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_end_date, resp.body)
+            self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-04-01T01:01:01+00:00'),
               ('America/Los_Angeles', '2014-04-01T01:01:01+00:00'))
@@ -286,7 +286,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
 
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_start_date, resp.body)
+            self.assertIn(expected_start_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-05-01T00:00:00+00:00'),
               ('America/Los_Angeles', '2014-05-01T00:00:00+00:00'))
@@ -302,7 +302,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             self._set_up_days_early_for_beta(xblock, 5)
             self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_end_date, resp.body)
+            self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-04-06T01:01:01+00:00'),
               ('America/Los_Angeles', '2014-04-06T01:01:01+00:00'))
@@ -323,7 +323,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set start dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_start_date, resp.body)
+            self.assertIn(expected_start_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-05-01T00:00:00+00:00'),
               ('America/Los_Angeles', '2014-05-01T00:00:00+00:00'))
@@ -343,7 +343,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set due dates
             xblock = self._set_up_end_date(dt.datetime(2014, 5, 1))
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_end_date, resp.body)
+            self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-04-06T01:01:01+00:00'),
               ('America/Los_Angeles', '2014-04-06T01:01:01+00:00'))
@@ -360,7 +360,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
 
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_start_date, resp.body)
+            self.assertIn(expected_start_date, resp.body.decode('utf-8'))
 
     @ddt.data(('utc', '2014-05-01T00:00:00+00:00'),
               ('America/Los_Angeles', '2014-05-01T00:00:00+00:00'))
@@ -376,7 +376,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
 
             resp = self._render_xblock(xblock)
-            self.assertIn(expected_end_date, resp.body)
+            self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
@@ -838,8 +838,8 @@ class TestDates(XBlockHandlerTestCase):
         )
 
     def assert_is_closed(
-        self, xblock, now, step, expected_is_closed, expected_reason,
-        expected_start, expected_due, released=None, course_staff=False,
+            self, xblock, now, step, expected_is_closed, expected_reason,
+            expected_start, expected_due, released=None, course_staff=False,
     ):
         """
         Assert whether the XBlock step is open/closed.

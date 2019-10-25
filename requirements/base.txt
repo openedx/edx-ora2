@@ -3,7 +3,7 @@ edx-i18n-tools
 edx-submissions>=2.0.12
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework==3.6.3
 git+https://github.com/edx/XBlock.git@xblock-1.0.1#egg=XBlock==1.0.1
-git+https://github.com/edx/xblock-sdk.git@v0.1.4#egg=xblock-sdk==0.1.4
+git+https://github.com/edx/xblock-sdk.git@8918a3f1d2d4fae3a806a29d1fee9428f4dbe37f#egg=xblock-sdk==0.1.5
 
 # Third Party Requirements
 bleach==2.1.4

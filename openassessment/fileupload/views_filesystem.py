@@ -21,8 +21,6 @@ def filesystem_storage(request, key):
     """
     Uploading and download files to the local filesystem backend.
     """
-    if isinstance(key, six.text_type):
-        key = key.encode("utf-8")
     if request.method == "PUT":
         if not is_upload_url_available(key):
             raise Http404()
@@ -87,7 +85,7 @@ def save_to_file(key, content, metadata=None):
     safe_save(file_path, content)
     try:
         safe_save(metadata_path, json.dumps(metadata))
-    except:
+    except Exception:
         safe_remove(file_path)
         safe_remove(metadata_path)
         raise
@@ -103,14 +101,14 @@ def safe_save(path, content):
     """
     dir_path = os.path.abspath(os.path.dirname(path))
     if not dir_path.startswith(get_bucket_path()):
-        raise exceptions.FileUploadRequestError("Uploaded file name not allowed: '%s'" % path)
+        raise exceptions.FileUploadRequestError(u"Uploaded file name not allowed: '%s'" % path)
     root_directory = get_root_directory_path()
     if not os.path.exists(root_directory):
-        raise exceptions.FileUploadInternalError("File upload root directory does not exist: %s" % root_directory)
+        raise exceptions.FileUploadInternalError(u"File upload root directory does not exist: %s" % root_directory)
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
     with open(path, 'w') as f:
-        f.write(content)
+        f.write(content.decode('utf-8') if six.PY3 and isinstance(content, bytes) else content)
 
 
 def safe_remove(path):

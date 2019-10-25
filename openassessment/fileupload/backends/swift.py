@@ -16,7 +16,7 @@ from __future__ import absolute_import
 import logging
 
 import requests
-import six.moves.urllib.parse
+import six.moves.urllib.parse  # pylint: disable=import-error
 
 from django.conf import settings
 
@@ -25,7 +25,7 @@ import swiftclient
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend
 
-logger = logging.getLogger("openassessment.fileupload.api")
+logger = logging.getLogger("openassessment.fileupload.api")  # pylint: disable=invalid-name
 
 # prefix paths with current version, in case we need to roll it at some point
 SWIFT_BACKEND_VERSION = 1

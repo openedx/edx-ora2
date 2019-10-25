@@ -79,13 +79,13 @@ class MessageMixin(object):
         step_info = deadline_info.get(status, {})
 
         context = {
-                status: True,
-                "{}_approaching".format(status): step_info.get('approaching', False),
-                "{}_not_released".format(status): (step_info.get("reason") == "start"),
+            status: True,
+            "{}_approaching".format(status): step_info.get('approaching', False),
+            "{}_not_released".format(status): (step_info.get("reason") == "start"),
 
-                # Uses a static field in the XBlock to determine if the PeerAssessment Block
-                # was able to pick up an assessment.
-                "peer_not_available": self.no_peers,
+            # Uses a static field in the XBlock to determine if the PeerAssessment Block
+            # was able to pick up an assessment.
+            "peer_not_available": self.no_peers,
         }
 
         return 'openassessmentblock/message/oa_message_incomplete.html', context

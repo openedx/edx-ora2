@@ -8,6 +8,7 @@ from __future__ import absolute_import
 import copy
 import json
 import os.path
+import six
 
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, full_assessment_dict,
@@ -30,14 +31,14 @@ class RubricDeserializationTest(CacheResetTest):
         # and returns a reference to it the next time.
         rubric_data = json_data('data/rubric/project_plan_rubric.json')
 
-        r1 = rubric_from_dict(rubric_data)
+        rubric_i = rubric_from_dict(rubric_data)
 
         with self.assertNumQueries(1):
             # Just the select -- shouldn't need the create queries
-            r2 = rubric_from_dict(rubric_data)
+            rubric_j = rubric_from_dict(rubric_data)
 
-        self.assertEqual(r1.id, r2.id)
-        r1.delete()
+        self.assertEqual(rubric_i.id, rubric_j.id)
+        rubric_i.delete()
 
     def test_rubric_requires_positive_score(self):
         with self.assertRaises(InvalidRubric):
@@ -47,18 +48,18 @@ class RubricDeserializationTest(CacheResetTest):
 class CriterionDeserializationTest(CacheResetTest):
 
     def test_empty_criteria(self):
-        with self.assertRaises(InvalidRubric) as cm:
+        with self.assertRaises(InvalidRubric) as criteria_exception_message:
             rubric_from_dict(json_data('data/rubric/empty_criteria.json'))
         self.assertEqual(
-            cm.exception.errors,
+            criteria_exception_message.exception.errors,
             {'criteria': [u'Must have at least one criterion']}
         )
 
     def test_missing_criteria(self):
-        with self.assertRaises(InvalidRubric) as cm:
+        with self.assertRaises(InvalidRubric) as criteria_exception_message:
             rubric_from_dict(json_data('data/rubric/missing_criteria.json'))
         self.assertEqual(
-            cm.exception.errors,
+            criteria_exception_message.exception.errors,
             {'criteria': [u'This field is required.']}
         )
 
@@ -70,10 +71,10 @@ class CriterionOptionDeserializationTest(CacheResetTest):
         self.assertEqual(rubric.criteria.count(), 2)
 
     def test_missing_options(self):
-        with self.assertRaises(InvalidRubric) as cm:
+        with self.assertRaises(InvalidRubric) as criteria_exception_message:
             rubric_from_dict(json_data('data/rubric/missing_options.json'))
         self.assertEqual(
-            cm.exception.errors,
+            criteria_exception_message.exception.errors,
             {
                 'criteria': [
                     {'options': [u'This field is required.']},
@@ -92,7 +93,7 @@ class AssessmentFeedbackSerializerTest(CacheResetTest):
         feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
 
         serialized = AssessmentFeedbackSerializer(feedback).data
-        self.assertItemsEqual(serialized, {
+        six.assertCountEqual(self, serialized, {
             'submission_uuid': 'abc123',
             'feedback_text': 'Test feedback',
             'options': [
@@ -108,7 +109,7 @@ class AssessmentFeedbackSerializerTest(CacheResetTest):
         )
 
         serialized = AssessmentFeedbackSerializer(feedback).data
-        self.assertItemsEqual(serialized, {
+        six.assertCountEqual(self, serialized, {
             'submission_uuid': 'abc123',
             'feedback_text': 'Test feedback',
             'options': [],

@@ -17,4 +17,4 @@ def get_backend():
     elif backend_setting == "django":
         return django_storage.Backend()
     else:
-        raise ValueError("Invalid ORA2_FILEUPLOAD_BACKEND setting value: %s" % backend_setting)
+        raise ValueError(u"Invalid ORA2_FILEUPLOAD_BACKEND setting value: %s" % backend_setting)

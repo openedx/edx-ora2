@@ -32,7 +32,7 @@ class RubricIndexTest(CacheResetTest):
         self.criteria = [
             Criterion.objects.create(
                 rubric=self.rubric,
-                name="test criterion {num}".format(num=num),
+                name=u"test criterion {num}".format(num=num),
                 order_num=num,
             ) for num in range(self.NUM_CRITERIA)
         ]
@@ -42,7 +42,7 @@ class RubricIndexTest(CacheResetTest):
             self.options[criterion.name] = [
                 CriterionOption.objects.create(
                     criterion=criterion,
-                    name="test option {num}".format(num=num),
+                    name=u"test option {num}".format(num=num),
                     order_num=num,
                     points=num
                 ) for num in range(self.NUM_OPTIONS)
