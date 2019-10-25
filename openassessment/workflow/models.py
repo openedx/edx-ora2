@@ -38,9 +38,9 @@ logger = logging.getLogger('openassessment.workflow.models')
 # that implements the corresponding assessment API.
 # For backwards compatibility, we provide a default configuration as well
 DEFAULT_ASSESSMENT_API_DICT = {
-    'peer': 'openassessment.assessment.api.peer',
-    'self': 'openassessment.assessment.api.self',
-    'training': 'openassessment.assessment.api.student_training',
+    u'peer': 'openassessment.assessment.api.peer',
+    u'self': 'openassessment.assessment.api.self',
+    u'training': 'openassessment.assessment.api.student_training',
 }
 ASSESSMENT_API_DICT = getattr(
     settings, 'ORA2_ASSESSMENTS',
@@ -60,14 +60,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     an after the fact recording of the last known state of that information so
     we can search easily.
     """
-    STEPS = list(ASSESSMENT_API_DICT.keys())
+    STEPS = sorted(ASSESSMENT_API_DICT.keys())
 
     STATUSES = [
-        "waiting",  # User has done all necessary assessment but hasn't been
+        u"waiting",  # User has done all necessary assessment but hasn't been
                     # graded yet -- we're waiting for assessments of their
                     # submission by others.
-        "done",  # Complete
-        "cancelled"  # User submission has been cancelled.
+        u"done",  # Complete
+        u"cancelled"  # User submission has been cancelled.
     ]
 
     STATUS_VALUES = STEPS + STATUSES
