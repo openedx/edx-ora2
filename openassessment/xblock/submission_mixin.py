@@ -553,6 +553,7 @@ class SubmissionMixin(object):
             for i in range(self.MAX_FILES_COUNT):
                 file_url = self._get_download_url(i)
                 file_description = ''
+                file_name = ''
                 if file_url:
                     try:
                         file_description = saved_files_descriptions[i]
