@@ -202,7 +202,7 @@ OpenAssessment.ResponseView.prototype = {
             !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
             readyToSubmit = false;
         }
-        if (this.files && !this.collectFilesDescriptions()) {
+        if (this.hasPendingUploadFiles() && !this.collectFilesDescriptions()) {
             readyToSubmit = false;
         }
 
