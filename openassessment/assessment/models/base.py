@@ -423,7 +423,7 @@ class Assessment(models.Model):
     scorer_id = models.CharField(max_length=40, db_index=True)
     score_type = models.CharField(max_length=2)
 
-    feedback = models.TextField(max_length=10000, default="", blank=True)
+    feedback = models.TextField(max_length=10000, default=u"", blank=True)
 
     class Meta:
         ordering = ["-scored_at", "-id"]
@@ -627,7 +627,7 @@ class AssessmentPart(models.Model):
     # Free-form text feedback for the specific criterion
     # Note that the `Assessment` model also has a feedback field,
     # which is feedback on the submission as a whole.
-    feedback = models.TextField(default="", blank=True)
+    feedback = models.TextField(default=u"", blank=True)
 
     class Meta:
         app_label = "assessment"
