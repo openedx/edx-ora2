@@ -21,6 +21,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.fileUploadResponse = '';
     this.files = null;
     this.filesDescriptions = [];
+    this.fileNames = [];
     this.filesType = null;
     this.lastChangeTime = Date.now();
     this.errorOnLastSave = false;
@@ -69,6 +70,7 @@ OpenAssessment.ResponseView.prototype = {
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
                 view.dateFactory.apply();
+                view.checkSubmissionAbility();
             }
         ).fail(function() {
             view.baseView.showLoadError('response');
@@ -200,6 +202,11 @@ OpenAssessment.ResponseView.prototype = {
             !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
             readyToSubmit = false;
         }
+        if (this.hasPendingUploadFiles() && !this.collectFilesDescriptions()) {
+            readyToSubmit = false;
+        }
+
+        // if new files are to be uploaded, confirm that they have descriptions
         this.submitEnabled(readyToSubmit);
     },
 
@@ -254,6 +261,20 @@ OpenAssessment.ResponseView.prototype = {
      **/
     saveEnabled: function(enabled) {
         return this.baseView.buttonEnabled('.submission__save', enabled);
+    },
+
+    /**
+     * Enable/disable the upload button or check whether the upload button is enabled
+     *
+     * @param {boolean]} enabled - optional param to enable/disable button
+     * @returns {boolean} whether the upload button is enabled or not
+     *
+     * @example
+     *     view.uploadEnabled(true);  // enable the upload button
+     *     view.uploadEnabled();      // check whether the upload button is enabled
+     */
+    uploadEnabled: function(enabled) {
+        return this.baseView.buttonEnabled('.file__upload', enabled);
     },
 
     /**
@@ -683,18 +704,25 @@ OpenAssessment.ResponseView.prototype = {
             divTextarea.appendTo(mainDiv);
 
             mainDiv.appendTo(filesDescriptions);
-            textarea.on('change keyup drop paste', $.proxy(this, 'checkFilesDescriptions'));
+            textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
         }
 
-        $(this.element).find('.file__upload').prop('disabled', !descriptionsExists);
+        // We can upload if descriptions exist
+        this.uploadEnabled(descriptionsExists);
+
+        // Submissions should be disabled when missing descriptions
+        this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
     },
 
     /**
-     When user type something in some file description field this function check input
-     and block/unblock "Upload" button
-
+     * Called when user updates a file description field:
+     * Check that file descriptions exist for all to-be-uploaded files and enable/disable upload button
+     * If successful (each file has a non-empty description), save file descriptions to page state
+     *
+     * @returns {boolean} true if file descriptions were found for each upload (passes validation)
+     * or false in the event of an error
      */
-    checkFilesDescriptions: function() {
+    collectFilesDescriptions: function() {
         var isError = false;
         var filesDescriptions = [];
 
@@ -707,10 +735,13 @@ OpenAssessment.ResponseView.prototype = {
             }
         });
 
-        $(this.element).find('.file__upload').prop('disabled', isError);
+        this.uploadEnabled(!isError);
+
         if (!isError) {
             this.filesDescriptions = filesDescriptions;
         }
+
+        return !isError;
     },
 
     /**
@@ -748,8 +779,13 @@ OpenAssessment.ResponseView.prototype = {
     saveFilesDescriptions: function() {
         var view = this;
         var sel = $('.step--response', this.element);
-
-        return this.server.saveFilesDescriptions(this.filesDescriptions).done(
+        var fileMetaData = [];
+        for (var i=0; i < this.filesDescriptions.length; i++) {
+            this.fileNames.push(this.files[i].name);
+            var entry = {description: this.filesDescriptions[i], fileName: this.files[i].name};
+            fileMetaData.push(entry);
+        }
+        return this.server.saveFilesDescriptions(fileMetaData).done(
             function() {
                 view.removeFilesDescriptions();
             }
@@ -862,7 +898,7 @@ OpenAssessment.ResponseView.prototype = {
             } else {
                 file = $('<a />', {
                     href: url,
-                    text: view.filesDescriptions[filenum],
+                    text: view.filesDescriptions[filenum] + ' (' + view.fileNames[filenum] + ')',
                 });
                 file.addClass('submission__answer__file submission--file');
                 file.attr('target', '_blank');

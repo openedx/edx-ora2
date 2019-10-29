@@ -182,12 +182,14 @@ describe("OpenAssessment.Server", function() {
     it("saves files descriptions", function() {
         stubAjax(true, {'success': true, 'msg': ''});
         var success = false;
-        server.saveFilesDescriptions(['test1', 'test2']).done(function() { success = true; });
+        server.saveFilesDescriptions([{description: 'test1', fileName: 'fileName1'},
+            {description: 'test2', fileName: 'fileName2'}]).done(function() { success = true; });
         expect(success).toBe(true);
         expect($.ajax).toHaveBeenCalledWith({
             url: "/save_files_descriptions",
             type: "POST",
-            data: JSON.stringify({descriptions: ['test1', 'test2']}),
+            data: JSON.stringify({fileMetadata: [{description: 'test1', fileName: 'fileName1'},
+            {description: 'test2', fileName: 'fileName2'}]}),
             contentType : jsonContentType
         });
     });

@@ -110,12 +110,15 @@ class SubmissionMixin(object):
             try:
                 try:
                     saved_files_descriptions = json.loads(self.saved_files_descriptions)
+                    saved_files_names = json.loads(self.saved_files_names)
                 except ValueError:
                     saved_files_descriptions = None
+                    saved_files_names = None
                 submission = self.create_submission(
                     student_item_dict,
                     student_sub_data,
-                    saved_files_descriptions
+                    saved_files_descriptions,
+                    saved_files_names,
                 )
             except api.SubmissionRequestError as err:
 
@@ -203,19 +206,24 @@ class SubmissionMixin(object):
 
         Args:
             data (dict): Data should have a single key 'descriptions' that contains
-                the texts for each uploaded file.
+                a list of dictionaries with the following keys: 'description' and fileName.
+            each element of the list maps to a single file
             suffix (str): Not used.
 
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
-        if 'descriptions' in data:
-            descriptions = data['descriptions']
+        if 'fileMetadata' in data:
+            file_data = data['fileMetadata']
 
-            if isinstance(descriptions, list) and all([isinstance(description, six.string_types) for description in descriptions]):
+            if isinstance(file_data, list) and all([
+                isinstance(description['description'], six.string_types) and
+                isinstance(description['fileName'], six.string_types)
+                for description in file_data
+            ]):
                 try:
-                    self.saved_files_descriptions = json.dumps(descriptions)
-
+                    self.saved_files_descriptions = json.dumps([desc['description'] for desc in file_data])
+                    self.saved_files_names = json.dumps([desc['fileName'] for desc in file_data])
                     # Emit analytics event...
                     self.runtime.publish(
                         self,
@@ -229,21 +237,24 @@ class SubmissionMixin(object):
 
         return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
-    def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None):
+    def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None, files_names=None):
         # Import is placed here to avoid model import at project startup.
         from submissions import api
 
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
         files_descriptions = files_descriptions if files_descriptions else []
+        files_names = files_names if files_names else []
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.file_upload_type:
             student_sub_dict['file_keys'] = []
             student_sub_dict['files_descriptions'] = []
+            student_sub_dict['files_name'] = []
             for i in range(self.MAX_FILES_COUNT):
                 key_to_save = ''
                 file_description = ''
+                file_name = ''
                 item_key = self._get_student_item_key(i)
                 try:
                     url = file_upload_api.get_download_url(item_key)
@@ -251,6 +262,7 @@ class SubmissionMixin(object):
                         key_to_save = item_key
                         try:
                             file_description = files_descriptions[i]
+                            file_name = files_names[i]
                         except IndexError:
                             pass
                 except FileUploadError:
@@ -260,12 +272,14 @@ class SubmissionMixin(object):
                         "descriptions {files_descriptions}".format(
                             student_item_dict=student_item_dict,
                             student_sub_data=student_sub_data,
-                            files_descriptions=files_descriptions 
+                            files_descriptions=files_descriptions,
+                            files_names=files_names,
                         )
                     )
                 if key_to_save:
                     student_sub_dict['file_keys'].append(key_to_save)
                     student_sub_dict['files_descriptions'].append(file_description)
+                    student_sub_dict['files_name'].append(file_name)
                 else:
                     break
 
@@ -417,18 +431,20 @@ class SubmissionMixin(object):
         if 'file_keys' in submission['answer']:
             file_keys = submission['answer'].get('file_keys', [])
             descriptions = submission['answer'].get('files_descriptions', [])
+            file_names = submission['answer'].get('files_name', [])
             for idx, key in enumerate(file_keys):
                 file_download_url = self._get_url_by_file_key(key)
                 if file_download_url:
                     file_description = descriptions[idx].strip() if idx < len(descriptions) else ''
-                    urls.append((file_download_url, file_description))
+                    file_name = file_names[idx].strip() if idx < len(file_names) else ''
+                    urls.append((file_download_url, file_description, file_name))
                 else:
                     break
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
             file_download_url = self._get_url_by_file_key(key)
             if file_download_url:
-                urls.append((file_download_url, ''))
+                urls.append((file_download_url, '', ''))
         return urls
 
     @staticmethod
@@ -527,20 +543,24 @@ class SubmissionMixin(object):
         if self.file_upload_type:
             try:
                 saved_files_descriptions = json.loads(self.saved_files_descriptions)
+                saved_files_names = json.loads(self.saved_files_names)
             except ValueError:
                 saved_files_descriptions = []
+                saved_files_names = []
 
             file_urls = []
 
             for i in range(self.MAX_FILES_COUNT):
                 file_url = self._get_download_url(i)
                 file_description = ''
+                file_name = ''
                 if file_url:
                     try:
                         file_description = saved_files_descriptions[i]
+                        file_name = saved_files_names[i]
                     except IndexError:
                         pass
-                    file_urls.append((file_url, file_description))
+                    file_urls.append((file_url, file_description, file_name))
                 else:
                     break
             context['file_urls'] = file_urls

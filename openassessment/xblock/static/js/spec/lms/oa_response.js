@@ -627,7 +627,7 @@ describe("OpenAssessment.ResponseView", function() {
             return $(view.element).find('.file__upload').first();
         }
         function expectFileUploadButton(disabled) {
-            view.checkFilesDescriptions();
+            view.collectFilesDescriptions();
             expect(getFileUploadField().is(':disabled')).toEqual(disabled);
         }
 
@@ -715,7 +715,42 @@ describe("OpenAssessment.ResponseView", function() {
          expect(view.hasAllUploadFiles()).toEqual(false);
          expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
             "Your file " + file[0].name + " has been deleted or path has been changed.");
+     });
 
+    it("prevents user from uploading or submitting responses when file descriptions are missing", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
 
+        // initially, user can't submit because file is missing
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.uploadEnabled()).toBe(false);
+
+        // user selects some files to upload
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
+
+        // user selected some files to upload but missing descriptions causes submit to be disabled
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.uploadEnabled()).toBe(false);
+
+        var firstDescriptionField1 = $(view.element).find('.file__description__0').first();
+        var firstDescriptionField2 = $(view.element).find('.file__description__1').first();
+        $(firstDescriptionField1).val('test1');
+        $(firstDescriptionField2).val('');
+
+        // adding some, but not all, descriptions causes submit to be disabled
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.uploadEnabled()).toBe(false);
+
+        $(firstDescriptionField1).val('test1');
+        $(firstDescriptionField2).val('test2');
+
+        // user finishes adding descriptions which enables submit button
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+        expect(view.uploadEnabled()).toBe(true);
     });
 });
