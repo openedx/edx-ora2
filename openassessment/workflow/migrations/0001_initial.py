@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, verbose_name='created', editable=False)),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, verbose_name='modified', editable=False)),
-                ('status', model_utils.fields.StatusField(default=b'peer', max_length=100, verbose_name='status', no_check_for_status=True, choices=[(b'peer', b'peer'), (b'ai', b'ai'), (b'self', b'self'), (b'training', b'training'), (b'waiting', b'waiting'), (b'done', b'done'), (b'cancelled', b'cancelled')])),
+                ('status', model_utils.fields.StatusField(default=u'peer', max_length=100, verbose_name='status', no_check_for_status=True, choices=[(u'peer', u'peer'), (u'ai', u'ai'), (u'self', u'self'), (u'training', u'training'), (u'waiting', u'waiting'), (u'done', u'done'), (u'cancelled', u'cancelled')])),
                 ('status_changed', model_utils.fields.MonitorField(default=django.utils.timezone.now, verbose_name='status changed', monitor='status')),
                 ('submission_uuid', models.CharField(unique=True, max_length=36, db_index=True)),
                 ('uuid', models.UUIDField(db_index=True, unique=True, editable=False, blank=True)),
