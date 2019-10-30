@@ -8,6 +8,7 @@ import copy
 
 import ddt
 from mock import patch
+import six
 
 from django.db import DatabaseError
 
@@ -30,6 +31,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         """
         Create a submission.
         """
+        super(StudentTrainingAssessmentTest, self).setUp()
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
         training_api.on_start(submission['uuid'])
         self.submission_uuid = submission['uuid']
@@ -62,7 +64,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         )
 
         # Expect that we get corrected and stay on the current example
-        self.assertItemsEqual(corrections, EXAMPLES[1]['options_selected'])
+        six.assertCountEqual(self, corrections, EXAMPLES[1]['options_selected'])
         self._assert_workflow_status(self.submission_uuid, 1, 2)
 
         # Try again, and this time assess the same way as the instructor
@@ -158,7 +160,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
             data['rubric'], data['examples']
         )
         msg = u"Expected errors {} but got {}".format(data['errors'], errors)
-        self.assertItemsEqual(errors, data['errors'], msg=msg)
+        six.assertCountEqual(self, errors, data['errors'], msg=msg)
 
     def test_is_finished_no_workflow(self):
         # Without creating a workflow, we should not be finished
@@ -301,7 +303,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         """
         example = training_api.get_training_example(submission_uuid, input_rubric, input_examples)
         expected_example = self._expected_example(input_examples[order_num], input_rubric)
-        self.assertItemsEqual(example, expected_example)
+        six.assertCountEqual(self, example, expected_example)
 
     def _warm_cache(self, rubric, examples):
         """

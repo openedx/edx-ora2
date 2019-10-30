@@ -5,7 +5,6 @@ Tests for openassessment data aggregation.
 
 from __future__ import absolute_import, print_function
 
-from StringIO import StringIO
 import csv
 import os.path
 
@@ -21,6 +20,11 @@ from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
+
+if six.PY2:
+    from StringIO import StringIO  # pylint: disable=import-error
+else:
+    from io import StringIO  # pylint: disable=import-error
 
 COURSE_ID = "Test_Course"
 
@@ -99,7 +103,7 @@ class CsvWriterTest(TransactionCacheResetTest):
     Test for writing openassessment data to CSV.
     """
     longMessage = True
-    maxDiff = None
+    maxDiff = None  # pylint: disable=invalid-name
 
     @ddt.file_data('data/write_to_csv.json')
     def test_write_to_csv(self, data):
@@ -128,7 +132,7 @@ class CsvWriterTest(TransactionCacheResetTest):
                     actual_row = None
                 self.assertEqual(
                     actual_row, expected_row,
-                    msg="Output name: {}".format(output_name)
+                    msg=u"Output name: {}".format(output_name)
                 )
 
             # Check for extra rows
@@ -150,7 +154,7 @@ class CsvWriterTest(TransactionCacheResetTest):
                 'item_id': 'test_item',
                 'item_type': 'openassessment',
             }
-            submission_text = "test submission {}".format(index)
+            submission_text = u"test submission {}".format(index)
             submission = sub_api.create_submission(student_item, submission_text)
             workflow_api.create_workflow(submission['uuid'], ['peer', 'self'])
 
@@ -229,7 +233,7 @@ class CsvWriterTest(TransactionCacheResetTest):
         fixture_path = os.path.join(
             os.path.dirname(__file__), 'data', fixture_relpath
         )
-        print("Loading database fixtures from {}".format(fixture_path))
+        print(u"Loading database fixtures from {}".format(fixture_path))
         call_command('loaddata', fixture_path)
 
 
@@ -242,7 +246,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
     def _build_criteria_and_assessment_parts(self, num_criteria=1, feedback=""):
         """ Build a set of criteria and assessment parts for the rubric. """
         rubric = RubricFactory()
-        criteria = [CriterionFactory(rubric=rubric, order_num=n-1) for n in range(num_criteria)]
+        criteria = [CriterionFactory(rubric=rubric, order_num=n - 1) for n in range(num_criteria)]
 
         criterion_options = []
         # for every criterion, make a criterion option
@@ -256,14 +260,14 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
     def _assessment_cell(self, assessment, feedback=""):
         """ Build a string for the given assessment information. """
-        cell = "Assessment #{id}\n-- scored_at: {scored_at}\n-- type: {type}\n-- scorer_id: {scorer}\n".format(
+        cell = u"Assessment #{id}\n-- scored_at: {scored_at}\n-- type: {type}\n-- scorer_id: {scorer}\n".format(
             id=assessment.id,
             scored_at=assessment.scored_at,
             type=assessment.score_type,
             scorer=assessment.scorer_id
         )
         if feedback:
-            cell += "-- overall_feedback: {}\n".format(feedback)
+            cell += u"-- overall_feedback: {}\n".format(feedback)
         return cell
 
     def test_build_assessments_cell(self):
@@ -289,18 +293,18 @@ class TestOraAggregateData(TransactionCacheResetTest):
     def _assessment_part_cell(self, assessment_part, feedback=""):
         """ Build the string representing an assessment part. """
 
-        cell = "-- {criterion_label}: {option_label} ({option_points})\n".format(
+        cell = u"-- {criterion_label}: {option_label} ({option_points})\n".format(
             criterion_label=assessment_part.criterion.label,
             option_label=assessment_part.option.label,
             option_points=assessment_part.option.points,
         )
         if feedback:
-            cell += "-- feedback: {}\n".format(feedback)
+            cell += u"-- feedback: {}\n".format(feedback)
         return cell
 
     def test_build_assessments_parts_cell(self):
         assessment1 = self._build_criteria_and_assessment_parts()
-        a1_cell = "Assessment #{}\n".format(assessment1.id)  # pylint: disable=no-member
+        a1_cell = u"Assessment #{}\n".format(assessment1.id)  # pylint: disable=no-member
 
         for part in assessment1.parts.all():  # pylint: disable=no-member
             a1_cell += self._assessment_part_cell(part)
@@ -311,7 +315,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         # Second assessment with 2 component parts and individual option feedback
         assessment2 = self._build_criteria_and_assessment_parts(num_criteria=2, feedback="Test feedback")
-        a2_cell = "Assessment #{}\n".format(assessment2.id)  # pylint: disable=no-member
+        a2_cell = u"Assessment #{}\n".format(assessment2.id)  # pylint: disable=no-member
 
         for part in assessment2.parts.all():  # pylint: disable=no-member
             a2_cell += self._assessment_part_cell(part, feedback="Test feedback")
@@ -329,7 +333,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
         # pylint: disable=protected-access
         feedback_option_cell = OraAggregateData._build_feedback_options_cell([assessment1])
 
-        self.assertEqual(feedback_option_cell, option1_text+'\n')
+        self.assertEqual(feedback_option_cell, option1_text + '\n')
 
         assessment2 = AssessmentFactory()
         option2_text = "More test feedback"
@@ -368,7 +372,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
     def setUp(self):
         super(TestOraAggregateDataIntegration, self).setUp()
-        self.maxDiff = None
+        self.maxDiff = None  # pylint: disable=invalid-name
         # Create submissions and assessments
         self.submission = self._create_submission(STUDENT_ITEM)
         self.scorer_submission = self._create_submission(SCORER_ITEM)
@@ -415,17 +419,17 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         feedback_dict['submission_uuid'] = submission_uuid
         peer_api.set_assessment_feedback(feedback_dict)
 
-    def _other_student(self, n):
+    def _other_student(self, no_of_student):
         """
         n is an integer to postfix, for example _other_student(3) would return "Student_3"
         """
-        return STUDENT_ID + '_' + str(n)
+        return STUDENT_ID + '_' + str(no_of_student)
 
-    def _other_item(self, n):
+    def _other_item(self, no_of_student):
         """
         n is an integer to postfix, for example _other_item(4) would return "item_4"
         """
-        return ITEM_ID + '_' + str(n)
+        return ITEM_ID + '_' + str(no_of_student)
 
     def test_collect_ora2_data(self):
         headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
@@ -444,7 +448,6 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'Feedback Statements Selected',
             'Feedback on Peer Assessments'
         ])
-
 
         self.assertEqual(data[0], [
             self.scorer_submission['uuid'],
@@ -470,8 +473,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             u"Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
                 id=self.assessment['id'],
                 scored_at=self.assessment['scored_at'],
-            ) +
-            u"-- scorer_id: {scorer}\n-- overall_feedback: {feedback}\n".format(
+            ) + u"-- scorer_id: {scorer}\n-- overall_feedback: {feedback}\n".format(
                 scorer=self.assessment['scorer_id'],
                 feedback=self.assessment['feedback']
             ),
@@ -480,8 +482,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
                 label=self.assessment['parts'][0]['criterion']['label'],
                 option_label=self.assessment['parts'][0]['criterion']['options'][0]['label'],
                 points=self.assessment['parts'][0]['criterion']['options'][0]['points'],
-            ) +
-            u"-- {label}: {option_label} ({points})\n-- feedback: {feedback}\n".format(
+            ) + u"-- {label}: {option_label} ({points})\n-- feedback: {feedback}\n".format(
                 label=self.assessment['parts'][1]['criterion']['label'],
                 option_label=self.assessment['parts'][1]['criterion']['options'][1]['label'],
                 points=self.assessment['parts'][1]['criterion']['options'][1]['points'],
@@ -490,7 +491,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             self.score['created_at'],
             self.score['points_earned'],
             self.score['points_possible'],
-            FEEDBACK_OPTIONS['options'][0] + '\n' + FEEDBACK_OPTIONS['options'][1]+'\n',
+            FEEDBACK_OPTIONS['options'][0] + '\n' + FEEDBACK_OPTIONS['options'][1] + '\n',
             FEEDBACK_TEXT,
         ])
 

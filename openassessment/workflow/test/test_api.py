@@ -1,3 +1,4 @@
+""" Test Cases for Api"""
 from __future__ import absolute_import
 
 import ddt
@@ -22,7 +23,7 @@ RUBRIC_DICT = {
             "options": [
                 {"name": "no", "points": "0", "explanation": ""},
                 {"name": "yes", "points": "1", "explanation": ""},
-                ]
+            ]
         },
     ]
 }
@@ -47,6 +48,7 @@ ITEM_2 = {
 
 @ddt.ddt
 class TestAssessmentWorkflowApi(CacheResetTest):
+    """ Tests Assessment workflow Api. """
 
     @ddt.file_data('data/assessments.json')
     def test_create_workflow(self, data):
@@ -74,7 +76,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
         # Test that the Peer Workflow is, or is not created, based on when peer
         # is a step in the workflow.
-        if "peer" == first_step:
+        if first_step == "peer":
             peer_workflow = PeerWorkflow.objects.get(submission_uuid=submission["uuid"])
             self.assertIsNotNone(peer_workflow)
         else:
@@ -119,13 +121,12 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         peer_workflows = list(PeerWorkflow.objects.filter(submission_uuid=submission["uuid"]))
         self.assertTrue(peer_workflows)
 
-
         with patch('openassessment.assessment.api.peer.submitter_is_finished') as mock_peer_submit:
             mock_peer_submit.return_value = True
             workflow = workflow_api.get_workflow_for_submission(
                 submission["uuid"], requirements
             )
-        self.assertEquals("self", workflow['status'])
+        self.assertEqual("self", workflow['status'])
 
         with patch('openassessment.assessment.api.self.submitter_is_finished') as mock_self_submit:
             mock_self_submit.return_value = True
@@ -133,7 +134,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                 submission["uuid"], requirements
             )
 
-        self.assertEquals("waiting", workflow['status'])
+        self.assertEqual("waiting", workflow['status'])
 
     def test_update_peer_workflow(self):
         submission = sub_api.create_submission(ITEM_1, ANSWER_1)
@@ -280,7 +281,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         }, "test answer")
 
         # Create the model object directly, bypassing start_workflow()
-        workflow = AssessmentWorkflow.objects.create(
+        AssessmentWorkflow.objects.create(
             submission_uuid=submission["uuid"],
             status=AssessmentWorkflow.STATUS.waiting,
             course_id="test course",
@@ -306,7 +307,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             {"status": "cancelled", "count": 0},
         ])
 
-        self.assertFalse("ai" in [count['status'] for count in counts])
+        self.assertNotIn("ai", [count['status'] for count in counts])
 
         # Create assessments with each status
         # We're going to cheat a little bit by using the model objects
@@ -339,7 +340,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             {"status": "cancelled", "count": 1},
         ])
 
-        self.assertFalse("ai" in [count['status'] for count in counts])
+        self.assertNotIn("ai", [count['status'] for count in counts])
 
         # Create a workflow in a different course, same user and item
         # Counts should be the same
@@ -481,8 +482,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertIsNotNone(workflow)
 
     def _create_workflow_with_status(
-        self, student_id, course_id, item_id,
-        status, answer="answer", steps=None
+            self, student_id, course_id, item_id,
+            status, answer="answer", steps=None
     ):
         """
         Create a submission and workflow with a given status.

@@ -5,11 +5,10 @@ from __future__ import absolute_import
 
 import json
 import os
-import re
 
-import six.moves.urllib.error
-import six.moves.urllib.parse
-import six.moves.urllib.request
+import six.moves.urllib.error  # pylint: disable=import-error
+import six.moves.urllib.parse  # pylint: disable=import-error
+import six.moves.urllib.request  # pylint: disable=import-error
 
 from bok_choy.page_object import PageObject
 

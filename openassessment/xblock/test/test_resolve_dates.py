@@ -24,8 +24,9 @@ STUB_I18N = lambda x: x
 class ResolveDatesTest(TestCase):
 
     def setUp(self):
+        super(ResolveDatesTest, self).setUp()
         # Construct a dictionary of datetimes for our test data to index
-        self.DATES = {
+        self.DATES = {  # pylint: disable=invalid-name
             (day - 1): datetime.datetime(2014, 1, day).replace(tzinfo=pytz.UTC)
             for day in range(1, 15)
         }
@@ -33,6 +34,7 @@ class ResolveDatesTest(TestCase):
         self.DATES[99] = DISTANT_FUTURE
 
         # Construct a dictionary of ISO-formatted date strings for our test data to index
+        # pylint: disable=invalid-name
         self.DATE_STRINGS = {key: val.isoformat() for key, val in six.iteritems(self.DATES)}
         self.DATE_STRINGS[None] = None
 

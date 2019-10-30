@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MAX_PYLINT_VIOLATIONS=400
+MAX_PYLINT_VIOLATIONS=0
 
 mkdir -p test/logs
 PYLINT_VIOLATIONS=test/logs/pylint.txt

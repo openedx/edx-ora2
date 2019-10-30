@@ -7,21 +7,23 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.assessment --auto
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from datetime import timedelta
 import logging
 import random
 
 from django.db import DatabaseError, models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentWorkflowError
 from openassessment.assessment.models.base import Assessment
 
-logger = logging.getLogger("openassessment.assessment.models")
+logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
 
 
+@python_2_unicode_compatible
 class AssessmentFeedbackOption(models.Model):
     """
     Option a student can select to provide feedback on the feedback they received.
@@ -38,7 +40,7 @@ class AssessmentFeedbackOption(models.Model):
     class Meta:
         app_label = "assessment"
 
-    def __unicode__(self):
+    def __str__(self):
         return u'"{}"'.format(self.text)
 
 
@@ -89,6 +91,7 @@ class AssessmentFeedback(models.Model):
         self.options.add(*options)  # pylint:disable=E1101
 
 
+@python_2_unicode_compatible
 class PeerWorkflow(models.Model):
     """Internal Model for tracking Peer Assessment Workflow
 
@@ -195,7 +198,7 @@ class PeerWorkflow(models.Model):
                 submission_uuid=submission_uuid
             )
 
-            if len(workflow_items) > 0:
+            if workflow_items:
                 item = workflow_items[0]
             else:
                 item = PeerWorkflowItem.objects.create(
@@ -247,8 +250,7 @@ class PeerWorkflow(models.Model):
 
         # Remove any open items which have a submission which has been completed.
         for item in valid_open_items:
-            if (item.started_at < oldest_acceptable or
-                    item.submission_uuid in completed_sub_uuids):
+            if (item.started_at < oldest_acceptable) or (item.submission_uuid in completed_sub_uuids):
                 valid_open_items.remove(item)
 
         return valid_open_items[0] if valid_open_items else None
@@ -396,12 +398,11 @@ class PeerWorkflow(models.Model):
             item.assessment = assessment
             item.save()
 
-            if (
-                    not item.author.grading_completed_at and
-                    item.author.graded_by.filter(assessment__isnull=False).count() >= num_required_grades
-            ):
-                item.author.grading_completed_at = now()
-                item.author.save()
+            if not item.author.grading_completed_at:
+                if item.author.graded_by.filter(assessment__isnull=False).count() >= num_required_grades:
+                    item.author.grading_completed_at = now()
+                    item.author.save()
+
         except (DatabaseError, PeerWorkflowItem.DoesNotExist):
             error_message = (
                 u"An internal error occurred while retrieving a workflow item for "
@@ -419,7 +420,7 @@ class PeerWorkflow(models.Model):
             integer
 
         """
-        return self.graded.filter(assessment__isnull=False).count() # pylint:disable=E1101
+        return self.graded.filter(assessment__isnull=False).count()  # pylint:disable=E1101
 
     def __repr__(self):
         return (
@@ -428,10 +429,11 @@ class PeerWorkflow(models.Model):
             "created_at={0.created_at}, completed_at={0.completed_at})"
         ).format(self)
 
-    def __unicode__(self):
+    def __str__(self):
         return repr(self)
 
 
+@python_2_unicode_compatible
 class PeerWorkflowItem(models.Model):
     """Represents an assessment associated with a particular workflow
 
@@ -481,5 +483,5 @@ class PeerWorkflowItem(models.Model):
             "scored={0.scored})"
         ).format(self)
 
-    def __unicode__(self):
+    def __str__(self):
         return repr(self)

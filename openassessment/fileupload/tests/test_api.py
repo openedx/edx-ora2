@@ -43,7 +43,7 @@ class TestFileUploadService(TestCase):
         conn = boto.connect_s3()
         conn.create_bucket('mybucket')
         uploadUrl = api.get_upload_url("foo", "bar")
-        self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", uploadUrl)
+        self.assertIn("/submissions_attachments/foo", uploadUrl)
 
     @mock_s3
     @override_settings(
@@ -58,7 +58,7 @@ class TestFileUploadService(TestCase):
         key.key = "submissions_attachments/foo"
         key.set_contents_from_string("How d'ya do?")
         downloadUrl = api.get_download_url("foo")
-        self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", downloadUrl)
+        self.assertIn("/submissions_attachments/foo", downloadUrl)
 
     @mock_s3
     @override_settings(
@@ -104,7 +104,7 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     @patch.object(boto, 'connect_s3')
-    @raises(exceptions.FileUploadInternalError, mock_s3)
+    @raises(exceptions.FileUploadInternalError)
     def test_get_download_url_error(self, mock_s3):
         mock_s3.side_effect = Exception("Oh noes")
         api.get_download_url("foo")
@@ -122,10 +122,11 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
     """
 
     def setUp(self):
+        super(TestFileUploadServiceWithFilesystemBackend, self).setUp()
         self.backend = api.backends.get_backend()
 
         self.content = tempfile.TemporaryFile()
-        self.content.write("foobar content")
+        self.content.write(b"foobar content")
         self.content.seek(0)
 
         self.key = None
@@ -252,17 +253,17 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
 
         self.assertIn("/" + self.key, upload_url)
         self.assertEqual(200, upload_response.status_code)
-        self.assertEqual("", upload_response.content)
+        self.assertEqual("", upload_response.content.decode('utf-8'))
         self.assertEqual(200, download_response.status_code)
         self.assertEqual(
             "attachment; filename=" + self.key,
             download_response.get('Content-Disposition')
         )
         self.assertEqual(self.content_type, download_response.get('Content-Type'))
-        self.assertIn("foobar content", download_response.content)
+        self.assertIn("foobar content", download_response.content.decode('utf-8'))
         self.assertTrue(os.path.exists(file_path), "File %s does not exist" % file_path)
         with open(file_path) as f:
-            self.assertEqual(self.content.read(), f.read())
+            self.assertEqual(self.content.read().decode('utf-8'), f.read())
 
     def test_download_content_with_no_content_type(self):
         views.save_to_file(self.key_name, "uploaded content", metadata=None)
@@ -383,13 +384,14 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
     """
 
     def setUp(self):
+        super(TestFileUploadServiceWithDjangoStorageBackend, self).setUp()
         self.backend = api.backends.get_backend()
         self.username = 'test_user'
         self.password = 'password'
         self.user = get_user_model().objects.create_user(username=self.username, password=self.password)
 
         self.content = tempfile.TemporaryFile()
-        self.content.write("foobar content")
+        self.content.write(b"foobar content")
         self.content.seek(0)
 
         self.key = "myfile.txt"

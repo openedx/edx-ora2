@@ -87,7 +87,8 @@ class TrainingExampleSerializerTest(CacheResetTest):
                 u"Consider the subtleness of the sea; how its most dreaded creatures glide under water, "
                 u"unapparent for the most part, and treacherously hidden beneath the loveliest tints of "
                 u"azure..... Consider all this; and then turn to this green, gentle, and most docile earth; "
-                u"consider them both, the sea and the land; and do you not find a strange analogy to something in yourself?"
+                u"consider them both, the sea and the land; and do you not find a strange analogy to "
+                u"something in yourself?"
             ),
             'options_selected': OrderedDict({
                 u"vøȼȺƀᵾłȺɍɏ": u"𝒑𝒐𝒐𝒓",
@@ -108,7 +109,7 @@ class TrainingExampleSerializerTest(CacheResetTest):
         self.assertEqual(len(db_examples), 3)
 
         # Check that the examples match what we got from the deserializer
-        self.assertItemsEqual(examples, db_examples)
+        six.assertCountEqual(self, examples, db_examples)
 
     def test_similar_training_examples_different_rubric(self):
         # Deserialize some examples
@@ -142,7 +143,7 @@ class TrainingExampleSerializerTest(CacheResetTest):
         self.assertEqual(len(db_examples), 4)
 
         # Check that all the examples are in the database
-        for example in (first_examples + second_examples):
+        for example in first_examples + second_examples:
             self.assertIn(example, db_examples)
 
     def test_similar_training_examples_different_answer(self):
@@ -160,23 +161,25 @@ class TrainingExampleSerializerTest(CacheResetTest):
         self.assertEqual(len(db_examples), 4)
 
         # Check that all the examples are in the database
-        for example in (first_examples + second_examples):
+        for example in first_examples + second_examples:
             self.assertIn(example, db_examples)
 
-    @mock.patch('openassessment.assessment.models.TrainingExample.objects.get')
-    @mock.patch('openassessment.assessment.models.TrainingExample.create_example')
-    def test_deserialize_integrity_error(self, mock_create, mock_get):
-        # Simulate an integrity error when creating the training example
-        # This can occur when using repeatable-read isolation mode.
-        mock_example = mock.MagicMock(TrainingExample)
-        mock_get.side_effect = [TrainingExample.DoesNotExist, mock_example]
-        mock_create.side_effect = IntegrityError
+    def test_deserialize_integrity_error(self):
+        """
+        Simulate an integrity error when creating the training example
+        This can occur when using repeatable-read isolation mode.
+        """
+        example = deserialize_training_examples(self.EXAMPLES[:1], self.RUBRIC)[0]
+        with mock.patch('openassessment.assessment.models.TrainingExample.objects.get') as mock_get:
+            with mock.patch('openassessment.assessment.models.TrainingExample.create_example') as mock_create:
+                mock_get.side_effect = [TrainingExample.DoesNotExist, example]
+                mock_create.side_effect = IntegrityError
 
-        # Expect that we get the mock example back
-        # (proves that the function tried to retrieve the object again after
-        # catching the integrity error)
-        examples = deserialize_training_examples(self.EXAMPLES[:1], self.RUBRIC)
-        self.assertEqual(examples, [mock_example])
+                # Expect that we get the mock example back
+                # (proves that the function tried to retrieve the object again after
+                # catching the integrity error)
+                examples = deserialize_training_examples(self.EXAMPLES[:1], self.RUBRIC)
+                self.assertEqual(examples, [example])
 
     def test_serialize_training_example_with_legacy_answer(self):
         """Test that legacy answer format in training example serialized correctly"""

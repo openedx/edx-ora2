@@ -53,7 +53,7 @@
 #
 # ------------------------------
 [MASTER]
-ignore = 
+ignore = .git, .tox, migrations
 persistent = yes
 load-plugins = edx_lint.pylint,pylint_django
 
@@ -80,7 +80,13 @@ disable =
 	too-many-arguments,
 	too-many-locals,
 	unused-wildcard-import,
-	duplicate-code
+	duplicate-code,
+	missing-docstring,
+	too-many-statements,
+	cyclic-import,
+	model-missing-unicode,
+	old-style-class,
+	superfluous-parens,
 
 [REPORTS]
 output-format = text

@@ -26,10 +26,9 @@ def utf8_validator(value):
 
     """
     try:
-        if isinstance(value, str):
+        if isinstance(value, bytes):
             return value.decode('utf-8')
-        else:
-            return six.text_type(value)
+        return six.text_type(value)
     except (ValueError, TypeError):
         raise Invalid(u"Could not load unicode from value \"{val}\"".format(val=value))
 

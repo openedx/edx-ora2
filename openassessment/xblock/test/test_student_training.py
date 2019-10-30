@@ -112,8 +112,8 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
             # Expect that we were not correct due to a workflow update error.
             self.assertFalse(resp['success'], msg=resp.get('msg'))
-            self.assertEquals('Could not update workflow status.', resp.get('msg'))
-            self.assertFalse('corrections' in resp)
+            self.assertEqual('Could not update workflow status.', resp.get('msg'))
+            self.assertNotIn('corrections', resp)
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
@@ -313,7 +313,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
     def test_no_student_training_defined(self, xblock):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         resp = self.request(xblock, 'render_student_training', json.dumps({}))
-        self.assertEquals("", resp.decode('utf-8'))
+        self.assertEqual("", resp.decode('utf-8'))
 
     @scenario('data/student_training.xml', user_id="Plato")
     def test_no_submission(self, xblock):

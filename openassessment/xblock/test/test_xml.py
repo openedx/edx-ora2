@@ -37,8 +37,7 @@ def _parse_date(value):
     """
     if value is None:
         return value
-    else:
-        return dateutil.parser.parse(value).replace(tzinfo=pytz.utc)
+    return dateutil.parser.parse(value).replace(tzinfo=pytz.utc)
 
 
 @ddt.ddt
@@ -115,9 +114,11 @@ class TestSerializeContent(TestCase):
         """
         Mock the OA XBlock.
         """
+        super(TestSerializeContent, self).setUp()
         self.oa_block = mock.MagicMock(OpenAssessmentBlock)
 
     def _configure_xblock(self, data):
+        """ Helper method of xblock configuration for tests. """
         self.oa_block.title = data.get('title', '')
         self.oa_block.text_response = data.get('text_response', '')
         self.oa_block.file_upload_response = data.get('file_upload_response', None)
@@ -150,7 +151,7 @@ class TestSerializeContent(TestCase):
         try:
             parsed_actual = etree.fromstring(xml)
         except (ValueError, etree.XMLSyntaxError):
-            self.fail("Could not parse output XML:\n{}".format(xml))
+            self.fail(u"Could not parse output XML:\n{}".format(xml))
 
         # Assume that the test data XML is valid; if not, this will raise an error
         # instead of a test failure.
@@ -176,7 +177,8 @@ class TestSerializeContent(TestCase):
                     tag=actual.tag, expected=expected.text, actual=actual.text
                 )
             )
-            self.assertItemsEqual(
+            six.assertCountEqual(
+                self,
                 list(actual.items()), list(expected.items()),
                 msg=u"Incorrect attributes for {tag}.  Expected {expected} but found {actual}".format(
                     tag=actual.tag, expected=list(expected.items()), actual=list(actual.items())
@@ -195,7 +197,7 @@ class TestSerializeContent(TestCase):
     def test_serialize_examples(self, data):
         self._configure_xblock(data)
         for assessment in data['assessments']:
-            if 'student-training' == assessment['name'] and assessment['examples']:
+            if assessment['name'] == 'student-training' and assessment['examples']:
                 xml_str = serialize_examples_to_xml_str(assessment)
                 for part in assessment['examples'][0]['answer']['parts']:
                     self.assertIn(part['text'], xml_str)
@@ -223,7 +225,7 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:     # pylint:disable=W0703
-                    msg = "Could not parse mutated criteria dict {criteria}\n{ex}".format(criteria=mutated_dict, ex=ex)
+                    msg = u"Could not parse mutated criteria dict {criteria}\n{ex}".format(criteria=mutated_dict, ex=ex)
                     self.fail(msg)
 
     def test_mutated_prompts_dict(self):
@@ -237,7 +239,7 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:  # pylint:disable=W0703
-                    msg = "Could not parse mutated prompts list {prompts}\n{ex}".format(prompts=mutated_list, ex=ex)
+                    msg = u"Could not parse mutated prompts list {prompts}\n{ex}".format(prompts=mutated_list, ex=ex)
                     self.fail(msg)
 
     def test_mutated_assessments_dict(self):
@@ -251,7 +253,7 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:     # pylint:disable=W0703
-                    msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(
+                    msg = u"Could not parse mutated assessment dict {assessment}\n{ex}".format(
                         assessment=mutated_dict, ex=ex
                     )
                     self.fail(msg)
@@ -267,7 +269,7 @@ class TestSerializeContent(TestCase):
             try:
                 etree.fromstring(xml)
             except Exception as ex:     # pylint:disable=W0703
-                msg = "Could not parse mutated field {field} with value {value}\n{ex}".format(
+                msg = u"Could not parse mutated field {field} with value {value}\n{ex}".format(
                     field=field, value=mutated_value, ex=ex
                 )
                 self.fail(msg)
@@ -325,13 +327,13 @@ class TestSerializeContent(TestCase):
         for key, val in six.iteritems(input_dict):
 
             # Mutation #1: Remove the key
-            print("== Removing key {}".format(key))
+            print(u"== Removing key {}".format(key))
             yield {k: v for k, v in six.iteritems(input_dict) if k != key}
 
             if isinstance(val, dict):
 
                 # Mutation #2: Empty dict
-                print("== Emptying dict {}".format(key))
+                print(u"== Emptying dict {}".format(key))
                 yield self._mutate_dict(input_dict, key, dict())
 
                 # Mutation #3-5: value mutations
@@ -344,7 +346,7 @@ class TestSerializeContent(TestCase):
 
             elif isinstance(val, list):
                 # Mutation #2: Empty list
-                print("== Emptying list {}".format(key))
+                print(u"== Emptying list {}".format(key))
                 yield self._mutate_dict(input_dict, key, list())
 
                 # Mutation #3-5: value mutations
@@ -400,13 +402,13 @@ class TestSerializeContent(TestCase):
         Yields:
             dict
         """
-        print("== None value {}".format(key))
+        print(u"== None value {}".format(key))
         yield self._mutate_dict(input_dict, key, None)
 
-        print("== Unicode value {}".format(key))
+        print(u"== Unicode value {}".format(key))
         yield self._mutate_dict(input_dict, key, u"\u9731")
 
-        print("== int value {}".format(key))
+        print(u"== int value {}".format(key))
         yield self._mutate_dict(input_dict, key, 0)
 
     @staticmethod
@@ -446,7 +448,9 @@ class TestSerializeContent(TestCase):
 
 @ddt.ddt
 class TestParsePromptsFromXml(TestCase):
-
+    """
+    Test deserialization of prompts data from XML.
+    """
     @ddt.file_data("data/parse_prompts_xml.json")
     def test_parse_prompts_from_xml(self, data):
         xml = etree.fromstring("".join(data['xml']))
@@ -457,6 +461,9 @@ class TestParsePromptsFromXml(TestCase):
 
 @ddt.ddt
 class TestParseRubricFromXml(TestCase):
+    """
+    Test deserialization of Rubric from XML.
+    """
 
     @ddt.file_data("data/parse_rubric_xml.json")
     def test_parse_rubric_from_xml(self, data):
@@ -469,6 +476,9 @@ class TestParseRubricFromXml(TestCase):
 
 @ddt.ddt
 class TestParseExamplesFromXml(TestCase):
+    """
+    Test deserialization of examples from XML.
+    """
 
     @ddt.file_data("data/parse_examples_xml.json")
     def test_parse_examples_from_xml(self, data):
@@ -479,6 +489,9 @@ class TestParseExamplesFromXml(TestCase):
 
 @ddt.ddt
 class TestParseAssessmentsFromXml(TestCase):
+    """
+    Test deserialization of assessments from XML.
+    """
 
     @ddt.file_data("data/parse_assessments_xml.json")
     def test_parse_assessments_from_xml(self, data):

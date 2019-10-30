@@ -168,9 +168,12 @@ def deserialize_training_examples(examples, rubric_dict):
     # Parse each example
     created_examples = []
     for example_dict in examples:
-
         # Try to retrieve the example from the cache
-        cache_key, content_hash = TrainingExample.cache_key(example_dict['answer'], example_dict['options_selected'], rubric)
+        cache_key, content_hash = TrainingExample.cache_key(
+            example_dict['answer'],
+            example_dict['options_selected'],
+            rubric
+        )
         example = cache.get(cache_key)
 
         # If we couldn't retrieve the example from the cache, create it

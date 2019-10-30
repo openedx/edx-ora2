@@ -1,6 +1,7 @@
 """
 Page objects for UI-level acceptance tests.
 """
+# pylint: disable=unicode-format-string
 
 from __future__ import absolute_import
 
@@ -20,7 +21,7 @@ class PageConfigurationError(Exception):
     pass
 
 
-class BaseAssessmentPage(PageObject):
+class BaseAssessmentPage(PageObject):  # pylint: disable=abstract-method
     """
     Base class for ORA page objects.
     """
@@ -157,7 +158,7 @@ class MultipleAssessmentPage(BaseAssessmentPage):
         return self.q(css='#main').is_present()
 
 
-class OpenAssessmentPage(BaseAssessmentPage):
+class OpenAssessmentPage(BaseAssessmentPage):  # pylint: disable=abstract-method
     """
     Base class for singular ORA page objects.
     """
@@ -295,7 +296,7 @@ class SubmissionPage(OpenAssessmentPage):
         self.q(css=".file__upload").click()
 
     @property
-    def latex_preview_button_is_disabled(self):
+    def latex_preview_button_is_disabled(self):  # pylint: disable=invalid-name
         """
         Check if 'Preview in Latex' button is disabled
 
@@ -550,14 +551,14 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
 
         status_completed_css = self._bounded_selector(".step__status__value--completed")
         complete_candidates = [int(x) for x in self.q(css=status_completed_css).text]
-        if len(complete_candidates) > 0:
+        if complete_candidates:
             completed = complete_candidates[0]
         else:
             # The number completed is no longer available on this page, but can be inferred from the
             # current review number.
             status_current_css = self._bounded_selector(".step__status__number--current")
             current_candidates = [int(y) for y in self.q(css=status_current_css).text]
-            completed = current_candidates[0] - 1 if len(current_candidates) > 0 and current_candidates[0] > 0 else None
+            completed = current_candidates[0] - 1 if current_candidates and current_candidates[0] > 0 else None
         return completed
 
     @property
@@ -589,7 +590,7 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
             string is message title is present, else None
         """
         message_title = self.q(css=self._bounded_selector(".message__title"))
-        if len(message_title) == 0:
+        if not message_title:
             return None
 
         return message_title.text[0]
@@ -655,7 +656,7 @@ class GradePage(OpenAssessmentPage):
         except BrokenPromise:
             # Sometimes there is no score, and that's expected.
             pass
-        return score_candidates[0] if len(score_candidates) > 0 else None
+        return score_candidates[0] if score_candidates else None
 
     def grade_entry(self, question):
         """
@@ -851,12 +852,12 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         return self.q(css=self._bounded_selector(".staff-info__student__report")).text[0]
 
-    def verify_learner_report_text(self, expectedText):
+    def verify_learner_report_text(self, expected_text):
         """
         Verifies the learner report text is as expected.
         """
         EmptyPromise(
-            lambda: self.learner_report_text == expectedText,
+            lambda: self.learner_report_text == expected_text,
             "Learner report text correct"
         ).fulfill()
 
@@ -891,7 +892,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Returns the final score displayed in the learner report.
         """
         score = self.q(css=self._bounded_selector(".staff-info__final__grade__score"))
-        if len(score) == 0:
+        if not score:
             return None
         return score.text[0]
 
@@ -905,7 +906,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         ).fulfill()
 
     @property
-    def learner_final_score_table_headers(self):
+    def learner_final_score_table_headers(self):  # pylint: disable=invalid-name
         """
         Return the final score table headers (as an array of strings) as shown in the staff area section.
 
@@ -915,7 +916,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         return self._get_table_text(".staff-info__final__grade__table th")
 
     @property
-    def learner_final_score_table_values(self):
+    def learner_final_score_table_values(self):  # pylint: disable=invalid-name
         """
         Return the final score table values (as an array of strings) as shown in the staff area section.
 
@@ -940,7 +941,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             self.q(css=self._bounded_selector(sel)).first.click()
         self.submit_assessment(continue_after)
 
-    def submit_assessment(self, continue_after=False):
+    def submit_assessment(self, continue_after=False):  # pylint: disable=arguments-differ
         """
         Submit a staff assessment of the problem.
         """

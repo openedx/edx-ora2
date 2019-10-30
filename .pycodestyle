@@ -1,0 +1,4 @@
+[pycodestyle]
+exclude = .git, .tox, migrations
+ignore = E731
+max-line-length = 120

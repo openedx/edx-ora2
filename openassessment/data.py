@@ -322,7 +322,10 @@ class CsvWriter(object):
         """
         writer = self.writers.get(output_name)
         if writer is not None:
-            encoded_row = [six.text_type(field).encode('utf-8') for field in row]
+            if six.PY2:
+                encoded_row = [six.text_type(field).encode('utf-8') for field in row]
+            else:
+                encoded_row = [six.text_type(field) for field in row]
             writer.writerow(encoded_row)
 
     def _use_read_replica(self, queryset):

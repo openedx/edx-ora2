@@ -181,13 +181,13 @@ class AssessmentTest(CacheResetTest):
             )
         except SelfAssessmentRequestError:
             error = True
-        self.assertTrue(data['expected_error'] == error)
+        self.assertEqual(data['expected_error'], error)
 
-    def _create_data_structures_with_criterion_properties(
-        self,
-        has_option_selected=True,
-        has_zero_options=True,
-        has_feedback=True
+    def _create_data_structures_with_criterion_properties(  # pylint: disable=invalid-name
+            self,
+            has_option_selected=True,
+            has_zero_options=True,
+            has_feedback=True
     ):
         """
         Generates a dummy set of criterion definition structures that will allow us to specificy a specific combination

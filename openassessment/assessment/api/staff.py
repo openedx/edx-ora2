@@ -13,7 +13,7 @@ from openassessment.assessment.models import Assessment, AssessmentPart, Invalid
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
 from submissions import api as submissions_api
 
-logger = logging.getLogger("openassessment.assessment.api.staff")
+logger = logging.getLogger("openassessment.assessment.api.staff")  # pylint: disable=invalid-name
 
 STAFF_TYPE = "ST"
 
@@ -80,7 +80,7 @@ def on_init(submission_uuid):
     """
     try:
         submission = submissions_api.get_submission_and_student(submission_uuid)
-        workflow, __ = StaffWorkflow.objects.get_or_create(
+        StaffWorkflow.objects.get_or_create(
             course_id=submission['student_item']['course_id'],
             item_id=submission['student_item']['item_id'],
             submission_uuid=submission_uuid
@@ -192,10 +192,10 @@ def get_latest_staff_assessment(submission_uuid):
         logger.exception(msg)
         raise StaffAssessmentInternalError(msg)
 
-    if len(assessments) > 0:
+    if assessments:
         return full_assessment_dict(assessments[0])
-    else:
-        return None
+
+    return None
 
 
 def get_assessment_scores_by_criteria(submission_uuid):
@@ -298,15 +298,17 @@ def get_staff_grading_statistics(course_id, item_id):
 
 
 def create_assessment(
-    submission_uuid,
-    scorer_id,
-    options_selected,
-    criterion_feedback,
-    overall_feedback,
-    rubric_dict,
-    scored_at=None
+        submission_uuid,
+        scorer_id,
+        options_selected,
+        criterion_feedback,
+        overall_feedback,
+        rubric_dict,
+        scored_at=None
 ):
-    """Creates an assessment on the given submission.
+    # pylint: disable=unicode-format-string
+    """
+    Creates an assessment on the given submission.
 
     Assessments are created based on feedback associated with a particular
     rubric.

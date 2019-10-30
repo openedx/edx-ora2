@@ -45,10 +45,9 @@ def _sort_by_order_num(items):
     Returns:
         dict
     """
-    return sorted([
-            el for el in items
-            if isinstance(el, dict)
-        ], key=lambda el: el.get('order_num', 0)
+    return sorted(
+        [el for el in items if isinstance(el, dict)],
+        key=lambda el: el.get('order_num', 0)
     )
 
 
@@ -231,8 +230,8 @@ def parse_date(date_str, name=""):
         return six.text_type(formatted_date)
     except (ValueError, TypeError):
         msg = (
-            'The format of the given date ({date}) for the {name} is invalid. '
-            'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
+            u'The format of the given date ({date}) for the {name} is invalid. '
+            u'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
         ).format(date=date_str, name=name)
         raise UpdateFromXmlError(msg)
 
@@ -484,7 +483,7 @@ def parse_examples_xml(examples):
             raise UpdateFromXmlError(u'Each "example" element must contain exactly one "answer" element')
 
         answer_part_elements = answer_elements[0].findall('part')
-        if len(answer_part_elements) > 0:
+        if answer_part_elements:
             for answer_part_element in answer_part_elements:
                 answers_list.append(_safe_get_text(answer_part_element))
         else:
@@ -541,6 +540,7 @@ def parse_assessments_xml(assessments_root):
         if 'start' in assessment.attrib:
 
             # Other assessment types CAN have a start date
+            # pylint: disable=unicode-format-string
             parsed_start = parse_date(assessment.get('start'), name="{} start date".format(assessment_dict['name']))
 
             if parsed_start is not None:
@@ -552,6 +552,7 @@ def parse_assessments_xml(assessments_root):
         if 'due' in assessment.attrib:
 
             # Other assessment types CAN have a due date
+            # pylint: disable=unicode-format-string
             parsed_due = parse_date(assessment.get('due'), name="{} due date".format(assessment_dict['name']))
 
             if parsed_due is not None:
@@ -625,9 +626,10 @@ def serialize_training_examples(examples, assessment_el):
 
             for part in parts:
                 part_el = etree.SubElement(answer_el, 'part')
+                # pylint: disable=unicode-format-string
                 part_el.text = six.text_type(part.get('text', u''))
-        except: # excuse the bare-except, looking for more information on EDUCATOR-1817
-            log.exception('Error parsing training example: %s', example_dict)
+        except Exception:  # excuse the bare-except, looking for more information on EDUCATOR-1817
+            log.exception(u'Error parsing training example: %s', example_dict)
             raise
 
         # Options selected from the rubric

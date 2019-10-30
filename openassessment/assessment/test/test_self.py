@@ -10,6 +10,7 @@ import datetime
 
 from mock import patch
 import pytz
+import six
 
 from django.db import DatabaseError
 
@@ -57,8 +58,14 @@ class TestSelfApi(CacheResetTest):
     }
 
     CRITERION_FEEDBACK = {
-        "clarity": "Like a morning in the restful city of San Fransisco, the piece was indescribable, beautiful, and too foggy to properly comprehend.",
-        "accuracy": "Like my sister's cutting comments about my weight, I may not have enjoyed the piece, but I cannot fault it for its factual nature."
+        "clarity": (
+            "Like a morning in the restful city of San Fransisco, the piece was indescribable, "
+            "beautiful, and too foggy to properly comprehend."
+        ),
+        "accuracy": (
+            "Like my sister's cutting comments about my weight, I may not have enjoyed the piece, "
+            "but I cannot fault it for its factual nature."
+        )
     }
 
     OVERALL_FEEDBACK = (
@@ -93,7 +100,7 @@ class TestSelfApi(CacheResetTest):
 
         # Check that the assessment we created matches the assessment we retrieved
         # and that both have the correct values
-        self.assertItemsEqual(assessment, retrieved)
+        six.assertCountEqual(self, assessment, retrieved)
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 8)
         self.assertEqual(assessment['points_possible'], 10)
@@ -111,7 +118,7 @@ class TestSelfApi(CacheResetTest):
 
     def test_create_assessment_wrong_user(self):
         # Create a submission
-        submission = create_submission(self.STUDENT_ITEM, "Test answer")
+        create_submission(self.STUDENT_ITEM, "Test answer")
 
         # Attempt to create a self-assessment for the submission from a different user
         with self.assertRaises(SelfAssessmentRequestError):
@@ -225,7 +232,7 @@ class TestSelfApi(CacheResetTest):
 
         # Expect that we still have the original assessment
         retrieved = get_assessment(submission["uuid"])
-        self.assertItemsEqual(assessment, retrieved)
+        six.assertCountEqual(self, assessment, retrieved)
 
     def test_is_complete_no_submission(self):
         # This submission uuid does not exist
@@ -281,7 +288,7 @@ class TestSelfApi(CacheResetTest):
 
         assessment = create_assessment(
             submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-            options_selected,  criterion_feedback, overall_feedback,
+            options_selected, criterion_feedback, overall_feedback,
             rubric, scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
 
@@ -302,7 +309,7 @@ class TestSelfApi(CacheResetTest):
 
         with self.assertRaises(SelfAssessmentInternalError):
             # Create a self-assessment for the submission
-            assessment = create_assessment(
+            create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)

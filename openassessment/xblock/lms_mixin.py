@@ -11,11 +11,11 @@ from xblock.fields import DateTime, Dict, Float, Scope, String
 
 class GroupAccessDict(Dict):
     """Special Dict class for serializing the group_access field"""
-    def from_json(self, access_dict):
+    def from_json(self, access_dict):  # pylint: disable=arguments-differ
         if access_dict is not None:
             return {int(k): access_dict[k] for k in access_dict}
 
-    def to_json(self, access_dict):
+    def to_json(self, access_dict):  # pylint: disable=arguments-differ
         if access_dict is not None:
             return {six.text_type(k): access_dict[k] for k in access_dict}
 
@@ -100,6 +100,6 @@ class LmsCompatibilityMixin(object):
         """
         return sum(
             max(option["points"] for option in criterion["options"])
-            if len(criterion["options"]) > 0 else 0
+            if criterion["options"] else 0
             for criterion in self.rubric_criteria
         )

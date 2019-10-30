@@ -4,11 +4,14 @@ Models for managing staff assessments.
 from __future__ import absolute_import
 
 from datetime import timedelta
+import logging
 
 from django.db import DatabaseError, models
 from django.utils.timezone import now
 
 from openassessment.assessment.errors import StaffAssessmentInternalError
+
+logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
 
 
 class StaffWorkflow(models.Model):
@@ -63,6 +66,7 @@ class StaffWorkflow(models.Model):
         Returns:
             dict: a dictionary that contains the following keys: 'graded', 'ungraded', and 'in-progress'
         """
+        # pylint: disable=unicode-format-string
         timeout = (now() - cls.TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
         ungraded = cls.objects.filter(
             models.Q(grading_started_at=None) | models.Q(grading_started_at__lte=timeout),
@@ -103,6 +107,7 @@ class StaffWorkflow(models.Model):
                 the workflows for this request.
 
         """
+        # pylint: disable=unicode-format-string
         timeout = (now() - cls.TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
         try:
             # Search for existing submissions that the scorer has worked on.

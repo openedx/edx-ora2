@@ -10,6 +10,7 @@ import json
 
 import mock
 import pytz
+import six
 
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
@@ -53,14 +54,15 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertEqual(assessment['score_type'], 'SE')
         self.assertEqual(assessment['feedback'], u'')
 
-        parts = sorted(assessment['parts'])
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.self_assess', assessment)
+
+        parts = assessment['parts']
+        parts.sort(key=lambda x: x['option']['name'])
         self.assertEqual(len(parts), 2)
         self.assertEqual(parts[0]['option']['criterion']['name'], u'Form')
         self.assertEqual(parts[0]['option']['name'], 'Fair')
         self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
-
-        self.assert_assessment_event_published(xblock, 'openassessmentblock.self_assess', assessment)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_no_submission(self, xblock):
@@ -440,9 +442,9 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             self.assertIn(u'error', resp.decode('utf-8').lower())
 
     def _assert_path_and_context(
-        self, xblock, expected_path, expected_context,
-        workflow_status=None, status_details=None,
-        submission_uuid=None
+            self, xblock, expected_path, expected_context,
+            workflow_status=None, status_details=None,
+            submission_uuid=None
     ):
         """
         Render the self assessment step and verify:
@@ -476,7 +478,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
 
         self.assertEqual(path, expected_path)
-        self.assertItemsEqual(context, expected_context)
+        six.assertCountEqual(self, context, expected_context)
 
         # Verify that we render without error
         resp = self.request(xblock, 'render_self_assessment', json.dumps({}))

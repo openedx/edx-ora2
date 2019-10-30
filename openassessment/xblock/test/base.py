@@ -105,7 +105,7 @@ def scenario(scenario_path, user_id=None):
                 if isinstance(self, XBlockHandlerTestCaseMixin):
 
                     # Print a debug message
-                    print("Loading scenario from {path}".format(path=scenario_path))
+                    print(u"Loading scenario from {path}".format(path=scenario_path))
 
                     # Configure the runtime with our user id
                     self.set_user(user_id)
@@ -188,7 +188,7 @@ class XBlockHandlerTestCaseMixin(object):
         # Create a fake request
         request = webob.Request(dict())
         request.method = request_method
-        request.body = content
+        request.body = content.encode('utf-8')
 
         # Send the request to the XBlock handler
         if use_runtime:
@@ -202,7 +202,7 @@ class XBlockHandlerTestCaseMixin(object):
         elif response_format == 'json':
             return json.loads(response.body)
         else:
-            raise NotImplementedError("Response format '{format}' not supported".format(response_format))
+            raise NotImplementedError(u"Response format '{format}' not supported".format(format=response_format))
 
     def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
         parts_list = []
@@ -331,7 +331,7 @@ class SubmitAssessmentsMixin(object):
         student_id = student_item['student_id']
         submission = xblock.create_submission(student_item, submission_text)
 
-        if len(peers) > 0:
+        if peers:
             # Create submissions and (optionally) assessments from other users
             must_be_graded_by = xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
             scorer_subs = self.create_peer_submissions(student_item, peers, submission_text)

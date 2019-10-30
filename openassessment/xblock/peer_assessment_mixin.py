@@ -19,7 +19,7 @@ from .data_conversion import (clean_criterion_feedback, create_rubric_dict, crea
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class PeerAssessmentMixin(object):
@@ -66,8 +66,7 @@ class PeerAssessmentMixin(object):
         uuid_server, uuid_client = self._get_server_and_client_submission_uuids(data)
         if uuid_server != uuid_client:
             logger.warning(
-                'Irrelevant assessment submission: '
-                'expected "{uuid_server}", got "{uuid_client}"'.format(
+                u'Irrelevant assessment submission: expected "{uuid_server}", got "{uuid_client}"'.format(
                     uuid_server=uuid_server,
                     uuid_client=uuid_client,
                 )
@@ -126,8 +125,7 @@ class PeerAssessmentMixin(object):
 
             return {'success': True, 'msg': u''}
 
-        else:
-            return {'success': False, 'msg': self._('Could not load peer assessment.')}
+        return {'success': False, 'msg': self._('Could not load peer assessment.')}
 
     @XBlock.handler
     def render_peer_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -220,7 +218,7 @@ class PeerAssessmentMixin(object):
                 )
             else:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment and move to response #{response_number}"
+                    u"Submit your assessment and move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
         if workflow_status == "cancelled":
@@ -304,7 +302,7 @@ class PeerAssessmentMixin(object):
 
         return peer_submission
 
-    def _get_server_and_client_submission_uuids(self, data={}):
+    def _get_server_and_client_submission_uuids(self, data={}):  # pylint: disable=dangerous-default-value
         """
         Retrieve the server and client submission_uuids
 

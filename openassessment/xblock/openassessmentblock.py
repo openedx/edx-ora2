@@ -40,7 +40,7 @@ from xblock.core import XBlock
 from xblock.fields import Boolean, Integer, List, Scope, String
 from xblock.fragment import Fragment
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 UI_MODELS = {
@@ -209,12 +209,6 @@ class OpenAssessmentBlock(MessageMixin,
         help="The requested set of assessments and the order in which to apply them."
     )
 
-    course_id = String(
-        default=u"TestCourse",
-        scope=Scope.content,
-        help="The course_id associated with this prompt (until we can get it from runtime)."
-    )
-
     submission_uuid = String(
         default=None,
         scope=Scope.user_state,
@@ -253,7 +247,7 @@ class OpenAssessmentBlock(MessageMixin,
 
     @property
     def course_id(self):
-        return text_type(self.xmodule_runtime.course_id)
+        return text_type(self.xmodule_runtime.course_id)  # pylint: disable=no-member
 
     @property
     def text_response(self):
@@ -263,8 +257,7 @@ class OpenAssessmentBlock(MessageMixin,
         """
         if not self.file_upload_response and not self.text_response_raw:
             return 'required'
-        else:
-            return self.text_response_raw
+        return self.text_response_raw
 
     @text_response.setter
     def text_response(self, value):
@@ -281,8 +274,7 @@ class OpenAssessmentBlock(MessageMixin,
         """
         if not self.file_upload_response_raw and (self.file_upload_type_raw is not None or self.allow_file_upload):
             return 'optional'
-        else:
-            return self.file_upload_response_raw
+        return self.file_upload_response_raw
 
     @file_upload_response.setter
     def file_upload_response(self, value):
@@ -303,8 +295,7 @@ class OpenAssessmentBlock(MessageMixin,
             return self.file_upload_type_raw
         if self.allow_file_upload:
             return 'image'
-        else:
-            return None
+        return None
 
     @file_upload_type.setter
     def file_upload_type(self, value):
@@ -320,8 +311,7 @@ class OpenAssessmentBlock(MessageMixin,
         """
         if self.white_listed_file_types:
             return ','.join(self.white_listed_file_types)
-        else:
-            return ''
+        return ''
 
     @white_listed_file_types_string.setter
     def white_listed_file_types_string(self, value):
@@ -393,7 +383,7 @@ class OpenAssessmentBlock(MessageMixin,
         else:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, item))
 
-    def student_view(self, context=None):
+    def student_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
         The main view which displays the general layout for Open Ended
@@ -521,7 +511,7 @@ class OpenAssessmentBlock(MessageMixin,
                 fragment.add_css_url(self.runtime.local_resource_url(self, css))
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
 
-            for js in additional_js:
+            for js in additional_js:  # pylint: disable=invalid-name
                 self.add_javascript_files(fragment, js)
             self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
             self.add_javascript_files(fragment, "static/js/src/oa_server.js")
@@ -552,9 +542,8 @@ class OpenAssessmentBlock(MessageMixin,
             bool
         """
         if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_admin', False)
-        else:
-            return False
+            return getattr(self.xmodule_runtime, 'user_is_admin', False)  # pylint: disable=no-member
+        return False
 
     @property
     def is_course_staff(self):
@@ -565,9 +554,8 @@ class OpenAssessmentBlock(MessageMixin,
             bool
         """
         if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_staff', False)
-        else:
-            return False
+            return getattr(self.xmodule_runtime, 'user_is_staff', False)  # pylint: disable=no-member
+        return False
 
     @property
     def is_beta_tester(self):
@@ -578,9 +566,8 @@ class OpenAssessmentBlock(MessageMixin,
             bool
         """
         if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_beta_tester', False)
-        else:
-            return False
+            return getattr(self.xmodule_runtime, 'user_is_beta_tester', False)  # pylint: disable=no-member
+        return False
 
     @property
     def in_studio_preview(self):
@@ -727,7 +714,7 @@ class OpenAssessmentBlock(MessageMixin,
 
     @property
     def _(self):
-        i18nService = self.runtime.service(self, 'i18n')
+        i18nService = self.runtime.service(self, 'i18n')  # pylint: disable=invalid-name
         return i18nService.ugettext
 
     @property
@@ -932,8 +919,7 @@ class OpenAssessmentBlock(MessageMixin,
             return True, "start", open_range[0], open_range[1]
         elif now >= open_range[1]:
             return True, "due", open_range[0], open_range[1]
-        else:
-            return False, None, open_range[0], open_range[1]
+        return False, None, open_range[0], open_range[1]
 
     def get_waiting_details(self, status_details):
         """
@@ -1106,18 +1092,17 @@ class OpenAssessmentBlock(MessageMixin,
 
         """
         if hasattr(self, "xmodule_runtime"):
-            user = self.xmodule_runtime.get_real_user(anonymous_user_id)
+            user = self.xmodule_runtime.get_real_user(anonymous_user_id)  # pylint: disable=no-member
             if user:
                 return user.username
-            else:
-                logger.exception(
-                    "XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
-                )
-                return None
+            logger.exception(
+                u"XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
+            )
+            return None
 
     def _adjust_start_date_for_beta_testers(self, start):
         if hasattr(self, "xmodule_runtime"):
-            days_early_for_beta = getattr(self.xmodule_runtime, 'days_early_for_beta', 0)
+            days_early_for_beta = getattr(self.xmodule_runtime, 'days_early_for_beta', 0)  # pylint: disable=no-member
             if days_early_for_beta is not None:
                 delta = dt.timedelta(days_early_for_beta)
                 effective = start - delta

@@ -13,7 +13,7 @@ from xblock.core import XBlock
 from .data_conversion import clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters
 from .staff_area_mixin import require_course_staff
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class StaffAssessmentMixin(object):

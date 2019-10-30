@@ -22,7 +22,7 @@ class Settings(object):
         stored file names. The specified file prefix for the storage must be
         publicly viewable or all uploaded files will not be seen.
     """
-    DEFAULT_FILE_UPLOAD_STORAGE_PREFIX = "submissions_attachments"
+    DEFAULT_FILE_UPLOAD_STORAGE_PREFIX = "submissions_attachments"  # pylint: disable=invalid-name
 
     @classmethod
     def get_bucket_name(cls):
