@@ -288,6 +288,8 @@ OpenAssessment.BaseView.prototype = {
             container = '.submission__feedback__actions';
         } else if (type === 'upload') {
             container = '.upload__error';
+        } else if (type === 'delete') {
+            container = '.delete__error';
         }
 
         // If we don't have anywhere to put the message, just log it to the console

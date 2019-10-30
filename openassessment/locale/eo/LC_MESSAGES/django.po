@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-30 11:53-0400\n"
+"POT-Creation-Date: 2019-10-31 16:00-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1405,6 +1405,10 @@ msgstr "Ýöür Süßmïssïön Stätüs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ�
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "We could not upload files"
 msgstr "Wé çöüld nöt üplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "We could not delete files"
+msgstr "Wé çöüld nöt délété fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Select a file to upload for this submission."

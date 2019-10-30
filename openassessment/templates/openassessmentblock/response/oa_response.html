@@ -142,6 +142,12 @@
                                     <div class="message__content"></div>
                                 </div>
                             </div>
+                            <div class="delete__error">
+                                <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                    <h5 class="message__title">{% trans "We could not delete files" %}</h5>
+                                    <div class="message__content"></div>
+                                </div>
+                            </div>
                             <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
                             <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" multiple="">
                             <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload files" %}</button>

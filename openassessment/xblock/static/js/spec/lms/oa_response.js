@@ -58,6 +58,11 @@ describe("OpenAssessment.ResponseView", function() {
             return successPromiseWithUrl;
         };
 
+        this.removeFileError = false
+        this.removeUploadedFile = function() {
+            return this.removeFileError ? errorPromise : successPromise;;
+        }
+
     };
 
     var StubFileUploader = function() {
@@ -752,5 +757,47 @@ describe("OpenAssessment.ResponseView", function() {
         view.checkSubmissionAbility(true);
         expect(view.submitEnabled()).toBe(true);
         expect(view.uploadEnabled()).toBe(true);
+    });
+
+    it("deleting all uploaded files prevents user from submitting", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+
+        // Upload files
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['i1', 'i2']);
+        view.uploadFiles()
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+
+        // Delete the first file
+        view.removeUploadedFile(0);
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+
+        // Delete the remaining file
+        view.removeUploadedFile(1);
+        expect(view.submitEnabled()).toBe(false);    
+    });
+
+    it("displays an error if there is an error deleting a file", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+        server.removeFileError = true;
+        spyOn(view.baseView, 'toggleActionError').and.callThrough();
+
+        // Upload a file
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['text']);
+        view.uploadFiles();
+
+        // Attempt to delete the file
+        view.removeUploadedFile(0);
+
+        // Expect an error to be displayed
+        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('delete', 'ERROR');
     });
 });
