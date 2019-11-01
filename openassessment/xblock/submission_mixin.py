@@ -370,6 +370,29 @@ class SubmissionMixin(object):
                 break
         return {'success': True, 'removed_num': removed_num}
 
+    @XBlock.json_handler
+    def remove_uploaded_file(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Removes uploaded user file.
+        """
+        filenum = data.get('filenum', -1)
+        try:
+            filenum = int(filenum)
+        except ValueError:
+            filenum = -1
+
+        removed = file_upload_api.remove_file(self._get_student_item_key(filenum))
+        if removed:
+            saved_file_descriptions = json.loads(self.saved_files_descriptions)
+            saved_file_descriptions[filenum] = None
+            self.saved_files_descriptions = json.dumps(saved_file_descriptions)
+
+            saved_files_names = json.loads(self.saved_files_names)
+            saved_files_names[filenum] = None
+            self.saved_files_names = json.dumps(saved_files_names)
+
+        return {'success': removed}
+
     def _get_download_url(self, file_num=0):
         """
         Internal function for retrieving the download url.
@@ -529,6 +552,7 @@ class SubmissionMixin(object):
             "text_response": self.text_response,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
+            "enable_delete_files": False,
         }
 
         # Due dates can default to the distant future, in which case
@@ -552,19 +576,35 @@ class SubmissionMixin(object):
 
             file_urls = []
 
-            for i in range(self.MAX_FILES_COUNT):
-                file_url = self._get_download_url(i)
-                file_description = ''
-                file_name = ''
-                if file_url:
-                    try:
-                        file_description = saved_files_descriptions[i]
-                        file_name = saved_files_names[i]
-                    except IndexError:
-                        pass
-                    file_urls.append((file_url, file_description, file_name))
-                else:
-                    break
+            if saved_files_descriptions == []:
+                # This is the old behavior, required for a corner case and should be eventually removed.
+                # https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
+                # to be uploaded without descriptions. In that case, saved_files_descriptions would be
+                # an empty list. If there are currently users in that state who have files uploaded
+                # with no descriptions but have not yet submitted, they will fall here.
+                for i in range(self.MAX_FILES_COUNT):
+                    file_url = self._get_download_url(i)
+                    file_description = ''
+                    file_name = ''
+                    if file_url:
+                        try:
+                            file_description = saved_files_descriptions[i]
+                            file_name = saved_files_names[i]
+                        except IndexError:
+                            pass
+                        file_urls.append((file_url, file_description, file_name))
+                    else:
+                        break
+            else:
+                for i, (file_description, file_name) in enumerate(zip(saved_files_descriptions, saved_files_names)):
+                    if file_description is None:
+                        # We are passing Nones to the template because when files are deleted, we still want to
+                        # represent them as empty elements in order to preserve the indices and thus urls of the
+                        # remaining files.
+                        file_urls.append((None, None, None))
+                    else:
+                        file_url = self._get_download_url(i)
+                        file_urls.append((file_url, file_description, file_name))
             context['file_urls'] = file_urls
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
@@ -592,6 +632,7 @@ class SubmissionMixin(object):
 
             context['saved_response'] = create_submission_dict(saved_response, self.prompts)
             context['save_status'] = self.save_status
+            context['enable_delete_files'] = True
 
             submit_enabled = True
             if self.text_response == 'required' and not self.saved_response:

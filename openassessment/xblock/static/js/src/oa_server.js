@@ -533,6 +533,26 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
+         * Sends request to server to remove specific uploaded file.
+         */
+        removeUploadedFile: function(filenum) {
+            var url = this.url('remove_uploaded_file');
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({'filenum': filenum}),
+                    contentType: jsonContentType,
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('Server error.')]);
+                });
+            }).promise();
+        },
+
+        /**
          * Sends request to server to save descriptions for each uploaded file.
          */
         saveFilesDescriptions: function(fileMetadata) {

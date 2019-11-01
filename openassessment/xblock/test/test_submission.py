@@ -281,7 +281,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -308,7 +309,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -331,7 +333,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': True,
             }
         )
 
@@ -353,7 +356,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': True,
             }
         )
 
@@ -381,7 +385,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': True,
             }
         )
 
@@ -409,7 +414,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': True,
             }
         )
 
@@ -432,7 +438,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -468,7 +475,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 },
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -498,7 +506,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -514,7 +523,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -537,7 +547,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -566,7 +577,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
@@ -595,7 +607,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text'
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 

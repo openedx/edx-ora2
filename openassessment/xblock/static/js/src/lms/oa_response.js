@@ -143,6 +143,18 @@ OpenAssessment.ResponseView.prototype = {
                 }
             }
         );
+
+        // Install click handlers for delete file buttons.
+        sel.find('.delete__uploaded__file').click(this.handleDeleteFileClick());
+    },
+
+    handleDeleteFileClick: function() {
+        var view = this;
+        return function(eventObject) {
+            eventObject.preventDefault();
+            var filenum = $(eventObject.target).attr('filenum');
+            view.removeUploadedFile(filenum);
+        };
     },
 
     /**
@@ -767,8 +779,25 @@ OpenAssessment.ResponseView.prototype = {
                 sel.find('.submission__answer__files').html('');
             }
         ).fail(function(errMsg) {
-            view.baseView.toggleActionError('upload', errMsg);
+            view.baseView.toggleActionError('delete', errMsg);
             sel.find('.file__upload').prop('disabled', false);
+        });
+    },
+
+    /**
+     Remove a previously uploaded file.
+
+     */
+    removeUploadedFile: function(filenum) {
+        var view = this;
+        return this.server.removeUploadedFile(filenum).done(function() {
+            var sel = $('.step--response', view.element);
+            var block = sel.find('.submission__answer__file__block__' + filenum);
+            block.html('');
+            block.prop('deleted', true);
+            view.checkSubmissionAbility();
+        }).fail(function(errMsg) {
+            view.baseView.toggleActionError('delete', errMsg);
         });
     },
 
@@ -870,6 +899,7 @@ OpenAssessment.ResponseView.prototype = {
             var div1 = null;
             var div2 = null;
             var ariaLabelledBy = null;
+            var button = null;
 
             if (!fileBlockExists) {
                 fileBlock = $('<div/>');
@@ -904,6 +934,13 @@ OpenAssessment.ResponseView.prototype = {
                 file.attr('target', '_blank');
                 file.appendTo(fileBlock);
             }
+
+            button = $('<button />');
+            button.text('Delete File');
+            button.addClass('delete__uploaded__file');
+            button.attr('filenum', filenum);
+            button.click(view.handleDeleteFileClick());
+            button.appendTo(fileBlock);
 
             return url;
         });

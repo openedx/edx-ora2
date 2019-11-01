@@ -1058,6 +1058,18 @@
   .file--upload {
     margin: $baseline-v ($baseline-v/2);
   }
+
+  .delete__uploaded__file {
+    @extend %btn--secondary;
+    @extend %action-2;
+    @include text-align(center);
+
+    display: inline-block;
+    margin: ($baseline-v/2);
+    padding: ($baseline-v/2);
+    box-shadow: none;
+    font-size: .75em;
+  }
 }
 .self-assessment__display__header
 .self-assessment__display__title,
