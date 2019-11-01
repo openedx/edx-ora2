@@ -48,9 +48,9 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         self.assertIn(descriptions[1]['description'], resp.decode('utf-8'))
 
     @scenario('data/save_scenario.xml', user_id="Valchek")
-    def test_overwrite_files_descriptions(self, xblock):
+    def test_append_files_descriptions(self, xblock):
         """
-        Checks ability to overwrite existed files descriptions.
+        Checks ability to to append additional files
 
         """
         descriptions1 = [{'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1'},
@@ -67,7 +67,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         xblock._get_download_url = mock.MagicMock(side_effect=lambda i: "https://img-url/%d" % i)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
 
-        self.assertNotIn(descriptions1[0]['description'], resp.decode('utf-8'))
-        self.assertNotIn(descriptions1[1]['description'], resp.decode('utf-8'))
+        self.assertIn(descriptions1[0]['description'], resp.decode('utf-8'))
+        self.assertIn(descriptions1[1]['description'], resp.decode('utf-8'))
         self.assertIn(descriptions2[0]['description'], resp.decode('utf-8'))
         self.assertIn(descriptions2[1]['description'], resp.decode('utf-8'))

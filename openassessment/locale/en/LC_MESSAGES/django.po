@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-31 16:00-0400\n"
+"POT-Creation-Date: 2019-11-05 16:27-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1663,21 +1663,21 @@ msgstr ""
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:248
+#: openassessment/xblock/data_conversion.py:249
 msgid "You must provide options selected in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:251
+#: openassessment/xblock/data_conversion.py:252
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:254
+#: openassessment/xblock/data_conversion.py:255
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:74
 #: openassessment/xblock/leaderboard_mixin.py:56
-#: openassessment/xblock/self_assessment_mixin.py:40
+#: openassessment/xblock/self_assessment_mixin.py:41
 #: openassessment/xblock/student_training_mixin.py:60
 #: openassessment/xblock/student_training_mixin.py:265
 msgid "An unexpected error occurred."
@@ -1807,12 +1807,12 @@ msgstr ""
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr ""
 
-#: openassessment/xblock/self_assessment_mixin.py:139
+#: openassessment/xblock/self_assessment_mixin.py:140
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr ""
 
-#: openassessment/xblock/self_assessment_mixin.py:161
-#: openassessment/xblock/self_assessment_mixin.py:168
+#: openassessment/xblock/self_assessment_mixin.py:162
+#: openassessment/xblock/self_assessment_mixin.py:169
 msgid "Your self assessment could not be submitted."
 msgstr ""
 
@@ -1940,67 +1940,67 @@ msgstr ""
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:81
+#: openassessment/xblock/submission_mixin.py:82
 msgid "\"submission\" required to submit answer."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:102
+#: openassessment/xblock/submission_mixin.py:103
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:108
+#: openassessment/xblock/submission_mixin.py:109
 msgid "Multiple submissions are not allowed."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:154
+#: openassessment/xblock/submission_mixin.py:155
 msgid "API returned unclassified exception."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:196
+#: openassessment/xblock/submission_mixin.py:197
 msgid "This response could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:200
+#: openassessment/xblock/submission_mixin.py:201
 msgid "This response was not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:238
+#: openassessment/xblock/submission_mixin.py:247
 msgid "Files descriptions could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:242
+#: openassessment/xblock/submission_mixin.py:251
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:319
+#: openassessment/xblock/submission_mixin.py:329
 msgid "There was an error uploading your file."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:327
+#: openassessment/xblock/submission_mixin.py:336
 msgid "Content type must be GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:330
+#: openassessment/xblock/submission_mixin.py:339
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:333
+#: openassessment/xblock/submission_mixin.py:342
 msgid "File type must be one of the following types: {}"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:337
+#: openassessment/xblock/submission_mixin.py:346
 msgid "File type is not allowed."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:344
+#: openassessment/xblock/submission_mixin.py:353
 msgid "Error retrieving upload URL."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:508
+#: openassessment/xblock/submission_mixin.py:502
 msgid "This response has been saved but not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:509
+#: openassessment/xblock/submission_mixin.py:503
 msgid "This response has not been saved."
 msgstr ""
 
@@ -2088,10 +2088,10 @@ msgstr ""
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:358
+#: openassessment/xblock/validation.py:359
 msgid "Leaderboard number is invalid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:382
 msgid "The submission format is invalid."
 msgstr ""

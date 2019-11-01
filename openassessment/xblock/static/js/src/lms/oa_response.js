@@ -30,6 +30,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.filesUploaded = false;
     this.announceStatus = false;
     this.isRendering = false;
+    this.fileCountBeforeUpload = 0;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
@@ -128,18 +129,9 @@ OpenAssessment.ResponseView.prototype = {
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
-                var previouslyUploadedFiles = sel.find('.submission__answer__file').length ? true : false;
                 $('.submission__answer__display__file', view.element).removeClass('is--hidden');
                 if (view.hasAllUploadFiles()) {
-                    if (previouslyUploadedFiles) {
-                        // eslint-disable-next-line max-len
-                        var msg = gettext('After you upload new files all your previously uploaded files will be overwritten. Continue?');
-                        if (confirm(msg)) {
-                            view.uploadFiles();
-                        }
-                    } else {
-                        view.uploadFiles();
-                    }
+                    view.uploadFiles();
                 }
             }
         );
@@ -644,6 +636,15 @@ OpenAssessment.ResponseView.prototype = {
             }
         }
 
+        if (this.getSavedFileCount(false) + files.length > this.data.MAXIMUM_FILE_UPLOAD_COUNT ) {
+            var msg = gettext('Only ' + this.data.MAXIMUM_FILE_UPLOAD_COUNT + ' files can be saved.');
+            this.baseView.toggleActionError(
+                'upload',
+                gettext(msg)
+            );
+            errorCheckerTriggered = true;
+        }
+
         if (!errorCheckerTriggered) {
             this.baseView.toggleActionError('upload', null);
             if (files.length > 0) {
@@ -673,6 +674,7 @@ OpenAssessment.ResponseView.prototype = {
         var descriptionsExists = true;
 
         this.filesDescriptions = descriptions || [];
+        this.fileNames = [];
 
         $(filesDescriptions).show().html('');
 
@@ -766,22 +768,13 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
-     Remove previously uploaded files.
-
+     Returns the number of file blocks rendered on the page. includeDeleted is necessary in
+     order to get the count of all files (even deleted ones) since our url logic is based on an index that
+     is always incrementing. When includeDeleted is false - returns only the  count of files that are "live".
      */
-    removeUploadedFiles: function() {
-        var view = this;
-        var sel = $('.step--response', this.element);
-
-        return this.server.removeUploadedFiles().done(
-            function() {
-                var sel = $('.step--response', view.element);
-                sel.find('.submission__answer__files').html('');
-            }
-        ).fail(function(errMsg) {
-            view.baseView.toggleActionError('delete', errMsg);
-            sel.find('.file__upload').prop('disabled', false);
-        });
+    getSavedFileCount: function(includeDeleted) {
+        return includeDeleted ? $('.submission__answer__file__block').length :
+            $('.submission__answer__file__block').filter(':parent').length;
     },
 
     /**
@@ -836,14 +829,13 @@ OpenAssessment.ResponseView.prototype = {
 
         sel.find('.file__upload').prop('disabled', true);
 
-        promise = view.removeUploadedFiles();
-        promise = promise.then(function() {
-            return view.saveFilesDescriptions();
-        });
+        promise = view.saveFilesDescriptions();
 
+        view.fileCountBeforeUpload = view.getSavedFileCount(true);
         $.each(view.files, function(index, file) {
             promise = promise.then(function() {
-                return view.fileUpload(view, file.type, file.name, index, file, fileCount === (index + 1));
+                return view.fileUpload(view, file.type, file.name, view.fileCountBeforeUpload + index, file,
+                    fileCount === (index + 1));
             });
         });
 
@@ -914,7 +906,7 @@ OpenAssessment.ResponseView.prototype = {
                     id: ariaLabelledBy,
                 });
                 div1.addClass('submission__file__description__label');
-                div1.text(view.filesDescriptions[filenum] + ':');
+                div1.text(view.filesDescriptions[filenum - view.fileCountBeforeUpload] + ':');
                 div1.appendTo(fileBlock);
 
                 img = $('<img />');
@@ -926,9 +918,11 @@ OpenAssessment.ResponseView.prototype = {
                 div2.html(img);
                 div2.appendTo(fileBlock);
             } else {
+                var description = view.filesDescriptions[filenum - view.fileCountBeforeUpload];
+                var fileName = view.fileNames[filenum - view.fileCountBeforeUpload];
                 file = $('<a />', {
                     href: url,
-                    text: view.filesDescriptions[filenum] + ' (' + view.fileNames[filenum] + ')',
+                    text: description + ' (' + fileName + ')',
                 });
                 file.addClass('submission__answer__file submission--file');
                 file.attr('target', '_blank');

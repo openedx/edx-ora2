@@ -166,19 +166,6 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
-    it("removes uploaded files", function() {
-        stubAjax(true, {'success': true, 'msg': ''});
-        var success = false;
-        server.removeUploadedFiles().done(function() { success = true; });
-        expect(success).toBe(true);
-        expect($.ajax).toHaveBeenCalledWith({
-            url: "/remove_all_uploaded_files",
-            type: "POST",
-            data: JSON.stringify({}),
-            contentType : jsonContentType
-        });
-    });
-
     it("saves files descriptions", function() {
         stubAjax(true, {'success': true, 'msg': ''});
         var success = false;

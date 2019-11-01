@@ -22,6 +22,7 @@ describe("OpenAssessment.ResponseView", function() {
 
     var FILE_TYPE_WHITE_LIST = ['pdf', 'doc', 'docx', 'html'];
     var FILE_EXT_BLACK_LIST = ['exe', 'msi', 'app', 'dmg'];
+    var MAXIMUM_FILE_UPLOAD_COUNT = 20;
 
     var StubServer = function() {
 
@@ -120,7 +121,8 @@ describe("OpenAssessment.ResponseView", function() {
             "ALLOWED_IMAGE_MIME_TYPES": ALLOWED_IMAGE_MIME_TYPES,
             "ALLOWED_FILE_MIME_TYPES": ALLOWED_FILE_MIME_TYPES,
             "FILE_TYPE_WHITE_LIST": FILE_TYPE_WHITE_LIST,
-            "FILE_EXT_BLACK_LIST": FILE_EXT_BLACK_LIST
+            "FILE_EXT_BLACK_LIST": FILE_EXT_BLACK_LIST,
+            "MAXIMUM_FILE_UPLOAD_COUNT": MAXIMUM_FILE_UPLOAD_COUNT
         };
 
         // Create and install the view
@@ -140,12 +142,10 @@ describe("OpenAssessment.ResponseView", function() {
                 else { defer.reject(); }
             });
         });
-        spyOn(view, 'removeUploadedFiles').and.callFake(function() {
-            return $.Deferred(function(defer) {
-                defer.resolve();
-            });
-        });
         spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
+            for (var i=0; i < this.filesDescriptions.length; i++) {
+                this.fileNames.push(this.files[i].name);
+            }
             return $.Deferred(function(defer) {
                 view.removeFilesDescriptions();
                 defer.resolve();
@@ -583,6 +583,79 @@ describe("OpenAssessment.ResponseView", function() {
         expect(fileUploader.uploadArgs[1].data).toEqual(files[1]);
     });
 
+    it("tests that new file uploads are appended", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+
+        // Upload files
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['i1', 'i2']);
+        view.uploadFiles()
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+        expect(view.files.length).toEqual(2);
+        view.prepareUpload(files, 'image', ['i1', 'i2']);
+        view.uploadFiles()
+        view.checkSubmissionAbility(true);
+        expect(view.files.length).toEqual(2);
+    });
+
+    it("tests that file upload number can't exceed maximum", function() {
+        spyOn(view.baseView, 'toggleActionError').and.callThrough();
+        spyOn(view, 'getSavedFileCount').and.returnValue(20);
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+        expect(view.submitEnabled()).toBe(false);
+        var files = [];
+        for(var i=0; i<20;i++) {
+            files.push({type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''});
+        }
+
+        view.prepareUpload(files, 'image', ['i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',
+        'i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',]);
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+        expect(view.getSavedFileCount()).toEqual(20);
+        var files2 = [];
+        for(i=0; i<2;i++) {
+            files2.push({type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''});
+        }
+        view.prepareUpload(files2, 'image', ['i1', 'i2']);
+        expect(view.baseView.toggleActionError).toHaveBeenCalledWith(
+            'upload', 'Only ' + view.data.MAXIMUM_FILE_UPLOAD_COUNT +' files can be saved.');
+    });
+
+    it("tests that file upload works after file delete", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+
+        // Upload files
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['i1', 'i2']);
+        view.uploadFiles()
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+        // Delete the first file
+        view.removeUploadedFile(0);
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+        var fileNameAfterDelete = 'picture3.jpg';
+        files = [{type: 'image/jpeg', size: 1024, name: fileNameAfterDelete, data: ''}];
+        view.prepareUpload(files, 'image', ['i3']);
+        view.uploadFiles();
+        view.checkSubmissionAbility(true);
+        // Ensure that view.fileNames and view.fileDescriptions only contain data about the newest set
+        // of files uploaded files.
+        expect(view.fileNames).toEqual(['picture3.jpg']);
+        expect(view.filesDescriptions).toEqual(['i3']);
+    });
+
     it("uploads a PDF using a one-time URL", function() {
         var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
         view.prepareUpload(files, 'pdf-and-image', ['text']);
@@ -780,7 +853,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Delete the remaining file
         view.removeUploadedFile(1);
-        expect(view.submitEnabled()).toBe(false);    
+        expect(view.submitEnabled()).toBe(false);
     });
 
     it("displays an error if there is an error deleting a file", function() {
