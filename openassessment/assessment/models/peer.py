@@ -58,7 +58,7 @@ class AssessmentFeedback(models.Model):
 
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)
-    feedback_text = models.TextField(max_length=10000, default="")
+    feedback_text = models.TextField(max_length=10000, default=u"")
     options = models.ManyToManyField(AssessmentFeedbackOption, related_name='assessment_feedback', default=None)
 
     class Meta:
