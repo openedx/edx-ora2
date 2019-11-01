@@ -210,38 +210,6 @@ class SubmissionTest(XBlockHandlerTestCase):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @scenario('data/file_upload_scenario.xml')
-    def test_remove_all_uploaded_files(self, xblock):
-        """ Test remove all user files """
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
-        key.set_contents_from_string("How d'ya do?")
-
-        xblock.xmodule_runtime = Mock(
-            course_id='test_course',
-            anonymous_student_id='test_student',
-        )
-        download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
-        resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
-        self.assertTrue(resp['success'])
-        self.assertTrue(resp['url'].startswith(download_url))
-
-        resp = self.request(xblock, 'remove_all_uploaded_files', json.dumps(dict()), response_format='json')
-        self.assertTrue(resp['success'])
-        self.assertEqual(resp['removed_num'], 1)
-
-        resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
-        self.assertTrue(resp['success'])
-        self.assertEqual(u'', resp['url'])
-
-    @mock_s3
-    @override_settings(
-        AWS_ACCESS_KEY_ID='foobar',
-        AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
-    )
     @scenario('data/custom_file_upload.xml')
     def test_upload_files_with_uppercase_ext(self, xblock):
         """

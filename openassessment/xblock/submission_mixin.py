@@ -203,11 +203,11 @@ class SubmissionMixin(object):
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
         """
-        Save the descriptions for each uploaded file.
+        Save the metadata for each uploaded file.
 
         Args:
-            data (dict): Data should have a single key 'descriptions' that contains
-                a list of dictionaries with the following keys: 'description' and fileName.
+            data (dict): Data should have a single key 'fileMetadata' that contains
+                a list of dictionaries with the following keys: 'description' and 'fileName'.
             each element of the list maps to a single file
             suffix (str): Not used.
 
@@ -227,8 +227,16 @@ class SubmissionMixin(object):
                     ]
             ):
                 try:
-                    self.saved_files_descriptions = json.dumps([desc['description'] for desc in file_data])
-                    self.saved_files_names = json.dumps([desc['fileName'] for desc in file_data])
+                    if self.saved_files_descriptions != '':
+                        existing_file_descriptions_list = json.loads(self.saved_files_descriptions)
+                        existing_file_names_list = json.loads(self.saved_files_names)
+                        existing_file_descriptions_list.extend([desc['description'] for desc in file_data])
+                        existing_file_names_list.extend([desc['fileName'] for desc in file_data])
+                        self.saved_files_descriptions = json.dumps(existing_file_descriptions_list)
+                        self.saved_files_names = json.dumps(existing_file_names_list)
+                    else:
+                        self.saved_files_descriptions = json.dumps([desc['description'] for desc in file_data])
+                        self.saved_files_names = json.dumps([desc['fileName'] for desc in file_data])
                     # Emit analytics event...
                     self.runtime.publish(
                         self,
@@ -324,7 +332,6 @@ class SubmissionMixin(object):
         file_name_parts = file_name.split('.')
         file_num = int(data.get('filenum', 0))
         file_ext = file_name_parts[-1] if len(file_name_parts) > 1 else None
-
         if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
             return {'success': False, 'msg': self._(u"Content type must be GIF, PNG or JPG.")}
 
@@ -356,21 +363,6 @@ class SubmissionMixin(object):
         """
         file_num = int(data.get('filenum', 0))
         return {'success': True, 'url': self._get_download_url(file_num)}
-
-    @XBlock.json_handler
-    def remove_all_uploaded_files(self, data, suffix=''):  # pylint: disable=unused-argument
-        """
-        Removes all uploaded user files.
-
-        """
-        removed_num = 0
-        for i in range(self.MAX_FILES_COUNT):
-            removed = file_upload_api.remove_file(self._get_student_item_key(i))
-            if removed:
-                removed_num += 1
-            else:
-                break
-        return {'success': True, 'removed_num': removed_num}
 
     @XBlock.json_handler
     def remove_uploaded_file(self, data, suffix=''):  # pylint: disable=unused-argument
