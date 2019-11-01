@@ -48,7 +48,7 @@ class StudentTrainingWorkflowTest(CacheResetTest):
 
         # Simulate a race condition in which someone creates a workflow item
         # after we check if it exists.
-        mock_workflow_item = mock.MagicMock(StudentTrainingWorkflowItem)
+        mock.MagicMock(StudentTrainingWorkflowItem)
         mock_create.side_effect = IntegrityError
 
         # Expect that we retry and retrieve the workflow item created by someone else

@@ -39,21 +39,21 @@ class CollectOra2DataTest(CacheResetTest):
                 "i4x://edX/DemoX/openassessment/hash_value",
                 "e31b4beb3d191cd47b07e17735728d53",
                 "2014-10-07 20:33:31+00:00",
-                '{""text"": ""This is a response to a question. #dylan""}',
+                u'{""text"": ""This is a response to a question. #dylan""}',
                 "Assessment #1 -- scored_at: 2014-10-07 20:37:54 -- type: T -- scorer_id: hash -- feedback: Test",
                 "Assessment #1 -- Content: Unclear recommendation (5)",
                 "2014-10-07 21:35:47+00:00",
                 "10",
                 "20",
                 "Completed test assessments.",
-                "They were useful.",
+                u"They were useful.",
             ],
             [
                 "row-two-submission-value",
                 "i4x://edX/DemoX/openassessment/hash_value",
                 "e31b4beb3d191cd47b07e17735728d53",
                 "2014-10-07 20:33:31+00:00",
-                '{""text"": ""This is a response to a question. #dylan""}',
+                u'{""text"": ""This is a response to a question. #dylan""}',
                 "Assessment #1 -- scored_at: 2014-10-07 20:37:54 -- type: T -- scorer_id: hash -- feedback: Test",
                 "Assessment #1 -- Content: Unclear recommendation (5)",
                 "2014-10-07 21:35:47+00:00",
@@ -69,14 +69,14 @@ class CollectOra2DataTest(CacheResetTest):
             "i4x://edX/DemoX/openassessment/hash_value",
             "e31b4beb3d191cd47b07e17735728d53",
             "2014-10-07 20:33:31+00:00",
-            '{""text"": ""This is a response to a question. #dylan""}',
+            u'{""text"": ""This is a response to a question. #dylan""}',
             "Assessment #1 -- scored_at: 2014-10-07 20:37:54 -- type: T -- scorer_id: hash -- feedback: Test",
             "Assessment #1 -- Content: Unclear recommendation (5)",
             "2014-10-07 21:35:47+00:00",
             "10",
             "20",
             "Completed test assessments.",
-            "\xf0\x9d\x93\xa8\xf0\x9d\x93\xb8\xf0\x9d\x93\xbe",
+            "𝓨𝓸𝓾",
         ]
 
     @patch('openassessment.management.commands.collect_ora2_data.OraAggregateData.collect_ora2_data')
@@ -89,7 +89,6 @@ class CollectOra2DataTest(CacheResetTest):
             call_command('collect_ora2_data', self.COURSE_ID)
 
             mock_writerow = mock_write.writer.return_value.writerow
-
             mock_writerow.assert_any_call(self.test_header)
             mock_writerow.assert_any_call(self.test_rows[0])
             mock_writerow.assert_any_call(self.unicode_encoded_row)

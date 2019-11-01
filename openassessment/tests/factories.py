@@ -105,7 +105,7 @@ class AssessmentFeedbackFactory(DjangoModelFactory):
             return
         if extracted:
             for assessment in extracted:
-                self.assessments.add(assessment)
+                self.assessments.add(assessment)  # pylint: disable=no-member
 
     @factory.post_generation
     def options(self, create, extracted, **kwargs):  # pylint: disable=unused-argument
@@ -114,4 +114,4 @@ class AssessmentFeedbackFactory(DjangoModelFactory):
             return
         if extracted:
             for option in extracted:
-                self.options.add(option)
+                self.options.add(option)  # pylint: disable=no-member

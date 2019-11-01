@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 import bleach
 from bleach import callbacks
 
-register = template.Library()
+register = template.Library()  # pylint: disable=invalid-name
 
 
 @register.filter()

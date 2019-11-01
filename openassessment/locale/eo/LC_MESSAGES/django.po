@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-10 15:07-0400\n"
+"POT-Creation-Date: 2019-10-30 11:53-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
-"Language: eo\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -68,90 +68,56 @@ msgstr ""
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "Open Response Assessment"
-msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+msgid "Save"
+msgstr "Sävé Ⱡ'σяєм ι#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "Settings"
-msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
+msgid "Cancel"
+msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "Rubric"
-msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
-msgid "Prompt"
-msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "Rubric Change Impacts Settings Section"
-msgstr ""
-"Rüßrïç Çhängé Ìmpäçts Séttïngs Séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid ""
-"A change that you made to this assessment's rubric has an impact on some "
-"examples laid out in the settings tab. For more information, go to the "
-"Settings section and fix the areas highlighted in red."
-msgstr ""
-"À çhängé thät ýöü mädé tö thïs ässéssmént's rüßrïç häs än ïmpäçt ön sömé "
-"éxämplés läïd öüt ïn thé séttïngs täß. För möré ïnförmätïön, gö tö thé "
-"Séttïngs séçtïön änd fïx thé äréäs hïghlïghtéd ïn réd. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
-"łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ "
-"єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ "
-"αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
-"ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υ#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "close alert"
-msgstr "çlösé älért Ⱡ'σяєм ιρѕυм ∂σłσя #"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Display Name "
 msgstr "Dïspläý Nämé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "The display name for this component."
 msgstr ""
 "Thé dïspläý nämé för thïs çömpönént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Response Start Date"
 msgstr "Réspönsé Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Response Start Time"
 msgstr "Réspönsé Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän ßégïn süßmïttïng réspönsés. Ⱡ'σяєм ιρѕυм"
 " ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Response Due Date"
 msgstr "Réspönsé Düé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Response Due Time"
 msgstr "Réspönsé Düé Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän nö löngér süßmït réspönsés. Ⱡ'σяєм ιρѕυм"
 " ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Text Response"
 msgstr "Téxt Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
@@ -159,11 +125,11 @@ msgstr ""
 "Spéçïfý whéthér léärnérs müst ïnçlüdé ä téxt ßäséd réspönsé tö thïs "
 "prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "File Uploads Response"
 msgstr "Fïlé Ûplöäds Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
@@ -171,23 +137,23 @@ msgstr ""
 "Spéçïfý whéthér léärnérs äré äßlé tö üplöäd fïlés äs ä pärt öf théïr "
 "réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "File Upload Types"
 msgstr "Fïlé Ûplöäd Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "PDF or Image Files"
 msgstr "PDF ör Ìmägé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Image Files"
 msgstr "Ìmägé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Custom File Types"
 msgstr "Çüstöm Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners can submit files along with their text responses. "
 "Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
@@ -203,11 +169,11 @@ msgstr ""
 "ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм "
 "α∂ мιηιм νєηιαм, q#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "File Types"
 msgstr "Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
@@ -215,31 +181,33 @@ msgstr ""
 "Éntér thé fïlé éxténsïöns, sépärätéd ßý çömmäs, thät ýöü wänt léärnérs tö ßé"
 " äßlé tö üplöäd. För éxämplé: pdf,döç,döçx. Ⱡ'σяєм ιρѕυм#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Allow LaTeX Responses"
 msgstr "Àllöw LäTéX Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "False"
 msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "True"
 msgstr "Trüé Ⱡ'σяєм ι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr ""
 "Spéçïfý whéthér léärnérs çän wrïté LäTéX förmättéd strïngs Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
 msgid "Top Responses"
 msgstr "Töp Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
@@ -254,29 +222,27 @@ msgstr ""
 " єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
 "¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid ""
-"In this assignment, you can include learner training, peer assessment, self "
-"assessment, and staff assessment steps. Select the steps that you want "
-"below, and then drag them into the order you want. If you include a learner "
-"training step, it must precede all other steps. If you include a staff "
-"assessment step, it must be the final step. After you release an ORA "
-"assignment, you cannot change the type and number of assessment steps."
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Teams Enabled"
+msgstr "Téäms Énäßléd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
-"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé léärnér träïnïng, péér ässéssmént, sélf "
-"ässéssmént, änd stäff ässéssmént stéps. Séléçt thé stéps thät ýöü wänt "
-"ßélöw, änd thén dräg thém ïntö thé ördér ýöü wänt. Ìf ýöü ïnçlüdé ä léärnér "
-"träïnïng stép, ït müst préçédé äll öthér stéps. Ìf ýöü ïnçlüdé ä stäff "
-"ässéssmént stép, ït müst ßé thé fïnäl stép. Àftér ýöü réléäsé än ÖRÀ "
-"ässïgnmént, ýöü çännöt çhängé thé týpé änd nümßér öf ässéssmént stéps.#"
+"Spéçïfý whéthér téäm süßmïssïöns äré ällöwéd för thïs réspönsé. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "Save"
-msgstr "Sävé Ⱡ'σяєм ι#"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Select Team Set"
+msgstr "Séléçt Téäm Sét Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html
-msgid "Cancel"
-msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Team A"
+msgstr "Téäm À Ⱡ'σяєм ιρѕυ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Team B"
+msgstr "Téäm B Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
@@ -337,6 +303,48 @@ msgid ""
 msgstr ""
 "Séléçt öné öf thé öptïöns äßövé. Thïs désçrïßés whéthér ör nöt thé léärnér "
 "wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "Open Response Assessment"
+msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "Settings"
+msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "Rubric"
+msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
+msgid "Prompt"
+msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "Rubric Change Impacts Settings Section"
+msgstr ""
+"Rüßrïç Çhängé Ìmpäçts Séttïngs Séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid ""
+"A change that you made to this assessment's rubric has an impact on some "
+"examples laid out in the settings tab. For more information, go to the "
+"Settings section and fix the areas highlighted in red."
+msgstr ""
+"À çhängé thät ýöü mädé tö thïs ässéssmént's rüßrïç häs än ïmpäçt ön sömé "
+"éxämplés läïd öüt ïn thé séttïngs täß. För möré ïnförmätïön, gö tö thé "
+"Séttïngs séçtïön änd fïx thé äréäs hïghlïghtéd ïn réd. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
+"łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ "
+"єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ "
+"αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
+"ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "close alert"
+msgstr "çlösé älért Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
 msgid "Option"
@@ -531,6 +539,22 @@ msgid "Enter the date and time when all self assessments must be complete."
 msgstr ""
 "Éntér thé däté änd tïmé whén äll sélf ässéssménts müst ßé çömplété. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_settings.html
+msgid ""
+"In this assignment, you can include learner training, peer assessment, self "
+"assessment, and staff assessment steps. Select the steps that you want "
+"below, and then drag them into the order you want. If you include a learner "
+"training step, it must precede all other steps. If you include a staff "
+"assessment step, it must be the final step. After you release an ORA "
+"assignment, you cannot change the type and number of assessment steps."
+msgstr ""
+"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé léärnér träïnïng, péér ässéssmént, sélf "
+"ässéssmént, änd stäff ässéssmént stéps. Séléçt thé stéps thät ýöü wänt "
+"ßélöw, änd thén dräg thém ïntö thé ördér ýöü wänt. Ìf ýöü ïnçlüdé ä léärnér "
+"träïnïng stép, ït müst préçédé äll öthér stéps. Ìf ýöü ïnçlüdé ä stäff "
+"ässéssmént stép, ït müst ßé thé fïnäl stép. Àftér ýöü réléäsé än ÖRÀ "
+"ässïgnmént, ýöü çännöt çhängé thé týpé änd nümßér öf ässéssmént stéps.#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html
 msgid "Step: Staff Assessment"

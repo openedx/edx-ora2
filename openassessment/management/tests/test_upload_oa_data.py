@@ -4,8 +4,8 @@ Tests for management command that uploads submission/assessment data.
 """
 from __future__ import absolute_import
 
-from StringIO import StringIO
 import tarfile
+from io import BytesIO
 
 from six.moves import range
 
@@ -46,7 +46,7 @@ class UploadDataTest(CacheResetTest):
                 'item_id': 'test_item',
                 'item_type': 'openassessment',
             }
-            submission_text = "test submission {}".format(index)
+            submission_text = u"test submission {}".format(index)
             submission = sub_api.create_submission(student_item, submission_text)
             workflow_api.create_workflow(submission['uuid'], ['peer', 'self'])
 
@@ -60,7 +60,7 @@ class UploadDataTest(CacheResetTest):
         self.assertEqual(len(cmd.history), 1)
         bucket = conn.get_all_buckets()[0]
         key = bucket.get_key(cmd.history[0]['key'])
-        contents = StringIO(key.get_contents_as_string())
+        contents = BytesIO(key.get_contents_as_string())
 
         # Expect that the contents contain all the expected CSV files
         with tarfile.open(mode="r:gz", fileobj=contents) as tar:

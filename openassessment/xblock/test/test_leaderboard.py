@@ -8,7 +8,7 @@ import json
 from random import randint
 
 import mock
-from six.moves.urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse  # pylint: disable=import-error
 
 from django.core.cache import cache
 from django.test.utils import override_settings
@@ -130,7 +130,6 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
     @scenario('data/leaderboard_show.xml')
     def test_no_text_key_submission(self, xblock):
-        self.maxDiff = None
         # Instead of using the default submission as a dict with 'text',
         # make the submission a string.
         self._create_submissions_and_scores(xblock, [('test answer', 1)], submission_key=None)
@@ -150,9 +149,9 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
     def test_non_text_submission(self, xblock):
         # Create a mock bucket
         conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
+        conn.create_bucket('mybucket')
         # Create a non-text submission (the submission dict doesn't contain 'text')
-        file_download_url = api.get_download_url('s3key')
+        api.get_download_url('s3key')
         self._create_submissions_and_scores(xblock, [('s3key', 1)], submission_key='file_key')
 
         # Expect that we default to an empty string for content
@@ -182,7 +181,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             files_url_and_description = [
                 (api.get_download_url(file_key), file_descriptions[idx], file_names[idx])
                 for idx, file_key in enumerate(file_keys)
-                ]
+            ]
 
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
@@ -192,8 +191,6 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])
-
-        self.maxDiff = None
         # Expect that we retrieve both the text and the download URL for the file
         self._assert_scores(xblock, [
             {'score': 1, 'files': files_url_and_description, 'submission': create_submission_dict(
@@ -226,7 +223,6 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])
-        self.maxDiff = None
         # Expect that we retrieve both the text and the download URL for the file
         self._assert_scores(xblock, [
             {'score': 1, 'files': file_download_url, 'submission': create_submission_dict(
@@ -236,8 +232,8 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ])
 
     def _create_submissions_and_scores(
-        self, xblock, submissions_and_scores,
-        submission_key=None, points_possible=10
+            self, xblock, submissions_and_scores,
+            submission_key=None, points_possible=10
     ):
         """
         Create submissions and scores that should be displayed by the leaderboard.
@@ -259,7 +255,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             # to anything without affecting the test.
             student_item = xblock.get_student_item_dict()
             # adding rand number to the student_id to make it unique.
-            student_item['student_id'] = 'student {num} {num2}'.format(num=num, num2=randint(2, 1000))
+            student_item['student_id'] = u'student {num} {num2}'.format(num=num, num2=randint(2, 1000))
             if submission_key is not None:
                 answer = {submission_key: submission}
             else:
@@ -281,11 +277,6 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
                 is a dictionary of with keys 'content' (the submission text)
                 and 'score' (the integer number of points earned)
         """
-        # We temporarily set the maxDiff attribute to infinite so that we can
-        # have a full diff
-        maxDiff = self.maxDiff
-        self.maxDiff = None
-
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/leaderboard/oa_leaderboard_show.html',
@@ -298,8 +289,6 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             },
             workflow_status='done',
         )
-
-        self.maxDiff = maxDiff
 
     def _assert_path_and_context(self, xblock, expected_path, expected_context, workflow_status=None):
         """

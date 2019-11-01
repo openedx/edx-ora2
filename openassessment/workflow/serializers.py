@@ -10,6 +10,9 @@ from openassessment.workflow.models import AssessmentWorkflow, AssessmentWorkflo
 
 
 class AssessmentWorkflowSerializer(serializers.ModelSerializer):
+    """
+    Serialize a AssessmentWorkflow' model.
+    """
     score = serializers.ReadOnlyField(required=False)
 
     class Meta:

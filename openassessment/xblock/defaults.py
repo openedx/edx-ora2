@@ -10,7 +10,7 @@ DEFAULT_PROMPT = """
     Write a persuasive essay to a newspaper reflecting your views on censorship in libraries. Do you believe that certain materials, such as books, music, movies, magazines, etc., should be removed from the shelves if they are found offensive? Support your position with convincing arguments from your own experience, observations, and/or reading.
 
     Read for conciseness, clarity of thought, and form.
-"""
+"""  # nopep8
 
 DEFAULT_RUBRIC_CRITERIA = [
     {
@@ -22,15 +22,15 @@ DEFAULT_RUBRIC_CRITERIA = [
         'options': [
             {
                 'order_num': 0, 'points': 0, 'name': 'Poor', 'label': 'Poor',
-                'explanation': """Difficult for the reader to discern the main idea.  Too brief or too repetitive to establish or maintain a focus."""
+                'explanation': """Difficult for the reader to discern the main idea.  Too brief or too repetitive to establish or maintain a focus."""  # nopep8
             },
             {
                 'order_num': 1, 'points': 3, 'name': 'Fair', 'label': 'Fair',
-                'explanation': """Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task."""
+                'explanation': """Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task."""  # nopep8
             },
             {
                 'order_num': 2, 'points': 5, 'name': 'Good', 'label': 'Good',
-                'explanation': """Presents a unifying theme or main idea without going off on tangents.  Stays completely focused on topic and task."""
+                'explanation': """Presents a unifying theme or main idea without going off on tangents.  Stays completely focused on topic and task."""  # nopep8
             },
         ],
     },
@@ -42,19 +42,19 @@ DEFAULT_RUBRIC_CRITERIA = [
         'options': [
             {
                 'order_num': 0, 'points': 0, 'name': 'Poor', 'label': 'Poor',
-                'explanation': """Includes little information with few or no details or unrelated details.  Unsuccessful in attempts to explore any facets of the topic."""
+                'explanation': """Includes little information with few or no details or unrelated details.  Unsuccessful in attempts to explore any facets of the topic."""  # nopep8
             },
             {
                 'order_num': 1, 'points': 1, 'name': 'Fair', 'label': 'Fair',
-                'explanation': """Includes little information and few or no details.  Explores only one or two facets of the topic."""
+                'explanation': """Includes little information and few or no details.  Explores only one or two facets of the topic."""  # nopep8
             },
             {
                 'order_num': 2, 'points': 3, 'name': 'Good', 'label': 'Good',
-                'explanation': """Includes sufficient information and supporting details. (Details may not be fully developed; ideas may be listed.)  Explores some facets of the topic."""
+                'explanation': """Includes sufficient information and supporting details. (Details may not be fully developed; ideas may be listed.)  Explores some facets of the topic."""  # nopep8
             },
             {
                 'order_num': 3, 'points': 3, 'name': 'Excellent', 'label': 'Excellent',
-                'explanation': """Includes in-depth information and exceptional supporting details that are fully developed.  Explores all facets of the topic."""
+                'explanation': """Includes in-depth information and exceptional supporting details that are fully developed.  Explores all facets of the topic."""  # nopep8
             },
         ],
     },

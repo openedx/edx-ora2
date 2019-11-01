@@ -34,8 +34,8 @@ class AssessmentWorkflowRequestError(AssessmentWorkflowError):
 
     """
 
-    def __init__(self, field_errors):
-        Exception.__init__(self, repr(field_errors))
+    def __init__(self, field_errors):  # pylint: disable=super-init-not-called
+        Exception.__init__(self, repr(field_errors))  # pylint: disable=non-parent-init-called
         self.field_errors = copy.deepcopy(field_errors)
 
 

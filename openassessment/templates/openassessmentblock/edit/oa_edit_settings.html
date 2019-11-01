@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load tz %}
+<div id="oa_settings_editor_wrapper" class="oa_editor_content_wrapper wrapper-comp-settings">
+
+    {% include "openassessmentblock/edit/oa_edit_basic_settings_list.html" %}
+
+    <p class="openassessment_description" id="openassessment_step_select_description">
+        {% trans "In this assignment, you can include learner training, peer assessment, self assessment, and staff assessment steps. Select the steps that you want below, and then drag them into the order you want. If you include a learner training step, it must precede all other steps. If you include a staff assessment step, it must be the final step. After you release an ORA assignment, you cannot change the type and number of assessment steps." %}
+    </p>
+    <ol id="openassessment_assessment_module_settings_editors">
+        {% for assessment in editor_assessments_order %}
+            {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
+                {% include template %}
+            {% endwith %}
+        {% endfor %}
+    </ol>
+</div>

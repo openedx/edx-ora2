@@ -257,5 +257,36 @@ describe("OpenAssessment.EditSettingsView", function() {
         view.fileTypeWhiteList("pdf, EXE, .app");
         expect(view.validate()).toBe(false);
         expect(view.validationErrors()).toContain('The following file types are not allowed: exe,app');
-    })
+    });
+
+    it("enables the teamset selector when teams are enabled, and disabled it otherwise", function() {
+        view.teamsEnabled(false);
+        expect(view.teamsEnabled()).toBe(false);
+        view.teamset('team-b');
+        expect(view.teamset()).toBe('');
+
+        view.teamsEnabled(true);
+        expect(view.teamsEnabled()).toBe(true);
+        view.teamset('team-b');
+        expect(view.teamset()).toBe('team-b');
+    });
+
+    it("hides the training, self, and peer assessment types when teams are enabled", function() {
+        view.teamsEnabled(false);
+        expect(view.teamsEnabled()).toBe(false);
+        // None of the assessment editors should be hidden when teams are disabled
+        $('.openassessment_assessment_module_settings_editor').each(function(index, editor) {
+            expect($(editor).hasClass('is--hidden')).toBe(false);
+        });
+
+        view.teamsEnabled(true);
+        expect(view.teamsEnabled()).toBe(true);
+        [
+            '#oa_self_assessment_editor',
+            '#oa_peer_assessment_editor',
+            '#oa_student_training_editor',
+        ].forEach(function (editorId, index) {
+            expect($(editorId).hasClass('is--hidden')).toBe(true);
+        });
+    });
 });

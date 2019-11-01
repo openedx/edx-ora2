@@ -89,8 +89,7 @@ def update_assessments_format(assessments):
     for assessment in assessments:
         if 'examples' in assessment and assessment['examples']:
             for example in assessment['examples']:
-                if (isinstance(example, dict) and
-                    (isinstance(example['answer'], six.text_type) or isinstance(example['answer'], str))):
+                if isinstance(example, dict) and isinstance(example['answer'], (six.text_type, str)):
                     example['answer'] = {
                         'parts': [
                             {'text': example['answer']}
@@ -148,7 +147,7 @@ def create_rubric_dict(prompts, criteria):
 
     """
     return {
-        "prompts" : prompts,
+        "prompts": prompts,
         "criteria": criteria
     }
 
@@ -169,8 +168,9 @@ def clean_criterion_feedback(rubric_criteria, criterion_feedback):
     return {
         criterion['name']: criterion_feedback[criterion['name']]
         for criterion in rubric_criteria
-        if criterion['name'] in criterion_feedback
-        and criterion.get('feedback', 'disabled') in ['optional', 'required']
+        if criterion['name'] in criterion_feedback and criterion.get(
+            'feedback', 'disabled'
+        ) in ['optional', 'required']
     }
 
 

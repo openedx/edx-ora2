@@ -9,14 +9,17 @@ from uuid import uuid4
 
 import pkg_resources
 import six
-from six.moves import range, zip
+from six.moves import zip
 
 from django.conf import settings
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy
 
-from openassessment.xblock.data_conversion import (create_rubric_dict, make_django_template_key,
-                                                   update_assessments_format)
+from openassessment.xblock.data_conversion import (
+    create_rubric_dict,
+    make_django_template_key,
+    update_assessments_format
+)
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
@@ -26,7 +29,7 @@ from xblock.core import XBlock
 from xblock.fields import List, Scope
 from xblock.fragment import Fragment
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class StudioMixin(object):
@@ -51,6 +54,10 @@ class StudioMixin(object):
         "": ugettext_lazy("None")
     }
 
+    STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'
+
+    BASE_EDITOR_ASSESSMENTS_ORDER = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
+
     # Since the XBlock problem definition contains only assessment
     # modules that are enabled, we need to keep track of the order
     # that the user left assessments in the editor, including
@@ -73,7 +80,7 @@ class StudioMixin(object):
             (Fragment): An HTML fragment for editing the configuration of this XBlock.
         """
         rendered_template = get_template(
-            'openassessmentblock/edit/oa_edit.html'
+            self.STUDIO_EDITING_TEMPLATE
         ).render(self.editor_context())
         fragment = Fragment(rendered_template)
         if settings.DEBUG:
@@ -93,13 +100,6 @@ class StudioMixin(object):
         """
         Update the XBlock's XML.
 
-        Args:
-            data (dict): Data from the request; should have a value for the key 'xml'
-                containing the XML for this XBlock.
-
-        Keyword Arguments:
-            suffix (str): Not used
-
         Returns:
             dict with keys
                 'rubric' (unicode), 'prompt' (unicode), 'title' (unicode),
@@ -112,8 +112,12 @@ class StudioMixin(object):
         # before displaying them in the editor.
         __, __, date_ranges = resolve_dates(
             self.start, self.due,
-            [(self.submission_start, self.submission_due)] +
-            [(asmnt.get('start'), asmnt.get('due')) for asmnt in self.valid_assessments],
+            [
+                (self.submission_start, self.submission_due)
+            ] + [
+                (asmnt.get('start'), asmnt.get('due'))
+                for asmnt in self.valid_assessments
+            ],
             self._
         )
 
@@ -145,7 +149,7 @@ class StudioMixin(object):
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
-            'text_response': self.text_response if self.text_response  else '',
+            'text_response': self.text_response if self.text_response else '',
             'file_upload_response': self.file_upload_response if self.file_upload_response else '',
             'necessity_options': self.NECESSITY_OPTIONS,
             'file_upload_type': self.file_upload_type,
@@ -156,6 +160,8 @@ class StudioMixin(object):
                 make_django_template_key(asmnt)
                 for asmnt in self.editor_assessments_order
             ],
+            'teams_feature_enabled': self.team_submissions_enabled(),
+            'teams_enabled': self.teams_enabled,
             'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
         }
@@ -228,7 +234,7 @@ class StudioMixin(object):
             leaderboard_show=data['leaderboard_show']
         )
         if not success:
-            return {'success': False, 'msg': self._('Validation error: {error}').format(error=msg)}
+            return {'success': False, 'msg': self._(u'Validation error: {error}').format(error=msg)}
 
         # At this point, all the input data has been validated,
         # so we can safely modify the XBlock fields.
@@ -253,6 +259,7 @@ class StudioMixin(object):
             self.white_listed_file_types_string = None
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
+        self.teams_enabled = bool(data.get('teams_enabled', False))
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 
@@ -307,7 +314,7 @@ class StudioMixin(object):
         student_training_template = {
             'answer': {
                 'parts': [
-                    {'text': ''} for prompt in self.prompts
+                    {'text': ''} for _ in self.prompts
                 ]
             }
         }
@@ -351,7 +358,7 @@ class StudioMixin(object):
         """
         # Start with the default order, to pick up any assessment types that have been added
         # since the user last saved their ordering.
-        effective_order = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
+        effective_order = copy.deepcopy(self.BASE_EDITOR_ASSESSMENTS_ORDER)
 
         # Account for changes the user has made to the default order
         user_order = copy.deepcopy(self.editor_assessments_order)
@@ -375,8 +382,8 @@ class StudioMixin(object):
         superset_indices = [superset.index(item) for item in subset]
         sorted_superset_indices = sorted(superset_indices)
         if superset_indices != sorted_superset_indices:
-            for i in range(len(sorted_superset_indices)):
-                superset[sorted_superset_indices[i]] = subset[i]
+            for index, superset_index in enumerate(sorted_superset_indices):
+                superset[superset_index] = subset[index]
         return superset
 
     def _get_base_url_path_for_course_assets(self, course_key):

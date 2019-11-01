@@ -9,7 +9,7 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import importlib
 import logging
@@ -18,6 +18,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import DatabaseError, models, transaction
 from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from model_utils import Choices
@@ -29,7 +30,7 @@ from submissions import api as sub_api
 
 from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
-logger = logging.getLogger('openassessment.workflow.models')
+logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
 
 
 # To encapsulate the workflow API from the assessment API,
@@ -38,14 +39,15 @@ logger = logging.getLogger('openassessment.workflow.models')
 # that implements the corresponding assessment API.
 # For backwards compatibility, we provide a default configuration as well
 DEFAULT_ASSESSMENT_API_DICT = {
-    'peer': 'openassessment.assessment.api.peer',
-    'self': 'openassessment.assessment.api.self',
-    'training': 'openassessment.assessment.api.student_training',
+    u'peer': 'openassessment.assessment.api.peer',
+    u'self': 'openassessment.assessment.api.self',
+    u'training': 'openassessment.assessment.api.student_training',
 }
 ASSESSMENT_API_DICT = getattr(
     settings, 'ORA2_ASSESSMENTS',
     DEFAULT_ASSESSMENT_API_DICT
 )
+
 
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
     """Tracks the open-ended assessment status of a student submission.
@@ -60,14 +62,15 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     an after the fact recording of the last known state of that information so
     we can search easily.
     """
-    STEPS = list(ASSESSMENT_API_DICT.keys())
+    STEPS = sorted(ASSESSMENT_API_DICT.keys())
 
     STATUSES = [
-        "waiting",  # User has done all necessary assessment but hasn't been
-                    # graded yet -- we're waiting for assessments of their
-                    # submission by others.
-        "done",  # Complete
-        "cancelled"  # User submission has been cancelled.
+        # User has done all necessary assessment but hasn't been
+        # graded yet -- we're waiting for assessments of their
+        # submission by others.
+        u"waiting",
+        u"done",  # Complete
+        u"cancelled"  # User submission has been cancelled.
     ]
 
     STATUS_VALUES = STEPS + STATUSES
@@ -81,7 +84,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     # We then use that score as the student's overall score.
     # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
     # in descending priority order.
-    DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']
+    DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']  # pylint: disable=invalid-name
     ASSESSMENT_SCORE_PRIORITY = getattr(
         settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
         DEFAULT_ASSESSMENT_SCORE_PRIORITY
@@ -265,10 +268,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     else:
                         step_requirements = assessment_requirements.get(assessment_step_name, {})
                     score = get_score_func(self.submission_uuid, step_requirements)
-                    if assessment_step_name == self.STATUS.staff and score == None:
+                    if not score and (assessment_step_name == self.STATUS.staff):
                         if step_requirements and step_requirements.get('required', False):
-                            break # A staff score was not found, and one is required. Return None
-                        continue # A staff score was not found, but it is not required, so try the next type of score
+                            break  # A staff score was not found, and one is required. Return None
+                        continue  # A staff score was not found, but it is not required, so try the next type of score
                     break
 
         return score
@@ -324,11 +327,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
             if (
                     # Does a prior score exist? Is it a staff score? Do the points earned match?
-                    not old_score or
-                    not self.STAFF_ANNOTATION_TYPE in [
+                    not old_score or self.STAFF_ANNOTATION_TYPE not in [
                         annotation['annotation_type'] for annotation in old_score['annotations']
-                    ] or
-                    old_score['points_earned'] != new_staff_score['points_earned']
+                    ] or old_score['points_earned'] != new_staff_score['points_earned']
             ):
                 # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
@@ -369,11 +370,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
-        if (
-                new_status == self.STATUS.waiting and
-                all(step.assessment_completed_at for step in steps)
-        ):
-
+        if new_status == self.STATUS.waiting and all(step.assessment_completed_at for step in steps):
             score = self.get_score(assessment_requirements, step_for_name)
             # If we found a score, then we're done
             if score is not None:
@@ -746,7 +743,7 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
             u"the workflow for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
-    except:
+    except Exception:  # pylint: disable=broad-except
         msg = (
             u"Unexpected error occurred while updating the workflow "
             u"for submission UUID {}"
@@ -754,6 +751,7 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
         logger.exception(msg)
 
 
+@python_2_unicode_compatible
 class AssessmentWorkflowCancellation(models.Model):
     """Model for tracking cancellations of assessment workflow.
 
@@ -777,7 +775,7 @@ class AssessmentWorkflowCancellation(models.Model):
             "created_at={0.created_at})"
         ).format(self)
 
-    def __unicode__(self):
+    def __str__(self):
         return repr(self)
 
     @classmethod

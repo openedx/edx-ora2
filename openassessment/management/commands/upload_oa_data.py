@@ -68,7 +68,11 @@ class Command(BaseCommand):
         if len(args) < 2:
             raise CommandError(u'Usage: upload_oa_data {}'.format(self.args))
 
-        course_id, s3_bucket = args[0].decode('utf-8'), args[1].decode('utf-8')
+        course_id, s3_bucket = args[0], args[1]
+        if isinstance(course_id, bytes):
+            course_id = course_id.decode('utf-8')
+        if isinstance(s3_bucket, bytes):
+            s3_bucket = s3_bucket.decode('utf-8')
         csv_dir = tempfile.mkdtemp()
 
         try:

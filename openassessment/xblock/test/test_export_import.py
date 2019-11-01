@@ -4,8 +4,10 @@ Test that we can export a block from the runtime (to XML) and re-import it witho
 
 from __future__ import absolute_import
 
-from StringIO import StringIO
 import copy
+from io import BytesIO
+
+import six
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -19,7 +21,7 @@ class TestExportImport(XBlockHandlerTestCase):
         old_fields = copy.deepcopy(xblock.fields)
 
         # Export the XBlock from the runtime
-        output_buffer = StringIO()
+        output_buffer = BytesIO()
         self.runtime.export_to_xml(xblock, output_buffer)
 
         # Re-import the XBlock
@@ -27,4 +29,4 @@ class TestExportImport(XBlockHandlerTestCase):
         new_block = self.runtime.get_block(block_id)
 
         # Check that the values of all fields are the same
-        self.assertItemsEqual(new_block.fields, old_fields)
+        six.assertCountEqual(self, new_block.fields, old_fields)

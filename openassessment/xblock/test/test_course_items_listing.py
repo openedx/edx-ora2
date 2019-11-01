@@ -25,7 +25,7 @@ class TestCourseItemsListingHandlers(XBlockHandlerTestCase, SubmitAssessmentsMix
         """
         response = self.request(xblock, 'get_ora2_responses', json.dumps({}),
                                 request_method='GET')
-        self.assertIn('You do not have permission', response)
+        self.assertIn('You do not have permission', response.decode('utf-8'))
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_access(self, xblock):

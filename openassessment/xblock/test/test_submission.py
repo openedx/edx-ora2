@@ -70,7 +70,7 @@ class SubmissionTest(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     @patch.object(sub_api, 'create_submission')
-    def test_submission_API_failure(self, xblock, mock_submit):
+    def test_submission_API_failure(self, xblock, mock_submit):  # pylint: disable=invalid-name
         mock_submit.side_effect = SubmissionRequestError(msg="Cat on fire.")
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
@@ -121,7 +121,7 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        self.assertIn("Incomplete", resp)
+        self.assertIn("Incomplete", resp.decode('utf-8'))
 
     @scenario('data/line_breaks.xml')
     def test_prompt_line_breaks(self, xblock):
@@ -129,18 +129,18 @@ class SubmissionTest(XBlockHandlerTestCase):
         # (backward compatibility in case if prompt_type == 'text')
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
-        self.assertIn(expected_prompt, resp)
+        self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
     def test_prompt_html_to_text(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         expected_prompt = u"<code><strong>Question 123</strong></code>"
-        self.assertIn(expected_prompt, resp)
+        self.assertIn(expected_prompt, resp.decode('utf-8'))
 
         xblock.prompts_type = "text"
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         expected_prompt = "&lt;code&gt;&lt;strong&gt;Question 123&lt;/strong&gt;&lt;/code&gt;"
-        self.assertIn(expected_prompt, resp)
+        self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @mock_s3
     @override_settings(
@@ -158,10 +158,10 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
                                                               "filename": "test.jpg"}), response_format='json')
         self.assertTrue(resp['success'])
-        self.assertTrue(resp['url'].startswith(
-            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' +
-            xblock.scope_ids.usage_id
-        ))
+        self.assertIn(
+            '/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id,
+            resp['url']
+        )
 
     @mock_s3
     @override_settings(
@@ -253,10 +253,10 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'upload_url', json.dumps({'contentType': 'filename',
                                                               'filename': 'test.PDF'}), response_format='json')
         self.assertTrue(resp['success'])
-        self.assertTrue(resp['url'].startswith(
-            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' +
-            xblock.scope_ids.usage_id
-        ))
+        self.assertIn(
+            '/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id,
+            resp['url']
+        )
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
@@ -603,8 +603,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     def test_integration(self, xblock):
         # Expect that the response step is open and displays the deadline
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        self.assertIn('Enter your response to the prompt', resp)
-        self.assertIn('2999-05-06T00:00:00+00:00', resp)
+        self.assertIn('Enter your response to the prompt', resp.decode('utf-8'))
+        self.assertIn('2999-05-06T00:00:00+00:00', resp.decode('utf-8'))
 
         # Create a submission for the user
         xblock.create_submission(
@@ -614,7 +614,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
 
         # Expect that the response step is "submitted"
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        self.assertIn('your response has been submitted', resp.lower())
+        self.assertIn('your response has been submitted', resp.decode('utf-8').lower())
 
     def _assert_path_and_context(self, xblock, expected_path, expected_context):
         """
@@ -637,7 +637,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
 
         path, context = xblock.submission_path_and_context()
-        self.maxDiff = None   # Show a full diff
+        self.maxDiff = None  # pylint: disable=invalid-name
         self.assertEqual(path, expected_path)
         self.assertEqual(context, expected_context)
 

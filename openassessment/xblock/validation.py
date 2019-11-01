@@ -83,7 +83,7 @@ def _is_valid_assessment_sequence(assessments):
         return False
 
     # if using staff-assessment, it must come last
-    if 'staff-assessment' in sequence and 'staff-assessment' != sequence[-1]:
+    if 'staff-assessment' in sequence and sequence[-1] != 'staff-assessment':
         return False
 
     # if using training, must be followed by peer at some point
@@ -117,7 +117,7 @@ def validate_assessments(assessments, current_assessments, is_released, _):
             is_valid is a boolean indicating whether the assessment is semantically valid
             and msg describes any validation errors found.
     """
-    if len(assessments) == 0:
+    if not assessments:
         return False, _("This problem must include at least one assessment.")
 
     # Ensure that we support this sequence of assessments.
@@ -195,7 +195,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
     for criterion in rubric_dict['criteria']:
         # No duplicate option names within a criterion
         duplicates = _duplicates([option['name'] for option in criterion['options']])
-        if len(duplicates) > 0:
+        if duplicates:
             msg = _(u"Options in '{criterion}' have duplicate name(s): {duplicates}").format(
                 criterion=criterion['name'], duplicates=", ".join(duplicates)
             )
@@ -203,7 +203,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
 
         # Some criteria may have no options, just written feedback.
         # In this case, written feedback must be required (not optional or disabled).
-        if len(criterion['options']) == 0 and criterion.get('feedback', 'disabled') != 'required':
+        if not criterion['options'] and criterion.get('feedback', 'disabled') != 'required':
             msg = _(u'Criteria with no options must require written feedback.')
             return False, msg
 
@@ -289,7 +289,7 @@ def validate_assessment_examples(rubric_dict, assessments, _):
             examples = convert_training_examples_list_to_dict(asmnt['examples'])
 
             # Must have at least one training example
-            if len(examples) == 0:
+            if not examples:
                 return False, _(
                     u"Learner training must have at least one training example."
                 )
@@ -380,14 +380,14 @@ def validate_submission(submission, prompts, _, text_response='required'):
 
     message = _(u"The submission format is invalid.")
 
-    if type(submission) != list:
+    if not isinstance(submission, list):
         return False, message
 
     if text_response == 'required' and len(submission) != len(prompts):
         return False, message
 
     for submission_part in submission:
-        if type(submission_part) != six.text_type:
+        if not isinstance(submission_part, six.text_type):
             return False, message
 
     return True, u''

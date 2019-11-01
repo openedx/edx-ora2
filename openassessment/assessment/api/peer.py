@@ -19,7 +19,7 @@ from openassessment.assessment.serializers import (AssessmentFeedbackSerializer,
                                                    full_assessment_dict, rubric_from_dict, serialize_assessments)
 from submissions import api as sub_api
 
-logger = logging.getLogger("openassessment.assessment.api.peer")
+logger = logging.getLogger("openassessment.assessment.api.peer")  # pylint: disable=invalid-name
 
 PEER_TYPE = "PE"
 
@@ -196,16 +196,18 @@ def get_score(submission_uuid, peer_requirements):
 
 
 def create_assessment(
-    scorer_submission_uuid,
-    scorer_id,
-    options_selected,
-    criterion_feedback,
-    overall_feedback,
-    rubric_dict,
-    num_required_grades,
-    scored_at=None
+        scorer_submission_uuid,
+        scorer_id,
+        options_selected,
+        criterion_feedback,
+        overall_feedback,
+        rubric_dict,
+        num_required_grades,
+        scored_at=None
 ):
-    """Creates an assessment on the given submission.
+    # pylint: disable=unicode-format-string
+    """
+    Creates an assessment on the given submission.
 
     Assessments are created based on feedback associated with a particular
     rubric.
@@ -297,6 +299,7 @@ def create_assessment(
         ).format(scorer_id)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
 
 @transaction.atomic
 def _complete_assessment(
@@ -602,8 +605,7 @@ def get_submitted_assessments(submission_uuid, limit=None):
         return serialize_assessments(assessments)
     except DatabaseError:
         error_message = (
-            u"Couldn't retrieve the assessments completed by the "
-            " student with submission {uuid}"
+            u"Couldn't retrieve the assessments completed by the student with submission {uuid}"
         ).format(uuid=submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)

@@ -52,13 +52,13 @@ def _parse_date(value, _):
             return parse_date(value).replace(tzinfo=pytz.utc)
         except ValueError:
             raise InvalidDateFormat(
-                _("'{date}' is an invalid date format. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.").format(
-                    date=value
-                )
+                _(
+                    u"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS."
+                ).format(date=value)
             )
 
     else:
-        raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))
+        raise InvalidDateFormat(_(u"'{date}' must be a date string or datetime").format(date=value))
 
 
 def parse_date_value(date, _):
@@ -194,7 +194,7 @@ def resolve_dates(start, end, date_ranges, _):
     # As we iterate backwards, resolve end dates.
     prev_start = start
     prev_end = end
-    for index in range(len(date_ranges)):
+    for index in range(len(date_ranges)):  # pylint: disable=consider-using-enumerate
         reverse_index = len(date_ranges) - index - 1
 
         # Resolve "default" start dates to the previous start date.

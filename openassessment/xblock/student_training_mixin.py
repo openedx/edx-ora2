@@ -16,7 +16,7 @@ from xblock.core import XBlock
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class StudentTrainingMixin(object):
@@ -54,7 +54,7 @@ class StudentTrainingMixin(object):
 
         try:
             path, context = self.training_path_and_context()
-        except:  # pylint:disable=W0702
+        except Exception:  # pylint: disable=broad-except
             msg = u"Could not render Learner Training step for submission {}.".format(self.submission_uuid)
             logger.exception(msg)
             return self.render_error(self._(u"An unexpected error occurred."))
@@ -76,7 +76,7 @@ class StudentTrainingMixin(object):
         """
         if answer and isinstance(answer[0], six.string_types):
             return self._parse_answer_string(answer[0])
-        elif len(answer) == 0:
+        elif not answer:
             return self._parse_answer_string("")
 
     def _parse_answer_string(self, answer):
@@ -97,7 +97,7 @@ class StudentTrainingMixin(object):
         if not example:
             return (
                 {},
-                "No training example was returned from the API for student with Submission UUID {}".format(
+                u"No training example was returned from the API for student with Submission UUID {}".format(
                     self.submission_uuid
                 )
             )
@@ -112,7 +112,7 @@ class StudentTrainingMixin(object):
 
         return (submission_dict, "") or (
             {},
-            "Improperly formatted example, cannot render student training. Example: {}".format(example)
+            u"Improperly formatted example, cannot render student training. Example: {}".format(example)
         )
 
     def training_path_and_context(self):
@@ -259,7 +259,7 @@ class StudentTrainingMixin(object):
                 'success': False,
                 'msg': self._(u"Your scores could not be checked.")
             }
-        except:
+        except Exception:  # pylint: disable=broad-except
             return {
                 'success': False,
                 'msg': self._(u"An unexpected error occurred.")

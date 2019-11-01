@@ -16,7 +16,7 @@ from submissions.api import SubmissionNotFoundError, get_submission_and_student
 # Assessments are tagged as "self-evaluation"
 SELF_TYPE = "SE"
 
-logger = logging.getLogger("openassessment.assessment.api.self")
+logger = logging.getLogger("openassessment.assessment.api.self")  # pylint: disable=invalid-name
 
 
 def submitter_is_finished(submission_uuid, self_requirements):  # pylint: disable=unused-argument
@@ -88,20 +88,20 @@ def get_score(submission_uuid, self_requirements):  # pylint: disable=unused-arg
 
 
 def create_assessment(
-    submission_uuid,
-    user_id,
-    options_selected,
-    criterion_feedback,
-    overall_feedback,
-    rubric_dict,
-    scored_at=None
+        submission_uuid,
+        user_id,
+        options_selected,
+        criterion_feedback,
+        overall_feedback,
+        rubric_dict,
+        scored_at=None
 ):
     """
     Create a self-assessment for a submission.
 
     Args:
         submission_uuid (str): The unique identifier for the submission being assessed.
-        user_id (str): The ID of the user creating the assessment. 
+        user_id (str): The ID of the user creating the assessment.
                        This must match the ID of the user who made the submission.
         options_selected (dict): Mapping of rubric criterion names to option values selected.
         criterion_feedback (dict): Dictionary mapping criterion names to the
@@ -145,8 +145,7 @@ def create_assessment(
             raise SelfAssessmentRequestError(msg)
     except SubmissionNotFoundError:
         msg = (
-            "Could not submit a self-assessment because no submission "
-            "exists with UUID {uuid}"
+            u"Could not submit a self-assessment because no submission exists with UUID {uuid}"
         ).format(uuid=submission_uuid)
         raise SelfAssessmentRequestError()
 

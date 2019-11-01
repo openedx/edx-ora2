@@ -16,7 +16,7 @@ from xblock.core import XBlock
 
 from .user_data import get_user_preferences
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 def require_global_admin(error_key):
@@ -41,8 +41,7 @@ def require_global_admin(error_key):
             }
             if not xblock.is_admin or xblock.in_studio_preview:
                 return {'success': False, 'msg': permission_errors[error_key]}
-            else:
-                return func(xblock, *args, **kwargs)
+            return func(xblock, *args, **kwargs)
         return _wrapped
     return _decorator
 
@@ -73,8 +72,7 @@ def require_course_staff(error_key, with_json_handler=False):
                 return {"success": False, "msg": permission_errors[error_key]}
             elif not xblock.is_course_staff or xblock.in_studio_preview:
                 return xblock.render_error(permission_errors[error_key])
-            else:
-                return func(xblock, *args, **kwargs)
+            return func(xblock, *args, **kwargs)
         return _wrapped
     return _decorator
 
@@ -215,11 +213,8 @@ class StaffAreaMixin(object):
                     )
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
-                else:
-                    return self.render_error(self._(u"Error loading the checked out learner response."))
-            else:
-                return self.render_error(self._(u"No other learner responses are available for grading at this time."))
-
+                return self.render_error(self._(u"Error loading the checked out learner response."))
+            return self.render_error(self._(u"No other learner responses are available for grading at this time."))
         except PeerAssessmentInternalError:
             return self.render_error(self._(u"Error getting staff grade information."))
 
@@ -351,7 +346,7 @@ class StaffAreaMixin(object):
 
         workflow = self.get_workflow_info(submission_uuid=submission_uuid)
         grade_exists = workflow.get('status') == "done"
-        grade_utils = self.runtime._services.get('grade_utils')
+        grade_utils = self.runtime._services.get('grade_utils')  # pylint: disable=protected-access
 
         if "peer-assessment" in assessment_steps:
             peer_assessments = peer_api.get_assessments(submission_uuid)
@@ -467,7 +462,7 @@ class StaffAreaMixin(object):
         try:
             assessment_requirements = self.workflow_requirements()
             if requesting_user_id is None:
-                "The student_id is actually the bound user, which is the staff user in this context."
+                # The student_id is actually the bound user, which is the staff user in this context.
                 requesting_user_id = self.get_student_item_dict()["student_id"]
             # Cancel the related workflow.
             workflow_api.cancel_workflow(
@@ -488,6 +483,6 @@ class StaffAreaMixin(object):
                 AssessmentWorkflowError,
                 AssessmentWorkflowInternalError
         ) as ex:
-            msg = ex.message
+            msg = str(ex)
             logger.exception(msg)
             return {"success": False, 'msg': msg}

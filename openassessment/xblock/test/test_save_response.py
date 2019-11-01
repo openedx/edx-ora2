@@ -19,7 +19,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
     @scenario('data/save_scenario.xml', user_id="Daniels")
     def test_default_saved_response_blank(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps({}))
-        self.assertIn('response has not been saved', resp)
+        self.assertIn('response has not been saved', resp.decode('utf-8'))
 
     @ddt.file_data('data/save_responses.json')
     @scenario('data/save_scenario.xml', user_id="Perleman")
@@ -35,7 +35,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn(submission[0], resp.decode('utf-8'))
         self.assertIn(submission[1], resp.decode('utf-8'))
-        self.assertIn('saved but not submitted', resp.lower())
+        self.assertIn('saved but not submitted', resp.decode('utf-8').lower())
 
     @scenario('data/save_scenario.xml', user_id="Valchek")
     def test_overwrite_saved_response(self, xblock):

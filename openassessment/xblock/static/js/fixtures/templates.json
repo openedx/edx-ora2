@@ -434,6 +434,8 @@
                 "optional": "Optional",
                 "": "None"
             },
+            "teams_feature_enabled": true,
+            "teams_enabled": false,
             "criteria": [
                 {
                     "name": "criterion_1",

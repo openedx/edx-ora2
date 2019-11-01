@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import unittest
 
 import ddt
+import six
 
 from django.template import Context, Template
 
@@ -11,8 +12,8 @@ from django.template import Context, Template
 class OAExtrasTests(unittest.TestCase):
 
     template = Template(
-        "{% load oa_extras %}"
-        "{{ text|link_and_linebreak }}"
+        u"{% load oa_extras %}"
+        u"{{ text|link_and_linebreak }}"
     )
 
     @ddt.data(
@@ -27,7 +28,8 @@ class OAExtrasTests(unittest.TestCase):
         rendered_template = self.template.render(Context({'text': text}))
         self.assertIn(link_text, rendered_template)
         if text:
-            self.assertRegexpMatches(
+            six.assertRegex(
+                self,
                 rendered_template,
                 r'<a.*target="_blank".*>{link_text}</a>'.format(link_text=link_text),
             )

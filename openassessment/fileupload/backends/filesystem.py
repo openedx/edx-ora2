@@ -112,8 +112,12 @@ def is_download_url_available(url_key_name):
 
 
 def get_upload_cache_key(url_key_name):
+    if isinstance(url_key_name, bytes):
+        url_key_name = url_key_name.decode('utf-8')
     return "upload/" + url_key_name
 
 
 def get_download_cache_key(url_key_name):
+    if isinstance(url_key_name, bytes):
+        url_key_name = url_key_name.decode('utf-8')
     return "download/" + url_key_name

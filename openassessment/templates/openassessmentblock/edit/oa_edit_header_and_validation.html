@@ -1,0 +1,21 @@
+{% load i18n %}
+<div id="openassessment_editor_header">
+    <h6 id="oa_editor_window_title" class="title modal_window_title" >{% trans "Open Response Assessment" %}</h6>
+    <ul class="editor_modes action_list action_modes editor_tabs">
+        <li class="view-button oa_editor_tab"><a href="#oa_settings_editor_wrapper">{% trans "Settings" %}</a></li>
+        <li class="view-button oa_editor_tab"><a href="#oa_rubric_editor_wrapper">{% trans "Rubric" %}</a></li>
+        <li class="view-button oa_editor_tab"><a href="#oa_prompt_editor_wrapper">{% trans "Prompt" %}</a></li>
+    </ul>
+</div>
+
+<div id="openassessment_validation_alert" class="covered">
+    <span class="openassessment_alert_icon" aria-hidden="true"></span>
+    <div class="openassessment_alert_header">
+        <h2 class="openassessment_alert_title">{% trans "Rubric Change Impacts Settings Section" %}</h2>
+        <p class="openassessment_alert_message">{% trans "A change that you made to this assessment's rubric has an impact on some examples laid out in the settings tab. For more information, go to the Settings section and fix the areas highlighted in red." %}</p>
+    </div>
+    <a href="" rel="view" class="action openassessment_alert_close">
+        <span class="icon fa fa-times-circle" aria-hidden="true"></span>
+        <span class="label is--hidden">{% trans "close alert" %}</span>
+    </a>
+</div>

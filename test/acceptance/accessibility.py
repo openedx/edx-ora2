@@ -1,6 +1,7 @@
 """
 UI-level acceptance tests for OpenAssessment accessibility.
 """
+# pylint: disable=arguments-differ
 from __future__ import absolute_import
 
 import os
@@ -301,7 +302,7 @@ if __name__ == "__main__":
 
     # Configure the screenshot directory
     if 'SCREENSHOT_DIR' not in os.environ:
-        tests_dir = os.path.dirname(__file__)
-        os.environ['SCREENSHOT_DIR'] = os.path.join(tests_dir, 'screenshots')
+        TESTS_DIR = os.path.dirname(__file__)
+        os.environ['SCREENSHOT_DIR'] = os.path.join(TESTS_DIR, 'screenshots')
 
     unittest.main()

@@ -2,6 +2,7 @@
 Retrieve user-specific data
 """
 
+
 def get_user_preferences(user_service):
     """
     Returns the preferred language and timezone for the current user, if specified, or None if not.
