@@ -27,6 +27,7 @@ from .base import XBlockHandlerTestCase, scenario
 
 
 class SubmissionTest(XBlockHandlerTestCase):
+    """ Test Submissions Api for Open Assessments. """
     SUBMISSION = json.dumps({
         "submission": ["This is my answer to the first prompt!", "This is my answer to the second prompt!"]
     })

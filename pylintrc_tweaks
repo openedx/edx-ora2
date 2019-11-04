@@ -1,0 +1,19 @@
+# pylintrc tweaks for use with edx_lint.
+[MASTER]
+ignore+ = .git, .tox, migrations
+load-plugins = edx_lint.pylint,pylint_django
+
+[MESSAGES CONTROL]
+disable+ =
+    superfluous-parens,
+    old-style-class,
+    model-missing-unicode,
+    too-many-statements,
+    cyclic-import,
+    useless-suppression,
+    bad-option-value,
+
+
+[BASIC]
+attr-rgx = [a-z_][a-z0-9_]{2,40}$
+argument-rgx = [a-z_][a-z0-9_]{2,40}$

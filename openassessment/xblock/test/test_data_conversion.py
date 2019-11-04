@@ -18,6 +18,7 @@ from openassessment.xblock.data_conversion import (
 
 @ddt.ddt
 class DataConversionTest(TestCase):
+    """ Test ora data conversions. """
 
     @ddt.data(
         (None, [{'description': ''}]),

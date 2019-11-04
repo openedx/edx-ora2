@@ -22,6 +22,7 @@ STUB_I18N = lambda x: x
 
 @ddt.ddt
 class ResolveDatesTest(TestCase):
+    """ Tests dates for resolved correctly. """
 
     def setUp(self):
         super(ResolveDatesTest, self).setUp()

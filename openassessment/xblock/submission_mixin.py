@@ -1,3 +1,4 @@
+""" A Mixin for Response submissions. """
 from __future__ import absolute_import
 
 import json
@@ -242,6 +243,7 @@ class SubmissionMixin(object):
         return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
     def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None, files_names=None):
+        """ Creates submission for the submitted assessment response. """
         # Import is placed here to avoid model import at project startup.
         from submissions import api
 

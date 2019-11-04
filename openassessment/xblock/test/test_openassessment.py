@@ -465,6 +465,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
 
 class TestDates(XBlockHandlerTestCase):
+    """ Test Assessment Dates. """
 
     @scenario('data/basic_scenario.xml')
     def test_start_end_date_checks(self, xblock):

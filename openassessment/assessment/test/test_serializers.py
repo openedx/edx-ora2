@@ -25,6 +25,7 @@ def json_data(filename):
 
 
 class RubricDeserializationTest(CacheResetTest):
+    """ rubric data deserialization tests. """
 
     def test_rubric_only_created_once(self):
         # Make sure sending the same Rubric data twice only creates one Rubric,
@@ -46,6 +47,7 @@ class RubricDeserializationTest(CacheResetTest):
 
 
 class CriterionDeserializationTest(CacheResetTest):
+    """ Criterion deserialization tests. """
 
     def test_empty_criteria(self):
         with self.assertRaises(InvalidRubric) as criteria_exception_message:
@@ -65,6 +67,7 @@ class CriterionDeserializationTest(CacheResetTest):
 
 
 class CriterionOptionDeserializationTest(CacheResetTest):
+    """ Criterion Option Deserialization Tests. """
 
     def test_empty_options(self):
         rubric = rubric_from_dict(json_data('data/rubric/empty_options.json'))
@@ -85,6 +88,7 @@ class CriterionOptionDeserializationTest(CacheResetTest):
 
 
 class AssessmentFeedbackSerializerTest(CacheResetTest):
+    """ Tests Assessment feedback serializer. """
 
     def test_serialize(self):
         feedback = AssessmentFeedback.objects.create(

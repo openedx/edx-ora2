@@ -1,3 +1,4 @@
+""" File Uploads backends. """
 from __future__ import absolute_import
 
 import abc
@@ -41,6 +42,7 @@ class Settings(object):
 
 
 class BaseBackend(six.with_metaclass(abc.ABCMeta, object)):
+    """ Base class for file upload backends. """
 
     UPLOAD_URL_TIMEOUT = 3600
 

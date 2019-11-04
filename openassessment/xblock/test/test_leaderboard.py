@@ -24,6 +24,7 @@ from .base import XBlockHandlerTransactionTestCase, scenario
 
 
 class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
+    """ Tests Leaderboard renders correctly. """
 
     @scenario('data/basic_scenario.xml')
     def test_no_leaderboard(self, xblock):

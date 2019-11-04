@@ -40,6 +40,7 @@ def retry(tries=2, delay=4, backoff=2):
 
     """
     def _decorator(func):
+        """ Decorator to retry flaky tests. """
         @wraps(func)
         def _inner(*args, **kwargs):
             _delay = delay
@@ -1175,9 +1176,11 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def generate_feedback(self, assessment_type, feedback_type):
-        return "{}: {} feedback".format(assessment_type, feedback_type)
+        """ Generates a feedback for assessment. """
+        return u"{}: {} feedback".format(assessment_type, feedback_type)
 
     def assess_feedback(self, self_or_peer=""):
+        """ Assess feedback for the assessment. """
         if self_or_peer != "self" and self_or_peer != "peer":
             raise AssertionError("assert_feedback only works for self or peer assessments")
         page = self.self_asmnt_page if self_or_peer == "self" else self.peer_asmnt_page

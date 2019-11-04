@@ -386,7 +386,7 @@ class PeerWorkflow(models.Model):
         try:
             item_query = self.graded.filter(
                 submission_uuid=submission_uuid
-            ).order_by("-started_at", "-id")  # pylint:disable=E1101
+            ).order_by("-started_at", "-id")
             items = list(item_query[:1])
             if not items:
                 msg = (
@@ -420,7 +420,7 @@ class PeerWorkflow(models.Model):
             integer
 
         """
-        return self.graded.filter(assessment__isnull=False).count()  # pylint:disable=E1101
+        return self.graded.filter(assessment__isnull=False).count()
 
     def __repr__(self):
         return (

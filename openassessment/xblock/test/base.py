@@ -94,8 +94,10 @@ def scenario(scenario_path, user_id=None):
             self.assertTrue('Success' in response)
     """
     def _decorator(func):
+        """ Decorator method for scenario. """
         @wraps(func)
         def _wrapped(*args, **kwargs):
+            """ Wrapper method for decorator. """
 
             # Retrieve the object (self)
             # if this is a function, not a method, then do nothing.
@@ -205,6 +207,7 @@ class XBlockHandlerTestCaseMixin(object):
             raise NotImplementedError(u"Response format '{format}' not supported".format(format=response_format))
 
     def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
+        """ Checks assessment event published successfuly. """
         parts_list = []
         for part in assessment["parts"]:
             # Some assessment parts do not include point values,

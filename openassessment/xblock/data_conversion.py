@@ -243,6 +243,7 @@ def verify_assessment_parameters(func):
         the modified function
     """
     def verify_and_call(instance, data, suffix):
+        """ Inner Method. """
         # Validate the request
         if 'options_selected' not in data:
             return {'success': False, 'msg': instance._('You must provide options selected in the assessment.')}

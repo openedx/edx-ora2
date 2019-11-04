@@ -296,7 +296,7 @@ class SubmissionPage(OpenAssessmentPage):
         self.q(css=".file__upload").click()
 
     @property
-    def latex_preview_button_is_disabled(self):  # pylint: disable=invalid-name
+    def latex_preview_button_is_disabled(self):
         """
         Check if 'Preview in Latex' button is disabled
 
@@ -357,6 +357,7 @@ class AssessmentMixin(object):
 
         """
         def selector(criterion_num, option_num):
+            """ Selector for Criterion Option. """
             sel = ".rubric_{criterion_num}_{option_num}".format(
                 criterion_num=criterion_num,
                 option_num=option_num
@@ -364,11 +365,13 @@ class AssessmentMixin(object):
             return sel
 
         def select_criterion():
+            """ Selects the criterion option. """
             for criterion_num, option_num in enumerate(options_selected):
                 sel = selector(criterion_num, option_num)
                 self.q(css=self._bounded_selector(sel)).first.click()
 
         def criterion_selected():
+            """ Check if a criterion option is selected or not. """
             for criterion_num, option_num in enumerate(options_selected):
                 sel = selector(criterion_num, option_num)
                 self.wait_for_element_visibility(self._bounded_selector(sel), "Criterion option visible")
@@ -906,7 +909,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         ).fulfill()
 
     @property
-    def learner_final_score_table_headers(self):  # pylint: disable=invalid-name
+    def learner_final_score_table_headers(self):
         """
         Return the final score table headers (as an array of strings) as shown in the staff area section.
 
@@ -916,7 +919,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         return self._get_table_text(".staff-info__final__grade__table th")
 
     @property
-    def learner_final_score_table_values(self):  # pylint: disable=invalid-name
+    def learner_final_score_table_values(self):
         """
         Return the final score table values (as an array of strings) as shown in the staff area section.
 
@@ -933,6 +936,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         ).text[0]
 
     def staff_assess(self, options_selected, continue_after=False):
+        """ Staff assess the submission for given rubric. """
         for criterion_num, option_num in enumerate(options_selected):
             sel = ".rubric_{criterion_num}_{option_num}".format(
                 criterion_num=criterion_num,

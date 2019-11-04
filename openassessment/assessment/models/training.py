@@ -89,7 +89,7 @@ class TrainingExample(models.Model):
         if options_selected is None:
             options_selected = {
                 option.criterion.name: option.name
-                for option in self.options_selected.all()  # pylint:disable=E1101
+                for option in self.options_selected.all()
             }
             cache.set(cache_key, options_selected)
         return options_selected
