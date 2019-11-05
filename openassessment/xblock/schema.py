@@ -104,6 +104,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('file_upload_type', default=None): Any(All(utf8_validator, In(VALID_UPLOAD_FILE_TYPES)), None),
     'white_listed_file_types': utf8_validator,
     Required('allow_latex'): bool,
+    Required('teams_enabled'): bool,
     Required('leaderboard_show'): int,
     Required('assessments'): [
         Schema({
