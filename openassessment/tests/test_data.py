@@ -103,7 +103,7 @@ class CsvWriterTest(TransactionCacheResetTest):
     Test for writing openassessment data to CSV.
     """
     longMessage = True
-    maxDiff = None  # pylint: disable=invalid-name
+    maxDiff = None
 
     @ddt.file_data('data/write_to_csv.json')
     def test_write_to_csv(self, data):
@@ -304,9 +304,9 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
     def test_build_assessments_parts_cell(self):
         assessment1 = self._build_criteria_and_assessment_parts()
-        a1_cell = u"Assessment #{}\n".format(assessment1.id)  # pylint: disable=no-member
+        a1_cell = u"Assessment #{}\n".format(assessment1.id)
 
-        for part in assessment1.parts.all():  # pylint: disable=no-member
+        for part in assessment1.parts.all():
             a1_cell += self._assessment_part_cell(part)
 
         # pylint: disable=protected-access
@@ -315,9 +315,9 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         # Second assessment with 2 component parts and individual option feedback
         assessment2 = self._build_criteria_and_assessment_parts(num_criteria=2, feedback="Test feedback")
-        a2_cell = u"Assessment #{}\n".format(assessment2.id)  # pylint: disable=no-member
+        a2_cell = u"Assessment #{}\n".format(assessment2.id)
 
-        for part in assessment2.parts.all():  # pylint: disable=no-member
+        for part in assessment2.parts.all():
             a2_cell += self._assessment_part_cell(part, feedback="Test feedback")
 
         # pylint: disable=protected-access

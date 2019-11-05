@@ -374,6 +374,9 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.assertIn('peer assessment', resp)
 
     def _test_incomplete_helper(self, xblock, peers, self_assessment):
+        """
+        Check assessment completition status is shown correctly on assessment page.
+        """
         self.create_submission_and_assessments(
             xblock, self.SUBMISSION, peers, [PEER_ASSESSMENTS[0]] if peers else [], self_assessment
         )

@@ -276,7 +276,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             {'criteria': xblock.rubric_criteria},
         )
 
-        _, _ = xblock.get_student_info_path_and_context("Bob")  # pylint: disable=protected-access
+        _, _ = xblock.get_student_info_path_and_context("Bob")
         self.assertIn(
             "Good use of vocabulary!",
             self.request(

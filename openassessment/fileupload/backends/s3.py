@@ -1,3 +1,4 @@
+""" S3 bucket file upload backend. """
 from __future__ import absolute_import
 
 import logging
@@ -13,6 +14,7 @@ logger = logging.getLogger("openassessment.fileupload.api")  # pylint: disable=i
 
 
 class Backend(BaseBackend):
+    """ S3 Bucked File Upload Backend. """
 
     def get_upload_url(self, key, content_type):
         bucket_name, key_name = self._retrieve_parameters(key)

@@ -1,3 +1,4 @@
+""" Tests for custom django template tags. """
 from __future__ import absolute_import
 
 import unittest
@@ -10,6 +11,7 @@ from django.template import Context, Template
 
 @ddt.ddt
 class OAExtrasTests(unittest.TestCase):
+    """ Tests for custom django template tags oa_extras. """
 
     template = Template(
         u"{% load oa_extras %}"

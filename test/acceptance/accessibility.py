@@ -280,6 +280,7 @@ class MultipleOpenAssessmentA11yTest(OpenAssessmentA11yTest, MultipleOpenAssessm
 
 
 class FileUploadA11yTest(OpenAssessmentA11yTest):
+    """ Accessibility tests for Open Assessments. """
 
     def setUp(self):
         super(FileUploadA11yTest, self).setUp('file_upload')

@@ -24,7 +24,7 @@ from submissions import api as sub_api
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-def submitter_is_finished(submission_uuid, training_requirements):   # pylint:disable=W0613
+def submitter_is_finished(submission_uuid, training_requirements):
     """
     Check whether the student has correctly assessed
     all the training example responses.

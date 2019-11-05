@@ -420,7 +420,7 @@ class StaffAreaMixin(object):
                 user_id,
                 course_id,
                 item_id,
-                clear_state=True  # pylint: disable=unexpected-keyword-arg
+                clear_state=True
             )
             # TODO: try to remove the above pylint disable once edx-submissions release is done
 

@@ -81,7 +81,7 @@ class StudentTrainingWorkflow(models.Model):
 
         """
         try:
-            return cls.objects.get(submission_uuid=submission_uuid)   # pylint:disable=E1101
+            return cls.objects.get(submission_uuid=submission_uuid)
         except cls.DoesNotExist:
             return None
 
@@ -95,7 +95,7 @@ class StudentTrainingWorkflow(models.Model):
             int
 
         """
-        return self.items.filter(completed_at__isnull=False).count()  # pylint:disable=E1101
+        return self.items.filter(completed_at__isnull=False).count()
 
     def next_training_example(self, examples):
         """
@@ -169,7 +169,7 @@ class StudentTrainingWorkflow(models.Model):
         """
         next_incomplete = self.items.select_related(
             'training_example'
-        ).filter(  # pylint:disable=E1101
+        ).filter(
             completed_at__isnull=True
         ).order_by('order_num')[:1]
 

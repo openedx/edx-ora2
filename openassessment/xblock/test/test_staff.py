@@ -20,6 +20,7 @@ class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     maxDiff = None
 
     def _assert_path_and_context(self, xblock, expected_context):
+        """ Check Staff Assessment path and context correct. """
         path, context = xblock.staff_path_and_context()
 
         self.assertEqual('openassessmentblock/staff/oa_staff_grade.html', path)
@@ -31,6 +32,7 @@ class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
 
 class TestStaffAssessmentRender(StaffAssessmentTestBase):
+    """ Test Staff Assessment Render correctly. """
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_grade_templates(self, xblock):
@@ -42,6 +44,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
         self._verify_grade_templates_workflow(xblock)
 
     def _verify_grade_templates_workflow(self, xblock):
+        """ Verify grade templates workflow. """
         unavailable_context = {
             'status_value': 'Not Available',
             'button_active': 'disabled="disabled" aria-expanded="false"',
@@ -144,6 +147,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
 
 
 class TestStaffAssessment(StaffAssessmentTestBase):
+    """ Test Staff Assessment Workflow. """
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_assess_handler(self, xblock):

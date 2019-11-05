@@ -15,6 +15,7 @@ from .base import XBlockHandlerTestCase, scenario
 
 @ddt.ddt
 class SaveResponseTest(XBlockHandlerTestCase):
+    """ Test Responses are saved correctly. """
 
     @scenario('data/save_scenario.xml', user_id="Daniels")
     def test_default_saved_response_blank(self, xblock):

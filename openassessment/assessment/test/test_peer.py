@@ -1,4 +1,5 @@
 # coding=utf-8
+""" Tests Peer Workflow. """
 from __future__ import absolute_import
 
 import copy
@@ -1569,6 +1570,7 @@ class TestPeerApi(CacheResetTest):
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):
+        """ Creats a student and submission for tests. """
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)

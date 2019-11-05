@@ -21,6 +21,7 @@ from submissions.api import create_submission
 
 
 class TestSelfApi(CacheResetTest):
+    """ Tests for Self Assessment API. """
 
     STUDENT_ITEM = {
         'student_id': u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',

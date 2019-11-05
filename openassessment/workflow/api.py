@@ -94,7 +94,7 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
         err_msg = u"Could not create assessment workflow for submission UUID: {}".format(submission_uuid)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
-    except Exception:  # pylint: disable=broad-except
+    except Exception:
         err_msg = (
             u"An unexpected error occurred while creating "
             u"the workflow for submission UUID {}"

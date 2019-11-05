@@ -323,6 +323,7 @@ def validator(oa_block, _, strict_post_release=True):
     from submissions.api import MAX_TOP_SUBMISSIONS
 
     def _inner(rubric_dict, assessments, leaderboard_show=0, submission_start=None, submission_due=None):
+        """ Validator method. """
 
         is_released = strict_post_release and oa_block.is_released()
 

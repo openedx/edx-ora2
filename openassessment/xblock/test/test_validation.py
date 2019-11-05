@@ -24,6 +24,7 @@ STUB_I18N = lambda x: x
 
 @ddt.ddt
 class AssessmentValidationTest(TestCase):
+    """ Test ora for Assessments. """
 
     @ddt.file_data('data/valid_assessments.json')
     def test_valid_assessment(self, data):
@@ -88,6 +89,7 @@ class AssessmentValidationTest(TestCase):
 
 @ddt.ddt
 class RubricValidationTest(TestCase):
+    """ Test ora for example rubrics"""
 
     @ddt.file_data('data/valid_rubrics.json')
     def test_valid_rubric(self, data):
@@ -115,6 +117,7 @@ class RubricValidationTest(TestCase):
 
 @ddt.ddt
 class AssessmentExamplesValidationTest(TestCase):
+    """ Test ora for example assessments. """
 
     @ddt.file_data('data/valid_assessment_examples.json')
     def test_valid_assessment_examples(self, data):
@@ -131,6 +134,7 @@ class AssessmentExamplesValidationTest(TestCase):
 
 @ddt.ddt
 class DateValidationTest(TestCase):
+    """ Test ora for example dates. """
 
     def setUp(self):
         super(DateValidationTest, self).setUp()
