@@ -182,6 +182,16 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.leaderboard_show, 42)
 
+    @scenario('data/basic_scenario.xml')
+    def test_update_editor_context_saves_teams_enabled(self, xblock):
+        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
+        data['teams_enabled'] = True
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
+        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertTrue(xblock.teams_enabled)
+
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_context_invalid_request_data(self, xblock, data):

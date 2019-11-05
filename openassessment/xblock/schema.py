@@ -8,7 +8,16 @@ import dateutil
 from pytz import utc
 import six
 
-from voluptuous import All, Any, In, Invalid, Range, Required, Schema
+from voluptuous import (
+    All,
+    Any,
+    In,
+    Invalid,
+    Optional,
+    Range,
+    Required,
+    Schema,
+)
 
 
 def utf8_validator(value):
@@ -105,6 +114,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     'white_listed_file_types': utf8_validator,
     Required('allow_latex'): bool,
     Required('leaderboard_show'): int,
+    Optional('teams_enabled'): bool,
     Required('assessments'): [
         Schema({
             Required('name'): All(utf8_validator, In(VALID_ASSESSMENT_TYPES)),
