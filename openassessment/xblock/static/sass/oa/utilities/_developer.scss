@@ -1069,6 +1069,19 @@
     padding: ($baseline-v/2);
     box-shadow: none;
     font-size: .75em;
+
+    &:active {
+      text-shadow: none;
+      box-shadow: none;
+    }
+    &:hover {
+      text-shadow: none;
+      box-shadow: none;
+    }
+    &:focus {
+      text-shadow: none;
+      box-shadow: none;
+    }
   }
 }
 .self-assessment__display__header
