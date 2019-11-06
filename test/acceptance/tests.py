@@ -9,21 +9,17 @@ import os
 import time
 import unittest
 
-import ddt
-from six.moves import range
-
-from acceptance.auto_auth import AutoAuthPage  # pylint: disable=import-error
-from acceptance.pages import (  # pylint: disable=import-error
-    AssessmentPage,
-    GradePage,
-    StaffAreaPage,
-    StudioSettingsPage,
-    SubmissionPage
-)
 from bok_choy.promise import BrokenPromise, EmptyPromise
 from bok_choy.web_app_test import WebAppTest
+import ddt
 from nose.plugins.attrib import attr
 from pyinstrument import Profiler
+
+from six.moves import range
+
+from ..acceptance.auto_auth import AutoAuthPage  # pylint: disable=import-error
+from ..acceptance.pages import (AssessmentPage, GradePage, StaffAreaPage,  # pylint: disable=import-error
+                                StudioSettingsPage, SubmissionPage)
 
 # This value is generally used in jenkins, but not locally
 PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
