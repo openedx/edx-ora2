@@ -42,11 +42,11 @@ OpenAssessment.ResponseView.prototype = {
     // before we can autosave.
     AUTO_SAVE_WAIT: 30000,
 
-    // Maximum size (20 * 2^20 bytes, approx. 20MB) for all attached files.
-    MAX_FILES_SIZE: 20971520,
+    // Maximum size (500 * 2^20 bytes, approx. 500MB) for all attached files.
+    MAX_FILES_SIZE: 500 * Math.pow(1024, 2),
 
     // For user-facing upload limit text.
-    MAX_FILES_MB: 20,
+    MAX_FILES_MB: 500,
 
     UNSAVED_WARNING_KEY: 'learner-response',
 
