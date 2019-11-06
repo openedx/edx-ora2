@@ -43,8 +43,8 @@ OpenAssessment.ResponseView.prototype = {
     // before we can autosave.
     AUTO_SAVE_WAIT: 30000,
 
-    // Maximum size (500 * 2^20 bytes, approx. 500MB) for all attached files.
-    MAX_FILES_SIZE: 500 * Math.pow(1024, 2),
+    // Maximum size (500 * 2^20 bytes, approx. 500MB) of a single uploaded file.
+    MAX_FILE_SIZE: 500 * Math.pow(1024, 2),
 
     // For user-facing upload limit text.
     MAX_FILES_MB: 500,
@@ -584,20 +584,18 @@ OpenAssessment.ResponseView.prototype = {
         this.filesType = uploadType;
         this.filesUploaded = false;
 
-        var totalSize = 0;
         var ext = null;
         var fileType = null;
         var errorCheckerTriggered = false;
 
         for (var i = 0; i < files.length; i++) {
-            totalSize += files[i].size;
             ext = files[i].name.split('.').pop().toLowerCase();
             fileType = files[i].type;
 
-            if (totalSize > this.MAX_FILES_SIZE) {
+            if (files[i].size > this.MAX_FILE_SIZE) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext('File size must be {max_files_mb}MB or less.').replace(
+                    gettext('Individual file size must be {max_files_mb}MB or less.').replace(
                         '{max_files_mb}',
                         this.MAX_FILES_MB
                     )
@@ -804,7 +802,11 @@ OpenAssessment.ResponseView.prototype = {
         var fileMetaData = [];
         for (var i=0; i < this.filesDescriptions.length; i++) {
             this.fileNames.push(this.files[i].name);
-            var entry = {description: this.filesDescriptions[i], fileName: this.files[i].name};
+            var entry = {
+                description: this.filesDescriptions[i],
+                fileName: this.files[i].name,
+                fileSize: this.files[i].size,
+            };
             fileMetaData.push(entry);
         }
         return this.server.saveFilesDescriptions(fileMetaData).done(

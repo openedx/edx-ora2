@@ -33,8 +33,8 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
 
         """
         # Save the response
-        descriptions = [{'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1'},
-                        {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2'}]
+        descriptions = [{'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
+                        {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}]
         payload = json.dumps({'fileMetadata': descriptions})
         resp = self.request(xblock, 'save_files_descriptions', payload, response_format="json")
         self.assertTrue(resp['success'])
@@ -53,12 +53,14 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         Checks ability to to append additional files
 
         """
-        descriptions1 = [{'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1'},
-                         {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2'}]
+        descriptions1 = [
+            {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
+            {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}
+        ]
         payload = json.dumps({'fileMetadata': descriptions1})
         self.request(xblock, 'save_files_descriptions', payload, response_format="json")
-        descriptions2 = [{'description': u"test1", 'fileName': 'fname1'},
-                         {'description': u"test2", 'fileName': 'fname2'}]
+        descriptions2 = [{'description': u"test1", 'fileName': 'fname1', 'fileSize': 1000},
+                         {'description': u"test2", 'fileName': 'fname2', 'fileSize': 2000}]
         payload = json.dumps({'fileMetadata': descriptions2})
         self.request(xblock, 'save_files_descriptions', payload, response_format="json")
 

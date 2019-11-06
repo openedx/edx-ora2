@@ -245,6 +245,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="Saved original names for each uploaded file."
     )
 
+    saved_files_sizes = String(
+        default=u"",
+        scope=Scope.user_state,
+        help="Filesize of each uploaded file in bytes."
+    )
+
     no_peers = Boolean(
         default=False,
         scope=Scope.user_state,
