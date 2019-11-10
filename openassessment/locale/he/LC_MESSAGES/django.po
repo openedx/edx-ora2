@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-10 15:07-0400\n"
-"PO-Revision-Date: 2019-07-04 06:18+0000\n"
-"Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>\n"
+"POT-Creation-Date: 2019-11-05 16:27-0500\n"
+"PO-Revision-Date: 2019-11-01 19:25+0000\n"
+"Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,107 +61,83 @@ msgstr "דוגמה {example_number} מכילה אפשרות עודפת עבור\
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "חסרה בדוגמה {example_number} אפשרות עבור \n\"{criterion_name}\""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
-msgid "Open Response Assessment"
-msgstr "הערכה של תשובה פתוחה"
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:25
+msgid "Save"
+msgstr "שמור"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
-msgid "Settings"
-msgstr "הגדרות"
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:29
+msgid "Cancel"
+msgstr "בטל"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:15
-msgid "Rubric"
-msgstr "כותרת"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
-msgid "Prompt"
-msgstr "הנחיה"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
-msgid "Rubric Change Impacts Settings Section"
-msgstr "שינוי כותרת משפיע על הגדרות פרק"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
-msgid ""
-"A change that you made to this assessment's rubric has an impact on some "
-"examples laid out in the settings tab. For more information, go to the "
-"Settings section and fix the areas highlighted in red."
-msgstr "לשינוי שביצעת לכותרת ההערכה יש השפעה על כמה דוגמאות שהוצגו בכרטיסיית ההגדרות. לקבלת מידע נוסף, עבור אל סעיף ההגדרות ותקן את האזורים המודגשים באדום."
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
-msgid "close alert"
-msgstr "סגור התראה"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:41
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:6
 msgid "Display Name "
 msgstr "שם תצוגה"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:9
 msgid "The display name for this component."
 msgstr "שם התצוגה עבור רכיב זה"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:16
 msgid "Response Start Date"
 msgstr "תאריך התחלת קבלת תשובות"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:64
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:29
 msgid "Response Start Time"
 msgstr "שעת התחלת קבלת תשובות"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:73
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "The date and time when learners can begin submitting responses."
 msgstr "התאריך והשעה שבהם הלומדים יכולים להתחיל לשלוח תשובות."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:80
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
 msgid "Response Due Date"
 msgstr "תאריך יעד לתשובות"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:93
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid "Response Due Time"
 msgstr "שעת יעד לתשובות"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
 msgid "The date and time when learners can no longer submit responses."
 msgstr "התאריך והשעה שבהם התלמידים אינם יכולים לשלוח יותר  תשובות."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
 msgid "Text Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
 msgstr "הגדירו אם על הלומדים לכלול תגובה מבוססת טקסט לבעיה זו."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
 msgid "File Uploads Response"
 msgstr "העלאת קובץ כתשובה"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:92
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
 msgstr "הגדירו אם על הלומדים להעלות קובץ כחלק מתשובה עבור בעיה זו."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
 msgid "File Upload Types"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:98
 msgid "PDF or Image Files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:134
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:99
 msgid "Image Files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:100
 msgid "Custom File Types"
 msgstr "סוגי קבצים מותאמים אישית"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:139
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
 msgid ""
 "Specify whether learners can submit files along with their text responses. "
 "Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
@@ -170,62 +146,66 @@ msgid ""
 "with caution.)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:108
 msgid "File Types"
 msgstr "סוגי קובץ"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:151
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:116
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "הזן את תוספות הקובץ, כשהן מופרדות בפסיק, שברצונך שהלומדים יוכלו להעלות. לדוגמה: pdf‏, doc‏, docx."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:124
 msgid "Allow LaTeX Responses"
 msgstr "אפשר תשובות ל-LaTeX"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:161
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:126
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:151
 msgid "False"
 msgstr "לא נכון"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:162
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:127
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:152
 msgid "True"
 msgstr "נכון"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:165
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:130
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "ציין אם הלומדים יכולים לכתוב מחרוזות מעוצבות ב-LaTeX"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:169
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:134
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
 msgstr "תשובות מובילות"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:178
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:143
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
 msgstr "ציין את מספר התשובות בעלות הדירוג המוביל שיש להציג. מספרים חוקיים נעים בין 0 ל-99. אם המספר הוא 0, סעיף התשובות המובילות אינו מופיע בפני הלומדים."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:184
-msgid ""
-"In this assignment, you can include learner training, peer assessment, self "
-"assessment, and staff assessment steps. Select the steps that you want "
-"below, and then drag them into the order you want. If you include a learner "
-"training step, it must precede all other steps. If you include a staff "
-"assessment step, it must be the final step. After you release an ORA "
-"assignment, you cannot change the type and number of assessment steps."
-msgstr "במשימה זו תוכל לכלול תרגול תלמיד, הערכת עמיתים, הערכה עצמית ושלבי הערכת צוות. בחר להלן את השלבים הרצויים ולאחר מכן גרור אותם לפי הסדר הרצוי. אם תכלול שלב תרגול תלמיד, עליו להקדים את כל השלבים האחרים. אם תכלול שלב של הערכת צוות, עליו להיות השלב הסופי. לאחר הפצת משימת ORA, לא ניתן לשנות את סוג ומספר שלבי ההערכה."
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:149
+msgid "Teams Enabled"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
-msgid "Save"
-msgstr "שמור"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:156
+msgid "Specify whether team submissions are allowed for this response."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:204
-msgid "Cancel"
-msgstr "בטל"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:161
+msgid "Select Team Set"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:164
+msgid "Team A"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:165
+msgid "Team B"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
@@ -261,19 +241,19 @@ msgid "Feedback for This Criterion"
 msgstr "משוב עבור קריטריון זה"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:51
+#: openassessment/xblock/studio_mixin.py:54
 msgid "None"
 msgstr "ללא"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:53
 msgid "Optional"
 msgstr "רשות"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:91
-#: openassessment/xblock/studio_mixin.py:49
+#: openassessment/xblock/studio_mixin.py:52
 msgid "Required"
 msgstr "נדרש"
 
@@ -282,6 +262,38 @@ msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
 msgstr "בחר אחת מהאפשרויות שלעיל. אפשרות זו מתארת אם הלומד יצטרך לספק משוב לקריטריון או לא."
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:3
+msgid "Open Response Assessment"
+msgstr "הערכה של תשובה פתוחה"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:5
+msgid "Settings"
+msgstr "הגדרות"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:6
+msgid "Rubric"
+msgstr "כותרת"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:7
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
+msgid "Prompt"
+msgstr "הנחיה"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:14
+msgid "Rubric Change Impacts Settings Section"
+msgstr "שינוי כותרת משפיע על הגדרות פרק"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:15
+msgid ""
+"A change that you made to this assessment's rubric has an impact on some "
+"examples laid out in the settings tab. For more information, go to the "
+"Settings section and fix the areas highlighted in red."
+msgstr "לשינוי שביצעת לכותרת ההערכה יש השפעה על כמה דוגמאות שהוצגו בכרטיסיית ההגדרות. לקבלת מידע נוסף, עבור אל סעיף ההגדרות ותקן את האזורים המודגשים באדום."
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:19
+msgid "close alert"
+msgstr "סגור התראה"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
@@ -434,6 +446,16 @@ msgstr "הזן את התאריך והשעה שבהם הלומדים מתחילי
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
 msgid "Enter the date and time when all self assessments must be complete."
 msgstr "הזן את התאריך והזמן בהם צריך להשלים את ההערכה העצמית."
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_settings.html:8
+msgid ""
+"In this assignment, you can include learner training, peer assessment, self "
+"assessment, and staff assessment steps. Select the steps that you want "
+"below, and then drag them into the order you want. If you include a learner "
+"training step, it must precede all other steps. If you include a staff "
+"assessment step, it must be the final step. After you release an ORA "
+"assignment, you cannot change the type and number of assessment steps."
+msgstr "במשימה זו תוכל לכלול תרגול תלמיד, הערכת עמיתים, הערכה עצמית ושלבי הערכת צוות. בחר להלן את השלבים הרצויים ולאחר מכן גרור אותם לפי הסדר הרצוי. אם תכלול שלב תרגול תלמיד, עליו להקדים את כל השלבים האחרים. אם תכלול שלב של הערכת צוות, עליו להיות השלב הסופי. לאחר הפצת משימת ORA, לא ניתן לשנות את סוג ומספר שלבי ההערכה."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
@@ -857,11 +879,11 @@ msgstr "הערות"
 msgid "The question for this section"
 msgstr "השאלה עבור פרק זה."
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:29
 msgid "View the files associated with this submission:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:36
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:43
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
@@ -1086,23 +1108,27 @@ msgstr "מצב ההגשה שלך"
 msgid "We could not upload files"
 msgstr "לא הצלחנו להעלות את הקבצים"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:145
+#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+msgid "We could not delete files"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:151
 msgid "Select a file to upload for this submission."
 msgstr "בחר קובץ להעלאה עבור הגשה זו."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:153
 msgid "Upload files"
 msgstr "העלה את הקובץ"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:156
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "You may continue to work on your response until you submit it."
 msgstr "ניתן להמשיך לעבוד על תשובתך עד שתגיש אותה."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:163
+#: openassessment/templates/openassessmentblock/response/oa_response.html:169
 msgid "We could not submit your response"
 msgstr "לא הצלחנו להגיש את תשובתך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:179
 msgid "Submit your response and move to the next step"
 msgstr "הגש את תשובתך ועבור לשלב הבא"
 
@@ -1617,39 +1643,39 @@ msgstr "שגיאה בעת טעינת דוגמאות לתרגול לומד"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "לא ניתן היה לטעון את שלב תרגול הלומד במשימה זו."
 
-#: openassessment/xblock/data_conversion.py:248
+#: openassessment/xblock/data_conversion.py:249
 msgid "You must provide options selected in the assessment."
 msgstr "עליך לספק אפשרויות שנבחרו במשימה."
 
-#: openassessment/xblock/data_conversion.py:251
+#: openassessment/xblock/data_conversion.py:252
 msgid "You must provide overall feedback in the assessment."
 msgstr "עליך לספק אפשרויות שנבחרו במשימה."
 
-#: openassessment/xblock/data_conversion.py:254
+#: openassessment/xblock/data_conversion.py:255
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "עליך לספק משוב עבור הקריטריונים בהערכה."
 
 #: openassessment/xblock/grade_mixin.py:74
 #: openassessment/xblock/leaderboard_mixin.py:56
-#: openassessment/xblock/self_assessment_mixin.py:40
+#: openassessment/xblock/self_assessment_mixin.py:41
 #: openassessment/xblock/student_training_mixin.py:60
 #: openassessment/xblock/student_training_mixin.py:265
 msgid "An unexpected error occurred."
 msgstr "אירעה שגיאה לא צפויה."
 
-#: openassessment/xblock/grade_mixin.py:172
+#: openassessment/xblock/grade_mixin.py:169
 msgid "Peer Assessment"
 msgstr "הערכת עמיתים"
 
-#: openassessment/xblock/grade_mixin.py:174
+#: openassessment/xblock/grade_mixin.py:171
 msgid "Self Assessment"
 msgstr "הערכה עצמית"
 
-#: openassessment/xblock/grade_mixin.py:210
+#: openassessment/xblock/grade_mixin.py:207
 msgid "Assessment feedback could not be saved."
 msgstr "לא ניתן היה לשמור משוב על ההערכה."
 
-#: openassessment/xblock/grade_mixin.py:221
+#: openassessment/xblock/grade_mixin.py:218
 msgid "Feedback saved."
 msgstr "משוב נשמר."
 
@@ -1685,7 +1711,7 @@ msgstr "הערכתך העצמית"
 msgid "Your Comments"
 msgstr "תגובותיך"
 
-#: openassessment/xblock/grade_mixin.py:470
+#: openassessment/xblock/grade_mixin.py:471
 msgid "Waiting for peer reviews"
 msgstr "ממתין לסקירות עמית"
 
@@ -1697,40 +1723,40 @@ msgstr "עמית"
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "עליך להגיש תשובה לפני שתוכל לבצע הערכת עמיתים."
 
-#: openassessment/xblock/peer_assessment_mixin.py:77
+#: openassessment/xblock/peer_assessment_mixin.py:76
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "המשוב הוגש כבר או שבוטלה ההגשה ."
 
-#: openassessment/xblock/peer_assessment_mixin.py:102
-#: openassessment/xblock/peer_assessment_mixin.py:107
+#: openassessment/xblock/peer_assessment_mixin.py:101
+#: openassessment/xblock/peer_assessment_mixin.py:106
 msgid "Your peer assessment could not be submitted."
 msgstr "לא ניתן היה להגיש את הערכת עמיתיך."
 
-#: openassessment/xblock/peer_assessment_mixin.py:121
+#: openassessment/xblock/peer_assessment_mixin.py:120
 #: openassessment/xblock/student_training_mixin.py:271
 msgid "Could not update workflow status."
 msgstr "לא ניתן לעדכן מצב זרימת העבודה."
 
-#: openassessment/xblock/peer_assessment_mixin.py:130
+#: openassessment/xblock/peer_assessment_mixin.py:128
 msgid "Could not load peer assessment."
 msgstr "לא ניתן לטעון הערכת עמיתים."
 
-#: openassessment/xblock/peer_assessment_mixin.py:215
+#: openassessment/xblock/peer_assessment_mixin.py:213
 msgid "Submit your assessment and review another response"
 msgstr "שלח את הערכתך וסקירתך לתשובה אחרת"
 
-#: openassessment/xblock/peer_assessment_mixin.py:219
+#: openassessment/xblock/peer_assessment_mixin.py:217
 msgid "Submit your assessment and move to next step"
 msgstr "שלח את הערכתך ועבור לשלב הבא"
 
-#: openassessment/xblock/peer_assessment_mixin.py:223
+#: openassessment/xblock/peer_assessment_mixin.py:221
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "שלח את הערכתך ועבור לתשובה מספר{response_number}"
 
-#: openassessment/xblock/resolve_dates.py:55
+#: openassessment/xblock/resolve_dates.py:56
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
@@ -1761,12 +1787,12 @@ msgstr "תאריך היעד של שלב זה '{due}' אינו יכול להיו�
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "תאריך ההתחלה '{start}' אינו יכול להיות מאוחר יותר מתאריך הסיום '{due}'."
 
-#: openassessment/xblock/self_assessment_mixin.py:139
+#: openassessment/xblock/self_assessment_mixin.py:140
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "עליך להגיש תשובה בטרם תוכל לבצע הערכה עצמית."
 
-#: openassessment/xblock/self_assessment_mixin.py:161
-#: openassessment/xblock/self_assessment_mixin.py:168
+#: openassessment/xblock/self_assessment_mixin.py:162
+#: openassessment/xblock/self_assessment_mixin.py:169
 msgid "Your self assessment could not be submitted."
 msgstr "לא ניתן היה להגיש את הערכתך העצמית."
 
@@ -1778,43 +1804,43 @@ msgstr "אין לך את ההרשאות הדרושות על מנת לקבוע ה
 msgid "You do not have permission to reschedule tasks."
 msgstr "אין לך את ההרשאות הדרושות על מנת לקבוע מחדש משימות."
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:66
 msgid "You do not have permission to access the ORA staff area"
 msgstr "אין לך הרשאה לגשת לאזור הצוות של ORA"
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access ORA learner information."
 msgstr "אין לך הרשאה לגשת לפרטי הלומד של ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA staff grading."
 msgstr "אין לך הרשאה לגשת לדירוג הצוות של ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:179
+#: openassessment/xblock/staff_area_mixin.py:177
 msgid "Error getting learner information."
 msgstr "שגיאה בעת השגת פרטי הלומד."
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:216
 msgid "Error loading the checked out learner response."
 msgstr "שגיאה בעת טעינת תשובת הלומד שיצא."
 
-#: openassessment/xblock/staff_area_mixin.py:221
+#: openassessment/xblock/staff_area_mixin.py:217
 msgid "No other learner responses are available for grading at this time."
 msgstr "אין תשובות לומד זמינות אחרות לדירוג כעת."
 
-#: openassessment/xblock/staff_area_mixin.py:224
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "Error getting staff grade information."
 msgstr "שגיאה בעת השגת פרטי דירוג הצוות."
 
-#: openassessment/xblock/staff_area_mixin.py:245
+#: openassessment/xblock/staff_area_mixin.py:240
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "שגיאה בהשגת ביטול דירוג של דירוג הצוות וספירות שהסתיימו."
 
-#: openassessment/xblock/staff_area_mixin.py:455
+#: openassessment/xblock/staff_area_mixin.py:450
 msgid "Please enter valid reason to remove the submission."
 msgstr "אנא רשום סיבה תקפה לביטול ההגשה."
 
-#: openassessment/xblock/staff_area_mixin.py:481
+#: openassessment/xblock/staff_area_mixin.py:476
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1864,97 +1890,97 @@ msgstr "options_selected חייב להיות מילון"
 msgid "Your scores could not be checked."
 msgstr "לא ניתן היה לבדוק את ציוניך."
 
-#: openassessment/xblock/studio_mixin.py:186
-#: openassessment/xblock/studio_mixin.py:198
+#: openassessment/xblock/studio_mixin.py:192
+#: openassessment/xblock/studio_mixin.py:204
 msgid "Error updating XBlock configuration"
 msgstr "שגיאה בעדכון תצורת XBLOCK"
 
-#: openassessment/xblock/studio_mixin.py:201
+#: openassessment/xblock/studio_mixin.py:207
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr "שגיאה: לא ניתן לבטל את תגובות הטקסט והעלאת הקובץ"
 
-#: openassessment/xblock/studio_mixin.py:204
+#: openassessment/xblock/studio_mixin.py:210
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:207
+#: openassessment/xblock/studio_mixin.py:213
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:231
+#: openassessment/xblock/studio_mixin.py:237
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "שגיאת אימות: {error}"
 
-#: openassessment/xblock/studio_mixin.py:257
+#: openassessment/xblock/studio_mixin.py:264
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock עודכן בהצלחה"
 
-#: openassessment/xblock/submission_mixin.py:81
+#: openassessment/xblock/submission_mixin.py:82
 msgid "\"submission\" required to submit answer."
 msgstr "דרושה \"הגשה\" על מנת להגיש תשובה."
 
-#: openassessment/xblock/submission_mixin.py:102
+#: openassessment/xblock/submission_mixin.py:103
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "על מנת להגיש תשובה, ראה רכיב זה בתצוגה מקדימה או בזמן אמת."
 
-#: openassessment/xblock/submission_mixin.py:108
+#: openassessment/xblock/submission_mixin.py:109
 msgid "Multiple submissions are not allowed."
 msgstr "לא ניתן לבצע הגשות מרובות. "
 
-#: openassessment/xblock/submission_mixin.py:151
+#: openassessment/xblock/submission_mixin.py:155
 msgid "API returned unclassified exception."
 msgstr "API החזיר חריג בלתי מסווג."
 
-#: openassessment/xblock/submission_mixin.py:193
+#: openassessment/xblock/submission_mixin.py:197
 msgid "This response could not be saved."
 msgstr "לא ניתן לשמור תגובה זו."
 
-#: openassessment/xblock/submission_mixin.py:197
+#: openassessment/xblock/submission_mixin.py:201
 msgid "This response was not submitted."
 msgstr "תשובה זו לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:226
+#: openassessment/xblock/submission_mixin.py:247
 msgid "Files descriptions could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:230
+#: openassessment/xblock/submission_mixin.py:251
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:302
+#: openassessment/xblock/submission_mixin.py:329
 msgid "There was an error uploading your file."
 msgstr "אירעה שגיאה בעת העלאת הקובץ שלך."
 
-#: openassessment/xblock/submission_mixin.py:310
+#: openassessment/xblock/submission_mixin.py:336
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "סוג התוכן חייב להיות GIF‏, PNG או JPG."
 
-#: openassessment/xblock/submission_mixin.py:313
+#: openassessment/xblock/submission_mixin.py:339
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "סוג התוכן חייב להיות PDF‏, GIF,‏ PNG או JPG."
 
-#: openassessment/xblock/submission_mixin.py:316
+#: openassessment/xblock/submission_mixin.py:342
 msgid "File type must be one of the following types: {}"
 msgstr "סוג הקובץ חייב להיות אחד מהסוגים הבאים: {}"
 
-#: openassessment/xblock/submission_mixin.py:320
+#: openassessment/xblock/submission_mixin.py:346
 msgid "File type is not allowed."
 msgstr "סוג הקובץ אינו אפשרי."
 
-#: openassessment/xblock/submission_mixin.py:327
+#: openassessment/xblock/submission_mixin.py:353
 msgid "Error retrieving upload URL."
 msgstr "שגיאה באחזור כתובת URL להעלאה."
 
-#: openassessment/xblock/submission_mixin.py:467
+#: openassessment/xblock/submission_mixin.py:502
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:468
+#: openassessment/xblock/submission_mixin.py:503
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 
@@ -2040,10 +2066,10 @@ msgstr "לא ניתן לשנות את ערך הנקודות לאחר פרסום 
 msgid "Learner training must have at least one training example."
 msgstr "לתרגול הלומד חייבת להיות לפחות דוגמת תרגול אחת"
 
-#: openassessment/xblock/validation.py:358
+#: openassessment/xblock/validation.py:359
 msgid "Leaderboard number is invalid."
 msgstr "מספר לוח התוצאות אינו חוקי."
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:382
 msgid "The submission format is invalid."
 msgstr "פורמט ההגשה אינו חוקי"

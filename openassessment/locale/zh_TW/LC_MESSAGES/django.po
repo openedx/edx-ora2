@@ -6,6 +6,7 @@
 # Translators:
 # LIU,SHU-HAO <jeremy55662004@gmail.com>, 2014
 # JEN-HAO HSIEH <orienthauz@gmail.com>, 2015
+# Julia Oppenheimer <juliaoppenheimer2017@gmail.com>, 2019
 # KUN-MIN SYU <qwer20108@gmail.com>, 2014-2015
 # Lin Yu-Chun <iftwoplustwoequalsfive@gmail.com>, 2014
 # LIU,SHU-HAO <jeremy55662004@gmail.com>, 2014
@@ -27,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-10 15:07-0400\n"
-"PO-Revision-Date: 2018-03-29 22:44+0000\n"
+"POT-Creation-Date: 2019-11-05 16:27-0500\n"
+"PO-Revision-Date: 2019-11-01 19:25+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -69,107 +70,83 @@ msgstr "樣例 {example_number} 為 \"{criterion_name}\" 提供額外評分選�
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "樣例 {example_number} 對 \"{criterion_name}\" 缺少一個評分選項"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
-msgid "Open Response Assessment"
-msgstr "開放式問題評分"
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:25
+msgid "Save"
+msgstr "儲存"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
-msgid "Settings"
-msgstr "設定"
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:29
+msgid "Cancel"
+msgstr "取消"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:15
-msgid "Rubric"
-msgstr "評分準則"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
-msgid "Prompt"
-msgstr "問題描述"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
-msgid "Rubric Change Impacts Settings Section"
-msgstr "評分準則變更影響設置部分"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
-msgid ""
-"A change that you made to this assessment's rubric has an impact on some "
-"examples laid out in the settings tab. For more information, go to the "
-"Settings section and fix the areas highlighted in red."
-msgstr "你在本評量中的評分標準所做的變更將會影響在設定分頁已設計的範例練習。欲了解更多訊息，請至設定分頁和修改紅色顯示的區域。"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
-msgid "close alert"
-msgstr "關閉警告"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:41
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:6
 msgid "Display Name "
 msgstr "顯示名稱"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:9
 msgid "The display name for this component."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:16
 msgid "Response Start Date"
 msgstr "作答開始日期"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:64
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:29
 msgid "Response Start Time"
 msgstr "作答開始時間"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:73
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "The date and time when learners can begin submitting responses."
 msgstr "學生可以開始提交作答的日期及時間。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:80
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
 msgid "Response Due Date"
 msgstr "作答截止日期"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:93
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid "Response Due Time"
 msgstr "作答截止時間"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
 msgid "The date and time when learners can no longer submit responses."
 msgstr "學生不能再提交作答的日期及時間。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
 msgid "Text Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
 msgid "File Uploads Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:92
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:131
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
 msgid "File Upload Types"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:98
 msgid "PDF or Image Files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:134
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:99
 msgid "Image Files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:100
 msgid "Custom File Types"
 msgstr "自定義檔案類型"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:139
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
 msgid ""
 "Specify whether learners can submit files along with their text responses. "
 "Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
@@ -178,62 +155,66 @@ msgid ""
 "with caution.)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:143
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:108
 msgid "File Types"
 msgstr "檔案類型"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:151
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:116
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "輸入文件名，並用逗號分隔，您希望學習者能夠上傳。例如：PDF，DOC，DOCX。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:124
 msgid "Allow LaTeX Responses"
 msgstr "允許Latex格式作答"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:161
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:126
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:151
 msgid "False"
 msgstr "否"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:162
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:127
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:152
 msgid "True"
 msgstr "是"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:165
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:130
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "是否要讓學生可以撰寫Latex格式的字串"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:169
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:134
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
 msgstr "作業觀摩數"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:178
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:143
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
 msgstr "指定被觀摩的優良作業的數量。此值必須介於 0-99 之間。例如，填 10 的話表示同儕互評後大家可以觀摩最高的 10 份作答。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:184
-msgid ""
-"In this assignment, you can include learner training, peer assessment, self "
-"assessment, and staff assessment steps. Select the steps that you want "
-"below, and then drag them into the order you want. If you include a learner "
-"training step, it must precede all other steps. If you include a staff "
-"assessment step, it must be the final step. After you release an ORA "
-"assignment, you cannot change the type and number of assessment steps."
-msgstr "在此作業中，你可以包含「評分訓練」、「同儕互評」、「自我評量」。請選擇（打勾）你要的步驟，你可以調整「同儕互評」和「自我評量」的順序，但「評分訓練」一定要在第一步驟（如果有選的話）。如果您規劃加入同儕互評的步驟，將規劃至最後一個步驟。在您發布同儕互評之後，您無法變更評量的步驟和數量。"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:149
+msgid "Teams Enabled"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:200
-msgid "Save"
-msgstr "儲存"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:156
+msgid "Specify whether team submissions are allowed for this response."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:204
-msgid "Cancel"
-msgstr "取消"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:161
+msgid "Select Team Set"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:164
+msgid "Team A"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:165
+msgid "Team B"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
@@ -269,19 +250,19 @@ msgid "Feedback for This Criterion"
 msgstr "此評分標準的回饋"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:51
+#: openassessment/xblock/studio_mixin.py:54
 msgid "None"
 msgstr "無"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:53
 msgid "Optional"
 msgstr "非必填"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:91
-#: openassessment/xblock/studio_mixin.py:49
+#: openassessment/xblock/studio_mixin.py:52
 msgid "Required"
 msgstr "需要評分"
 
@@ -290,6 +271,38 @@ msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
 msgstr "請選擇一個選項。此描述學生是否必須要提供評分標準之回饋。"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:3
+msgid "Open Response Assessment"
+msgstr "開放式問題評分"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:5
+msgid "Settings"
+msgstr "設定"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:6
+msgid "Rubric"
+msgstr "評分準則"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:7
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
+msgid "Prompt"
+msgstr "問題描述"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:14
+msgid "Rubric Change Impacts Settings Section"
+msgstr "評分準則變更影響設置部分"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:15
+msgid ""
+"A change that you made to this assessment's rubric has an impact on some "
+"examples laid out in the settings tab. For more information, go to the "
+"Settings section and fix the areas highlighted in red."
+msgstr "你在本評量中的評分標準所做的變更將會影響在設定分頁已設計的範例練習。欲了解更多訊息，請至設定分頁和修改紅色顯示的區域。"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:19
+msgid "close alert"
+msgstr "關閉警告"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
@@ -442,6 +455,16 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
 msgid "Enter the date and time when all self assessments must be complete."
 msgstr "輸入所有自我評量必須完成的日期及時間。"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_settings.html:8
+msgid ""
+"In this assignment, you can include learner training, peer assessment, self "
+"assessment, and staff assessment steps. Select the steps that you want "
+"below, and then drag them into the order you want. If you include a learner "
+"training step, it must precede all other steps. If you include a staff "
+"assessment step, it must be the final step. After you release an ORA "
+"assignment, you cannot change the type and number of assessment steps."
+msgstr "在此作業中，你可以包含「評分訓練」、「同儕互評」、「自我評量」。請選擇（打勾）你要的步驟，你可以調整「同儕互評」和「自我評量」的順序，但「評分訓練」一定要在第一步驟（如果有選的話）。如果您規劃加入同儕互評的步驟，將規劃至最後一個步驟。在您發布同儕互評之後，您無法變更評量的步驟和數量。"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
@@ -862,11 +885,11 @@ msgstr "評論"
 msgid "The question for this section"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:28
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:29
 msgid "View the files associated with this submission:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:36
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:43
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
@@ -1091,23 +1114,27 @@ msgstr "您的提交狀態"
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:145
+#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+msgid "We could not delete files"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:151
 msgid "Select a file to upload for this submission."
 msgstr "選擇本次提交上傳的檔案。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:153
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:156
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "You may continue to work on your response until you submit it."
 msgstr "您可以在送出答案前繼續工作"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:163
+#: openassessment/templates/openassessmentblock/response/oa_response.html:169
 msgid "We could not submit your response"
 msgstr "我們無法送出您的回應"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:179
 msgid "Submit your response and move to the next step"
 msgstr "送出您的回應並移動至下一步"
 
@@ -1619,39 +1646,39 @@ msgstr "載入評分訓練發生錯誤"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "評分訓練步驟的任務無法載入。"
 
-#: openassessment/xblock/data_conversion.py:248
+#: openassessment/xblock/data_conversion.py:249
 msgid "You must provide options selected in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:251
+#: openassessment/xblock/data_conversion.py:252
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:254
+#: openassessment/xblock/data_conversion.py:255
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:74
 #: openassessment/xblock/leaderboard_mixin.py:56
-#: openassessment/xblock/self_assessment_mixin.py:40
+#: openassessment/xblock/self_assessment_mixin.py:41
 #: openassessment/xblock/student_training_mixin.py:60
 #: openassessment/xblock/student_training_mixin.py:265
 msgid "An unexpected error occurred."
 msgstr "ㄧ個未預期的錯誤發生。"
 
-#: openassessment/xblock/grade_mixin.py:172
+#: openassessment/xblock/grade_mixin.py:169
 msgid "Peer Assessment"
 msgstr "同儕互評"
 
-#: openassessment/xblock/grade_mixin.py:174
+#: openassessment/xblock/grade_mixin.py:171
 msgid "Self Assessment"
 msgstr "自我評量"
 
-#: openassessment/xblock/grade_mixin.py:210
+#: openassessment/xblock/grade_mixin.py:207
 msgid "Assessment feedback could not be saved."
 msgstr "無法儲存評分的反饋意見"
 
-#: openassessment/xblock/grade_mixin.py:221
+#: openassessment/xblock/grade_mixin.py:218
 msgid "Feedback saved."
 msgstr "反饋意見已儲存。"
 
@@ -1687,7 +1714,7 @@ msgstr "您的自我評分"
 msgid "Your Comments"
 msgstr "你的評論"
 
-#: openassessment/xblock/grade_mixin.py:470
+#: openassessment/xblock/grade_mixin.py:471
 msgid "Waiting for peer reviews"
 msgstr "等待同儕觀摩"
 
@@ -1699,40 +1726,40 @@ msgstr "同儕"
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "您必須先送出答案才能開始進行同儕互評。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:77
+#: openassessment/xblock/peer_assessment_mixin.py:76
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:102
-#: openassessment/xblock/peer_assessment_mixin.py:107
+#: openassessment/xblock/peer_assessment_mixin.py:101
+#: openassessment/xblock/peer_assessment_mixin.py:106
 msgid "Your peer assessment could not be submitted."
 msgstr "無法送出您的同儕評量。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:121
+#: openassessment/xblock/peer_assessment_mixin.py:120
 #: openassessment/xblock/student_training_mixin.py:271
 msgid "Could not update workflow status."
 msgstr "無法更新工作流程狀態。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:130
+#: openassessment/xblock/peer_assessment_mixin.py:128
 msgid "Could not load peer assessment."
 msgstr "無法載入同儕評量。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:215
+#: openassessment/xblock/peer_assessment_mixin.py:213
 msgid "Submit your assessment and review another response"
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:219
+#: openassessment/xblock/peer_assessment_mixin.py:217
 msgid "Submit your assessment and move to next step"
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:223
+#: openassessment/xblock/peer_assessment_mixin.py:221
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:55
+#: openassessment/xblock/resolve_dates.py:56
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
@@ -1763,12 +1790,12 @@ msgstr "此步驟的截止時間 '{due}' 不能早於前一步驟的截止時間
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "起始時間 '{start}' 不能晚於截止時間 '{due}'"
 
-#: openassessment/xblock/self_assessment_mixin.py:139
+#: openassessment/xblock/self_assessment_mixin.py:140
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "您必須先送出答案才能開始進行自我評量。"
 
-#: openassessment/xblock/self_assessment_mixin.py:161
-#: openassessment/xblock/self_assessment_mixin.py:168
+#: openassessment/xblock/self_assessment_mixin.py:162
+#: openassessment/xblock/self_assessment_mixin.py:169
 msgid "Your self assessment could not be submitted."
 msgstr "無法送出您的自我評量。"
 
@@ -1780,43 +1807,43 @@ msgstr "您沒有權限排序訓練"
 msgid "You do not have permission to reschedule tasks."
 msgstr "您沒有權限重新排序任務。"
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:66
 msgid "You do not have permission to access the ORA staff area"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access ORA learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:179
+#: openassessment/xblock/staff_area_mixin.py:177
 msgid "Error getting learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:216
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:221
+#: openassessment/xblock/staff_area_mixin.py:217
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:224
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:245
+#: openassessment/xblock/staff_area_mixin.py:240
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:455
+#: openassessment/xblock/staff_area_mixin.py:450
 msgid "Please enter valid reason to remove the submission."
 msgstr "請輸入有效的原因來移除這個提交。"
 
-#: openassessment/xblock/staff_area_mixin.py:481
+#: openassessment/xblock/staff_area_mixin.py:476
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1866,97 +1893,97 @@ msgstr "options_selected 的值必須是個目錄"
 msgid "Your scores could not be checked."
 msgstr "無法檢查您的分數。"
 
-#: openassessment/xblock/studio_mixin.py:186
-#: openassessment/xblock/studio_mixin.py:198
+#: openassessment/xblock/studio_mixin.py:192
+#: openassessment/xblock/studio_mixin.py:204
 msgid "Error updating XBlock configuration"
 msgstr "更新XBlock設定的錯誤"
 
-#: openassessment/xblock/studio_mixin.py:201
+#: openassessment/xblock/studio_mixin.py:207
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:204
+#: openassessment/xblock/studio_mixin.py:210
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:207
+#: openassessment/xblock/studio_mixin.py:213
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:231
+#: openassessment/xblock/studio_mixin.py:237
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "驗證錯誤：{error}"
 
-#: openassessment/xblock/studio_mixin.py:257
+#: openassessment/xblock/studio_mixin.py:264
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新 OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:81
+#: openassessment/xblock/submission_mixin.py:82
 msgid "\"submission\" required to submit answer."
 msgstr "\"submission\"需要提交答案"
 
-#: openassessment/xblock/submission_mixin.py:102
+#: openassessment/xblock/submission_mixin.py:103
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "為了送出您的回應，請於 \"預覽\" 或是 \"線上模式\" 檢視此組件。"
 
-#: openassessment/xblock/submission_mixin.py:108
+#: openassessment/xblock/submission_mixin.py:109
 msgid "Multiple submissions are not allowed."
 msgstr "不允許同時多個送出。"
 
-#: openassessment/xblock/submission_mixin.py:151
+#: openassessment/xblock/submission_mixin.py:155
 msgid "API returned unclassified exception."
 msgstr "API 回應了一個非典型的例外。"
 
-#: openassessment/xblock/submission_mixin.py:193
+#: openassessment/xblock/submission_mixin.py:197
 msgid "This response could not be saved."
 msgstr "這個作答無法儲存。"
 
-#: openassessment/xblock/submission_mixin.py:197
+#: openassessment/xblock/submission_mixin.py:201
 msgid "This response was not submitted."
 msgstr "這個答案並被未提交。"
 
-#: openassessment/xblock/submission_mixin.py:226
+#: openassessment/xblock/submission_mixin.py:247
 msgid "Files descriptions could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:230
+#: openassessment/xblock/submission_mixin.py:251
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:302
+#: openassessment/xblock/submission_mixin.py:329
 msgid "There was an error uploading your file."
 msgstr "在上傳您的檔案時發生了一個錯誤。"
 
-#: openassessment/xblock/submission_mixin.py:310
+#: openassessment/xblock/submission_mixin.py:336
 msgid "Content type must be GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:313
+#: openassessment/xblock/submission_mixin.py:339
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:316
+#: openassessment/xblock/submission_mixin.py:342
 msgid "File type must be one of the following types: {}"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:320
+#: openassessment/xblock/submission_mixin.py:346
 msgid "File type is not allowed."
 msgstr "檔案類型是不允許的。"
 
-#: openassessment/xblock/submission_mixin.py:327
+#: openassessment/xblock/submission_mixin.py:353
 msgid "Error retrieving upload URL."
 msgstr "檢索上傳網址錯誤。"
 
-#: openassessment/xblock/submission_mixin.py:467
+#: openassessment/xblock/submission_mixin.py:502
 msgid "This response has been saved but not submitted."
 msgstr "這一份作答已經儲存了，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:468
+#: openassessment/xblock/submission_mixin.py:503
 msgid "This response has not been saved."
 msgstr "這一個作答還沒有被儲存。"
 
@@ -2042,10 +2069,10 @@ msgstr "問題釋出後您不能再修改分數值。"
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:358
+#: openassessment/xblock/validation.py:359
 msgid "Leaderboard number is invalid."
 msgstr "排行榜上的數字是無效的。"
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:382
 msgid "The submission format is invalid."
 msgstr "提交格式是無效的。"
