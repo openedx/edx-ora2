@@ -146,6 +146,7 @@ class GradeMixin:
                 staff_assessment=staff_assessment,
             ),
             'file_upload_type': self.file_upload_type,
+            'allow_multiple_files': self.allow_multiple_files,
             'allow_latex': self.allow_latex,
             'prompts_type': self.prompts_type,
             'file_urls': self.get_download_urls_from_submission(student_submission),

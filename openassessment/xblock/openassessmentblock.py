@@ -169,6 +169,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="Custom list of file types allowed with submission."
     )
 
+    allow_multiple_files = Boolean(
+        default=True,
+        scope=Scope.settings,
+        help="Allow multiple files uploaded with submission (if file upload enabled)."
+    )
+
     allow_latex = Boolean(
         default=False,
         scope=Scope.settings,
@@ -810,6 +816,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.allow_file_upload = config['allow_file_upload']
         block.file_upload_type = config['file_upload_type']
         block.white_listed_file_types_string = config['white_listed_file_types']
+        block.allow_multiple_files = config['allow_multiple_files']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']

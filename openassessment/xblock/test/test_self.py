@@ -177,6 +177,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             'openassessmentblock/self/oa_self_unavailable.html',
             {
                 'self_start': datetime.datetime(5999, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -192,6 +193,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             'openassessmentblock/self/oa_self_closed.html',
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -205,6 +207,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_unavailable.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -223,6 +226,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_unavailable.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -241,6 +245,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': None,
@@ -264,6 +269,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': None,
@@ -286,6 +292,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': None,
@@ -303,6 +310,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_cancelled.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -324,6 +332,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
                 'self_submission': submission,
                 'file_upload_type': None,
                 'self_file_urls': [],
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -350,6 +359,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -371,6 +381,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             'openassessmentblock/self/oa_self_closed.html',
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,
@@ -404,6 +415,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'prompts_type': 'text',
                 'user_timezone': pytz.utc,

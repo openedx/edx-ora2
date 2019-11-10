@@ -116,6 +116,7 @@ class StaffAreaMixin:
         context['status_counts'] = status_counts
         context['num_submissions'] = num_submissions
 
+        context['allow_multiple_files'] = self.allow_multiple_files
         # Include Latex setting
         context['allow_latex'] = self.allow_latex
         context['prompts_type'] = self.prompts_type

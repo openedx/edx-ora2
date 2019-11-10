@@ -93,6 +93,14 @@
         </p>
         <div id="openassessment_submission_file_upload_type_wrapper" class="{% if not file_upload_response %}is--hidden{% endif %}">
             <div class="wrapper-comp-setting">
+                <label for="openassessment_submission_nfile_editor" class="setting-label">{% trans "Allow Multiple Files"%}</label>
+                <select id="openassessment_submission_nfile_editor" class="input setting-input" name="multiple files submission">
+                    <option value="0">{% trans "False"%}</option>
+                    <option value="1" {% if allow_multiple_files %} selected="true" {% endif %}>{% trans "True"%}</option>
+                </select>
+            </div>
+            <p class="setting-help">{% trans "Specify whether learners can upload more than one file. Has no effect if File Uploads Response is None."%}</p>
+            <div class="wrapper-comp-setting">
                 <label for="openassessment_submission_upload_selector" class="setting-label">{% trans "File Upload Types"%}</label>
                 <select id="openassessment_submission_upload_selector" class="input setting-input" name="upload submission">
                     <option value="pdf-and-image" {% if file_upload_type == "pdf-and-image" %} selected="true" {% endif %}>{% trans "PDF or Image Files"%}</option>
@@ -170,5 +178,4 @@
 
         </li>
     {% endif %}
-    <li>
 </ul>

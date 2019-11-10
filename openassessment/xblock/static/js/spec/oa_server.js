@@ -289,6 +289,7 @@ describe("OpenAssessment.Server", function() {
             editorAssessmentsOrder: EDITOR_ASSESSMENTS_ORDER,
             fileUploadType: "image",
             fileTypeWhiteList: ['pdf', 'doc'],
+            multipleFilesEnabled: true,
             latexEnabled: true,
             leaderboardNum: 15
         });
@@ -306,6 +307,7 @@ describe("OpenAssessment.Server", function() {
                 editor_assessments_order: EDITOR_ASSESSMENTS_ORDER,
                 file_upload_type: "image",
                 white_listed_file_types: ['pdf', 'doc'],
+                allow_multiple_files: true,
                 allow_latex: true,
                 leaderboard_show: 15
             }),

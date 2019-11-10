@@ -171,6 +171,37 @@ class SubmissionTest(XBlockHandlerTestCase):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
+    @scenario('data/single_file_upload_scenario.xml')
+    def test_upload_url_single_file(self, xblock):
+        """ Test generate correct upload URL """
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        # _get_download_url is run by upload_url to check if any uploads exist.
+        # Set it to return some path so simulate a file already uploaded.
+        xblock._get_download_url = lambda x: "https://example.com/url"  # pylint: disable=protected-access
+        resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
+                                                              "filename": "test.jpg"}), response_format='json')
+        self.assertFalse(resp['success'])
+        self.assertIn('Only a single file upload is allowed', resp['msg'])
+
+        # Now test that we can upload a file if no existing upload.
+        xblock._get_download_url = lambda x: None  # pylint: disable=protected-access
+        resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
+                                                              "filename": "test.jpg"}), response_format='json')
+        self.assertTrue(resp['success'])
+        self.assertIn(
+            '/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id,
+            resp['url']
+        )
+
+    @mock_s3_deprecated
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
     @scenario('data/file_upload_scenario.xml')
     def test_download_url(self, xblock):
         """ Test generate correct download URL with existing file. should create a file and get the download URL """
@@ -189,7 +220,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
 
         self.assertTrue(resp['success'])
-        self.assertEqual(download_url, resp['url'])
+        self.assertEqual(str(download_url), str(resp['url']))
 
     def _get_student_item_key(self, num, usage_id):
         key = "submissions_attachments/test_student/test_course/" + usage_id
@@ -556,6 +587,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -584,6 +616,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'peer_incomplete': True,
                 'self_incomplete': True,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -608,6 +641,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -631,6 +665,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -667,6 +702,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -806,11 +842,12 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'allow_multiple_files': True,
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
-                    ('', 'file-1', None, True),
-                    ('', 'file-2', None, True)
+                    api.FileDescriptor(download_url='', description='file-1', name=None, show_delete_button=True),
+                    api.FileDescriptor(download_url='', description='file-2', name=None, show_delete_button=True),
                 ],
                 'team_file_urls': [],
                 'saved_response': create_submission_dict({
@@ -942,6 +979,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -984,6 +1022,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'peer_incomplete': True,
                 'self_incomplete': True,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -1013,6 +1052,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'text_response': 'required',
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
@@ -1052,6 +1092,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'peer_incomplete': True,
                 'self_incomplete': True,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -1069,6 +1110,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -1093,6 +1135,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'peer_incomplete': False,
                 'self_incomplete': True,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -1123,6 +1166,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'text_response': 'required',
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
@@ -1153,6 +1197,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'text_response': 'required',
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'allow_multiple_files': True,
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,

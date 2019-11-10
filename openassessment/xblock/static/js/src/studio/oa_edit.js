@@ -205,6 +205,7 @@ OpenAssessment.StudioView.prototype = {
             fileUploadResponse: view.settingsView.fileUploadResponseNecessity(),
             fileUploadType: fileUploadType !== '' ? fileUploadType : null,
             fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
+            multipleFilesEnabled: view.settingsView.multipleFilesEnabled(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder(),

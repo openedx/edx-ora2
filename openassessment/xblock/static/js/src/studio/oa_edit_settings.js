@@ -301,6 +301,17 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
+    Enable / disable multiple files upload
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable multiple files upload
+    Returns:
+        boolean
+    **/
+    multipleFilesEnabled: function(isEnabled) {
+        return this.settingSelectorEnabled('#openassessment_submission_nfile_editor', isEnabled);
+    },
+    /**
     Enable / disable latex rendering.
 
     Args:

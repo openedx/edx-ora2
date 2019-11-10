@@ -159,9 +159,21 @@
                                     <div class="message__content"></div>
                                 </div>
                             </div>
-                            <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
-                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" multiple="">
-                            <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload files" %}</button>
+                            <label class="sr" for="submission_answer_upload_{{ xblock_id }}">
+                                {% if allow_multiple_files %}
+                                    {% trans "Select one or more files to upload for this submission." %}
+                                {% else %}
+                                    {% trans "Select a file to upload for this submission." %}
+                                {% endif %}
+                            </label>
+                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %}>
+                            <button type="submit" class="file__upload action action--upload" disabled>
+                                {% if allow_multiple_files %}
+                                    {% trans "Upload files" %}
+                                {% else %}
+                                    {% trans "Upload file" %}
+                                {% endif %}
+                            </button>
                             <div class="files__descriptions"></div>
                         </li>
                         {% endif %}

@@ -283,6 +283,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             'openassessmentblock/leaderboard/oa_leaderboard_show.html',
             {
                 'topscores': scores,
+                'allow_multiple_files': xblock.allow_multiple_files,
                 'allow_latex': xblock.allow_latex,
                 'prompts_type': xblock.prompts_type,
                 'file_upload_type': xblock.file_upload_type,

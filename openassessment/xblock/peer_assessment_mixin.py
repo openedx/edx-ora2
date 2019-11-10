@@ -171,6 +171,7 @@ class PeerAssessmentMixin:
 
         context_dict = {
             "rubric_criteria": self.rubric_criteria_with_labels,
+            "allow_multiple_files": self.allow_multiple_files,
             "allow_latex": self.allow_latex,
             "prompts_type": self.prompts_type,
             "user_timezone": user_preferences['user_timezone'],

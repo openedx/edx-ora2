@@ -30,6 +30,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "submission_due": "4014-02-27T09:46",
         "file_upload_type": None,
         "white_listed_file_types": '',
+        "allow_multiple_files": True,
         "allow_latex": False,
         "leaderboard_show": 4,
         "assessments": [{"name": "self-assessment"}],
