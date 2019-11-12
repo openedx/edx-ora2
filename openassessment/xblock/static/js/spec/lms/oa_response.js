@@ -506,7 +506,7 @@ describe("OpenAssessment.ResponseView", function() {
         var files = [{type: 'image/jpeg', size: 544288000, name: 'huge-picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            'File size must be 500MB or less.');
+            'Individual file size must be 500MB or less.');
     });
 
     it("selects the wrong image file type", function() {
@@ -551,7 +551,7 @@ describe("OpenAssessment.ResponseView", function() {
                      {type: 'image/jpeg', size: 544288000, name: 'huge-picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            'File size must be 500MB or less.');
+            'Individual file size must be 500MB or less.');
     });
 
     it("selects three files - one with invalid extension", function() {

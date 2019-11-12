@@ -20,6 +20,7 @@ from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+from openassessment.xblock.workflow_mixin import WorkflowMixin
 from submissions import api as sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 
@@ -189,6 +190,91 @@ class SubmissionTest(XBlockHandlerTestCase):
 
         self.assertTrue(resp['success'])
         self.assertEqual(download_url, resp['url'])
+
+    def _get_student_item_key(self, num, usage_id):
+        key = "submissions_attachments/test_student/test_course/" + usage_id
+        if num > 0:
+            key = key + "/" + str(num)
+        return key
+
+    def _create_uploaded_file(self, bucket, file_num, usage_id):
+        key = Key(bucket)
+        key.key = self._get_student_item_key(file_num, usage_id)
+        key.set_contents_from_string("How d'ya do?")
+
+    def _create_uploaded_files(self, num_files, usage_key):
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        for i in range(num_files):
+            self._create_uploaded_file(bucket, i, usage_key)
+
+    def _create_entry(self, description, name, size):
+        return {
+            'description': description,
+            'fileName': name,
+            'fileSize': size,
+        }
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
+    @scenario('data/file_upload_scenario.xml', user_id='bob')
+    def test_delete_and_submit(self, xblock):
+        """ Test that after deleting a file, the remaining files are correctly submitted  """
+        self._create_uploaded_files(5, xblock.scope_ids.usage_id)
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        file_metadata = [
+            self._create_entry('File Number ' + str(i), 'file_' + str(i), 1000) for i in range(5)
+        ]
+        file_index_to_remove = 2
+        expected_file_metadata = list(file_metadata)
+        expected_file_metadata.pop(file_index_to_remove)
+
+        data = {'fileMetadata': file_metadata, 'itsamee': 'magrio'}
+        resp = self.request(
+            xblock,
+            'save_files_descriptions',
+            json.dumps(data),
+            response_format='json'
+        )
+        self.assertTrue(resp['success'])
+        resp = self.request(
+            xblock,
+            'remove_uploaded_file',
+            json.dumps({'filenum': file_index_to_remove}),
+            response_format='json'
+        )
+        self.assertTrue(resp['success'])
+        with patch('submissions.api.create_submission') as mocked_submit:
+            with patch.object(WorkflowMixin, 'create_workflow'):
+                mocked_submit.return_value = {
+                    "uuid": '1111',
+                    "attempt_number": 1,
+                    "created_at": dt.datetime.now(),
+                    "submitted_at": dt.datetime.now(),
+                    "answer": {},
+                }
+                resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
+                mocked_submit.assert_called_once()
+                student_sub_dict = mocked_submit.call_args[0][1]
+                self.assertEqual(
+                    student_sub_dict['files_descriptions'],
+                    [meta['description'] for meta in expected_file_metadata]
+                )
+                self.assertEqual(
+                    student_sub_dict['files_name'],
+                    [meta['fileName'] for meta in expected_file_metadata]
+                )
+                self.assertEqual(
+                    student_sub_dict['files_sizes'],
+                    [meta['fileSize'] for meta in expected_file_metadata]
+                )
 
     @mock_s3
     @override_settings(

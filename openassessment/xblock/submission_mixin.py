@@ -109,18 +109,7 @@ class SubmissionMixin(object):
         status_text = self._(u'Multiple submissions are not allowed.')
         if not workflow:
             try:
-                try:
-                    saved_files_descriptions = json.loads(self.saved_files_descriptions)
-                    saved_files_names = json.loads(self.saved_files_names)
-                except ValueError:
-                    saved_files_descriptions = None
-                    saved_files_names = None
-                submission = self.create_submission(
-                    student_item_dict,
-                    student_sub_data,
-                    saved_files_descriptions,
-                    saved_files_names,
-                )
+                submission = self.create_submission(student_item_dict, student_sub_data)
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -200,6 +189,56 @@ class SubmissionMixin(object):
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
+    def get_saved_file_metadata(self):
+        """
+        Get list of (file_download_url, file_description, file_name, file_size) for all uploaded files.
+        Deleted files are represented as (None, None, None, 0)
+        """
+        try:
+            saved_files_descriptions = json.loads(self.saved_files_descriptions)
+            saved_files_names = json.loads(self.saved_files_names)
+            saved_files_sizes = json.loads(self.saved_files_sizes)
+        except ValueError:
+            saved_files_descriptions = []
+            saved_files_names = []
+            saved_files_sizes = []
+
+        file_metadata = []
+
+        if saved_files_descriptions == []:
+            # This is the old behavior, required for a corner case and should be eventually removed.
+            # https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
+            # to be uploaded without descriptions. In that case, saved_files_descriptions would be
+            # an empty list. If there are currently users in that state who have files uploaded
+            # with no descriptions but have not yet submitted, they will fall here.
+            for i in range(self.MAX_FILES_COUNT):
+                file_url = self._get_download_url(i)
+                file_description = ''
+                file_name = ''
+                file_size = 0
+                if file_url:
+                    try:
+                        file_description = saved_files_descriptions[i]
+                        file_name = saved_files_names[i]
+                        file_size = saved_files_sizes[i]
+                    except IndexError:
+                        pass
+                    file_metadata.append((file_url, file_description, file_name, file_size))
+                else:
+                    break
+        else:
+            zipped_metadata = zip(saved_files_descriptions, saved_files_names, saved_files_sizes)
+            for i, (file_description, file_name, file_size) in enumerate(zipped_metadata):
+                if file_description is None:
+                    # We are passing Nones to the template because when files are deleted, we still want to
+                    # represent them as empty elements in order to preserve the indices and thus urls of the
+                    # remaining files.
+                    file_metadata.append((None, None, None, 0))
+                else:
+                    file_url = self._get_download_url(i)
+                    file_metadata.append((file_url, file_description, file_name, file_size))
+        return file_metadata
+
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -216,27 +255,32 @@ class SubmissionMixin(object):
         """
         if 'fileMetadata' in data:
             file_data = data['fileMetadata']
-
             if isinstance(file_data, list) and all(
                     [all(
                         [
-                            isinstance(description['description'], six.string_types),
-                            isinstance(description['fileName'], six.string_types)
+                            isinstance(file_metadata['description'], six.string_types),
+                            isinstance(file_metadata['fileName'], six.string_types),
+                            isinstance(file_metadata['fileSize'], six.integer_types),
                         ]
-                    ) for description in file_data
+                    ) for file_metadata in file_data
                     ]
             ):
                 try:
                     if self.saved_files_descriptions != '':
                         existing_file_descriptions_list = json.loads(self.saved_files_descriptions)
                         existing_file_names_list = json.loads(self.saved_files_names)
+                        existing_file_sizes_list = json.loads(self.saved_files_sizes)
                         existing_file_descriptions_list.extend([desc['description'] for desc in file_data])
                         existing_file_names_list.extend([desc['fileName'] for desc in file_data])
+                        existing_file_sizes_list.extend([desc['fileSize'] for desc in file_data])
                         self.saved_files_descriptions = json.dumps(existing_file_descriptions_list)
                         self.saved_files_names = json.dumps(existing_file_names_list)
+                        self.saved_files_sizes = json.dumps(existing_file_sizes_list)
                     else:
                         self.saved_files_descriptions = json.dumps([desc['description'] for desc in file_data])
                         self.saved_files_names = json.dumps([desc['fileName'] for desc in file_data])
+                        self.saved_files_sizes = json.dumps([desc['fileSize'] for desc in file_data])
+
                     # Emit analytics event...
                     self.runtime.publish(
                         self,
@@ -250,51 +294,39 @@ class SubmissionMixin(object):
 
         return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
-    def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None, files_names=None):
+    def create_submission(self, student_item_dict, student_sub_data):
         """ Creates submission for the submitted assessment response. """
         # Import is placed here to avoid model import at project startup.
         from submissions import api
 
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
-        files_descriptions = files_descriptions if files_descriptions else []
-        files_names = files_names if files_names else []
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.file_upload_type:
+            try:
+                saved_file_metadata = self.get_saved_file_metadata()
+            except FileUploadError:
+                logger.exception(
+                    u"FileUploadError for student_item: {student_item_dict}"
+                    u" and submission data: {student_sub_data} with file".format(
+                        student_item_dict=student_item_dict,
+                        student_sub_data=student_sub_data,
+                    )
+                )
+
             student_sub_dict['file_keys'] = []
             student_sub_dict['files_descriptions'] = []
             student_sub_dict['files_name'] = []
-            for i in range(self.MAX_FILES_COUNT):
-                key_to_save = ''
-                file_description = ''
-                file_name = ''
-                item_key = self._get_student_item_key(i)
-                try:
-                    url = file_upload_api.get_download_url(item_key)
-                    if url:
-                        key_to_save = item_key
-                        try:
-                            file_description = files_descriptions[i]
-                            file_name = files_names[i]
-                        except IndexError:
-                            pass
-                except FileUploadError:
-                    logger.exception(
-                        u"FileUploadError for student_item: {student_item_dict}"
-                        u" and submission data: {student_sub_data} with file"
-                        u"descriptions {files_descriptions}".format(
-                            student_item_dict=student_item_dict,
-                            student_sub_data=student_sub_data,
-                            files_descriptions=files_descriptions,
-                        )
-                    )
-                if key_to_save:
-                    student_sub_dict['file_keys'].append(key_to_save)
-                    student_sub_dict['files_descriptions'].append(file_description)
-                    student_sub_dict['files_name'].append(file_name)
-                else:
-                    break
+            student_sub_dict['files_sizes'] = []
+            for i, (file_url, file_description, file_name, file_size) in enumerate(saved_file_metadata):
+                if not file_url:
+                    continue
+                key_to_save = self._get_student_item_key(i)
+                student_sub_dict['file_keys'].append(key_to_save)
+                student_sub_dict['files_descriptions'].append(file_description)
+                student_sub_dict['files_name'].append(file_name)
+                student_sub_dict['files_sizes'].append(file_size)
 
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -384,6 +416,10 @@ class SubmissionMixin(object):
             saved_files_names = json.loads(self.saved_files_names)
             saved_files_names[filenum] = None
             self.saved_files_names = json.dumps(saved_files_names)
+
+            saved_files_sizes = json.loads(self.saved_files_sizes)
+            saved_files_sizes[filenum] = 0
+            self.saved_files_sizes = json.dumps(saved_files_sizes)
 
         return {'success': removed}
 
@@ -561,45 +597,10 @@ class SubmissionMixin(object):
         file_urls = None
 
         if self.file_upload_type:
-            try:
-                saved_files_descriptions = json.loads(self.saved_files_descriptions)
-                saved_files_names = json.loads(self.saved_files_names)
-            except ValueError:
-                saved_files_descriptions = []
-                saved_files_names = []
-
-            file_urls = []
-
-            if saved_files_descriptions == []:
-                # This is the old behavior, required for a corner case and should be eventually removed.
-                # https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
-                # to be uploaded without descriptions. In that case, saved_files_descriptions would be
-                # an empty list. If there are currently users in that state who have files uploaded
-                # with no descriptions but have not yet submitted, they will fall here.
-                for i in range(self.MAX_FILES_COUNT):
-                    file_url = self._get_download_url(i)
-                    file_description = ''
-                    file_name = ''
-                    if file_url:
-                        try:
-                            file_description = saved_files_descriptions[i]
-                            file_name = saved_files_names[i]
-                        except IndexError:
-                            pass
-                        file_urls.append((file_url, file_description, file_name))
-                    else:
-                        break
-            else:
-                for i, (file_description, file_name) in enumerate(zip(saved_files_descriptions, saved_files_names)):
-                    if file_description is None:
-                        # We are passing Nones to the template because when files are deleted, we still want to
-                        # represent them as empty elements in order to preserve the indices and thus urls of the
-                        # remaining files.
-                        file_urls.append((None, None, None))
-                    else:
-                        file_url = self._get_download_url(i)
-                        file_urls.append((file_url, file_description, file_name))
-            context['file_urls'] = file_urls
+            file_metadata = self.get_saved_file_metadata()
+            context['file_urls'] = [
+                (file_url, file_description, file_name) for file_url, file_description, file_name, _ in file_metadata
+            ]
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 
