@@ -1,0 +1,17 @@
+# Requirements for test runs
+-c constraints.txt
+
+-r base.txt
+
+coverage                            # Repeat a test case with multiple data inputs
+ddt
+django-nose>=1.4.1
+factory_boy                         # Fixture factories for test setup
+freezegun                           # Mock the datetime module to manipulate date functions
+mock                                # Stub out specific code during test runs
+moto
+nose
+tox
+more-itertools
+
+git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
