@@ -1,0 +1,5 @@
+# Allows us to generate version pins with `pip-compile`, and install
+# them deterministically with `pip-sync`.
+# `pip-compile` itself is used to generate pip-tools.txt.
+
+pip-tools

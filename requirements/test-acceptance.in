@@ -1,0 +1,10 @@
+# Requirements for acceptance tests
+-c constraints.txt
+
+-r test.txt
+
+bok-choy
+ddt
+nose
+pyinstrument
+selenium
