@@ -4,8 +4,8 @@ from __future__ import absolute_import, unicode_literals
 import json
 import logging
 
+from django.utils.functional import cached_property
 import six
-from six.moves import range
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
@@ -18,17 +18,6 @@ from .user_data import get_user_preferences
 from .validation import validate_submission
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
-
-
-def _safe_load_json_list(field):
-    """
-    Tries to load JSON-ified string,
-    returns an empty list if we try to load some non-JSON-encoded string.
-    """
-    try:
-        return json.loads(field)
-    except ValueError:
-        return []
 
 
 class SubmissionMixin(object):
@@ -44,11 +33,11 @@ class SubmissionMixin(object):
 
     """
 
-    ALLOWED_IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png']
+    ALLOWED_IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png']  # pragma: no cover
 
-    ALLOWED_FILE_MIME_TYPES = ['application/pdf'] + ALLOWED_IMAGE_MIME_TYPES
+    ALLOWED_FILE_MIME_TYPES = ['application/pdf'] + ALLOWED_IMAGE_MIME_TYPES  # pragma: no cover
 
-    MAX_FILES_COUNT = 20
+    MAX_FILES_COUNT = 20  # pragma: no cover
 
     # taken from http://www.howtogeek.com/137270/50-file-extensions-that-are-potentially-dangerous-on-windows/
     # and http://pcsupport.about.com/od/tipstricks/a/execfileext.htm
@@ -63,6 +52,10 @@ class SubmissionMixin(object):
         'rgs', 'run', 'sct', 'shb', 'shs', 'u3p', 'vbscript', 'vbe', 'workflow',
         'htm', 'html',
     ]
+
+    @cached_property
+    def file_manager(self):
+        return file_upload_api.FileUploadManager(self)
 
     @XBlock.json_handler
     def submit(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -200,138 +193,6 @@ class SubmissionMixin(object):
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
-    def get_saved_file_metadata(self):
-        """
-        Get list of (file_download_url, file_description, file_name, file_size) for all uploaded files.
-        Deleted files are represented as (None, None, None, 0)
-        """
-        saved_file_descriptions, saved_file_names, saved_file_sizes = self.get_safe_normalized_file_metadata()
-
-        file_metadata = []
-
-        if not saved_file_descriptions:
-            # This is the old behavior, required for a corner case and should be eventually removed.
-            # https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
-            # to be uploaded without descriptions. In that case, saved_file_descriptions would be
-            # an empty list. If there are currently users in that state who have files uploaded
-            # with no descriptions but have not yet submitted, they will fall here.
-            for i in range(self.MAX_FILES_COUNT):
-                file_url = self._get_download_url(i)
-                file_description = ''
-                file_name = ''
-                file_size = 0
-                if file_url:
-                    try:
-                        file_description = saved_file_descriptions[i]
-                        file_name = saved_file_names[i]
-                        file_size = saved_file_sizes[i]
-                    except IndexError:
-                        pass
-                    file_metadata.append((file_url, file_description, file_name, file_size))
-                else:
-                    break
-        else:
-            zipped_metadata = zip(saved_file_descriptions, saved_file_names, saved_file_sizes)
-            for i, (file_description, file_name, file_size) in enumerate(zipped_metadata):
-                if file_description is None:
-                    # We are passing Nones to the template because when files are deleted, we still want to
-                    # represent them as empty elements in order to preserve the indices and thus urls of the
-                    # remaining files.
-                    file_metadata.append((None, None, None, 0))
-                else:
-                    file_url = self._get_download_url(i)
-                    file_metadata.append((file_url, file_description, file_name, file_size))
-        return file_metadata
-
-    def get_file_descriptions(self):
-        return _safe_load_json_list(self.saved_files_descriptions)
-
-    def set_file_descriptions(self, file_description_list):
-        self.saved_files_descriptions = json.dumps(file_description_list)
-
-    def get_file_names(self):
-        return _safe_load_json_list(self.saved_files_names)
-
-    def set_file_names(self, file_name_list):
-        self.saved_files_names = json.dumps(file_name_list)
-
-    def get_file_sizes(self):
-        return _safe_load_json_list(self.saved_files_sizes)
-
-    def set_file_sizes(self, file_size_list):
-        self.saved_files_sizes = json.dumps(file_size_list)
-
-    def fix_file_names(self, descriptions=None):
-        descriptions = descriptions or self.get_file_descriptions()
-        if len(self.get_file_names()) != len(descriptions):
-            self.set_file_names([None for _ in range(len(descriptions))])
-        return self.get_file_names()
-
-    def fix_file_sizes(self, descriptions=None):
-        descriptions = descriptions or self.get_file_descriptions()
-        if len(self.get_file_sizes()) != len(descriptions):
-            self.set_file_sizes([None for _ in range(len(descriptions))])
-        return self.get_file_sizes()
-
-    def get_safe_normalized_file_metadata(self):
-        descriptions = self.get_file_descriptions()
-        names = self.fix_file_names(descriptions)
-        sizes = self.fix_file_sizes(descriptions)
-        return descriptions, names, sizes
-
-    def append_safe_normalized_file_metadata(self, descriptions_to_add, names_to_add, sizes_to_add):
-        """
-        Given lists of new file metadata, write the new metadata to our stored file metadata fields
-
-        Args:
-            descriptions_to_add: a list of file descriptions
-            names_to_add: a list of file names
-            sizes_to_add: a list of file sizes as integers
-
-        Returns: newly updated file metadata fields
-        """
-        if not (len(descriptions_to_add) == len(names_to_add) == len(sizes_to_add)):
-            message = (
-                'Attempted to append file metadata of differing lengths: '
-                'descriptions = {}, names = {}, sizes = {}'
-            )
-            raise FileUploadError(message.format(descriptions_to_add, names_to_add, sizes_to_add))
-
-        existing_file_descriptions, existing_file_names, existing_file_sizes = self.get_safe_normalized_file_metadata()
-
-        new_descriptions = existing_file_descriptions + descriptions_to_add
-        self.set_file_descriptions(new_descriptions)
-
-        new_names = existing_file_names + names_to_add
-        self.set_file_names(new_names)
-
-        new_sizes = existing_file_sizes + sizes_to_add
-        self.set_file_sizes(new_sizes)
-
-        return new_descriptions, new_names, new_sizes
-
-    def delete_safe_normalized_file_metadata(self, index):
-        """
-        Given a file index to remove, null out its metadata in our stored file metadata fields
-
-        Args:
-            index: file index to remove
-
-        Returns: newly updated file metadata fields
-        """
-        stored_file_descriptions, stored_file_names, stored_file_sizes = self.get_safe_normalized_file_metadata()
-
-        stored_file_descriptions[index] = None
-        self.set_file_descriptions(stored_file_descriptions)
-
-        stored_file_names[index] = None
-        self.set_file_names(stored_file_names)
-
-        stored_file_sizes[index] = 0
-        self.set_file_sizes(stored_file_sizes)
-
-        return stored_file_descriptions, stored_file_names, stored_file_sizes
-
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -351,24 +212,27 @@ class SubmissionMixin(object):
         if 'fileMetadata' not in data:
             return failure_response
 
-        file_data = data['fileMetadata']
-
-        if not isinstance(file_data, list):
+        if not isinstance(data['fileMetadata'], list):
             return failure_response
 
-        file_descriptions = [desc['description'] for desc in file_data]
-        file_names = [desc['fileName'] for desc in file_data]
-        file_sizes = [desc['fileSize'] for desc in file_data]
+        file_data = [
+            {
+                'description': item['description'],
+                'name': item['fileName'],
+                'size': item['fileSize'],
+            } for item in data['fileMetadata']
+        ]
 
-        if not all([
-            all([isinstance(description, six.string_types) for description in file_descriptions]),
-            all([isinstance(name, six.string_types) for name in file_names]),
-            all([isinstance(size, six.integer_types) for size in file_sizes]),
-        ]):
-            return failure_response
+        for new_upload in file_data:
+            if not all([
+                isinstance(new_upload['description'], six.string_types),
+                isinstance(new_upload['name'], six.string_types),
+                isinstance(new_upload['size'], six.integer_types),
+            ]):
+                return failure_response
 
         try:
-            self.append_safe_normalized_file_metadata(file_descriptions, file_names, file_sizes)
+            self.file_manager.append_uploads(*file_data)
             # Emit analytics event...
             self.runtime.publish(
                 self,
@@ -391,30 +255,14 @@ class SubmissionMixin(object):
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.file_upload_type:
-            saved_file_metadata = []
-            try:
-                saved_file_metadata = self.get_saved_file_metadata()
-            except FileUploadError:
-                logger.exception(
-                    u"FileUploadError for student_item: {student_item_dict}"
-                    u" and submission data: {student_sub_data} with file".format(
-                        student_item_dict=student_item_dict,
-                        student_sub_data=student_sub_data,
-                    )
-                )
+            for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
+                student_sub_dict[field] = []
 
-            student_sub_dict['file_keys'] = []
-            student_sub_dict['files_descriptions'] = []
-            student_sub_dict['files_name'] = []
-            student_sub_dict['files_sizes'] = []
-            for i, (file_url, file_description, file_name, file_size) in enumerate(saved_file_metadata):
-                if not file_url:
-                    continue
-                key_to_save = self._get_student_item_key(i)
-                student_sub_dict['file_keys'].append(key_to_save)
-                student_sub_dict['files_descriptions'].append(file_description)
-                student_sub_dict['files_name'].append(file_name)
-                student_sub_dict['files_sizes'].append(file_size)
+            for file_upload in self.file_manager.get_uploads():
+                student_sub_dict['file_keys'].append(file_upload.key)
+                student_sub_dict['files_descriptions'].append(file_upload.description)
+                student_sub_dict['files_names'].append(file_upload.name)
+                student_sub_dict['files_sizes'].append(file_upload.size)
 
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -495,12 +343,12 @@ class SubmissionMixin(object):
         except ValueError:
             filenum = -1
 
-        removed = file_upload_api.remove_file(self._get_student_item_key(filenum))
-
-        if removed:
-            self.delete_safe_normalized_file_metadata(filenum)
-
-        return {'success': removed}
+        try:
+            self.file_manager.delete_upload(filenum)
+            return {'success': True}
+        except FileUploadError as exc:
+            logger.exception(exc)
+            return {'success': False}
 
     def _get_download_url(self, file_num=0):
         """
@@ -676,10 +524,8 @@ class SubmissionMixin(object):
         file_urls = None
 
         if self.file_upload_type:
-            file_metadata = self.get_saved_file_metadata()
-            context['file_urls'] = [
-                (file_url, file_description, file_name) for file_url, file_description, file_name, _ in file_metadata
-            ]
+            file_uploads = self.file_manager.get_uploads()
+            context['file_urls'] = [upload.url_descriptor_tuple() for upload in file_uploads]
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 

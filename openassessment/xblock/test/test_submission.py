@@ -3,12 +3,12 @@
 Test submission to the OpenAssessment XBlock.
 """
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import datetime as dt
 import json
 
-from mock import Mock, patch
+from mock import ANY, Mock, patch
 import pytz
 
 from django.test.utils import override_settings
@@ -223,7 +223,9 @@ class SubmissionTest(XBlockHandlerTestCase):
     )
     @scenario('data/file_upload_scenario.xml', user_id='bob')
     def test_delete_and_submit(self, xblock):
-        """ Test that after deleting a file, the remaining files are correctly submitted  """
+        """
+        Test that after deleting a file, the remaining files are correctly submitted.
+        """
         self._create_uploaded_files(5, xblock.scope_ids.usage_id)
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
@@ -268,7 +270,7 @@ class SubmissionTest(XBlockHandlerTestCase):
                     [meta['description'] for meta in expected_file_metadata]
                 )
                 self.assertEqual(
-                    student_sub_dict['files_name'],
+                    student_sub_dict['files_names'],
                     [meta['fileName'] for meta in expected_file_metadata]
                 )
                 self.assertEqual(
@@ -288,7 +290,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
 
         self.assertTrue(resp['success'])
-        self.assertEqual(u'', resp['url'])
+        self.assertEqual('', resp['url'])
 
     @mock_s3
     @override_settings(
@@ -312,6 +314,27 @@ class SubmissionTest(XBlockHandlerTestCase):
             '/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id,
             resp['url']
         )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_descriptionless_files(self, xblock):
+        """
+        Tests the old corner-case of a user being able to save files
+        without descriptions.
+        """
+        with patch('openassessment.fileupload.api.get_download_url') as mock_download_url:
+            # Pretend there are two uploaded files for this XBlock.
+            mock_download_url.side_effect = [
+                Mock(),
+                Mock(),
+                None,
+            ]
+
+            student_item_dict = xblock.get_student_item_dict()
+            key_1 = api.get_student_file_key(student_item_dict, index=0)
+            key_2 = api.get_student_file_key(student_item_dict, index=1)
+
+            actual_keys = [upload.key for upload in xblock.file_manager.get_uploads()]
+            self.assertEqual([key_1, key_2], actual_keys)
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
@@ -418,11 +441,12 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response(self, xblock):
-        descriptions = ["whatever.pdf", "anything you want to call it is fine"]
-        names = ["whatever.pdf", "anything.pdf"]
-        sizes = [200, 400]
+        file_uploads = [
+            {'description': 'file-1', 'name': 'file-1.pdf', 'size': 200},
+            {'description': 'file-2', 'name': 'file-2.pdf', 'size': 400},
+        ]
 
-        xblock.append_safe_normalized_file_metadata(descriptions, names, sizes)
+        xblock.file_manager.append_uploads(*file_uploads)
 
         # Save a response
         payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
@@ -451,19 +475,47 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             }
         )
 
-        self.assertEqual(descriptions, xblock.get_file_descriptions())
-        self.assertEqual(names, xblock.get_file_names())
-        self.assertEqual(sizes, xblock.get_file_sizes())
+        # pylint: disable=protected-access
+        actual_file_uploads = [upload._to_dict() for upload in xblock.file_manager.get_uploads()]
+        expected_file_uploads = [
+            api.FileUpload(
+                description='file-1',
+                name='file-1.pdf',
+                size=200,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            )._to_dict(),
+            api.FileUpload(
+                description='file-2',
+                name='file-2.pdf',
+                size=400,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            )._to_dict(),
+        ]
+
+        for expected, actual in zip(expected_file_uploads, actual_file_uploads):
+            # We can't consistently determine the values of an XBlock's item_id
+            expected.pop('item_id')
+            actual.pop('item_id')
+
+        self.assertEqual(expected_file_uploads, actual_file_uploads)
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response_misaligned_file_data(self, xblock):
-        descriptions = ["whatever.pdf", "anything you want to call it is fine"]
-        names = []
-        sizes = [200]
-
-        xblock.set_file_descriptions(descriptions)
-        xblock.set_file_names(names)
-        xblock.set_file_sizes(sizes)
+        """
+        Test the case where the XBlock user state contains a different number of
+        file descriptions from file sizes and names.  After rendering the block,
+        the list of file names and sizes should be coerced to lists that are of the
+        same length as the file descriptions.
+        """
+        xblock.saved_files_descriptions = json.dumps(["file-1", "file-2"])
+        xblock.saved_files_names = json.dumps([])
+        xblock.saved_files_sizes = json.dumps([200])
 
         xblock.file_upload_type = 'pdf-and-image'
         xblock.file_upload_response = 'optional'
@@ -480,8 +532,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
-                    ('', u'whatever.pdf', None),
-                    ('', u'anything you want to call it is fine', None)
+                    ('', 'file-1', None),
+                    ('', 'file-2', None)
                 ],
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -499,9 +551,37 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             }
         )
 
-        self.assertEqual(["whatever.pdf", "anything you want to call it is fine"], xblock.get_file_descriptions())
-        self.assertEqual([None, None], xblock.get_file_names())
-        self.assertEqual([None, None], xblock.get_file_sizes())
+        # pylint: disable=protected-access
+        actual_file_uploads = [upload._to_dict() for upload in xblock.file_manager.get_uploads()]
+        # When file names/sizes are of different cardinality of file descriptions,
+        # they are coerced to lists of nulls of the same cardinality of the descriptions,
+        # hence, name and size attributes below are null.
+        expected_file_uploads = [
+            api.FileUpload(
+                description='file-1',
+                name=None,
+                size=None,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            )._to_dict(),
+            api.FileUpload(
+                description='file-2',
+                name=None,
+                size=None,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            )._to_dict(),
+        ]
+        for expected, actual in zip(expected_file_uploads, actual_file_uploads):
+            # We can't consistently determine the values of an XBlock's item_id
+            expected.pop('item_id')
+            actual.pop('item_id')
+
+        self.assertEqual(expected_file_uploads, actual_file_uploads)
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response_old_format(self, xblock):
@@ -735,7 +815,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         # Create a submission for the user
         xblock.create_submission(
             xblock.get_student_item_dict(),
-            (u'Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.', u'∀ ɯɐu ɯnsʇ ɥɐʌǝ ɐu nɯqɹǝllɐ ʇoo˙'),
+            ('Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.', '∀ ɯɐu ɯnsʇ ɥɐʌǝ ɐu nɯqɹǝllɐ ʇoo˙'),
         )
 
         # Expect that the response step is "submitted"
