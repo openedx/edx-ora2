@@ -1,5 +1,5 @@
 """ A Mixin for Response submissions. """
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import json
 import logging
@@ -18,6 +18,17 @@ from .user_data import get_user_preferences
 from .validation import validate_submission
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+
+def _safe_load_json_list(field):
+    """
+    Tries to load JSON-ified string,
+    returns an empty list if we try to load some non-JSON-encoded string.
+    """
+    try:
+        return json.loads(field)
+    except ValueError:
+        return []
 
 
 class SubmissionMixin(object):
@@ -194,21 +205,14 @@ class SubmissionMixin(object):
         Get list of (file_download_url, file_description, file_name, file_size) for all uploaded files.
         Deleted files are represented as (None, None, None, 0)
         """
-        try:
-            saved_files_descriptions = json.loads(self.saved_files_descriptions)
-            saved_files_names = json.loads(self.saved_files_names)
-            saved_files_sizes = json.loads(self.saved_files_sizes)
-        except ValueError:
-            saved_files_descriptions = []
-            saved_files_names = []
-            saved_files_sizes = []
+        saved_file_descriptions, saved_file_names, saved_file_sizes = self.get_safe_normalized_file_metadata()
 
         file_metadata = []
 
-        if saved_files_descriptions == []:
+        if not saved_file_descriptions:
             # This is the old behavior, required for a corner case and should be eventually removed.
             # https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
-            # to be uploaded without descriptions. In that case, saved_files_descriptions would be
+            # to be uploaded without descriptions. In that case, saved_file_descriptions would be
             # an empty list. If there are currently users in that state who have files uploaded
             # with no descriptions but have not yet submitted, they will fall here.
             for i in range(self.MAX_FILES_COUNT):
@@ -218,16 +222,16 @@ class SubmissionMixin(object):
                 file_size = 0
                 if file_url:
                     try:
-                        file_description = saved_files_descriptions[i]
-                        file_name = saved_files_names[i]
-                        file_size = saved_files_sizes[i]
+                        file_description = saved_file_descriptions[i]
+                        file_name = saved_file_names[i]
+                        file_size = saved_file_sizes[i]
                     except IndexError:
                         pass
                     file_metadata.append((file_url, file_description, file_name, file_size))
                 else:
                     break
         else:
-            zipped_metadata = zip(saved_files_descriptions, saved_files_names, saved_files_sizes)
+            zipped_metadata = zip(saved_file_descriptions, saved_file_names, saved_file_sizes)
             for i, (file_description, file_name, file_size) in enumerate(zipped_metadata):
                 if file_description is None:
                     # We are passing Nones to the template because when files are deleted, we still want to
@@ -239,6 +243,95 @@ class SubmissionMixin(object):
                     file_metadata.append((file_url, file_description, file_name, file_size))
         return file_metadata
 
+    def get_file_descriptions(self):
+        return _safe_load_json_list(self.saved_files_descriptions)
+
+    def set_file_descriptions(self, file_description_list):
+        self.saved_files_descriptions = json.dumps(file_description_list)
+
+    def get_file_names(self):
+        return _safe_load_json_list(self.saved_files_names)
+
+    def set_file_names(self, file_name_list):
+        self.saved_files_names = json.dumps(file_name_list)
+
+    def get_file_sizes(self):
+        return _safe_load_json_list(self.saved_files_sizes)
+
+    def set_file_sizes(self, file_size_list):
+        self.saved_files_sizes = json.dumps(file_size_list)
+
+    def fix_file_names(self, descriptions=None):
+        descriptions = descriptions or self.get_file_descriptions()
+        if len(self.get_file_names()) != len(descriptions):
+            self.set_file_names([None for _ in range(len(descriptions))])
+        return self.get_file_names()
+
+    def fix_file_sizes(self, descriptions=None):
+        descriptions = descriptions or self.get_file_descriptions()
+        if len(self.get_file_sizes()) != len(descriptions):
+            self.set_file_sizes([None for _ in range(len(descriptions))])
+        return self.get_file_sizes()
+
+    def get_safe_normalized_file_metadata(self):
+        descriptions = self.get_file_descriptions()
+        names = self.fix_file_names(descriptions)
+        sizes = self.fix_file_sizes(descriptions)
+        return descriptions, names, sizes
+
+    def append_safe_normalized_file_metadata(self, descriptions_to_add, names_to_add, sizes_to_add):
+        """
+        Given lists of new file metadata, write the new metadata to our stored file metadata fields
+
+        Args:
+            descriptions_to_add: a list of file descriptions
+            names_to_add: a list of file names
+            sizes_to_add: a list of file sizes as integers
+
+        Returns: newly updated file metadata fields
+        """
+        if not (len(descriptions_to_add) == len(names_to_add) == len(sizes_to_add)):
+            message = (
+                'Attempted to append file metadata of differing lengths: '
+                'descriptions = {}, names = {}, sizes = {}'
+            )
+            raise FileUploadError(message.format(descriptions_to_add, names_to_add, sizes_to_add))
+
+        existing_file_descriptions, existing_file_names, existing_file_sizes = self.get_safe_normalized_file_metadata()
+
+        new_descriptions = existing_file_descriptions + descriptions_to_add
+        self.set_file_descriptions(new_descriptions)
+
+        new_names = existing_file_names + names_to_add
+        self.set_file_names(new_names)
+
+        new_sizes = existing_file_sizes + sizes_to_add
+        self.set_file_sizes(new_sizes)
+
+        return new_descriptions, new_names, new_sizes
+
+    def delete_safe_normalized_file_metadata(self, index):
+        """
+        Given a file index to remove, null out its metadata in our stored file metadata fields
+
+        Args:
+            index: file index to remove
+
+        Returns: newly updated file metadata fields
+        """
+        stored_file_descriptions, stored_file_names, stored_file_sizes = self.get_safe_normalized_file_metadata()
+
+        stored_file_descriptions[index] = None
+        self.set_file_descriptions(stored_file_descriptions)
+
+        stored_file_names[index] = None
+        self.set_file_names(stored_file_names)
+
+        stored_file_sizes[index] = 0
+        self.set_file_sizes(stored_file_sizes)
+
+        return stored_file_descriptions, stored_file_names, stored_file_sizes
+
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -246,53 +339,47 @@ class SubmissionMixin(object):
 
         Args:
             data (dict): Data should have a single key 'fileMetadata' that contains
-                a list of dictionaries with the following keys: 'description' and 'fileName'.
+                a list of dictionaries with the following keys: 'description','fileName', and 'fileSize'
             each element of the list maps to a single file
             suffix (str): Not used.
 
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
-        if 'fileMetadata' in data:
-            file_data = data['fileMetadata']
-            if isinstance(file_data, list) and all(
-                    [all(
-                        [
-                            isinstance(file_metadata['description'], six.string_types),
-                            isinstance(file_metadata['fileName'], six.string_types),
-                            isinstance(file_metadata['fileSize'], six.integer_types),
-                        ]
-                    ) for file_metadata in file_data
-                    ]
-            ):
-                try:
-                    if self.saved_files_descriptions != '':
-                        existing_file_descriptions_list = json.loads(self.saved_files_descriptions)
-                        existing_file_names_list = json.loads(self.saved_files_names)
-                        existing_file_sizes_list = json.loads(self.saved_files_sizes)
-                        existing_file_descriptions_list.extend([desc['description'] for desc in file_data])
-                        existing_file_names_list.extend([desc['fileName'] for desc in file_data])
-                        existing_file_sizes_list.extend([desc['fileSize'] for desc in file_data])
-                        self.saved_files_descriptions = json.dumps(existing_file_descriptions_list)
-                        self.saved_files_names = json.dumps(existing_file_names_list)
-                        self.saved_files_sizes = json.dumps(existing_file_sizes_list)
-                    else:
-                        self.saved_files_descriptions = json.dumps([desc['description'] for desc in file_data])
-                        self.saved_files_names = json.dumps([desc['fileName'] for desc in file_data])
-                        self.saved_files_sizes = json.dumps([desc['fileSize'] for desc in file_data])
+        failure_response = {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
-                    # Emit analytics event...
-                    self.runtime.publish(
-                        self,
-                        "openassessmentblock.save_files_descriptions",
-                        {"saved_response": self.saved_files_descriptions}
-                    )
-                except Exception:  # pylint: disable=broad-except
-                    return {'success': False, 'msg': self._(u"Files descriptions could not be saved.")}
-                else:
-                    return {'success': True, 'msg': u''}
+        if 'fileMetadata' not in data:
+            return failure_response
 
-        return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
+        file_data = data['fileMetadata']
+
+        if not isinstance(file_data, list):
+            return failure_response
+
+        file_descriptions = [desc['description'] for desc in file_data]
+        file_names = [desc['fileName'] for desc in file_data]
+        file_sizes = [desc['fileSize'] for desc in file_data]
+
+        if not all([
+            all([isinstance(description, six.string_types) for description in file_descriptions]),
+            all([isinstance(name, six.string_types) for name in file_names]),
+            all([isinstance(size, six.integer_types) for size in file_sizes]),
+        ]):
+            return failure_response
+
+        try:
+            self.append_safe_normalized_file_metadata(file_descriptions, file_names, file_sizes)
+            # Emit analytics event...
+            self.runtime.publish(
+                self,
+                "openassessmentblock.save_files_descriptions",
+                {"saved_response": self.saved_files_descriptions}
+            )
+        except FileUploadError as exc:
+            logger.exception(six.text_type(exc))
+            return {'success': False, 'msg': self._(u"Files metadata could not be saved.")}
+
+        return {'success': True, 'msg': u''}
 
     def create_submission(self, student_item_dict, student_sub_data):
         """ Creates submission for the submitted assessment response. """
@@ -304,6 +391,7 @@ class SubmissionMixin(object):
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.file_upload_type:
+            saved_file_metadata = []
             try:
                 saved_file_metadata = self.get_saved_file_metadata()
             except FileUploadError:
@@ -408,18 +496,9 @@ class SubmissionMixin(object):
             filenum = -1
 
         removed = file_upload_api.remove_file(self._get_student_item_key(filenum))
+
         if removed:
-            saved_file_descriptions = json.loads(self.saved_files_descriptions)
-            saved_file_descriptions[filenum] = None
-            self.saved_files_descriptions = json.dumps(saved_file_descriptions)
-
-            saved_files_names = json.loads(self.saved_files_names)
-            saved_files_names[filenum] = None
-            self.saved_files_names = json.dumps(saved_files_names)
-
-            saved_files_sizes = json.loads(self.saved_files_sizes)
-            saved_files_sizes[filenum] = 0
-            self.saved_files_sizes = json.dumps(saved_files_sizes)
+            self.delete_safe_normalized_file_metadata(filenum)
 
         return {'success': removed}
 

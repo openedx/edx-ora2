@@ -19,7 +19,7 @@ contextlib2==0.6.0.post1
 coverage==4.5.4
 ddt==1.0.0
 defusedxml==0.6.0
-django-model-utils==3.2.0
+django-model-utils==3.0.0
 django-nose==1.4.6
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
 django==1.11.26

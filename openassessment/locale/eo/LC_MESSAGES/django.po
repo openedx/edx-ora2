@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-12 11:30-0500\n"
+"POT-Creation-Date: 2019-11-15 13:26-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2505,16 +2505,15 @@ msgstr ""
 "Thïs réspönsé wäs nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/xblock/submission_mixin.py
-msgid "Files descriptions could not be saved."
-msgstr ""
-"Fïlés désçrïptïöns çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: openassessment/xblock/submission_mixin.py
 msgid "Files descriptions were not submitted."
 msgstr ""
 "Fïlés désçrïptïöns wéré nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
+
+#: openassessment/xblock/submission_mixin.py
+msgid "Files metadata could not be saved."
+msgstr ""
+"Fïlés métädätä çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/xblock/submission_mixin.py
 msgid "There was an error uploading your file."

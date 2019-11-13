@@ -7,6 +7,7 @@ futures==3.3.0 ; python_version == "2.7"
 boto<3.0.0
 defusedxml<1.0.0
 django<2.0
+django-model-utils==3.0.0          # Constrained by edx-platform and its dependencies.
 jsonfield<3.0.0
 lazy<2.0
 libsass<1.0.0

@@ -418,6 +418,12 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response(self, xblock):
+        descriptions = ["whatever.pdf", "anything you want to call it is fine"]
+        names = ["whatever.pdf", "anything.pdf"]
+        sizes = [200, 400]
+
+        xblock.append_safe_normalized_file_metadata(descriptions, names, sizes)
+
         # Save a response
         payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
         resp = self.request(xblock, 'save_submission', payload, response_format='json')
@@ -444,6 +450,58 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'enable_delete_files': True,
             }
         )
+
+        self.assertEqual(descriptions, xblock.get_file_descriptions())
+        self.assertEqual(names, xblock.get_file_names())
+        self.assertEqual(sizes, xblock.get_file_sizes())
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_saved_response_misaligned_file_data(self, xblock):
+        descriptions = ["whatever.pdf", "anything you want to call it is fine"]
+        names = []
+        sizes = [200]
+
+        xblock.set_file_descriptions(descriptions)
+        xblock.set_file_names(names)
+        xblock.set_file_sizes(sizes)
+
+        xblock.file_upload_type = 'pdf-and-image'
+        xblock.file_upload_response = 'optional'
+
+        # Save a response
+        payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
+        resp = self.request(xblock, 'save_submission', payload, response_format='json')
+        self.assertTrue(resp['success'])
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'text_response': 'required',
+                'file_upload_response': 'optional',
+                'file_upload_type': 'pdf-and-image',
+                'file_urls': [
+                    ('', u'whatever.pdf', None),
+                    ('', u'anything you want to call it is fine', None)
+                ],
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ('A man must have a code', 'A man must have an umbrella too.')
+                    )
+                }, xblock.prompts),
+                'save_status': 'This response has been saved but not submitted.',
+                'submit_enabled': True,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'allow_latex': False,
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': True,
+            }
+        )
+
+        self.assertEqual(["whatever.pdf", "anything you want to call it is fine"], xblock.get_file_descriptions())
+        self.assertEqual([None, None], xblock.get_file_names())
+        self.assertEqual([None, None], xblock.get_file_sizes())
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response_old_format(self, xblock):
