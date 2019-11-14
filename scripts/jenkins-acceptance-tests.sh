@@ -38,6 +38,16 @@ virtualenv venv
 source venv/bin/activate
 pip install -r requirements/test-acceptance.txt
 
+######### Install geckodriver and recent firefox for bokchoy ########
+wget -q https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
+mkdir geckodriver
+tar -xzf geckodriver-v0.15.0-linux64.tar.gz -C geckodriver
+export PATH=$PATH:$(pwd)/geckodriver
+
+wget -q https://ftp.mozilla.org/pub/firefox/releases/70.0.1/linux-x86_64/en-US/firefox-70.0.1.tar.bz2
+tar xjf firefox-70.0.1.tar.bz2
+export SELENIUM_FIREFOX_PATH=$(pwd)/firefox/firefox
+
 ######### Run acceptance tests #########
 make test-acceptance || EXIT=1
 

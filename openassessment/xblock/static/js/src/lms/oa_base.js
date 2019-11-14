@@ -145,8 +145,8 @@ OpenAssessment.BaseView.prototype = {
      * @return {String} - the current status.
      */
     getStatus: function(stepID, currentView, gradeStatus) {
-        var cssBase = stepID + ' .step__header .step__title ';
-        var cssStringTitle = cssBase + '.step__label';
+        var cssBase = stepID + ' .step__header ';
+        var cssStringTitle = cssBase + '.step__title .step__label';
         var cssStringStatus = cssBase + '.step__status';
 
         if (gradeStatus) {

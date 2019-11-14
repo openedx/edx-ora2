@@ -1036,14 +1036,13 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEqual(
-            ['Poor - 0 points\nPeer 1 - Poor', 'Good',
-             'Poor - 0 points\nPeer 1 - Poor', 'Excellent'],
+            ['Peer 1 - Poor', 'Good', 'Peer 1 - Poor', 'Excellent'],
             self.staff_area_page.learner_final_score_table_values
         )
 
         self.verify_grade_entries(
-            [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"),
-             (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent")]
+            [(u"PEER MEDIAN GRADE", u"Waiting for peer reviews", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"),
+             (u"PEER MEDIAN GRADE", u"Waiting for peer reviews", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent")]
         )
 
         # Now do a staff override, changing the score (to 1).
@@ -1071,12 +1070,12 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.verify_grade_entries(
             [
                 (
-                    u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor",
+                    u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Waiting for peer reviews",
                     u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"
                 ),
                 (
                     u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE",
-                    u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent"
+                    u"Waiting for peer reviews", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent"
                 )
             ]
         )
