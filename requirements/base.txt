@@ -6,45 +6,42 @@
 #
 
 appdirs==1.4.3            # via fs
-backports.os==0.1.1       # via fs
-bleach==3.1.0
-boto==2.49.0
+bleach==2.1.4
+boto==2.39.0
 certifi==2019.9.11        # via requests
 chardet==3.0.4            # via requests
-defusedxml==0.6.0
+defusedxml==0.5.0
 django-model-utils==3.0.0
 django==1.11.26
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework
 edx-i18n-tools==0.4.8
 edx-submissions==3.0.1
 enum34==1.1.6             # via fs
-fs==2.4.11
-future==0.18.2            # via backports.os
+fs==2.0.18
 futures==3.3.0 ; python_version == "2.7"  # via python-swiftclient
 html5lib==1.0.1
 idna==2.8                 # via requests
 jsonfield==2.0.2
-lazy==1.4
-libsass==0.19.4
+lazy==1.1
+libsass==0.10.0
 loremipsum==1.0.5
-lxml==4.4.1
+lxml==3.8.0
 markupsafe==1.1.1
-path.py==8.3
+path.py==8.2.1
 polib==1.1.0              # via edx-i18n-tools
-python-dateutil==2.8.0
+python-dateutil==2.4.0
 python-swiftclient==3.8.1
 pytz==2019.3
 pyyaml==5.1.2             # via edx-i18n-tools
 requests==2.22.0          # via python-swiftclient
 six==1.13.0               # via bleach, edx-i18n-tools, fs, html5lib, libsass, python-dateutil, python-swiftclient
-typing==3.7.4.1           # via fs
 urllib3==1.25.7           # via requests
 voluptuous==0.11.7
-web-fragments==0.3.0
-webencodings==0.5.1       # via bleach, html5lib
+web-fragments==0.3.1
+webencodings==0.5.1       # via html5lib
 webob==1.8.5
 git+https://github.com/edx/XBlock.git@xblock-1.0.1#egg=XBlock
 git+https://github.com/edx/xblock-sdk.git@331e50bed2a3c9014d998cc4428e92bf658baf8d#egg=xblock-sdk
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.6.0        # via fs
+# setuptools==41.6.0        # via fs, lazy
