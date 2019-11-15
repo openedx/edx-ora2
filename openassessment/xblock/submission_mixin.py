@@ -12,6 +12,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from xblock.core import XBlock
 
 from .data_conversion import create_submission_dict, prepare_submission_for_serialization
+from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
@@ -172,6 +173,9 @@ class SubmissionMixin(object):
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
+        data.update({'problem_name': self.display_name})
+        grader = TestGrader()
+        output = grader.grade(data)
         if 'submission' in data:
             student_sub_data = data['submission']
             # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
@@ -203,7 +207,7 @@ class SubmissionMixin(object):
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
-                return {'success': True, 'msg': u''}
+                return {'success': True, 'msg': u'', 'out': output['errors']}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
