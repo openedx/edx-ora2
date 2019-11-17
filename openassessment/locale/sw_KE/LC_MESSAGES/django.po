@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 16:27-0500\n"
-"PO-Revision-Date: 2019-11-01 19:25+0000\n"
+"POT-Creation-Date: 2019-11-15 13:26-0500\n"
+"PO-Revision-Date: 2019-11-15 19:36+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
@@ -1911,15 +1911,15 @@ msgstr "Hitilafu ya uthibitishaji: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Imefanikiwa kusasisha OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:82
+#: openassessment/xblock/submission_mixin.py:93
 msgid "\"submission\" required to submit answer."
 msgstr "\"uwasilishaji\" inahitajika kuwasilisha jibu."
 
-#: openassessment/xblock/submission_mixin.py:103
+#: openassessment/xblock/submission_mixin.py:114
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Kuwasilisha jibu, tizama kipengele hiki kwa Mtazamo kabla au Mubashara."
 
-#: openassessment/xblock/submission_mixin.py:109
+#: openassessment/xblock/submission_mixin.py:120
 msgid "Multiple submissions are not allowed."
 msgstr "Kuwasilisha zaidi ya mara moja hakuruhusiwi."
 
@@ -1935,43 +1935,43 @@ msgstr "Jibu hili halikuweza kuhifadhiwa."
 msgid "This response was not submitted."
 msgstr "Jibu hili halikuwasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:247
-msgid "Files descriptions could not be saved."
-msgstr "Maelezo ya mafaili hayakuweza kuhifadhiwa."
-
-#: openassessment/xblock/submission_mixin.py:251
+#: openassessment/xblock/submission_mixin.py:349
 msgid "Files descriptions were not submitted."
 msgstr "Maelezo ya mafaili hayakuwasilishwa"
 
-#: openassessment/xblock/submission_mixin.py:329
+#: openassessment/xblock/submission_mixin.py:380
+msgid "Files metadata could not be saved."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:449
 msgid "There was an error uploading your file."
 msgstr "Kulikuwa na hitilafu kupakia faili lako."
 
-#: openassessment/xblock/submission_mixin.py:336
+#: openassessment/xblock/submission_mixin.py:456
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:339
+#: openassessment/xblock/submission_mixin.py:459
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe katika PDF, GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:342
+#: openassessment/xblock/submission_mixin.py:462
 msgid "File type must be one of the following types: {}"
 msgstr "Aina ya faili lazima iwe moja ya aina zifuatazo: {}"
 
-#: openassessment/xblock/submission_mixin.py:346
+#: openassessment/xblock/submission_mixin.py:466
 msgid "File type is not allowed."
 msgstr "Aina ya faili haihitajiki."
 
-#: openassessment/xblock/submission_mixin.py:353
+#: openassessment/xblock/submission_mixin.py:473
 msgid "Error retrieving upload URL."
 msgstr "Hitilafu imetokea wakati kurudisha upakiaji wa URL."
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:617
 msgid "This response has been saved but not submitted."
 msgstr "Jibu hili limehifadhiwa lakini halijawasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:503
+#: openassessment/xblock/submission_mixin.py:618
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 

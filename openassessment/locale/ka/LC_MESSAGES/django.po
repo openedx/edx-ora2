@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 16:27-0500\n"
-"PO-Revision-Date: 2019-11-01 19:25+0000\n"
+"POT-Creation-Date: 2019-11-15 13:26-0500\n"
+"PO-Revision-Date: 2019-11-15 19:36+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
 "MIME-Version: 1.0\n"
@@ -1909,15 +1909,15 @@ msgstr "დადასტურების შეცდომა: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock წარმატებით განახლდა"
 
-#: openassessment/xblock/submission_mixin.py:82
+#: openassessment/xblock/submission_mixin.py:93
 msgid "\"submission\" required to submit answer."
 msgstr "პასუხების გაგზავნისთვის საჭიროა პარამეტრი \"submission\"."
 
-#: openassessment/xblock/submission_mixin.py:103
+#: openassessment/xblock/submission_mixin.py:114
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "პასუხის გაგზავნისათვის, იხილეთ ეს კომპონენტი გადათვალიერების ან ცოცხალ რეჟიმში."
 
-#: openassessment/xblock/submission_mixin.py:109
+#: openassessment/xblock/submission_mixin.py:120
 msgid "Multiple submissions are not allowed."
 msgstr "რამდენიმე ნამუშევრის გაგზავნა დაუშვებელია."
 
@@ -1933,43 +1933,43 @@ msgstr "პასუხის შენახვა ვერ მოხერხ
 msgid "This response was not submitted."
 msgstr "პასუხის გაგზავნა ვერ მოხერხდა. "
 
-#: openassessment/xblock/submission_mixin.py:247
-msgid "Files descriptions could not be saved."
-msgstr "ფაილების აღწერების შენახვა ვერ მოხერხდა"
-
-#: openassessment/xblock/submission_mixin.py:251
+#: openassessment/xblock/submission_mixin.py:349
 msgid "Files descriptions were not submitted."
 msgstr "ფაილების აღწერა არ იყო შეტანილი"
 
-#: openassessment/xblock/submission_mixin.py:329
+#: openassessment/xblock/submission_mixin.py:380
+msgid "Files metadata could not be saved."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:449
 msgid "There was an error uploading your file."
 msgstr "თქვენი ფაილის ატვირთვისას დაფიქსირდა შეცდომა."
 
-#: openassessment/xblock/submission_mixin.py:336
+#: openassessment/xblock/submission_mixin.py:456
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "ფაილის ტიპი უნდა იყოს GIF, PNG ან JPG."
 
-#: openassessment/xblock/submission_mixin.py:339
+#: openassessment/xblock/submission_mixin.py:459
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "ფაილის ტიპი უნდა იყოს PDF, GIF, PNG ან JPG."
 
-#: openassessment/xblock/submission_mixin.py:342
+#: openassessment/xblock/submission_mixin.py:462
 msgid "File type must be one of the following types: {}"
 msgstr "ფაილის ტიპი უნდა იყოს ქვემოთ ჩამოთვლილთაგან ერთ-ერთი: {}"
 
-#: openassessment/xblock/submission_mixin.py:346
+#: openassessment/xblock/submission_mixin.py:466
 msgid "File type is not allowed."
 msgstr "ფაილის ტიპი დაშვებული არ არის."
 
-#: openassessment/xblock/submission_mixin.py:353
+#: openassessment/xblock/submission_mixin.py:473
 msgid "Error retrieving upload URL."
 msgstr "ატვირთვის URL-ის ამოღების შეცდომა."
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:617
 msgid "This response has been saved but not submitted."
 msgstr "ეს პასუხი შენახულია, მაგრამ არ გაგზავნილა."
 
-#: openassessment/xblock/submission_mixin.py:503
+#: openassessment/xblock/submission_mixin.py:618
 msgid "This response has not been saved."
 msgstr "პასუხი არ შენახულა."
 

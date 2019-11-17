@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 16:27-0500\n"
-"PO-Revision-Date: 2019-11-01 19:25+0000\n"
+"POT-Creation-Date: 2019-11-15 13:26-0500\n"
+"PO-Revision-Date: 2019-11-15 19:36+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -1914,15 +1914,15 @@ msgstr "Erro de validação: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Atualização bem-sucedida do OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:82
+#: openassessment/xblock/submission_mixin.py:93
 msgid "\"submission\" required to submit answer."
 msgstr "\"submissão\" exigida para enviar a resposta."
 
-#: openassessment/xblock/submission_mixin.py:103
+#: openassessment/xblock/submission_mixin.py:114
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Para enviar uma resposta, exiba este componente em modo Pré-visualização ou Tempo Real."
 
-#: openassessment/xblock/submission_mixin.py:109
+#: openassessment/xblock/submission_mixin.py:120
 msgid "Multiple submissions are not allowed."
 msgstr "Várias submissões não são permitidas."
 
@@ -1938,43 +1938,43 @@ msgstr "Esta resposta não pode ser guardada."
 msgid "This response was not submitted."
 msgstr "Esta resposta não pode ser submetida."
 
-#: openassessment/xblock/submission_mixin.py:247
-msgid "Files descriptions could not be saved."
-msgstr "Não foi possível guardar as descrições dos ficheiros."
-
-#: openassessment/xblock/submission_mixin.py:251
+#: openassessment/xblock/submission_mixin.py:349
 msgid "Files descriptions were not submitted."
 msgstr "As descrições dos ficheiros não foram submetidas."
 
-#: openassessment/xblock/submission_mixin.py:329
+#: openassessment/xblock/submission_mixin.py:380
+msgid "Files metadata could not be saved."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:449
 msgid "There was an error uploading your file."
 msgstr "Ocorreu um erro ao carregar o seu ficheiro."
 
-#: openassessment/xblock/submission_mixin.py:336
+#: openassessment/xblock/submission_mixin.py:456
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "O tipo de conteúdo deve ser GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:339
+#: openassessment/xblock/submission_mixin.py:459
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "O tipo de conteúdo deve ser PDF, GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:342
+#: openassessment/xblock/submission_mixin.py:462
 msgid "File type must be one of the following types: {}"
 msgstr "O tipo de ficheiro deve ser um dos seguintes: {}"
 
-#: openassessment/xblock/submission_mixin.py:346
+#: openassessment/xblock/submission_mixin.py:466
 msgid "File type is not allowed."
 msgstr "O tipo de ficheiro não é permitido."
 
-#: openassessment/xblock/submission_mixin.py:353
+#: openassessment/xblock/submission_mixin.py:473
 msgid "Error retrieving upload URL."
 msgstr "Erro ao recuperar o url de carregamento."
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:617
 msgid "This response has been saved but not submitted."
 msgstr "Esta resposta foi guardada mas não foi submetida."
 
-#: openassessment/xblock/submission_mixin.py:503
+#: openassessment/xblock/submission_mixin.py:618
 msgid "This response has not been saved."
 msgstr "Esta resposta não foi guardada."
 
