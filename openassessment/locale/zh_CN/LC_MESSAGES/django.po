@@ -38,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 16:27-0500\n"
-"PO-Revision-Date: 2019-11-01 19:25+0000\n"
+"POT-Creation-Date: 2019-11-15 13:26-0500\n"
+"PO-Revision-Date: 2019-11-15 19:36+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -1933,15 +1933,15 @@ msgstr "验证错误: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: openassessment/xblock/submission_mixin.py:82
+#: openassessment/xblock/submission_mixin.py:93
 msgid "\"submission\" required to submit answer."
 msgstr "要交答案，必须有“submission\"。"
 
-#: openassessment/xblock/submission_mixin.py:103
+#: openassessment/xblock/submission_mixin.py:114
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "要提交答案，请在预览或实时模式查看该组件。"
 
-#: openassessment/xblock/submission_mixin.py:109
+#: openassessment/xblock/submission_mixin.py:120
 msgid "Multiple submissions are not allowed."
 msgstr "不允许批量提交。"
 
@@ -1957,43 +1957,43 @@ msgstr "该答案无法保存。"
 msgid "This response was not submitted."
 msgstr "该答案提交不成功。"
 
-#: openassessment/xblock/submission_mixin.py:247
-msgid "Files descriptions could not be saved."
-msgstr "文件描述无法保存。"
-
-#: openassessment/xblock/submission_mixin.py:251
+#: openassessment/xblock/submission_mixin.py:349
 msgid "Files descriptions were not submitted."
 msgstr "文件描述未能提交。"
 
-#: openassessment/xblock/submission_mixin.py:329
+#: openassessment/xblock/submission_mixin.py:380
+msgid "Files metadata could not be saved."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:449
 msgid "There was an error uploading your file."
 msgstr "您的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:336
+#: openassessment/xblock/submission_mixin.py:456
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "内容格式必须是 GIF、 PNG 或 JPG。"
 
-#: openassessment/xblock/submission_mixin.py:339
+#: openassessment/xblock/submission_mixin.py:459
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "内容格式必须是 PDF、GIF、 PNG 或 JPG。"
 
-#: openassessment/xblock/submission_mixin.py:342
+#: openassessment/xblock/submission_mixin.py:462
 msgid "File type must be one of the following types: {}"
 msgstr "文件类型必须为以下类型中的一种：{}"
 
-#: openassessment/xblock/submission_mixin.py:346
+#: openassessment/xblock/submission_mixin.py:466
 msgid "File type is not allowed."
 msgstr "文件类型不可用。"
 
-#: openassessment/xblock/submission_mixin.py:353
+#: openassessment/xblock/submission_mixin.py:473
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:617
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:503
+#: openassessment/xblock/submission_mixin.py:618
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 

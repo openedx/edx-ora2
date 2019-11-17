@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 16:27-0500\n"
-"PO-Revision-Date: 2019-11-07 19:25+0000\n"
+"POT-Creation-Date: 2019-11-15 13:26-0500\n"
+"PO-Revision-Date: 2019-11-15 21:08+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/open-edx/edx-platform/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -258,40 +258,40 @@ msgid ""
 msgstr "Ви відправляєте на перевірку відповідь на це завдання. Після відправлення ви не зможете змінити відповідь або надіслати її ще раз."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:600
-msgid "File size must be {max_files_mb}MB or less."
+#: openassessment/xblock/static/js/src/lms/oa_response.js:598
+msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:610
-#: openassessment/xblock/static/js/src/lms/oa_response.js:617
-#: openassessment/xblock/static/js/src/lms/oa_response.js:624
+#: openassessment/xblock/static/js/src/lms/oa_response.js:608
+#: openassessment/xblock/static/js/src/lms/oa_response.js:615
+#: openassessment/xblock/static/js/src/lms/oa_response.js:622
 msgid "You can upload files with these file types: "
 msgstr "Ви можете завантажувати файли таких типів: "
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:632
+#: openassessment/xblock/static/js/src/lms/oa_response.js:630
 msgid "File type is not allowed."
 msgstr "Цей тип файлів не дозволений."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:640
+#: openassessment/xblock/static/js/src/lms/oa_response.js:638
 msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:685
-#: openassessment/xblock/static/js/src/lms/oa_response.js:691
+#: openassessment/xblock/static/js/src/lms/oa_response.js:684
+#: openassessment/xblock/static/js/src/lms/oa_response.js:690
 msgid "Describe "
 msgstr "Опишіть"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:685
+#: openassessment/xblock/static/js/src/lms/oa_response.js:684
 msgid "(required):"
 msgstr "(обов'язково)"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:705
+#: openassessment/xblock/static/js/src/lms/oa_response.js:704
 msgid "Thumbnail view of "
 msgstr "Мініатюра для"
 
