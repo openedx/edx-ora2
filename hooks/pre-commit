@@ -1,0 +1,21 @@
+#!/bin/sh
+
+echo Running pre-commit scripts...
+
+# stash unstaged changes
+STASH_NAME="pre-commit-$(date +%s)"
+git stash push -q --keep-index -m "$STASH_NAME"
+
+# generate CSS and JavaScript files
+(make javascript sass)
+RESULT=$?
+
+# add updated files
+[ $RESULT == 0 ] && git add -u .
+
+# restore stashed changes
+git stash pop -q
+
+# abort the commit if file generation fails
+[ $RESULT -ne 0 ] && exit 1
+exit 0

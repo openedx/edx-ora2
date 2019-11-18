@@ -21,7 +21,24 @@ Please see ``LICENSE.txt`` for details.
 How to Contribute
 =================
 
-Contributions are very welcome. The easiest way is to fork this repo, and then make a pull request from your fork. The first time you make a pull request, you may be asked to sign a Contributor Agreement.
+Contributions are very welcome. The easiest way is to fork this repo, and then
+make a pull request from your fork. The first time you make a pull request, you
+may be asked to sign a Contributor Agreement.
+
+Before committing any changes, remember to regenerate the CSS and the bundled
+JavaScript files. Your changes may work locally because Studio, LMS and the
+tests access the raw files directly, but on a sandbox or production-like
+environment only the bundled files are used. You should do the following:
+
+.. code:: bash
+
+    make javascript sass
+
+**Note**: This can be automated by installing git hooks using:
+
+.. code:: bash
+
+    make install-git-hooks
 
 Reporting Security Issues
 =========================
@@ -31,7 +48,8 @@ Please do not report security issues in public. Please email security@edx.org
 Mailing List and Slack
 ======================
 
-You can get help with this code on our `mailing lists`_ or in real-time conversations on `Slack`_.
+You can get help with this code on our `mailing lists`_ or in real-time
+conversations on `Slack`_.
 
 .. _mailing lists: https://open.edx.org/getting-help
 .. _Slack: https://open.edx.org/getting-help

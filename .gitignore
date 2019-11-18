@@ -59,6 +59,9 @@ config.codekit
 # PyCharm
 .idea
 
+# Visual Studio Code
+.vscode
+
 # emacs
 *~
 
