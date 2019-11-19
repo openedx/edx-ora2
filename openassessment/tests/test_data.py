@@ -496,7 +496,9 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         ])
 
     @ddt.data(
-        u'ゅせ第1図', u'ぞひのぽ。', u"ГЂіи lіиэ ъэтшээи"
+        u'ゅせ第1図 ГЂіи', u"lіиэ ъэтшээи",
+        {'parts': [{'text': u'ぞひのぽ ГЂіи lіиэ ъэтшээи'}]},
+        {'files_descriptions': [u"Ámate a ti mismo primero y todo lo demás"]}
     )
     def test_collect_ora2_data_with_special_characters(self, answer):
         """
