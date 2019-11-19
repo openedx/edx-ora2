@@ -26,3 +26,12 @@ branches:
       - master
 after_success:
   coveralls
+deploy:
+  provider: pypi
+  user: edx
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    condition: '$TOXENV=quality'
+  password:
+    secure:
