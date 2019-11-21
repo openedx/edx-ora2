@@ -20,7 +20,7 @@ django-nose==1.4.6
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework
 edx-i18n-tools==0.4.8
-edx-submissions==3.0.1
+edx-submissions==3.0.2
 enum34==1.1.6
 factory-boy==2.12.0
 faker==2.0.4              # via factory-boy
