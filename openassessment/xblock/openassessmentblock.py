@@ -25,6 +25,7 @@ from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
+from openassessment.xblock.pusher_mixin import PusherMixin
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
@@ -105,6 +106,7 @@ class OpenAssessmentBlock(MessageMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
                           WaffleMixin,
+                          PusherMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
