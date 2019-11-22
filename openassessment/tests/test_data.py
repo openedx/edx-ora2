@@ -6,6 +6,7 @@ Tests for openassessment data aggregation.
 from __future__ import absolute_import, print_function
 
 import csv
+import json
 import os.path
 
 import ddt
@@ -365,6 +366,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
         self.assertEqual(feedback_cell, "")
 
 
+@ddt.ddt
 class TestOraAggregateDataIntegration(TransactionCacheResetTest):
     """
     Test that OraAggregateData behaves as expected when integrated.
@@ -448,13 +450,12 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'Feedback Statements Selected',
             'Feedback on Peer Assessments'
         ])
-
         self.assertEqual(data[0], [
             self.scorer_submission['uuid'],
             self.scorer_submission['student_item'],
             SCORER_ID,
             self.scorer_submission['submitted_at'],
-            self.scorer_submission['answer'],
+            json.dumps(self.scorer_submission['answer']),
             u'',
             u'',
             u'',
@@ -463,13 +464,12 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             u'',
             u'',
         ])
-
         self.assertEqual(data[1], [
             self.submission['uuid'],
             self.submission['student_item'],
             STUDENT_ID,
             self.submission['submitted_at'],
-            self.submission['answer'],
+            json.dumps(self.submission['answer']),
             u"Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
                 id=self.assessment['id'],
                 scored_at=self.assessment['scored_at'],
@@ -494,6 +494,27 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             FEEDBACK_OPTIONS['options'][0] + '\n' + FEEDBACK_OPTIONS['options'][1] + '\n',
             FEEDBACK_TEXT,
         ])
+
+    @ddt.data(
+        u'ゅせ第1図 ГЂіи', u"lіиэ ъэтшээи",
+        {'parts': [{'text': u'ぞひのぽ ГЂіи lіиэ ъэтшээи'}]},
+        {'files_descriptions': [u"Ámate a ti mismo primero y todo lo demás"]}
+    )
+    def test_collect_ora2_data_with_special_characters(self, answer):
+        """
+        Scenario: Verify the data collection for ORA2 works with special or non-ascii characters.
+
+        Given the submission object
+        Then update its answer with a non-ascii value
+        And the submission is saved
+        When the ORA2 data for the submissions is obtained
+        Then the data's answer will be same as json dumped answer
+        """
+        submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
+        submission.answer = answer
+        submission.save()
+        _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
+        self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][4])
 
     def test_collect_ora2_responses(self):
         item_id2 = self._other_item(2)

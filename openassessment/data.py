@@ -478,7 +478,8 @@ class OraAggregateData(object):
                 submission['student_item'],
                 student_item['student_id'],
                 submission['submitted_at'],
-                submission['answer'],
+                #  Dumping required to render special characters in CSV
+                json.dumps(submission['answer'], ensure_ascii=False),
                 assessments_cell,
                 assessments_parts_cell,
                 score.get('created_at', ''),
