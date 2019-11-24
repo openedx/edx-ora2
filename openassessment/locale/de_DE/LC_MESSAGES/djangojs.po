@@ -8,6 +8,7 @@
 # Akif Vohra <akifvohra@gmail.com>, 2016
 # Alexander L. <alexander.lohberg@ufo-style.de>, 2014
 # Alexander L. <alexander.lohberg@ufo-style.de>, 2017
+# Donna Klamma <donna@polarstern-education.com>, 2019
 # jumo, 2016
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
 # Max Vogl <mail@max-vogl.de>, 2014
@@ -20,8 +21,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-15 13:26-0500\n"
-"PO-Revision-Date: 2019-11-15 21:08+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"PO-Revision-Date: 2019-11-22 15:18+0000\n"
+"Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -259,7 +260,7 @@ msgstr "Sie sind dabei Ihre Antwort für diese Aufgabe einzureichen. Nachdem Sie
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:598
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "Die individuelle Dateigröße muss {max_files_mb}MB oder weniger sein."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:608
@@ -276,7 +277,7 @@ msgstr "Dieser Dateityp ist nicht erlaubt. "
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:638
 msgid "Only "
-msgstr ""
+msgstr "Nur"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:684

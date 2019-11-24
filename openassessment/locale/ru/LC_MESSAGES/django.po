@@ -6,7 +6,7 @@
 # Translators:
 # Alexandr Kosharny <acosarnii@gmail.com>, 2016
 # ovoschee <all.spam.there@gmail.com>, 2014
-# Dmitriy <polevaiabrest@gmail.com>, 2014
+# Dmitri Polevoi <polevaiabrest@gmail.com>, 2014
 # Liubov Fomicheva <liubov.nelapa@gmail.com>, 2015-2018
 # Maksimenkova Olga <omaksimenkova@hse.ru>, 2014-2015
 # Maria Artemieva <maria.m.artemieva@gmail.com>, 2015
