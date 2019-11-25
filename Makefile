@@ -33,6 +33,7 @@ install-js: ## install JavaScript dependencies
 
 install-test: ## install requirements for tests
 	pip install -r requirements/test.txt
+	python setup.py develop --quiet  # XBlock plugin (openassessment) has to be installed via entry_points.
 
 install: install-python install-js install-test javascript sass ## install all dependencies
 
@@ -112,7 +113,7 @@ quality: ## Run linting and code quality checks
 	./scripts/run-pylint.sh
 
 test-python: ## Run Python tests
-	coverage run manage.py test openassessment
+	pytest
 
 render-templates: ## Render HTML templates
 	./scripts/render-templates.sh

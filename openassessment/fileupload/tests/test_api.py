@@ -23,7 +23,7 @@ from django.test.utils import override_settings
 import boto
 from boto.s3.key import Key
 from moto import mock_s3
-from nose.tools import raises
+from pytest import raises
 from openassessment.fileupload import api, exceptions, urls
 from openassessment.fileupload import views_filesystem as views
 from openassessment.fileupload.backends.base import Settings as FileUploadSettings
@@ -77,13 +77,13 @@ class TestFileUploadService(TestCase):
         result = api.remove_file("foo")
         self.assertFalse(result)
 
-    @raises(exceptions.FileUploadInternalError)
     def test_get_upload_url_no_bucket(self):
-        api.get_upload_url("foo", "bar")
+        with raises(exceptions.FileUploadInternalError):
+            api.get_upload_url("foo", "bar")
 
-    @raises(exceptions.FileUploadRequestError)
     def test_get_upload_url_no_key(self):
-        api.get_upload_url("", "bar")
+        with raises(exceptions.FileUploadRequestError):
+            api.get_upload_url("", "bar")
 
     @mock_s3
     @override_settings(
@@ -92,10 +92,10 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     @patch.object(boto, 'connect_s3')
-    @raises(exceptions.FileUploadInternalError)
     def test_get_upload_url_error(self, mock_s3):
-        mock_s3.side_effect = Exception("Oh noes")
-        api.get_upload_url("foo", "bar")
+        with raises(exceptions.FileUploadInternalError):
+            mock_s3.side_effect = Exception("Oh noes")
+            api.get_upload_url("foo", "bar")
 
     @mock_s3
     @override_settings(
@@ -104,10 +104,10 @@ class TestFileUploadService(TestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     @patch.object(boto, 'connect_s3')
-    @raises(exceptions.FileUploadInternalError)
     def test_get_download_url_error(self, mock_s3):
-        mock_s3.side_effect = Exception("Oh noes")
-        api.get_download_url("foo")
+        with raises(exceptions.FileUploadInternalError):
+            mock_s3.side_effect = Exception("Oh noes")
+            api.get_download_url("foo")
 
 
 @override_settings(

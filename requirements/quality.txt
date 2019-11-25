@@ -5,8 +5,9 @@
 #    make upgrade
 #
 
-appdirs==1.4.3
 astroid==1.5.3            # via pylint, pylint-celery
+atomicwrites==1.3.0
+attrs==19.3.0
 backports.functools-lru-cache==1.6.1  # via astroid, isort, pylint
 bleach==2.1.4
 boto==2.39.0
@@ -20,14 +21,13 @@ coverage==4.5.4
 ddt==1.0.0
 defusedxml==0.5.0
 django-model-utils==3.0.0
-django-nose==1.4.6
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
 django==1.11.26
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework
 edx-i18n-tools==0.4.8
 edx-submissions==3.0.2
 git+https://github.com/edx/edx-lint.git@1.3.0#egg=edx_lint
-enum34==1.1.6
+enum34==1.1.6             # via astroid
 factory-boy==2.12.0
 faker==2.0.4
 filelock==3.0.12
@@ -51,11 +51,10 @@ mccabe==0.6.1             # via pylint
 mock==3.0.5
 more-itertools==5.0.0
 moto==0.4.31
-nose==1.3.7
 packaging==19.2
 path.py==8.2.1
 pathlib2==2.3.5
-pluggy==0.13.0
+pluggy==0.13.1
 polib==1.1.0
 py==1.8.0
 pycodestyle==2.5.0
@@ -64,6 +63,9 @@ pylint-django==0.7.2
 pylint-plugin-utils==0.6  # via pylint-celery, pylint-django
 pylint==1.7.6             # via pylint-celery, pylint-django, pylint-plugin-utils
 pyparsing==2.4.5
+pytest-cov==2.7.1
+pytest-django==3.7.0
+pytest==4.5.0
 python-dateutil==2.4.0
 python-swiftclient==3.8.1
 pytz==2019.3
@@ -78,6 +80,7 @@ tox==3.14.1
 urllib3==1.25.7
 virtualenv==16.7.7
 voluptuous==0.11.7
+wcwidth==0.1.7
 web-fragments==0.3.1
 webencodings==0.5.1
 webob==1.8.5
@@ -87,4 +90,4 @@ git+https://github.com/edx/xblock-sdk.git@331e50bed2a3c9014d998cc4428e92bf658baf
 zipp==0.6.0
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.6.0        # via fs, lazy
+# setuptools==41.6.0        # via lazy, pytest

@@ -12,7 +12,7 @@ import unittest
 from bok_choy.promise import BrokenPromise, EmptyPromise
 from bok_choy.web_app_test import WebAppTest
 import ddt
-from nose.plugins.attrib import attr
+import pytest
 from pyinstrument import Profiler
 
 from six.moves import range
@@ -302,13 +302,13 @@ class SelfAssessmentTest(OpenAssessmentTest):
         super(SelfAssessmentTest, self).setUp('self_only')
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_self_assessment(self):
         # Submit a response
         self.do_self_assessment()
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_latex(self):
         self.auto_auth_page.visit()
         self.submission_page.visit()
@@ -332,7 +332,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
         super(StaffAssessmentTest, self).setUp('staff_only', staff=True)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_assessment(self):
         # Set up user and navigate to submission page
         self.auto_auth_page.visit()
@@ -380,7 +380,7 @@ class PeerAssessmentTest(OpenAssessmentTest):
         super(PeerAssessmentTest, self).setUp('peer_only')
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_peer_assessment(self):
         # Create a submission for the first student, so there's
         # at least one submission to assess.
@@ -412,7 +412,7 @@ class StaffOverrideTest(OpenAssessmentTest):
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def _test_staff_override(self):
         """
         Scenario: staff can override a learner's grade
@@ -451,7 +451,7 @@ class StaffOverrideSelfTest(StaffOverrideTest):
         self.problem_type = 'self_only'
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_override(self):
         super(StaffOverrideSelfTest, self)._test_staff_override()
 
@@ -465,7 +465,7 @@ class StaffOverridePeerTest(StaffOverrideTest):
         self.problem_type = 'peer_only'
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_override(self):
         super(StaffOverridePeerTest, self)._test_staff_override()
 
@@ -478,7 +478,7 @@ class StudentTrainingTest(OpenAssessmentTest):
         super(StudentTrainingTest, self).setUp('student_training')
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_student_training(self):
         # Create a submission so we can get to student training
         self.auto_auth_page.visit()
@@ -501,7 +501,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.studio_page = StudioSettingsPage(self.browser, self.TEST_COURSE_ID)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_area_buttons(self):
         """
         Scenario: the staff area buttons should behave correctly
@@ -526,7 +526,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertEqual(self.staff_area_page.selected_button_names, [])
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_area_panel(self):
         """
         Scenario: the staff area panels should be shown correctly
@@ -562,7 +562,7 @@ class StaffAreaTest(OpenAssessmentTest):
             self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_student_info(self):
         """
         Scenario: staff tools shows learner response information
@@ -589,7 +589,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertNotIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_student_info_no_submission(self):
         """
         Scenario: staff tools indicates if no submission has been received for a given learner
@@ -614,7 +614,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.verify_learner_report_text('A response was not found for this learner.')
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_override(self):
         """
         Scenario: staff can override a learner's grade
@@ -659,7 +659,7 @@ class StaffAreaTest(OpenAssessmentTest):
         )
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_cancel_submission(self):
         """
         Scenario: staff can cancel a learner's submission
@@ -701,7 +701,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertIn("Learner submission removed", self.staff_area_page.learner_response)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_grade_override_cancelled(self):
         """
         Scenario: the staff grade section displays cancelled when the submission is cancelled
@@ -725,7 +725,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self._verify_staff_grade_section("CANCELLED")
         self.assertIsNone(self.grade_page.wait_for_page().score)
 
-    @attr('acceptance')
+    @pytest.mark.acceptance
     @ddt.data(True, False)
     def test_staff_override_availability_course_end(self, froze_grade):
         """
@@ -757,7 +757,7 @@ class FileUploadTest(OpenAssessmentTest):
         super(FileUploadTest, self).setUp('file_upload')
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_file_upload(self):
         self.auto_auth_page.visit()
         # trying to upload a unacceptable file
@@ -1009,7 +1009,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_override_at_end(self):
         """
         Scenario: complete workflow with staff override at the very end
@@ -1082,7 +1082,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         )
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_staff_override_at_beginning(self):
         """
         Scenario: complete workflow with staff override at the very beginning
@@ -1140,7 +1140,7 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     @ddt.data(True, False)
     def test_train_self_peer_staff(self, peer_grades_me):
         """
@@ -1184,7 +1184,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         page.submit_assessment()
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_feedback_only(self):
         # Make submission
         user, _ = self.do_submission()
@@ -1266,7 +1266,7 @@ class MultipleOpenAssessmentTest(OpenAssessmentTest, MultipleOpenAssessmentMixin
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
-    @attr('acceptance')
+    @pytest.mark.acceptance
     def test_multiple_ora_complete_flow(self):
         """
         Scenario: complete workflow on a unit containing multiple ORA blocks.

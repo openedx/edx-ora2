@@ -6,8 +6,8 @@ from mock import patch
 
 from django.db import DatabaseError
 from django.test.utils import override_settings
+from pytest import raises
 
-from nose.tools import raises
 from openassessment.assessment.models import PeerWorkflow, StudentTrainingWorkflow
 from openassessment.test_utils import CacheResetTest
 import openassessment.workflow.api as workflow_api
@@ -189,67 +189,67 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     @patch('submissions.models.Submission.objects.get')
     @ddt.file_data('data/assessments.json')
-    @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_submissions_errors_wrapped(self, data, mock_get):
-        mock_get.side_effect = Exception("Kaboom!")
-        workflow_api.create_workflow("zzzzzzzzzzzzzzz", data["steps"])
+        with raises(workflow_api.AssessmentWorkflowInternalError):
+            mock_get.side_effect = Exception("Kaboom!")
+            workflow_api.create_workflow("zzzzzzzzzzzzzzz", data["steps"])
 
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects.create')
     @ddt.file_data('data/assessments.json')
-    @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_workflow_errors_wrapped(self, data, mock_create):
-        mock_create.side_effect = DatabaseError("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
-        workflow_api.create_workflow(submission["uuid"], data["steps"])
+        with raises(workflow_api.AssessmentWorkflowInternalError):
+            mock_create.side_effect = DatabaseError("Kaboom!")
+            submission = sub_api.create_submission(ITEM_1, ANSWER_2)
+            workflow_api.create_workflow(submission["uuid"], data["steps"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get_or_create')
-    @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_peer_workflow_errors_wrapped(self, mock_create):
-        mock_create.side_effect = DatabaseError("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
-        workflow_api.create_workflow(submission["uuid"], ["peer", "self"])
+        with raises(workflow_api.AssessmentWorkflowInternalError):
+            mock_create.side_effect = DatabaseError("Kaboom!")
+            submission = sub_api.create_submission(ITEM_1, ANSWER_2)
+            workflow_api.create_workflow(submission["uuid"], ["peer", "self"])
 
     @patch('openassessment.assessment.api.staff.get_score')
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get_or_create')
-    @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_no_peer_assessment_error_handled(self, mock_get_workflow, mock_get_staff_score):
         """
         Tests to verify that, given a problem that requires the peer step and a submission associated with a workflow
         that has no assessments, an overriding staff score will push the workflow into the done state and not crash
         when there are no assessments in the "completed" peer step.
         """
-        mock_get_workflow.raises = PeerWorkflow.DoesNotExist
-        mock_get_staff_score.return_value = {
-            "points_earned": 10,
-            "points_possible": 10,
-            "contributing_assessments": 123,
-            "staff_id": "staff 1",
-        }
-        _, submission = self._create_workflow_with_status(
-            "user 1",
-            "test/1/1",
-            "peer-problem",
-            "peer",
-            steps=["peer"]
-        )
-        workflow_api.update_from_assessments(
-            submission["uuid"],
-            {
-                "peer": {
-                    "must_grade": 5,
-                    "must_be_graded_by": 3
-                }
-            },
-            override_submitter_requirements=True
-        )
+        with raises(workflow_api.AssessmentWorkflowInternalError):
+            mock_get_workflow.raises = PeerWorkflow.DoesNotExist
+            mock_get_staff_score.return_value = {
+                "points_earned": 10,
+                "points_possible": 10,
+                "contributing_assessments": 123,
+                "staff_id": "staff 1",
+            }
+            _, submission = self._create_workflow_with_status(
+                "user 1",
+                "test/1/1",
+                "peer-problem",
+                "peer",
+                steps=["peer"]
+            )
+            workflow_api.update_from_assessments(
+                submission["uuid"],
+                {
+                    "peer": {
+                        "must_grade": 5,
+                        "must_be_graded_by": 3
+                    }
+                },
+                override_submitter_requirements=True
+            )
 
     @patch('openassessment.workflow.models.AssessmentWorkflow.objects.get')
     @ddt.file_data('data/assessments.json')
-    @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_exception_wrapped(self, data, mock_create):
-        mock_create.side_effect = Exception("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
-        workflow_api.update_from_assessments(submission["uuid"], data["steps"])
+        with raises(workflow_api.AssessmentWorkflowInternalError):
+            mock_create.side_effect = Exception("Kaboom!")
+            submission = sub_api.create_submission(ITEM_1, ANSWER_2)
+            workflow_api.update_from_assessments(submission["uuid"], data["steps"])
 
     @ddt.file_data('data/assessments.json')
     def test_get_assessment_workflow_expected_errors(self, data):
@@ -260,12 +260,12 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     @patch('submissions.models.Submission.objects.get')
     @ddt.file_data('data/assessments.json')
-    @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_workflow_get_errors_wrapped(self, data, mock_get):
-        mock_get.side_effect = Exception("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, "We talk TV!")
-        workflow = workflow_api.create_workflow(submission["uuid"], data["steps"])
-        workflow_api.get_workflow_for_submission(workflow["uuid"], {})
+        with raises(workflow_api.AssessmentWorkflowInternalError):
+            mock_get.side_effect = Exception("Kaboom!")
+            submission = sub_api.create_submission(ITEM_1, "We talk TV!")
+            workflow = workflow_api.create_workflow(submission["uuid"], data["steps"])
+            workflow_api.get_workflow_for_submission(workflow["uuid"], {})
 
     def test_preexisting_workflow(self):
         """
