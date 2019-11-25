@@ -108,8 +108,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 
-    # Third party
-    'django_nose',
 
     # XBlock
     'workbench',
@@ -140,4 +138,4 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

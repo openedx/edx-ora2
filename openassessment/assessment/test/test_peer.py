@@ -13,8 +13,8 @@ from six.moves import range
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
+from pytest import raises
 
-from nose.tools import raises
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import (
     Assessment,
@@ -425,21 +425,21 @@ class TestPeerApi(CacheResetTest):
             # This should not raise an exception
             peer_api.on_start(tim_sub["uuid"])
 
-    @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_submission_found_closing_assessment(self):
         """
         Confirm the appropriate error is raised when no submission is found
         open for assessment, when submitting an assessment.
         """
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api.create_assessment(
-            tim_sub["uuid"], tim["student_id"],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
-            RUBRIC_DICT,
-            REQUIRED_GRADED_BY,
-        )
+        with raises(peer_api.PeerAssessmentWorkflowError):
+            peer_api.create_assessment(
+                tim_sub["uuid"], tim["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+            )
 
     def test_peer_assessment_workflow(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
@@ -1124,79 +1124,79 @@ class TestPeerApi(CacheResetTest):
         self.assertIsNotNone(item.assessment)
 
     @patch("openassessment.assessment.models.peer.PeerWorkflowItem.objects.filter")
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_get_submitted_assessments_error(self, mock_filter):
-        self._create_student_and_submission("Tim", "Tim's answer")
-        bob_sub, __ = self._create_student_and_submission("Bob", "Bob's answer")
-        peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"])
-        self.assertEqual(1, len(submitted_assessments))
+        with raises(peer_api.PeerAssessmentInternalError):
+            self._create_student_and_submission("Tim", "Tim's answer")
+            bob_sub, __ = self._create_student_and_submission("Bob", "Bob's answer")
+            peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"])
+            self.assertEqual(1, len(submitted_assessments))
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.raw')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_failure_to_get_review_submission(self, mock_filter):
-        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        tim_workflow = PeerWorkflow.get_by_submission_uuid(tim_answer['uuid'])
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_workflow.get_submission_for_review(3)
+        with raises(peer_api.PeerAssessmentInternalError):
+            tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            tim_workflow = PeerWorkflow.get_by_submission_uuid(tim_answer['uuid'])
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            tim_workflow.get_submission_for_review(3)
 
     @patch('openassessment.assessment.models.AssessmentFeedback.objects.get')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessment_feedback_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api.get_assessment_feedback(tim_answer['uuid'])
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            tim_answer, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            peer_api.get_assessment_feedback(tim_answer['uuid'])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflowItem.get_scored_assessments')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_set_assessment_feedback_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api.set_assessment_feedback({'submission_uuid': tim_answer['uuid']})
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            peer_api.set_assessment_feedback({'submission_uuid': tim_answer['uuid']})
 
     @patch('openassessment.assessment.models.AssessmentFeedback.save')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_set_assessment_feedback_error_on_save(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api.set_assessment_feedback(
-            {
-                'submission_uuid': tim_answer['uuid'],
-                'feedback_text': 'Boo',
-            }
-        )
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            peer_api.set_assessment_feedback(
+                {
+                    'submission_uuid': tim_answer['uuid'],
+                    'feedback_text': 'Boo',
+                }
+            )
 
     @patch('openassessment.assessment.models.AssessmentFeedback.save')
-    @raises(peer_api.PeerAssessmentRequestError)
     def test_set_assessment_feedback_error_on_huge_save(self, _):
-        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api.set_assessment_feedback(
-            {
-                'submission_uuid': tim_answer['uuid'],
-                'feedback_text': 'Boo' * AssessmentFeedback.MAXSIZE,
-            }
-        )
+        with raises(peer_api.PeerAssessmentRequestError):
+            tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            peer_api.set_assessment_feedback(
+                {
+                    'submission_uuid': tim_answer['uuid'],
+                    'feedback_text': 'Boo' * AssessmentFeedback.MAXSIZE,
+                }
+            )
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get')
-    @raises(peer_api.PeerAssessmentWorkflowError)
     def test_failure_to_get_latest_workflow(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        PeerWorkflow.get_by_submission_uuid(tim_answer['uuid'])
+        with raises(peer_api.PeerAssessmentWorkflowError):
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            PeerWorkflow.get_by_submission_uuid(tim_answer['uuid'])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get_or_create')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_create_workflow_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get_or_create')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_create_workflow_item_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        PeerWorkflow.create_item(tim, tim_answer['uuid'])
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Oh no.")
+            tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+            PeerWorkflow.create_item(tim, tim_answer['uuid'])
 
     def test_get_submission_to_evaluate(self):
         submission, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
@@ -1234,75 +1234,75 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(max_scores['secret'], 1)
         self.assertEqual(max_scores['giveup'], 10)
 
-    @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_open_assessment(self):
-        self._create_student_and_submission("Tim", "Tim's answer")
-        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
-        peer_api.create_assessment(
-            bob_sub['uuid'], bob['student_id'],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
-            RUBRIC_DICT,
-            1
-        )
+        with raises(peer_api.PeerAssessmentWorkflowError):
+            self._create_student_and_submission("Tim", "Tim's answer")
+            bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+            peer_api.create_assessment(
+                bob_sub['uuid'], bob['student_id'],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                1
+            )
 
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_max_score_db_error(self):
-        tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-        with patch('openassessment.assessment.models.Assessment.objects.filter') as mock_filter:
-            mock_filter.side_effect = DatabaseError("Bad things happened")
-            peer_api.get_rubric_max_scores(tim["uuid"])
+        with raises(peer_api.PeerAssessmentInternalError):
+            tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
+            with patch('openassessment.assessment.models.Assessment.objects.filter') as mock_filter:
+                mock_filter.side_effect = DatabaseError("Bad things happened")
+                peer_api.get_rubric_max_scores(tim["uuid"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_median_score_db_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Bad things happened")
-        tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-        peer_api.get_assessment_median_scores(tim["uuid"])
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Bad things happened")
+            tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
+            peer_api.get_assessment_median_scores(tim["uuid"])
 
     @patch('openassessment.assessment.models.Assessment.objects.filter')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessments_db_error(self, mock_filter):
-        mock_filter.return_value = Assessment.objects.none()
-        tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-        mock_filter.side_effect = DatabaseError("Bad things happened")
-        peer_api.get_assessments(tim["uuid"])
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.return_value = Assessment.objects.none()
+            tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
+            mock_filter.side_effect = DatabaseError("Bad things happened")
+            peer_api.get_assessments(tim["uuid"])
 
     @patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get_or_create')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_assessment_creation(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Bad things happened")
-        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        peer_api.on_start(submission["uuid"])
-        peer_api.create_assessment(
-            submission["uuid"], STUDENT_ITEM["student_id"],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
-            RUBRIC_DICT,
-            REQUIRED_GRADED_BY,
-            MONDAY,
-        )
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.side_effect = DatabaseError("Bad things happened")
+            submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+            peer_api.on_start(submission["uuid"])
+            peer_api.create_assessment(
+                submission["uuid"], STUDENT_ITEM["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+                MONDAY,
+            )
 
     @patch('openassessment.assessment.models.Assessment.objects.filter')
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_get_assessment(self, mock_filter):
-        mock_filter.return_value = Assessment.objects.none()
-        self._create_student_and_submission("Tim", "Tim's answer")
-        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
-        sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 3)
-        peer_api.create_assessment(
-            bob_sub["uuid"], bob["student_id"],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
-            RUBRIC_DICT,
-            REQUIRED_GRADED_BY,
-            MONDAY,
-        )
-        mock_filter.side_effect = DatabaseError("Bad things happened")
-        peer_api.get_assessments(sub["uuid"])
+        with raises(peer_api.PeerAssessmentInternalError):
+            mock_filter.return_value = Assessment.objects.none()
+            self._create_student_and_submission("Tim", "Tim's answer")
+            bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+            sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 3)
+            peer_api.create_assessment(
+                bob_sub["uuid"], bob["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+                MONDAY,
+            )
+            mock_filter.side_effect = DatabaseError("Bad things happened")
+            peer_api.get_assessments(sub["uuid"])
 
     def test_choose_score(self):
         self.assertEqual(0, Assessment.get_median_score([]))
@@ -1314,22 +1314,21 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(16, Assessment.get_median_score([5, 6, 12, 16, 22, 53, 102]))
         self.assertEqual(16, Assessment.get_median_score([16, 6, 12, 102, 22, 53, 5]))
 
-    @raises(peer_api.PeerAssessmentWorkflowError)
     def test_assess_before_submitting(self):
-        # Create a submission for another student
-        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-
-        # Attempt to create the assessment from another student without first making a submission
-        peer_api.create_assessment(
-            submission["uuid"],
-            "another_student",
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
-            RUBRIC_DICT,
-            REQUIRED_GRADED_BY,
-            MONDAY,
-        )
+        with raises(peer_api.PeerAssessmentWorkflowError):
+            # Create a submission for another student
+            submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+            # Attempt to create the assessment from another student without first making a submission
+            peer_api.create_assessment(
+                submission["uuid"],
+                "another_student",
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+                MONDAY,
+            )
 
     def test_ignore_duplicate_workflow_items(self):
         """
@@ -1535,38 +1534,38 @@ class TestPeerApi(CacheResetTest):
         # Verify that only the first assessment was used to generate the score
         self.assertEqual(score['points_earned'], 14)
 
-    @raises(peer_api.PeerAssessmentInternalError)
     def test_create_assessment_database_error(self):
-        self._create_student_and_submission("Bob", "Bob's answer")
-        submission, student = self._create_student_and_submission("Jim", "Jim's answer")
-        peer_api.get_submission_to_assess(submission['uuid'], 1)
+        with raises(peer_api.PeerAssessmentInternalError):
+            self._create_student_and_submission("Bob", "Bob's answer")
+            submission, student = self._create_student_and_submission("Jim", "Jim's answer")
+            peer_api.get_submission_to_assess(submission['uuid'], 1)
 
-        with patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get') as mock_call:
-            mock_call.side_effect = DatabaseError("Kaboom!")
+            with patch('openassessment.assessment.models.peer.PeerWorkflow.objects.get') as mock_call:
+                mock_call.side_effect = DatabaseError("Kaboom!")
+                peer_api.create_assessment(
+                    submission['uuid'],
+                    student['student_id'],
+                    ASSESSMENT_DICT['options_selected'],
+                    ASSESSMENT_DICT['criterion_feedback'],
+                    ASSESSMENT_DICT['overall_feedback'],
+                    RUBRIC_DICT,
+                    REQUIRED_GRADED_BY
+                )
+
+    def test_create_assessment_invalid_rubric_error(self):
+        with raises(peer_api.PeerAssessmentRequestError):
+            self._create_student_and_submission("Bob", "Bob's answer")
+            submission, student = self._create_student_and_submission("Jim", "Jim's answer")
+            peer_api.get_submission_to_assess(submission['uuid'], 1)
             peer_api.create_assessment(
                 submission['uuid'],
                 student['student_id'],
                 ASSESSMENT_DICT['options_selected'],
                 ASSESSMENT_DICT['criterion_feedback'],
                 ASSESSMENT_DICT['overall_feedback'],
-                RUBRIC_DICT,
+                {"invalid_rubric!": "is invalid"},
                 REQUIRED_GRADED_BY
             )
-
-    @raises(peer_api.PeerAssessmentRequestError)
-    def test_create_assessment_invalid_rubric_error(self):
-        self._create_student_and_submission("Bob", "Bob's answer")
-        submission, student = self._create_student_and_submission("Jim", "Jim's answer")
-        peer_api.get_submission_to_assess(submission['uuid'], 1)
-        peer_api.create_assessment(
-            submission['uuid'],
-            student['student_id'],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
-            {"invalid_rubric!": "is invalid"},
-            REQUIRED_GRADED_BY
-        )
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):
