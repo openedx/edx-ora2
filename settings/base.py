@@ -148,5 +148,6 @@ PUSHER_KEY = None
 PUSHER_SECRET = None
 
 # See if the developer has any local overrides.
+from os.path import abspath, dirname, join
 if os.path.isfile(join(dirname(abspath(__file__)), 'private.py')):
     from .private import *  # pylint: disable=import-error,wildcard-import
