@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 from __future__ import absolute_import
 
-from setuptools import find_packages, setup
+import os.path
+from io import open as open_as_of_py3
+
+from setuptools import setup, find_packages
+
+README = open_as_of_py3(
+    os.path.join(os.path.dirname(__file__), 'README.rst')
+).read()
 
 
 def is_requirement(line):
@@ -10,6 +17,7 @@ def is_requirement(line):
     that is, it is not blank, a comment, a URL, or an included file.
     """
     return line and not line.startswith(('-r', '#', '-e', 'git+', '-c'))
+
 
 def load_requirements(*requirements_paths):
     """
@@ -27,13 +35,16 @@ def load_requirements(*requirements_paths):
 
 setup(
     name='ora2',
-    version='2.4.2',
+    version='2.4.4',
     author='edX',
+    author_email='oscm@edx.org',
     url='http://github.com/edx/edx-ora2',
     description='edx-ora2',
     license='AGPL',
+    long_description=README,
+    long_description_content_type='text/x-rst',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Framework :: Django :: 1.11',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Affero General Public License v3',
