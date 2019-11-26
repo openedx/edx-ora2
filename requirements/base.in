@@ -23,6 +23,7 @@ libsass
 loremipsum
 lxml
 path.py
+pusher
 python-dateutil
 pytz
 voluptuous

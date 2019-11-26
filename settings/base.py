@@ -141,3 +141,12 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Pusher config
+PUSHER_APP_ID = None
+PUSHER_KEY = None
+PUSHER_SECRET = None
+
+# See if the developer has any local overrides.
+if os.path.isfile(join(dirname(abspath(__file__)), 'private.py')):
+    from .private import *  # pylint: disable=import-error,wildcard-import
