@@ -34,4 +34,4 @@ deploy:
     tags: true
     condition: '$TOXENV=quality'
   password:
-    secure:
+    secure: F7yrAFt9c56Y/x29pNbI3LMEATc6DPDTqEXs5WDDRwse/JwKe3MSsXRv6ois6JKzWroHQOZu4CKBbtfZ8v4fWv8lT4kwMJzAq8I4tda4qaSWulHiTdefzkR147oW9db2lTAKFOZsV/XUFFsv2sHDK/SQiJ0y+nxTgoMxEILChnw=
