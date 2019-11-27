@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'openassessment.fileupload',
     'openassessment.workflow',
     'openassessment.assessment',
+    'openassessment.pusher',
 
 )
 
