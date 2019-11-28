@@ -58,7 +58,11 @@ def _safe_load_json_list(field):
     """
     try:
         return json.loads(field)
-    except ValueError:
+    except ValueError as exc:
+        logger.exception(u"JSON loads failed for field {field} with error {error}".format(
+            field=field,
+            error=exc
+        ))
         return []
 
 
@@ -98,7 +102,7 @@ class FileUpload(object):
             try:
                 return get_download_url(self.key)
             except FileUploadError:
-                logger.error('Error retrieving download URL for key {}.'.format(self.key))
+                logger.exception(u'FileUploadError: Error retrieving download URL for key {}.'.format(self.key))
                 return ''
 
     @property
@@ -190,7 +194,11 @@ class FileUploadManager(object):
                 names_to_add,
                 sizes_to_add,
             ) = self._dicts_to_key_lists(new_uploads, required_keys)
-        except FileUploadError:
+        except FileUploadError as exc:
+            logging.exception(u"FileUploadError: Metadata save for {data} failed with error {error}".format(
+                error=exc,
+                data=new_uploads
+            ))
             raise
 
         existing_file_descriptions, existing_file_names, existing_file_sizes = self._get_metadata_from_block()
@@ -282,7 +290,11 @@ class FileUploadManager(object):
             download_url = ''
             try:
                 download_url = get_download_url(file_key)
-            except FileUploadError:
+            except FileUploadError as exc:
+                logger.exception(u"FileUploadError: URL retrieval failed for key {key} with error {error}".format(
+                    key=file_key,
+                    error=exc
+                ))
                 pass
 
             if download_url:
