@@ -58,11 +58,7 @@ def _safe_load_json_list(field):
     """
     try:
         return json.loads(field)
-    except ValueError as exc:
-        logger.exception(u"JSON loads failed for field {field} with error {error}".format(
-            field=field,
-            error=exc
-        ))
+    except ValueError:
         return []
 
 
@@ -101,8 +97,11 @@ class FileUpload(object):
         if self.exists:
             try:
                 return get_download_url(self.key)
-            except FileUploadError:
-                logger.exception(u'FileUploadError: Error retrieving download URL for key {}.'.format(self.key))
+            except FileUploadError as exc:
+                logger.exception(u'FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
+                    key=self.key,
+                    error=exc
+                ))
                 return ''
 
     @property
@@ -290,11 +289,7 @@ class FileUploadManager(object):
             download_url = ''
             try:
                 download_url = get_download_url(file_key)
-            except FileUploadError as exc:
-                logger.exception(u"FileUploadError: URL retrieval failed for key {key} with error {error}".format(
-                    key=file_key,
-                    error=exc
-                ))
+            except FileUploadError:
                 pass
 
             if download_url:

@@ -396,8 +396,11 @@ class SubmissionMixin(object):
         try:
             if key:
                 url = file_upload_api.get_download_url(key)
-        except FileUploadError:
-            logger.exception(u"FileUploadError: Unable to generate download url for file key {}".format(key))
+        except FileUploadError as exc:
+            logger.exception(u"FileUploadError: Download url for file key {key} failed with error {error}".format(
+                key=key,
+                error=exc
+            ))
         return url
 
     def get_download_urls_from_submission(self, submission):
