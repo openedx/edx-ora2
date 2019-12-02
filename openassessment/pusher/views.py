@@ -3,6 +3,8 @@ Provides the pusher authentication endpoint.
 """
 from __future__ import absolute_import
 
+import logging
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
@@ -11,11 +13,20 @@ from django.views.decorators.http import require_http_methods
 import pusher
 
 
-PUSHER_CLIENT = pusher.Pusher(
-    app_id=settings.PUSHER_APP_ID,
-    key=settings.PUSHER_KEY,
-    secret=settings.PUSHER_SECRET,
-)
+_PUSHER_CLIENT = None
+
+
+def pusher_client():
+    global _PUSHER_CLIENT
+
+    if not _PUSHER_CLIENT:
+        _PUSHER_CLIENT = pusher.Pusher(
+            app_id=settings.PUSHER_APP_ID,
+            key=settings.PUSHER_KEY,
+            secret=settings.PUSHER_SECRET,
+        )
+
+    return _PUSHER_CLIENT
 
 
 @login_required()
@@ -36,7 +47,7 @@ def authenticate(request):
     socket_id = data.get('socket_id', '')
 
     return JsonResponse(
-        PUSHER_CLIENT.authenticate(
+        pusher_client().authenticate(
             channel=channel_name,
             socket_id=socket_id,
         )
