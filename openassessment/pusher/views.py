@@ -11,7 +11,7 @@ from django.views.decorators.http import require_http_methods
 import pusher
 
 
-PUSHER_CIENT = pusher.Pusher(
+PUSHER_CLIENT = pusher.Pusher(
     app_id=settings.PUSHER_APP_ID,
     key=settings.PUSHER_KEY,
     secret=settings.PUSHER_SECRET,
