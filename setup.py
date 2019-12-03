@@ -26,7 +26,6 @@ def load_requirements(*requirements_paths):
     """
     requirements = set()
     for path in requirements_paths:
-        print(os.listdir("requirements"))
         with open(os.path.expanduser(path)) as reqs:
             requirements.update(
                 line.split('#')[0].strip() for line in reqs
