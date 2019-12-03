@@ -336,6 +336,20 @@ class SubmissionTest(XBlockHandlerTestCase):
             actual_keys = [upload.key for upload in xblock.file_manager.get_uploads()]
             self.assertEqual([key_1, key_2], actual_keys)
 
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_get_student_username(self, xblock):
+        mock_user = Mock(
+            username='UserName1'
+        )
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            get_real_user=lambda _: mock_user
+        )
+        resp = self.request(xblock, 'get_student_username', json.dumps({}))
+        resp = json.loads(resp)
+        self.assertEqual(resp['username'], 'UserName1')
+
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
     """
