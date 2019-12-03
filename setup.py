@@ -58,7 +58,7 @@ setup(
     include_package_data=True,
     # Todo - this should be loading 'requirements/base.in' but Tox is having an issue with it
     install_requires=load_requirements('requirements/base.in'),
-    tests_require=load_requirements('requirements/test.txt'),
+    tests_require=load_requirements('requirements/test.in'),
     entry_points={
         'xblock.v1': [
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
