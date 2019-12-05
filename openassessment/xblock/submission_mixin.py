@@ -157,6 +157,20 @@ class SubmissionMixin(object):
 
         return status, status_tag, status_text
 
+    def grade_response(self, data):
+        """
+        Grade the response and return appropriate output.
+        """
+        data.update({'problem_name': self.display_name})
+        grader = TestGrader()
+        output = grader.grade(data)
+        result = ''
+        if output['tests']:
+            result = output['tests'][0][1]
+        elif output['errors']:
+            result = output['errors']
+        return result
+
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -173,13 +187,8 @@ class SubmissionMixin(object):
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
-        data.update({'problem_name': self.display_name})
-        grader = TestGrader()
-        output_val = ''
-        output = grader.grade(data)
-        if output:
-            output_val = output['tests'][0][1]
         if 'submission' in data:
+            grade_output = self.grade_response(data)
             student_sub_data = data['submission']
             # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
             # if not success:
@@ -210,7 +219,7 @@ class SubmissionMixin(object):
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
-                return {'success': True, 'msg': u'', 'out': output_val}
+                return {'success': True, 'msg': u'', 'out': grade_output}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 

@@ -20,7 +20,9 @@
             <div class="submission__answer__part__text">
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
                 <div class="submission__answer__part__text__value">
+                    <pre>
                     {{ part.text|escape|link_and_linebreak }}
+                    </pre>
                 </div>
             </div>
             {% endif %}

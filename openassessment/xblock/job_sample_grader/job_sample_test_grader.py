@@ -197,14 +197,3 @@ class TestGrader:
             return result
         except Exception as e:
             return self.respond_with_error(e.message)
-
-
-if __name__ == '__main__':
-    response = {
-        u'submission': [u"from math import floor, sqrt\n\n\nclass Node:\n    \"\"\"\n    Representation of a tree's single node\n    \"\"\"\n\n    def __init__(self, value):\n        self.value = value\n        self.children = []\n    \n    def add_child(self, child):\n        self.children.append(child)\n    \n    def __repr__(self):\n        return \"%s %s\" % (self.value, self.children)\n\n\nclass Tree:\n\n    def __init__(self):\n\n        self.root = None\n        self.prime_nodes_count = 0\n    \n    def set_root(self, node):\n        self.root = node\n    \n    def update_prime_node_count(self):\n        '''\n        Traverse tree to update the prime node count if a node\n        has prime number of children.\n        '''\n        queue = []\n        queue.append(self.root)\n        while(len(queue)>0):\n            current_node = queue.pop(0)\n            for each in current_node.children:\n                queue.append(each)\n            if current_node.children:\n                if is_prime(len(current_node.children)):\n                    self.prime_nodes_count+=1\n    \n    def is_supreme(self, threshold):\n        if self.prime_nodes_count >= threshold:\n            return \"SUPREME\"\n        else:\n            return \"NORMAL\"\n        \n\ndef is_prime(number):\n    prime = True\n    if number==1:\n        return False\n    for j in range(2, floor(sqrt(number))+1):\n        if number%j==0:\n            prime = False\n            break\n    return prime\n    \n\ndef create_tree_from_input(data_string):\n    tree = Tree()\n    stack = []\n    node = None\n    for idx,data in enumerate(data_string):\n        if data == '(':\n            continue\n        elif data == ')' or data==',':\n            stack.pop()\n        else:\n            node = Node(data)\n            if stack != []:\n                stack[len(stack)-1].children.append(node)\n            stack.append(node)\n    tree.set_root(stack.pop(0))\n    return tree\n                \nif __name__=='__main__':\n    inp_file = open('secret_data/tree-sample.in', 'r')\n    test_cases = int(inp_file.readline())\n    for count in range(1, test_cases+1):\n        threshold = int(inp_file.readline())\n        data_string = inp_file.readline().strip()\n        tree = create_tree_from_input(data_string)\n        tree.update_prime_node_count()\n        print(\"CASE # {}: {}\".format(count, tree.is_supreme(threshold)))"],
-        u'problem_name': 'tree'
-    }
-    output = TestGrader().grade(response)
-
-    print(output)
-
