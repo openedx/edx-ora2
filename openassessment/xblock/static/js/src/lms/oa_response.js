@@ -217,12 +217,11 @@ OpenAssessment.ResponseView.prototype = {
         // url: "http://localhost:18000/api/courses/v1/blocks/block-v1:Arbx+ed314+2018+type@course+block@course/?all_blocks=true&depth=all&block_types_filter=video&student_view_data=video"
     }).done(function (response) {
         view.task_poller.stop();
-        view.updateCodeOutput(response.root);
+//        view.updateCodeOutput(response.root);
         view.saveEnabled(true);
         view.saveStatus("");
     }).fail(function (response) {
-        console.log(response);
-        view.updateCodeOutput(response.responseText);
+//        view.updateCodeOutput(response.responseText);
         view.task_poller.backOff();
     });
     },
@@ -513,10 +512,10 @@ OpenAssessment.ResponseView.prototype = {
 
         var view = this;
         var savedResponse = this.response('save');
-        this.server.save(savedResponse).done(function() {
+        this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-
+            view.updateCodeOutput(data);
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             view.checkSubmissionAbility();

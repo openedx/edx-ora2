@@ -209,7 +209,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                     data: JSON.stringify({submission: submission}),
                     contentType: jsonContentType
                 }).done(function(data) {
-                    if (data.success) { defer.resolve(); }
+                    if (data.success) { defer.resolve(data.out); }
                     else { defer.rejectWith(this, [data.msg]); }
                 }).fail(function() {
                     defer.rejectWith(this, [gettext("This response could not be saved.")]);

@@ -175,7 +175,10 @@ class SubmissionMixin(object):
         """
         data.update({'problem_name': self.display_name})
         grader = TestGrader()
+        output_val = ''
         output = grader.grade(data)
+        if output:
+            output_val = output['tests'][0][1]
         if 'submission' in data:
             student_sub_data = data['submission']
             # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
@@ -207,7 +210,7 @@ class SubmissionMixin(object):
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
-                return {'success': True, 'msg': u'', 'out': output['errors']}
+                return {'success': True, 'msg': u'', 'out': output_val}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
