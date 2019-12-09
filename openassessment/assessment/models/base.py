@@ -28,6 +28,10 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
+from simple_history.models import HistoricalRecords
+
+from model_utils.models import TimeStampedModel
+
 from lazy import lazy
 
 logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
@@ -828,3 +832,22 @@ class AssessmentPart(models.Model):
         if missing_criteria:
             msg = u"Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
             raise InvalidRubricSelection(msg)
+
+
+@python_2_unicode_compatible
+class SharedFileUpload(TimeStampedModel):
+    """
+    Define a single file uploaded by a student when attached to a team.
+
+    """
+    team_id = models.CharField(max_length=255, db_index=True)
+    course_id = models.CharField(max_length=255, db_index=True)
+    item_id = models.CharField(max_length=255, db_index=True)
+    owner_id = models.CharField(max_length=255, db_index=True)
+    file_key = models.CharField(max_length=255, unique=True)
+    history = HistoricalRecords()
+    description = models.TextField(default=u"", blank=True)
+    size = models.BigIntegerField(default=0, blank=True)
+
+    def __str__(self):
+        return u"SharedFileUpload {}".format(self.file_key)
