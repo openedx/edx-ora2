@@ -303,7 +303,10 @@ class FileUploadManager(object):
 
     def _get_file_descriptions(self):
         """ Returns a list of file descriptions associated with this manager's OA block. """
-        return _safe_load_json_list(self.block.saved_files_descriptions)
+        return [
+            self.block.runtime.service(self.block, 'teams').echo('HELLO ') + description
+            for description in _safe_load_json_list(self.block.saved_files_descriptions)
+        ]
 
     def _set_file_descriptions(self, file_description_list):
         """ Updates the file descriptions associated with this manager's OA block. """
