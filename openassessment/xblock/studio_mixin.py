@@ -139,6 +139,9 @@ class StudioMixin(object):
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
         course_id = self.location.course_key if hasattr(self, 'location') else None
 
+        teams_config = self.runtime.service(self, 'teams_configuration').teams_configuration(self.location.course_key)
+        teamsets = [teamset.teamset_id for teamset in teams_config.teamsets]
+
         return {
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
@@ -162,6 +165,7 @@ class StudioMixin(object):
             ],
             'teams_feature_enabled': self.team_submissions_enabled(),
             'teams_enabled': self.teams_enabled,
+            'teamsets': teamsets,
             'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
         }

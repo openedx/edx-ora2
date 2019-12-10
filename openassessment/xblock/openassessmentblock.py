@@ -92,6 +92,7 @@ def load(path):
 @XBlock.needs("i18n")
 @XBlock.needs("user")
 @XBlock.needs("teams")
+@XBlock.needs("teams_configuration")
 class OpenAssessmentBlock(MessageMixin,
                           SubmissionMixin,
                           PeerAssessmentMixin,
