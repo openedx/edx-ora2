@@ -515,7 +515,7 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            view.updateCodeOutput(data);
+            view.updateCodeOutput(data.sample);
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             view.checkSubmissionAbility();

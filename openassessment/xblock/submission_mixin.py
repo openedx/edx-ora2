@@ -164,11 +164,12 @@ class SubmissionMixin(object):
         data.update({'problem_name': self.display_name})
         grader = TestGrader()
         output = grader.grade(data)
-        result = ''
+        result = {'staff': '', 'sample': ''}
         if output['tests']:
-            result = output['tests'][0][1]
+            result['sample'] = output['tests'][0][1]
+            result['staff'] = output['tests'][1][1]
         elif output['errors']:
-            result = output['errors']
+            result['sample'] = output['errors']
         return result
 
     @XBlock.json_handler
