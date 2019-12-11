@@ -266,6 +266,12 @@ class StaffAreaMixin(object):
         if submission:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
+            if self.should_use_user_state(context["staff_file_urls"]):
+                logger.info(u"Checking student module for upload info for user: {username} in block: {block}".format(
+                    username=student_username,
+                    block=str(self.location)
+                ))
+                context['staff_file_urls'] = self.get_files_info_from_user_state(student_username)
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt

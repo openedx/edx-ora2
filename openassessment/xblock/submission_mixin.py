@@ -446,6 +446,38 @@ class SubmissionMixin(object):
                 urls.append((file_download_url, '', ''))
         return urls
 
+    def get_files_info_from_user_state(self, username):
+        """
+        Returns the files information from the user state for a given username.
+
+        If the files information is present in the user state, return a list of following tuple:
+        (file_download_url, file_description, file_name)
+
+        Arguments:
+            username(str): user's name whose state is being check for files information.
+        Returns:
+            List of files information tuple, if present, else empty list.
+        """
+
+        files_info = []
+        user_state = self.get_user_state(username)
+        item_dict = self.get_student_item_dict_from_username(username)
+        if u'saved_files_descriptions' in user_state:
+            # pylint: disable=protected-access
+            files_descriptions = file_upload_api._safe_load_json_list(user_state.get('saved_files_descriptions'))
+
+            files_names = file_upload_api._safe_load_json_list(user_state.get('saved_files_names', '[]'))
+            for index, description in enumerate(files_descriptions):
+                file_key = file_upload_api.get_student_file_key(item_dict, index)
+                download_url = self._get_url_by_file_key(file_key)
+                if download_url:
+                    file_name = files_names[index] if index < len(files_names) else ''
+                    files_info.append((download_url, description, file_name))
+                else:
+                    # If file has been removed, the URL doesn't exist
+                    continue
+        return files_info
+
     @staticmethod
     def get_user_submission(submission_uuid):
         """Return the most recent submission by user in workflow

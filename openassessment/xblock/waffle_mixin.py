@@ -8,6 +8,8 @@ WAFFLE_NAMESPACE = 'openresponseassessment'
 
 TEAM_SUBMISSIONS = 'team_submissions'
 
+USER_STATE_UPLOAD_DATA = "user_state_upload_data"
+
 
 def import_waffle_switch():
     """
@@ -51,16 +53,27 @@ class WaffleMixin(object):
         CourseWaffleFlag = import_course_waffle_flag()  # pylint: disable=invalid-name
         return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name)  # pylint: disable=feature-toggle-needs-doc
 
-    def team_submissions_enabled(self):
+    def is_feature_enabled(self, flag):
         """
         Returns True if a WaffleSwitch or CourseWaffleFlag
-        for team submissions is enabled for this block,
-        False otherwise.
+        is enabled for this block, False otherwise.
         """
-        if self._waffle_switch(TEAM_SUBMISSIONS).is_enabled():
+        if self._waffle_switch(flag).is_enabled():
             return True
 
-        if self._course_waffle_flag(TEAM_SUBMISSIONS).is_enabled(self.location.course_key):
+        if self._course_waffle_flag(flag).is_enabled(self.location.course_key):
             return True
 
         return False
+
+    def team_submissions_enabled(self):
+        """
+        Returns a boolean specifying if the team submission is enabled.
+        """
+        return self.is_feature_enabled(TEAM_SUBMISSIONS)
+
+    def user_state_upload_data_enabled(self):
+        """
+        Returns a boolean indicating the user state upload data flag is enabled or not.
+        """
+        return self.is_feature_enabled(USER_STATE_UPLOAD_DATA)

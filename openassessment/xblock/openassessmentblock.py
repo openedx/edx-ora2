@@ -38,6 +38,7 @@ from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from webob import Response
 from xblock.core import XBlock
+from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
 from xblock.fragment import Fragment
 
@@ -91,6 +92,7 @@ def load(path):
 
 @XBlock.needs("i18n")
 @XBlock.needs("user")
+@XBlock.needs("user_state")
 class OpenAssessmentBlock(MessageMixin,
                           SubmissionMixin,
                           PeerAssessmentMixin,
@@ -351,6 +353,53 @@ class OpenAssessmentBlock(MessageMixin,
             A unique id for (user, course) pair
         """
         return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id)
+
+    def is_user_state_service_available(self):
+        """
+        Check if the user state service is present in runtime.
+        """
+        try:
+            self.runtime.service(self, 'user_state')
+            return True
+        except NoSuchServiceError:
+            return False
+
+    def get_user_state(self, username):
+        """
+        Get the student module state for the given username for current ORA block.
+
+        Arguments:
+            username(str): username against which the state is required in the current block.
+
+        Returns:
+            user state, if found, else empty dict
+        """
+        if self.is_user_state_service_available():
+            user_state_service = self.runtime.service(self, 'user_state')
+            return user_state_service.get_state_as_dict(username, str(self.location))  # pylint: disable=no-member
+        return {}
+
+    def should_use_user_state(self, upload_urls):
+        """
+        Return a boolean if the user state is used for additional data checks.
+
+        User state is utilized when all of the following are true:
+        1. user state service is available(which is only part of courseware)
+        2. The waffle flag/switch is enabled
+        3. the file upload is required or optional
+        4. the file data from submission is missing information
+        """
+        return not any(upload_urls) \
+            and self.is_user_state_service_available() \
+            and self.user_state_upload_data_enabled() \
+            and self.file_upload_response
+
+    def get_student_item_dict_from_username(self, username):
+        """
+        Get the item dict for a given username in the parent course of block.
+        """
+        anonymous_user_id = self.get_anonymous_user_id(username, self.course_id)
+        return self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
 
     def get_student_item_dict(self, anonymous_user_id=None):
         """Create a student_item_dict from our surrounding context.
