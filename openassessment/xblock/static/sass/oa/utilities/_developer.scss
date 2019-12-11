@@ -1083,6 +1083,13 @@
       box-shadow: none;
     }
   }
+
+  #team_name_and_users {
+    margin: ($baseline-v/2) 0;
+    border: 1px solid $color-decorative-secondary;
+    background-color: $white;
+    padding: $baseline-v;
+  }
 }
 .self-assessment__display__header
 .self-assessment__display__title,

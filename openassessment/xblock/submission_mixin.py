@@ -287,6 +287,14 @@ class SubmissionMixin(object):
         return submission
 
     @XBlock.json_handler
+    def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
+        """
+        Gets the username of the current student for use in team lookup
+        """
+        anonymous_id = self.xmodule_runtime.anonymous_student_id
+        return {'username': self.get_username(anonymous_id)}
+
+    @XBlock.json_handler
     def upload_url(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Request a URL to be used for uploading content related to this

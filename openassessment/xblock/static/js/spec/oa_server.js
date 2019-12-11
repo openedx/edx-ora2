@@ -516,4 +516,83 @@ describe("OpenAssessment.Server", function() {
         );
         expect(receivedMsg).toEqual("Test error");
     });
+
+    it('listTeams returns team from team listing endpoint', function(){
+        var expectedTeam = {name: 'TeamName', id:'TeamId'}
+        stubAjax(true, {count: 1, results:[expectedTeam]});
+        var receivedTeam = null;
+        server.listTeams('username', 'CourseId').done(function(team) {receivedTeam = team})
+        expect(receivedTeam).toEqual(expectedTeam);
+    });
+
+    it('listTeams error response from team listing endpoint', function(){
+        stubAjax(false, null);
+        var receivedMsg = null;
+        server.listTeams('username', 'CourseId').fail(function(errMsg) {receivedMsg = errMsg;});
+        expect(receivedMsg).toEqual('Could not load teams information.');
+    });
+
+    it('listTeams handles zero teams from teams listing endpoint', function(){
+        stubAjax(true, {count: 0, results: []});
+        var receivedVal = null;
+        server.listTeams('username', 'CourseId').done(function(val){receivedVal = val;});
+        expect(receivedVal).toBeNull();
+    });
+
+    it('listTeams handles multiple teams from teams listing endpoint', function(){
+        stubAjax(
+            true,
+            {
+                count: 2,
+                results: [
+                    {name: 'TeamName', id:'TeamId'},
+                    {name: 'Team2', id: 'Team2'},
+                ]
+            }
+        );
+        var receivedMsg = null;
+        server.listTeams('username', 'CourseId').fail(function(errMsg){receivedMsg = errMsg;});
+        expect(receivedMsg).toEqual('Multiple teams returned for course');
+    });
+
+    it("getTeamDetail returns team detail information", function() {
+        var expectedTeamDetail = {
+            course_id: 'CourseID',
+            description: "A team!",
+            membership: [{user: {username: 'user1'}}, {user: {username: 'user1'}}, {user: {username: 'user1'}}]
+        }
+        stubAjax(true, expectedTeamDetail);
+        receivedDetail = null
+        server.getTeamDetail('team id').done(function(teamDetail) {receivedDetail = teamDetail})
+        expect(receivedDetail).toEqual(expectedTeamDetail)
+    });
+
+    it("getTeamDetail handles error response from team detail endpoint", function() {
+        stubAjax(false, null);
+        var promiseFailed = false;
+        server.getTeamDetail('team id').fail(function() {promiseFailed = true});
+        expect(promiseFailed).toBe(true)
+    });
+
+    it("getUsername handles error response from the endpoint", function() {
+        stubAjax(false, null);
+        var receivedMsg = "";
+        server.getUsername().fail(function(msg) {receivedMsg = msg});
+        expect(receivedMsg).toEqual('Error when looking up username')
+    });
+
+    it("getUsername handles null username", function() {
+        stubAjax(true, {username: null});
+        var receivedMsg = "";
+        server.getUsername().fail(function(msg) {receivedMsg = msg});
+        expect(receivedMsg).toEqual('User lookup failed')
+    });
+
+    it("getUsername returns username", function() {
+        var expectedUsername = 'expected-username'
+        stubAjax(true, {username: expectedUsername});
+        var receivedUsername = "";
+        server.getUsername().done(function(username) {receivedUsername = username});
+        expect(receivedUsername).toEqual(expectedUsername)
+    });
 });

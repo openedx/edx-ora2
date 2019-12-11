@@ -36,6 +36,12 @@ describe("OpenAssessment.BaseView", function() {
         this.peerAssess = function(optionsSelected, feedback) {
             return successPromise;
         };
+
+        this.listTeams = function(username, courseId) {
+            return $.Deferred(
+                function(defer) { defer.resolveWith(this, [null]); }
+            ).promise();
+        }
     };
 
     // Stub runtime
