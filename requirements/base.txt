@@ -39,7 +39,7 @@ pyopenssl==19.1.0         # via ndg-httpsclient, pusher
 python-dateutil==2.4.0
 python-swiftclient==3.8.1
 pytz==2019.3
-pyyaml==5.1.2             # via edx-i18n-tools
+pyyaml==5.2               # via edx-i18n-tools
 requests==2.22.0          # via pusher, python-swiftclient
 six==1.13.0               # via bleach, cryptography, edx-i18n-tools, html5lib, libsass, pusher, pynacl, pyopenssl, python-dateutil, python-swiftclient
 urllib3==1.25.7           # via pusher, requests

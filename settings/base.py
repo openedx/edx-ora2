@@ -139,6 +139,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
 
+
 # Pusher config
 PUSHER_APP_ID = None
 PUSHER_KEY = None
