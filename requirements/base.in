@@ -9,6 +9,7 @@ git+https://github.com/edx/XBlock.git@xblock-1.0.1#egg=XBlock
 git+https://github.com/edx/xblock-sdk.git@331e50bed2a3c9014d998cc4428e92bf658baf8d#egg=xblock-sdk
 
 django
+django-simple-history
 
 # Third Party Requirements
 bleach

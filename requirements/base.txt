@@ -10,6 +10,7 @@ certifi==2019.11.28       # via requests
 chardet==3.0.4            # via requests
 defusedxml==0.5.0
 django-model-utils==3.0.0
+django-simple-history==2.8.0
 django==1.11.26
 git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework
 edx-i18n-tools==0.4.8
