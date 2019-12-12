@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-15 13:26-0500\n"
+"POT-Creation-Date: 2019-12-06 11:46-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1099,43 +1099,43 @@ msgstr ""
 msgid "Enter your response to the prompt above."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+#: openassessment/templates/openassessmentblock/response/oa_response.html:121
 msgid "We could not save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:125
+#: openassessment/templates/openassessmentblock/response/oa_response.html:128
 msgid "Save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:129
+#: openassessment/templates/openassessmentblock/response/oa_response.html:132
 msgid "Your Submission Status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:141
+#: openassessment/templates/openassessmentblock/response/oa_response.html:144
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:150
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: openassessment/templates/openassessmentblock/response/oa_response.html:154
 msgid "Select a file to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:153
+#: openassessment/templates/openassessmentblock/response/oa_response.html:156
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:162
+#: openassessment/templates/openassessmentblock/response/oa_response.html:165
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:169
+#: openassessment/templates/openassessmentblock/response/oa_response.html:172
 msgid "We could not submit your response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:179
+#: openassessment/templates/openassessmentblock/response/oa_response.html:182
 msgid "Submit your response and move to the next step"
 msgstr ""
 
@@ -1940,67 +1940,67 @@ msgstr ""
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:93
+#: openassessment/xblock/submission_mixin.py:86
 msgid "\"submission\" required to submit answer."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:114
+#: openassessment/xblock/submission_mixin.py:107
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:120
+#: openassessment/xblock/submission_mixin.py:113
 msgid "Multiple submissions are not allowed."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:155
+#: openassessment/xblock/submission_mixin.py:148
 msgid "API returned unclassified exception."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:197
+#: openassessment/xblock/submission_mixin.py:190
 msgid "This response could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:201
+#: openassessment/xblock/submission_mixin.py:194
 msgid "This response was not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:349
+#: openassessment/xblock/submission_mixin.py:210
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:380
+#: openassessment/xblock/submission_mixin.py:247
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:449
+#: openassessment/xblock/submission_mixin.py:305
 msgid "There was an error uploading your file."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:456
+#: openassessment/xblock/submission_mixin.py:312
 msgid "Content type must be GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:459
+#: openassessment/xblock/submission_mixin.py:315
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:462
+#: openassessment/xblock/submission_mixin.py:318
 msgid "File type must be one of the following types: {}"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:322
 msgid "File type is not allowed."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:473
+#: openassessment/xblock/submission_mixin.py:329
 msgid "Error retrieving upload URL."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:617
+#: openassessment/xblock/submission_mixin.py:479
 msgid "This response has been saved but not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:618
+#: openassessment/xblock/submission_mixin.py:480
 msgid "This response has not been saved."
 msgstr ""
 

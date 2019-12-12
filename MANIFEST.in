@@ -6,7 +6,7 @@ include openassessment/xblock/static/css/*.css
 include openassessment/xblock/static/css/lib/backgrid/*.css
 include openassessment/xblock/static/js/openassessment*.min.js
 include openassessment/xblock/static/js/lib/backgrid/*.js
-include requirements/*.txt
+include requirements/*.in
 recursive-include openassessment/xblock/static/js/src *.js
 recursive-include openassessment/templates *.html *.underscore
 recursive-include openassessment/locale *.po

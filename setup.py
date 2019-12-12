@@ -35,7 +35,7 @@ def load_requirements(*requirements_paths):
 
 setup(
     name='ora2',
-    version='2.4.5',
+    version='2.4.8',
     author='edX',
     author_email='oscm@edx.org',
     url='http://github.com/edx/edx-ora2',
@@ -57,8 +57,8 @@ setup(
     packages=find_packages(include=['openassessment*'], exclude=['*.test', '*.tests']),
     include_package_data=True,
     # Todo - this should be loading 'requirements/base.in' but Tox is having an issue with it
-    install_requires=load_requirements('requirements/base.txt'),
-    tests_require=load_requirements('requirements/test.txt'),
+    install_requires=load_requirements('requirements/base.in'),
+    tests_require=load_requirements('requirements/test.in'),
     entry_points={
         'xblock.v1': [
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',

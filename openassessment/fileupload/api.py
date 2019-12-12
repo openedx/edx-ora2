@@ -97,8 +97,11 @@ class FileUpload(object):
         if self.exists:
             try:
                 return get_download_url(self.key)
-            except FileUploadError:
-                logger.error('Error retrieving download URL for key {}.'.format(self.key))
+            except FileUploadError as exc:
+                logger.exception(u'FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
+                    key=self.key,
+                    error=exc
+                ))
                 return ''
 
     @property
@@ -190,7 +193,11 @@ class FileUploadManager(object):
                 names_to_add,
                 sizes_to_add,
             ) = self._dicts_to_key_lists(new_uploads, required_keys)
-        except FileUploadError:
+        except FileUploadError as exc:
+            logging.exception(u"FileUploadError: Metadata save for {data} failed with error {error}".format(
+                error=exc,
+                data=new_uploads
+            ))
             raise
 
         existing_file_descriptions, existing_file_names, existing_file_sizes = self._get_metadata_from_block()

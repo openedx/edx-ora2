@@ -612,6 +612,84 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             $.ajax({
                 type: "POST", url: url, data: payload, contentType: jsonContentType
             });
+        },
+
+        /**
+         * Calls the team detail endpoint
+         *
+         * @param {string} teamId - the unique identifier for the team
+         */
+        getTeamDetail: function(teamId) {
+            var teamsUrl = window.location.origin + '/api/team/v0/teams/' + teamId;
+            return $.ajax({
+                type: "GET",
+                url: teamsUrl,
+                contentType: jsonContentType
+            });
+        },
+
+        /**
+         * Calls the team listing endpoint to recieve the list of teams for this user and course
+         *
+         * Currently a user should only be in one team per course, so an exception is raised
+         * if multiple teams are returned.
+         *
+         * @param {string} username - The username of the user we are looking up teams for
+         * @param {string} courseId - The course id that we are looking up teams for
+         */
+        listTeams: function(username, courseId) {
+            var teamsUrl = window.location.origin + '/api/team/v0/teams/';
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    type: "GET",
+                    url: teamsUrl,
+                    data: {
+                        course_id: courseId,
+                        username: username,
+                    },
+                    contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.count > 1) {
+                        defer.rejectWith(this, [gettext('Multiple teams returned for course')]);
+                    }
+                    else if (data.count === 0) {
+                        defer.resolveWith(this, [null]);
+                    }
+                    else {
+                        defer.resolveWith(this, [data.results[0]]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('Could not load teams information.')]);
+                });
+            }).promise();
+        },
+
+        /**
+         * Gets the current student's username.
+         * 
+         * Returns a promise which resolves with the username, 
+         * or fails if there is an error or the user is not found
+         */
+
+        getUsername: function() {
+            var url = this.url('get_student_username');
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({}),
+                    contentType: jsonContentType
+                }).done(function(data){
+                    if (data.username === null) {
+                        defer.rejectWith(this, [gettext('User lookup failed')]);
+                    }
+                    else {
+                        defer.resolveWith(this, [data.username]);
+                    }
+                }).fail(function(){
+                    defer.rejectWith(this, [gettext('Error when looking up username')]);
+                });
+            });
         }
     };
 }

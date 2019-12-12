@@ -550,6 +550,7 @@ class OpenAssessmentBlock(MessageMixin,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
             "MAXIMUM_FILE_UPLOAD_COUNT": self.MAX_FILES_COUNT,
+            "TEAM_ASSIGNMENT": self.teams_enabled and self.team_submissions_enabled()
         }
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment

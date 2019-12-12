@@ -240,7 +240,10 @@ class SubmissionMixin(object):
                 {"saved_response": self.saved_files_descriptions}
             )
         except FileUploadError as exc:
-            logger.exception(six.text_type(exc))
+            logger.exception(u"FileUploadError: file description for data {data} failed with error {error}".format(
+                data=data,
+                error=exc
+            ))
             return {'success': False, 'msg': self._(u"Files metadata could not be saved.")}
 
         return {'success': True, 'msg': u''}
@@ -282,6 +285,14 @@ class SubmissionMixin(object):
         )
 
         return submission
+
+    @XBlock.json_handler
+    def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
+        """
+        Gets the username of the current student for use in team lookup
+        """
+        anonymous_id = self.xmodule_runtime.anonymous_student_id
+        return {'username': self.get_username(anonymous_id)}
 
     @XBlock.json_handler
     def upload_url(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -357,8 +368,11 @@ class SubmissionMixin(object):
         """
         try:
             return file_upload_api.get_download_url(self._get_student_item_key(file_num))
-        except FileUploadError:
-            logger.exception("Error retrieving download URL.")
+        except FileUploadError as exc:
+            logger.exception(u"FileUploadError: Download URL retrieval for filenum {num} failed with {error}".format(
+                error=exc,
+                num=file_num
+            ))
             return ''
 
     def _get_student_item_key(self, num=0):
@@ -390,8 +404,11 @@ class SubmissionMixin(object):
         try:
             if key:
                 url = file_upload_api.get_download_url(key)
-        except FileUploadError:
-            logger.exception(u"Unable to generate download url for file key {}".format(key))
+        except FileUploadError as exc:
+            logger.exception(u"FileUploadError: Download url for file key {key} failed with error {error}".format(
+                key=key,
+                error=exc
+            ))
         return url
 
     def get_download_urls_from_submission(self, submission):

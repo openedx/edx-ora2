@@ -23,6 +23,7 @@ describe("OpenAssessment.ResponseView", function() {
     var FILE_TYPE_WHITE_LIST = ['pdf', 'doc', 'docx', 'html'];
     var FILE_EXT_BLACK_LIST = ['exe', 'msi', 'app', 'dmg'];
     var MAXIMUM_FILE_UPLOAD_COUNT = 20;
+    var COURSE_ID = 'course_id'
 
     var StubServer = function() {
 
@@ -30,9 +31,13 @@ describe("OpenAssessment.ResponseView", function() {
             function(defer) { defer.resolve(); }
         ).promise();
 
-        var successPromiseWithUrl = $.Deferred(
-            function(defer) { defer.resolveWith(this, [FAKE_URL]); }
-        ).promise();
+        var successPromiseWithResult = function(result){
+            return $.Deferred(
+                function(defer) { defer.resolveWith(this, [result]); }
+            ).promise();
+        }
+
+        var successPromiseWithUrl = successPromiseWithResult(FAKE_URL)
 
         var errorPromise = $.Deferred(
             function(defer) { defer.rejectWith(this, ["ERROR"]); }
@@ -64,6 +69,37 @@ describe("OpenAssessment.ResponseView", function() {
             return this.removeFileError ? errorPromise : successPromise;;
         }
 
+        this.teamListError = false
+        this.listTeamsResult = {name: 'TeamName', id:'TeamId'}
+        this.listTeams = function(username, courseId) {
+            if (this.teamListError) {
+                return errorPromise
+            } else {
+                return successPromiseWithResult(this.listTeamsResult)
+            };
+        }
+        
+        this.teamDetailError = false
+        this.teamDetailResult = {
+            id: 'TeamId',
+            name: 'TeamName',
+            course_id: 'CourseID',
+            topic_id: 'TopicID',
+            description: "A team!",
+            membership: [{user: {username: 'user1'}}, {user: {username: 'user2'}}, {user: {username: 'user3'}}]
+        }
+        this.getTeamDetail = function(teamId) {
+            if (this.teamDetailError) {
+                return errorPromise
+            } else {
+                return successPromiseWithResult(this.teamDetailResult);
+            }
+        }
+
+        this.getUsernameError = false
+        this.getUsername = function() {
+            return this.getUsernameError ? errorPromise : successPromiseWithResult('this-is-my-username') 
+        }
     };
 
     var StubFileUploader = function() {
@@ -122,7 +158,9 @@ describe("OpenAssessment.ResponseView", function() {
             "ALLOWED_FILE_MIME_TYPES": ALLOWED_FILE_MIME_TYPES,
             "FILE_TYPE_WHITE_LIST": FILE_TYPE_WHITE_LIST,
             "FILE_EXT_BLACK_LIST": FILE_EXT_BLACK_LIST,
-            "MAXIMUM_FILE_UPLOAD_COUNT": MAXIMUM_FILE_UPLOAD_COUNT
+            "MAXIMUM_FILE_UPLOAD_COUNT": MAXIMUM_FILE_UPLOAD_COUNT,
+            "COURSE_ID": COURSE_ID,
+            "TEAM_ASSIGNMENT": true,
         };
 
         // Create and install the view
@@ -873,4 +911,97 @@ describe("OpenAssessment.ResponseView", function() {
         // Expect an error to be displayed
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('delete', 'ERROR');
     });
+
+    describe('team display', function(){
+
+        it('parses list and detail endponts correctly', function(){
+            spyOn(view, 'generateTeamStringHTML').and.callThrough();
+            view.getTeamInfo();
+            expect(view.generateTeamStringHTML).toHaveBeenCalledWith(
+                'TeamName',
+                'http://localhost:9876/courses/CourseID/teams/#teams/TopicID/TeamId',
+                ['user1', 'user2', 'user3']
+            );
+        })
+
+        it('generates team HTML correctly', function(){
+            var teamUrl =  'http://localhost:9876/courses/CourseID/teams/#teams/TopicID/TeamId'
+            var message = view.generateTeamStringHTML('name', teamUrl, ['u1', 'u2', 'u3'])
+            var expectedMsg = 'You are on team <a href='+ teamUrl +'>name</a>. '
+            expectedMsg += 'Team Members: <strong class="emphasis">u1</strong>, <strong class="emphasis">u2</strong>, '
+            expectedMsg += '<strong class="emphasis">u3</strong>'
+            expect(message).toEqual(expectedMsg)
+        })
+
+        it('generates team url correctly', function(){
+            var url = view.getTeamUrl(view.server.teamDetailResult)
+            expect(url).toEqual('http://localhost:9876/courses/CourseID/teams/#teams/TopicID/TeamId')
+        })
+
+        it("doesn't call any endpoints if teams are disabled", function(){
+            view.data.TEAM_ASSIGNMENT = false
+            spyOn(view.server, 'listTeams').and.callThrough();
+            spyOn(view.server, 'getTeamDetail').and.callThrough();
+            spyOn(view.server, 'getUsername').and.callThrough();
+            view.getTeamInfo();
+            expect(view.server.listTeams.calls.any()).toEqual(false);
+            expect(view.server.getTeamDetail.calls.any()).toEqual(false);
+            expect(view.server.getUsername.calls.any()).toEqual(false);
+        })
+
+        it("doesn't call teamDetail if ListTeams is null", function(){
+            spyOn(view.server, 'getTeamDetail').and.callThrough();
+            view.server.listTeamsResult = null
+            view.getTeamInfo();
+            expect(view.server.getTeamDetail.calls.any()).toEqual(false);
+        })
+
+        it("chains calls correctly", function(){
+            spyOn(view.server, 'listTeams').and.callThrough();
+            spyOn(view.server, 'getTeamDetail').and.callThrough();
+            var recievedMessage = ""
+            view.getTeamInfo().done(
+                function(message){recievedMessage = message}
+            );
+            var expectedMsg = 'You are on team <a href=http://localhost:9876/courses/CourseID/teams/#teams/TopicID/TeamId>TeamName</a>. '
+            expectedMsg += 'Team Members: <strong class="emphasis">user1</strong>, <strong class="emphasis">user2</strong>, '
+            expectedMsg += '<strong class="emphasis">user3</strong>'
+            expect(recievedMessage).toEqual(expectedMsg)
+            expect(view.server.listTeams).toHaveBeenCalledWith('this-is-my-username', undefined) //window.$$course_id is undefined
+            expect(view.server.getTeamDetail).toHaveBeenCalledWith('TeamId')
+        })
+
+        it("handles an error from username endpoint", function(){
+            spyOn(view.server, 'listTeams').and.callThrough();
+            spyOn(view.server, 'getTeamDetail').and.callThrough();
+
+            view.server.getUsernameError = true
+            var recievedMessage = ""
+            view.getTeamInfo().fail(
+                function(message){recievedMessage = message}
+            )
+            expect(recievedMessage).toEqual('ERROR');
+
+            expect(view.server.listTeams.calls.any()).toEqual(false);
+            expect(view.server.getTeamDetail.calls.any()).toEqual(false);
+        })
+
+        it("handles an error from team listing endpoint", function(){
+            view.server.teamListError = true
+            var recievedMessage = ""
+            view.getTeamInfo().fail(
+                function(message){recievedMessage = message}
+            )
+            expect(recievedMessage).toEqual('ERROR')
+        })
+
+        it("handles an error from team detail endpoint", function(){
+            view.server.teamDetailError = true
+            var recievedMessage = ""
+            view.getTeamInfo().fail(
+                function(message){recievedMessage = message}
+            )
+            expect(recievedMessage).toEqual('Unable to load team detail')
+        })
+    })
 });
