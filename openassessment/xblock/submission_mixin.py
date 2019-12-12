@@ -166,8 +166,8 @@ class SubmissionMixin(object):
         output = grader.grade(data)
         result = {'staff': '', 'sample': ''}
         if output['tests']:
-            result['sample'] = output['tests'][0][1]
-            result['staff'] = output['tests'][1][1]
+            result['sample'] = output['tests'][0][2]
+            result['staff'] = output['tests'][1][2]
         elif output['errors']:
             result['sample'] = output['errors']
         return result
