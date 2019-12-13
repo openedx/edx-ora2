@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-06 11:46-0500\n"
+"POT-Creation-Date: 2019-12-16 12:22-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1389,6 +1389,14 @@ msgid "Enter your response to the prompt above."
 msgstr ""
 "Éntér ýöür réspönsé tö thé prömpt äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "You are on team "
+msgstr "Ýöü äré ön téäm  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "Team Members: "
+msgstr "Téäm Mémßérs:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "We could not save your progress"

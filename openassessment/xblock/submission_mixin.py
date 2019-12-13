@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 import json
 import logging
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
 import six
 
@@ -11,6 +12,7 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from xblock.core import XBlock
+from xblock.exceptions import NoSuchServiceError
 
 from .data_conversion import create_submission_dict, prepare_submission_for_serialization
 from .resolve_dates import DISTANT_FUTURE
@@ -603,6 +605,20 @@ class SubmissionMixin(object):
             context['save_status'] = self.save_status
             context['enable_delete_files'] = True
 
+            if self.teams_enabled:
+                try:
+                    team_info = self.get_team_info()
+                    if team_info:
+                        context.update(team_info)
+                except ObjectDoesNotExist:
+                    error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
+                    logger.error(error_msg.format(
+                        str(self.location),
+                        self.get_student_item_dict()['student_id'],
+                    ))
+                except NoSuchServiceError:
+                    logger.error('{}: Teams service is unavailable'.format(str(self.location)))
+
             submit_enabled = True
             if self.text_response == 'required' and not self.saved_response:
                 submit_enabled = False
@@ -637,3 +653,26 @@ class SubmissionMixin(object):
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
         return path, context
+
+    def get_team_info(self):
+        """
+        Returns dict with team info from the team service or None if th user is not on a team
+
+        Raises:
+            - NoSuchServiceError if the teams service is unavailable
+            - ObjectDoesNotExist if the user associated with `anonymous_user_id`
+                                 can not be found
+        """
+        teams_service = self.runtime.service(self, 'teams')
+        student_item_dict = self.get_student_item_dict()
+        user = self.get_real_user(student_item_dict['student_id'])
+        if not user:
+            raise ObjectDoesNotExist()
+        team = teams_service.get_team(user, student_item_dict['course_id'])
+        if not team:
+            return None
+        return {
+            'team_name': team.name,
+            'team_usernames': [user.username for user in team.users.all()],
+            'team_url': teams_service.get_team_detail_url(team),
+        }

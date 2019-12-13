@@ -11,6 +11,7 @@ import json
 from mock import ANY, Mock, patch
 import pytz
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.test.utils import override_settings
 
 import boto
@@ -23,6 +24,7 @@ from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from submissions import api as sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
+from xblock.exceptions import NoSuchServiceError
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -349,6 +351,73 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'get_student_username', json.dumps({}))
         resp = json.loads(resp)
         self.assertEqual(resp['username'], 'UserName1')
+
+    @scenario('data/submission_open.xml')
+    def test_get_team_info_no_service(self, xblock):
+        with self.assertRaises(NoSuchServiceError):
+            xblock.get_team_info()
+
+    @scenario('data/submission_open.xml')
+    def test_get_team_info_no_user(self, xblock):
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        xblock.runtime = Mock()
+        xblock.get_real_user = Mock(return_value=None)
+
+        with self.assertRaises(ObjectDoesNotExist):
+            xblock.get_team_info()
+
+    @scenario('data/submission_open.xml')
+    def test_get_team_info_no_team(self, xblock):
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        mock_team_service = Mock()
+        mock_team_service.get_team.return_value = None
+        xblock.runtime = Mock()
+        xblock.runtime.service.return_value = mock_team_service
+        self.assertIsNone(xblock.get_team_info())
+
+    @scenario('data/submission_open.xml')
+    def test_get_team_info(self, xblock):
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        xblock.runtime = Mock()
+
+        expected_usernames = ['Al1ce', 'B0B', "ch4rles_in_charge"]
+        mock_users = [Mock(username=username) for username in expected_usernames]
+
+        expected_team_name = "AlgorithmsSquad"
+        expected_topic_id = "Algo"
+        expected_description = "Who runs the world? AlgorithmSquad"
+        mock_team = Mock(
+            topic_id=expected_topic_id,
+            description=expected_description,
+        )
+        # This is required because 'name' is a reserved property for mocks
+        mock_team.configure_mock(name=expected_team_name)
+        mock_team.users.all.return_value = mock_users
+
+        mock_team_service = Mock()
+        mock_team_service.get_team.return_value = mock_team
+        expected_team_url = "this_should_be_a_url"
+        mock_team_service.get_team_detail_url.return_value = expected_team_url
+        xblock.runtime.service.return_value = mock_team_service
+
+        team_info = xblock.get_team_info()
+        self.assertDictEqual(
+            team_info,
+            {
+                'team_name': expected_team_name,
+                'team_usernames': expected_usernames,
+                'team_url': expected_team_url,
+            }
+        )
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):

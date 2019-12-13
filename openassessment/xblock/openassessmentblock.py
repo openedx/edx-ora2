@@ -93,6 +93,7 @@ def load(path):
 @XBlock.needs("i18n")
 @XBlock.needs("user")
 @XBlock.needs("user_state")
+@XBlock.needs("teams")
 class OpenAssessmentBlock(MessageMixin,
                           SubmissionMixin,
                           PeerAssessmentMixin,
@@ -1154,24 +1155,39 @@ class OpenAssessmentBlock(MessageMixin,
         self.runtime.publish(self, event_name, data)
         return {'success': True}
 
+    def get_real_user(self, anonymous_user_id):
+        """
+        Return the user associated with anonymous_user_id
+        Args:
+            anonymous_user_id (str): the anonymous user id of the user
+
+        Returns: the user model for the user if it can be identified.
+            If the xblock service to converts to a real user fails,
+            returns None and logs the error.
+
+        """
+        if hasattr(self, "xmodule_runtime"):
+            user = self.xmodule_runtime.get_real_user(anonymous_user_id)  # pylint: disable=no-member
+            if user:
+                return user
+            logger.exception(
+                u"XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
+            )
+            return None
+
     def get_username(self, anonymous_user_id):
         """
         Return the username of the user associated with anonymous_user_id
         Args:
             anonymous_user_id (str): the anonymous user id of the user
 
-        Returns: the username if it can be identified. If the xblock service to converts to a real user
-            fails, returns None and logs the error.
+        Returns: the username if it can be identified.
 
         """
-        if hasattr(self, "xmodule_runtime"):
-            user = self.xmodule_runtime.get_real_user(anonymous_user_id)  # pylint: disable=no-member
-            if user:
-                return user.username
-            logger.exception(
-                u"XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
-            )
-            return None
+        user = self.get_real_user(anonymous_user_id)
+        if user:
+            return user.username
+        return None
 
     def _adjust_start_date_for_beta_testers(self, start):
         """
