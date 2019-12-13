@@ -5,7 +5,9 @@
     {% for part in answer.parts %}
         <li class="submission__answer__part">
             <div class="submission__answer__part__text">
+                {% if forloop.first %}
                 <h5 class="submission__answer__part__text__title">{% trans "The question for this section" %}</h5>
+                {% endif %}
             </div>
             <article class="submission__answer__part__prompt">
                 <div class="submission__answer__part__prompt__value">
@@ -18,7 +20,9 @@
             </article>
             {% if part.text %}
             <div class="submission__answer__part__text">
+                {% if forloop.first %}
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
+                {% endif %}
                 <div class="submission__answer__part__text__value">
                     <pre>
                     {{ part.text|escape|link_and_linebreak }}

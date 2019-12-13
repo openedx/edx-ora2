@@ -198,12 +198,12 @@ OpenAssessment.ResponseView.prototype = {
         return $('.response__submission .submission__answer__part__text__value', this.element);
     },
     /**
-     Disable every second prompt on loading ORA
+     Disable every prompt, except the first, on loading ORA
      **/
     disableCodeOutputArea: function(){
         var sel = $('.response__submission .submission__answer__part__text__value', this.element);
         sel.map(function (index) {
-            if(index%2!==0){
+            if(index!==0){
                 $(this).prop('readonly', true);
             }
         });
@@ -230,9 +230,9 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Update code area with run result
      */
-    updateCodeOutput: function(output){
+    updateCodeOutput: function(output, index=1){
     var sel = this.getPrompts();
-    $(sel[1]).val(output);
+    $(sel[index]).val(output);
     },
 
     /**
@@ -518,8 +518,9 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            view.updateCodeOutput(data.sample);
-            view.staff_response = data.staff;
+            view.updateCodeOutput(data.sample_out);
+            view.updateCodeOutput(data.sample_expected, 2);
+            view.staff_response = data.staff_out;
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             view.checkSubmissionAbility();

@@ -132,10 +132,10 @@ class TestGrader:
             )
         elif 'C++' in output:
             lang = 'cpp'
-        # else:
-        #     raise Exception('Language can only be C++, Java or Python.')
         else:
-            lang = "py"
+            raise Exception('Language can only be C++, Java or Python.')
+        # else:
+        #     lang = "py"
         return lang, source_code
 
     def write_code_file(self, source_code, full_code_file_name):
