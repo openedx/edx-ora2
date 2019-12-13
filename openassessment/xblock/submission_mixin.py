@@ -84,13 +84,13 @@ class SubmissionMixin(object):
 
         status = False
         student_sub_data = data['submission']
-        success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-        if not success:
-            return (
-                False,
-                'EBADARGS',
-                msg
-            )
+        # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
+        # if not success:
+        #     return (
+        #         False,
+        #         'EBADARGS',
+        #         msg
+        #     )
 
         student_item_dict = self.get_student_item_dict()
 

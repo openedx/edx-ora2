@@ -189,7 +189,7 @@ def prepare_submission_for_serialization(submission_data):
     }
 
 
-def create_submission_dict(submission, prompts):
+def create_submission_dict(submission, prompts, staff_view=False):
     """
     1. Convert from legacy format.
     2. Add prompts to submission['answer']['parts'] to simplify iteration in the template.
@@ -197,17 +197,28 @@ def create_submission_dict(submission, prompts):
     Args:
         submission (dict): Submission dictionary.
         prompts (list of dict): The prompts from the problem definition.
+        staff_view: If staff is viewing submission, then add the staff test cases output
 
     Returns:
         dict
     """
     parts = [{'prompt': prompt, 'text': ''} for prompt in prompts]
+    if staff_view:
+        parts.append({'prompt': {'description': "Staff Test Cases Output"}, 'text': ''})
 
     if 'text' in submission['answer']:
         parts[0]['text'] = submission['answer'].pop('text')
     else:
         for index, part in enumerate(submission['answer'].pop('parts')):
-            parts[index]['text'] = part['text']
+            try:
+                parts[index]['text'] = part['text']
+            except IndexError:
+                # To avoid showing the staff output to learner when they have submitted their submission
+
+                # This error is raised as staff output is saved without any prompt and when trying to change
+                # the submission format, it tries to add the staff output but since no prompt is set
+                # at that index, it raises IndexError
+                continue
 
     submission['answer']['parts'] = parts
 

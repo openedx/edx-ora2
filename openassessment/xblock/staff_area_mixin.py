@@ -260,14 +260,13 @@ class StaffAreaMixin(object):
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))  # localize for staff user
 
         context = {
-            'submission': create_submission_dict(submission, self.prompts) if submission else None,
+            'submission': create_submission_dict(submission, self.prompts, staff_view=True) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
         }
-
         if submission:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
