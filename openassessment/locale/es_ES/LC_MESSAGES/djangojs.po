@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-15 13:26-0500\n"
-"PO-Revision-Date: 2019-11-15 21:08+0000\n"
+"POT-Creation-Date: 2019-12-06 11:46-0500\n"
+"PO-Revision-Date: 2019-12-12 08:29+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/open-edx/edx-platform/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -115,6 +115,30 @@ msgid "The submission could not be removed from the grading pool."
 msgstr "La entrega no pudo eliminarse del tablón de calificaciones."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:653
+msgid "Multiple teams returned for course"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:662
+msgid "Could not load teams information."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:683
+msgid "User lookup failed"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:689
+msgid "Error when looking up username"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_base.js:321
 msgid "Unable to load"
 msgstr ""
@@ -204,90 +228,95 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:311
+#: openassessment/xblock/static/js/src/lms/oa_response.js:320
 msgid "Your file "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:335
+#: openassessment/xblock/static/js/src/lms/oa_response.js:344
 msgid "Status of Your Response"
 msgstr "Estado de tu respuesta"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:409
+#: openassessment/xblock/static/js/src/lms/oa_response.js:418
 msgid "This response has not been saved."
 msgstr "Esta respuesta no se ha guardado."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:414
+#: openassessment/xblock/static/js/src/lms/oa_response.js:423
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:432
+#: openassessment/xblock/static/js/src/lms/oa_response.js:441
 msgid "Saving..."
 msgstr "Guardando..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:454
+#: openassessment/xblock/static/js/src/lms/oa_response.js:463
 msgid "This response has been saved but not submitted."
 msgstr "Esta respuesta se ha guardado pero no se ha enviado"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:459
+#: openassessment/xblock/static/js/src/lms/oa_response.js:468
 msgid "Error"
 msgstr "Error"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:485
+#: openassessment/xblock/static/js/src/lms/oa_response.js:494
 msgid "Do you want to upload your file before submitting?"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:561
+#: openassessment/xblock/static/js/src/lms/oa_response.js:570
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Estás a punto de enviar tu respuesta para este ejercicio. Después de enviar esta respuesta, no podrás cambiarla o enviar una nueva."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:598
+#: openassessment/xblock/static/js/src/lms/oa_response.js:607
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:608
-#: openassessment/xblock/static/js/src/lms/oa_response.js:615
-#: openassessment/xblock/static/js/src/lms/oa_response.js:622
+#: openassessment/xblock/static/js/src/lms/oa_response.js:617
+#: openassessment/xblock/static/js/src/lms/oa_response.js:624
+#: openassessment/xblock/static/js/src/lms/oa_response.js:631
 msgid "You can upload files with these file types: "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:630
+#: openassessment/xblock/static/js/src/lms/oa_response.js:639
 msgid "File type is not allowed."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:638
+#: openassessment/xblock/static/js/src/lms/oa_response.js:647
 msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:684
-#: openassessment/xblock/static/js/src/lms/oa_response.js:690
+#: openassessment/xblock/static/js/src/lms/oa_response.js:693
+#: openassessment/xblock/static/js/src/lms/oa_response.js:699
 msgid "Describe "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:684
+#: openassessment/xblock/static/js/src/lms/oa_response.js:693
 msgid "(required):"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:704
+#: openassessment/xblock/static/js/src/lms/oa_response.js:713
 msgid "Thumbnail view of "
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:1005
+msgid "Unable to load team detail"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
