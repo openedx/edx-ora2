@@ -111,9 +111,14 @@
                                 {% endif %}
                             </li>
                         {% endfor %}
-                        <div id="team_name_and_users">
-                            
-                        </div>
+                        {% if team_name %}
+                            <div id='team_name_and_users'>
+                                {% trans "You are on team " %}
+                                <a href="{{team_url}}">{{team_name}}</a>.
+                                {% trans "Team Members: " %}
+                                <strong class="emphasis">{{team_usernames|join:", "}}</strong>
+                            </div>
+                        {% endif %}
                         {% if text_response %}
                         <li class="field">
                             <div class="response__submission__actions">

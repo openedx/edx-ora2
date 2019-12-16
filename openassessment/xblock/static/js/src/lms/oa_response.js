@@ -62,28 +62,16 @@ OpenAssessment.ResponseView.prototype = {
         view.isRendering = true;
         this.server.render('submission').done(
             function(html) {
-                view.getTeamInfo().done(
-                    function(teamHTML) {
-                        // Load the HTML and install event handlers
-                        $(stepID, view.element).replaceWith(html);
-                        view.server.renderLatex($(stepID, view.element));
-                        var teamDiv = $('#team_name_and_users', this.element);
-                        if (teamHTML) {
-                            teamDiv.html(teamHTML);
-                        } else {
-                            teamDiv.hide();
-                        }
-                        view.installHandlers();
-                        view.setAutoSaveEnabled(true);
-                        view.isRendering = false;
-                        view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
-                        view.announceStatus = false;
-                        view.dateFactory.apply();
-                        view.checkSubmissionAbility();
-                    }
-                ).fail(function(msg) {
-                    view.baseView.showLoadError('response', msg);
-                });
+                // Load the HTML and install event handlers
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
+                view.installHandlers();
+                view.setAutoSaveEnabled(true);
+                view.isRendering = false;
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+                view.announceStatus = false;
+                view.dateFactory.apply();
+                view.checkSubmissionAbility();
             }).fail(function() {
             view.baseView.showLoadError('response');
         });
@@ -951,76 +939,5 @@ OpenAssessment.ResponseView.prototype = {
 
             return url;
         });
-    },
-
-    /**
-     * Generates HTML to display team information
-     *
-     * @param {string} teamName - The name of the team
-     * @param {string} teamUrl - The url to the team page
-     * @param {array} usernames - The list of users on the team
-     */
-    generateTeamStringHTML: function(teamName, teamUrl, usernames) {
-        var userString = usernames.join('</strong>, <strong class="emphasis">');
-        userString = '<strong class="emphasis">' + userString + '</strong>';
-        var teamMsg = 'Team Members: ' + userString;
-        return 'You are on team <a href=' + teamUrl + '>' + teamName + '</a>. ' + teamMsg;
-    },
-
-    getTeamUrl: function(teamDetail) {
-        return [
-            window.location.origin,
-            'courses',
-            teamDetail.course_id,
-            'teams',
-            '#teams',
-            teamDetail.topic_id,
-            teamDetail.id,
-        ].join('/');
-    },
-
-    /**
-     * Request team info for current user and assignment from Teams API and return HTML to be
-     * displayed to user
-     *
-     * If teams are enabled and turned on for this ora, return a promise that resolves with the HTML to be displayed,
-     * or null if the user is not on a team.
-     * If teams are not enabled, return a promise that immediatey resolves with null.
-     */
-    getTeamInfo: function() {
-        var view = this;
-        var teamEnabled = (view.data || {}).TEAM_ASSIGNMENT || false;
-        if (!teamEnabled) {
-            // eslint-disable-next-line new-cap
-            return $.Deferred(
-                function(defer) {defer.resolveWith(this, [null]);}
-            ).promise();
-        }
-        // eslint-disable-next-line new-cap
-        return $.Deferred(function(defer) {
-            view.server.getUsername().done(function(username) {
-                view.server.listTeams(username, window.$$course_id).done(function(team) {
-                    // If the user is not in a team, resolve null
-                    if (team === null) {
-                        defer.resolveWith(this, [null]);
-                        return;
-                    }
-                    view.server.getTeamDetail(team.id).done(function(teamDetail) {
-                        var membership = teamDetail.membership || [];
-                        var usernames = membership.map(function(membership) {
-                            return membership.user.username;
-                        });
-                        var teamUrl = view.getTeamUrl(teamDetail);
-                        defer.resolveWith(this, [view.generateTeamStringHTML(team.name, teamUrl, usernames)]);
-                    }).fail(function() {
-                        defer.rejectWith(this, [gettext('Unable to load team detail')]);
-                    });
-                }).fail(function(msg) {
-                    defer.rejectWith(this, [msg]);
-                });
-            }).fail(function(msg) {
-                defer.rejectWith(this, [msg]);
-            });
-        }).promise();
     },
 };
