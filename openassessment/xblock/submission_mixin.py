@@ -39,6 +39,11 @@ class SubmissionMixin(object):
 
     MAX_FILES_COUNT = 20
 
+    STAFF_EXPECTED = 'staff_expected'
+    STAFF_OUTPUT = 'staff_out'
+    SAMPLE_EXPECTED = 'sample_expected'
+    SAMPLE_OUTPUT = 'sample_out'
+
     # taken from http://www.howtogeek.com/137270/50-file-extensions-that-are-potentially-dangerous-on-windows/
     # and http://pcsupport.about.com/od/tipstricks/a/execfileext.htm
     # left out .js and office extensions
@@ -83,6 +88,8 @@ class SubmissionMixin(object):
             )
 
         status = False
+        grade_output = self.grade_response(data, add_staff_output=True)
+        self.add_staff_output_to_submission(data, grade_output)
         student_sub_data = data['submission']
         # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
         # if not success:
@@ -157,22 +164,33 @@ class SubmissionMixin(object):
 
         return status, status_tag, status_text
 
-    def grade_response(self, data):
+    def add_staff_output_to_submission(self, data, grade_output):
+
+        keys_to_add = [self.STAFF_OUTPUT, self.STAFF_EXPECTED]
+        for each in keys_to_add:
+            try:
+                data['submission'].append(grade_output[each])
+            except KeyError:
+                # If the keys aren't found, which happens if the code submission has faced
+                # some errors, then add an empty string
+                data['submission'].append('')
+
+    def grade_response(self, data, add_staff_output=False):
         """
         Grade the response and return appropriate output.
         """
         data.update({'problem_name': self.display_name})
         grader = TestGrader()
         output = grader.grade(data)
-        result = {'staff_out': '','staff_expected': '', 'sample_out': '', 'sample_expected': ''}
+        result = {self.SAMPLE_OUTPUT: '', self.SAMPLE_EXPECTED: ''}
         if output['tests']:
-            result['sample_out'] = output['tests'][0][2]
-            result['staff_out'] = output['tests'][1][2]
-
-            result['sample_expected'] = output['tests'][0][1]
-            result['staff_expected'] = output['tests'][1][1]
+            result[self.SAMPLE_OUTPUT] = output['tests'][0][2]
+            result[self.SAMPLE_EXPECTED] = output['tests'][0][1]
+            if add_staff_output:
+                result[self.STAFF_OUTPUT] = output['tests'][1][2]
+                result[self.STAFF_EXPECTED] = output['tests'][1][1]
         elif output['errors']:
-            result['sample_out'] = output['errors']
+            result[self.SAMPLE_OUTPUT] = output['errors']
         return result
 
     @XBlock.json_handler

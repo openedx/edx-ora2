@@ -205,6 +205,7 @@ def create_submission_dict(submission, prompts, staff_view=False):
     parts = [{'prompt': prompt, 'text': ''} for prompt in prompts]
     if staff_view:
         parts.append({'prompt': {'description': "Staff Test Cases Output"}, 'text': ''})
+        parts.append({'prompt': {'description': "Staff Test Cases Expected"}, 'text': ''})
 
     if 'text' in submission['answer']:
         parts[0]['text'] = submission['answer'].pop('text')

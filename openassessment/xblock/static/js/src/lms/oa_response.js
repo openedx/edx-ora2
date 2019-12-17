@@ -71,7 +71,6 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.isRendering = false;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
     this.task_poller = null;
-    this.staff_response = '';
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -424,7 +423,6 @@ OpenAssessment.ResponseView.prototype = {
             var data_list = (sel.map(function() {
                 return $(this).val();
             }).get());
-            data_list.push(this.staff_response);
             return data_list
         }
         // if (typeof texts === 'undefined') {
@@ -520,7 +518,6 @@ OpenAssessment.ResponseView.prototype = {
             view.savedResponse = savedResponse;
             view.updateCodeOutput(data.sample_out);
             view.updateCodeOutput(data.sample_expected, 2);
-            view.staff_response = data.staff_out;
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             view.checkSubmissionAbility();
