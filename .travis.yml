@@ -1,37 +1,51 @@
 addons:
   apt:
     packages:
-    - nodejs
+      - nodejs
 
 language: python
 
 sudo: false
 
 python:
-  - "2.7"
-  - "3.6"
+  - 2.7
+  - 3.5
 
 env:
-  - TOXENV=django111
-  - TOXENV=quality
-  - TOXENV=js
+  - TOX_ENV=django111
+  - TOX_ENV=django20
+  - TOX_ENV=django21
+  - TOX_ENV=django22
+
+matrix:
+  exclude:
+    - python: 2.7
+      env: TOX_ENV=django20
+    - python: 2.7
+      env: TOX_ENV=django21
+    - python: 2.7
+      env: TOX_ENV=django22
+  include:
+    - python: 3.5
+      env: TOX_ENV=js
+    - python: 3.5
+      env: TOX_ENV=quality
 
 before_install:
   - "pip install -U pip"
   - export BOTO_CONFIG=/dev/null
 
 cache:
-    directories:
-        - $HOME/.cache/pip
+  directories:
+    - $HOME/.cache/pip
 
 install:
   - "pip install tox"
 
 script:
-  - tox
+  - tox -e $TOX_ENV
 
-after_success:
-  coveralls
+after_success: coveralls
 
 deploy:
   provider: pypi
@@ -39,6 +53,6 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    condition: '$TOXENV=quality'
+    condition: "$TOXENV=quality"
   password:
     secure: F7yrAFt9c56Y/x29pNbI3LMEATc6DPDTqEXs5WDDRwse/JwKe3MSsXRv6ois6JKzWroHQOZu4CKBbtfZ8v4fWv8lT4kwMJzAq8I4tda4qaSWulHiTdefzkR147oW9db2lTAKFOZsV/XUFFsv2sHDK/SQiJ0y+nxTgoMxEILChnw=

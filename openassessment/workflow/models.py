@@ -620,7 +620,7 @@ class AssessmentWorkflowStep(models.Model):
     update to occur).
 
     """
-    workflow = models.ForeignKey(AssessmentWorkflow, related_name="steps")
+    workflow = models.ForeignKey(AssessmentWorkflow, related_name="steps", on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     submitter_completed_at = models.DateTimeField(default=None, null=True)
     assessment_completed_at = models.DateTimeField(default=None, null=True)
@@ -758,7 +758,7 @@ class AssessmentWorkflowCancellation(models.Model):
     It is created when a staff member requests removal of a submission
     from the peer grading pool.
     """
-    workflow = models.ForeignKey(AssessmentWorkflow, related_name='cancellations')
+    workflow = models.ForeignKey(AssessmentWorkflow, related_name='cancellations', on_delete=models.CASCADE)
     comments = models.TextField(max_length=10000)
     cancelled_by_id = models.CharField(max_length=40, db_index=True)
 

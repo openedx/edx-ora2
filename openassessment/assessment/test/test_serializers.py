@@ -20,7 +20,7 @@ from .constants import RUBRIC
 
 def json_data(filename):
     curr_dir = os.path.dirname(__file__)
-    with open(os.path.join(curr_dir, filename), "rb") as json_file:
+    with open(os.path.join(curr_dir, filename), "r") as json_file:
         return json.load(json_file)
 
 

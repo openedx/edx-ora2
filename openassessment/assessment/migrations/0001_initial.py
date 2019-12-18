@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('feedback', models.TextField(default=u'', blank=True)),
-                ('assessment', models.ForeignKey(related_name='parts', to='assessment.Assessment')),
+                ('assessment', models.ForeignKey(related_name='parts', to='assessment.Assessment', on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -72,7 +72,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('label', models.CharField(max_length=100, blank=True)),
                 ('explanation', models.TextField(max_length=10000, blank=True)),
-                ('criterion', models.ForeignKey(related_name='options', to='assessment.Criterion')),
+                ('criterion', models.ForeignKey(related_name='options', to='assessment.Criterion', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['criterion', 'order_num'],
@@ -102,9 +102,9 @@ class Migration(migrations.Migration):
                 ('submission_uuid', models.CharField(max_length=128, db_index=True)),
                 ('started_at', models.DateTimeField(default=django.utils.timezone.now, db_index=True)),
                 ('scored', models.BooleanField(default=False)),
-                ('assessment', models.ForeignKey(to='assessment.Assessment', null=True)),
-                ('author', models.ForeignKey(related_name='graded_by', to='assessment.PeerWorkflow')),
-                ('scorer', models.ForeignKey(related_name='graded', to='assessment.PeerWorkflow')),
+                ('assessment', models.ForeignKey(to='assessment.Assessment', null=True, on_delete=models.CASCADE)),
+                ('author', models.ForeignKey(related_name='graded_by', to='assessment.PeerWorkflow', on_delete=models.CASCADE)),
+                ('scorer', models.ForeignKey(related_name='graded', to='assessment.PeerWorkflow', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['started_at', 'id'],
@@ -147,33 +147,33 @@ class Migration(migrations.Migration):
                 ('raw_answer', models.TextField(blank=True)),
                 ('content_hash', models.CharField(unique=True, max_length=40, db_index=True)),
                 ('options_selected', models.ManyToManyField(to='assessment.CriterionOption')),
-                ('rubric', models.ForeignKey(to='assessment.Rubric')),
+                ('rubric', models.ForeignKey(to='assessment.Rubric', on_delete=models.CASCADE)),
             ],
         ),
         migrations.AddField(
             model_name='studenttrainingworkflowitem',
             name='training_example',
-            field=models.ForeignKey(to='assessment.TrainingExample'),
+            field=models.ForeignKey(to='assessment.TrainingExample', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='studenttrainingworkflowitem',
             name='workflow',
-            field=models.ForeignKey(related_name='items', to='assessment.StudentTrainingWorkflow'),
+            field=models.ForeignKey(related_name='items', to='assessment.StudentTrainingWorkflow', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='criterion',
             name='rubric',
-            field=models.ForeignKey(related_name='criteria', to='assessment.Rubric'),
+            field=models.ForeignKey(related_name='criteria', to='assessment.Rubric', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='assessmentpart',
             name='criterion',
-            field=models.ForeignKey(related_name='+', to='assessment.Criterion'),
+            field=models.ForeignKey(related_name='+', to='assessment.Criterion', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='assessmentpart',
             name='option',
-            field=models.ForeignKey(related_name='+', to='assessment.CriterionOption', null=True),
+            field=models.ForeignKey(related_name='+', to='assessment.CriterionOption', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='assessmentfeedback',
@@ -183,7 +183,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='assessment',
             name='rubric',
-            field=models.ForeignKey(to='assessment.Rubric'),
+            field=models.ForeignKey(to='assessment.Rubric', on_delete=models.CASCADE),
         ),
         migrations.AlterUniqueTogether(
             name='studenttrainingworkflowitem',

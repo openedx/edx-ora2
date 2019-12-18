@@ -186,11 +186,11 @@ class StudentTrainingWorkflowItem(models.Model):
     if there are no examples left, the student has
     successfully completed training.
     """
-    workflow = models.ForeignKey(StudentTrainingWorkflow, related_name="items")
+    workflow = models.ForeignKey(StudentTrainingWorkflow, related_name="items", on_delete=models.CASCADE)
     order_num = models.PositiveIntegerField()
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(default=None, null=True)
-    training_example = models.ForeignKey(TrainingExample)
+    training_example = models.ForeignKey(TrainingExample, on_delete=models.CASCADE)
 
     class Meta:
         app_label = "assessment"

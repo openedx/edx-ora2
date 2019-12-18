@@ -6,8 +6,8 @@ from __future__ import absolute_import
 import json
 
 from django.contrib import admin
-from django.core.urlresolvers import reverse_lazy
 from django.utils import html
+from django.urls import reverse_lazy
 
 from openassessment.assessment.models import Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric
 from openassessment.assessment.serializers import RubricSerializer

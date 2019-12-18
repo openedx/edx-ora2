@@ -11,6 +11,7 @@ import json
 from mock import ANY, Mock, patch
 import pytz
 
+import django
 from django.core.exceptions import ObjectDoesNotExist
 from django.test.utils import override_settings
 
@@ -132,7 +133,10 @@ class SubmissionTest(XBlockHandlerTestCase):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
+        if django.VERSION >= (2, 1):
+            expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
+        else:
+            expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
@@ -349,7 +353,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             get_real_user=lambda _: mock_user
         )
         resp = self.request(xblock, 'get_student_username', json.dumps({}))
-        resp = json.loads(resp)
+        resp = json.loads(resp.decode('utf-8'))
         self.assertEqual(resp['username'], 'UserName1')
 
     @scenario('data/submission_open.xml')

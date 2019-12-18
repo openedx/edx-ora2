@@ -4,9 +4,9 @@
 # edX Internal Requirements
 edx-i18n-tools
 edx-submissions
-git+https://github.com/edx/django-rest-framework.git@1ceda7c086fddffd1c440cc86856441bbf0bd9cb#egg=djangorestframework
-git+https://github.com/edx/XBlock.git@xblock-1.0.1#egg=XBlock
-git+https://github.com/edx/xblock-sdk.git@331e50bed2a3c9014d998cc4428e92bf658baf8d#egg=xblock-sdk
+djangorestframework
+Xblock
+git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk
 
 django
 django-simple-history
