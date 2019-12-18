@@ -71,7 +71,9 @@
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
                             <li class="submission__answer__part">
+                                {% if forloop.first %}
                                 <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
+                                {% endif %}
                                 <article class="submission__answer__part__prompt">
                                     <div class="submission__answer__part__prompt__copy">
                                         {% if prompts_type == 'html' %}
@@ -86,6 +88,7 @@
                                 {% if text_response %}
                                 <div class="field field--textarea submission__answer__part__text">
                                     <div class="submission__answer__part__text">
+                                        {% if forloop.first %}
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                             class="submission__answer__part__text__title">
                                           {% if text_response == "required" %}
@@ -94,6 +97,7 @@
                                             {% trans "Your response (optional)" %}
                                           {% endif %}
                                         </h5>
+                                        {% endif %}
                                     </div>
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
@@ -101,7 +105,6 @@
                                         data-preview="submission__{{ forloop.counter }}"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
-                                        placeholder="{% trans "Enter your response to the prompt above." %}"
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>
