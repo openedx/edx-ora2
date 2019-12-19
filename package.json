@@ -7,16 +7,16 @@
     "backgrid": "~0.3.8",
     "edx-ui-toolkit": "1.5.3",
     "moment": "^2.15.1",
-    "moment-timezone": "~0.5.5",
+    "moment-timezone": "^0.5.27",
     "requirejs": "~2.3.2",
     "underscore": "^1.8.2"
   },
   "devDependencies": {
-    "eslint": "^6.3.0",
+    "eslint": "^6.7.2",
     "eslint-config-google": "^0.14.0",
     "jasmine": "^2.3.0",
     "jshint": "2.10.2",
-    "karma": "^4.3.0",
+    "karma": "^4.4.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
@@ -26,8 +26,8 @@
     "karma-sinon": "^1.0.3",
     "karma-spec-reporter": "^0.0.31",
     "phantomjs-prebuilt": "^2.1.14",
-    "sinon": "^7.4.2",
-    "uglify-js": "^3.5.15"
+    "sinon": "^7.5.0",
+    "uglify-js": "^3.7.2"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",

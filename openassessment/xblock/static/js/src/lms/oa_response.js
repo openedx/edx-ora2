@@ -229,7 +229,7 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Update code area with run result
      */
-    updateCodeOutput: function(output, index=1){
+    updateCodeOutput: function(output, index){
     var sel = this.getPrompts();
     $(sel[index]).val(output);
     },
@@ -516,7 +516,7 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            view.updateCodeOutput(data.sample_out);
+            view.updateCodeOutput(data.sample_out, 1);
             view.updateCodeOutput(data.sample_expected, 2);
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
