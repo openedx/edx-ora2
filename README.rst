@@ -1,14 +1,20 @@
 Open Response Assessment |build-status| |coverage-status|
 =========================================================
 
+This repository defines an Open Response Assessment (ORA) XBlock for use within edx-platform: https://github.com/edx/edx-platform
+
 `User docs <http://edx.readthedocs.org/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/index.html>`_
 
 
 Installation, Tests, and other Developer Tasks
 ==============================================
 
+If you'll be modifying ORA code, the `Open edX Developer Stack`_ is a Docker-based development environment.
+
 edX engineers follow the `guides on our wiki <https://openedx.atlassian.net/wiki/spaces/EDUCATOR/pages/9765004/ORA+Developer+Guide>`_.
-Reading this page before contributing is highly recommended.
+Reading this page before contributing **is highly recommended**.
+
+.. _Open edX Developer Stack: https://github.com/edx/devstack
 
 License
 =======
