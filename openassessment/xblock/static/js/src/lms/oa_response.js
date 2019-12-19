@@ -527,12 +527,12 @@ OpenAssessment.ResponseView.prototype = {
                 return element === savedResponse[index];
             });
             if (currentResponseEqualsSaved) {
-                var msg = gettext('Code Execution In Progress');
+                var msg = gettext('Execution Completed');
                 view.saveStatus(msg);
                 view.baseView.srReadTexts([msg]);
             }
-            view.saveEnabled(false);
-            view.task_poller.start();
+//            view.saveEnabled(false);
+//            view.task_poller.start();
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
