@@ -69,7 +69,7 @@ class MockBlock(TeamMixin):
 
 
 @ddt.ddt
-class StudioViewTest(TestCase):
+class TeamMixinTest(TestCase):
     """
     Tests for team-based functionality for the openassessment block
     """
