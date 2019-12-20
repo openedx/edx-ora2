@@ -26,8 +26,8 @@ class TeamMixin(object):
     @cached_property
     def team(self):
         """
-        If the user associated with self.
-        Returns the CourseTeam model that represents the team or None if th user is not on a team
+        For the user and course_id associated with this ORA block, returns the user's
+        CourseTeam, or None if the user is not a member of a team in this course.
 
         Raises:
             - NoSuchServiceError if the teams service is unavailable
@@ -49,7 +49,7 @@ class TeamMixin(object):
         """
         try:
             team = self.team
-        except Exception:  # pylint: disable=broad-except
+        except ObjectDoesNotExist:
             return False
         return bool(team)
 
@@ -59,10 +59,7 @@ class TeamMixin(object):
         Ignore and return dummy data if we are course staff or in studio preview, since
         we will want to see how the page will look to students
         """
-        return (
-            (not self.has_team()) and not
-            (self.is_course_staff or self.in_studio_preview)
-        )
+        return (not self.has_team()) and not (self.is_course_staff or self.in_studio_preview)
 
     def get_team_info(self):
         """
