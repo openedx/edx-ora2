@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-06 11:46-0500\n"
-"PO-Revision-Date: 2019-11-15 19:36+0000\n"
+"POT-Creation-Date: 2019-12-16 12:29-0500\n"
+"PO-Revision-Date: 2019-12-16 20:05+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
@@ -1085,43 +1085,51 @@ msgstr "Jibu lako (sio lazima)"
 msgid "Enter your response to the prompt above."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
+#: openassessment/templates/openassessmentblock/response/oa_response.html:116
+msgid "You are on team "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+msgid "Team Members: "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:126
 msgid "We could not save your progress"
 msgstr "Hatukuweza kuhifadhi maendeleo ya kazi yako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:128
+#: openassessment/templates/openassessmentblock/response/oa_response.html:133
 msgid "Save your progress"
 msgstr "Hifadhi maendeleo ya kazi yako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:132
+#: openassessment/templates/openassessmentblock/response/oa_response.html:137
 msgid "Your Submission Status"
 msgstr "Hali Halisi ya Uwasilishaji Wako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:144
+#: openassessment/templates/openassessmentblock/response/oa_response.html:149
 msgid "We could not upload files"
 msgstr "Hatukuweza kupakia mafaili"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:150
+#: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:154
+#: openassessment/templates/openassessmentblock/response/oa_response.html:159
 msgid "Select a file to upload for this submission."
 msgstr "Chagua faili upakie kwa wasilisho hili."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:156
+#: openassessment/templates/openassessmentblock/response/oa_response.html:161
 msgid "Upload files"
 msgstr "Pakia mafaili"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:165
+#: openassessment/templates/openassessmentblock/response/oa_response.html:170
 msgid "You may continue to work on your response until you submit it."
 msgstr "Unaweza kuendelea kushughulikia jibu lako mpaka utakapofanikiwa kulituma."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:172
+#: openassessment/templates/openassessmentblock/response/oa_response.html:177
 msgid "We could not submit your response"
 msgstr "Hatukuweza kutuma jibu lako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:182
+#: openassessment/templates/openassessmentblock/response/oa_response.html:187
 msgid "Submit your response and move to the next step"
 msgstr "Tuma jibu lako na uendelee kwa hatua ifuatayo"
 
@@ -1827,11 +1835,11 @@ msgstr "Hitilafu ya kupata habari za madaraja ya walimu."
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Hitilafu katika kupata ukatizaji wakutoa daraja za wafanyakazi na kupitia upya akaunti zao. "
 
-#: openassessment/xblock/staff_area_mixin.py:450
+#: openassessment/xblock/staff_area_mixin.py:456
 msgid "Please enter valid reason to remove the submission."
 msgstr "Tafadhali ingiza sababu halali kukuwezesha kuondoa wasilisho."
 
-#: openassessment/xblock/staff_area_mixin.py:476
+#: openassessment/xblock/staff_area_mixin.py:482
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1911,67 +1919,67 @@ msgstr "Hitilafu ya uthibitishaji: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Imefanikiwa kusasisha OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:86
+#: openassessment/xblock/submission_mixin.py:88
 msgid "\"submission\" required to submit answer."
 msgstr "\"uwasilishaji\" inahitajika kuwasilisha jibu."
 
-#: openassessment/xblock/submission_mixin.py:107
+#: openassessment/xblock/submission_mixin.py:109
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Kuwasilisha jibu, tizama kipengele hiki kwa Mtazamo kabla au Mubashara."
 
-#: openassessment/xblock/submission_mixin.py:113
+#: openassessment/xblock/submission_mixin.py:115
 msgid "Multiple submissions are not allowed."
 msgstr "Kuwasilisha zaidi ya mara moja hakuruhusiwi."
 
-#: openassessment/xblock/submission_mixin.py:148
+#: openassessment/xblock/submission_mixin.py:150
 msgid "API returned unclassified exception."
 msgstr "API imerudisha taarifa zisizo muhimu."
 
-#: openassessment/xblock/submission_mixin.py:190
+#: openassessment/xblock/submission_mixin.py:192
 msgid "This response could not be saved."
 msgstr "Jibu hili halikuweza kuhifadhiwa."
 
-#: openassessment/xblock/submission_mixin.py:194
+#: openassessment/xblock/submission_mixin.py:196
 msgid "This response was not submitted."
 msgstr "Jibu hili halikuwasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:210
+#: openassessment/xblock/submission_mixin.py:212
 msgid "Files descriptions were not submitted."
 msgstr "Maelezo ya mafaili hayakuwasilishwa"
 
-#: openassessment/xblock/submission_mixin.py:247
+#: openassessment/xblock/submission_mixin.py:249
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:305
+#: openassessment/xblock/submission_mixin.py:310
 msgid "There was an error uploading your file."
 msgstr "Kulikuwa na hitilafu kupakia faili lako."
 
-#: openassessment/xblock/submission_mixin.py:312
+#: openassessment/xblock/submission_mixin.py:317
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:315
+#: openassessment/xblock/submission_mixin.py:320
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe katika PDF, GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:318
+#: openassessment/xblock/submission_mixin.py:323
 msgid "File type must be one of the following types: {}"
 msgstr "Aina ya faili lazima iwe moja ya aina zifuatazo: {}"
 
-#: openassessment/xblock/submission_mixin.py:322
+#: openassessment/xblock/submission_mixin.py:327
 msgid "File type is not allowed."
 msgstr "Aina ya faili haihitajiki."
 
-#: openassessment/xblock/submission_mixin.py:329
+#: openassessment/xblock/submission_mixin.py:334
 msgid "Error retrieving upload URL."
 msgstr "Hitilafu imetokea wakati kurudisha upakiaji wa URL."
 
-#: openassessment/xblock/submission_mixin.py:479
+#: openassessment/xblock/submission_mixin.py:516
 msgid "This response has been saved but not submitted."
 msgstr "Jibu hili limehifadhiwa lakini halijawasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:480
+#: openassessment/xblock/submission_mixin.py:517
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 

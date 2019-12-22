@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-06 11:46-0500\n"
+"POT-Creation-Date: 2019-12-16 12:29-0500\n"
 "PO-Revision-Date: 2019-12-12 08:29+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -132,13 +132,13 @@ msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:683
+#: openassessment/xblock/static/js/src/oa_server.js:684
 msgid "User lookup failed"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:689
+#: openassessment/xblock/static/js/src/oa_server.js:690
 msgid "Error when looking up username"
 msgstr ""
 
@@ -232,94 +232,93 @@ msgid ""
 msgstr "如果你沒有提交同儕互評而離開這個頁面，你將遺失任何這部分的作業。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:320
+#: openassessment/xblock/static/js/src/lms/oa_response.js:310
 msgid "Your file "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:344
+#: openassessment/xblock/static/js/src/lms/oa_response.js:334
 msgid "Status of Your Response"
 msgstr "您的作答之狀態"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:418
+#: openassessment/xblock/static/js/src/lms/oa_response.js:408
 msgid "This response has not been saved."
 msgstr "作答尚未儲存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:423
+#: openassessment/xblock/static/js/src/lms/oa_response.js:413
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "如果你沒有儲存或提交你的作答而離開這個頁面，你將遺失你任何已作答的作業。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:441
+#: openassessment/xblock/static/js/src/lms/oa_response.js:431
 msgid "Saving..."
 msgstr "儲存中"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:463
+#: openassessment/xblock/static/js/src/lms/oa_response.js:453
 msgid "This response has been saved but not submitted."
 msgstr "這一份作答已經儲存了，但仍未提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:468
+#: openassessment/xblock/static/js/src/lms/oa_response.js:458
 msgid "Error"
 msgstr "錯誤"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:494
+#: openassessment/xblock/static/js/src/lms/oa_response.js:484
 msgid "Do you want to upload your file before submitting?"
 msgstr "你想在提交前上傳您的檔案？"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:570
+#: openassessment/xblock/static/js/src/lms/oa_response.js:560
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "您即將送出你的作答，一旦送出作答就不能修改，也無法重新送出新的作答。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:607
+#: openassessment/xblock/static/js/src/lms/oa_response.js:597
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:617
-#: openassessment/xblock/static/js/src/lms/oa_response.js:624
-#: openassessment/xblock/static/js/src/lms/oa_response.js:631
+#: openassessment/xblock/static/js/src/lms/oa_response.js:607
+#: openassessment/xblock/static/js/src/lms/oa_response.js:614
+#: openassessment/xblock/static/js/src/lms/oa_response.js:621
 msgid "You can upload files with these file types: "
 msgstr "您可以上傳這些類型的檔案："
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:639
+#: openassessment/xblock/static/js/src/lms/oa_response.js:629
 msgid "File type is not allowed."
 msgstr "檔案類型是不允許的。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:647
+#: openassessment/xblock/static/js/src/lms/oa_response.js:637
 msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:693
-#: openassessment/xblock/static/js/src/lms/oa_response.js:699
+#: openassessment/xblock/static/js/src/lms/oa_response.js:683
+#: openassessment/xblock/static/js/src/lms/oa_response.js:689
 msgid "Describe "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:693
+#: openassessment/xblock/static/js/src/lms/oa_response.js:683
 msgid "(required):"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:713
+#: openassessment/xblock/static/js/src/lms/oa_response.js:703
 msgid "Thumbnail view of "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:1005
 msgid "Unable to load team detail"
 msgstr ""
 

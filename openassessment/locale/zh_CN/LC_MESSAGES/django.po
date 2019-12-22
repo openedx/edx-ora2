@@ -31,6 +31,7 @@
 # YUAN Tian <Sweetyuantian@msn.cn>, 2014
 # Yue Fang <yfang@juilliard.edu>, 2016
 # zhouxuan <lion19930924@163.com>, 2015
+# 亚峰 乔 <qiao_yafeng@qq.com>, 2019
 # 张太红 <zth@xjau.edu.cn>, 2014,2017
 # 汤和果 <hgtang93@163.com>, 2015
 # 竹轩 <fmyzjs@gmail.com>, 2014
@@ -38,9 +39,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-06 11:46-0500\n"
-"PO-Revision-Date: 2019-11-15 19:36+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"POT-Creation-Date: 2019-12-16 12:29-0500\n"
+"PO-Revision-Date: 2019-12-19 03:20+0000\n"
+"Last-Translator: 亚峰 乔 <qiao_yafeng@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1108,43 +1109,51 @@ msgstr "您的回复（选答）"
 msgid "Enter your response to the prompt above."
 msgstr "请输入您对上述题目的回复"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
+#: openassessment/templates/openassessmentblock/response/oa_response.html:116
+msgid "You are on team "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+msgid "Team Members: "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:126
 msgid "We could not save your progress"
 msgstr "我们无法保存您的进度。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:128
+#: openassessment/templates/openassessmentblock/response/oa_response.html:133
 msgid "Save your progress"
 msgstr "保存您的进度"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:132
+#: openassessment/templates/openassessmentblock/response/oa_response.html:137
 msgid "Your Submission Status"
 msgstr "您的提交状态"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:144
+#: openassessment/templates/openassessmentblock/response/oa_response.html:149
 msgid "We could not upload files"
 msgstr "无法上传文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:150
+#: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:154
+#: openassessment/templates/openassessmentblock/response/oa_response.html:159
 msgid "Select a file to upload for this submission."
 msgstr "选择一个要为此提交上传的文件。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:156
+#: openassessment/templates/openassessmentblock/response/oa_response.html:161
 msgid "Upload files"
 msgstr "上传文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:165
+#: openassessment/templates/openassessmentblock/response/oa_response.html:170
 msgid "You may continue to work on your response until you submit it."
 msgstr "在提交之前，您可以继续对答案进行修改。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:172
+#: openassessment/templates/openassessmentblock/response/oa_response.html:177
 msgid "We could not submit your response"
 msgstr "我们无法提交您的答案"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:182
+#: openassessment/templates/openassessmentblock/response/oa_response.html:187
 msgid "Submit your response and move to the next step"
 msgstr "提交您的答案并进行下一步"
 
@@ -1849,11 +1858,11 @@ msgstr "无法获取教员评分信息"
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "获得不合格和已检验的员工评分计数出现错误。"
 
-#: openassessment/xblock/staff_area_mixin.py:450
+#: openassessment/xblock/staff_area_mixin.py:456
 msgid "Please enter valid reason to remove the submission."
 msgstr "请输入合理的理由以移除该提交。"
 
-#: openassessment/xblock/staff_area_mixin.py:476
+#: openassessment/xblock/staff_area_mixin.py:482
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1933,67 +1942,67 @@ msgstr "验证错误: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: openassessment/xblock/submission_mixin.py:86
+#: openassessment/xblock/submission_mixin.py:88
 msgid "\"submission\" required to submit answer."
 msgstr "要交答案，必须有“submission\"。"
 
-#: openassessment/xblock/submission_mixin.py:107
+#: openassessment/xblock/submission_mixin.py:109
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "要提交答案，请在预览或实时模式查看该组件。"
 
-#: openassessment/xblock/submission_mixin.py:113
+#: openassessment/xblock/submission_mixin.py:115
 msgid "Multiple submissions are not allowed."
 msgstr "不允许批量提交。"
 
-#: openassessment/xblock/submission_mixin.py:148
+#: openassessment/xblock/submission_mixin.py:150
 msgid "API returned unclassified exception."
 msgstr "API返回的未分类的异常"
 
-#: openassessment/xblock/submission_mixin.py:190
+#: openassessment/xblock/submission_mixin.py:192
 msgid "This response could not be saved."
 msgstr "该答案无法保存。"
 
-#: openassessment/xblock/submission_mixin.py:194
+#: openassessment/xblock/submission_mixin.py:196
 msgid "This response was not submitted."
 msgstr "该答案提交不成功。"
 
-#: openassessment/xblock/submission_mixin.py:210
+#: openassessment/xblock/submission_mixin.py:212
 msgid "Files descriptions were not submitted."
 msgstr "文件描述未能提交。"
 
-#: openassessment/xblock/submission_mixin.py:247
+#: openassessment/xblock/submission_mixin.py:249
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:305
+#: openassessment/xblock/submission_mixin.py:310
 msgid "There was an error uploading your file."
 msgstr "您的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:312
+#: openassessment/xblock/submission_mixin.py:317
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "内容格式必须是 GIF、 PNG 或 JPG。"
 
-#: openassessment/xblock/submission_mixin.py:315
+#: openassessment/xblock/submission_mixin.py:320
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "内容格式必须是 PDF、GIF、 PNG 或 JPG。"
 
-#: openassessment/xblock/submission_mixin.py:318
+#: openassessment/xblock/submission_mixin.py:323
 msgid "File type must be one of the following types: {}"
 msgstr "文件类型必须为以下类型中的一种：{}"
 
-#: openassessment/xblock/submission_mixin.py:322
+#: openassessment/xblock/submission_mixin.py:327
 msgid "File type is not allowed."
 msgstr "文件类型不可用。"
 
-#: openassessment/xblock/submission_mixin.py:329
+#: openassessment/xblock/submission_mixin.py:334
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:479
+#: openassessment/xblock/submission_mixin.py:516
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:480
+#: openassessment/xblock/submission_mixin.py:517
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 
