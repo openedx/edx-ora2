@@ -94,6 +94,7 @@ def load(path):
 @XBlock.needs("user")
 @XBlock.needs("user_state")
 @XBlock.needs("teams")
+@XBlock.needs("teams_configuration")
 class OpenAssessmentBlock(MessageMixin,
                           SubmissionMixin,
                           PeerAssessmentMixin,
@@ -264,6 +265,12 @@ class OpenAssessmentBlock(MessageMixin,
         default=False,
         scope=Scope.settings,
         help="Whether team submissions are enabled for this case study.",
+    )
+
+    selected_teamset_name = String(
+        default=u"",
+        scope=Scope.settings,
+        help="The name of the selected teamset.",
     )
 
     @property

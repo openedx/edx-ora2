@@ -9,7 +9,7 @@ import datetime as dt
 import json
 
 from ddt import ddt, file_data
-from mock import MagicMock, patch
+from mock import MagicMock, patch, Mock
 import pytz
 import six
 
@@ -135,11 +135,13 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_render_studio_view(self, xblock):
+        self._mock_teamset_names_only(xblock)
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
 
     @scenario('data/student_training.xml')
     def test_render_studio_with_training(self, xblock):
+        self._mock_teamset_names_only(xblock)
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
 
@@ -153,6 +155,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_include_leaderboard_in_editor(self, xblock):
+        self._mock_teamset_names_only(xblock)
         xblock.leaderboard_show = 15
         self.assertEqual(xblock.editor_context()['leaderboard_show'], 15)
 
@@ -186,11 +189,14 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_update_editor_context_saves_teams_enabled(self, xblock):
         data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
         data['teams_enabled'] = True
+        ts_name = 'selected_teamset'
+        data['selected_teamset_name'] = ts_name
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertTrue(xblock.teams_enabled)
+        self.assertEqual(ts_name, xblock.selected_teamset_name)
 
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
@@ -264,6 +270,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/self_then_peer.xml')
     def test_render_editor_assessment_order(self, xblock):
+        self._mock_teamset_names_only(xblock)
         # Expect that the editor uses the order defined by the problem.
         self._assert_rendered_editor_order(xblock, [
             'student-training',
@@ -323,6 +330,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_editor_context_assigns_labels(self, xblock):
+        self._mock_teamset_names_only(xblock)
         # Strip out any labels from criteria/options that may have been imported.
         for criterion in xblock.rubric_criteria:
             if 'label' in criterion:
@@ -352,3 +360,33 @@ class StudioViewTest(XBlockHandlerTestCase):
                 self.assertEqual(criterion['label'], criterion['name'])
                 for option in criterion['options']:
                     self.assertEqual(option['label'], option['name'])
+
+    @scenario('data/basic_scenario.xml')
+    def test_render_studio_with_teamset_names(self, xblock):
+        self._mock_teamset_names_only(xblock)
+        frag = self.runtime.render(xblock, 'studio_view')
+        self.assertTrue(frag.body_html().find('teamset_name_a'))
+
+    @scenario('data/basic_scenario.xml')
+    def test_get_teamset_names(self, xblock):
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        xblock.runtime = Mock()
+        mock_teams_config = Mock(
+            teamsets=[Mock(name="tset1"), Mock(name="tset2")]
+        )
+        mock_team_configuration_service = Mock()
+        mock_team_configuration_service.get_teams_configuration.return_value = mock_teams_config
+        xblock.runtime.service.return_value = mock_team_configuration_service
+
+        teamset_names = xblock.get_teamset_names("test_course")
+        self.assertEqual(teamset_names, [ts.name for ts in mock_teams_config.teamsets])
+
+    def _mock_teamset_names_only(self, xblock):
+        """
+        Bare bones mock to allow rendering tests to function as before
+        """
+        xblock.get_teamset_names = Mock()
+        xblock.get_teamset_names.return_value = ["teamset_name_a", "teamset_name_b"]

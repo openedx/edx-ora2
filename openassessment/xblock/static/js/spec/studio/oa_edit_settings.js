@@ -262,13 +262,9 @@ describe("OpenAssessment.EditSettingsView", function() {
     it("enables the teamset selector when teams are enabled, and disabled it otherwise", function() {
         view.teamsEnabled(false);
         expect(view.teamsEnabled()).toBe(false);
-        view.teamset('team-b');
-        expect(view.teamset()).toBe('');
 
         view.teamsEnabled(true);
         expect(view.teamsEnabled()).toBe(true);
-        view.teamset('team-b');
-        expect(view.teamset()).toBe('team-b');
     });
 
     it("hides the training, self, and peer assessment types when teams are enabled", function() {
