@@ -165,6 +165,8 @@ class StudioMixin(object):
             'teams_enabled': self.teams_enabled,
             'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
+            'teamset_names': self.get_teamset_names(course_id),
+            'selected_teamset_name': self.selected_teamset_name,
         }
 
     @XBlock.json_handler
@@ -261,6 +263,7 @@ class StudioMixin(object):
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
         self.teams_enabled = bool(data.get('teams_enabled', False))
+        self.selected_teamset_name = data.get('selected_teamset_name', '')
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 
@@ -400,3 +403,22 @@ class StudioMixin(object):
         if not url_path.startswith('/'):
             url_path = '/' + url_path
         return url_path.replace(placeholder_id, '')
+
+    def get_team_configuration(self, course_id):
+        """
+        Returns a dict with team configuration settings.
+        """
+        configuration_service = self.runtime.service(self, 'teams_configuration')
+        team_configuration = configuration_service.get_teams_configuration(course_id)
+        if not team_configuration:
+            return None
+        return team_configuration
+
+    def get_teamset_names(self, course_id):
+        """
+        Wrapper around get_team_configuration that returns team names only for display
+        """
+        team_configuration = self.get_team_configuration(course_id)
+        if not team_configuration:
+            return None
+        return [teamset.name for teamset in team_configuration.teamsets]

@@ -426,6 +426,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     fileTypeWhiteList (string): Comma separated file type white list
          *     latexEnabled: TRUE if latex rendering is enabled.
          *     leaderboardNum (int): The number of scores to show in the leaderboard.
+         *     teamsEnabled: TRUE if teams are enabled.
+         *     teamset (string): The name of the selected teamset.
          *
          * @returns {promise} A JQuery promise, which resolves with no arguments
          *     and fails with an error message.
@@ -449,7 +451,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 white_listed_file_types: options.fileTypeWhiteList,
                 allow_latex: options.latexEnabled,
                 leaderboard_show: options.leaderboardNum,
-                teams_enabled: options.teamsEnabled
+                teams_enabled: options.teamsEnabled,
+                selected_teamset_name: options.selectedTeamsetName
             });
             return $.Deferred(function(defer) {
                 $.ajax({
@@ -666,8 +669,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
 
         /**
          * Gets the current student's username.
-         * 
-         * Returns a promise which resolves with the username, 
+         *
+         * Returns a promise which resolves with the username,
          * or fails if there is an error or the user is not found
          */
 
