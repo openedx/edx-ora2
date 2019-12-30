@@ -71,8 +71,8 @@
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
                             <li class="submission__answer__part"
-                                {% if not forloop.first and forloop.counter|divisibleby:2 %} style="display: inline-block" {%endif%}
-                                {% if not forloop.first and not forloop.counter|divisibleby:2 %} style="float: right;" {%endif%} >
+                                {% if not forloop.first and forloop.counter|divisibleby:2 %} style="display: inline-block; width:50%" {%endif%}
+                                {% if not forloop.first and not forloop.counter|divisibleby:2 %} style="float: right; width:50%" {%endif%} >
                                 {% if forloop.first %}
                                 <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
                                 {% endif %}
@@ -107,8 +107,7 @@
                                         data-preview="submission__{{ forloop.counter }}"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
-                                        {% if not forloop.first and not forloop.counter|divisibleby:2 %} rows="10" cols="50" {%endif%}
-                                        {% if not forloop.first and  forloop.counter|divisibleby:2 %} rows="10" cols="40" {%endif%}
+                                        {% if not forloop.first  %} rows="10" cols="50" {%endif%}
 
                                     >{{ part.text }}</textarea>
                                 </div>
