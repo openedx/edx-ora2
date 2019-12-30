@@ -51,7 +51,7 @@ def get_student_file_key(student_item_dict, index=0):
     return key_template.format(index=index, **student_item_dict)
 
 
-def _safe_load_json_list(field):
+def _safe_load_json_list(field, log_error=False):
     """
     Tries to load JSON-ified string,
     returns an empty list if we try to load some non-JSON-encoded string.
@@ -59,6 +59,11 @@ def _safe_load_json_list(field):
     try:
         return json.loads(field)
     except ValueError:
+        if log_error:
+            logger.exception("URLWorkaround: Safe Load failed for data field:{field} with type:{type}".format(
+                field=field,
+                type=type(field)
+            ))
         return []
 
 
