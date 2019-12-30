@@ -3,7 +3,9 @@
 {% load oa_extras %}
 <ol class="submission__answer__display__content">
     {% for part in answer.parts %}
-        <li class="submission__answer__part">
+        <li class="submission__answer__part"
+            {% if not forloop.first and forloop.counter|divisibleby:2 %} style="display: inline-block; width:50%" {%endif%}
+            {% if not forloop.first and not forloop.counter|divisibleby:2 %} style="float: right; width:50%" {%endif%}>
             <div class="submission__answer__part__text">
                 {% if forloop.first %}
                 <h5 class="submission__answer__part__text__title">{% trans "The question for this section" %}</h5>
