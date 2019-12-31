@@ -466,9 +466,14 @@ class SubmissionMixin(object):
         item_dict = self.get_student_item_dict_from_username(username)
         if u'saved_files_descriptions' in user_state:
             # pylint: disable=protected-access
-            files_descriptions = file_upload_api._safe_load_json_list(user_state.get('saved_files_descriptions'))
-
-            files_names = file_upload_api._safe_load_json_list(user_state.get('saved_files_names', '[]'))
+            files_descriptions = file_upload_api._safe_load_json_list(
+                user_state.get('saved_files_descriptions'),
+                log_error=True
+            )
+            files_names = file_upload_api._safe_load_json_list(
+                user_state.get('saved_files_names', '[]'),
+                log_error=True
+            )
             for index, description in enumerate(files_descriptions):
                 file_key = file_upload_api.get_student_file_key(item_dict, index)
                 download_url = self._get_url_by_file_key(file_key)
@@ -477,6 +482,11 @@ class SubmissionMixin(object):
                     files_info.append((download_url, description, file_name))
                 else:
                     # If file has been removed, the URL doesn't exist
+                    logger.info("URLWorkaround: no URL for description {desc} & key {key} for user:{user}".format(
+                        desc=description,
+                        user=username,
+                        key=file_key
+                    ))
                     continue
         return files_info
 
