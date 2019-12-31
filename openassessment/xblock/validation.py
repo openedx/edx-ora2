@@ -391,3 +391,36 @@ def validate_submission(submission, prompts, _, text_response='required'):
             return False, message
 
     return True, u''
+
+
+def get_correctness(submission):
+    """
+    From the submission, return a list containing correctness information
+    of sample & staff test cases.
+    """
+    correctness = []
+    for count in range(1, len(submission['answer']['parts']), 2):
+        actual = submission['answer']['parts'][count]['text']
+        expected = submission['answer']['parts'][count+1]['text']
+        is_equal = are_outputs_equal(actual, expected)
+        correctness.append(is_equal)
+    return correctness
+
+
+def are_outputs_equal(actual, expected):
+    """
+    Returns a boolean indicating if the outputs are equal to each other or not.
+    """
+    if actual and expected:
+        actual = actual.split('\n')
+        expected = expected.split('\n')
+        if actual==expected:
+            return True
+    return False
+
+
+def set_correctness_in_context(context, key, correctness, index):
+    try:
+        context[key] = correctness[index]
+    except IndexError:
+        context[key] = False

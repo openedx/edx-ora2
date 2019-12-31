@@ -15,7 +15,7 @@ from .data_conversion import create_submission_dict, prepare_submission_for_seri
 from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-from .validation import validate_submission
+from .validation import get_correctness, set_correctness_in_context
 
 logger = logging.getLogger(__name__)
 
@@ -654,6 +654,9 @@ class SubmissionMixin(object):
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+            correctness = get_correctness(context['student_submission'])
+            set_correctness_in_context(context, 'sample_correct', correctness, 0)
+
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
         return path, context

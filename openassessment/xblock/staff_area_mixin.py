@@ -12,6 +12,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.validation import get_correctness, set_correctness_in_context
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -278,6 +279,10 @@ class StaffAreaMixin(object):
             context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
         context['xblock_id'] = self.get_xblock_id()
+        correctness = get_correctness(submission)
+        set_correctness_in_context(context, 'sample_correct', correctness, 0)
+        set_correctness_in_context(context, 'staff_correct', correctness, 1)
+
         return context
 
     def get_student_info_path_and_context(self, student_username):
