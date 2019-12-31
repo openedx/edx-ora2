@@ -25,10 +25,25 @@
                 {% if forloop.first %}
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
                 {% endif %}
-                <div class="submission__answer__part__text__value">
-                    <pre>
+
+                {% if forloop.counter|divisibleby:4 %}
+                    {% if staff_correct %}
+                        <div class="submission__answer__part__text__value" style="border: 5px solid green;">
+                    {%else%}
+                        <div class="submission__answer__part__text__value" style="border: 5px solid red;">
+                    {%endif%}
+                {% elif forloop.counter|divisibleby:2%}
+                        {% if sample_correct %}
+                        <div class="submission__answer__part__text__value" style="border: 5px solid green;">
+                    {%else%}
+                        <div class="submission__answer__part__text__value" style="border: 5px solid red;">
+                    {%endif%}
+                {%else%}
+                <div class="submission__answer__part__text__value" >
+                {%endif%}
+                        <pre>
                     {{ part.text|escape|link_and_linebreak }}
-                    </pre>
+                        </pre>
                 </div>
             </div>
             {% endif %}
