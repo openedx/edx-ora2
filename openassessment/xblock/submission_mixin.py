@@ -432,7 +432,7 @@ class SubmissionMixin(object):
         if 'file_keys' in submission['answer']:
             file_keys = submission['answer'].get('file_keys', [])
             descriptions = submission['answer'].get('files_descriptions', [])
-            file_names = submission['answer'].get('files_name', [])
+            file_names = submission['answer'].get('files_name', submission['answer'].get('files_names', []))
             for idx, key in enumerate(file_keys):
                 file_download_url = self._get_url_by_file_key(key)
                 if file_download_url:
