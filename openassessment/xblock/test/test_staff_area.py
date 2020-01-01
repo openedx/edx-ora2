@@ -12,6 +12,7 @@ from six.moves import range, zip
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
+import ddt
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -64,6 +65,7 @@ class NullUserService(object):
         return MagicMock(opt_attrs={})
 
 
+@ddt.ddt
 class TestCourseStaff(XBlockHandlerTestCase):
     """
     Tests for course staff debug panel.
@@ -781,3 +783,46 @@ class TestCourseStaff(XBlockHandlerTestCase):
         peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], types)
         return submission
+
+    @ddt.data('files_names', 'files_name')
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_file_name_is_rendered_on_template(self, xblock, key):
+        """
+        This test Validates the file name is visible to staff when viewing individual submission.
+        """
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+
+        # Create an image submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {
+            'text': "Bob Answer",
+            'file_keys': ["test_key"],
+            'files_descriptions': ["test_description"],
+            key: ["test_fileName"],
+        }, ['self'])
+
+        # Mock the file upload API to avoid hitting S3
+        with patch("openassessment.xblock.submission_mixin.file_upload_api") as file_api:
+            file_api.get_download_url.return_value = "http://www.example.com/image.jpeg"
+            # also fake a file_upload_type so our patched url gets rendered
+            xblock.file_upload_type_raw = 'image'
+
+            __, context = xblock.get_student_info_path_and_context("Bob")
+
+            # Check that the right file key was passed to generate the download url
+            file_api.get_download_url.assert_called_with("test_key")
+
+            # Check the context passed to the template
+
+            self.assertEqual(
+                [
+                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')
+                ],
+                context['staff_file_urls']
+            )
