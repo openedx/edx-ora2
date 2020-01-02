@@ -1090,6 +1090,14 @@
     background-color: $white;
     padding: $baseline-v;
   }
+
+  #team_concurrency_notice {
+    margin: ($baseline-v/2) 0;
+    border: 1px solid $color-error;
+    background-color: $color-error-back;
+    color: $color-error;
+    padding: $baseline-v;
+  }
 }
 .self-assessment__display__header
 .self-assessment__display__title,

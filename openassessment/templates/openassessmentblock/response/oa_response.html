@@ -118,6 +118,9 @@
                                 {% trans "Team Members: " %}
                                 <strong class="emphasis">{{team_usernames|join:", "}}</strong>
                             </div>
+                            <div id='team_concurrency_notice'>
+                                {% trans "Note: this is a team assignment. Make sure to coordinate with your teammates to avoid overwriting each other's work."%}
+                            </div>
                         {% endif %}
                         {% if text_response %}
                         <li class="field">
