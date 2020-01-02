@@ -16,6 +16,11 @@ class TeamMixin(object):
         'team_usernames': ['< USERNAMES >'],
         'team_url': '#TEAM_URL',
     }
+
+    def is_team_assignment(self):
+        # pylint: disable=no-member
+        return self.teams_enabled and self.team_submissions_enabled
+
     @cached_property
     def teams_service(self):
         try:
@@ -82,7 +87,8 @@ class TeamMixin(object):
 
     def get_team_info(self):
         """
-        Return a dict with team data if the user is on a team, None otherwise
+        Return a dict with team data if the user is on a team, or an
+        empty dict otherwise.
         If we are course staff or in studio preview, return dummy data to
         render the page like a student would see
         """
@@ -90,6 +96,7 @@ class TeamMixin(object):
             return self.STAFF_OR_PREVIEW_INFO
         elif self.has_team():
             return {
+                'team_id': self.team.team_id,
                 'team_name': self.team.name,
                 'team_usernames': [user.username for user in self.team.users.all()],
                 'team_url': self.teams_service.get_team_detail_url(self.team),
@@ -97,4 +104,4 @@ class TeamMixin(object):
         elif self.is_course_staff:
             return self.STAFF_OR_PREVIEW_INFO
         else:
-            return None
+            return {}

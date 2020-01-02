@@ -442,7 +442,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             # Check the context passed to the template
             self.assertEqual(
                 [
-                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')
+                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName', False)
                 ],
                 context['staff_file_urls']
             )
@@ -497,7 +497,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             # Check the context passed to the template
             self.assertEqual(
-                [(image, "test_description%d" % i, "fname%d" % i) for i, image in enumerate(images)],
+                [(image, "test_description%d" % i, "fname%d" % i, False) for i, image in enumerate(images)],
                 context['staff_file_urls']
             )
             self.assertEqual('image', context['file_upload_type'])
@@ -945,7 +945,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             self.assertEqual(
                 [
-                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')
+                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName', False)
                 ],
                 context['staff_file_urls']
             )

@@ -180,7 +180,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             key = Key(bucket, 'submissions_attachments/{}'.format(file_key))
             key.set_contents_from_string("How d'ya do?")
             files_url_and_description = [
-                (api.get_download_url(file_key), file_descriptions[idx], file_names[idx])
+                (api.get_download_url(file_key), file_descriptions[idx], file_names[idx], False)
                 for idx, file_key in enumerate(file_keys)
             ]
 
@@ -217,7 +217,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         key = Key(bucket, 'submissions_attachments/foo')
         key.set_contents_from_string("How d'ya do?")
 
-        file_download_url = [(api.get_download_url('foo'), '', '',)]
+        file_download_url = [(api.get_download_url('foo'), '', '', False)]
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_key'] = 'foo'

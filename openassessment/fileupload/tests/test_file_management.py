@@ -34,6 +34,9 @@ class MockBlock(object):
         else:
             self.team = None
 
+    def has_team(self):
+        return bool(self.team)
+
     def is_team_assignment(self):
         return bool(self.team)
 
@@ -156,7 +159,38 @@ class FileUploadManagerTests(TestCase):
         self.assert_file_upload(files[1], 'name2', 'desc2', 200)
         self.assert_file_upload(files[2], 'name4', 'desc4', 400)
         shared_uploads = self._get_shared_uploads(self.team_manager)
-        self.assertEqual(4, len(shared_uploads))
+        self.assertEqual(3, len(shared_uploads))
+
+        shared_upload_names = sorted([upload.name for upload in shared_uploads])
+        self.assertEqual(['name1', 'name2', 'name4'], shared_upload_names)
+
+    @override_settings(
+        ORA2_FILEUPLOAD_BACKEND='django',
+        MEDIA_ROOT='/tmp',
+    )
+    def test_shared_file_descriptors_have_download_urls(self):
+        self.team_manager.append_uploads(
+            upload_dict('name1', 'desc1', 100),
+            upload_dict('name2', 'desc2', 200),
+        )
+
+        # create a new block with a different student_id but on the same team
+        other_users_block = MockBlock(number=2, team_id=self.team_id)
+        other_users_block.student_id = MockBlock.STUDENT_ID + '317'
+
+        with mock.patch('openassessment.fileupload.backends.django_storage.default_storage') as mock_default_storage:
+            mock_default_storage.exists.return_value = True
+            other_users_file_manager = FileUploadManager(other_users_block)
+
+            actual_descriptors = other_users_file_manager.team_file_descriptor_tuples()
+            self.assertEqual(2, len(actual_descriptors))
+            for descriptor in actual_descriptors:
+                self.assertEqual(mock_default_storage.url.return_value, descriptor.download_url)
+
+            actual_file_uploads = other_users_file_manager.get_team_uploads()
+            self.assertEqual(2, len(actual_file_uploads))
+            for index, upload in enumerate(actual_file_uploads):
+                self.assertEqual(index, upload.index)
 
     def test_integrity_error(self):
         self.team_manager.append_uploads(

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-10 07:20-0500\n"
+"POT-Creation-Date: 2020-01-27 16:15-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1029,12 +1029,19 @@ msgstr ""
 "αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_no_team.html
+#, python-format
 msgid ""
-"This is a team assignment. You are currently not on a team. You must be on a"
-" team to access this team assignment."
+"\n"
+"            This is a team assignment for team set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
+"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
 msgstr ""
-"Thïs ïs ä téäm ässïgnmént. Ýöü äré çürréntlý nöt ön ä téäm. Ýöü müst ßé ön ä"
-" téäm tö äççéss thïs téäm ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσ#"
+"\n"
+"            Thïs ïs ä téäm ässïgnmént för téäm sét \"%(teamset_name)s\".\n"
+"            Ýöü äré çürréntlý nöt ön ä téäm ïn téäm sét \"%(teamset_name)s\".\n"
+"            Ýöü müst ßé ön ä téäm ïn téäm sét \"%(teamset_name)s\" tö äççéss thïs téäm ässïgnmént.\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяι#"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html
 #, python-format
@@ -1109,11 +1116,23 @@ msgstr "Çömménts Ⱡ'σяєм ιρѕυм ∂#"
 msgid "The question for this section"
 msgstr "Thé qüéstïön för thïs séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html
+msgid "Files that were uploaded by your teammates:"
+msgstr ""
+"Fïlés thät wéré üplöädéd ßý ýöür téämmätés: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html
 msgid "View the files associated with this submission:"
 msgstr ""
 "Vïéw thé fïlés ässöçïätéd wïth thïs süßmïssïön: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
 " ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html
+msgid "Files that were uploaded by you:"
+msgstr ""
+"Fïlés thät wéré üplöädéd ßý ýöü: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html
 msgid ""

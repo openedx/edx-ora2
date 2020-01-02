@@ -1,6 +1,6 @@
 {
   "name": "edx-ora2",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
     "backbone": "~1.2.3",
@@ -27,7 +27,7 @@
     "karma-spec-reporter": "^0.0.31",
     "phantomjs-prebuilt": "^2.1.14",
     "sinon": "^7.5.0",
-    "uglify-js": "^3.7.5"
+    "uglify-js": "^3.7.6"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
