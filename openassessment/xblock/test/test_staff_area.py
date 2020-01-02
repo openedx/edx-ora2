@@ -7,12 +7,14 @@ from __future__ import absolute_import
 from collections import namedtuple
 import json
 
+import ddt
 from mock import MagicMock, Mock, call, patch
 from six.moves import range, zip
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
-import ddt
+from testfixtures import log_capture
+
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -756,9 +758,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("response was not found", resp.body.decode('utf-8').lower())
 
+    @log_capture()
     @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
-    def test_staff_area_student_upload_info_from_user_state(self, xblock, waffle_patch):
+    def test_staff_area_student_upload_info_from_user_state(self, xblock, waffle_patch, logger):
         """
         Verify the student upload info is retrieved correctly from the user state.
 
@@ -772,6 +775,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         with patch("openassessment.fileupload.api.get_download_url") as get_download_url:
             get_download_url.return_value = FILE_URL
             __, context = xblock.get_student_info_path_and_context('Bob')
+            self._verify_user_state_usage_log_present(logger, **{'location': xblock.location})
             staff_urls = context['staff_file_urls']
             for count in range(2):
                 self.assertTupleEqual(
@@ -795,9 +799,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         __, context = xblock.get_student_info_path_and_context('Bob')
         self.assertFalse(any(context['staff_file_urls']))
 
+    @log_capture()
     @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
-    def test_student_userstate_not_used_when_upload_info_in_submission(self, xblock, waffle_patch):
+    def test_student_userstate_not_used_when_upload_info_in_submission(self, xblock, waffle_patch, logger):
         """
         Verify the user state isn't used if the upload info is present in submission.
 
@@ -805,16 +810,19 @@ class TestCourseStaff(XBlockHandlerTestCase):
         And upload is either required or optional
         If the waffle flag is set
         Then user state is not used for the upload info
+        And user state usage logs aren't present
         """
         waffle_patch.return_value = True
         self._setup_xblock_and_create_submission(xblock, **{
-            'files_keys': [FILE_URL, FILE_URL],
+            'file_keys': [FILE_URL, FILE_URL],
             'files_descriptions': [SAVED_FILES_DESCRIPTIONS[1], SAVED_FILES_DESCRIPTIONS[0]],
             'files_names': [SAVED_FILES_NAMES[1], SAVED_FILES_NAMES[0]]
         })
-        __, context = xblock.get_student_info_path_and_context('Bob')
-        # To add logging based check here
-        self.assertFalse(any(context['staff_file_urls']))
+        with patch("openassessment.fileupload.api.get_download_url") as get_download_url:
+            get_download_url.return_value = FILE_URL
+            __, __ = xblock.get_student_info_path_and_context('Bob')
+        with self.assertRaises(AssertionError):
+            self._verify_user_state_usage_log_present(logger, **{'location': xblock.location})
 
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         """
@@ -924,7 +932,23 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         self._create_submission(student_item, {
             'text': "Text Answer",
-            'files_keys': kwargs.setdefault('files_keys', []),
-            'files_descriptions': kwargs.setdefault('files_descriptions', []),
-            'files_names': kwargs.setdefault('files_name', [])
+            'file_keys': kwargs.get('file_keys', []),
+            'files_descriptions': kwargs.get('files_descriptions', []),
+            'files_names': kwargs.get('files_names', [])
         }, ['staff'])
+
+    @staticmethod
+    def _verify_user_state_usage_log_present(logger, **kwargs):
+        """
+        Validates the presence of the logs indicating user state usage for upload info.
+        """
+        logger.check_present(
+            (
+                'openassessment.xblock.staff_area_mixin',
+                'INFO',
+                u'Checking student module for upload info for user: {username} in block: {block}'.format(
+                    username=kwargs.get('username', 'Bob'),
+                    block=kwargs.get('location')
+                )
+            )
+        )
