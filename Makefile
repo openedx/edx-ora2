@@ -137,3 +137,11 @@ test-sandbox: test-acceptance test-a11y ## Run acceptance and accessibility test
 install-osx-requirements: ## Install OSX specific requirements using Homebrew
 	brew install gettext
 	brew link gettext --force
+
+##################
+#Devstack commands
+##################
+
+install-local-ora: ## installs your local ORA2 code into the LMS and Studio python virtualenvs
+	docker exec -t edx.devstack.lms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
+	docker exec -t edx.devstack.studio bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'

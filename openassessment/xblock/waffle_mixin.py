@@ -3,6 +3,8 @@ Mixin for determining waffle state relevant to an ORA block.
 """
 from __future__ import absolute_import
 
+from django.utils.functional import cached_property
+
 
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
@@ -66,6 +68,7 @@ class WaffleMixin(object):
 
         return False
 
+    @cached_property
     def team_submissions_enabled(self):
         """
         Returns a boolean specifying if the team submission is enabled.

@@ -84,3 +84,6 @@ edx-ora2/
 
 # private Django settings
 private.py
+
+# pyenv
+.python-version

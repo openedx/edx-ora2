@@ -635,9 +635,6 @@ class OpenAssessmentBlock(MessageMixin,
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
 
-    def is_team_assignment(self):
-        return self.teams_enabled and self.team_submissions_enabled()
-
     @property
     def is_admin(self):
         """
