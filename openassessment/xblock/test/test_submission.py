@@ -423,6 +423,26 @@ class SubmissionTest(XBlockHandlerTestCase):
             }
         )
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_team_submission(self, xblock):
+        """ If teams are enabled, a submission by any member should submit for each member of the team """
+
+        # given a learner is on a team
+        xblock.teams_enabled = True
+        xblock.get_team_info = Mock()
+        xblock.get_team_info.return_value = {'team_name': 'red team', 'team_usernames': [
+            'red 5', 'red 2'], 'team_url': 'rebel_alliance.org'}
+
+        # when the learner submits an open assessment response
+        resp = self.request(
+            xblock, 'submit', self.SUBMISSION, response_format='json')
+
+        # then the submission goes through
+        self.assertTrue(resp[0])
+
+        # ... and a submission is created for the learner's teammates
+        # TODO
+
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
     """

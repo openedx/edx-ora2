@@ -150,8 +150,12 @@ class SubmissionMixin(object):
                 status_text = self._(u'API returned unclassified exception.')
             else:
                 status = True
-                status_tag = submission.get('student_item')
-                status_text = submission.get('attempt_number')
+                if self.teams_enabled and len(submission) > 1:
+                    status_tag = submission[0].get('student_item')
+                    status_text = u"Submitted team assignment for {} learners".format(len(submission))
+                else:
+                    status_tag = submission.get('student_item')
+                    status_text = submission.get('attempt_number')
 
         return status, status_tag, status_text
 
@@ -251,7 +255,7 @@ class SubmissionMixin(object):
         return {'success': True, 'msg': u''}
 
     def create_submission(self, student_item_dict, student_sub_data):
-        """ Creates submission for the submitted assessment response. """
+        """ Creates submission for the submitted assessment response or a list for a team assessment """
         # Import is placed here to avoid model import at project startup.
         from submissions import api
 
@@ -285,6 +289,37 @@ class SubmissionMixin(object):
                 "answer": submission["answer"],
             }
         )
+
+        if self.teams_enabled:
+            submissions = [submission]
+
+            team_dict = self.get_team_info()
+            team_usernames = []
+
+            if team_dict is not None:
+                team_usernames = team_dict["team_usernames"]
+
+            for student_id in team_usernames:
+                student_item_dict["student_id"] = student_id
+                submission = api.create_submission(student_item_dict, student_sub_dict)
+                self.create_workflow(submission["uuid"])
+                self.submission_uuid = submission["uuid"]
+
+                # Emit analytics event...
+                self.runtime.publish(
+                    self,
+                    "openassessmentblock.create_submission",
+                    {
+                        "submission_uuid": submission["uuid"],
+                        "attempt_number": submission["attempt_number"],
+                        "created_at": submission["created_at"],
+                        "submitted_at": submission["submitted_at"],
+                        "answer": submission["answer"],
+                    }
+                )
+                submissions.append(submission)
+
+            return submissions
 
         return submission
 
