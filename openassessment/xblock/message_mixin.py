@@ -49,7 +49,9 @@ class MessageMixin(object):
 
         # Render the instruction message based on the status of the workflow
         # and the closed status.
-        if status == "done" or status == "waiting":
+        if self.teams_enabled and self.should_hide_team_ora():
+            path, context = 'openassessmentblock/message/oa_message_no_team.html', {}
+        elif status == "done" or status == "waiting":
             path, context = self.render_message_complete(status_details)
         elif problem_is_closed or active_step_deadline_info.get('is_closed'):
             path, context = self.render_message_closed(active_step_deadline_info)
