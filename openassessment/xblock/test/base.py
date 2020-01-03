@@ -202,7 +202,7 @@ class XBlockHandlerTestCaseMixin(object):
         if response_format is None:
             return response.body
         elif response_format == 'json':
-            return json.loads(response.body)
+            return json.loads(response.body.decode('utf-8'))
         else:
             raise NotImplementedError(u"Response format '{format}' not supported".format(format=response_format))
 

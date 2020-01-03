@@ -247,7 +247,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
     def _build_criteria_and_assessment_parts(self, num_criteria=1, feedback=""):
         """ Build a set of criteria and assessment parts for the rubric. """
         rubric = RubricFactory()
-        criteria = [CriterionFactory(rubric=rubric, order_num=n - 1) for n in range(num_criteria)]
+        criteria = [CriterionFactory(rubric=rubric, order_num=n + 1) for n in range(num_criteria)]
 
         criterion_options = []
         # for every criterion, make a criterion option
