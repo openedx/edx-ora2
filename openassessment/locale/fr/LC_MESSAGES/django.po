@@ -24,6 +24,7 @@
 # Matthieu Falce <falce.matthieu@gmail.com>, 2016
 # moocit-france <contact@moocit.fr>, 2015-2018
 # MP55 <martine.pergent@gmail.com>, 2014
+# Nicolas François Leperlier <leperlier.n@gmail.com>, 2019
 # rafcha <raphael.chay@gmail.com>, 2014
 # rafcha <raphael.chay@gmail.com>, 2014
 # Régis Millet <regmillet@ct2c.fr>, 2015
@@ -37,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 12:29-0500\n"
-"PO-Revision-Date: 2019-12-16 20:05+0000\n"
+"POT-Creation-Date: 2020-01-03 12:27-0500\n"
+"PO-Revision-Date: 2020-01-04 08:37+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -215,14 +216,6 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:161
 msgid "Select Team Set"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:164
-msgid "Team A"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:165
-msgid "Team B"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
@@ -1116,43 +1109,49 @@ msgstr ""
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:126
+#: openassessment/templates/openassessmentblock/response/oa_response.html:122
+msgid ""
+"Note: this is a team assignment. Make sure to coordinate with your teammates"
+" to avoid overwriting each other's work."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:129
 msgid "We could not save your progress"
 msgstr "Votre réponse n'a pas pu être enregistrée"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:133
+#: openassessment/templates/openassessmentblock/response/oa_response.html:136
 msgid "Save your progress"
 msgstr "Enregistrer votre réponse"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:137
+#: openassessment/templates/openassessmentblock/response/oa_response.html:140
 msgid "Your Submission Status"
 msgstr "Statut de votre envoi"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:149
+#: openassessment/templates/openassessmentblock/response/oa_response.html:152
 msgid "We could not upload files"
 msgstr "Nous n'avons pas pu charger les fichiers"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:155
+#: openassessment/templates/openassessmentblock/response/oa_response.html:158
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:159
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Select a file to upload for this submission."
 msgstr "Sélectionnez un fichier à envoyer pour cette réponse."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:161
+#: openassessment/templates/openassessmentblock/response/oa_response.html:164
 msgid "Upload files"
 msgstr "Charger un fichier"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:170
+#: openassessment/templates/openassessmentblock/response/oa_response.html:173
 msgid "You may continue to work on your response until you submit it."
 msgstr "Vous pouvez continuer à travailler sur votre réponse jusqu'à ce que vous l'envoyez."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:177
+#: openassessment/templates/openassessmentblock/response/oa_response.html:180
 msgid "We could not submit your response"
 msgstr "Votre réponse n'a pas pu être envoyée"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:187
+#: openassessment/templates/openassessmentblock/response/oa_response.html:190
 msgid "Submit your response and move to the next step"
 msgstr "Envoyez votre réponse et passez à l'étape suivante"
 
@@ -1912,33 +1911,33 @@ msgstr "options_selected doit être un disctionnaire"
 msgid "Your scores could not be checked."
 msgstr "Vos notes n'ont pu être vérifiés."
 
-#: openassessment/xblock/studio_mixin.py:192
-#: openassessment/xblock/studio_mixin.py:204
+#: openassessment/xblock/studio_mixin.py:195
+#: openassessment/xblock/studio_mixin.py:207
 msgid "Error updating XBlock configuration"
 msgstr "Erreur lors de la mise à jour de la configuration du XBlock"
 
-#: openassessment/xblock/studio_mixin.py:207
+#: openassessment/xblock/studio_mixin.py:210
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr "Erreur: vous ne pouvez pas désactiver à la fois les réponses textes ou par chargement de fichier"
 
-#: openassessment/xblock/studio_mixin.py:210
+#: openassessment/xblock/studio_mixin.py:213
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr "Erreur: Si les réponses textes sont désactivées, les réponses par fichier à charger sont requises"
 
-#: openassessment/xblock/studio_mixin.py:213
+#: openassessment/xblock/studio_mixin.py:216
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr "Erreur: Si les réponses par fichier à charger sont désactivées, les réponses par textes sont requises"
 
-#: openassessment/xblock/studio_mixin.py:237
+#: openassessment/xblock/studio_mixin.py:240
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Erreur de validation : {error}"
 
-#: openassessment/xblock/studio_mixin.py:264
+#: openassessment/xblock/studio_mixin.py:268
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock a été correctement mis à jour"
 
@@ -1998,11 +1997,11 @@ msgstr "Type de fichier non supporté."
 msgid "Error retrieving upload URL."
 msgstr "Une erreur s'est produite lors de la récupération de l'URL de chargement."
 
-#: openassessment/xblock/submission_mixin.py:516
+#: openassessment/xblock/submission_mixin.py:526
 msgid "This response has been saved but not submitted."
 msgstr "Cette réponse est enregistrée mais n'a pas été envoyée."
 
-#: openassessment/xblock/submission_mixin.py:517
+#: openassessment/xblock/submission_mixin.py:527
 msgid "This response has not been saved."
 msgstr "Cette réponse n'a pas été enregistrée."
 
