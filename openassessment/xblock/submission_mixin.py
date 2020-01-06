@@ -168,6 +168,7 @@ class SubmissionMixin(object):
                     ).format(student_item=student_item_dict)
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
+                    status_text = msg
             except (api.SubmissionError, AssessmentWorkflowError):
                 msg = (
                     u"An unknown error occurred while submitting "
