@@ -75,8 +75,10 @@ class SubmissionMixin(object):
             suffix (str): Not used in this handler.
 
         Returns:
-            (tuple): Returns the status (boolean) of this request, the
+            (tuple | [tuple]): Returns the status (boolean) of this request, the
                 associated status tag (str), and status text (unicode).
+                This becomes an array of similarly structured tuples in the event
+                of a team submisison, one entry per student entry.
 
         """
         # Import is placed here to avoid model import at project startup.
@@ -113,9 +115,22 @@ class SubmissionMixin(object):
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
         status_text = self._(u'Multiple submissions are not allowed.')
+
         if not workflow:
             try:
-                submission = self.create_submission(student_item_dict, student_sub_data)
+                submissions = []
+
+                if self.teams_enabled:
+                    team_dict = self.get_team_info()
+
+                    if team_dict is not None:
+                        team_usernames = team_dict["team_usernames"]
+
+                        for student_id in team_usernames:
+                            student_item_dict["student_id"] = student_id
+                            submissions.append(self.create_submission(student_item_dict, student_sub_data))
+                else:
+                    submissions = [self.create_submission(student_item_dict, student_sub_data)]
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -149,14 +164,22 @@ class SubmissionMixin(object):
                 status_tag = 'EUNKNOWN'
                 status_text = self._(u'API returned unclassified exception.')
             else:
-                status = True
-                if self.teams_enabled and len(submission) > 1:
-                    status_tag = submission[0].get('student_item')
-                    status_text = u"Submitted team assignment for {} learners".format(len(submission))
-                else:
+                result = []
+
+                for submission in submissions:
+                    status = True
                     status_tag = submission.get('student_item')
                     status_text = submission.get('attempt_number')
 
+                    result.append((status, status_tag, status_text))
+
+                # to preserve old behavior, return a tuple for single user submissions
+                if len(result) == 1:
+                    return result[0]
+                else:
+                    return result
+
+        # error cases fall through to here
         return status, status_tag, status_text
 
     @XBlock.json_handler
@@ -289,37 +312,6 @@ class SubmissionMixin(object):
                 "answer": submission["answer"],
             }
         )
-
-        if self.teams_enabled:
-            submissions = [submission]
-
-            team_dict = self.get_team_info()
-            team_usernames = []
-
-            if team_dict is not None:
-                team_usernames = team_dict["team_usernames"]
-
-            for student_id in team_usernames:
-                student_item_dict["student_id"] = student_id
-                submission = api.create_submission(student_item_dict, student_sub_dict)
-                self.create_workflow(submission["uuid"])
-                self.submission_uuid = submission["uuid"]
-
-                # Emit analytics event...
-                self.runtime.publish(
-                    self,
-                    "openassessmentblock.create_submission",
-                    {
-                        "submission_uuid": submission["uuid"],
-                        "attempt_number": submission["attempt_number"],
-                        "created_at": submission["created_at"],
-                        "submitted_at": submission["submitted_at"],
-                        "answer": submission["answer"],
-                    }
-                )
-                submissions.append(submission)
-
-            return submissions
 
         return submission
 
