@@ -32,10 +32,7 @@ class MockTeamsService(object):
         ]
 
     def get_team(self, user, course_id):  # pylint: disable=unused-argument
-        if self.has_team:
-            return self.team
-        else:
-            return None
+        return self.team if self.has_team else None
 
 
 class MockBlock(TeamMixin):
@@ -55,10 +52,7 @@ class MockBlock(TeamMixin):
             self.service = MockTeamsService(has_team)
 
     def get_real_user(self, anonymous_user_id):  # pylint: disable=unused-argument
-        if self.has_user:
-            return mock.MagicMock()
-        else:
-            return None
+        return mock.MagicMock() if self.has_user else None
 
     @property
     def teams_service(self):
