@@ -441,7 +441,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             xblock, 'submit', self.SUBMISSION, response_format='json')
 
         # then the submission is successful for all members of a team
-        self.assertEquals(len(team_usernames), len(response))
+        self.assertEqual(len(team_usernames), len(response))
 
         for result in response:
             self.assertTrue(result[0])
