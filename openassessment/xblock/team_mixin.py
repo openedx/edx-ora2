@@ -52,13 +52,15 @@ class TeamMixin(object):
             return False
         return bool(team)
 
-    def should_hide_team_ora(self):
+    def valid_access_to_team_assessment(self):
         """
-        Hide the ORA when the user is not on a team for a team ORA.
-        Ignore and return dummy data if we are course staff or in studio preview, since
-        we will want to see how the page will look to students
+        A team-based ORA can be viewed by:
+         - A student on a team
+         - Course staff
+         - Studio preview
+        Students not on a team cannot access a team ORA
         """
-        return (not self.has_team()) and not (self.is_course_staff or self.in_studio_preview)
+        return self.is_course_staff or self.in_studio_preview or self.has_team()
 
     def get_team_info(self):
         """

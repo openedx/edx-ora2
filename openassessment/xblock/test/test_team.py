@@ -105,15 +105,15 @@ class TeamMixinTest(TestCase):
 
     @ddt.unpack
     @ddt.data(
-        (False, False, False, True),  # Student in LMS with no team
-        (True, False, False, False),  # Student in LMS with a team
-        (False, False, True, False),  # Studio preview
-        (False, True, False, False),  # Course staff in LMS
-        (False, True, True, False),   # Course Staff in studio preview
+        (False, False, False, False),  # Student in LMS with no team
+        (True, False, False, True),  # Student in LMS with a team
+        (False, False, True, True),  # Studio preview
+        (False, True, False, True),  # Course staff in LMS
+        (False, True, True, True),   # Course Staff in studio preview
     )
-    def test_should_hide_team_ora(self, has_team, is_course_staff, in_studio_preview, expected_should_hide):
+    def test_valid_access_to_team_assessment(self, has_team, is_course_staff, in_studio_preview, expected_valid):
         block = MockBlock(has_team=has_team)
         block.is_course_staff = is_course_staff
         block.in_studio_preview = in_studio_preview
-        should_hide_team_ora = block.should_hide_team_ora()
-        self.assertEqual(expected_should_hide, should_hide_team_ora)
+        valid_access_to_team_assessment = block.valid_access_to_team_assessment()
+        self.assertEqual(expected_valid, valid_access_to_team_assessment)

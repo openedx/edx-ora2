@@ -499,7 +499,7 @@ class OpenAssessmentBlock(MessageMixin,
         }
         template = get_template("openassessmentblock/oa_base.html")
 
-        if self.teams_enabled and self.should_hide_team_ora():
+        if self.teams_enabled and not self.valid_access_to_team_assessment():
             context_dict['rubric_assessments'] = []
 
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
