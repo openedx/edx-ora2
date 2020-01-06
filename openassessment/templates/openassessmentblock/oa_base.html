@@ -3,18 +3,11 @@
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
     <div class="openassessment problem">
         <div class="wrapper--grid">
-            {% if title %}
-                <h3 class="openassessment__title problem__header">{% trans title %}</h3>
-            {% endif %}
+            
 
             <div class="wrapper-openassessment__message">
 
                 {% block message %}
-                <div class="openassessment__message message">
-                    <div class="message__content">
-                        <p>{% trans "This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the Your Response field." %}</p>
-                    </div>
-                </div>
                 {% endblock %}
             </div>
 
