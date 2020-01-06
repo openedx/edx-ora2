@@ -118,19 +118,32 @@ class SubmissionMixin(object):
 
         if not workflow:
             try:
-                submissions = []
 
                 if self.teams_enabled:
-                    team_dict = self.get_team_info()
+                    # a submission for a team generates matching submissions for all members
+                    submissions = self.create_team_submission(student_item_dict,student_sub_data)
 
-                    if team_dict is not None:
-                        team_usernames = team_dict["team_usernames"]
+                    result = []
 
-                        for student_id in team_usernames:
-                            student_item_dict["student_id"] = student_id
-                            submissions.append(self.create_submission(student_item_dict, student_sub_data))
+                    for submission in submissions:
+                        status = True
+                        status_tag = submission.get('student_item')
+                        status_text = submission.get('attempt_number')
+
+                        result.append((status, status_tag, status_text))
+
+                    # return results from all submissions
+                    return result
+
                 else:
-                    submissions = [self.create_submission(student_item_dict, student_sub_data)]
+                    submission = self.create_submission(student_item_dict, student_sub_data)
+
+                    status = True
+                    status_tag = submission.get('student_item')
+                    status_text = submission.get('attempt_number')
+
+                    return status, status_tag, status_text
+
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -163,21 +176,6 @@ class SubmissionMixin(object):
                 logger.exception(msg)
                 status_tag = 'EUNKNOWN'
                 status_text = self._(u'API returned unclassified exception.')
-            else:
-                result = []
-
-                for submission in submissions:
-                    status = True
-                    status_tag = submission.get('student_item')
-                    status_text = submission.get('attempt_number')
-
-                    result.append((status, status_tag, status_text))
-
-                # to preserve old behavior, return a tuple for single user submissions
-                if len(result) == 1:
-                    return result[0]
-                else:
-                    return result
 
         # error cases fall through to here
         return status, status_tag, status_text
@@ -276,6 +274,22 @@ class SubmissionMixin(object):
             return {'success': False, 'msg': self._(u"Files metadata could not be saved.")}
 
         return {'success': True, 'msg': u''}
+
+    def create_team_submission(self, student_item_dict, student_sub_data):
+        """ A student submitting for a team should generate matching submissions for every member of the team """
+        team_dict = self.get_team_info()
+
+        if team_dict is not None:
+            submissions = []
+
+            team_usernames = team_dict["team_usernames"]
+
+            # submissions are identical except for the student ID
+            for student_id in team_usernames:
+                student_item_dict["student_id"] = student_id
+                submissions.append(self.create_submission(student_item_dict, student_sub_data))
+
+        return submissions
 
     def create_submission(self, student_item_dict, student_sub_data):
         """ Creates submission for the submitted assessment response or a list for a team assessment """
