@@ -663,26 +663,3 @@ class SubmissionMixin(object):
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
         return path, context
-
-    def get_team_info(self):
-        """
-        Returns dict with team info from the team service or None if th user is not on a team
-
-        Raises:
-            - NoSuchServiceError if the teams service is unavailable
-            - ObjectDoesNotExist if the user associated with `anonymous_user_id`
-                                 can not be found
-        """
-        teams_service = self.runtime.service(self, 'teams')
-        student_item_dict = self.get_student_item_dict()
-        user = self.get_real_user(student_item_dict['student_id'])
-        if not user:
-            raise ObjectDoesNotExist()
-        team = teams_service.get_team(user, student_item_dict['course_id'])
-        if not team:
-            return None
-        return {
-            'team_name': team.name,
-            'team_usernames': [user.username for user in team.users.all()],
-            'team_url': teams_service.get_team_detail_url(team),
-        }
