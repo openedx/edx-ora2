@@ -1,30 +1,43 @@
 {% spaceless %}
 {% load i18n %}
 {% load oa_extras %}
-<ol class="submission__answer__display__content">
+<ol class="submission__answer__display__content" >
     {% for part in answer.parts %}
+    {% if forloop.counter|divisibleby:2%} <div>{%endif%}
         <li class="submission__answer__part"
-            {% if not forloop.first and forloop.counter|divisibleby:2 %} style="display: inline-block; width:50%" {%endif%}
-            {% if not forloop.first and not forloop.counter|divisibleby:2 %} style="float: right; width:50%" {%endif%}>
+            {% if not forloop.first %} style="display: inline-block; width:50%;" {%endif%}>
             <div class="submission__answer__part__text">
-                {% if forloop.first %}
-                <h5 class="submission__answer__part__text__title">{% trans "The question for this section" %}</h5>
-                {% endif %}
+
+<!--                <h5 class="submission__answer__part__text__title">{% trans "The question for this section" %}</h5>-->
             </div>
-            <article class="submission__answer__part__prompt">
-                <div class="submission__answer__part__prompt__value">
-                    {% if prompts_type == 'html' %}
-                        {{ part.prompt.description|safe }}
-                    {% else %}
-                        {{ part.prompt.description|linebreaks }}
-                    {% endif %}
-                </div>
-            </article>
+<!--            <article class="submission__answer__part__prompt">-->
+<!--                <div class="submission__answer__part__prompt__value">-->
+<!--                    {% if prompts_type == 'html' %}-->
+<!--                        {{ part.prompt.description|safe }}-->
+<!--                    {% else %}-->
+<!--                        {{ part.prompt.description|linebreaks }}-->
+<!--                    {% endif %}-->
+<!--                </div>-->
+<!--            </article>-->
             {% if part.text %}
             <div class="submission__answer__part__text">
-                {% if forloop.first %}
-                <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
-                {% endif %}
+
+                <h5 class="submission__answer__part__text__title">
+                    {% if forloop.first %}
+                        {{ answer_text_label }}
+                    {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
+                        {% trans "Your Output"%}
+                    {% elif forloop.counter|divisibleby:3 %}
+                        {% trans "Code Output"%}
+                    {% else %}
+                        {% if prompts_type == 'html' %}
+                            {{ part.prompt.description|safe }}
+                        {% else %}
+                            {{ part.prompt.description|linebreaks }}
+                        {% endif %}
+                    {% endif %}
+                </h5>
+
 
                 {% if forloop.counter|divisibleby:4 %}
                     {% if staff_correct %}
@@ -48,6 +61,7 @@
             </div>
             {% endif %}
         </li>
+    {% if not forloop.counter|divisibleby:2 and not forloop.first%}</div> {%endif%}
     {% endfor %}
 </ol>
 {% endspaceless %}

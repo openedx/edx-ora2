@@ -53,15 +53,6 @@
         <div class="wrapper--step__content">
             <div class="step__instruction">
                 <p>
-                    {% trans "Enter your response to the prompt." %}
-                    {% if submission_due %}
-                    {% trans "You can save your progress and return to complete your response at any time before the due date" %}
-                    (<span class="step__deadline">
-                        <span id="oa_step_deadline_response" class="date ora-datetime" data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}" data-timezone="{{ user_timezone }}" data-format="longDateTime" data-language="{{ user_language }}"></span>
-                    </span>).
-                    {% else %}
-                    {% trans "You can save your progress and return to complete your response at any time." %}
-                    {% endif %}
                     <strong class="emphasis">{% trans "After you submit your response, you cannot edit it" %}</strong>.
                 </p>
             </div>
@@ -73,33 +64,37 @@
                             <li class="submission__answer__part"
                                 {% if not forloop.first and forloop.counter|divisibleby:2 %} style="display: inline-block; width:50%" {%endif%}
                                 {% if not forloop.first and not forloop.counter|divisibleby:2 %} style="float: right; width:50%" {%endif%} >
-                                {% if forloop.first %}
-                                <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
-                                {% endif %}
-                                <article class="submission__answer__part__prompt">
-                                    <div class="submission__answer__part__prompt__copy">
-                                        {% if prompts_type == 'html' %}
-                                            {{ part.prompt.description|safe }}
-                                        {% else %}
-                                            {{ part.prompt.description|linebreaks }}
-                                        {% endif %}
-                                    </div>
-                                </article>
+<!--                                <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>-->
+<!--                                <article class="submission__answer__part__prompt">-->
+<!--                                    <div class="submission__answer__part__prompt__copy">-->
+<!--                                        {% if prompts_type == 'html' %}-->
+<!--                                            {{ part.prompt.description|safe }}-->
+<!--                                        {% else %}-->
+<!--                                            {{ part.prompt.description|linebreaks }}-->
+<!--                                        {% endif %}-->
+<!--                                    </div>-->
+<!--                                </article>-->
 
 
                                 {% if text_response %}
                                 <div class="field field--textarea submission__answer__part__text">
                                     <div class="submission__answer__part__text">
-                                        {% if forloop.first %}
+
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                             class="submission__answer__part__text__title">
-                                          {% if text_response == "required" %}
-                                            {% trans "Your response (required)" %}
-                                          {% elif text_response == "optional" %}
-                                            {% trans "Your response (optional)" %}
-                                          {% endif %}
+                                            {% if forloop.first %}
+                                                {% if text_response == "required" %}
+                                                    {% trans "Your response (required)" %}
+                                                {% elif text_response == "optional" %}
+                                                    {% trans "Your response (optional)" %}
+                                                {% endif %}
+                                            {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
+                                                {% trans "Your Output"%}
+                                            {% elif forloop.counter|divisibleby:3 %}
+                                                {% trans "Code Output"%}
+                                            {% endif %}
                                         </h5>
-                                        {% endif %}
+
                                     </div>
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
