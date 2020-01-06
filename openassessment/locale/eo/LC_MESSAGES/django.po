@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-03 09:57-0500\n"
+"POT-Creation-Date: 2020-01-06 13:47-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1029,6 +1029,20 @@ msgstr ""
 "\n"
 "                                    Thïs ässïgnmént ïs ïn prögréss. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυ#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html
+msgid "Team membership is required to view this assignment"
+msgstr ""
+"Téäm mémßérshïp ïs réqüïréd tö vïéw thïs ässïgnmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html
+msgid ""
+"This is a team assignment. You are currently not on a team. You must be on a"
+" team to access this team assignment."
+msgstr ""
+"Thïs ïs ä téäm ässïgnmént. Ýöü äré çürréntlý nöt ön ä téäm. Ýöü müst ßé ön ä"
+" téäm tö äççéss thïs téäm ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html
 #, python-format
