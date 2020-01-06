@@ -3,7 +3,7 @@
 {% load oa_extras %}
 <ol class="submission__answer__display__content" >
     {% for part in answer.parts %}
-    {% if forloop.counter|divisibleby:2%} <div>{%endif%}
+    {% if forloop.counter|divisibleby:2%} <div style="display: flex;flex-direction: row;">{%endif%}
         <li class="submission__answer__part"
             {% if not forloop.first %} style="display: inline-block; width:50%;" {%endif%}>
             <div class="submission__answer__part__text">
