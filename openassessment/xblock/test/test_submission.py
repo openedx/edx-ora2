@@ -432,7 +432,9 @@ class SubmissionTest(XBlockHandlerTestCase):
         xblock.get_team_info = Mock()
 
         team_usernames = ['Red Leader', 'Red Two', 'Red Five']
-        xblock.get_team_info.return_value = {'team_name': 'Red Squadron', 'team_usernames': team_usernames, 'team_url': 'rebel_alliance.org'}
+        xblock.get_team_info.return_value = {'team_name': 'Red Squadron',
+                                             'team_usernames': team_usernames,
+                                             'team_url': 'rebel_alliance.org'}
 
         # when the learner submits an open assessment response
         response = self.request(
@@ -447,7 +449,7 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Red Five')
     @patch.object(sub_api, 'create_submission')
     def test_team_submission_partial_failure(self, xblock, mock_submit):
-        """ If a team submission encounters an issue with one of the submissions... 
+        """ If a team submission encounters an issue with one of the submissions...
             easiest behavior is to return a failure, leaving the result a partial success
         """
 
@@ -456,7 +458,9 @@ class SubmissionTest(XBlockHandlerTestCase):
         xblock.get_team_info = Mock()
 
         team_usernames = ['Red Leader', 'Red Two', 'Red Five']
-        xblock.get_team_info.return_value = {'team_name': 'Red Squadron', 'team_usernames': team_usernames, 'team_url': 'rebel_alliance.org'}
+        xblock.get_team_info.return_value = {'team_name': 'Red Squadron',
+                                             'team_usernames': team_usernames,
+                                             'team_url': 'rebel_alliance.org'}
 
         # ... but there's an issue when submitting
         mock_submit.side_effect = SubmissionRequestError(msg="I can't shake him!")
@@ -467,6 +471,7 @@ class SubmissionTest(XBlockHandlerTestCase):
 
         # then the submission returns a failure
         self.assertFalse(response[0])
+
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
     """

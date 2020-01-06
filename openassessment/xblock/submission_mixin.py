@@ -121,7 +121,7 @@ class SubmissionMixin(object):
 
                 if self.teams_enabled:
                     # a submission for a team generates matching submissions for all members
-                    submissions = self.create_team_submission(student_item_dict,student_sub_data)
+                    submissions = self.create_team_submission(student_item_dict, student_sub_data)
 
                     result = []
 
