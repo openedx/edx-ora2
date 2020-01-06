@@ -89,7 +89,8 @@ class SubmissionMixin(object):
 
         status = False
         grade_output = self.grade_response(data, add_staff_output=True)
-        self.add_staff_output_to_submission(data, grade_output)
+        self.add_output_to_submission(data, grade_output)
+        self.add_output_to_submission(data, grade_output, 'staff')
         student_sub_data = data['submission']
         # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
         # if not success:
@@ -164,9 +165,23 @@ class SubmissionMixin(object):
 
         return status, status_tag, status_text
 
-    def add_staff_output_to_submission(self, data, grade_output):
+    def add_output_to_submission(self, data, grade_output, sub_type='sample'):
+        """
+        Add the result of the code output to the submission.
 
-        keys_to_add = [self.STAFF_OUTPUT, self.STAFF_EXPECTED]
+        Arguments:
+            data(dict): Contains the submission data(code in our case)
+            grade_output(dict): result of the grader
+            sub_type(str): str that tells which output is to be added.
+                There are two submission output:
+                 1. Sample/Public(default param)
+                 2. Staff/Private
+        Return:
+            None
+        """
+        keys_to_add = [self.SAMPLE_OUTPUT, self.SAMPLE_EXPECTED]
+        if sub_type == 'staff':
+            keys_to_add = [self.STAFF_OUTPUT, self.STAFF_EXPECTED]
         for each in keys_to_add:
             try:
                 data['submission'].append(grade_output[each])
@@ -186,11 +201,15 @@ class SubmissionMixin(object):
         if output['tests']:
             result[self.SAMPLE_OUTPUT] = output['tests'][0][2]
             result[self.SAMPLE_EXPECTED] = output['tests'][0][1]
+            result['correctness'] = output['correct']
             if add_staff_output:
                 result[self.STAFF_OUTPUT] = output['tests'][1][2]
                 result[self.STAFF_EXPECTED] = output['tests'][1][1]
         elif output['errors']:
-            result[self.SAMPLE_OUTPUT] = output['errors']
+            try:
+                result[self.SAMPLE_OUTPUT] = output['errors'][0]
+            except KeyError:
+                result[self.SAMPLE_OUTPUT] = output['errors']
         return result
 
     @XBlock.json_handler
