@@ -234,6 +234,19 @@ OpenAssessment.ResponseView.prototype = {
     $(sel[index]).val(output);
     },
 
+    /*
+    Show the reponse is either correct/incorrect based on the given value
+    */
+    indicateCorrectness: function(correctness){
+    var output_prompt = $(this.getPrompts()[1]);
+    if(correctness==true){
+    output_prompt.attr('style', "border:5px solid green");
+    }
+    else{
+    output_prompt.attr('style', "border:5px solid red");
+    }
+    },
+
     /**
      Enable or disable autosave polling.
 
@@ -423,7 +436,7 @@ OpenAssessment.ResponseView.prototype = {
             var data_list = (sel.map(function() {
                 return $(this).val();
             }).get());
-            return data_list
+            return [data_list[0]]
         }
         // if (typeof texts === 'undefined') {
         //     return sel.map(function() {
@@ -518,6 +531,7 @@ OpenAssessment.ResponseView.prototype = {
             view.savedResponse = savedResponse;
             view.updateCodeOutput(data.sample_out, 1);
             view.updateCodeOutput(data.sample_expected, 2);
+            view.indicateCorrectness(data.correctness);
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             view.checkSubmissionAbility();
