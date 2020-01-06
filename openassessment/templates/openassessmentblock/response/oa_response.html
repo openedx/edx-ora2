@@ -64,17 +64,6 @@
                             <li class="submission__answer__part"
                                 {% if not forloop.first and forloop.counter|divisibleby:2 %} style="display: inline-block; width:50%" {%endif%}
                                 {% if not forloop.first and not forloop.counter|divisibleby:2 %} style="float: right; width:50%" {%endif%} >
-<!--                                <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>-->
-<!--                                <article class="submission__answer__part__prompt">-->
-<!--                                    <div class="submission__answer__part__prompt__copy">-->
-<!--                                        {% if prompts_type == 'html' %}-->
-<!--                                            {{ part.prompt.description|safe }}-->
-<!--                                        {% else %}-->
-<!--                                            {{ part.prompt.description|linebreaks }}-->
-<!--                                        {% endif %}-->
-<!--                                    </div>-->
-<!--                                </article>-->
-
 
                                 {% if text_response %}
                                 <div class="field field--textarea submission__answer__part__text">
