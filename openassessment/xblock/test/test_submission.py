@@ -354,11 +354,15 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = json.loads(resp.decode('utf-8'))
         self.assertEqual(resp['username'], 'UserName1')
 
-    @scenario('data/basic_scenario.xml', user_id='Red Five')
-    def test_team_submission(self, xblock):
-        """ If teams are enabled, a submission by any member should submit for each member of the team """
+    def _setup_mock_team(self, xblock):
+        """ Enable and configure a mock team to be returned from the teams service
 
-        # given a learner is on a team
+            {
+                'team_name': 'Red Squadron',
+                'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
+                'team_url': 'rebel_alliance.org'
+            }
+        """
         xblock.teams_enabled = True
         xblock.get_team_info = Mock()
 
@@ -367,12 +371,19 @@ class SubmissionTest(XBlockHandlerTestCase):
                                              'team_usernames': team_usernames,
                                              'team_url': 'rebel_alliance.org'}
 
+    @scenario('data/basic_scenario.xml', user_id='Red Five')
+    def test_team_submission(self, xblock):
+        """ If teams are enabled, a submission by any member should submit for each member of the team """
+
+        # given a learner is on a team
+        self._setup_mock_team(xblock)
+
         # when the learner submits an open assessment response
         response = self.request(
             xblock, 'submit', self.SUBMISSION, response_format='json')
 
         # then the submission is successful for all members of a team
-        self.assertEqual(len(team_usernames), len(response))
+        self.assertEqual(3, len(response))
 
         for result in response:
             self.assertTrue(result[0])
@@ -385,13 +396,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         """
 
         # given a learner is on a team
-        xblock.teams_enabled = True
-        xblock.get_team_info = Mock()
-
-        team_usernames = ['Red Leader', 'Red Two', 'Red Five']
-        xblock.get_team_info.return_value = {'team_name': 'Red Squadron',
-                                             'team_usernames': team_usernames,
-                                             'team_url': 'rebel_alliance.org'}
+        self._setup_mock_team(xblock)
 
         # ... but there's an issue when submitting
         mock_submit.side_effect = SubmissionRequestError(msg="I can't shake him!")
