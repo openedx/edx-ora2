@@ -25,6 +25,8 @@ from openassessment.xblock.workflow_mixin import WorkflowMixin
 from submissions import api as sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 
+from openassessment.assessment.models import SharedFileUpload
+
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -407,6 +409,38 @@ class SubmissionTest(XBlockHandlerTestCase):
 
         # then the submission returns a failure
         self.assertFalse(response[0])
+
+    @scenario('data/basic_scenario.xml', user_id='Red Five')
+    @patch.object(SharedFileUpload, 'by_team_course_item')
+    def test_team_file_submission(self, xblock, mock_get_team_files):
+        """ If teams are enabled, a submission by any member should submit for each member of the team """
+
+        # given a learner is on a team and file uploads are enabled
+        self._setup_mock_team(xblock)
+        xblock.file_upload_type = 'pdf-and-image'
+
+        mock_shared_file_uploads = [{
+            "team_id": "mock_team_id",
+            "course_id": "mock_course_id",
+            "item_id": "mock_item_id",
+            "owner_id": "mock_owner_id",
+            "file_key": "mock_file_key",
+            "history": None,
+            "description": "mock_description",
+            "size": 12345
+        }]
+
+        mock_get_team_files.return_value = mock_shared_file_uploads
+
+        # when the learner submits an open assessment response
+        response = self.request(
+            xblock, 'submit', self.SUBMISSION, response_format='json')
+
+        # then the submission is successful for all members of a team
+        self.assertEqual(3, len(response))
+
+        for result in response:
+            self.assertTrue(result[0])
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):

@@ -19,6 +19,8 @@ from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
 
+from openassessment.assessment.models import SharedFileUpload
+
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -301,15 +303,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
-        if self.file_upload_type:
-            for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
-                student_sub_dict[field] = []
-
-            for file_upload in self.file_manager.get_uploads():
-                student_sub_dict['file_keys'].append(file_upload.key)
-                student_sub_dict['files_descriptions'].append(file_upload.description)
-                student_sub_dict['files_names'].append(file_upload.name)
-                student_sub_dict['files_sizes'].append(file_upload.size)
+        self.collect_files_for_submission(student_sub_dict)
 
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -329,6 +323,34 @@ class SubmissionMixin(object):
         )
 
         return submission
+
+    def collect_files_for_submission(self, student_sub_dict):
+        """ collect files from CSM for individual submisisons or SharedFileUpload for team submisisons """
+
+        if not self.file_upload_type:
+            return
+
+        for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
+            student_sub_dict[field] = []
+
+        if self.teams_enabled:
+            for team_file_upload in self.get_team_files():
+                student_sub_dict['file_keys'].append(team_file_upload['file_key'])
+                student_sub_dict['files_descriptions'].append(team_file_upload['description'])
+                student_sub_dict['files_names'].append(team_file_upload['item_id'])
+                student_sub_dict['files_sizes'].append(team_file_upload['size'])
+
+        else:
+            for file_upload in self.file_manager.get_uploads():
+                student_sub_dict['file_keys'].append(file_upload.key)
+                student_sub_dict['files_descriptions'].append(file_upload.description)
+                student_sub_dict['files_names'].append(file_upload.name)
+                student_sub_dict['files_sizes'].append(file_upload.size)
+
+        return student_sub_dict
+
+    def get_team_files(self):
+        return SharedFileUpload.by_team_course_item() # self.team.team_id, self.course_id, self.item_id)
 
     @XBlock.json_handler
     def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
