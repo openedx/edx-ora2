@@ -851,3 +851,7 @@ class SharedFileUpload(TimeStampedModel):
 
     def __str__(self):
         return u"SharedFileUpload {}".format(self.file_key)
+
+    @classmethod
+    def by_team_course_item(cls, team_id, course_id, item_id):
+        return cls.objects.filter(team_id=team_id, course_id=course_id, item_id=item_id)
