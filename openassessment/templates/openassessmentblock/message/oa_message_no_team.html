@@ -1,0 +1,9 @@
+{% load i18n %}
+{% spaceless %}
+<div id="openassessment__message__{{ xblock_id }}" class="message--warning openassessment__message message">
+    <h4 class="message__title">{% trans "Team membership is required to view this assignment" %} </h4>
+    <div class="message__content">
+        <p> {% trans "This is a team assignment. You are currently not on a team. You must be on a team to access this team assignment." %}</p>
+    </div>
+</div>
+{% endspaceless %}

@@ -32,6 +32,7 @@ from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
+from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.waffle_mixin import WaffleMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
@@ -109,6 +110,7 @@ class OpenAssessmentBlock(MessageMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
                           WaffleMixin,
+                          TeamMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
@@ -409,6 +411,10 @@ class OpenAssessmentBlock(MessageMixin,
         anonymous_user_id = self.get_anonymous_user_id(username, self.course_id)
         return self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
 
+    def get_anonymous_user_id_from_xmodule_runtime(self):
+        if hasattr(self, "xmodule_runtime"):
+            return self.xmodule_runtime.anonymous_student_id  # pylint:disable=E1101
+
     def get_student_item_dict(self, anonymous_user_id=None):
         """Create a student_item_dict from our surrounding context.
 
@@ -492,6 +498,9 @@ class OpenAssessmentBlock(MessageMixin,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
+
+        if self.teams_enabled and not self.valid_access_to_team_assessment():
+            context_dict['rubric_assessments'] = []
 
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
