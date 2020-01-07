@@ -8,7 +8,9 @@ from __future__ import absolute_import, unicode_literals
 
 import json
 import logging
+from django.db import IntegrityError
 
+from openassessment.assessment.models import SharedFileUpload
 from openassessment.fileupload.exceptions import FileUploadError
 
 from . import backends
@@ -216,7 +218,38 @@ class FileUploadManager(object):
         new_sizes = existing_file_sizes + sizes_to_add
         self._set_file_sizes(new_sizes)
 
-        return self._file_uploads_from_list_fields(new_descriptions, new_names, new_sizes)
+        new_file_uploads = self._file_uploads_from_list_fields(new_descriptions, new_names, new_sizes)
+
+        if self.block.is_team_assignment():
+            existing_file_upload_key_set = {
+                fileupload.key for fileupload in
+                self._file_uploads_from_list_fields(
+                    existing_file_descriptions,
+                    existing_file_names,
+                    existing_file_sizes
+                )
+            }
+            for new_file_upload in new_file_uploads:
+                if new_file_upload.key not in existing_file_upload_key_set:
+                    self.create_shared_upload(new_file_upload)
+
+        return new_file_uploads
+
+    def create_shared_upload(self, fileupload):
+        try:
+            SharedFileUpload.objects.create(
+                team_id=self.block.team.team_id,
+                owner_id=fileupload.student_id,
+                course_id=fileupload.course_id,
+                item_id=fileupload.item_id,
+                file_key=fileupload.key,
+                description=fileupload.description,
+                size=fileupload.size,
+                name=fileupload.name,
+            )
+        except IntegrityError as e:
+            logger.error("Unable to create shared upload. " + str(e))
+            raise e
 
     def delete_upload(self, index):
         """

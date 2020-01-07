@@ -848,6 +848,7 @@ class SharedFileUpload(TimeStampedModel):
     history = HistoricalRecords()
     description = models.TextField(default=u"", blank=True)
     size = models.BigIntegerField(default=0, blank=True)
+    name = models.CharField(max_length=255, default=u"")
 
     def __str__(self):
         return u"SharedFileUpload {}".format(self.file_key)
