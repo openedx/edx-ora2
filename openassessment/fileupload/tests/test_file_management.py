@@ -52,7 +52,7 @@ class MockBlock(object):
         )
 
 
-def uploadDict(name, desc, size):
+def upload_dict(name, desc, size):
     return {
         'name': name,
         'description': desc,
@@ -70,10 +70,10 @@ class FileUploadManagerTests(TestCase):
         team_block = MockBlock(2, team_id=self.team_id)
         self.team_manager = FileUploadManager(team_block)
 
-    def assertFileUpload(self, fileUpload, expectedName, expectedDesc, expectedSize):
-        self.assertEqual(fileUpload.name, expectedName)
-        self.assertEqual(fileUpload.description, expectedDesc)
-        self.assertEqual(fileUpload.size, expectedSize)
+    def assert_file_upload(self, file_upload, expected_name, expected_desc, expected_size):
+        self.assertEqual(file_upload.name, expected_name)
+        self.assertEqual(file_upload.description, expected_desc)
+        self.assertEqual(file_upload.size, expected_size)
 
     @override_settings(ORA2_FILEUPLOAD_BACKEND='django')
     def test_get_append_delete(self):
@@ -81,29 +81,29 @@ class FileUploadManagerTests(TestCase):
         self.assertEqual(files, [])
 
         self.manager.append_uploads(
-            uploadDict('name1', 'desc1', 100),
-            uploadDict('name2', 'desc2', 200),
-            uploadDict('name3', 'desc3', 300),
+            upload_dict('name1', 'desc1', 100),
+            upload_dict('name2', 'desc2', 200),
+            upload_dict('name3', 'desc3', 300),
         )
         files = self.manager.get_uploads()
         self.assertEqual(3, len(files))
-        self.assertFileUpload(files[0], 'name1', 'desc1', 100)
-        self.assertFileUpload(files[1], 'name2', 'desc2', 200)
-        self.assertFileUpload(files[2], 'name3', 'desc3', 300)
+        self.assert_file_upload(files[0], 'name1', 'desc1', 100)
+        self.assert_file_upload(files[1], 'name2', 'desc2', 200)
+        self.assert_file_upload(files[2], 'name3', 'desc3', 300)
 
         self.manager.append_uploads(
-            uploadDict('name4', 'desc4', 400)
+            upload_dict('name4', 'desc4', 400)
         )
         files = self.manager.get_uploads()
         self.assertEqual(4, len(files))
-        self.assertFileUpload(files[3], 'name4', 'desc4', 400)
+        self.assert_file_upload(files[3], 'name4', 'desc4', 400)
 
         self.manager.delete_upload(2)
         files = self.manager.get_uploads()
         self.assertEqual(3, len(files))
-        self.assertFileUpload(files[0], 'name1', 'desc1', 100)
-        self.assertFileUpload(files[1], 'name2', 'desc2', 200)
-        self.assertFileUpload(files[2], 'name4', 'desc4', 400)
+        self.assert_file_upload(files[0], 'name1', 'desc1', 100)
+        self.assert_file_upload(files[1], 'name2', 'desc2', 200)
+        self.assert_file_upload(files[2], 'name4', 'desc4', 400)
 
         self.assertEqual([], self._get_shared_uploads(self.manager))
 
@@ -120,31 +120,31 @@ class FileUploadManagerTests(TestCase):
         self.assertEqual(self._get_shared_uploads(self.team_manager), [])
 
         self.team_manager.append_uploads(
-            uploadDict('name1', 'desc1', 100),
-            uploadDict('name2', 'desc2', 200),
-            uploadDict('name3', 'desc3', 300),
+            upload_dict('name1', 'desc1', 100),
+            upload_dict('name2', 'desc2', 200),
+            upload_dict('name3', 'desc3', 300),
         )
         files = self.team_manager.get_uploads()
         self.assertEqual(3, len(files))
-        self.assertFileUpload(files[0], 'name1', 'desc1', 100)
-        self.assertFileUpload(files[1], 'name2', 'desc2', 200)
-        self.assertFileUpload(files[2], 'name3', 'desc3', 300)
+        self.assert_file_upload(files[0], 'name1', 'desc1', 100)
+        self.assert_file_upload(files[1], 'name2', 'desc2', 200)
+        self.assert_file_upload(files[2], 'name3', 'desc3', 300)
         shared_uploads = self._get_shared_uploads(self.team_manager)
         self.assertEqual(3, len(shared_uploads))
-        self.assertFileUpload(shared_uploads[0], 'name1', 'desc1', 100)
-        self.assertFileUpload(shared_uploads[1], 'name2', 'desc2', 200)
-        self.assertFileUpload(shared_uploads[2], 'name3', 'desc3', 300)
+        self.assert_file_upload(shared_uploads[0], 'name1', 'desc1', 100)
+        self.assert_file_upload(shared_uploads[1], 'name2', 'desc2', 200)
+        self.assert_file_upload(shared_uploads[2], 'name3', 'desc3', 300)
         for shared_upload in shared_uploads:
             self.assertEquals(shared_upload.owner_id, self.team_manager.block.student_id)
 
         self.team_manager.append_uploads(
-            uploadDict('name4', 'desc4', 400)
+            upload_dict('name4', 'desc4', 400)
         )
         files = self.team_manager.get_uploads()
         self.assertEqual(4, len(files))
-        self.assertFileUpload(files[3], 'name4', 'desc4', 400)
+        self.assert_file_upload(files[3], 'name4', 'desc4', 400)
         shared_uploads = self._get_shared_uploads(self.team_manager)
-        self.assertFileUpload(shared_uploads[3], 'name4', 'desc4', 400)
+        self.assert_file_upload(shared_uploads[3], 'name4', 'desc4', 400)
         self.assertEqual(4, len(shared_uploads))
         for shared_upload in shared_uploads:
             self.assertEquals(shared_upload.owner_id, self.team_manager.block.student_id)
@@ -152,15 +152,15 @@ class FileUploadManagerTests(TestCase):
         self.team_manager.delete_upload(2)
         files = self.team_manager.get_uploads()
         self.assertEqual(3, len(files))
-        self.assertFileUpload(files[0], 'name1', 'desc1', 100)
-        self.assertFileUpload(files[1], 'name2', 'desc2', 200)
-        self.assertFileUpload(files[2], 'name4', 'desc4', 400)
+        self.assert_file_upload(files[0], 'name1', 'desc1', 100)
+        self.assert_file_upload(files[1], 'name2', 'desc2', 200)
+        self.assert_file_upload(files[2], 'name4', 'desc4', 400)
         shared_uploads = self._get_shared_uploads(self.team_manager)
         self.assertEqual(4, len(shared_uploads))
 
     def test_integrity_error(self):
         self.team_manager.append_uploads(
-            uploadDict('name1', 'desc1', 100),
+            upload_dict('name1', 'desc1', 100),
         )
         uploaded_file = self.team_manager.get_uploads()[0]
 
