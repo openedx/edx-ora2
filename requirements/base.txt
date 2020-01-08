@@ -30,7 +30,7 @@ polib==1.1.0              # via edx-i18n-tools
 python-dateutil==2.4.0
 python-swiftclient==3.8.1
 pytz==2019.3
-pyyaml==5.2               # via edx-i18n-tools, xblock
+pyyaml==5.3               # via edx-i18n-tools, xblock
 requests==2.22.0          # via python-swiftclient
 six==1.13.0               # via bleach, django-simple-history, edx-i18n-tools, html5lib, libsass, python-dateutil, python-swiftclient, xblock
 urllib3==1.25.7           # via requests
