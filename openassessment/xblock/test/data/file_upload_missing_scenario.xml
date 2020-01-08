@@ -1,0 +1,28 @@
+<openassessment file_upload_response="optional" file_upload_type="custom" white_listed_file_types="pdf,srt,txt">
+    <title>Open Assessment Test</title>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty? Please answer in a short essay of 200-300 words.</description>
+        </prompt>
+    </prompts>
+    <rubric>
+        <criterion feedback="optional">
+        <name>Ideas</name>
+        <label>Ideas</label>
+        <prompt>Determine if there is a unifying theme or main idea.</prompt>
+        <option points="3">
+          <name>Fair</name>
+          <label>Fair</label>
+          <explanation>Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task.</explanation>
+        </option>
+        <option points="5">
+          <name>Good</name>
+          <label>Good</label>
+          <explanation>Presents a unifying theme or main idea without going off on tangents.  Stays completely focused on topic and task.</explanation>
+        </option>
+      </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="staff-assessment" required="True"/>
+    </assessments>
+</openassessment>
