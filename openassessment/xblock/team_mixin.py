@@ -70,6 +70,7 @@ class TeamMixin(object):
         """
         if self.has_team():
             return {
+                'team_id': self.team.team_id,
                 'team_name': self.team.name,
                 'team_usernames': [user.username for user in self.team.users.all()],
                 'team_url': self.teams_service.get_team_detail_url(self.team),

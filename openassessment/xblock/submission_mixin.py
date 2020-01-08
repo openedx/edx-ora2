@@ -350,7 +350,11 @@ class SubmissionMixin(object):
         return student_sub_dict
 
     def get_team_files(self):
-        return SharedFileUpload.by_team_course_item() # self.team.team_id, self.course_id, self.item_id)
+        team_id = self.get_team_info()['team_id']
+        course_id = self.get_student_item_dict()['course_id']
+        item_id = self.get_student_item_dict()['item_id']
+
+        return SharedFileUpload.by_team_course_item(team_id, course_id, item_id)
 
     @XBlock.json_handler
     def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
