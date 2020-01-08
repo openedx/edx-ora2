@@ -278,7 +278,7 @@ class SubmissionMixin(object):
         return {'success': True, 'msg': u''}
 
     def create_team_submission(self, student_item_dict, student_sub_data):
-        """ A student submitting for a team should generate matching submissions for every member of the team """
+        """ A student submitting for a team should generate matching submissions for every member of the team. """
         team_dict = self.get_team_info()
 
         if team_dict is not None:
@@ -294,7 +294,7 @@ class SubmissionMixin(object):
         return submissions
 
     def create_submission(self, student_item_dict, student_sub_data):
-        """ Creates submission for the submitted assessment response or a list for a team assessment """
+        """ Creates submission for the submitted assessment response or a list for a team assessment. """
         # Import is placed here to avoid model import at project startup.
         from submissions import api
 
@@ -324,7 +324,7 @@ class SubmissionMixin(object):
         return submission
 
     def collect_files_for_submission(self, student_sub_dict):
-        """ collect files from CSM for individual submisisons or SharedFileUpload for team submisisons """
+        """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
 
         if not self.file_upload_type:
             return
@@ -350,7 +350,7 @@ class SubmissionMixin(object):
 
     def get_team_files(self):
         """ Team files, unlike individual submissions, are gathered from the SharedFileUpload table
-            and identified by their team ID, course ID, and item ID
+            and identified by their team ID, course ID, and item ID.
         """
 
         team_id = self.get_team_info()['team_id']
@@ -362,7 +362,7 @@ class SubmissionMixin(object):
     @XBlock.json_handler
     def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
         """
-        Gets the username of the current student for use in team lookup
+        Gets the username of the current student for use in team lookup.
         """
         anonymous_id = self.xmodule_runtime.anonymous_student_id
         return {'username': self.get_username(anonymous_id)}
