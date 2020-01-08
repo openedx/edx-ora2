@@ -362,6 +362,8 @@ class SubmissionTest(XBlockHandlerTestCase):
         """
         xblock.teams_enabled = True
         xblock.get_team_info = Mock()
+        xblock.get_anonymous_user_id = Mock()
+        xblock.get_anonymous_user_id.side_effect = [1, 2, 5]
 
         mock_team = {'team_id': 'rs-04',
                      'team_name': 'Red Squadron',
