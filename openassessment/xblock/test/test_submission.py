@@ -17,6 +17,7 @@ from django.test.utils import override_settings
 import boto
 from boto.s3.key import Key
 from moto import mock_s3
+from openassessment.assessment.models import SharedFileUpload
 from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
@@ -24,8 +25,6 @@ from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from submissions import api as sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
-
-from openassessment.assessment.models import SharedFileUpload
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -384,7 +383,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             xblock, 'submit', self.SUBMISSION, response_format='json')
 
         # then the submission is successful for all members of a team
-        self.assertEqual(3, len(response))
+        self.assertEqual(len(mock_team['team_usernames']), len(response))
 
         for result in response:
             self.assertTrue(result[0])
@@ -397,7 +396,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         """
 
         # given a learner is on a team
-        mock_team = self._setup_mock_team(xblock)
+        self._setup_mock_team(xblock)
 
         # ... but there's an issue when submitting
         mock_submit.side_effect = SubmissionRequestError(msg="I can't shake him!")
@@ -436,7 +435,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             xblock, 'submit', self.SUBMISSION, response_format='json')
 
         # then the submission is successful for all members of a team
-        self.assertEqual(3, len(response))
+        self.assertEqual(len(mock_team['team_usernames']), len(response))
 
         for result in response:
             self.assertTrue(result[0])

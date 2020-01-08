@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
 import six
 
+from openassessment.assessment.models import SharedFileUpload
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -18,8 +19,6 @@ from .data_conversion import create_submission_dict, prepare_submission_for_seri
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
-
-from openassessment.assessment.models import SharedFileUpload
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -350,6 +349,10 @@ class SubmissionMixin(object):
         return student_sub_dict
 
     def get_team_files(self):
+        """ Team files, unlike individual submissions, are gathered from the SharedFileUpload table
+            and identified by their team ID, course ID, and item ID
+        """
+
         team_id = self.get_team_info()['team_id']
         course_id = self.get_student_item_dict()['course_id']
         item_id = self.get_student_item_dict()['item_id']
