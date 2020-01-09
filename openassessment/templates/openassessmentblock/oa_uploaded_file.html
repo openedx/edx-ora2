@@ -13,7 +13,7 @@
     <div class="{{ class_prefix }}__display__file {% if not file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
         <div class="submission__answer__files">
         {% for file_url, file_description, file_name, file_index in file_urls %}
-            <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
+            <div class="submission__answer__file__block submission__answer__file__block__{{ file_index}}" {% if not file_url %} deleted {% endif %}>
             {% if file_url %}
                 {% if file_upload_type == "image" %}
                     {% if file_description %}
@@ -26,7 +26,7 @@
                         {% if file_description %}
                         {{ file_description }} ( {{file_name}} )
                         {% else %}
-                        {% trans "View the files associated with this submission:" %} #{{ forloop.counter }}
+                        {% trans "View the files associated with this submission:" %} #{{ file_index }}
                         {% endif %}
                     </a>
                 {% endif %}
