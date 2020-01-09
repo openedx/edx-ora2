@@ -132,7 +132,7 @@ class FileUpload(object):
         Used in the response template context to provide a file URL, description, and name
         to render in the client.
         """
-        return (self.download_url, self.description, self.name)
+        return (self.download_url, self.description, self.name, self.index)
 
     def _to_dict(self):
         """
