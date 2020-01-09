@@ -25,7 +25,7 @@ libsass==0.19.4
 loremipsum==1.0.5
 lxml==4.4.2
 markupsafe==1.1.1         # via xblock
-more-itertools==8.0.2     # via zipp
+more-itertools==5.0.0     # via zipp
 path.py==12.4.0
 path==13.1.0              # via path.py
 polib==1.1.0              # via edx-i18n-tools

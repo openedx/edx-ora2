@@ -35,7 +35,7 @@ loremipsum==1.0.5
 lxml==4.4.2
 markupsafe==1.1.1
 mock==3.0.5
-more-itertools==8.0.2
+more-itertools==5.0.0
 moto==0.4.31
 packaging==20.0           # via tox
 path.py==12.4.0
