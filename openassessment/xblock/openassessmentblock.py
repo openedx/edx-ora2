@@ -269,10 +269,10 @@ class OpenAssessmentBlock(MessageMixin,
         help="Whether team submissions are enabled for this case study.",
     )
 
-    selected_teamset_name = String(
+    selected_teamset_id = String(
         default=u"",
         scope=Scope.settings,
-        help="The name of the selected teamset.",
+        help="The id of the selected teamset.",
     )
 
     @property
@@ -1202,6 +1202,8 @@ class OpenAssessmentBlock(MessageMixin,
 
         """
         if hasattr(self, "xmodule_runtime"):
+            if self.xmodule_runtime.get_real_user is None:  # pylint: disable=no-member
+                return None
             user = self.xmodule_runtime.get_real_user(anonymous_user_id)  # pylint: disable=no-member
             if user:
                 return user

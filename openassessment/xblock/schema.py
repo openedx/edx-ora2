@@ -115,7 +115,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('allow_latex'): bool,
     Required('leaderboard_show'): int,
     Optional('teams_enabled'): bool,
-    Optional('selected_teamset_name'): utf8_validator,
+    Optional('selected_teamset_id'): utf8_validator,
     Required('assessments'): [
         Schema({
             Required('name'): All(utf8_validator, In(VALID_ASSESSMENT_TYPES)),
