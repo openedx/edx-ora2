@@ -585,7 +585,7 @@ class SubmissionMixin(object):
         file_urls = None
 
         if self.file_upload_type:
-            file_uploads = self.file_manager.get_uploads()
+            file_uploads = self.file_manager.get_uploads(include_deleted=True)
             context['file_urls'] = [upload.url_descriptor_tuple() for upload in file_uploads]
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
