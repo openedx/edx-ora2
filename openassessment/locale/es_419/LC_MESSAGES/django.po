@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-03 12:27-0500\n"
-"PO-Revision-Date: 2020-01-04 08:37+0000\n"
+"POT-Creation-Date: 2020-01-06 14:11-0500\n"
+"PO-Revision-Date: 2020-01-06 20:59+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -823,6 +823,16 @@ msgid ""
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
 msgstr "\nEsta tarea está en proceso. Usted todavía necesita completar el paso de %(start_link)scalificación entre pares%(end_link)s."
+
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:4
+msgid "Team membership is required to view this assignment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:6
+msgid ""
+"This is a team assignment. You are currently not on a team. You must be on a"
+" team to access this team assignment."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
