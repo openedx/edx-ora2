@@ -174,13 +174,15 @@ class FileUploadManager(object):
     def __init__(self, openassessment_xblock):
         self.block = openassessment_xblock
 
-    def get_uploads(self):
+    def get_uploads(self, include_deleted=False):
         """
         Returns:
             A list of FileUpload objects associated with an instance of an O.A. Block.
         """
         descriptions, names, sizes = self._get_metadata_from_block()
-        return self._file_uploads_from_list_fields(descriptions, names, sizes)
+        return self._file_uploads_from_list_fields(
+            descriptions, names, sizes, include_deleted
+        )
 
     def append_uploads(self, *new_uploads):
         """
