@@ -38,7 +38,7 @@ class TeamMixin(object):
         if not user:
             logger.error(u'{}: User lookup for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
             raise ObjectDoesNotExist()
-        team = self.teams_service.get_team(user, self.course_id)
+        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
         return team
 
     def has_team(self):
