@@ -271,6 +271,9 @@ class StaffAreaMixin(object):
         if submission:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
+            correctness = get_correctness(submission)
+            set_correctness_in_context(context, 'sample_correct', correctness, 0)
+            set_correctness_in_context(context, 'staff_correct', correctness, 1)
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
@@ -279,9 +282,6 @@ class StaffAreaMixin(object):
             context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
         context['xblock_id'] = self.get_xblock_id()
-        correctness = get_correctness(submission)
-        set_correctness_in_context(context, 'sample_correct', correctness, 0)
-        set_correctness_in_context(context, 'staff_correct', correctness, 1)
 
         return context
 
