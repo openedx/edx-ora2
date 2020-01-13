@@ -165,8 +165,8 @@ class StudioMixin(object):
             'teams_enabled': self.teams_enabled,
             'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
-            'teamset_names': self.get_teamset_names(course_id),
-            'selected_teamset_name': self.selected_teamset_name,
+            'teamsets': self.get_teamsets(course_id),
+            'selected_teamset_id': self.selected_teamset_id,
         }
 
     @XBlock.json_handler
@@ -263,7 +263,7 @@ class StudioMixin(object):
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
         self.teams_enabled = bool(data.get('teams_enabled', False))
-        self.selected_teamset_name = data.get('selected_teamset_name', '')
+        self.selected_teamset_id = data.get('selected_teamset_id', '')
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 
@@ -414,11 +414,11 @@ class StudioMixin(object):
             return None
         return team_configuration
 
-    def get_teamset_names(self, course_id):
+    def get_teamsets(self, course_id):
         """
         Wrapper around get_team_configuration that returns team names only for display
         """
         team_configuration = self.get_team_configuration(course_id)
         if not team_configuration:
             return None
-        return [teamset.name for teamset in team_configuration.teamsets]
+        return team_configuration.teamsets
