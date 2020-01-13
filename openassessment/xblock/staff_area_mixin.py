@@ -273,6 +273,16 @@ class StaffAreaMixin(object):
                 ))
                 context['staff_file_urls'] = self.get_files_info_from_user_state(student_username)
 
+                # This particular check is for the cases affected by the incorrect filenum bug
+                # and gets all the upload URLs if feature enabled.
+                if self.should_get_all_files_urls(context['staff_file_urls']):
+                    logger.info(
+                        u"Retrieving all uploaded files by user:{username} in block:{block}".format(
+                            username=student_username,
+                            block=str(self.location)
+                        ))
+                    context['staff_file_urls'] = self.get_all_upload_urls_for_user(student_username)
+
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
 

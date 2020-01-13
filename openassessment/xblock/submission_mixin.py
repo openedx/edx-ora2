@@ -463,7 +463,7 @@ class SubmissionMixin(object):
 
         files_info = []
         user_state = self.get_user_state(username)
-        item_dict = self.get_student_item_dict_from_username(username)
+        item_dict = self.get_student_item_dict_from_username_or_email(username)
         if u'saved_files_descriptions' in user_state:
             # pylint: disable=protected-access
             files_descriptions = file_upload_api._safe_load_json_list(
@@ -489,6 +489,44 @@ class SubmissionMixin(object):
                     ))
                     continue
         return files_info
+
+    def get_all_upload_urls_for_user(self, username_or_email):
+        """
+        For a particular ORA block, get the download URLs for all the files uploaded and still present.
+
+        Used for an extreme edge case, where the stored files indices are out of sync with
+        the uploaded files, this is a last resort to get the download URLs of all the files
+        that have been uploaded by a learner in an ORA block(and haven't been deleted from the storage).
+        Starting from 0 index to maximum file upload count possible, this checks if a file exists against
+        every index. If present, add the info, else repeat it for the next indices.
+
+        Arguments:
+            username_or_email(str): username or email of the learner whose files' information is to be obtained.
+        Returns:
+            List of 3-valued tuples, with first value being file URL and other two values as empty string.
+            The other 2 values have to be appended to work properly in the template.
+        """
+        file_uploads = []
+        student_item_dict = self.get_student_item_dict_from_username_or_email(username_or_email)
+        for index in range(self.MAX_FILES_COUNT):
+            file_key = file_upload_api.get_student_file_key(student_item_dict, index)
+            download_url = ''
+            try:
+                download_url = file_upload_api.get_download_url(file_key)
+            except FileUploadError:
+                pass
+
+            if download_url:
+                logger.info(u"Download URL exists for key {key} in block {block} for user {user}".format(
+                    key=file_key,
+                    user=username_or_email,
+                    block=str(self.location)
+                ))
+                file_uploads.append((download_url, '', ''))
+            else:
+                continue
+
+        return file_uploads
 
     @staticmethod
     def get_user_submission(submission_uuid):

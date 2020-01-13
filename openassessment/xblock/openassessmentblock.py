@@ -404,11 +404,27 @@ class OpenAssessmentBlock(MessageMixin,
             and self.user_state_upload_data_enabled() \
             and self.file_upload_response
 
-    def get_student_item_dict_from_username(self, username):
+    def should_get_all_files_urls(self, upload_urls):
         """
-        Get the item dict for a given username in the parent course of block.
+        Returns a boolean to decide if all the file submitted by a learner in a block should be obtained.
+
+        Following conditions should be true for boolean to be true:
+        1. The waffle flag/switch is enabled
+        2. the file upload is required or optional
+        3. the file data from submission is missing information
+
+        Arguments:
+            upload_urls(list): A list of (file url, description, name) tuple, if info present, else empty list
         """
-        anonymous_user_id = self.get_anonymous_user_id(username, self.course_id)
+        return not any(upload_urls) \
+            and self.is_fetch_all_urls_waffle_enabled() \
+            and self.file_upload_response
+
+    def get_student_item_dict_from_username_or_email(self, username_or_email):
+        """
+        Get the item dict for a given username or email in the parent course of block.
+        """
+        anonymous_user_id = self.get_anonymous_user_id(username_or_email, self.course_id)
         return self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
 
     def get_anonymous_user_id_from_xmodule_runtime(self):

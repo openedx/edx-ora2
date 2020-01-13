@@ -6,8 +6,8 @@ from __future__ import absolute_import
 
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
+ALL_FILES_URLS = "all_files_urls"
 TEAM_SUBMISSIONS = 'team_submissions'
-
 USER_STATE_UPLOAD_DATA = "user_state_upload_data"
 
 
@@ -77,3 +77,9 @@ class WaffleMixin(object):
         Returns a boolean indicating the user state upload data flag is enabled or not.
         """
         return self.is_feature_enabled(USER_STATE_UPLOAD_DATA)
+
+    def is_fetch_all_urls_waffle_enabled(self):
+        """
+        Returns a boolean indicating the all files urls feature flag is enabled or not.
+        """
+        return self.is_feature_enabled(ALL_FILES_URLS)
