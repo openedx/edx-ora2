@@ -120,15 +120,21 @@ class WorkflowMixin(object):
                 Defaults to the submission created by the current student.
 
         Returns:
-            dict
+            dict 
 
         Raises:
             AssessmentWorkflowError
         """
+        from submissions.api import get_submissions
         if submission_uuid is None:
             submission_uuid = self.submission_uuid
             if submission_uuid is None:
-                return {}
+                student_item = self.get_student_item_dict()
+                submission_list = get_submissions(student_item)
+                if len(submission_list) > 0:
+                    submission_uuid = submission_list[0]["uuid"]
+                else:
+                    return {}
         return workflow_api.get_workflow_for_submission(
             submission_uuid, self.workflow_requirements()
         )
