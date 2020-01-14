@@ -289,7 +289,7 @@ class SubmissionMixin(object):
 
             # submissions are identical except for the student ID
             for student_username in team_usernames:
-                student_item_dict["student_id"] = self.get_anonymous_user_id(student_username, course_id)
+                student_item_dict = self.get_student_item_dict_from_username(student_username)
                 submissions.append(self.create_submission(student_item_dict, student_sub_data))
 
         return submissions
