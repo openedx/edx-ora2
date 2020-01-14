@@ -351,7 +351,7 @@ class OpenAssessmentBlock(MessageMixin,
         self.white_listed_file_types = [file_type.strip().strip('.').lower()
                                         for file_type in value.split(',')] if value else None
 
-    def get_anonymous_user_id(self, username, course_id, ignore_staff_check=True):
+    def get_anonymous_user_id(self, username, course_id):
         """
         Get the anonymous user id from Xblock user service.
 
@@ -362,7 +362,7 @@ class OpenAssessmentBlock(MessageMixin,
         Returns:
             A unique id for (user, course) pair
         """
-        return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id, ignore_staff_check)
+        return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id, ignore_staff_check=True)
 
     def is_user_state_service_available(self):
         """

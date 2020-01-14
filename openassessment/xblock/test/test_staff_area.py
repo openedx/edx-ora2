@@ -57,7 +57,7 @@ class NullUserService(object):
     A simple implementation of the runtime "user" service.
     """
     @staticmethod
-    def get_anonymous_user_id(username, _):
+    def get_anonymous_user_id(username, _, ignore_staff_check=True):
         """
         A convenience method.
         """
