@@ -125,19 +125,44 @@ class WorkflowMixin(object):
         Raises:
             AssessmentWorkflowError
         """
-        from submissions.api import get_submissions
         if submission_uuid is None:
-            submission_uuid = self.submission_uuid
-            if submission_uuid is None:
-                student_item = self.get_student_item_dict()
-                submission_list = get_submissions(student_item)
-                if len(submission_list) > 0:
-                    submission_uuid = submission_list[0]["uuid"]
-                else:
-                    return {}
+            submission_uuid = self.try_get_submission_uuid()
+
+        if submission_uuid is None:
+            return {}
         return workflow_api.get_workflow_for_submission(
             submission_uuid, self.workflow_requirements()
         )
+
+    def try_get_submission_uuid(self):
+        """ Submission UUIDs can be in multiple spots based on the submission type,
+            try the various locations to try to find it.
+
+            No submission ID will be found if a learner has not submitted a response
+
+            Indiviual submissions will be in the user's context.
+
+            Team submissions don't save the submission_uuid for teammates contexts'
+            Instead, we should attempt to look up the submission ID from the database.
+
+            Returns:
+                (string) Submission ID if found
+                (None) None if not found
+        """
+        if self.submission_uuid is not None:
+            return self.submission_uuid
+
+        elif self.teams_enabled:
+            from submissions.api import get_submissions
+
+            # Query for submissions by the student item
+            student_item = self.get_student_item_dict()
+            submission_list = get_submissions(student_item)
+
+            if len(submission_list) > 0 and submission_list[0]["uuid"] is not None:
+                return submission_list[0]["uuid"]
+
+        return None
 
     def get_workflow_status_counts(self):
         """

@@ -285,12 +285,15 @@ class SubmissionMixin(object):
             submissions = []
 
             team_usernames = team_dict["team_usernames"]
-            course_id = self.get_student_item_dict()['course_id']
 
             # submissions are identical except for the student ID
             for student_username in team_usernames:
                 student_item_dict = self.get_student_item_dict_from_username(student_username)
                 submissions.append(self.create_submission(student_item_dict, student_sub_data))
+
+        # Since we don't get the right UUID through the above loop,
+        # null it out and fetch it from the DB during the next page load
+        self.submission_uuid = None
 
         return submissions
 

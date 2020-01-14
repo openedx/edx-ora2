@@ -358,12 +358,21 @@ class SubmissionTest(XBlockHandlerTestCase):
     def _setup_mock_team(self, xblock):
         """ Enable teams and configure a mock team to be returned from the teams service
 
-            Returns the mock team for use in test validation
+            Returns:
+                the mock team for use in test validation
         """
         xblock.teams_enabled = True
         xblock.get_team_info = Mock()
-        xblock.get_anonymous_user_id = Mock()
-        xblock.get_anonymous_user_id.side_effect = [1, 2, 5]
+
+        mock_student_item_dict = {
+            'student_id': '1337',
+            'item_id': 'item ID',
+            'course_id': 'course ID',
+            'item_type': 'item type'
+        }
+
+        xblock.get_student_item_dict_from_username = Mock()
+        xblock.get_student_item_dict_from_username.return_value = mock_student_item_dict
 
         mock_team = {'team_id': 'rs-04',
                      'team_name': 'Red Squadron',
