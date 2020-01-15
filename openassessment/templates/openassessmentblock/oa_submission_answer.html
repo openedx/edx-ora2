@@ -50,10 +50,7 @@
                 <div class="submission__answer__part__text__value" >
                 {%endif%}
                     {% if forloop.first%}
-                            <pre>
-                                <code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">
-                                {{part.text|escape}}
-                                </code>
+                            <pre><code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">{{part.text}}</code>
                             </pre>
 
                     {%else%}
