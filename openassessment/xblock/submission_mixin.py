@@ -15,6 +15,7 @@ from .data_conversion import create_submission_dict, prepare_submission_for_seri
 from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
+from .utils import get_code_language
 from .validation import get_correctness, set_correctness_in_context
 
 logger = logging.getLogger(__name__)
@@ -675,6 +676,7 @@ class SubmissionMixin(object):
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             correctness = get_correctness(context['student_submission'])
             set_correctness_in_context(context, 'sample_correct', correctness, 0)
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0]['text'])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

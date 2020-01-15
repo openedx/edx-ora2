@@ -12,6 +12,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.utils import get_code_language
 from openassessment.xblock.validation import get_correctness, set_correctness_in_context
 from xblock.core import XBlock
 
@@ -274,6 +275,7 @@ class StaffAreaMixin(object):
             correctness = get_correctness(submission)
             set_correctness_in_context(context, 'sample_correct', correctness, 0)
             set_correctness_in_context(context, 'staff_correct', correctness, 1)
+            context['code_language'] = get_code_language(submission['answer']['parts'][0]['text'])
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
