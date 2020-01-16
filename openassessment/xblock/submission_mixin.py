@@ -288,7 +288,7 @@ class SubmissionMixin(object):
 
             # submissions are identical except for the student ID
             for student_username in team_usernames:
-                student_item_dict = self.get_student_item_dict_from_username(student_username)
+                student_item_dict = self.get_student_item_dict_from_username_or_email(student_username)
                 submissions.append(self.create_submission(student_item_dict, student_sub_data))
 
         # Since we don't get the right UUID through the above loop,
@@ -338,10 +338,10 @@ class SubmissionMixin(object):
 
         if self.teams_enabled:
             for team_file_upload in self.get_team_files():
-                student_sub_dict['file_keys'].append(team_file_upload['file_key'])
-                student_sub_dict['files_descriptions'].append(team_file_upload['description'])
-                student_sub_dict['files_names'].append(team_file_upload['item_id'])
-                student_sub_dict['files_sizes'].append(team_file_upload['size'])
+                student_sub_dict['file_keys'].append(team_file_upload.file_key)
+                student_sub_dict['files_descriptions'].append(team_file_upload.description)
+                student_sub_dict['files_names'].append(team_file_upload.item_id)
+                student_sub_dict['files_sizes'].append(team_file_upload.size)
 
         else:
             for file_upload in self.file_manager.get_uploads():
