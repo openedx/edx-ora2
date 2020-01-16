@@ -371,8 +371,8 @@ class SubmissionTest(XBlockHandlerTestCase):
             'item_type': 'item type'
         }
 
-        xblock.get_student_item_dict_from_username = Mock()
-        xblock.get_student_item_dict_from_username.return_value = mock_student_item_dict
+        xblock.get_student_item_dict_from_username_or_email = Mock()
+        xblock.get_student_item_dict_from_username_or_email.return_value = mock_student_item_dict
 
         mock_team = {'team_id': 'rs-04',
                      'team_name': 'Red Squadron',
@@ -428,18 +428,17 @@ class SubmissionTest(XBlockHandlerTestCase):
         mock_team = self._setup_mock_team(xblock)
         xblock.file_upload_type = 'pdf-and-image'
 
-        mock_shared_file_uploads = [{
-            "team_id": "mock_team_id",
-            "course_id": "mock_course_id",
-            "item_id": "mock_item_id",
-            "owner_id": "mock_owner_id",
-            "file_key": "mock_file_key",
-            "history": None,
-            "description": "mock_description",
-            "size": 12345
-        }]
+        mock_shared_file_upload = Mock()
+        mock_shared_file_upload.team_id = "mock_team_id"
+        mock_shared_file_upload.course_id = "mock_course_id"
+        mock_shared_file_upload.item_id = "mock_item_id"
+        mock_shared_file_upload.owner_id = "mock_owner_id"
+        mock_shared_file_upload.file_key = "mock_file_key"
+        mock_shared_file_upload.history = None
+        mock_shared_file_upload.description = "mock_description"
+        mock_shared_file_upload.size = 12345
 
-        mock_get_team_files.return_value = mock_shared_file_uploads
+        mock_get_team_files.return_value = [mock_shared_file_upload]
 
         # when the learner submits an open assessment response
         response = self.request(
