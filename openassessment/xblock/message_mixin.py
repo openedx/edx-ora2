@@ -50,7 +50,7 @@ class MessageMixin(object):
         # Render the instruction message based on the status of the workflow
         # and the closed status.
         if self.teams_enabled and not self.valid_access_to_team_assessment():
-            path, context = 'openassessmentblock/message/oa_message_no_team.html', {}
+            path, context = self.render_message_no_team()
         elif status == "done" or status == "waiting":
             path, context = self.render_message_complete(status_details)
         elif problem_is_closed or active_step_deadline_info.get('is_closed'):
@@ -236,3 +236,14 @@ class MessageMixin(object):
             deadline_info.update(self_dict)
 
         return deadline_info
+
+    def render_message_no_team(self):
+        """
+        Render the message when the user is not part of a team in the selected teamset.
+        """
+        if self.teamset_config:
+            teamset_name = self.teamset_config.name
+        else:
+            teamset_name = '<id ' + self.selected_teamset_id + '>'
+        context = {'teamset_name': teamset_name}
+        return 'openassessmentblock/message/oa_message_no_team.html', context
