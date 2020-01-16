@@ -22,16 +22,16 @@
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Rouven Wachhaus <inactive+rwchhs@transifex.com>, 2016
 # Rouven Wachhaus <inactive+rwchhs@transifex.com>, 2016
-# Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018-2019
+# Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018-2020
 # v4rp1ng <inactive+v4rp1ng@transifex.com>, 2014
 # Андрей Поляков <polyakov.andrey@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-03 12:27-0500\n"
-"PO-Revision-Date: 2020-01-04 08:37+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"POT-Creation-Date: 2020-01-06 14:11-0500\n"
+"PO-Revision-Date: 2020-01-10 12:43+0000\n"
+"Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -824,6 +824,16 @@ msgid ""
 "                                "
 msgstr "\n                                   Diese Aufgabe ist in Bearbeitung. Sie müssen noch die %(start_link)sGruppen Beurteilung%(end_link)s bearbeiten.\n                                "
 
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:4
+msgid "Team membership is required to view this assignment"
+msgstr "Sie müssen in einem Team sein, um diese Aufgabe bearbeiten zu können."
+
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:6
+msgid ""
+"This is a team assignment. You are currently not on a team. You must be on a"
+" team to access this team assignment."
+msgstr "Das ist eine Teamaufgabe. Sie sind derzeit in keinem Team. Sie müssen in einem Team sein, um diese Aufgabe bearbeiten zu können."
+
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
 msgid ""
@@ -1094,17 +1104,17 @@ msgstr "Geben Sie Ihre Antwort in das Eingabefeld oben ein."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:116
 msgid "You are on team "
-msgstr ""
+msgstr "Sie sind im Team"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:118
 msgid "Team Members: "
-msgstr ""
+msgstr "Teammitglieder:"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:122
 msgid ""
 "Note: this is a team assignment. Make sure to coordinate with your teammates"
 " to avoid overwriting each other's work."
-msgstr ""
+msgstr "Hinweis: Dies ist eine Teamaufgabe. Koordinieren Sie die Arbeit mit Ihrem Team, um ein Überschreiben der Arbeit der anderen zu vermeiden."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:129
 msgid "We could not save your progress"

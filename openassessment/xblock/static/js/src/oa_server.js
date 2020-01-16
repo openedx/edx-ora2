@@ -452,7 +452,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 allow_latex: options.latexEnabled,
                 leaderboard_show: options.leaderboardNum,
                 teams_enabled: options.teamsEnabled,
-                selected_teamset_name: options.selectedTeamsetName
+                selected_teamset_id: options.selectedTeamsetId
             });
             return $.Deferred(function(defer) {
                 $.ajax({

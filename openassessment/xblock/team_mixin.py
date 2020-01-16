@@ -38,7 +38,7 @@ class TeamMixin(object):
         if not user:
             logger.error(u'{}: User lookup for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
             raise ObjectDoesNotExist()
-        team = self.teams_service.get_team(user, self.course_id)
+        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
         return team
 
     def has_team(self):
@@ -68,14 +68,16 @@ class TeamMixin(object):
         If we are course staff or in studio preview, return dummy data to
         render the page like a student would see
         """
-        if self.has_team():
+        if self.in_studio_preview:
+            return self.STAFF_OR_PREVIEW_INFO
+        elif self.has_team():
             return {
                 'team_id': self.team.team_id,
                 'team_name': self.team.name,
                 'team_usernames': [user.username for user in self.team.users.all()],
                 'team_url': self.teams_service.get_team_detail_url(self.team),
             }
-        elif self.is_course_staff or self.in_studio_preview:
+        elif self.is_course_staff:
             return self.STAFF_OR_PREVIEW_INFO
         else:
             return None

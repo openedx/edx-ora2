@@ -31,7 +31,7 @@ class MockTeamsService(object):
             mock.MagicMock(username='UserC'),
         ]
 
-    def get_team(self, user, course_id):  # pylint: disable=unused-argument
+    def get_team(self, user, course_id, teamset_id):  # pylint: disable=unused-argument
         return self.team if self.has_team else None
 
 
@@ -40,6 +40,7 @@ class MockBlock(TeamMixin):
     Fixture class for testing ``TeamMixin``.
     """
     location = mock.MagicMock()
+    selected_teamset_id = "teamset-id-0001"
     get_anonymous_user_id_from_xmodule_runtime = mock.MagicMock()
     course_id = mock.MagicMock()
     is_course_staff = False

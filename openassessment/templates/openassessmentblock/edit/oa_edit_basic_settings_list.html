@@ -160,8 +160,8 @@
                 <div class="wrapper-comp-setting">
                     <label for="openassessment_teamset_selector" class="setting-label">{% trans "Select Team Set"%}</label>
                     <select id="openassessment_teamset_selector" class="input setting-input" name="teamset selection">
-                        {% for teamset_name in teamset_names %}
-                            <option value='{{teamset_name}}' {% if selected_teamset_name == teamset_name %} selected="true" {% endif %}>{{teamset_name}}</option>
+                        {% for teamset in teamsets %}
+                            <option value='{{teamset.teamset_id}}' {% if selected_teamset_id == teamset.teamset_id %} selected="true" {% endif %}>{{teamset.name}}</option>
                         {% endfor %}
 
                     </select>

@@ -824,6 +824,42 @@ class TestCourseStaff(XBlockHandlerTestCase):
         with self.assertRaises(AssertionError):
             self._verify_user_state_usage_log_present(logger, **{'location': xblock.location})
 
+    @log_capture()
+    @patch("openassessment.fileupload.api.get_download_url")
+    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.is_fetch_all_urls_waffle_enabled')
+    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
+    @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
+    def test_staff_area_student_all_uploads(self, xblock, user_state_waffle, all_files_waffle, download_url, logger):
+        """
+        Verify the all files urls are obtained for a user in a given ORA block when staff is
+        viewing an individual learner submission.
+
+        Scenario: When the upload info is missing from submission
+        And upload is either required or optional
+        And user state upload info is not synced with uploaded files' indices
+        And user state and all file urls waffle flags are enabled
+        Then the URLs for all the uploaded files are obtained
+        """
+        user_state_waffle.return_value = True
+        all_files_waffle.return_value = True
+        self._setup_xblock_and_create_submission(xblock)
+        # Download URL return value is empty due to indices inconsistency
+        download_url.return_value = ""
+        __, context = xblock.get_student_info_path_and_context('Bob')
+        self._verify_user_state_usage_log_present(logger, **{'location': xblock.location})
+        staff_urls = context['staff_file_urls']
+        self.assertFalse(any(staff_urls))
+
+        # If state doesn't provide data, it is possible to use all files urls workaround
+        self.assertTrue(xblock.should_get_all_files_urls(staff_urls))
+        download_url.return_value = FILE_URL
+
+        # Calling this method directly as using `get_student_info_path_and_context`
+        # will use user state. This is because we are mocking get_download_url method.
+        staff_urls = xblock.get_all_upload_urls_for_user('Bob')
+        expected_staff_urls = [(FILE_URL, '', '')] * xblock.MAX_FILES_COUNT
+        self.assertEqual(staff_urls, expected_staff_urls)
+
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         """
         Internal helper for common staff assessment context verification.

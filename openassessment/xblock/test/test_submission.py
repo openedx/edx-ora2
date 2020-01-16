@@ -620,6 +620,81 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
 
         self.assertEqual(expected_file_uploads, actual_file_uploads)
 
+    @scenario('data/save_scenario.xml', user_id="Valchek")
+    def test_open_saved_response_deleted_file_uploads(self, xblock):
+        """
+        Test that we generate the correct file indexes even when
+        some of the saved files have been deleted
+        """
+        file_uploads = [
+            {'description': 'file-1', 'name': 'file-1.pdf', 'size': 200},
+            {'description': 'file-2', 'name': 'file-2.pdf', 'size': 400},
+            {'description': 'file-3', 'name': 'file-3.pdf', 'size': 1600},
+        ]
+
+        xblock.file_manager.append_uploads(*file_uploads)
+
+        # delete file-2
+        with patch('openassessment.fileupload.api.remove_file'):
+            xblock.file_manager.delete_upload(1)
+
+        payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
+        resp = self.request(xblock, 'save_submission', payload, response_format='json')
+        self.assertTrue(resp['success'])
+
+        expected_file_uploads = [
+            api.FileUpload(
+                description='file-1',
+                name='file-1.pdf',
+                size=200,
+                student_id='Valchek',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            ),
+            api.FileUpload(
+                description=None,
+                name=None,
+                size=0,
+                student_id='Valchek',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            ),
+            api.FileUpload(
+                description='file-3',
+                name='file-3.pdf',
+                size=1600,
+                student_id='Valchek',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            ),
+        ]
+        # pylint: disable=protected-access
+        actual_file_upload_dicts = [
+            upload._to_dict() for upload in xblock.file_manager.get_uploads(include_deleted=True)
+        ]
+        expected_file_upload_dicts = [upload._to_dict() for upload in expected_file_uploads]
+
+        for expected, actual in zip(expected_file_upload_dicts, actual_file_upload_dicts):
+            # We can't consistently determine the values of an XBlock's item_id
+            expected.pop('item_id')
+            actual.pop('item_id')
+
+        self.assertEqual(expected_file_upload_dicts, actual_file_upload_dicts)
+
+        # assert that there's an entry with the correct index in the rendered HTML
+        # we should have an index for all files ever uploaded, even the deleted one
+        resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
+
+        self.assertIn('"submission__answer__file__block submission__answer__file__block__1"  deleted', resp)
+        for index in range(len(file_uploads)):
+            self.assertIn(
+                '"submission__answer__file__block submission__answer__file__block__{}"'.format(index),
+                resp
+            )
+
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response_misaligned_file_data(self, xblock):
         """
@@ -668,6 +743,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
 
         # pylint: disable=protected-access
         actual_file_uploads = [upload._to_dict() for upload in xblock.file_manager.get_uploads()]
+
         # When file names/sizes are of different cardinality of file descriptions,
         # they are coerced to lists of nulls of the same cardinality of the descriptions,
         # hence, name and size attributes below are null.
