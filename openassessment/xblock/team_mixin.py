@@ -22,6 +22,15 @@ class TeamMixin(object):
             return self.runtime.service(self, 'teams')
         except NoSuchServiceError:
             logger.error(u'{}: Teams service unavailable'.format(self.location))
+            raise
+
+    @cached_property
+    def teams_config_service(self):
+        try:
+            return self.runtime.service(self, 'teams_config')
+        except NoSuchServiceError:
+            logger.error(u'{}: Teams Configuration service unavailable'.format(self.location))
+            raise
 
     @cached_property
     def team(self):
@@ -40,6 +49,14 @@ class TeamMixin(object):
             raise ObjectDoesNotExist()
         team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
         return team
+
+    @cached_property
+    def teamset_config(self):
+        teams_config = self.teams_config_service.get_teams_config(self.course_id)
+        try:
+            return teams_config.teamsets_by_id[self.selected_teamset_id]
+        except KeyError:
+            return None
 
     def has_team(self):
         """
