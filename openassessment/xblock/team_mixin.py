@@ -25,7 +25,7 @@ class TeamMixin(object):
             raise
 
     @cached_property
-    def teams_config_service(self):
+    def teams_configuration_service(self):
         try:
             return self.runtime.service(self, 'teams_configuration')
         except NoSuchServiceError:
@@ -53,7 +53,7 @@ class TeamMixin(object):
     @cached_property
     def teamset_config(self):
         course_id = self.location.course_key if hasattr(self, 'location') else None
-        teams_config = self.teams_config_service.get_teams_configuration(course_id)
+        teams_config = self.teams_configuration_service.get_teams_configuration(course_id)
         try:
             return teams_config.teamsets_by_id[self.selected_teamset_id]
         except KeyError:

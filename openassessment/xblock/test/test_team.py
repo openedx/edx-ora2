@@ -17,7 +17,7 @@ TEAMSET_ID = 'teamset-1-id'
 TEAMSET_NAME = 'teamset-1-name'
 
 
-class MockTeamsConfigService(object):
+class MockTeamsConfigurationService(object):
     """
     Fixture class for testing ``TeamMixin``.
     """
@@ -56,11 +56,11 @@ class MockRuntime(object):
     """
     Fixture class for testing ``TeamMixin``.
     """
-    def __init__(self, has_teams_service, has_team, has_teams_config_service):
+    def __init__(self, has_teams_service, has_team, has_teams_configuration_service):
         self.has_teams_service = has_teams_service
         self.teams_service = MockTeamsService(has_team)
-        self.has_teams_config_service = has_teams_config_service
-        self.teams_config_service = MockTeamsConfigService()
+        self.has_teams_configuration_service = has_teams_configuration_service
+        self.teams_configuration_service = MockTeamsConfigurationService()
 
     def service(self, _, service_name):
         """
@@ -70,8 +70,8 @@ class MockRuntime(object):
             if self.has_teams_service:
                 return self.teams_service
         elif service_name == 'teams_configuration':
-            if self.has_teams_config_service:
-                return self.teams_config_service
+            if self.has_teams_configuration_service:
+                return self.teams_configuration_service
         raise NoSuchServiceError()
 
 
@@ -87,10 +87,10 @@ class MockBlock(TeamMixin):
     in_studio_preview = False
 
     def __init__(
-        self, has_teams_service=True, has_teams_config_service=True,
+        self, has_teams_service=True, has_teams_configuration_service=True,
         has_user=True, has_team=True,
     ):
-        self.runtime = MockRuntime(has_teams_service, has_team, has_teams_config_service)
+        self.runtime = MockRuntime(has_teams_service, has_team, has_teams_configuration_service)
         self.has_user = has_user
 
     def get_real_user(self, anonymous_user_id):  # pylint: disable=unused-argument
@@ -147,8 +147,8 @@ class TeamMixinTest(TestCase):
         valid_access_to_team_assessment = block.valid_access_to_team_assessment()
         self.assertEqual(expected_valid, valid_access_to_team_assessment)
 
-    def test_teamset_config_no_teams_config_service(self):
-        block = MockBlock(has_teams_config_service=False)
+    def test_teamset_config_no_teams_configuration_service(self):
+        block = MockBlock(has_teams_configuration_service=False)
         with self.assertRaises(NoSuchServiceError):
             _ = block.teamset_config
 
