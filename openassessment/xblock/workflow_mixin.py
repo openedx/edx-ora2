@@ -120,7 +120,7 @@ class WorkflowMixin(object):
                 Defaults to the submission created by the current student.
 
         Returns:
-            dict 
+            dict
 
         Raises:
             AssessmentWorkflowError

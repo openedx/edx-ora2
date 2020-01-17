@@ -798,7 +798,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         )
 
     @scenario('data/team_submission.xml', user_id="Red Five")
-    def test_team_open_submitted(self, xblock): #, mock_submit):
+    def test_team_open_submitted(self, xblock):
         """ When a submission is created for a team, we create identical submissions for each learner.
             Since we can't save submission info to other learners state, we need to query the database
             on page load to see if a submisison has been created by a team member.
@@ -812,7 +812,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission':  create_submission_dict(submissions[-1], xblock.prompts),
+                'student_submission': create_submission_dict(submissions[-1], xblock.prompts),
                 'text_response': 'required',
                 'file_upload_response': None,
                 'file_upload_type': None,
