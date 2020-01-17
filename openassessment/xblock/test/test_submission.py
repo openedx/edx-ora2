@@ -356,7 +356,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertEqual(resp['username'], 'UserName1')
 
     @staticmethod
-    def _setup_mock_team(xblock):
+    def setup_mock_team(xblock):
         """ Enable teams and configure a mock team to be returned from the teams service
 
             Returns:
@@ -382,7 +382,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         """ If teams are enabled, a submission by any member should submit for each member of the team """
 
         # given a learner is on a team
-        mock_team = self._setup_mock_team(xblock)
+        mock_team = self.setup_mock_team(xblock)
 
         # when the learner submits an open assessment response
         response = self.request(
@@ -402,7 +402,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         """
 
         # given a learner is on a team
-        self._setup_mock_team(xblock)
+        self.setup_mock_team(xblock)
 
         # ... but there's an issue when submitting
         mock_submit.side_effect = SubmissionRequestError(msg="I can't shake him!")
@@ -420,7 +420,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         """ If teams are enabled, a submission by any member should submit for each member of the team """
 
         # given a learner is on a team and file uploads are enabled
-        mock_team = self._setup_mock_team(xblock)
+        mock_team = self.setup_mock_team(xblock)
         xblock.file_upload_type = 'pdf-and-image'
 
         mock_shared_file_upload = Mock()
@@ -803,7 +803,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             Since we can't save submission info to other learners state, we need to query the database
             on page load to see if a submisison has been created by a team member.
         """
-        SubmissionTest._setup_mock_team(xblock)
+        SubmissionTest.setup_mock_team(xblock)
         submissions = xblock.create_team_submission(
             xblock.get_student_item_dict(),
             ('A man must have a code', 'A man must have an umbrella too.')

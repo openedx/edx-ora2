@@ -159,7 +159,7 @@ class WorkflowMixin(object):
             student_item = self.get_student_item_dict()
             submission_list = get_submissions(student_item)
 
-            if len(submission_list) > 0 and submission_list[0]["uuid"] is not None:
+            if submission_list and submission_list[0]["uuid"] is not None:
                 return submission_list[0]["uuid"]
 
         return None
