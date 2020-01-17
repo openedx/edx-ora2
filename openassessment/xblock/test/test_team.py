@@ -69,7 +69,7 @@ class MockRuntime(object):
         if service_name == 'teams':
             if self.has_teams_service:
                 return self.teams_service
-        elif service_name == 'teams_config':
+        elif service_name == 'teams_configuration':
             if self.has_teams_config_service:
                 return self.teams_config_service
         raise NoSuchServiceError()
