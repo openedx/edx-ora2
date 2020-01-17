@@ -363,23 +363,17 @@ class SubmissionTest(XBlockHandlerTestCase):
                 the mock team for use in test validation
         """
         xblock.teams_enabled = True
-        xblock.get_team_info = Mock()
-
-        mock_student_item_dict = {
-            'student_id': 'Red Five',
-            'item_id': '.openassessment.d0.u0',
-            'course_id': u'edX/Enchantment_101/April_1',
-            'item_type': u'openassessment'
-        }
-
-        xblock.get_student_item_dict_from_username_or_email = Mock()
-        xblock.get_student_item_dict_from_username_or_email.return_value = mock_student_item_dict
 
         mock_team = {'team_id': 'rs-04',
                      'team_name': 'Red Squadron',
                      'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
                      'team_url': 'rebel_alliance.org'}
+
+        xblock.get_team_info = Mock()
         xblock.get_team_info.return_value = mock_team
+
+        xblock.get_student_item_dict_from_username_or_email = Mock()
+        xblock.get_student_item_dict_from_username_or_email.return_value = xblock.get_student_item_dict()
 
         return mock_team
 
