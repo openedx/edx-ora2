@@ -3,7 +3,13 @@
 <div id="openassessment__message__{{ xblock_id }}" class="message--warning openassessment__message message">
     <h4 class="message__title">{% trans "Team membership is required to view this assignment" %} </h4>
     <div class="message__content">
-        <p> {% trans "This is a team assignment for team set {{teamset_name}}. You are currently not on a team in team set {{teamset_name}}. You must be on a team in team set {{teamset_name}} to access this team assignment." %}</p>
+        <p> 
+            {% blocktrans %}
+            This is a team assignment for team set "{{ teamset_name }}".
+            You are currently not on a team in team set "{{teamset_name}}".
+            You must be on a team in team set "{{teamset_name}}" to access this team assignment.
+            {% endblocktrans %}
+        </p>
     </div>
 </div>
 {% endspaceless %}

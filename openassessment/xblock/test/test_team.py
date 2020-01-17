@@ -25,7 +25,7 @@ class MockTeamsConfigService(object):
         self.teamset = mock.MagicMock()
         self.teamset.configure_mock(name=TEAMSET_NAME)
 
-    def get_teams_config(self, _):
+    def get_teams_configuration(self, _):
         return mock.MagicMock(
             teamsets_by_id={TEAMSET_ID: self.teamset}
         )
