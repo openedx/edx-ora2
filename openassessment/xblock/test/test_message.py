@@ -53,7 +53,7 @@ class TestMessageRender(XBlockHandlerTestCase):
     def _assert_path_and_context(  # pylint: disable=dangerous-default-value
             xblock, expected_path, expected_context,
             workflow_status, deadline_information, has_peers_to_grade,
-            workflow_status_details=DEFAULT_STATUS_DETAILS
+            workflow_status_details=DEFAULT_STATUS_DETAILS,
     ):
         """
         Complete all of the logic behind rendering the message and verify
@@ -87,7 +87,6 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         # Simulate the field of no_peers based on our test input
         xblock.no_peers = not has_peers_to_grade
-
         # Mock out the is_closed method from the OpenAssessmentClass
         with mock.patch.object(OpenAssessmentBlock, 'is_closed') as mock_is_closed:
 
@@ -95,7 +94,6 @@ class TestMessageRender(XBlockHandlerTestCase):
                 # The method which will patch xblock.is_closed. Returns values in the form of is_closed, and takes
                 # its information from the paramater deadline_information of _assert_path_and_context.
                 # Note that if no parameter is provided, we assume the user is asking for is_closed()
-
                 return deadline_information.get(step, "not-found")
 
             # Sets the side effect of is_closed to be our custom method, completing the patch
@@ -868,6 +866,38 @@ class TestMessageRender(XBlockHandlerTestCase):
             'xblock_id': xblock.scope_ids.usage_id,
         }
 
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
+
+    @scenario('data/message_scenario_staff_assessment_only.xml', user_id="Linda")
+    @ddt.data(False, True)
+    def test_no_team(self, xblock, teamset_found):
+        status = None
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.FUTURE),
+            'staff-assessment': (False, None, self.FAR_PAST, self.FAR_FUTURE),
+            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE)
+        }
+        has_peers_to_grade = False
+
+        xblock.teams_enabled = True
+        xblock.selected_teamset_id = 'teamset_message_id'
+        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=False)
+
+        if teamset_found:
+            mock_teamset = mock.MagicMock()
+            mock_teamset.configure_mock(name='Teamset Name')
+        else:
+            mock_teamset = None
+        xblock.teamset_config = mock_teamset
+
+        expected_path = 'openassessmentblock/message/oa_message_no_team.html'
+        expected_context = {
+            'teamset_name': 'Teamset Name' if teamset_found else '<id teamset_message_id>',
+            'xblock_id': xblock.scope_ids.usage_id,
+        }
         self._assert_path_and_context(
             xblock, expected_path, expected_context,
             status, deadline_information, has_peers_to_grade
