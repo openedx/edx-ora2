@@ -355,7 +355,8 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = json.loads(resp.decode('utf-8'))
         self.assertEqual(resp['username'], 'UserName1')
 
-    def _setup_mock_team(self, xblock):
+    @staticmethod
+    def _setup_mock_team(xblock):
         """ Enable teams and configure a mock team to be returned from the teams service
 
             Returns:
@@ -365,10 +366,10 @@ class SubmissionTest(XBlockHandlerTestCase):
         xblock.get_team_info = Mock()
 
         mock_student_item_dict = {
-            'student_id': '1337',
-            'item_id': 'item ID',
-            'course_id': 'course ID',
-            'item_type': 'item type'
+            'student_id': 'Red Five',
+            'item_id': '.openassessment.d0.u0',
+            'course_id': u'edX/Enchantment_101/April_1',
+            'item_type': u'openassessment'
         }
 
         xblock.get_student_item_dict_from_username_or_email = Mock()
@@ -799,6 +800,35 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'user_language': None,
                 'prompts_type': 'text',
                 'enable_delete_files': True,
+            }
+        )
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_team_open_submitted(self, xblock): #, mock_submit):
+        """ When a submission is created for a team, we create identical submissions for each learner.
+            Since we can't save submission info to other learners state, we need to query the database
+            on page load to see if a submisison has been created by a team member.
+        """
+        SubmissionTest._setup_mock_team(xblock)
+        submissions = xblock.create_team_submission(
+            xblock.get_student_item_dict(),
+            ('A man must have a code', 'A man must have an umbrella too.')
+        )
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            {
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission':  create_submission_dict(submissions[-1], xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'peer_incomplete': False,
+                'self_incomplete': False,
+                'allow_latex': False,
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
