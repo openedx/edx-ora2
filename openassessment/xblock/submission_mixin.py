@@ -124,26 +124,16 @@ class SubmissionMixin(object):
                     # a submission for a team generates matching submissions for all members
                     submissions = self.create_team_submission(student_item_dict, student_sub_data)
 
-                    result = []
+                    results = []
 
                     for submission in submissions:
-                        status = True
-                        status_tag = submission.get('student_item')
-                        status_text = submission.get('attempt_number')
+                        result.append(self._create_submission_response(submission))
 
-                        result.append((status, status_tag, status_text))
-
-                    # return results from all submissions
-                    return result
+                    return results
 
                 else:
                     submission = self.create_submission(student_item_dict, student_sub_data)
-
-                    status = True
-                    status_tag = submission.get('student_item')
-                    status_text = submission.get('attempt_number')
-
-                    return status, status_tag, status_text
+                    return self._create_submission_response(submission)
 
             except api.SubmissionRequestError as err:
 
@@ -181,6 +171,18 @@ class SubmissionMixin(object):
 
         # error cases fall through to here
         return status, status_tag, status_text
+
+    def _create_submission_response(self, submission):
+        """ Wrap submisison info for return to client
+
+            Returns:
+                (tuple): True (indicates success), student item, attempt number
+        """
+        status = True
+        status_tag = submission.get('student_item')
+        status_text = submission.get('attempt_number')
+
+        return (status, status_tag, status_text)
 
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
