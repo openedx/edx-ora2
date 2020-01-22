@@ -99,3 +99,7 @@ class TeamMixin(object):
             return self.STAFF_OR_PREVIEW_INFO
         else:
             return None
+
+    def get_team_anonymous_user_ids(self):
+        if self.has_team():
+            return self.teams_service.get_team_anonymous_user_ids(self.team.team_id)

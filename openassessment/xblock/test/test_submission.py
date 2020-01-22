@@ -362,18 +362,16 @@ class SubmissionTest(XBlockHandlerTestCase):
             Returns:
                 the mock team for use in test validation
         """
-        xblock.teams_enabled = True
 
         mock_team = {'team_id': 'rs-04',
                      'team_name': 'Red Squadron',
                      'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
                      'team_url': 'rebel_alliance.org'}
 
-        xblock.get_team_info = Mock()
-        xblock.get_team_info.return_value = mock_team
-
-        xblock.get_student_item_dict_from_username_or_email = Mock()
-        xblock.get_student_item_dict_from_username_or_email.return_value = xblock.get_student_item_dict()
+        xblock.teams_enabled = True
+        xblock.has_team = Mock(return_value=True)
+        xblock.get_team_info = Mock(return_value=mock_team)
+        xblock.get_team_anonymous_user_ids = Mock(return_value=['rl', 'r5', 'r2'])
 
         return mock_team
 
@@ -805,7 +803,6 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         """
         SubmissionTest.setup_mock_team(xblock)
         submissions = xblock.create_team_submission(
-            xblock.get_student_item_dict(),
             ('A man must have a code', 'A man must have an umbrella too.')
         )
         self._assert_path_and_context(

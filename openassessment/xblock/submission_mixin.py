@@ -120,14 +120,14 @@ class SubmissionMixin(object):
         if not workflow:
             try:
 
+                # a submission for a team generates matching submissions for all members
                 if self.teams_enabled:
-                    # a submission for a team generates matching submissions for all members
-                    submissions = self.create_team_submission(student_item_dict, student_sub_data)
+                    submissions = self.create_team_submission(student_sub_data)
 
                     results = []
 
                     for submission in submissions:
-                        result.append(self._create_submission_response(submission))
+                        results.append(self._create_submission_response(submission))
 
                     return results
 
@@ -279,18 +279,16 @@ class SubmissionMixin(object):
 
         return {'success': True, 'msg': u''}
 
-    def create_team_submission(self, student_item_dict, student_sub_data):
+    def create_team_submission(self, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
-        team_dict = self.get_team_info()
+        if self.has_team():
+            team_anonymous_user_ids = self.get_team_anonymous_user_ids()
 
-        if team_dict is not None:
             submissions = []
 
-            team_usernames = team_dict["team_usernames"]
-
-            # submissions are identical except for the student ID
-            for student_username in team_usernames:
-                student_item_dict = self.get_student_item_dict_from_username_or_email(student_username)
+            # submissions are identical except for the student item
+            for anonymous_user_id in team_anonymous_user_ids:
+                student_item_dict = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
                 submissions.append(self.create_submission(student_item_dict, student_sub_data))
 
         # Since we don't get the right UUID through the above loop,

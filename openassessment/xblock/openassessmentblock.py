@@ -362,7 +362,7 @@ class OpenAssessmentBlock(MessageMixin,
         Returns:
             A unique id for (user, course) pair
         """
-        return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id, ignore_staff_check=True)
+        return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id)
 
     def is_user_state_service_available(self):
         """
