@@ -102,4 +102,7 @@ class TeamMixin(object):
 
     def get_team_anonymous_user_ids(self):
         if self.has_team():
-            return self.teams_service.get_team_anonymous_user_ids(self.team.team_id)
+            anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+            user = self.get_real_user(anonymous_user_id)
+
+            return self.teams_service.get_team_anonymous_user_ids(user, self.team)
