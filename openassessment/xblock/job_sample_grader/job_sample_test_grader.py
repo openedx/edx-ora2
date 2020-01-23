@@ -6,10 +6,9 @@ import shutil
 
 
 class TestGrader:
-    # __SECRET_DATA_DIR__ = "secret_data/"
-    # __TMP_DATA_DIR__ = "tmp_data/"
+
+    __SECRET_DATA_DIR__ = "/grader_data/"
     __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
-    __SECRET_DATA_DIR__ = os.path.dirname(__file__) + "/secret_data/"
 
     def grade(self, response):
         problem_name = response['problem_name']
@@ -23,7 +22,7 @@ class TestGrader:
         try:
             lang, student_response = self.detect_code_language(source_code, code_file_name)
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
-            self.write_code_file(source_code, full_code_file_name)
+            self.write_code_file(student_response, full_code_file_name)
         except Exception as exc:
             return self.respond_with_error(exc.message)
 
@@ -63,7 +62,6 @@ class TestGrader:
         output, error = subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
         ).communicate()
-
         if error and compiling:
             raise Exception(error)
         elif error and running_code and 'Killed' in error:
@@ -94,11 +92,11 @@ class TestGrader:
 
         elif lang == 'java':
             self.run_as_subprocess(
-                'javac -cp {0} {1}'.format(TestGrader.SECRET_DATA_DIR + "json-simple-1.1.1.jar", code_full_file_name),
+                'javac -cp {0} {1}'.format(TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar", code_full_file_name),
                 compiling=True)
             output = self.run_as_subprocess(
                 'java -cp {0} {1}{2}'.format(
-                    TestGrader.TMP_DATA_DIR + code_file_name + ":" + TestGrader.SECRET_DATA_DIR + "json-simple-1.1.1.jar",
+                    TestGrader.__TMP_DATA_DIR__ + code_file_name + ":" + TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar",
                     code_file_name, input_file),
                 running_code=True, timeout=timeout
             )
