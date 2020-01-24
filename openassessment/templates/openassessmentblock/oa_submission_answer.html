@@ -23,7 +23,7 @@
                     {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
                         {% trans "Your Output"%}
                     {% elif forloop.counter|divisibleby:3 %}
-                        {% trans "Code Output"%}
+                        {% trans "Expected Output"%}
                     {% else %}
                         {% if prompts_type == 'html' %}
                             {{ part.prompt.description|safe }}
