@@ -6,14 +6,17 @@
         var $section = $(element);
         var block = $section.find('.open-response-assessment-block');
         var itemViewEnabled = (parseInt(block.data('item-view-enabled')) === 1) && XBlock;
+        var dataRendered = parseInt(block.data('rendered'));
 
         this.$section = $section;
         this.runtime = runtime;
         this.oraData = $.parseJSON($('#open-response-assessment-items').text());
 
-        $section.find('.open-response-assessment-content').hide();
-        $section.find('.open-response-assessment-item').hide();
-        $section.find('.open-response-assessment-msg').show();
+        if (!dataRendered) { // if rendered, we're returning after tabbing away
+            $section.find('.open-response-assessment-content').hide();
+            $section.find('.open-response-assessment-item').hide();
+            $section.find('.open-response-assessment-msg').show();
+        }
 
         var AssessmentCell = Backgrid.UriCell.extend({
             staff: false,
