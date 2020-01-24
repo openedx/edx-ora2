@@ -619,7 +619,10 @@ class OpenAssessmentBlock(MessageMixin,
         if self.leaderboard_show > 0:
             ui_models.append(UI_MODELS["leaderboard"])
 
-        return ui_models
+        if self.is_course_staff:
+            return ui_models
+        else:
+            return [ui_models[0]]
 
     @staticmethod
     def workbench_scenarios():
