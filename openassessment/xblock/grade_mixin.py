@@ -73,7 +73,10 @@ class GradeMixin(object):
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
             return self.render_error(self._(u"An unexpected error occurred."))
         else:
-            return self.render_assessment(path, context)
+            if self.is_course_staff:
+                return self.render_assessment(path, context)
+            else:
+                return self.render_assessment(path, {})
 
     def render_grade_complete(self, workflow):
         """

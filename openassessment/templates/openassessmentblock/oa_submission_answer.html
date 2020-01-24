@@ -1,6 +1,11 @@
 {% spaceless %}
 {% load i18n %}
 {% load oa_extras %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/prism.css' %}">
+<script src="{% static 'js/prism.js' %}"></script>
+
 <ol class="submission__answer__display__content" >
     {% for part in answer.parts %}
     {% if forloop.counter|divisibleby:2%} <div style="display: flex;flex-direction: row;">{%endif%}
@@ -18,7 +23,7 @@
                     {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
                         {% trans "Your Output"%}
                     {% elif forloop.counter|divisibleby:3 %}
-                        {% trans "Code Output"%}
+                        {% trans "Expected Output"%}
                     {% else %}
                         {% if prompts_type == 'html' %}
                             {{ part.prompt.description|safe }}
@@ -44,9 +49,16 @@
                 {%else%}
                 <div class="submission__answer__part__text__value" >
                 {%endif%}
-                        <pre>
+                    {% if forloop.first%}
+                            <pre><code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">{{part.text}}</code>
+                            </pre>
+
+                    {%else%}
+                     <pre>
                     {{ part.text|escape|link_and_linebreak }}
                         </pre>
+                    {%endif%}
+
                 </div>
             </div>
             {% endif %}

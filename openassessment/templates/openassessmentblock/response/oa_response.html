@@ -17,7 +17,6 @@
 
         <span>
             <h4 class="step__title">
-                <span class="step__counter"></span>
                 <span class="wrapper--copy">
                     <span id="oa_step_title_response" class="step__label" aria-describedby="oa_step_status_response oa_step_deadline_response">{% trans "Your Response" %}</span>
                 </span>
@@ -72,15 +71,12 @@
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                             class="submission__answer__part__text__title">
                                             {% if forloop.first %}
-                                                {% if text_response == "required" %}
-                                                    {% trans "Your response (required)" %}
-                                                {% elif text_response == "optional" %}
-                                                    {% trans "Your response (optional)" %}
-                                                {% endif %}
+
+                                                    {% trans "Write Your Code Here" %}
                                             {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
                                                 {% trans "Your Output"%}
                                             {% elif forloop.counter|divisibleby:3 %}
-                                                {% trans "Code Output"%}
+                                                {% trans "Expected Output"%}
                                             {% endif %}
                                         </h5>
 
@@ -160,7 +156,7 @@
                                 text_response="{{text_response}}"
                                 file_upload_response="{{file_upload_response}}"
                                 {{submit_enabled|yesno:",disabled" }}>
-                            {% trans "Submit your response and move to the next step" %}
+                            {% trans "Submit your response" %}
                         </button>
                     </li>
                 </ul>
