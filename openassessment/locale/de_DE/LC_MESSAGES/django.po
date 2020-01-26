@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-06 14:11-0500\n"
-"PO-Revision-Date: 2020-01-10 12:43+0000\n"
+"POT-Creation-Date: 2020-01-10 07:20-0500\n"
+"PO-Revision-Date: 2020-01-15 15:35+0000\n"
 "Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -1856,7 +1856,7 @@ msgstr "Fehler beim Laden der Mitarbeiterbenotungsinformationen."
 
 #: openassessment/xblock/staff_area_mixin.py:240
 msgid "Error getting staff grade ungraded and checked out counts."
-msgstr ""
+msgstr "Fehler beim Laden der Mitarbeiterbenotungsinformationen."
 
 #: openassessment/xblock/staff_area_mixin.py:456
 msgid "Please enter valid reason to remove the submission."
