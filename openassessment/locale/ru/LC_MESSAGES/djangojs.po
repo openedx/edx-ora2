@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-06 14:11-0500\n"
+"POT-Creation-Date: 2020-01-10 07:20-0500\n"
 "PO-Revision-Date: 2020-01-03 08:12+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
@@ -146,79 +146,79 @@ msgid "Unable to load"
 msgstr "Не удалось загрузить"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:51
 msgid "Unit Name"
 msgstr "Название блока"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:51
 msgid "Units"
 msgstr "Блоки"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:55
 msgid "Assessment"
 msgstr "Оценка"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:55
 msgid "Assessments"
 msgstr "Задания"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:56
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:59
 msgid "Total Responses"
 msgstr "Всего ответов"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:60
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:63
 msgid "Training"
 msgstr "Обучение"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:64
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:67
 msgid "Peer"
 msgstr "Взаимооценка"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:68
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:71
 msgid "Self"
 msgstr "Самооценка"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:72
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:75
 msgid "Waiting"
 msgstr "Ожидание"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:76
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:79
 msgid "Staff"
 msgstr "Сотрудник"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:81
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:82
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:84
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:85
 msgid "Final Grade Received"
 msgstr "Получена итоговая оценка"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:112
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:115
 msgid "List of Open Assessments is unavailable"
 msgstr "Список заданий с открытыми ответами недоступен"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:212
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:263
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:215
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:266
 msgid "Please wait"
 msgstr "Пожалуйста, подождите"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:236
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:239
 msgid "Block view is unavailable"
 msgstr "Просмотр блока недоступен"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:248
+#: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:251
 msgid "Back to Full List"
 msgstr "Вернуться к полному списку"
 
