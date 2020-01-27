@@ -153,14 +153,17 @@ class WorkflowMixin(object):
             return self.submission_uuid
 
         elif self.teams_enabled:
-            from submissions.api import get_submissions
+            from submissions.api import get_submissions, SubmissionInternalError
 
-            # Query for submissions by the student item
-            student_item = self.get_student_item_dict()
-            submission_list = get_submissions(student_item)
+            try:
+                # Query for submissions by the student item
+                student_item = self.get_student_item_dict()
+                submission_list = get_submissions(student_item)
 
-            if submission_list and submission_list[0]["uuid"] is not None:
-                return submission_list[0]["uuid"]
+                if submission_list and submission_list[0]["uuid"] is not None:
+                    return submission_list[0]["uuid"]
+            except SubmissionInternalError:
+                return None
 
         return None
 
