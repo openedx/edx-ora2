@@ -282,7 +282,7 @@ class SubmissionMixin(object):
     def create_team_submission(self, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
         if self.has_team():
-            team_anonymous_user_ids = self.get_team_anonymous_user_ids()
+            team_anonymous_user_ids = self.get_anonymous_user_ids_for_team()
 
             submissions = []
 
