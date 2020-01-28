@@ -483,7 +483,7 @@ class SubmissionMixin(object):
                 download_url = self._get_url_by_file_key(file_key)
                 if download_url:
                     file_name = files_names[index] if index < len(files_names) else ''
-                    files_info.append((download_url, description, file_name))
+                    files_info.append((download_url, description, file_name, False))
                 else:
                     # If file has been removed, the URL doesn't exist
                     logger.info("URLWorkaround: no URL for description {desc} & key {key} for user:{user}".format(
@@ -526,7 +526,7 @@ class SubmissionMixin(object):
                     user=username_or_email,
                     block=str(self.location)
                 ))
-                file_uploads.append((download_url, '', ''))
+                file_uploads.append((download_url, '', '', False))
             else:
                 continue
 
