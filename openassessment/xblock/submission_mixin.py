@@ -124,8 +124,7 @@ class SubmissionMixin(object):
                 if self.teams_enabled:
                     submissions = self.create_team_submission(student_sub_data)
 
-                    return [self._create_submission_response(submission) 
-                        for submission in submissions]
+                    return [self._create_submission_response(submission) for submission in submissions]
 
                 else:
                     submission = self.create_submission(student_item_dict, student_sub_data)
