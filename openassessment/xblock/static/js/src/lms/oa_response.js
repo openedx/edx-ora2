@@ -241,9 +241,11 @@ OpenAssessment.ResponseView.prototype = {
     var output_prompt = $(this.getPrompts()[1]);
     if(correctness==true){
     output_prompt.attr('style', "border:5px solid green");
+    this.saveStatus(gettext("Code output matches the expected output"));
     }
     else{
     output_prompt.attr('style', "border:5px solid red");
+    this.saveStatus(gettext("Code output mismatch / Execution error"));
     }
     },
 
@@ -491,18 +493,17 @@ OpenAssessment.ResponseView.prototype = {
 
         // Update the save button, save status, and "unsaved changes" warning
         // only if the response has changed
-        if (this.responseChanged()) {
+
             var saveAbility = this.checkSaveAbility();
             this.saveEnabled(saveAbility);
             this.previewEnabled(saveAbility);
-            this.saveStatus(gettext('This response has not been saved.'));
             this.baseView.unsavedWarningEnabled(
                 true,
                 this.UNSAVED_WARNING_KEY,
                 // eslint-disable-next-line max-len
                 gettext('If you leave this page without saving or submitting your response, you will lose any work you have done on the response.')
             );
-        }
+
 
         // Record the current time (used for autosave)
         this.lastChangeTime = Date.now();
@@ -518,7 +519,7 @@ OpenAssessment.ResponseView.prototype = {
         this.errorOnLastSave = false;
 
         // Update the save status and error notifications
-        this.saveStatus(gettext('Saving...'));
+        this.saveStatus(gettext('Code execution in progress'));
         this.baseView.toggleActionError('save', null);
 
         // Disable the "unsaved changes" warning
@@ -526,6 +527,7 @@ OpenAssessment.ResponseView.prototype = {
 
         var view = this;
         var savedResponse = this.response('save');
+        view.saveEnabled(false);
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
@@ -540,13 +542,8 @@ OpenAssessment.ResponseView.prototype = {
             var currentResponseEqualsSaved = currentResponse.every(function(element, index) {
                 return element === savedResponse[index];
             });
-            if (currentResponseEqualsSaved) {
-                var msg = gettext('Execution Completed');
-                view.saveStatus(msg);
-                view.baseView.srReadTexts([msg]);
-            }
-//            view.saveEnabled(false);
-//            view.task_poller.start();
+            view.saveEnabled(true);
+            view.baseView.toggleActionError('save', null);
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
@@ -555,6 +552,7 @@ OpenAssessment.ResponseView.prototype = {
             // so we can disable autosave
             // (avoids repeatedly refreshing the error message)
             view.errorOnLastSave = true;
+            view.saveEnabled(false);
         });
     },
 

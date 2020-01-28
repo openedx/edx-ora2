@@ -19,6 +19,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
     };
 
     var jsonContentType = "application/json; charset=utf-8";
+    var prevRequest = null;
 
     OpenAssessment.Server.prototype = {
 
@@ -203,16 +204,27 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         save: function(submission) {
             var url = this.url('save_submission');
             return $.Deferred(function(defer) {
-                $.ajax({
+                 prevRequest = $.ajax({
                     type: "POST",
                     url: url,
                     data: JSON.stringify({submission: submission}),
-                    contentType: jsonContentType
+                    contentType: jsonContentType,
+                    beforeSend: function(){
+                    if(prevRequest != null){
+                        prevRequest.abort("Previous code run aborted");
+                    }
+                    },
                 }).done(function(data) {
+                    prevRequest = null;
                     if (data.success) { defer.resolve(data.out); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
-                    defer.rejectWith(this, [gettext("This response could not be saved.")]);
+                }).fail(function(data) {
+                    errorMessage = "This response could not be saved.";
+                    if(data.statusText){
+                        errorMessage = data.statusText;
+                    }
+                    prevRequest = null;
+                    defer.rejectWith(this, [gettext(errorMessage)]);
                 });
             }).promise();
         },
