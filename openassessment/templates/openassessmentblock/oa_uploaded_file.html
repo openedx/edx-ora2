@@ -11,8 +11,13 @@
     {% endif %}
 
     <div class="{{ class_prefix }}__display__file {% if not file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
+        {% if file_urls %}
+          <h5 class="submission__answer__part__text__title">
+            {% trans "Files that were uploaded by you:" %}
+          </h5>
+        {% endif %}
         <div class="submission__answer__files">
-        {% for file_url, file_description, file_name in file_urls %}
+        {% for file_url, file_description, file_name, show_delete_button in file_urls %}
             <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
             {% if file_url %}
                 {% if file_upload_type == "image" %}
@@ -30,7 +35,7 @@
                         {% endif %}
                     </a>
                 {% endif %}
-                {% if enable_delete_files %}
+                {% if enable_delete_files and show_delete_button %}
                     <button class="delete__uploaded__file" filenum="{{ forloop.counter0 }}" aria-label="Delete {{ file_description }} ({{file_name}})">
                         Delete File
                     </button>

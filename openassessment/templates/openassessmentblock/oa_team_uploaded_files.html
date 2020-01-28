@@ -1,0 +1,38 @@
+{% spaceless %}
+{% load i18n %}
+
+{% if file_upload_type %}
+  <div class="{{ class_prefix }}__display__file {% if not team_file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
+        {% if team_file_urls %}
+        <h5 class="submission__answer__part__text__title">
+          {% trans "Files that were uploaded by your teammates:" %}
+        </h5>
+        {% endif %}
+
+        <div class="submission__answer__files">
+        {% for file_url, file_description, file_name, show_delete_button in team_file_urls %}
+            <div class="submission__answer__team__file__block submission__answer__team__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
+            {% if file_url %}
+                {% if file_upload_type == "image" %}
+                    {% if file_description %}
+                    <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}">{{ file_description }}:</div>
+                    {% endif %}
+                    <div><img class="submission__answer__file submission--image" src="{{ file_url }}"
+                            aria-labelledby="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}" /></div>
+                {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
+                    <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
+                        {% if file_description %}
+                        {{ file_description }} ( {{file_name}} )
+                        {% else %}
+                        {% trans "View the files associated with this submission:" %} #{{ forloop.counter }}
+                        {% endif %}
+                    </a>
+                {% endif %}
+            {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{% endspaceless %}

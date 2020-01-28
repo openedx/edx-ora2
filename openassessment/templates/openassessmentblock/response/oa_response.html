@@ -168,6 +168,10 @@
                         <li class="field">
                         {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
                         </li>
+                        <hr/>
+                        <li class="field">
+                        {% include "openassessmentblock/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response" xblock_id=xblock_id %}
+                        </li>
                     </ol>
 
                     <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>

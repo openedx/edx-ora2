@@ -43,5 +43,4 @@ class StudioViewTest(TestCase):
         MockCourseWaffleFlag.return_value.is_enabled.return_value = flag_enabled
 
         my_block = MockBlock()
-        actual_teams_enabled = my_block.team_submissions_enabled()
-        self.assertEqual(expected_teams_enabled, actual_teams_enabled)
+        self.assertEqual(expected_teams_enabled, my_block.team_submissions_enabled)

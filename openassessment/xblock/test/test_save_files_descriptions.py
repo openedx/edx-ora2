@@ -31,6 +31,9 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         Checks ability to call handler with descriptions and then saved texts should be available after xblock render.
 
         """
+        # We're not worried about looking up shared uploads in this test
+        xblock.has_team = mock.Mock(return_value=False)
+
         # Save the response
         descriptions = [{'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
                         {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}]
@@ -54,6 +57,9 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         Checks ability to to append additional files
 
         """
+        # We're not worried about looking up shared uploads in this test
+        xblock.has_team = mock.Mock(return_value=False)
+
         descriptions1 = [
             {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
             {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}

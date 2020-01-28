@@ -384,7 +384,9 @@ class SubmissionMixin(object):
         content_type = data['contentType']
         file_name = data['filename']
         file_name_parts = file_name.split('.')
+
         file_num = int(data.get('filenum', 0))
+
         file_ext = file_name_parts[-1] if len(file_name_parts) > 1 else None
         if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
             return {'success': False, 'msg': self._(u"Content type must be GIF, PNG or JPG.")}
@@ -429,12 +431,23 @@ class SubmissionMixin(object):
         except ValueError:
             filenum = -1
 
-        try:
-            self.file_manager.delete_upload(filenum)
-            return {'success': True}
-        except FileUploadError as exc:
-            logger.exception(exc)
-            return {'success': False}
+        if self._can_delete_file(filenum):
+            try:
+                self.file_manager.delete_upload(filenum)
+                return {'success': True}
+            except FileUploadError as exc:
+                logger.exception(exc)
+
+        return {'success': False}
+
+    def _can_delete_file(self, filenum):
+        """
+        Helper function, wraps `file_upload_api.can_delete_file()`.
+        """
+        team_id = self.get_team_info().get('team_id')
+        key = self._get_student_item_key(filenum)
+        current_user_id = self.get_student_item_dict()['student_id']
+        return file_upload_api.can_delete_file(current_user_id, self.teams_enabled, key, team_id)
 
     def _get_download_url(self, file_num=0):
         """
@@ -459,16 +472,7 @@ class SubmissionMixin(object):
             A string representation of the key.
 
         """
-        student_item_dict = self.get_student_item_dict()
-        num = int(num)
-        if num > 0:
-            student_item_dict['num'] = num
-            return u"{student_id}/{course_id}/{item_id}/{num}".format(
-                **student_item_dict
-            )
-        return u"{student_id}/{course_id}/{item_id}".format(
-            **student_item_dict
-        )
+        return file_upload_api.get_student_file_key(self.get_student_item_dict(), index=num)
 
     def _get_url_by_file_key(self, key):
         """
@@ -511,14 +515,14 @@ class SubmissionMixin(object):
                 if file_download_url:
                     file_description = descriptions[idx].strip() if idx < len(descriptions) else ''
                     file_name = file_names[idx].strip() if idx < len(file_names) else ''
-                    urls.append((file_download_url, file_description, file_name))
+                    urls.append((file_download_url, file_description, file_name, False))
                 else:
                     break
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
             file_download_url = self._get_url_by_file_key(key)
             if file_download_url:
-                urls.append((file_download_url, '', ''))
+                urls.append((file_download_url, '', '', False))
         return urls
 
     def get_files_info_from_user_state(self, username):
@@ -552,7 +556,7 @@ class SubmissionMixin(object):
                 download_url = self._get_url_by_file_key(file_key)
                 if download_url:
                     file_name = files_names[index] if index < len(files_names) else ''
-                    files_info.append((download_url, description, file_name))
+                    files_info.append((download_url, description, file_name, False))
                 else:
                     # If file has been removed, the URL doesn't exist
                     logger.info("URLWorkaround: no URL for description {desc} & key {key} for user:{user}".format(
@@ -595,7 +599,7 @@ class SubmissionMixin(object):
                     user=username_or_email,
                     block=str(self.location)
                 ))
-                file_uploads.append((download_url, '', ''))
+                file_uploads.append((download_url, '', '', False))
             else:
                 continue
 
@@ -696,8 +700,8 @@ class SubmissionMixin(object):
         file_urls = None
 
         if self.file_upload_type:
-            file_uploads = self.file_manager.get_uploads(include_deleted=True)
-            context['file_urls'] = [upload.url_descriptor_tuple() for upload in file_uploads]
+            context['file_urls'] = self.file_manager.file_descriptor_tuples(include_deleted=True)
+            context['team_file_urls'] = self.file_manager.team_file_descriptor_tuples()
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 

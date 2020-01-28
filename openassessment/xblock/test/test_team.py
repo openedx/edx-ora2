@@ -39,7 +39,7 @@ class MockTeamsService(object):
 
     def __init__(self, has_team):
         self.has_team = has_team
-        self.team = mock.MagicMock()
+        self.team = mock.MagicMock(team_id='the-team-id')
         # This is required because 'name' is a reserved property for mocks
         self.team.configure_mock(name='TeamName', team_id='TeamID')
         self.team.users.all.return_value = [
@@ -122,7 +122,7 @@ class TeamMixinTest(TestCase):
         self.assertDictEqual(
             block.get_team_info(),
             {
-                'team_id': "TeamID",
+                'team_id': 'TeamID',
                 'team_name': 'TeamName',
                 'team_usernames': [
                     'UserA',
@@ -132,6 +132,10 @@ class TeamMixinTest(TestCase):
                 'team_url': 'this-is-a-url',
             }
         )
+
+    def test_get_team_info_no_team(self):
+        block = MockBlock(has_team=False)
+        self.assertEqual({}, block.get_team_info())
 
     @ddt.unpack
     @ddt.data(

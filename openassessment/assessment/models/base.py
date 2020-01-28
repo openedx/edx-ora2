@@ -26,6 +26,7 @@ import six
 from django.core.cache import cache
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.functional import cached_property
 from django.utils.timezone import now
 
 from simple_history.models import HistoricalRecords
@@ -35,6 +36,8 @@ from model_utils.models import TimeStampedModel
 from lazy import lazy
 
 logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
+
+KEY_SEPARATOR = '/'
 
 
 class InvalidRubricSelection(Exception):
@@ -853,6 +856,31 @@ class SharedFileUpload(TimeStampedModel):
     def __str__(self):
         return u"SharedFileUpload {}".format(self.file_key)
 
+    @cached_property
+    def index(self):
+        """
+        Relies on the definition of fileupload.api.get_student_file_key,
+        namely, that ``file_key`` will be composed of either 3 or 4 parts,
+        and if 4, then the string after the last slash is the index of the file.
+        If there are only 3 parts, the index is 0 by convention.
+        """
+        key_parts = self.file_key.split(KEY_SEPARATOR)
+        if len(key_parts) == 4:
+            return int(key_parts[3])
+        return 0
+
     @classmethod
-    def by_team_course_item(cls, team_id, course_id, item_id):
+    def by_key(cls, key):
+        try:
+            return cls.objects.get(file_key=key)
+        except cls.DoesNotExist as exc:
+            logger.exception(exc)
+            raise
+
+    @classmethod
+    def by_team_course_item(cls, team_id, course_id, item_id, **kwargs):  # pylint: disable=unused-argument
         return cls.objects.filter(team_id=team_id, course_id=course_id, item_id=item_id)
+
+    @classmethod
+    def by_student_course_item(cls, student_id, course_id, item_id, **kwargs):  # pylint: disable=unused-argument
+        return cls.objects.filter(owner_id=student_id, course_id=course_id, item_id=item_id)

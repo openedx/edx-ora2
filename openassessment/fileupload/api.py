@@ -6,17 +6,22 @@ URLs of existing files, and delete files.
 
 from __future__ import absolute_import, unicode_literals
 
+from collections import namedtuple
 import json
 import logging
-from django.db import IntegrityError
 
-from openassessment.assessment.models import SharedFileUpload
+from django.db import IntegrityError
+from django.utils.functional import cached_property
+
+from openassessment.assessment.models.base import SharedFileUpload
 from openassessment.fileupload.exceptions import FileUploadError
 
 from . import backends
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+KEY_SEPARATOR = '/'
 
 
 def get_upload_url(key, content_type):
@@ -46,11 +51,54 @@ def get_student_file_key(student_item_dict, index=0):
         student_item_dict: A dictionary containing keys ('student_id', 'course_id', 'item_id').
         index (int, optional): The index of a file.
     """
-    key_template = '{student_id}/{course_id}/{item_id}'
+    key_template = KEY_SEPARATOR.join(('{student_id}', '{course_id}', '{item_id}'))
     index = int(index)
     if index > 0:
-        key_template += '/{index}'
+        key_template += KEY_SEPARATOR + '{index}'
     return key_template.format(index=index, **student_item_dict)
+
+
+def can_delete_file(current_user_id, teams_enabled, key, team_id=None, shared_file=None):
+    """
+    A user is allowed to delete any file they own if this is not a team-enabled response.
+    If the response is team-enabled, a user, who is a member of a team,
+    is allowed to delete a file they own as long as they are still
+    a member of the team with which the file has been shared.
+
+    params:
+      current_user_id (string): The anonymous id of the current user in an ORA block.
+      teams_enabled (boolean): Indicates if teams are enabled for an ORA block.
+      key (string): The key of the file to check if we can delete.
+      team_id (string): The id of the team of the user who may be able to delete the file.
+      shared_file (SharedFileUpload): Optional. A SharedFileUpload object corresponding to the given
+      key.  It's useful to pass this in if you've already fetched all of the SharedFileUpload records
+      for a given item/team.
+
+    raises:
+        SharedFileUpload.DoesNotExist If teams are enabled, a team_id is provided,
+        and no SharedFileUpload corresponding to the file key exists.
+    returns:
+        Boolean indicating if the file with the given key can be deleted by the current user.
+    """
+    if not teams_enabled:
+        return True
+
+    if not shared_file:
+        try:
+            shared_file = SharedFileUpload.by_key(key)
+        except SharedFileUpload.DoesNotExist:
+            logger.info('While checking ORA file-deletion ability, could not find file with key: {}'.format(key))
+            return True
+
+    if shared_file.owner_id != current_user_id:
+        return False
+
+    if shared_file.team_id != team_id:
+        return False
+
+    # If we've made it this far, the current user has a team, and it's the same
+    # team that the file is shared with, so let them (as the file's owner) delete it.
+    return True
 
 
 def _safe_load_json_list(field, log_error=False):
@@ -74,7 +122,7 @@ class FileUpload(object):
     A layer of abstraction over the various components of file
     data stored as ORA XBlock user-scoped fields.
     """
-    def __init__(self, name=None, description=None, size=None, index=None, descriptionless=False, **student_item_dict):
+    def __init__(self, name=None, description=None, size=None, index=0, descriptionless=False, **student_item_dict):
         """
         Args:
             name (str): The name of a file.
@@ -127,13 +175,6 @@ class FileUpload(object):
         }
         return get_student_file_key(student_item_dict, index=self.index)
 
-    def url_descriptor_tuple(self):
-        """
-        Used in the response template context to provide a file URL, description, and name
-        to render in the client.
-        """
-        return (self.download_url, self.description, self.name)
-
     def _to_dict(self):
         """
         Returns:
@@ -151,6 +192,9 @@ class FileUpload(object):
             False otherwise.
         """
         return self._to_dict() == other._to_dict()  # pylint: disable=protected-access
+
+
+FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'show_delete_button'])
 
 
 class FileUploadManager(object):
@@ -174,15 +218,160 @@ class FileUploadManager(object):
     def __init__(self, openassessment_xblock):
         self.block = openassessment_xblock
 
+    @cached_property
+    def student_item_dict(self):
+        """ Returns a dict containing 'student_id', 'course_id', and 'item_id'. """
+        return self.block.get_student_item_dict()
+
+    @property
+    def team_id(self):
+        """ Returns the current team_id or None. """
+        return self.block.team.team_id if self.block.has_team() else None
+
     def get_uploads(self, include_deleted=False):
         """
         Returns:
-            A list of FileUpload objects associated with an instance of an O.A. Block.
+            A list of FileUpload objects associated with an instance of an Open Assessment Block.
+            This will include FileUpload objects corresponding to existing files.
+            It does **not** include entries for files that have been deleted.
         """
         descriptions, names, sizes = self._get_metadata_from_block()
-        return self._file_uploads_from_list_fields(
-            descriptions, names, sizes, include_deleted
+        user_uploads = self._file_uploads_from_list_fields(descriptions, names, sizes, include_deleted=include_deleted)
+
+        if self.block.is_team_assignment():
+            return self._uploads_shared_with_team_by_current_user(user_uploads)
+
+        return user_uploads
+
+    def get_team_uploads(self):
+        if self.block.is_team_assignment():
+            return self._uploads_owned_by_teammates()
+        return []
+
+    def _uploads_shared_with_team_by_current_user(self, user_uploads):
+        """
+        Helper function that filters a given list of ``user_uploads``
+        down to those ``FileUploads`` that are owned by the current user
+        **and** the current user's current team (if any).
+        """
+        jointly_owned_uploads = []
+
+        for upload in user_uploads:
+            shared_upload = self.shared_uploads_for_student_by_key.get(upload.key)
+            if shared_upload and (shared_upload.team_id == self.team_id):
+                jointly_owned_uploads.append(upload)
+            elif not upload.exists:
+                # we should return entries for deleted files, here,
+                # to uphold the invariant around file indices.
+                jointly_owned_uploads.append(upload)
+
+        return jointly_owned_uploads
+
+    def _uploads_owned_by_teammates(self):
+        """
+        Returns a list of FileUpload objects owned by other members of the team.
+        Does not include FileUploads of the current user.
+        """
+        shared_uploads_from_other_users = sorted(
+            [
+                shared_upload
+                for shared_upload in self.shared_uploads_for_team_by_key.values()
+                if shared_upload.owner_id != self.student_item_dict['student_id']
+            ],
+            key=lambda upload: upload.file_key,
         )
+
+        return [
+            FileUpload(
+                name=shared_upload.name,
+                description=shared_upload.description,
+                size=shared_upload.size,
+                student_id=shared_upload.owner_id,
+                course_id=shared_upload.course_id,
+                item_id=shared_upload.item_id,
+                index=shared_upload.index,
+            ) for shared_upload in shared_uploads_from_other_users
+        ]
+
+    def file_descriptor_tuples(self, include_deleted=False):
+        """
+        Used in the response template context to provide a (file URL, description, name, show_delete_button boolean)
+        for each uploaded file in this block to render in the client.
+        If self.block is team-enabled, this will return only entries for files
+        that have been shared with the block's current user's team.
+        """
+        team_id = self.block.team.team_id if self.block.has_team() else None
+
+        descriptors = []
+
+        for upload in self.get_uploads(include_deleted=include_deleted):
+            show_delete_button = True if upload.exists else False
+
+            if upload.exists and self.block.is_team_assignment():
+                shared_upload = self.shared_uploads_for_team_by_key[upload.key]
+                show_delete_button = can_delete_file(
+                    self.student_item_dict['student_id'],
+                    self.block.is_team_assignment(),
+                    upload.key,
+                    team_id=team_id,
+                    shared_file=shared_upload,
+                )
+
+            descriptors.append(FileDescriptor(
+                download_url=upload.download_url,
+                description=upload.description,
+                name=upload.name,
+                show_delete_button=show_delete_button,
+            ))
+
+        return descriptors
+
+    def team_file_descriptor_tuples(self):
+        """
+        Returns the list of FileDescriptors owned by other team members
+        shown to a user when self.block is a team assignment.
+        """
+        return [
+            FileDescriptor(
+                download_url=upload.download_url,
+                description=upload.description,
+                name=upload.name,
+                show_delete_button=False,
+            )
+            for upload in self.get_team_uploads()
+        ]
+
+    @cached_property
+    def shared_uploads_for_student_by_key(self):
+        """
+        Returns **and caches** all of the SharedFileUpload records
+        for this student/course/item.
+        """
+        shared_uploads = SharedFileUpload.by_student_course_item(**self.student_item_dict)
+        return {shared_upload.file_key: shared_upload for shared_upload in shared_uploads}
+
+    @cached_property
+    def shared_uploads_for_team_by_key(self):
+        """
+        Returns **and caches** all of the SharedFileUpload records
+        for this student/course/item.
+        """
+        shared_uploads = SharedFileUpload.by_team_course_item(
+            team_id=self.team_id,
+            course_id=self.student_item_dict['course_id'],
+            item_id=self.student_item_dict['item_id'],
+        )
+        return {shared_upload.file_key: shared_upload for shared_upload in shared_uploads}
+
+    def invalidate_cached_shared_file_dicts(self):
+        """
+        Invalidates SharedFileUpload records that we have cached.
+        """
+        if hasattr(self, 'shared_uploads_for_student_by_key'):
+            del self.shared_uploads_for_student_by_key
+
+        if hasattr(self, 'shared_uploads_for_team_by_key'):
+            del self.shared_uploads_for_team_by_key
 
     def append_uploads(self, *new_uploads):
         """
@@ -222,7 +411,7 @@ class FileUploadManager(object):
 
         new_file_uploads = self._file_uploads_from_list_fields(new_descriptions, new_names, new_sizes)
 
-        if self.block.is_team_assignment():
+        if self.block.is_team_assignment() and self.block.has_team():
             existing_file_upload_key_set = {
                 fileupload.key for fileupload in
                 self._file_uploads_from_list_fields(
@@ -231,10 +420,12 @@ class FileUploadManager(object):
                     existing_file_sizes
                 )
             }
+
             for new_file_upload in new_file_uploads:
                 if new_file_upload.key not in existing_file_upload_key_set:
                     self.create_shared_upload(new_file_upload)
 
+        self.invalidate_cached_shared_file_dicts()
         return new_file_uploads
 
     def create_shared_upload(self, fileupload):
@@ -253,16 +444,19 @@ class FileUploadManager(object):
             logger.error("Unable to create shared upload. " + str(e))
             raise e
 
+    def get_file_key(self, index):
+        return get_student_file_key(self.student_item_dict, index)
+
     def delete_upload(self, index):
         """
-        Given a file index to remove, null out its metadata in our stored file metadata fields
+        Given a file index to remove, null out its metadata in our stored file metadata fields.
+        This will also delete any ``SharedFileUpload`` records associated with the file's key
+        (if the file has been shared with a team).
 
         Args:
-            index: file index to remove
-
-        Returns: newly updated FileUpload records.
+            index (integer): file index to remove
         """
-        file_key = get_student_file_key(self.block.get_student_item_dict(), index)
+        file_key = self.get_file_key(index)
         remove_file(file_key)
 
         stored_file_descriptions, stored_file_names, stored_file_sizes = self._get_metadata_from_block()
@@ -275,6 +469,14 @@ class FileUploadManager(object):
 
         stored_file_sizes[index] = 0
         self._set_file_sizes(stored_file_sizes)
+
+        if self.block.is_team_assignment():
+            try:
+                SharedFileUpload.by_key(file_key).delete()
+            except SharedFileUpload.DoesNotExist:
+                logger.warning('Could not find SharedFileUpload to delete: {}'.format(file_key))
+
+        self.invalidate_cached_shared_file_dicts()
 
     def _get_metadata_from_block(self):
         descriptions = self._get_file_descriptions()
@@ -301,7 +503,7 @@ class FileUploadManager(object):
                 key: file_field[index] for key, file_field in file_fields_by_key.items()
             }
 
-            file_upload_kwargs.update(self.block.get_student_item_dict())
+            file_upload_kwargs.update(self.student_item_dict)
             file_upload_kwargs['index'] = index
 
             file_upload = FileUpload(**file_upload_kwargs)
@@ -322,9 +524,8 @@ class FileUploadManager(object):
         """
         file_uploads = []
 
-        student_item_dict = self.block.get_student_item_dict()
         for index in range(self.block.MAX_FILES_COUNT):
-            file_key = get_student_file_key(student_item_dict, index)
+            file_key = get_student_file_key(self.student_item_dict, index)
 
             download_url = ''
             try:
@@ -334,7 +535,7 @@ class FileUploadManager(object):
 
             if download_url:
                 file_uploads.append(FileUpload(
-                    name='', description='', size=0, index=index, descriptionless=True, **student_item_dict
+                    name='', description='', size=0, index=index, descriptionless=True, **self.student_item_dict
                 ))
             else:
                 break

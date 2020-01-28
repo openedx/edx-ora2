@@ -442,7 +442,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             # Check the context passed to the template
             self.assertEqual(
                 [
-                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')
+                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName', False)
                 ],
                 context['staff_file_urls']
             )
@@ -497,7 +497,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             # Check the context passed to the template
             self.assertEqual(
-                [(image, "test_description%d" % i, "fname%d" % i) for i, image in enumerate(images)],
+                [(image, "test_description%d" % i, "fname%d" % i, False) for i, image in enumerate(images)],
                 context['staff_file_urls']
             )
             self.assertEqual('image', context['file_upload_type'])
@@ -779,8 +779,15 @@ class TestCourseStaff(XBlockHandlerTestCase):
             staff_urls = context['staff_file_urls']
             for count in range(2):
                 self.assertTupleEqual(
-                    staff_urls[count], (FILE_URL, SAVED_FILES_DESCRIPTIONS[count], SAVED_FILES_NAMES[count])
+                    staff_urls[count], (FILE_URL, SAVED_FILES_DESCRIPTIONS[count], SAVED_FILES_NAMES[count], False)
                 )
+
+            self._verify_staff_assessment_rendering(
+                xblock,
+                'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html',
+                context,
+                FILE_URL,
+            )
 
     @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
@@ -857,8 +864,26 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Calling this method directly as using `get_student_info_path_and_context`
         # will use user state. This is because we are mocking get_download_url method.
         staff_urls = xblock.get_all_upload_urls_for_user('Bob')
-        expected_staff_urls = [(FILE_URL, '', '')] * xblock.MAX_FILES_COUNT
+        expected_staff_urls = [(FILE_URL, '', '', False)] * xblock.MAX_FILES_COUNT
         self.assertEqual(staff_urls, expected_staff_urls)
+
+        new_context = {key: value for key, value in context.items()}
+        new_context['staff_file_urls'] = staff_urls
+        self._verify_staff_assessment_rendering(
+            xblock,
+            'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html',
+            new_context,
+            FILE_URL,
+        )
+
+    def _verify_staff_assessment_rendering(self, xblock, template_path, context, *expected_strings):
+        """
+        The file upload template has a hard dependency on the length of the file description tuple,
+        so make sure we don't blow up when trying to render it with this context.
+        """
+        response = xblock.render_assessment(template_path, context_dict=context)
+        for expected_string in expected_strings:
+            self.assertIn(expected_string, response.body.decode('utf-8'))
 
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         """
@@ -945,7 +970,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             self.assertEqual(
                 [
-                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName')
+                    ('http://www.example.com/image.jpeg', 'test_description', 'test_fileName', False)
                 ],
                 context['staff_file_urls']
             )

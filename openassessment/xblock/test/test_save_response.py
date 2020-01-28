@@ -7,6 +7,7 @@ from __future__ import absolute_import
 import json
 
 import ddt
+import mock
 
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 
@@ -19,12 +20,15 @@ class SaveResponseTest(XBlockHandlerTestCase):
 
     @scenario('data/save_scenario.xml', user_id="Daniels")
     def test_default_saved_response_blank(self, xblock):
+        xblock.get_team_info = mock.Mock(return_value={})
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('response has not been saved', resp.decode('utf-8'))
 
     @ddt.file_data('data/save_responses.json')
     @scenario('data/save_scenario.xml', user_id="Perleman")
     def test_save_response(self, xblock, data):
+        xblock.get_team_info = mock.Mock(return_value={})
+
         # Save the response
         submission = ["  ".join(data[0]), "  ".join(data[1])]
         payload = json.dumps({'submission': submission})
@@ -40,6 +44,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
 
     @scenario('data/save_scenario.xml', user_id="Valchek")
     def test_overwrite_saved_response(self, xblock):
+        xblock.get_team_info = mock.Mock(return_value={})
 
         # XBlock has a saved response already
         xblock.saved_response = prepare_submission_for_serialization([
@@ -58,6 +63,8 @@ class SaveResponseTest(XBlockHandlerTestCase):
 
     @scenario('data/save_scenario.xml', user_id="Bubbles")
     def test_missing_submission_key(self, xblock):
+        xblock.get_team_info = mock.Mock(return_value={})
+
         resp = self.request(xblock, 'save_submission', json.dumps({}), response_format="json")
         self.assertFalse(resp['success'])
         self.assertIn('not submitted', resp['msg'])

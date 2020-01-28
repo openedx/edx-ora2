@@ -236,6 +236,11 @@ class SubmissionTest(XBlockHandlerTestCase):
             course_id='test_course',
             anonymous_student_id='test_student',
         )
+
+        # Mock away any calls to the teams service
+        xblock._can_delete_file = Mock(return_value=True)  # pylint: disable=protected-access
+        xblock.has_team = Mock(return_value=False)
+
         file_metadata = [
             self._create_entry('File Number ' + str(i), 'file_' + str(i), 1000) for i in range(5)
         ]
@@ -251,6 +256,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             response_format='json'
         )
         self.assertTrue(resp['success'])
+
         resp = self.request(
             xblock,
             'remove_uploaded_file',
@@ -702,6 +708,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         xblock.file_upload_type = 'pdf-and-image'
         xblock.file_upload_response = 'optional'
 
+        xblock.get_team_info = Mock(return_value={})
+
         # Save a response
         payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
         resp = self.request(xblock, 'save_submission', payload, response_format='json')
@@ -714,9 +722,10 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
-                    ('', 'file-1', None),
-                    ('', 'file-2', None)
+                    ('', 'file-1', None, True),
+                    ('', 'file-2', None, True)
                 ],
+                'team_file_urls': [],
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ('A man must have a code', 'A man must have an umbrella too.')
@@ -765,6 +774,65 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             actual.pop('item_id')
 
         self.assertEqual(expected_file_uploads, actual_file_uploads)
+
+    @patch('openassessment.fileupload.api.get_download_url')
+    @scenario('data/save_scenario.xml', user_id="Valchek")
+    def test_render_shared_files(self, xblock, mock_get_download_url):
+        """
+        Test that we render files owned by Valchek and
+        their teammates when files are shared with a team.
+        """
+        xblock.file_manager.get_uploads = Mock(return_value=[
+            api.FileUpload(
+                description='file-1',
+                name='file-1.pdf',
+                size=200,
+                student_id='Valchek',
+                course_id='edX/Enchantment_101/April_1',
+                item_id='item-a',
+                descriptionless=False,
+            ),
+            api.FileUpload(  # just for fun, add a file that's been deleted
+                description=None,
+                name=None,
+                size=0,
+                student_id='Valchek',
+                course_id='edX/Enchantment_101/April_1',
+                item_id=ANY,
+                descriptionless=False,
+            ),
+        ])
+
+        xblock.file_manager.get_team_uploads = Mock(return_value=[
+            api.FileUpload(
+                description='file-5',
+                name='file-5.pdf',
+                size=500,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id='item-a',
+                descriptionless=False,
+            ),
+        ])
+
+        mock_get_download_url.side_effect = ['file-1-url', 'file-5-url']
+
+        # assert that there's an entry with the correct index in the rendered HTML
+        # we should have an index for all files ever uploaded, even the deleted one
+        resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
+
+        expected_strings = [
+            '"submission__answer__file__block submission__answer__file__block__0"',
+            '"submission__answer__file__block submission__answer__file__block__1"  deleted',
+            '"submission__answer__team__file__block submission__answer__team__file__block__0"',
+            'file-1.pdf',
+            'file-5.pdf',
+            'file-1-url',
+            'file-5-url',
+        ]
+
+        for expected_string in expected_strings:
+            self.assertIn(expected_string, resp)
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response_old_format(self, xblock):
@@ -1032,6 +1100,34 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         # Expect that the response step is "submitted"
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn('your response has been submitted', resp.decode('utf-8').lower())
+
+    @patch('openassessment.fileupload.api.can_delete_file', autospec=True)
+    @patch('openassessment.fileupload.api.get_student_file_key', autospec=True)
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_can_delete_file(self, xblock, mock_get_student_file_key, mock_can_delete_file):
+        xblock.get_team_info = Mock(return_value={'team_id': 'my-team-id'})
+        xblock.teams_enabled = True
+
+        self.assertEqual(
+            mock_can_delete_file.return_value,
+            xblock._can_delete_file(5),  # pylint: disable=protected-access
+        )
+        mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
+        mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, 'my-team-id')
+
+    @patch('openassessment.fileupload.api.can_delete_file', autospec=True)
+    @patch('openassessment.fileupload.api.get_student_file_key', autospec=True)
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_can_delete_file_no_team_info(self, xblock, mock_get_student_file_key, mock_can_delete_file):
+        xblock.get_team_info = Mock(return_value={})
+        xblock.teams_enabled = True
+
+        self.assertEqual(
+            mock_can_delete_file.return_value,
+            xblock._can_delete_file(5),  # pylint: disable=protected-access
+        )
+        mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
+        mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, None)
 
     def _assert_path_and_context(self, xblock, expected_path, expected_context):
         """
