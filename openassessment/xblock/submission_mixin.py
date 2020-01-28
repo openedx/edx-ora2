@@ -124,12 +124,8 @@ class SubmissionMixin(object):
                 if self.teams_enabled:
                     submissions = self.create_team_submission(student_sub_data)
 
-                    results = []
-
-                    for submission in submissions:
-                        results.append(self._create_submission_response(submission))
-
-                    return results
+                    return [self._create_submission_response(submission) 
+                        for submission in submissions]
 
                 else:
                     submission = self.create_submission(student_item_dict, student_sub_data)
@@ -306,7 +302,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
-        self.collect_files_for_submission(student_sub_dict)
+        self._collect_files_for_submission(student_sub_dict)
 
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -327,7 +323,7 @@ class SubmissionMixin(object):
 
         return submission
 
-    def collect_files_for_submission(self, student_sub_dict):
+    def _collect_files_for_submission(self, student_sub_dict):
         """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
 
         if not self.file_upload_type:
@@ -337,18 +333,14 @@ class SubmissionMixin(object):
             student_sub_dict[field] = []
 
         if self.teams_enabled:
-            for team_file_upload in self.get_team_files():
-                student_sub_dict['file_keys'].append(team_file_upload.file_key)
-                student_sub_dict['files_descriptions'].append(team_file_upload.description)
-                student_sub_dict['files_names'].append(team_file_upload.item_id)
-                student_sub_dict['files_sizes'].append(team_file_upload.size)
-
+            uploads = self.get_team_files()
         else:
-            for file_upload in self.file_manager.get_uploads():
-                student_sub_dict['file_keys'].append(file_upload.key)
-                student_sub_dict['files_descriptions'].append(file_upload.description)
-                student_sub_dict['files_names'].append(file_upload.name)
-                student_sub_dict['files_sizes'].append(file_upload.size)
+            uploads = self.file_manager.get_uploads()
+        for upload in uploads:
+            student_sub_dict['file_keys'].append(upload.key)
+            student_sub_dict['files_descriptions'].append(upload.description)
+            student_sub_dict['files_names'].append(upload.name)
+            student_sub_dict['files_sizes'].append(upload.size)
 
         return student_sub_dict
 
@@ -361,7 +353,14 @@ class SubmissionMixin(object):
         course_id = self.get_student_item_dict()['course_id']
         item_id = self.get_student_item_dict()['item_id']
 
-        return SharedFileUpload.by_team_course_item(team_id, course_id, item_id)
+        uploads = SharedFileUpload.by_team_course_item(team_id, course_id, item_id)
+
+        # rename fields to adhere to individual file upload format
+        for upload in uploads:
+            upload.key = upload.file_key
+            upload.name = upload.item_id
+
+        return uploads
 
     @XBlock.json_handler
     def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
