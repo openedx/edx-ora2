@@ -494,7 +494,7 @@ class SubmissionMixin(object):
                     continue
         return files_info
 
-    def get_all_upload_urls_for_user(self, username_or_email):
+    def get_all_upload_urls_for_user(self, username_or_email=None, student_item_dict=None):
         """
         For a particular ORA block, get the download URLs for all the files uploaded and still present.
 
@@ -511,7 +511,9 @@ class SubmissionMixin(object):
             The other 2 values have to be appended to work properly in the template.
         """
         file_uploads = []
-        student_item_dict = self.get_student_item_dict_from_username_or_email(username_or_email)
+        if not student_item_dict:
+            student_item_dict = self.get_student_item_dict_from_username_or_email(username_or_email)
+
         for index in range(self.MAX_FILES_COUNT):
             file_key = file_upload_api.get_student_file_key(student_item_dict, index)
             download_url = ''
@@ -523,7 +525,7 @@ class SubmissionMixin(object):
             if download_url:
                 logger.info(u"Download URL exists for key {key} in block {block} for user {user}".format(
                     key=file_key,
-                    user=username_or_email,
+                    user=username_or_email or student_item_dict.get('student_id'),
                     block=str(self.location)
                 ))
                 file_uploads.append((download_url, '', '', False))

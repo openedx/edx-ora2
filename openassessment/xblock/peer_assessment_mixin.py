@@ -11,6 +11,8 @@ from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerA
                                               PeerAssessmentWorkflowError)
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
+
+from submissions import api as sub_api
 from webob import Response
 from xblock.core import XBlock
 
@@ -241,6 +243,7 @@ class PeerAssessmentMixin(object):
                 # Determine if file upload is supported for this XBlock.
                 context_dict["file_upload_type"] = self.file_upload_type
                 context_dict["peer_file_urls"] = self.get_download_urls_from_submission(peer_sub)
+                self._update_context_with_all_file_urls_if_necessary(peer_sub, context_dict)
             else:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
         elif reason == 'due' and problem_closed:
@@ -256,6 +259,8 @@ class PeerAssessmentMixin(object):
                 # Determine if file upload is supported for this XBlock.
                 context_dict["file_upload_type"] = self.file_upload_type
                 context_dict["peer_file_urls"] = self.get_download_urls_from_submission(peer_sub)
+                self._update_context_with_all_file_urls_if_necessary(peer_sub, context_dict)
+
                 # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
                 self.no_peers = False
             else:
@@ -264,6 +269,27 @@ class PeerAssessmentMixin(object):
                 self.no_peers = True
 
         return path, context_dict
+
+    def _update_context_with_all_file_urls_if_necessary(self, peer_submission, context):
+        """
+        This particular check is for the cases affected by CR-1497 and CR-1730
+        and gets all the upload URLs if feature enabled.
+        """
+        if self.should_get_all_files_urls(context['peer_file_urls']):
+            logger.info(
+                u"Retrieving all uploaded files by user:{username} in block:{block}".format(
+                    username=peer_student_id,
+                    block=str(self.location)
+                ))
+            # peer_submission_and_student() will include a fully-serialized
+            # student_item_dict for the peer
+            peer_student_item_dict = sub_api.get_submission_and_student(
+                peer_submission['uuid']
+            ).get('student_item', {})
+
+            context['peer_file_urls'] = self.get_all_upload_urls_for_user(
+                student_item_dict=peer_student_item_dict
+            )
 
     def get_peer_submission(self, student_item_dict, assessment):
         """
