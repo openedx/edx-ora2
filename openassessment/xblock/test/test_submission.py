@@ -375,6 +375,7 @@ class SubmissionTest(XBlockHandlerTestCase):
                      'team_url': 'rebel_alliance.org'}
 
         xblock.teams_enabled = True
+        xblock.team_submissions_enabled = True
         xblock.has_team = Mock(return_value=True)
         xblock.get_team_info = Mock(return_value=mock_team)
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
@@ -419,25 +420,24 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertFalse(response[0])
 
     @scenario('data/basic_scenario.xml', user_id='Red Five')
-    @patch.object(SharedFileUpload, 'by_team_course_item')
-    def test_team_file_submission(self, xblock, mock_get_team_files):
+    def test_team_file_submission(self, xblock):
         """ If teams are enabled, a submission by any member should submit for each member of the team """
 
         # given a learner is on a team and file uploads are enabled
         mock_team = self.setup_mock_team(xblock)
         xblock.file_upload_type = 'pdf-and-image'
 
-        mock_shared_file_upload = Mock()
-        mock_shared_file_upload.team_id = "mock_team_id"
-        mock_shared_file_upload.course_id = "mock_course_id"
-        mock_shared_file_upload.item_id = "mock_item_id"
-        mock_shared_file_upload.owner_id = "mock_owner_id"
-        mock_shared_file_upload.file_key = "mock_file_key"
-        mock_shared_file_upload.history = None
-        mock_shared_file_upload.description = "mock_description"
-        mock_shared_file_upload.size = 12345
-
-        mock_get_team_files.return_value = [mock_shared_file_upload]
+        xblock.file_manager.get_team_uploads = Mock(return_value=[
+            api.FileUpload(
+                description='file-5',
+                name='file-5.pdf',
+                size=500,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id='item-a',
+                descriptionless=False,
+            ),
+        ])
 
         # when the learner submits an open assessment response
         response = self.request(

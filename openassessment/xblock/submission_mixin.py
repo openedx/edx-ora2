@@ -8,7 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
 import six
 
-from openassessment.assessment.models import SharedFileUpload
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -332,7 +331,7 @@ class SubmissionMixin(object):
             student_sub_dict[field] = []
 
         if self.teams_enabled:
-            uploads = self.get_team_files()
+            uploads = self.file_manager.get_team_uploads()
         else:
             uploads = self.file_manager.get_uploads()
         for upload in uploads:
@@ -342,24 +341,6 @@ class SubmissionMixin(object):
             student_sub_dict['files_sizes'].append(upload.size)
 
         return student_sub_dict
-
-    def get_team_files(self):
-        """ Team files, unlike individual submissions, are gathered from the SharedFileUpload table
-            and identified by their team ID, course ID, and item ID.
-        """
-
-        team_id = self.get_team_info()['team_id']
-        course_id = self.get_student_item_dict()['course_id']
-        item_id = self.get_student_item_dict()['item_id']
-
-        uploads = SharedFileUpload.by_team_course_item(team_id, course_id, item_id)
-
-        # rename fields to adhere to individual file upload format
-        for upload in uploads:
-            upload.key = upload.file_key
-            upload.name = upload.item_id
-
-        return uploads
 
     @XBlock.json_handler
     def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
