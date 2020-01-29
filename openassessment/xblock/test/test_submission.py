@@ -368,6 +368,11 @@ class SubmissionTest(XBlockHandlerTestCase):
                 the mock team for use in test validation
         """
 
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='r5'
+        )
+
         mock_team = {'team_id': 'rs-04',
                      'team_name': 'Red Squadron',
                      'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
@@ -872,11 +877,12 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         submissions = xblock.create_team_submission(
             ('A man must have a code', 'A man must have an umbrella too.')
         )
+        # get submission from Xblock
+        submission = [_ for _ in submissions if _['uuid'] == xblock.submission_uuid][0]
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission': create_submission_dict(submissions[-1], xblock.prompts),
+                'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
                 'file_upload_response': None,
                 'file_upload_type': None,

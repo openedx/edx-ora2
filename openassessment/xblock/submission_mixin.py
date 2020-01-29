@@ -276,6 +276,7 @@ class SubmissionMixin(object):
     def create_team_submission(self, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
         if self.has_team():
+            submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
             team_anonymous_user_ids = self.get_anonymous_user_ids_for_team()
 
             submissions = []
@@ -283,11 +284,12 @@ class SubmissionMixin(object):
             # submissions are identical except for the student item
             for anonymous_user_id in team_anonymous_user_ids:
                 student_item_dict = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
-                submissions.append(self.create_submission(student_item_dict, student_sub_data))
+                submission = self.create_submission(student_item_dict, student_sub_data)
 
-        # Since we don't get the right UUID through the above loop,
-        # null it out and fetch it from the DB during the next page load
-        self.submission_uuid = None
+                if anonymous_user_id == submitter_anonymous_user_id:
+                    self.submission_uuid = submission["uuid"]
+
+                submissions.append(submission)
 
         return submissions
 
