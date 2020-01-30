@@ -22,6 +22,10 @@ from .validation import validate_submission
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
+class NoTeamToCreateSubmissionForError(Exception):
+    pass
+
+
 class SubmissionMixin(object):
     """Submission Mixin introducing all Submission-related functionality.
 
@@ -75,8 +79,10 @@ class SubmissionMixin(object):
             suffix (str): Not used in this handler.
 
         Returns:
-            (tuple): Returns the status (boolean) of this request, the
+            (tuple | [tuple]): Returns the status (boolean) of this request, the
                 associated status tag (str), and status text (unicode).
+                This becomes an array of similarly structured tuples in the event
+                of a team submisison, one entry per student entry.
 
         """
         # Import is placed here to avoid model import at project startup.
@@ -113,9 +119,19 @@ class SubmissionMixin(object):
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
         status_text = self._(u'Multiple submissions are not allowed.')
+
         if not workflow:
             try:
-                submission = self.create_submission(student_item_dict, student_sub_data)
+
+                # a submission for a team generates matching submissions for all members
+                if self.is_team_assignment():
+                    submissions = self.create_team_submission(student_sub_data)
+                    return [self._create_submission_response(submission) for submission in submissions]
+
+                else:
+                    submission = self.create_submission(student_item_dict, student_sub_data)
+                    return self._create_submission_response(submission)
+
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -140,7 +156,8 @@ class SubmissionMixin(object):
                     ).format(student_item=student_item_dict)
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
-            except (api.SubmissionError, AssessmentWorkflowError):
+                    status_text = msg
+            except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
                 msg = (
                     u"An unknown error occurred while submitting "
                     u"a response for the user: {student_item}"
@@ -148,12 +165,21 @@ class SubmissionMixin(object):
                 logger.exception(msg)
                 status_tag = 'EUNKNOWN'
                 status_text = self._(u'API returned unclassified exception.')
-            else:
-                status = True
-                status_tag = submission.get('student_item')
-                status_text = submission.get('attempt_number')
 
+        # error cases fall through to here
         return status, status_tag, status_text
+
+    def _create_submission_response(self, submission):
+        """ Wrap submisison info for return to client
+
+            Returns:
+                (tuple): True (indicates success), student item, attempt number
+        """
+        status = True
+        status_tag = submission.get('student_item')
+        status_text = submission.get('attempt_number')
+
+        return (status, status_tag, status_text)
 
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -250,8 +276,35 @@ class SubmissionMixin(object):
 
         return {'success': True, 'msg': u''}
 
+    def create_team_submission(self, student_sub_data):
+        """ A student submitting for a team should generate matching submissions for every member of the team. """
+        if not self.has_team():
+            msg = "Student {} has no team for course {}".format(
+                self.get_student_item_dict()['student_id'],
+                self.course_id
+            )
+            logger.exception(msg)
+            raise NoTeamToCreateSubmissionForError(msg)
+
+        submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
+        team_anonymous_user_ids = self.get_anonymous_user_ids_for_team()
+
+        submissions = []
+
+        # submissions are identical except for the student item
+        for anonymous_user_id in team_anonymous_user_ids:
+            student_item_dict = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
+            submission = self.create_submission(student_item_dict, student_sub_data)
+
+            if anonymous_user_id == submitter_anonymous_user_id:
+                self.submission_uuid = submission["uuid"]
+
+            submissions.append(submission)
+
+        return submissions
+
     def create_submission(self, student_item_dict, student_sub_data):
-        """ Creates submission for the submitted assessment response. """
+        """ Creates submission for the submitted assessment response or a list for a team assessment. """
         # Import is placed here to avoid model import at project startup.
         from submissions import api
 
@@ -259,15 +312,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
-        if self.file_upload_type:
-            for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
-                student_sub_dict[field] = []
-
-            for file_upload in self.file_manager.get_uploads():
-                student_sub_dict['file_keys'].append(file_upload.key)
-                student_sub_dict['files_descriptions'].append(file_upload.description)
-                student_sub_dict['files_names'].append(file_upload.name)
-                student_sub_dict['files_sizes'].append(file_upload.size)
+        self._collect_files_for_submission(student_sub_dict)
 
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -288,10 +333,32 @@ class SubmissionMixin(object):
 
         return submission
 
+    def _collect_files_for_submission(self, student_sub_dict):
+        """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
+
+        if not self.file_upload_type:
+            return
+
+        for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
+            student_sub_dict[field] = []
+
+        if self.is_team_assignment():
+            uploads = self.file_manager.get_team_uploads()
+        else:
+            uploads = self.file_manager.get_uploads()
+
+        for upload in uploads:
+            student_sub_dict['file_keys'].append(upload.key)
+            student_sub_dict['files_descriptions'].append(upload.description)
+            student_sub_dict['files_names'].append(upload.name)
+            student_sub_dict['files_sizes'].append(upload.size)
+
+        return student_sub_dict
+
     @XBlock.json_handler
     def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
         """
-        Gets the username of the current student for use in team lookup
+        Gets the username of the current student for use in team lookup.
         """
         anonymous_id = self.xmodule_runtime.anonymous_student_id
         return {'username': self.get_username(anonymous_id)}

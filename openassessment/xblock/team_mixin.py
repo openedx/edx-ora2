@@ -105,3 +105,10 @@ class TeamMixin(object):
             return self.STAFF_OR_PREVIEW_INFO
         else:
             return {}
+
+    def get_anonymous_user_ids_for_team(self):
+        if self.has_team():
+            anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+            user = self.get_real_user(anonymous_user_id)
+
+            return self.teams_service.get_anonymous_user_ids_for_team(user, self.team)

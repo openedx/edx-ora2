@@ -360,6 +360,101 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = json.loads(resp.decode('utf-8'))
         self.assertEqual(resp['username'], 'UserName1')
 
+    @staticmethod
+    def setup_mock_team(xblock):
+        """ Enable teams and configure a mock team to be returned from the teams service
+
+            Returns:
+                the mock team for use in test validation
+        """
+
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='r5'
+        )
+
+        mock_team = {
+            'team_id': 'rs-04',
+            'team_name': 'Red Squadron',
+            'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
+            'team_url': 'rebel_alliance.org'
+        }
+
+        xblock.teams_enabled = True
+        xblock.team_submissions_enabled = True
+
+        xblock.has_team = Mock(return_value=True)
+        xblock.get_team_info = Mock(return_value=mock_team)
+        xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
+
+        return mock_team
+
+    @scenario('data/basic_scenario.xml', user_id='Red Five')
+    def test_team_submission(self, xblock):
+        """ If teams are enabled, a submission by any member should submit for each member of the team """
+
+        # given a learner is on a team
+        mock_team = self.setup_mock_team(xblock)
+
+        # when the learner submits an open assessment response
+        response = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
+
+        # then the submission is successful for all members of a team
+        self.assertEqual(len(mock_team['team_usernames']), len(response))
+
+        for result in response:
+            self.assertTrue(result[0])
+
+    @scenario('data/basic_scenario.xml', user_id='Red Five')
+    @patch.object(sub_api, 'create_submission')
+    def test_team_submission_partial_failure(self, xblock, mock_submit):
+        """ If a team submission encounters an issue with one of the submissions...
+            easiest behavior is to return a failure, leaving the result a partial success
+        """
+
+        # given a learner is on a team
+        self.setup_mock_team(xblock)
+
+        # ... but there's an issue when submitting
+        mock_submit.side_effect = SubmissionRequestError(msg="I can't shake him!")
+
+        # when the learner submits an open assessment response
+        response = self.request(
+            xblock, 'submit', self.SUBMISSION, response_format='json')
+
+        # then the submission returns a failure
+        self.assertFalse(response[0])
+
+    @scenario('data/basic_scenario.xml', user_id='Red Five')
+    def test_team_file_submission(self, xblock):
+        """ If teams are enabled, a submission by any member should submit for each member of the team """
+
+        # given a learner is on a team and file uploads are enabled
+        mock_team = self.setup_mock_team(xblock)
+        xblock.file_upload_type = 'pdf-and-image'
+
+        xblock.file_manager.get_team_uploads = Mock(return_value=[
+            api.FileUpload(
+                description='file-5',
+                name='file-5.pdf',
+                size=500,
+                student_id='Bob',
+                course_id='edX/Enchantment_101/April_1',
+                item_id='item-a',
+                descriptionless=False,
+            ),
+        ])
+
+        # when the learner submits an open assessment response
+        response = self.request(
+            xblock, 'submit', self.SUBMISSION, response_format='json')
+
+        # then the submission is successful for all members of a team
+        self.assertEqual(len(mock_team['team_usernames']), len(response))
+
+        for result in response:
+            self.assertTrue(result[0])
+
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
     """
@@ -771,6 +866,35 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'user_language': None,
                 'prompts_type': 'text',
                 'enable_delete_files': True,
+            }
+        )
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_team_open_submitted(self, xblock):
+        """ When a submission is created for a team, we create identical submissions for each learner.
+            Since we can't save submission info to other learners state, we need to query the database
+            on page load to see if a submisison has been created by a team member.
+        """
+        SubmissionTest.setup_mock_team(xblock)
+        submissions = xblock.create_team_submission(
+            ('A man must have a code', 'A man must have an umbrella too.')
+        )
+        # get submission from Xblock
+        submission = [sub for sub in submissions if sub['uuid'] == xblock.submission_uuid][0]
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            {
+                'student_submission': create_submission_dict(submission, xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'peer_incomplete': False,
+                'self_incomplete': False,
+                'allow_latex': False,
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': False,
             }
         )
 
