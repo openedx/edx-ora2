@@ -3,6 +3,7 @@ import time
 import re
 import os
 import shutil
+import uuid
 
 
 class TestGrader:
@@ -13,7 +14,7 @@ class TestGrader:
     def grade(self, response):
         problem_name = response['problem_name']
         source_code = response['submission'][0]
-        code_file_name = "auto_generated_code_file_" + str(int(time.time()))
+        code_file_name = "auto_generated_code_file_" + str(uuid.uuid4())
         if not os.path.exists(TestGrader.__TMP_DATA_DIR__ + code_file_name):
             os.mkdir(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
@@ -45,7 +46,7 @@ class TestGrader:
             if sample_test_case_result["tests"]:
                 sample_test_case_result["tests"].append(secret_test_case_result["tests"][0])
 
-        shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + "/" + code_file_name)
+        shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
         return sample_test_case_result
 

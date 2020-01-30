@@ -431,8 +431,10 @@ OpenAssessment.ResponseView.prototype = {
     response: function(action) {
         var sel = $('.response__submission .submission__answer__part__text__value', this.element);
         if(action==='load' || action==='save'){
-            var out_list = $(sel[0]).val().split();
-            return out_list;
+            var data_list = (sel.map(function() {
+                return $(this).val();
+            }).get());
+            return [data_list[0]];
         }
         else if(action==='submit'){
             var data_list = (sel.map(function() {
