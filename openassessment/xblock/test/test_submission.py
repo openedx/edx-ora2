@@ -373,13 +373,16 @@ class SubmissionTest(XBlockHandlerTestCase):
             anonymous_student_id='r5'
         )
 
-        mock_team = {'team_id': 'rs-04',
-                     'team_name': 'Red Squadron',
-                     'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
-                     'team_url': 'rebel_alliance.org'}
+        mock_team = {
+            'team_id': 'rs-04',
+            'team_name': 'Red Squadron',
+            'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
+            'team_url': 'rebel_alliance.org'
+        }
 
         xblock.teams_enabled = True
         xblock.team_submissions_enabled = True
+
         xblock.has_team = Mock(return_value=True)
         xblock.get_team_info = Mock(return_value=mock_team)
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
@@ -394,8 +397,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         mock_team = self.setup_mock_team(xblock)
 
         # when the learner submits an open assessment response
-        response = self.request(
-            xblock, 'submit', self.SUBMISSION, response_format='json')
+        response = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
 
         # then the submission is successful for all members of a team
         self.assertEqual(len(mock_team['team_usernames']), len(response))
@@ -878,7 +880,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             ('A man must have a code', 'A man must have an umbrella too.')
         )
         # get submission from Xblock
-        submission = [_ for _ in submissions if _['uuid'] == xblock.submission_uuid][0]
+        submission = [sub for sub in submissions if sub['uuid'] == xblock.submission_uuid][0]
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {

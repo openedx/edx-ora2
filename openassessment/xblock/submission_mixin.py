@@ -22,6 +22,10 @@ from .validation import validate_submission
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
+class NoTeamToCreateSubmissionForError(Exception):
+    pass
+
+
 class SubmissionMixin(object):
     """Submission Mixin introducing all Submission-related functionality.
 
@@ -120,9 +124,8 @@ class SubmissionMixin(object):
             try:
 
                 # a submission for a team generates matching submissions for all members
-                if self.teams_enabled:
+                if self.is_team_assignment():
                     submissions = self.create_team_submission(student_sub_data)
-
                     return [self._create_submission_response(submission) for submission in submissions]
 
                 else:
@@ -154,7 +157,7 @@ class SubmissionMixin(object):
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
                     status_text = msg
-            except (api.SubmissionError, AssessmentWorkflowError):
+            except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
                 msg = (
                     u"An unknown error occurred while submitting "
                     u"a response for the user: {student_item}"
@@ -275,21 +278,28 @@ class SubmissionMixin(object):
 
     def create_team_submission(self, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
-        if self.has_team():
-            submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
-            team_anonymous_user_ids = self.get_anonymous_user_ids_for_team()
+        if not self.has_team():
+            msg = "Student {} has no team for course {}".format(
+                self.get_student_item_dict()['student_id'],
+                self.course_id
+            )
+            logger.exception(msg)
+            raise NoTeamToCreateSubmissionForError(msg)
 
-            submissions = []
+        submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
+        team_anonymous_user_ids = self.get_anonymous_user_ids_for_team()
 
-            # submissions are identical except for the student item
-            for anonymous_user_id in team_anonymous_user_ids:
-                student_item_dict = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
-                submission = self.create_submission(student_item_dict, student_sub_data)
+        submissions = []
 
-                if anonymous_user_id == submitter_anonymous_user_id:
-                    self.submission_uuid = submission["uuid"]
+        # submissions are identical except for the student item
+        for anonymous_user_id in team_anonymous_user_ids:
+            student_item_dict = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
+            submission = self.create_submission(student_item_dict, student_sub_data)
 
-                submissions.append(submission)
+            if anonymous_user_id == submitter_anonymous_user_id:
+                self.submission_uuid = submission["uuid"]
+
+            submissions.append(submission)
 
         return submissions
 
@@ -332,10 +342,11 @@ class SubmissionMixin(object):
         for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
             student_sub_dict[field] = []
 
-        if self.teams_enabled:
+        if self.is_team_assignment():
             uploads = self.file_manager.get_team_uploads()
         else:
             uploads = self.file_manager.get_uploads()
+
         for upload in uploads:
             student_sub_dict['file_keys'].append(upload.key)
             student_sub_dict['files_descriptions'].append(upload.description)
