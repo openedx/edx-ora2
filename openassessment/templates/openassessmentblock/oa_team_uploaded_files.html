@@ -10,7 +10,7 @@
         {% endif %}
 
         <div class="submission__answer__files">
-        {% for file_url, file_description, file_name, show_delete_button in team_file_urls %}
+        {% for file_url, file_description, file_name, owner_username in team_file_urls %}
             <div class="submission__answer__team__file__block submission__answer__team__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
             {% if file_url %}
                 {% if file_upload_type == "image" %}
@@ -28,6 +28,7 @@
                         {% endif %}
                     </a>
                 {% endif %}
+                [Uploaded by <strong class="emphasis">{{ owner_username }}</strong>]
             {% endif %}
             </div>
         {% endfor %}
