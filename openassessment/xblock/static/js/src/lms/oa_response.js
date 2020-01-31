@@ -770,8 +770,14 @@ OpenAssessment.ResponseView.prototype = {
      is always incrementing. When includeDeleted is false - returns only the  count of files that are "live".
      */
     getSavedFileCount: function(includeDeleted) {
-        return includeDeleted ? $('.submission__answer__file__block').length :
-            $('.submission__answer__file__block').filter(':parent').length;
+        // There may be multiple ORA blocks in a single vertical/page.
+        // Find the content element of THIS ORA block, and then the
+        // file submission elements therein.
+        if (includeDeleted) {
+            return $(this.baseView.element).find('.submission__answer__file__block').length;
+        } else {
+            return $(this.baseView.element).find('.submission__answer__file__block').filter(':parent').length;
+        }
     },
 
     /**
