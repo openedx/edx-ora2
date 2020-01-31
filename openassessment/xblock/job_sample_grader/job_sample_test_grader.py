@@ -5,6 +5,8 @@ import os
 import shutil
 import uuid
 
+from openassessment.xblock.utils import OOP_PROBLEM_NAMES
+
 
 class TestGrader:
 
@@ -160,7 +162,7 @@ class TestGrader:
             actual_output.append("... Too much output. Extra output Trimmed.")
             actual_output = "\n".join(actual_output)
 
-        if problem_name not in ["call-center"]:
+        if problem_name not in OOP_PROBLEM_NAMES:
             expected_output = open(expected_output_file, 'r').read().strip()
             actual_output = actual_output.strip()
 

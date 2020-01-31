@@ -9,6 +9,8 @@ CODE_LANGUAGES = {
     'C++': 'language-cpp'
 }
 
+OOP_PROBLEM_NAMES = ["call-center", "car-parking", "email-client"]
+
 
 def get_code_language(source_code):
     """

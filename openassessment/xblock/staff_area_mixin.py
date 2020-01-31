@@ -272,7 +272,7 @@ class StaffAreaMixin(object):
         if submission:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
-            correctness = get_correctness(submission)
+            correctness = get_correctness(submission, self.display_name)
             set_correctness_in_context(context, 'sample_correct', correctness, 0)
             set_correctness_in_context(context, 'staff_correct', correctness, 1)
             context['code_language'] = get_code_language(submission['answer']['parts'][0]['text'])
