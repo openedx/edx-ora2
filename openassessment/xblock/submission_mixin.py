@@ -674,7 +674,7 @@ class SubmissionMixin(object):
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-            correctness = get_correctness(context['student_submission'])
+            correctness = get_correctness(context['student_submission'], self.display_name)
             set_correctness_in_context(context, 'sample_correct', correctness, 0)
             context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0]['text'])
 

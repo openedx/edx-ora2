@@ -12,6 +12,7 @@ from openassessment.assessment.api.student_training import validate_training_exa
 from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 from openassessment.xblock.resolve_dates import DateValidationError, InvalidDateFormat, resolve_dates
+from openassessment.xblock.utils import OOP_PROBLEM_NAMES
 
 
 def _match_by_order(items, others):
@@ -393,11 +394,13 @@ def validate_submission(submission, prompts, _, text_response='required'):
     return True, u''
 
 
-def get_correctness(submission):
+def get_correctness(submission, problem_name):
     """
     From the submission, return a list containing correctness information
     of sample & staff test cases.
     """
+    if problem_name in OOP_PROBLEM_NAMES:
+        return [True, True]
     correctness = []
     for count in range(1, len(submission['answer']['parts']), 2):
         actual = submission['answer']['parts'][count]['text']
