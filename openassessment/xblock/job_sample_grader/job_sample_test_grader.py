@@ -16,7 +16,7 @@ class TestGrader:
     def grade(self, response):
         problem_name = response['problem_name']
         source_code = response['submission'][0]
-        code_file_name = "auto_generated_code_file_" + str(uuid.uuid4())
+        code_file_name = "auto_generated_code_file_" + str(uuid.uuid4()).replace('-', '')
         if not os.path.exists(TestGrader.__TMP_DATA_DIR__ + code_file_name):
             os.mkdir(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
