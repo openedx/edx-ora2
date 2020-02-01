@@ -34,6 +34,9 @@ class MockBlock(object):
         else:
             self.team = None
 
+    def get_username(self, student_id):
+        return "this-username" if student_id == self.student_id else "other-username"
+
     def has_team(self):
         return bool(self.team)
 

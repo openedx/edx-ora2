@@ -58,6 +58,10 @@ def mock_block():
         'item_id': DEFAULT_ITEM_ID,
     }
 
+    mock_block.get_username = mock.Mock(
+        return_value='some_username'
+    )
+
     def _make_mock_block(**kwargs):
         mock_block.saved_files_descriptions = json.dumps(kwargs.get('descriptions') or ['file-description-1'])
         mock_block.saved_files_names = json.dumps(kwargs.get('names') or ['file-name-1.pdf'])
@@ -286,17 +290,17 @@ def test_team_file_descriptor_tuples(mock_get_download_url, shared_file_upload_f
     actual_descriptors = file_manager.team_file_descriptor_tuples()
 
     expected_descriptors = [
-        api.FileDescriptor(
+        api.TeamFileDescriptor(
             download_url=mock_get_download_url.return_value,
             name='File Beta',
             description='Another file',
-            show_delete_button=False,
+            uploaded_by='some_username',
         ),
-        api.FileDescriptor(
+        api.TeamFileDescriptor(
             download_url=mock_get_download_url.return_value,
             name='File Delta',
             description='Yet another file',
-            show_delete_button=False,
+            uploaded_by='some_username',
         ),
     ]
     assert expected_descriptors == actual_descriptors
