@@ -197,6 +197,7 @@ class FileUpload(object):
 FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'show_delete_button'])
 TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'uploaded_by'])
 
+
 class FileUploadManager(object):
     """
     Manages the CRUD operations of file uploads
