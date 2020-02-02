@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-10 07:20-0500\n"
-"PO-Revision-Date: 2020-01-06 20:59+0000\n"
+"POT-Creation-Date: 2020-01-27 16:15-0500\n"
+"PO-Revision-Date: 2020-01-28 20:18+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -820,10 +820,14 @@ msgstr "\nמשימה זו נמצאת בתהליך.  עליך להשלים עדי
 msgid "Team membership is required to view this assignment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:6
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:7
+#, python-format
 msgid ""
-"This is a team assignment. You are currently not on a team. You must be on a"
-" team to access this team assignment."
+"\n"
+"            This is a team assignment for team set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
+"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
@@ -881,11 +885,20 @@ msgstr "הערות"
 msgid "The question for this section"
 msgstr "השאלה עבור פרק זה."
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:29
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
+msgid "Files that were uploaded by your teammates:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:43
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
+msgid "Files that were uploaded by you:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
@@ -1136,15 +1149,15 @@ msgstr "בחר קובץ להעלאה עבור הגשה זו."
 msgid "Upload files"
 msgstr "העלה את הקובץ"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:177
 msgid "You may continue to work on your response until you submit it."
 msgstr "ניתן להמשיך לעבוד על תשובתך עד שתגיש אותה."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:180
+#: openassessment/templates/openassessmentblock/response/oa_response.html:184
 msgid "We could not submit your response"
 msgstr "לא הצלחנו להגיש את תשובתך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:190
+#: openassessment/templates/openassessmentblock/response/oa_response.html:194
 msgid "Submit your response and move to the next step"
 msgstr "הגש את תשובתך ועבור לשלב הבא"
 
@@ -1852,11 +1865,11 @@ msgstr "שגיאה בעת השגת פרטי דירוג הצוות."
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "שגיאה בהשגת ביטול דירוג של דירוג הצוות וספירות שהסתיימו."
 
-#: openassessment/xblock/staff_area_mixin.py:456
+#: openassessment/xblock/staff_area_mixin.py:466
 msgid "Please enter valid reason to remove the submission."
 msgstr "אנא רשום סיבה תקפה לביטול ההגשה."
 
-#: openassessment/xblock/staff_area_mixin.py:482
+#: openassessment/xblock/staff_area_mixin.py:492
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1972,31 +1985,31 @@ msgstr ""
 msgid "There was an error uploading your file."
 msgstr "אירעה שגיאה בעת העלאת הקובץ שלך."
 
-#: openassessment/xblock/submission_mixin.py:317
+#: openassessment/xblock/submission_mixin.py:319
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "סוג התוכן חייב להיות GIF‏, PNG או JPG."
 
-#: openassessment/xblock/submission_mixin.py:320
+#: openassessment/xblock/submission_mixin.py:322
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "סוג התוכן חייב להיות PDF‏, GIF,‏ PNG או JPG."
 
-#: openassessment/xblock/submission_mixin.py:323
+#: openassessment/xblock/submission_mixin.py:325
 msgid "File type must be one of the following types: {}"
 msgstr "סוג הקובץ חייב להיות אחד מהסוגים הבאים: {}"
 
-#: openassessment/xblock/submission_mixin.py:327
+#: openassessment/xblock/submission_mixin.py:329
 msgid "File type is not allowed."
 msgstr "סוג הקובץ אינו אפשרי."
 
-#: openassessment/xblock/submission_mixin.py:334
+#: openassessment/xblock/submission_mixin.py:336
 msgid "Error retrieving upload URL."
 msgstr "שגיאה באחזור כתובת URL להעלאה."
 
-#: openassessment/xblock/submission_mixin.py:526
+#: openassessment/xblock/submission_mixin.py:568
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:527
+#: openassessment/xblock/submission_mixin.py:569
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 

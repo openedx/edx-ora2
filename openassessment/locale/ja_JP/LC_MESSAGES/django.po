@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-10 07:20-0500\n"
-"PO-Revision-Date: 2020-01-06 20:59+0000\n"
+"POT-Creation-Date: 2020-01-27 16:15-0500\n"
+"PO-Revision-Date: 2020-01-28 20:18+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -816,10 +816,14 @@ msgstr "\n                                    この課題は進行中です。�
 msgid "Team membership is required to view this assignment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:6
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:7
+#, python-format
 msgid ""
-"This is a team assignment. You are currently not on a team. You must be on a"
-" team to access this team assignment."
+"\n"
+"            This is a team assignment for team set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
+"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
@@ -877,11 +881,20 @@ msgstr "コメント"
 msgid "The question for this section"
 msgstr "このセクションの質問"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:29
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
+msgid "Files that were uploaded by your teammates:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
 msgstr "この提出に関連するファイルを見る:"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:43
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
+msgid "Files that were uploaded by you:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
@@ -1132,15 +1145,15 @@ msgstr "アップロードするファイルを選択してください。"
 msgid "Upload files"
 msgstr "ファイルをアップロード"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:177
 msgid "You may continue to work on your response until you submit it."
 msgstr "提出するまでは解答を編集できます。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:180
+#: openassessment/templates/openassessmentblock/response/oa_response.html:184
 msgid "We could not submit your response"
 msgstr "解答を提出できませんでした"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:190
+#: openassessment/templates/openassessmentblock/response/oa_response.html:194
 msgid "Submit your response and move to the next step"
 msgstr "解答を提出して、次のステップに進む"
 
@@ -1845,11 +1858,11 @@ msgstr "スタッフ採点情報の取得エラー。"
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "スタッフ採点の未採点およびチェックアウト済の数の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:456
+#: openassessment/xblock/staff_area_mixin.py:466
 msgid "Please enter valid reason to remove the submission."
 msgstr "提出物を削除する正当な理由を入力してください。"
 
-#: openassessment/xblock/staff_area_mixin.py:482
+#: openassessment/xblock/staff_area_mixin.py:492
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1965,31 +1978,31 @@ msgstr ""
 msgid "There was an error uploading your file."
 msgstr "ファイルのアップロード時にエラーが発生しました。"
 
-#: openassessment/xblock/submission_mixin.py:317
+#: openassessment/xblock/submission_mixin.py:319
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "コンテンツファイルはGIF、PNGまたはJPGでなければいけません。"
 
-#: openassessment/xblock/submission_mixin.py:320
+#: openassessment/xblock/submission_mixin.py:322
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "コンテンツファイルはPDF、GIF、PNGまたはJPGでなければいけません。"
 
-#: openassessment/xblock/submission_mixin.py:323
+#: openassessment/xblock/submission_mixin.py:325
 msgid "File type must be one of the following types: {}"
 msgstr "ファイルタイプは次のいずれかでなければいけません: {}"
 
-#: openassessment/xblock/submission_mixin.py:327
+#: openassessment/xblock/submission_mixin.py:329
 msgid "File type is not allowed."
 msgstr "ファイルタイプが正しくありません。"
 
-#: openassessment/xblock/submission_mixin.py:334
+#: openassessment/xblock/submission_mixin.py:336
 msgid "Error retrieving upload URL."
 msgstr "アップロードURLの取得エラー。"
 
-#: openassessment/xblock/submission_mixin.py:526
+#: openassessment/xblock/submission_mixin.py:568
 msgid "This response has been saved but not submitted."
 msgstr "この解答は一時保存されていますが、提出されていません。"
 
-#: openassessment/xblock/submission_mixin.py:527
+#: openassessment/xblock/submission_mixin.py:569
 msgid "This response has not been saved."
 msgstr "この解答は保存されていません。"
 
