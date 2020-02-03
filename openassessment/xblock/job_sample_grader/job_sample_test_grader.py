@@ -108,7 +108,7 @@ class TestGrader:
             compiled_file_full_name_with_path = code_full_file_name + '.o'
             if not compiled_file_full_name_with_path.startswith('/'):
                 compiled_file_full_name_with_path = '/' + compiled_file_full_name_with_path
-            self.run_as_subprocess('g++ ' + code_full_file_name + ' -o ' + compiled_file_full_name_with_path, compiling=True)
+            self.run_as_subprocess('g++ ' + code_full_file_name + ' -o ' + compiled_file_full_name_with_path + ' -lcurl -ljsoncpp', compiling=True)
             output = self.run_as_subprocess(compiled_file_full_name_with_path + " " + input_file, running_code=True, timeout=timeout)
 
         else:
