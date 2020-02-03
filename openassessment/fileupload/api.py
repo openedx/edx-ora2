@@ -195,6 +195,7 @@ class FileUpload(object):
 
 
 FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'show_delete_button'])
+TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'uploaded_by'])
 
 
 class FileUploadManager(object):
@@ -328,15 +329,15 @@ class FileUploadManager(object):
 
     def team_file_descriptor_tuples(self):
         """
-        Returns the list of FileDescriptors owned by other team members
+        Returns the list of TeamFileDescriptors owned by other team members
         shown to a user when self.block is a team assignment.
         """
         return [
-            FileDescriptor(
+            TeamFileDescriptor(
                 download_url=upload.download_url,
                 description=upload.description,
                 name=upload.name,
-                show_delete_button=False,
+                uploaded_by=self.block.get_username(upload.student_id)
             )
             for upload in self.get_team_uploads()
         ]

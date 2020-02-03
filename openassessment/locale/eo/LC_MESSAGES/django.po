@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-27 16:15-0500\n"
+"POT-Creation-Date: 2020-01-31 16:11-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1128,6 +1128,10 @@ msgid "View the files associated with this submission:"
 msgstr ""
 "Vïéw thé fïlés ässöçïätéd wïth thïs süßmïssïön: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
 " ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html
+msgid "Uploaded by"
+msgstr "Ûplöädéd ßý Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html
 msgid "Files that were uploaded by you:"
