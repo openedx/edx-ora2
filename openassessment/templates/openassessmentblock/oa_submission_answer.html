@@ -54,9 +54,7 @@
                             </pre>
 
                     {%else%}
-                     <pre>
-                    {{ part.text|escape|link_and_linebreak }}
-                        </pre>
+                    {{ part.text|escape|linebreaksbr }}
                     {%endif%}
 
                 </div>
