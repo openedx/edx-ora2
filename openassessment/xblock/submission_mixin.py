@@ -204,7 +204,7 @@ class SubmissionMixin(object):
             result[self.SAMPLE_EXPECTED] = output['tests'][0][1]
             result['correctness'] = output['correct']
             if add_staff_output:
-                result = {self.STAFF_OUTPUT: '', self.STAFF_EXPECTED: ''}
+                result.update({self.STAFF_OUTPUT: '', self.STAFF_EXPECTED: ''})
                 # If there is an error during the staff output generation
                 # Add that error to the submission
                 try:
