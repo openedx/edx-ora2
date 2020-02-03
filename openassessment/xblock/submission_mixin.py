@@ -204,12 +204,22 @@ class SubmissionMixin(object):
             result[self.SAMPLE_EXPECTED] = output['tests'][0][1]
             result['correctness'] = output['correct']
             if add_staff_output:
-                result[self.STAFF_OUTPUT] = output['tests'][1][2]
-                result[self.STAFF_EXPECTED] = output['tests'][1][1]
+                result = {self.STAFF_OUTPUT: '', self.STAFF_EXPECTED: ''}
+                # If there is an error during the staff output generation
+                # Add that error to the submission
+                try:
+                    result[self.STAFF_OUTPUT] = output['tests'][1][2]
+                    result[self.STAFF_EXPECTED] = output['tests'][1][1]
+                except IndexError:
+                    if output['errors']:
+                        try:
+                            result[self.STAFF_OUTPUT] = output['errors'][0]
+                        except IndexError:
+                            result[self.STAFF_OUTPUT] = output['errors']
         elif output['errors']:
             try:
                 result[self.SAMPLE_OUTPUT] = output['errors'][0]
-            except KeyError:
+            except IndexError:
                 result[self.SAMPLE_OUTPUT] = output['errors']
         return result
 
