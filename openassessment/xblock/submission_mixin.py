@@ -342,10 +342,9 @@ class SubmissionMixin(object):
         for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
             student_sub_dict[field] = []
 
+        uploads = self.file_manager.get_uploads()
         if self.is_team_assignment():
-            uploads = self.file_manager.get_team_uploads()
-        else:
-            uploads = self.file_manager.get_uploads()
+            uploads += self.file_manager.get_team_uploads()
 
         for upload in uploads:
             student_sub_dict['file_keys'].append(upload.key)
