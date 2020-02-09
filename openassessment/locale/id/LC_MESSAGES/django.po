@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-10 07:20-0500\n"
-"PO-Revision-Date: 2020-01-06 20:59+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"POT-Creation-Date: 2020-01-31 16:11-0500\n"
+"PO-Revision-Date: 2020-02-04 08:29+0000\n"
+"Last-Translator: Ahmad Sofyan <asofyan@niskala.net>\n"
 "Language-Team: Indonesian (http://www.transifex.com/open-edx/edx-platform/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -813,10 +813,14 @@ msgstr "\n                                    Penugasan sedang berlangsung. Anda
 msgid "Team membership is required to view this assignment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:6
+#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:7
+#, python-format
 msgid ""
-"This is a team assignment. You are currently not on a team. You must be on a"
-" team to access this team assignment."
+"\n"
+"            This is a team assignment for team set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
+"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
@@ -874,11 +878,24 @@ msgstr "Komentar"
 msgid "The question for this section"
 msgstr "Pertanyaan untuk bagian ini"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:29
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
+msgid "Files that were uploaded by your teammates:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
 msgstr "Lihat file yang terkait dengan kiriman ini:"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:43
+#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:31
+msgid "Uploaded by"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
+msgid "Files that were uploaded by you:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
@@ -1129,15 +1146,15 @@ msgstr "Pilih file untuk diunggah untuk kiriman ini."
 msgid "Upload files"
 msgstr "Unggah file"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:177
 msgid "You may continue to work on your response until you submit it."
 msgstr "Anda dapat terus bekerja pada tanggapan Anda sampai Anda mengirimkannya."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:180
+#: openassessment/templates/openassessmentblock/response/oa_response.html:184
 msgid "We could not submit your response"
 msgstr "Kami tidak dapat mengajukan tanggapan Anda"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:190
+#: openassessment/templates/openassessmentblock/response/oa_response.html:194
 msgid "Submit your response and move to the next step"
 msgstr "Ajukan tanggapan Anda dan beralih ke langkah  berikutnya"
 
@@ -1842,11 +1859,11 @@ msgstr ""
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:456
+#: openassessment/xblock/staff_area_mixin.py:466
 msgid "Please enter valid reason to remove the submission."
 msgstr "Masukkan alasan yang sah untuk menghapus pengajuan."
 
-#: openassessment/xblock/staff_area_mixin.py:482
+#: openassessment/xblock/staff_area_mixin.py:492
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1926,67 +1943,67 @@ msgstr "Validasi error: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Berhasil memperbarui OpenAssesment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:88
+#: openassessment/xblock/submission_mixin.py:94
 msgid "\"submission\" required to submit answer."
 msgstr "\"Pengiriman\" diperlukan untuk mengirimkan jawaban."
 
-#: openassessment/xblock/submission_mixin.py:109
+#: openassessment/xblock/submission_mixin.py:115
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Untuk mengirimkan tanggapan, melihat komponen ini di Preview atau mode Live."
 
-#: openassessment/xblock/submission_mixin.py:115
+#: openassessment/xblock/submission_mixin.py:121
 msgid "Multiple submissions are not allowed."
 msgstr "Tidak diperbolehkan melakukan beberapa pengiriman."
 
-#: openassessment/xblock/submission_mixin.py:150
+#: openassessment/xblock/submission_mixin.py:167
 msgid "API returned unclassified exception."
 msgstr "API menunjukkan unclassified exception."
 
-#: openassessment/xblock/submission_mixin.py:192
+#: openassessment/xblock/submission_mixin.py:218
 msgid "This response could not be saved."
 msgstr "Tanggapan ini tidak bisa disimpan."
 
-#: openassessment/xblock/submission_mixin.py:196
+#: openassessment/xblock/submission_mixin.py:222
 msgid "This response was not submitted."
 msgstr "Tanggapan ini belum dikirimkan."
 
-#: openassessment/xblock/submission_mixin.py:212
+#: openassessment/xblock/submission_mixin.py:238
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:249
+#: openassessment/xblock/submission_mixin.py:275
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:310
+#: openassessment/xblock/submission_mixin.py:377
 msgid "There was an error uploading your file."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:317
+#: openassessment/xblock/submission_mixin.py:386
 msgid "Content type must be GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:320
+#: openassessment/xblock/submission_mixin.py:389
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:323
+#: openassessment/xblock/submission_mixin.py:392
 msgid "File type must be one of the following types: {}"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:327
+#: openassessment/xblock/submission_mixin.py:396
 msgid "File type is not allowed."
 msgstr "Jenis berkas ini tidak diperkenankan"
 
-#: openassessment/xblock/submission_mixin.py:334
+#: openassessment/xblock/submission_mixin.py:403
 msgid "Error retrieving upload URL."
 msgstr "Kesalahan dalam URL unggah."
 
-#: openassessment/xblock/submission_mixin.py:526
+#: openassessment/xblock/submission_mixin.py:635
 msgid "This response has been saved but not submitted."
 msgstr "Tanggapan ini telah disimpan tapi tidak dikirimkan."
 
-#: openassessment/xblock/submission_mixin.py:527
+#: openassessment/xblock/submission_mixin.py:636
 msgid "This response has not been saved."
 msgstr "Tanggapan ini belum disimpan"
 

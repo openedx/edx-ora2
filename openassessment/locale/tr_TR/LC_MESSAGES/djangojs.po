@@ -5,7 +5,7 @@
 # 
 # Translators:
 # adem ÖZGÜR <admozgur@gmail.com>, 2015
-# Ali Işıngör <ali@artistanbul.io>, 2018
+# Ali Işıngör <ali@artistanbul.io>, 2018,2020
 # ali selek <aliselek01@gmail.com>, 2015
 # Emrah Emirtekin <eemirtekin@gmail.com>, 2015
 # Hakan Şenel <hgsenel@gmail.com>, 2017
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-10 07:20-0500\n"
-"PO-Revision-Date: 2020-01-03 08:12+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"POT-Creation-Date: 2020-01-31 16:11-0500\n"
+"PO-Revision-Date: 2020-02-07 14:24+0000\n"
+"Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,7 +126,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:665
 msgid "Could not load teams information."
-msgstr ""
+msgstr "Takım bilgileri yüklenemedi."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -298,7 +298,7 @@ msgstr "Dosya türüne izin verilmiyor."
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:637
 msgid "Only "
-msgstr ""
+msgstr "Sadece"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:683
