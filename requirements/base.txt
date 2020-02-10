@@ -4,6 +4,7 @@
 #
 #    make upgrade
 #
+appdirs==1.4.3            # via fs
 bleach==2.1.4
 boto==2.39.0
 certifi==2019.11.28       # via requests
@@ -11,15 +12,14 @@ chardet==3.0.4            # via requests
 defusedxml==0.5.0
 django-model-utils==3.0.0
 django-simple-history==2.8.0
-django==1.11.27
+django==2.2.10
 djangorestframework==3.9.4
 edx-i18n-tools==0.5.0
-edx-submissions==3.0.3
+edx-submissions==3.0.4
 fs==2.0.18                # via xblock
-futures==3.3.0 ; python_version == "2.7"  # via python-swiftclient
 html5lib==1.0.1
 idna==2.8                 # via requests
-jsonfield==2.0.2
+jsonfield2==3.0.3
 lazy==1.1
 libsass==0.10.0
 loremipsum==1.0.5
@@ -32,12 +32,13 @@ python-swiftclient==3.8.1
 pytz==2019.3
 pyyaml==5.3               # via edx-i18n-tools, xblock
 requests==2.22.0          # via python-swiftclient
-six==1.13.0               # via bleach, django-simple-history, edx-i18n-tools, html5lib, libsass, python-dateutil, python-swiftclient, xblock
-urllib3==1.25.7           # via requests
+six==1.14.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, python-dateutil, python-swiftclient, xblock
+sqlparse==0.3.0           # via django
+urllib3==1.25.8           # via requests
 voluptuous==0.11.7
 web-fragments==0.3.1      # via xblock
 webencodings==0.5.1       # via html5lib
-webob==1.8.5              # via xblock
+webob==1.8.6              # via xblock
 git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk
 xblock==1.2.9
 

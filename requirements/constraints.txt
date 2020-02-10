@@ -9,7 +9,7 @@ boto<=2.39.0                       # Constrained by edx-platform and its depende
 defusedxml<=0.5.0                  # Constrained by edx-platform and its dependencies.
 django-model-utils==3.0.0          # Constrained by edx-platform and its dependencies.
 fs<=2.0.18                         # Constrained by edx-platform/XBlock
-jsonfield<3.0.0
+jsonfield2<3.1.0
 lazy<=1.1                          # Constrained by edx-platform and its dependencies.
 libsass<=0.10.0                    # Constrained by edx-platform and its dependencies.
 loremipsum<2.0.0
