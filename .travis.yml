@@ -8,7 +8,6 @@ language: python
 sudo: false
 
 python:
-  - 2.7
   - 3.5
 
 env:
@@ -18,13 +17,6 @@ env:
   - TOX_ENV=django22
 
 matrix:
-  exclude:
-    - python: 2.7
-      env: TOX_ENV=django20
-    - python: 2.7
-      env: TOX_ENV=django21
-    - python: 2.7
-      env: TOX_ENV=django22
   include:
     - python: 3.5
       env: TOX_ENV=js
