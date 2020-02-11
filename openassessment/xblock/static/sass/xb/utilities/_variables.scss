@@ -39,6 +39,7 @@ $gray-d3: shade($gray,60%);
 $gray-d4: shade($gray,80%);
 $gray-d5: shade($gray,90%);
 $gray-d6: shade($gray,95%);
+$gray-d7: rgb(124, 143, 156);                                       // 3:1 contrast for WCAG 2.1 compliance
 
 // blacks
 $black: $gray-d6;
