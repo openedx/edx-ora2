@@ -433,7 +433,19 @@ class SubmissionTest(XBlockHandlerTestCase):
         mock_team = self.setup_mock_team(xblock)
         xblock.file_upload_type = 'pdf-and-image'
 
-        xblock.file_manager.get_team_uploads = Mock(return_value=[
+        xblock.file_manager.get_uploads = Mock(side_effect=lambda: [
+            api.FileUpload(
+                description='file-1',
+                name='file-1.pdf',
+                size=100,
+                student_id='Lucy',
+                course_id='edX/Enchantment_101/April_1',
+                item_id='item-a',
+                descriptionless=False,
+            ),
+        ])
+
+        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda: [
             api.FileUpload(
                 description='file-5',
                 name='file-5.pdf',
@@ -447,13 +459,32 @@ class SubmissionTest(XBlockHandlerTestCase):
 
         # when the learner submits an open assessment response
         response = self.request(
-            xblock, 'submit', self.SUBMISSION, response_format='json')
+            xblock, 'submit', self.SUBMISSION, response_format='json'
+        )
 
         # then the submission is successful for all members of a team
         self.assertEqual(len(mock_team['team_usernames']), len(response))
 
-        for result in response:
-            self.assertTrue(result[0])
+        for status, _, attempt_number in response:
+            self.assertTrue(status)
+            self.assertEqual(1, attempt_number)
+
+        all_submissions = sub_api.get_all_submissions(
+            course_id=xblock.course_id,
+            item_id=str(xblock.scope_ids.usage_id),
+            item_type='openassessment',
+        )
+
+        # assert that the content of each teammate's submission is identical.
+        for submission in all_submissions:
+            answer = submission['answer']
+            self.assertEqual(['file-1', 'file-5'], answer['files_descriptions'])
+            self.assertEqual(['file-1.pdf', 'file-5.pdf'], answer['files_names'])
+            self.assertEqual([100, 500], answer['files_sizes'])
+            self.assertEqual([
+                {'text': 'This is my answer to the first prompt!'},
+                {'text': 'This is my answer to the second prompt!'},
+            ], answer['parts'])
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
