@@ -32,6 +32,8 @@
 
                 {% trans "Your Uploaded Files"  as translated_header %}
                 {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls header=translated_header class_prefix="submission__answer" including_template="response_graded" xblock_id=xblock_id %}
+
+                {% include "openassessmentblock/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response_graded" xblock_id=xblock_id %}
             </article>
         </div>
     </div>
