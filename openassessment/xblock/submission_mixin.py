@@ -447,14 +447,7 @@ class SubmissionMixin(object):
         Internal function for retrieving the download url.
 
         """
-        try:
-            return file_upload_api.get_download_url(self._get_student_item_key(file_num))
-        except FileUploadError as exc:
-            logger.exception(u"FileUploadError: Download URL retrieval for filenum {num} failed with {error}".format(
-                error=exc,
-                num=file_num
-            ))
-            return ''
+        return self._get_url_by_file_key(self._get_student_item_key(file_num))
 
     def _get_student_item_key(self, num=0):
         """
@@ -481,6 +474,10 @@ class SubmissionMixin(object):
                 key=key,
                 error=exc
             ))
+
+        if not url:
+            logger.warning('FileUploadError: Could not retrieve URL for key {}'.format(key))
+
         return url
 
     def get_download_urls_from_submission(self, submission):
@@ -509,8 +506,6 @@ class SubmissionMixin(object):
                     file_description = descriptions[idx].strip() if idx < len(descriptions) else ''
                     file_name = file_names[idx].strip() if idx < len(file_names) else ''
                     urls.append((file_download_url, file_description, file_name, False))
-                else:
-                    break
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
             file_download_url = self._get_url_by_file_key(key)

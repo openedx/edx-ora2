@@ -8,7 +8,7 @@ from __future__ import absolute_import, unicode_literals
 import datetime as dt
 import json
 
-from mock import ANY, Mock, patch
+from mock import ANY, Mock, call, patch
 import pytz
 
 import django
@@ -485,6 +485,57 @@ class SubmissionTest(XBlockHandlerTestCase):
                 {'text': 'This is my answer to the first prompt!'},
                 {'text': 'This is my answer to the second prompt!'},
             ], answer['parts'])
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_get_download_urls_from_submission(self, xblock):
+        mock_submission = {
+            'answer': {
+                'file_keys': ['key-1', 'key-2', 'key-3'],
+                'files_descriptions': ['desc-1', None, 'desc-3'],
+                'files_names': ['name-1', None, 'name-3'],
+            },
+        }
+        with patch('openassessment.fileupload.api.get_download_url') as mock_download_url:
+            # Pretend there are two uploaded files for this XBlock.
+            mock_download_url.side_effect = [
+                'download-url-1',
+                '',
+                'download-url-3',
+            ]
+
+            actual_urls = xblock.get_download_urls_from_submission(mock_submission)
+            # Even though one of the keys had no good download URL, we should
+            # still return data for keys that came after it.
+            expected_urls = [
+                ('download-url-1', 'desc-1', 'name-1', False),
+                ('download-url-3', 'desc-3', 'name-3', False),
+            ]
+            self.assertEqual(expected_urls, actual_urls)
+
+            mock_download_url.assert_has_calls([
+                call('key-1'), call('key-2'), call('key-3')
+            ])
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_get_download_urls_from_submission_single_key(self, xblock):
+        mock_submission = {
+            'answer': {
+                'file_key': 'key-1',
+            },
+        }
+        with patch('openassessment.fileupload.api.get_download_url') as mock_download_url:
+            # Pretend there are two uploaded files for this XBlock.
+            mock_download_url.side_effect = [
+                'download-url-1',
+            ]
+
+            actual_urls = xblock.get_download_urls_from_submission(mock_submission)
+            expected_urls = [
+                ('download-url-1', '', '', False),
+            ]
+            self.assertEqual(expected_urls, actual_urls)
+
+            mock_download_url.assert_has_calls([call('key-1')])
 
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
