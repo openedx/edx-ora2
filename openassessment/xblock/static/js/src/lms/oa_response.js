@@ -786,15 +786,38 @@ OpenAssessment.ResponseView.prototype = {
      */
     removeUploadedFile: function(filenum) {
         var view = this;
-        return this.server.removeUploadedFile(filenum).done(function() {
-            var sel = $('.step--response', view.element);
-            var block = sel.find('.submission__answer__file__block__' + filenum);
-            block.html('');
-            block.prop('deleted', true);
-            view.checkSubmissionAbility();
-        }).fail(function(errMsg) {
-            view.baseView.toggleActionError('delete', errMsg);
+        return view.confirmRemoveUploadedFile().done(function() {
+            return view.server.removeUploadedFile(filenum).done(function() {
+                var sel = $('.step--response', view.element);
+                var block = sel.find('.submission__answer__file__block__' + filenum);
+                block.html('');
+                block.prop('deleted', true);
+                view.checkSubmissionAbility();
+            }).fail(function(errMsg) {
+                view.baseView.toggleActionError('delete', errMsg);
+            });
         });
+    },
+
+    confirmRemoveUploadedFile: function() {
+        var msg = gettext('Are you sure you want to delete this file? It cannot be restored.');
+        // eslint-disable-next-line new-cap
+        return $.Deferred(function(defer) {
+            if (confirm(msg)) {defer.resolve();} else {defer.reject();}
+        });
+    },
+
+    /**
+     * Given a filenum, look up the block for that filenum and return the text displayed
+     * '<file_description> (<filename>)'
+     */
+    getFileNameAndDescription: function(filenum) {
+        var fileBlock = $(this.baseView.element).find('.submission__answer__file__block__' + filenum + ' > a');
+        if (fileBlock.length) {
+            return fileBlock[0].text.trim();
+        } else {
+            return '';
+        }
     },
 
     /**

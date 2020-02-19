@@ -174,12 +174,14 @@ describe("OpenAssessment.ResponseView", function() {
         // To instead simulate the user cancelling the submission,
         // set `stubConfirm` to false.
         setStubConfirm(true);
-        spyOn(view, 'confirmSubmission').and.callFake(function() {
+        fakeConfirm = function() {
             return $.Deferred(function(defer) {
                 if (stubConfirm) { defer.resolve(); }
                 else { defer.reject(); }
             });
-        });
+        };
+        spyOn(view, 'confirmSubmission').and.callFake(fakeConfirm);
+        spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirm);
         spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
             for (var i=0; i < this.filesDescriptions.length; i++) {
                 this.fileNames.push(this.files[i].name);
@@ -892,6 +894,31 @@ describe("OpenAssessment.ResponseView", function() {
         // Delete the remaining file
         view.removeUploadedFile(1);
         expect(view.submitEnabled()).toBe(false);
+    });
+
+    it("doesn't delete file if user clicks no", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+
+        // Upload file
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['i1']);
+        view.uploadFiles()
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+
+        // Delete the first file, twice, but don't
+        setStubConfirm(false);
+
+        view.removeUploadedFile(0);
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
+
+        view.removeUploadedFile(0);
+        view.checkSubmissionAbility(true);
+        expect(view.submitEnabled()).toBe(true);
     });
 
     it("displays an error if there is an error deleting a file", function() {
