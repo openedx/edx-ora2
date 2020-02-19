@@ -151,7 +151,11 @@ class FileUpload(object):
     def download_url(self):
         if self.exists:
             try:
-                return get_download_url(self.key)
+                url = get_download_url(self.key)
+                if not url:
+                    logger.exception(u'FileUploadError: No download url found for file {key}'.format(
+                        key=self.key
+                    ))
             except FileUploadError as exc:
                 logger.exception(u'FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
                     key=self.key,
