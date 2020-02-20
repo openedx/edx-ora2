@@ -243,6 +243,7 @@ def test_file_descriptor_tuples_after_sharing_with_old_team(
 @pytest.mark.django_db
 @mock.patch('openassessment.fileupload.api.get_download_url', autospec=True)
 def test_team_file_descriptor_tuples(mock_get_download_url, shared_file_upload_fixture, mock_block):
+    mock_get_download_url.return_value = "some-download-url"
     block = mock_block(
         descriptions=['The first file'],
         names=['File A'],
