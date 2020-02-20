@@ -30,7 +30,9 @@ class Settings(object):
         'image/jpeg': '.jpg',
         'image/pjpeg': '.jpg',
         'image/png': '.png',
-        'application/pdf': '.pdf'
+        'application/pdf': '.pdf',
+        'application/msword': '.doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx'
     }
 
     @classmethod
