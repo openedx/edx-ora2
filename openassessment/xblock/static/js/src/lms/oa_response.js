@@ -786,7 +786,7 @@ OpenAssessment.ResponseView.prototype = {
      */
     removeUploadedFile: function(filenum) {
         var view = this;
-        return view.confirmRemoveUploadedFile().done(function() {
+        return view.confirmRemoveUploadedFile(filenum).done(function() {
             return view.server.removeUploadedFile(filenum).done(function() {
                 var sel = $('.step--response', view.element);
                 var block = sel.find('.submission__answer__file__block__' + filenum);
@@ -799,8 +799,9 @@ OpenAssessment.ResponseView.prototype = {
         });
     },
 
-    confirmRemoveUploadedFile: function() {
-        var msg = gettext('Are you sure you want to delete this file? It cannot be restored.');
+    confirmRemoveUploadedFile: function(filenum) {
+        var msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
+        msg += this.getFileNameAndDescription(filenum);
         // eslint-disable-next-line new-cap
         return $.Deferred(function(defer) {
             if (confirm(msg)) {defer.resolve();} else {defer.reject();}

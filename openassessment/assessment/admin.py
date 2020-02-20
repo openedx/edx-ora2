@@ -153,7 +153,7 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
 
 class SharedFileUploadAdmin(admin.ModelAdmin):
     """
-    Django admin model for PeerWorkflows.
+    Django admin model for SharedFileUploads.
     """
     model = SharedFileUpload
     list_display = (

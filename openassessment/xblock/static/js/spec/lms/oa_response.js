@@ -909,7 +909,8 @@ describe("OpenAssessment.ResponseView", function() {
         view.checkSubmissionAbility(true);
         expect(view.submitEnabled()).toBe(true);
 
-        // Delete the first file, twice, but don't
+        // "Click" the delete button twice, cancelling both times.
+        // The file should not be deleted either time.
         setStubConfirm(false);
 
         view.removeUploadedFile(0);
