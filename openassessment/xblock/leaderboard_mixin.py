@@ -3,6 +3,7 @@ Leaderboard step in the OpenAssessment XBlock.
 """
 from __future__ import absolute_import
 
+import logging
 import six
 
 from django.utils.translation import ugettext as _
@@ -12,6 +13,8 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
 from xblock.core import XBlock
+
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class LeaderboardMixin(object):
@@ -136,6 +139,10 @@ class LeaderboardMixin(object):
         """
         try:
             file_download_url = file_upload_api.get_download_url(file_key)
-        except FileUploadError:
+        except FileUploadError as exc:
+            logger.exception(u'FileUploadError: URL retrieval failed for key {file_key} with error {error}'.format(
+                file_key=file_key,
+                error=exc
+            ))
             file_download_url = ''
         return file_download_url
