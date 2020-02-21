@@ -35,7 +35,10 @@ def get_download_url(key):
     """
     Returns the url at which the file that corresponds to the key can be downloaded.
     """
-    return backends.get_backend().get_download_url(key)
+    url = backends.get_backend().get_download_url(key)
+    if not url:
+        logger.exception('FileUploadError: Could not retrieve URL for key {}'.format(key))
+    return url
 
 
 def remove_file(key):

@@ -423,13 +423,17 @@ class SubmissionMixin(object):
             filenum = int(filenum)
         except ValueError:
             filenum = -1
-
+        student_item_key = self._get_student_item_key(num=filenum)
         if self._can_delete_file(filenum):
             try:
                 self.file_manager.delete_upload(filenum)
+                logger.debug("Deleted file {student_item_key}".format(student_item_key=student_item_key))
                 return {'success': True}
             except FileUploadError as exc:
-                logger.exception(exc)
+                logger.exception("FileUploadError: Error when deleting file {student_item_key} : {exc}".format(
+                    student_item_key=student_item_key,
+                    exc=exc
+                ))
 
         return {'success': False}
 
@@ -474,9 +478,6 @@ class SubmissionMixin(object):
                 key=key,
                 error=exc
             ))
-
-        if not url:
-            logger.warning('FileUploadError: Could not retrieve URL for key {}'.format(key))
 
         return url
 
