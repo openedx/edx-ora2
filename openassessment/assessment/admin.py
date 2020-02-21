@@ -9,7 +9,9 @@ from django.contrib import admin
 from django.utils import html
 from django.urls import reverse_lazy
 
-from openassessment.assessment.models import Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric
+from openassessment.assessment.models import (
+    Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric, SharedFileUpload
+)
 from openassessment.assessment.serializers import RubricSerializer
 
 
@@ -149,7 +151,22 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
     assessments_by.allow_tags = True
 
 
+class SharedFileUploadAdmin(admin.ModelAdmin):
+    """
+    Django admin model for SharedFileUploads.
+    """
+    model = SharedFileUpload
+    list_display = (
+        'id', 'team_id', 'item_id', 'owner_id', 'file_key', 'name',
+        'description', 'size',
+    )
+    search_fields = (
+        'id', 'course_id', 'item_id', 'team_id', 'file_key',
+    )
+
+
 admin.site.register(Rubric, RubricAdmin)
 admin.site.register(PeerWorkflow, PeerWorkflowAdmin)
 admin.site.register(Assessment, AssessmentAdmin)
 admin.site.register(AssessmentFeedback, AssessmentFeedbackAdmin)
+admin.site.register(SharedFileUpload, SharedFileUploadAdmin)

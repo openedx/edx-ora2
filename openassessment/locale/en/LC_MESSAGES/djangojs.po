@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 16:11-0500\n"
+"POT-Creation-Date: 2020-02-20 13:05-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -464,4 +464,10 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:100
 msgid "The following file types are not allowed: "
+msgstr ""
+
+#: openassessment/xblock/static/js/src/lms/oa_response.js:803
+msgid ""
+"Are you sure you want to delete the following file? It cannot be restored.\n"
+"File: "
 msgstr ""
