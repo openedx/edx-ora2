@@ -35,7 +35,10 @@ def get_download_url(key):
     """
     Returns the url at which the file that corresponds to the key can be downloaded.
     """
-    return backends.get_backend().get_download_url(key)
+    url = backends.get_backend().get_download_url(key)
+    if not url:
+        logger.exception('FileUploadError: Could not retrieve URL for key {}'.format(key))
+    return url
 
 
 def remove_file(key):
@@ -151,12 +154,7 @@ class FileUpload(object):
     def download_url(self):
         if self.exists:
             try:
-                url = get_download_url(self.key)
-                if not url:
-                    logger.exception(u'FileUploadError: No download url found for FileUpload with key {key}'.format(
-                        key=self.key
-                    ))
-                return url
+                return get_download_url(self.key)
             except FileUploadError as exc:
                 logger.exception(u'FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
                     key=self.key,
