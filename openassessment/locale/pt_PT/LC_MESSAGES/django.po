@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 16:11-0500\n"
+"POT-Creation-Date: 2020-02-20 13:05-0500\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: Manuela Silva <manuelarodsilva@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
@@ -1979,35 +1979,35 @@ msgstr "As descrições dos ficheiros não foram submetidas."
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:377
+#: openassessment/xblock/submission_mixin.py:376
 msgid "There was an error uploading your file."
 msgstr "Ocorreu um erro ao carregar o seu ficheiro."
 
-#: openassessment/xblock/submission_mixin.py:386
+#: openassessment/xblock/submission_mixin.py:385
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "O tipo de conteúdo deve ser GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:389
+#: openassessment/xblock/submission_mixin.py:388
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "O tipo de conteúdo deve ser PDF, GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:392
+#: openassessment/xblock/submission_mixin.py:391
 msgid "File type must be one of the following types: {}"
 msgstr "O tipo de ficheiro deve ser um dos seguintes: {}"
 
-#: openassessment/xblock/submission_mixin.py:396
+#: openassessment/xblock/submission_mixin.py:395
 msgid "File type is not allowed."
 msgstr "O tipo de ficheiro não é permitido."
 
-#: openassessment/xblock/submission_mixin.py:403
+#: openassessment/xblock/submission_mixin.py:402
 msgid "Error retrieving upload URL."
 msgstr "Erro ao recuperar o url de carregamento."
 
-#: openassessment/xblock/submission_mixin.py:635
+#: openassessment/xblock/submission_mixin.py:629
 msgid "This response has been saved but not submitted."
 msgstr "Esta resposta foi guardada mas não foi submetida."
 
-#: openassessment/xblock/submission_mixin.py:636
+#: openassessment/xblock/submission_mixin.py:630
 msgid "This response has not been saved."
 msgstr "Esta resposta não foi guardada."
 

@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 16:11-0500\n"
+"POT-Creation-Date: 2020-02-20 13:05-0500\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: Kyoto University <edxkyotoux@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
@@ -1978,35 +1978,35 @@ msgstr "ファイルの詳細説明が提出されませんでした。"
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:377
+#: openassessment/xblock/submission_mixin.py:376
 msgid "There was an error uploading your file."
 msgstr "ファイルのアップロード時にエラーが発生しました。"
 
-#: openassessment/xblock/submission_mixin.py:386
+#: openassessment/xblock/submission_mixin.py:385
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "コンテンツファイルはGIF、PNGまたはJPGでなければいけません。"
 
-#: openassessment/xblock/submission_mixin.py:389
+#: openassessment/xblock/submission_mixin.py:388
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "コンテンツファイルはPDF、GIF、PNGまたはJPGでなければいけません。"
 
-#: openassessment/xblock/submission_mixin.py:392
+#: openassessment/xblock/submission_mixin.py:391
 msgid "File type must be one of the following types: {}"
 msgstr "ファイルタイプは次のいずれかでなければいけません: {}"
 
-#: openassessment/xblock/submission_mixin.py:396
+#: openassessment/xblock/submission_mixin.py:395
 msgid "File type is not allowed."
 msgstr "ファイルタイプが正しくありません。"
 
-#: openassessment/xblock/submission_mixin.py:403
+#: openassessment/xblock/submission_mixin.py:402
 msgid "Error retrieving upload URL."
 msgstr "アップロードURLの取得エラー。"
 
-#: openassessment/xblock/submission_mixin.py:635
+#: openassessment/xblock/submission_mixin.py:629
 msgid "This response has been saved but not submitted."
 msgstr "この解答は一時保存されていますが、提出されていません。"
 
-#: openassessment/xblock/submission_mixin.py:636
+#: openassessment/xblock/submission_mixin.py:630
 msgid "This response has not been saved."
 msgstr "この解答は保存されていません。"
 

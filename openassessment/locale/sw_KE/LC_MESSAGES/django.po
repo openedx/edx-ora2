@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 16:11-0500\n"
+"POT-Creation-Date: 2020-02-20 13:05-0500\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: swaleh amin <mkupuofirstnameswaleh@yahoo.com>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
@@ -1976,35 +1976,35 @@ msgstr "Maelezo ya mafaili hayakuwasilishwa"
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:377
+#: openassessment/xblock/submission_mixin.py:376
 msgid "There was an error uploading your file."
 msgstr "Kulikuwa na hitilafu kupakia faili lako."
 
-#: openassessment/xblock/submission_mixin.py:386
+#: openassessment/xblock/submission_mixin.py:385
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:389
+#: openassessment/xblock/submission_mixin.py:388
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe katika PDF, GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:392
+#: openassessment/xblock/submission_mixin.py:391
 msgid "File type must be one of the following types: {}"
 msgstr "Aina ya faili lazima iwe moja ya aina zifuatazo: {}"
 
-#: openassessment/xblock/submission_mixin.py:396
+#: openassessment/xblock/submission_mixin.py:395
 msgid "File type is not allowed."
 msgstr "Aina ya faili haihitajiki."
 
-#: openassessment/xblock/submission_mixin.py:403
+#: openassessment/xblock/submission_mixin.py:402
 msgid "Error retrieving upload URL."
 msgstr "Hitilafu imetokea wakati kurudisha upakiaji wa URL."
 
-#: openassessment/xblock/submission_mixin.py:635
+#: openassessment/xblock/submission_mixin.py:629
 msgid "This response has been saved but not submitted."
 msgstr "Jibu hili limehifadhiwa lakini halijawasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:636
+#: openassessment/xblock/submission_mixin.py:630
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 
