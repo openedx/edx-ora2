@@ -457,11 +457,33 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(xblock.prompt, '[{"description": "Prompt 4."}, {"description": "Prompt 5."}]')
 
     @scenario('data/neither_response_type.xml')
+    def test_no_response_type_but_optional_file_upload(self, xblock):
+        """
+        Ensure that legacy courses that did not store raw file_upload/text response fields,
+        but do allow optional file uploads, will still load properly.
+        """
+        xblock.file_upload_response_raw = None
+        xblock.text_response_raw = None
+        xblock.file_upload_type_raw = 'optional'
+        self.assertEqual(xblock.text_response, 'required')
+
+    @scenario('data/neither_response_type.xml')
     def test_no_response_type(self, xblock):
         """
-        Ensure that legacy courses will still load properly.
+        Ensure that legacy courses that did not store raw file_upload/text response fields
+        will still load properly.
         """
         self.assertEqual(xblock.text_response, 'required')
+
+    @scenario('data/neither_response_type.xml')
+    def test_optional_text_response_no_file_upload_response(self, xblock):
+        """
+        Ensure that `text_response` gives back the non-null value of `text_response_raw`,
+        even if `file_upload_response_raw` is null.
+        """
+        xblock.file_upload_response_raw = None
+        xblock.text_response_raw = 'optional'
+        self.assertEqual(xblock.text_response, 'optional')
 
 
 class TestDates(XBlockHandlerTestCase):

@@ -285,7 +285,7 @@ class OpenAssessmentBlock(MessageMixin,
         Backward compatibility for existing blocks that were created without text_response
         or file_upload_response fields. These blocks will be treated as required text.
         """
-        if not self.file_upload_response and not self.text_response_raw:
+        if not self.file_upload_response_raw and not self.text_response_raw:
             return 'required'
         return self.text_response_raw
 
