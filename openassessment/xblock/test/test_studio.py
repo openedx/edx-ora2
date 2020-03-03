@@ -114,10 +114,10 @@ class StudioViewTest(XBlockHandlerTestCase):
     def setUpClass(cls):
         super(StudioViewTest, cls).setUpClass()
         cls.waffle_switch_patcher = patch(
-            'openassessment.xblock.waffle_mixin.import_waffle_switch'
+            'openassessment.xblock.config_mixin.import_waffle_switch'
         )
         cls.waffle_course_flag_patcher = patch(
-            'openassessment.xblock.waffle_mixin.import_course_waffle_flag'
+            'openassessment.xblock.config_mixin.import_course_waffle_flag'
         )
         cls.waffle_switch_patcher.start()
         cls.waffle_course_flag_patcher.start()

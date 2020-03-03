@@ -34,7 +34,7 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.validation import validator
-from openassessment.xblock.waffle_mixin import WaffleMixin
+from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from webob import Response
@@ -109,7 +109,7 @@ class OpenAssessmentBlock(MessageMixin,
                           StudentTrainingMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
-                          WaffleMixin,
+                          ConfigMixin,
                           TeamMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
@@ -401,7 +401,7 @@ class OpenAssessmentBlock(MessageMixin,
         """
         return not any(upload_urls) \
             and self.is_user_state_service_available() \
-            and self.user_state_upload_data_enabled() \
+            and self.user_state_upload_data_enabled \
             and self.file_upload_response
 
     def should_get_all_files_urls(self, upload_urls):
@@ -417,7 +417,7 @@ class OpenAssessmentBlock(MessageMixin,
             upload_urls(list): A list of (file url, description, name) tuple, if info present, else empty list
         """
         return not any(upload_urls) \
-            and self.is_fetch_all_urls_waffle_enabled() \
+            and self.is_fetch_all_urls_waffle_enabled \
             and self.file_upload_response
 
     def get_student_item_dict_from_username_or_email(self, username_or_email):
