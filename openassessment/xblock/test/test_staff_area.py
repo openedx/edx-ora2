@@ -8,7 +8,7 @@ from collections import namedtuple
 import json
 
 import ddt
-from mock import MagicMock, Mock, call, patch
+from mock import MagicMock, Mock, PropertyMock, call, patch
 from six.moves import range, zip
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
@@ -759,7 +759,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("response was not found", resp.body.decode('utf-8').lower())
 
     @log_capture()
-    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
+    @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
     def test_staff_area_student_upload_info_from_user_state(self, xblock, waffle_patch, logger):
         """
@@ -789,7 +789,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 FILE_URL,
             )
 
-    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
+    @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled', new_callable=PropertyMock)
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
     def test_staff_area_student_user_state_not_used(self, xblock, waffle_patch):
         """
@@ -807,7 +807,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertFalse(any(context['staff_file_urls']))
 
     @log_capture()
-    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
+    @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
     def test_student_userstate_not_used_when_upload_info_in_submission(self, xblock, waffle_patch, logger):
         """
@@ -833,8 +833,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @log_capture()
     @patch("openassessment.fileupload.api.get_download_url")
-    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.is_fetch_all_urls_waffle_enabled')
-    @patch('openassessment.xblock.waffle_mixin.WaffleMixin.user_state_upload_data_enabled')
+    @patch('openassessment.xblock.config_mixin.ConfigMixin.is_fetch_all_urls_waffle_enabled')
+    @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
     def test_staff_area_student_all_uploads(self, xblock, user_state_waffle, all_files_waffle, download_url, logger):
         """

@@ -139,4 +139,16 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
 
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+FEATURES = {
+    # Set to True to enable team-based ORA submissions.
+    # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
+    'ENABLE_ORA_TEAM_SUBMISSIONS': False,
+
+    # A "work-around" feature toggle meant to help in cases where some file uploads are not discoverable.
+    # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
+    'ENABLE_ORA_ALL_FILE_URLS': False,
+
+    # A "work-around" feature toggle meant to pull file upload data our of user state, rather than Submission records.
+    # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
+    'ENABLE_ORA_USER_STATE_UPLOAD_DATA': False,
+}
