@@ -37,7 +37,7 @@ def get_download_url(key):
     """
     url = backends.get_backend().get_download_url(key)
     if not url:
-        logger.exception('FileUploadError: Could not retrieve URL for key {}'.format(key))
+        logger.warning('FileUploadError: Could not retrieve URL for key {}'.format(key))
     return url
 
 
