@@ -262,15 +262,71 @@
     }
 
     .answer__value {
-      @include margin-right(($baseline-v/2));
+        position: absolute;
+        opacity: 0;
 
-      // STATE: checked
-      &:checked {
+        &:focus {
+            + .answer__label:before {
+                box-shadow: 0 0 0 2px $blue;
+                border: 1px solid $gray-d7;
+            }
+        }
+
+        &:checked {
+            + .answer__label:after {
+                color: $selected-color;
+                opacity: 1;
+            }
+        }
 
         + .answer__label {
-          color: $selected-color;
+            position: relative;
+            padding-left: 28px;
+
+            &:before {
+                position: absolute;
+                left: 0;
+                top: -1px;
+                content: '';
+                background: $white;
+                width: 20px;
+                height: 20px;
+                display: block;
+                border-radius: 3px;
+                border: 1px solid $black;
+            }
+
+            &:after {
+                content: '✓';
+                position: absolute;
+                top: -1px;
+                left: 0;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                text-align: center;
+                color: $black;
+                opacity: 0;
+            }
         }
-      }
+    }
+
+    .answer__value {
+        + .answer__label {
+            &:before {
+                border-radius: 20px;
+            }
+
+            &:after {
+                background: $black;
+                content: '';
+                top: 4px;
+                left: 5px;
+                width: 10px;
+                height: 10px;
+                border-radius: 10px;
+            }
+        }
     }
   }
 
