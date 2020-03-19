@@ -64,6 +64,8 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             trainingAssessmentElement.removeClass('is--hidden');
         } else {
             teamsetElement.removeClass('is--hidden');
+            self.assessmentViews.oa_staff_assessment_editor.isEnabled(true);
+
             selfAssessmentElement.addClass('is--hidden');
             peerAssessmentElement.addClass('is--hidden');
             trainingAssessmentElement.addClass('is--hidden');
