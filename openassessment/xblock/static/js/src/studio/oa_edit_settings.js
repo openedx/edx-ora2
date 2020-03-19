@@ -52,25 +52,27 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         ])
     ).install();
 
+    function onTeamsEnabledChange(selectedValue) {
+        var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
+        var selfAssessmentElement = $('#oa_self_assessment_editor', self.element);
+        var peerAssessmentElement = $('#oa_peer_assessment_editor', self.element);
+        var trainingAssessmentElement = $('#oa_student_training_editor', self.element);
+        if (!selectedValue || selectedValue === '0') {
+            teamsetElement.addClass('is--hidden');
+            selfAssessmentElement.removeClass('is--hidden');
+            peerAssessmentElement.removeClass('is--hidden');
+            trainingAssessmentElement.removeClass('is--hidden');
+        } else {
+            teamsetElement.removeClass('is--hidden');
+            selfAssessmentElement.addClass('is--hidden');
+            peerAssessmentElement.addClass('is--hidden');
+            trainingAssessmentElement.addClass('is--hidden');
+        }
+    }
+
     this.teamsEnabledSelectControl = new OpenAssessment.SelectControl(
         $('#openassessment_team_enabled_selector', this.element),
-        function(selectedValue) {
-            var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
-            var selfAssessmentElement = $('#oa_self_assessment_editor', self.element);
-            var peerAssessmentElement = $('#oa_peer_assessment_editor', self.element);
-            var trainingAssessmentElement = $('#oa_student_training_editor', self.element);
-            if (!selectedValue || selectedValue === '0') {
-                teamsetElement.addClass('is--hidden');
-                selfAssessmentElement.removeClass('is--hidden');
-                peerAssessmentElement.removeClass('is--hidden');
-                trainingAssessmentElement.removeClass('is--hidden');
-            } else {
-                teamsetElement.removeClass('is--hidden');
-                selfAssessmentElement.addClass('is--hidden');
-                peerAssessmentElement.addClass('is--hidden');
-                trainingAssessmentElement.addClass('is--hidden');
-            }
-        },
+        onTeamsEnabledChange,
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
@@ -105,6 +107,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     );
 
     this.initializeSortableAssessments();
+    onTeamsEnabledChange($('#openassessment_team_enabled_selector').val());
 };
 
 OpenAssessment.EditSettingsView.prototype = {
