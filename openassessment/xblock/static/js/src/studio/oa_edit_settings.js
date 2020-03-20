@@ -419,9 +419,9 @@ OpenAssessment.EditSettingsView.prototype = {
         $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each(
             function() {
                 var asmntView = view.assessmentViews[$(this).attr('id')];
-                var isHidden = $(asmntView.element).hasClass('is--hidden');
+                var isVisible = !view.isHidden($(asmntView.element));
 
-                if (asmntView.isEnabled() && !isHidden) {
+                if (asmntView.isEnabled() && isVisible) {
                     var description = asmntView.description();
                     description.name = asmntView.name;
                     assessmentDescList.push(description);
