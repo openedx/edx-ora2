@@ -19,6 +19,8 @@ describe("OpenAssessment.EditSettingsView", function() {
             return this._enabled;
         };
 
+        this.element = $('<div>', {id: name});
+
         this.validate = function() {
             return this.isValid;
         };
@@ -265,6 +267,21 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         view.teamsEnabled(true);
         expect(view.teamsEnabled()).toBe(true);
+    });
+
+    it('can hide/show elements on the page', function() {
+        var selector = $(assessmentViews[PEER].element);
+
+        // element shown by default should return hidden = false
+        expect(view.isHidden(selector)).toBe(false);
+
+        // explicitly hiding an element should return hidden = true
+        view.setHidden(selector, true);
+        expect(view.isHidden(selector)).toBe(true);
+
+        // explicitly showing an element should return hidden = false
+        view.setHidden(selector, false);
+        expect(view.isHidden(selector)).toBe(false);
     });
 
     it('hides the training, self, and peer assessment types when teams are enabled', function() {
