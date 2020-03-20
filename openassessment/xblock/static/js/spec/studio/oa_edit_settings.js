@@ -285,27 +285,34 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it('hides the training, self, and peer assessment types when teams are enabled', function() {
+        // Default config: teams are disabled, all assessments shown
         view.teamsEnabled(false);
         expect(view.teamsEnabled()).toBe(false);
 
-        // None of the assessment editors should be hidden when teams are disabled
-        $('.openassessment_assessment_module_settings_editor').each(function(index, editor) {
-            expect($(editor).hasClass('is--hidden')).toBe(false);
+        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
+        allAssessmentTypes.forEach(function(type) {
+            var selector = $(assessmentViews[type].element);
+            expect(view.isHidden(selector)).toBe(false);
         });
 
-        expect(assessmentViews[STAFF].isEnabled()).not.toBe(true);
-
+        // Teams config: only staff assessments supported, others hidden
         view.teamsEnabled(true);
         expect(view.teamsEnabled()).toBe(true);
-        [
-            '#oa_self_assessment_editor',
-            '#oa_peer_assessment_editor',
-            '#oa_student_training_editor',
-        ].forEach(function(editorId) {
-            expect($(editorId).hasClass('is--hidden')).toBe(true);
+
+        var shownForTeamAssessments = [STAFF];
+        var hiddenForTeamAssessments = [SELF, TRAINING, PEER];
+
+        hiddenForTeamAssessments.forEach(function(type) {
+            var selector = $(assessmentViews[type].element);
+            expect(view.isHidden(selector)).toBe(true);
         });
 
-        // for team assessments, it automatically selects 'staff-assessment'
+        shownForTeamAssessments.forEach(function(type) {
+            var selector = $(assessmentViews[type].element);
+            expect(view.isHidden(selector)).toBe(false);
+        });
+
+        // for team assessments, it also automatically selects 'staff-assessment'
         expect(assessmentViews[STAFF].isEnabled()).toBe(true);
     });
 });
