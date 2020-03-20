@@ -55,23 +55,23 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     function onTeamsEnabledChange(selectedValue) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
 
-        var selfAssessmentElement = $('#oa_self_assessment_editor', self.element);
-        var peerAssessmentElement = $('#oa_peer_assessment_editor', self.element);
-        var trainingAssessmentElement = $('#oa_student_training_editor', self.element);
+        var selfAssessment = self.assessmentViews['oa_self_assessment_editor'];
+        var peerAssessment = self.assessmentViews['oa_peer_assessment_editor'];
+        var trainingAssessment = self.assessmentViews['oa_student_training_editor'];
         var staffAssessment = self.assessmentViews['oa_staff_assessment_editor'];
 
         if (!selectedValue || selectedValue === '0') {
             self.setHidden(teamsetElement, true);
 
-            self.setHidden(selfAssessmentElement, false);
-            self.setHidden(peerAssessmentElement, false);
-            self.setHidden(trainingAssessmentElement, false);
+            self.setHidden($(selfAssessment.element), false);
+            self.setHidden($(peerAssessment.element), false);
+            self.setHidden($(trainingAssessment.element), false);
         } else {
             self.setHidden(teamsetElement, false);
 
-            self.setHidden(selfAssessmentElement, true);
-            self.setHidden(peerAssessmentElement, true);
-            self.setHidden(trainingAssessmentElement, true);
+            self.setHidden($(selfAssessment.element), true);
+            self.setHidden($(peerAssessment.element), true);
+            self.setHidden($(trainingAssessment.element), true);
 
             staffAssessment.isEnabled(true);
         }
