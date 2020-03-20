@@ -55,10 +55,10 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     function onTeamsEnabledChange(selectedValue) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
 
-        var selfAssessment = self.assessmentViews['oa_self_assessment_editor'];
-        var peerAssessment = self.assessmentViews['oa_peer_assessment_editor'];
-        var trainingAssessment = self.assessmentViews['oa_student_training_editor'];
-        var staffAssessment = self.assessmentViews['oa_staff_assessment_editor'];
+        var selfAssessment = self.assessmentViews.oa_self_assessment_editor;
+        var peerAssessment = self.assessmentViews.oa_peer_assessment_editor;
+        var trainingAssessment = self.assessmentViews.oa_student_training_editor;
+        var staffAssessment = self.assessmentViews.oa_staff_assessment_editor;
 
         if (!selectedValue || selectedValue === '0') {
             self.setHidden(teamsetElement, true);
