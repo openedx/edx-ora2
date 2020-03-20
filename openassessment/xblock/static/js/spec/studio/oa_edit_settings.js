@@ -315,4 +315,21 @@ describe("OpenAssessment.EditSettingsView", function() {
         // for team assessments, it also automatically selects 'staff-assessment'
         expect(assessmentViews[STAFF].isEnabled()).toBe(true);
     });
+
+    it('treats hidden assessment types as unselected', function() {
+        // Select all assessment types
+        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
+        allAssessmentTypes.forEach(function(type) {
+            assessmentViews[type].isEnabled(true);
+        });
+
+        expect(view.assessmentsDescription().length).toBe(4);
+
+        // Hide some assessments, but leave them enabled
+        view.setHidden($(assessmentViews[SELF].element), true);
+        view.setHidden($(assessmentViews[PEER].element), true);
+
+        // "Saved" assessment types should be limited to visible types
+        expect(view.assessmentsDescription().length).toBe(2);
+    });
 });
