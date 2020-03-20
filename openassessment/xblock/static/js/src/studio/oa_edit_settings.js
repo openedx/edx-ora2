@@ -54,21 +54,26 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
 
     function onTeamsEnabledChange(selectedValue) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
+
         var selfAssessmentElement = $('#oa_self_assessment_editor', self.element);
         var peerAssessmentElement = $('#oa_peer_assessment_editor', self.element);
         var trainingAssessmentElement = $('#oa_student_training_editor', self.element);
-        if (!selectedValue || selectedValue === '0') {
-            teamsetElement.addClass('is--hidden');
-            selfAssessmentElement.removeClass('is--hidden');
-            peerAssessmentElement.removeClass('is--hidden');
-            trainingAssessmentElement.removeClass('is--hidden');
-        } else {
-            teamsetElement.removeClass('is--hidden');
-            self.assessmentViews.oa_staff_assessment_editor.isEnabled(true);
+        var staffAssessment = self.assessmentViews['oa_staff_assessment_editor'];
 
-            selfAssessmentElement.addClass('is--hidden');
-            peerAssessmentElement.addClass('is--hidden');
-            trainingAssessmentElement.addClass('is--hidden');
+        if (!selectedValue || selectedValue === '0') {
+            self.setHidden(teamsetElement, true);
+
+            self.setHidden(selfAssessmentElement, false);
+            self.setHidden(peerAssessmentElement, false);
+            self.setHidden(trainingAssessmentElement, false);
+        } else {
+            self.setHidden(teamsetElement, false);
+
+            self.setHidden(selfAssessmentElement, true);
+            self.setHidden(peerAssessmentElement, true);
+            self.setHidden(trainingAssessmentElement, true);
+
+            staffAssessment.isEnabled(true);
         }
     }
 
@@ -320,6 +325,28 @@ OpenAssessment.EditSettingsView.prototype = {
         }
         return this.settingSelectorEnabled('#openassessment_team_enabled_selector', isEnabled);
     },
+
+    /**
+     * Hide elements, including setting the aria-hidden attribute for screen readers.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to hide.
+     * @param {boolean} hidden - Whether to hide or show the elements.
+     */
+    setHidden: function(selector, hidden) {
+        selector.toggleClass('is--hidden', hidden);
+        selector.attr('aria-hidden', hidden ? 'true' : 'false');
+    },
+
+    /**
+     * Check whether elements are hidden.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to check.
+     * @return {boolean} - True if all the elements are hidden, else false.
+     */
+    isHidden: function(selector) {
+        return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
+    },
+
     /**
     Get or set the teamset.
 
