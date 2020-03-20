@@ -267,13 +267,16 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.teamsEnabled()).toBe(true);
     });
 
-    it("hides the training, self, and peer assessment types when teams are enabled", function() {
+    it('hides the training, self, and peer assessment types when teams are enabled', function() {
         view.teamsEnabled(false);
         expect(view.teamsEnabled()).toBe(false);
+
         // None of the assessment editors should be hidden when teams are disabled
         $('.openassessment_assessment_module_settings_editor').each(function(index, editor) {
             expect($(editor).hasClass('is--hidden')).toBe(false);
         });
+
+        expect(assessmentViews[STAFF].isEnabled()).not.toBe(true);
 
         view.teamsEnabled(true);
         expect(view.teamsEnabled()).toBe(true);
@@ -281,8 +284,11 @@ describe("OpenAssessment.EditSettingsView", function() {
             '#oa_self_assessment_editor',
             '#oa_peer_assessment_editor',
             '#oa_student_training_editor',
-        ].forEach(function (editorId, index) {
+        ].forEach(function(editorId) {
             expect($(editorId).hasClass('is--hidden')).toBe(true);
         });
+
+        // for team assessments, it automatically selects 'staff-assessment'
+        expect(assessmentViews[STAFF].isEnabled()).toBe(true);
     });
 });
