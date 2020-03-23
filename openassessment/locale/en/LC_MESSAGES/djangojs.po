@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-20 13:05-0500\n"
+"POT-Creation-Date: 2020-03-23 17:38-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -308,6 +308,13 @@ msgid "Thumbnail view of "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:803
+msgid ""
+"Are you sure you want to delete the following file? It cannot be restored.\n"
+"File: "
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:123
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
@@ -457,17 +464,11 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:90
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:99
 msgid "File types can not be empty."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:100
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:109
 msgid "The following file types are not allowed: "
-msgstr ""
-
-#: openassessment/xblock/static/js/src/lms/oa_response.js:803
-msgid ""
-"Are you sure you want to delete the following file? It cannot be restored.\n"
-"File: "
 msgstr ""

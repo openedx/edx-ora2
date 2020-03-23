@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-20 13:05-0500\n"
+"POT-Creation-Date: 2020-03-23 17:38-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1711,7 +1711,7 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:74
-#: openassessment/xblock/leaderboard_mixin.py:56
+#: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:41
 #: openassessment/xblock/student_training_mixin.py:60
 #: openassessment/xblock/student_training_mixin.py:265
@@ -2031,11 +2031,11 @@ msgstr ""
 msgid "Error retrieving upload URL."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:629
+#: openassessment/xblock/submission_mixin.py:630
 msgid "This response has been saved but not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:631
 msgid "This response has not been saved."
 msgstr ""
 
