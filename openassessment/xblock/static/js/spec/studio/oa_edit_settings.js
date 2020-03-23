@@ -19,6 +19,8 @@ describe("OpenAssessment.EditSettingsView", function() {
             return this._enabled;
         };
 
+        this.element = $('<div>', {id: name});
+
         this.validate = function() {
             return this.isValid;
         };
@@ -267,22 +269,67 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.teamsEnabled()).toBe(true);
     });
 
-    it("hides the training, self, and peer assessment types when teams are enabled", function() {
+    it('can hide/show elements on the page', function() {
+        var selector = $(assessmentViews[PEER].element);
+
+        // element shown by default should return hidden = false
+        expect(view.isHidden(selector)).toBe(false);
+
+        // explicitly hiding an element should return hidden = true
+        view.setHidden(selector, true);
+        expect(view.isHidden(selector)).toBe(true);
+
+        // explicitly showing an element should return hidden = false
+        view.setHidden(selector, false);
+        expect(view.isHidden(selector)).toBe(false);
+    });
+
+    it('hides the training, self, and peer assessment types when teams are enabled', function() {
+        // Default config: teams are disabled, all assessments shown
         view.teamsEnabled(false);
         expect(view.teamsEnabled()).toBe(false);
-        // None of the assessment editors should be hidden when teams are disabled
-        $('.openassessment_assessment_module_settings_editor').each(function(index, editor) {
-            expect($(editor).hasClass('is--hidden')).toBe(false);
+
+        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
+        allAssessmentTypes.forEach(function(type) {
+            var selector = $(assessmentViews[type].element);
+            expect(view.isHidden(selector)).toBe(false);
         });
 
+        // Teams config: only staff assessments supported, others hidden
         view.teamsEnabled(true);
         expect(view.teamsEnabled()).toBe(true);
-        [
-            '#oa_self_assessment_editor',
-            '#oa_peer_assessment_editor',
-            '#oa_student_training_editor',
-        ].forEach(function (editorId, index) {
-            expect($(editorId).hasClass('is--hidden')).toBe(true);
+
+        var shownForTeamAssessments = [STAFF];
+        var hiddenForTeamAssessments = [SELF, TRAINING, PEER];
+
+        hiddenForTeamAssessments.forEach(function(type) {
+            var selector = $(assessmentViews[type].element);
+            expect(view.isHidden(selector)).toBe(true);
         });
+
+        shownForTeamAssessments.forEach(function(type) {
+            var selector = $(assessmentViews[type].element);
+            expect(view.isHidden(selector)).toBe(false);
+        });
+
+        // for team assessments, it also automatically selects 'staff-assessment'
+        expect(assessmentViews[STAFF].isEnabled()).toBe(true);
+    });
+
+    it('treats hidden assessment types as unselected', function() {
+        // Select all assessment types
+        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
+        allAssessmentTypes.forEach(function(type) {
+            assessmentViews[type].isEnabled(true);
+        });
+
+        expect(view.assessmentsDescription().length).toBe(4);
+
+        // Hide some assessments, but leave them enabled
+        view.setHidden($(assessmentViews[SELF].element), true);
+        view.setHidden($(assessmentViews[PEER].element), true);
+
+        // "Saved" assessment types should be limited to visible types
+        expect(view.assessmentsDescription().length).toBe(2);
     });
 });

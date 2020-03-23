@@ -52,25 +52,34 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         ])
     ).install();
 
+    function onTeamsEnabledChange(selectedValue) {
+        var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
+
+        var selfAssessment = self.assessmentViews.oa_self_assessment_editor;
+        var peerAssessment = self.assessmentViews.oa_peer_assessment_editor;
+        var trainingAssessment = self.assessmentViews.oa_student_training_editor;
+        var staffAssessment = self.assessmentViews.oa_staff_assessment_editor;
+
+        if (!selectedValue || selectedValue === '0') {
+            self.setHidden(teamsetElement, true);
+
+            self.setHidden($(selfAssessment.element), false);
+            self.setHidden($(peerAssessment.element), false);
+            self.setHidden($(trainingAssessment.element), false);
+        } else {
+            self.setHidden(teamsetElement, false);
+
+            self.setHidden($(selfAssessment.element), true);
+            self.setHidden($(peerAssessment.element), true);
+            self.setHidden($(trainingAssessment.element), true);
+
+            staffAssessment.isEnabled(true);
+        }
+    }
+
     this.teamsEnabledSelectControl = new OpenAssessment.SelectControl(
         $('#openassessment_team_enabled_selector', this.element),
-        function(selectedValue) {
-            var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
-            var selfAssessmentElement = $('#oa_self_assessment_editor', self.element);
-            var peerAssessmentElement = $('#oa_peer_assessment_editor', self.element);
-            var trainingAssessmentElement = $('#oa_student_training_editor', self.element);
-            if (!selectedValue || selectedValue === '0') {
-                teamsetElement.addClass('is--hidden');
-                selfAssessmentElement.removeClass('is--hidden');
-                peerAssessmentElement.removeClass('is--hidden');
-                trainingAssessmentElement.removeClass('is--hidden');
-            } else {
-                teamsetElement.removeClass('is--hidden');
-                selfAssessmentElement.addClass('is--hidden');
-                peerAssessmentElement.addClass('is--hidden');
-                trainingAssessmentElement.addClass('is--hidden');
-            }
-        },
+        onTeamsEnabledChange,
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
@@ -105,6 +114,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     );
 
     this.initializeSortableAssessments();
+    onTeamsEnabledChange($('#openassessment_team_enabled_selector').val());
 };
 
 OpenAssessment.EditSettingsView.prototype = {
@@ -315,6 +325,28 @@ OpenAssessment.EditSettingsView.prototype = {
         }
         return this.settingSelectorEnabled('#openassessment_team_enabled_selector', isEnabled);
     },
+
+    /**
+     * Hide elements, including setting the aria-hidden attribute for screen readers.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to hide.
+     * @param {boolean} hidden - Whether to hide or show the elements.
+     */
+    setHidden: function(selector, hidden) {
+        selector.toggleClass('is--hidden', hidden);
+        selector.attr('aria-hidden', hidden ? 'true' : 'false');
+    },
+
+    /**
+     * Check whether elements are hidden.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to check.
+     * @return {boolean} - True if all the elements are hidden, else false.
+     */
+    isHidden: function(selector) {
+        return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
+    },
+
     /**
     Get or set the teamset.
 
@@ -387,7 +419,9 @@ OpenAssessment.EditSettingsView.prototype = {
         $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each(
             function() {
                 var asmntView = view.assessmentViews[$(this).attr('id')];
-                if (asmntView.isEnabled()) {
+                var isVisible = !view.isHidden($(asmntView.element));
+
+                if (asmntView.isEnabled() && isVisible) {
                     var description = asmntView.description();
                     description.name = asmntView.name;
                     assessmentDescList.push(description);
