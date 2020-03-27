@@ -151,3 +151,10 @@ class StaffWorkflow(models.Model):
         self.scorer_id = scorer_id
         self.grading_completed_at = now()
         self.save()
+
+
+class TeamStaffWorkflow(StaffWorkflow):
+    """
+    Extends the StafWorkflow to be used for team based assessments.
+    """
+    team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
