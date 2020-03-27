@@ -609,6 +609,13 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         return self.cancellations.exists()
 
 
+class TeamAssessmentWorkflow(AssessmentWorkflow):
+    """
+    Extends AssessmentWorkflow to support team based assessments.
+    """
+    team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
+
+
 class AssessmentWorkflowStep(models.Model):
     """An individual step in the overall workflow process.
 
