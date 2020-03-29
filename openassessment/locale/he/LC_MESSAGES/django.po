@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-20 13:05-0500\n"
+"POT-Creation-Date: 2020-03-23 17:38-0400\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: Bentsi Magidovich <magidovich@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
@@ -1689,7 +1689,7 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr "עליך לספק משוב עבור הקריטריונים בהערכה."
 
 #: openassessment/xblock/grade_mixin.py:74
-#: openassessment/xblock/leaderboard_mixin.py:56
+#: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:41
 #: openassessment/xblock/student_training_mixin.py:60
 #: openassessment/xblock/student_training_mixin.py:265
@@ -2009,11 +2009,11 @@ msgstr "סוג הקובץ אינו אפשרי."
 msgid "Error retrieving upload URL."
 msgstr "שגיאה באחזור כתובת URL להעלאה."
 
-#: openassessment/xblock/submission_mixin.py:629
+#: openassessment/xblock/submission_mixin.py:630
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:631
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 
