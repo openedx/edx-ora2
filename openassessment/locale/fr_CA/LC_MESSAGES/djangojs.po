@@ -56,7 +56,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-20 13:05-0500\n"
+"POT-Creation-Date: 2020-03-23 17:38-0400\n"
 "PO-Revision-Date: 2020-02-21 19:13+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -356,6 +356,13 @@ msgid "Thumbnail view of "
 msgstr "Vue miniature de"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:803
+msgid ""
+"Are you sure you want to delete the following file? It cannot be restored.\n"
+"File: "
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:123
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
@@ -505,17 +512,11 @@ msgid ""
 msgstr "Les modifications apportées aux étapes qui ne sont pas sélectionnés dans le cadre du devoir ne seront pas sauvegardées."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:90
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:99
 msgid "File types can not be empty."
 msgstr "Les formats de fichiers ne peuvent être vides."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:100
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:109
 msgid "The following file types are not allowed: "
 msgstr "Les formats de fichiers suivants ne sont pas permis : "
-
-#: openassessment/xblock/static/js/src/lms/oa_response.js:803
-msgid ""
-"Are you sure you want to delete the following file? It cannot be restored.\n"
-"File: "
-msgstr ""

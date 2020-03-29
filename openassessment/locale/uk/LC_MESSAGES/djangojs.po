@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-20 13:05-0500\n"
+"POT-Creation-Date: 2020-03-23 17:38-0400\n"
 "PO-Revision-Date: 2020-02-21 19:13+0000\n"
 "Last-Translator: Ned Batchelder <ned@edx.org>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/open-edx/edx-platform/language/uk/)\n"
@@ -320,6 +320,13 @@ msgid "Thumbnail view of "
 msgstr "Мініатюра для"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:803
+msgid ""
+"Are you sure you want to delete the following file? It cannot be restored.\n"
+"File: "
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:123
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
@@ -469,17 +476,11 @@ msgid ""
 msgstr "Зміни до кроків, котрі не обрано як частини завдання, не збережуться."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:90
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:99
 msgid "File types can not be empty."
 msgstr "Поле типів файлів не може бути пустим."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:100
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:109
 msgid "The following file types are not allowed: "
 msgstr "Наступні типи файлів не дозволені: "
-
-#: openassessment/xblock/static/js/src/lms/oa_response.js:803
-msgid ""
-"Are you sure you want to delete the following file? It cannot be restored.\n"
-"File: "
-msgstr ""
