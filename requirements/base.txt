@@ -10,7 +10,7 @@ boto==2.39.0
 certifi==2019.11.28       # via requests
 chardet==3.0.4            # via requests
 defusedxml==0.5.0
-django-model-utils==3.0.0
+django-model-utils==3.2.0
 django-simple-history==2.8.0
 django==2.2.10
 djangorestframework==3.9.4
