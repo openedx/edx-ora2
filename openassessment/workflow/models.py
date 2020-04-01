@@ -619,7 +619,9 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
     @transaction.atomic
     def start_workflow(cls, submission_uuid):
         """ Start a team workflow """
-        pass
+        # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
+        workflow = {}
+        return workflow
 
 
 class AssessmentWorkflowStep(models.Model):

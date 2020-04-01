@@ -2,6 +2,14 @@
 Functions that largely mirror the workflow functions specified
 in `workflow.api`, but specifically for handling team submissions.
 """
+import logging
+
+from openassessment.workflow.errors import AssessmentWorkflowInternalError
+from openassessment.workflow.models import TeamAssessmentWorkflow
+from submissions import api as sub_api
+
+logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
+
 
 def create_workflow(team_submission_uuid):
     """
@@ -11,9 +19,20 @@ def create_workflow(team_submission_uuid):
     since those are only used to indicate which assessment steps (e.g. "peer", "self")
     are to be included in the workflow.
     """
-    # TODO: try to invoke `TeamAssessmentWorkflow.start_workflow(team_submission_uuid)`
-    # and catch any errors that might occur.
-    raise NotImplementedError
+    try:
+        team_workflow = TeamAssessmentWorkflow.start_workflow(team_submission_uuid)
+        logger.info((
+            u"Started team assessment workflow for "
+            u"team submission UUID {uuid}"
+        ).format(uuid=team_submission_uuid))
+        return team_workflow
+    except Exception:
+        err_msg = (
+            u"An unexpected error occurred while creating "
+            u"the workflow for team submission UUID {}"
+        ).format(submission_uuid)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
 
 
 def get_workflow_for_submission(team_submission_uuid):
