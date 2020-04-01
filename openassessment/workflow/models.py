@@ -637,6 +637,11 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             logger.exception(message)
             raise AssessmentWorkflowError(message)
 
+    def update_from_assessments(self):
+        """ Update status from the assessments. For teams, only the staff assessment """
+        # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
+        pass
+
 
 class AssessmentWorkflowStep(models.Model):
     """An individual step in the overall workflow process.

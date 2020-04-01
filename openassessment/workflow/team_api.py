@@ -47,22 +47,28 @@ def get_workflow_for_submission(team_submission_uuid):
     are only assessible by staff (where requirements like "must_grade" and
     "must_be_graded_by" are not supported).
     """
-    # TODO: call `update_from_assessments(team_submission_uuid)`
-    # Also, decide if you really need both `get_workflow_for_submission()`
+    # TODO: decide if you really need both `get_workflow_for_submission()`
     # and `update_from_assessments()`, when the former only calls/returns
     # the result of the latter.
-    raise NotImplementedError
+    return update_from_assessments(team_submission_uuid)
 
 
 def update_from_assessments(team_submission_uuid):
     """
-    Should update the workflow status based on the status of the underlying
-    assessments.
+    Update the workflow status based on the underlying assessments.
     """
-    # TODO: get the `TeamAssessmentWorkflow` model for the given
-    # `team_submission_uuid` and invoke it's `update_from_assessments()` method.
-    # Return a serialized version of its results (see `_serialized_with_details()`)
-    raise NotImplementedError
+    team_workflow = _get_workflow_model(team_submission_uuid)
+
+    try:
+        team_workflow.update_from_assessments()
+        logger.info((
+            u"Updated workflow for team submission UUID {uuid} "
+        ).format(uuid=team_submission_uuid))
+        return _serialized_with_details(team_workflow)
+    except Exception:
+        err_msg = u"Could not update team assessment workflow: {}".format(err)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
 
 
 def _get_workflow_model(team_submission_uuid):
