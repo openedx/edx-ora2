@@ -4,7 +4,12 @@ in `workflow.api`, but specifically for handling team submissions.
 """
 import logging
 
-from openassessment.workflow.errors import AssessmentWorkflowInternalError
+from openassessment.workflow.errors import (
+    AssessmentWorkflowError,
+    AssessmentWorkflowInternalError,
+    AssessmentWorkflowRequestError,
+    AssessmentWorkflowNotFoundError
+)
 from openassessment.workflow.models import TeamAssessmentWorkflow
 from submissions import api as sub_api
 
@@ -65,7 +70,28 @@ def _get_workflow_model(team_submission_uuid):
     Returns the `TeamAssessmentWorkflow` model associated with the
     given `team_submission_uuid`.
     """
-    raise NotImplementedError
+    if not isinstance(team_submission_uuid, str):
+        raise AssessmentWorkflowRequestError("team_submission_uuid must be a string")
+
+    try:
+        team_workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
+    except AssessmentWorkflowError as exc:
+        raise AssessmentWorkflowInternalError(repr(exc))
+    except Exception as exc:
+        # Something very unexpected has just happened (like DB misconfig)
+        err_msg = (
+            u"Could not get team assessment workflow with team_submission_uuid {} due to error: {}"
+            .format(team_submission_uuid, exc)
+        )
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
+
+    if team_workflow is None:
+        raise AssessmentWorkflowNotFoundError(
+            u"No team assessment workflow matching team_submission_uuid {}".format(team_submission_uuid)
+        )
+
+    return team_workflow
 
 
 def get_status_counts(course_id, item_id):
