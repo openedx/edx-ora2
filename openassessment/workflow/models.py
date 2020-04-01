@@ -623,6 +623,20 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         workflow = {}
         return workflow
 
+    @classmethod
+    def get_by_team_submission_uuid(cls, team_submission_uuid):
+        try:
+            return cls.objects.get(team_submission_uuid=team_submission_uuid)
+        except cls.DoesNotExist:
+            return None
+        except DatabaseError as exc:
+            message = u"Error finding workflow for team submission UUID {} due to error: {}.".format(
+                team_submission_uuid,
+                exc
+            )
+            logger.exception(message)
+            raise AssessmentWorkflowError(message)
+
 
 class AssessmentWorkflowStep(models.Model):
     """An individual step in the overall workflow process.
