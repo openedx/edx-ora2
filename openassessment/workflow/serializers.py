@@ -6,7 +6,7 @@ from __future__ import absolute_import
 
 from rest_framework import serializers
 
-from openassessment.workflow.models import AssessmentWorkflow, AssessmentWorkflowCancellation
+from openassessment.workflow.models import AssessmentWorkflow, AssessmentWorkflowCancellation, TeamAssessmentWorkflow
 
 
 class AssessmentWorkflowSerializer(serializers.ModelSerializer):
@@ -19,6 +19,25 @@ class AssessmentWorkflowSerializer(serializers.ModelSerializer):
         model = AssessmentWorkflow
         fields = (
             'submission_uuid',
+            'status',
+            'created',
+            'modified',
+
+            # Computed
+            'score'
+        )
+
+
+class TeamAssessmentWorkflowSerializer(serializers.ModelSerializer):
+    """
+    Serialize a TeamAssessmentWorkflow model.
+    """
+    score = serializers.ReadOnlyField(required=False)
+
+    class Meta:
+        model = TeamAssessmentWorkflow
+        fields = (
+            'team_submission_uuid'
             'status',
             'created',
             'modified',
