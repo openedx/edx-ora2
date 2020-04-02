@@ -613,13 +613,14 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
     """
     Extends AssessmentWorkflow to support team based assessments.
     """
+    # Only staff assessments are supported for teams
     STEPS = ['staff']
 
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 
     @classmethod
     @transaction.atomic
-    def start_workflow(cls, submission_uuid):
+    def start_workflow(cls, team_submission_uuid):
         """ Start a team workflow """
         # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
         workflow = {}
@@ -632,10 +633,9 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         except cls.DoesNotExist:
             return None
         except DatabaseError as exc:
-            message = u"Error finding workflow for team submission UUID {} due to error: {}.".format(
-                team_submission_uuid,
-                exc
-            )
+            message = (
+                u"Error finding workflow for team submission UUID {uuid} due to error: {exc}."
+            ).format(uuid=team_submission_uuid, exc=exc)
             logger.exception(message)
             raise AssessmentWorkflowError(message)
 

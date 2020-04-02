@@ -36,8 +36,8 @@ def create_workflow(team_submission_uuid):
     except Exception:
         err_msg = (
             u"An unexpected error occurred while creating "
-            u"the workflow for team submission UUID {}"
-        ).format(submission_uuid)
+            u"the workflow for team submission UUID {uuid}"
+        ).format(uuid=team_submission_uuid)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
 
@@ -58,8 +58,10 @@ def get_workflow_for_submission(team_submission_uuid):
         logger.info((
             u"Updated workflow for team submission UUID {uuid} "
         ).format(uuid=team_submission_uuid))
-    except Exception:
-        err_msg = u"Could not update team assessment workflow: {}".format(err)
+    except Exception as exc:
+        err_msg = (
+            u"Could not update team assessment workflow: {exc}"
+        ).format(exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
 
@@ -88,16 +90,16 @@ def _get_workflow_model(team_submission_uuid):
     except Exception as exc:
         # Something very unexpected has just happened (like DB misconfig)
         err_msg = (
-            u"Could not get team assessment workflow with team_submission_uuid {} due to error: {}"
-            .format(team_submission_uuid, exc)
-        )
+            u"Could not get team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
+        ).format(uuid=team_submission_uuid, exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
 
     if team_workflow is None:
-        raise AssessmentWorkflowNotFoundError(
-            u"No team assessment workflow matching team_submission_uuid {}".format(team_submission_uuid)
-        )
+        err_msg = (
+            u"No team assessment workflow matching team_submission_uuid {uuid}"
+        ).format(uuid=team_submission_uuid)
+        raise AssessmentWorkflowNotFoundError(err_msg)
 
     return team_workflow
 
