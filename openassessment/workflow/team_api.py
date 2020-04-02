@@ -11,6 +11,8 @@ from openassessment.workflow.errors import (
     AssessmentWorkflowNotFoundError
 )
 from openassessment.workflow.models import TeamAssessmentWorkflow
+from openassessment.workflow.serializers import TeamAssessmentWorkflowSerializer
+
 from submissions import api as sub_api
 
 logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
@@ -63,6 +65,12 @@ def get_workflow_for_submission(team_submission_uuid):
 
     # Return serialized workflow object
     return _serialized_with_details(team_workflow)
+
+
+def _serialized_with_details(team_workflow):
+    data_dict = TeamAssessmentWorkflowSerializer(team_workflow).data
+    data_dict['status_details'] = team_workflow.status_details()
+    return data_dict
 
 
 def _get_workflow_model(team_submission_uuid):
