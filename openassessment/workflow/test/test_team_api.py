@@ -29,3 +29,25 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         # It is updated and returns a correctly serialized version
         assert team_workflow['team_submission_uuid'] == team_submission_uuid
         assert 'staff' in team_workflow['status_details']
+
+    def test_cancel_workflow(self):
+        # Given a workflow
+        team_submission_uuid = 'foo'
+        TeamAssessmentWorkflow.objects.create(
+            team_submission_uuid=team_submission_uuid,
+            status=AssessmentWorkflow.STATUS.waiting,
+            course_id='test course',
+            item_id='test item'
+        )
+
+        # When I cancel the workflow, for fun
+        team_api.cancel_workflow(
+            team_submission_uuid=team_submission_uuid,
+            comments="For fun",
+            cancelled_by_id="My ID"
+        )
+
+        # Then workflow is cancelled...
+        # status for workflow should be cancelled...
+        # and score points_earned should be 0.
+

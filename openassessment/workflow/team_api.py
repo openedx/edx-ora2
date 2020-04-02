@@ -135,8 +135,7 @@ def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
     An AssessmentWorkflow which has been cancelled is no longer included in the
     staff grading pool.
     """
-    # TODO: Call `TeamAssessmentWorkflow.cancel_workflow(team_submission_uuid, comments, cancelled_by_id)`
-    raise NotImplementedError
+    TeamAssessmentWorkflow.cancel_workflow(team_submission_uuid, comments, cancelled_by_id)
 
 
 def get_assessment_workflow_cancellation(team_submission_uuid):
