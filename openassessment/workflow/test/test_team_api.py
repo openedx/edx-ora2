@@ -19,7 +19,7 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
 
     def test_get_workflow(self):
         # Given a workflow
-        self._create_test_worfkflow(self.team_submission_uuid)
+        self._create_test_workflow(self.team_submission_uuid)
 
         # When I get the workflow
         team_workflow = team_api.get_workflow_for_submission(self.team_submission_uuid)
@@ -30,7 +30,7 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
 
     def test_cancel_workflow(self):
         # Given a workflow
-        self._create_test_worfkflow(self.team_submission_uuid)
+        self._create_test_workflow(self.team_submission_uuid)
 
         # When I cancel the workflow, for fun
         team_api.cancel_workflow(self.team_submission_uuid, "Cancellation comment", "Cancelled by ID")
@@ -39,10 +39,10 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         # status for workflow should be cancelled...
         # and score points_earned should be 0.
 
-    def _create_test_worfkflow(self, team_submission_uuid):
+    def _create_test_workflow(self, team_submission_uuid, status=TeamAssessmentWorkflow.STATUS.waiting):
         return TeamAssessmentWorkflow.objects.create(
             team_submission_uuid=team_submission_uuid,
-            status=AssessmentWorkflow.STATUS.waiting,
+            status=status,
             course_id='test course',
             item_id='test item'
         )
