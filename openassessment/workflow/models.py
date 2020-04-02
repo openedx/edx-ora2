@@ -613,6 +613,8 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
     """
     Extends AssessmentWorkflow to support team based assessments.
     """
+    STEPS = ['staff']
+
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 
     @classmethod

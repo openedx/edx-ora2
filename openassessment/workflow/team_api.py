@@ -123,9 +123,23 @@ def get_status_counts(course_id, item_id):
             {"status": "done", "count": 12},
         ]
     """
-    # TODO: return the results of a query against `TeamAssessmentWorkflow`,
-    # filtered by (course_id, item_id) and grouped by `status`.
-    raise NotImplementedError
+    # The AI status exists for workflow logic, but no student will ever be in
+    # the AI status, so we should never return it.
+    statuses = TeamAssessmentWorkflow.STEPS + TeamAssessmentWorkflow.STATUSES
+    if 'ai' in statuses:
+        statuses.remove('ai')
+
+    return [
+        {
+            "status": status,
+            "count": TeamAssessmentWorkflow.objects.filter(
+                status=status,
+                course_id=course_id,
+                item_id=item_id,
+            ).count()
+        }
+        for status in statuses
+    ]
 
 
 def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
