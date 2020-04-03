@@ -854,3 +854,18 @@ class AssessmentWorkflowCancellation(models.Model):
         """
         workflow_cancellations = cls.objects.filter(workflow__submission_uuid=submission_uuid).order_by("-created_at")
         return workflow_cancellations[0] if workflow_cancellations.exists() else None
+
+
+class TeamAssessmentWorkflowCancellation(AssessmentWorkflowCancellation):
+    """ Model for tracking cancellations of a team assessment workflow."""
+    team_workflow = models.ForeignKey(
+        TeamAssessmentWorkflow,
+        related_name='team_cancellations',
+        on_delete=models.CASCADE
+    )
+
+    @classmethod
+    def get_latest_workflow_cancellation(cls, team_submission_uuid):
+        """ Get the latest AssessmentWorkflowCancellation for a submission's workflow. """
+        team_workflow_cancellations = cls.objects.filter(workflow__team_submission_uuid=team_submission_uuid).order_by("-created_at")
+        return team_workflow_cancellations[0] if team_workflow_cancellations.exists() else None
