@@ -5,7 +5,6 @@ in `workflow.api`, but specifically for handling team submissions.
 import logging
 
 from openassessment.workflow.errors import (
-    AssessmentWorkflowError,
     AssessmentWorkflowInternalError,
     AssessmentWorkflowRequestError,
     AssessmentWorkflowNotFoundError
@@ -13,7 +12,6 @@ from openassessment.workflow.errors import (
 from openassessment.workflow.models import TeamAssessmentWorkflow
 from openassessment.workflow.serializers import TeamAssessmentWorkflowSerializer
 
-from submissions import api as sub_api
 
 logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
 
@@ -139,28 +137,3 @@ def get_status_counts(course_id, item_id):
         }
         for status in statuses
     ]
-
-
-def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
-    """
-    Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
-
-    An AssessmentWorkflow which has been cancelled is no longer included in the
-    staff grading pool.
-    """
-    TeamAssessmentWorkflow.cancel_workflow(team_submission_uuid, comments, cancelled_by_id)
-
-
-def get_assessment_workflow_cancellation(team_submission_uuid):
-    """
-    Get cancellation information for a team assessment workflow.
-    """
-    # TODO: Return the serialized results of
-    # `AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)`.
-    raise NotImplementedError
-
-
-def is_workflow_cancelled(team_submission_uuid):
-    """
-    """
-    raise NotImplementedError

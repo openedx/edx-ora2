@@ -620,10 +620,10 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
     @classmethod
     @transaction.atomic
-    def start_workflow(cls, team_submission_uuid):
+    def start_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ
         """ Start a team workflow """
         # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
-        workflow = {}
+        workflow = {'team_submission_uuid': team_submission_uuid}
         return workflow
 
     @classmethod
@@ -639,14 +639,8 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             logger.exception(message)
             raise AssessmentWorkflowError(message)
 
-    def update_from_assessments(self):
+    def update_from_assessments(self):  # pylint: disable=arguments-differ
         """ Update status from the assessments. For teams, only the staff assessment """
-        # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
-        pass
-
-    @classmethod
-    def cancel_workflow(cls, team_submission_uuid, comments, cancelled_by_id):
-        """ Add a cancellation entry to remove an assessment from the grading pool """
         # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
         pass
 
