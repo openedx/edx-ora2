@@ -137,3 +137,28 @@ def get_status_counts(course_id, item_id):
         }
         for status in statuses
     ]
+
+
+def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
+    """
+    Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
+
+    An AssessmentWorkflow which has been cancelled is no longer included in the
+    staff grading pool.
+    """
+    TeamAssessmentWorkflow.cancel_workflow(team_submission_uuid, comments, cancelled_by_id)
+
+
+def get_assessment_workflow_cancellation(team_submission_uuid):
+    """
+    Get cancellation information for a team assessment workflow.
+    """
+    # TODO: Return the serialized results of
+    # `AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)`.
+    raise NotImplementedError
+
+
+def is_workflow_cancelled(team_submission_uuid):
+    """
+    """
+    raise NotImplementedError

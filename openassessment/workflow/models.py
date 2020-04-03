@@ -644,6 +644,12 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
         pass
 
+    @classmethod
+    def cancel_workflow(cls, team_submission_uuid, comments, cancelled_by_id):
+        """ Add a cancellation entry to remove an assessment from the grading pool """
+        # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
+        pass
+
 
 class AssessmentWorkflowStep(models.Model):
     """An individual step in the overall workflow process.
