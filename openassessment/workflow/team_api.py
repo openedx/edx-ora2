@@ -85,10 +85,7 @@ def _get_workflow_model(team_submission_uuid):
 
     try:
         team_workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
-    except AssessmentWorkflowError as exc:
-        raise AssessmentWorkflowInternalError(repr(exc))
     except Exception as exc:
-        # Something very unexpected has just happened (like DB misconfig)
         err_msg = (
             u"Could not get team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
         ).format(uuid=team_submission_uuid, exc=exc)
