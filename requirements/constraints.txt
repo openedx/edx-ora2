@@ -7,7 +7,7 @@ futures==3.3.0 ; python_version == "2.7"
 bleach<=2.1.4                      # Constrained by edx-platform/edx-enterprise/lti_consumer-xblock
 boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
 defusedxml<=0.5.0                  # Constrained by edx-platform and its dependencies.
-django-model-utils==3.0.0          # Constrained by edx-platform and its dependencies.
+django-model-utils<4.0.0          # Constrained by edx-platform and its dependencies.
 fs<=2.0.18                         # Constrained by edx-platform/XBlock
 jsonfield2<3.1.0
 lazy<=1.1                          # Constrained by edx-platform and its dependencies.

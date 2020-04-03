@@ -41,7 +41,7 @@ from webob import Response
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
-from xblock.fragment import Fragment
+from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
