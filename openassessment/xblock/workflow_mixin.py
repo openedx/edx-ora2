@@ -142,28 +142,12 @@ class WorkflowMixin(object):
 
             Indiviual submissions will be in the user's context.
 
-            Team submissions don't save the submission_uuid for teammates contexts'
-            Instead, we should attempt to look up the submission ID from the database.
-
             Returns:
                 (string) Submission ID if found
                 (None) None if not found
         """
         if self.submission_uuid is not None:
             return self.submission_uuid
-
-        elif self.teams_enabled:
-            from submissions.api import get_submissions, SubmissionInternalError
-
-            try:
-                # Query for submissions by the student item
-                student_item = self.get_student_item_dict()
-                submission_list = get_submissions(student_item)
-
-                if submission_list and submission_list[0]["uuid"] is not None:
-                    return submission_list[0]["uuid"]
-            except SubmissionInternalError:
-                return None
 
         return None
 
