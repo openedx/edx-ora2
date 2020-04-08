@@ -29,31 +29,25 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         assert 'staff' in team_workflow['status_details']
 
     def test_get_status_counts(self):
-        # Initial counts should be 0
-        counts = team_api.get_status_counts('test course', 'test item')
+        expected_steps = ['staff', 'waiting', 'done', 'cancelled']
 
-        self.assertEqual(counts, [
-            {'status': 'staff', 'count': 0},
-            {'status': 'waiting', 'count': 0},
-            {'status': 'done', 'count': 0},
-            {'status': 'cancelled', 'count': 0},
-        ])
+        # Initially, counts for all expected steps should be 0
+        initial_counts = team_api.get_status_counts('test course', 'test item')
 
-        # Create some assessments
+        for step in expected_steps:
+            assert {'status': step, 'count': 0} in initial_counts
+
+        # Given some assessments
         self._create_test_workflow('foo', 'staff')
         self._create_test_workflow('bar', 'waiting')
         self._create_test_workflow('baz', 'done')
         self._create_test_workflow('biz', 'cancelled')
 
-        # Get updated counts
+        # When we get updated counts
         counts = team_api.get_status_counts('test course', 'test item')
 
-        self.assertEqual(counts, [
-            {'status': 'staff', 'count': 1},
-            {'status': 'waiting', 'count': 1},
-            {'status': 'done', 'count': 1},
-            {'status': 'cancelled', 'count': 1},
-        ])
+        for step in expected_steps:
+            assert {'status': step, 'count': 1} in counts
 
     def _create_test_workflow(self, team_submission_uuid, status=TeamAssessmentWorkflow.STATUS.waiting):
         """ Create a team workflow with filler values """

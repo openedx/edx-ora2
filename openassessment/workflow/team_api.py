@@ -4,6 +4,8 @@ in `workflow.api`, but specifically for handling team submissions.
 """
 import logging
 
+from django.db.models import Count
+
 from openassessment.workflow.errors import (
     AssessmentWorkflowInternalError,
     AssessmentWorkflowRequestError,
@@ -128,23 +130,28 @@ def get_status_counts(course_id, item_id):
         [
             {"status": "staff", "count": 5},
             {"status": "waiting", "count": 43},
-            {"status": "done", "count": 12},
+            {"status": "done", "count": 0},
         ]
     """
-    # The AI status exists for workflow logic, but no student will ever be in
-    # the AI status, so we should never return it.
     statuses = TeamAssessmentWorkflow.STEPS + TeamAssessmentWorkflow.STATUSES
+
+    # Remove AI status, valid for workflow logic but not a valid team/student step
     if 'ai' in statuses:
         statuses.remove('ai')
 
+    queryset = TeamAssessmentWorkflow.objects.filter(
+        status__in=statuses,
+        course_id=course_id,
+        item_id=item_id,
+    ).values('status').annotate(count=Count('status')).order_by('-created')
+
+    counts_by_status = {status: 0 for status in statuses}
+
+    for row in queryset:
+        counts_by_status[row['status']] = row['count']
+
     return [
-        {
-            "status": status,
-            "count": TeamAssessmentWorkflow.objects.filter(
-                status=status,
-                course_id=course_id,
-                item_id=item_id,
-            ).count()
-        }
-        for status in statuses
+        {'status': status, 'count': count}
+        for status, count
+        in counts_by_status.items()
     ]
