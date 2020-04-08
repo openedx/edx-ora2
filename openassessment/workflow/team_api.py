@@ -23,6 +23,9 @@ def create_workflow(team_submission_uuid):
     we don't accept `steps` or `on_init_params` as parameters to this function,
     since those are only used to indicate which assessment steps (e.g. "peer", "self")
     are to be included in the workflow.
+
+    Raises:
+        AssessmentWorkflowInternalError on error
     """
     try:
         team_workflow = TeamAssessmentWorkflow.start_workflow(team_submission_uuid)
@@ -46,6 +49,9 @@ def get_workflow_for_submission(team_submission_uuid):
     an analogous `assessment_requirements` parameter, because team submissions
     are only assessible by staff (where requirements like "must_grade" and
     "must_be_graded_by" are not supported).
+
+    Raises:
+        AssessmentWorkflowInternalError on error
     """
     # Get the wokflow for this submission
     team_workflow = _get_workflow_model(team_submission_uuid)
@@ -77,6 +83,11 @@ def _get_workflow_model(team_submission_uuid):
     """
     Returns the `TeamAssessmentWorkflow` model associated with the
     given `team_submission_uuid`.
+
+    Raises:
+        AssessmentWorkflowRequestError for incorrect arguments
+        AssessmentWorkflowNotFoundError when workflow not found
+        AssessmentWorkflowInternalError on error
     """
     if not isinstance(team_submission_uuid, str):
         raise AssessmentWorkflowRequestError("team_submission_uuid must be a string")
