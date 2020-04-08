@@ -13,7 +13,7 @@ from openassessment.workflow.models import TeamAssessmentWorkflow
 from openassessment.workflow.serializers import TeamAssessmentWorkflowSerializer
 
 
-logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 def create_workflow(team_submission_uuid):
@@ -27,14 +27,14 @@ def create_workflow(team_submission_uuid):
     try:
         team_workflow = TeamAssessmentWorkflow.start_workflow(team_submission_uuid)
         logger.info((
-            u"Started team assessment workflow for "
-            u"team submission UUID {uuid}"
+            "Started team assessment workflow for "
+            "team submission UUID {uuid}"
         ).format(uuid=team_submission_uuid))
         return team_workflow
     except Exception:
         err_msg = (
-            u"An unexpected error occurred while creating "
-            u"the workflow for team submission UUID {uuid}"
+            "An unexpected error occurred while creating "
+            "the workflow for team submission UUID {uuid}"
         ).format(uuid=team_submission_uuid)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
@@ -54,11 +54,11 @@ def get_workflow_for_submission(team_submission_uuid):
     try:
         team_workflow.update_from_assessments()
         logger.info((
-            u"Updated workflow for team submission UUID {uuid} "
+            "Updated workflow for team submission UUID {uuid} "
         ).format(uuid=team_submission_uuid))
     except Exception as exc:
         err_msg = (
-            u"Could not update team assessment workflow: {exc}"
+            "Could not update team assessment workflow: {exc}"
         ).format(exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
@@ -85,14 +85,14 @@ def _get_workflow_model(team_submission_uuid):
         team_workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
     except Exception as exc:
         err_msg = (
-            u"Could not get team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
+            "Could not get team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
         ).format(uuid=team_submission_uuid, exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
 
     if team_workflow is None:
         err_msg = (
-            u"No team assessment workflow matching team_submission_uuid {uuid}"
+            "No team assessment workflow matching team_submission_uuid {uuid}"
         ).format(uuid=team_submission_uuid)
         raise AssessmentWorkflowNotFoundError(err_msg)
 
