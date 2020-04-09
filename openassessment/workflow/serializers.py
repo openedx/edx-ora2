@@ -6,11 +6,7 @@ from __future__ import absolute_import
 
 from rest_framework import serializers
 
-from openassessment.workflow.models import (
-    AssessmentWorkflow,
-    AssessmentWorkflowCancellation,
-    TeamAssessmentWorkflow
-)
+from openassessment.workflow.models import AssessmentWorkflow, AssessmentWorkflowCancellation, TeamAssessmentWorkflow
 
 
 class AssessmentWorkflowSerializer(serializers.ModelSerializer):
