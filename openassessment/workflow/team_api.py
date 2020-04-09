@@ -4,13 +4,21 @@ in `workflow.api`, but specifically for handling team submissions.
 """
 import logging
 
+from django.db import DatabaseError
+
 from openassessment.workflow.errors import (
     AssessmentWorkflowInternalError,
     AssessmentWorkflowRequestError,
     AssessmentWorkflowNotFoundError
 )
-from openassessment.workflow.models import TeamAssessmentWorkflow
-from openassessment.workflow.serializers import TeamAssessmentWorkflowSerializer
+from openassessment.workflow.models import (
+    TeamAssessmentWorkflow,
+    TeamAssessmentWorkflowCancellation
+)
+from openassessment.workflow.serializers import (
+    TeamAssessmentWorkflowSerializer,
+    TeamAssessmentWorkflowCancellationSerializer as TeamWorkflowCancellationSerializer
+)
 
 
 logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
@@ -153,12 +161,23 @@ def get_assessment_workflow_cancellation(team_submission_uuid):
     """
     Get cancellation information for a team assessment workflow.
     """
-    # TODO: Return the serialized results of
-    # `AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)`.
-    raise NotImplementedError
+    try:
+        workflow_cancellation = TeamAssessmentWorkflowCancellation.get_latest_workflow_cancellation(
+            team_submission_uuid
+        )
+        return TeamWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
+    except DatabaseError:
+        error_message = (
+            u"Error finding team assessment workflow cancellation for team submission UUID {uuid}."
+        ).format(uuid=team_submission_uuid)
+        logger.exception(error_message)
+        raise AssessmentWorkflowInternalError(error_message)
 
 
 def is_workflow_cancelled(team_submission_uuid):
-    """
-    """
-    raise NotImplementedError
+    """ Check if assessment workflow is cancelled """
+    try:
+        workflow = TeamAssessmentWorkflow.get_by_submission_uuid(team_submission_uuid)
+        return workflow.is_cancelled if workflow else False
+    except AssessmentWorkflowError:
+        return False

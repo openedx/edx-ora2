@@ -867,5 +867,7 @@ class TeamAssessmentWorkflowCancellation(AssessmentWorkflowCancellation):
     @classmethod
     def get_latest_workflow_cancellation(cls, team_submission_uuid):
         """ Get the latest AssessmentWorkflowCancellation for a submission's workflow. """
-        team_workflow_cancellations = cls.objects.filter(workflow__team_submission_uuid=team_submission_uuid).order_by("-created_at")
+        team_workflow_cancellations = cls.objects.filter(
+            team_workflow__team_submission_uuid=team_submission_uuid
+        ).order_by("-created_at")
         return team_workflow_cancellations[0] if team_workflow_cancellations.exists() else None
