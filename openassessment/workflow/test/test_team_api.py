@@ -55,14 +55,14 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
             {'status': 'cancelled', 'count': 1},
         ])
 
-    def test_cancel_workflow(self, mock_workflow):
+    def test_cancel_workflow(self):
         # Given a workflow
         # When I cancel the workflow
         # The workflow status should be cancelled...
         # the points/score should be 0
         pass
 
-    def test_get_workflow_cancellation(self, mock_get):
+    def test_get_workflow_cancellation(self):
         # Given a set of cancelled workflows
         # When I query for a cancelled flow
         # I get serialized info from the cancelled workflow
