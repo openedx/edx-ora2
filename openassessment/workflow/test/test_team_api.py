@@ -1,7 +1,7 @@
 """ Test Cases for Team Workflow API """
 import uuid
 
-from openassessment.workflow.models import TeamAssessmentWorkflow
+from openassessment.workflow.models import TeamAssessmentWorkflow, TeamAssessmentWorkflowCancellation
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import team_api
 
@@ -54,6 +54,19 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
             {'status': 'done', 'count': 1},
             {'status': 'cancelled', 'count': 1},
         ])
+
+    def test_cancel_workflow(self, mock_workflow):
+        # Given a workflow
+        # When I cancel the workflow
+        # The workflow status should be cancelled...
+        # the points/score should be 0
+        pass
+
+    def test_get_workflow_cancellation(self, mock_get):
+        # Given a set of cancelled workflows
+        # When I query for a cancelled flow
+        # I get serialized info from the cancelled workflow
+        pass
 
     def _create_test_workflow(self, team_submission_uuid, status=TeamAssessmentWorkflow.STATUS.waiting):
         """ Create a team workflow with filler values """
