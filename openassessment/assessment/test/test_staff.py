@@ -646,12 +646,12 @@ class BaseStaffWorkflowModelTestMixin(object):
         When getting a submission to review, prioritize submissions
         that the reviewer has previously worked on
         """
-        #Create three ungraded
+        # Create three ungraded
         self._create_ungraded()
         self._create_ungraded()
         self._create_ungraded()
 
-        #Create graded and in-progress for graders 1 and 2
+        # Create graded and in-progress for graders 1 and 2
         self._create_graded(scorer_id=self.scorer_1_id)
         in_progress_scorer_1 = self._create_in_progress(scorer_id=self.scorer_1_id)
 
@@ -660,10 +660,9 @@ class BaseStaffWorkflowModelTestMixin(object):
 
         self._get_and_assert_workflow(in_progress_scorer_1)
 
-
     def test_get_submission_for_review_no_scorer(self):
         """
-        When getting a submission to review, if there are no workflows the 
+        When getting a submission to review, if there are no workflows the
         reviewer has worked on, get one that has no scorer (or has timed out)
         """
         self._create_graded(scorer_id=self.scorer_1_id)
@@ -672,15 +671,14 @@ class BaseStaffWorkflowModelTestMixin(object):
 
         self._get_and_assert_workflow(no_scorer)
 
-
     def test_get_submission_for_review_in_progress_past_timeout(self):
         """
-        When getting a submission to review, if there are no workflows the 
+        When getting a submission to review, if there are no workflows the
         reviewer has worked on, get one that has timed out (or has no scorer)
         """
         self._create_graded(scorer_id=self.scorer_1_id)
         self._create_in_progress(scorer_id=self.scorer_2_id)
-        
+
         hour_past_time_limit_td = self.model.TIME_LIMIT + timedelta(hours=1)
         grading_start = datetime.now() - hour_past_time_limit_td
         timed_out = self._create_ungraded(scorer_id=self.scorer_2_id, grading_started_at=grading_start)
