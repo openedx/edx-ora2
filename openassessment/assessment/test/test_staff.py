@@ -526,7 +526,10 @@ class TestStaffAssessment(CacheResetTest):
 
 
 @ddt
-class BaseStaffWorkflowModelTestMixin(object):
+class BaseStaffWorkflowModelTestMixin():
+    """
+    Common tests and test data for StaffWorkflowTest and TeamStaffWorkflowTest
+    """
     item_id = 'itemitemitemimitem'
     other_item_id = 'other_item_id'
     course_id = 'edx/TestCourse/CourseRun2'
@@ -555,6 +558,7 @@ class BaseStaffWorkflowModelTestMixin(object):
     @classmethod
     def _create_in_progress(cls, course_id=None, item_id=None, scorer_id=''):
         """
+        Create an in-progress workflow
         """
         # pylint: disable=unexpected-keyword-arg
         return cls.create_workflow(
@@ -588,6 +592,7 @@ class BaseStaffWorkflowModelTestMixin(object):
     @classmethod
     def _create_graded(cls, course_id=None, item_id=None, scorer_id=''):
         """
+        Create a completed, graded workflow (no assessment is created)
         """
         # pylint: disable=unexpected-keyword-arg
         return cls.create_workflow(
@@ -629,6 +634,12 @@ class BaseStaffWorkflowModelTestMixin(object):
         )
 
     def _get_and_assert_workflow(self, expected_workflow):
+        """
+        Call get_submission_for_review for course_id, item_id, and scorer_1_id
+        Verify the identifying uuid returned is the expected workflow, and
+        check that scorer_id and grading_started_at were updated
+        """
+
         submission_uuid = self.model.get_submission_for_review(self.course_id, self.item_id, self.scorer_1_id)
         selected_workflow = self.get_workflow_by_identifying_uuid(submission_uuid)
 
@@ -637,9 +648,9 @@ class BaseStaffWorkflowModelTestMixin(object):
         self.assertEqual(expected_workflow.id, selected_workflow.id)
         self.assertEqual(self.scorer_1_id, selected_workflow.scorer_id)
 
-        now = datetime.now(tz=selected_workflow.grading_started_at.tzinfo)
-        timediff = now - selected_workflow.grading_started_at
-        self.assertTrue(timediff < timedelta(seconds=1))
+        now_with_tz = datetime.now(tz=selected_workflow.grading_started_at.tzinfo)
+        timediff = now_with_tz - selected_workflow.grading_started_at
+        self.assertLess(timediff, timedelta(seconds=1))
 
     def test_get_submission_for_review_previously_graded(self):
         """
@@ -715,6 +726,7 @@ class BaseStaffWorkflowModelTestMixin(object):
 
 
 class StaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
+    """ Tests for the StaffWorkflow model """
 
     model = StaffWorkflow
 
@@ -731,6 +743,7 @@ class StaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
 
 
 class TeamStaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
+    """ Tests for the TeamStaffWorkflow model """
 
     model = TeamStaffWorkflow
 

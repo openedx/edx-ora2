@@ -118,23 +118,25 @@ class AssessmentFeedbackFactory(DjangoModelFactory):
 
 
 class StaffWorkflowFactory(DjangoModelFactory):
+    """ Create StaffWorkflow models for testing """
     class Meta:
         model = StaffWorkflow
 
     scorer_id = ''
-    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))
-    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))
+    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))  # pylint: disable=unnecessary-lambda
     submission_uuid = factory.Faker('sha1')
     assessment = None
 
 
 class TeamStaffWorkflowFactory(DjangoModelFactory):
+    """ Create StaffWorkflow models for testing """
     class Meta:
         model = TeamStaffWorkflow
 
     scorer_id = ''
-    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))
-    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))
+    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))  # pylint: disable=unnecessary-lambda
     submission_uuid = factory.Faker('sha1')
     assessment = None
     team_submission_uuid = factory.Faker('sha1')
