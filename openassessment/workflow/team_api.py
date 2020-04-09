@@ -5,6 +5,7 @@ in `workflow.api`, but specifically for handling team submissions.
 import logging
 
 from django.db import DatabaseError
+from django.db.models import Count
 
 from openassessment.workflow.errors import (
     AssessmentWorkflowInternalError,
@@ -21,7 +22,7 @@ from openassessment.workflow.serializers import (
 )
 
 
-logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 def create_workflow(team_submission_uuid):
@@ -31,18 +32,21 @@ def create_workflow(team_submission_uuid):
     we don't accept `steps` or `on_init_params` as parameters to this function,
     since those are only used to indicate which assessment steps (e.g. "peer", "self")
     are to be included in the workflow.
+
+    Raises:
+        AssessmentWorkflowInternalError on error
     """
     try:
         team_workflow = TeamAssessmentWorkflow.start_workflow(team_submission_uuid)
         logger.info((
-            u"Started team assessment workflow for "
-            u"team submission UUID {uuid}"
+            "Started team assessment workflow for "
+            "team submission UUID {uuid}"
         ).format(uuid=team_submission_uuid))
         return team_workflow
     except Exception:
         err_msg = (
-            u"An unexpected error occurred while creating "
-            u"the workflow for team submission UUID {uuid}"
+            "An unexpected error occurred while creating "
+            "the workflow for team submission UUID {uuid}"
         ).format(uuid=team_submission_uuid)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
@@ -54,6 +58,9 @@ def get_workflow_for_submission(team_submission_uuid):
     an analogous `assessment_requirements` parameter, because team submissions
     are only assessible by staff (where requirements like "must_grade" and
     "must_be_graded_by" are not supported).
+
+    Raises:
+        AssessmentWorkflowInternalError on error
     """
     # Get the wokflow for this submission
     team_workflow = _get_workflow_model(team_submission_uuid)
@@ -62,11 +69,11 @@ def get_workflow_for_submission(team_submission_uuid):
     try:
         team_workflow.update_from_assessments()
         logger.info((
-            u"Updated workflow for team submission UUID {uuid} "
+            "Updated workflow for team submission UUID {uuid} "
         ).format(uuid=team_submission_uuid))
     except Exception as exc:
         err_msg = (
-            u"Could not update team assessment workflow: {exc}"
+            "Could not update team assessment workflow: {exc}"
         ).format(exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
@@ -85,6 +92,11 @@ def _get_workflow_model(team_submission_uuid):
     """
     Returns the `TeamAssessmentWorkflow` model associated with the
     given `team_submission_uuid`.
+
+    Raises:
+        AssessmentWorkflowRequestError for incorrect arguments
+        AssessmentWorkflowNotFoundError when workflow not found
+        AssessmentWorkflowInternalError on error
     """
     if not isinstance(team_submission_uuid, str):
         raise AssessmentWorkflowRequestError("team_submission_uuid must be a string")
@@ -93,14 +105,14 @@ def _get_workflow_model(team_submission_uuid):
         team_workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
     except Exception as exc:
         err_msg = (
-            u"Could not get team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
+            "Could not get team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
         ).format(uuid=team_submission_uuid, exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
 
     if team_workflow is None:
         err_msg = (
-            u"No team assessment workflow matching team_submission_uuid {uuid}"
+            "No team assessment workflow matching team_submission_uuid {uuid}"
         ).format(uuid=team_submission_uuid)
         raise AssessmentWorkflowNotFoundError(err_msg)
 
@@ -125,25 +137,30 @@ def get_status_counts(course_id, item_id):
         [
             {"status": "staff", "count": 5},
             {"status": "waiting", "count": 43},
-            {"status": "done", "count": 12},
+            {"status": "done", "count": 0},
         ]
     """
-    # The AI status exists for workflow logic, but no student will ever be in
-    # the AI status, so we should never return it.
     statuses = TeamAssessmentWorkflow.STEPS + TeamAssessmentWorkflow.STATUSES
+
+    # Remove AI status, valid for workflow logic but not a valid team/student step
     if 'ai' in statuses:
         statuses.remove('ai')
 
+    queryset = TeamAssessmentWorkflow.objects.filter(
+        status__in=statuses,
+        course_id=course_id,
+        item_id=item_id,
+    ).values('status').annotate(count=Count('status')).order_by('-created')
+
+    counts_by_status = {status: 0 for status in statuses}
+
+    for row in queryset:
+        counts_by_status[row['status']] = row['count']
+
     return [
-        {
-            "status": status,
-            "count": TeamAssessmentWorkflow.objects.filter(
-                status=status,
-                course_id=course_id,
-                item_id=item_id,
-            ).count()
-        }
-        for status in statuses
+        {'status': status, 'count': count}
+        for status, count
+        in counts_by_status.items()
     ]
 
 

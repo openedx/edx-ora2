@@ -635,7 +635,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             return None
         except DatabaseError as exc:
             message = (
-                u"Error finding workflow for team submission UUID {uuid} due to error: {exc}."
+                "Error finding workflow for team submission UUID {uuid} due to error: {exc}."
             ).format(uuid=team_submission_uuid, exc=exc)
             logger.exception(message)
             raise AssessmentWorkflowError(message)
