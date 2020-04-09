@@ -5,7 +5,7 @@ Tests for staff assessments.
 from __future__ import absolute_import
 
 import copy
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from ddt import data, ddt, unpack
 import mock
@@ -18,8 +18,9 @@ from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api.peer import create_assessment as peer_assess
 from openassessment.assessment.api.self import create_assessment as self_assess
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
-from openassessment.assessment.models import Assessment, StaffWorkflow
+from openassessment.assessment.models import Assessment, StaffWorkflow, TeamStaffWorkflow
 from openassessment.test_utils import CacheResetTest
+from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, AssessmentFactory
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 
@@ -522,3 +523,227 @@ class TestStaffAssessment(CacheResetTest):
             peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], steps, init_params)
         return submission, new_student_item
+
+
+@ddt
+class BaseStaffWorkflowModelTestMixin(object):
+    item_id = 'itemitemitemimitem'
+    other_item_id = 'other_item_id'
+    course_id = 'edx/TestCourse/CourseRun2'
+    other_course_id = 'edx/SomeOtherCourse/CourseRun15'
+    scorer_1_id = 'scorer1'
+    scorer_2_id = 'scorer2'
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Make some graded, ungraded and in-progress workflows for another item in this
+        course and in another course, just for some noise
+        """
+        for _ in range(2):
+            cls._create_in_progress(
+                course_id=cls.other_course_id,
+                item_id=cls.other_item_id,
+                scorer_id=cls.scorer_2_id)
+            cls._create_ungraded(course_id=cls.other_course_id, item_id=cls.other_item_id)
+            cls._create_graded(course_id=cls.other_course_id, item_id=cls.other_item_id, scorer_id=cls.scorer_1_id)
+
+            cls._create_in_progress(item_id=cls.other_item_id, scorer_id=cls.scorer_2_id)
+            cls._create_ungraded(item_id=cls.other_item_id)
+            cls._create_graded(item_id=cls.other_item_id, scorer_id=cls.scorer_1_id)
+
+    @classmethod
+    def _create_in_progress(cls, course_id=None, item_id=None, scorer_id=''):
+        """
+        """
+        # pylint: disable=unexpected-keyword-arg
+        return cls.create_workflow(
+            course_id=course_id or cls.course_id,
+            item_id=item_id or cls.item_id,
+            scorer_id=scorer_id,
+            grading_completed_at=None,
+            cancelled_at=None,
+            grading_started_at=datetime.now(),
+        )
+
+    @classmethod
+    def _create_ungraded(cls, course_id=None, item_id=None, scorer_id='', grading_started_at=None):
+        """
+        Create an ungraded workflow with the given fields.
+
+        A workflow can still be ungraded if it has a scorer_id and grading_started_at,
+        as long as grading_started_at is before the timeout. This function doesn't actually do
+        that validation, beware.
+        """
+        # pylint: disable=unexpected-keyword-arg
+        return cls.create_workflow(
+            course_id=course_id or cls.course_id,
+            item_id=item_id or cls.item_id,
+            grading_completed_at=None,
+            cancelled_at=None,
+            scorer_id=scorer_id,
+            grading_started_at=grading_started_at,
+        )
+
+    @classmethod
+    def _create_graded(cls, course_id=None, item_id=None, scorer_id=''):
+        """
+        """
+        # pylint: disable=unexpected-keyword-arg
+        return cls.create_workflow(
+            course_id=course_id or cls.course_id,
+            item_id=item_id or cls.item_id,
+            scorer_id=scorer_id,
+            cancelled_at=None,
+            grading_completed_at=datetime.now()
+        )
+
+    def test_cancelled(self):
+        workflow = self.create_workflow()
+        self.assertFalse(workflow.is_cancelled)
+        workflow.cancelled_at = datetime.now()
+        self.assertTrue(workflow.is_cancelled)
+
+    @unpack
+    @data(
+        (0, 5, 7),
+        (3, 0, 4),
+        (5, 2, 0),
+        (0, 0, 0),
+    )
+    def test_get_workflow_statistics(self, expected_graded, expected_ungraded, expected_in_progress):
+        for _ in range(expected_graded):
+            self._create_graded()
+        for _ in range(expected_ungraded):
+            self._create_ungraded()
+        for _ in range(expected_in_progress):
+            self._create_in_progress()
+        stats = self.model.get_workflow_statistics(self.course_id, self.item_id)
+        self.assertDictEqual(
+            {
+                'graded': expected_graded,
+                'ungraded': expected_ungraded,
+                'in-progress': expected_in_progress,
+            },
+            stats
+        )
+
+    def _get_and_assert_workflow(self, expected_workflow):
+        submission_uuid = self.model.get_submission_for_review(self.course_id, self.item_id, self.scorer_1_id)
+        selected_workflow = self.get_workflow_by_identifying_uuid(submission_uuid)
+
+        # Check that the workflow is the workflow we expect, and that scorer_id was updated, and that
+        # grading_started_at was set no more than a second ago.
+        self.assertEqual(expected_workflow.id, selected_workflow.id)
+        self.assertEqual(self.scorer_1_id, selected_workflow.scorer_id)
+
+        now = datetime.now(tz=selected_workflow.grading_started_at.tzinfo)
+        timediff = now - selected_workflow.grading_started_at
+        self.assertTrue(timediff < timedelta(seconds=1))
+
+    def test_get_submission_for_review_previously_graded(self):
+        """
+        When getting a submission to review, prioritize submissions
+        that the reviewer has previously worked on
+        """
+        #Create three ungraded
+        self._create_ungraded()
+        self._create_ungraded()
+        self._create_ungraded()
+
+        #Create graded and in-progress for graders 1 and 2
+        self._create_graded(scorer_id=self.scorer_1_id)
+        in_progress_scorer_1 = self._create_in_progress(scorer_id=self.scorer_1_id)
+
+        self._create_graded(scorer_id=self.scorer_2_id)
+        self._create_in_progress(scorer_id=self.scorer_2_id)
+
+        self._get_and_assert_workflow(in_progress_scorer_1)
+
+
+    def test_get_submission_for_review_no_scorer(self):
+        """
+        When getting a submission to review, if there are no workflows the 
+        reviewer has worked on, get one that has no scorer (or has timed out)
+        """
+        self._create_graded(scorer_id=self.scorer_1_id)
+        self._create_in_progress(scorer_id=self.scorer_2_id)
+        no_scorer = self._create_ungraded()
+
+        self._get_and_assert_workflow(no_scorer)
+
+
+    def test_get_submission_for_review_in_progress_past_timeout(self):
+        """
+        When getting a submission to review, if there are no workflows the 
+        reviewer has worked on, get one that has timed out (or has no scorer)
+        """
+        self._create_graded(scorer_id=self.scorer_1_id)
+        self._create_in_progress(scorer_id=self.scorer_2_id)
+        
+        hour_past_time_limit_td = self.model.TIME_LIMIT + timedelta(hours=1)
+        grading_start = datetime.now() - hour_past_time_limit_td
+        timed_out = self._create_ungraded(scorer_id=self.scorer_2_id, grading_started_at=grading_start)
+
+        self._get_and_assert_workflow(timed_out)
+
+    def test_get_submission_for_review_no_available(self):
+        self._create_graded(scorer_id=self.scorer_1_id)
+        self._create_graded(scorer_id=self.scorer_2_id)
+        self._create_in_progress(scorer_id=self.scorer_2_id)
+
+        submission_uuid = self.model.get_submission_for_review(self.course_id, self.item_id, self.scorer_1_id)
+        self.assertIsNone(submission_uuid)
+
+    def test_database_error(self):
+        self._create_ungraded()
+        with mock.patch.object(self.model, 'save') as mocked_save:
+            mocked_save.side_effect = DatabaseError
+            with self.assertRaises(StaffAssessmentInternalError):
+                self.model.get_submission_for_review(self.course_id, self.item_id, self.scorer_1_id)
+
+    def test_close_active_assessment(self):
+        workflow = self.create_workflow()
+        self.assertIsNone(workflow.assessment)
+        self.assertEqual('', workflow.scorer_id)
+        self.assertIsNone(workflow.grading_completed_at)
+
+        assessment = AssessmentFactory.create()
+        workflow.close_active_assessment(assessment, self.scorer_1_id)
+
+        self.assertEqual(assessment.id, workflow.assessment)
+        self.assertEqual(self.scorer_1_id, workflow.scorer_id)
+        self.assertIsNotNone(workflow.grading_completed_at)
+
+
+class StaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
+
+    model = StaffWorkflow
+
+    @classmethod
+    def create_workflow(cls, **kwargs):
+        return StaffWorkflowFactory.create(**kwargs)
+
+    def get_workflow_by_identifying_uuid(self, uuid):
+        return StaffWorkflow.objects.get(submission_uuid=uuid)
+
+    def test_identifying_uuid(self):
+        workflow = self.create_workflow()
+        self.assertEqual(workflow.submission_uuid, workflow.identifying_uuid)
+
+
+class TeamStaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
+
+    model = TeamStaffWorkflow
+
+    @classmethod
+    def create_workflow(cls, **kwargs):
+        return TeamStaffWorkflowFactory.create(**kwargs)
+
+    def get_workflow_by_identifying_uuid(self, uuid):
+        return TeamStaffWorkflow.objects.get(team_submission_uuid=uuid)
+
+    def test_identifying_uuid(self):
+        workflow = self.create_workflow()
+        self.assertNotEqual(workflow.submission_uuid, workflow.identifying_uuid)
+        self.assertEqual(workflow.team_submission_uuid, workflow.identifying_uuid)

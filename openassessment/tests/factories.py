@@ -7,7 +7,7 @@ import factory
 from factory.django import DjangoModelFactory
 
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
-                                              Criterion, CriterionOption, Rubric)
+                                              Criterion, CriterionOption, Rubric, StaffWorkflow, TeamStaffWorkflow)
 
 
 class RubricFactory(DjangoModelFactory):
@@ -115,3 +115,26 @@ class AssessmentFeedbackFactory(DjangoModelFactory):
         if extracted:
             for option in extracted:
                 self.options.add(option)  # pylint: disable=no-member
+
+
+class StaffWorkflowFactory(DjangoModelFactory):
+    class Meta:
+        model = StaffWorkflow
+
+    scorer_id = ''
+    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))
+    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))
+    submission_uuid = factory.Faker('sha1')
+    assessment = None
+
+
+class TeamStaffWorkflowFactory(DjangoModelFactory):
+    class Meta:
+        model = TeamStaffWorkflow
+
+    scorer_id = ''
+    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))
+    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))
+    submission_uuid = factory.Faker('sha1')
+    assessment = None
+    team_submission_uuid = factory.Faker('sha1')
