@@ -12,7 +12,8 @@ from openassessment.workflow.errors import (
     AssessmentWorkflowNotFoundError
 )
 from openassessment.workflow.models import (
-    TeamAssessmentWorkflow
+    TeamAssessmentWorkflow,
+    AssessmentWorkflowCancellation
 )
 from openassessment.workflow.serializers import (
     TeamAssessmentWorkflowSerializer,
@@ -178,7 +179,7 @@ def get_assessment_workflow_cancellation(team_submission_uuid):
     """
     try:
         workflow = _get_workflow_model(team_submission_uuid)
-        workflow_cancellation = AssessmentWorkflow.get_latest_workflow_cancellation(
+        workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(
             workflow.submission_uuid
         )
         return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None

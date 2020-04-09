@@ -76,10 +76,21 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         self.assertEqual(team_workflow.score, None)
 
     def test_get_workflow_cancellation(self):
-        # Given a set of cancelled workflows
+        # Given a cancelled workflow
+        team_submission_uuid = 'foo'
+        team_workflow = self._create_test_workflow(team_submission_uuid)
+        team_api.cancel_workflow(
+            team_submission_uuid=team_submission_uuid,
+            comments='cancelled',
+            cancelled_by_id='my-id'
+        )
+
         # When I query for a cancelled flow
-        # I get serialized info from the cancelled workflow
-        pass
+        cancellation = team_api.get_assessment_workflow_cancellation(team_submission_uuid)
+
+        # Then I get serialized info from the cancellation
+        self.assertEquals(cancellation['comments'], 'cancelled')
+        self.assertEquals(cancellation['cancelled_by_id'], 'my-id')
 
     def _create_test_workflow(self, team_submission_uuid, status=TeamAssessmentWorkflow.STATUS.waiting):
         """ Create a team workflow with filler values """
