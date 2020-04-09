@@ -8,6 +8,7 @@ from django.db import DatabaseError
 from django.db.models import Count
 
 from openassessment.workflow.errors import (
+    AssessmentWorkflowError,
     AssessmentWorkflowInternalError,
     AssessmentWorkflowRequestError,
     AssessmentWorkflowNotFoundError

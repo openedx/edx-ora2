@@ -62,17 +62,17 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         )
 
         # The workflow status should be cancelled...
-        team_workflow = team_api._get_workflow_model(team_submission_uuid)
+        team_workflow = team_api.get_workflow_for_submission(team_submission_uuid)
         self.assertTrue(team_api.is_workflow_cancelled(team_submission_uuid))
-        self.assertEqual(team_workflow.status, 'cancelled')
+        self.assertEqual(team_workflow['status'], 'cancelled')
 
         # and the points/score should be 0
-        self.assertEqual(team_workflow.score, None)
+        self.assertEqual(team_workflow['score'], None)
 
     def test_get_workflow_cancellation(self):
         # Given a cancelled workflow
         team_submission_uuid = 'foo'
-        team_workflow = self._create_test_workflow(team_submission_uuid)
+        self._create_test_workflow(team_submission_uuid)
         team_api.cancel_workflow(
             team_submission_uuid=team_submission_uuid,
             comments='cancelled',
