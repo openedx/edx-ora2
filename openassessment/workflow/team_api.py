@@ -152,8 +152,24 @@ def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
 
     An AssessmentWorkflow which has been cancelled is no longer included in the
     staff grading pool.
+
+    Team workflows follow the same cancellation workflow,
+    but operate on the reference submission.
     """
-    TeamAssessmentWorkflow.cancel_workflow(team_submission_uuid, comments, cancelled_by_id)
+    try:
+        submission_uuid = _get_workflow_model(team_submission_uuid).submission_uuid
+        TeamAssessmentWorkflow.cancel_workflow(
+            submission_uuid,
+            comments,
+            cancelled_by_id,
+            TeamAssessmentWorkflow.REQUIREMENTS
+        )
+    except Exception as exc:
+        err_msg = (
+            u"Could not cancel team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
+        ).format(uuid=team_submission_uuid, exc=exc)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
 
 
 def get_assessment_workflow_cancellation(team_submission_uuid):

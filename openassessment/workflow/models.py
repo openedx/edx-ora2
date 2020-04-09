@@ -615,6 +615,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
     """
     # Only staff assessments are supported for teams
     STEPS = ['staff']
+    REQUIREMENTS = {"staff": {"required": True}}
 
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 
@@ -848,4 +849,3 @@ class AssessmentWorkflowCancellation(models.Model):
         """
         workflow_cancellations = cls.objects.filter(workflow__submission_uuid=submission_uuid).order_by("-created_at")
         return workflow_cancellations[0] if workflow_cancellations.exists() else None
-
