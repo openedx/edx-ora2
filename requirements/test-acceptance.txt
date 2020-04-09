@@ -15,13 +15,13 @@ chardet==3.0.4
 coverage==5.0.3
 ddt==1.0.0
 defusedxml==0.5.0
-django-model-utils==3.0.0
+django-model-utils==3.2.0
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
 django-simple-history==2.8.0
 django==2.2.10
 djangorestframework==3.9.4
 edx-i18n-tools==0.5.0
-edx-submissions==3.0.4
+edx-submissions==3.0.6
 factory-boy==2.12.0
 faker==4.0.0
 filelock==3.0.12

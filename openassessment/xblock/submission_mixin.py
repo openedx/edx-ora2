@@ -505,7 +505,11 @@ class SubmissionMixin(object):
                 file_download_url = self._get_url_by_file_key(key)
                 if file_download_url:
                     file_description = descriptions[idx].strip() if idx < len(descriptions) else ''
-                    file_name = file_names[idx].strip() if idx < len(file_names) else ''
+                    try:
+                        file_name = file_names[idx].strip() if idx < len(file_names) else ''
+                    except AttributeError:
+                        file_name = ''
+                        logger.error('descriptions[idx] is None in {}'.format(submission))
                     urls.append((file_download_url, file_description, file_name, False))
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
