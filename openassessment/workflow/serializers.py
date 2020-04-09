@@ -9,8 +9,7 @@ from rest_framework import serializers
 from openassessment.workflow.models import (
     AssessmentWorkflow,
     AssessmentWorkflowCancellation,
-    TeamAssessmentWorkflow,
-    TeamAssessmentWorkflowCancellation
+    TeamAssessmentWorkflow
 )
 
 
@@ -59,20 +58,6 @@ class AssessmentWorkflowCancellationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssessmentWorkflowCancellation
-        fields = (
-            'comments',
-            'cancelled_by_id',
-            'created_at',
-        )
-
-
-class TeamAssessmentWorkflowCancellationSerializer(serializers.ModelSerializer):
-    """
-    Serialize a `TeamAssessmentWorkflowCancellation` model.
-    """
-
-    class Meta:
-        model = TeamAssessmentWorkflowCancellation
         fields = (
             'comments',
             'cancelled_by_id',

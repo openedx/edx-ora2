@@ -12,12 +12,11 @@ from openassessment.workflow.errors import (
     AssessmentWorkflowNotFoundError
 )
 from openassessment.workflow.models import (
-    TeamAssessmentWorkflow,
-    TeamAssessmentWorkflowCancellation
+    TeamAssessmentWorkflow
 )
 from openassessment.workflow.serializers import (
     TeamAssessmentWorkflowSerializer,
-    TeamAssessmentWorkflowCancellationSerializer as TeamWorkflowCancellationSerializer
+    AssessmentWorkflowCancellationSerializer
 )
 
 
@@ -162,22 +161,29 @@ def get_assessment_workflow_cancellation(team_submission_uuid):
     Get cancellation information for a team assessment workflow.
     """
     try:
-        workflow_cancellation = TeamAssessmentWorkflowCancellation.get_latest_workflow_cancellation(
-            team_submission_uuid
+        workflow = _get_workflow_model(team_submission_uuid)
+        workflow_cancellation = AssessmentWorkflow.get_latest_workflow_cancellation(
+            workflow.submission_uuid
         )
-        return TeamWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
+        return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
     except DatabaseError:
         error_message = (
             u"Error finding team assessment workflow cancellation for team submission UUID {uuid}."
         ).format(uuid=team_submission_uuid)
         logger.exception(error_message)
         raise AssessmentWorkflowInternalError(error_message)
+    except Exception as exc:
+        err_msg = (
+            u"Could not get workflow cancellation with team_submission_uuid {uuid} due to error: {exc}"
+        ).format(uuid=team_submission_uuid, exc=exc)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
 
 
 def is_workflow_cancelled(team_submission_uuid):
     """ Check if assessment workflow is cancelled """
     try:
-        workflow = TeamAssessmentWorkflow.get_by_submission_uuid(team_submission_uuid)
+        workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
         return workflow.is_cancelled if workflow else False
     except AssessmentWorkflowError:
         return False

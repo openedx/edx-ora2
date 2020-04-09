@@ -1,7 +1,7 @@
 """ Test Cases for Team Workflow API """
 import uuid
 
-from openassessment.workflow.models import TeamAssessmentWorkflow, TeamAssessmentWorkflowCancellation
+from openassessment.workflow.models import TeamAssessmentWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import team_api
 
