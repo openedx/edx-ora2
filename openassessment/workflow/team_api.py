@@ -185,7 +185,7 @@ def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
         )
     except Exception as exc:
         err_msg = (
-            u"Could not cancel team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
+            "Could not cancel team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
         ).format(uuid=team_submission_uuid, exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
@@ -203,13 +203,13 @@ def get_assessment_workflow_cancellation(team_submission_uuid):
         return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
     except DatabaseError:
         error_message = (
-            u"Error finding team assessment workflow cancellation for team submission UUID {uuid}."
+            "Error finding team assessment workflow cancellation for team submission UUID {uuid}."
         ).format(uuid=team_submission_uuid)
         logger.exception(error_message)
         raise AssessmentWorkflowInternalError(error_message)
     except Exception as exc:
         err_msg = (
-            u"Could not get workflow cancellation with team_submission_uuid {uuid} due to error: {exc}"
+            "Could not get workflow cancellation with team_submission_uuid {uuid} due to error: {exc}"
         ).format(uuid=team_submission_uuid, exc=exc)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
