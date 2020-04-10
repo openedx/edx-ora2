@@ -5,9 +5,10 @@ Tests for staff assessments.
 from __future__ import absolute_import
 
 import copy
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from ddt import data, ddt, unpack
+from freezegun import freeze_time
 import mock
 
 from django.db import DatabaseError
@@ -526,6 +527,7 @@ class TestStaffAssessment(CacheResetTest):
 
 
 @ddt
+@freeze_time("2020-04-10 12:00:01", tz_offset=-4)
 class BaseStaffWorkflowModelTestMixin():
     """
     Common tests and test data for StaffWorkflowTest and TeamStaffWorkflowTest
@@ -567,7 +569,7 @@ class BaseStaffWorkflowModelTestMixin():
             scorer_id=scorer_id,
             grading_completed_at=None,
             cancelled_at=None,
-            grading_started_at=datetime.now(),
+            grading_started_at=now() - timedelta(hours=1),
         )
 
     @classmethod
@@ -600,13 +602,13 @@ class BaseStaffWorkflowModelTestMixin():
             item_id=item_id or cls.item_id,
             scorer_id=scorer_id,
             cancelled_at=None,
-            grading_completed_at=datetime.now()
+            grading_completed_at=now() - timedelta(hours=1),
         )
 
     def test_cancelled(self):
         workflow = self.create_workflow()
         self.assertFalse(workflow.is_cancelled)
-        workflow.cancelled_at = datetime.now()
+        workflow.cancelled_at = now()
         self.assertTrue(workflow.is_cancelled)
 
     @unpack
@@ -647,10 +649,7 @@ class BaseStaffWorkflowModelTestMixin():
         # grading_started_at was set no more than a second ago.
         self.assertEqual(expected_workflow.id, selected_workflow.id)
         self.assertEqual(self.scorer_1_id, selected_workflow.scorer_id)
-
-        now_with_tz = datetime.now(tz=selected_workflow.grading_started_at.tzinfo)
-        timediff = now_with_tz - selected_workflow.grading_started_at
-        self.assertLess(timediff, timedelta(seconds=1))
+        self.assertEqual(now(), selected_workflow.grading_started_at)
 
     def test_get_submission_for_review_previously_graded(self):
         """
@@ -691,12 +690,15 @@ class BaseStaffWorkflowModelTestMixin():
         self._create_in_progress(scorer_id=self.scorer_2_id)
 
         hour_past_time_limit_td = self.model.TIME_LIMIT + timedelta(hours=1)
-        grading_start = datetime.now() - hour_past_time_limit_td
+        grading_start = now() - hour_past_time_limit_td
         timed_out = self._create_ungraded(scorer_id=self.scorer_2_id, grading_started_at=grading_start)
 
         self._get_and_assert_workflow(timed_out)
 
     def test_get_submission_for_review_no_available(self):
+        """
+        When getting a submisison to review, if there are no workflows at all to return, return None
+        """
         self._create_graded(scorer_id=self.scorer_1_id)
         self._create_graded(scorer_id=self.scorer_2_id)
         self._create_in_progress(scorer_id=self.scorer_2_id)
@@ -705,6 +707,9 @@ class BaseStaffWorkflowModelTestMixin():
         self.assertIsNone(submission_uuid)
 
     def test_database_error(self):
+        """
+        Test error behavior
+        """
         self._create_ungraded()
         with mock.patch.object(self.model, 'save') as mocked_save:
             mocked_save.side_effect = DatabaseError
@@ -712,6 +717,9 @@ class BaseStaffWorkflowModelTestMixin():
                 self.model.get_submission_for_review(self.course_id, self.item_id, self.scorer_1_id)
 
     def test_close_active_assessment(self):
+        """
+        Test that calling close_active_assessment sets the expected fields on the workflow
+        """
         workflow = self.create_workflow()
         self.assertIsNone(workflow.assessment)
         self.assertEqual('', workflow.scorer_id)
@@ -722,7 +730,7 @@ class BaseStaffWorkflowModelTestMixin():
 
         self.assertEqual(assessment.id, workflow.assessment)
         self.assertEqual(self.scorer_1_id, workflow.scorer_id)
-        self.assertIsNotNone(workflow.grading_completed_at)
+        self.assertEqual(now(), workflow.grading_completed_at)
 
 
 class StaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):

@@ -100,15 +100,12 @@ class StaffWorkflow(models.Model):
         completely graded, or is actively being reviewed by other staff members.
 
         Args:
-            submission_uuid (str): The submission UUID from the student
-                requesting a submission for assessment. This is used to explicitly
-                avoid giving the student their own submission, and determines the
-                associated Peer Workflow.
+            course_id (str): The course that we would like to retrieve submissions for,
             item_id (str): The student_item that we would like to retrieve submissions for.
             scorer_id (str): The user id of the staff member scoring this submission
 
         Returns:
-            submission_uuid (str): The submission_uuid for the submission to review.
+            identifying_uuid (str): The identifying_uuid for the (team or individual) submission to review.
 
         Raises:
             StaffAssessmentInternalError: Raised when there is an error retrieving
