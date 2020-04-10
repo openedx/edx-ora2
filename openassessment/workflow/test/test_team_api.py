@@ -49,6 +49,43 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         for step in expected_steps:
             assert {'status': step, 'count': 1} in counts
 
+    def test_cancel_workflow(self):
+        # Given a workflow
+        team_submission_uuid = 'foo'
+        team_workflow = self._create_test_workflow(team_submission_uuid)
+
+        # When I cancel the workflow
+        team_api.cancel_workflow(
+            team_submission_uuid=team_submission_uuid,
+            comments='cancelled',
+            cancelled_by_id='my-id'
+        )
+
+        # The workflow status should be cancelled...
+        team_workflow = team_api.get_workflow_for_submission(team_submission_uuid)
+        self.assertTrue(team_api.is_workflow_cancelled(team_submission_uuid))
+        self.assertEqual(team_workflow['status'], 'cancelled')
+
+        # and the points/score should be 0
+        self.assertEqual(team_workflow['score'], None)
+
+    def test_get_workflow_cancellation(self):
+        # Given a cancelled workflow
+        team_submission_uuid = 'foo'
+        self._create_test_workflow(team_submission_uuid)
+        team_api.cancel_workflow(
+            team_submission_uuid=team_submission_uuid,
+            comments='cancelled',
+            cancelled_by_id='my-id'
+        )
+
+        # When I query for a cancelled flow
+        cancellation = team_api.get_assessment_workflow_cancellation(team_submission_uuid)
+
+        # Then I get serialized info from the cancellation
+        self.assertEqual(cancellation['comments'], 'cancelled')
+        self.assertEqual(cancellation['cancelled_by_id'], 'my-id')
+
     def _create_test_workflow(self, team_submission_uuid, status=TeamAssessmentWorkflow.STATUS.waiting):
         """ Create a team workflow with filler values """
         return TeamAssessmentWorkflow.objects.create(

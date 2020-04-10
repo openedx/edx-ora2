@@ -4,15 +4,23 @@ in `workflow.api`, but specifically for handling team submissions.
 """
 import logging
 
+from django.db import DatabaseError
 from django.db.models import Count
 
 from openassessment.workflow.errors import (
+    AssessmentWorkflowError,
     AssessmentWorkflowInternalError,
     AssessmentWorkflowRequestError,
     AssessmentWorkflowNotFoundError
 )
-from openassessment.workflow.models import TeamAssessmentWorkflow
-from openassessment.workflow.serializers import TeamAssessmentWorkflowSerializer
+from openassessment.workflow.models import (
+    TeamAssessmentWorkflow,
+    AssessmentWorkflowCancellation
+)
+from openassessment.workflow.serializers import (
+    TeamAssessmentWorkflowSerializer,
+    AssessmentWorkflowCancellationSerializer
+)
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -155,3 +163,64 @@ def get_status_counts(course_id, item_id):
         for status, count
         in counts_by_status.items()
     ]
+
+
+def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
+    """
+    Add an entry in AssessmentWorkflowCancellation table for a TeamAssessmentWorkflow.
+
+    An TeamAssessmentWorkflow which has been cancelled is no longer included in the
+    staff grading pool.
+
+    Team workflows follow the same cancellation workflow,
+    but operate on the reference submission.
+    """
+    try:
+        submission_uuid = _get_workflow_model(team_submission_uuid).submission_uuid
+        TeamAssessmentWorkflow.cancel_workflow(
+            submission_uuid,
+            comments,
+            cancelled_by_id,
+            TeamAssessmentWorkflow.REQUIREMENTS
+        )
+    except Exception as exc:
+        err_msg = (
+            "Could not cancel team assessment workflow with team_submission_uuid {uuid} due to error: {exc}"
+        ).format(uuid=team_submission_uuid, exc=exc)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
+
+
+def get_assessment_workflow_cancellation(team_submission_uuid):
+    """
+    Get cancellation information for a team assessment workflow.
+    """
+    try:
+        workflow = _get_workflow_model(team_submission_uuid)
+        workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(
+            workflow.submission_uuid
+        )
+        return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
+    except DatabaseError:
+        error_message = (
+            "Error finding team assessment workflow cancellation for team submission UUID {uuid}."
+        ).format(uuid=team_submission_uuid)
+        logger.exception(error_message)
+        raise AssessmentWorkflowInternalError(error_message)
+    except Exception as exc:
+        err_msg = (
+            "Could not get workflow cancellation with team_submission_uuid {uuid} due to error: {exc}"
+        ).format(uuid=team_submission_uuid, exc=exc)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
+
+
+def is_workflow_cancelled(team_submission_uuid):
+    """
+    Check if the team assessment workflow is cancelled
+    """
+    try:
+        workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
+        return workflow.is_cancelled if workflow else False
+    except AssessmentWorkflowError:
+        return False
