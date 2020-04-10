@@ -167,9 +167,9 @@ def get_status_counts(course_id, item_id):
 
 def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
     """
-    Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
+    Add an entry in AssessmentWorkflowCancellation table for a TeamAssessmentWorkflow.
 
-    An AssessmentWorkflow which has been cancelled is no longer included in the
+    An TeamAssessmentWorkflow which has been cancelled is no longer included in the
     staff grading pool.
 
     Team workflows follow the same cancellation workflow,
@@ -216,7 +216,9 @@ def get_assessment_workflow_cancellation(team_submission_uuid):
 
 
 def is_workflow_cancelled(team_submission_uuid):
-    """ Check if assessment workflow is cancelled """
+    """
+    Check if the team assessment workflow is cancelled
+    """
     try:
         workflow = TeamAssessmentWorkflow.get_by_team_submission_uuid(team_submission_uuid)
         return workflow.is_cancelled if workflow else False
