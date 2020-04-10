@@ -54,6 +54,14 @@ class StaffWorkflow(models.Model):
         """
         return bool(self.cancelled_at)
 
+    @property
+    def identifying_uuid(self):
+        """
+        Return the 'primary' identifying UUID for the staff workflow.
+        (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
+        """
+        return self.submission_uuid
+
     @classmethod
     def get_workflow_statistics(cls, course_id, item_id):
         """
@@ -92,15 +100,12 @@ class StaffWorkflow(models.Model):
         completely graded, or is actively being reviewed by other staff members.
 
         Args:
-            submission_uuid (str): The submission UUID from the student
-                requesting a submission for assessment. This is used to explicitly
-                avoid giving the student their own submission, and determines the
-                associated Peer Workflow.
+            course_id (str): The course that we would like to retrieve submissions for,
             item_id (str): The student_item that we would like to retrieve submissions for.
             scorer_id (str): The user id of the staff member scoring this submission
 
         Returns:
-            submission_uuid (str): The submission_uuid for the submission to review.
+            identifying_uuid (str): The identifying_uuid for the (team or individual) submission to review.
 
         Raises:
             StaffAssessmentInternalError: Raised when there is an error retrieving
@@ -111,7 +116,7 @@ class StaffWorkflow(models.Model):
         timeout = (now() - cls.TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
         try:
             # Search for existing submissions that the scorer has worked on.
-            staff_workflows = StaffWorkflow.objects.filter(
+            staff_workflows = cls.objects.filter(
                 course_id=course_id,
                 item_id=item_id,
                 scorer_id=scorer_id,
@@ -121,7 +126,7 @@ class StaffWorkflow(models.Model):
             # If no existing submissions exist, then get any other
             # available workflows.
             if not staff_workflows:
-                staff_workflows = StaffWorkflow.objects.filter(
+                staff_workflows = cls.objects.filter(
                     models.Q(scorer_id='') | models.Q(grading_started_at__lte=timeout),
                     course_id=course_id,
                     item_id=item_id,
@@ -135,7 +140,7 @@ class StaffWorkflow(models.Model):
             workflow.scorer_id = scorer_id
             workflow.grading_started_at = now()
             workflow.save()
-            return workflow.submission_uuid
+            return workflow.identifying_uuid
         except DatabaseError:
             error_message = (
                 u"An internal error occurred while retrieving a submission for staff grading"
@@ -158,3 +163,11 @@ class TeamStaffWorkflow(StaffWorkflow):
     Extends the StafWorkflow to be used for team based assessments.
     """
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
+
+    @property
+    def identifying_uuid(self):
+        """
+        Return the 'primary' identifying UUID for the staff workflow.
+        (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
+        """
+        return self.team_submission_uuid
