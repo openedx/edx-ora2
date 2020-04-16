@@ -6,6 +6,7 @@ from __future__ import absolute_import
 import logging
 
 from django.db import DatabaseError
+from django.utils.timezone import now
 
 from openassessment.assessment.models.staff import TeamStaffWorkflow
 from submissions import (
@@ -63,6 +64,35 @@ def on_init(team_submission_uuid):
     except DatabaseError:
         error_message = (
             "An internal error occurred while creating a new team staff workflow for team submission {}"
+        ).format(team_submission_uuid)
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)
+
+
+def on_cancel(team_submission_uuid):
+    """
+    Cancel the team staff workflow for submission.
+
+    Sets the cancelled_at field in team staff workflow.
+
+    Args:
+        team_submission_uuid (str): The team_submission UUID associated with this workflow.
+
+    Returns:
+        None
+
+    """
+    try:
+        workflow = TeamStaffWorkflow.objects.get(team_submission_uuid=team_submission_uuid)
+        workflow.cancelled_at = now()
+        workflow.save(update_fields=['cancelled_at'])
+    except TeamStaffWorkflow.DoesNotExist:
+        # If we can't find a workflow, then we don't have to do anything to
+        # cancel it.
+        pass
+    except DatabaseError:
+        error_message = (
+            "An internal error occurred while cancelling the team staff workflow for submission {}"
         ).format(team_submission_uuid)
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message)

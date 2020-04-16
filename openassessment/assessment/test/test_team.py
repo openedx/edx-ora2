@@ -4,9 +4,13 @@ Tests for team assessments.
 from __future__ import absolute_import
 
 import mock
+from freezegun import freeze_time
+
+from django.utils.timezone import now
 
 from openassessment.assessment.api import teams as teams_api
 from openassessment.assessment.models.staff import TeamStaffWorkflow
+from openassessment.tests.factories import TeamStaffWorkflowFactory
 from openassessment.test_utils import CacheResetTest
 
 from submissions import (
@@ -43,3 +47,15 @@ class TestTeamApi(CacheResetTest):
         # Then I generate a new TeamStaffWorkflow for the submission
         new_workflow = TeamStaffWorkflow.objects.get(team_submission_uuid=team_submission_uuid)
         assert new_workflow is not None
+
+    @freeze_time("2020-04-10 12:00:01", tz_offset=-4)
+    def test_cancel(self):
+        # Given a team submission
+        workflow = TeamStaffWorkflowFactory.create()
+
+        # When I cancel through the API
+        teams_api.on_cancel(workflow.team_submission_uuid)
+
+        # The workflow, gets cancelled
+        cancelled_workflow = TeamStaffWorkflow.objects.get(team_submission_uuid=workflow.team_submission_uuid)
+        self.assertEqual(cancelled_workflow.cancelled_at, now())
