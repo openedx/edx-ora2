@@ -5,6 +5,14 @@ from __future__ import absolute_import
 
 import logging
 
+from django.db import DatabaseError
+
+from openassessment.assessment.models.staff import TeamStaffWorkflow
+from submissions import (
+    api as submissions_api,
+    team_api as team_submissions_api
+)
+
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -22,3 +30,39 @@ def submitter_is_finished(team_submission_uuid, team_requirements):  # pylint: d
 
     """
     return True
+
+
+def on_init(team_submission_uuid):
+    """
+    Create a new team staff workflow for a student item and submission.
+
+    Creates a unique team staff workflow for a student item, associated with a
+    team submission.
+
+    Note that the staff workflow begins things in on_init() instead of
+    on_start(), because staff shoud be able to access the submission
+    regardless of which state the workflow is currently in.
+
+    Args:
+        team_submission_uuid (str): The team submission associated with this workflow.
+
+    Returns:
+        None
+
+    Raises:
+        StaffAssessmentInternalError: Raised when there is an internal error
+            creating the Workflow.
+    """
+    try:
+        team_submission = team_submissions_api.get_team_submission(team_submission_uuid)
+        TeamStaffWorkflow.objects.get_or_create(
+            course_id=team_submission['course_id'],
+            item_id=team_submission['item_id'],
+            team_submission_uuid=team_submission_uuid
+        )
+    except DatabaseError:
+        error_message = (
+            "An internal error occurred while creating a new team staff workflow for team submission {}"
+        ).format(team_submission_uuid)
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)
