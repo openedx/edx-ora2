@@ -223,6 +223,30 @@ class SubmissionMixin(object):
                 result[self.SAMPLE_OUTPUT] = output['errors']
         return result
 
+    def grade_response_v2(self, data, add_staff_output=False):
+        data.update({'problem_name': self.display_name})
+        grader = TestGrader()
+        output = grader.grade(data)
+
+        sample_output = output[0]
+        response_dict = {
+            'error': None,
+            'correct': None,
+            'incorrect': None,
+            'total': None,
+            'test_results': {}
+        }
+        if sample_output['error']:
+            response_dict['error'] = sample_output['error'][0]
+        else:
+            response_dict['correct'] = sample_output['correct']
+            response_dict['incorrect'] = sample_output['incorrect']
+            response_dict['total'] = sample_output['total_tests']
+            response_dict['test_results'] = sample_output['output']
+            # for key, value in sample_output['output'].items():
+            #     response_dict['test_results'][key] = value['correct']
+        return response_dict
+
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -240,11 +264,8 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
-            grade_output = self.grade_response(data)
+            grade_output = self.grade_response_v2(data)
             student_sub_data = data['submission']
-            # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-            # if not success:
-            #     return {'success': False, 'msg': msg}
             try:
                 self.saved_response = json.dumps(
                     prepare_submission_for_serialization(student_sub_data)
@@ -258,25 +279,12 @@ class SubmissionMixin(object):
                     {"saved_response": self.saved_response}
                 )
 
-                # unique_uuid = get_uuid()
-
-                # uuid = celery_task_function(student_sub_data, unique_uuid)
-
-
-                # def celery_task_function(student_date, uuid):
-                #     resp = run_code(student_date)
-                #     save_response_to_cache(key=uuid, response=resp)
-
-
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
                 return {'success': True, 'msg': u'', 'out': grade_output}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
-
-        # def get_result(uuid):
-        #     get_from_cache(key=uuid)
 
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument

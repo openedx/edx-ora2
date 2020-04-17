@@ -234,19 +234,74 @@ OpenAssessment.ResponseView.prototype = {
     $(sel[index]).val(output);
     },
 
+    createTextArea: function(value){
+        return "<textarea rows=2 cols=10 style='width:50%; height:auto;' readonly>" + value + "</textarea>";
+    },
+
+    errorTextArea: function(value){
+        return "<textarea rows=10 cols=10 style='width:50%; height:auto;' readonly>" + value + "</textarea>";
+    },
+
     /*
-    Show the reponse is either correct/incorrect based on the given value
+    Renders which test number failed and which has passed
+    */
+    showTestCaseResult: function(test_results){
+
+        var test_status_elem = $("#test_case_status_result", this.element);
+        test_status_elem.html("");
+        var out_textarea = "<p><span style='width:50%; display:inline-block;'> Your Output </span> <span style='width:45%; display:inline-block;'> Expected Output </span></p>";
+
+        for(var key in test_results){
+            let style= "red";
+            if(test_results[key]['correct']==true){
+                style= "green";
+            }
+            out_textarea += (
+            "<p style='outline: 3px solid " + style + "';>" +
+            this.createTextArea(test_results[key]['actual_output']) +
+            this.createTextArea(test_results[key]['expected_output']) +
+            "</p>"
+            )
+        }
+        test_status_elem.html(out_textarea);
+    },
+
+    /*
+    Add the HTML to show how many test cases passed from the total number
+    */
+    showResultSummary: function(correct, total){
+
+        const summary = correct + " out of " + total + " test cases passed"
+        $("#test_cases_summary").html("<p style='text-align:center;'>" + summary + "</p>")
+    },
+
+    /*
+    Clear the summary HTML
+    */
+    clearResultSummary: function(){
+        $("#test_cases_summary").html("");
+    },
+
+    /*
+    Displays a textbox containing the code error
+    */
+    showRunError: function(error){
+        $("#test_case_status_result", this.element).html(this.errorTextArea(error));
+    },
+
+    /*
+    Show the response is either correct/incorrect based on the given value
     */
     indicateCorrectness: function(correctness){
-    var output_prompt = $(this.getPrompts()[1]);
-    if(correctness==true){
-    output_prompt.attr('style', "border:5px solid green");
-    this.saveStatus(gettext("Code output matches the expected output"));
-    }
-    else{
-    output_prompt.attr('style', "border:5px solid red");
-    this.saveStatus(gettext("Code output mismatch / Execution error"));
-    }
+        var output_prompt = $(this.getPrompts()[1]);
+        if(correctness==true){
+        output_prompt.attr('style', "border:5px solid green");
+        this.saveStatus(gettext("Code output matches the expected output"));
+        }
+        else{
+        output_prompt.attr('style', "border:5px solid red");
+        this.saveStatus(gettext("Code output mismatch / Execution error"));
+        }
     },
 
     /**
@@ -533,9 +588,17 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            view.updateCodeOutput(data.sample_out, 1);
-            view.updateCodeOutput(data.sample_expected, 2);
-            view.indicateCorrectness(data.correctness);
+            if(data.error){
+                view.showRunError(data.error);
+                view.indicateCorrectness(false);
+                view.clearResultSummary();
+            }
+            else{
+                view.showResultSummary(data.correct, data.total);
+                view.showTestCaseResult(data.test_results);
+                view.indicateCorrectness(data.correct === data.total);
+            }
+
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             view.checkSubmissionAbility();

@@ -1,19 +1,22 @@
-import subprocess
-import time
-import re
+import glob
 import os
+import re
 import shutil
+import subprocess
 import uuid
+
+from collections import OrderedDict
 
 from openassessment.xblock.utils import OOP_PROBLEM_NAMES
 
 
 class TestGrader:
 
-    __SECRET_DATA_DIR__ = "/grader_data/"
+    # __SECRET_DATA_DIR__ = "/grader_data/"
+    __SECRET_DATA_DIR__ = os.path.dirname(__file__) + "/secret_data/"
     __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
 
-    def grade(self, response):
+    def grade(self, response, add_staff_cases=False):
         problem_name = response['problem_name']
         source_code = response['submission'][0]
         code_file_name = "auto_generated_code_file_" + str(uuid.uuid4()).replace('-', '')
@@ -27,30 +30,77 @@ class TestGrader:
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
             self.write_code_file(student_response, full_code_file_name)
         except Exception as exc:
-            return self.respond_with_error(exc.message)
+            return self.respond_with_error(str(exc))
 
-        sample_input_file_argument = ' {0}{1}-sample.in'.format(self.__SECRET_DATA_DIR__, problem_name)
-        sample_expected_output_file = '{0}{1}-sample.out'.format(self.__SECRET_DATA_DIR__, problem_name)
-        input_file_argument = ' {0}{1}.in'.format(self.__SECRET_DATA_DIR__, problem_name)
-        expected_output_file = '{0}{1}.out'.format(self.__SECRET_DATA_DIR__, problem_name)
-
-        sample_test_case_result = self.run_test_cases(lang, code_file_name, full_code_file_name,
-                                                      code_file_path, sample_input_file_argument,
-                                                      sample_expected_output_file, 60, problem_name)
-        secret_test_case_result = self.run_test_cases(lang, code_file_name, full_code_file_name,
-                                                      code_file_path, input_file_argument,
-                                                      expected_output_file, 60, problem_name)
-
-        if sample_test_case_result["tests"]:
-            sample_test_case_result["tests"][0].append("sample")
-        if secret_test_case_result["tests"]:
-            secret_test_case_result["tests"][0].append("staff")
-            if sample_test_case_result["tests"]:
-                sample_test_case_result["tests"].append(secret_test_case_result["tests"][0])
+        output = []
+        sample_result = self.run_code('sample', lang, code_file_name, full_code_file_name, problem_name)
+        output.append(sample_result)
+        if add_staff_cases:
+            staff_result = self.run_code('staff', lang, code_file_name, full_code_file_name, problem_name)
+            output.append(staff_result)
+        # sample_input_file_argument = ' {0}{1}-sample.in'.format(self.__SECRET_DATA_DIR__, problem_name)
+        # sample_expected_output_file = '{0}{1}-sample.out'.format(self.__SECRET_DATA_DIR__, problem_name)
+        # input_file_argument = ' {0}{1}.in'.format(self.__SECRET_DATA_DIR__, problem_name)
+        # expected_output_file = '{0}{1}.out'.format(self.__SECRET_DATA_DIR__, problem_name)
+        #
+        # sample_test_case_result = self.run_test_cases(lang, code_file_name, full_code_file_name,
+        #                                               sample_input_file_argument,
+        #                                               sample_expected_output_file, 60, problem_name)
+        # secret_test_case_result = self.run_test_cases(lang, code_file_name, full_code_file_name,
+        #                                               input_file_argument,
+        #                                               expected_output_file, 60, problem_name)
+        #
+        # if sample_test_case_result["tests"]:
+        #     sample_test_case_result["tests"][0].append("sample")
+        # if secret_test_case_result["tests"]:
+        #     secret_test_case_result["tests"][0].append("staff")
+        #     if sample_test_case_result["tests"]:
+        #         sample_test_case_result["tests"].append(secret_test_case_result["tests"][0])
 
         shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
-        return sample_test_case_result
+        return output
+
+    def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
+
+        test_cases = glob.glob("{}{}/{}/*".format(self.__SECRET_DATA_DIR__, problem_name, run_type))
+        output = {
+            'run_type': run_type,
+            'total_tests': len(test_cases),
+            'correct': 0,
+            'incorrect': 0,
+            'output': OrderedDict(),
+            'error': None
+        }
+        for case in test_cases:
+            case_number = int(case.split('/')[-1])
+            input_file = "{}/input.in".format(case)
+            expected_output_file = "{}/output.out".format(case)
+            run_output = self.run_test_cases(
+                lang, code_file_name,
+                full_code_file_name,
+                input_file,
+                expected_output_file,
+                timeout=5,
+                problem_name=problem_name
+            )
+            # If execution faced error, stop processing
+            if run_output['errors']:
+                output['error'] = run_output['errors']
+                break
+            if run_output['correct']:
+                output['correct'] += 1
+            else:
+                output['incorrect'] += 1
+            expected_output = run_output['tests'][0][1]
+            actual_output = run_output['tests'][0][2]
+            output['output'][case_number] = {
+                'actual_output': actual_output,
+                'expected_output': expected_output,
+                'correct': run_output['correct']
+            }
+
+        return output
 
     def run_as_subprocess(self, cmd, compiling=False, running_code=False, timeout=None):
         """
@@ -65,6 +115,7 @@ class TestGrader:
         output, error = subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
         ).communicate()
+        error = error.decode('utf-8')
         if error and compiling:
             raise Exception(error)
         elif error and running_code and 'Killed' in error:
@@ -85,12 +136,12 @@ class TestGrader:
             'tests': []
         }
 
-    def execute_code(self, lang, code_file_name, code_full_file_name, code_file_path, input_file, timeout):
+    def execute_code(self, lang, code_file_name, code_full_file_name, input_file, timeout=10):
         """
         compiles the code, runs the code for python, java and c++ and returns output of the code
         """
         if lang == 'py':
-            output = self.run_as_subprocess('python3 ' + code_full_file_name + input_file, running_code=True,
+            output = self.run_as_subprocess('python3 {} {}'.format(code_full_file_name, input_file), running_code=True,
                                        timeout=timeout)
 
         elif lang == 'java':
@@ -191,13 +242,25 @@ class TestGrader:
                 'tests': [[True, "", actual_output.strip()]]
             }
 
-    def run_test_cases(self, lang, code_file_name, full_code_file_name, code_file_path, input_file_argument,
-                       expected_output_file, timeout, problem_name):
+    def run_test_cases(self, lang, code_file_name, full_code_file_name, input_file_argument,
+                       expected_output_file, timeout=10, problem_name=''):
         # Run Sample Test Case
         try:
-            output = self.execute_code(lang, code_file_name, full_code_file_name, code_file_path, input_file_argument,
-                                  timeout)
+            output = self.execute_code(lang, code_file_name, full_code_file_name, input_file_argument, timeout)
             result = self.compare_outputs(output, expected_output_file, problem_name)
             return result
         except Exception as e:
-            return self.respond_with_error(e.message)
+            return self.respond_with_error(str(e))
+
+
+if __name__ == '__main__':
+    grader = TestGrader()
+    inp_file = os.path.dirname(__file__) + '/test.py'
+    data = {
+        'problem_name': 'tree',
+        'submission': [
+            open(inp_file, 'r').read()
+        ]
+    }
+    output = grader.grade(data)[0]
+    print(output['output'][1]['correct'])

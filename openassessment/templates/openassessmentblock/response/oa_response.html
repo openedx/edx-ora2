@@ -71,38 +71,46 @@
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                             class="submission__answer__part__text__title">
                                             {% if forloop.first %}
-
                                                     {% trans "Write Your Code Here" %}
-                                            {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
-                                                {% trans "Your Output"%}
-                                            {% elif forloop.counter|divisibleby:3 %}
-                                                {% trans "Expected Output"%}
                                             {% endif %}
                                         </h5>
 
                                     </div>
+                                    {% if forloop.first %}
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
                                         class="submission__answer__part__text__value"
                                         data-preview="submission__{{ forloop.counter }}"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
-                                        {% if not forloop.first  %} rows="10" cols="50" {%endif%}
+
 
                                     >{{ part.text }}</textarea>
+                                    {% endif %}
                                 </div>
                                 {% with forloop.counter|stringformat:"s" as submission_num %}
                                     {% include "openassessmentblock/oa_latex_preview.html" with id="submission__"|add:xblock_id|add:submission_num elem="div" preview_name="submission__"|add:submission_num %}
                                 {% endwith %}
                                 {% endif %}
                             </li>
+
                         {% endfor %}
+
                         {% if text_response %}
+                        <div id="test_cases_summary">
+
+                        </div>
+
+                        <div id="test_case_status_result">
+
+                        </div>
+
                         <li class="field">
                             <div class="response__submission__actions">
                                 <div class="message message--inline message--error message--error-server" tabindex="-1">
                                     <div class="message__content"></div>
                                 </div>
+
 
                                 <ul class="list list--actions">
                                     <li class="list--actions__item">
@@ -116,6 +124,7 @@
                                         </div>
                                     </li>
                                 </ul>
+
                             </div>
                         </li>
                         {% endif %}
