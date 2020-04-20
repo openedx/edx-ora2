@@ -4,7 +4,9 @@ Leaderboard step in the OpenAssessment XBlock.
 from __future__ import absolute_import
 
 import logging
+
 import six
+from xblock.core import XBlock
 
 from django.utils.translation import ugettext as _
 
@@ -12,12 +14,11 @@ from openassessment.assessment.errors import PeerAssessmentError, SelfAssessment
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
-from xblock.core import XBlock
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class LeaderboardMixin(object):
+class LeaderboardMixin:
     """Leaderboard Mixin introduces all handlers for displaying the leaderboard
 
     Abstracts all functionality and handlers associated with the Leaderboard.

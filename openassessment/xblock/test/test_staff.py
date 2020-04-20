@@ -17,6 +17,7 @@ from .base import (PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_GOOD_ASSESSMENT, Sub
 
 
 class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+    """TestClass for staff assessment handlers in Open Assessment XBlock."""
     maxDiff = None
 
     def _assert_path_and_context(self, xblock, expected_context):

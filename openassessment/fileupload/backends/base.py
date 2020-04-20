@@ -11,7 +11,7 @@ from django.conf import settings
 from ..exceptions import FileUploadInternalError, FileUploadRequestError
 
 
-class Settings(object):
+class Settings:
     """Store settings related to file upload
 
     The following settings are used:
@@ -37,6 +37,7 @@ class Settings(object):
 
     @classmethod
     def get_bucket_name(cls):
+        """Return the bucket name."""
         bucket_name = getattr(settings, "FILE_UPLOAD_STORAGE_BUCKET_NAME", None)
         if not bucket_name:
             raise FileUploadInternalError("No bucket name configured for FileUpload Service.")

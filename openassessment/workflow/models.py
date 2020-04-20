@@ -26,7 +26,7 @@ from model_utils.models import StatusModel, TimeStampedModel
 
 from openassessment.assessment.errors.base import AssessmentError
 from openassessment.assessment.signals import assessment_complete_signal
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
@@ -404,6 +404,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 assessment_completed_at=now(),
                 workflow=self,
             )
+            # pylint: disable=no-member
             self.steps.add(
                 staff_step
             )
@@ -413,6 +414,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if not steps:
             # If no steps exist for this AssessmentWorkflow, assume
             # peer -> self for backwards compatibility, with an optional staff override
+            # pylint: disable=no-member
             self.steps.add(
                 AssessmentWorkflowStep(name=self.STATUS.staff, order_num=0, assessment_completed_at=now()),
                 AssessmentWorkflowStep(name=self.STATUS.peer, order_num=1),
@@ -629,6 +631,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
     @classmethod
     def get_by_team_submission_uuid(cls, team_submission_uuid):
+        """ Return the workflow object using uuid."""
         try:
             return cls.objects.get(team_submission_uuid=team_submission_uuid)
         except cls.DoesNotExist:
@@ -753,7 +756,7 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
     This allows asynchronous processes to update the workflow
 
     Args:
-        sender (object): Not used
+        sender : Not used
 
     Keyword Arguments:
         submission_uuid (str): The UUID of the submission associated

@@ -20,7 +20,7 @@ from openassessment.data import CsvWriter, OraAggregateData
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 if six.PY2:
     from StringIO import StringIO  # pylint: disable=import-error

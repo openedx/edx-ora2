@@ -8,16 +8,17 @@ from unittest import TestCase
 
 import ddt
 import mock
+from xblock.exceptions import NoSuchServiceError
+
+from django.core.exceptions import ObjectDoesNotExist
 
 from openassessment.xblock.team_mixin import TeamMixin
-from django.core.exceptions import ObjectDoesNotExist
-from xblock.exceptions import NoSuchServiceError
 
 TEAMSET_ID = 'teamset-1-id'
 TEAMSET_NAME = 'teamset-1-name'
 
 
-class MockTeamsConfigurationService(object):
+class MockTeamsConfigurationService:
     """
     Fixture class for testing ``TeamMixin``.
     """
@@ -31,7 +32,7 @@ class MockTeamsConfigurationService(object):
         )
 
 
-class MockTeamsService(object):
+class MockTeamsService:
     """
     Fixture class for testing ``TeamMixin``.
     """
@@ -52,7 +53,7 @@ class MockTeamsService(object):
         return self.team if self.has_team else None
 
 
-class MockRuntime(object):
+class MockRuntime:
     """
     Fixture class for testing ``TeamMixin``.
     """

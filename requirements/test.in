@@ -8,9 +8,9 @@ ddt
 factory_boy                         # Fixture factories for test setup
 freezegun                           # Mock the datetime module to manipulate date functions
 mock                                # Stub out specific code during test runs
-pytest==4.5.0
-pytest-cov==2.7.1                          # pytest extension for code coverage statistics
-pytest-django==3.7.0                       # pytest extension for better Django support
+pytest
+pytest-cov                          # pytest extension for code coverage statistics
+pytest-django                       # pytest extension for better Django support
 moto
 testfixtures                        # Provides a LogCapture utility to be used by tests
 tox

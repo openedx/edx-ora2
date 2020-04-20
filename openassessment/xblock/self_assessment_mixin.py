@@ -6,7 +6,7 @@ import logging
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from webob import Response
-from xblock.core import XBlock
+from xblock.core import XBlock  # pylint: disable=wrong-import-order
 
 from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
                               verify_assessment_parameters)
@@ -16,7 +16,7 @@ from .user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class SelfAssessmentMixin(object):
+class SelfAssessmentMixin:
     """The Self Assessment Mixin for all Self Assessment Functionality.
 
     Abstracts all functionality and handlers associated with Self Assessment.

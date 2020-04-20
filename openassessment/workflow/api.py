@@ -11,7 +11,7 @@ import six
 from django.db import DatabaseError
 
 from openassessment.assessment.errors import PeerAssessmentError, PeerAssessmentInternalError
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 from .errors import (AssessmentWorkflowError, AssessmentWorkflowInternalError, AssessmentWorkflowNotFoundError,
                      AssessmentWorkflowRequestError)

@@ -5,16 +5,17 @@ from __future__ import absolute_import
 
 import copy
 
+from lazy import lazy
+from xblock.core import XBlock
+
 from django.utils.translation import ugettext as _
 
-from lazy import lazy
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
-from xblock.core import XBlock
 
 from .data_conversion import create_submission_dict
 
 
-class GradeMixin(object):
+class GradeMixin:
     """Grade Mixin introduces all handlers for displaying grades
 
     Abstracts all functionality and handlers associated with Grades.
@@ -65,6 +66,7 @@ class GradeMixin(object):
                 # we want focus to go from the assessment steps to the staff grading step.
                 if "staff-assessment" in assessment_steps:
                     context['is_waiting_staff'] = "is--waiting--staff"
+                # pylint: disable=self-assigning-variable
                 path, context = 'openassessmentblock/grade/oa_grade_waiting.html', context
             elif status is None:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'

@@ -8,7 +8,7 @@ import six
 from django.db import IntegrityError, models, transaction
 from django.utils import timezone
 
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 from .training import TrainingExample
 

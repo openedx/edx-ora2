@@ -13,10 +13,10 @@ from django.conf import settings
 
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.workflow.models import AssessmentWorkflow
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 
-class CsvWriter(object):
+class CsvWriter:
     """
     Dump openassessment data to CSV files.
     """
@@ -346,7 +346,7 @@ class CsvWriter(object):
         )
 
 
-class OraAggregateData(object):
+class OraAggregateData:
     """
     Aggregate all the ORA data into a single table-like data structure.
     """

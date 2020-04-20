@@ -5,42 +5,42 @@
 #    make upgrade
 #
 appdirs==1.4.3            # via fs
-bleach==2.1.4
-boto==2.39.0
-certifi==2019.11.28       # via requests
+bleach==2.1.4             # via -c requirements/constraints.txt, -r requirements/base.in
+boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.in
+certifi==2020.4.5.1       # via requests
 chardet==3.0.4            # via requests
-defusedxml==0.5.0
-django-model-utils==3.2.0
-django-simple-history==2.8.0
-django==2.2.10
-djangorestframework==3.9.4
-edx-i18n-tools==0.5.0
-edx-submissions==3.0.6
-fs==2.0.18                # via xblock
-html5lib==1.0.1
-idna==2.8                 # via requests
-jsonfield2==3.0.3
-lazy==1.1
-libsass==0.10.0
-loremipsum==1.0.5
-lxml==3.8.0
+defusedxml==0.5.0         # via -c requirements/constraints.txt, -r requirements/base.in
+django-model-utils==3.2.0  # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
+django-simple-history==2.8.0  # via -r requirements/base.in
+django==2.2.12            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
+djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
+edx-i18n-tools==0.5.0     # via -r requirements/base.in
+edx-submissions==3.1.0    # via -r requirements/base.in
+fs==2.0.18                # via -c requirements/constraints.txt, xblock
+html5lib==1.0.1           # via -r requirements/base.in, bleach
+idna==2.9                 # via requests
+jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
+lazy==1.1                 # via -c requirements/constraints.txt, -r requirements/base.in
+libsass==0.10.0           # via -c requirements/constraints.txt, -r requirements/base.in
+loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
+lxml==3.8.0               # via -c requirements/constraints.txt, -r requirements/base.in, xblock
 markupsafe==1.1.1         # via xblock
-path.py==8.2.1
+path.py==8.2.1            # via -c requirements/constraints.txt, -r requirements/base.in, edx-i18n-tools
 polib==1.1.0              # via edx-i18n-tools
-python-dateutil==2.4.0
-python-swiftclient==3.8.1
-pytz==2019.3
-pyyaml==5.3               # via edx-i18n-tools, xblock
-requests==2.22.0          # via python-swiftclient
+python-dateutil==2.4.0    # via -c requirements/constraints.txt, -r requirements/base.in, xblock
+python-swiftclient==3.9.0  # via -c requirements/constraints.txt, -r requirements/base.in
+pytz==2019.3              # via -r requirements/base.in, django, edx-submissions, fs, xblock
+pyyaml==5.3.1             # via edx-i18n-tools, xblock
+requests==2.23.0          # via python-swiftclient
 six==1.14.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, python-dateutil, python-swiftclient, xblock
-sqlparse==0.3.0           # via django
-urllib3==1.25.8           # via requests
-voluptuous==0.11.7
+sqlparse==0.3.1           # via django
+urllib3==1.25.9           # via requests
+voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.in
 web-fragments==0.3.1      # via xblock
 webencodings==0.5.1       # via html5lib
 webob==1.8.6              # via xblock
-git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk
-xblock==1.2.9
+git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk  # via -r requirements/base.in
+xblock==1.2.9             # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

@@ -15,7 +15,7 @@ from django.test import TestCase
 
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, resolve_dates
 from openassessment.xblock.user_data import get_user_preferences
-from workbench.runtime import WorkBenchUserService
+from workbench.runtime import WorkBenchUserService  # pylint: disable=wrong-import-order
 
 STUB_I18N = lambda x: x
 
@@ -66,7 +66,7 @@ class ResolveDatesTest(TestCase):
         # Start date should resolve to the min of all start dates
         # See the detailed comment in the docstring of `resolve_dates`
         # for the reasoning behind this.
-        resolved_start, __, __ = resolve_dates(
+        resolved_start, __, ___ = resolve_dates(
             "2013-01-01", None,
             [
                 ("1999-01-01", "1999-02-03"),
@@ -86,7 +86,7 @@ class ResolveDatesTest(TestCase):
         # End date should resolve to the max of all end dates
         # See the detailed comment in the docstring of `resolve_dates`
         # for the reasoning behind this.
-        __, resolved_end, __ = resolve_dates(
+        __, resolved_end, ___ = resolve_dates(
             None, "2013-01-01",
             [
                 ("1999-01-01", "1999-02-03"),

@@ -18,7 +18,7 @@ from boto.s3.key import Key
 from moto import mock_s3
 from openassessment.fileupload import api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 from .base import XBlockHandlerTransactionTestCase, scenario
 

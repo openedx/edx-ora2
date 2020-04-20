@@ -11,16 +11,16 @@ from xblock.fields import DateTime, Dict, Float, Scope, String
 
 class GroupAccessDict(Dict):
     """Special Dict class for serializing the group_access field"""
-    def from_json(self, access_dict):  # pylint: disable=arguments-differ
+    def from_json(self, access_dict):  # pylint: disable=arguments-differ, inconsistent-return-statements
         if access_dict is not None:
             return {int(k): access_dict[k] for k in access_dict}
 
-    def to_json(self, access_dict):  # pylint: disable=arguments-differ
+    def to_json(self, access_dict):  # pylint: disable=arguments-differ, inconsistent-return-statements
         if access_dict is not None:
             return {six.text_type(k): access_dict[k] for k in access_dict}
 
 
-class LmsCompatibilityMixin(object):
+class LmsCompatibilityMixin:
     """
     Extra fields and methods used by LMS/Studio.
     """

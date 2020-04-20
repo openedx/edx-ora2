@@ -887,15 +887,15 @@ def parse_from_xml(root):
     title_el = root.find('title')
     if title_el is None:
         raise UpdateFromXmlError('Every assessment must contain a "title" element.')
-    else:
-        title = _safe_get_text(title_el)
+
+    title = _safe_get_text(title_el)
 
     # Retrieve the rubric
     rubric_el = root.find('rubric')
     if rubric_el is None:
         raise UpdateFromXmlError('Every assessment must contain a "rubric" element.')
-    else:
-        rubric = parse_rubric_xml(rubric_el)
+
+    rubric = parse_rubric_xml(rubric_el)
 
     # Retrieve the prompts
     prompts = _parse_prompts_xml(root)
@@ -916,8 +916,8 @@ def parse_from_xml(root):
     assessments_el = root.find('assessments')
     if assessments_el is None:
         raise UpdateFromXmlError('Every assessment must contain an "assessments" element.')
-    else:
-        assessments = parse_assessments_xml(assessments_el)
+
+    assessments = parse_assessments_xml(assessments_el)
 
     return {
         'title': title,

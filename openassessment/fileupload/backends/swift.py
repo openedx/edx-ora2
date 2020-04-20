@@ -16,11 +16,10 @@ from __future__ import absolute_import
 import logging
 
 import requests
-import six.moves.urllib.parse  # pylint: disable=import-error
+import six.moves.urllib.parse  # pylint: disable=import-error, wrong-import-order
+import swiftclient
 
 from django.conf import settings
-
-import swiftclient
 
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend
@@ -87,7 +86,7 @@ class Backend(BaseBackend):
         except Exception as ex:
             logger.exception(
                 u"An internal exception occurred while removing object on swift storage."
-            )
+            )  # pylint: disable=unicode-format-string
             raise FileUploadInternalError(ex)
 
 

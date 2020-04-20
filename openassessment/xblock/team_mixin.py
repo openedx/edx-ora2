@@ -8,7 +8,7 @@ from xblock.exceptions import NoSuchServiceError
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class TeamMixin(object):
+class TeamMixin:
     """Team Mixin introducing all teams-related functionality."""
 
     STAFF_OR_PREVIEW_INFO = {
@@ -23,6 +23,7 @@ class TeamMixin(object):
 
     @cached_property
     def teams_service(self):
+        """ Return teams service."""
         try:
             return self.runtime.service(self, 'teams')
         except NoSuchServiceError:
@@ -31,6 +32,7 @@ class TeamMixin(object):
 
     @cached_property
     def teams_configuration_service(self):
+        """ Return teams configuration."""
         try:
             return self.runtime.service(self, 'teams_configuration')
         except NoSuchServiceError:
@@ -57,6 +59,7 @@ class TeamMixin(object):
 
     @cached_property
     def teamset_config(self):
+        """Return teamset id."""
         course_id = self.location.course_key if hasattr(self, 'location') else None
         teams_config = self.teams_configuration_service.get_teams_configuration(course_id)
         try:
@@ -107,8 +110,11 @@ class TeamMixin(object):
             return {}
 
     def get_anonymous_user_ids_for_team(self):
+        """Return anonymous user ids for the team."""
         if self.has_team():
             anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
             user = self.get_real_user(anonymous_user_id)
 
             return self.teams_service.get_anonymous_user_ids_for_team(user, self.team)
+
+        return None

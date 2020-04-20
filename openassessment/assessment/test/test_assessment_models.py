@@ -13,7 +13,7 @@ from openassessment.assessment.errors import SelfAssessmentRequestError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
 from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.test_utils import CacheResetTest
-from submissions.api import create_submission
+from submissions.api import create_submission  # pylint: disable=wrong-import-order
 
 from .constants import RUBRIC
 
