@@ -1,0 +1,25 @@
+{% spaceless %}
+{% load i18n %}
+{% load oa_extras %}
+
+<div>
+    {% if response.error %}
+    <div class="submission__answer__part__text__value" style="outline: 3px solid red;"> {{response.error|escape|linebreaksbr}}</div>
+    {% else %}
+<!--        <p style="text-align:center; font: 20px bold;">{{response.correct}} test cases out of {{response.total_tests}} passed</p>-->
+    <div style="display: flex;flex-direction: row;">
+        <span style="display: inline-block; width:50%; font:20px bold;">{{student_output_header}}</span>
+        <span style="display: inline-block; width:50%; font:20px bold;">{{expected_output_header}}</span>
+    </div>
+    <br/>
+        {% for key, value in response.output.items %}
+            <div style="display: flex;flex-direction: row; outline:3px solid {%if value.correct%}green{%else%}red{%endif%}" >
+                <span style="display: inline-block; width:50%;" class="submission__answer__part__text__value"> {{value.actual_output|escape|linebreaksbr}}</span>
+                <span style="display: inline-block; width:50%;" class="submission__answer__part__text__value">{{value.expected_output|escape|linebreaksbr}}</span>
+            </div>
+            <br/>
+        {% endfor %}
+
+    {%  endif %}
+</div>
+{% endspaceless %}

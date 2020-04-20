@@ -239,7 +239,11 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     errorTextArea: function(value){
-        return "<textarea rows=10 cols=10 style='width:50%; height:auto;' readonly>" + value + "</textarea>";
+        return "<textarea rows=10 style='width:70%; height:auto;' readonly>" + value + "</textarea>";
+    },
+
+    createOutputHeader: function(value, width){
+        return "<span style='width:" + width + "%; display:inline-block; font: 18px bold;'>"+ value +"</span>"
     },
 
     /*
@@ -249,10 +253,14 @@ OpenAssessment.ResponseView.prototype = {
 
         var test_status_elem = $("#test_case_status_result", this.element);
         test_status_elem.html("");
-        var out_textarea = "<p><span style='width:50%; display:inline-block;'> Your Output </span> <span style='width:45%; display:inline-block;'> Expected Output </span></p>";
+        var out_textarea =
+            "<p>" +
+            this.createOutputHeader("Your Output", 50) +
+            this.createOutputHeader("Expected Output", 45) +
+            "</p>";
 
         for(var key in test_results){
-            let style= "red";
+            var style= "red";
             if(test_results[key]['correct']==true){
                 style= "green";
             }
@@ -271,7 +279,7 @@ OpenAssessment.ResponseView.prototype = {
     */
     showResultSummary: function(correct, total){
 
-        const summary = correct + " out of " + total + " test cases passed"
+        var summary = correct + " out of " + total + " test cases passed"
         $("#test_cases_summary").html("<p style='text-align:center;'>" + summary + "</p>")
     },
 
@@ -594,9 +602,9 @@ OpenAssessment.ResponseView.prototype = {
                 view.clearResultSummary();
             }
             else{
-                view.showResultSummary(data.correct, data.total);
-                view.showTestCaseResult(data.test_results);
-                view.indicateCorrectness(data.correct === data.total);
+                view.showResultSummary(data.correct, data.total_tests);
+                view.showTestCaseResult(data.output);
+                view.indicateCorrectness(data.correct === data.total_tests);
             }
 
             // ... but update the UI based on what the user may have entered

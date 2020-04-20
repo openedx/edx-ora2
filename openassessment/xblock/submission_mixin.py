@@ -11,7 +11,7 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from xblock.core import XBlock
 
-from .data_conversion import create_submission_dict, prepare_submission_for_serialization
+from .data_conversion import create_submission_dict, create_submission_dict_v2, prepare_submission_for_serialization, prepare_submission_for_serialization_v2
 from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
@@ -89,17 +89,10 @@ class SubmissionMixin(object):
             )
 
         status = False
-        grade_output = self.grade_response(data, add_staff_output=True)
-        self.add_output_to_submission(data, grade_output)
-        self.add_output_to_submission(data, grade_output, 'staff')
-        student_sub_data = data['submission']
-        # success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-        # if not success:
-        #     return (
-        #         False,
-        #         'EBADARGS',
-        #         msg
-        #     )
+        grade_output = self.grade_response_v2(data, add_staff_output=True)
+
+        # Adding submission data and grader output
+        student_sub_data = data['submission'] + grade_output
 
         student_item_dict = self.get_student_item_dict()
 
@@ -224,28 +217,19 @@ class SubmissionMixin(object):
         return result
 
     def grade_response_v2(self, data, add_staff_output=False):
+        """
+        Grade the response with per file test case feature.
+        """
         data.update({'problem_name': self.display_name})
         grader = TestGrader()
-        output = grader.grade(data)
+        output = grader.grade(data, add_staff_cases=add_staff_output)
 
         sample_output = output[0]
-        response_dict = {
-            'error': None,
-            'correct': None,
-            'incorrect': None,
-            'total': None,
-            'test_results': {}
-        }
-        if sample_output['error']:
-            response_dict['error'] = sample_output['error'][0]
-        else:
-            response_dict['correct'] = sample_output['correct']
-            response_dict['incorrect'] = sample_output['incorrect']
-            response_dict['total'] = sample_output['total_tests']
-            response_dict['test_results'] = sample_output['output']
-            # for key, value in sample_output['output'].items():
-            #     response_dict['test_results'][key] = value['correct']
-        return response_dict
+        if add_staff_output:
+            # If staff output is required, send the original result as it is.
+            return output
+        sample_output.pop('run_type')
+        return sample_output
 
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -326,7 +310,7 @@ class SubmissionMixin(object):
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
         files_descriptions = files_descriptions if files_descriptions else []
-        student_sub_dict = prepare_submission_for_serialization(student_sub_data)
+        student_sub_dict = prepare_submission_for_serialization_v2(student_sub_data)
 
         if self.file_upload_type:
             student_sub_dict['file_keys'] = []
@@ -691,10 +675,10 @@ class SubmissionMixin(object):
             self_in_workflow = "self" in workflow["status_details"]
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
-            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-            correctness = get_correctness(context['student_submission'], self.display_name)
-            set_correctness_in_context(context, 'sample_correct', correctness, 0)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0]['text'])
+            context["student_submission"] = create_submission_dict_v2(student_submission, self.prompts)
+            # correctness = get_correctness(context['student_submission'], self.display_name)
+            # set_correctness_in_context(context, 'sample_correct', correctness, 0)
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

@@ -6,62 +6,31 @@
 <link rel="stylesheet" href="{% static 'css/prism.css' %}">
 <script src="{% static 'js/prism.js' %}"></script>
 
+
 <ol class="submission__answer__display__content" >
-    {% for part in answer.parts %}
-    {% if forloop.counter|divisibleby:2%} <div style="display: flex;flex-direction: row;">{%endif%}
-        <li class="submission__answer__part"
-            {% if not forloop.first %} style="display: inline-block; width:50%;" {%endif%}>
-            <div class="submission__answer__part__text">
 
-            </div>
-            {% if part.text %}
-            <div class="submission__answer__part__text">
+    <li>
+        <h5 class="submission__answer__part__text__title">
+            {{answer_text_label}}
+        </h5>
 
-                <h5 class="submission__answer__part__text__title">
-                    {% if forloop.first %}
-                        {{ answer_text_label }}
-                    {% elif forloop.counter|divisibleby:2 and not forloop.counter|divisibleby:4%}
-                        {% trans "Your Output"%}
-                    {% elif forloop.counter|divisibleby:3 %}
-                        {% trans "Expected Output"%}
-                    {% else %}
-                        {% if prompts_type == 'html' %}
-                            {{ part.prompt.description|safe }}
-                        {% else %}
-                            {{ part.prompt.description|linebreaks }}
-                        {% endif %}
-                    {% endif %}
-                </h5>
+        <pre>
+            <code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">{{answer.parts.0}}</code>
+        </pre>
+    </li>
 
+    <li>
+        {% trans "Your Output" as code_output_label %}
+        {% trans "Expected Output" as expected_output_label %}
+        {% include "openassessmentblock/render_submission_details.html" with response=answer.parts.1 student_output_header=code_output_label expected_output_header=expected_output_label%}
+    </li>
 
-                {% if forloop.counter|divisibleby:4 %}
-                    {% if staff_correct %}
-                        <div class="submission__answer__part__text__value" style="border: 5px solid green;">
-                    {%else%}
-                        <div class="submission__answer__part__text__value" style="border: 5px solid red;">
-                    {%endif%}
-                {% elif forloop.counter|divisibleby:2%}
-                        {% if sample_correct %}
-                        <div class="submission__answer__part__text__value" style="border: 5px solid green;">
-                    {%else%}
-                        <div class="submission__answer__part__text__value" style="border: 5px solid red;">
-                    {%endif%}
-                {%else%}
-                <div class="submission__answer__part__text__value" >
-                {%endif%}
-                    {% if forloop.first%}
-                            <pre><code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">{{part.text}}</code>
-                            </pre>
-
-                    {%else%}
-                    {{ part.text|escape|linebreaksbr }}
-                    {%endif%}
-
-                </div>
-            </div>
-            {% endif %}
+    {% if staff_view %}
+        <li>
+            {% trans "Staff Test Case Output" as code_output_label %}
+            {% trans "Expected Test Case Output" as expected_output_label %}
+            {% include "openassessmentblock/render_submission_details.html" with response=answer.parts.2 student_output_header=code_output_label expected_output_header=expected_output_label%}
         </li>
-    {% if not forloop.counter|divisibleby:2 and not forloop.first%}</div> {%endif%}
-    {% endfor %}
+    {% endif %}
 </ol>
 {% endspaceless %}

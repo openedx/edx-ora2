@@ -189,6 +189,16 @@ def prepare_submission_for_serialization(submission_data):
     }
 
 
+def prepare_submission_for_serialization_v2(submission_data):
+    """
+    Convert the list to indexed dict for saving submission.
+    """
+    sub_dict = {}
+    for index, value in enumerate(submission_data):
+        sub_dict[index] = value
+    return sub_dict
+
+
 def create_submission_dict(submission, prompts, staff_view=False):
     """
     1. Convert from legacy format.
@@ -202,6 +212,7 @@ def create_submission_dict(submission, prompts, staff_view=False):
     Returns:
         dict
     """
+
     parts = [{'prompt': prompt, 'text': ''} for prompt in prompts]
     if staff_view:
         parts.append({'prompt': {'description': "Staff Test Cases Output"}, 'text': ''})
@@ -220,8 +231,21 @@ def create_submission_dict(submission, prompts, staff_view=False):
                 # the submission format, it tries to add the staff output but since no prompt is set
                 # at that index, it raises IndexError
                 continue
-
     submission['answer']['parts'] = parts
+
+    return submission
+
+
+def create_submission_dict_v2(submission, prompts, staff_view=False):
+    if not staff_view:
+        # Delete staff info from the submission dict if not required
+        try:
+            del submission['answer']['2']
+        except Exception:
+            pass
+    submission['answer']['parts'] = [submission['answer']['0'], submission['answer']['1']]
+    if staff_view:
+        submission['answer']['parts'].append(submission['answer']['2'])
 
     return submission
 

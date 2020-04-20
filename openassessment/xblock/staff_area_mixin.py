@@ -10,10 +10,9 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict
+from openassessment.xblock.data_conversion import create_submission_dict, create_submission_dict_v2
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language
-from openassessment.xblock.validation import get_correctness, set_correctness_in_context
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -262,7 +261,7 @@ class StaffAreaMixin(object):
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))  # localize for staff user
 
         context = {
-            'submission': create_submission_dict(submission, self.prompts, staff_view=True) if submission else None,
+            'submission': create_submission_dict_v2(submission, self.prompts, staff_view=True) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
             'user_timezone': user_preferences['user_timezone'],
@@ -272,10 +271,8 @@ class StaffAreaMixin(object):
         if submission:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
-            correctness = get_correctness(submission, self.display_name)
-            set_correctness_in_context(context, 'sample_correct', correctness, 0)
-            set_correctness_in_context(context, 'staff_correct', correctness, 1)
-            context['code_language'] = get_code_language(submission['answer']['parts'][0]['text'])
+            context['code_language'] = get_code_language(submission['answer']['parts'][0])
+            context['staff_view'] = True
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt

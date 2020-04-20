@@ -546,7 +546,7 @@
 
 
   .submission__answer__part__text__value {
-    margin: ($baseline-v/2) 0;
+    margin: 0;
 
     &:not(textarea) {
       border: 1px solid $color-decorative-secondary;
