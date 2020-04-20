@@ -19,7 +19,7 @@ from .user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class StudentTrainingMixin(object):
+class StudentTrainingMixin:
     """
     Student training is a step that allows students to practice
     assessing example essays provided by the course author.
@@ -58,8 +58,8 @@ class StudentTrainingMixin(object):
             msg = u"Could not render Learner Training step for submission {}.".format(self.submission_uuid)
             logger.exception(msg)
             return self.render_error(self._(u"An unexpected error occurred."))
-        else:
-            return self.render_assessment(path, context)
+
+        return self.render_assessment(path, context)
 
     def _parse_answer_dict(self, answer):
         """
@@ -69,6 +69,8 @@ class StudentTrainingMixin(object):
         if parts and isinstance(parts[0], dict):
             if isinstance(parts[0].get('text'), six.string_types):
                 return create_submission_dict({'answer': answer}, self.prompts)
+
+            return
 
     def _parse_answer_list(self, answer):
         """

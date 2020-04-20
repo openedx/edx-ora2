@@ -16,11 +16,10 @@ from __future__ import absolute_import
 import logging
 
 import requests
-import six.moves.urllib.parse  # pylint: disable=import-error
+import six.moves.urllib.parse  # pylint: disable=import-error, wrong-import-order
+import swiftclient
 
 from django.conf import settings
-
-import swiftclient
 
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend

@@ -10,11 +10,10 @@ import json
 import ddt
 from mock import MagicMock, Mock, PropertyMock, call, patch
 from six.moves import range, zip
-import six.moves.urllib.error  # pylint: disable=import-error
-import six.moves.urllib.parse  # pylint: disable=import-error
-import six.moves.urllib.request  # pylint: disable=import-error
+import six.moves.urllib.error  # pylint: disable=import-error, wrong-import-order
+import six.moves.urllib.parse  # pylint: disable=import-error, wrong-import-order
+import six.moves.urllib.request  # pylint: disable=import-error, wrong-import-order
 from testfixtures import log_capture
-
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -23,7 +22,7 @@ from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
@@ -52,7 +51,7 @@ ASSESSMENT_DICT = {
 }
 
 
-class NullUserService(object):
+class NullUserService:
     """
     A simple implementation of the runtime "user" service.
     """
@@ -71,7 +70,7 @@ class NullUserService(object):
         return MagicMock(opt_attrs={})
 
 
-class UserStateService(object):
+class UserStateService:
     """
     An implementation of `user_state` runtime service, to be utilized by tests.
     """
@@ -827,7 +826,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         })
         with patch("openassessment.fileupload.api.get_download_url") as get_download_url:
             get_download_url.return_value = FILE_URL
-            __, __ = xblock.get_student_info_path_and_context('Bob')
+            __, ___ = xblock.get_student_info_path_and_context('Bob')
         with self.assertRaises(AssertionError):
             self._verify_user_state_usage_log_present(logger, **{'location': xblock.location})
 

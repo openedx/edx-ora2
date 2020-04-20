@@ -4,12 +4,13 @@ Handle OpenAssessment XBlock requests to the Workflow API.
 
 from __future__ import absolute_import
 
-from openassessment.workflow import api as workflow_api
-from openassessment.workflow.models import AssessmentWorkflowCancellation
 from xblock.core import XBlock
 
+from openassessment.workflow import api as workflow_api
+from openassessment.workflow.models import AssessmentWorkflowCancellation
 
-class WorkflowMixin(object):
+
+class WorkflowMixin:
     """
     Handle OpenAssessment XBlock requests to the Workflow API.
     """

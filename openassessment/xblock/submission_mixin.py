@@ -4,15 +4,16 @@ from __future__ import absolute_import, unicode_literals
 import json
 import logging
 
+import six
+from xblock.core import XBlock
+from xblock.exceptions import NoSuchServiceError
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
-import six
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
-from xblock.core import XBlock
-from xblock.exceptions import NoSuchServiceError
 
 from .data_conversion import create_submission_dict, prepare_submission_for_serialization
 from .resolve_dates import DISTANT_FUTURE
@@ -26,7 +27,7 @@ class NoTeamToCreateSubmissionForError(Exception):
     pass
 
 
-class SubmissionMixin(object):
+class SubmissionMixin:
     """Submission Mixin introducing all Submission-related functionality.
 
     Submission Mixin contains all logic and handlers associated with rendering

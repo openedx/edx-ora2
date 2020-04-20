@@ -8,22 +8,22 @@ from __future__ import absolute_import, unicode_literals
 import datetime as dt
 import json
 
+import boto
+from boto.s3.key import Key
 from mock import ANY, Mock, call, patch
+from moto import mock_s3
 import pytz
 
 import django
 from django.test.utils import override_settings
 
-import boto
-from boto.s3.key import Key
-from moto import mock_s3
 from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
-from submissions import api as sub_api
-from submissions.api import SubmissionInternalError, SubmissionRequestError
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
+from submissions.api import SubmissionInternalError, SubmissionRequestError  # pylint: disable=wrong-import-order
 
 from .base import XBlockHandlerTestCase, scenario
 

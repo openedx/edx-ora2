@@ -19,7 +19,7 @@ from openassessment.assessment.errors import StudentTrainingInternalError, Stude
 from openassessment.assessment.models import InvalidRubricSelection, StudentTrainingWorkflow
 from openassessment.assessment.serializers import (InvalidRubric, InvalidTrainingExample, deserialize_training_examples,
                                                    serialize_training_example, validate_training_example_format)
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

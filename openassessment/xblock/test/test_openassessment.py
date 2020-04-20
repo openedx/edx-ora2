@@ -8,13 +8,13 @@ import datetime as dt
 import json
 
 import ddt
+from freezegun import freeze_time
+from lxml import etree
 from mock import MagicMock, Mock, PropertyMock, patch
 import pytz
 import six
 from six import StringIO
 
-from freezegun import freeze_time
-from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
@@ -699,14 +699,14 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) - dt.timedelta(minutes=1)
 
         # Since the start date is in the past, the problem should be available
-        is_closed, __, __, __ = xblock.is_closed()
+        is_closed, _, __, ___ = xblock.is_closed()
         self.assertFalse(is_closed)
 
         # Set the start date one hour in the future (in UTC)
         xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) + dt.timedelta(hours=1)
 
         # Now the problem should be open
-        is_closed, __, __, __ = xblock.is_closed()
+        is_closed, _, __, ___ = xblock.is_closed()
         self.assertTrue(is_closed)
 
     @scenario('data/basic_scenario.xml')

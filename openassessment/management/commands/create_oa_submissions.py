@@ -15,7 +15,7 @@ import loremipsum
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 STEPS = ['peer', 'self']
 
@@ -41,6 +41,7 @@ class Command(BaseCommand):
     NUM_OPTIONS = 5
 
     def __init__(self, *args, **kwargs):
+        """initialize the variables."""
         self.self_assessment_required = kwargs.get('self_assessment_required', False)
         kwargs = {}
         super(Command, self).__init__(*args, **kwargs)

@@ -11,14 +11,14 @@ import os.path
 
 import mock
 from six.moves import zip
+import webob
+from workbench.runtime import WorkbenchRuntime
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
 from openassessment.workflow import api as workflow_api
-from submissions import api as submissions_api
-import webob
-from workbench.runtime import WorkbenchRuntime
+from submissions import api as submissions_api  # pylint: disable=wrong-import-order
 
 # Sample peer assessments
 PEER_ASSESSMENTS = [
@@ -124,7 +124,7 @@ def scenario(scenario_path, user_id=None):
     return _decorator
 
 
-class XBlockHandlerTestCaseMixin(object):
+class XBlockHandlerTestCaseMixin:
     """
     Load the XBlock in the workbench runtime to test its handler.
     """
@@ -295,7 +295,7 @@ class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCa
     pass
 
 
-class SubmitAssessmentsMixin(object):
+class SubmitAssessmentsMixin:
     """
     A mixin for creating a submission and peer/self assessments so that the user can
     receive a grade. This is useful for getting into the "waiting for peer assessment" state.

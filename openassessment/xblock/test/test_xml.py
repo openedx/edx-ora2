@@ -9,6 +9,7 @@ import json
 
 import dateutil.parser
 import ddt
+import lxml.etree as etree
 import mock
 import pytz
 import six
@@ -16,7 +17,6 @@ from six.moves import zip
 
 from django.test import TestCase
 
-import lxml.etree as etree
 from openassessment.xblock.data_conversion import create_prompts_list
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.xml import (UpdateFromXmlError, _parse_prompts_xml, parse_assessments_xml,

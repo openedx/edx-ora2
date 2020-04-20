@@ -9,7 +9,7 @@ from django.db import IntegrityError
 
 from openassessment.assessment.models import StudentTrainingWorkflow, StudentTrainingWorkflowItem
 from openassessment.test_utils import CacheResetTest
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 from .constants import ANSWER, EXAMPLES, STUDENT_ITEM
 

@@ -17,7 +17,7 @@ from openassessment.assessment.models import (Assessment, AssessmentFeedback, As
                                               PeerWorkflow, PeerWorkflowItem)
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, RubricSerializer,
                                                    full_assessment_dict, rubric_from_dict, serialize_assessments)
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 logger = logging.getLogger("openassessment.assessment.api.peer")  # pylint: disable=invalid-name
 

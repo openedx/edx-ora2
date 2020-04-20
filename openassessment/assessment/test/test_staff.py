@@ -23,7 +23,7 @@ from openassessment.assessment.models import Assessment, StaffWorkflow, TeamStaf
 from openassessment.test_utils import CacheResetTest
 from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, AssessmentFactory
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
 

@@ -122,6 +122,7 @@ class AssessmentFeedbackSerializerTest(CacheResetTest):
 
 
 class AssessmentSerializerTest(CacheResetTest):
+    """ Tests for assessment serializer. """
 
     def test_full_assessment_dict_criteria_no_options(self):
         # Create a rubric with a criterion that has no options (just feedback)

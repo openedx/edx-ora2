@@ -11,7 +11,7 @@ import pytz
 from xblock.core import XBlock
 
 
-class MessageMixin(object):
+class MessageMixin:
     """
     Message Mixin introduces all handlers for displaying the banner message
 
@@ -51,11 +51,11 @@ class MessageMixin(object):
         # and the closed status.
         if self.teams_enabled and not self.valid_access_to_team_assessment():
             path, context = self.render_message_no_team()
-        elif status == "done" or status == "waiting":
+        elif status in["done", "waiting"]:
             path, context = self.render_message_complete(status_details)
         elif problem_is_closed or active_step_deadline_info.get('is_closed'):
             path, context = self.render_message_closed(active_step_deadline_info)
-        elif status == "self" or status == "peer" or status == "training":
+        elif status in ["self", "peer", "training"]:
             path, context = self.render_message_incomplete(status, deadline_info)
         elif status is None:
             path, context = self.render_message_open(deadline_info)

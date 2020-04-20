@@ -12,6 +12,9 @@ disable+ =
     cyclic-import,
     useless-suppression,
     bad-option-value,
+    unnecessary-pass,
+    unnecessary-comprehension
+
 
 
 [BASIC]

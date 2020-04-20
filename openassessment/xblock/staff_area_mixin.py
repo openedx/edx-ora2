@@ -8,11 +8,12 @@ import copy
 from functools import wraps
 import logging
 
+from xblock.core import XBlock
+
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from xblock.core import XBlock
 
 from .user_data import get_user_preferences
 
@@ -77,7 +78,7 @@ def require_course_staff(error_key, with_json_handler=False):
     return _decorator
 
 
-class StaffAreaMixin(object):
+class StaffAreaMixin:
     """
     Display debug information to course and global staff.
     """
@@ -123,7 +124,7 @@ class StaffAreaMixin(object):
         for step in ['submission'] + self.assessment_steps:
 
             # Get the dates as a student would see them
-            __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
+            __, ___, start_date, due_date = self.is_closed(step=step, course_staff=False)
 
             context['step_dates'].append({
                 'step': step,
@@ -247,7 +248,7 @@ class StaffAreaMixin(object):
 
         Args:
             student_username (unicode): The username of the student to report.
-            submission (object): A submission, as returned by the submission_api.
+            submission : A submission, as returned by the submission_api.
 
         Returns:
             A context dict for rendering a student submission and associated rubric (for staff grading).

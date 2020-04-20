@@ -278,9 +278,9 @@ class OpenAssessmentTest(WebAppTest):
             if not continue_after:
                 self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out - 1))
                 break
-            else:
-                ungraded -= 1
-                self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
+
+            ungraded -= 1
+            self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
 
     def refresh_page(self):
         """
@@ -781,7 +781,7 @@ class FileUploadTest(OpenAssessmentTest):
         self.assertTrue(self.submission_page.have_files_uploaded)
 
 
-class FullWorkflowMixin(object):
+class FullWorkflowMixin:
     """
     Mixin with helper methods and constants for testing a full workflow
     (training, self assessment, peer assessment, staff override).

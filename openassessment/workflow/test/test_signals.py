@@ -12,7 +12,7 @@ from openassessment.assessment.signals import assessment_complete_signal
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflow
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 
 @ddt.ddt

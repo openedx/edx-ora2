@@ -13,6 +13,7 @@ from .base import XBlockHandlerTestCase, scenario
 
 
 class TestExportImport(XBlockHandlerTestCase):
+    """Test that we can export a block from the runtime (to XML) and re-import."""
 
     @scenario('data/basic_scenario.xml')
     def test_export_import(self, xblock):

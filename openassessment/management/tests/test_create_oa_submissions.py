@@ -11,7 +11,7 @@ from django.test import TestCase
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.management.commands import create_oa_submissions
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 
 class CreateSubmissionsTest(TestCase):

@@ -120,7 +120,7 @@ def _safe_load_json_list(field, log_error=False):
         return []
 
 
-class FileUpload(object):
+class FileUpload:
     """
     A layer of abstraction over the various components of file
     data stored as ORA XBlock user-scoped fields.
@@ -201,7 +201,7 @@ FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'n
 TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'uploaded_by'])
 
 
-class FileUploadManager(object):
+class FileUploadManager:
     """
     Manages the CRUD operations of file uploads
     that take place in the context of an OpenAssessmentBlock.
@@ -433,6 +433,7 @@ class FileUploadManager(object):
         return new_file_uploads
 
     def create_shared_upload(self, fileupload):
+        """method to create sharedfileupload objects."""
         try:
             SharedFileUpload.objects.create(
                 team_id=self.block.team.team_id,

@@ -26,7 +26,7 @@ from openassessment.assessment.models import (
 )
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
+from submissions import api as sub_api  # pylint: disable=wrong-import-order
 
 STUDENT_ITEM = dict(
     student_id="Tim",

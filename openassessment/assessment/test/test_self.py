@@ -17,7 +17,7 @@ from django.db import DatabaseError
 from openassessment.assessment.api.self import create_assessment, get_assessment, submitter_is_finished
 from openassessment.assessment.errors import SelfAssessmentInternalError, SelfAssessmentRequestError
 from openassessment.test_utils import CacheResetTest
-from submissions.api import create_submission
+from submissions.api import create_submission  # pylint: disable=wrong-import-order
 
 
 class TestSelfApi(CacheResetTest):

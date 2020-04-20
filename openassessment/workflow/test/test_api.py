@@ -13,7 +13,7 @@ from openassessment.test_utils import CacheResetTest
 import openassessment.workflow.api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowInternalError
 from openassessment.workflow.models import AssessmentWorkflow
-import submissions.api as sub_api
+import submissions.api as sub_api  # pylint: disable=wrong-import-order
 
 RUBRIC_DICT = {
     "criteria": [
