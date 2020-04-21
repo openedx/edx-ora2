@@ -78,7 +78,7 @@ class TestTeamApi(CacheResetTest):
 
         # Then the correct assessment is returned
         self.assertIsNotNone(returned_assessment)
-        self.assertEquals(returned_assessment['id'], assessment.id)
+        self.assertEqual(returned_assessment['id'], assessment.id)
 
     def _create_team_workflow_and_assessment(self):
         """

@@ -123,8 +123,8 @@ def get_latest_staff_assessment(team_submission_uuid):
         'points_earned': 6,
         'points_possible': 12,
         'scored_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
-        'scorer': u"staff",
-        'feedback': u''
+        'scorer': "staff",
+        'feedback': ''
     }
 
     """
@@ -132,26 +132,26 @@ def get_latest_staff_assessment(team_submission_uuid):
         # Get the reference submission from a team submission
         team_workflow = TeamStaffWorkflow.objects.filter(
             team_submission_uuid=team_submission_uuid
-        )[:1]
+        ).first()
 
         if not team_workflow:
             return None
 
-        submission_uuid = team_workflow[0].submission_uuid
+        submission_uuid = team_workflow.submission_uuid
 
-        assessments = Assessment.objects.filter(
+        assessment = Assessment.objects.filter(
             submission_uuid=submission_uuid,
             score_type=STAFF_TYPE,
-        )[:1]
+        ).first()
     except DatabaseError as ex:
         msg = (
-            u"An error occurred while retrieving staff assessments "
-            u"for the submission with UUID {uuid}: {ex}"
+            "An error occurred while retrieving staff assessments "
+            "for the submission with UUID {uuid}: {ex}"
         ).format(uuid=submission_uuid, ex=ex)
         logger.exception(msg)
         raise StaffAssessmentInternalError(msg)
 
-    if assessments:
-        return full_assessment_dict(assessments[0])
+    if assessment:
+        return full_assessment_dict(assessment)
 
     return None
