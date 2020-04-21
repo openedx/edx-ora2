@@ -8,8 +8,11 @@ import logging
 from django.db import DatabaseError
 from django.utils.timezone import now
 
-from openassessment.assessment.models import Assessment, TeamStaffWorkflow
-from openassessment.assessment.serializers import full_assessment_dict
+from openassessment.assessment.api.staff import _complete_assessment
+from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
+from openassessment.assessment.models import Assessment, TeamStaffWorkflow, InvalidRubricSelection
+from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict
+
 
 from submissions import (
     api as submissions_api,
@@ -155,3 +158,64 @@ def get_latest_staff_assessment(team_submission_uuid):
         return full_assessment_dict(assessment)
 
     return None
+
+
+def create_assessment(
+        team_submission_uuid,
+        scorer_id,
+        options_selected,
+        criterion_feedback,
+        overall_feedback,
+        rubric_dict,
+        scored_at=None
+):
+    """
+    Creates an assessment for each member of the submitting team.
+
+    Closely mirrors openassessment.assessment.api.staff.py::create_assessment
+
+    Can use _complete_assessment from Staff API as is, but has the side-effect
+    of only associating the last graded assessment with the workflow
+
+    Returns:
+        dict: the Assessment model, serialized as a dict.
+    """
+    try:
+        try:
+            scorer_workflow = TeamStaffWorkflow.objects.get(team_submission_uuid=team_submission_uuid)
+        except TeamStaffWorkflow.DoesNotExist:
+            scorer_workflow = None
+
+        # Get the submissions for a team
+        team_submission = team_submissions_api.get_team_submission(team_submission_uuid)
+
+        assessment_dicts = []
+        for submission_uuid in team_submission['submission_uuids']:
+            assessment = _complete_assessment(
+                submission_uuid,
+                scorer_id,
+                options_selected,
+                criterion_feedback,
+                overall_feedback,
+                rubric_dict,
+                scored_at,
+                scorer_workflow
+            )
+            assessment_dicts.append(full_assessment_dict(assessment))
+
+        return assessment_dicts
+
+    except InvalidRubric:
+        error_message = "The rubric definition is not valid."
+        logger.exception(error_message)
+        raise StaffAssessmentRequestError(error_message)
+    except InvalidRubricSelection:
+        error_message = "Invalid options were selected in the rubric."
+        logger.warning(error_message, exc_info=True)
+        raise StaffAssessmentRequestError(error_message)
+    except DatabaseError:
+        error_message = (
+            "An error occurred while creating an assessment by the scorer with this ID: {}"
+        ).format(scorer_id)
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)

@@ -10,7 +10,7 @@ from django.utils.timezone import now
 
 from openassessment.assessment.api import teams as teams_api
 from openassessment.assessment.models.staff import TeamStaffWorkflow
-from openassessment.tests.factories import TeamStaffWorkflowFactory, AssessmentFactory
+from openassessment.tests.factories import TeamStaffWorkflowFactory, AssessmentFactory, UserFactory
 from openassessment.test_utils import CacheResetTest
 
 from submissions import (
@@ -18,11 +18,22 @@ from submissions import (
     team_api as team_submissions_api
 )
 
+from .constants import OPTIONS_SELECTED_DICT, RUBRIC
+
 STAFF_TYPE = "ST"
 
 
 class TestTeamApi(CacheResetTest):
     """ Tests for the Team Assessment API """
+
+    def _create_users(self):
+        """ Create test users on a team """
+        submitting_user = UserFactory.create()
+        team_member_1 = UserFactory.create()
+        team_member_2 = UserFactory.create()
+
+        self.team_member_ids = [submitting_user.id, team_member_1.id, team_member_2.id]
+        return self.team_member_ids
 
     def test_submitter_is_finished(self):
         team_submission_uuid = 'foo'
@@ -79,6 +90,35 @@ class TestTeamApi(CacheResetTest):
         # Then the correct assessment is returned
         self.assertIsNotNone(returned_assessment)
         self.assertEqual(returned_assessment['id'], assessment.id)
+
+    def test_create_assessment(self):
+        # Given a team submission and workflow
+        self._create_users()
+        team_submission = team_submissions_api.create_submission_for_team(
+            'mock-course',
+            'mock-item',
+            'mock-team-id',
+            self.team_member_ids[0],
+            self.team_member_ids,
+            '42'
+        )
+        workflow = TeamStaffWorkflowFactory.create()
+        workflow.team_submission_uuid = team_submission['team_submission_uuid']
+        workflow.save()
+
+        # When I create an assessment
+        assessments = teams_api.create_assessment(
+            workflow.team_submission_uuid,
+            "Snape",
+            OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
+            RUBRIC
+        )
+
+        # Assessments are created for each memeber of the team
+        self.assertEqual(
+            [assessment['submission_uuid'] for assessment in assessments],
+            [str(uuid) for uuid in team_submission['submission_uuids']]
+        )
 
     def _create_team_workflow_and_assessment(self):
         """
