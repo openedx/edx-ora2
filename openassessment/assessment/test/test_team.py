@@ -107,6 +107,35 @@ class TestTeamApi(CacheResetTest):
         cancelled_workflow = TeamStaffWorkflow.objects.get(team_submission_uuid=workflow.team_submission_uuid)
         self.assertEqual(cancelled_workflow.cancelled_at, now())
 
+    def test_get_score_none(self):
+        # Given there's no assessment for a submission
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        staff_requirements = {'required': True}
+
+        # When I use the API to get the score
+        score = teams_api.get_score(team_submission_uuid, staff_requirements)
+
+        # Then None is returned
+        self.assertIsNone(score)
+
+    def test_get_score(self):
+        # Given an assessment fora  submission
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        assessments = self._create_test_assessments_for_team(team_submission_uuid)
+        staff_requirements = {'required': True}
+
+        # When I query the API for the score
+        score = teams_api.get_score(team_submission_uuid, staff_requirements)
+
+        # Then the score is returned (from test constants)
+        assessment = assessments[-1]
+        self.assertEqual(score, {
+            "points_earned": assessment["points_earned"],
+            "points_possible": assessment["points_possible"],
+            "contributing_assessments": [assessment['id']],
+            "staff_id": assessment["scorer_id"],
+        })
+
     def test_get_latest_assessment_none(self):
         # Given no assessments for a team, when I try to get latest
         team_submission = self._create_test_submission_for_team()

@@ -127,6 +127,33 @@ def on_cancel(team_submission_uuid):
         raise StaffAssessmentInternalError(error_message)
 
 
+def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unused-argument
+    """
+    Generate a score based on a completed assessment for the given team submission.
+    If no assessment has been completed for this submission, this will return
+    None.
+
+    Args:
+        team_submission_uuid (str): The UUID for the submission to get a score for.
+        staff_requirements (dict): Not used.
+
+    Returns:
+        A dictionary with the points earned, points possible,
+        contributing_assessments, and staff_id information.
+
+    """
+    assessment = get_latest_staff_assessment(team_submission_uuid)
+    if not assessment:
+        return None
+
+    return {
+        "points_earned": assessment["points_earned"],
+        "points_possible": assessment["points_possible"],
+        "contributing_assessments": [assessment["id"]],
+        "staff_id": assessment["scorer_id"],
+    }
+
+
 def get_latest_staff_assessment(team_submission_uuid):
     """
     Retrieve the latest staff assessment for a team submission.
