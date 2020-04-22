@@ -26,22 +26,28 @@ STAFF_TYPE = "ST"
 class TestTeamApi(CacheResetTest):
     """ Tests for the Team Assessment API """
 
-    default_assessment = (
-        "Snape",  # scorer_id
-        OPTIONS_SELECTED_DICT["few"]["options"],  # options_selected
-        dict(),  # critereon_feedback
-        '',  # overall_feedback
-        RUBRIC  # rubric_dict
-    )
+    def setUp(self):
+        super()
 
-    def _create_users(self):
-        """ Create test users on a team """
-        submitting_user = UserFactory.create()
-        team_member_1 = UserFactory.create()
-        team_member_2 = UserFactory.create()
+        # Users for testing
+        staff_user = UserFactory.create()
+        staff_user.is_staff = True
+        staff_user.save()
+        self.staff_user_id = staff_user.id
 
-        self.team_member_ids = [submitting_user.id, team_member_1.id, team_member_2.id]
-        return self.team_member_ids
+        self.submitting_user_id = UserFactory.create().id
+        team_member_1_id = UserFactory.create().id
+        team_member_2_id = UserFactory.create().id
+
+        self.team_member_ids = [self.submitting_user_id, team_member_1_id, team_member_2_id]
+
+        self.default_assessment = (
+            self.staff_user_id,  # scorer_id
+            OPTIONS_SELECTED_DICT["few"]["options"],  # options_selected
+            dict(),  # critereon_feedback
+            '',  # overall_feedback
+            RUBRIC  # rubric_dict
+        )
 
     def test_submitter_is_finished(self):
         team_submission_uuid = 'foo'
@@ -156,7 +162,7 @@ class TestTeamApi(CacheResetTest):
         # Given an assessment for a team submission
         team_submission = self._create_test_submission_for_team()
         assessments = self._create_test_assessments_for_team(
-            team_submission_uuid=team_submission['team_submission_uuid']
+            team_submission['team_submission_uuid']
         )
 
         # When I ask the API for the latest
@@ -187,7 +193,7 @@ class TestTeamApi(CacheResetTest):
         submission_to_assess = teams_api.get_submission_to_assess(
             'mock-course',
             'mock-item',
-            'staff-id'
+            self.staff_user_id
         )
 
         # Then the API returns None
@@ -201,7 +207,7 @@ class TestTeamApi(CacheResetTest):
         submission_to_assess = teams_api.get_submission_to_assess(
             'mock-course',
             'mock-item',
-            'staff-id'
+            self.staff_user_id
         )
 
         # Then I recieve one to assess
@@ -277,13 +283,13 @@ class TestTeamApi(CacheResetTest):
         # Create assessment
         assessments = teams_api.create_assessment(
             team_submission_uuid,
-            "Snape",
+            self.staff_user_id,
             OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
             RUBRIC
         )
         return assessments
 
-    def _create_test_submission_for_team(self, team_member_ids=None):
+    def _create_test_submission_for_team(self):
         """
         Helper to create a team submission.
         Implicitly creates a TeamStaffWorkflow linked to the submission.
@@ -291,17 +297,13 @@ class TestTeamApi(CacheResetTest):
         Returns:
             TeamSubmission
         """
-        # Create users if not supplied
-        if team_member_ids is None:
-            team_member_ids = self._create_users()
-
         # Create a team submission
         team_submission = team_submissions_api.create_submission_for_team(
             'mock-course',
             'mock-item',
             'mock-team-id',
-            team_member_ids[0],
-            team_member_ids,
+            self.submitting_user_id,
+            self.team_member_ids,
             '42'
         )
 
