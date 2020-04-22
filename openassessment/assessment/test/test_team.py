@@ -75,40 +75,33 @@ class TestTeamApi(CacheResetTest):
 
     def test_get_latest_assessment_none(self):
         # Given no assessments for a team, when I try to get latest
-        assessment = teams_api.get_latest_staff_assessment("no-assessments-for-uuid")
+        team_submission = self._create_test_submission_for_team()
+        assessment = teams_api.get_latest_staff_assessment(team_submission['team_submission_uuid'])
 
         # Then None is returned
         self.assertIsNone(assessment)
 
-    def test_get_latst_assessment(self):
+    def test_get_latest_assessment(self):
         # Given an assessment for a team submission
-        workflow, assessment = self._create_team_workflow_and_assessment()
+        team_submission = self._create_test_submission_for_team()
+        assessments = self._create_test_assessments_for_team(
+            team_submission_uuid=team_submission['team_submission_uuid']
+        )
 
         # When I ask the API for the latest
-        returned_assessment = teams_api.get_latest_staff_assessment(workflow.team_submission_uuid)
+        returned_assessment = teams_api.get_latest_staff_assessment(team_submission['team_submission_uuid'])
 
         # Then the correct assessment is returned
         self.assertIsNotNone(returned_assessment)
-        self.assertEqual(returned_assessment['id'], assessment.id)
+        self.assertEqual(returned_assessment['id'], assessments[-1]['id'])
 
     def test_create_assessment(self):
         # Given a team submission and workflow
-        self._create_users()
-        team_submission = team_submissions_api.create_submission_for_team(
-            'mock-course',
-            'mock-item',
-            'mock-team-id',
-            self.team_member_ids[0],
-            self.team_member_ids,
-            '42'
-        )
-        workflow = TeamStaffWorkflowFactory.create()
-        workflow.team_submission_uuid = team_submission['team_submission_uuid']
-        workflow.save()
+        team_submission = self._create_test_submission_for_team()
 
         # When I create an assessment
         assessments = teams_api.create_assessment(
-            workflow.team_submission_uuid,
+            team_submission['team_submission_uuid'],
             "Snape",
             OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
             RUBRIC
@@ -120,21 +113,63 @@ class TestTeamApi(CacheResetTest):
             [str(uuid) for uuid in team_submission['submission_uuids']]
         )
 
-    def _create_team_workflow_and_assessment(self):
+    def _create_test_assessments_for_team(self, team_submission_uuid=None, team_member_ids=None):
         """
-        Helper to create a team assessment and workflow
+        Helper to create team assessments.
+        Implicitly creates a submission and workflow to link the assessment to.
 
         Returns:
-            (workflow, assessment)
+            Assessments
+        """
+        # Create submission and workflow
+        if team_submission_uuid is None:
+            team_submission_uuid = self._create_test_submission_for_team(team_member_ids)['team_submission_uuid']
+
+        # Create assessment
+        assessments = teams_api.create_assessment(
+            team_submission_uuid,
+            "Snape",
+            OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
+            RUBRIC
+        )
+        return assessments
+
+    def _create_test_submission_for_team(self, team_member_ids=None):
+        """
+        Helper to create a team submission.
+        Implicitly creates a TeamStaffWorkflow linked to the submission.
+
+        Returns:
+            TeamSubmission
+        """
+        # Create users if not supplied
+        if team_member_ids is None:
+            team_member_ids = self._create_users()
+
+        # Create a team submission
+        team_submission = team_submissions_api.create_submission_for_team(
+            'mock-course',
+            'mock-item',
+            'mock-team-id',
+            team_member_ids[0],
+            team_member_ids,
+            '42'
+        )
+
+        # Create a team staff workflow linked to the team submission
+        self._create_test_workflow(team_submission['team_submission_uuid'])
+
+        return team_submission
+
+    def _create_test_workflow(self, team_submission_uuid):
+        """
+        Creates a test team workflow and links to a team submission
+
+        Returns:
+            Created workflow
         """
         workflow = TeamStaffWorkflowFactory.create()
-
-        assessment = AssessmentFactory.create()
-        assessment.submission_uuid = workflow.submission_uuid
-        assessment.score_type = STAFF_TYPE
-        assessment.save()
-
-        workflow.assessment = assessment.id
+        workflow.team_submission_uuid = team_submission_uuid
         workflow.save()
 
-        return workflow, assessment
+        return workflow
