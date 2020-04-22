@@ -70,7 +70,7 @@ class StudentTrainingMixin:
             if isinstance(parts[0].get('text'), six.string_types):
                 return create_submission_dict({'answer': answer}, self.prompts)
 
-            return
+        return
 
     def _parse_answer_list(self, answer):
         """

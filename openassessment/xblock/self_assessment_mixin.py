@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 import logging
 
-from openassessment.assessment.api import self as self_api
+from openassessment.assessment.api import self as self_api  # pylint: disable=wrong-import-order
 from openassessment.workflow import api as workflow_api
 from webob import Response
 from xblock.core import XBlock  # pylint: disable=wrong-import-order
