@@ -160,9 +160,9 @@ class FileUpload:
                 logger.exception(u'FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
                     key=self.key,
                     error=exc
-                ))
+                ))  # pylint: disable=unicode-format-string
 
-            return ''
+        return ''
 
     @property
     def key(self):
