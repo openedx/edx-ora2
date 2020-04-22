@@ -33,6 +33,8 @@ def filesystem_storage(request, key):
             raise Http404()
         return download_file(key)
 
+    return None
+
 
 def download_file(key):
     """Returns an HttpResponse to download the corresponding file"""

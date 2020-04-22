@@ -108,7 +108,7 @@ class StudioMixin:
         # In the authoring GUI, date and time fields should never be null.
         # Therefore, we need to resolve all "default" dates to datetime objects
         # before displaying them in the editor.
-        __, __, date_ranges = resolve_dates(
+        __, ___, date_ranges = resolve_dates(
             self.start, self.due,
             [
                 (self.submission_start, self.submission_due)

@@ -56,7 +56,7 @@ class LeaderboardMixin:
                 path, context = self.render_leaderboard_complete(self.get_student_item_dict())
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_leaderboard_incomplete()
-        except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
+        except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):  # pylint: disable=no-member
             return self.render_error(_(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
