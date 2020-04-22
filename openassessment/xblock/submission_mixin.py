@@ -125,12 +125,10 @@ class SubmissionMixin:
 
                 # a submission for a team generates matching submissions for all members
                 if self.is_team_assignment():
-                    submissions = self.create_team_submission(student_sub_data)
-                    return [self._create_submission_response(submission) for submission in submissions]
-
+                    submission = self.create_team_submission(student_sub_data)
                 else:
                     submission = self.create_submission(student_item_dict, student_sub_data)
-                    return self._create_submission_response(submission)
+                return self._create_submission_response(submission)
 
             except api.SubmissionRequestError as err:
 
@@ -286,22 +284,42 @@ class SubmissionMixin:
             logger.exception(msg)
             raise NoTeamToCreateSubmissionForError(msg)
 
+        # Import is placed here to avoid model import at project startup.
+        from submissions import team_api
+
+        team_info = self.get_team_info()
+        # Store the student's response text in a JSON-encodable dict
+        # so that later we can add additional response fields.
+        student_sub_dict = prepare_submission_for_serialization(student_sub_data)
+
+        self._collect_files_for_submission(student_sub_dict)
         submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
-        team_anonymous_user_ids = self.get_anonymous_user_ids_for_team()
+        user = self.get_real_user(submitter_anonymous_user_id)
+        student_item_dict = self.get_student_item_dict(anonymous_user_id=submitter_anonymous_user_id)
+        submission = team_api.create_submission_for_team(
+            self.course_id,
+            student_item_dict['item_id'],
+            team_info['team_id'],
+            user.id,
+            team_info['team_usernames'],
+            student_sub_dict,
+        )
 
-        submissions = []
-
-        # submissions are identical except for the student item
-        for anonymous_user_id in team_anonymous_user_ids:
-            student_item_dict = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
-            submission = self.create_submission(student_item_dict, student_sub_data)
-
-            if anonymous_user_id == submitter_anonymous_user_id:
-                self.submission_uuid = submission["uuid"]
-
-            submissions.append(submission)
-
-        return submissions
+        self.create_team_workflow(submission["team_submission_uuid"])
+        # Emit analytics event...
+        self.runtime.publish(
+            self,
+            "openassessmentblock.create_team_submission",
+            {
+                "submission_uuid": submission["team_submission_uuid"],
+                "team_id": team_info["team_id"],
+                "attempt_number": submission["attempt_number"],
+                "created_at": submission["created_at"],
+                "submitted_at": submission["submitted_at"],
+                "answer": submission["answer"],
+            }
+        )
+        return submission
 
     def create_submission(self, student_item_dict, student_sub_data):
         """ Creates submission for the submitted assessment response or a list for a team assessment. """

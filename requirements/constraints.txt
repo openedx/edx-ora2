@@ -4,6 +4,7 @@
 futures==3.3.0 ; python_version == "2.7"
 
 # Base dependencies
+Django<2.3                         # Stay on the latest LTS release of Django
 bleach<=2.1.4                      # Constrained by edx-platform/edx-enterprise/lti_consumer-xblock
 boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
 defusedxml<=0.5.0                  # Constrained by edx-platform and its dependencies.
@@ -19,6 +20,7 @@ mock<4.0.0                         # mock version 4.0.0 drops support for python
 path.py<=8.2.1                     # Constrained by edx-platform and its dependencies.
 python-dateutil<=2.4.0             # Constrained by edx-platform and its dependencies.
 python-swiftclient<4.0.0
+mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
 voluptuous<1.0.0
 zipp==1.0.0                        # zipp 2.0.0 requires Python >= 3.6
 

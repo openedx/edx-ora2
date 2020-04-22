@@ -36,6 +36,7 @@ from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from webob import Response
 from xblock.core import XBlock
@@ -106,6 +107,7 @@ class OpenAssessmentBlock(MessageMixin,
                           LeaderboardMixin,
                           StaffAreaMixin,
                           WorkflowMixin,
+                          TeamWorkflowMixin,
                           StudentTrainingMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
