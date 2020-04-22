@@ -132,18 +132,12 @@ def get_latest_staff_assessment(team_submission_uuid):
 
     """
     try:
-        # Get the reference submission from a team submission
-        team_workflow = TeamStaffWorkflow.objects.filter(
-            team_submission_uuid=team_submission_uuid
-        ).first()
+        # Get the reference submissions
+        team_submission = team_submissions_api.get_team_submission(team_submission_uuid)
 
-        if not team_workflow:
-            return None
-
-        submission_uuid = team_workflow.submission_uuid
-
+        # Return the most-recently graded assessment for any team member's submisison
         assessment = Assessment.objects.filter(
-            submission_uuid=submission_uuid,
+            submission_uuid__in=team_submission['submission_uuids'],
             score_type=STAFF_TYPE,
         ).first()
     except DatabaseError as ex:
