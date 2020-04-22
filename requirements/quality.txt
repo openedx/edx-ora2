@@ -24,7 +24,7 @@ django==2.2.12            # via -c requirements/constraints.txt, -r requirements
 djangorestframework==3.9.4  # via -r requirements/test.txt, edx-submissions
 edx-i18n-tools==0.5.0     # via -r requirements/test.txt
 edx-lint==1.4.1           # via -r requirements/quality.in
-edx-submissions==3.0.7    # via -r requirements/test.txt
+edx-submissions==3.1.0    # via -r requirements/test.txt
 factory-boy==2.12.0       # via -r requirements/test.txt
 faker==4.0.3              # via -r requirements/test.txt, factory-boy
 filelock==3.0.12          # via -r requirements/test.txt, tox, virtualenv
