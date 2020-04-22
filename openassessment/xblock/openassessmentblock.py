@@ -1113,6 +1113,8 @@ class OpenAssessmentBlock(MessageMixin,
             if assessment["name"] == mixin_name:
                 return assessment
 
+            return None
+
     def publish_assessment_event(self, event_name, assessment, **kwargs):
         """
         Emit an analytics event for the peer assessment.
