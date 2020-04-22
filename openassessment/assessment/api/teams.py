@@ -238,6 +238,59 @@ def get_assessment_scores_by_criteria(team_submission_uuid):
         raise StaffAssessmentInternalError(error_message)
 
 
+def get_submission_to_assess(course_id, item_id, scorer_id):
+    """
+    Get a team submission for staff evaluation.
+
+    Retrieves a team submission for assessment for the given staff member.
+
+    Args:
+        course_id (str): The course that we would like to fetch submissions from.
+        item_id (str): The student_item (problem) that we would like to retrieve submissions for.
+        scorer_id (str): The user id of the staff member scoring this submission
+
+    Returns:
+        dict: A student submission for assessment. This contains a 'student_item',
+            'attempt_number', 'submitted_at', 'created_at', and 'answer' field to be
+            used for assessment.
+
+    Raises:
+        StaffAssessmentInternalError: Raised when there is an internal error
+            retrieving staff workflow information.
+
+    Examples:
+        >>> get_submission_to_assess("a_course_id", "an_item_id", "a_scorer_id")
+        {
+            'student_item': 2,
+            'attempt_number': 1,
+            'submitted_at': datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
+            'answer': { ... }
+        }
+
+    """
+    team_submission_uuid = TeamStaffWorkflow.get_submission_for_review(course_id, item_id, scorer_id)
+    if team_submission_uuid:
+        try:
+            submission_data = team_submissions_api.get_team_submission(team_submission_uuid)
+            return submission_data
+        except team_submissions_api.TeamSubmissionNotFoundError:
+            error_message = (
+                "Could not find a team submission with the uuid {}"
+            ).format(team_submission_uuid)
+            logger.exception(error_message)
+            raise StaffAssessmentInternalError(error_message)
+    else:
+        logger.info(
+            "No team submission found for staff to assess ({}, {})"
+            .format(
+                course_id,
+                item_id,
+            )
+        )
+        return None
+
+
 def create_assessment(
         team_submission_uuid,
         scorer_id,

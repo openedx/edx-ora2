@@ -173,6 +173,32 @@ class TestTeamApi(CacheResetTest):
             OPTIONS_SELECTED_DICT["few"]["options"].keys()
         )
 
+    def test_get_submission_to_assess_none(self):
+        # Given no submissions to assess
+        # When I ask the API for another submission
+        submission_to_assess = teams_api.get_submission_to_assess(
+            'mock-course',
+            'mock-item',
+            'staff-id'
+        )
+
+        # Then the API returns None
+        self.assertIsNone(submission_to_assess)
+
+    def test_get_submission_to_assess(self):
+        # Given ungraded submissions to assess
+        team_submission = self._create_test_submission_for_team()
+
+        # When I ask the API for a submission
+        submission_to_assess = teams_api.get_submission_to_assess(
+            'mock-course',
+            'mock-item',
+            'staff-id'
+        )
+
+        # Then I recieve one to assess
+        self.assertEqual(team_submission, submission_to_assess)
+
     def test_create_assessment(self):
         # Given a team submission and workflow
         team_submission = self._create_test_submission_for_team()
@@ -235,11 +261,15 @@ class TestTeamApi(CacheResetTest):
         )
 
         # Create a team staff workflow linked to the team submission
-        self._create_test_workflow(team_submission['team_submission_uuid'])
+        self._create_test_workflow(
+            team_submission['team_submission_uuid'],
+            course_id='mock-course',
+            item_id='mock-item'
+        )
 
         return team_submission
 
-    def _create_test_workflow(self, team_submission_uuid):
+    def _create_test_workflow(self, team_submission_uuid, course_id=None, item_id=None):
         """
         Creates a test team workflow and links to a team submission
 
@@ -248,6 +278,8 @@ class TestTeamApi(CacheResetTest):
         """
         workflow = TeamStaffWorkflowFactory.create()
         workflow.team_submission_uuid = team_submission_uuid
+        workflow.course_id = course_id if course_id else workflow.course_id
+        workflow.item_id = item_id if item_id else workflow.item_id
         workflow.save()
 
         return workflow
