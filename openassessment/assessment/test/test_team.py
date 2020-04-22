@@ -44,6 +44,40 @@ class TestTeamApi(CacheResetTest):
             team_requirements
         ))
 
+    def test_assessment_is_not_required(self):
+        # Given a submission but unifinshed assessment
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        staff_requirements = None
+
+        # When I ask the API if the assessment is finished
+        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements)
+
+        # Then it returns False
+        self.assertFalse(api_response)
+
+    def test_assessment_is_not_finished(self):
+        # Given a submission but unifinshed assessment
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        staff_requirements = {'required': True}
+
+        # When I ask the API if the assessment is finished
+        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements)
+
+        # Then it returns False
+        self.assertFalse(api_response)
+
+    def test_assessment_is_finished(self):
+        # Given a submission and assessment
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        assessments = self._create_test_assessments_for_team(team_submission_uuid)
+        staff_requirements = {'required': True}
+
+        # When I ask the API if the assessment is finished
+        api_response = teams_api.assessment_is_finished(team_submission_uuid, staff_requirements)
+
+        # Then it returns True
+        self.assertTrue(api_response)
+
     @mock.patch('submissions.team_api.get_team_submission')
     def test_on_init(self, mock_get_submission):
         # Given a team submission

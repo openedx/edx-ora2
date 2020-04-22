@@ -40,6 +40,28 @@ def submitter_is_finished(team_submission_uuid, team_requirements):  # pylint: d
     return True
 
 
+def assessment_is_finished(team_submission_uuid, staff_requirements):
+    """
+    Determine if the staff assessment step of the given team submission is completed.
+    This checks to see if staff have completed the assessment.
+
+    Args:
+        team_submission_uuid (str): The UUID of the submission being graded.
+        staff_requirements (dict): Any variables that may effect this state.
+
+    Returns:
+        True if a staff assessment has been completed for this team submission or if not required.
+    """
+    # Requirements of None means we can't make any assumptions about the done-ness of this step
+    if staff_requirements is None:
+        return False
+
+    if staff_requirements.get('required', False):
+        return bool(get_latest_staff_assessment(team_submission_uuid))
+
+    return True
+
+
 def on_init(team_submission_uuid):
     """
     Create a new team staff workflow for a student item and submission.
