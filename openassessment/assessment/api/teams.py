@@ -203,6 +203,41 @@ def get_latest_staff_assessment(team_submission_uuid):
     return None
 
 
+def get_assessment_scores_by_criteria(team_submission_uuid):
+    """Get the staff score for each rubric criterion
+
+    Args:
+        team_submission_uuid (str): The team submission uuid is used to get the
+            assessment used to score this submission.
+
+    Returns:
+        (dict): A dictionary of rubric criterion names, with a score of
+            the staff assessments.
+
+    Raises:
+        StaffAssessmentInternalError: If any error occurs while retrieving
+            information from the scores, an error is raised.
+    """
+    try:
+        # Get most recently graded assessment for a team submission
+        team_submission = team_submissions_api.get_team_submission(team_submission_uuid)
+        assessments = list(
+            Assessment.objects.filter(
+                submission_uuid__in=team_submission['submission_uuids'],
+                score_type=STAFF_TYPE,
+            )[:1]
+        )
+
+        scores = Assessment.scores_by_criterion(assessments)
+        # Since this is only being sent one score, the median score will be the
+        # same as the only score.
+        return Assessment.get_median_score_dict(scores)
+    except DatabaseError:
+        error_message = "Error getting staff assessment scores for {}".format(submission_uuid)
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)
+
+
 def create_assessment(
         team_submission_uuid,
         scorer_id,

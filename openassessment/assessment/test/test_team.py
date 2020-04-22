@@ -158,6 +158,21 @@ class TestTeamApi(CacheResetTest):
         self.assertIsNotNone(returned_assessment)
         self.assertEqual(returned_assessment['id'], assessments[-1]['id'])
 
+    def test_get_assessment_scores_by_criteria(self):
+        # Given an assessment for a team submission
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        self._create_test_assessments_for_team(team_submission_uuid)
+
+        # When I ask the API for assessment scores
+        score_criteria = teams_api.get_assessment_scores_by_criteria(team_submission_uuid)
+
+        # Then the API returns the rubric dictionary...
+        # TODO... with the correct scores
+        self.assertEqual(
+            score_criteria.keys(),
+            OPTIONS_SELECTED_DICT["few"]["options"].keys()
+        )
+
     def test_create_assessment(self):
         # Given a team submission and workflow
         team_submission = self._create_test_submission_for_team()
