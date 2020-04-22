@@ -18,7 +18,7 @@ django-model-utils==3.2.0
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
 django-simple-history==2.8.0
 edx-i18n-tools==0.5.0
-edx-submissions==3.1.1
+edx-submissions==3.1.3
 factory-boy==2.12.0
 faker==4.0.0              # via factory-boy
 filelock==3.0.12          # via tox, virtualenv

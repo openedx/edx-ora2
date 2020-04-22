@@ -206,7 +206,7 @@ class TestTeamApi(CacheResetTest):
             self.staff_user_id
         )
 
-        # Then I recieve one to assess
+        # Then I recieve a submission to assess
         self.assertEqual(team_submission, submission_to_assess)
 
     def test_get_grading_statistics(self):
