@@ -29,7 +29,7 @@ class SelfAssessmentMixin:
     """
 
     @XBlock.handler
-    def render_self_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
+    def render_self_assessment(self, data, suffix=''):  # pylint: disable=unused-argument, missing-docstring
         if "self-assessment" not in self.assessment_steps:
             return Response(u"")
 

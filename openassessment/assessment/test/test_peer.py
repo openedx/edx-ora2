@@ -1039,7 +1039,7 @@ class TestPeerApi(CacheResetTest):
         # Get the next submission for review
         submission_uuid = xander_workflow.get_submission_for_over_grading()
 
-        if not (buffy_answer["uuid"] == submission_uuid or willow_answer["uuid"] == submission_uuid):
+        if not (submission_uuid in (buffy_answer['uuid'], willow_answer['uuid'])):
             self.fail("Submission was not Buffy or Willow's.")
 
     def test_create_feedback_on_an_assessment(self):

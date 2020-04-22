@@ -698,7 +698,7 @@ class AssessmentPart(models.Model):
                 'feedback': feedback.get(criterion_name, u"")[0:cls.MAX_FEEDBACK_SIZE],
             }
             for criterion_name, option_name in six.iteritems(selected)
-        ]
+        ]  # pylint: disable=consider-using-set-comprehension
 
         # Some criteria may have feedback but no options, only feedback.
         # For these, we set `option` to None, indicating that the assessment part
@@ -871,6 +871,7 @@ class SharedFileUpload(TimeStampedModel):
 
     @classmethod
     def by_key(cls, key):
+        """Return object against a key."""
         try:
             return cls.objects.get(file_key=key)
         except cls.DoesNotExist as exc:
