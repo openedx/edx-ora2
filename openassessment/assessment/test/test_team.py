@@ -26,6 +26,14 @@ STAFF_TYPE = "ST"
 class TestTeamApi(CacheResetTest):
     """ Tests for the Team Assessment API """
 
+    default_assessment = (
+        "Snape",  # scorer_id
+        OPTIONS_SELECTED_DICT["few"]["options"],  # options_selected
+        dict(),  # critereon_feedback
+        '',  # overall_feedback
+        RUBRIC  # rubric_dict
+    )
+
     def _create_users(self):
         """ Create test users on a team """
         submitting_user = UserFactory.create()
@@ -199,6 +207,45 @@ class TestTeamApi(CacheResetTest):
         # Then I recieve one to assess
         self.assertEqual(team_submission, submission_to_assess)
 
+    def test_get_grading_statistics(self):
+        # Given an open response item
+        mock_ora = ('mock-course', 'mock-item')
+
+        # Initially, nothing listed
+        self.assertEquals(
+            teams_api.get_staff_grading_statistics(*mock_ora),
+            {
+                'graded': 0,
+                'ungraded': 0,
+                'in-progress': 0
+            }
+        )
+
+        # New submissions count towards 'ungraded'
+        submission = self._create_test_submission_for_team()
+        self.assertEquals(
+            teams_api.get_staff_grading_statistics(*mock_ora),
+            {
+                'graded': 0,
+                'ungraded': 1,
+                'in-progress': 0
+            }
+        )
+
+        # Complete assessments count towards 'graded'
+        teams_api.create_assessment(
+            submission['team_submission_uuid'],
+            *self.default_assessment
+        )
+        self.assertEquals(
+            teams_api.get_staff_grading_statistics(*mock_ora),
+            {
+                'graded': 1,
+                'ungraded': 0,
+                'in-progress': 0
+            }
+        )
+
     def test_create_assessment(self):
         # Given a team submission and workflow
         team_submission = self._create_test_submission_for_team()
@@ -206,9 +253,7 @@ class TestTeamApi(CacheResetTest):
         # When I create an assessment
         assessments = teams_api.create_assessment(
             team_submission['team_submission_uuid'],
-            "Snape",
-            OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
-            RUBRIC
+            *self.default_assessment
         )
 
         # Assessments are created for each memeber of the team

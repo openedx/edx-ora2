@@ -291,6 +291,20 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
         return None
 
 
+def get_staff_grading_statistics(course_id, item_id):
+    """
+    Returns the number of graded, ungraded, and in-progress team submissions for staff grading.
+
+    Args:
+        course_id (str): The course that this problem belongs to
+        item_id (str): The student_item (problem) that we want to know statistics about.
+
+    Returns:
+        dict: a dictionary that contains the following keys: 'graded', 'ungraded', and 'in-progress'
+    """
+    return TeamStaffWorkflow.get_workflow_statistics(course_id, item_id)
+
+
 def create_assessment(
         team_submission_uuid,
         scorer_id,
