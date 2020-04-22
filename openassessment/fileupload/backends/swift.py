@@ -86,7 +86,7 @@ class Backend(BaseBackend):
         except Exception as ex:
             logger.exception(
                 u"An internal exception occurred while removing object on swift storage."
-            )
+            )  # pylint: disable=unicode-format-string
             raise FileUploadInternalError(ex)
 
 
