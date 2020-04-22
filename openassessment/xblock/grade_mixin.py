@@ -72,7 +72,7 @@ class GradeMixin:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_grade_incomplete(workflow)
-        except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
+        except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):  # pylint: disable=no-member
             return self.render_error(self._(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
