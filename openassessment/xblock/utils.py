@@ -31,4 +31,4 @@ def get_percentage(sample_submission, staff_submission):
     staff_correct = staff_submission['correct']
     staff_total = staff_submission['total_tests']
 
-    return (sample_correct + staff_correct) / (staff_total + sample_total)
+    return ((sample_correct + staff_correct) / (staff_total + sample_total)) * 100
