@@ -22,3 +22,13 @@ def get_code_language(source_code):
         return CODE_LANGUAGES[language]
     except KeyError:
         return ""
+
+
+def get_percentage(sample_submission, staff_submission):
+    sample_correct = sample_submission['correct']
+    sample_total = sample_submission['total_tests']
+
+    staff_correct = staff_submission['correct']
+    staff_total = staff_submission['total_tests']
+
+    return (sample_correct + staff_correct) / (staff_total + sample_total)

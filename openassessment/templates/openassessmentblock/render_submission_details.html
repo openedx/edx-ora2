@@ -3,10 +3,11 @@
 {% load oa_extras %}
 
 <div>
+    <h2 style="text-align:center">{{header_content}}</h2>
     {% if response.error %}
-    <div class="submission__answer__part__text__value" style="outline: 3px solid red;"> {{response.error|escape|linebreaksbr}}</div>
+        <div class="submission__answer__part__text__value" style="outline: 3px solid red;"> {{response.error|escape|linebreaksbr}}</div>
     {% else %}
-<!--        <p style="text-align:center; font: 20px bold;">{{response.correct}} test cases out of {{response.total_tests}} passed</p>-->
+        <p style="font: 20px bold;">Tests Result: Passed {{response.correct}} out of {{response.total_tests}} test cases</p>
     <div style="display: flex;flex-direction: row;">
         <span style="display: inline-block; width:50%; font:20px bold;">{{student_output_header}}</span>
         <span style="display: inline-block; width:50%; font:20px bold;">{{expected_output_header}}</span>

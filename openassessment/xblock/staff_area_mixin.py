@@ -12,7 +12,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, create_submission_dict_v2
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from openassessment.xblock.utils import get_code_language
+from openassessment.xblock.utils import get_code_language, get_percentage
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -273,6 +273,7 @@ class StaffAreaMixin(object):
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
             context['code_language'] = get_code_language(submission['answer']['parts'][0])
             context['staff_view'] = True
+            context['result_percentage'] = get_percentage(submission['answer']['parts'][1], submission['answer']['parts'][2])
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt

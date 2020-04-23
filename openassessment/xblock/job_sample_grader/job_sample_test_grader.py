@@ -119,7 +119,7 @@ class TestGrader:
         if error and compiling:
             raise Exception(error)
         elif error and running_code and 'Killed' in error:
-            raise Exception('Time limit exceeded.')
+            return u'Time limit exceeded.'
         elif error and running_code:
             raise Exception(error)
 
