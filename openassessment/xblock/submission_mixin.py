@@ -158,6 +158,7 @@ class SubmissionMixin:
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
                     status_text = msg
+            # pylint: disable=no-member
             except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
                 msg = (
                     u"An unknown error occurred while submitting "

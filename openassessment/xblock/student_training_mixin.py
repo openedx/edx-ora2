@@ -7,7 +7,7 @@ import logging
 
 import six
 
-from openassessment.assessment.api import student_training
+from openassessment.assessment.api import student_training  # pylint: disable=wrong-import-order
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict, create_submission_dict
 from webob import Response
@@ -70,7 +70,7 @@ class StudentTrainingMixin:
             if isinstance(parts[0].get('text'), six.string_types):
                 return create_submission_dict({'answer': answer}, self.prompts)
 
-        return
+        return None
 
     def _parse_answer_list(self, answer):
         """
