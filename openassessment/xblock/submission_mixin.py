@@ -158,8 +158,7 @@ class SubmissionMixin:
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
                     status_text = msg
-            # pylint: disable=no-member
-            except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
+            except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):  # pylint: disable=no-member
                 msg = (
                     u"An unknown error occurred while submitting "
                     u"a response for the user: {student_item}"
@@ -335,7 +334,7 @@ class SubmissionMixin:
 
         return submission
 
-    def _collect_files_for_submission(self, student_sub_dict):
+    def _collect_files_for_submission(self, student_sub_dict):  # pylint: disable=inconsistent-return-statements
         """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
 
         if not self.file_upload_type:
