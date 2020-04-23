@@ -218,7 +218,7 @@ class TestTeamApi(CacheResetTest):
         mock_ora = ('mock-course', 'mock-item')
 
         # Initially, nothing listed
-        self.assertEquals(
+        self.assertEqual(
             teams_api.get_staff_grading_statistics(*mock_ora),
             {
                 'graded': 0,
@@ -229,7 +229,7 @@ class TestTeamApi(CacheResetTest):
 
         # New submissions count towards 'ungraded'
         submission = self._create_test_submission_for_team()
-        self.assertEquals(
+        self.assertEqual(
             teams_api.get_staff_grading_statistics(*mock_ora),
             {
                 'graded': 0,
@@ -243,7 +243,7 @@ class TestTeamApi(CacheResetTest):
             submission['team_submission_uuid'],
             *self.default_assessment
         )
-        self.assertEquals(
+        self.assertEqual(
             teams_api.get_staff_grading_statistics(*mock_ora),
             {
                 'graded': 1,
