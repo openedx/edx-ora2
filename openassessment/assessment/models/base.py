@@ -237,7 +237,7 @@ class CriterionOption(models.Model):
         return repr(self)
 
 
-class RubricIndex(object):
+class RubricIndex:
     """
     Loads a rubric's criteria and options into memory so that they
     can be repeatedly queried without hitting the database.

@@ -14,7 +14,7 @@ from webob import Response
 from xblock.core import XBlock
 
 
-class CourseItemsListingMixin(object):
+class CourseItemsListingMixin:
     """
     The mixin with handlers for the course ora blocks listing view.
 

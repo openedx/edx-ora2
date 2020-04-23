@@ -17,7 +17,7 @@ from xblock.core import XBlock
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class LeaderboardMixin(object):
+class LeaderboardMixin:
     """Leaderboard Mixin introduces all handlers for displaying the leaderboard
 
     Abstracts all functionality and handlers associated with the Leaderboard.

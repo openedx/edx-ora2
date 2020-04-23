@@ -14,7 +14,7 @@ from xblock.core import XBlock
 from .data_conversion import create_submission_dict
 
 
-class GradeMixin(object):
+class GradeMixin:
     """Grade Mixin introduces all handlers for displaying grades
 
     Abstracts all functionality and handlers associated with Grades.

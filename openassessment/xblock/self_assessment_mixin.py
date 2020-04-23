@@ -16,7 +16,7 @@ from .user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class SelfAssessmentMixin(object):
+class SelfAssessmentMixin:
     """The Self Assessment Mixin for all Self Assessment Functionality.
 
     Abstracts all functionality and handlers associated with Self Assessment.

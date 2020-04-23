@@ -40,7 +40,7 @@ def import_course_waffle_flag():
     return CourseWaffleFlag
 
 
-class ConfigMixin(object):
+class ConfigMixin:
     """
     Mixin class for determining configuration and feature-toggle state relevant to an ORA block.
     """

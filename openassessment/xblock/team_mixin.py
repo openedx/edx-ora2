@@ -8,7 +8,7 @@ from xblock.exceptions import NoSuchServiceError
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class TeamMixin(object):
+class TeamMixin:
     """Team Mixin introducing all teams-related functionality."""
 
     STAFF_OR_PREVIEW_INFO = {

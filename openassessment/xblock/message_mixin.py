@@ -11,7 +11,7 @@ import pytz
 from xblock.core import XBlock
 
 
-class MessageMixin(object):
+class MessageMixin:
     """
     Message Mixin introduces all handlers for displaying the banner message
 
