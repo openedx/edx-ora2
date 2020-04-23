@@ -392,7 +392,7 @@ class GradeMixin:
         if assessments:
             first_assessment = assessments[0]
             option = first_assessment['option']
-            if option and option.get('points', None) != None:  # pylint: disable=singleton-comparison
+            if option and option.get('points', None) != None:  # nopep8
                 first_assessment['points'] = option['points']
 
         return assessments
