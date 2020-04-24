@@ -30,7 +30,7 @@ class TestGrader:
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
             self.write_code_file(student_response, full_code_file_name)
         except Exception as exc:
-            return self.respond_with_error(str(exc))
+            return self.response_with_error_v2(str(exc))
 
         output = []
         sample_result = self.run_code('sample', lang, code_file_name, full_code_file_name, problem_name)
@@ -60,6 +60,20 @@ class TestGrader:
         shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
         return output
+
+    def response_with_error_v2(self, error):
+        """
+        To make the incorrect language error compatible with per file test
+        case run compatible.
+        """
+        return [{
+            'run_type': 'sample',
+            'total_tests': 0,
+            'correct': 0,
+            'incorrect': 0,
+            'output': None,
+            'error': [error]
+        }]
 
     def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
 
@@ -208,11 +222,6 @@ class TestGrader:
         otherwise returns response of correct answer
         """
 
-        if len(actual_output.split('\n')) > 150:
-            actual_output = actual_output.split("\n")[:149]
-            actual_output.append("... Too much output. Extra output Trimmed.")
-            actual_output = "\n".join(actual_output)
-
         if problem_name not in OOP_PROBLEM_NAMES:
             expected_output = open(expected_output_file, 'r').read().strip()
             actual_output = actual_output.strip()
@@ -255,7 +264,7 @@ class TestGrader:
 
 if __name__ == '__main__':
     grader = TestGrader()
-    inp_file = os.path.dirname(__file__) + '/test.py'
+    inp_file = os.path.dirname(__file__) + '/secret_data/tree.py'
     data = {
         'problem_name': 'tree',
         'submission': [
