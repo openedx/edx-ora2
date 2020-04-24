@@ -193,7 +193,7 @@ def get_latest_staff_assessment(team_submission_uuid):
         msg = (
             "An error occurred while retrieving staff assessments "
             "for the submission with UUID {uuid}: {ex}"
-        ).format(uuid=submission_uuid, ex=ex)
+        ).format(uuid=team_submission_uuid, ex=ex)
         logger.exception(msg)
         raise StaffAssessmentInternalError(msg)
 
@@ -233,7 +233,7 @@ def get_assessment_scores_by_criteria(team_submission_uuid):
         # same as the only score.
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
-        error_message = "Error getting staff assessment scores for {}".format(submission_uuid)
+        error_message = "Error getting staff assessment scores for {}".format(team_submission_uuid)
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message)
 
