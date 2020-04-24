@@ -8,17 +8,14 @@ from freezegun import freeze_time
 
 from django.utils.timezone import now
 
+from submissions import team_api as team_submissions_api
+
 from openassessment.assessment.api import teams as teams_api
 from openassessment.assessment.models.staff import TeamStaffWorkflow
-from openassessment.tests.factories import TeamStaffWorkflowFactory, AssessmentFactory, UserFactory
+from openassessment.assessment.test.constants import OPTIONS_SELECTED_DICT, RUBRIC
+from openassessment.tests.factories import TeamStaffWorkflowFactory, UserFactory
 from openassessment.test_utils import CacheResetTest
 
-from submissions import (
-    api as submissions_api,
-    team_api as team_submissions_api
-)
-
-from .constants import OPTIONS_SELECTED_DICT, RUBRIC
 
 STAFF_TYPE = "ST"
 
@@ -27,7 +24,7 @@ class TestTeamApi(CacheResetTest):
     """ Tests for the Team Assessment API """
 
     def setUp(self):
-        super()
+        super().setUp()
 
         # Users for testing
         staff_user = UserFactory.create()
@@ -83,7 +80,7 @@ class TestTeamApi(CacheResetTest):
     def test_assessment_is_finished(self):
         # Given a submission and assessment
         team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
-        assessments = self._create_test_assessments_for_team(team_submission_uuid)
+        self._create_test_assessments_for_team(team_submission_uuid)
         staff_requirements = {'required': True}
 
         # When I ask the API if the assessment is finished
@@ -160,13 +157,11 @@ class TestTeamApi(CacheResetTest):
 
     def test_get_latest_assessment(self):
         # Given an assessment for a team submission
-        team_submission = self._create_test_submission_for_team()
-        assessments = self._create_test_assessments_for_team(
-            team_submission['team_submission_uuid']
-        )
+        team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
+        assessments = self._create_test_assessments_for_team(team_submission_uuid)
 
         # When I ask the API for the latest
-        returned_assessment = teams_api.get_latest_staff_assessment(team_submission['team_submission_uuid'])
+        returned_assessment = teams_api.get_latest_staff_assessment(team_submission_uuid)
 
         # Then the correct assessment is returned
         self.assertIsNotNone(returned_assessment)
@@ -268,7 +263,7 @@ class TestTeamApi(CacheResetTest):
             [str(uuid) for uuid in team_submission['submission_uuids']]
         )
 
-    def _create_test_assessments_for_team(self, team_submission_uuid=None, team_member_ids=None):
+    def _create_test_assessments_for_team(self, team_submission_uuid):
         """
         Helper to create team assessments.
         Implicitly creates a submission and workflow to link the assessment to.
@@ -278,7 +273,7 @@ class TestTeamApi(CacheResetTest):
         """
         # Create submission and workflow
         if team_submission_uuid is None:
-            team_submission_uuid = self._create_test_submission_for_team(team_member_ids)['team_submission_uuid']
+            team_submission_uuid = self._create_test_submission_for_team()['team_submission_uuid']
 
         # Create assessment
         assessments = teams_api.create_assessment(

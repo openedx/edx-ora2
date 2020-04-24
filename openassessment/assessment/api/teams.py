@@ -8,16 +8,13 @@ import logging
 from django.db import DatabaseError
 from django.utils.timezone import now
 
+from submissions import team_api as team_submissions_api
+
 from openassessment.assessment.api.staff import _complete_assessment
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, TeamStaffWorkflow, InvalidRubricSelection
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict
 
-
-from submissions import (
-    api as submissions_api,
-    team_api as team_submissions_api
-)
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -274,7 +271,7 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
         try:
             submission_data = team_submissions_api.get_team_submission(team_submission_uuid)
             return submission_data
-        except team_submissions_api.TeamSubmissionNotFoundError:
+        except DatabaseError:
             error_message = (
                 "Could not find a team submission with the uuid {}"
             ).format(team_submission_uuid)

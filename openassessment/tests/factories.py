@@ -6,7 +6,6 @@ from __future__ import absolute_import
 import datetime
 import factory
 from django.contrib.auth.models import User
-from django.utils.timezone import now
 from factory.django import DjangoModelFactory
 from pytz import UTC
 
