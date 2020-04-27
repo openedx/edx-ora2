@@ -7,20 +7,17 @@ futures==3.3.0 ; python_version == "2.7"
 bleach<=2.1.4                      # Constrained by edx-platform/edx-enterprise/lti_consumer-xblock
 boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
 defusedxml<=0.5.0                  # Constrained by edx-platform and its dependencies.
-Django<2.3                         # Stay on the latest LTS release of Django
-django-model-utils<4.0.0           # Constrained by edx-platform and its dependencies.
+django-model-utils<4.0.0          # Constrained by edx-platform and its dependencies.
 fs<=2.0.18                         # Constrained by edx-platform/XBlock
 jsonfield2<3.1.0
 lazy<=1.1                          # Constrained by edx-platform and its dependencies.
-libsass<=0.10.1                    # Constrained by edx-platform and its dependencies.
+libsass<=0.10.0                    # Constrained by edx-platform and its dependencies.
 loremipsum<2.0.0
 lxml<=3.8.0                        # Constrained by edx-platform and its dependencies.
-mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
 path.py<=8.2.1                     # Constrained by edx-platform and its dependencies.
 python-dateutil<=2.4.0             # Constrained by edx-platform and its dependencies.
 python-swiftclient<4.0.0
 voluptuous<1.0.0
-zipp<2.0.0                         # zipp 2.0.0 requires Python >= 3
 
 # Test dependencies
 ddt==1.0.0                          # Test failures at versions > 1.0.0
