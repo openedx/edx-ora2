@@ -10,15 +10,13 @@ from django.utils.timezone import now
 
 from submissions import team_api as team_submissions_api
 
-from openassessment.assessment.api.staff import _complete_assessment
+from openassessment.assessment.api.staff import _complete_assessment, STAFF_TYPE
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, TeamStaffWorkflow, InvalidRubricSelection
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
-
-STAFF_TYPE = "ST"
 
 
 def submitter_is_finished(team_submission_uuid, team_requirements):  # pylint: disable=unused-argument
