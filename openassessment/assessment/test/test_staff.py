@@ -380,7 +380,7 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(
             str(context_manager.exception),
             (
-                u"An error occurred while retrieving staff assessments for the submission with UUID {uuid}: {ex}"
+                u"An error occurred while retrieving staff assessments for the submission with UUID ['{uuid}']: {ex}"
             ).format(uuid=tim_sub["uuid"], ex="KABOOM!")
         )
 

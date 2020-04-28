@@ -12,7 +12,7 @@ from submissions import api as submissions_api
 from openassessment.assessment.api import staff_base
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
-from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
+from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict
 
 
 logger = logging.getLogger("openassessment.assessment.api.staff")  # pylint: disable=invalid-name
@@ -162,23 +162,7 @@ def get_latest_staff_assessment(submission_uuid):
     }
 
     """
-    try:
-        assessments = Assessment.objects.filter(
-            submission_uuid=submission_uuid,
-            score_type=staff_base.STAFF_TYPE,
-        )[:1]
-    except DatabaseError as ex:
-        msg = (
-            u"An error occurred while retrieving staff assessments "
-            u"for the submission with UUID {uuid}: {ex}"
-        ).format(uuid=submission_uuid, ex=ex)
-        logger.exception(msg)
-        raise StaffAssessmentInternalError(msg)
-
-    if assessments:
-        return full_assessment_dict(assessments[0])
-
-    return None
+    return staff_base.get_latest_staff_assessment([submission_uuid])
 
 
 def get_assessment_scores_by_criteria(submission_uuid):

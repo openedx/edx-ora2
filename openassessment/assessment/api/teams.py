@@ -159,27 +159,10 @@ def get_latest_staff_assessment(team_submission_uuid):
     }
 
     """
-    try:
-        # Get the reference submissions
-        team_submission = team_submissions_api.get_team_submission(team_submission_uuid)
+    # Get the reference submissions
+    submission_uuids = team_submissions_api.get_team_submission(team_submission_uuid)['submission_uuids']
 
-        # Return the most-recently graded assessment for any team member's submisison
-        assessment = Assessment.objects.filter(
-            submission_uuid__in=team_submission['submission_uuids'],
-            score_type=staff_base.STAFF_TYPE,
-        ).first()
-    except StaffAssessmentInternalError as ex:
-        msg = (
-            "An error occurred while retrieving staff assessments "
-            "for the team submission with UUID {uuid}: {ex}"
-        ).format(uuid=team_submission_uuid, ex=ex)
-        logger.exception(msg)
-        raise StaffAssessmentInternalError(msg)
-
-    if assessment:
-        return full_assessment_dict(assessment)
-
-    return None
+    return staff_base.get_latest_staff_assessment(submission_uuids)
 
 
 def get_assessment_scores_by_criteria(team_submission_uuid):

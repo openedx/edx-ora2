@@ -8,8 +8,9 @@ import logging
 from django.db import DatabaseError, transaction
 from django.utils.timezone import now
 
+from openassessment.assessment.errors import StaffAssessmentInternalError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
-from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
+from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -43,6 +44,52 @@ def cancel_workflow(uuid, workflow_model=StaffWorkflow):
         ).format(uuid)
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message)
+
+
+def get_latest_staff_assessment(submission_uuids):
+    """
+    Retrieve the latest staff assessment for a submission.
+
+    Args:
+        submission_uuids (Array(str)): The UUIDs of the submissions being assessed.
+
+    Returns:
+        dict: The serialized assessment model
+        or None if no assessments are available
+
+    Raises:
+        StaffAssessmentInternalError if there are problems connecting to the database.
+
+    Example usage:
+
+    >>> get_latest_staff_assessment(['10df7db776686822e501b05f452dc1e4b9141fe5'])
+    {
+        'points_earned': 6,
+        'points_possible': 12,
+        'scored_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
+        'scorer': "staff",
+        'feedback': ''
+    }
+
+    """
+    try:
+        # Return the most-recently graded assessment for any submisison
+        assessment = Assessment.objects.filter(
+            submission_uuid__in=submission_uuids,
+            score_type=STAFF_TYPE,
+        ).first()
+    except DatabaseError as ex:
+        msg = (
+            "An error occurred while retrieving staff assessments "
+            "for the submission with UUID {uuids}: {ex}"
+        ).format(uuids=submission_uuids, ex=ex)
+        logger.exception(msg)
+        raise StaffAssessmentInternalError(msg)
+
+    if assessment:
+        return full_assessment_dict(assessment)
+
+    return None
 
 
 @transaction.atomic
