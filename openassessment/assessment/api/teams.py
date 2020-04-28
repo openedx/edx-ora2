@@ -6,11 +6,10 @@ from __future__ import absolute_import
 import logging
 
 from django.db import DatabaseError
-from django.utils.timezone import now
 
 from submissions import team_api as team_submissions_api
 
-from openassessment.assessment.api.staff import _complete_assessment, STAFF_TYPE
+from openassessment.assessment.api.staff import cancel_workflow, _complete_assessment, STAFF_TYPE
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, TeamStaffWorkflow, InvalidRubricSelection
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict
@@ -97,8 +96,6 @@ def on_cancel(team_submission_uuid):
     """
     Cancel the team staff workflow for submission.
 
-    Sets the cancelled_at field in team staff workflow.
-
     Args:
         team_submission_uuid (str): The team_submission UUID associated with this workflow.
 
@@ -106,20 +103,7 @@ def on_cancel(team_submission_uuid):
         None
 
     """
-    try:
-        workflow = TeamStaffWorkflow.objects.get(team_submission_uuid=team_submission_uuid)
-        workflow.cancelled_at = now()
-        workflow.save(update_fields=['cancelled_at'])
-    except TeamStaffWorkflow.DoesNotExist:
-        # If we can't find a workflow, then we don't have to do anything to
-        # cancel it.
-        pass
-    except DatabaseError:
-        error_message = (
-            "An internal error occurred while cancelling the team staff workflow for submission {}"
-        ).format(team_submission_uuid)
-        logger.exception(error_message)
-        raise StaffAssessmentInternalError(error_message)
+    return cancel_workflow(team_submission_uuid, workflow_model=TeamStaffWorkflow)
 
 
 def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unused-argument

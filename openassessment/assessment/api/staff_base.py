@@ -5,15 +5,44 @@ from __future__ import absolute_import
 
 import logging
 
-from django.db import transaction
+from django.db import DatabaseError, transaction
+from django.utils.timezone import now
 
-from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
+from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
 from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 STAFF_TYPE = "ST"
+
+
+def cancel_workflow(uuid, workflow_model=StaffWorkflow):
+    """
+    Cancel the workflow for submission.
+
+    Sets the cancelled_at field in team staff workflow.
+
+    Args:
+        uuid (str): The UUID associated with this workflow.
+
+    Returns:
+        None
+
+    """
+    try:
+        workflow = workflow_model.get_by_identifying_uuid(uuid)
+        workflow.cancelled_at = now()
+        workflow.save(update_fields=['cancelled_at'])
+    except workflow_model.DoesNotExist:
+        # If we can't find a workflow, then we don't have to do anything to cancel it
+        pass
+    except DatabaseError:
+        error_message = (
+            "An internal error occurred while cancelling the team/staff workflow for submission {}"
+        ).format(uuid)
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)
 
 
 @transaction.atomic
