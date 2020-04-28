@@ -9,7 +9,7 @@ from django.db import DatabaseError
 
 from submissions import team_api as team_submissions_api
 
-from openassessment.assessment.api.staff import cancel_workflow, _complete_assessment, STAFF_TYPE
+from openassessment.assessment.api import staff_base
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, TeamStaffWorkflow, InvalidRubricSelection
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict
@@ -103,7 +103,7 @@ def on_cancel(team_submission_uuid):
         None
 
     """
-    return cancel_workflow(team_submission_uuid, workflow_model=TeamStaffWorkflow)
+    return staff_base.cancel_workflow(team_submission_uuid, workflow_model=TeamStaffWorkflow)
 
 
 def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unused-argument
@@ -166,12 +166,12 @@ def get_latest_staff_assessment(team_submission_uuid):
         # Return the most-recently graded assessment for any team member's submisison
         assessment = Assessment.objects.filter(
             submission_uuid__in=team_submission['submission_uuids'],
-            score_type=STAFF_TYPE,
+            score_type=staff_base.STAFF_TYPE,
         ).first()
-    except DatabaseError as ex:
+    except StaffAssessmentInternalError as ex:
         msg = (
             "An error occurred while retrieving staff assessments "
-            "for the submission with UUID {uuid}: {ex}"
+            "for the team submission with UUID {uuid}: {ex}"
         ).format(uuid=team_submission_uuid, ex=ex)
         logger.exception(msg)
         raise StaffAssessmentInternalError(msg)
@@ -203,7 +203,7 @@ def get_assessment_scores_by_criteria(team_submission_uuid):
         assessments = list(
             Assessment.objects.filter(
                 submission_uuid__in=team_submission['submission_uuids'],
-                score_type=STAFF_TYPE,
+                score_type=staff_base.STAFF_TYPE,
             )[:1]
         )
 
@@ -315,7 +315,7 @@ def create_assessment(
 
         assessment_dicts = []
         for submission_uuid in team_submission['submission_uuids']:
-            assessment = _complete_assessment(
+            assessment = staff_base._complete_assessment(
                 submission_uuid,
                 scorer_id,
                 options_selected,

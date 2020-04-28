@@ -9,7 +9,7 @@ from django.db import DatabaseError, transaction
 
 from submissions import api as submissions_api
 
-from openassessment.assessment.api.staff_base import cancel_workflow, _complete_assessment, STAFF_TYPE
+from openassessment.assessment.api import staff_base
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
@@ -106,7 +106,7 @@ def on_cancel(submission_uuid):
         None
 
     """
-    return cancel_workflow(submission_uuid)
+    return staff_base.cancel_workflow(submission_uuid)
 
 
 def get_score(submission_uuid, staff_requirements):  # pylint: disable=unused-argument
@@ -165,7 +165,7 @@ def get_latest_staff_assessment(submission_uuid):
     try:
         assessments = Assessment.objects.filter(
             submission_uuid=submission_uuid,
-            score_type=STAFF_TYPE,
+            score_type=staff_base.STAFF_TYPE,
         )[:1]
     except DatabaseError as ex:
         msg = (
@@ -200,7 +200,8 @@ def get_assessment_scores_by_criteria(submission_uuid):
         # This will always create a list of length 1
         assessments = list(
             Assessment.objects.filter(
-                score_type=STAFF_TYPE, submission_uuid=submission_uuid
+                score_type=staff_base.STAFF_TYPE,
+                submission_uuid=submission_uuid
             )[:1]
         )
         scores = Assessment.scores_by_criterion(assessments)
@@ -342,7 +343,7 @@ def create_assessment(
         except StaffWorkflow.DoesNotExist:
             scorer_workflow = None
 
-        assessment = _complete_assessment(
+        assessment = staff_base._complete_assessment(
             submission_uuid,
             scorer_id,
             options_selected,
