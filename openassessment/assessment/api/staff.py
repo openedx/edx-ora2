@@ -162,7 +162,12 @@ def get_latest_staff_assessment(submission_uuid):
     }
 
     """
-    return staff_base.get_latest_staff_assessment([submission_uuid])
+    assessment = staff_base.get_latest_staff_assessment([submission_uuid])
+
+    if assessment:
+        return full_assessment_dict(assessment)
+    else:
+        return None
 
 
 def get_assessment_scores_by_criteria(submission_uuid):

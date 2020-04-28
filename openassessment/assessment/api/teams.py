@@ -162,7 +162,12 @@ def get_latest_staff_assessment(team_submission_uuid):
     # Get the reference submissions
     submission_uuids = team_submissions_api.get_team_submission(team_submission_uuid)['submission_uuids']
 
-    return staff_base.get_latest_staff_assessment(submission_uuids)
+    assessment = staff_base.get_latest_staff_assessment(submission_uuids)
+
+    if assessment:
+        return full_assessment_dict(assessment)
+    else:
+        return None
 
 
 def get_assessment_scores_by_criteria(team_submission_uuid):
@@ -182,15 +187,10 @@ def get_assessment_scores_by_criteria(team_submission_uuid):
     """
     try:
         # Get most recently graded assessment for a team submission
-        team_submission = team_submissions_api.get_team_submission(team_submission_uuid)
-        assessments = list(
-            Assessment.objects.filter(
-                submission_uuid__in=team_submission['submission_uuids'],
-                score_type=staff_base.STAFF_TYPE,
-            )[:1]
-        )
+        submission_uuids = team_submissions_api.get_team_submission(team_submission_uuid)['submission_uuids']
+        assessment = staff_base.get_latest_staff_assessment(submission_uuids)
 
-        scores = Assessment.scores_by_criterion(assessments)
+        scores = Assessment.scores_by_criterion([assessment])
         # Since this is only being sent one score, the median score will be the
         # same as the only score.
         return Assessment.get_median_score_dict(scores)

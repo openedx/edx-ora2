@@ -86,10 +86,7 @@ def get_latest_staff_assessment(submission_uuids):
         logger.exception(msg)
         raise StaffAssessmentInternalError(msg)
 
-    if assessment:
-        return full_assessment_dict(assessment)
-
-    return None
+    return assessment
 
 
 @transaction.atomic
