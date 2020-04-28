@@ -157,6 +157,18 @@ class StaffWorkflow(models.Model):
         self.grading_completed_at = now()
         self.save()
 
+    @classmethod
+    def get_by_identifying_uuid(cls, uuid):
+        """
+        Get a staff workflow by submission UUID or None
+        """
+        try:
+            staff_workflow = cls.objects.get(submission_uuid=uuid)
+        except cls.DoesNotExist:
+            staff_workflow = None
+
+        return staff_workflow
+
 
 class TeamStaffWorkflow(StaffWorkflow):
     """
@@ -171,3 +183,15 @@ class TeamStaffWorkflow(StaffWorkflow):
         (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
         """
         return self.team_submission_uuid
+
+    @classmethod
+    def get_by_identifying_uuid(cls, uuid):
+        """
+        Get a team staff workflow by submission UUID or None
+        """
+        try:
+            team_staff_workflow = cls.objects.get(team_submission_uuid=uuid)
+        except cls.DoesNotExist:
+            team_staff_workflow = None
+
+        return team_staff_workflow
