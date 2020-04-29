@@ -23,23 +23,24 @@ STAFF_TYPE = "ST"
 class TestTeamApi(CacheResetTest):
     """ Tests for the Team Assessment API """
 
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
 
         # Users for testing
         staff_user = UserFactory.create()
         staff_user.is_staff = True
         staff_user.save()
-        self.staff_user_id = staff_user.id
+        cls.staff_user_id = staff_user.id
 
-        self.submitting_user_id = UserFactory.create().id
+        cls.submitting_user_id = UserFactory.create().id
         team_member_1_id = UserFactory.create().id
         team_member_2_id = UserFactory.create().id
 
-        self.team_member_ids = [self.submitting_user_id, team_member_1_id, team_member_2_id]
+        cls.team_member_ids = [cls.submitting_user_id, team_member_1_id, team_member_2_id]
 
-        self.default_assessment = (
-            self.staff_user_id,  # scorer_id
+        cls.default_assessment = (
+            cls.staff_user_id,  # scorer_id
             OPTIONS_SELECTED_DICT["few"]["options"],  # options_selected
             dict(),  # critereon_feedback
             '',  # overall_feedback
@@ -232,7 +233,6 @@ class TestTeamApi(CacheResetTest):
                 'in-progress': 0
             }
         )
-
         # Complete assessments count towards 'graded'
         teams_api.create_assessment(
             submission['team_submission_uuid'],
