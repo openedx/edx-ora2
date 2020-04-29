@@ -21,7 +21,7 @@ django-simple-history==2.8.0
 django==2.2.10
 djangorestframework==3.9.4
 edx-i18n-tools==0.5.0
-edx-submissions==3.0.6
+edx-submissions==3.1.1
 factory-boy==2.12.0
 faker==4.0.0
 filelock==3.0.12
@@ -35,7 +35,7 @@ importlib-resources==1.0.2
 jinja2==2.11.1
 jsonfield2==3.0.3
 lazy==1.1
-libsass==0.10.0
+libsass==0.10.1
 loremipsum==1.0.5
 lxml==3.8.0
 markupsafe==1.1.1
@@ -77,7 +77,7 @@ werkzeug==1.0.0
 git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk
 xblock==1.2.9
 xmltodict==0.12.0
-zipp==1.1.0
+zipp==1.0.0
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

@@ -8,10 +8,12 @@ import logging
 from django.db import DatabaseError, transaction
 from django.utils.timezone import now
 
+from submissions import api as submissions_api
+
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
-from submissions import api as submissions_api
+
 
 logger = logging.getLogger("openassessment.assessment.api.staff")  # pylint: disable=invalid-name
 

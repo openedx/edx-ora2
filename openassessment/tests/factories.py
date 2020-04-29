@@ -3,8 +3,11 @@ Create factories for assessments and all of their related models.
 """
 from __future__ import absolute_import
 
+import datetime
 import factory
+from django.contrib.auth.models import User
 from factory.django import DjangoModelFactory
+from pytz import UTC
 
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
                                               Criterion, CriterionOption, Rubric, StaffWorkflow, TeamStaffWorkflow)
@@ -140,3 +143,23 @@ class TeamStaffWorkflowFactory(DjangoModelFactory):
     submission_uuid = factory.Faker('sha1')
     assessment = None
     team_submission_uuid = factory.Faker('sha1')
+
+
+class UserFactory(DjangoModelFactory):
+    """ Copied from edx-platform/common/djangoapps/student/tests/factories.py """
+    class Meta:
+        model = User
+        django_get_or_create = ('email', 'username')
+
+    _DEFAULT_PASSWORD = 'test'
+
+    username = factory.Sequence('robot{0}'.format)
+    email = factory.Sequence('robot+test+{0}@edx.org'.format)
+    password = factory.PostGenerationMethodCall('set_password', _DEFAULT_PASSWORD)
+    first_name = factory.Sequence('Robot{0}'.format)
+    last_name = 'Test'
+    is_staff = False
+    is_active = True
+    is_superuser = False
+    last_login = datetime.datetime(2012, 1, 1, tzinfo=UTC)
+    date_joined = datetime.datetime(2011, 1, 1, tzinfo=UTC)

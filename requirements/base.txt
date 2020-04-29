@@ -15,13 +15,13 @@ django-simple-history==2.8.0
 django==2.2.10
 djangorestframework==3.9.4
 edx-i18n-tools==0.5.0
-edx-submissions==3.0.6
+edx-submissions==3.1.1
 fs==2.0.18                # via xblock
 html5lib==1.0.1
 idna==2.8                 # via requests
 jsonfield2==3.0.3
 lazy==1.1
-libsass==0.10.0
+libsass==0.10.1
 loremipsum==1.0.5
 lxml==3.8.0
 markupsafe==1.1.1         # via xblock
