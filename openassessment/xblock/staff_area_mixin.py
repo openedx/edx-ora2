@@ -211,6 +211,8 @@ class StaffAreaMixin(object):
                     submission_context = self.get_student_submission_context(
                         self.get_username(anonymous_student_id), submission
                     )
+                    # Add team info to context
+                    submission_context['teams_enabled'] = self.teams_enabled
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._(u"Error loading the checked out learner response."))
