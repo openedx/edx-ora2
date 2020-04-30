@@ -32,7 +32,7 @@ from web_fragments.fragment import Fragment
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class StudioMixin(object):
+class StudioMixin:
     """
     Studio editing view for OpenAssessment XBlock.
     """

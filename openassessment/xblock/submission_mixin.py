@@ -26,7 +26,7 @@ class NoTeamToCreateSubmissionForError(Exception):
     pass
 
 
-class SubmissionMixin(object):
+class SubmissionMixin:
     """Submission Mixin introducing all Submission-related functionality.
 
     Submission Mixin contains all logic and handlers associated with rendering

@@ -10,7 +10,7 @@ from openassessment.assessment.models.base import SharedFileUpload
 from openassessment.fileupload.api import get_student_file_key, FileUpload, FileUploadManager
 
 
-class MockBlock(object):
+class MockBlock:
 
     STUDENT_ID = 'student-id-'
     COURSE_ID = 'course-v1:edx+ORA203+course-'

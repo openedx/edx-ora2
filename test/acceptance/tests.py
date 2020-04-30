@@ -781,7 +781,7 @@ class FileUploadTest(OpenAssessmentTest):
         self.assertTrue(self.submission_page.have_files_uploaded)
 
 
-class FullWorkflowMixin(object):
+class FullWorkflowMixin:
     """
     Mixin with helper methods and constants for testing a full workflow
     (training, self assessment, peer assessment, staff override).

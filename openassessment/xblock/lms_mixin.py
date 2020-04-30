@@ -20,7 +20,7 @@ class GroupAccessDict(Dict):
             return {six.text_type(k): access_dict[k] for k in access_dict}
 
 
-class LmsCompatibilityMixin(object):
+class LmsCompatibilityMixin:
     """
     Extra fields and methods used by LMS/Studio.
     """

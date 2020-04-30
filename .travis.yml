@@ -9,19 +9,16 @@ sudo: false
 
 python:
   - 3.5
+  - 3.8
 
 env:
-  - TOX_ENV=django111
-  - TOX_ENV=django20
-  - TOX_ENV=django21
   - TOX_ENV=django22
+  - TOX_ENV=js
+  - TOX_ENV=quality
 
-matrix:
-  include:
-    - python: 3.5
-      env: TOX_ENV=js
-    - python: 3.5
-      env: TOX_ENV=quality
+jobs:
+  allow_failures:
+  - python: 3.8
 
 before_install:
   - "pip install -U pip"

@@ -77,7 +77,7 @@ def require_course_staff(error_key, with_json_handler=False):
     return _decorator
 
 
-class StaffAreaMixin(object):
+class StaffAreaMixin:
     """
     Display debug information to course and global staff.
     """
