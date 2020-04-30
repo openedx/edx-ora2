@@ -11,7 +11,6 @@ import json
 from mock import ANY, Mock, call, patch
 import pytz
 
-import django
 from django.test.utils import override_settings
 
 import boto
@@ -133,10 +132,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        if django.VERSION >= (2, 1):
-            expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
-        else:
-            expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
+        expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
