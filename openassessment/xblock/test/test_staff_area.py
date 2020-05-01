@@ -691,6 +691,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         permission_denied = "You do not have permission to access ORA staff grading."
         no_submissions_available = "No other learner responses are available for grading at this time."
         submission_text = "Grade me, please!"
+        team_submission_disabled = 'data-team-submission="False"'
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertIn(permission_denied, resp)
@@ -714,6 +715,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertNotIn(no_submissions_available, resp)
         self.assertIn(submission_text, resp)
+        self.assertIn(team_submission_disabled, resp)
 
         self.assert_event_published(xblock, 'openassessmentblock.get_submission_for_staff_grading', {
             'type': 'full-grade',
@@ -721,6 +723,25 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'item_id': bob_item['item_id'],
             'submission_returned_uuid': submission['uuid']
         })
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_form_for_team_assessment(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        # Enable teams
+        xblock.teams_enabled = True
+        team_submission_enabled = 'data-team-submission="True"'
+
+        # Create a submission for Bob, and corresponding workflow.
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        submission = self._create_submission(bob_item, {'text': 'foo'}, [])
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertIn(team_submission_enabled, resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_delete_student_state(self, xblock):
