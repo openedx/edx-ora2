@@ -681,6 +681,67 @@ describe('OpenAssessment.StaffAreaView', function() {
             verifyFocused($staffGradeButton[0]);
         });
 
+        it('does not prompt submitter about submitting for individual assignments', function() {
+            // Given an individual assignment
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment;
+            showInstructorAssessmentForm(staffArea);
+
+            var prompt = spyOn(staffArea, 'confirmSubmitGradeForTeam').and.callFake(function() {return false;});
+            var submit = spyOn(staffArea, 'submitStaffGrade').and.callThrough();
+
+            // Fill in and click the button to submit and request another submission
+            $assessment = getAssessment(staffArea, staffAreaTab);
+            fillAssessment($assessment, gradingType);
+            submitAssessment(staffArea, staffAreaTab);
+
+            // The submitter has the ability to back out of submitting for a team
+            expect(prompt).not.toHaveBeenCalled();
+            expect(submit).toHaveBeenCalled();
+        });
+
+        it('prompts submitter about submitting for all members of a team', function() {
+            // Given a team assignment
+            server.staffGradeFormTemplate = 'oa_staff_grade_team_assessment.html';
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment;
+            showInstructorAssessmentForm(staffArea);
+
+            // Mock the user accepting the prompt
+            var prompt = spyOn(staffArea, 'confirmSubmitGradeForTeam').and.callFake(function() {return true;});
+            var submit = spyOn(staffArea, 'submitStaffGrade').and.callThrough();
+
+            // Fill in and click the button to submit and request another submission
+            $assessment = getAssessment(staffArea, staffAreaTab);
+            fillAssessment($assessment, gradingType);
+            submitAssessment(staffArea, staffAreaTab);
+
+            // The submitter has the ability to back out of submitting for a team
+            expect(prompt).toHaveBeenCalled();
+            expect(submit).toHaveBeenCalled();
+        });
+
+        it('allows a submitter to cancell submitting for all members of a team', function() {
+            // Given a team assignment
+            server.staffGradeFormTemplate = 'oa_staff_grade_team_assessment.html';
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment;
+            showInstructorAssessmentForm(staffArea);
+
+            // Mock the user cancelling the prompt
+            var prompt = spyOn(staffArea, 'confirmSubmitGradeForTeam').and.callFake(function() {return false;});
+            var submit = spyOn(staffArea, 'submitStaffGrade').and.callThrough();
+
+            // Fill in and click the button to submit and request another submission
+            $assessment = getAssessment(staffArea, staffAreaTab);
+            fillAssessment($assessment, gradingType);
+            submitAssessment(staffArea, staffAreaTab);
+
+            // The submitter has the ability to back out of submitting for a team
+            expect(prompt).toHaveBeenCalled();
+            expect(submit).not.toHaveBeenCalled();
+        });
+
         it('can submit a staff grade and receive another submission', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment, $staffGradeButton;
