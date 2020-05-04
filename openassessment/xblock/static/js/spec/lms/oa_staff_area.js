@@ -1,11 +1,12 @@
 /**
  * Tests for OpenAssessment Student Training view.
  */
+/* eslint new-cap: 0 */
 describe('OpenAssessment.StaffAreaView', function() {
     'use strict';
 
     var successPromise = $.Deferred(
-        function(defer) { defer.resolve(); }
+        function(defer) {defer.resolve();}
     ).promise();
 
     var failWith = function(owner, result) {
@@ -121,7 +122,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         // Check whether it tried to load staff area from the server
         var expectedFragments = [];
-        if (shouldCall) { expectedFragments = ['staff_area']; }
+        if (shouldCall) {expectedFragments = ['staff_area'];}
         expect(server.fragmentsLoaded).toEqual(expectedFragments);
     };
 
@@ -139,6 +140,7 @@ describe('OpenAssessment.StaffAreaView', function() {
     var fillAssessment = function($assessment, type) {
         $('#staff-'+ type+ '__assessment__rubric__question--2__feedback__', $assessment).val('Text response');
         $('.question__answers', $assessment).each(function() {
+            // eslint-disable-next-line no-invalid-this
             $('input[type="radio"]', this).first().click();
         });
     };
@@ -155,11 +157,12 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     var verifyAssessType = function(staffArea, assessType) {
         expect(staffArea.callStaffAssess).toHaveBeenCalledWith(
-                jasmine.any(String), jasmine.any(Object), jasmine.any(Object), jasmine.any(Function), jasmine.any(String), assessType
+            jasmine.any(String), jasmine.any(Object), jasmine.any(Object),
+            jasmine.any(Function), jasmine.any(String), assessType
         );
     };
 
-    var verifyFocused = function (element) {
+    var verifyFocused = function(element) {
         expect(element).toEqual(element.ownerDocument.activeElement);
     };
 
@@ -186,8 +189,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
     });
 
-    describe('Detects unsaved changes', function () {
-
+    describe('Detects unsaved changes', function() {
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
         });
@@ -200,8 +202,8 @@ describe('OpenAssessment.StaffAreaView', function() {
         it('tracks unsubmitted assessments in multiple views', function() {
             var fullGradeStaffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 staffOverrideStaffArea = createStaffArea(),
-                fullGradeTab = "staff-grading",
-                staffOverrideTab = "staff-tools",
+                fullGradeTab = 'staff-grading',
+                staffOverrideTab = 'staff-tools',
                 $assessment;
 
             expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(false);
@@ -248,7 +250,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var view = createStaffArea({
                 'success': true,
                 'workflow_uuid': 'abc123',
-                'msg': 'Great success.'
+                'msg': 'Great success.',
             });
 
             // Submit the assessment
@@ -262,7 +264,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var view = createStaffArea({
                 success: true,
                 workflow_uuid: 'abc123',
-                msg: 'Great success.'
+                msg: 'Great success.',
             });
 
             spyOn(server, 'rescheduleUnfinishedTasks').and.callThrough();
@@ -278,7 +280,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var view = createStaffArea({
                 'success': false,
                 'workflow_uuid': 'abc123',
-                'errMsg': 'Stupendous Failure.'
+                'errMsg': 'Stupendous Failure.',
             });
 
             spyOn(server, 'rescheduleUnfinishedTasks').and.callThrough();
@@ -364,7 +366,6 @@ describe('OpenAssessment.StaffAreaView', function() {
     });
 
     describe('Manage Individual Learners', function() {
-
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
         });
@@ -497,8 +498,8 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
 
         describe('Staff Grade Override', function() {
-            var staffAreaTab = "staff-tools";
-            var gradingType = "override";
+            var staffAreaTab = 'staff-tools';
+            var gradingType = 'override';
 
             afterEach(function() {
                 // Disable the unsaved page warning (if set)
@@ -506,8 +507,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             });
 
             it('enables the submit button when all required fields are specified', function() {
-                var staffArea = createStaffArea(),
-                    $assessment, $submitButton;
+                var staffArea = createStaffArea(), $assessment, $submitButton; // eslint-disable-line no-unused-vars
                 chooseStudent(staffArea, 'testStudent');
                 $assessment = getAssessment(staffArea, staffAreaTab);
                 $submitButton = $('.action--submit', $assessment);
@@ -612,8 +612,8 @@ describe('OpenAssessment.StaffAreaView', function() {
     });
 
     describe('Grade Available Responses', function() {
-        var staffAreaTab = "staff-grading";
-        var gradingType = "full-grade";
+        var staffAreaTab = 'staff-grading';
+        var gradingType = 'full-grade';
 
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
@@ -795,14 +795,14 @@ describe('OpenAssessment.StaffAreaView', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment;
 
-            expect($('.staff__grade__value').text().trim()).toBe("10 Available and 2 Checked Out");
+            expect($('.staff__grade__value').text().trim()).toBe('10 Available and 2 Checked Out');
 
             // Rendering the staff grading form will cause the counts to re-render as well.
             // This will use the staffGradeCountsTemplate template, which mimics the count changes.
             server.staffGradeCountsTemplate = 'oa_staff_grade_learners_count_1.html';
             showInstructorAssessmentForm(staffArea);
 
-            expect($('.staff__grade__value').text().trim()).toBe("9 Available and 3 Checked Out");
+            expect($('.staff__grade__value').text().trim()).toBe('9 Available and 3 Checked Out');
 
             // Fill in assessment and make sure the code re-renders the count form.
             $assessment = getAssessment(staffArea, staffAreaTab);
@@ -811,7 +811,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             server.staffGradeCountsTemplate = 'oa_staff_grade_learners_count_2.html';
             submitAssessment(staffArea, staffAreaTab);
 
-            expect($('.staff__grade__value').text().trim()).toBe("9 Available and 2 Checked Out");
+            expect($('.staff__grade__value').text().trim()).toBe('9 Available and 2 Checked Out');
         });
 
         it('warns of unsubmitted assessments', function() {
@@ -833,8 +833,8 @@ describe('OpenAssessment.StaffAreaView', function() {
     });
 
     describe('Grade Available Responses as the separate view', function() {
-        var staffAreaTab = "staff-grading";
-        var gradingType = "full-grade";
+        var staffAreaTab = 'staff-grading';
+        var gradingType = 'full-grade';
 
         beforeEach(function() {
             loadFixtures('oa_grade_available_responses_separate_view.html');
@@ -849,7 +849,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             expect(staffArea.length).toBe(1);
             expect(staffGradingButton.length).toBe(0);
             expect(problemHeader.text()).toBe('Test ABC');
-            expect(gradeValue.text().trim()).toBe("9 Available and 2 Checked Out");
+            expect(gradeValue.text().trim()).toBe('9 Available and 2 Checked Out');
         });
 
         it('can submit a staff grade', function() {
