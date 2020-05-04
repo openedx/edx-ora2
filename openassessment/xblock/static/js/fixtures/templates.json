@@ -1158,7 +1158,8 @@
                     "text": "testing response text"
                 }
             },
-            "student_username": "mock_user"
+            "student_username": "mock_user",
+            "teams_enabled": false
         },
         "output": "oa_staff_grade_learners_assessment.html"
     },
@@ -1214,9 +1215,67 @@
                     "text": "testing response text"
                 }
             },
-            "student_username": "mock_user_2"
+            "student_username": "mock_user_2",
+            "teams_enabled": false
         },
         "output": "oa_staff_grade_learners_assessment_2.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ],
+            "submission": {
+                "answer": {
+                    "text": "testing response text"
+                }
+            },
+            "student_username": "mock_user_2",
+            "teams_enabled": true
+        },
+        "output": "oa_staff_grade_team_assessment.html"
     },
     {
         "template": "openassessmentblock/response/oa_response.html",
