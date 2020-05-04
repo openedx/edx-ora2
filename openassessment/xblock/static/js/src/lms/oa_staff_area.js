@@ -211,7 +211,7 @@
                                 eventObject.preventDefault();
 
                                 // team submissions get a warning prompt
-                                if (teamSubmissionEnabled && !view.confirmSubmitGradeForTeam()) {return;};
+                                if (teamSubmissionEnabled && !view.confirmSubmitGradeForTeam()) {return;}
 
                                 view.submitStaffGrade(submissionID, rubric, $staffGradeTab,
                                     $(eventObject.currentTarget).hasClass('continue_grading--action')
