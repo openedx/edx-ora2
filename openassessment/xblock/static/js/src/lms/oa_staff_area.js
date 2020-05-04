@@ -145,7 +145,6 @@
          * so we want to notify the grader.
          */
         confirmSubmitGradeForTeam: function() {
-            debugger;
             var msg = gettext(
                 'This grade will be applied to all members of the team. ' +
                 'Do you want to continue?'
