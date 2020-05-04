@@ -738,7 +738,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Create a submission for Bob, and corresponding workflow.
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
-        submission = self._create_submission(bob_item, {'text': 'foo'}, [])
+        self._create_submission(bob_item, {'text': 'foo'}, [])
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertIn(team_submission_enabled, resp)
