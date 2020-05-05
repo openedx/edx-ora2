@@ -108,7 +108,9 @@ class TestGrader:
                 output['incorrect'] += 1
             expected_output = run_output['tests'][0][1]
             actual_output = run_output['tests'][0][2]
+            test_input = open(input_file, 'r').read()
             output['output'][case_number] = {
+                'test_input': test_input,
                 'actual_output': actual_output,
                 'expected_output': expected_output,
                 'correct': run_output['correct']

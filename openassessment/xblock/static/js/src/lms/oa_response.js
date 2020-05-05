@@ -234,8 +234,8 @@ OpenAssessment.ResponseView.prototype = {
     $(sel[index]).val(output);
     },
 
-    createTextArea: function(value){
-        return "<textarea rows=2 cols=10 style='width:50%; height:auto;' readonly>" + value + "</textarea>";
+    createTextArea: function(value, width){
+        return "<textarea rows=5 style='width:" +width + "%; height:auto;' readonly>" + value + "</textarea>";
     },
 
     errorTextArea: function(value){
@@ -255,8 +255,9 @@ OpenAssessment.ResponseView.prototype = {
         test_status_elem.html("");
         var out_textarea =
             "<p>" +
-            this.createOutputHeader("Your Output", 50) +
-            this.createOutputHeader("Expected Output", 45) +
+            this.createOutputHeader("Test Input", 33) +
+            this.createOutputHeader("Your Output", 33) +
+            this.createOutputHeader("Expected Output", 33) +
             "</p>";
 
         for(var key in test_results){
@@ -266,8 +267,9 @@ OpenAssessment.ResponseView.prototype = {
             }
             out_textarea += (
             "<p style='outline: 3px solid " + style + "';>" +
-            this.createTextArea(test_results[key]['actual_output']) +
-            this.createTextArea(test_results[key]['expected_output']) +
+            this.createTextArea(test_results[key]['test_input'], 33) +
+            this.createTextArea(test_results[key]['actual_output'], 33) +
+            this.createTextArea(test_results[key]['expected_output'], 34) +
             "</p>"
             )
         }
