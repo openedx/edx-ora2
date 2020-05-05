@@ -12,8 +12,7 @@ from openassessment.xblock.utils import OOP_PROBLEM_NAMES
 
 class TestGrader:
 
-    # __SECRET_DATA_DIR__ = "/grader_data/"
-    __SECRET_DATA_DIR__ = os.path.dirname(__file__) + "/secret_data/"
+    __SECRET_DATA_DIR__ = "/grader_data/"
     __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
 
     def grade(self, response, add_staff_cases=False):
