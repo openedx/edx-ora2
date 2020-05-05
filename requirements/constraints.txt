@@ -1,28 +1,21 @@
 # Version constraints for pip-installation.
 
-# This packages is a backport which can only be installed on Python 2.7
-futures==3.3.0 ; python_version == "2.7"
-
 # Base dependencies
-bleach<=2.1.4                      # Constrained by edx-platform/edx-enterprise/lti_consumer-xblock
-boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
-defusedxml<=0.5.0                  # Constrained by edx-platform and its dependencies.
 Django<2.3                         # Stay on the latest LTS release of Django
-django-model-utils<4.0.0          # Constrained by edx-platform and its dependencies.
+boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
 fs<=2.0.18                         # Constrained by edx-platform/XBlock
-jsonfield2<3.1.0
-lazy<=1.1                          # Constrained by edx-platform and its dependencies.
-libsass<=0.10.1                    # Constrained by edx-platform and its dependencies.
+jsonfield2<3.1.0                   # jsonfield2 3.1.0 drops support for python 3.5
 loremipsum<2.0.0
-lxml<=3.8.0                        # Constrained by edx-platform and its dependencies.
-mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
-path.py<=8.2.1                     # Constrained by edx-platform and its dependencies.
-python-dateutil<=2.4.0             # Constrained by edx-platform and its dependencies.
+
+# Upgrading to 2.5.3 triggered "'tzlocal' object
+# has no attribute '_std_offset'" errors in production in edx-platform repo.
+python-dateutil==2.4.0
+
 python-swiftclient<4.0.0
+mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
 voluptuous<1.0.0
 zipp==1.0.0                        # zipp 2.0.0 requires Python >= 3.6
 
 # Test dependencies
 ddt==1.0.0                          # Test failures at versions > 1.0.0
-more-itertools<6.0.0                # Dropped Python 2.x compatibility after 5.0.0
 moto==0.4.31                        # Pinned to avoid test failures

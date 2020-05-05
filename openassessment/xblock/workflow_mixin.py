@@ -9,7 +9,7 @@ from openassessment.workflow.models import AssessmentWorkflowCancellation
 from xblock.core import XBlock
 
 
-class WorkflowMixin(object):
+class WorkflowMixin:
     """
     Handle OpenAssessment XBlock requests to the Workflow API.
     """

@@ -52,7 +52,7 @@ ASSESSMENT_DICT = {
 }
 
 
-class NullUserService(object):
+class NullUserService:
     """
     A simple implementation of the runtime "user" service.
     """
@@ -71,7 +71,7 @@ class NullUserService(object):
         return MagicMock(opt_attrs={})
 
 
-class UserStateService(object):
+class UserStateService:
     """
     An implementation of `user_state` runtime service, to be utilized by tests.
     """

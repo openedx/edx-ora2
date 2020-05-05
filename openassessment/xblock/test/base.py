@@ -124,7 +124,7 @@ def scenario(scenario_path, user_id=None):
     return _decorator
 
 
-class XBlockHandlerTestCaseMixin(object):
+class XBlockHandlerTestCaseMixin:
     """
     Load the XBlock in the workbench runtime to test its handler.
     """
@@ -295,7 +295,7 @@ class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCa
     pass
 
 
-class SubmitAssessmentsMixin(object):
+class SubmitAssessmentsMixin:
     """
     A mixin for creating a submission and peer/self assessments so that the user can
     receive a grade. This is useful for getting into the "waiting for peer assessment" state.

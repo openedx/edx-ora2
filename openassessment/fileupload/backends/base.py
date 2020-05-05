@@ -11,7 +11,7 @@ from django.conf import settings
 from ..exceptions import FileUploadInternalError, FileUploadRequestError
 
 
-class Settings(object):
+class Settings:
     """Store settings related to file upload
 
     The following settings are used:

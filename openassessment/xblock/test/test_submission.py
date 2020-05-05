@@ -11,18 +11,19 @@ import json
 from mock import ANY, Mock, call, patch
 import pytz
 
-import django
 from django.test.utils import override_settings
 
 import boto
 from boto.s3.key import Key
 from moto import mock_s3
+from django.contrib.auth import get_user_model
 from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from submissions import api as sub_api
+from submissions.models import TeamSubmission
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 
 from .base import XBlockHandlerTestCase, scenario
@@ -131,10 +132,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        if django.VERSION >= (2, 1):
-            expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
-        else:
-            expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
+        expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
@@ -386,6 +384,9 @@ class SubmissionTest(XBlockHandlerTestCase):
         xblock.has_team = Mock(return_value=True)
         xblock.get_team_info = Mock(return_value=mock_team)
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
+        password = 'password'
+        user = get_user_model().objects.create_user(username='Red Five', password=password)
+        xblock.get_real_user = Mock(return_value=user)
 
         return mock_team
 
@@ -393,17 +394,10 @@ class SubmissionTest(XBlockHandlerTestCase):
     def test_team_submission(self, xblock):
         """ If teams are enabled, a submission by any member should submit for each member of the team """
 
-        # given a learner is on a team
-        mock_team = self.setup_mock_team(xblock)
-
         # when the learner submits an open assessment response
         response = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
 
-        # then the submission is successful for all members of a team
-        self.assertEqual(len(mock_team['team_usernames']), len(response))
-
-        for result in response:
-            self.assertTrue(result[0])
+        self.assertTrue(response[0])
 
     @scenario('data/basic_scenario.xml', user_id='Red Five')
     @patch.object(sub_api, 'create_submission')
@@ -465,9 +459,8 @@ class SubmissionTest(XBlockHandlerTestCase):
         # then the submission is successful for all members of a team
         self.assertEqual(len(mock_team['team_usernames']), len(response))
 
-        for status, _, attempt_number in response:
-            self.assertTrue(status)
-            self.assertEqual(1, attempt_number)
+        self.assertTrue(response[0])
+        self.assertEqual(1, response[2])
 
         all_submissions = sub_api.get_all_submissions(
             course_id=xblock.course_id,
@@ -958,27 +951,16 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             on page load to see if a submisison has been created by a team member.
         """
         SubmissionTest.setup_mock_team(xblock)
-        submissions = xblock.create_team_submission(
+
+        xblock.create_team_submission(
             ('A man must have a code', 'A man must have an umbrella too.')
         )
-        # get submission from Xblock
-        submission = [sub for sub in submissions if sub['uuid'] == xblock.submission_uuid][0]
-        self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_submitted.html',
-            {
-                'student_submission': create_submission_dict(submission, xblock.prompts),
-                'text_response': 'required',
-                'file_upload_response': None,
-                'file_upload_type': None,
-                'peer_incomplete': False,
-                'self_incomplete': False,
-                'allow_latex': False,
-                'user_timezone': None,
-                'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
-            }
-        )
+
+        ts = TeamSubmission.objects.all()
+        self.assertEqual(len(ts), 1)
+        self.assertEqual(ts[0].submitted_by.username, 'Red Five')
+        # TODO this work also depends on https://openedx.atlassian.net/browse/EDUCATOR-4986
+        # Once that ticket is complete, reinstate original assert via path_and_context
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_submitted(self, xblock):

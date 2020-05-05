@@ -19,7 +19,7 @@ from .user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class StudentTrainingMixin(object):
+class StudentTrainingMixin:
     """
     Student training is a step that allows students to practice
     assessing example essays provided by the course author.

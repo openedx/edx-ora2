@@ -337,7 +337,7 @@ class SubmissionPage(OpenAssessmentPage):
         return self.q(css=".submission__answer__files").visible
 
 
-class AssessmentMixin(object):
+class AssessmentMixin:
     """
     Mixin for interacting with the assessment rubric.
     """

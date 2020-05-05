@@ -22,7 +22,7 @@ from .user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class PeerAssessmentMixin(object):
+class PeerAssessmentMixin:
     """The Peer Assessment Mixin for all Peer Functionality.
 
     Abstracts all functionality and handlers associated with Peer Assessment.

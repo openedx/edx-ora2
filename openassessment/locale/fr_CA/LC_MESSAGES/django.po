@@ -96,7 +96,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-23 17:38-0400\n"
-"PO-Revision-Date: 2020-02-04 08:29+0000\n"
+"PO-Revision-Date: 2020-05-01 00:17+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -961,7 +961,7 @@ msgstr "La question pour cette section"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
 msgid "Files that were uploaded by your teammates:"
-msgstr ""
+msgstr "Fichiers téléchargés par vos coéquipiers :"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
@@ -970,11 +970,11 @@ msgstr "Voir les fichiers associés à cette soumission :"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:31
 msgid "Uploaded by"
-msgstr ""
+msgstr "Téléversé par"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
-msgstr ""
+msgstr "Fichiers que vous avez téléchargés :"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
