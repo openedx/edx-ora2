@@ -139,6 +139,21 @@
         },
 
         /**
+         * Prompt the grader when about to submit a grade for a team assignment.
+         *
+         * Team grades are assigned to each member of a team, which diverges from past behaior
+         * so we want to notify the grader.
+         */
+        confirmSubmitGradeForTeam: function() {
+            var msg = gettext(
+                'This grade will be applied to all members of the team. ' +
+                'Do you want to continue?'
+            );
+
+            return confirm(msg);
+        },
+
+        /**
          * Upon request, loads the staff grade/assessment section of the staff area.
          * This allows staff grading when staff assessment is a required step.
          *
@@ -151,6 +166,7 @@
             var $staffGradeControl = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CLASS);
             var $staffGradeContent = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTENT_CLASS);
             var $staffGradeContainer = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTAINER_CLASS);
+
             // eslint-disable-next-line new-cap
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
@@ -189,7 +205,14 @@
                         $staffGradeTab.find('.wrapper--staff-assessment .action--submit').click(
                             function(eventObject) {
                                 var submissionID = $staffGradeTab.find('.staff__grade__form').data('submission-uuid');
+                                var teamSubmissionEnabled = $staffGradeTab.find('.staff__grade__form')
+                                    .data('team-submission') === 'True';
+
                                 eventObject.preventDefault();
+
+                                // team submissions get a warning prompt
+                                if (teamSubmissionEnabled && !view.confirmSubmitGradeForTeam()) {return;}
+
                                 view.submitStaffGrade(submissionID, rubric, $staffGradeTab,
                                     $(eventObject.currentTarget).hasClass('continue_grading--action')
                                 );

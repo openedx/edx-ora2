@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -380,6 +380,15 @@ msgstr "Ûnéxpéçtéd sérvér érrör. Ⱡ'σяєм ιρѕυм ∂σłσя ѕ
 msgid "You must provide a learner name."
 msgstr ""
 "Ýöü müst prövïdé ä léärnér nämé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js
+msgid ""
+"This grade will be applied to all members of the team. Do you want to "
+"continue?"
+msgstr ""
+"Thïs grädé wïll ßé äpplïéd tö äll mémßérs öf thé téäm. Dö ýöü wänt tö "
+"çöntïnüé? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js
