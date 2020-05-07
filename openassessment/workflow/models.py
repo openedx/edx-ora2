@@ -154,7 +154,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             new_list.extend(step_names)
             step_names = new_list
 
-        # Create the workflow and assessment step models in the database
+        # Create the workflow and step models in the database
         # For now, set the status to waiting; we'll modify it later
         # based on the first step in the workflow.
         workflow = cls.objects.create(
