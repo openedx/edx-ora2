@@ -28,14 +28,14 @@ class TeamAssessmentTest(CacheResetTest):
     }
 
     def setUp(self):
-        super(TeamAssessmentTest, self).setUp()
+        super().setUp()
         self.workflow_step_api_patcher = mock.patch.object(AssessmentWorkflowStep, 'api')
         mocked_workflow_api = self.workflow_step_api_patcher.start()
         self.mock_assessment_api = mock.Mock()
         mocked_workflow_api.return_value = self.mock_assessment_api
 
     def tearDown(self):
-        super(TeamAssessmentTest, self).tearDown()
+        super().tearDown()
         self.workflow_step_api_patcher.stop()
 
     @contextmanager

@@ -339,7 +339,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 self.set_staff_score(new_staff_score)
                 self.save()
                 logger.info((
-                    u"Workflow for submission UUID {uuid} has updated score using {staff_type} assessment."
+                    "Workflow for submission UUID {uuid} has updated score using {staff_type} assessment."
                 ).format(uuid=self.submission_uuid, staff_type=self.STAFF_STEP_NAME))
 
                 # Update the assessment_completed_at field for all steps
@@ -616,7 +616,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     def identifying_uuid(self):
         """
         Returns the primary identifying uuid for this workflow.
-        AssessmentWorkflow returns submission_uuid, and TeamAssessmentWorkflow returns team_submission_uuid
+        Can be overriden by child classes
         """
         return self.submission_uuid
 
@@ -737,7 +737,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
                 self._set_team_staff_score(new_score)
                 self.save()
                 logger.info((
-                    u"Team Workflow for team submission UUID {uuid} has updated score using team staff assessment."
+                    "Team Workflow for team submission UUID {uuid} has updated score using team staff assessment."
                 ).format(uuid=self.team_submission_uuid))
 
                 team_staff_step.assessment_completed_at = now()
@@ -762,8 +762,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
     def identifying_uuid(self):
         """
         Returns the primary identifying uuid for this workflow.
-        AssessmentWorkflow returns submission_uuid, and TeamAssessmentWorkflow returns team_submission_uuid
-        Needed because teams step api functions need team_submission_uuid as an input
+        Overwrites AssessmentWorkflow.identifying_uuid to return team_submission_uuid
         """
         return self.team_submission_uuid
 
