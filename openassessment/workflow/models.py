@@ -26,7 +26,7 @@ from model_utils.models import StatusModel, TimeStampedModel
 
 from openassessment.assessment.errors.base import AssessmentError
 from openassessment.assessment.signals import assessment_complete_signal
-from submissions import api as sub_api
+from submissions import api as sub_api, team_api as sub_team_api
 
 from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
@@ -62,6 +62,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     an after the fact recording of the last known state of that information so
     we can search easily.
     """
+    STAFF_STEP_NAME = 'staff'
+
     STEPS = sorted(ASSESSMENT_API_DICT.keys())
 
     STATUSES = [
@@ -267,8 +269,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                         step_requirements = None
                     else:
                         step_requirements = assessment_requirements.get(assessment_step_name, {})
-                    score = get_score_func(self.submission_uuid, step_requirements)
-                    if not score and (assessment_step_name == self.STATUS.staff):
+                    score = get_score_func(self.identifying_uuid, step_requirements)
+                    if not score and assessment_step.is_staff_step():
                         if step_requirements and step_requirements.get('required', False):
                             break  # A staff score was not found, and one is required. Return None
                         continue  # A staff score was not found, but it is not required, so try the next type of score
@@ -311,7 +313,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             override_submitter_requirements (bool): If True, the presence of a new
                 staff score will cause all of the submitter's requirements to be
                 fulfilled, moving the workflow to DONE and exposing their grade.
-
         """
         if self.status == self.STATUS.cancelled:
             return
@@ -321,7 +322,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         step_for_name = {step.name: step for step in steps}
 
-        new_staff_score = self.get_score(assessment_requirements, {'staff': step_for_name.get('staff', None)})
+        new_staff_score = self.get_score(
+            assessment_requirements,
+            {self.STAFF_STEP_NAME: step_for_name.get(self.STAFF_STEP_NAME, None)}
+        )
         if new_staff_score:
             # new_staff_score is just the most recent staff score, it may already be recorded in sub_api
             old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
@@ -335,8 +339,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 self.set_staff_score(new_staff_score)
                 self.save()
                 logger.info((
-                    u"Workflow for submission UUID {uuid} has updated score using staff assessment."
-                ).format(uuid=self.submission_uuid))
+                    "Workflow for submission UUID {uuid} has updated score using {staff_type} assessment."
+                ).format(uuid=self.submission_uuid, staff_type=self.STAFF_STEP_NAME))
 
                 # Update the assessment_completed_at field for all steps
                 # All steps are considered "assessment complete", as the staff score will override all
@@ -479,7 +483,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         """
         steps = self._get_steps()
         step_for_name = {step.name: step for step in steps}
-        staff_step = step_for_name.get("staff")
+        staff_step = step_for_name.get(self.STAFF_STEP_NAME)
         if staff_step is not None:
             get_latest_func = getattr(staff_step.api(), 'get_latest_assessment', None)
             if get_latest_func is not None:
@@ -511,7 +515,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         for step in steps:
             on_cancel_func = getattr(step.api(), 'on_cancel', None)
             if on_cancel_func is not None:
-                on_cancel_func(self.submission_uuid)
+                on_cancel_func(self.identifying_uuid)
 
         try:
             score = self.get_score(assessment_requirements, step_for_name)
@@ -608,27 +612,35 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         """
         return self.cancellations.exists()
 
+    @property
+    def identifying_uuid(self):
+        """
+        Returns the primary identifying uuid for this workflow.
+        Can be overriden by child classes
+        """
+        return self.submission_uuid
+
 
 class TeamAssessmentWorkflow(AssessmentWorkflow):
     """
     Extends AssessmentWorkflow to support team based assessments.
     """
     # Only staff assessments are supported for teams
-    STEPS = ['staff']
-    REQUIREMENTS = {"staff": {"required": True}}
+    TEAM_STAFF_STEP_NAME = 'teams'
+
+    STEPS = [TEAM_STAFF_STEP_NAME]
+    STATUS_VALUES = STEPS + AssessmentWorkflow.STATUSES
+    STATUS = Choices(*STATUS_VALUES)  # implicit "status" field
+
+    ASSESSMENT_SCORE_PRIORITY = [TEAM_STAFF_STEP_NAME]
+
+    REQUIREMENTS = {TEAM_STAFF_STEP_NAME: {"required": True}}
 
     team_submission_uuid = models.CharField(max_length=128, unique=True, null=False)
 
     @classmethod
-    @transaction.atomic
-    def start_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ
-        """ Start a team workflow """
-        # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
-        workflow = {'team_submission_uuid': team_submission_uuid}
-        return workflow
-
-    @classmethod
     def get_by_team_submission_uuid(cls, team_submission_uuid):
+        """ Given a team submission uuid, return the associated workflow """
         try:
             return cls.objects.get(team_submission_uuid=team_submission_uuid)
         except cls.DoesNotExist:
@@ -640,10 +652,119 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             logger.exception(message)
             raise AssessmentWorkflowError(message)
 
+    @classmethod
+    @transaction.atomic
+    def start_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ
+        """ Start a team workflow """
+        team_submission_dict = sub_team_api.get_team_submission(team_submission_uuid)
+        try:
+            referrence_learner_submission_uuid = team_submission_dict['submission_uuids'][0]
+        except IndexError:
+            msg = 'No individual submission found for team submisison uuid {}'.format(team_submission_uuid)
+            logger.exception(msg)
+            raise AssessmentWorkflowInternalError(msg)
+
+        # Create the workflow in the database
+        # For now, set the status to waiting; we'll modify it later
+        team_workflow = cls.objects.create(
+            team_submission_uuid=team_submission_uuid,
+            submission_uuid=referrence_learner_submission_uuid,
+            status=TeamAssessmentWorkflow.STATUS.waiting,
+            course_id=team_submission_dict['course_id'],
+            item_id=team_submission_dict['item_id']
+        )
+        team_staff_step = AssessmentWorkflowStep.objects.create(
+            workflow=team_workflow, name=cls.TEAM_STAFF_STEP_NAME, order_num=0
+        )
+        team_workflow.steps.add(team_staff_step)
+
+        team_assessment_api = team_staff_step.api()
+        team_assessment_api.on_init(team_submission_uuid)
+
+        team_workflow.status = TeamAssessmentWorkflow.STATUS.teams
+        team_workflow.save()
+
+        return team_workflow
+
+    @property
+    def _team_staff_step(self):
+        return self._get_steps()[0]
+
+    def _get_steps(self):
+        """
+        Simple helper function for retrieving all the steps in the given
+        TeamAssessmentWorkflow. In this case, it's somewhat trivial, since a
+        TeamAssessmentWorkflow can only ever have a single 'teams' step.
+        """
+
+        if self.steps.count() != 1:
+            err_msg = 'Team Assessment Workflow {} should have exactly one single "teams" step: {}'.format(
+                self.uuid,
+                self.steps.all()
+            )
+            logger.error(err_msg)
+            raise AssessmentWorkflowInternalError(err_msg)
+        step = self.steps.first()
+        if step.name != TeamAssessmentWorkflow.STATUS.teams:
+            err_msg = 'Team Assessment Workflow {} has a "{}" step rather than a teams step'.format(
+                self.uuid,
+                step.name
+            )
+            logger.error(err_msg)
+            raise AssessmentWorkflowInternalError(err_msg)
+        return [step]
+
     def update_from_assessments(self):  # pylint: disable=arguments-differ
-        """ Update status from the assessments. For teams, only the staff assessment """
-        # TODO - Implement in https://openedx.atlassian.net/browse/EDUCATOR-4986
-        pass
+        """
+        Update the workflow with potential new scores from assessments.
+        """
+        if self.status == self.STATUS.cancelled:
+            return
+
+        team_staff_step = self._team_staff_step
+        team_staff_api = team_staff_step.api()
+        new_score = team_staff_api.get_score(self.team_submission_uuid, self.REQUIREMENTS)
+        if new_score:
+            # new_score is just the most recent team score, it may already be recorded in sub_api
+            old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
+            if (
+                    # Does a prior score exist?  Do the points earned match?
+                    not old_score or self.STAFF_ANNOTATION_TYPE not in [
+                        annotation['annotation_type'] for annotation in old_score['annotations']
+                    ] or old_score['points_earned'] != new_score['points_earned']
+            ):
+                # Set the team staff score using team submissions api, and log that fact
+                self._set_team_staff_score(new_score)
+                self.save()
+                logger.info((
+                    "Team Workflow for team submission UUID {uuid} has updated score using team staff assessment."
+                ).format(uuid=self.team_submission_uuid))
+
+                team_staff_step.assessment_completed_at = now()
+                team_staff_step.save()
+
+            team_staff_step.update(self.team_submission_uuid, self.REQUIREMENTS)
+            self.status = self.STATUS.done
+            self.save()
+
+    def _set_team_staff_score(self, score):
+        reason = "A staff member has defined the score for this submission"
+        sub_team_api.set_score(
+            self.team_submission_uuid,
+            score["points_earned"],
+            score["points_possible"],
+            annotation_creator=score["staff_id"],
+            annotation_type=self.STAFF_ANNOTATION_TYPE,
+            annotation_reason=reason
+        )
+
+    @property
+    def identifying_uuid(self):
+        """
+        Returns the primary identifying uuid for this workflow.
+        Overwrites AssessmentWorkflow.identifying_uuid to return team_submission_uuid
+        """
+        return self.team_submission_uuid
 
 
 class AssessmentWorkflowStep(models.Model):
@@ -663,6 +784,8 @@ class AssessmentWorkflowStep(models.Model):
     assessment_completed_at = models.DateTimeField(default=None, null=True)
     order_num = models.PositiveIntegerField()
 
+    staff_step_types = [AssessmentWorkflow.STAFF_STEP_NAME, TeamAssessmentWorkflow.TEAM_STAFF_STEP_NAME]
+
     class Meta:
         ordering = ["workflow", "order_num"]
         app_label = "workflow"
@@ -680,6 +803,9 @@ class AssessmentWorkflowStep(models.Model):
         """
         return self.assessment_completed_at is not None
 
+    def is_staff_step(self):
+        return self.name in self.staff_step_types
+
     def api(self):
         """
         Returns an API associated with this workflow step. If no API is
@@ -694,9 +820,14 @@ class AssessmentWorkflowStep(models.Model):
         api_path = getattr(
             settings, 'ORA2_ASSESSMENTS', DEFAULT_ASSESSMENT_API_DICT
         ).get(self.name)
-        # Staff API should always be available
-        if self.name == 'staff' and not api_path:
-            api_path = 'openassessment.assessment.api.staff'
+        # Staff APIs should always be available
+        if self.is_staff_step() and not api_path:
+            if self.name == AssessmentWorkflow.STAFF_STEP_NAME:
+                api_path = 'openassessment.assessment.api.staff'
+            elif self.name == TeamAssessmentWorkflow.TEAM_STAFF_STEP_NAME:
+                api_path = 'openassessment.assessment.api.teams'
+            else:
+                raise AssessmentWorkflowInternalError('Staff step type {} has no associated api'.format(self.name))
         if api_path is not None:
             try:
                 return importlib.import_module(api_path)
