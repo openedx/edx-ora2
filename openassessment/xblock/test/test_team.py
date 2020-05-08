@@ -16,6 +16,9 @@ from xblock.exceptions import NoSuchServiceError
 TEAMSET_ID = 'teamset-1-id'
 TEAMSET_NAME = 'teamset-1-name'
 
+MOCK_TEAM_MEMBERS = ['UserA', 'UserB', 'UserC']
+MOCK_TEAM_NAME = 'TeamName'
+MOCK_TEAM_ID = 'TeamID'
 
 class MockTeamsConfigurationService:
     """
@@ -41,11 +44,11 @@ class MockTeamsService:
         self.has_team = has_team
         self.team = mock.MagicMock(team_id='the-team-id')
         # This is required because 'name' is a reserved property for mocks
-        self.team.configure_mock(name='TeamName', team_id='TeamID')
+        self.team.configure_mock(name=MOCK_TEAM_NAME, team_id=MOCK_TEAM_ID)
         self.team.users.all.return_value = [
-            mock.MagicMock(username='UserA'),
-            mock.MagicMock(username='UserB'),
-            mock.MagicMock(username='UserC'),
+            mock.MagicMock(username=MOCK_TEAM_MEMBERS[0]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBERS[1]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBERS[2]),
         ]
 
     def get_team(self, user, course_id, teamset_id):  # pylint: disable=unused-argument
