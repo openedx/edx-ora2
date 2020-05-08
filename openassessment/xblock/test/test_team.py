@@ -20,6 +20,7 @@ MOCK_TEAM_MEMBERS = ['UserA', 'UserB', 'UserC']
 MOCK_TEAM_NAME = 'TeamName'
 MOCK_TEAM_ID = 'TeamID'
 
+
 class MockTeamsConfigurationService:
     """
     Fixture class for testing ``TeamMixin``.

@@ -4,10 +4,8 @@ Tests for the staff area.
 """
 from __future__ import absolute_import
 
-import logging
 from collections import namedtuple
 import json
-
 
 import ddt
 from mock import MagicMock, Mock, PropertyMock, call, patch
@@ -28,8 +26,6 @@ from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME
 from openassessment.xblock.staff_area_mixin import conv_format_list
 from submissions import api as sub_api
-
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
@@ -746,7 +742,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Enable teams
         xblock.teams_enabled = True
-        xblock.runtime._services['teams'] = MockTeamsService(True)
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         team_submission_enabled = 'data-team-submission="True"'
         team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
         team_usernames_query = 'data-team-usernames="{}"'.format(conv_format_list(MOCK_TEAM_MEMBERS))

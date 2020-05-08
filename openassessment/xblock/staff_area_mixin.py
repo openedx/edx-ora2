@@ -5,6 +5,7 @@ determine the flow of the problem.
 from __future__ import absolute_import
 
 import copy
+from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 import logging
 
@@ -12,7 +13,6 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from openassessment.xblock.team_mixin import TeamMixin
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -76,6 +76,7 @@ def require_course_staff(error_key, with_json_handler=False):
             return func(xblock, *args, **kwargs)
         return _wrapped
     return _decorator
+
 
 def conv_format_list(str_list):
     """
@@ -233,13 +234,20 @@ class StaffAreaMixin:
                         user = self.get_real_user(anonymous_student_id)
 
                         if not user:
-                            logger.error(u'{}: User lookuip for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
+                            logger.error(
+                                u'{}: User lookuip for anonymous_user_id {} failed'.format(
+                                    self.location,
+                                    anonymous_student_id
+                                )
+                            )
                             raise ObjectDoesNotExist()
 
                         team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
 
                         submission_context['team_name'] = team.name
-                        submission_context['team_usernames'] = conv_format_list([user.username for user in team.users.all()])
+                        submission_context['team_usernames'] = conv_format_list(
+                            [user.username for user in team.users.all()]
+                        )
 
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
