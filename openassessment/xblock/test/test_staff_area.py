@@ -4,8 +4,10 @@ Tests for the staff area.
 """
 from __future__ import absolute_import
 
+import logging
 from collections import namedtuple
 import json
+
 
 import ddt
 from mock import MagicMock, Mock, PropertyMock, call, patch
@@ -23,7 +25,11 @@ from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME
+from openassessment.xblock.staff_area_mixin import conv_format_list
 from submissions import api as sub_api
+
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
@@ -31,6 +37,13 @@ SAVED_FILES_NAMES = ['file1.txt', 'file2.txt']
 
 STUDENT_ITEM = dict(
     student_id="Bob",
+    course_id="test_course",
+    item_id="item_one",
+    item_type="openassessment",
+)
+
+TEAMMATE_ITEM = dict(
+    student_id=MOCK_TEAM_MEMBERS[0],
     course_id="test_course",
     item_id="item_one",
     item_type="openassessment",
@@ -733,15 +746,20 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Enable teams
         xblock.teams_enabled = True
+        xblock.runtime._services['teams'] = MockTeamsService(True)
         team_submission_enabled = 'data-team-submission="True"'
+        team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
+        team_usernames_query = 'data-team-usernames="{}"'.format(conv_format_list(MOCK_TEAM_MEMBERS))
 
         # Create a submission for Bob, and corresponding workflow.
-        bob_item = STUDENT_ITEM.copy()
-        bob_item["item_id"] = xblock.scope_ids.usage_id
-        self._create_submission(bob_item, {'text': 'foo'}, [])
+        team_item = TEAMMATE_ITEM.copy()
+        team_item["item_id"] = xblock.scope_ids.usage_id
+        self._create_submission(team_item, {'text': 'foo'}, [])
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertIn(team_submission_enabled, resp)
+        self.assertIn(team_name_query, resp)
+        self.assertIn(team_usernames_query, resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_delete_student_state(self, xblock):
