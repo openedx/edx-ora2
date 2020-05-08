@@ -24,7 +24,7 @@ from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME
-from openassessment.xblock.staff_area_mixin import conv_format_list
+from openassessment.xblock.staff_area_mixin import list_to_conversational_format
 from submissions import api as sub_api
 
 FILE_URL = 'www.fileurl.com'
@@ -745,7 +745,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         team_submission_enabled = 'data-team-submission="True"'
         team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
-        team_usernames_query = 'data-team-usernames="{}"'.format(conv_format_list(MOCK_TEAM_MEMBERS))
+        team_usernames_query = 'data-team-usernames="{}"'.format(list_to_conversational_format(MOCK_TEAM_MEMBERS))
 
         # Create a submission for Bob, and corresponding workflow.
         team_item = TEAMMATE_ITEM.copy()

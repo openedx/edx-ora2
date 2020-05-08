@@ -78,7 +78,7 @@ def require_course_staff(error_key, with_json_handler=False):
     return _decorator
 
 
-def conv_format_list(str_list):
+def list_to_conversational_format(str_list):
     """
     String list render method, displaying a list of string values in conversational language.
     ['a'] => 'a';  ['a', 'b'] => 'a and b';  ['a', 'b', 'c'] => 'a, b, and c'
@@ -235,7 +235,7 @@ class StaffAreaMixin:
 
                         if not user:
                             logger.error(
-                                u'{}: User lookuip for anonymous_user_id {} failed'.format(
+                                '{}: User lookuip for anonymous_user_id {} failed'.format(
                                     self.location,
                                     anonymous_student_id
                                 )
@@ -245,7 +245,7 @@ class StaffAreaMixin:
                         team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
 
                         submission_context['team_name'] = team.name
-                        submission_context['team_usernames'] = conv_format_list(
+                        submission_context['team_usernames'] = list_to_conversational_format(
                             [user.username for user in team.users.all()]
                         )
 
