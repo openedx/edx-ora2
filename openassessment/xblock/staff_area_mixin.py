@@ -12,6 +12,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.team_mixin import TeamMixin
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -75,6 +76,21 @@ def require_course_staff(error_key, with_json_handler=False):
             return func(xblock, *args, **kwargs)
         return _wrapped
     return _decorator
+
+def conv_format_list(str_list):
+    """
+    String list render method, displaying a list of string values in conversational language.
+    ['a'] => 'a';  ['a', 'b'] => 'a and b';  ['a', 'b', 'c'] => 'a, b, and c'
+
+    Args:
+        str_list (str[]): List of strings to return in comma-joined/conversational form.
+
+    Returns:
+        Combined string.
+    """
+    if len(str_list) < 3:
+        return ', and '.join(str_list)
+    return '{} and {}'.format(', '.join(str_list[:-1]), str_list[-1])
 
 
 class StaffAreaMixin:
@@ -213,6 +229,18 @@ class StaffAreaMixin:
                     )
                     # Add team info to context
                     submission_context['teams_enabled'] = self.teams_enabled
+                    if self.teams_enabled:
+                        user = self.get_real_user(anonymous_student_id)
+
+                        if not user:
+                            logger.error(u'{}: User lookuip for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
+                            raise ObjectDoesNotExist()
+
+                        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+
+                        submission_context['team_name'] = team.name
+                        submission_context['team_usernames'] = conv_format_list([user.username for user in team.users.all()])
+
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._(u"Error loading the checked out learner response."))
