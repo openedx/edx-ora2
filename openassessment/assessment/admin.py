@@ -6,8 +6,8 @@ from __future__ import absolute_import
 import json
 
 from django.contrib import admin
-from django.utils import html
 from django.urls import reverse_lazy
+from django.utils.html import format_html, format_html_join
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric, SharedFileUpload
@@ -40,10 +40,8 @@ class RubricAdmin(admin.ModelAdmin):
     def data(self, rubric_obj):
         """Full JSON string of rubric, indented and HTML formatted."""
         rubric_data = RubricSerializer.serialized_from_cache(rubric_obj)
-        return u"<pre>\n{}\n</pre>".format(
-            html.escape(json.dumps(rubric_data, sort_keys=True, indent=4))
-        )
-    data.allow_tags = True
+        return format_html(
+            u"<pre>\n{}\n</pre>", json.dumps(rubric_data, sort_keys=True, indent=4))
 
 
 class PeerWorkflowItemInline(admin.StackedInline):
@@ -97,10 +95,8 @@ class AssessmentAdmin(admin.ModelAdmin):
             'admin:assessment_rubric_change',
             args=[assessment_obj.rubric.id]
         )
-        return u'<a href="{}">{}</a>'.format(
-            url, assessment_obj.rubric.content_hash
-        )
-    rubric_link.allow_tags = True
+        return format_html(
+            u'<a href="{}">{}</a>', url, assessment_obj.rubric.content_hash)
     rubric_link.admin_order_field = 'rubric__content_hash'
     rubric_link.short_description = 'Rubric'
 
@@ -108,21 +104,15 @@ class AssessmentAdmin(admin.ModelAdmin):
         """
         Returns the parts summary of this assessment as HTML.
         """
-        return "<br/>".join(
-            html.escape(
-                u"{}/{} - {} - {}: {} - {} - {}".format(
-                    part.points_earned,
-                    part.points_possible,
-                    part.criterion.name,
-                    part.criterion.label,
-                    part.option.name if part.option else "None",
-                    part.option.label if part.option else "None",
-                    part.feedback,
-                )
-            )
-            for part in assessment_obj.parts.all()
-        )
-    parts_summary.allow_tags = True
+        return format_html_join("<br/>", u"{}/{} - {} - {}: {} - {} - {}", ((
+            part.points_earned,
+            part.points_possible,
+            part.criterion.name,
+            part.criterion.label,
+            part.option.name if part.option else "None",
+            part.option.label if part.option else "None",
+            part.feedback
+        ) for part in assessment_obj.parts.all()))
 
 
 class AssessmentFeedbackAdmin(admin.ModelAdmin):
@@ -140,15 +130,10 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
         """
         Gets all assessments for this feedback.
         """
-        links = [
-            u'<a href="{}">{}</a>'.format(
-                reverse_lazy('admin:assessment_assessment_change', args=[asmt.id]),
-                html.escape(asmt.scorer_id)
-            )
-            for asmt in assessment_feedback.assessments.all()
-        ]
-        return ", ".join(links)
-    assessments_by.allow_tags = True
+        return format_html_join(", ", '<a href="{}">{}</a>', ((
+            reverse_lazy('admin:assessment_assessment_change', args=[asmt.id]),
+            asmt.scorer_id) for asmt in assessment_feedback.assessments.all()
+        ))
 
 
 class SharedFileUploadAdmin(admin.ModelAdmin):
