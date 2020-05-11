@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-08 15:17-0400\n"
+"POT-Creation-Date: 2020-05-11 10:47-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1715,15 +1715,15 @@ msgstr ""
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:249
+#: openassessment/xblock/data_conversion.py:265
 msgid "You must provide options selected in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:252
+#: openassessment/xblock/data_conversion.py:268
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:255
+#: openassessment/xblock/data_conversion.py:271
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
@@ -1888,31 +1888,31 @@ msgstr ""
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:194
+#: openassessment/xblock/staff_area_mixin.py:178
 msgid "Error getting learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:254
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:255
+#: openassessment/xblock/staff_area_mixin.py:239
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:257
+#: openassessment/xblock/staff_area_mixin.py:241
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:278
+#: openassessment/xblock/staff_area_mixin.py:262
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:504
+#: openassessment/xblock/staff_area_mixin.py:488
 msgid "Please enter valid reason to remove the submission."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:530
+#: openassessment/xblock/staff_area_mixin.py:514
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
