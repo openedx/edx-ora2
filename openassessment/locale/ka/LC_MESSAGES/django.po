@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: Giorgi Goderdzishvili <biggeorgian@gmail.com>\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
@@ -1842,27 +1842,27 @@ msgstr "თქვენ არ გაქვთ წვდომის უფლ�
 msgid "Error getting learner information."
 msgstr "მსმენელის ინფორმაციის ამოღებისას წარმოიშვა შეცდომა."
 
-#: openassessment/xblock/staff_area_mixin.py:216
+#: openassessment/xblock/staff_area_mixin.py:218
 msgid "Error loading the checked out learner response."
 msgstr "მსმენელის შეფასებული პასუხების ჩატვირთვისას წარმოიშვა შეცდომა."
 
-#: openassessment/xblock/staff_area_mixin.py:217
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
 msgstr "ამჟამად შეფასებისთვის ხელმისაწვდომი არ არის არცერთი სხვა მსმენელის პასუხი."
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:221
 msgid "Error getting staff grade information."
 msgstr "თანამშრომელთა შეფასების ინფორმაციის ამოღებისას წარმოიშვა შეცდომა."
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "თანამშრომელთა მიერ შეუფასებელი და შეუმოწმებელი დავალებების რაოდენობის ამოღებისას წარმოიშვა შეცდომა."
 
-#: openassessment/xblock/staff_area_mixin.py:466
+#: openassessment/xblock/staff_area_mixin.py:468
 msgid "Please enter valid reason to remove the submission."
 msgstr "გთხივთ შეიყვანოთ დავალების წაშლის საფუძვლიანი მიზეზი."
 
-#: openassessment/xblock/staff_area_mixin.py:492
+#: openassessment/xblock/staff_area_mixin.py:494
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1998,11 +1998,11 @@ msgstr "ფაილის ტიპი დაშვებული არ ა�
 msgid "Error retrieving upload URL."
 msgstr "ატვირთვის URL-ის ამოღების შეცდომა."
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:634
 msgid "This response has been saved but not submitted."
 msgstr "ეს პასუხი შენახულია, მაგრამ არ გაგზავნილა."
 
-#: openassessment/xblock/submission_mixin.py:631
+#: openassessment/xblock/submission_mixin.py:635
 msgid "This response has not been saved."
 msgstr "პასუხი არ შენახულა."
 

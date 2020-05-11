@@ -4,7 +4,7 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018
+# Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018,2020
 # Cristian Salamea <ovnicraft@gmail.com>, 2015
 # Diego Rojas <diego.rojas@edunext.co>, 2017
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2016-2017
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
-"PO-Revision-Date: 2020-02-21 19:13+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
+"PO-Revision-Date: 2020-05-08 21:44+0000\n"
+"Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -281,7 +281,7 @@ msgstr "Está a punto de subir su respuesta para esta tarea. Después de subirla
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:597
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "El tamaño del archivo debe ser de aproximadamente {max_files_mb}MB o menos."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:607
@@ -298,7 +298,7 @@ msgstr "Tipo de archivo no permitido."
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:637
 msgid "Only "
-msgstr ""
+msgstr "Solo"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:683
@@ -332,7 +332,7 @@ msgstr "Si abandona esta página sin enviar su auto evaluación, perderá todos 
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:131
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:213
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:236
 msgid "Unexpected server error."
 msgstr "Ocurrió un error inesperado en el servidor."
 
@@ -342,12 +342,19 @@ msgid "You must provide a learner name."
 msgstr "Debe ingresar un nombre."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:264
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:149
+msgid ""
+"This grade will be applied to all members of the team. Do you want to "
+"continue?"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:287
 msgid "Error getting the number of ungraded responses"
 msgstr "Error al obtener el número de respuestas no calificadas."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:497
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:520
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."

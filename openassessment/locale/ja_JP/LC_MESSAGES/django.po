@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: Kyoto University <edxkyotoux@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
@@ -1846,27 +1846,27 @@ msgstr "ORAスタッフ採点へのアクセスがはありません。"
 msgid "Error getting learner information."
 msgstr "受講者情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:216
+#: openassessment/xblock/staff_area_mixin.py:218
 msgid "Error loading the checked out learner response."
 msgstr "チェックアウト済受講者の解答の読込エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:217
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
 msgstr "現在、採点対象の他の受講者の解答はありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:221
 msgid "Error getting staff grade information."
 msgstr "スタッフ採点情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "スタッフ採点の未採点およびチェックアウト済の数の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:466
+#: openassessment/xblock/staff_area_mixin.py:468
 msgid "Please enter valid reason to remove the submission."
 msgstr "提出物を削除する正当な理由を入力してください。"
 
-#: openassessment/xblock/staff_area_mixin.py:492
+#: openassessment/xblock/staff_area_mixin.py:494
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -2002,11 +2002,11 @@ msgstr "ファイルタイプが正しくありません。"
 msgid "Error retrieving upload URL."
 msgstr "アップロードURLの取得エラー。"
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:634
 msgid "This response has been saved but not submitted."
 msgstr "この解答は一時保存されていますが、提出されていません。"
 
-#: openassessment/xblock/submission_mixin.py:631
+#: openassessment/xblock/submission_mixin.py:635
 msgid "This response has not been saved."
 msgstr "この解答は保存されていません。"
 

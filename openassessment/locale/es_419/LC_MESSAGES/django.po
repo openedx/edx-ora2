@@ -4,7 +4,7 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018-2019
+# Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018-2020
 # Andy Armstrong <andya@edx.org>, 2014
 # Morphyne <cirrosis60@gmail.com>, 2014
 # Cristian Guerra <cristian.guerra.maya@gmail.com>, 2016
@@ -29,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
-"PO-Revision-Date: 2020-02-04 08:29+0000\n"
-"Last-Translator: Juan Camilo Montoya Franco <juan.montoya@edunext.co>\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
+"PO-Revision-Date: 2020-05-08 21:44+0000\n"
+"Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -199,15 +199,15 @@ msgstr "Especifique el número de respuestas con el mejor puntaje para mostrar. 
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:149
 msgid "Teams Enabled"
-msgstr ""
+msgstr "Equipos habilitados"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:156
 msgid "Specify whether team submissions are allowed for this response."
-msgstr ""
+msgstr "Especifique si los envíos en un equipo están permitidos para esta respuesta."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:161
 msgid "Select Team Set"
-msgstr ""
+msgstr "Seleccionar conjunto de equipo "
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
@@ -1151,7 +1151,7 @@ msgstr "No pudimos subir archivos"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:158
 msgid "We could not delete files"
-msgstr ""
+msgstr "No pudimos Eliminar los archivos"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Select a file to upload for this submission."
@@ -1859,27 +1859,27 @@ msgstr "No tiene permisos para acceder a la calificación de miembros del equipo
 msgid "Error getting learner information."
 msgstr "Error al obtener la información del estudiante."
 
-#: openassessment/xblock/staff_area_mixin.py:216
+#: openassessment/xblock/staff_area_mixin.py:218
 msgid "Error loading the checked out learner response."
 msgstr "Error cargando la respuesta elegida por el estudiante."
 
-#: openassessment/xblock/staff_area_mixin.py:217
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
 msgstr "No hay otras respuestas de estudiantes disponibles para calificar en este momento."
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:221
 msgid "Error getting staff grade information."
 msgstr "Error obteniendo la información de calificación del equipo del curso."
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Error obteniendo el conteo de respuestas enviadas y no calificadas."
 
-#: openassessment/xblock/staff_area_mixin.py:466
+#: openassessment/xblock/staff_area_mixin.py:468
 msgid "Please enter valid reason to remove the submission."
 msgstr "Por favor ingrese una razón válida para eliminar este envío."
 
-#: openassessment/xblock/staff_area_mixin.py:492
+#: openassessment/xblock/staff_area_mixin.py:494
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1989,7 +1989,7 @@ msgstr "No se enviaron descripciones de archivos."
 
 #: openassessment/xblock/submission_mixin.py:275
 msgid "Files metadata could not be saved."
-msgstr ""
+msgstr "Los meta datos de los archivos no se pudieron guardar."
 
 #: openassessment/xblock/submission_mixin.py:376
 msgid "There was an error uploading your file."
@@ -2015,11 +2015,11 @@ msgstr "Tipo de archivo no permitido."
 msgid "Error retrieving upload URL."
 msgstr "Error al recuperar la URL subida."
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:634
 msgid "This response has been saved but not submitted."
 msgstr "La respuesta ha sido guardada, pero no enviada."
 
-#: openassessment/xblock/submission_mixin.py:631
+#: openassessment/xblock/submission_mixin.py:635
 msgid "This response has not been saved."
 msgstr "Esta respuesta no ha sido guardada."
 

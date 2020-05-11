@@ -15,6 +15,7 @@
 # Christopher Castermane <christopher.castermane@student.uclouvain.be>, 2014
 # ClaudeCoulombe <claude.coulombe@gmail.com>, 2014
 # Daniel Le Berre, 2014-2015
+# David Truong <david.truong@edulib.org>, 2020
 # Delattre <mdelattre78@laposte.net>, 2015
 # derthy <derthiamj@gmail.com>, 2014
 # Dosto92 <hakim.poubelle@gmail.com>, 2014
@@ -95,9 +96,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
-"PO-Revision-Date: 2020-05-01 00:17+0000\n"
-"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
+"PO-Revision-Date: 2020-05-06 18:08+0000\n"
+"Last-Translator: David Truong <david.truong@edulib.org>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1925,27 +1926,27 @@ msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations d
 msgid "Error getting learner information."
 msgstr "Erreur lors de l'obtention d'information sur l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:216
+#: openassessment/xblock/staff_area_mixin.py:218
 msgid "Error loading the checked out learner response."
 msgstr "Erreur lors du chargement de la réponse de l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:217
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
 msgstr "Aucune autre réponse d'apprenant disponible pour notation en ce moment."
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:221
 msgid "Error getting staff grade information."
 msgstr "Erreur lors de la récupération de la note de l'équipe pédagogique."
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Erreur lors de la récupération des notes attribuées par l'équipe pédagogique et leur compte."
 
-#: openassessment/xblock/staff_area_mixin.py:466
+#: openassessment/xblock/staff_area_mixin.py:468
 msgid "Please enter valid reason to remove the submission."
 msgstr "Veuillez saisir une raison valide pour supprimer la réponse."
 
-#: openassessment/xblock/staff_area_mixin.py:492
+#: openassessment/xblock/staff_area_mixin.py:494
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -2081,11 +2082,11 @@ msgstr "Type de fichier non supporté."
 msgid "Error retrieving upload URL."
 msgstr "Une erreur s'est produite lors de la récupération de l'URL de chargement."
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:634
 msgid "This response has been saved but not submitted."
 msgstr "Cette réponse a été enregistrée mais n'a pas été soumise."
 
-#: openassessment/xblock/submission_mixin.py:631
+#: openassessment/xblock/submission_mixin.py:635
 msgid "This response has not been saved."
 msgstr "Cette réponse n'a pas été enregistrée."
 
