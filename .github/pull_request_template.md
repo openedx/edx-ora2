@@ -13,6 +13,6 @@
 - [ ] Test suites passing on Jenkins
 - [ ] Bumped version number in [setup.py](../setup.py) and [package.json](../package.json)
 
-JIRA: [EDUCATOR-XXXX](https://openedx.atlassian.net/browse/EDUCATOR-XXXX)
+JIRA: [JIRA-XXXX](https://openedx.atlassian.net/browse/JIRA-XXXX)
 
 FIY: @edx/masters-devs-gta
