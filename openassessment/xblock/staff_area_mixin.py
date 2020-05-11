@@ -11,7 +11,7 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict
+from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from xblock.core import XBlock
 
@@ -76,22 +76,6 @@ def require_course_staff(error_key, with_json_handler=False):
             return func(xblock, *args, **kwargs)
         return _wrapped
     return _decorator
-
-
-def list_to_conversational_format(str_list):
-    """
-    String list render method, displaying a list of string values in conversational language.
-    ['a'] => 'a';  ['a', 'b'] => 'a and b';  ['a', 'b', 'c'] => 'a, b, and c'
-
-    Args:
-        str_list (str[]): List of strings to return in comma-joined/conversational form.
-
-    Returns:
-        Combined string.
-    """
-    if len(str_list) < 3:
-        return ', and '.join(str_list)
-    return '{} and {}'.format(', '.join(str_list[:-1]), str_list[-1])
 
 
 class StaffAreaMixin:
