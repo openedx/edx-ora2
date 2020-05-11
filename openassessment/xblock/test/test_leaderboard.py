@@ -15,7 +15,7 @@ from django.test.utils import override_settings
 
 import boto
 from boto.s3.key import Key
-from moto import mock_s3
+from moto import mock_s3_deprecated
 from openassessment.fileupload import api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from submissions import api as sub_api
@@ -140,7 +140,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {'score': 1, 'files': []}
         ])
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -160,7 +160,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {'score': 1, 'files': [], 'submission': ''}
         ])
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -200,7 +200,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             )}
         ])
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',

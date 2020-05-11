@@ -31,7 +31,7 @@ class UploadDataTest(CacheResetTest):
         "submission.csv", "score.csv",
     ]
 
-    @moto.mock_s3
+    @moto.mock_s3_deprecated
     def test_upload(self):
         # Create an S3 bucket using the fake S3 implementation
         conn = boto.connect_s3()

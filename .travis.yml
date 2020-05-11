@@ -16,10 +16,6 @@ env:
   - TOX_ENV=js
   - TOX_ENV=quality
 
-jobs:
-  allow_failures:
-  - python: 3.8
-
 before_install:
   - "pip install -U pip"
   - export BOTO_CONFIG=/dev/null
@@ -43,5 +39,6 @@ deploy:
   on:
     tags: true
     condition: "$TOXENV=quality"
+    python: 3.5
   password:
     secure: F7yrAFt9c56Y/x29pNbI3LMEATc6DPDTqEXs5WDDRwse/JwKe3MSsXRv6ois6JKzWroHQOZu4CKBbtfZ8v4fWv8lT4kwMJzAq8I4tda4qaSWulHiTdefzkR147oW9db2lTAKFOZsV/XUFFsv2sHDK/SQiJ0y+nxTgoMxEILChnw=

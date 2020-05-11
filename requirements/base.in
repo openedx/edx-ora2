@@ -6,7 +6,7 @@ edx-i18n-tools
 edx-submissions
 djangorestframework
 Xblock
-git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk
+git+https://github.com/edx/xblock-sdk.git@446e979bad1f3bf7f891787b32d5b2e7620b2f23#egg=xblock-sdk
 
 django
 django-simple-history

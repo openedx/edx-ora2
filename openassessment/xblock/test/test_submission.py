@@ -15,7 +15,7 @@ from django.test.utils import override_settings
 
 import boto
 from boto.s3.key import Key
-from moto import mock_s3
+from moto import mock_s3_deprecated
 from django.contrib.auth import get_user_model
 from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
@@ -146,7 +146,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         expected_prompt = "&lt;code&gt;&lt;strong&gt;Question 123&lt;/strong&gt;&lt;/code&gt;"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -167,7 +167,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             resp['url']
         )
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -217,7 +217,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             'fileSize': size,
         }
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -286,7 +286,7 @@ class SubmissionTest(XBlockHandlerTestCase):
                     [meta['fileSize'] for meta in expected_file_metadata]
                 )
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -300,7 +300,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertTrue(resp['success'])
         self.assertEqual('', resp['url'])
 
-    @mock_s3
+    @mock_s3_deprecated
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
