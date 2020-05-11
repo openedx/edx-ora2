@@ -21,6 +21,7 @@ __pycache__
 # Various common editor backups
 *.orig
 .*.swp
+.*.swo
 *~
 
 # Installer logs
