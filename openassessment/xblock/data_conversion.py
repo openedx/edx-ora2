@@ -77,6 +77,24 @@ def convert_training_examples_list_to_dict(examples_list):
     ]
 
 
+def list_to_conversational_format(str_list):
+    """
+    String list render method, displaying a list of string values in conversational language.
+    ['a'] => 'a';  ['a', 'b'] => 'a and b';  ['a', 'b', 'c'] => 'a, b, and c'
+
+    Args:
+        str_list (str[]): List of strings to return in comma-joined/conversational form.
+
+    Returns:
+        Combined string.
+    """
+    if str_list is None:
+        return ''
+    if len(str_list) < 3:
+        return ' and '.join(str_list)
+    return '{}, and {}'.format(', '.join(str_list[:-1]), str_list[-1])
+
+
 def update_assessments_format(assessments):
     """
     For each example update 'answer' to newer format.

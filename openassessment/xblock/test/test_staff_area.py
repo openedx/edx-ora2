@@ -23,6 +23,7 @@ from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME
 from submissions import api as sub_api
 
 FILE_URL = 'www.fileurl.com'
@@ -31,6 +32,13 @@ SAVED_FILES_NAMES = ['file1.txt', 'file2.txt']
 
 STUDENT_ITEM = dict(
     student_id="Bob",
+    course_id="test_course",
+    item_id="item_one",
+    item_type="openassessment",
+)
+
+TEAMMATE_ITEM = dict(
+    student_id=MOCK_TEAM_MEMBERS[0],
     course_id="test_course",
     item_id="item_one",
     item_type="openassessment",
@@ -724,8 +732,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'submission_returned_uuid': submission['uuid']
         })
 
+    @patch('openassessment.xblock.staff_area_mixin.list_to_conversational_format')
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_form_for_team_assessment(self, xblock):
+    def test_staff_form_for_team_assessment(self, xblock, formatter):
+        # mock list format
+        def mock_formatter(entries):
+            return ', '.join(entries)
+        formatter.side_effect = mock_formatter
+
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -733,15 +747,20 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Enable teams
         xblock.teams_enabled = True
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         team_submission_enabled = 'data-team-submission="True"'
+        team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
+        team_usernames_query = 'data-team-usernames="{}"'.format(mock_formatter(MOCK_TEAM_MEMBERS))
 
         # Create a submission for Bob, and corresponding workflow.
-        bob_item = STUDENT_ITEM.copy()
-        bob_item["item_id"] = xblock.scope_ids.usage_id
-        self._create_submission(bob_item, {'text': 'foo'}, [])
+        team_item = TEAMMATE_ITEM.copy()
+        team_item["item_id"] = xblock.scope_ids.usage_id
+        self._create_submission(team_item, {'text': 'foo'}, [])
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertIn(team_submission_enabled, resp)
+        self.assertIn(team_name_query, resp)
+        self.assertIn(team_usernames_query, resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_delete_student_state(self, xblock):

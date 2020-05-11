@@ -5,12 +5,13 @@ determine the flow of the problem.
 from __future__ import absolute_import
 
 import copy
+from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 import logging
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict
+from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from xblock.core import XBlock
 
@@ -213,6 +214,25 @@ class StaffAreaMixin:
                     )
                     # Add team info to context
                     submission_context['teams_enabled'] = self.teams_enabled
+                    if self.teams_enabled:
+                        user = self.get_real_user(anonymous_student_id)
+
+                        if not user:
+                            logger.error(
+                                '{}: User lookuip for anonymous_user_id {} failed'.format(
+                                    self.location,
+                                    anonymous_student_id
+                                )
+                            )
+                            raise ObjectDoesNotExist()
+
+                        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+
+                        submission_context['team_name'] = team.name
+                        submission_context['team_usernames'] = list_to_conversational_format(
+                            [user.username for user in team.users.all()]
+                        )
+
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._(u"Error loading the checked out learner response."))
