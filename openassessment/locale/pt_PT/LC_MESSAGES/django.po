@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-23 17:38-0400\n"
+"POT-Creation-Date: 2020-05-04 17:03-0400\n"
 "PO-Revision-Date: 2020-02-04 08:29+0000\n"
 "Last-Translator: Manuela Silva <manuelarodsilva@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
@@ -1847,27 +1847,27 @@ msgstr "Sem permissão para aceder à classificação da equipa de ORA."
 msgid "Error getting learner information."
 msgstr "Erro ao obter informações do estudante."
 
-#: openassessment/xblock/staff_area_mixin.py:216
+#: openassessment/xblock/staff_area_mixin.py:218
 msgid "Error loading the checked out learner response."
 msgstr "Erro ao carregar a resposta do estudante já validada."
 
-#: openassessment/xblock/staff_area_mixin.py:217
+#: openassessment/xblock/staff_area_mixin.py:219
 msgid "No other learner responses are available for grading at this time."
 msgstr "Neste momento, não existe outra resposta do estudante está disponível para classificação."
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:221
 msgid "Error getting staff grade information."
 msgstr "Erro ao obter informações sobre a classificação da equipa."
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Erro ao obter o grau da equipa sem classificação e contagens verificadas."
 
-#: openassessment/xblock/staff_area_mixin.py:466
+#: openassessment/xblock/staff_area_mixin.py:468
 msgid "Please enter valid reason to remove the submission."
 msgstr "Por favor, introduza um motivo válido para eliminar o envio."
 
-#: openassessment/xblock/staff_area_mixin.py:492
+#: openassessment/xblock/staff_area_mixin.py:494
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -2003,11 +2003,11 @@ msgstr "O tipo de ficheiro não é permitido."
 msgid "Error retrieving upload URL."
 msgstr "Erro ao recuperar o url de carregamento."
 
-#: openassessment/xblock/submission_mixin.py:630
+#: openassessment/xblock/submission_mixin.py:634
 msgid "This response has been saved but not submitted."
 msgstr "Esta resposta foi guardada mas não foi submetida."
 
-#: openassessment/xblock/submission_mixin.py:631
+#: openassessment/xblock/submission_mixin.py:635
 msgid "This response has not been saved."
 msgstr "Esta resposta não foi guardada."
 
