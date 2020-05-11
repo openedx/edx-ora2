@@ -88,9 +88,11 @@ def list_to_conversational_format(str_list):
     Returns:
         Combined string.
     """
+    if str_list is None:
+        return ''
     if len(str_list) < 3:
-        return ', and '.join(str_list)
-    return '{} and {}'.format(', '.join(str_list[:-1]), str_list[-1])
+        return ' and '.join(str_list)
+    return '{}, and {}'.format(', '.join(str_list[:-1]), str_list[-1])
 
 
 def update_assessments_format(assessments):

@@ -11,6 +11,7 @@ from django.test import TestCase
 
 from openassessment.xblock.data_conversion import (
     create_prompts_list, create_submission_dict,
+    list_to_conversational_format,
     prepare_submission_for_serialization,
     update_assessments_format
 )
@@ -50,6 +51,17 @@ class DataConversionTest(TestCase):
     @ddt.unpack
     def test_create_submission_dict(self, input_submission, input_prompts, output):
         self.assertEqual(create_submission_dict(input_submission, input_prompts), output)
+
+    @ddt.data(
+        (None, ''),
+        (['user'], 'user'),
+        (['userA', 'userB'], 'userA and userB'),
+        (['userA', 'userB', 'userC'], 'userA, userB, and userC'),
+        (['A', 'B', 'C', 'D', 'E'], 'A, B, C, D, and E')
+    )
+    @ddt.unpack
+    def test_list_to_conversational_format(self, input_list, output):
+        self.assertEqual(list_to_conversational_format(input_list), output)
 
     @ddt.data(
         ([''], {'parts': [{'text': ''}]}),
