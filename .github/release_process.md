@@ -3,7 +3,7 @@
 Before Merging a pull request:
 
 - [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json)
-- [ ] Run ``make javascript sass`` if your changes include JS/CSS changes
+- [ ] Run `make javascript sass` if your changes include JS/CSS changes
 - [ ] Get a green Travis build for this PR
 - [ ] Address PR comments
 - [ ] Get approving review from code owners
