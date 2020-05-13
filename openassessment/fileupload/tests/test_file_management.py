@@ -4,7 +4,7 @@ import mock
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.utils import override_settings
-from moto import mock_s3
+from moto import mock_s3_deprecated
 
 from openassessment.assessment.models.base import SharedFileUpload
 from openassessment.fileupload.api import get_student_file_key, FileUpload, FileUploadManager

@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-appdirs==1.4.3            # via fs
+appdirs==1.4.4            # via fs
 bleach==3.1.5             # via -r requirements/base.in
 boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.in
 certifi==2020.4.5.1       # via requests
@@ -14,15 +14,15 @@ django-model-utils==4.0.0  # via -r requirements/base.in, edx-submissions
 django-simple-history==2.10.0  # via -r requirements/base.in
 django==2.2.12            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
 djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
-edx-i18n-tools==0.5.0     # via -r requirements/base.in
-edx-submissions==3.1.3    # via -r requirements/base.in
+edx-i18n-tools==0.5.1     # via -r requirements/base.in
+edx-submissions==3.1.5    # via -r requirements/base.in
 fs==2.0.18                # via -c requirements/constraints.txt, xblock
 html5lib==1.0.1           # via -r requirements/base.in
-idna==2.9                 # via requests
+idna==2.8                 # via -c requirements/constraints.txt, requests
 importlib-metadata==1.6.0  # via path
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
 lazy==1.4                 # via -r requirements/base.in
-libsass==0.19.4           # via -r requirements/base.in
+libsass==0.20.0           # via -r requirements/base.in
 loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
 lxml==4.5.0               # via -r requirements/base.in, xblock
 markupsafe==1.1.1         # via xblock
@@ -41,11 +41,11 @@ six==1.14.0               # via bleach, django-simple-history, edx-i18n-tools, f
 sqlparse==0.3.1           # via django
 urllib3==1.25.9           # via requests
 voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.in
-web-fragments==0.3.1      # via xblock
+web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock
-git+https://github.com/edx/xblock-sdk.git@74bf5d6010b37e591a687e1e227263d689412279#egg=xblock-sdk  # via -r requirements/base.in
-xblock==1.2.9             # via -r requirements/base.in
+git+https://github.com/edx/xblock-sdk.git@446e979bad1f3bf7f891787b32d5b2e7620b2f23#egg=xblock-sdk  # via -r requirements/base.in
+xblock==1.3.1             # via -r requirements/base.in
 zipp==1.0.0               # via -c requirements/constraints.txt, importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
