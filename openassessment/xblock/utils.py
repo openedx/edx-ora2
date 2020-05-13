@@ -31,4 +31,7 @@ def get_percentage(sample_submission, staff_submission):
     staff_correct = staff_submission['correct']
     staff_total = staff_submission['total_tests']
 
-    return ((sample_correct + staff_correct) / (staff_total + sample_total)) * 100
+    try:
+        return ((float(sample_correct + staff_correct)) / (staff_total + sample_total)) * 100
+    except ZeroDivisionError:
+        return 0

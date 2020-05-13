@@ -65,14 +65,21 @@ class TestGrader:
         To make the incorrect language error compatible with per file test
         case run compatible.
         """
-        return [{
-            'run_type': 'sample',
+        return [self.get_error_response('sample', error)]
+
+    @staticmethod
+    def get_error_response(run_type, error):
+        """
+        Create a sample error response for a given run and the error to be displayed.
+        """
+        return {
+            'run_type': run_type,
             'total_tests': 0,
             'correct': 0,
             'incorrect': 0,
             'output': None,
             'error': [error]
-        }]
+        }
 
     def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
 
