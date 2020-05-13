@@ -97,7 +97,8 @@ class TestTeamApi(CacheResetTest):
         mock_get_submission.return_value = {
             'team_submission_uuid': team_submission_uuid,
             'course_id': 'fake_course',
-            'item_id': 'fake_item'
+            'item_id': 'fake_item',
+            'submission_uuids': ['uuid1', 'uuid2', 'uuid3']
         }
 
         # When I initialize an assessment

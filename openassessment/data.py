@@ -12,7 +12,7 @@ import six
 from django.conf import settings
 
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
-from openassessment.workflow.models import AssessmentWorkflow
+from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
 from submissions import api as sub_api
 
 
@@ -527,10 +527,15 @@ class OraAggregateData:
             }
 
         """
+
+        all_valid_ora_statuses = set()
+        all_valid_ora_statuses.update(AssessmentWorkflow().STATUS_VALUES)
+        all_valid_ora_statuses.update(TeamAssessmentWorkflow().STATUS_VALUES)
+
         if desired_statuses:
-            statuses = [st for st in AssessmentWorkflow().STATUS_VALUES if st in desired_statuses]
+            statuses = [st for st in all_valid_ora_statuses if st in desired_statuses]
         else:
-            statuses = AssessmentWorkflow().STATUS_VALUES
+            statuses = all_valid_ora_statuses
 
         items = AssessmentWorkflow.objects.filter(course_id=course_id, status__in=statuses).values('item_id', 'status')
 

@@ -19,8 +19,8 @@ import openassessment.assessment.api.peer as peer_api
 from openassessment.data import CsvWriter, OraAggregateData
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
-from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
+from openassessment.workflow import api as workflow_api, team_api as team_workflow_api
+from submissions import api as sub_api, team_api as team_sub_api
 
 if six.PY2:
     from StringIO import StringIO  # pylint: disable=import-error
@@ -399,6 +399,21 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
+    def _create_team_submission(self, course_id, item_id, team_id, team_member_ids):
+        """
+        Create a team submission and initialize a team workflow
+        """
+        team_submission = team_sub_api.create_submission_for_team(
+            course_id,
+            item_id,
+            team_id,
+            team_member_ids[0],
+            team_member_ids,
+            ANSWER,
+        )
+        team_workflow_api.create_workflow(team_submission['team_submission_uuid'])
+        return team_submission
+
     def _create_assessment(self, submission_uuid):
         """
         Creates an assessment for the given submission.
@@ -519,9 +534,14 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
     def test_collect_ora2_responses(self):
         item_id2 = self._other_item(2)
         item_id3 = self._other_item(3)
+        team_item_id = self._other_item(4)
 
         student_id2 = self._other_student(2)
         student_id3 = self._other_student(3)
+        student_id4 = self._other_student(4)
+        student_id5 = self._other_student(5)
+        student_ids = [STUDENT_ID, student_id2, student_id3, student_id4, student_id5]
+        student_model_ids = [UserFactory.create(username=student_id).id for student_id in student_ids]
 
         self._create_submission(dict(
             student_id=STUDENT_ID,
@@ -555,25 +575,43 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             item_type="openassessment"
         ), STEPS)
 
+        self._create_team_submission(
+            COURSE_ID,
+            team_item_id,
+            'team_1',
+            student_model_ids[:3]
+        )
+        self._create_team_submission(
+            COURSE_ID,
+            team_item_id,
+            'team_2',
+            student_model_ids[3:]
+        )
+
         data = OraAggregateData.collect_ora2_responses(COURSE_ID)
 
         self.assertIn(ITEM_ID, data)
         self.assertIn(item_id2, data)
         self.assertIn(item_id3, data)
-        for item in [ITEM_ID, item_id2, item_id3]:
-            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done', 'cancelled'},
+        self.assertIn(team_item_id, data)
+        for item in [ITEM_ID, item_id2, item_id3, team_item_id]:
+            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done', 'cancelled', 'teams'},
                              set(data[item].keys()))
         self.assertEqual(data[ITEM_ID], {
             'total': 2, 'training': 0, 'peer': 2, 'self': 0, 'staff': 0, 'waiting': 0,
-            'done': 0, 'cancelled': 0
+            'done': 0, 'cancelled': 0, 'teams': 0
         })
         self.assertEqual(data[item_id2], {
             'total': 2, 'training': 0, 'peer': 1, 'self': 1, 'staff': 0, 'waiting': 0,
-            'done': 0, 'cancelled': 0
+            'done': 0, 'cancelled': 0, 'teams': 0
         })
         self.assertEqual(data[item_id3], {
             'total': 3, 'training': 0, 'peer': 1, 'self': 2, 'staff': 0, 'waiting': 0,
-            'done': 0, 'cancelled': 0
+            'done': 0, 'cancelled': 0, 'teams': 0
+        })
+        self.assertEqual(data[team_item_id], {
+            'total': 2, 'training': 0, 'peer': 0, 'self': 0, 'staff': 0, 'waiting': 0,
+            'done': 0, 'cancelled': 0, 'teams': 2
         })
 
         data = OraAggregateData.collect_ora2_responses(COURSE_ID, ['staff', 'peer'])
