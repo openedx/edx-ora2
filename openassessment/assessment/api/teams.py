@@ -85,7 +85,11 @@ def on_init(team_submission_uuid):
         TeamStaffWorkflow.objects.get_or_create(
             course_id=team_submission['course_id'],
             item_id=team_submission['item_id'],
-            team_submission_uuid=team_submission_uuid
+            team_submission_uuid=team_submission_uuid,
+            # submission_uuid is currently not used in any logic in TeamStaffWorkflow, so we don't
+            # realy care which submission is chosen and it doesn't need to match the TeamAssessment Workflow.
+            # It must be filled because of the unique constraint on the field (can't have multiple '' values)
+            submission_uuid=team_submission['submission_uuids'][0],
         )
     except DatabaseError:
         error_message = (
