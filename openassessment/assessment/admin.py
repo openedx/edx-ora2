@@ -10,7 +10,8 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html, format_html_join
 
 from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric, SharedFileUpload
+    Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric, SharedFileUpload, StaffWorkflow,
+    TeamStaffWorkflow,
 )
 from openassessment.assessment.serializers import RubricSerializer
 
@@ -150,8 +151,24 @@ class SharedFileUploadAdmin(admin.ModelAdmin):
     )
 
 
+class StaffWorkflowAdmin(admin.ModelAdmin):
+    """
+    Django admin model for StaffWorkflows
+    """
+    list_display = ('id', 'submission_uuid', 'course_id', 'item_id', 'grading_completed_at')
+
+
+class TeamStaffWorkflowAdmin(admin.ModelAdmin):
+    """
+    Django admin model for TeamStaffWorkflows
+    """
+    list_display = ('id', 'team_submission_uuid', 'course_id', 'item_id', 'grading_completed_at')
+
+
 admin.site.register(Rubric, RubricAdmin)
 admin.site.register(PeerWorkflow, PeerWorkflowAdmin)
 admin.site.register(Assessment, AssessmentAdmin)
 admin.site.register(AssessmentFeedback, AssessmentFeedbackAdmin)
 admin.site.register(SharedFileUpload, SharedFileUploadAdmin)
+admin.site.register(StaffWorkflow, StaffWorkflowAdmin)
+admin.site.register(TeamStaffWorkflow, TeamStaffWorkflowAdmin)

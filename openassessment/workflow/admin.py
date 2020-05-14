@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 from django.contrib import admin
 
-from .models import AssessmentWorkflow, AssessmentWorkflowStep
+from .models import AssessmentWorkflow, AssessmentWorkflowStep, TeamAssessmentWorkflow
 
 
 class AssessmentWorkflowStepInline(admin.StackedInline):
@@ -28,4 +28,19 @@ class AssessmentWorkflowAdmin(admin.ModelAdmin):
     inlines = (AssessmentWorkflowStepInline,)
 
 
+class TeamAssessmentWorkflowAdmin(admin.ModelAdmin):
+    """
+    Admin for TeamAssessmentWorkflows.
+    """
+    
+    list_display = (
+        'id', 'status', 'team_submission_uuid', 'submission_uuid', 'course_id', 'item_id', 'status_changed'
+    )
+    list_filter = ('status',)
+    search_fields = ('team_submission_uuid', 'submission_uuid', 'course_id', 'item_id')
+
+    inlines = (AssessmentWorkflowStepInline,)
+
+
 admin.site.register(AssessmentWorkflow, AssessmentWorkflowAdmin)
+admin.site.register(TeamAssessmentWorkflow, TeamAssessmentWorkflowAdmin)
