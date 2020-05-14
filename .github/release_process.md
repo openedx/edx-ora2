@@ -2,9 +2,10 @@
 
 Before Merging a pull request:
 
-- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json)
-- [ ] Run `make javascript sass` if your changes include JS/CSS changes
+- [ ] If any user-facing text has changed, run `make check_translations_up_to_date` and check in any updated files
+- [ ] If your changes include JS/CSS changes, run `make javascript sass` 
 - [ ] Get a green Travis build for this PR
+- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json)
 - [ ] Address PR comments
 - [ ] Get approving review from code owners
 
@@ -12,7 +13,7 @@ Before Merging a pull request:
 
 When a PR is ready to release, do the following to publish a new version of ORA:
 
-- [ ] Merge to master
+- [ ] Merge to `master`
 - [ ] Create a [release tag on GitHub](https://github.com/edx/edx-ora2/releases) with updated version number (e.g. `v3.1.4`)
 - [ ] Manually inspect diff at https://github.com/edx/edx-ora2/compare/0.x.n-1...0.x.n, email contributors
 - [ ] Confirm new version appears in [PyPi: ora2](https://pypi.org/project/ora2)
