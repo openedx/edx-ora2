@@ -32,7 +32,7 @@ class TeamAssessmentWorkflowAdmin(admin.ModelAdmin):
     """
     Admin for TeamAssessmentWorkflows.
     """
-    
+
     list_display = (
         'id', 'status', 'team_submission_uuid', 'submission_uuid', 'course_id', 'item_id', 'status_changed'
     )
