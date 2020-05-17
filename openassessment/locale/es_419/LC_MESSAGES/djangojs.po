@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-04 17:03-0400\n"
-"PO-Revision-Date: 2020-05-08 21:44+0000\n"
+"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"PO-Revision-Date: 2020-05-13 23:36+0000\n"
 "Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -120,25 +120,25 @@ msgstr "La entrega no pudo ser eliminada de la lista de evaluaciones"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:656
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "Varios equipos encontrados para el curso"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:665
 msgid "Could not load teams information."
-msgstr ""
+msgstr "No se pudo cargar la información de los equipos."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:687
 msgid "User lookup failed"
-msgstr ""
+msgstr "Falló búsqueda del usuario"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:693
 msgid "Error when looking up username"
-msgstr ""
+msgstr "Error al buscar el nombre de usuario"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_base.js:321

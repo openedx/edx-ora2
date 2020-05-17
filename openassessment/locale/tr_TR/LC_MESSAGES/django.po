@@ -21,9 +21,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-04 17:03-0400\n"
-"PO-Revision-Date: 2020-02-07 14:25+0000\n"
-"Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
+"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"PO-Revision-Date: 2020-05-12 06:26+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -951,7 +951,7 @@ msgstr "Akranlarınızdan birinin aşağıdaki cevabını okuyun ve değerlendir
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:77
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:28
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
 msgid "Associated Files"
@@ -960,7 +960,7 @@ msgstr "İlişkili Dosyalar"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:91
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:71
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:40
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
 msgid "We could not submit your assessment"
 msgstr "Ödevinizi gönderemiyoruz"
@@ -1361,11 +1361,23 @@ msgstr "N/A"
 msgid "Staff Assessment"
 msgstr "Personel Değerlendirme"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:7
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:14
+msgid "Give this team a grade using the problem's rubric."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
 msgstr "Problem rubrikini kullanarak bu öğrenciye not ver."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:26
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
 #, python-format
 msgid ""
 "\n"
@@ -1373,23 +1385,27 @@ msgid ""
 "                                    "
 msgstr "\n                                        %(student_username)s için cevap\n                                    "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
 msgid "Learner Response"
 msgstr "Öğrenci Yanıtı"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
+msgid "The teams's response to the prompt above"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
 msgstr "Öğrencinin üstteki soruya cevabı"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
 msgid "Submit assessment"
 msgstr "Değerlendirmeyi teslim et"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
 msgstr "Değerlendirmeyi gönder ve notlandırmaya devam et"
 
@@ -1674,15 +1690,15 @@ msgstr "Öğrenci Eğitim Örneklerini Yüklerken Hata"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Öğrenci Eğitim Adımındaki bu görev yüklenemedi."
 
-#: openassessment/xblock/data_conversion.py:249
+#: openassessment/xblock/data_conversion.py:265
 msgid "You must provide options selected in the assessment."
 msgstr "Değerlendirme için gerekli seçenekleri sağlamalısınız."
 
-#: openassessment/xblock/data_conversion.py:252
+#: openassessment/xblock/data_conversion.py:268
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:255
+#: openassessment/xblock/data_conversion.py:271
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
@@ -1827,51 +1843,51 @@ msgstr "Bireysel-değerlendirme yapmadan önce cevap göndermelisiniz."
 msgid "Your self assessment could not be submitted."
 msgstr "Kişisel değerlendirmeniz gönderilemedi."
 
-#: openassessment/xblock/staff_area_mixin.py:39
+#: openassessment/xblock/staff_area_mixin.py:40
 msgid "You do not have permission to schedule training"
 msgstr "Eğitimi programlamak için izniniz yok"
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to reschedule tasks."
 msgstr "Görevleri yeniden planlamak için izniniz yok."
 
-#: openassessment/xblock/staff_area_mixin.py:66
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access the ORA staff area"
 msgstr "ORA görevli bilgilerine erişim için izniniz yok"
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA learner information."
 msgstr "ORA öğrenci bilgilerine erişim için izniniz yok."
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA staff grading."
 msgstr "ORA görevli notlandırmalarına erişim için izniniz yok."
 
-#: openassessment/xblock/staff_area_mixin.py:177
+#: openassessment/xblock/staff_area_mixin.py:178
 msgid "Error getting learner information."
 msgstr "Öğrenci bilgisini alırken hata oluştu."
 
-#: openassessment/xblock/staff_area_mixin.py:218
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:239
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:221
+#: openassessment/xblock/staff_area_mixin.py:241
 msgid "Error getting staff grade information."
 msgstr "Personel not bilgisini alırken hata oluştu."
 
-#: openassessment/xblock/staff_area_mixin.py:242
+#: openassessment/xblock/staff_area_mixin.py:262
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:468
+#: openassessment/xblock/staff_area_mixin.py:488
 msgid "Please enter valid reason to remove the submission."
 msgstr "Gönderimi kaldırmak için geçerli bir sebep girin."
 
-#: openassessment/xblock/staff_area_mixin.py:494
+#: openassessment/xblock/staff_area_mixin.py:514
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1963,55 +1979,55 @@ msgstr "Cevap göndermek için, bu bileşeni Ön İzleme ve ya Canlı modda gör
 msgid "Multiple submissions are not allowed."
 msgstr "Çoklu gönderimlere izin verilmez."
 
-#: openassessment/xblock/submission_mixin.py:167
+#: openassessment/xblock/submission_mixin.py:165
 msgid "API returned unclassified exception."
 msgstr "API sınıflandırılmamiş ayrıcalık döndürdü."
 
-#: openassessment/xblock/submission_mixin.py:218
+#: openassessment/xblock/submission_mixin.py:216
 msgid "This response could not be saved."
 msgstr "Bu cevap kaydedilemedi."
 
-#: openassessment/xblock/submission_mixin.py:222
+#: openassessment/xblock/submission_mixin.py:220
 msgid "This response was not submitted."
 msgstr "Bu cevap gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:238
+#: openassessment/xblock/submission_mixin.py:236
 msgid "Files descriptions were not submitted."
 msgstr "Dosya açıklamaları gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:275
+#: openassessment/xblock/submission_mixin.py:273
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:376
+#: openassessment/xblock/submission_mixin.py:394
 msgid "There was an error uploading your file."
 msgstr "Dosyanızı yüklerken hata oluştu."
 
-#: openassessment/xblock/submission_mixin.py:385
+#: openassessment/xblock/submission_mixin.py:403
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "İçerik tipi, GIF, PNG veya JPG olmalıdır. "
 
-#: openassessment/xblock/submission_mixin.py:388
+#: openassessment/xblock/submission_mixin.py:406
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "İçerik tipi PDF, GIF, PNG veya JPG olmalıdır. "
 
-#: openassessment/xblock/submission_mixin.py:391
+#: openassessment/xblock/submission_mixin.py:409
 msgid "File type must be one of the following types: {}"
 msgstr "Dosya tipi şunlardan biri olmalıdır: {}"
 
-#: openassessment/xblock/submission_mixin.py:395
+#: openassessment/xblock/submission_mixin.py:413
 msgid "File type is not allowed."
 msgstr "Dosya türüne izin verilmiyor."
 
-#: openassessment/xblock/submission_mixin.py:402
+#: openassessment/xblock/submission_mixin.py:420
 msgid "Error retrieving upload URL."
 msgstr "URL yükleme alırken hata"
 
-#: openassessment/xblock/submission_mixin.py:634
+#: openassessment/xblock/submission_mixin.py:652
 msgid "This response has been saved but not submitted."
 msgstr "Bu cevap kaydedildi, ancak gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:635
+#: openassessment/xblock/submission_mixin.py:653
 msgid "This response has not been saved."
 msgstr "Bu cevap kaydedilmedi."
 

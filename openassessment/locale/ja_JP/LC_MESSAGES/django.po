@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-04 17:03-0400\n"
-"PO-Revision-Date: 2020-02-04 08:29+0000\n"
-"Last-Translator: Kyoto University <edxkyotoux@gmail.com>\n"
+"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"PO-Revision-Date: 2020-05-12 06:26+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -947,7 +947,7 @@ msgstr "以下にある他の受講者の解答を読んで評価してくださ
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:77
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:28
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
 msgid "Associated Files"
@@ -956,7 +956,7 @@ msgstr "関連ファイル"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:91
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:71
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:40
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
 msgid "We could not submit your assessment"
 msgstr "評価を提出できませんでした"
@@ -1357,11 +1357,23 @@ msgstr "なし"
 msgid "Staff Assessment"
 msgstr "スタッフ・アセスメント"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:7
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:14
+msgid "Give this team a grade using the problem's rubric."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
 msgstr "問題のルーブリックを使用して、この受講者の採点をしてください。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:26
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
 #, python-format
 msgid ""
 "\n"
@@ -1369,23 +1381,27 @@ msgid ""
 "                                    "
 msgstr "\n                                        解答: %(student_username)s\n                                    "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
 msgid "Learner Response"
 msgstr "受講者の解答"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
+msgid "The teams's response to the prompt above"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
 msgstr "上の問題に対する受講者の解答"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
 msgid "Submit assessment"
 msgstr "評価を提出する"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
 msgstr "評価を提出して採点を続ける"
 
@@ -1669,15 +1685,15 @@ msgstr "受講者用トレーニング例の読込エラー"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "この課題の受講者用トレーニングステップが読み込めませんでした。"
 
-#: openassessment/xblock/data_conversion.py:249
+#: openassessment/xblock/data_conversion.py:265
 msgid "You must provide options selected in the assessment."
 msgstr "評価で選択した選択肢を入力してください。"
 
-#: openassessment/xblock/data_conversion.py:252
+#: openassessment/xblock/data_conversion.py:268
 msgid "You must provide overall feedback in the assessment."
 msgstr "全体のフィードバックを入力してください。"
 
-#: openassessment/xblock/data_conversion.py:255
+#: openassessment/xblock/data_conversion.py:271
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "評価基準に関するフィードバックを入力してください。"
 
@@ -1822,51 +1838,51 @@ msgstr "セルフ・アセスメントを行う前に、解答を提出してく
 msgid "Your self assessment could not be submitted."
 msgstr "あなたのセルフ・アセスメントは提出できませんでした。"
 
-#: openassessment/xblock/staff_area_mixin.py:39
+#: openassessment/xblock/staff_area_mixin.py:40
 msgid "You do not have permission to schedule training"
 msgstr "トレーニングをスケジューリングする権限がありません"
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to reschedule tasks."
 msgstr "タスクの再スケジューリングをする権限がありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:66
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access the ORA staff area"
 msgstr "ORAスタッフ情報へのアクセス権がありません"
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA learner information."
 msgstr "ORA受講者情報へのアクセス権がありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA staff grading."
 msgstr "ORAスタッフ採点へのアクセスがはありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:177
+#: openassessment/xblock/staff_area_mixin.py:178
 msgid "Error getting learner information."
 msgstr "受講者情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:218
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Error loading the checked out learner response."
 msgstr "チェックアウト済受講者の解答の読込エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:239
 msgid "No other learner responses are available for grading at this time."
 msgstr "現在、採点対象の他の受講者の解答はありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:221
+#: openassessment/xblock/staff_area_mixin.py:241
 msgid "Error getting staff grade information."
 msgstr "スタッフ採点情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:242
+#: openassessment/xblock/staff_area_mixin.py:262
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "スタッフ採点の未採点およびチェックアウト済の数の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:468
+#: openassessment/xblock/staff_area_mixin.py:488
 msgid "Please enter valid reason to remove the submission."
 msgstr "提出物を削除する正当な理由を入力してください。"
 
-#: openassessment/xblock/staff_area_mixin.py:494
+#: openassessment/xblock/staff_area_mixin.py:514
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1958,55 +1974,55 @@ msgstr "解答を提出するには、このコンポーネントをプレビュ
 msgid "Multiple submissions are not allowed."
 msgstr "複数回の提出は許可されていません。"
 
-#: openassessment/xblock/submission_mixin.py:167
+#: openassessment/xblock/submission_mixin.py:165
 msgid "API returned unclassified exception."
 msgstr "APIが分類されていない例外を返しました。"
 
-#: openassessment/xblock/submission_mixin.py:218
+#: openassessment/xblock/submission_mixin.py:216
 msgid "This response could not be saved."
 msgstr "この解答を保存することができませんでした。"
 
-#: openassessment/xblock/submission_mixin.py:222
+#: openassessment/xblock/submission_mixin.py:220
 msgid "This response was not submitted."
 msgstr "この解答は提出されませんでした。"
 
-#: openassessment/xblock/submission_mixin.py:238
+#: openassessment/xblock/submission_mixin.py:236
 msgid "Files descriptions were not submitted."
 msgstr "ファイルの詳細説明が提出されませんでした。"
 
-#: openassessment/xblock/submission_mixin.py:275
+#: openassessment/xblock/submission_mixin.py:273
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:376
+#: openassessment/xblock/submission_mixin.py:394
 msgid "There was an error uploading your file."
 msgstr "ファイルのアップロード時にエラーが発生しました。"
 
-#: openassessment/xblock/submission_mixin.py:385
+#: openassessment/xblock/submission_mixin.py:403
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "コンテンツファイルはGIF、PNGまたはJPGでなければいけません。"
 
-#: openassessment/xblock/submission_mixin.py:388
+#: openassessment/xblock/submission_mixin.py:406
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "コンテンツファイルはPDF、GIF、PNGまたはJPGでなければいけません。"
 
-#: openassessment/xblock/submission_mixin.py:391
+#: openassessment/xblock/submission_mixin.py:409
 msgid "File type must be one of the following types: {}"
 msgstr "ファイルタイプは次のいずれかでなければいけません: {}"
 
-#: openassessment/xblock/submission_mixin.py:395
+#: openassessment/xblock/submission_mixin.py:413
 msgid "File type is not allowed."
 msgstr "ファイルタイプが正しくありません。"
 
-#: openassessment/xblock/submission_mixin.py:402
+#: openassessment/xblock/submission_mixin.py:420
 msgid "Error retrieving upload URL."
 msgstr "アップロードURLの取得エラー。"
 
-#: openassessment/xblock/submission_mixin.py:634
+#: openassessment/xblock/submission_mixin.py:652
 msgid "This response has been saved but not submitted."
 msgstr "この解答は一時保存されていますが、提出されていません。"
 
-#: openassessment/xblock/submission_mixin.py:635
+#: openassessment/xblock/submission_mixin.py:653
 msgid "This response has not been saved."
 msgstr "この解答は保存されていません。"
 
