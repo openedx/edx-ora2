@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-04 17:03-0400\n"
-"PO-Revision-Date: 2020-02-04 08:29+0000\n"
-"Last-Translator: Manuela Silva <manuelarodsilva@gmail.com>\n"
+"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"PO-Revision-Date: 2020-05-12 06:26+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -947,7 +947,7 @@ msgstr "Leia e avalie a resposta de um dos seus pares."
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:77
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:28
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
 msgid "Associated Files"
@@ -956,7 +956,7 @@ msgstr "Ficheiros associados"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:91
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:71
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:40
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
 msgid "We could not submit your assessment"
 msgstr "Nós não poderíamos submeter sua avaliação"
@@ -1357,11 +1357,23 @@ msgstr "N/D"
 msgid "Staff Assessment"
 msgstr "Avaliação pela Equipa"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:7
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:14
+msgid "Give this team a grade using the problem's rubric."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
 msgstr "Comunique ao estudante uma classificação utilizando a rúbrica do problema."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:26
+#, python-format
+msgid ""
+"\n"
+"                                        Response for: %(team_name)s with %(team_usernames)s\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
 #, python-format
 msgid ""
 "\n"
@@ -1369,23 +1381,27 @@ msgid ""
 "                                    "
 msgstr "\n                                        Resposta para: %(student_username)s\n                                    "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
 msgid "Learner Response"
 msgstr "Resposta do Estudante"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
+msgid "The teams's response to the prompt above"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the prompt above"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
 msgid "Submit assessment"
 msgstr "Enviar avaliação"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
 msgstr "Envie a sua avaliação e continue para a classificação"
 
@@ -1670,15 +1686,15 @@ msgstr "Erro ao carregar exemplos de Formação do Estudante"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Não foi possível carregar a Etapa de Formação do Estudante desta tarefa "
 
-#: openassessment/xblock/data_conversion.py:249
+#: openassessment/xblock/data_conversion.py:265
 msgid "You must provide options selected in the assessment."
 msgstr "Deve disponibilizar opções selecionadas na avaliação."
 
-#: openassessment/xblock/data_conversion.py:252
+#: openassessment/xblock/data_conversion.py:268
 msgid "You must provide overall feedback in the assessment."
 msgstr "Deve fazer comentários geraois na avaliação."
 
-#: openassessment/xblock/data_conversion.py:255
+#: openassessment/xblock/data_conversion.py:271
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "Deve fazer comentários para os critérios na avaliação."
 
@@ -1823,51 +1839,51 @@ msgstr "Deve submeter uma resposta antes de poder realizar uma auto-avaliação.
 msgid "Your self assessment could not be submitted."
 msgstr "A sua auto-avaliação não pode ser submetida."
 
-#: openassessment/xblock/staff_area_mixin.py:39
+#: openassessment/xblock/staff_area_mixin.py:40
 msgid "You do not have permission to schedule training"
 msgstr "Sem permissão para agendar exercício"
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to reschedule tasks."
 msgstr "Sem permissão para reagendar tarefas."
 
-#: openassessment/xblock/staff_area_mixin.py:66
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access the ORA staff area"
 msgstr "Sem permissão para aceder à área da equipa de ORA"
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA learner information."
 msgstr "Sem permissão para aceder às informações do estudante de ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Sem permissão para aceder à classificação da equipa de ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:177
+#: openassessment/xblock/staff_area_mixin.py:178
 msgid "Error getting learner information."
 msgstr "Erro ao obter informações do estudante."
 
-#: openassessment/xblock/staff_area_mixin.py:218
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Error loading the checked out learner response."
 msgstr "Erro ao carregar a resposta do estudante já validada."
 
-#: openassessment/xblock/staff_area_mixin.py:219
+#: openassessment/xblock/staff_area_mixin.py:239
 msgid "No other learner responses are available for grading at this time."
 msgstr "Neste momento, não existe outra resposta do estudante está disponível para classificação."
 
-#: openassessment/xblock/staff_area_mixin.py:221
+#: openassessment/xblock/staff_area_mixin.py:241
 msgid "Error getting staff grade information."
 msgstr "Erro ao obter informações sobre a classificação da equipa."
 
-#: openassessment/xblock/staff_area_mixin.py:242
+#: openassessment/xblock/staff_area_mixin.py:262
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Erro ao obter o grau da equipa sem classificação e contagens verificadas."
 
-#: openassessment/xblock/staff_area_mixin.py:468
+#: openassessment/xblock/staff_area_mixin.py:488
 msgid "Please enter valid reason to remove the submission."
 msgstr "Por favor, introduza um motivo válido para eliminar o envio."
 
-#: openassessment/xblock/staff_area_mixin.py:494
+#: openassessment/xblock/staff_area_mixin.py:514
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1959,55 +1975,55 @@ msgstr "Para enviar uma resposta, exiba este componente em modo Pré-visualizaç
 msgid "Multiple submissions are not allowed."
 msgstr "Várias submissões não são permitidas."
 
-#: openassessment/xblock/submission_mixin.py:167
+#: openassessment/xblock/submission_mixin.py:165
 msgid "API returned unclassified exception."
 msgstr "API retornou uma exceção sem classificação."
 
-#: openassessment/xblock/submission_mixin.py:218
+#: openassessment/xblock/submission_mixin.py:216
 msgid "This response could not be saved."
 msgstr "Esta resposta não pode ser guardada."
 
-#: openassessment/xblock/submission_mixin.py:222
+#: openassessment/xblock/submission_mixin.py:220
 msgid "This response was not submitted."
 msgstr "Esta resposta não pode ser submetida."
 
-#: openassessment/xblock/submission_mixin.py:238
+#: openassessment/xblock/submission_mixin.py:236
 msgid "Files descriptions were not submitted."
 msgstr "As descrições dos ficheiros não foram submetidas."
 
-#: openassessment/xblock/submission_mixin.py:275
+#: openassessment/xblock/submission_mixin.py:273
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:376
+#: openassessment/xblock/submission_mixin.py:394
 msgid "There was an error uploading your file."
 msgstr "Ocorreu um erro ao carregar o seu ficheiro."
 
-#: openassessment/xblock/submission_mixin.py:385
+#: openassessment/xblock/submission_mixin.py:403
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "O tipo de conteúdo deve ser GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:388
+#: openassessment/xblock/submission_mixin.py:406
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "O tipo de conteúdo deve ser PDF, GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:391
+#: openassessment/xblock/submission_mixin.py:409
 msgid "File type must be one of the following types: {}"
 msgstr "O tipo de ficheiro deve ser um dos seguintes: {}"
 
-#: openassessment/xblock/submission_mixin.py:395
+#: openassessment/xblock/submission_mixin.py:413
 msgid "File type is not allowed."
 msgstr "O tipo de ficheiro não é permitido."
 
-#: openassessment/xblock/submission_mixin.py:402
+#: openassessment/xblock/submission_mixin.py:420
 msgid "Error retrieving upload URL."
 msgstr "Erro ao recuperar o url de carregamento."
 
-#: openassessment/xblock/submission_mixin.py:634
+#: openassessment/xblock/submission_mixin.py:652
 msgid "This response has been saved but not submitted."
 msgstr "Esta resposta foi guardada mas não foi submetida."
 
-#: openassessment/xblock/submission_mixin.py:635
+#: openassessment/xblock/submission_mixin.py:653
 msgid "This response has not been saved."
 msgstr "Esta resposta não foi guardada."
 
