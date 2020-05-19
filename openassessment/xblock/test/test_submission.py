@@ -468,8 +468,10 @@ class SubmissionTest(XBlockHandlerTestCase):
             item_type='openassessment',
         )
 
+        submission_user_ids = set()
         # assert that the content of each teammate's submission is identical.
         for submission in all_submissions:
+            submission_user_ids.add(submission['student_id'])
             answer = submission['answer']
             self.assertEqual(['file-1', 'file-5'], answer['files_descriptions'])
             self.assertEqual(['file-1.pdf', 'file-5.pdf'], answer['files_names'])
@@ -478,6 +480,8 @@ class SubmissionTest(XBlockHandlerTestCase):
                 {'text': 'This is my answer to the first prompt!'},
                 {'text': 'This is my answer to the second prompt!'},
             ], answer['parts'])
+
+        self.assertEqual(submission_user_ids, {'rl', 'r5', 'r2'})
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_get_download_urls_from_submission(self, xblock):

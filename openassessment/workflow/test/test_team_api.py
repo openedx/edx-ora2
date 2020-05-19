@@ -24,12 +24,14 @@ class TestTeamAssessmentWorkflowApi(CacheResetTest):
         Create a test team submission through the submissions api
         """
         self.users = [UserFactory.create() for _ in range(5)]
+        anonymous_user_ids = ['anonymous_user_id_for_' + user.username for user in self.users]
+
         self.team_submission_dict = sub_team_api.create_submission_for_team(
             self.course_id,
             self.item_id,
             'team-rocket',
             self.users[0].id,
-            [user.id for user in self.users],
+            anonymous_user_ids,
             'this-is-my-answer',
         )
         self.team_submission_uuid = self.team_submission_dict['team_submission_uuid']
