@@ -7,7 +7,7 @@ owner: mattcarter
 oeps:
   oep-2: true
   oep-7: true
-  oep-18: false
+  oep-18: true
   oep-30:
     state: False
     reason: TODO - Implement for this application if appropriate
