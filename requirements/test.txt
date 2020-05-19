@@ -30,7 +30,7 @@ docker==4.2.0             # via moto
 docutils==0.15.2          # via botocore
 ecdsa==0.15               # via python-jose, sshpubkeys
 edx-i18n-tools==0.5.1     # via -r requirements/base.txt
-edx-submissions==3.1.5    # via -r requirements/base.txt
+edx-submissions==3.1.7    # via -r requirements/base.txt
 factory-boy==2.12.0       # via -r requirements/test.in
 faker==4.0.3              # via factory-boy
 filelock==3.0.12          # via tox, virtualenv
