@@ -36,8 +36,11 @@ class TestTeamApi(CacheResetTest):
         cls.submitting_user_id = UserFactory.create().id
         team_member_1_id = UserFactory.create().id
         team_member_2_id = UserFactory.create().id
-
-        cls.team_member_ids = [cls.submitting_user_id, team_member_1_id, team_member_2_id]
+        user_ids = [cls.submitting_user_id, team_member_1_id, team_member_2_id]
+        cls.user_id_to_anonymous_id = {
+            user_id: 'anon_id_for_' + str(user_id) for user_id in user_ids
+        }
+        cls.team_member_ids = list(cls.user_id_to_anonymous_id.values())
 
         cls.default_assessment = (
             cls.staff_user_id,  # scorer_id

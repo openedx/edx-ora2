@@ -399,7 +399,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
-    def _create_team_submission(self, course_id, item_id, team_id, team_member_ids):
+    def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids):
         """
         Create a team submission and initialize a team workflow
         """
@@ -407,8 +407,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             course_id,
             item_id,
             team_id,
-            team_member_ids[0],
-            team_member_ids,
+            submitting_user_id,
+            team_member_student_ids,
             ANSWER,
         )
         team_workflow_api.create_workflow(team_submission['team_submission_uuid'])
@@ -541,7 +541,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         student_id4 = self._other_student(4)
         student_id5 = self._other_student(5)
         student_ids = [STUDENT_ID, student_id2, student_id3, student_id4, student_id5]
-        student_model_ids = [UserFactory.create(username=student_id).id for student_id in student_ids]
+        student_model_1 = UserFactory.create()
+        student_model_2 = UserFactory.create()
 
         self._create_submission(dict(
             student_id=STUDENT_ID,
@@ -579,13 +580,15 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             COURSE_ID,
             team_item_id,
             'team_1',
-            student_model_ids[:3]
+            student_model_1.id,
+            student_ids[:3],
         )
         self._create_team_submission(
             COURSE_ID,
             team_item_id,
             'team_2',
-            student_model_ids[3:]
+            student_model_2.id,
+            student_ids[3:]
         )
 
         data = OraAggregateData.collect_ora2_responses(COURSE_ID)

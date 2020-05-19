@@ -296,12 +296,13 @@ class SubmissionMixin:
         submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
         user = self.get_real_user(submitter_anonymous_user_id)
         student_item_dict = self.get_student_item_dict(anonymous_user_id=submitter_anonymous_user_id)
+        anonymous_student_ids = self.get_anonymous_user_ids_for_team()
         submission = team_api.create_submission_for_team(
             self.course_id,
             student_item_dict['item_id'],
             team_info['team_id'],
             user.id,
-            team_info['team_usernames'],
+            anonymous_student_ids,
             student_sub_dict,
         )
 
