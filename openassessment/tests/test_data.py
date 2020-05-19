@@ -538,9 +538,12 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
         student_id2 = self._other_student(2)
         student_id3 = self._other_student(3)
+        team_1_ids = [STUDENT_ID, student_id2, student_id3]
+
         student_id4 = self._other_student(4)
         student_id5 = self._other_student(5)
-        student_ids = [STUDENT_ID, student_id2, student_id3, student_id4, student_id5]
+        team_2_ids = [student_id4, student_id5]
+
         student_model_1 = UserFactory.create()
         student_model_2 = UserFactory.create()
 
@@ -581,14 +584,14 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             team_item_id,
             'team_1',
             student_model_1.id,
-            student_ids[:3],
+            team_1_ids,
         )
         self._create_team_submission(
             COURSE_ID,
             team_item_id,
             'team_2',
             student_model_2.id,
-            student_ids[3:]
+            team_2_ids
         )
 
         data = OraAggregateData.collect_ora2_responses(COURSE_ID)
