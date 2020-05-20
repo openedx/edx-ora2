@@ -45,6 +45,8 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 	pip-compile --upgrade -o requirements/test.txt requirements/test.in
 	pip-compile --upgrade -o requirements/quality.txt requirements/quality.in
 	pip-compile --upgrade -o requirements/test-acceptance.txt requirements/test-acceptance.in
+	pip-compile --upgrade -o requirements/tox.txt requirements/tox.in
+	pip-compile --upgrade -o requirements/travis.txt requirements/travis.in
 	# Delete django pin from test requirements to avoid tox version collision
 	sed -i.tmp '/^[d|D]jango==/d' requirements/test.txt
 	sed -i.tmp '/^djangorestframework==/d' requirements/test.txt

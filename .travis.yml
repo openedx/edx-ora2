@@ -25,7 +25,7 @@ cache:
     - $HOME/.cache/pip
 
 install:
-  - "pip install tox"
+  - pip install -r requirements/travis.txt
 
 script:
   - tox -e $TOX_ENV
