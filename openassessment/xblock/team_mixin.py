@@ -37,6 +37,22 @@ class TeamMixin:
             logger.error(u'{}: Teams Configuration service unavailable'.format(self.location))
             raise
 
+    def get_team_for_anonymous_user(self, anonymous_user_id):
+        """
+        For course_id associated with this ORA block, returns the provided user's
+        CourseTeam, or None if the user is not a member of a team in this course.
+        Raises:
+            - NoSuchServiceError if the teams service is unavailable
+            - ObjectDoesNotExist if the user associated with `anonymous_user_id`
+                                    can not be found
+        """
+        user = self.get_real_user(anonymous_user_id)
+        if not user:
+            logger.error(u'{}: User lookup for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
+            raise ObjectDoesNotExist()
+        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+        return team
+
     @cached_property
     def team(self):
         """
@@ -47,13 +63,9 @@ class TeamMixin:
             - ObjectDoesNotExist if the user associated with `anonymous_user_id`
                                     can not be found
         """
-        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-        user = self.get_real_user(anonymous_user_id)
-        if not user:
-            logger.error(u'{}: User lookup for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
-            raise ObjectDoesNotExist()
-        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
-        return team
+        return self.get_team_for_anonymous_user(
+            self.get_anonymous_user_id_from_xmodule_runtime()
+        )
 
     @cached_property
     def teamset_config(self):
