@@ -307,6 +307,7 @@ class SubmissionMixin:
         )
 
         self.create_team_workflow(submission["team_submission_uuid"])
+        self.submission_uuid = submission["team_submission_uuid"]
         # Emit analytics event...
         self.runtime.publish(
             self,
