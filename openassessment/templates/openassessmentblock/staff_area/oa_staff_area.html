@@ -3,7 +3,13 @@
 <div class="openassessment__staff-area wrapper--staff-area">
 
     <div class="wrapper--staff-toolbar">
-        <button class="ui-staff__button button-staff-tools" aria-expanded="false" data-panel="openassessment__staff-tools">{% trans "Manage Individual Learners" %}</button>
+        <button class="ui-staff__button button-staff-tools" aria-expanded="false" data-panel="openassessment__staff-tools">
+            {% if not is_team_assignment %}
+                {% trans "Manage Individual Learners" %}
+            {% else %}
+                {% trans "Manage Team Responses"%}
+            {% endif %}
+        </button>
         <button class="ui-staff__button button-staff-info" aria-expanded="false" data-panel="openassessment__staff-info">{% trans "View Assignment Statistics" %}</button>
         {% if staff_assessment_required %}
             <button class="ui-staff__button button-staff-grading" aria-expanded="false" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
@@ -14,7 +20,13 @@
         <div class="staff-info ui-staff">
             <button class="ui-staff_close_button ui-staff__title"><span class="sr">{% trans "Close" %}</span> <span class="icon fa fa-close" aria-hidden="true"></span></button>
             <h2 class="staff-info__title ui-staff__title">
-                <span class="staff-info__title__copy">{% trans "Manage Individual Learners" %}</span>
+                <span class="staff-info__title__copy">
+                    {% if not is_team_assignment %}
+                        {% trans "Manage Individual Learners" %}
+                    {% else %}
+                        {% trans "Manage Teams"%}
+                    {% endif %}
+                </span>
             </h2>
 
             <div class="staff-info__content ui-staff__content">
@@ -23,7 +35,12 @@
                     <div class="wrapper--input" class="staff-info__student__form">
                         <form class="openassessment_student_info_form">
                             <div class="form--error" tabindex="-1"></div>
-                            <label class="label">{% trans "Enter an individual learner's username or email" %}
+                            <label class="label">
+                                {% if not is_team_assignment %}
+                                    {% trans "Enter an individual learner's username or email" %}
+                                {% else %}
+                                    {% trans "Enter a team member's username or edX email" %}
+                                {% endif %}
                                 <input type="text" class="openassessment__student_username value" maxlength="255">
                             </label>
                             <button class="action--submit action--submit-username"><span class="copy">{% trans "Submit" %}</span></button>

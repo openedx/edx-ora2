@@ -7,9 +7,15 @@
 {% if submission %}
     <h2 class="title">
         <span class="label staff-info__student__report__summary" tabindex="-1">
-            {% blocktrans with learner=student_username %}
-                Viewing learner: {{ learner }}
-            {% endblocktrans %}
+            {% if not is_team_assignment %}
+                {% blocktrans with learner=student_username %}
+                    Viewing learner: {{ learner }}
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans with team=student_username %}
+                    Viewing team: {{ team }}
+                {% endblocktrans %}
+            {% endif %}
         </span>
     </h2>
 
@@ -18,7 +24,11 @@
             <button class="ui-staff ui-slidable" aria-controls="learner_response_content_{{ submission.uuid }}" aria-expanded="false" id="learner_response_{{ submission.uuid }}">
                 <h2 class="staff-info__title ui-staff__subtitle">
                     <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                    <span>{% trans "Learner's Response" %}</span>
+                        {% if not is_team_assignment %}
+                            <span>{% trans "Learner's Response" %}</span>
+                        {% else %}
+                            <span>{% trans "Team's Response" %}</span>
+                        {% endif %}
                 </h2>
             </button>
         </div>
@@ -78,7 +88,11 @@
             <button class="ui-staff ui-slidable" aria-controls="final_grade_content_{{ submission.uuid }}" aria-expanded="false" id="final_grade_{{ submission.uuid }}">
                 <h2 class="staff-info__title ui-staff__subtitle">
                     <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                    <span>{% trans "Learner's Final Grade" %}</span>
+                    {% if not is_team_assignment %}
+                        <span>{% trans "Learner's Final Grade" %}</span>
+                    {% else %}
+                        <span>{% trans "Team's Final Grade" %}</span>
+                    {% endif %}
                 </h2>
             </button>
         </div>
@@ -165,7 +179,11 @@
                     <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
                         <h2 class="staff-info__title ui-staff__subtitle">
                             <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                            <span>{% trans "Submit Assessment Grade Override" %}</span>
+                            {% if not is_team_assignment %}
+                                <span>{% trans "Submit Assessment Grade Override" %}</span>
+                            {% else %}
+                                <span>{% trans "Submit Team Grade Override" %}</span>
+                            {% endif %}
                         </h2>
                     </button>
                 </div>
@@ -182,7 +200,11 @@
                 <button class="ui-staff ui-slidable" aria-controls="remove_submission_content_{{ submission.uuid }}" aria-expanded="false" id="remove_submission_{{ submission.uuid }}">
                     <h2 class="staff-info__title ui-staff__subtitle">
                         <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                        <span>{% trans "Remove Submission From Peer Grading" %}</span>
+                        {% if not is_team_assignment %}
+                            <span>{% trans "Remove Submission From Peer Grading" %}</span>
+                        {% else %}
+                            <span>{% trans "Remove Team Submission from Grading" %}</span>
+                        {% endif %}
                     </h2>
                 </button>
             </div>

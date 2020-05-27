@@ -140,6 +140,9 @@ class StaffAreaMixin:
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
 
+        # Include whether or not this is a team assignment
+        context['is_team_assignment'] = self.teams_enabled
+
         context['xblock_id'] = self.get_xblock_id()
         return path, context
 
@@ -172,6 +175,7 @@ class StaffAreaMixin:
         try:
             student_username = data.params.get('student_username', '')
             path, context = self.get_student_info_path_and_context(student_username)
+            context['is_team_assignment'] = self.teams_enabled
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
