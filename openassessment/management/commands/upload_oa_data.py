@@ -13,12 +13,10 @@ import tempfile
 
 import six
 
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-import boto
-from boto.s3.key import Key
 from openassessment.data import CsvWriter
+from openassessment.fileupload.backends.s3 import _connect_to_s3
 
 
 class Command(BaseCommand):
@@ -140,21 +138,23 @@ class Command(BaseCommand):
             str: URL to access the uploaded archive.
 
         """
-        # Try to get the AWS credentials from settings if they are available
-        # If not, these will default to `None`, and boto will try to use
-        # environment vars or configuration files instead.
-        aws_access_key_id = getattr(settings, 'AWS_ACCESS_KEY_ID', None)
-        aws_secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
-        conn = boto.connect_s3(
-            aws_access_key_id=aws_access_key_id,
-            aws_secret_access_key=aws_secret_access_key
-        )
+        conn = _connect_to_s3()
 
-        bucket = conn.get_bucket(s3_bucket)
         key_name = os.path.join(course_id, os.path.split(file_path)[1])
-        key = Key(bucket=bucket, name=key_name)
-        key.set_contents_from_filename(file_path)
-        url = key.generate_url(self.URL_EXPIRATION_HOURS * 3600)
+        with open(file_path, "rb") as f:
+            conn.put_object(
+                Bucket=s3_bucket,
+                Key=key_name,
+                Body=f.read()
+            )
+        url = conn.generate_presigned_url(
+            "get_object",
+            Params={
+                "Bucket": s3_bucket,
+                "Key": key_name,
+            },
+            ExpiresIn=self.URL_EXPIRATION_HOURS * 3600
+        )
 
         # Store the key and url in the history
         self._history.append({'key': key_name, 'url': url})

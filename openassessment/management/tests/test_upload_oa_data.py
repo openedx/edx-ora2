@@ -6,10 +6,11 @@ from __future__ import absolute_import
 
 import tarfile
 from io import BytesIO
+from urllib.parse import urlparse
 
 from six.moves import range
 
-import boto
+import boto3
 import moto
 from openassessment.management.commands import upload_oa_data
 from openassessment.test_utils import CacheResetTest
@@ -31,11 +32,11 @@ class UploadDataTest(CacheResetTest):
         "submission.csv", "score.csv",
     ]
 
-    @moto.mock_s3_deprecated
+    @moto.mock_s3
     def test_upload(self):
         # Create an S3 bucket using the fake S3 implementation
-        conn = boto.connect_s3()
-        conn.create_bucket(self.BUCKET_NAME)
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket=self.BUCKET_NAME)
 
         # Create some submissions to ensure that we cover
         # the progress indicator code.
@@ -58,9 +59,12 @@ class UploadDataTest(CacheResetTest):
 
         # Retrieve the uploaded file from the fake S3 implementation
         self.assertEqual(len(cmd.history), 1)
-        bucket = conn.get_all_buckets()[0]
-        key = bucket.get_key(cmd.history[0]['key'])
-        contents = BytesIO(key.get_contents_as_string())
+        bucket = conn.list_buckets()["Buckets"][0]["Name"]
+        key = conn.list_objects(Bucket=bucket)["Contents"][0]["Key"]
+        contents = BytesIO(conn.get_object(
+            Bucket=self.BUCKET_NAME,
+            Key=key
+        )["Body"].read())
 
         # Expect that the contents contain all the expected CSV files
         with tarfile.open(mode="r:gz", fileobj=contents) as tar:
@@ -74,4 +78,10 @@ class UploadDataTest(CacheResetTest):
 
         # Expect that we generated a URL for the bucket
         url = cmd.history[0]['url']
-        self.assertIn("https://{}".format(self.BUCKET_NAME), url)
+        parsed_url = urlparse(url)
+        self.assertEqual("https", parsed_url.scheme)
+        self.assertIn(
+            parsed_url.netloc,
+            ["s3.eu-west-1.amazonaws.com", "s3.amazonaws.com"]
+        )
+        self.assertIn("/{}".format(self.BUCKET_NAME), parsed_url.path)

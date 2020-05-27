@@ -13,9 +13,8 @@ import pytz
 
 from django.test.utils import override_settings
 
-import boto
-from boto.s3.key import Key
-from moto import mock_s3_deprecated
+import boto3
+from moto import mock_s3
 from django.contrib.auth import get_user_model
 from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
@@ -146,7 +145,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         expected_prompt = "&lt;code&gt;&lt;strong&gt;Question 123&lt;/strong&gt;&lt;/code&gt;"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -167,7 +166,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             resp['url']
         )
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -176,11 +175,14 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_download_url(self, xblock):
         """ Test generate correct download URL with existing file. should create a file and get the download URL """
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
-        key.set_contents_from_string("How d'ya do?")
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
+        conn.put_object(
+            Bucket="mybucket",
+            Key=key,
+            Body=b"How d'ya do?"
+        )
         download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
 
         xblock.xmodule_runtime = Mock(
@@ -199,16 +201,16 @@ class SubmissionTest(XBlockHandlerTestCase):
             key = key + "/" + str(num)
         return key
 
-    def _create_uploaded_file(self, bucket, file_num, usage_id):
-        key = Key(bucket)
-        key.key = self._get_student_item_key(file_num, usage_id)
-        key.set_contents_from_string("How d'ya do?")
-
     def _create_uploaded_files(self, num_files, usage_key):
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        for i in range(num_files):
-            self._create_uploaded_file(bucket, i, usage_key)
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        for file_num in range(num_files):
+            key = self._get_student_item_key(file_num, usage_key)
+            conn.put_object(
+                Bucket="mybucket",
+                Key=key,
+                Body=b"How d'ya do?",
+            )
 
     def _create_entry(self, description, name, size):
         return {
@@ -217,7 +219,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             'fileSize': size,
         }
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -286,7 +288,7 @@ class SubmissionTest(XBlockHandlerTestCase):
                     [meta['fileSize'] for meta in expected_file_metadata]
                 )
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -300,7 +302,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertTrue(resp['success'])
         self.assertEqual('', resp['url'])
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',

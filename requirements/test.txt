@@ -10,9 +10,9 @@ attrs==19.3.0             # via jsonschema, pytest
 aws-sam-translator==1.23.0  # via cfn-lint
 aws-xray-sdk==2.5.0       # via moto
 bleach==3.1.5             # via -r requirements/base.txt
-boto3==1.13.13            # via aws-sam-translator, moto
-boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.txt, django-pyfs, moto
-botocore==1.16.13         # via aws-xray-sdk, boto3, moto, s3transfer
+boto3==1.13.17            # via -r requirements/base.txt, aws-sam-translator, moto
+boto==2.39.0              # via django-pyfs, moto
+botocore==1.16.17         # via -r requirements/base.txt, aws-xray-sdk, boto3, moto, s3transfer
 certifi==2020.4.5.1       # via -r requirements/base.txt, requests
 cffi==1.14.0              # via cryptography
 cfn-lint==0.32.1          # via moto
@@ -27,7 +27,7 @@ django-model-utils==4.0.0  # via -r requirements/base.txt, edx-submissions
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs  # via -r requirements/test.in
 django-simple-history==2.10.0  # via -r requirements/base.txt
 docker==4.2.0             # via moto
-docutils==0.15.2          # via botocore
+docutils==0.15.2          # via -r requirements/base.txt, botocore
 ecdsa==0.15               # via python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/base.txt
 edx-submissions==3.1.7    # via -r requirements/base.txt
@@ -42,7 +42,7 @@ idna==2.8                 # via -c requirements/constraints.txt, -r requirements
 importlib-metadata==1.6.0  # via -r requirements/base.txt, importlib-resources, jsonpickle, jsonschema, path, pluggy, tox, virtualenv
 importlib-resources==1.5.0  # via cfn-lint, virtualenv
 jinja2==2.11.2            # via moto
-jmespath==0.10.0          # via boto3, botocore
+jmespath==0.10.0          # via -r requirements/base.txt, boto3, botocore
 jsondiff==1.1.2           # via moto
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.txt, edx-submissions
 jsonpatch==1.25           # via cfn-lint
@@ -81,7 +81,7 @@ pyyaml==5.3.1             # via -r requirements/base.txt, cfn-lint, edx-i18n-too
 requests==2.23.0          # via -r requirements/base.txt, docker, moto, python-swiftclient, responses
 responses==0.10.14        # via moto
 rsa==4.0                  # via python-jose
-s3transfer==0.3.3         # via boto3
+s3transfer==0.3.3         # via -r requirements/base.txt, boto3
 six==1.14.0               # via -r requirements/base.txt, aws-sam-translator, bleach, cfn-lint, cryptography, django-pyfs, django-simple-history, docker, ecdsa, edx-i18n-tools, freezegun, fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pathlib2, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
 sqlparse==0.3.1           # via -r requirements/base.txt, django
 sshpubkeys==3.1.0         # via moto
