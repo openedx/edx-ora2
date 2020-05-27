@@ -13,7 +13,7 @@ django-simple-history
 # Third Party Requirements
 bleach
 html5lib
-boto
+boto3
 python-swiftclient
 defusedxml
 django-model-utils
