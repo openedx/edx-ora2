@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"POT-Creation-Date: 2020-05-27 20:54-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1663,6 +1663,10 @@ msgid "Manage Individual Learners"
 msgstr "Mänägé Ìndïvïdüäl Léärnérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Manage Team Responses"
+msgstr "Mänägé Téäm Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "View Assignment Statistics"
 msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
@@ -1674,10 +1678,20 @@ msgid "Close"
 msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Manage Teams"
+msgstr "Mänägé Téäms Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "Enter an individual learner's username or email"
 msgstr ""
 "Éntér än ïndïvïdüäl léärnér's üsérnämé ör émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
 " ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Enter a team member's username or edX email"
+msgstr ""
+"Éntér ä téäm mémßér's üsérnämé ör édX émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "Submit"
@@ -1817,16 +1831,31 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                Viewing learner: %(learner)s\n"
-"            "
+"                    Viewing learner: %(learner)s\n"
+"                "
 msgstr ""
 "\n"
-"                Vïéwïng léärnér: %(learner)s\n"
-"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"                    Vïéwïng léärnér: %(learner)s\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                    Viewing team: %(team)s\n"
+"                "
+msgstr ""
+"\n"
+"                    Vïéwïng téäm: %(team)s\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Learner's Response"
 msgstr "Léärnér's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Team's Response"
+msgstr "Téäm's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 #, python-format
@@ -1862,6 +1891,12 @@ msgstr ""
 "                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "The team's response to the prompt above"
+msgstr ""
+"Thé téäm's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Peer Assessments for This Learner"
 msgstr ""
 "Péér Àsséssménts för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
@@ -1884,6 +1919,10 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Learner's Final Grade"
 msgstr "Léärnér's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Team's Final Grade"
+msgstr "Téäm's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 #, python-format
@@ -1960,9 +1999,18 @@ msgstr ""
 "Süßmït Àsséssmént Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Submit Team Grade Override"
+msgstr "Süßmït Téäm Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Remove Submission From Peer Grading"
 msgstr ""
 "Rémövé Süßmïssïön Fröm Péér Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Remove Team Submission from Grading"
+msgstr ""
+"Rémövé Téäm Süßmïssïön fröm Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Caution: This Action Cannot Be Undone"
