@@ -175,7 +175,19 @@ class StaffAreaMixin:
         try:
             student_username = data.params.get('student_username', '')
             path, context = self.get_student_info_path_and_context(student_username)
+
             context['is_team_assignment'] = self.teams_enabled
+            context['team_name'] = None
+
+            # Note - this can probably be simplified when we get context direct from team assignments
+            if self.teams_enabled and context['submission']:
+                anonymous_student_id = self.get_anonymous_user_id(student_username, self.course_id)
+                user = self.get_real_user(anonymous_student_id)
+
+                if user:
+                    team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+                    context['team_name'] = getattr(team, 'name', None)
+
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
