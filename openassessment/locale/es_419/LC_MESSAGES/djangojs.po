@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-11 10:47-0400\n"
-"PO-Revision-Date: 2020-05-13 23:36+0000\n"
+"PO-Revision-Date: 2020-05-20 17:14+0000\n"
 "Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -321,7 +321,7 @@ msgstr "Vista miniatura de"
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr ""
+msgstr "¿Estás seguro de que desea eliminar el siguiente archivo? No puede ser restaurado.\nArchivo:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_self.js:123
@@ -346,7 +346,7 @@ msgstr "Debe ingresar un nombre."
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr ""
+msgstr "Esta calificación se aplicará a todos los miembros del equipo. ¿Desea continuar?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:287
