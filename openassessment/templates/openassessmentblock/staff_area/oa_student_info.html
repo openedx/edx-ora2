@@ -83,7 +83,11 @@
     {% endif %}
 
     {% if staff_assessment %}
-        {% trans "Staff Assessment for This Learner" as translated_title %}
+        {% if not is_team_assignment %}
+            {% trans "Staff Assessment for This Learner" as translated_title %}
+        {% else %}
+            {% trans "Staff Assessment for this Team" as translated_title %}
+        {% endif %}
         {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="staff" assessments=staff_assessment %}
     {% endif %}
 
