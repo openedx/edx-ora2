@@ -76,8 +76,8 @@ class TeamWorkflowMixin:
         """
         Gets the uuid for the team submission for this user's team.
 
-        Returns: team submission uuid if one exists, or 
-                 None none exists or there was an error looking it up
+        Returns: team submission uuid if one exists, or
+                 None if none exists or there was an error looking it up
         """
         if not self.has_team():
             return None
@@ -91,7 +91,6 @@ class TeamWorkflowMixin:
             )
         except (TeamSubmissionNotFoundError, TeamSubmissionInternalError):
             return None
-        
         return team_submission['team_submission_uuid']
 
     def get_team_workflow_status_counts(self):
