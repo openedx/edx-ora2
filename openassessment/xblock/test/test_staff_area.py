@@ -846,6 +846,36 @@ class TestCourseStaff(XBlockHandlerTestCase):
         __, context = xblock.get_student_info_path_and_context('Bob')
         self.assertFalse(any(context['staff_file_urls']))
 
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_area_has_team_info(self, xblock):
+        # Given that we are course staff, managing a team assignment
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.teams_enabled = True
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+
+        # When I get the staff context
+        __, context = xblock.get_staff_path_and_context()
+
+        # Then the context has team assignment info
+        self.assertTrue(context['is_team_assignment'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_staff_area_has_team_info_individual(self, xblock):
+        # Given that we are course staff, managing an individual assignment
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.teams_enabled = False
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+
+        # When I get the staff context
+        __, context = xblock.get_staff_path_and_context()
+
+        # Then the context has team assignment info
+        self.assertFalse(context['is_team_assignment'])
+
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
