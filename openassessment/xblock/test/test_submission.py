@@ -409,6 +409,8 @@ class SubmissionTest(XBlockHandlerTestCase):
         # given a learner is on a team
         self.setup_mock_team(xblock)
 
+        xblock.get_workflow_info = Mock(return_value=None)
+
         # ... but there's an issue when submitting
         mock_submit.side_effect = SubmissionRequestError(msg="I can't shake him!")
 
@@ -450,6 +452,8 @@ class SubmissionTest(XBlockHandlerTestCase):
                 descriptionless=False,
             ),
         ])
+
+        xblock.get_workflow_info = Mock(return_value=None)
 
         # when the learner submits an open assessment response
         response = self.request(

@@ -6,6 +6,7 @@ from __future__ import absolute_import
 
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
+from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
 from xblock.core import XBlock
 
 
@@ -125,6 +126,9 @@ class WorkflowMixin:
         Raises:
             AssessmentWorkflowError
         """
+        if self.is_team_assignment():
+            return self.get_team_workflow_info()
+
         if submission_uuid is None:
             submission_uuid = self.get_submission_uuid()
 
@@ -148,8 +152,15 @@ class WorkflowMixin:
         """
         if self.submission_uuid is not None:
             return self.submission_uuid
-
-        return None
+        elif self.is_team_assignment():
+            try:
+                # Query for submissions by the student item
+                student_item = self.get_student_item_dict()
+                submission_list = get_submissions(student_item)
+                if submission_list and submission_list[0]["uuid"] is not None:
+                    return submission_list[0]["uuid"]
+            except (SubmissionInternalError, SubmissionNotFoundError):
+                return None
 
     def get_workflow_status_counts(self):
         """

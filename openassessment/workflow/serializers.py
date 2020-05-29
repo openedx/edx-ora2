@@ -38,6 +38,7 @@ class TeamAssessmentWorkflowSerializer(serializers.ModelSerializer):
         model = TeamAssessmentWorkflow
         fields = (
             'team_submission_uuid',
+            'submission_uuid',
             'status',
             'created',
             'modified',
