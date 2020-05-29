@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 20:54-0400\n"
+"POT-Creation-Date: 2020-05-29 16:24-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1915,6 +1915,10 @@ msgstr "Léärnér's Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕ�
 msgid "Staff Assessment for This Learner"
 msgstr ""
 "Stäff Àsséssmént för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Staff Assessment for this Team"
+msgstr "Stäff Àsséssmént för thïs Téäm Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Learner's Final Grade"
