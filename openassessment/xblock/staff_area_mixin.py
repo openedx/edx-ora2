@@ -8,12 +8,12 @@ import copy
 from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 import logging
+from xblock.core import XBlock
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from xblock.core import XBlock
 
 from .user_data import get_user_preferences
 

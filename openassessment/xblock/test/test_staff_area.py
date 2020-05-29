@@ -7,12 +7,12 @@ from __future__ import absolute_import
 from collections import namedtuple
 import json
 
-import ddt
-from mock import MagicMock, Mock, PropertyMock, call, patch
 from six.moves import range, zip
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
+import ddt
+from mock import MagicMock, Mock, PropertyMock, call, patch
 from testfixtures import log_capture
 
 
