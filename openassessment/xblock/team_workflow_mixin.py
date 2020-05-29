@@ -4,8 +4,14 @@ Handle OpenAssessment XBlock requests around team functionality to the Workflow 
 
 from __future__ import absolute_import
 
+import logging
+
 from xblock.core import XBlock
+from submissions import team_api as team_sub_api
+from submissions.errors import TeamSubmissionNotFoundError, TeamSubmissionInternalError
 from openassessment.workflow import team_api as team_workflow_api
+
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class TeamWorkflowMixin:
@@ -68,34 +74,25 @@ class TeamWorkflowMixin:
 
     def get_team_submission_uuid(self):
         """
-            Since we have a single submission for all students in a tean, we must query the team_submission_api (TODO)
-            to return a list of sumissions for the team(s) a given student is on.
+        Gets the uuid for the team submission for this user's team.
 
-            No submission ID will be found if a team has not submitted a response
-
-            Returns:
-                (string) Submission ID if found
-                (None) None if not found
+        Returns: team submission uuid if one exists, or 
+                 None none exists or there was an error looking it up
         """
-        if self.submission_uuid is not None:
-            return self.submission_uuid
+        if not self.has_team():
+            return None
 
-        elif self.teams_enabled:
-            # TODO Once https://openedx.atlassian.net/browse/EDUCATOR-4983 is complete, modify this to use
-            # the team submissions API
-            from submissions.api import get_submissions, SubmissionInternalError
-
-            try:
-                # Query for submissions by the student item
-                student_item = self.get_student_item_dict()
-                submission_list = get_submissions(student_item)
-
-                if submission_list and submission_list[0]["uuid"] is not None:
-                    return submission_list[0]["uuid"]
-            except SubmissionInternalError:
-                return None
-
-        return None
+        student_item_dict = self.get_student_item_dict()
+        try:
+            team_submission = team_sub_api.get_team_submission_for_team(
+                student_item_dict['course_id'],
+                student_item_dict['item_id'],
+                self.team.team_id
+            )
+        except (TeamSubmissionNotFoundError, TeamSubmissionInternalError):
+            return None
+        
+        return team_submission['team_submission_uuid']
 
     def get_team_workflow_status_counts(self):
         """
