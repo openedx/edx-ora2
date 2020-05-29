@@ -175,19 +175,6 @@ class StaffAreaMixin:
         try:
             student_username = data.params.get('student_username', '')
             path, context = self.get_student_info_path_and_context(student_username)
-
-            context['is_team_assignment'] = self.teams_enabled
-            context['team_name'] = None
-
-            # Note - this can probably be simplified when we get context direct from team assignments
-            if self.teams_enabled and context['submission']:
-                anonymous_student_id = self.get_anonymous_user_id(student_username, self.course_id)
-                user = self.get_real_user(anonymous_student_id)
-
-                if user:
-                    team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
-                    context['team_name'] = getattr(team, 'name', None)
-
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
@@ -299,6 +286,7 @@ class StaffAreaMixin:
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
+            "is_team_assignment": self.teams_enabled,
         }
 
         if submission:
@@ -366,6 +354,14 @@ class StaffAreaMixin:
         # Only add the rest of the details to the context if a submission exists.
         if submission_uuid:
             self.add_submission_context(submission_uuid, context)
+
+        # Add team info to context
+        # Note - this can probably be simplified when we get context direct from team assignments
+        context['team_name'] = None
+        if anonymous_user_id and self.teams_enabled:
+            user = self.get_real_user(anonymous_user_id)
+            team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+            context['team_name'] = getattr(team, 'name', None)
 
         path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context

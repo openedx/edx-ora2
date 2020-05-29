@@ -861,6 +861,25 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Then the context has team assignment info
         self.assertTrue(context['is_team_assignment'])
 
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_area_student_info_has_team_info(self, xblock):
+        # Given that we are course staff and teams enabled
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.teams_enabled = True
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+
+        # Create a submission for the team, and corresponding workflow.
+        team_item = TEAMMATE_ITEM.copy()
+        team_item["item_id"] = xblock.scope_ids.usage_id
+        self._create_submission(team_item, {'text': 'foo'}, [])
+
+        __, context = xblock.get_student_info_path_and_context("Bob")
+        self.assertTrue(context['is_team_assignment'])
+        self.assertEqual(context['team_name'], MOCK_TEAM_NAME)
+
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_has_team_info_individual(self, xblock):
         # Given that we are course staff, managing an individual assignment
@@ -875,6 +894,23 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Then the context has team assignment info
         self.assertFalse(context['is_team_assignment'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_staff_area_student_info_no_team_info(self, xblock):
+        # Given that we are course staff and teams are not enabled
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
+        # Create a submission for Bob, and corresponding workflow.
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        self._create_submission(bob_item, {'text': 'foo'}, [])
+
+        __, context = xblock.get_student_info_path_and_context("Bob")
+        self.assertFalse(context['is_team_assignment'])
+        self.assertIsNone(context['team_name'])
 
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
