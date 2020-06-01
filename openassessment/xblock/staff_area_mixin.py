@@ -13,6 +13,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from submissions.errors import TeamSubmissionNotFoundError
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -438,6 +439,11 @@ class StaffAreaMixin:
         for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
         and pass through to the submissions API to orphan the submission so that the user can create a new one.
         """
+
+        if self.is_team_assignment():
+            self.clear_team_state(user_id, course_id, item_id, requesting_user_id)
+            return
+
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
         # Note that student_item cannot be constructed using get_student_item_dict, since we're in a staff context
@@ -460,7 +466,47 @@ class StaffAreaMixin:
                 item_id,
                 clear_state=True
             )
-            # TODO: try to remove the above pylint disable once edx-submissions release is done
+
+    def clear_team_state(self, user_id, course_id, item_id, requesting_user_id):
+        """
+        This is called from clear_student_state (which is called from the LMS runtime) when the xblock is a team
+        assignment, to clear student state for an entire team for a given problem. It will cancel the workflow
+        to remove it from the grading pools, and pass through to the submissions team API to orphan the team
+        submission and individual submissions so that the team can create a new submission.
+        """
+        error_msg_base = 'Attempted to clear team state for anonymous user {} '.format(user_id)
+        try:
+            user_team = self.get_team_for_anonymous_user(user_id)
+        except ObjectDoesNotExist:
+            warning_msg = error_msg_base + 'but was unable to resolve to a real user'
+            logger.warning(warning_msg)
+            return
+
+        if user_team is None:
+            warning_msg = error_msg_base + 'but they are not on a team for course {} item {}.'.format(
+                course_id, item_id
+            )
+            logger.warning(warning_msg)
+            return
+
+        from submissions import team_api as team_submissions_api
+
+        try:
+            team_submission = team_submissions_api.get_team_submission_for_team(course_id, item_id, user_team.team_id)
+        except TeamSubmissionNotFoundError:
+            warning_msg = error_msg_base + "course {} item {} but no team submission was found for team {}".format(
+                course_id, item_id, user_team.team_id
+            )
+            logger.warning(warning_msg)
+
+        # Remove the submission from grading pool
+        self._cancel_team_workflow(
+            team_submission['team_submission_uuid'],
+            "Student and team state cleared",
+            requesting_user_id
+        )
+        # Tell the submissions API to orphan the submissions to prevent them from being accessed
+        team_submissions_api.reset_scores(team_submission['team_submission_uuid'])
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)
@@ -515,6 +561,41 @@ class StaffAreaMixin:
                     u"The learner receives a grade of zero unless you delete "
                     u"the learner's state for the problem to allow them to "
                     u"resubmit a response."
+                )
+            }
+        except (
+                AssessmentWorkflowError,
+                AssessmentWorkflowInternalError
+        ) as ex:
+            msg = str(ex)
+            logger.exception(msg)
+            return {"success": False, 'msg': msg}
+
+    def _cancel_team_workflow(self, team_submission_uuid, comments, requesting_user_id=None):
+        """
+        Internal helper method to cancel a team workflow using the team workflow API.
+
+        If requesting_user is not provided, we will use the user to which this xblock is currently bound.
+        """
+        # Import is placed here to avoid model import at project startup.
+        from openassessment.workflow import team_api as team_workflow_api
+        try:
+            if requesting_user_id is None:
+                # The student_id is actually the bound user, which is the staff user in this context.
+                requesting_user_id = self.get_student_item_dict()["student_id"]
+            # Cancel the related workflow.
+            team_workflow_api.cancel_workflow(
+                team_submission_uuid,
+                comments,
+                requesting_user_id,
+            )
+            return {
+                "success": True,
+                'msg': self._(
+                    "The team submission has been removed from assessment. "
+                    "The learners receive a grade of zero unless you delete "
+                    "the learners' states for the problem to allow them to "
+                    "resubmit a response."
                 )
             }
         except (

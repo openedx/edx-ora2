@@ -20,11 +20,14 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import staff as staff_api
 from openassessment.fileupload.exceptions import FileUploadInternalError
+from openassessment.tests.factories import UserFactory
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow import team_api as team_workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
-from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME
+from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME, MOCK_TEAM_ID
 from submissions import api as sub_api
+from submissions import team_api as team_sub_api
 
 FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
@@ -798,6 +801,28 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("response was not found", resp.body.decode('utf-8').lower())
 
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_delete_student_state_for_team_assessment(self, xblock):
+        self._setup_xblock_and_create_submission(xblock, team=True)
+
+        status_counts, total_submissions = xblock.get_team_workflow_status_counts()
+        self.assertEqual(total_submissions, 1)
+        status_counts = self._parse_workflow_status_counts(status_counts)
+        self.assertEqual(status_counts['teams'], 1)
+
+        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, STUDENT_ITEM['student_id'])
+
+        status_counts, total_submissions = xblock.get_team_workflow_status_counts()
+        self.assertEqual(total_submissions, 1)
+        status_counts = self._parse_workflow_status_counts(status_counts)
+        self.assertEqual(status_counts['cancelled'], 1)
+
+    def _parse_workflow_status_counts(self, status_counts):
+        """ Helper to transform status counts from a list of dicts to a single dict """
+        return {
+            status['status']: status['count'] for status in status_counts
+        }
+
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
@@ -972,6 +997,21 @@ class TestCourseStaff(XBlockHandlerTestCase):
         workflow_api.create_workflow(submission["uuid"], types)
         return submission
 
+    def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids, answer):
+        """
+        Create a team submission and initialize a team workflow
+        """
+        team_submission = team_sub_api.create_submission_for_team(
+            course_id,
+            item_id,
+            team_id,
+            submitting_user_id,
+            team_member_student_ids,
+            answer,
+        )
+        team_workflow_api.create_workflow(team_submission['team_submission_uuid'])
+        return team_submission
+
     @ddt.data('files_names', 'files_name')
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_file_name_is_rendered_on_template(self, xblock, key):
@@ -1015,9 +1055,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 context['staff_file_urls']
             )
 
-    def _setup_xblock_and_create_submission(self, xblock, **kwargs):
+    def _setup_xblock_and_create_submission(self, xblock, team=False, **kwargs):
         """
-        A shortcut method to setup ORA xblock and add a user submission to the block.
+        A shortcut method to setup ORA xblock and add a user submission or a team submission to the block.
         """
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, 'Bob'
@@ -1025,18 +1065,34 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # pylint: disable=protected-access
         xblock.runtime._services['user'] = NullUserService()
         xblock.runtime._services['user_state'] = UserStateService()
+        if team:
+            xblock.runtime._services['teams'] = MockTeamsService(True)
 
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
         student_item = STUDENT_ITEM.copy()
         student_item["item_id"] = usage_id
-
-        self._create_submission(student_item, {
-            'text': "Text Answer",
-            'file_keys': kwargs.get('file_keys', []),
-            'files_descriptions': kwargs.get('files_descriptions', []),
-            'files_names': kwargs.get('files_names', [])
-        }, ['staff'])
+        if team:
+            xblock.teams_enabled = True
+            xblock.is_team_assignment = Mock(return_value=True)
+            anonymous_user_ids_for_team = ['Bob', 'Alice', 'Chris']
+            xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)
+            arbitrary_test_user = UserFactory.create()
+            return self._create_team_submission(
+                STUDENT_ITEM['course_id'],
+                usage_id,
+                MOCK_TEAM_ID,
+                arbitrary_test_user.id,
+                anonymous_user_ids_for_team,
+                "this is an answer to a team assignment",
+            )
+        else:
+            return self._create_submission(student_item, {
+                'text': "Text Answer",
+                'file_keys': kwargs.get('file_keys', []),
+                'files_descriptions': kwargs.get('files_descriptions', []),
+                'files_names': kwargs.get('files_names', [])
+            }, ['staff'])
 
     @staticmethod
     def _verify_user_state_usage_log_present(logger, **kwargs):
