@@ -1077,8 +1077,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.is_team_assignment = Mock(return_value=True)
             anonymous_user_ids_for_team = ['Bob', 'Alice', 'Chris']
             xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)
-
-        if team:
             arbitrary_test_user = UserFactory.create()
             return self._create_team_submission(
                 STUDENT_ITEM['course_id'],
