@@ -2,8 +2,6 @@
 Public interface for the Assessment Workflow.
 
 """
-
-
 import logging
 
 from django.db import DatabaseError

@@ -818,7 +818,7 @@ class AssessmentPart(models.Model):
             InvalidRubricSelection
         """
         missing_option_selections = rubric_index.find_missing_criteria(selected_criteria)
-        zero_option_criteria = set([c.name for c in rubric_index.find_criteria_without_options()])
+        zero_option_criteria = {c.name for c in rubric_index.find_criteria_without_options()}
         # pylint: disable=invalid-name
         zero_option_criteria_missing_feedback = zero_option_criteria - set(criteria_feedback)
         # pylint: disable=invalid-name

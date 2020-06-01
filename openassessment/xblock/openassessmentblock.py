@@ -1110,6 +1110,7 @@ class OpenAssessmentBlock(MessageMixin,
         for assessment in self.valid_assessments:
             if assessment["name"] == mixin_name:
                 return assessment
+        return None
 
     def publish_assessment_event(self, event_name, assessment, **kwargs):
         """
@@ -1207,7 +1208,7 @@ class OpenAssessmentBlock(MessageMixin,
             logger.exception(
                 u"XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
             )
-            return None
+        return None
 
     def get_username(self, anonymous_user_id):
         """

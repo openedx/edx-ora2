@@ -59,7 +59,7 @@ class Settings:
         return mimetypes.guess_extension(mime_type) or ''
 
 
-class BaseBackend(object, metaclass=abc.ABCMeta):
+class BaseBackend(metaclass=abc.ABCMeta):
     """ Base class for file upload backends. """
 
     UPLOAD_URL_TIMEOUT = 3600

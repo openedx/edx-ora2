@@ -12,6 +12,8 @@ disable+ =
     cyclic-import,
     useless-suppression,
     bad-option-value,
+    missing-function-docstring,
+    missing-class-docstring
 
 
 [BASIC]

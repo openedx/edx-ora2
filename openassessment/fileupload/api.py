@@ -448,7 +448,7 @@ class FileUploadManager:
                 name=fileupload.name,
             )
         except IntegrityError as e:
-            logger.error("Unable to create shared upload. " + str(e))
+            logger.error("Unable to create shared upload. %s", str(e))
             raise e
 
     def get_file_key(self, index):

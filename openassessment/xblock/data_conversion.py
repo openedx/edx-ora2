@@ -2,8 +2,6 @@
 Data Conversion utility methods for handling ORA2 XBlock data transformations and validation.
 
 """
-
-
 import json
 
 
