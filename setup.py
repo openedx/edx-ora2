@@ -36,7 +36,7 @@ def load_requirements(*requirements_paths):
 
 setup(
     name='ora2',
-    version='2.7.8',
+    version='2.7.10',
     author='edX',
     author_email='oscm@edx.org',
     url='http://github.com/edx/edx-ora2',
@@ -46,7 +46,7 @@ setup(
     long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-        'Framework :: Django :: 2.22',
+        'Framework :: Django :: 2.2',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
