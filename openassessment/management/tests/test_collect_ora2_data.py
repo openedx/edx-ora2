@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """ Test the collect_ora2_data management command """
 
-
-
 from mock import patch
 
 from django.core.management import call_command

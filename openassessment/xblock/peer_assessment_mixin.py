@@ -3,8 +3,6 @@ The Peer Assessment Mixin for all Peer Functionality.
 
 """
 
-
-
 import logging
 
 from webob import Response

@@ -3,8 +3,6 @@
 Test OpenAssessment XBlock data_conversion.
 """
 
-
-
 import ddt
 
 from django.test import TestCase

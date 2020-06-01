@@ -2,8 +2,6 @@
 Basic tests for teams functionality of the ORA XBlock.
 """
 
-
-
 from unittest import TestCase
 
 import ddt

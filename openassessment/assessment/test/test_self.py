@@ -3,8 +3,6 @@
 Tests for self-assessment API.
 """
 
-
-
 import copy
 import datetime
 

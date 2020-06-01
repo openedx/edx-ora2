@@ -2,8 +2,6 @@
 Test resolving unspecified dates and date strings to datetimes.
 """
 
-
-
 import datetime
 
 import ddt

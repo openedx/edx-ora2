@@ -2,10 +2,9 @@
 Handle OpenAssessment XBlock requests to the Workflow API.
 """
 
-
-
 from xblock.core import XBlock
 from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
+
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
 

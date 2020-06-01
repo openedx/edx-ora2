@@ -3,8 +3,6 @@
 Test OpenAssessment XBlock validation.
 """
 
-
-
 import copy
 from datetime import datetime as dt
 

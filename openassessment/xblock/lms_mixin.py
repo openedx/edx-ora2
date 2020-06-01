@@ -2,8 +2,6 @@
 Fields and methods used by the LMS and Studio.
 """
 
-
-
 import six
 
 from xblock.fields import DateTime, Dict, Float, Scope, String

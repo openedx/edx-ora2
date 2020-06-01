@@ -2,8 +2,6 @@
 Test that we can export a block from the runtime (to XML) and re-import it without error.
 """
 
-
-
 import copy
 from io import BytesIO
 

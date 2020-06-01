@@ -3,8 +3,6 @@
 Tests for openassessment data aggregation.
 """
 
-
-
 import csv
 import json
 import os.path

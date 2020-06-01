@@ -3,8 +3,6 @@
 Tests for assessment models.
 """
 
-
-
 import copy
 
 from six.moves import range

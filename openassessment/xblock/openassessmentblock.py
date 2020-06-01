@@ -1,7 +1,5 @@
 """An XBlock where students can read a question and compose their response"""
 
-
-
 import copy
 import datetime as dt
 import json

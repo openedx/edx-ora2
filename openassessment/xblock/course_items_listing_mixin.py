@@ -3,8 +3,6 @@ The mixin with handlers for the course ora blocks listing view.
 
 """
 
-
-
 import json
 
 import six

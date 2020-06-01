@@ -3,8 +3,6 @@
 Tests for assessment serializers.
 """
 
-
-
 import copy
 import json
 import os.path

@@ -3,8 +3,6 @@
 Tests for course items listing handlers.
 """
 
-
-
 import json
 
 from mock import patch

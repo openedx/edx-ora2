@@ -3,8 +3,6 @@
 Test submission to the OpenAssessment XBlock.
 """
 
-
-
 import datetime as dt
 import json
 

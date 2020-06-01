@@ -3,8 +3,6 @@ Page objects for UI-level acceptance tests.
 """
 # pylint: disable=unicode-format-string
 
-
-
 from abc import abstractmethod
 import os
 

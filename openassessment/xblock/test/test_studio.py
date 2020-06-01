@@ -2,8 +2,6 @@
 View-level tests for Studio view of OpenAssessment XBlock.
 """
 
-
-
 import copy
 import datetime as dt
 import json

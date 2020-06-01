@@ -2,8 +2,6 @@
 Handle OpenAssessment XBlock requests around team functionality to the Workflow API.
 """
 
-
-
 import logging
 
 from xblock.core import XBlock
