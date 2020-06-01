@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-29 16:24-0400\n"
+"POT-Creation-Date: 2020-06-01 17:33-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1912,55 +1912,62 @@ msgstr ""
 msgid "Your self assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:181
+#: openassessment/xblock/staff_area_mixin.py:183
 msgid "Error getting learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:241
+#: openassessment/xblock/staff_area_mixin.py:243
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:242
+#: openassessment/xblock/staff_area_mixin.py:244
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:246
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:265
+#: openassessment/xblock/staff_area_mixin.py:267
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:500
+#: openassessment/xblock/staff_area_mixin.py:547
 msgid "Please enter valid reason to remove the submission."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:526
+#: openassessment/xblock/staff_area_mixin.py:573
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:608
+msgid ""
+"The team submission has been removed from assessment. The learners receive a "
+"grade of zero unless you delete the learners' states for the problem to "
+"allow them to resubmit a response."
 msgstr ""
 
 #: openassessment/xblock/staff_assessment_mixin.py:40
@@ -2068,35 +2075,35 @@ msgstr ""
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:396
+#: openassessment/xblock/submission_mixin.py:395
 msgid "There was an error uploading your file."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:405
+#: openassessment/xblock/submission_mixin.py:404
 msgid "Content type must be GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:408
+#: openassessment/xblock/submission_mixin.py:407
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:411
+#: openassessment/xblock/submission_mixin.py:410
 msgid "File type must be one of the following types: {}"
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:415
+#: openassessment/xblock/submission_mixin.py:414
 msgid "File type is not allowed."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:422
+#: openassessment/xblock/submission_mixin.py:421
 msgid "Error retrieving upload URL."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:654
+#: openassessment/xblock/submission_mixin.py:653
 msgid "This response has been saved but not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:655
+#: openassessment/xblock/submission_mixin.py:654
 msgid "This response has not been saved."
 msgstr ""
 
