@@ -1094,7 +1094,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 'files_names': kwargs.get('files_names', [])
             }, ['staff'])
 
-
     @staticmethod
     def _verify_user_state_usage_log_present(logger, **kwargs):
         """
