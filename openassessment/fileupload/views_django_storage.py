@@ -1,7 +1,7 @@
 """
 Provides the upload endpoint for the django storage backend.
 """
-from __future__ import absolute_import
+
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse

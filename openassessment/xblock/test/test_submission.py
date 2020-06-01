@@ -3,7 +3,7 @@
 Test submission to the OpenAssessment XBlock.
 """
 
-from __future__ import absolute_import, unicode_literals
+
 
 import datetime as dt
 import json

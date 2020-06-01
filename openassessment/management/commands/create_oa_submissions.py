@@ -1,7 +1,7 @@
 """
 Create dummy submissions and assessments for testing.
 """
-from __future__ import absolute_import, print_function
+
 
 import copy
 from uuid import uuid4

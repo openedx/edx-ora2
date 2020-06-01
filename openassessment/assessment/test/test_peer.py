@@ -1,6 +1,6 @@
 # coding=utf-8
 """ Tests Peer Workflow. """
-from __future__ import absolute_import
+
 
 import copy
 import datetime

@@ -2,7 +2,7 @@
 The Staff Area View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
-from __future__ import absolute_import
+
 
 import copy
 from django.core.exceptions import ObjectDoesNotExist

@@ -11,7 +11,7 @@ ORA2_SWIFT_KEY should correspond to Meta Temp-Url-Key configure in swift. Run
 'swift stat -v' to get it.
 '''
 
-from __future__ import absolute_import
+
 
 import logging
 

@@ -1,7 +1,7 @@
 """
 Validate changes to an XBlock before it is updated.
 """
-from __future__ import absolute_import
+
 
 from collections import Counter
 

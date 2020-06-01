@@ -1,7 +1,7 @@
 """
 Tests for team assessments.
 """
-from __future__ import absolute_import
+
 
 import mock
 from freezegun import freeze_time

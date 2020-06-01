@@ -2,7 +2,7 @@
 """
 Tests for management command that uploads submission/assessment data.
 """
-from __future__ import absolute_import
+
 
 import tarfile
 from io import BytesIO

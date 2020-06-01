@@ -2,7 +2,7 @@
 """
 Tests for the assessment Django models.
 """
-from __future__ import absolute_import
+
 
 import copy
 

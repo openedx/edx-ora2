@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Test the collect_ora2_data management command """
 
-from __future__ import absolute_import
+
 
 from mock import patch
 

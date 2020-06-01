@@ -2,7 +2,7 @@
 Basic tests for teams functionality of the ORA XBlock.
 """
 
-from __future__ import absolute_import
+
 
 from unittest import TestCase
 

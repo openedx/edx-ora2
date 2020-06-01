@@ -4,7 +4,7 @@ associated with submissions. This can be used to upload new files, manage
 URLs of existing files, and delete files.
 """
 
-from __future__ import absolute_import, unicode_literals
+
 
 from collections import namedtuple
 import json

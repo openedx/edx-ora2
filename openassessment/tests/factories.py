@@ -1,7 +1,7 @@
 """
 Create factories for assessments and all of their related models.
 """
-from __future__ import absolute_import
+
 
 import datetime
 import factory

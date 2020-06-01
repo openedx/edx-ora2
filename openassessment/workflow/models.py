@@ -9,7 +9,7 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
-from __future__ import absolute_import, unicode_literals
+
 
 import importlib
 import logging

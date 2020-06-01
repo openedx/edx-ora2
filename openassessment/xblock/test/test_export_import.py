@@ -2,7 +2,7 @@
 Test that we can export a block from the runtime (to XML) and re-import it without error.
 """
 
-from __future__ import absolute_import
+
 
 import copy
 from io import BytesIO

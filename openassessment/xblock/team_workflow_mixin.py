@@ -2,7 +2,7 @@
 Handle OpenAssessment XBlock requests around team functionality to the Workflow API.
 """
 
-from __future__ import absolute_import
+
 
 import logging
 

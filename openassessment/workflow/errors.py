@@ -1,7 +1,7 @@
 """
 Errors defined by the workflow API.
 """
-from __future__ import absolute_import
+
 
 import copy
 

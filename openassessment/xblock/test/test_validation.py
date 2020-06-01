@@ -3,7 +3,7 @@
 Test OpenAssessment XBlock validation.
 """
 
-from __future__ import absolute_import
+
 
 import copy
 from datetime import datetime as dt

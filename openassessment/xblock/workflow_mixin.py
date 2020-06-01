@@ -2,7 +2,7 @@
 Handle OpenAssessment XBlock requests to the Workflow API.
 """
 
-from __future__ import absolute_import
+
 
 from xblock.core import XBlock
 from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
