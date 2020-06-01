@@ -10,7 +10,6 @@ import json
 import os.path
 
 import mock
-from six.moves import zip
 
 import webob
 from submissions import api as submissions_api

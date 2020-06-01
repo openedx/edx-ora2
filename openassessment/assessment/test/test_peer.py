@@ -8,8 +8,6 @@ import datetime
 from ddt import ddt, file_data
 from mock import patch
 import pytz
-import six
-from six.moves import range
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
@@ -1088,7 +1086,7 @@ class TestPeerApi(CacheResetTest):
         self.assertIsNot(saved_feedback, None)
         self.assertEqual(saved_feedback['submission_uuid'], assessment['submission_uuid'])
         self.assertEqual(saved_feedback['feedback_text'], 'Bob is a jerk!')
-        six.assertCountEqual(self, saved_feedback['options'], [
+        self.assertCountEqual(saved_feedback['options'], [
             {'text': 'I disliked this assessment'},
             {'text': 'I felt this assessment was unfair'},
         ])

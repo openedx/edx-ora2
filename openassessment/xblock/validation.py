@@ -5,9 +5,6 @@ Validate changes to an XBlock before it is updated.
 
 from collections import Counter
 
-import six
-from six.moves import zip
-
 from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.assessment.serializers import InvalidRubric, rubric_from_dict
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
@@ -263,7 +260,7 @@ def validate_dates(start, end, date_ranges, _):
     try:
         resolve_dates(start, end, date_ranges, _)
     except (DateValidationError, InvalidDateFormat) as ex:
-        return False, six.text_type(ex)
+        return False, str(ex)
     else:
         return True, u''
 
@@ -388,7 +385,7 @@ def validate_submission(submission, prompts, _, text_response='required'):
         return False, message
 
     for submission_part in submission:
-        if not isinstance(submission_part, six.text_type):
+        if not isinstance(submission_part, str):
             return False, message
 
     return True, u''

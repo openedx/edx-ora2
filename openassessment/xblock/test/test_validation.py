@@ -9,7 +9,6 @@ from datetime import datetime as dt
 import ddt
 import mock
 import pytz
-from six.moves import range
 
 from django.test import TestCase
 

@@ -6,9 +6,6 @@ Create dummy submissions and assessments for testing.
 import copy
 from uuid import uuid4
 
-import six
-from six.moves import range
-
 from django.core.management.base import BaseCommand, CommandError
 
 import loremipsum
@@ -59,8 +56,8 @@ class Command(BaseCommand):
         if len(args) < 4:
             raise CommandError('Usage: create_oa_submissions <COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS> <PERCENTAGE>')
 
-        course_id = six.text_type(args[0])
-        item_id = six.text_type(args[1])
+        course_id = str(args[0])
+        item_id = str(args[1])
 
         try:
             num_submissions = int(args[2])

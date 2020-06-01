@@ -5,13 +5,12 @@ Tests the Open Assessment XBlock functionality.
 
 from collections import namedtuple
 import datetime as dt
+from io import StringIO
 import json
 
 import ddt
 from mock import MagicMock, Mock, PropertyMock, patch
 import pytz
-import six
-from six import StringIO
 
 from freezegun import freeze_time
 from lxml import etree
@@ -382,7 +381,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     def test_default_fields(self, xblock):
 
         # Reset all fields in the XBlock to their default values
-        for field_name, field in six.iteritems(xblock.fields):
+        for field_name, field in xblock.fields.items():
             setattr(xblock, field_name, field.default)
 
         # Validate Submission Rendering.
@@ -395,7 +394,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # because that's what our models expect.
         student_item = xblock.get_student_item_dict()
         self.assertEqual(student_item['student_id'], '2')
-        self.assertIsInstance(student_item['item_id'], six.text_type)
+        self.assertIsInstance(student_item['item_id'], str)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_use_xmodule_runtime(self, xblock):

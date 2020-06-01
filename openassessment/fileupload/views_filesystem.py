@@ -5,8 +5,6 @@ import hashlib
 import json
 import os
 
-import six
-
 from django.conf import settings
 from django.shortcuts import Http404, HttpResponse
 from django.utils import timezone
@@ -113,7 +111,7 @@ def safe_save(path, content):
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
     with open(path, 'w') as f:
-        f.write(content.decode('utf-8') if six.PY3 and isinstance(content, bytes) else content)
+        f.write(content.decode('utf-8') if isinstance(content, bytes) else content)
 
 
 def safe_remove(path):

@@ -7,8 +7,6 @@ Tests for management command that uploads submission/assessment data.
 import tarfile
 from io import BytesIO
 
-from six.moves import range
-
 import boto
 import moto
 from submissions import api as sub_api

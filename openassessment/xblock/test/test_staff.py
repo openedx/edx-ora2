@@ -7,7 +7,6 @@ Tests for staff assessment handlers in Open Assessment XBlock.
 import copy
 import json
 
-import six
 from mock import Mock, patch
 
 from openassessment.assessment.api import (
@@ -41,7 +40,7 @@ class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         path, context = xblock.staff_path_and_context()
 
         self.assertEqual('openassessmentblock/staff/oa_staff_grade.html', path)
-        six.assertCountEqual(self, expected_context, context)
+        self.assertCountEqual(expected_context, context)
 
         # Verify that we render without error
         resp = self.request(xblock, 'render_staff_assessment', json.dumps({}))

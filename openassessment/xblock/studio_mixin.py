@@ -8,8 +8,6 @@ import logging
 from uuid import uuid4
 
 import pkg_resources
-import six
-from six.moves import zip
 
 from django.conf import settings
 from django.template.loader import get_template
@@ -399,7 +397,7 @@ class StudioMixin:
 
         placeholder_id = uuid4().hex
         # create a dummy asset location with a fake but unique name. strip off the name, and return it
-        url_path = six.text_type(course_key.make_asset_key('asset', placeholder_id).for_branch(None))
+        url_path = str(course_key.make_asset_key('asset', placeholder_id).for_branch(None))
         if not url_path.startswith('/'):
             url_path = '/' + url_path
         return url_path.replace(placeholder_id, '')

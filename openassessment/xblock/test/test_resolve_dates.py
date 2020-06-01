@@ -6,8 +6,6 @@ import datetime
 
 import ddt
 import pytz
-import six
-from six.moves import range
 
 from django.test import TestCase
 
@@ -34,7 +32,7 @@ class ResolveDatesTest(TestCase):
 
         # Construct a dictionary of ISO-formatted date strings for our test data to index
         # pylint: disable=invalid-name
-        self.DATE_STRINGS = {key: val.isoformat() for key, val in six.iteritems(self.DATES)}
+        self.DATE_STRINGS = {key: val.isoformat() for key, val in self.DATES.items()}
         self.DATE_STRINGS[None] = None
 
     @ddt.file_data('data/resolve_dates.json')

@@ -5,10 +5,9 @@ Student training step in the OpenAssessment XBlock.
 
 import logging
 
-import six
-
 from webob import Response
 from xblock.core import XBlock
+
 from openassessment.assessment.api import student_training
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict, create_submission_dict
@@ -67,7 +66,7 @@ class StudentTrainingMixin:
         """
         parts = answer.get('parts', [])
         if parts and isinstance(parts[0], dict):
-            if isinstance(parts[0].get('text'), six.string_types):
+            if isinstance(parts[0].get('text'), str):
                 return create_submission_dict({'answer': answer}, self.prompts)
         return None
 
@@ -75,7 +74,7 @@ class StudentTrainingMixin:
         """
         Helper to parse answer as a list of strings.
         """
-        if answer and isinstance(answer[0], six.string_types):
+        if answer and isinstance(answer[0], str):
             return self._parse_answer_string(answer[0])
         elif not answer:
             return self._parse_answer_string("")
@@ -105,7 +104,7 @@ class StudentTrainingMixin:
             )
         answer = example['answer']
         submission_dict = None
-        if isinstance(answer, six.string_types):
+        if isinstance(answer, str):
             submission_dict = self._parse_answer_string(answer)
         elif isinstance(answer, dict):
             submission_dict = self._parse_answer_dict(answer)

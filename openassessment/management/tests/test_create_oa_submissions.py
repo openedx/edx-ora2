@@ -2,8 +2,6 @@
 Tests for the management command that creates dummy submissions.
 """
 
-import six
-
 from django.test import TestCase
 
 from submissions import api as sub_api
@@ -32,7 +30,7 @@ class CreateSubmissionsTest(TestCase):
             self.assertEqual(len(submissions), 1)
 
             answer_dict = submissions[0]['answer']
-            self.assertIsInstance(answer_dict['text'], six.string_types)
+            self.assertIsInstance(answer_dict['text'], str)
             self.assertGreater(len(answer_dict['text']), 0)
 
             # Check that peer and self assessments were created

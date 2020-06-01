@@ -21,8 +21,6 @@ import json
 import logging
 import math
 
-import six
-
 from django.core.cache import cache
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -519,7 +517,7 @@ class Assessment(models.Model):
 
         """
         median_scores = {}
-        for criterion, criterion_scores in six.iteritems(scores_dict):
+        for criterion, criterion_scores in scores_dict.items():
             criterion_score = Assessment.get_median_score(criterion_scores)
             median_scores[criterion] = criterion_score
         return median_scores
@@ -693,13 +691,13 @@ class AssessmentPart(models.Model):
                 'option': rubric_index.find_option(criterion_name, option_name),
                 'feedback': feedback.get(criterion_name, u"")[0:cls.MAX_FEEDBACK_SIZE],
             }
-            for criterion_name, option_name in six.iteritems(selected)
+            for criterion_name, option_name in selected.items()
         ]
 
         # Some criteria may have feedback but no options, only feedback.
         # For these, we set `option` to None, indicating that the assessment part
         # is not associated with any option, only a criterion.
-        for criterion_name, feedback_text in six.iteritems(feedback):
+        for criterion_name, feedback_text in feedback.items():
             if criterion_name not in selected:
                 assessment_parts.append({
                     'criterion': rubric_index.find_criterion(criterion_name),
@@ -751,7 +749,7 @@ class AssessmentPart(models.Model):
                 'criterion': rubric_index.find_criterion(criterion_name),
                 'option': rubric_index.find_option_for_points(criterion_name, option_points),
             }
-            for criterion_name, option_points in six.iteritems(selected)
+            for criterion_name, option_points in selected.items()
         ]
 
         # Add in feedback-only criteria

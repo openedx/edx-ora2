@@ -5,8 +5,6 @@ Test that we can export a block from the runtime (to XML) and re-import it witho
 import copy
 from io import BytesIO
 
-import six
-
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -27,4 +25,4 @@ class TestExportImport(XBlockHandlerTestCase):
         new_block = self.runtime.get_block(block_id)
 
         # Check that the values of all fields are the same
-        six.assertCountEqual(self, new_block.fields, old_fields)
+        self.assertCountEqual(new_block.fields, old_fields)

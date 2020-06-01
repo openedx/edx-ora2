@@ -8,8 +8,6 @@ import copy
 import json
 
 import ddt
-import six
-from six.moves import zip
 
 from openassessment.assessment.api import peer as peer_api
 
@@ -412,8 +410,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         feedback = peer_api.get_assessment_feedback(xblock.submission_uuid)
         self.assertIsNot(feedback, None)
         self.assertEqual(feedback['feedback_text'], u'I disliked my assessment')
-        six.assertCountEqual(
-            self,
+        self.assertCountEqual(
             feedback['options'], [{'text': u'Option 1'}, {'text': u'Option 2'}]
         )
 
@@ -435,7 +432,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Verify that the feedback was created in the database
         feedback = peer_api.get_assessment_feedback(xblock.submission_uuid)
         self.assertIsNot(feedback, None)
-        six.assertCountEqual(self, feedback['options'], [])
+        self.assertCountEqual(feedback['options'], [])
 
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_submit_feedback_invalid_options(self, xblock):

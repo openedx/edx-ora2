@@ -8,7 +8,6 @@ from collections import OrderedDict
 import copy
 
 import mock
-import six
 
 from django.db import IntegrityError
 
@@ -109,7 +108,7 @@ class TrainingExampleSerializerTest(CacheResetTest):
         self.assertEqual(len(db_examples), 3)
 
         # Check that the examples match what we got from the deserializer
-        six.assertCountEqual(self, examples, db_examples)
+        self.assertCountEqual(examples, db_examples)
 
     def test_similar_training_examples_different_rubric(self):
         # Deserialize some examples
@@ -185,7 +184,7 @@ class TrainingExampleSerializerTest(CacheResetTest):
         """Test that legacy answer format in training example serialized correctly"""
         training_examples = deserialize_training_examples(self.EXAMPLES, self.RUBRIC)
         for example in training_examples:
-            self.assertIsInstance(example.answer, six.text_type)
+            self.assertIsInstance(example.answer, str)
             serialized_example = serialize_training_example(example)
             self.assertIsInstance(serialized_example["answer"], dict)
             expected_answer_dict = {'parts': [{'text': example.answer}]}

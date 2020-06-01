@@ -7,8 +7,6 @@ import datetime as dt
 
 from dateutil.parser import parse as parse_date
 import pytz
-import six
-from six.moves import range, zip
 
 
 class InvalidDateFormat(Exception):
@@ -45,7 +43,7 @@ def _parse_date(value, _):
     if isinstance(value, dt.datetime):
         return value.replace(tzinfo=pytz.utc)
 
-    elif isinstance(value, six.string_types):
+    elif isinstance(value, str):
         try:
             return parse_date(value).replace(tzinfo=pytz.utc)
         except ValueError:

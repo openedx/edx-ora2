@@ -15,8 +15,6 @@ import ddt
 import pytest
 from pyinstrument import Profiler
 
-from six.moves import range
-
 from ..acceptance.auto_auth import AutoAuthPage  # pylint: disable=import-error
 from ..acceptance.pages import (AssessmentPage, GradePage, StaffAreaPage,  # pylint: disable=import-error
                                 StudioSettingsPage, SubmissionPage)

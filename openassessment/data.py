@@ -7,8 +7,6 @@ from collections import defaultdict
 import csv
 import json
 
-import six
-
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import F
@@ -91,7 +89,7 @@ class CsvWriter:
         """
         self.writers = {
             key: csv.writer(file_handle)
-            for key, file_handle in six.iteritems(output_streams)
+            for key, file_handle in output_streams.items()
             if key in self.MODELS
         }
         self._progress_callback = progress_callback
@@ -187,7 +185,7 @@ class CsvWriter:
         """
         Write the headers (first row) for each output stream.
         """
-        for name, writer in six.iteritems(self.writers):
+        for name, writer in self.writers.items():
             writer.writerow(self.HEADERS[name])
 
     def _write_submission_to_csv(self, submission_uuid):
@@ -283,7 +281,7 @@ class CsvWriter:
 
         """
         options_string = ",".join([
-            six.text_type(option.id) for option in assessment_feedback.options.all()
+            str(option.id) for option in assessment_feedback.options.all()
         ])
 
         self._write_unicode('assessment_feedback', [
@@ -324,10 +322,7 @@ class CsvWriter:
         """
         writer = self.writers.get(output_name)
         if writer is not None:
-            if six.PY2:
-                encoded_row = [six.text_type(field).encode('utf-8') for field in row]
-            else:
-                encoded_row = [six.text_type(field) for field in row]
+            encoded_row = [str(field) for field in row]
             writer.writerow(encoded_row)
 
     def _use_read_replica(self, queryset):
