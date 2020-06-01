@@ -12,10 +12,10 @@ importlib-resources==2.0.1  # via virtualenv
 more-itertools==8.4.0     # via zipp
 packaging==20.4           # via tox
 pluggy==0.13.1            # via tox
-py==1.8.2                 # via tox
+py==1.9.0                 # via tox
 pyparsing==2.4.7          # via packaging
 six==1.15.0               # via packaging, tox, virtualenv
 toml==0.10.1              # via tox
 tox==3.15.2               # via -r requirements/tox.in
-virtualenv==20.0.23       # via tox
+virtualenv==20.0.25       # via tox
 zipp==1.0.0               # via -c requirements/constraints.txt, importlib-metadata, importlib-resources

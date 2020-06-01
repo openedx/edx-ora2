@@ -5,6 +5,7 @@
 
 coverage                            # Repeat a test case with multiple data inputs
 ddt
+django-pyfs
 factory_boy                         # Fixture factories for test setup
 freezegun<=0.3.14                   # Mock the datetime module to manipulate date functions, breaks on 0.3.15
 mock                                # Stub out specific code during test runs
@@ -17,4 +18,3 @@ tox
 more-itertools
 xblock-sdk
 
-git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
