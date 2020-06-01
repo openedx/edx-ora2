@@ -141,7 +141,7 @@ class StaffAreaMixin:
             )
 
         # Include whether or not this is a team assignment
-        context['is_team_assignment'] = self.teams_enabled
+        context['is_team_assignment'] = self.is_team_assignment()
 
         context['xblock_id'] = self.get_xblock_id()
         return path, context
@@ -216,8 +216,8 @@ class StaffAreaMixin:
                         self.get_username(anonymous_student_id), submission
                     )
                     # Add team info to context
-                    submission_context['teams_enabled'] = self.teams_enabled
-                    if self.teams_enabled:
+                    submission_context['teams_enabled'] = self.is_team_assignment()
+                    if self.is_team_assignment():
                         user = self.get_real_user(anonymous_student_id)
 
                         if not user:
@@ -286,7 +286,7 @@ class StaffAreaMixin:
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
-            "is_team_assignment": self.teams_enabled,
+            "is_team_assignment": self.is_team_assignment(),
         }
 
         if submission:
@@ -358,7 +358,7 @@ class StaffAreaMixin:
         # Add team info to context
         # Note - this can probably be simplified when we get context direct from team assignments
         context['team_name'] = None
-        if anonymous_user_id and self.teams_enabled:
+        if anonymous_user_id and self.is_team_assignment():
             user = self.get_real_user(anonymous_user_id)
             team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
             context['team_name'] = getattr(team, 'name', None)

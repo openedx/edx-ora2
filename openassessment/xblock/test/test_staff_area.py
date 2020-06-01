@@ -732,9 +732,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'submission_returned_uuid': submission['uuid']
         })
 
+    @patch('openassessment.xblock.team_mixin.TeamMixin.is_team_assignment')
     @patch('openassessment.xblock.staff_area_mixin.list_to_conversational_format')
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_form_for_team_assessment(self, xblock, formatter):
+    def test_staff_form_for_team_assessment(self, xblock, formatter, is_team_assignment_patch):
         # mock list format
         def mock_formatter(entries):
             return ', '.join(entries)
@@ -746,7 +747,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         # Enable teams
-        xblock.teams_enabled = True
+        is_team_assignment_patch.return_value = True
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         team_submission_enabled = 'data-team-submission="True"'
         team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
@@ -846,13 +847,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         __, context = xblock.get_student_info_path_and_context('Bob')
         self.assertFalse(any(context['staff_file_urls']))
 
+    @patch('openassessment.xblock.team_mixin.TeamMixin.is_team_assignment')
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_area_has_team_info(self, xblock):
+    def test_staff_area_has_team_info(self, xblock, is_team_assignment_patch):
         # Given that we are course staff, managing a team assignment
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.teams_enabled = True
+        is_team_assignment_patch.return_value = True
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
 
         # When I get the staff context
@@ -861,13 +863,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Then the context has team assignment info
         self.assertTrue(context['is_team_assignment'])
 
-    @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_area_student_info_has_team_info(self, xblock):
+    @patch('openassessment.xblock.team_mixin.TeamMixin.is_team_assignment')
+    @scenario('data/team_submission.xml', user_id='Bob', )
+    def test_staff_area_student_info_has_team_info(self, xblock, is_team_assignment_patch):
         # Given that we are course staff and teams enabled
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
-        xblock.teams_enabled = True
+        is_team_assignment_patch.return_value = True
         xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
 
