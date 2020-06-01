@@ -11,9 +11,9 @@ import six
 
 from django.conf import settings
 
+from submissions import api as sub_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
-from submissions import api as sub_api
 
 
 class CsvWriter:

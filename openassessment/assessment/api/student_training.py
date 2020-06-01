@@ -15,11 +15,11 @@ import six
 from django.db import DatabaseError
 from django.utils.translation import ugettext as _
 
+from submissions import api as sub_api
 from openassessment.assessment.errors import StudentTrainingInternalError, StudentTrainingRequestError
 from openassessment.assessment.models import InvalidRubricSelection, StudentTrainingWorkflow
 from openassessment.assessment.serializers import (InvalidRubric, InvalidTrainingExample, deserialize_training_examples,
                                                    serialize_training_example, validate_training_example_format)
-from submissions import api as sub_api
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

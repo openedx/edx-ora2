@@ -15,14 +15,12 @@ class InvalidDateFormat(Exception):
     """
     The date string could not be parsed.
     """
-    pass
 
 
 class DateValidationError(Exception):
     """
     Dates are not semantically valid.
     """
-    pass
 
 
 DISTANT_PAST = dt.datetime(dt.MINYEAR, 1, 1, tzinfo=pytz.utc)

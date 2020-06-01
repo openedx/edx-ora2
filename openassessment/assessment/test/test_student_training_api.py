@@ -12,10 +12,10 @@ import six
 
 from django.db import DatabaseError
 
+from submissions import api as sub_api
 from openassessment.assessment.api import student_training as training_api
 from openassessment.assessment.errors import StudentTrainingInternalError, StudentTrainingRequestError
 from openassessment.test_utils import CacheResetTest
-from submissions import api as sub_api
 
 from .constants import ANSWER, EXAMPLES, RUBRIC, STUDENT_ITEM
 

@@ -16,6 +16,12 @@ from django.conf import settings
 from django.template.loader import get_template
 
 from lazy import lazy
+from webob import Response
+from xblock.core import XBlock
+from xblock.exceptions import NoSuchServiceError
+from xblock.fields import Boolean, Integer, List, Scope, String
+from web_fragments.fragment import Fragment
+
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
@@ -38,11 +44,6 @@ from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
-from webob import Response
-from xblock.core import XBlock
-from xblock.exceptions import NoSuchServiceError
-from xblock.fields import Boolean, Integer, List, Scope, String
-from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -432,6 +433,7 @@ class OpenAssessmentBlock(MessageMixin,
     def get_anonymous_user_id_from_xmodule_runtime(self):
         if hasattr(self, "xmodule_runtime"):
             return self.xmodule_runtime.anonymous_student_id  # pylint:disable=E1101
+        return None
 
     def get_student_item_dict(self, anonymous_user_id=None):
         """Create a student_item_dict from our surrounding context.
@@ -702,8 +704,7 @@ class OpenAssessmentBlock(MessageMixin,
             if assessment["name"] == "staff-assessment":
                 if not assessment["required"]:
                     continue
-                else:
-                    staff_assessment_required = True
+                staff_assessment_required = True
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
@@ -1083,7 +1084,7 @@ class OpenAssessmentBlock(MessageMixin,
             is_published = self.runtime.modulestore.has_published_version(self)
         else:
             is_published = True
-        is_closed, reason, __, __ = self.is_closed(step=step)
+        is_closed, reason, __, __ = self.is_closed(step=step)  # pylint: disable=redeclared-assigned-name
         is_released = is_published and (not is_closed or reason == 'due')
         if self.start:
             is_released = is_released and dt.datetime.now(pytz.UTC) > parse_date_value(self.start, self._)

@@ -44,7 +44,6 @@ class InvalidRubricSelection(Exception):
     """
     The specified criterion/option do not exist in the rubric.
     """
-    pass
 
 
 class Rubric(models.Model):
@@ -313,8 +312,7 @@ class RubricIndex:
                 rubric_hash=self.rubric.content_hash
             )
             raise InvalidRubricSelection(msg)
-        else:
-            return self._criteria_index[criterion_name]
+        return self._criteria_index[criterion_name]
 
     def find_option(self, criterion_name, option_name):
         """
@@ -342,8 +340,7 @@ class RubricIndex:
                 rubric_hash=self.rubric.content_hash
             )
             raise InvalidRubricSelection(msg)
-        else:
-            return self._option_index[key]
+        return self._option_index[key]
 
     def find_option_for_points(self, criterion_name, option_points):
         """
@@ -373,10 +370,9 @@ class RubricIndex:
                 rubric_hash=self.rubric.content_hash
             )
             raise InvalidRubricSelection(msg)
-        else:
-            # Assume that we gave priority to options with lower
-            # order numbers when we created the index.
-            return self._option_points_index[key]
+        # Assume that we gave priority to options with lower
+        # order numbers when we created the index.
+        return self._option_points_index[key]
 
     @property
     def criteria_names(self):

@@ -9,9 +9,9 @@ import json
 
 import six
 
-from openassessment.xblock.staff_area_mixin import require_course_staff
 from webob import Response
 from xblock.core import XBlock
+from openassessment.xblock.staff_area_mixin import require_course_staff
 
 
 class CourseItemsListingMixin:

@@ -8,12 +8,12 @@ from django.db import DatabaseError
 from django.test.utils import override_settings
 from pytest import raises
 
+import submissions.api as sub_api
 from openassessment.assessment.models import PeerWorkflow, StudentTrainingWorkflow
 from openassessment.test_utils import CacheResetTest
 import openassessment.workflow.api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowInternalError
 from openassessment.workflow.models import AssessmentWorkflow
-import submissions.api as sub_api
 
 RUBRIC_DICT = {
     "criteria": [

@@ -699,14 +699,14 @@ class TestDates(XBlockHandlerTestCase):
         xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) - dt.timedelta(minutes=1)
 
         # Since the start date is in the past, the problem should be available
-        is_closed, __, __, __ = xblock.is_closed()
+        is_closed, __, __, __ = xblock.is_closed()  # pylint: disable=redeclared-assigned-name
         self.assertFalse(is_closed)
 
         # Set the start date one hour in the future (in UTC)
         xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) + dt.timedelta(hours=1)
 
         # Now the problem should be open
-        is_closed, __, __, __ = xblock.is_closed()
+        is_closed, __, __, __ = xblock.is_closed()  # pylint: disable=redeclared-assigned-name
         self.assertTrue(is_closed)
 
     @scenario('data/basic_scenario.xml')

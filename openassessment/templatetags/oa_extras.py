@@ -25,3 +25,4 @@ def link_and_linebreak(text):
     if text:
         escaped_text = conditional_escape(text)
         return mark_safe(linebreaks(bleach.linkify(escaped_text, callbacks=[callbacks.target_blank])))
+    return None

@@ -15,6 +15,8 @@ import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
 from testfixtures import log_capture
 
+from submissions import api as sub_api
+from submissions import team_api as team_sub_api
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -26,8 +28,6 @@ from openassessment.workflow import team_api as team_workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME, MOCK_TEAM_ID
-from submissions import api as sub_api
-from submissions import team_api as team_sub_api
 
 FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
@@ -892,7 +892,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         })
         with patch("openassessment.fileupload.api.get_download_url") as get_download_url:
             get_download_url.return_value = FILE_URL
-            __, __ = xblock.get_student_info_path_and_context('Bob')
+            __, __ = xblock.get_student_info_path_and_context('Bob')  # pylint: disable=redeclared-assigned-name
         with self.assertRaises(AssertionError):
             self._verify_user_state_usage_log_present(logger, **{'location': xblock.location})
 
@@ -932,7 +932,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         expected_staff_urls = [(FILE_URL, '', '', False)] * xblock.MAX_FILES_COUNT
         self.assertEqual(staff_urls, expected_staff_urls)
 
-        new_context = {key: value for key, value in context.items()}
+        new_context = dict(context.items())
         new_context['staff_file_urls'] = staff_urls
         self._verify_staff_assessment_rendering(
             xblock,

@@ -11,10 +11,10 @@ from six.moves import range
 
 import boto
 import moto
+from submissions import api as sub_api
 from openassessment.management.commands import upload_oa_data
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
 
 
 class UploadDataTest(CacheResetTest):

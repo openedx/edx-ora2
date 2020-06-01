@@ -9,9 +9,9 @@ from unittest import TestCase
 import ddt
 import mock
 
-from openassessment.xblock.team_mixin import TeamMixin
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
+from openassessment.xblock.team_mixin import TeamMixin
 
 TEAMSET_ID = 'teamset-1-id'
 TEAMSET_NAME = 'teamset-1-name'

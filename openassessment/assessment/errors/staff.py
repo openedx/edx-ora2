@@ -12,7 +12,6 @@ class StaffAssessmentError(AssessmentError):
     staff assessment.
 
     """
-    pass
 
 
 class StaffAssessmentRequestError(StaffAssessmentError):
@@ -22,7 +21,6 @@ class StaffAssessmentRequestError(StaffAssessmentError):
     information which does not allow the request to be processed.
 
     """
-    pass
 
 
 class StaffAssessmentInternalError(StaffAssessmentError):
@@ -32,4 +30,3 @@ class StaffAssessmentInternalError(StaffAssessmentError):
     the actions or parameters given to the API.
 
     """
-    pass

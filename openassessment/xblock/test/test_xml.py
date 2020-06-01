@@ -162,8 +162,8 @@ class TestSerializeContent(TestCase):
         parsed_expected = etree.fromstring(pretty_expected)
 
         # Walk both trees, comparing elements and attributes
-        actual_elements = [el for el in parsed_actual.getiterator()]
-        expected_elements = [el for el in parsed_expected.getiterator()]
+        actual_elements = list(parsed_actual.getiterator())
+        expected_elements = list(parsed_expected.getiterator())
         self.assertEqual(
             len(actual_elements), len(expected_elements),
             msg=u"Incorrect XML output:\nActual: {}\nExpected: {}".format(xml, pretty_expected)

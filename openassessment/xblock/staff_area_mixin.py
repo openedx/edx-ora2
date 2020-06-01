@@ -125,7 +125,8 @@ class StaffAreaMixin:
         for step in ['submission'] + self.assessment_steps:
 
             # Get the dates as a student would see them
-            __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
+            __, __, start_date, due_date = self.is_closed(
+                step=step, course_staff=False)  # pylint: disable=redeclared-assigned-name
 
             context['step_dates'].append({
                 'step': step,

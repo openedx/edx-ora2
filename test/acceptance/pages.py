@@ -18,7 +18,6 @@ ORA_SANDBOX_STUDIO_URL = ORA_SANDBOX_URL.replace("@", "@studio-")
 
 class PageConfigurationError(Exception):
     """ A page object was not configured correctly. """
-    pass
 
 
 class BaseAssessmentPage(PageObject):  # pylint: disable=abstract-method
@@ -73,7 +72,6 @@ class StudioPage(PageObject):
         """
         Verifies browser is on the correct page.
         """
-        pass
 
     @property
     def url(self):

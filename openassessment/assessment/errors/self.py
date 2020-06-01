@@ -11,18 +11,15 @@ class SelfAssessmentError(AssessmentError):
     Self Assessment Workflow.
 
     """
-    pass
 
 
 class SelfAssessmentRequestError(SelfAssessmentError):
     """
     There was a problem with the request for a self-assessment.
     """
-    pass
 
 
 class SelfAssessmentInternalError(SelfAssessmentError):
     """
     There was an internal problem while accessing the self-assessment api.
     """
-    pass

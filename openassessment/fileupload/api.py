@@ -152,6 +152,10 @@ class FileUpload:
 
     @property
     def download_url(self):
+        """
+        Returns the url at which the file that corresponds to the key
+        can be downloaded if exists.
+        """
         if self.exists:
             try:
                 return get_download_url(self.key)
@@ -161,6 +165,7 @@ class FileUpload:
                     error=exc
                 ))
                 return ''
+        return None
 
     @property
     def key(self):
@@ -309,7 +314,7 @@ class FileUploadManager:
         descriptors = []
 
         for upload in self.get_uploads(include_deleted=include_deleted):
-            show_delete_button = True if upload.exists else False
+            show_delete_button = bool(upload.exists)
 
             if upload.exists and self.block.is_team_assignment():
                 shared_upload = self.shared_uploads_for_team_by_key[upload.key]
