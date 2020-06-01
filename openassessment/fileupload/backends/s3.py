@@ -11,7 +11,7 @@ import boto3
 from ..exceptions import FileUploadInternalError
 from .base import BaseBackend
 
-logger = logging.getLogger(
+log = logging.getLogger(
     "openassessment.fileupload.api"
 )  # pylint: disable=invalid-name
 
@@ -33,7 +33,7 @@ class Backend(BaseBackend):
                 ExpiresIn=self.UPLOAD_URL_TIMEOUT,
             )
         except Exception as ex:
-            logger.exception(
+            log.exception(
                 u"An internal exception occurred while generating an upload URL."
             )
             raise FileUploadInternalError(ex)
@@ -50,7 +50,7 @@ class Backend(BaseBackend):
                 ExpiresIn=self.DOWNLOAD_URL_TIMEOUT,
             )
         except Exception as ex:
-            logger.exception(
+            log.exception(
                 u"An internal exception occurred while generating a download URL."
             )
             raise FileUploadInternalError(ex)
