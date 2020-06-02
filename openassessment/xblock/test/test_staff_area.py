@@ -872,15 +872,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         __, context = xblock.get_student_info_path_and_context('Bob')
         self.assertFalse(any(context['staff_file_urls']))
 
-    @patch('openassessment.xblock.team_mixin.TeamMixin.is_team_assignment')
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_area_has_team_info(self, xblock, is_team_assignment_patch):
+    def test_staff_area_has_team_info(self, xblock):
         # Given that we are course staff, managing a team assignment
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        is_team_assignment_patch.return_value = True
-        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+        self._setup_xblock_and_create_submission(xblock, team=True)
 
         # When I get the staff context
         __, context = xblock.get_staff_path_and_context()
@@ -888,34 +883,22 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Then the context has team assignment info
         self.assertTrue(context['is_team_assignment'])
 
-    @patch('openassessment.xblock.team_mixin.TeamMixin.is_team_assignment')
     @scenario('data/team_submission.xml', user_id='Bob', )
-    def test_staff_area_student_info_has_team_info(self, xblock, is_team_assignment_patch):
+    def test_staff_area_student_info_has_team_info(self, xblock):
         # Given that we are course staff and teams enabled
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        is_team_assignment_patch.return_value = True
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
-        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+        student = self._setup_xblock_and_create_submission(xblock, team=True)['submitted_by']
 
-        # Create a submission for the team, and corresponding workflow.
-        team_item = TEAMMATE_ITEM.copy()
-        team_item["item_id"] = xblock.scope_ids.usage_id
-        self._create_submission(team_item, {'text': 'foo'}, [])
+        # When I get the student context
+        __, context = xblock.get_student_info_path_and_context(student)
 
-        __, context = xblock.get_student_info_path_and_context("Bob")
+        # Then the context has team info
         self.assertTrue(context['is_team_assignment'])
         self.assertEqual(context['team_name'], MOCK_TEAM_NAME)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_has_team_info_individual(self, xblock):
         # Given that we are course staff, managing an individual assignment
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.teams_enabled = False
-        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+        self._setup_xblock_and_create_submission(xblock)
 
         # When I get the staff context
         __, context = xblock.get_staff_path_and_context()
@@ -926,17 +909,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_no_team_info(self, xblock):
         # Given that we are course staff and teams are not enabled
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+        self._setup_xblock_and_create_submission(xblock)
 
-        # Create a submission for Bob, and corresponding workflow.
-        bob_item = STUDENT_ITEM.copy()
-        bob_item["item_id"] = xblock.scope_ids.usage_id
-        self._create_submission(bob_item, {'text': 'foo'}, [])
-
+        # When I get the student context
         __, context = xblock.get_student_info_path_and_context("Bob")
+
+        # Then it knows it's not a team assignment
         self.assertFalse(context['is_team_assignment'])
         self.assertIsNone(context['team_name'])
 
@@ -1139,6 +1117,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
+        xblock.user_state_upload_data_enabled = Mock(return_value=True)
         student_item = STUDENT_ITEM.copy()
         student_item["item_id"] = usage_id
         if team:
