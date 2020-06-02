@@ -774,6 +774,32 @@
         "output": "oa_staff_area_full_grading_2.html"
     },
     {
+        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "context": {
+            "status_counts": {
+                "staff": 1,
+                "waiting": 3,
+                "done": 4
+            },
+            "num_submissions": 10,
+            "item_id": "test_item",
+            "step_dates": [
+                {
+                    "step": "submission",
+                    "start": "2014-01-01",
+                    "due": "N/A"
+                },
+                {
+                    "step": "staff",
+                    "start": "2014-02-02",
+                    "due": "N/A"
+                }
+            ],
+            "is_team_assignment": true
+        },
+        "output": "oa_staff_area_team_assignment.html"
+    },
+    {
         "template": "openassessmentblock/staff_area/oa_staff_grade_learners_count.html",
         "context": {
             "staff_assessment_ungraded": 9,
@@ -978,6 +1004,89 @@
             "workflow_status": "done"
         },
         "output": "oa_staff_graded_submission.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ],
+            "staff_assessments": [
+                {
+                    "submission_uuid": "52d2158a-c568-11e3-b9b9-28cfe9182465",
+                    "points_earned": 5,
+                    "points_possible": 6,
+                    "rubric": {
+                        "criteria": [
+                            {
+                                "name": "Criterion 1",
+                                "prompt": "Prompt 1",
+                                "order_num": 0,
+                                "feedback": "optional",
+                                "options": [
+                                    {
+                                        "order_num": 2,
+                                        "points": 2,
+                                        "name": "Good"
+                                    }
+                                ],
+                                "points_possible": 2
+                            }
+                        ]
+                    }
+                }
+            ],
+            "submission": {
+                "image_url": "/test-url",
+                "answer":{
+                    "text": "testing response text"
+                }
+            },
+            "is_team_assignment": true,
+            "submission_cancellation": 0
+        },
+        "output": "oa_student_info_team.html"
     },
     {
         "template": "openassessmentblock/peer/oa_peer_assessment.html",

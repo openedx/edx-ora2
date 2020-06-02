@@ -142,6 +142,9 @@ class StaffAreaMixin:
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
 
+        # Include whether or not this is a team assignment
+        context['is_team_assignment'] = self.is_team_assignment()
+
         context['xblock_id'] = self.get_xblock_id()
         return path, context
 
@@ -285,6 +288,7 @@ class StaffAreaMixin:
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
+            "is_team_assignment": self.is_team_assignment(),
         }
 
         if submission:
@@ -352,6 +356,15 @@ class StaffAreaMixin:
         # Only add the rest of the details to the context if a submission exists.
         if submission_uuid:
             self.add_submission_context(submission_uuid, context)
+
+        # Add team info to context
+        context['team_name'] = None
+        if anonymous_user_id and self.is_team_assignment():
+            try:
+                context['team_name'] = getattr(self.get_team_for_anonymous_user(anonymous_user_id), 'name', None)
+            except ObjectDoesNotExist:
+                # A student outside of the course will not exist and is valid
+                pass
 
         path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context

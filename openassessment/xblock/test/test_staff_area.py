@@ -7,12 +7,12 @@ from __future__ import absolute_import
 from collections import namedtuple
 import json
 
-import ddt
-from mock import MagicMock, Mock, PropertyMock, call, patch
 from six.moves import range, zip
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
+import ddt
+from mock import MagicMock, Mock, PropertyMock, call, patch
 from testfixtures import log_capture
 
 from submissions import api as sub_api
@@ -735,9 +735,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'submission_returned_uuid': submission['uuid']
         })
 
+    @patch('openassessment.xblock.team_mixin.TeamMixin.is_team_assignment')
     @patch('openassessment.xblock.staff_area_mixin.list_to_conversational_format')
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_form_for_team_assessment(self, xblock, formatter):
+    def test_staff_form_for_team_assessment(self, xblock, formatter, is_team_assignment_patch):
         # mock list format
         def mock_formatter(entries):
             return ', '.join(entries)
@@ -750,6 +751,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Enable teams
         xblock.teams_enabled = True
+        is_team_assignment_patch.return_value = True
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         team_submission_enabled = 'data-team-submission="True"'
         team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
@@ -870,6 +872,52 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self._setup_xblock_and_create_submission(xblock)
         __, context = xblock.get_student_info_path_and_context('Bob')
         self.assertFalse(any(context['staff_file_urls']))
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_area_has_team_info(self, xblock):
+        # Given that we are course staff, managing a team assignment
+        self._setup_xblock_and_create_submission(xblock, team=True)
+
+        # When I get the staff context
+        __, context = xblock.get_staff_path_and_context()
+
+        # Then the context has team assignment info
+        self.assertTrue(context['is_team_assignment'])
+
+    @scenario('data/team_submission.xml', user_id='Bob', )
+    def test_staff_area_student_info_has_team_info(self, xblock):
+        # Given that we are course staff and teams enabled
+        student = self._setup_xblock_and_create_submission(xblock, team=True)['submitted_by']
+
+        # When I get the student context
+        __, context = xblock.get_student_info_path_and_context(student)
+
+        # Then the context has team info
+        self.assertTrue(context['is_team_assignment'])
+        self.assertEqual(context['team_name'], MOCK_TEAM_NAME)
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_staff_area_has_team_info_individual(self, xblock):
+        # Given that we are course staff, managing an individual assignment
+        self._setup_xblock_and_create_submission(xblock)
+
+        # When I get the staff context
+        __, context = xblock.get_staff_path_and_context()
+
+        # Then the context has team assignment info
+        self.assertFalse(context['is_team_assignment'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_staff_area_student_info_no_team_info(self, xblock):
+        # Given that we are course staff and teams are not enabled
+        self._setup_xblock_and_create_submission(xblock)
+
+        # When I get the student context
+        __, context = xblock.get_student_info_path_and_context("Bob")
+
+        # Then it knows it's not a team assignment
+        self.assertFalse(context['is_team_assignment'])
+        self.assertIsNone(context['team_name'])
 
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
@@ -1070,6 +1118,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
+        xblock.user_state_upload_data_enabled = Mock(return_value=True)
         student_item = STUDENT_ITEM.copy()
         student_item["item_id"] = usage_id
         if team:

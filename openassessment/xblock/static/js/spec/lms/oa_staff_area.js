@@ -435,6 +435,55 @@ describe('OpenAssessment.StaffAreaView', function() {
             });
         });
 
+        it('defaults language when managing an individual assignment', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area.html'),
+                $staffToolsButton = $('.button-staff-tools', staffArea.element),
+                $staffToolsPanel = $('.wrapper--staff-tools', staffArea.element),
+                $staffToolsHeader = $('.staff-info__title', $staffToolsPanel),
+                $reportHeader,
+                $sectionHeaders;
+
+            // Button & header text for an individual assignment
+            expect($staffToolsButton.text().trim()).toBe('Manage Individual Learners');
+            expect($staffToolsHeader.text().trim()).toBe('Manage Individual Learners');
+
+            // Submission info for an individual
+            chooseStudent(staffArea, 'testStudent');
+            $reportHeader = $('.staff-info__student__report__summary', staffArea.element);
+            expect($reportHeader.text().trim()).toContain('Viewing learner:');
+
+            // Shorthand: all sections contain "learner" text
+            $sectionHeaders = $('$.staff-info__status .ui-staff');
+            $sectionHeaders.each(function(i, elem) { // eslint-disable-line no-unused-vars
+                expect($(elem).text().trim().toLowerCase()).toContain('learner');
+            });
+        });
+
+        it('updates language when managing a team assignment', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_team_assignment.html'),
+                $staffToolsButton = $('.button-staff-tools', staffArea.element),
+                $staffToolsPanel = $('.wrapper--staff-tools', staffArea.element),
+                $staffToolsHeader = $('.staff-info__title', $staffToolsPanel),
+                $reportHeader,
+                $sectionHeaders;
+
+            // Button & header text for a team assignment
+            expect($staffToolsButton.text().trim()).toBe('Manage Team Responses');
+            expect($staffToolsHeader.text().trim()).toBe('Manage Teams');
+
+            // Submission info for a team
+            server.studentTemplate = 'oa_student_info_team.html';
+            chooseStudent(staffArea, 'testStudent');
+            $reportHeader = $('.staff-info__student__report__summary', staffArea.element);
+            expect($reportHeader.text().trim()).toContain('Viewing team:');
+
+            // Shorthand: all sections contain "team" text
+            $sectionHeaders = $('$.staff-info__status .ui-staff');
+            $sectionHeaders.each(function(i, elem) { // eslint-disable-line no-unused-vars
+                expect($(elem).text().trim().toLowerCase()).toContain('team');
+            });
+        });
+
         describe('Submission Management', function() {
             it('updates submission cancellation button when comments changes', function() {
                 // Prevent the server's response from resolving,
