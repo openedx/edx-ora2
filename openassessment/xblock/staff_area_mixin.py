@@ -358,12 +358,13 @@ class StaffAreaMixin:
             self.add_submission_context(submission_uuid, context)
 
         # Add team info to context
-        # Note - this can probably be simplified when we get context direct from team assignments
         context['team_name'] = None
         if anonymous_user_id and self.is_team_assignment():
-            user = self.get_real_user(anonymous_user_id)
-            team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
-            context['team_name'] = getattr(team, 'name', None)
+            try:
+                context['team_name'] = getattr(self.get_team_for_anonymous_user(anonymous_user_id), 'name', None)
+            except ObjectDoesNotExist:
+                # A student outside of the course will not exist and is valid
+                pass
 
         path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
