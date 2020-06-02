@@ -8,7 +8,6 @@ import copy
 from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 import logging
-from xblock.core import XBlock
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
