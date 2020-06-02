@@ -15,12 +15,12 @@ from six.moves import range, zip
 
 from django.core.management import call_command
 
+from submissions import api as sub_api, team_api as team_sub_api
 import openassessment.assessment.api.peer as peer_api
 from openassessment.data import CsvWriter, OraAggregateData
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api, team_api as team_workflow_api
-from submissions import api as sub_api, team_api as team_sub_api
 
 if six.PY2:
     from StringIO import StringIO  # pylint: disable=import-error

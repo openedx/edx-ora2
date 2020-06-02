@@ -7,7 +7,6 @@ class FileUploadError(Exception):
     This is the generic error raised when a file could not be uploaded.
 
     """
-    pass
 
 
 class FileUploadInternalError(FileUploadError):
@@ -17,7 +16,6 @@ class FileUploadInternalError(FileUploadError):
     the File Upload API, beyond the intervention of the requester.
 
     """
-    pass
 
 
 class FileUploadRequestError(FileUploadError):
@@ -27,4 +25,3 @@ class FileUploadRequestError(FileUploadError):
     based on type restrictions, size restrictions, upload limits, etc.
 
     """
-    pass

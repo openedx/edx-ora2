@@ -12,13 +12,13 @@ import os.path
 import mock
 from six.moves import zip
 
+import webob
+from submissions import api as submissions_api
+from workbench.runtime import WorkbenchRuntime
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
 from openassessment.workflow import api as workflow_api
-from submissions import api as submissions_api
-import webob
-from workbench.runtime import WorkbenchRuntime
 
 # Sample peer assessments
 PEER_ASSESSMENTS = [
@@ -282,7 +282,6 @@ class XBlockHandlerTestCase(XBlockHandlerTestCaseMixin, CacheResetTest):
     """
     Base XBlock handler test case.  Use this if you do NOT need to simulate the read-replica.
     """
-    pass
 
 
 class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCacheResetTest):
@@ -292,7 +291,6 @@ class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCa
     on the read replica.  It's also slower, so unless you're using the read-replica,
     use `XBlockHandlerTestCase` instead.
     """
-    pass
 
 
 class SubmitAssessmentsMixin:

@@ -46,10 +46,9 @@ def retry(tries=2, delay=4, backoff=2):
                 except (BrokenPromise, AssertionError) as ex:
                     if attempt_num >= (tries - 1):
                         raise
-                    else:
-                        print(u"Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay))
-                        time.sleep(_delay)
-                        _delay *= backoff
+                    print(u"Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay))
+                    time.sleep(_delay)
+                    _delay *= backoff
         return _inner
     return _decorator
 
@@ -278,9 +277,8 @@ class OpenAssessmentTest(WebAppTest):
             if not continue_after:
                 self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out - 1))
                 break
-            else:
-                ungraded -= 1
-                self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
+            ungraded -= 1
+            self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
 
     def refresh_page(self):
         """
@@ -1177,7 +1175,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
 
     def assess_feedback(self, self_or_peer=""):
         """ Assess feedback for the assessment. """
-        if self_or_peer != "self" and self_or_peer != "peer":
+        if self_or_peer not in ('self', 'peer'):
             raise AssertionError("assert_feedback only works for self or peer assessments")
         page = self.self_asmnt_page if self_or_peer == "self" else self.peer_asmnt_page
         page.wait_for_page()

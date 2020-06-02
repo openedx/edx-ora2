@@ -4,10 +4,10 @@ Handle OpenAssessment XBlock requests to the Workflow API.
 
 from __future__ import absolute_import
 
+from xblock.core import XBlock
+from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
-from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
-from xblock.core import XBlock
 
 
 class WorkflowMixin:
@@ -161,6 +161,7 @@ class WorkflowMixin:
                     return submission_list[0]["uuid"]
             except (SubmissionInternalError, SubmissionNotFoundError):
                 return None
+        return None
 
     def get_workflow_status_counts(self):
         """

@@ -16,7 +16,6 @@ class InvalidTrainingExample(Exception):
     """
     The training example could not be deserialized.
     """
-    pass
 
 
 def validate_training_example_format(example):

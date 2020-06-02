@@ -15,6 +15,10 @@ from django.conf import settings
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy
 
+from voluptuous import MultipleInvalid
+from xblock.fields import List, Scope
+from xblock.core import XBlock
+from web_fragments.fragment import Fragment
 from openassessment.xblock.data_conversion import (
     create_rubric_dict,
     make_django_template_key,
@@ -24,10 +28,6 @@ from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEF
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
-from voluptuous import MultipleInvalid
-from xblock.core import XBlock
-from xblock.fields import List, Scope
-from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -111,7 +111,7 @@ class StudioMixin:
         # In the authoring GUI, date and time fields should never be null.
         # Therefore, we need to resolve all "default" dates to datetime objects
         # before displaying them in the editor.
-        __, __, date_ranges = resolve_dates(
+        __, __, date_ranges = resolve_dates(  # pylint: disable=redeclared-assigned-name
             self.start, self.due,
             [
                 (self.submission_start, self.submission_due)

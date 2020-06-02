@@ -3,4 +3,3 @@
 
 class AssessmentError(Exception):
     """ A generic error for errors that occur during assessment. """
-    pass

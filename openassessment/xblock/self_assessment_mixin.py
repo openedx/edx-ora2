@@ -3,10 +3,11 @@ from __future__ import absolute_import
 
 import logging
 
-from openassessment.assessment.api import self as self_api
-from openassessment.workflow import api as workflow_api
 from webob import Response
 from xblock.core import XBlock
+
+from openassessment.assessment.api import self as self_api
+from openassessment.workflow import api as workflow_api
 
 from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
                               verify_assessment_parameters)

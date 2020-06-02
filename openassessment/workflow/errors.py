@@ -13,7 +13,6 @@ class AssessmentWorkflowError(Exception):
     action.
 
     """
-    pass
 
 
 class AssessmentWorkflowInternalError(AssessmentWorkflowError):
@@ -24,7 +23,6 @@ class AssessmentWorkflowInternalError(AssessmentWorkflowError):
     services.
 
     """
-    pass
 
 
 class AssessmentWorkflowRequestError(AssessmentWorkflowError):
@@ -46,7 +44,6 @@ class AssessmentWorkflowNotFoundError(AssessmentWorkflowError):
     Submissions, this error may be raised.
 
     """
-    pass
 
 
 class AssessmentApiLoadError(AssessmentWorkflowInternalError):

@@ -112,7 +112,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         }
 
         for field, wrong_value in wrong_field_types.items():
-            file_metadata = {key: value for key, value in base_metadata.items()}
+            file_metadata = dict(base_metadata.items())
             file_metadata[field] = wrong_value
 
             resp = self.request(xblock, 'save_files_descriptions', json.dumps({'fileMetadata': file_metadata}))

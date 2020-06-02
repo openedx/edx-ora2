@@ -11,7 +11,6 @@ class PeerAssessmentError(AssessmentError):
     Peer Assessment Workflow.
 
     """
-    pass
 
 
 class PeerAssessmentRequestError(PeerAssessmentError):
@@ -21,7 +20,6 @@ class PeerAssessmentRequestError(PeerAssessmentError):
     information which does not allow the request to be processed.
 
     """
-    pass
 
 
 class PeerAssessmentWorkflowError(PeerAssessmentError):
@@ -31,7 +29,6 @@ class PeerAssessmentWorkflowError(PeerAssessmentError):
     occur based on parameters specific to the Submission, User, or Peer Scorers.
 
     """
-    pass
 
 
 class PeerAssessmentInternalError(PeerAssessmentError):
@@ -41,4 +38,3 @@ class PeerAssessmentInternalError(PeerAssessmentError):
     the actions or parameters given to the API.
 
     """
-    pass

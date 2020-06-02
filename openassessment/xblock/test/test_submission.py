@@ -17,14 +17,14 @@ import boto
 from boto.s3.key import Key
 from moto import mock_s3_deprecated
 from django.contrib.auth import get_user_model
+from submissions import api as sub_api
+from submissions.api import SubmissionInternalError, SubmissionRequestError
+from submissions.models import TeamSubmission
 from openassessment.fileupload import api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
-from submissions import api as sub_api
-from submissions.models import TeamSubmission
-from submissions.api import SubmissionInternalError, SubmissionRequestError
 
 from .base import XBlockHandlerTestCase, scenario
 

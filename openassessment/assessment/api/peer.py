@@ -11,13 +11,13 @@ import logging
 from django.db import DatabaseError, IntegrityError, transaction
 from django.utils import timezone
 
+from submissions import api as sub_api
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
                                               PeerAssessmentWorkflowError)
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentPart, InvalidRubricSelection,
                                               PeerWorkflow, PeerWorkflowItem)
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, RubricSerializer,
                                                    full_assessment_dict, rubric_from_dict, serialize_assessments)
-from submissions import api as sub_api
 
 logger = logging.getLogger("openassessment.assessment.api.peer")  # pylint: disable=invalid-name
 

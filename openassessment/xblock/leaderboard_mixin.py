@@ -8,11 +8,11 @@ import six
 
 from django.utils.translation import ugettext as _
 
+from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
-from xblock.core import XBlock
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
