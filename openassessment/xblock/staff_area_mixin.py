@@ -217,8 +217,8 @@ class StaffAreaMixin:
                         self.get_username(anonymous_student_id), submission
                     )
                     # Add team info to context
-                    submission_context['teams_enabled'] = self.is_team_assignment()
-                    if self.is_team_assignment():
+                    submission_context['teams_enabled'] = self.teams_enabled
+                    if self.teams_enabled:
                         user = self.get_real_user(anonymous_student_id)
 
                         if not user:

@@ -750,6 +750,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         # Enable teams
+        xblock.teams_enabled = True
         is_team_assignment_patch.return_value = True
         xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         team_submission_enabled = 'data-team-submission="True"'
