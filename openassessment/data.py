@@ -10,6 +10,8 @@ import json
 import six
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db.models import F
 
 from submissions import api as sub_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
@@ -369,18 +371,81 @@ class OraAggregateData:
         )
 
     @classmethod
-    def _build_assessments_cell(cls, assessments):
+    def _usernames_enabled(cls):
+        """
+        Checks if toggle for deanonymized usernames in report enabled.
+        """
+
+        return settings.FEATURES.get('ENABLE_ORA_USERNAMES_ON_DATA_EXPORT', False)
+
+    @classmethod
+    def _map_anonymized_ids_to_usernames(cls, anonymized_ids):
+        """
+        Args:
+            anonymized_ids - list of anonymized user ids.
+        Returns:
+            dictionary, that contains mapping between anonymized user ids and
+            actual usernames.
+        """
+        User = get_user_model()
+
+        users = cls._use_read_replica(
+            User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+            .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+            .values("username", "anonymous_id")
+        )
+
+        anonymous_id_to_username_mapping = {
+            user["anonymous_id"]: user["username"] for user in users
+        }
+
+        return anonymous_id_to_username_mapping
+
+    @classmethod
+    def _map_sudents_and_scorers_ids_to_usernames(cls, all_submission_information):
+        """
+        Args:
+            all_submission_information - list of tuples with submission data,
+            that returned by submissions api's
+            `get_all_course_submission_information` method.
+        Returns:
+            dictionary, that contains mapping between students and scoreres
+            anonymized user ids and actual usernames.
+        """
+
+        student_ids = []
+        submission_uuids = []
+
+        for student_item, submission, _ in all_submission_information:
+            student_ids.append(student_item["student_id"])
+            submission_uuids.append(submission["uuid"])
+
+        scorer_ids = cls._use_read_replica(
+            Assessment.objects.filter(submission_uuid__in=submission_uuids).values_list(
+                "scorer_id", flat=True
+            )
+        )
+
+        return cls._map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
+
+    @classmethod
+    def _build_assessments_cell(cls, assessments, usernames_map):
         """
         Args:
             assessments (QuerySet) - assessments that we would like to collate into one column.
+            usernames_map - dictionary that maps anonymous ids to usernames.
         Returns:
             string that should be included in the 'assessments' column for this set of assessments' row
         """
+        usernames_enabled = cls._usernames_enabled()
+
         returned_string = u""
         for assessment in assessments:
             returned_string += u"Assessment #{}\n".format(assessment.id)
             returned_string += u"-- scored_at: {}\n".format(assessment.scored_at)
             returned_string += u"-- type: {}\n".format(assessment.score_type)
+            if usernames_enabled:
+                returned_string += u"-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
             returned_string += u"-- scorer_id: {}\n".format(assessment.scorer_id)
             if assessment.feedback != u"":
                 returned_string += u"-- overall_feedback: {}\n".format(assessment.feedback)
@@ -455,12 +520,17 @@ class OraAggregateData:
                 for this course.
 
         """
+        all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
+        usernames_enabled = cls._usernames_enabled()
 
-        all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
+        usernames_map = (
+            cls._map_sudents_and_scorers_ids_to_usernames(all_submission_information)
+            if usernames_enabled
+            else {}
+        )
 
         rows = []
         for student_item, submission, score in all_submission_information:
-            row = []
             assessments = cls._use_read_replica(
                 Assessment.objects.prefetch_related('parts').
                 prefetch_related('rubric').
@@ -468,14 +538,21 @@ class OraAggregateData:
                     submission_uuid=submission['uuid']
                 )
             )
-            assessments_cell = cls._build_assessments_cell(assessments)
+            assessments_cell = cls._build_assessments_cell(assessments, usernames_map)
             assessments_parts_cell = cls._build_assessments_parts_cell(assessments)
             feedback_options_cell = cls._build_feedback_options_cell(assessments)
             feedback_cell = cls._build_feedback_cell(submission['uuid'])
 
+            row_username_cell = (
+                [usernames_map.get(student_item["student_id"], "")]
+                if usernames_enabled
+                else []
+            )
+
             row = [
                 submission['uuid'],
                 submission['student_item'],
+            ] + row_username_cell + [
                 student_item['student_id'],
                 submission['submitted_at'],
                 #  Dumping required to render special characters in CSV
@@ -490,9 +567,16 @@ class OraAggregateData:
             ]
             rows.append(row)
 
+        header_username_cell = (
+            ['Username']
+            if usernames_enabled
+            else []
+        )
+
         header = [
             'Submission ID',
-            'Item ID',
+            'Item ID'
+        ] + header_username_cell + [
             'Anonymized Student ID',
             'Date/Time Response Submitted',
             'Response',
