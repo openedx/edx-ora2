@@ -13,7 +13,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from submissions.errors import TeamSubmissionNotFoundError
+from submissions.errors import SubmissionNotFoundError, TeamSubmissionNotFoundError
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -547,7 +547,22 @@ class StaffAreaMixin:
         if not comments:
             return {"success": False, "msg": self._(u'Please enter valid reason to remove the submission.')}
 
-        return self._cancel_workflow(submission_uuid, comments)
+        if self.is_team_assignment():
+            not_found_msg = self._('Submission not found')
+            try:
+                submission = self.get_user_submission(submission_uuid)
+            except SubmissionNotFoundError:
+                return {"success": False, "msg": not_found_msg}
+            if not submission:
+                return {"success": False, "msg": not_found_msg}
+
+            team_submission_uuid = submission.get('team_submission_uuid', None)
+            if not team_submission_uuid:
+                msg = self._('Submission for team assignment has no associated team submission')
+                return {"success": False, "msg": msg}
+            return self._cancel_team_workflow(str(team_submission_uuid), comments)
+        else:
+            return self._cancel_workflow(submission_uuid, comments)
 
     def _cancel_workflow(self, submission_uuid, comments, requesting_user_id=None):
         """

@@ -166,7 +166,11 @@
                 </div>
             {% elif workflow_status == "cancelled" %}
                 <div class="staff-info__final__grade__score">
-                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
+                    {% if not is_team_assignment %}
+                        <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
+                    {% else %}
+                        <p>{% trans "The teams's submission has been removed from peer assessment. The team receives a grade of zero unless you delete the team's state for the problem to allow them to resubmit a response." %}</p>
+                    {% endif %}
                 </div>
             {% elif workflow_status == None %}
                 <div class="staff-info__final__grade__score">
@@ -222,7 +226,11 @@
 
                         <div class="step__message message message--warning">
                             <h5 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h5>
-                            <div class="message__content">{% trans "Removing a learner's submission cannot be undone and should be done with caution." %}</div>
+                            {% if not is_team_assignment %}
+                                <div class="message__content">{% trans "Removing a learner's submission cannot be undone and should be done with caution." %}</div>
+                            {% else %}
+                                <div class="message__content">{% trans "Removing a team's submission cannot be undone and should be done with caution." %}</div>
+                            {% endif %}
                         </div>
 
                         <ul class="list list--actions">
