@@ -171,7 +171,7 @@ class TestGrader:
                 'javac -cp {0} {1}'.format(TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar", code_full_file_name),
                 compiling=True)
             output = self.run_as_subprocess(
-                'java -cp {0} {1}{2}'.format(
+                'java -cp {0} {1} {2}'.format(
                     TestGrader.__TMP_DATA_DIR__ + code_file_name + ":" + TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar",
                     code_file_name, input_file),
                 running_code=True, timeout=timeout
