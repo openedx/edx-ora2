@@ -132,6 +132,7 @@ class GradeMixin:
 
         context = {
             'score': score,
+            'score_explanation': self._get_score_explanation(assessment_steps, score),
             'feedback_text': feedback_text,
             'has_submitted_feedback': has_submitted_feedback,
             'student_submission': create_submission_dict(student_submission, self.prompts),
@@ -584,3 +585,55 @@ class GradeMixin:
                     part['option']['label'] = option_labels.get(option_label_key, part['option']['name'])
 
         return assessment
+
+    def _get_score_explanation(self, assessment_steps, score):
+        """
+        Return a string which explains how grade is calculated for the ORA assessment
+        based on assessment_steps.
+        Args:
+            assessment_steps (list): List of assessment_steps for some ORA.
+            score (dict): Dict containing points_possible, points_earned and its related attributes
+        Returns:
+            str
+        """
+        first_sentence = _(
+            "You have successfully completed this problem and received a {earned_points}/{total_points}."
+        ).format(earned_points=score["points_earned"], total_points=score["points_possible"])
+
+        second_sentence = ""
+
+        is_self_assessment = "self-assessment" in assessment_steps
+        is_peer_assessment = "peer-assessment" in assessment_steps
+        is_staff_assessment = "staff-assessment" in assessment_steps
+
+        if is_self_assessment and not (is_staff_assessment or is_peer_assessment):
+            second_sentence = _("The grade for this problem is determined by your Self Assessment.")
+
+        elif is_staff_assessment and not (is_self_assessment or is_peer_assessment):
+            second_sentence = _("The grade for this problem is determined by your Staff Grade.")
+
+        elif is_peer_assessment and not (is_staff_assessment or is_self_assessment):
+            # TODO: Some additions to this message will be necessary to this message
+            #       based on E and H milestones.
+            second_sentence = _(
+                "The grade for this problem is determined by the average overall "
+                "score of your Peer Assessments."
+            )
+
+        elif is_self_assessment and is_peer_assessment and not is_staff_assessment:
+            second_sentence = _(
+                "The grade for this problem is determined by the average overall "
+                "score of your Peer Assessments."
+            )
+
+        elif is_self_assessment and is_staff_assessment and not is_peer_assessment:
+            second_sentence = _("The grade for this problem is determined by your Staff Grade.")
+
+        elif is_staff_assessment and is_peer_assessment and not is_self_assessment:
+            second_sentence = _("The grade for this problem is determined by your Staff Grade.")
+
+        elif is_self_assessment and is_staff_assessment and is_peer_assessment:
+            second_sentence = _("The grade for this problem is determined by your Staff Grade.")
+
+        # strip() to remove extra space in case second_sentence is empty
+        return "{} {}".format(first_sentence, second_sentence).strip()

@@ -44,6 +44,12 @@
 
                     <article class="submission__peer-evaluations step__content__section">
                         <h5 class="submission__peer-evaluations__title">{% trans "Assessments of Your Response" %}</h5>
+                        
+                        <hr>
+                        <div class="step__message message message--complete">
+                            <h5 class="message__title">{% trans "Status" %}</h5>
+                            <div class="message__content">{{ score_explanation }}</div>
+                        </div>
 
                         <ol class="list submission__peer-evaluations__questions">
                             {% for criterion in grade_details.criteria %}
