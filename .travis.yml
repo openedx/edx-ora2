@@ -12,9 +12,9 @@ python:
   - 3.8
 
 env:
-  - TOX_ENV=django22
-  - TOX_ENV=js
-  - TOX_ENV=quality
+  - TOXENV=django22
+  - TOXENV=js
+  - TOXENV=quality
 
 before_install:
   - "pip install -U pip"
@@ -28,7 +28,7 @@ install:
   - pip install -r requirements/travis.txt
 
 script:
-  - tox -e $TOX_ENV
+  - tox
 
 after_success: coveralls
 
@@ -38,7 +38,7 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    condition: "$TOXENV=quality"
+    condition: "$TOXENV = quality"
     python: 3.5
   password:
     secure: F7yrAFt9c56Y/x29pNbI3LMEATc6DPDTqEXs5WDDRwse/JwKe3MSsXRv6ois6JKzWroHQOZu4CKBbtfZ8v4fWv8lT4kwMJzAq8I4tda4qaSWulHiTdefzkR147oW9db2lTAKFOZsV/XUFFsv2sHDK/SQiJ0y+nxTgoMxEILChnw=
