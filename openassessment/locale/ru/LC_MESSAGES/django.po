@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 10:47-0400\n"
-"PO-Revision-Date: 2020-05-12 06:26+0000\n"
+"POT-Creation-Date: 2020-06-01 17:33-0400\n"
+"PO-Revision-Date: 2020-06-02 18:25+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -206,7 +206,7 @@ msgid "Select Team Set"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
 msgstr "Критерий"
@@ -360,7 +360,7 @@ msgstr "Введите дату и время. когда слушателя с�
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:92
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:109
 msgid "Due Date"
 msgstr "Срок сдачи"
 
@@ -699,8 +699,8 @@ msgid ""
 msgstr "Вы выполнили все шаги для данного задания, но ваш ответ всё ещё нуждается в проверке. Когда проверка вашего ответа окончится, вы увидите отзывы от всех, кто оценивал ваш ответ и получите итоговую оценку."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:143
 msgid "Grade Available Responses"
 msgstr "Оценить доступные ответы"
 
@@ -959,7 +959,7 @@ msgstr "Прочитайте и оцените следующий ответ о�
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:63
 msgid "Associated Files"
 msgstr "Приложенные файлы"
 
@@ -1305,61 +1305,73 @@ msgstr "Данный шаг завершён, срок его выполнени
 msgid "Staff Grade"
 msgstr "Оценка командой курса"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:8
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:25
 msgid "Manage Individual Learners"
 msgstr "Управление отдельными слушателями"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:7
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:44
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:10
+msgid "Manage Team Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:61
 msgid "View Assignment Statistics"
 msgstr "Статистика оценивания"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:124
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:21
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:59
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:141
 msgid "Close"
 msgstr "Закрыть"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:27
+msgid "Manage Teams"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:40
 msgid "Enter an individual learner's username or email"
 msgstr "Введите имя пользователя или адрес электронной почты слушателя."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:29
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
+msgid "Enter a team member's username or edX email"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:46
 msgid "Submit"
 msgstr "Отправить"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:68
 msgid "Response total"
 msgstr "Всего ответов"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:57
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:74
 msgid "Location"
 msgstr "Местонахождение"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:63
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:80
 msgid "Learner Progress"
 msgstr "Достижения слушателя"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:67
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:84
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:107
 msgid "Problem Step"
 msgstr "Шаг задания"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:68
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:85
 msgid "Active Learners in Step"
 msgstr "Количество активных слушателей на шаге"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:86
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:103
 msgid "Dates"
 msgstr "Даты"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:91
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
 msgid "Release Date"
 msgstr "Дата выпуска"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:104
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:110
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:121
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:127
 msgid "N/A"
 msgstr "Нет"
 
@@ -1402,7 +1414,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
 msgstr "Ответ слушателя на приведённый выше вопрос"
 
@@ -1435,19 +1447,31 @@ msgid ""
 "                                "
 msgstr "\nОтвет: %(student_username)s"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:10
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:11
 #, python-format
 msgid ""
 "\n"
-"                Viewing learner: %(learner)s\n"
-"            "
-msgstr "\nПросмотр слушателя: %(learner)s\n "
+"                    Viewing learner: %(learner)s\n"
+"                "
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:21
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:15
+#, python-format
+msgid ""
+"\n"
+"                    Viewing team: %(team)s\n"
+"                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
 msgstr "Ответ слушателя"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:29
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
+msgid "Team's Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
 msgid ""
 "\n"
@@ -1455,7 +1479,7 @@ msgid ""
 "                        "
 msgstr "\nОтвет слушателя удалён сотрудником %(removed_by_username)s %(removed_datetime)s\n\n                        "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:33
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:43
 #, python-format
 msgid ""
 "\n"
@@ -1463,7 +1487,7 @@ msgid ""
 "                        "
 msgstr "\n                            Ответы обучающихся удалены %(removed_datetime)s\n                        "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:40
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:50
 #, python-format
 msgid ""
 "\n"
@@ -1471,27 +1495,39 @@ msgid ""
 "                    "
 msgstr "\n                        Комментарии: %(comments)s\n                    "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
+msgid "The team's response to the prompt above"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
 msgstr "Оценки однокурсников, поставленные этому слушателю"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:62
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:76
 msgid "Peer Assessments Completed by This Learner"
 msgstr "Оценки работ однокурсников, поставленные этим слушателем"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:67
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Self Assessment"
 msgstr "Оценка, поставленная слушателем самому себе"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:72
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:87
 msgid "Staff Assessment for This Learner"
 msgstr "Оценка командой курса"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
+msgid "Staff Assessment for this Team"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
 msgstr "Итоговая оценка"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:90
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
+msgid "Team's Final Grade"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
 msgid ""
 "\n"
@@ -1499,11 +1535,11 @@ msgid ""
 "                        "
 msgstr "\nИтоговая оценка: %(points_earned)s из %(points_possible)s\n                        "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:97
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
 msgstr "Детали итоговой оценки"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:117
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:139
 #, python-format
 msgid ""
 "\n"
@@ -1518,56 +1554,64 @@ msgstr[1] "\n                                        %(assessment_label)s - %(po
 msgstr[2] "\n                                        %(assessment_label)s - %(points)s баллов\n                                    "
 msgstr[3] "\n                                        %(assessment_label)s - %(points)s баллов\n                                    "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:132
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
 msgstr "Отзыв сохранён"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:143
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:165
 msgid "The submission is waiting for assessments."
 msgstr "Ответ ожидает оценки."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:169
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Ответ слушателя был удален из результатов взаимного оценивания. Если вы не удалите статус выполненного слушателем задания, чтобы он смог отправить ответ заново, то слушатель получит нулевую оценку."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:173
 msgid "The problem has not been started."
 msgstr "Задание не начато."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:155
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been completed."
 msgstr "Задание не завершено."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:168
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:191
 msgid "Submit Assessment Grade Override"
 msgstr "Применить изменение оценки"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:185
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:193
+msgid "Submit Team Grade Override"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid "Remove Submission From Peer Grading"
 msgstr "Удалить ответ из результатов взаимного оценивания"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:194
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:214
+msgid "Remove Team Submission from Grading"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:224
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "Внимание: это действие необратимо"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:225
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "Удаление ответа слушателя необратимо. Используйте осторожно."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:200
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:230
 msgid "Comments:"
 msgstr "Комментарии:"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:209
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:239
 msgid "Remove submission"
 msgstr "Удалить ответ"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:224
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:254
 msgid "A response was not found for this learner."
 msgstr "Ответ этого слушателя не найден."
 
@@ -1698,15 +1742,15 @@ msgstr "Ошибка загрузки тренировочных примеро�
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Не удалось загрузить шаг обучения для этого задания."
 
-#: openassessment/xblock/data_conversion.py:265
+#: openassessment/xblock/data_conversion.py:267
 msgid "You must provide options selected in the assessment."
 msgstr "При оценивании, вам необходимо следовать следующим критериям."
 
-#: openassessment/xblock/data_conversion.py:268
+#: openassessment/xblock/data_conversion.py:270
 msgid "You must provide overall feedback in the assessment."
 msgstr "Для оценивания, вы должны представить отзыв."
 
-#: openassessment/xblock/data_conversion.py:271
+#: openassessment/xblock/data_conversion.py:273
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "Вам необходимо оставить отзыв в соответствии с критерием"
 
@@ -1851,56 +1895,63 @@ msgstr "Перед оцениванием своей работы вам нео�
 msgid "Your self assessment could not be submitted."
 msgstr "Не удалось отправить вашу оценку своей работы."
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "У вас недостаточно прав для запуска обучения автоматического оценщика"
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "У вас недостаточно прав для перезапуска задач."
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "У вас недостаточно прав для доступа к информации по оцениванию открытых ответов для сотрудников"
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "У вас недостаточно прав для доступа к информации о слушателях"
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "У вас нет доступа к оценке заданий командой курса."
 
-#: openassessment/xblock/staff_area_mixin.py:178
+#: openassessment/xblock/staff_area_mixin.py:183
 msgid "Error getting learner information."
 msgstr "Ошибка получения информации о слушателе."
 
-#: openassessment/xblock/staff_area_mixin.py:238
+#: openassessment/xblock/staff_area_mixin.py:243
 msgid "Error loading the checked out learner response."
 msgstr "Ошибка загрузки проверенного ответа."
 
-#: openassessment/xblock/staff_area_mixin.py:239
+#: openassessment/xblock/staff_area_mixin.py:244
 msgid "No other learner responses are available for grading at this time."
 msgstr "Нет доступных для оценивания ответов."
 
-#: openassessment/xblock/staff_area_mixin.py:241
+#: openassessment/xblock/staff_area_mixin.py:246
 msgid "Error getting staff grade information."
 msgstr "Ошибка при получении информации об оценке команды курса."
 
-#: openassessment/xblock/staff_area_mixin.py:262
+#: openassessment/xblock/staff_area_mixin.py:267
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Ошибка получения списка заданий без оценки."
 
-#: openassessment/xblock/staff_area_mixin.py:488
+#: openassessment/xblock/staff_area_mixin.py:547
 msgid "Please enter valid reason to remove the submission."
 msgstr "Пожалуйста, введите обоснованную причину удаления представленного задания."
 
-#: openassessment/xblock/staff_area_mixin.py:514
+#: openassessment/xblock/staff_area_mixin.py:573
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Ответ слушателя был удален из результатов взаимного оценивания. Если вы не удалите статус выполненного слушателем задания, чтобы он смог отправить ответ заново, то слушатель получит нулевую оценку."
+
+#: openassessment/xblock/staff_area_mixin.py:608
+msgid ""
+"The team submission has been removed from assessment. The learners receive a"
+" grade of zero unless you delete the learners' states for the problem to "
+"allow them to resubmit a response."
+msgstr ""
 
 #: openassessment/xblock/staff_assessment_mixin.py:40
 msgid "The submission ID of the submission being assessed was not found."
@@ -2007,35 +2058,35 @@ msgstr "Описания файлов не были отправлены."
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:394
+#: openassessment/xblock/submission_mixin.py:395
 msgid "There was an error uploading your file."
 msgstr "Произошла ошибка при загрузке вашего файла."
 
-#: openassessment/xblock/submission_mixin.py:403
+#: openassessment/xblock/submission_mixin.py:404
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "Тип файла должен быть GIF, PNG или JPG."
 
-#: openassessment/xblock/submission_mixin.py:406
+#: openassessment/xblock/submission_mixin.py:407
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "Тип файла должен быть PDF, GIF, PNG или JPG."
 
-#: openassessment/xblock/submission_mixin.py:409
+#: openassessment/xblock/submission_mixin.py:410
 msgid "File type must be one of the following types: {}"
 msgstr "Файл должен быть одного из следующих типов: {}"
 
-#: openassessment/xblock/submission_mixin.py:413
+#: openassessment/xblock/submission_mixin.py:414
 msgid "File type is not allowed."
 msgstr "Недопустимый тип файла"
 
-#: openassessment/xblock/submission_mixin.py:420
+#: openassessment/xblock/submission_mixin.py:421
 msgid "Error retrieving upload URL."
 msgstr "Ошибка при получении URL загрузки."
 
-#: openassessment/xblock/submission_mixin.py:652
+#: openassessment/xblock/submission_mixin.py:653
 msgid "This response has been saved but not submitted."
 msgstr "Ответ сохранён, но ещё не отправлен на проверку."
 
-#: openassessment/xblock/submission_mixin.py:653
+#: openassessment/xblock/submission_mixin.py:654
 msgid "This response has not been saved."
 msgstr "Ответ ещё не сохранён."
 
