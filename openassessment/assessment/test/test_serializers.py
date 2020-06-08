@@ -135,7 +135,7 @@ class AssessmentSerializerTest(CacheResetTest):
         rubric = rubric_from_dict(rubric_dict)
 
         # Create an assessment for the rubric
-        assessment = Assessment.create(rubric, "Bob", "submission UUID", "PE")
+        assessment = Assessment.create(rubric, "Bob", "submission-UUID", "PE")
         selected = {
             u"vøȼȺƀᵾłȺɍɏ": u"𝓰𝓸𝓸𝓭",
             u"ﻭɼค๓๓คɼ": u"єχ¢єℓℓєηт",
