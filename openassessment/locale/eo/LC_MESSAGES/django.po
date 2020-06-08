@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 15:25-0400\n"
+"POT-Creation-Date: 2020-06-08 09:59-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1988,6 +1988,21 @@ msgstr ""
 " ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"The teams's submission has been removed from peer assessment. The team "
+"receives a grade of zero unless you delete the team's state for the problem "
+"to allow them to resubmit a response."
+msgstr ""
+"Thé téäms's süßmïssïön häs ßéén rémövéd fröm péér ässéssmént. Thé téäm "
+"réçéïvés ä grädé öf zérö ünléss ýöü délété thé téäm's stäté för thé prößlém "
+"tö ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт,#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "The problem has not been started."
 msgstr ""
 "Thé prößlém häs nöt ßéén stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
@@ -2029,6 +2044,14 @@ msgid ""
 msgstr ""
 "Rémövïng ä léärnér's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
 "çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"Removing a team's submission cannot be undone and should be done with "
+"caution."
+msgstr ""
+"Rémövïng ä téäm's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
+"çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Comments:"
@@ -2466,6 +2489,16 @@ msgid "Please enter valid reason to remove the submission."
 msgstr ""
 "Pléäsé éntér välïd réäsön tö rémövé thé süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Submission not found"
+msgstr "Süßmïssïön nöt föünd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Submission for team assignment has no associated team submission"
+msgstr ""
+"Süßmïssïön för téäm ässïgnmént häs nö ässöçïätéd téäm süßmïssïön Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/xblock/staff_area_mixin.py
 msgid ""
