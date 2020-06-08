@@ -548,21 +548,29 @@ class StaffAreaMixin:
             return {"success": False, "msg": self._(u'Please enter valid reason to remove the submission.')}
 
         if self.is_team_assignment():
-            not_found_msg = self._('Submission not found')
-            try:
-                submission = self.get_user_submission(submission_uuid)
-            except SubmissionNotFoundError:
-                return {"success": False, "msg": not_found_msg}
-            if not submission:
-                return {"success": False, "msg": not_found_msg}
-
-            team_submission_uuid = submission.get('team_submission_uuid', None)
-            if not team_submission_uuid:
-                msg = self._('Submission for team assignment has no associated team submission')
-                return {"success": False, "msg": msg}
-            return self._cancel_team_workflow(str(team_submission_uuid), comments)
+            return self._cancel_team_submission(submission_uuid, comments)
         else:
             return self._cancel_workflow(submission_uuid, comments)
+
+    def _cancel_team_submission(self, submission_uuid, comments):
+        """
+        Cancels a team submission given an individual submission's uuid
+        """
+        not_found_msg = self._('Submission not found')
+        # Look up serialized individual submission to get team_submission_uuid
+        try:
+            submission = self.get_user_submission(submission_uuid)
+        except SubmissionNotFoundError:
+            return {"success": False, "msg": not_found_msg}
+        if not submission:
+            return {"success": False, "msg": not_found_msg}
+
+        team_submission_uuid = submission.get('team_submission_uuid', None)
+        if not team_submission_uuid:
+            msg = self._('Submission for team assignment has no associated team submission')
+            return {"success": False, "msg": msg}
+
+        return self._cancel_team_workflow(str(team_submission_uuid), comments)
 
     def _cancel_workflow(self, submission_uuid, comments, requesting_user_id=None):
         """
