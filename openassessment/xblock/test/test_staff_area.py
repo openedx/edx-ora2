@@ -654,7 +654,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("The learner submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
 
-
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_cancel_team_submission_submission_not_found(self, xblock):
         # Set up team assignment and submission
