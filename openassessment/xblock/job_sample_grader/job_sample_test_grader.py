@@ -29,7 +29,7 @@ class TestGrader:
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
             self.write_code_file(student_response, full_code_file_name)
         except Exception as exc:
-            return self.response_with_error_v2(str(exc))
+            return self.response_with_error_v2(exc.message)
 
         output = []
         sample_result = self.run_code('sample', lang, code_file_name, full_code_file_name, problem_name)
@@ -267,7 +267,7 @@ class TestGrader:
             result = self.compare_outputs(output, expected_output_file, problem_name)
             return result
         except Exception as e:
-            return self.respond_with_error(str(e))
+            return self.respond_with_error(e.message)
 
 
 if __name__ == '__main__':
