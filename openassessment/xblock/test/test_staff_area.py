@@ -708,7 +708,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Cancel the team submission
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
-        self.assertIn("The team submission has been removed from assessment", resp['msg'])
+        self.assertIn("The team’s submission has been removed from grading.", resp['msg'])
         self.assertTrue(resp['success'])
 
         # The submission should now be cancelled.

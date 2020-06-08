@@ -629,9 +629,9 @@ class StaffAreaMixin:
             return {
                 "success": True,
                 'msg': self._(
-                    "The team’s submission has been removed from grading. ",
-                    "The team receives a grade of zero unless you delete ",
-                    "a team member’s state for the problem to allow the team ",
+                    "The team’s submission has been removed from grading. "
+                    "The team receives a grade of zero unless you delete "
+                    "a team member’s state for the problem to allow the team "
                     "to resubmit a response."
                 )
             }
