@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 15:25-0400\n"
+"POT-Creation-Date: 2020-06-10 15:01-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -75,6 +75,26 @@ msgstr "Sävé Ⱡ'σяєм ι#"
 msgid "Cancel"
 msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
 
+#: openassessment/templates/openassessmentblock/edit/oa_edit_assessment_steps.html
+msgid ""
+"Open Response Assessments allow you to configure single or multiple steps in"
+" a rubric based open response assessment sequence. The steps available below"
+" can be enabled, disable, and ordered for a flexible set of pedagogical "
+"needs."
+msgstr ""
+"Öpén Réspönsé Àsséssménts ällöw ýöü tö çönfïgüré sïnglé ör mültïplé stéps ïn"
+" ä rüßrïç ßäséd öpén réspönsé ässéssmént séqüénçé. Thé stéps äväïläßlé ßélöw"
+" çän ßé énäßléd, dïsäßlé, änd ördéréd för ä fléxïßlé sét öf pédägögïçäl "
+"nééds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_assessment_steps.html
+msgid "Step Selection and Ordering"
+msgstr "Stép Séléçtïön änd Ördérïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Display Name "
 msgstr "Dïspläý Nämé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
@@ -84,34 +104,6 @@ msgid "The display name for this component."
 msgstr ""
 "Thé dïspläý nämé för thïs çömpönént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "Response Start Date"
-msgstr "Réspönsé Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "Response Start Time"
-msgstr "Réspönsé Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "The date and time when learners can begin submitting responses."
-msgstr ""
-"Thé däté änd tïmé whén léärnérs çän ßégïn süßmïttïng réspönsés. Ⱡ'σяєм ιρѕυм"
-" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "Response Due Date"
-msgstr "Réspönsé Düé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "Response Due Time"
-msgstr "Réspönsé Düé Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "The date and time when learners can no longer submit responses."
-msgstr ""
-"Thé däté änd tïmé whén léärnérs çän nö löngér süßmït réspönsés. Ⱡ'σяєм ιρѕυм"
-" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Text Response"
@@ -301,17 +293,25 @@ msgid "Open Response Assessment"
 msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
-msgid "Settings"
-msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
+msgid "Prompt"
+msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
 msgid "Rubric"
 msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
-msgid "Prompt"
-msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
+msgid "Schedule"
+msgstr "Sçhédülé Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "Assessment Steps"
+msgstr "Àsséssmént Stéps Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+msgid "Settings"
+msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
 msgid "Rubric Change Impacts Settings Section"
@@ -502,6 +502,34 @@ msgstr ""
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕ#"
 
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid "Response Start Date"
+msgstr "Réspönsé Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid "Response Start Time"
+msgstr "Réspönsé Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid "The date and time when learners can begin submitting responses."
+msgstr ""
+"Thé däté änd tïmé whén léärnérs çän ßégïn süßmïttïng réspönsés. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid "Response Due Date"
+msgstr "Réspönsé Düé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid "Response Due Time"
+msgstr "Réspönsé Düé Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid "The date and time when learners can no longer submit responses."
+msgstr ""
+"Thé däté änd tïmé whén léärnérs çän nö löngér süßmït réspönsés. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Step: Self Assessment"
 msgstr "Stép: Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
@@ -531,22 +559,6 @@ msgid "Enter the date and time when all self assessments must be complete."
 msgstr ""
 "Éntér thé däté änd tïmé whén äll sélf ässéssménts müst ßé çömplété. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_settings.html
-msgid ""
-"In this assignment, you can include learner training, peer assessment, self "
-"assessment, and staff assessment steps. Select the steps that you want "
-"below, and then drag them into the order you want. If you include a learner "
-"training step, it must precede all other steps. If you include a staff "
-"assessment step, it must be the final step. After you release an ORA "
-"assignment, you cannot change the type and number of assessment steps."
-msgstr ""
-"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé léärnér träïnïng, péér ässéssmént, sélf "
-"ässéssmént, änd stäff ässéssmént stéps. Séléçt thé stéps thät ýöü wänt "
-"ßélöw, änd thén dräg thém ïntö thé ördér ýöü wänt. Ìf ýöü ïnçlüdé ä léärnér "
-"träïnïng stép, ït müst préçédé äll öthér stéps. Ìf ýöü ïnçlüdé ä stäff "
-"ässéssmént stép, ït müst ßé thé fïnäl stép. Àftér ýöü réléäsé än ÖRÀ "
-"ässïgnmént, ýöü çännöt çhängé thé týpé änd nümßér öf ässéssmént stéps.#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html
 msgid "Step: Staff Assessment"
@@ -1988,6 +2000,21 @@ msgstr ""
 " ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"The teams's submission has been removed from peer assessment. The team "
+"receives a grade of zero unless you delete the team's state for the problem "
+"to allow them to resubmit a response."
+msgstr ""
+"Thé téäms's süßmïssïön häs ßéén rémövéd fröm péér ässéssmént. Thé téäm "
+"réçéïvés ä grädé öf zérö ünléss ýöü délété thé téäm's stäté för thé prößlém "
+"tö ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт,#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "The problem has not been started."
 msgstr ""
 "Thé prößlém häs nöt ßéén stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
@@ -2029,6 +2056,14 @@ msgid ""
 msgstr ""
 "Rémövïng ä léärnér's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
 "çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"Removing a team's submission cannot be undone and should be done with "
+"caution."
+msgstr ""
+"Rémövïng ä téäm's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
+"çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Comments:"
@@ -2468,6 +2503,16 @@ msgstr ""
 "αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/xblock/staff_area_mixin.py
+msgid "Submission not found"
+msgstr "Süßmïssïön nöt föünd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Submission for team assignment has no associated team submission"
+msgstr ""
+"Süßmïssïön för téäm ässïgnmént häs nö ässöçïätéd téäm süßmïssïön Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_area_mixin.py
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -2484,18 +2529,18 @@ msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py
 msgid ""
-"The team submission has been removed from assessment. The learners receive a"
-" grade of zero unless you delete the learners' states for the problem to "
-"allow them to resubmit a response."
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete a team member’s state for the problem to "
+"allow the team to resubmit a response."
 msgstr ""
-"Thé téäm süßmïssïön häs ßéén rémövéd fröm ässéssmént. Thé léärnérs réçéïvé ä"
-" grädé öf zérö ünléss ýöü délété thé léärnérs' stätés för thé prößlém tö "
-"ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя "
-"α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα"
-" αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ "
-"ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
-"яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
-"ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕ#"
+"Thé téäm’s süßmïssïön häs ßéén rémövéd fröm grädïng. Thé téäm réçéïvés ä "
+"grädé öf zérö ünléss ýöü délété ä téäm mémßér’s stäté för thé prößlém tö "
+"ällöw thé téäm tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт,#"
 
 #: openassessment/xblock/staff_assessment_mixin.py
 msgid "The submission ID of the submission being assessed was not found."

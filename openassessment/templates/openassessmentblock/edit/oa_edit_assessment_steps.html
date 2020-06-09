@@ -1,9 +1,15 @@
 {% load i18n %}
 {% load tz %}
 <div id="oa_assessment_steps_editor_wrapper" class="oa_editor_content_wrapper wrapper-comp-settings">
-    <p class="openassessment_description" id="openassessment_step_select_description">
-        {% trans "In this assignment, you can include learner training, peer assessment, self assessment, and staff assessment steps. Select the steps that you want below, and then drag them into the order you want. If you include a learner training step, it must precede all other steps. If you include a staff assessment step, it must be the final step. After you release an ORA assignment, you cannot change the type and number of assessment steps." %}
-    </p>
+    <div id="openassessment_step_select_description" class="openassessment_tab_instructions">
+        <p class="openassessment_description">
+            {% trans "Open Response Assessments allow you to configure single or multiple steps in a rubric based open response assessment sequence. The steps available below can be enabled, disable, and ordered for a flexible set of pedagogical needs." %}
+        </p>
+    </div>
+    <div class="openassessment_description_heading">
+        {% trans "Step Selection and Ordering" %}
+    </div>
+
     <ol id="openassessment_assessment_module_settings_editors">
         {% for assessment in editor_assessments_order %}
             {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}

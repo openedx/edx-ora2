@@ -397,6 +397,19 @@
     height: 100%;
   }
 
+  #oa_basic_settings_schedule_editor {
+    #openassessment_title_editor_wrapper{
+      label{
+        width: 25%;
+        @include text-align(left);
+      }
+      input{
+        width: 45%;
+        min-width: 100px;
+      }
+    }
+  }
+
   #oa_basic_settings_editor {
     #openassessment_title_editor_wrapper{
       label{
@@ -411,9 +424,7 @@
   }
 
   #openassessment_step_select_description{
-    @include padding(10px, 10px, 0, 10px);
     font-size: 80%;
-    margin: 7.5px;
   }
 
   .openassessment_assessment_module_settings_editor.openassessment_shrink_for_drag{
@@ -481,12 +492,17 @@
   }
 
   .openassessment_description{
-    font-size: 75%;
+    font-size: 90%;
     margin: 0;
   }
 
+  .openassessment_description_heading{
+    margin: 15px 10px;
+  }
+
   .openassessment_inclusion_wrapper{
-    background-color: $edx-gray-t1;
+    display: flex;
+    align-items: center;
     margin: 0;
     @include padding(7px, 5px, 7px, 13px);
     @include border-top-left-radius(2px);
@@ -496,10 +512,6 @@
       cursor: pointer;
       @include margin-left(($baseline-h/4));
     }
-  }
-
-  .openassessment_inclusion_wrapper:hover{
-    background-color: $edx-gray-t2;
   }
 
   label{
