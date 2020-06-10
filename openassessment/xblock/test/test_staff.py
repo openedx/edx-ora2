@@ -7,13 +7,29 @@ Tests for staff assessment handlers in Open Assessment XBlock.
 import copy
 import json
 
-import mock
 import six
+from mock import Mock, patch
 
-from openassessment.assessment.api import staff as staff_api
+from openassessment.assessment.api import (
+    staff as staff_api,
+    teams as teams_api
+)
+from openassessment.tests.factories import UserFactory
+from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
+from openassessment.workflow import team_api as team_workflow_api
+from submissions import team_api as team_sub_api
 
-from .base import (PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_GOOD_ASSESSMENT, SubmitAssessmentsMixin,
-                   XBlockHandlerTestCase, scenario)
+
+from .base import (
+    PEER_ASSESSMENTS,
+    SELF_ASSESSMENT,
+    STAFF_GOOD_ASSESSMENT,
+    TEAM_GOOD_ASSESSMENT,
+    SubmitAssessmentsMixin,
+    XBlockHandlerTestCase,
+    scenario
+)
+from .test_staff_area import NullUserService, UserStateService, STUDENT_ITEM
 
 
 class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
@@ -241,7 +257,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
 
         self.set_staff_access(xblock)
         STAFF_GOOD_ASSESSMENT['submission_uuid'] = submission['uuid']
-        with mock.patch('openassessment.xblock.staff_assessment_mixin.staff_api') as mock_api:
+        with patch('openassessment.xblock.staff_assessment_mixin.staff_api') as mock_api:
             #  Simulate a error
             mock_api.create_assessment.side_effect = staff_api.StaffAssessmentRequestError
             resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
@@ -253,3 +269,113 @@ class TestStaffAssessment(StaffAssessmentTestBase):
             resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
             self.assertFalse(resp['success'])
             self.assertIn('msg', resp)
+
+
+class TestStaffTeamAssessment(StaffAssessmentTestBase):
+    """ Test Staff Team Assessment Workflow"""
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_assess_handler(self, xblock):
+
+        submission = self._setup_xblock_and_create_team_submission(xblock)
+        submission["uuid"] = str(submission["submission_uuids"][0])
+
+        self.submit_staff_assessment(xblock, submission, assessment=TEAM_GOOD_ASSESSMENT)
+
+        assessment = teams_api.get_latest_staff_assessment(submission['team_submission_uuid'])
+        self._assert_team_assessment(assessment, submission)
+
+    def _assert_team_assessment(self, assessment, submission):
+        """
+        Helper function to perform asserts
+        """
+        self.assertEqual(assessment['points_earned'], 2)
+        self.assertEqual(assessment['scorer_id'], 'Bob')
+        self.assertEqual(assessment['score_type'], 'ST')
+        self.assertEqual(assessment['feedback'], 'Staff: good job!')
+        parts = assessment['parts']
+        parts.sort(key=lambda x: x['option']['name'])
+        self.assertEqual(len(parts), 3)
+        self.assertEqual(parts[0]['option']['criterion']['name'], 'Form')
+        self.assertEqual(parts[1]['option']['criterion']['name'], 'Concise')
+        self.assertEqual(parts[2]['option']['criterion']['name'], 'Clear-headed')
+        self.assertEqual(parts[0]['option']['name'], 'Facebook')
+        self.assertEqual(parts[1]['option']['name'], 'HP Lovecraft')
+        self.assertEqual(parts[2]['option']['name'], 'Yogi Berra')
+
+        score = teams_api.get_score(submission['team_submission_uuid'], {})
+        self.assertEqual(assessment['points_earned'], score['points_earned'])
+        self.assertEqual(assessment['points_possible'], score['points_possible'])
+
+    def _setup_xblock_and_create_team_submission(self, xblock):
+        """
+        A shortcut method to setup ORA xblock and add a user submission or a team submission to the block.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, 'Bob'
+        )
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        usage_id = xblock.scope_ids.usage_id
+        xblock.location = usage_id
+        xblock.user_state_upload_data_enabled = Mock(return_value=True)
+        student_item = STUDENT_ITEM.copy()
+        student_item["item_id"] = usage_id
+
+        xblock.teams_enabled = True
+        xblock.is_team_assignment = Mock(return_value=True)
+        anonymous_user_ids_for_team = ['Bob', 'Alice', 'Chris']
+        xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)
+        arbitrary_test_user = UserFactory.create()
+        return self._create_team_submission(
+            STUDENT_ITEM['course_id'],
+            usage_id,
+            MOCK_TEAM_ID,
+            arbitrary_test_user.id,
+            anonymous_user_ids_for_team,
+            "this is an answer to a team assignment",
+        )
+
+    @staticmethod
+    def _create_mock_runtime(
+            item_id,
+            is_staff,
+            is_admin,
+            anonymous_user_id,
+            user_is_beta=False,
+            days_early_for_beta=0
+    ):
+        """
+        Internal helper to define a mock runtime.
+        """
+        mock_runtime = Mock(
+            course_id='test_course',
+            item_id=item_id,
+            anonymous_student_id='Bob',
+            user_is_staff=is_staff,
+            user_is_admin=is_admin,
+            user_is_beta=user_is_beta,
+            days_early_for_beta=days_early_for_beta,
+            service=lambda self, service: Mock(
+                get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
+            )
+        )
+        return mock_runtime
+
+    def _create_team_submission(self, course_id, item_id, team_id, submitting_user_id, team_member_student_ids, answer):
+        """
+        Create a team submission and initialize a team workflow
+        """
+        team_submission = team_sub_api.create_submission_for_team(
+            course_id,
+            item_id,
+            team_id,
+            submitting_user_id,
+            team_member_student_ids,
+            answer,
+        )
+        team_workflow_api.create_workflow(team_submission['team_submission_uuid'])
+        return team_submission

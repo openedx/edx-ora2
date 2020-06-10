@@ -59,6 +59,17 @@ STAFF_GOOD_ASSESSMENT = {
     'assess_type': 'full-grade'
 }
 
+TEAM_GOOD_ASSESSMENT = {
+    'options_selected': {'Form': 'Facebook', 'Clear-headed': 'Yogi Berra', 'Concise': 'HP Lovecraft'},
+    'criterion_feedback': {
+        'Form': 'Staff: ƒαιя נσв',
+        'Clear-headed': 'Staff: good',
+        'Concise': 'Staff: good'
+    },
+    'overall_feedback': 'Staff: good job!',
+    'assess_type': 'full-grade'
+}
+
 # A sample bad staff assessment
 STAFF_BAD_ASSESSMENT = {
     'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ק๏๏г', u'Form': u'Poor'},
