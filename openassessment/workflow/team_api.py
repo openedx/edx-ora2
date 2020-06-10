@@ -55,20 +55,27 @@ def create_workflow(team_submission_uuid):
 
 def get_workflow_for_submission(team_submission_uuid):
     """
-    Like `api.get_workflow_for_submission`, but for teams.  We don't need
-    an analogous `assessment_requirements` parameter, because team submissions
-    are only assessible by staff (where requirements like "must_grade" and
-    "must_be_graded_by" are not supported).
-
-    Raises:
-        AssessmentWorkflowInternalError on error
+    Pass through to update_from_assessments. Returns team assessment workflow information
     """
+    return update_from_assessments(team_submission_uuid)
+
+
+def update_from_assessments(team_submission_uuid, override_submitter_requirements=False):
+    """
+        Like `api.update_from_assessments`, but for teams.  We don't need
+        an analogous `assessment_requirements` parameter, because team submissions
+        are only assessible by staff (where requirements like "must_grade" and
+        "must_be_graded_by" are not supported).
+
+        Raises:
+            AssessmentWorkflowInternalError on error
+        """
     # Get the wokflow for this submission
     team_workflow = _get_workflow_model(team_submission_uuid)
 
     # Update the workflow status based on the underlying assessments
     try:
-        team_workflow.update_from_assessments()
+        team_workflow.update_from_assessments(override_submitter_requirements)
         logger.info((
             "Updated workflow for team submission UUID {uuid} "
         ).format(uuid=team_submission_uuid))

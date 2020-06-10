@@ -714,7 +714,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             raise AssessmentWorkflowInternalError(err_msg)
         return [step]
 
-    def update_from_assessments(self):  # pylint: disable=arguments-differ
+    def update_from_assessments(self, override_submitter_requirements=False):  # pylint: disable=arguments-differ
         """
         Update the workflow with potential new scores from assessments.
         """
@@ -739,10 +739,12 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
                 logger.info((
                     "Team Workflow for team submission UUID {uuid} has updated score using team staff assessment."
                 ).format(uuid=self.team_submission_uuid))
-
-                team_staff_step.assessment_completed_at = now()
+                common_now = now()
+                team_staff_step.assessment_completed_at = common_now
                 team_staff_step.save()
 
+            if override_submitter_requirements:
+                team_staff_step.submitter_completed_at = common_now
             team_staff_step.update(self.team_submission_uuid, self.REQUIREMENTS)
             self.status = self.STATUS.done
             self.save()
