@@ -467,7 +467,7 @@ class StaffAreaMixin:
         if self.is_team_assignment():
             self.clear_team_state(user_id, course_id, item_id, requesting_user_id, submissions)
         else:
-            # There *should* only be one submission, but the logic is easy to extend for multiples so we may as well do it
+            # There *should* only be one submission, but the logic is easy to extend for multiples so we may as well
             for sub in submissions:
                 # Remove the submission from grading pools
                 self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
@@ -513,7 +513,6 @@ class StaffAreaMixin:
         # Tell the submissions API to orphan the submissions to prevent them from being accessed
         from submissions import team_api as team_submissions_api
         team_submissions_api.reset_scores(team_submission_uuid)
-
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)
