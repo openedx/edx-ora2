@@ -10,6 +10,8 @@ import json
 import os.path
 
 import ddt
+from mock import patch
+
 import six
 from six.moves import range, zip
 
@@ -31,7 +33,21 @@ COURSE_ID = "Test_Course"
 
 STUDENT_ID = u"Student"
 
+STUDENT_USERNAME = "Student Username"
+
 SCORER_ID = "Scorer"
+
+SCORER_USERNAME = "Scorer Username"
+
+TEST_SCORER_ID = "Test Scorer"
+
+TEST_SCORER_USERNAME = "Test Scorer Username"
+
+USERNAME_MAPPING = {
+    STUDENT_ID: STUDENT_USERNAME,
+    SCORER_ID: SCORER_USERNAME,
+    TEST_SCORER_ID: TEST_SCORER_USERNAME,
+}
 
 ITEM_ID = "item"
 
@@ -239,6 +255,7 @@ class CsvWriterTest(TransactionCacheResetTest):
 
 
 @ddt.ddt
+@patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': True})
 class TestOraAggregateData(TransactionCacheResetTest):
     """
     Test the component parts of OraAggregateData
@@ -254,29 +271,79 @@ class TestOraAggregateData(TransactionCacheResetTest):
         for criterion in criteria:
             criterion_options.append(CriterionOptionFactory(criterion=criterion))
 
-        assessment = AssessmentFactory(rubric=rubric, feedback=feedback)
+        assessment = AssessmentFactory(rubric=rubric, feedback=feedback, scorer_id=TEST_SCORER_ID)
         for criterion, option in zip(criteria, criterion_options):
             AssessmentPartFactory(assessment=assessment, criterion=criterion, option=option, feedback=feedback)
         return assessment
 
     def _assessment_cell(self, assessment, feedback=""):
         """ Build a string for the given assessment information. """
-        cell = u"Assessment #{id}\n-- scored_at: {scored_at}\n-- type: {type}\n-- scorer_id: {scorer}\n".format(
-            id=assessment.id,
-            scored_at=assessment.scored_at,
-            type=assessment.score_type,
-            scorer=assessment.scorer_id
-        )
+        cell = u"Assessment #{id}\n" \
+               u"-- scored_at: {scored_at}\n" \
+               u"-- type: {type}\n" \
+               u"-- scorer_username: {scorer_username}\n" \
+               u"-- scorer_id: {scorer_id}\n"\
+            .format(
+                id=assessment.id,
+                scored_at=assessment.scored_at,
+                type=assessment.score_type,
+                scorer_username=USERNAME_MAPPING[assessment.scorer_id],
+                scorer_id=assessment.scorer_id,
+            )
         if feedback:
             cell += u"-- overall_feedback: {}\n".format(feedback)
         return cell
+
+    def test_map_anonymized_ids_to_usernames(self):
+        with patch('openassessment.data.get_user_model') as get_user_model_mock:
+            get_user_model_mock.return_value.objects.filter.return_value.annotate.return_value.values.return_value = [
+                {'anonymous_id': STUDENT_ID, 'username': STUDENT_USERNAME},
+                {'anonymous_id': SCORER_ID, 'username': SCORER_USERNAME},
+                {'anonymous_id': TEST_SCORER_ID, 'username': TEST_SCORER_USERNAME},
+            ]
+
+            # pylint: disable=protected-access
+            mapping = OraAggregateData._map_anonymized_ids_to_usernames([STUDENT_ID, SCORER_ID, TEST_SCORER_ID])
+
+        self.assertEqual(mapping, USERNAME_MAPPING)
+
+    def test_map_sudents_and_scorers_ids_to_usernames(self):
+        test_submission_information = [
+            (
+                dict(
+                    student_id=STUDENT_ID,
+                    course_id=COURSE_ID,
+                    item_id="some_id",
+                    item_type="openassessment",
+                ),
+                sub_api.create_submission(STUDENT_ITEM, ANSWER),
+                (),
+            ),
+            (
+                dict(
+                    student_id=SCORER_ID,
+                    course_id=COURSE_ID,
+                    item_id="some_id",
+                    item_type="openassessment",
+                ),
+                sub_api.create_submission(SCORER_ITEM, ANSWER),
+                (),
+            ),
+        ]
+
+        with patch("openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames") as map_mock:
+            # pylint: disable=protected-access
+            OraAggregateData._map_sudents_and_scorers_ids_to_usernames(
+                test_submission_information
+            )
+            map_mock.assert_called_once_with([STUDENT_ID, SCORER_ID])
 
     def test_build_assessments_cell(self):
         # One assessment
         assessment1 = self._build_criteria_and_assessment_parts()
 
         # pylint: disable=protected-access
-        assessment_cell = OraAggregateData._build_assessments_cell([assessment1])
+        assessment_cell = OraAggregateData._build_assessments_cell([assessment1], USERNAME_MAPPING)
 
         a1_cell = self._assessment_cell(assessment1)
         self.assertEqual(assessment_cell, a1_cell)
@@ -285,7 +352,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
         assessment2 = self._build_criteria_and_assessment_parts(feedback="Test feedback")
 
         # pylint: disable=protected-access
-        assessment_cell = OraAggregateData._build_assessments_cell([assessment1, assessment2])
+        assessment_cell = OraAggregateData._build_assessments_cell([assessment1, assessment2], USERNAME_MAPPING)
 
         a2_cell = self._assessment_cell(assessment2, feedback="Test feedback")
 
@@ -367,6 +434,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
 
 @ddt.ddt
+@patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': True})
 class TestOraAggregateDataIntegration(TransactionCacheResetTest):
     """
     Test that OraAggregateData behaves as expected when integrated.
@@ -420,7 +488,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         """
         return peer_api.create_assessment(
             submission_uuid,
-            "scorer",
+            SCORER_ID,
             ASSESSMENT_DICT['options_selected'],
             ASSESSMENT_DICT['criterion_feedback'],
             ASSESSMENT_DICT['overall_feedback'],
@@ -449,7 +517,83 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         return ITEM_ID + '_' + str(no_of_student)
 
     def test_collect_ora2_data(self):
-        headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
+        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
+            map_mock.return_value = USERNAME_MAPPING
+            headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
+
+        self.assertEqual(headers, [
+            'Submission ID',
+            'Item ID',
+            'Username',
+            'Anonymized Student ID',
+            'Date/Time Response Submitted',
+            'Response',
+            'Assessment Details',
+            'Assessment Scores',
+            'Date/Time Final Score Given',
+            'Final Score Points Earned',
+            'Final Score Points Possible',
+            'Feedback Statements Selected',
+            'Feedback on Peer Assessments'
+        ])
+        self.assertEqual(data[0], [
+            self.scorer_submission['uuid'],
+            self.scorer_submission['student_item'],
+            SCORER_USERNAME,
+            SCORER_ID,
+            self.scorer_submission['submitted_at'],
+            json.dumps(self.scorer_submission['answer']),
+            u'',
+            u'',
+            u'',
+            u'',
+            u'',
+            u'',
+            u'',
+        ])
+        self.assertEqual(data[1], [
+            self.submission['uuid'],
+            self.submission['student_item'],
+            STUDENT_USERNAME,
+            STUDENT_ID,
+            self.submission['submitted_at'],
+            json.dumps(self.submission['answer']),
+            u"Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
+                id=self.assessment['id'],
+                scored_at=self.assessment['scored_at'],
+            ) + u"-- scorer_username: {scorer_username}\n".format(
+                scorer_username=USERNAME_MAPPING[self.assessment['scorer_id']]
+            ) + u"-- scorer_id: {scorer_id}\n-- overall_feedback: {feedback}\n".format(
+                scorer_id=self.assessment['scorer_id'],
+                feedback=self.assessment['feedback']
+            ),
+            u"Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
+                id=self.assessment['id'],
+                label=self.assessment['parts'][0]['criterion']['label'],
+                option_label=self.assessment['parts'][0]['criterion']['options'][0]['label'],
+                points=self.assessment['parts'][0]['criterion']['options'][0]['points'],
+            ) + u"-- {label}: {option_label} ({points})\n-- feedback: {feedback}\n".format(
+                label=self.assessment['parts'][1]['criterion']['label'],
+                option_label=self.assessment['parts'][1]['criterion']['options'][1]['label'],
+                points=self.assessment['parts'][1]['criterion']['options'][1]['points'],
+                feedback=self.assessment['parts'][1]['feedback'],
+            ),
+            self.score['created_at'],
+            self.score['points_earned'],
+            self.score['points_possible'],
+            FEEDBACK_OPTIONS['options'][0] + '\n' + FEEDBACK_OPTIONS['options'][1] + '\n',
+            FEEDBACK_TEXT,
+        ])
+
+    def test_collect_ora2_data_when_usernames_disabled(self):
+        """
+        Tests that ``OraAggregateData.collect_ora2_data`` generated report
+        without usernames when `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT`
+        settings toggle equals ``False``.
+        """
+
+        with patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False}):
+            headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
         self.assertEqual(headers, [
             'Submission ID',
@@ -488,8 +632,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             u"Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
                 id=self.assessment['id'],
                 scored_at=self.assessment['scored_at'],
-            ) + u"-- scorer_id: {scorer}\n-- overall_feedback: {feedback}\n".format(
-                scorer=self.assessment['scorer_id'],
+            ) + u"-- scorer_id: {scorer_id}\n-- overall_feedback: {feedback}\n".format(
+                scorer_id=self.assessment['scorer_id'],
                 feedback=self.assessment['feedback']
             ),
             u"Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
@@ -528,8 +672,10 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
         submission.answer = answer
         submission.save()
-        _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
-        self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][4])
+        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
+            map_mock.return_value = USERNAME_MAPPING
+            _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
+        self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][5])
 
     def test_collect_ora2_responses(self):
         item_id2 = self._other_item(2)
