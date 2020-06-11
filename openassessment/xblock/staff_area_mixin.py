@@ -13,7 +13,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from submissions.errors import SubmissionNotFoundError, TeamSubmissionNotFoundError
+from submissions.errors import SubmissionNotFoundError
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
