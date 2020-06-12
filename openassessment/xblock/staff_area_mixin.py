@@ -13,7 +13,7 @@ from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from submissions.errors import SubmissionNotFoundError, TeamSubmissionNotFoundError
+from submissions.errors import SubmissionNotFoundError
 from xblock.core import XBlock
 
 from .user_data import get_user_preferences
@@ -453,11 +453,6 @@ class StaffAreaMixin:
         for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
         and pass through to the submissions API to orphan the submission so that the user can create a new one.
         """
-
-        if self.is_team_assignment():
-            self.clear_team_state(user_id, course_id, item_id, requesting_user_id)
-            return
-
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
         # Note that student_item cannot be constructed using get_student_item_dict, since we're in a staff context
@@ -467,60 +462,57 @@ class StaffAreaMixin:
             'item_id': item_id,
             'item_type': 'openassessment',
         }
-        # There *should* only be one submission, but the logic is easy to extend for multiples so we may as well do it
         submissions = submission_api.get_submissions(student_item)
-        for sub in submissions:
-            # Remove the submission from grading pools
-            self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
 
-            # Tell the submissions API to orphan the submission to prevent it from being accessed
-            submission_api.reset_score(
-                user_id,
-                course_id,
-                item_id,
-                clear_state=True
-            )
+        if self.is_team_assignment():
+            self.clear_team_state(user_id, course_id, item_id, requesting_user_id, submissions)
+        else:
+            # There *should* only be one submission, but the logic is easy to extend for multiples so we may as well
+            for sub in submissions:
+                # Remove the submission from grading pools
+                self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
 
-    def clear_team_state(self, user_id, course_id, item_id, requesting_user_id):
+                # Tell the submissions API to orphan the submission to prevent it from being accessed
+                submission_api.reset_score(
+                    user_id,
+                    course_id,
+                    item_id,
+                    clear_state=True
+                )
+
+    def clear_team_state(self, user_id, course_id, item_id, requesting_user_id, submissions):
         """
         This is called from clear_student_state (which is called from the LMS runtime) when the xblock is a team
         assignment, to clear student state for an entire team for a given problem. It will cancel the workflow
         to remove it from the grading pools, and pass through to the submissions team API to orphan the team
         submission and individual submissions so that the team can create a new submission.
         """
-        error_msg_base = 'Attempted to clear team state for anonymous user {} '.format(user_id)
-        try:
-            user_team = self.get_team_for_anonymous_user(user_id)
-        except ObjectDoesNotExist:
-            warning_msg = error_msg_base + 'but was unable to resolve to a real user'
-            logger.warning(warning_msg)
+        student_item_string = "course {} item {} user {}".format(course_id, item_id, user_id)
+
+        if not submissions:
+            logger.warning('Attempted to reset team state for %s but no submission was found', student_item_string)
             return
+        if len(submissions) != 1:
+            logger.warning('Unexpected multiple individual submissions for team assignment. %s', student_item_string)
 
-        if user_team is None:
-            warning_msg = error_msg_base + 'but they are not on a team for course {} item {}.'.format(
-                course_id, item_id
+        submission = submissions[0]
+        team_submission_uuid = str(submission.get('team_submission_uuid', None))
+        if not team_submission_uuid:
+            logger.warning(
+                'Attempted to reset team state for %s but submission %s has no team_submission_uuid',
+                student_item_string,
+                submission['uuid']
             )
-            logger.warning(warning_msg)
             return
-
-        from submissions import team_api as team_submissions_api
-
-        try:
-            team_submission = team_submissions_api.get_team_submission_for_team(course_id, item_id, user_team.team_id)
-        except TeamSubmissionNotFoundError:
-            warning_msg = error_msg_base + "course {} item {} but no team submission was found for team {}".format(
-                course_id, item_id, user_team.team_id
-            )
-            logger.warning(warning_msg)
-
         # Remove the submission from grading pool
         self._cancel_team_workflow(
-            team_submission['team_submission_uuid'],
+            team_submission_uuid,
             "Student and team state cleared",
             requesting_user_id
         )
         # Tell the submissions API to orphan the submissions to prevent them from being accessed
-        team_submissions_api.reset_scores(team_submission['team_submission_uuid'])
+        from submissions import team_api as team_submissions_api
+        team_submissions_api.reset_scores(team_submission_uuid)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)
