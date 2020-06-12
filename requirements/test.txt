@@ -7,15 +7,15 @@
 appdirs==1.4.4            # via -r requirements/base.txt, fs, virtualenv
 atomicwrites==1.4.0       # via pytest
 attrs==19.3.0             # via jsonschema, pytest
-aws-sam-translator==1.23.0  # via cfn-lint
-aws-xray-sdk==2.5.0       # via moto
+aws-sam-translator==1.24.0  # via cfn-lint
+aws-xray-sdk==2.6.0       # via moto
 bleach==3.1.5             # via -r requirements/base.txt
-boto3==1.13.13            # via aws-sam-translator, moto
+boto3==1.14.1             # via aws-sam-translator, moto
 boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.txt, django-pyfs, moto
-botocore==1.16.13         # via aws-xray-sdk, boto3, moto, s3transfer
-certifi==2020.4.5.1       # via -r requirements/base.txt, requests
+botocore==1.17.1          # via aws-xray-sdk, boto3, moto, s3transfer
+certifi==2020.4.5.2       # via -r requirements/base.txt, requests
 cffi==1.14.0              # via cryptography
-cfn-lint==0.32.1          # via moto
+cfn-lint==0.33.0          # via moto
 chardet==3.0.4            # via -r requirements/base.txt, requests
 coverage==5.1             # via -r requirements/test.in, pytest-cov
 cryptography==2.9.2       # via moto, sshpubkeys
@@ -26,7 +26,7 @@ distlib==0.3.0            # via virtualenv
 django-model-utils==4.0.0  # via -r requirements/base.txt, edx-submissions
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs  # via -r requirements/test.in
 django-simple-history==2.10.0  # via -r requirements/base.txt
-docker==4.2.0             # via moto
+docker==4.2.1             # via moto
 docutils==0.15.2          # via botocore
 ecdsa==0.15               # via python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/base.txt
@@ -39,7 +39,7 @@ fs==2.0.18                # via -c requirements/constraints.txt, -r requirements
 future==0.18.2            # via aws-xray-sdk
 html5lib==1.0.1           # via -r requirements/base.txt
 idna==2.8                 # via -c requirements/constraints.txt, -r requirements/base.txt, moto, requests
-importlib-metadata==1.6.0  # via -r requirements/base.txt, importlib-resources, jsonpickle, jsonschema, path, pluggy, tox, virtualenv
+importlib-metadata==1.6.1  # via -r requirements/base.txt, importlib-resources, jsonpickle, jsonschema, path, pluggy, tox, virtualenv
 importlib-resources==1.5.0  # via cfn-lint, virtualenv
 jinja2==2.11.2            # via moto
 jmespath==0.10.0          # via boto3, botocore
@@ -79,27 +79,27 @@ python-swiftclient==3.9.0  # via -c requirements/constraints.txt, -r requirement
 pytz==2020.1              # via -r requirements/base.txt, django, edx-submissions, fs, moto, xblock
 pyyaml==5.3.1             # via -r requirements/base.txt, cfn-lint, edx-i18n-tools, moto, xblock
 requests==2.23.0          # via -r requirements/base.txt, docker, moto, python-swiftclient, responses
-responses==0.10.14        # via moto
-rsa==4.0                  # via python-jose
+responses==0.10.15        # via moto
+rsa==4.2                  # via python-jose
 s3transfer==0.3.3         # via boto3
-six==1.14.0               # via -r requirements/base.txt, aws-sam-translator, bleach, cfn-lint, cryptography, django-pyfs, django-simple-history, docker, ecdsa, edx-i18n-tools, freezegun, fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pathlib2, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
+six==1.15.0               # via -r requirements/base.txt, aws-sam-translator, bleach, cfn-lint, cryptography, django-pyfs, django-simple-history, docker, ecdsa, edx-i18n-tools, freezegun, fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pathlib2, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
 sqlparse==0.3.1           # via -r requirements/base.txt, django
 sshpubkeys==3.1.0         # via moto
 testfixtures==6.14.1      # via -r requirements/test.in
 text-unidecode==1.3       # via faker
 toml==0.10.1              # via tox
-tox==3.15.1               # via -r requirements/test.in
+tox==3.15.2               # via -r requirements/test.in
 urllib3==1.25.9           # via -r requirements/base.txt, botocore, requests
 virtualenv==20.0.21       # via tox
 voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.txt
-wcwidth==0.1.9            # via pytest
+wcwidth==0.2.4            # via pytest
 web-fragments==0.3.2      # via -r requirements/base.txt, xblock
 webencodings==0.5.1       # via -r requirements/base.txt, bleach, html5lib
 webob==1.8.6              # via -r requirements/base.txt, xblock
 websocket-client==0.57.0  # via docker
 werkzeug==1.0.1           # via moto
 wrapt==1.12.1             # via aws-xray-sdk
-git+https://github.com/edx/xblock-sdk.git@446e979bad1f3bf7f891787b32d5b2e7620b2f23#egg=xblock-sdk  # via -r requirements/base.txt
+xblock-sdk==0.2.0         # via -r requirements/base.txt
 xblock==1.3.1             # via -r requirements/base.txt
 xmltodict==0.12.0         # via moto
 zipp==1.0.0               # via -c requirements/constraints.txt, -r requirements/base.txt, importlib-metadata, importlib-resources
