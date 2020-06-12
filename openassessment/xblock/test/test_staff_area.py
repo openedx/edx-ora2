@@ -2,7 +2,7 @@
 """
 Tests for the staff area.
 """
-from __future__ import absolute_import
+
 
 from collections import namedtuple
 import json

@@ -2,8 +2,6 @@
 Basic tests for configuration/feature toggles of the ORA XBlock.
 """
 
-from __future__ import absolute_import
-
 import itertools
 import mock
 

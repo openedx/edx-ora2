@@ -3,8 +3,6 @@
 Tests for openassessment data aggregation.
 """
 
-from __future__ import absolute_import, print_function
-
 import csv
 import json
 import os.path

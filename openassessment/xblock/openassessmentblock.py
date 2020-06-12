@@ -1,7 +1,5 @@
 """An XBlock where students can read a question and compose their response"""
 
-from __future__ import absolute_import
-
 import copy
 import datetime as dt
 import json

@@ -1,7 +1,7 @@
 """
 Resolve unspecified dates and date strings to datetimes.
 """
-from __future__ import absolute_import
+
 
 import datetime as dt
 

@@ -6,7 +6,7 @@ Public interface for student training:
     they gave to to the instructor's assessment.
 
 """
-from __future__ import absolute_import
+
 
 import logging
 

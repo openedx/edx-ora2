@@ -2,7 +2,7 @@
 """
 Tests for leaderboard handlers in Open Assessment XBlock.
 """
-from __future__ import absolute_import
+
 
 import json
 from random import randint

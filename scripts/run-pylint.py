@@ -4,7 +4,7 @@ Determines the number of pylint violations (note that this includes both warning
 If larger than the supplied threshold, emits a status of 1 indicating failure.
 """
 
-from __future__ import absolute_import, print_function
+
 
 import re
 import sys

@@ -2,7 +2,7 @@
 """
 Base class for handler-level testing of the XBlock.
 """
-from __future__ import absolute_import, print_function
+
 
 import copy
 from functools import wraps

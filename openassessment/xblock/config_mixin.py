@@ -1,7 +1,7 @@
 """
 Mixin for determining configuration and feature-toggle state relevant to an ORA block.
 """
-from __future__ import absolute_import
+
 
 from django.conf import settings
 from django.utils.functional import cached_property

@@ -6,7 +6,7 @@ This command differs from upload_oa_data in that it places all the data into one
 
 Generates the same format as the instructor dashboard downloads.
 """
-from __future__ import absolute_import
+
 
 import csv
 import os

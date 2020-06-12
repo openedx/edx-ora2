@@ -2,8 +2,6 @@
 Test resolving unspecified dates and date strings to datetimes.
 """
 
-from __future__ import absolute_import
-
 import datetime
 
 import ddt

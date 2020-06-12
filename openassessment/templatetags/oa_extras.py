@@ -1,5 +1,5 @@
 """ Custom django template tags. """
-from __future__ import absolute_import
+
 
 from django import template
 from django.template.defaultfilters import linebreaks, stringfilter

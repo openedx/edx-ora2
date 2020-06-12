@@ -2,7 +2,7 @@
 """
 Tests for staff assessments.
 """
-from __future__ import absolute_import
+
 
 import copy
 from datetime import timedelta

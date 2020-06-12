@@ -2,8 +2,6 @@
 Schema for validating and sanitizing data received from the JavaScript client.
 """
 
-from __future__ import absolute_import
-
 import dateutil
 from pytz import utc
 import six

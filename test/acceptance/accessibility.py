@@ -2,7 +2,7 @@
 UI-level acceptance tests for OpenAssessment accessibility.
 """
 # pylint: disable=arguments-differ
-from __future__ import absolute_import
+
 
 import os
 import unittest

@@ -1,7 +1,7 @@
 """
 Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
-from __future__ import absolute_import
+
 
 import json
 import logging
