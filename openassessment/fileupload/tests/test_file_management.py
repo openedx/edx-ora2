@@ -141,7 +141,7 @@ class FileUploadManagerTests(TestCase):
         self.assert_file_upload(shared_uploads[1], 'name2', 'desc2', 200)
         self.assert_file_upload(shared_uploads[2], 'name3', 'desc3', 300)
         for shared_upload in shared_uploads:
-            self.assertEquals(shared_upload.owner_id, self.team_manager.block.student_id)
+            self.assertEqual(shared_upload.owner_id, self.team_manager.block.student_id)
 
         self.team_manager.append_uploads(
             upload_dict('name4', 'desc4', 400)
@@ -153,7 +153,7 @@ class FileUploadManagerTests(TestCase):
         self.assert_file_upload(shared_uploads[3], 'name4', 'desc4', 400)
         self.assertEqual(4, len(shared_uploads))
         for shared_upload in shared_uploads:
-            self.assertEquals(shared_upload.owner_id, self.team_manager.block.student_id)
+            self.assertEqual(shared_upload.owner_id, self.team_manager.block.student_id)
 
         self.team_manager.delete_upload(2)
         files = self.team_manager.get_uploads()
