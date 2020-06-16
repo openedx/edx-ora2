@@ -2,7 +2,7 @@
 Data Conversion utility methods for handling ORA2 XBlock data transformations and validation.
 
 """
-from __future__ import absolute_import
+
 
 import json
 

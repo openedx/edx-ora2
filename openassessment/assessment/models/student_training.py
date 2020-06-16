@@ -1,7 +1,7 @@
 """
 Django models specific to the student training assessment type.
 """
-from __future__ import absolute_import
+
 
 import six
 

@@ -126,28 +126,16 @@ DEFAULT_DUE = "2029-01-01T00:00"
 # module(s) associated with the XBlock.
 DEFAULT_PEER_ASSESSMENT = {
     "name": "peer-assessment",
-    "must_grade": 5,
-    "must_be_graded_by": 3,
-}
-
-DEFAULT_PEER_SCHEDULE_ASSESSMENT = {
-    "name": "peer-assessment-schedule",
     "start": DEFAULT_START,
     "due": DEFAULT_DUE,
+    "must_grade": 5,
+    "must_be_graded_by": 3,
 }
 
 DEFAULT_SELF_ASSESSMENT = {
     "name": "self-assessment",
     "start": DEFAULT_START,
     "due": DEFAULT_DUE,
-    "required": False,
-}
-
-DEFAULT_SELF_SCHEDULE_ASSESSMENT = {
-    "name": "self-assessment-schedule",
-    "start": DEFAULT_START,
-    "due": DEFAULT_DUE,
-    "required": False,
 }
 
 DEFAULT_STAFF_ASSESSMENT = {
@@ -160,17 +148,13 @@ DEFAULT_STAFF_ASSESSMENT = {
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_STUDENT_TRAINING,
     DEFAULT_PEER_ASSESSMENT,
-    DEFAULT_PEER_SCHEDULE_ASSESSMENT,
     DEFAULT_SELF_ASSESSMENT,
-    DEFAULT_SELF_SCHEDULE_ASSESSMENT,
     DEFAULT_STAFF_ASSESSMENT,
 ]
 
 DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
     "student-training",
     "peer-assessment",
-    "peer-assessment-schedule",
     "self-assessment",
-    "self-assessment-schedule",
     "staff-assessment",
 ]

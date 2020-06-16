@@ -2,8 +2,6 @@
 Fields and methods used by the LMS and Studio.
 """
 
-from __future__ import absolute_import
-
 import six
 
 from xblock.fields import DateTime, Dict, Float, Scope, String

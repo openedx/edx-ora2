@@ -1,7 +1,7 @@
 """
 Tests for Django signals and receivers defined by the workflow API.
 """
-from __future__ import absolute_import
+
 
 import ddt
 import mock

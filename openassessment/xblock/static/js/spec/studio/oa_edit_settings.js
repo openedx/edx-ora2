@@ -50,9 +50,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
     // The Peer and Self Editor ID's
     var PEER = "oa_peer_assessment_editor";
-    var PEER_SCHEDULE = "oa_peer_assessment_schedule_editor";
     var SELF = "oa_self_assessment_editor";
-    var SELF_SCHEDULE = "oa_self_assessment_schedule_editor"
     var TRAINING = "oa_student_training_editor";
     var STAFF = "oa_staff_assessment_editor";
 
@@ -63,9 +61,7 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Create the stub assessment views
         assessmentViews = {};
         assessmentViews[SELF] = new StubView("self-assessment", "Self assessment description");
-        assessmentViews[SELF_SCHEDULE] = new StubView("self-assessment-schedule", "Self assessment schedule description");
         assessmentViews[PEER] = new StubView("peer-assessment", "Peer assessment description");
-        assessmentViews[PEER_SCHEDULE] = new StubView("peer-assessment-schedule", "Peer assessment schedule description");
         assessmentViews[TRAINING] = new StubView("student-training", "Student Training description");
         assessmentViews[STAFF] = new StubView("staff-assessment", "Staff assessment description");
 
@@ -134,18 +130,14 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Disable all assessments, and expect an empty description
         assessmentViews[PEER].isEnabled(false);
-        assessmentViews[PEER_SCHEDULE].isEnabled(false);
         assessmentViews[SELF].isEnabled(false);
-        assessmentViews[SELF_SCHEDULE].isEnabled(false);
         assessmentViews[TRAINING].isEnabled(false);
         assessmentViews[STAFF].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([]);
 
         // Enable the first assessment only
         assessmentViews[PEER].isEnabled(false);
-        assessmentViews[PEER_SCHEDULE].isEnabled(false);
         assessmentViews[SELF].isEnabled(true);
-        assessmentViews[SELF_SCHEDULE].isEnabled(true);
         assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
@@ -156,9 +148,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Enable the second assessment only
         assessmentViews[PEER].isEnabled(true);
-        assessmentViews[PEER_SCHEDULE].isEnabled(true);
         assessmentViews[SELF].isEnabled(false);
-        assessmentViews[SELF_SCHEDULE].isEnabled(false);
         assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
@@ -169,9 +159,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Enable both assessments
         assessmentViews[PEER].isEnabled(true);
-        assessmentViews[PEER_SCHEDULE].isEnabled(true);
         assessmentViews[SELF].isEnabled(true);
-        assessmentViews[SELF_SCHEDULE].isEnabled(true);
         assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
@@ -230,9 +218,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         assessmentViews[PEER].isValid = false;
         assessmentViews[PEER].setValidationErrors(["test error"]);
         assessmentViews[PEER].isEnabled(true);
-        assessmentViews[PEER_SCHEDULE].isValid = false;
-        assessmentViews[PEER_SCHEDULE].setValidationErrors(["test error"]);
-        assessmentViews[PEER_SCHEDULE].isEnabled(true);
 
         // Expect that the parent view is also invalid
         expect(view.validate()).toBe(false);
@@ -244,14 +229,10 @@ describe("OpenAssessment.EditSettingsView", function() {
         assessmentViews[PEER].isValid = false;
         assessmentViews[PEER].setValidationErrors(["test error"]);
         assessmentViews[PEER].isEnabled(false);
-        assessmentViews[PEER_SCHEDULE].isValid = false;
-        assessmentViews[PEER_SCHEDULE].setValidationErrors(["test error"]);
-        assessmentViews[PEER_SCHEDULE].isEnabled(false);
 
         // Spy on the assessment view's validate() method so we can
         // verify that it doesn't get called (thus marking the DOM)
         spyOn(assessmentViews[PEER], 'validate').and.callThrough();
-        spyOn(assessmentViews[PEER_SCHEDULE], 'validate').and.callThrough();
 
         // Expect that the parent view is still valid
         expect(view.validate()).toBe(true);
@@ -290,23 +271,17 @@ describe("OpenAssessment.EditSettingsView", function() {
 
     it('can hide/show elements on the page', function() {
         var selector = $(assessmentViews[PEER].element);
-        var selectorSchedule = $(assessmentViews[PEER_SCHEDULE].element);
 
         // element shown by default should return hidden = false
         expect(view.isHidden(selector)).toBe(false);
-        expect(view.isHidden(selectorSchedule)).toBe(false);
 
         // explicitly hiding an element should return hidden = true
         view.setHidden(selector, true);
         expect(view.isHidden(selector)).toBe(true);
-        view.setHidden(selectorSchedule, true);
-        expect(view.isHidden(selectorSchedule)).toBe(true);
 
         // explicitly showing an element should return hidden = false
         view.setHidden(selector, false);
         expect(view.isHidden(selector)).toBe(false);
-        view.setHidden(selectorSchedule, false);
-        expect(view.isHidden(selectorSchedule)).toBe(false);
     });
 
     it('hides the training, self, and peer assessment types when teams are enabled', function() {
@@ -314,7 +289,7 @@ describe("OpenAssessment.EditSettingsView", function() {
         view.teamsEnabled(false);
         expect(view.teamsEnabled()).toBe(false);
 
-        var allAssessmentTypes = [SELF, SELF_SCHEDULE, TRAINING, PEER, PEER_SCHEDULE,STAFF];
+        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
         allAssessmentTypes.forEach(function(type) {
             var selector = $(assessmentViews[type].element);
             expect(view.isHidden(selector)).toBe(false);
@@ -325,7 +300,7 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.teamsEnabled()).toBe(true);
 
         var shownForTeamAssessments = [STAFF];
-        var hiddenForTeamAssessments = [SELF, SELF_SCHEDULE, TRAINING, PEER, PEER_SCHEDULE];
+        var hiddenForTeamAssessments = [SELF, TRAINING, PEER];
 
         hiddenForTeamAssessments.forEach(function(type) {
             var selector = $(assessmentViews[type].element);
@@ -343,7 +318,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
     it('treats hidden assessment types as unselected', function() {
         // Select all assessment types
-        var allAssessmentTypes = [SELF, SELF_SCHEDULE, TRAINING, PEER, PEER_SCHEDULE, STAFF];
+        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
         allAssessmentTypes.forEach(function(type) {
             assessmentViews[type].isEnabled(true);
         });
@@ -353,8 +328,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Hide some assessments, but leave them enabled
         view.setHidden($(assessmentViews[SELF].element), true);
         view.setHidden($(assessmentViews[PEER].element), true);
-        view.setHidden($(assessmentViews[SELF_SCHEDULE].element), true);
-        view.setHidden($(assessmentViews[PEER_SCHEDULE].element), true);
 
         // "Saved" assessment types should be limited to visible types
         expect(view.assessmentsDescription().length).toBe(2);

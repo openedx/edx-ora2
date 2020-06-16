@@ -3,8 +3,6 @@ Signals for the workflow API.
 See https://docs.djangoproject.com/en/1.4/topics/signals
 """
 
-from __future__ import absolute_import
-
 import django.dispatch
 
 # Indicate that an assessment has completed

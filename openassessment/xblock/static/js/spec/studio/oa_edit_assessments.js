@@ -59,6 +59,8 @@ describe("OpenAssessment edit assessment views", function() {
         beforeEach(function() {
             var element = $("#oa_peer_assessment_editor").get(0);
             view = new OpenAssessment.EditPeerAssessmentView(element);
+            view.startDatetime("2014-01-01", "00:00");
+            view.dueDatetime("2014-01-01", "00:00");
         });
 
         it("enables and disables", function() { testEnableAndDisable(view); });
@@ -66,10 +68,28 @@ describe("OpenAssessment edit assessment views", function() {
         it("loads a description", function() {
             view.mustGradeNum(1);
             view.mustBeGradedByNum(2);
+            view.startDatetime("2014-01-01", "00:00");
+            view.dueDatetime("2014-03-04", "00:00");
             expect(view.description()).toEqual({
                 must_grade: 1,
                 must_be_graded_by: 2,
+                start: "2014-01-01T00:00",
+                due: "2014-03-04T00:00"
             });
+        });
+
+        it("validates the start date and time", function() {
+            testValidateDate(
+                view, view.startDatetimeControl,
+                "Peer assessment start is invalid"
+            );
+        });
+
+        it("validates the due date and time", function() {
+            testValidateDate(
+                view, view.dueDatetimeControl,
+                "Peer assessment due is invalid"
+            );
         });
 
         it("validates the must grade field", function() {
@@ -103,70 +123,12 @@ describe("OpenAssessment edit assessment views", function() {
         it("shows an alert when disabled", function() { testAlertOnDisable(view); });
     });
 
-    describe("OpenAssessment.EditPeerAssessmentScheduleView", function() {
-        var view = null;
-
-        beforeEach(function() {
-            var element = $("#oa_peer_assessment_schedule_editor").get(0);
-            view = new OpenAssessment.EditPeerAssessmentScheduleView(element);
-            view.startDatetime("2014-01-01", "00:00");
-            view.dueDatetime("2014-01-01", "00:00");
-        });
-
-        it("enables and disables", function() { testEnableAndDisable(view); });
-
-        it("loads a description", function() {
-            view.startDatetime("2014-01-01", "00:00");
-            view.dueDatetime("2014-03-04", "00:00");
-            expect(view.description()).toEqual({
-                start: "2014-01-01T00:00",
-                due: "2014-03-04T00:00"
-            });
-        });
-
-        it("validates the start date and time", function() {
-            testValidateDate(
-                view, view.startDatetimeControl,
-                "Peer assessment start is invalid"
-            );
-        });
-
-        it("validates the due date and time", function() {
-            testValidateDate(
-                view, view.dueDatetimeControl,
-                "Peer assessment due is invalid"
-            );
-        });
-
-        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
-    });
-
     describe("OpenAssessment.EditSelfAssessmentView", function() {
         var view = null;
 
         beforeEach(function() {
             var element = $("#oa_self_assessment_editor").get(0);
             view = new OpenAssessment.EditSelfAssessmentView(element);
-            view.isEnabled(true);
-        });
-
-        it("enables and disables", function() { testEnableAndDisable(view); });
-
-        it("loads a description", function() {
-            expect(view.description()).toEqual({
-                required: true
-            });
-        });
-
-        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
-    });
-
-    describe("OpenAssessment.EditSelfAssessmentScheduleView", function() {
-        var view = null;
-
-        beforeEach(function() {
-            var element = $("#oa_self_assessment_schedule_editor").get(0);
-            view = new OpenAssessment.EditSelfAssessmentScheduleView(element);
             view.startDatetime("2014-01-01", "00:00");
             view.dueDatetime("2014-01-01", "00:00");
         });

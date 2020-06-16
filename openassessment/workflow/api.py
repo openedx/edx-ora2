@@ -2,7 +2,7 @@
 Public interface for the Assessment Workflow.
 
 """
-from __future__ import absolute_import
+
 
 import logging
 

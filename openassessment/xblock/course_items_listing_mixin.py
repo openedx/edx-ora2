@@ -3,8 +3,6 @@ The mixin with handlers for the course ora blocks listing view.
 
 """
 
-from __future__ import absolute_import
-
 import json
 
 import six

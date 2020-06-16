@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import absolute_import
+
 
 import os.path
 from io import open as open_as_of_py3
@@ -36,7 +36,7 @@ def load_requirements(*requirements_paths):
 
 setup(
     name='ora2',
-    version='2.7.11',
+    version='2.8.2',
     author='edX',
     author_email='oscm@edx.org',
     url='http://github.com/edx/edx-ora2',

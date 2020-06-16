@@ -3,8 +3,6 @@ The Peer Assessment Mixin for all Peer Functionality.
 
 """
 
-from __future__ import absolute_import
-
 import logging
 
 from webob import Response

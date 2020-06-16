@@ -22,7 +22,7 @@ where "templates.json" is a JSON file of the form:
 The rendered templates are saved to "output" relative to the
 templates.json file's directory.
 """
-from __future__ import absolute_import, print_function
+
 
 import json
 import os.path

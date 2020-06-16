@@ -2,7 +2,7 @@
 Base settings for ORA2.
 """
 
-from __future__ import absolute_import
+
 
 import os
 
@@ -155,4 +155,8 @@ FEATURES = {
     # A "work-around" feature toggle meant to pull file upload data our of user state, rather than Submission records.
     # See: https://openedx.atlassian.net/browse/EDUCATOR-4951
     'ENABLE_ORA_USER_STATE_UPLOAD_DATA': False,
+
+    # Set to True to add deanonymized usernames to ORA data report
+    # See: https://openedx.atlassian.net/browse/TNL-7273
+    'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False,
 }

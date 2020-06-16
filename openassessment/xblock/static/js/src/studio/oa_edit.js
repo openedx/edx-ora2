@@ -45,24 +45,19 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
         $('#oa_student_training_editor', this.element).get(0)
     );
     var peerAssessmentView = new OpenAssessment.EditPeerAssessmentView(
-        $('#oa_peer_assessment_editor', this.element).get(0)
-    );
-    var peerAssessmentScheduleView = new OpenAssessment.EditPeerAssessmentScheduleView(
+        $('#oa_peer_assessment_editor', this.element).get(0),
         $('#oa_peer_assessment_schedule_editor', this.element).get(0)
     );
     var selfAssessmentView = new OpenAssessment.EditSelfAssessmentView(
-        $('#oa_self_assessment_editor', this.element).get(0)
-    );
-    var selfAssessmentScheduleView = new OpenAssessment.EditSelfAssessmentScheduleView(
+        $('#oa_self_assessment_editor', this.element).get(0),
         $('#oa_self_assessment_schedule_editor', this.element).get(0)
     );
     var assessmentLookupDictionary = {};
     assessmentLookupDictionary[staffAssessmentView.getID()] = staffAssessmentView;
     assessmentLookupDictionary[studentTrainingView.getID()] = studentTrainingView;
     assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
-    assessmentLookupDictionary[peerAssessmentScheduleView.getID()] = peerAssessmentScheduleView;
     assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;
-    assessmentLookupDictionary[selfAssessmentScheduleView.getID()] = selfAssessmentScheduleView;
+
     this.settingsView = new OpenAssessment.EditSettingsView(
         $('#oa_basic_settings_editor', this.element).get(0), assessmentLookupDictionary, data
     );
@@ -111,7 +106,7 @@ OpenAssessment.StudioView.prototype = {
     initializeTabs: function() {
         // If this is the first editor that the user has opened, default to the prompt view.
         if (typeof(OpenAssessment.lastOpenEditingTab) === 'undefined') {
-            OpenAssessment.lastOpenEditingTab = 2;
+            OpenAssessment.lastOpenEditingTab = 0;
         }
         // Initialize JQuery UI Tabs, and activates the appropriate tab.
         $('.openassessment_editor_content_and_tabs', this.element)

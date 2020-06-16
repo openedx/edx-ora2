@@ -1,7 +1,7 @@
 """
 Public interface for self-assessment.
 """
-from __future__ import absolute_import
+
 
 import logging
 

@@ -1,7 +1,7 @@
 """
 Generate CSV files for submission and assessment data, then upload to S3.
 """
-from __future__ import absolute_import, print_function
+
 
 import datetime
 import os

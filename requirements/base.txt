@@ -7,19 +7,19 @@
 appdirs==1.4.4            # via fs
 bleach==3.1.5             # via -r requirements/base.in
 boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.in
-certifi==2020.4.5.1       # via requests
+certifi==2020.4.5.2       # via requests
 chardet==3.0.4            # via requests
 defusedxml==0.6.0         # via -r requirements/base.in
 django-model-utils==4.0.0  # via -r requirements/base.in, edx-submissions
 django-simple-history==2.10.0  # via -r requirements/base.in
-django==2.2.12            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
+django==2.2.13            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
 djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
 edx-i18n-tools==0.5.3     # via -r requirements/base.in
-edx-submissions==3.1.9    # via -r requirements/base.in
+edx-submissions==3.1.10    # via -r requirements/base.in
 fs==2.0.18                # via -c requirements/constraints.txt, xblock
 html5lib==1.0.1           # via -r requirements/base.in
 idna==2.8                 # via -c requirements/constraints.txt, requests
-importlib-metadata==1.6.0  # via path
+importlib-metadata==1.6.1  # via path
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
 lazy==1.4                 # via -r requirements/base.in
 libsass==0.20.0           # via -r requirements/base.in
@@ -37,14 +37,14 @@ python-swiftclient==3.9.0  # via -c requirements/constraints.txt, -r requirement
 pytz==2020.1              # via -r requirements/base.in, django, edx-submissions, fs, xblock
 pyyaml==5.3.1             # via edx-i18n-tools, xblock
 requests==2.23.0          # via python-swiftclient
-six==1.14.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, packaging, python-dateutil, python-swiftclient, xblock
+six==1.15.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, packaging, python-dateutil, python-swiftclient, xblock
 sqlparse==0.3.1           # via django
 urllib3==1.25.9           # via requests
 voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.in
 web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock
-git+https://github.com/edx/xblock-sdk.git@446e979bad1f3bf7f891787b32d5b2e7620b2f23#egg=xblock-sdk  # via -r requirements/base.in
+xblock-sdk==0.2.0         # via -r requirements/base.in
 xblock==1.3.1             # via -r requirements/base.in
 zipp==1.0.0               # via -c requirements/constraints.txt, importlib-metadata
 

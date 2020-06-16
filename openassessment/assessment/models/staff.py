@@ -1,7 +1,7 @@
 """
 Models for managing staff assessments.
 """
-from __future__ import absolute_import
+
 
 from datetime import timedelta
 import logging

@@ -1,5 +1,5 @@
 """ Tests for custom django template tags. """
-from __future__ import absolute_import
+
 
 import unittest
 

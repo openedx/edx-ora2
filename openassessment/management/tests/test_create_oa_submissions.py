@@ -2,8 +2,6 @@
 Tests for the management command that creates dummy submissions.
 """
 
-from __future__ import absolute_import
-
 import six
 
 from django.test import TestCase
