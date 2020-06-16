@@ -105,7 +105,9 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     ASSESSMENT_CSS_IDS = {
         "peer-assessment": "oa_peer_assessment_editor",
+        "peer-assessment-schedule": "oa_peer_assessment_schedule_editor",
         "self-assessment": "oa_self_assessment_editor",
+        "self-assessment-schedule": "oa_self_assessment_schedule_editor",
         "student-training": "oa_student_training_editor",
         "staff-assessment": "oa_staff_assessment_editor",
     }

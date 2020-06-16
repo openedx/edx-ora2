@@ -31,8 +31,12 @@
             </div>
             <p class="setting-help">{% trans "The date and time when learners can begin submitting responses." %}</p>
         </li>
-    </ul>
-    <ul id="oa_schedule_editor" class="list-input settings-list">    
+        <li class="openassessment_date_editor field comp-setting-entry openassessment_date_schedule_editor">
+            {% include "openassessmentblock/edit/oa_edit_peer_assessment_schedule.html" %}
+        </li>
+        <li class="openassessment_date_editor field comp-setting-entry openassessment_date_schedule_editor">
+            {% include "openassessmentblock/edit/oa_edit_self_assessment_schedule.html" %}
+        </li>
         <li class="openassessment_date_editor field comp-setting-entry">
             <div class="wrapper-comp-setting">
                 <label

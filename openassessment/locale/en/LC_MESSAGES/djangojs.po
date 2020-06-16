@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-10 15:01-0400\n"
+"POT-Creation-Date: 2020-06-16 11:09-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -367,49 +367,49 @@ msgid "Not Selected"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:152
 msgid "Couldn't Save This Assignment"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:153
 msgid "Please correct the outlined fields."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:178
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:185
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:392
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:399
 msgid "Paragraph"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:393
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:400
 msgid "Preformatted"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:394
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:401
 msgid "Heading 3"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:395
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:402
 msgid "Heading 4"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:396
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:403
 msgid "Heading 5"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:397
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:404
 msgid "Heading 6"
 msgstr ""
 
@@ -471,11 +471,11 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:99
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:105
 msgid "File types can not be empty."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:109
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:115
 msgid "The following file types are not allowed: "
 msgstr ""

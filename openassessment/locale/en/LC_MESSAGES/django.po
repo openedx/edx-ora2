@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-10 15:01-0400\n"
+"POT-Creation-Date: 2020-06-16 11:09-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -287,16 +287,19 @@ msgid "Option Explanation"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:9
 msgid "Step: Peer Assessment"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:13
 msgid ""
 "Learners assess a specified number of other learners' responses using the "
 "rubric for the assignment."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:17
 msgid "Specify the following values for the peer assessment step."
 msgstr ""
 
@@ -320,33 +323,33 @@ msgid ""
 "numbers are 0 to 99."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:22
 msgid "Start Date"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:31
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
 msgid "Start Time"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:39
 msgid ""
 "Enter the date and time when learners can begin assessing peer responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:43
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:43
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:109
 msgid "Due Date"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:66
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:52
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:52
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:52
 msgid "Due Time"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:74
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:60
 msgid "Enter the date and time when all peer assessments must be complete."
 msgstr ""
 
@@ -412,37 +415,39 @@ msgstr ""
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:39
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:45
 msgid "Response Due Date"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:52
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:58
 msgid "Response Due Time"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:61
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:67
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:9
 msgid "Step: Self Assessment"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:13
 msgid ""
 "Learners assess their own responses using the rubric for the assignment."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:17
 msgid "Specify start and due dates for the self assessment step."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:39
 msgid ""
 "Enter the date and time when learners can begin assessing their responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:60
 msgid "Enter the date and time when all self assessments must be complete."
 msgstr ""
 
@@ -2137,94 +2142,94 @@ msgstr ""
 msgid "This response has not been saved."
 msgstr ""
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:120
 msgid "This problem must include at least one assessment."
 msgstr ""
 
-#: openassessment/xblock/validation.py:125
+#: openassessment/xblock/validation.py:124
 msgid "The assessment order you selected is invalid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:135
+#: openassessment/xblock/validation.py:134
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:137
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr ""
 
-#: openassessment/xblock/validation.py:142
+#: openassessment/xblock/validation.py:141
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr ""
 
-#: openassessment/xblock/validation.py:151
+#: openassessment/xblock/validation.py:150
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 
-#: openassessment/xblock/validation.py:154
+#: openassessment/xblock/validation.py:153
 msgid "Each example response for learner training must be unique."
 msgstr ""
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:160
 msgid ""
 "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 
-#: openassessment/xblock/validation.py:165
+#: openassessment/xblock/validation.py:164
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:170
+#: openassessment/xblock/validation.py:169
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:193
+#: openassessment/xblock/validation.py:192
 msgid "This rubric definition is not valid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:199
+#: openassessment/xblock/validation.py:198
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 
-#: openassessment/xblock/validation.py:207
+#: openassessment/xblock/validation.py:206
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:215
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:220
+#: openassessment/xblock/validation.py:219
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:233
+#: openassessment/xblock/validation.py:232
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 
-#: openassessment/xblock/validation.py:238
+#: openassessment/xblock/validation.py:237
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:243
+#: openassessment/xblock/validation.py:242
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:294
+#: openassessment/xblock/validation.py:293
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:359
+#: openassessment/xblock/validation.py:358
 msgid "Leaderboard number is invalid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:382
+#: openassessment/xblock/validation.py:381
 msgid "The submission format is invalid."
 msgstr ""

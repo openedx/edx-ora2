@@ -14,6 +14,7 @@ OpenAssessment.EditScheduleView = function(element, assessmentViews, data) {
     var self = this;
     this.settingsElement = element;
     this.assessmentViews = assessmentViews;
+    this.data = data;
 
     // Configure the date and time fields
     this.startDatetimeControl = new OpenAssessment.DatetimeControl(
@@ -32,7 +33,9 @@ OpenAssessment.EditScheduleView = function(element, assessmentViews, data) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
 
         var selfAssessment = self.assessmentViews.oa_self_assessment_editor;
+        var selfAssessmentSchedule = self.assessmentViews.oa_self_assessment_schedule_editor;
         var peerAssessment = self.assessmentViews.oa_peer_assessment_editor;
+        var peerAssessmentSchedule = self.assessmentViews.oa_peer_assessment_schedule_editor;
         var trainingAssessment = self.assessmentViews.oa_student_training_editor;
         var staffAssessment = self.assessmentViews.oa_staff_assessment_editor;
 
@@ -40,13 +43,17 @@ OpenAssessment.EditScheduleView = function(element, assessmentViews, data) {
             self.setHidden(teamsetElement, true);
 
             self.setHidden($(selfAssessment.element), false);
+            self.setHidden($(selfAssessmentSchedule.element), false);
             self.setHidden($(peerAssessment.element), false);
+            self.setHidden($(peerAssessmentSchedule.element), false);
             self.setHidden($(trainingAssessment.element), false);
         } else {
             self.setHidden(teamsetElement, false);
 
             self.setHidden($(selfAssessment.element), true);
+            self.setHidden($(selfAssessmentSchedule.element), true);
             self.setHidden($(peerAssessment.element), true);
+            self.setHidden($(peerAssessmentSchedule.element), true);
             self.setHidden($(trainingAssessment.element), true);
 
             staffAssessment.isEnabled(true);

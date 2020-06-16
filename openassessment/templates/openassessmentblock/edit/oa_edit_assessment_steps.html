@@ -11,10 +11,9 @@
     </div>
 
     <ol id="openassessment_assessment_module_settings_editors">
-        {% for assessment in editor_assessments_order %}
-            {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
-                {% include template %}
-            {% endwith %}
-        {% endfor %}
+        {% include "openassessmentblock/edit/oa_edit_student_training.html" %}
+        {% include "openassessmentblock/edit/oa_edit_peer_assessment.html" %}
+        {% include "openassessmentblock/edit/oa_edit_self_assessment.html" %}
+        {% include "openassessmentblock/edit/oa_edit_staff_assessment.html" %}
     </ol>
 </div>

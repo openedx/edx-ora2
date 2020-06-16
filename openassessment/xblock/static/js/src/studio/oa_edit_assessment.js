@@ -29,19 +29,6 @@ OpenAssessment.EditPeerAssessmentView = function(element) {
             new OpenAssessment.AssessmentToggleListener(),
         ])
     ).install();
-
-    // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        '#peer_assessment_start_date',
-        '#peer_assessment_start_time'
-    ).install();
-
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        '#peer_assessment_due_date',
-        '#peer_assessment_due_time'
-    ).install();
 };
 
 OpenAssessment.EditPeerAssessmentView.prototype = {
@@ -57,16 +44,12 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
      {
          must_grade: 5,
          must_be_graded_by: 2,
-         start: null,
-         due: "2014-04-1T00:00"
      }
      **/
     description: function() {
         return {
             must_grade: this.mustGradeNum(),
             must_be_graded_by: this.mustBeGradedByNum(),
-            start: this.startDatetime(),
-            due: this.dueDatetime(),
         };
     },
 
@@ -121,6 +104,139 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     },
 
     /**
+     Gets the ID of the assessment
+
+     Returns:
+     string (CSS ID of the Element object)
+     **/
+    getID: function() {
+        return $(this.element).attr('id');
+    },
+
+    /**
+     Mark validation errors.
+
+     Returns:
+     Boolean indicating whether the view is valid.
+
+     **/
+    validate: function() {
+        var mustGradeValid = this.mustGradeField.validate();
+        var mustBeGradedByValid = this.mustBeGradedByField.validate();
+        return mustGradeValid && mustBeGradedByValid;
+    },
+
+    /**
+     Return a list of validation errors visible in the UI.
+     Mainly useful for testing.
+
+     Returns:
+     list of string
+
+     **/
+    validationErrors: function() {
+        var errors = [];
+        if (this.mustGradeField.validationErrors().length > 0) {
+            errors.push('Peer assessment must grade is invalid');
+        }
+        if (this.mustBeGradedByField.validationErrors().length > 0) {
+            errors.push('Peer assessment must be graded by is invalid');
+        }
+        return errors;
+    },
+
+    /**
+     Clear all validation errors from the UI.
+     **/
+    clearValidationErrors: function() {
+        this.mustGradeField.clearValidationErrors();
+        this.mustBeGradedByField.clearValidationErrors();
+    },
+};
+
+/**
+ Interface for editing peer assessment schedule settings.
+
+ Args:
+ element (DOM element): The DOM element representing this view.
+
+ Returns:
+ OpenAssessment.EditPeerAssessmentScheduleView
+
+ **/
+OpenAssessment.EditPeerAssessmentScheduleView = function(element) {
+    this.element = element;
+    this.name = 'peer-assessment-schedule';
+
+    // Configure the toggle checkbox to enable/disable this assessment
+    new OpenAssessment.ToggleControl(
+        $('#include_peer_assessment_schedule', this.element),
+        $('#peer_assessment_schedule_settings_editor', this.element),
+        $('#peer_assessment_schedule_description_closed', this.element),
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener(),
+        ])
+    ).install();
+
+    // Configure the date and time fields
+    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        '#peer_assessment_start_date',
+        '#peer_assessment_start_time'
+    ).install();
+
+    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        '#peer_assessment_due_date',
+        '#peer_assessment_due_time'
+    ).install();
+};
+
+OpenAssessment.EditPeerAssessmentScheduleView.prototype = {
+
+    /**
+     Return a description of the assessment schedule.
+
+     Returns:
+     object literal
+
+     Example usage:
+     >>> editPeerView.description();
+     {
+         start: null,
+         due: "2014-04-1T00:00"
+     }
+     **/
+    description: function() {
+        return {
+            start: this.startDatetime(),
+            due: this.dueDatetime(),
+        };
+    },
+
+    /**
+     Get or set whether the assessment schedule is enabled.
+
+     Args:
+     isEnabled (boolean, optional): If provided, set the enabled state of the assessment schedule.
+
+     Returns:
+     boolean
+     ***/
+    isEnabled: function(isEnabled) {
+        var sel = $('#include_peer_assessment_schedule', this.element);
+        return OpenAssessment.Fields.booleanField(sel, isEnabled);
+    },
+
+    /**
+     Toggle whether the assessment schedule is enabled or disabled.
+     This triggers the actual click event and is mainly useful for testing.
+     **/
+    toggleEnabled: function() {
+        $('#include_peer_assessment_schedule', this.element).click();
+    },
+
+    /**
      Get or set the start date and time of the assessment.
 
      Args:
@@ -149,7 +265,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     },
 
     /**
-     Gets the ID of the assessment
+     Gets the ID of the assessment schedule
 
      Returns:
      string (CSS ID of the Element object)
@@ -168,9 +284,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     validate: function() {
         var startValid = this.startDatetimeControl.validate();
         var dueValid = this.dueDatetimeControl.validate();
-        var mustGradeValid = this.mustGradeField.validate();
-        var mustBeGradedByValid = this.mustBeGradedByField.validate();
-        return startValid && dueValid && mustGradeValid && mustBeGradedByValid;
+        return startValid && dueValid;
     },
 
     /**
@@ -189,12 +303,6 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         if (this.dueDatetimeControl.validationErrors().length > 0) {
             errors.push('Peer assessment due is invalid');
         }
-        if (this.mustGradeField.validationErrors().length > 0) {
-            errors.push('Peer assessment must grade is invalid');
-        }
-        if (this.mustBeGradedByField.validationErrors().length > 0) {
-            errors.push('Peer assessment must be graded by is invalid');
-        }
         return errors;
     },
 
@@ -204,8 +312,6 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
         this.dueDatetimeControl.clearValidationErrors();
-        this.mustGradeField.clearValidationErrors();
-        this.mustBeGradedByField.clearValidationErrors();
     },
 };
 
@@ -232,6 +338,106 @@ OpenAssessment.EditSelfAssessmentView = function(element) {
             new OpenAssessment.AssessmentToggleListener(),
         ])
     ).install();
+};
+
+OpenAssessment.EditSelfAssessmentView.prototype = {
+
+    /**
+     * Return a description of the assessment.
+     *
+     * @return {Object} Representation of the view.
+     */
+    description: function() {
+        return {
+            required: this.isEnabled(),
+        };
+    },
+
+    /**
+     Get or set whether the assessment is enabled.
+
+     Args:
+     isEnabled (boolean, optional): If provided, set the enabled state of the assessment.
+
+     Returns:
+     boolean
+     ***/
+    isEnabled: function(isEnabled) {
+        var sel = $('#include_self_assessment', this.element);
+        return OpenAssessment.Fields.booleanField(sel, isEnabled);
+    },
+
+    /**
+     Toggle whether the assessment is enabled or disabled.
+     This triggers the actual click event and is mainly useful for testing.
+     **/
+    toggleEnabled: function() {
+        $('#include_self_assessment', this.element).click();
+    },
+
+    /**
+     Gets the ID of the assessment
+
+     Returns:
+     string (CSS ID of the Element object)
+     **/
+    getID: function() {
+        return $(this.element).attr('id');
+    },
+
+    /**
+     Mark validation errors.
+
+     Returns:
+     Boolean indicating whether the view is valid.
+
+     **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+     * Return a list of validation errors visible in the UI.
+     * Mainly useful for testing.
+     *
+     * @return {Array} - always empty, function called but not actually used.
+     */
+    validationErrors: function() {
+        var errors = [];
+        return errors;
+    },
+
+    /**
+     Clear all validation errors from the UI.
+     **/
+    clearValidationErrors: function() {
+        // do nothing
+    },
+};
+
+/**
+ Interface for editing self assessment schedule settings.
+
+ Args:
+ element (DOM element): The DOM element representing this view.
+
+ Returns:
+ OpenAssessment.EditSelfAssessmentScheduleView
+
+ **/
+OpenAssessment.EditSelfAssessmentScheduleView = function(element) {
+    this.element = element;
+    this.name = 'self-assessment-schedule';
+
+    // Configure the toggle checkbox to enable/disable this assessment
+    new OpenAssessment.ToggleControl(
+        $('#include_self_assessment_schedule', this.element),
+        $('#self_assessment_schedule_settings_editor', this.element),
+        $('#self_assessment_schedule_description_closed', this.element),
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener(),
+        ])
+    ).install();
 
     // Configure the date and time fields
     this.startDatetimeControl = new OpenAssessment.DatetimeControl(
@@ -247,7 +453,7 @@ OpenAssessment.EditSelfAssessmentView = function(element) {
     ).install();
 };
 
-OpenAssessment.EditSelfAssessmentView.prototype = {
+OpenAssessment.EditSelfAssessmentScheduleView.prototype = {
 
     /**
      Return a description of the assessment.
@@ -274,22 +480,22 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
      Get or set whether the assessment is enabled.
 
      Args:
-     isEnabled (boolean, optional): If provided, set the enabled state of the assessment.
+     isEnabled (boolean, optional): If provided, set the enabled state of the assessment schedule.
 
      Returns:
      boolean
      ***/
     isEnabled: function(isEnabled) {
-        var sel = $('#include_self_assessment', this.element);
+        var sel = $('#include_self_assessment_schedule', this.element);
         return OpenAssessment.Fields.booleanField(sel, isEnabled);
     },
 
     /**
-     Toggle whether the assessment is enabled or disabled.
+     Toggle whether the assessment schedule is enabled or disabled.
      This triggers the actual click event and is mainly useful for testing.
      **/
     toggleEnabled: function() {
-        $('#include_self_assessment', this.element).click();
+        $('#include_self_assessment_schedule', this.element).click();
     },
 
     /**

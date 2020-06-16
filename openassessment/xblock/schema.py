@@ -83,7 +83,9 @@ NECESSITY_OPTIONS = [
 
 VALID_ASSESSMENT_TYPES = [
     u'peer-assessment',
+    u'peer-assessment-schedule',
     u'self-assessment',
+    u'self-assessment-schedule',
     u'student-training',
     u'staff-assessment',
 ]

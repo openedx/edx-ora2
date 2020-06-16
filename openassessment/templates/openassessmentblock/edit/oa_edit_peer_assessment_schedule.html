@@ -1,21 +1,22 @@
 {% load i18n %}
 {% load tz %}
 {% spaceless %}
-<li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_schedule_editor">
     <div class="drag-handle action"></div>
     <div class="openassessment_inclusion_wrapper">
-        <input type="checkbox" id="include_peer_assessment"
+        <input class="openassessment_schedule_inclusion_wrapper" type="checkbox" id="include_peer_assessment_schedule"
                 {% if assessments.peer_assessment %} checked="true" {% endif %}>
         <label for="include_peer_assessment">{% trans "Step: Peer Assessment" %}</label>
     </div>
     <div class="openassessment_assessment_module_editor">
-        <p id="peer_assessment_description_closed" class="openassessment_description_closed {% if assessments.peer_assessment %} is--hidden {% endif %}">
+        <p id="peer_assessment_schedule_description_closed" class="openassessment_description_closed {% if assessments.peer_assessment %} is--hidden {% endif %}">
             {% trans "Learners assess a specified number of other learners' responses using the rubric for the assignment." %}
         </p>
-        <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.peer_assessment %} is--hidden {% endif %}">
+        <div id="peer_assessment_schedule_settings_editor" class="assessment_settings_wrapper {% if not assessments.peer_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
-                {% trans "Specify start and due dates for the peer assessment step." %}
+                {% trans "Specify the following values for the peer assessment step." %}
             </p>
+            <ul class="list-input settings-list">
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="peer_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>

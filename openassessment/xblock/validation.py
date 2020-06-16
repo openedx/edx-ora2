@@ -67,9 +67,9 @@ def _is_valid_assessment_sequence(assessments):
 
     """
     sequence = [asmnt.get('name') for asmnt in assessments]
-    required = ['staff-assessment', 'peer-assessment', 'self-assessment']
+    required = ['peer-assessment-schedule', 'self-assessment-schedule', 'peer-assessment',
+                'peer-assessment-schedule', 'self-assessment', 'self-assessment-schedule']
     optional = ['student-training']
-
     # at least one of required?
     if not any(name in required for name in sequence):
         return False

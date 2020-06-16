@@ -13,9 +13,9 @@ from bok_choy.promise import BrokenPromise, EmptyPromise
 from bok_choy.web_app_test import WebAppTest
 import ddt
 import pytest
+from six.moves import range
 from pyinstrument import Profiler
 
-from six.moves import range
 
 from ..acceptance.auto_auth import AutoAuthPage  # pylint: disable=import-error
 from ..acceptance.pages import (AssessmentPage, GradePage, StaffAreaPage,  # pylint: disable=import-error

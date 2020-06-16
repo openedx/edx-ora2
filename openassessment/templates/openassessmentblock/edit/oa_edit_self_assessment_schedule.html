@@ -1,18 +1,18 @@
 {% load i18n %}
 {% load tz %}
 {% spaceless %}
-<li class="openassessment_assessment_module_settings_editor" id="oa_self_assessment_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_self_assessment_schedule_editor">
     <div class="drag-handle action"></div>
     <div class="openassessment_inclusion_wrapper">
-        <input id="include_self_assessment" type="checkbox"
+        <input class="openassessment_schedule_inclusion_wrapper" id="include_self_assessment_schedule" type="checkbox"
                 {% if assessments.self_assessment %} checked="true" {% endif %}>
-        <label for="include_self_assessment">{% trans "Step: Self Assessment" %}</label>
+        <label for="include_self_assessment_schedule">{% trans "Step: Self Assessment" %}</label>
     </div>
     <div class="openassessment_assessment_module_editor">
-        <p id="self_assessment_description_closed" class="openassessment_description_closed {% if assessments.self_assessment %} is--hidden {% endif %}">
+        <p id="self_assessment_schedule_description_closed" class="openassessment_description_closed {% if assessments.self_assessment %} is--hidden {% endif %}">
             {% trans "Learners assess their own responses using the rubric for the assignment." %}
         </p>
-        <div id="self_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.self_assessment %} is--hidden {% endif %}">
+        <div id="self_assessment_schedule_settings_editor" class="assessment_settings_wrapper {% if not assessments.self_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
                 {% trans "Specify start and due dates for the self assessment step." %}
             </p>

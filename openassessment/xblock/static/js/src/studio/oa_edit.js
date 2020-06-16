@@ -37,7 +37,7 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
         ])
     );
 
-    // Initialize the assessment steps tab view
+    // Initialize the settings tab view
     var staffAssessmentView = new OpenAssessment.EditStaffAssessmentView(
         $('#oa_staff_assessment_editor', this.element).get(0)
     );
@@ -47,26 +47,24 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
     var peerAssessmentView = new OpenAssessment.EditPeerAssessmentView(
         $('#oa_peer_assessment_editor', this.element).get(0)
     );
+    var peerAssessmentScheduleView = new OpenAssessment.EditPeerAssessmentScheduleView(
+        $('#oa_peer_assessment_schedule_editor', this.element).get(0)
+    );
     var selfAssessmentView = new OpenAssessment.EditSelfAssessmentView(
         $('#oa_self_assessment_editor', this.element).get(0)
+    );
+    var selfAssessmentScheduleView = new OpenAssessment.EditSelfAssessmentScheduleView(
+        $('#oa_self_assessment_schedule_editor', this.element).get(0)
     );
     var assessmentLookupDictionary = {};
     assessmentLookupDictionary[staffAssessmentView.getID()] = staffAssessmentView;
     assessmentLookupDictionary[studentTrainingView.getID()] = studentTrainingView;
     assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
+    assessmentLookupDictionary[peerAssessmentScheduleView.getID()] = peerAssessmentScheduleView;
     assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;
-
-    // oa_basic_settings_schedule_editor
+    assessmentLookupDictionary[selfAssessmentScheduleView.getID()] = selfAssessmentScheduleView;
     this.settingsView = new OpenAssessment.EditSettingsView(
         $('#oa_basic_settings_editor', this.element).get(0), assessmentLookupDictionary, data
-    );
-
-    this.scheduleView = new OpenAssessment.EditScheduleView(
-        $('#oa_schedule_editor', this.element).get(0), assessmentLookupDictionary, data
-    );
-
-    this.assessmentStepsView = new OpenAssessment.EditAssessmentStepsView(
-        $('#openassessment_assessment_module_settings_editors', this.element).get(0), assessmentLookupDictionary, data
     );
 
     // Initialize the rubric tab view
@@ -113,7 +111,7 @@ OpenAssessment.StudioView.prototype = {
     initializeTabs: function() {
         // If this is the first editor that the user has opened, default to the prompt view.
         if (typeof(OpenAssessment.lastOpenEditingTab) === 'undefined') {
-            OpenAssessment.lastOpenEditingTab = 0;
+            OpenAssessment.lastOpenEditingTab = 2;
         }
         // Initialize JQuery UI Tabs, and activates the appropriate tab.
         $('.openassessment_editor_content_and_tabs', this.element)
@@ -207,6 +205,8 @@ OpenAssessment.StudioView.prototype = {
             feedback_default_text: view.rubricView.feedback_default_text(),
             criteria: view.rubricView.criteriaDefinition(),
             title: view.settingsView.displayName(),
+            submissionStart: view.settingsView.submissionStart(),
+            submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
             textResponse: view.settingsView.textResponseNecessity(),
             fileUploadResponse: view.settingsView.fileUploadResponseNecessity(),
@@ -217,8 +217,6 @@ OpenAssessment.StudioView.prototype = {
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder(),
             teamsEnabled: view.settingsView.teamsEnabled(),
             selectedTeamsetId: view.settingsView.teamset(),
-            submissionStart: view.scheduleView.submissionStart(),
-            submissionDue: view.scheduleView.submissionDue(),
         }).done(
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.
@@ -256,12 +254,10 @@ OpenAssessment.StudioView.prototype = {
 
      **/
     validate: function() {
-        var assessmentStepsValid = this.assessmentSteps.validate();
-        var scheduleValid = this.schedule.validate();
         var settingsValid = this.settingsView.validate();
         var rubricValid = this.rubricView.validate();
         var promptsValid = this.promptsView.validate();
-        return assessmentStepsValid && scheduleValid && settingsValid && rubricValid && promptsValid;
+        return settingsValid && rubricValid && promptsValid;
     },
 
     /**
@@ -273,13 +269,9 @@ OpenAssessment.StudioView.prototype = {
 
      **/
     validationErrors: function() {
-        return this.scheduleView.validationErrors().concat(
-            this.assessmentStepsView.validationErrors().concat(
-                this.settingsView.validationErrors().concat(
-                    this.rubricView.validationErrors().concat(
-                        this.promptsView.validationErrors()
-                    )
-                )
+        return this.settingsView.validationErrors().concat(
+            this.rubricView.validationErrors().concat(
+                this.promptsView.validationErrors()
             )
         );
     },
@@ -288,8 +280,6 @@ OpenAssessment.StudioView.prototype = {
      Clear all validation errors from the UI.
      **/
     clearValidationErrors: function() {
-        this.scheduleView.clearValidationErrors();
-        this.assessmentStepsView.clearValidationErrors();
         this.settingsView.clearValidationErrors();
         this.rubricView.clearValidationErrors();
         this.promptsView.clearValidationErrors();
