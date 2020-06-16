@@ -6,7 +6,6 @@ edx-i18n-tools
 edx-submissions
 djangorestframework
 Xblock
-xblock-sdk
 
 django
 django-simple-history
