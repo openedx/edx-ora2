@@ -25,6 +25,7 @@ from .base import (
     SELF_ASSESSMENT,
     STAFF_GOOD_ASSESSMENT,
     TEAM_GOOD_ASSESSMENT,
+    TEAM_GOOD_ASSESSMENT_REGRADE,
     SubmitAssessmentsMixin,
     XBlockHandlerTestCase,
     scenario
@@ -274,6 +275,28 @@ class TestStaffAssessment(StaffAssessmentTestBase):
 class TestStaffTeamAssessment(StaffAssessmentTestBase):
     """ Test Staff Team Assessment Workflow"""
 
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.expected_answer = {
+            'points_earned': 2,
+            'parts0_criterion_name': 'Form',
+            'parts1_criterion_name': 'Concise',
+            'parts2_criterion_name': 'Clear-headed',
+            'parts0_option_name': 'Facebook',
+            'parts1_option_name': 'HP Lovecraft',
+            'parts2_option_name': 'Yogi Berra'
+        }
+        cls.regrade_expected_answer = {
+            'points_earned': 3,
+            'parts0_criterion_name': 'Concise',
+            'parts1_criterion_name': 'Form',
+            'parts2_criterion_name': 'Clear-headed',
+            'parts0_option_name': 'HP Lovecraft',
+            'parts1_option_name': 'Reddit',
+            'parts2_option_name': 'Yogi Berra'
+        }
+
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_assess_handler(self, xblock):
 
@@ -283,25 +306,45 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         self.submit_staff_assessment(xblock, submission, assessment=TEAM_GOOD_ASSESSMENT)
 
         assessment = teams_api.get_latest_staff_assessment(submission['team_submission_uuid'])
-        self._assert_team_assessment(assessment, submission)
+        self._assert_team_assessment(assessment, submission, self.expected_answer)
 
-    def _assert_team_assessment(self, assessment, submission):
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_assess_handler_regrade(self, xblock):
+        """
+        To test regrade we first need to create/setup xblock, create an initial team submission and then
+        regrade it.
+        """
+        # create initial team submission
+        submission = self._setup_xblock_and_create_team_submission(xblock)
+        submission["uuid"] = str(submission["submission_uuids"][0])
+        # assesss initial team submission
+        self.submit_staff_assessment(xblock, submission, assessment=TEAM_GOOD_ASSESSMENT)
+        # get assessment via API for asserts
+        assessment = teams_api.get_latest_staff_assessment(submission['team_submission_uuid'])
+        self._assert_team_assessment(assessment, submission, self.expected_answer)
+        # assess the submission as a regrade by passing in a modified assessment
+        self.submit_staff_assessment(xblock, submission, assessment=TEAM_GOOD_ASSESSMENT_REGRADE)
+        # get the assessment via API for asserts
+        assessment = teams_api.get_latest_staff_assessment(submission['team_submission_uuid'])
+        self._assert_team_assessment(assessment, submission, self.regrade_expected_answer)
+
+    def _assert_team_assessment(self, assessment, submission, expected_answer):
         """
         Helper function to perform asserts
         """
-        self.assertEqual(assessment['points_earned'], 2)
+        self.assertEqual(assessment['points_earned'], expected_answer['points_earned'])
         self.assertEqual(assessment['scorer_id'], 'Bob')
         self.assertEqual(assessment['score_type'], 'ST')
         self.assertEqual(assessment['feedback'], 'Staff: good job!')
         parts = assessment['parts']
         parts.sort(key=lambda x: x['option']['name'])
         self.assertEqual(len(parts), 3)
-        self.assertEqual(parts[0]['option']['criterion']['name'], 'Form')
-        self.assertEqual(parts[1]['option']['criterion']['name'], 'Concise')
-        self.assertEqual(parts[2]['option']['criterion']['name'], 'Clear-headed')
-        self.assertEqual(parts[0]['option']['name'], 'Facebook')
-        self.assertEqual(parts[1]['option']['name'], 'HP Lovecraft')
-        self.assertEqual(parts[2]['option']['name'], 'Yogi Berra')
+        self.assertEqual(parts[0]['option']['criterion']['name'], expected_answer['parts0_criterion_name'])
+        self.assertEqual(parts[1]['option']['criterion']['name'], expected_answer['parts1_criterion_name'])
+        self.assertEqual(parts[2]['option']['criterion']['name'], expected_answer['parts2_criterion_name'])
+        self.assertEqual(parts[0]['option']['name'], expected_answer['parts0_option_name'])
+        self.assertEqual(parts[1]['option']['name'], expected_answer['parts1_option_name'])
+        self.assertEqual(parts[2]['option']['name'], expected_answer['parts2_option_name'])
 
         score = teams_api.get_score(submission['team_submission_uuid'], {})
         self.assertEqual(assessment['points_earned'], score['points_earned'])
