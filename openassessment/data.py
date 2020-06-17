@@ -429,6 +429,51 @@ class OraAggregateData:
         return cls._map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
 
     @classmethod
+    def _map_block_usage_keys_to_display_names(cls, course_id):
+        """
+        Fetches all course blocks and filters out those of them, whoose
+        category not equal to ``openassessment``. Then builds
+        mapping between block usage key string and block display name.
+
+        Args:
+            course_id (string or CourseLocator instance) - id of course
+            resourse
+        Returns:
+            dictionary, that contains mapping between block usage
+            keys (locations) and block display names.
+        """
+        # pylint: disable=import-error
+
+        from lms.djangoapps.course_blocks.api import get_course_blocks
+        from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
+
+        from xmodule.modulestore.django import modulestore
+
+        store = modulestore()
+        course_usage_key = store.make_course_usage_key(course_id)
+
+        # Passing an empty block structure transformer here to avoid user access checks
+        blocks = get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+
+        block_keys_to_remove = []
+
+        for block_key in blocks:
+            block_type = blocks.get_xblock_field(block_key, 'category')
+            if block_type != 'openassessment':
+                block_keys_to_remove.append(block_key)
+
+        for block_key in block_keys_to_remove:
+            blocks.remove_block(block_key, keep_descendants=True)
+
+        block_display_name_map = {}
+
+        for block_key in blocks:
+            block_key_str = str(block_key)
+            block_display_name_map[block_key_str] = blocks.get_xblock_field(block_key, 'display_name')
+
+        return block_display_name_map
+
+    @classmethod
     def _build_assessments_cell(cls, assessments, usernames_map):
         """
         Args:
@@ -528,6 +573,7 @@ class OraAggregateData:
             if usernames_enabled
             else {}
         )
+        block_display_names_map = cls._map_block_usage_keys_to_display_names(course_id)
 
         rows = []
         for student_item, submission, score in all_submission_information:
@@ -549,8 +595,12 @@ class OraAggregateData:
                 else []
             )
 
+            problem_name = block_display_names_map.get(student_item['item_id'])
+
             row = [
                 submission['uuid'],
+                student_item['item_id'],
+                problem_name,
                 submission['student_item'],
             ] + row_username_cell + [
                 student_item['student_id'],
@@ -575,6 +625,8 @@ class OraAggregateData:
 
         header = [
             'Submission ID',
+            'Location',
+            'Problem Name',
             'Item ID'
         ] + header_username_cell + [
             'Anonymized Student ID',
