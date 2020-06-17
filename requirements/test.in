@@ -15,5 +15,6 @@ moto
 testfixtures                        # Provides a LogCapture utility to be used by tests
 tox
 more-itertools
+xblock-sdk
 
 git+https://github.com/edx/django-pyfs.git@1.0.6#egg=django-pyfs
