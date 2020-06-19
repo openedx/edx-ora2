@@ -11,7 +11,8 @@ from lazy import lazy
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 from xblock.core import XBlock
 
-from .data_conversion import create_submission_dict
+from .data_conversion import create_submission_dict_v2
+from .utils import get_code_language
 
 
 class GradeMixin(object):
@@ -133,11 +134,13 @@ class GradeMixin(object):
         # when all the criteria in the rubric are feedback-only (no options).
         score = workflow['score']
 
-        context = {
+        context = {'student_submission': create_submission_dict_v2(student_submission, self.prompts)}
+
+        context.update({
             'score': score,
             'feedback_text': feedback_text,
             'has_submitted_feedback': has_submitted_feedback,
-            'student_submission': create_submission_dict(student_submission, self.prompts),
+            'code_language': get_code_language(context["student_submission"]['answer']['parts'][0]),
             'peer_assessments': peer_assessments,
             'grade_details': self.grade_details(
                 submission_uuid,
@@ -150,9 +153,9 @@ class GradeMixin(object):
             'prompts_type': self.prompts_type,
             'file_urls': self.get_download_urls_from_submission(student_submission),
             'xblock_id': self.get_xblock_id()
-        }
+        })
 
-        return ('openassessmentblock/grade/oa_grade_complete.html', context)
+        return 'openassessmentblock/grade/oa_grade_complete.html', context
 
     def render_grade_incomplete(self, workflow):
         """

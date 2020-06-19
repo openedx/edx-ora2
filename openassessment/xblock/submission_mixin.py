@@ -665,7 +665,8 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+            context["student_submission"] = create_submission_dict_v2(student_submission, self.prompts)
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(

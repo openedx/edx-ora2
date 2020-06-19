@@ -672,6 +672,7 @@ OpenAssessment.ResponseView.prototype = {
                         baseView.toggleActionError('response', null);
 
                         // Send the submission to the server, returning the promise.
+                        view.saveStatus("Creating submission. Please Wait!")
                         return view.server.submit(submission);
                     });
             })
