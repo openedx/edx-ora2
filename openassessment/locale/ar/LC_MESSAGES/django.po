@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-11 08:03-0400\n"
-"PO-Revision-Date: 2020-06-12 18:29+0000\n"
+"POT-Creation-Date: 2020-06-17 10:45-0400\n"
+"PO-Revision-Date: 2020-06-19 06:29+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -959,7 +959,7 @@ msgstr "قراءة وتقييم الرد التالي لأحد زملائك."
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:38
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:63
 msgid "Associated Files"
 msgstr ""
@@ -968,7 +968,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:71
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:50
 msgid "We could not submit your assessment"
 msgstr "عذرًا، لم نتمكّن من تقديم تقييمك."
 
@@ -976,7 +976,7 @@ msgstr "عذرًا، لم نتمكّن من تقديم تقييمك."
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:157
+#: openassessment/xblock/staff_assessment_mixin.py:156
 msgid "Cancelled"
 msgstr "جرى الإلغاء"
 
@@ -1035,8 +1035,8 @@ msgstr "تم تقييم جميع ردود الزملاء التي جرى تقد�
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:150
-#: openassessment/xblock/staff_assessment_mixin.py:174
+#: openassessment/xblock/staff_assessment_mixin.py:149
+#: openassessment/xblock/staff_assessment_mixin.py:173
 msgid "Not Available"
 msgstr "غير متاح"
 
@@ -1218,8 +1218,8 @@ msgstr "لقد مر تاريخ استحقاق هذه الخطوة. تم إغلا
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:164
-#: openassessment/xblock/staff_assessment_mixin.py:187
+#: openassessment/xblock/staff_assessment_mixin.py:163
+#: openassessment/xblock/staff_assessment_mixin.py:186
 msgid "Complete"
 msgstr "مكتمِل"
 
@@ -1397,6 +1397,7 @@ msgid ""
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1405,7 +1406,7 @@ msgid ""
 msgstr "\nردّ الطالب: %(student_username)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 msgid "Learner Response"
 msgstr "ردّ المتعلّم"
 
@@ -1414,13 +1415,13 @@ msgid "The teams's response to the prompt above"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:32
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
 msgstr "تقديم التقييم"
 
@@ -1436,17 +1437,22 @@ msgid ""
 "            "
 msgstr "\nمازال لديك                %(ungraded)s متوفرة وتحقّقت من %(in_progress)s \n            "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:6
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
 msgstr "تجاوز علامة المتعلّم الحالية باستخدام سُلّم تقييم المسألة."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:15
-#, python-format
-msgid ""
-"\n"
-"                                    Response for: %(student_username)s\n"
-"                                "
-msgstr "\nردود الطلاب: %(student_username)s\n                                "
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:9
+msgid "Override this team's current grade using the problem's rubric."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
+msgid "Team Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
+msgid "The team's response to the prompt above"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:11
 #, python-format
@@ -1495,10 +1501,6 @@ msgid ""
 "                        Comments: %(comments)s\n"
 "                    "
 msgstr "\nالتعليقات: %(comments)s"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
-msgid "The team's response to the prompt above"
-msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
@@ -1834,39 +1836,39 @@ msgstr "بانتظار آراء الزملاء"
 msgid "Peer"
 msgstr "زميل"
 
-#: openassessment/xblock/peer_assessment_mixin.py:63
+#: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "يجب أن تقدّم ردًّا قبل أن تتمكّن من إجراء تقييم للزملاء."
 
-#: openassessment/xblock/peer_assessment_mixin.py:76
+#: openassessment/xblock/peer_assessment_mixin.py:74
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "سبق أن جرى تقديم هذه الآراء والملاحظات أو قد أُلغِيَ التقديم."
 
-#: openassessment/xblock/peer_assessment_mixin.py:101
-#: openassessment/xblock/peer_assessment_mixin.py:106
+#: openassessment/xblock/peer_assessment_mixin.py:99
+#: openassessment/xblock/peer_assessment_mixin.py:104
 msgid "Your peer assessment could not be submitted."
 msgstr "عذرًا، لم يمكن تقديم تقييمك للزملاء. "
 
-#: openassessment/xblock/peer_assessment_mixin.py:120
+#: openassessment/xblock/peer_assessment_mixin.py:118
 #: openassessment/xblock/student_training_mixin.py:273
 msgid "Could not update workflow status."
 msgstr "عذرًا، لم يمكن تحديث حالة سير العمل."
 
-#: openassessment/xblock/peer_assessment_mixin.py:128
+#: openassessment/xblock/peer_assessment_mixin.py:126
 msgid "Could not load peer assessment."
 msgstr "عذرًا، لم يمكن تحميل تقييم الزملاء."
 
-#: openassessment/xblock/peer_assessment_mixin.py:213
+#: openassessment/xblock/peer_assessment_mixin.py:211
 msgid "Submit your assessment and review another response"
 msgstr "قدِّم تقييمك ثمّ راجع ردًّا آخر."
 
-#: openassessment/xblock/peer_assessment_mixin.py:217
+#: openassessment/xblock/peer_assessment_mixin.py:215
 msgid "Submit your assessment and move to next step"
 msgstr "قدِّم تقييمك ثم انتقل إلى الخطوة التالية."
 
-#: openassessment/xblock/peer_assessment_mixin.py:221
+#: openassessment/xblock/peer_assessment_mixin.py:219
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "قدِّم تقييمك ثم انتقل إلى الرد #{response_number}."
@@ -1951,61 +1953,61 @@ msgstr "حدث خطأ في تلقّي معلومات درجات طاقم الم�
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "حدث خطأ أثناء جلب أعداد الردود قيد التصحيح والردود غير المصحّحة بعد، ليتمكن طاقم المساق من المباشرة بعملية التصحيح."
 
-#: openassessment/xblock/staff_area_mixin.py:548
+#: openassessment/xblock/staff_area_mixin.py:540
 msgid "Please enter valid reason to remove the submission."
 msgstr "يُرجى إدخال سبب صالح لحذف التقديم."
 
-#: openassessment/xblock/staff_area_mixin.py:559
+#: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:570
+#: openassessment/xblock/staff_area_mixin.py:562
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:597
+#: openassessment/xblock/staff_area_mixin.py:589
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "حُذِفَ تقديم إجابة المتعلّم من قسم ’تقييم الزملاء‘. يحصل الطالب على درجة صفر ما لم يُمحى ’وضع المتعلّم‘ لهذه المشكلة وذلك ليُسمح له بإعادة تقديم ردّ الإجابة من جديد."
 
-#: openassessment/xblock/staff_area_mixin.py:632
+#: openassessment/xblock/staff_area_mixin.py:624
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:48
+#: openassessment/xblock/staff_assessment_mixin.py:47
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "تعذّر إيجاد الرقم التعريفي للتقديم قيد التقييم."
 
-#: openassessment/xblock/staff_assessment_mixin.py:75
-#: openassessment/xblock/staff_assessment_mixin.py:82
+#: openassessment/xblock/staff_assessment_mixin.py:74
+#: openassessment/xblock/staff_assessment_mixin.py:81
 msgid "Your staff assessment could not be submitted."
 msgstr "تعذّر تقديم تقييم طاقم المساق الخاص بردّك."
 
-#: openassessment/xblock/staff_assessment_mixin.py:116
-#: openassessment/xblock/staff_assessment_mixin.py:123
+#: openassessment/xblock/staff_assessment_mixin.py:115
+#: openassessment/xblock/staff_assessment_mixin.py:122
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:175
+#: openassessment/xblock/staff_assessment_mixin.py:174
 msgid "Waiting for a Staff Grade"
 msgstr "بانتظار الدرجة الممنوحة من طاقم المساق."
 
-#: openassessment/xblock/staff_assessment_mixin.py:176
+#: openassessment/xblock/staff_assessment_mixin.py:175
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "راجع الصفحة في وقت لاحق لتعرف فيما إذا قيّم أحد أعضاء طاقم الفريق ردّك. ستحصل على درجتك بعد إكمال عملية التقييم."
 
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: openassessment/xblock/staff_assessment_mixin.py:188
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "يجب أن تكمل الخطوات المبيّنة أعلاه لتعرف الدرجة التي حصلت عليها."
 
-#: openassessment/xblock/staff_assessment_mixin.py:190
+#: openassessment/xblock/staff_assessment_mixin.py:189
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
