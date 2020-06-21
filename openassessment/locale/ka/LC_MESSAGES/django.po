@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-11 08:03-0400\n"
-"PO-Revision-Date: 2020-06-12 18:29+0000\n"
+"POT-Creation-Date: 2020-06-17 10:45-0400\n"
+"PO-Revision-Date: 2020-06-19 06:29+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
 "MIME-Version: 1.0\n"
@@ -943,7 +943,7 @@ msgstr "წაიკითხეთ და შეაფასეთ თქვე
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:38
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:63
 msgid "Associated Files"
 msgstr "დაკავშირებული ფაილები"
@@ -952,7 +952,7 @@ msgstr "დაკავშირებული ფაილები"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:71
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:50
 msgid "We could not submit your assessment"
 msgstr "თქვენი შეფასების გაგზავნა ვერ მოხერხდა"
 
@@ -960,7 +960,7 @@ msgstr "თქვენი შეფასების გაგზავნა 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:157
+#: openassessment/xblock/staff_assessment_mixin.py:156
 msgid "Cancelled"
 msgstr "გაუქმებულია"
 
@@ -1019,8 +1019,8 @@ msgstr "ჯგუფის წევრების ყველა გამო
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:150
-#: openassessment/xblock/staff_assessment_mixin.py:174
+#: openassessment/xblock/staff_assessment_mixin.py:149
+#: openassessment/xblock/staff_assessment_mixin.py:173
 msgid "Not Available"
 msgstr "არ არის ხელმისაწვდომი"
 
@@ -1202,8 +1202,8 @@ msgstr "ამ საფეხურის ვადა ამოწურულ
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:164
-#: openassessment/xblock/staff_assessment_mixin.py:187
+#: openassessment/xblock/staff_assessment_mixin.py:163
+#: openassessment/xblock/staff_assessment_mixin.py:186
 msgid "Complete"
 msgstr "დასრულებულია"
 
@@ -1381,6 +1381,7 @@ msgid ""
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1389,7 +1390,7 @@ msgid ""
 msgstr "\n                                        პასუხი:  %(student_username)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 msgid "Learner Response"
 msgstr "მსმენელის პასუხი"
 
@@ -1398,13 +1399,13 @@ msgid "The teams's response to the prompt above"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:32
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
 msgstr "სტუდენტის პასუხი ზემოთ მითითებულ საკითხზე:"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
 msgstr "შეფასების გაგზავნა"
 
@@ -1420,17 +1421,22 @@ msgid ""
 "            "
 msgstr "\n                %(ungraded)s ხელმისაწვდომი და %(in_progress)s შემოწმებულია.\n            "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:6
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
 msgstr "ამოცანის შეფასების სქემის მიხედვით მსმენელის მიმდინარე შეფასების შეცვლა."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:15
-#, python-format
-msgid ""
-"\n"
-"                                    Response for: %(student_username)s\n"
-"                                "
-msgstr "\n                                    პასუხი: %(student_username)s\n                                "
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:9
+msgid "Override this team's current grade using the problem's rubric."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
+msgid "Team Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
+msgid "The team's response to the prompt above"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:11
 #, python-format
@@ -1479,10 +1485,6 @@ msgid ""
 "                        Comments: %(comments)s\n"
 "                    "
 msgstr "\n                   კომენტარები: %(comments)s\n                    "
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
-msgid "The team's response to the prompt above"
-msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
@@ -1814,39 +1816,39 @@ msgstr "სხვა სტუდენტების შეფასები�
 msgid "Peer"
 msgstr "კურსელი"
 
-#: openassessment/xblock/peer_assessment_mixin.py:63
+#: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "ურთიერთშეფასების დაწყებამდე, ჯერ საკუთარი პასუხი უნდა გაგზავნოთ."
 
-#: openassessment/xblock/peer_assessment_mixin.py:76
+#: openassessment/xblock/peer_assessment_mixin.py:74
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "ეს გამოხმაურება უკვე გაგზავნილია ან პასუხი წაშლილია."
 
-#: openassessment/xblock/peer_assessment_mixin.py:101
-#: openassessment/xblock/peer_assessment_mixin.py:106
+#: openassessment/xblock/peer_assessment_mixin.py:99
+#: openassessment/xblock/peer_assessment_mixin.py:104
 msgid "Your peer assessment could not be submitted."
 msgstr "თქვენი შესრულებული ურთიერთშეფასების გაგზავნა ვერ მოხერხდა."
 
-#: openassessment/xblock/peer_assessment_mixin.py:120
+#: openassessment/xblock/peer_assessment_mixin.py:118
 #: openassessment/xblock/student_training_mixin.py:273
 msgid "Could not update workflow status."
 msgstr "სამუშაო პროცესის სტატუსის განახლება ვერ მოხერხდა."
 
-#: openassessment/xblock/peer_assessment_mixin.py:128
+#: openassessment/xblock/peer_assessment_mixin.py:126
 msgid "Could not load peer assessment."
 msgstr "ურთიერთშეფასების ჩატვირთვა ვერ მოხერხდა."
 
-#: openassessment/xblock/peer_assessment_mixin.py:213
+#: openassessment/xblock/peer_assessment_mixin.py:211
 msgid "Submit your assessment and review another response"
 msgstr "გაგზავნეთ თქვენი შეფასება და  შეამოწმეთ სხვა პასუხი"
 
-#: openassessment/xblock/peer_assessment_mixin.py:217
+#: openassessment/xblock/peer_assessment_mixin.py:215
 msgid "Submit your assessment and move to next step"
 msgstr "გაგზავნეთ თქვენი შეფასება და გადადით შემდეგ საფეხურზე"
 
-#: openassessment/xblock/peer_assessment_mixin.py:221
+#: openassessment/xblock/peer_assessment_mixin.py:219
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "გაგზავნეთ თქვენი შეფასება და გადადით პასუხზე  #{response_number}"
@@ -1931,61 +1933,61 @@ msgstr "თანამშრომელთა შეფასების ი�
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "თანამშრომელთა მიერ შეუფასებელი და შეუმოწმებელი დავალებების რაოდენობის ამოღებისას წარმოიშვა შეცდომა."
 
-#: openassessment/xblock/staff_area_mixin.py:548
+#: openassessment/xblock/staff_area_mixin.py:540
 msgid "Please enter valid reason to remove the submission."
 msgstr "გთხივთ შეიყვანოთ დავალების წაშლის საფუძვლიანი მიზეზი."
 
-#: openassessment/xblock/staff_area_mixin.py:559
+#: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:570
+#: openassessment/xblock/staff_area_mixin.py:562
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:597
+#: openassessment/xblock/staff_area_mixin.py:589
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "მოსწავლის ამოცანის პასუხი წაიშალა ურთიერთშეფასებებიდან. მოსწავლე მიიღებს ნულოვან შეფასებას, ვიდრე არ წაშლით მოსწავლის ამოცანის სტატუსს და არ მისცემთ მას ხელახლა გამოგზავნის საშუალებას."
 
-#: openassessment/xblock/staff_area_mixin.py:632
+#: openassessment/xblock/staff_area_mixin.py:624
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:48
+#: openassessment/xblock/staff_assessment_mixin.py:47
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "შემოწმების პროცესში მყოფი პასუხის საიდენტიფიკაციო ნომერი ვერ მოიძებნა."
 
-#: openassessment/xblock/staff_assessment_mixin.py:75
-#: openassessment/xblock/staff_assessment_mixin.py:82
+#: openassessment/xblock/staff_assessment_mixin.py:74
+#: openassessment/xblock/staff_assessment_mixin.py:81
 msgid "Your staff assessment could not be submitted."
 msgstr "თქვენი შეფასების გაგზავნა ვერ მოხერხდა."
 
-#: openassessment/xblock/staff_assessment_mixin.py:116
-#: openassessment/xblock/staff_assessment_mixin.py:123
+#: openassessment/xblock/staff_assessment_mixin.py:115
+#: openassessment/xblock/staff_assessment_mixin.py:122
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:175
+#: openassessment/xblock/staff_assessment_mixin.py:174
 msgid "Waiting for a Staff Grade"
 msgstr "ველოდებით კურსის თანამშრომლების შეფასებას"
 
-#: openassessment/xblock/staff_assessment_mixin.py:176
+#: openassessment/xblock/staff_assessment_mixin.py:175
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "დაბრუნდით მოგვიანებით და გადაამოწმეთ, დაგიწერათ თუ არა შეფასება კურსის თანამშრომელმა. ქულას შეფასების დასრულების შემდეგ მიიღებთ."
 
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: openassessment/xblock/staff_assessment_mixin.py:188
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "თქვენი საბოლოო ქულის სანახავად უნდა დაასრულოთ ზემოთ მოცემული საფეხურები."
 
-#: openassessment/xblock/staff_assessment_mixin.py:190
+#: openassessment/xblock/staff_assessment_mixin.py:189
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
