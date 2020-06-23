@@ -33,6 +33,7 @@ class TestGrader:
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
             self.write_code_file(student_response, full_code_file_name)
         except Exception as exc:
+            logger.exception("Exception in language part with {}".format(exc))
             return self.response_with_error_v2(exc.message)
 
         output = []
@@ -88,8 +89,6 @@ class TestGrader:
     def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
 
         test_cases = glob.glob("{}{}/{}/*".format(self.__SECRET_DATA_DIR__, problem_name, run_type))
-
-        logger.info("run_code against problem {} with cases {}".format(problem_name, test_cases))
 
         output = {
             'run_type': run_type,
@@ -274,6 +273,7 @@ class TestGrader:
             result = self.compare_outputs(output, expected_output_file, problem_name)
             return result
         except Exception as e:
+            logger.exception("Error when running test {}".format(e))
             return self.respond_with_error(e.message)
 
 
