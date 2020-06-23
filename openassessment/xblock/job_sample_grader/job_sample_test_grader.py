@@ -1,4 +1,5 @@
 import glob
+import logging
 import os
 import re
 import shutil
@@ -8,6 +9,9 @@ import uuid
 from collections import OrderedDict
 
 from openassessment.xblock.utils import OOP_PROBLEM_NAMES
+
+
+logger = logging.getLogger(__name__)
 
 
 class TestGrader:
@@ -84,6 +88,9 @@ class TestGrader:
     def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
 
         test_cases = glob.glob("{}{}/{}/*".format(self.__SECRET_DATA_DIR__, problem_name, run_type))
+
+        logger.info("run_code against problem {} with cases {}".format(problem_name, test_cases))
+
         output = {
             'run_type': run_type,
             'total_tests': len(test_cases),
