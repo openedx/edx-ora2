@@ -33,7 +33,7 @@ class TestGrader:
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
             self.write_code_file(student_response, full_code_file_name)
         except UnicodeEncodeError as e:
-            return self.response_with_error_v2(e.object)
+            return self.response_with_error_v2(e.reason)
         except Exception as exc:
             return self.response_with_error_v2(exc.message)
 
