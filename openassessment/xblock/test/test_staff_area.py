@@ -2,7 +2,7 @@
 """
 Tests for the staff area.
 """
-from __future__ import absolute_import
+
 
 from collections import namedtuple
 import json
@@ -17,6 +17,7 @@ from testfixtures import log_capture
 
 from submissions import api as sub_api
 from submissions import team_api as team_sub_api
+from submissions.errors import SubmissionNotFoundError
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -652,6 +653,69 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
         self.assertIn("The learner submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_cancel_team_submission_submission_not_found(self, xblock):
+        # Set up team assignment and submission
+        self._setup_xblock_and_create_submission(xblock, team=True)
+        mock_get_user_submission = Mock()
+        xblock.get_user_submission = mock_get_user_submission
+
+        params = {"submission_uuid": 'abc', "comments": "Inappropriate language."}
+
+        # Raise submission not found exception.
+        mock_get_user_submission.side_effect = SubmissionNotFoundError()
+        resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
+        self.assertIn("Submission not found", resp['msg'])
+        self.assertFalse(resp['success'])
+
+        # get_user_submission returns None
+        mock_get_user_submission.side_effect = None
+        mock_get_user_submission.return_value = None
+        resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
+        self.assertIn("Submission not found", resp['msg'])
+        self.assertFalse(resp['success'])
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_cancel_team_submission_no_team_uuid(self, xblock):
+        # Set up team assignment and submission
+        self._setup_xblock_and_create_submission(xblock, team=True)
+        xblock.get_user_submission = Mock(return_value={'team_submission_uuid': ''})
+
+        params = {"submission_uuid": 'abc', "comments": "Inappropriate language."}
+
+        # Raise exception since there's no team_submission_uuid.
+        resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
+        self.assertIn("Submission for team assignment has no associated team submission", resp['msg'])
+        self.assertFalse(resp['success'])
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_cancel_team_submission(self, xblock):
+        # Set up team assignment and submission
+        team_submission = self._setup_xblock_and_create_submission(xblock, team=True)
+        xblock.get_user_submission = Mock(
+            return_value={
+                'team_submission_uuid': team_submission['team_submission_uuid']
+            }
+        )
+        params = {"submission_uuid": 'abc', "comments": "Inappropriate language."}
+
+        # There should be one team submission before cancellation
+        status_counts, total_submissions = xblock.get_team_workflow_status_counts()
+        self.assertEqual(total_submissions, 1)
+        status_counts = self._parse_workflow_status_counts(status_counts)
+        self.assertEqual(status_counts['teams'], 1)
+
+        # Cancel the team submission
+        resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
+        self.assertIn("The team’s submission has been removed from grading.", resp['msg'])
+        self.assertTrue(resp['success'])
+
+        # The submission should now be cancelled.
+        status_counts, total_submissions = xblock.get_team_workflow_status_counts()
+        self.assertEqual(total_submissions, 1)
+        status_counts = self._parse_workflow_status_counts(status_counts)
+        self.assertEqual(status_counts['cancelled'], 1)
 
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
     def test_staff_assessment_counts(self, xblock):

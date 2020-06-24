@@ -36,5 +36,5 @@ echo "Done"
 
 echo "Importing test course..."
 SERVICE_VARIANT=cms python $EDX_PLATFORM/manage.py cms \
-    import $COURSE_DATA $COURSE_RUN --settings production
+    import $COURSE_DATA $COURSE_RUN --settings devstack
 echo "Done"

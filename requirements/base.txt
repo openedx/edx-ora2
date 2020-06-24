@@ -12,10 +12,10 @@ chardet==3.0.4            # via requests
 defusedxml==0.6.0         # via -r requirements/base.in
 django-model-utils==4.0.0  # via -r requirements/base.in, edx-submissions
 django-simple-history==2.10.0  # via -r requirements/base.in
-django==2.2.13            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
+django==2.2.13            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2
 djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
 edx-i18n-tools==0.5.3     # via -r requirements/base.in
-edx-submissions==3.1.10    # via -r requirements/base.in
+edx-submissions==3.1.11   # via -r requirements/base.in
 fs==2.0.18                # via -c requirements/constraints.txt, xblock
 html5lib==1.0.1           # via -r requirements/base.in
 idna==2.8                 # via -c requirements/constraints.txt, requests
@@ -26,7 +26,7 @@ libsass==0.20.0           # via -r requirements/base.in
 loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
 lxml==4.5.1               # via -r requirements/base.in, xblock
 markupsafe==1.1.1         # via xblock
-more-itertools==8.3.0     # via zipp
+more-itertools==8.4.0     # via zipp
 packaging==20.4           # via bleach
 path.py==12.4.0           # via -r requirements/base.in, edx-i18n-tools
 path==13.1.0              # via path.py
@@ -44,7 +44,6 @@ voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements
 web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock
-xblock-sdk==0.2.0         # via -r requirements/base.in
 xblock==1.3.1             # via -r requirements/base.in
 zipp==1.0.0               # via -c requirements/constraints.txt, importlib-metadata
 

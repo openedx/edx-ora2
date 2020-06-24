@@ -2,8 +2,6 @@
 View-level tests for Studio view of OpenAssessment XBlock.
 """
 
-from __future__ import absolute_import
-
 import copy
 import datetime as dt
 import json
@@ -274,8 +272,8 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Expect that the editor uses the order defined by the problem.
         self._assert_rendered_editor_order(xblock, [
             'student-training',
-            'self-assessment',
             'peer-assessment',
+            'self-assessment',
             'staff-assessment'
         ])
 

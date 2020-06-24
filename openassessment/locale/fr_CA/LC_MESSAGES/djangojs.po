@@ -13,7 +13,7 @@
 # Daniel Le Berre, 2014-2015
 # David Truong <david.truong@edulib.org>, 2020
 # Dosto92 <hakim.poubelle@gmail.com>, 2014
-# Encolpe Degoute <inactive+encolpe@transifex.com>, 2013
+# b37bd6faa8631249767025c90cffb237_c33f832 <d0bf341d6cab6374cbc873fbbf166cb5_105987>, 2013
 # Eric Fortin, 2014,2016
 # Françoise Docq, 2014
 # Hélène Tindon <helene.tindon@gmail.com>, 2015
@@ -57,7 +57,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"POT-Creation-Date: 2020-06-17 10:45-0400\n"
 "PO-Revision-Date: 2020-05-12 20:37+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"

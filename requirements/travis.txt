@@ -14,16 +14,16 @@ docopt==0.6.2             # via coveralls
 filelock==3.0.12          # via -r requirements/tox.txt, tox, virtualenv
 idna==2.8                 # via -c requirements/constraints.txt, requests
 importlib-metadata==1.6.1  # via -r requirements/tox.txt, importlib-resources, pluggy, tox, virtualenv
-importlib-resources==1.5.0  # via -r requirements/tox.txt, virtualenv
-more-itertools==8.3.0     # via -r requirements/tox.txt, zipp
+importlib-resources==2.0.1  # via -r requirements/tox.txt, virtualenv
+more-itertools==8.4.0     # via -r requirements/tox.txt, zipp
 packaging==20.4           # via -r requirements/tox.txt, tox
 pluggy==0.13.1            # via -r requirements/tox.txt, tox
-py==1.8.1                 # via -r requirements/tox.txt, tox
+py==1.8.2                 # via -r requirements/tox.txt, tox
 pyparsing==2.4.7          # via -r requirements/tox.txt, packaging
 requests==2.23.0          # via coveralls
 six==1.15.0               # via -r requirements/tox.txt, packaging, tox, virtualenv
 toml==0.10.1              # via -r requirements/tox.txt, tox
 tox==3.15.2               # via -r requirements/tox.txt
 urllib3==1.25.9           # via requests
-virtualenv==20.0.21       # via -r requirements/tox.txt, tox
+virtualenv==20.0.23       # via -r requirements/tox.txt, tox
 zipp==1.0.0               # via -c requirements/constraints.txt, -r requirements/tox.txt, importlib-metadata, importlib-resources

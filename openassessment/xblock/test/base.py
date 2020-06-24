@@ -2,7 +2,7 @@
 """
 Base class for handler-level testing of the XBlock.
 """
-from __future__ import absolute_import, print_function
+
 
 import copy
 from functools import wraps
@@ -57,6 +57,28 @@ STAFF_GOOD_ASSESSMENT = {
     },
     'overall_feedback': u'Staff: good job!',
     'assess_type': 'full-grade'
+}
+
+TEAM_GOOD_ASSESSMENT = {
+    'options_selected': {'Form': 'Facebook', 'Clear-headed': 'Yogi Berra', 'Concise': 'HP Lovecraft'},
+    'criterion_feedback': {
+        'Form': 'Staff: ƒαιя נσв',
+        'Clear-headed': 'Staff: good',
+        'Concise': 'Staff: good'
+    },
+    'overall_feedback': 'Staff: good job!',
+    'assess_type': 'full-grade'
+}
+
+TEAM_GOOD_ASSESSMENT_REGRADE = {
+    'options_selected': {'Form': 'Reddit', 'Clear-headed': 'Yogi Berra', 'Concise': 'HP Lovecraft'},
+    'criterion_feedback': {
+        'Form': 'Staff: ƒαιя נσв',
+        'Clear-headed': 'Staff: good',
+        'Concise': 'Staff: good'
+    },
+    'overall_feedback': 'Staff: good job!',
+    'assess_type': 'regrade'
 }
 
 # A sample bad staff assessment

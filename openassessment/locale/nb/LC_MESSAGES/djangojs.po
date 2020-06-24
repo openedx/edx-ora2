@@ -8,12 +8,12 @@
 # Frode Arntsen <frode.arntsen@unit.no>, 2018
 # Joakim S. Johnson, 2016
 # Øyvind Eide <oaeide@gmail.com>, 2014
-# Thekla <inactive+Thekla@transifex.com>, 2014
+# a72439d066a62002909e04c2f19d8d08_d8eb3f3 <12b2c0ce52fb807293954de1aaa16dd6_175391>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 10:47-0400\n"
+"POT-Creation-Date: 2020-06-17 10:45-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/open-edx/edx-platform/language/nb/)\n"

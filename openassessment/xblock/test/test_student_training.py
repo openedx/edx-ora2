@@ -2,7 +2,7 @@
 """
 Tests for the student training step in the Open Assessment XBlock.
 """
-from __future__ import absolute_import
+
 
 import datetime
 import json

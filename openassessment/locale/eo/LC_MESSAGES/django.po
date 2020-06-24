@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-24 07:23-0400\n"
+"POT-Creation-Date: 2020-06-24 07:54-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1776,6 +1776,7 @@ msgstr ""
 "                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
 #, python-format
 msgid ""
 "\n"
@@ -1834,15 +1835,21 @@ msgstr ""
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
-#, python-format
-msgid ""
-"\n"
-"                                    Response for: %(student_username)s\n"
-"                                "
+msgid "Override this team's current grade using the problem's rubric."
 msgstr ""
-"\n"
-"                                    Réspönsé för: %(student_username)s\n"
-"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+"Övérrïdé thïs téäm's çürrént grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+msgid "Team Response"
+msgstr "Téäm Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "The team's response to the prompt above"
+msgstr ""
+"Thé téäm's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 #, python-format
@@ -1906,12 +1913,6 @@ msgstr ""
 "\n"
 "                        Çömménts: %(comments)s\n"
 "                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
-msgid "The team's response to the prompt above"
-msgstr ""
-"Thé téäm's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Peer Assessments for This Learner"
