@@ -33,7 +33,9 @@ class TestGrader:
             full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
             self.write_code_file(student_response, full_code_file_name)
         except UnicodeEncodeError as e:
-            return self.response_with_error_v2(e.reason)
+            return self.response_with_error_v2("{} - {} : {}".format(
+                e.start, e.end, e.reason
+            ))
         except Exception as exc:
             return self.response_with_error_v2(exc.message)
 
@@ -43,24 +45,6 @@ class TestGrader:
         if add_staff_cases:
             staff_result = self.run_code('staff', lang, code_file_name, full_code_file_name, problem_name)
             output.append(staff_result)
-        # sample_input_file_argument = ' {0}{1}-sample.in'.format(self.__SECRET_DATA_DIR__, problem_name)
-        # sample_expected_output_file = '{0}{1}-sample.out'.format(self.__SECRET_DATA_DIR__, problem_name)
-        # input_file_argument = ' {0}{1}.in'.format(self.__SECRET_DATA_DIR__, problem_name)
-        # expected_output_file = '{0}{1}.out'.format(self.__SECRET_DATA_DIR__, problem_name)
-        #
-        # sample_test_case_result = self.run_test_cases(lang, code_file_name, full_code_file_name,
-        #                                               sample_input_file_argument,
-        #                                               sample_expected_output_file, 60, problem_name)
-        # secret_test_case_result = self.run_test_cases(lang, code_file_name, full_code_file_name,
-        #                                               input_file_argument,
-        #                                               expected_output_file, 60, problem_name)
-        #
-        # if sample_test_case_result["tests"]:
-        #     sample_test_case_result["tests"][0].append("sample")
-        # if secret_test_case_result["tests"]:
-        #     secret_test_case_result["tests"][0].append("staff")
-        #     if sample_test_case_result["tests"]:
-        #         sample_test_case_result["tests"].append(secret_test_case_result["tests"][0])
 
         shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
@@ -90,6 +74,10 @@ class TestGrader:
     def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
 
         test_cases = glob.glob("{}{}/{}/*".format(self.__SECRET_DATA_DIR__, problem_name, run_type))
+
+        # Sort the test cases based on the test number
+        if test_cases:
+            test_cases = sorted(test_cases, key=lambda test_case: int(test_case.split('/')[-1]))
 
         output = {
             'run_type': run_type,
@@ -238,8 +226,8 @@ class TestGrader:
         """
 
         if problem_name not in OOP_PROBLEM_NAMES:
-            expected_output = open(expected_output_file, 'r').read().strip()
-            actual_output = actual_output.strip()
+            expected_output = open(expected_output_file, 'r').read().rstrip()
+            actual_output = actual_output.rstrip()
 
             expected_output_splited = expected_output.split('\n')
             actual_output_splited = actual_output.split('\n')
