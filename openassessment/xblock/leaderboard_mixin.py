@@ -4,7 +4,6 @@ Leaderboard step in the OpenAssessment XBlock.
 
 
 import logging
-import six
 
 from django.utils.translation import ugettext as _
 
@@ -102,7 +101,7 @@ class LeaderboardMixin:
             if 'text' in score['content'] or 'parts' in score['content']:
                 submission = {'answer': score.pop('content')}
                 score['submission'] = create_submission_dict(submission, self.prompts)
-            elif isinstance(score['content'], six.string_types):
+            elif isinstance(score['content'], str):
                 pass
             # Currently, we do not handle non-text submissions.
             else:

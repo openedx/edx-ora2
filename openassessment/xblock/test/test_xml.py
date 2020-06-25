@@ -11,8 +11,6 @@ import dateutil.parser
 import ddt
 import mock
 import pytz
-import six
-from six.moves import zip
 
 from django.test import TestCase
 
@@ -177,8 +175,7 @@ class TestSerializeContent(TestCase):
                     tag=actual.tag, expected=expected.text, actual=actual.text
                 )
             )
-            six.assertCountEqual(
-                self,
+            self.assertCountEqual(
                 list(actual.items()), list(expected.items()),
                 msg=u"Incorrect attributes for {tag}.  Expected {expected} but found {actual}".format(
                     tag=actual.tag, expected=list(expected.items()), actual=list(actual.items())
@@ -324,11 +321,11 @@ class TestSerializeContent(TestCase):
         Yields:
             dict
         """
-        for key, val in six.iteritems(input_dict):
+        for key, val in input_dict.items():
 
             # Mutation #1: Remove the key
             print(u"== Removing key {}".format(key))
-            yield {k: v for k, v in six.iteritems(input_dict) if k != key}
+            yield {k: v for k, v in input_dict.items() if k != key}
 
             if isinstance(val, dict):
 

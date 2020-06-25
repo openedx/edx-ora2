@@ -4,14 +4,12 @@ Tests for openassessment data aggregation.
 """
 
 import csv
+from io import StringIO
 import json
 import os.path
 
 import ddt
 from mock import patch
-
-import six
-from six.moves import range, zip
 
 from django.core.management import call_command
 
@@ -22,10 +20,6 @@ from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api, team_api as team_workflow_api
 
-if six.PY2:
-    from StringIO import StringIO  # pylint: disable=import-error
-else:
-    from io import StringIO  # pylint: disable=import-error
 
 COURSE_ID = "Test_Course"
 
@@ -136,7 +130,7 @@ class CsvWriterTest(TransactionCacheResetTest):
         writer.write_to_csv(data['course_id'])
 
         # Check that the CSV matches what we expected
-        for output_name, expected_csv in six.iteritems(data['expected_csv']):
+        for output_name, expected_csv in data['expected_csv'].items():
             output_buffer = output_streams[output_name]
             output_buffer.seek(0)
             actual_csv = csv.reader(output_buffer)

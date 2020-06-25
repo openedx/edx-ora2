@@ -4,8 +4,6 @@
 import abc
 import mimetypes
 
-import six
-
 from django.conf import settings
 
 from ..exceptions import FileUploadInternalError, FileUploadRequestError
@@ -61,7 +59,7 @@ class Settings:
         return mimetypes.guess_extension(mime_type) or ''
 
 
-class BaseBackend(six.with_metaclass(abc.ABCMeta, object)):
+class BaseBackend(object, metaclass=abc.ABCMeta):
     """ Base class for file upload backends. """
 
     UPLOAD_URL_TIMEOUT = 3600

@@ -5,12 +5,9 @@ import os
 import shutil
 import tempfile
 
+import urllib
 import ddt
 from mock import Mock, patch
-import six.moves.urllib.error
-import six.moves.urllib.parse
-from six.moves.urllib.parse import urlparse
-import six.moves.urllib.request
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -335,7 +332,7 @@ class TestSwiftBackend(TestCase):
         self.backend = api.backends.get_backend()
 
     def _verify_url(self, url):
-        result = urlparse(url)
+        result = urllib.parse.urlparse(url)
         self.assertEqual(result.scheme, u'http')
         self.assertEqual(result.netloc, u'www.example.com:12345')
         self.assertEqual(result.path, u'/v1/bucket_name/submissions_attachments/foo')
@@ -442,7 +439,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
 
         # Check updated download URL
         download_url = self.backend.get_download_url(self.key)
-        encoded_key = six.moves.urllib.parse.quote(self.key.encode('utf-8'))
+        encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
         self.assertEqual(u"submissions/{}".format(encoded_key), download_url)
 
     @ddt.data(u"noël.txt", "myfile.txt")
@@ -463,7 +460,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
 
         # File exists now
         download_url = self.backend.get_download_url(self.key)
-        encoded_key = six.moves.urllib.parse.quote(self.key.encode('utf-8'))
+        encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
         self.assertEqual(u"submissions/{}".format(encoded_key), download_url)
 
         # Remove file returns True now, and removes the file

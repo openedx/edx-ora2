@@ -6,7 +6,6 @@ import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
-import six
 
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
@@ -251,9 +250,9 @@ class SubmissionMixin:
 
         for new_upload in file_data:
             if not all([
-                isinstance(new_upload['description'], six.string_types),
-                isinstance(new_upload['name'], six.string_types),
-                isinstance(new_upload['size'], six.integer_types),
+                isinstance(new_upload['description'], str),
+                isinstance(new_upload['name'], str),
+                isinstance(new_upload['size'], int),
             ]):
                 return failure_response
 

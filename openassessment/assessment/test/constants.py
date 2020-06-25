@@ -2,7 +2,6 @@
 """
 Constants used as test data.
 """
-import six
 
 STUDENT_ITEM = {
     'student_id': u'𝓽𝓮𝓼𝓽 𝓼𝓽𝓾𝓭𝓮𝓷𝓽',
@@ -77,7 +76,7 @@ OPTIONS_SELECTED_DICT = {
         "expected_points": sum(
             RUBRIC_OPTIONS[i]["points"] for i in value
         )
-    } for key, value in six.iteritems(OPTIONS_SELECTED_CHOICES)
+    } for key, value in OPTIONS_SELECTED_CHOICES.items()
 }
 
 EXAMPLES = [

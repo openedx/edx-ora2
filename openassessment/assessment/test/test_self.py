@@ -8,7 +8,6 @@ import datetime
 
 from mock import patch
 import pytz
-import six
 
 from django.db import DatabaseError
 
@@ -99,7 +98,7 @@ class TestSelfApi(CacheResetTest):
 
         # Check that the assessment we created matches the assessment we retrieved
         # and that both have the correct values
-        six.assertCountEqual(self, assessment, retrieved)
+        self.assertCountEqual(assessment, retrieved)
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 8)
         self.assertEqual(assessment['points_possible'], 10)
@@ -231,7 +230,7 @@ class TestSelfApi(CacheResetTest):
 
         # Expect that we still have the original assessment
         retrieved = get_assessment(submission["uuid"])
-        six.assertCountEqual(self, assessment, retrieved)
+        self.assertCountEqual(assessment, retrieved)
 
     def test_is_complete_no_submission(self):
         # This submission uuid does not exist

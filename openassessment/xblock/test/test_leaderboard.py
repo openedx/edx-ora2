@@ -6,9 +6,9 @@ Tests for leaderboard handlers in Open Assessment XBlock.
 
 import json
 from random import randint
+from urllib.parse import urlparse
 
 import mock
-from six.moves.urllib.parse import urlparse  # pylint: disable=import-error
 
 from django.core.cache import cache
 from django.test.utils import override_settings

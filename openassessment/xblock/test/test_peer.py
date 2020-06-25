@@ -12,7 +12,6 @@ import json
 import ddt
 import mock
 import pytz
-import six
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.workflow import api as workflow_api
@@ -668,7 +667,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
 
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
         self.assertEqual(path, expected_path)
-        six.assertCountEqual(self, context, expected_context)
+        self.assertCountEqual(context, expected_context)
 
         # Verify that we render without error
         resp = self.request(xblock, 'render_peer_assessment', json.dumps({}))

@@ -11,8 +11,6 @@ Generates the same format as the instructor dashboard downloads.
 import csv
 import os
 
-import six
-
 from django.core.management.base import BaseCommand, CommandError
 
 from openassessment.data import OraAggregateData
@@ -26,7 +24,7 @@ class Command(BaseCommand):
     help = ("Usage: collect_ora2_data <course_id> --output-dir=<output_dir>")
 
     def add_arguments(self, parser):
-        parser.add_argument('course_id', nargs='+', type=six.text_type)
+        parser.add_argument('course_id', nargs='+', type=str)
         parser.add_argument(
             '-o',
             '--output-dir',
@@ -79,7 +77,7 @@ def _encode_row(data_list):
     processed_row = []
 
     for item in data_list:
-        new_item = six.text_type(item).encode('utf-8') if six.PY2 else six.text_type(item)
+        new_item = str(item)
         processed_row.append(new_item)
 
     return processed_row

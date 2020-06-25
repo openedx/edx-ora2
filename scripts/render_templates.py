@@ -31,7 +31,6 @@ import sys
 
 import dateutil.parser
 import pytz
-import six
 
 # This is a bit of a hack to ensure that the root repo directory
 # is in the front of the Python path, so Django can find the settings module.
@@ -73,14 +72,14 @@ def parse_dates(context):
     if isinstance(context, dict):
         return {
             key: parse_dates(value)
-            for key, value in six.iteritems(context)
+            for key, value in context.items()
         }
     elif isinstance(context, list):
         return [
             parse_dates(item)
             for item in context
         ]
-    elif isinstance(context, six.string_types):
+    elif isinstance(context, str):
         if DATETIME_REGEX.match(context) is not None:
             return dateutil.parser.parse(context).replace(tzinfo=pytz.utc)
 
@@ -109,10 +108,7 @@ def render_templates(root_dir, template_json):
 
         try:
             with open(output_path, 'w') as output_file:
-                if six.PY2:
-                    output_file.write(rendered.encode('utf-8'))
-                else:
-                    output_file.write(rendered)
+                output_file.write(rendered)
         except IOError:
             print("Could not write rendered template to file: {}".format(output_path))
             sys.exit(1)

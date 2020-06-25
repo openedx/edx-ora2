@@ -5,8 +5,6 @@ Tests for assessment models.
 
 import copy
 
-from six.moves import range
-
 from openassessment.assessment.models import Criterion, CriterionOption, InvalidRubricSelection, Rubric
 from openassessment.assessment.test.constants import RUBRIC
 from openassessment.test_utils import CacheResetTest

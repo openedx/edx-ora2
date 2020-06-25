@@ -7,10 +7,7 @@ Tests for the staff area.
 from collections import namedtuple
 import json
 
-from six.moves import range, zip
-import six.moves.urllib.error  # pylint: disable=import-error
-import six.moves.urllib.parse  # pylint: disable=import-error
-import six.moves.urllib.request  # pylint: disable=import-error
+import urllib
 import ddt
 from mock import MagicMock, Mock, PropertyMock, call, patch
 from testfixtures import log_capture
@@ -317,7 +314,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.request(
                 xblock,
                 "render_student_info",
-                six.moves.urllib.parse.urlencode({"student_username": "Bob"})
+                urllib.parse.urlencode({"student_username": "Bob"})
             ).decode('utf-8')
         )
 
@@ -461,7 +458,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertEqual('image', context['file_upload_type'])
 
             # Check the fully rendered template
-            payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
+            payload = urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
@@ -515,7 +512,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertEqual('image', context['file_upload_type'])
 
             # Check the fully rendered template
-            payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
+            payload = urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             for i in range(3):
                 self.assertIn("http://www.example.com/image%d.jpeg" % i, resp)
@@ -548,7 +545,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertNotIn('file_url', context['submission'])
 
             # Check the fully rendered template
-            payload = six.moves.urllib.parse.urlencode({"student_username": "Bob"})
+            payload = urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("Bob Answer", resp)
 

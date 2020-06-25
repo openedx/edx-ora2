@@ -3,8 +3,6 @@ Django models specific to the student training assessment type.
 """
 
 
-import six
-
 from django.db import IntegrityError, models, transaction
 from django.utils import timezone
 
@@ -241,7 +239,7 @@ class StudentTrainingWorkflowItem(models.Model):
         staff_selected = self.training_example.options_selected_dict
         corrections = dict()
 
-        for criterion_name, option_name in six.iteritems(staff_selected):
+        for criterion_name, option_name in staff_selected.items():
             missing_option = criterion_name not in options_selected
             incorrect_option = options_selected[criterion_name] != option_name
 

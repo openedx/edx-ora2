@@ -5,8 +5,6 @@ The mixin with handlers for the course ora blocks listing view.
 
 import json
 
-import six
-
 from webob import Response
 from xblock.core import XBlock
 from openassessment.xblock.staff_area_mixin import require_course_staff
@@ -27,5 +25,5 @@ class CourseItemsListingMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from openassessment.data import OraAggregateData
-        responses = OraAggregateData.collect_ora2_responses(six.text_type(self.course_id))
+        responses = OraAggregateData.collect_ora2_responses(str(self.course_id))
         return Response(json.dumps(responses), content_type='application/json', charset='UTF-8')

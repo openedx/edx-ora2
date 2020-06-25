@@ -6,7 +6,6 @@ Tests for assessment serializers.
 import copy
 import json
 import os.path
-import six
 
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, full_assessment_dict,
@@ -95,7 +94,7 @@ class AssessmentFeedbackSerializerTest(CacheResetTest):
         feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
 
         serialized = AssessmentFeedbackSerializer(feedback).data
-        six.assertCountEqual(self, serialized, {
+        self.assertCountEqual(serialized, {
             'submission_uuid': 'abc123',
             'feedback_text': 'Test feedback',
             'options': [
@@ -111,7 +110,7 @@ class AssessmentFeedbackSerializerTest(CacheResetTest):
         )
 
         serialized = AssessmentFeedbackSerializer(feedback).data
-        six.assertCountEqual(self, serialized, {
+        self.assertCountEqual(serialized, {
             'submission_uuid': 'abc123',
             'feedback_text': 'Test feedback',
             'options': [],

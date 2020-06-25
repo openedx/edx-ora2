@@ -11,8 +11,6 @@ import sys
 import tarfile
 import tempfile
 
-import six
-
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
@@ -102,7 +100,7 @@ class Command(BaseCommand):
         """
         output_streams = {
             name: open(os.path.join(csv_dir, rel_path), 'w')
-            for name, rel_path in six.iteritems(self.OUTPUT_CSV_PATHS)
+            for name, rel_path in self.OUTPUT_CSV_PATHS.items()
         }
         csv_writer = CsvWriter(output_streams, self._progress_callback)
         csv_writer.write_to_csv(course_id)

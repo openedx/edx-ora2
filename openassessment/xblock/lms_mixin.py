@@ -1,9 +1,6 @@
 """
 Fields and methods used by the LMS and Studio.
 """
-
-import six
-
 from xblock.fields import DateTime, Dict, Float, Scope, String
 
 
@@ -15,7 +12,7 @@ class GroupAccessDict(Dict):
 
     def to_json(self, access_dict):  # pylint: disable=arguments-differ
         if access_dict is not None:
-            return {six.text_type(k): access_dict[k] for k in access_dict}
+            return {str(k): access_dict[k] for k in access_dict}
 
 
 class LmsCompatibilityMixin:

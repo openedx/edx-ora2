@@ -9,7 +9,6 @@ import json
 from ddt import ddt, file_data
 from mock import MagicMock, patch, Mock
 import pytz
-import six
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -246,8 +245,8 @@ class StudioViewTest(XBlockHandlerTestCase):
         # that verify this extensively.
         self.assertEqual(xblock.title, old_title)
         self.assertEqual(xblock.prompts, old_prompts)
-        six.assertCountEqual(self, xblock.rubric_assessments, old_assessments)
-        six.assertCountEqual(self, xblock.rubric_criteria, old_criteria)
+        self.assertCountEqual(xblock.rubric_assessments, old_assessments)
+        self.assertCountEqual(xblock.rubric_criteria, old_criteria)
 
     @scenario('data/basic_scenario.xml')
     def test_check_released(self, xblock):
@@ -317,7 +316,7 @@ class StudioViewTest(XBlockHandlerTestCase):
                 "index": rendered_html.find(asmnt_css_id)
             }
             for asmnt_name, asmnt_css_id
-            in six.iteritems(self.ASSESSMENT_CSS_IDS)
+            in self.ASSESSMENT_CSS_IDS.items()
         ]
         actual_assessment_order = [
             index_dict['name']

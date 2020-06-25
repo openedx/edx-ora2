@@ -8,7 +8,6 @@ import os
 
 import pkg_resources
 import pytz
-from six import text_type
 
 from django.conf import settings
 from django.template.loader import get_template
@@ -278,7 +277,7 @@ class OpenAssessmentBlock(MessageMixin,
 
     @property
     def course_id(self):
-        return text_type(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
 
     @property
     def text_response(self):
@@ -445,7 +444,7 @@ class OpenAssessmentBlock(MessageMixin,
                 includes the student id, item id, and course id.
         """
 
-        item_id = text_type(self.scope_ids.usage_id)
+        item_id = str(self.scope_ids.usage_id)
 
         # This is not the real way course_ids should work, but this is a
         # temporary expediency for LMS integration
@@ -460,7 +459,7 @@ class OpenAssessmentBlock(MessageMixin,
             if self.scope_ids.user_id is None:
                 student_id = None
             else:
-                student_id = text_type(self.scope_ids.user_id)
+                student_id = str(self.scope_ids.user_id)
 
         student_item_dict = dict(
             student_id=student_id,
@@ -1241,4 +1240,4 @@ class OpenAssessmentBlock(MessageMixin,
         """
         Returns the xblock id
         """
-        return text_type(self.scope_ids.usage_id)
+        return str(self.scope_ids.usage_id)

@@ -4,7 +4,6 @@ Schema for validating and sanitizing data received from the JavaScript client.
 
 import dateutil
 from pytz import utc
-import six
 
 from voluptuous import (
     All,
@@ -35,7 +34,7 @@ def utf8_validator(value):
     try:
         if isinstance(value, bytes):
             return value.decode('utf-8')
-        return six.text_type(value)
+        return str(value)
     except (ValueError, TypeError):
         raise Invalid(u"Could not load unicode from value \"{val}\"".format(val=value))
 
@@ -61,7 +60,7 @@ def datetime_validator(value):
 
         # Parse the date and interpret it as UTC
         value = dateutil.parser.parse(value).replace(tzinfo=utc)
-        return six.text_type(value.isoformat())
+        return str(value.isoformat())
     except (ValueError, TypeError):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 
