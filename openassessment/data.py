@@ -431,9 +431,9 @@ class OraAggregateData:
     @classmethod
     def _map_block_usage_keys_to_display_names(cls, course_id):
         """
-        Fetches all course blocks and filters out those of them, whoose
-        category not equal to ``openassessment``. Then builds
-        mapping between block usage key string and block display name.
+        Fetches all course blocks and build mapping between block usage key
+        string and block display name for those ones, whoose category is equal
+        to ``openassessment``.
 
         Args:
             course_id (string or CourseLocator instance) - id of course
@@ -455,21 +455,12 @@ class OraAggregateData:
         # Passing an empty block structure transformer here to avoid user access checks
         blocks = get_course_blocks(None, course_usage_key, BlockStructureTransformers())
 
-        block_keys_to_remove = []
-
-        for block_key in blocks:
-            block_type = blocks.get_xblock_field(block_key, 'category')
-            if block_type != 'openassessment':
-                block_keys_to_remove.append(block_key)
-
-        for block_key in block_keys_to_remove:
-            blocks.remove_block(block_key, keep_descendants=True)
-
         block_display_name_map = {}
 
         for block_key in blocks:
-            block_key_str = str(block_key)
-            block_display_name_map[block_key_str] = blocks.get_xblock_field(block_key, 'display_name')
+            block_type = blocks.get_xblock_field(block_key, 'category')
+            if block_type == 'openassessment':
+                block_display_name_map[str(block_key)] = blocks.get_xblock_field(block_key, 'display_name')
 
         return block_display_name_map
 
