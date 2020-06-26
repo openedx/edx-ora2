@@ -9,7 +9,7 @@ import json
 import os.path
 
 import ddt
-from mock import patch
+from mock import Mock, patch
 
 from django.core.management import call_command
 
@@ -43,6 +43,8 @@ USERNAME_MAPPING = {
 
 ITEM_ID = "item"
 
+ITEM_DISPLAY_NAME = "Open Response Assessment"
+
 STUDENT_ITEM = dict(
     student_id=STUDENT_ID,
     course_id=COURSE_ID,
@@ -56,6 +58,11 @@ SCORER_ITEM = dict(
     item_id=ITEM_ID,
     item_type="openassessment"
 )
+
+ITEM_DISPLAY_NAMES_MAPPING = {
+    SCORER_ITEM['item_id']: ITEM_DISPLAY_NAME,
+    STUDENT_ITEM['item_id']: ITEM_DISPLAY_NAME
+}
 
 ANSWER = u"THIS IS A TEST ANSWER"
 
@@ -427,6 +434,10 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
 @ddt.ddt
 @patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': True})
+@patch(
+    'openassessment.data.OraAggregateData._map_block_usage_keys_to_display_names',
+    Mock(return_value=ITEM_DISPLAY_NAMES_MAPPING)
+)
 class TestOraAggregateDataIntegration(TransactionCacheResetTest):
     """
     Test that OraAggregateData behaves as expected when integrated.
@@ -515,6 +526,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
         self.assertEqual(headers, [
             'Submission ID',
+            'Location',
+            'Problem Name',
             'Item ID',
             'Username',
             'Anonymized Student ID',
@@ -530,6 +543,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         ])
         self.assertEqual(data[0], [
             self.scorer_submission['uuid'],
+            ITEM_ID,
+            ITEM_DISPLAY_NAME,
             self.scorer_submission['student_item'],
             SCORER_USERNAME,
             SCORER_ID,
@@ -545,6 +560,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         ])
         self.assertEqual(data[1], [
             self.submission['uuid'],
+            ITEM_ID,
+            ITEM_DISPLAY_NAME,
             self.submission['student_item'],
             STUDENT_USERNAME,
             STUDENT_ID,
@@ -589,6 +606,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
         self.assertEqual(headers, [
             'Submission ID',
+            'Location',
+            'Problem Name',
             'Item ID',
             'Anonymized Student ID',
             'Date/Time Response Submitted',
@@ -603,6 +622,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         ])
         self.assertEqual(data[0], [
             self.scorer_submission['uuid'],
+            ITEM_ID,
+            ITEM_DISPLAY_NAME,
             self.scorer_submission['student_item'],
             SCORER_ID,
             self.scorer_submission['submitted_at'],
@@ -617,6 +638,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         ])
         self.assertEqual(data[1], [
             self.submission['uuid'],
+            ITEM_ID,
+            ITEM_DISPLAY_NAME,
             self.submission['student_item'],
             STUDENT_ID,
             self.submission['submitted_at'],
@@ -667,7 +690,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
             map_mock.return_value = USERNAME_MAPPING
             _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
-        self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][5])
+        self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])
 
     def test_collect_ora2_responses(self):
         item_id2 = self._other_item(2)
