@@ -14,6 +14,10 @@ class AssessmentWorkflowSerializer(serializers.ModelSerializer):
     Serialize a AssessmentWorkflow' model.
     """
     score = serializers.ReadOnlyField(required=False)
+    assessment_score_priority = serializers.SerializerMethodField()
+
+    def get_assessment_score_priority(self, obj):
+        return obj.ASSESSMENT_SCORE_PRIORITY
 
     class Meta:
         model = AssessmentWorkflow
@@ -24,7 +28,8 @@ class AssessmentWorkflowSerializer(serializers.ModelSerializer):
             'modified',
 
             # Computed
-            'score'
+            'score',
+            'assessment_score_priority',
         )
 
 

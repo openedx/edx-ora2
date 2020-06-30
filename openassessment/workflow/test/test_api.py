@@ -62,7 +62,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertEqual(
             workflow_keys,
             {
-                'submission_uuid', 'status', 'created', 'modified', 'score'
+                'submission_uuid', 'status', 'created', 'modified', 'score', 'assessment_score_priority'
             }
         )
         self.assertEqual(workflow["submission_uuid"], submission["uuid"])
@@ -153,7 +153,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertEqual(
             workflow_keys,
             {
-                'submission_uuid', 'status', 'created', 'modified', 'score'
+                'submission_uuid', 'status', 'created', 'modified', 'score', 'assessment_score_priority'
             }
         )
         self.assertEqual(workflow["submission_uuid"], submission["uuid"])
