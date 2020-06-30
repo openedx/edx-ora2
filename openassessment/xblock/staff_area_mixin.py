@@ -9,12 +9,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 import logging
 
+from submissions.errors import SubmissionNotFoundError
+from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
-from submissions.errors import SubmissionNotFoundError
-from xblock.core import XBlock
 
 from .user_data import get_user_preferences
 
@@ -125,8 +125,8 @@ class StaffAreaMixin:
         for step in ['submission'] + self.assessment_steps:
 
             # Get the dates as a student would see them
-            __, __, start_date, due_date = self.is_closed(
-                step=step, course_staff=False)  # pylint: disable=redeclared-assigned-name
+            __, __, start_date, due_date = self.is_closed(  # pylint: disable=redeclared-assigned-name
+                step=step, course_staff=False)
 
             context['step_dates'].append({
                 'step': step,

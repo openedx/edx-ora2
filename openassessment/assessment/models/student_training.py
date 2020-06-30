@@ -2,7 +2,6 @@
 Django models specific to the student training assessment type.
 """
 
-
 from django.db import IntegrityError, models, transaction
 from django.utils import timezone
 

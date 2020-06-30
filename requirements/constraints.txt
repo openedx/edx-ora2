@@ -3,7 +3,7 @@
 # Base dependencies
 Django<2.3                         # Stay on the latest LTS release of Django
 boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
-fs<=2.0.18                         # Constrained by edx-platform/XBlock
+fs<=2.0.18                         # Constrained by edx-platform
 jsonfield2<3.1.0                   # jsonfield2 3.1.0 drops support for python 3.5
 loremipsum<2.0.0
 
@@ -19,3 +19,5 @@ zipp==1.0.0                        # zipp 2.0.0 requires Python >= 3.6
 # Test dependencies
 ddt==1.0.0                          # Test failures at versions > 1.0.0
 idna<2.9.0                          # moto version moto==1.3.14 requires idna<2.9.0
+fs-s3fs==0.1.8                      # Constrained by edx-platform
+wrapt==1.11.*                       # Constrained by astroid

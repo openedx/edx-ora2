@@ -124,3 +124,4 @@ class TeamMixin:
             user = self.get_real_user(anonymous_user_id)
 
             return self.teams_service.get_anonymous_user_ids_for_team(user, self.team)
+        return None

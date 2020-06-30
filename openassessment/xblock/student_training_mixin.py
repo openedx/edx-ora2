@@ -1,10 +1,7 @@
 """
 Student training step in the OpenAssessment XBlock.
 """
-
-
 import logging
-
 from webob import Response
 from xblock.core import XBlock
 

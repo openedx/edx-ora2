@@ -8,11 +8,11 @@ import mock
 
 from django.db import DatabaseError
 
+from submissions import api as sub_api
 from openassessment.assessment.signals import assessment_complete_signal
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflow
-from submissions import api as sub_api
 
 
 @ddt.ddt

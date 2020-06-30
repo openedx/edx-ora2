@@ -6,6 +6,8 @@ A mixin for staff grading.
 import logging
 
 from xblock.core import XBlock
+from submissions import team_api as team_sub_api
+
 from openassessment.assessment.api import (
     staff as staff_api,
     teams as teams_api
@@ -15,7 +17,6 @@ from openassessment.workflow import (
     api as workflow_api,
     team_api as team_workflow_api
 )
-from submissions import team_api as team_sub_api
 
 from .data_conversion import clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters
 from .staff_area_mixin import require_course_staff

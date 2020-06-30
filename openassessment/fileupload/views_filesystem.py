@@ -30,6 +30,7 @@ def filesystem_storage(request, key):
         if not is_download_url_available(key):
             raise Http404()
         return download_file(key)
+    return None
 
 
 def download_file(key):

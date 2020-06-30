@@ -408,7 +408,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 assessment_completed_at=now(),
                 workflow=self,
             )
-            self.steps.add(
+            self.steps.add(  # pylint: disable=no-member
                 staff_step
             )
 
@@ -417,7 +417,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if not steps:
             # If no steps exist for this AssessmentWorkflow, assume
             # peer -> self for backwards compatibility, with an optional staff override
-            self.steps.add(
+            self.steps.add(  # pylint: disable=no-member
                 AssessmentWorkflowStep(name=self.STATUS.staff, order_num=0, assessment_completed_at=now()),
                 AssessmentWorkflowStep(name=self.STATUS.peer, order_num=1),
                 AssessmentWorkflowStep(name=self.STATUS.self, order_num=2)
@@ -704,7 +704,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             )
             logger.error(err_msg)
             raise AssessmentWorkflowInternalError(err_msg)
-        step = self.steps.first()
+        step = self.steps.first()  # pylint: disable=no-member
         if step.name != TeamAssessmentWorkflow.STATUS.teams:
             err_msg = 'Team Assessment Workflow {} has a "{}" step rather than a teams step'.format(
                 self.uuid,

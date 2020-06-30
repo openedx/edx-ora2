@@ -355,7 +355,7 @@ class SubmissionMixin:
         """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
 
         if not self.file_upload_type:
-            return
+            return None
 
         for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
             student_sub_dict[field] = []

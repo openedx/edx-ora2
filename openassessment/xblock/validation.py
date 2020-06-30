@@ -2,7 +2,6 @@
 Validate changes to an XBlock before it is updated.
 """
 
-
 from collections import Counter
 
 from openassessment.assessment.api.student_training import validate_training_examples

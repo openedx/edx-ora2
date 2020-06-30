@@ -13,6 +13,7 @@ from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
 from pytest import raises
 
+from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import (
     Assessment,
@@ -24,7 +25,6 @@ from openassessment.assessment.models import (
 )
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
 
 STUDENT_ITEM = dict(
     student_id="Tim",
@@ -1037,7 +1037,7 @@ class TestPeerApi(CacheResetTest):
         # Get the next submission for review
         submission_uuid = xander_workflow.get_submission_for_over_grading()
 
-        if not (buffy_answer["uuid"] == submission_uuid or willow_answer["uuid"] == submission_uuid):
+        if not (submission_uuid in (buffy_answer['uuid'], willow_answer['uuid'])):
             self.fail("Submission was not Buffy or Willow's.")
 
     def test_create_feedback_on_an_assessment(self):

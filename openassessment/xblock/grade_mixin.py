@@ -65,7 +65,7 @@ class GradeMixin:
                 # we want focus to go from the assessment steps to the staff grading step.
                 if "staff-assessment" in assessment_steps:
                     context['is_waiting_staff'] = "is--waiting--staff"
-                path, context = 'openassessmentblock/grade/oa_grade_waiting.html', context
+                path = 'openassessmentblock/grade/oa_grade_waiting.html'
             elif status is None:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
@@ -390,7 +390,7 @@ class GradeMixin:
         if assessments:
             first_assessment = assessments[0]
             option = first_assessment['option']
-            if option and option.get('points', None) != None:  # nopep8
+            if option and option.get('points', None) is not None:
                 first_assessment['points'] = option['points']
 
         return assessments

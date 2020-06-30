@@ -14,6 +14,7 @@ import mock
 from django.db import DatabaseError
 from django.utils.timezone import now
 
+from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api.peer import create_assessment as peer_assess
@@ -23,7 +24,6 @@ from openassessment.assessment.models import Assessment, StaffWorkflow, TeamStaf
 from openassessment.test_utils import CacheResetTest
 from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, AssessmentFactory
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
 
 from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_OPTIONS, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
 
@@ -38,7 +38,7 @@ class TestStaffAssessment(CacheResetTest):
     STEP_REQUIREMENTS_WITH_STAFF = {'required': True}
 
     # This is due to ddt not playing nicely with list comprehensions
-    ASSESSMENT_SCORES_DDT = [key for key in OPTIONS_SELECTED_DICT]
+    ASSESSMENT_SCORES_DDT = list(OPTIONS_SELECTED_DICT)
 
     @staticmethod
     def _peer_assess(scores):

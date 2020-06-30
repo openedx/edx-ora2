@@ -9,6 +9,7 @@ import json
 
 from mock import Mock, patch
 
+from submissions import team_api as team_sub_api
 from openassessment.assessment.api import (
     staff as staff_api,
     teams as teams_api
@@ -16,8 +17,6 @@ from openassessment.assessment.api import (
 from openassessment.tests.factories import UserFactory
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 from openassessment.workflow import team_api as team_workflow_api
-from submissions import team_api as team_sub_api
-
 
 from .base import (
     PEER_ASSESSMENTS,

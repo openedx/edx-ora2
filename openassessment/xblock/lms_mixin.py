@@ -9,10 +9,12 @@ class GroupAccessDict(Dict):
     def from_json(self, access_dict):  # pylint: disable=arguments-differ
         if access_dict is not None:
             return {int(k): access_dict[k] for k in access_dict}
+        return None
 
     def to_json(self, access_dict):  # pylint: disable=arguments-differ
         if access_dict is not None:
             return {str(k): access_dict[k] for k in access_dict}
+        return None
 
 
 class LmsCompatibilityMixin:
