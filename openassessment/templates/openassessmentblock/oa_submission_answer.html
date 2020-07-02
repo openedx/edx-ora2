@@ -15,16 +15,16 @@
         </h5>
 
         <pre>
-            <code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">{{answer.parts.0}}</code>
+            <code  class="{% if code_language %}{{code_language}}{% else %} {% endif %}">{{answer.submission}}</code>
         </pre>
     </li>
     {% if staff_view %}
         <li class="list_item">
             <h2 style="text-align:center">Result Summary</h2>
             <br>
-            <div  >
-                <p class="bold_text">Total Test Cases: {{answer.parts.1.total_tests|add:answer.parts.2.total_tests}}</p>
-                <p class="bold_text">Passed Test Cases: {{answer.parts.1.correct|add:answer.parts.2.correct}}</p>
+            <div>
+                <p class="bold_text">Total Test Cases: {{total_tests}}</p>
+                <p class="bold_text">Passed Test Cases: {{tests_passed}}</p>
                 <p class="bold_text">Percentage Correctness: {{result_percentage}}%</p>
             </div>
         </li>
@@ -34,7 +34,7 @@
         {% trans "Test Case Result Breakdown" as header_content %}
         {% trans "Your Output" as code_output_label %}
         {% trans "Expected Output" as expected_output_label %}
-        {% include "openassessmentblock/render_submission_details.html" with response=answer.parts.1 student_output_header=code_output_label expected_output_header=expected_output_label header_content=header_content%}
+        {% include "openassessmentblock/render_submission_details.html" with response=answer.sample_run student_output_header=code_output_label expected_output_header=expected_output_label header_content=header_content%}
     </li>
 
     {% if staff_view %}
@@ -43,7 +43,7 @@
             {% trans "Staff Test Case Result Breakdown" as header_content %}
             {% trans "Staff Test Case Output" as code_output_label %}
             {% trans "Expected Test Case Output" as expected_output_label %}
-            {% include "openassessmentblock/render_submission_details.html" with response=answer.parts.2 student_output_header=code_output_label expected_output_header=expected_output_label header_content=header_content%}
+            {% include "openassessmentblock/render_submission_details.html" with response=answer.staff_run student_output_header=code_output_label expected_output_header=expected_output_label header_content=header_content%}
         </li>
     {% endif %}
 </ol>

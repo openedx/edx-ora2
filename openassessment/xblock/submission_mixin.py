@@ -11,12 +11,10 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from xblock.core import XBlock
 
-from .data_conversion import create_submission_dict, create_submission_dict_v2, prepare_submission_for_serialization, prepare_submission_for_serialization_v2
 from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .utils import get_code_language
-from .validation import get_correctness, set_correctness_in_context
 
 logger = logging.getLogger(__name__)
 
@@ -91,8 +89,25 @@ class SubmissionMixin(object):
         status = False
         grade_output = self.grade_response_v2(data, add_staff_output=True)
 
-        # Adding submission data and grader output
-        student_sub_data = data['submission'] + grade_output
+        # Check if sample and staff grade output is present
+        # If not, add a default error response
+        try:
+            sample_run = grade_output[0]
+        except IndexError:
+            sample_run = TestGrader.get_error_response("sample", "Submission Missing")
+
+        try:
+            staff_run = grade_output[1]
+        except IndexError:
+            staff_run = TestGrader.get_error_response("staff", "Staff Submission Missing")
+
+        # Add sample and staff run to submission
+        data.update({
+            'sample_run': sample_run,
+            'staff_run': staff_run
+        })
+
+        student_sub_data = data
 
         student_item_dict = self.get_student_item_dict()
 
@@ -249,11 +264,9 @@ class SubmissionMixin(object):
         """
         if 'submission' in data:
             grade_output = self.grade_response_v2(data)
-            student_sub_data = data['submission']
+            student_sub_data = data
             try:
-                self.saved_response = json.dumps(
-                    prepare_submission_for_serialization(student_sub_data)
-                )
+                self.saved_response = json.dumps(student_sub_data)
                 self.has_saved = True
 
                 # Emit analytics event...
@@ -310,7 +323,7 @@ class SubmissionMixin(object):
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
         files_descriptions = files_descriptions if files_descriptions else []
-        student_sub_dict = prepare_submission_for_serialization_v2(student_sub_data)
+        student_sub_dict = student_sub_data
 
         if self.file_upload_type:
             student_sub_dict['file_keys'] = []
@@ -642,7 +655,7 @@ class SubmissionMixin(object):
                     },
                 }
 
-            context['saved_response'] = create_submission_dict(saved_response, self.prompts)
+            context['saved_response'] = saved_response['answer']
             context['save_status'] = self.save_status
 
             submit_enabled = True
@@ -665,8 +678,8 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["student_submission"] = create_submission_dict_v2(student_submission, self.prompts)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0])
+            context["student_submission"] = student_submission
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(
@@ -676,10 +689,9 @@ class SubmissionMixin(object):
             self_in_workflow = "self" in workflow["status_details"]
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
-            context["student_submission"] = create_submission_dict_v2(student_submission, self.prompts)
-            # correctness = get_correctness(context['student_submission'], self.display_name)
-            # set_correctness_in_context(context, 'sample_correct', correctness, 0)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['parts'][0])
+
+            context["student_submission"] = student_submission
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

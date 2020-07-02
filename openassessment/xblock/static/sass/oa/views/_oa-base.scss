@@ -1201,3 +1201,10 @@
 .bold_text {
     font: 20px bold;
 }
+
+// Choose language dropdown
+select#submission__answer__language{
+    float: right;
+    margin-bottom: 10px;
+    width: 20%;
+}
