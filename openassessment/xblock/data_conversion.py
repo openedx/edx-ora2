@@ -262,7 +262,7 @@ def update_submission_old_format_answer(submission):
     """
     answer = submission['answer']
 
-    if '0' in answer and '1' and answer:
+    if '0' in answer and '1' in answer:
         new_answer = {'submission': answer['0'], 'sample_run': answer['1']}
 
         try:
