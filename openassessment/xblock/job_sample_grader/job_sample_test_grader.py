@@ -32,11 +32,10 @@ class TestGrader:
         source_code = response['submission']
         language = response.get('language')
 
-        if language:
-            if language.lower() not in self.ALLOWED_LANGUAGES:
-                return self.response_with_error_v2("Language can only be Python, Java, or C++")
-            else:
-                language = self.LANGUAGE_EXTENSION_MAP[language.lower()]
+        if not language or (language and language.lower() not in self.ALLOWED_LANGUAGES):
+            return self.response_with_error_v2("Language can only be Python, Java, or C++")
+        else:
+            language = self.LANGUAGE_EXTENSION_MAP[language.lower()]
 
         code_file_name = "auto_generated_code_file_" + str(uuid.uuid4()).replace('-', '')
         if not os.path.exists(TestGrader.__TMP_DATA_DIR__ + code_file_name):

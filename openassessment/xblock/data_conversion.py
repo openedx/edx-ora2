@@ -255,6 +255,31 @@ def create_submission_dict_v2(submission, prompts, staff_view=False):
     return submission
 
 
+def update_submission_old_format_answer(submission):
+    """
+    Update the submission answer from indexed-key format to new format, the format that uses
+    semantically correct keys
+    """
+    answer = submission['answer']
+
+    if '0' in answer and '1' and answer:
+        new_answer = {'submission': answer['0'], 'sample_run': answer['1']}
+
+        try:
+            new_answer.update({'staff_run': answer['2']})
+        except KeyError:
+            new_answer.update({'staff_run': TestGrader.get_error_response('staff', "Missing Staff Submission")})
+
+        try:
+            new_answer.update({'language': answer['0'].split('\n')[0]})
+        except Exception:
+            new_answer.update({'language': None})
+
+        submission['answer'] = new_answer
+
+    return submission
+
+
 def make_django_template_key(key):
     """
     Django templates access dictionary items using dot notation,

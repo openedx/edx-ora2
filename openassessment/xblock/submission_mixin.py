@@ -11,6 +11,7 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from xblock.core import XBlock
 
+from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
@@ -678,7 +679,7 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["student_submission"] = student_submission
+            context["student_submission"] = update_submission_old_format_answer(student_submission)
             context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
@@ -690,7 +691,7 @@ class SubmissionMixin(object):
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
 
-            context["student_submission"] = student_submission
+            context["student_submission"] = update_submission_old_format_answer(student_submission)
             context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'

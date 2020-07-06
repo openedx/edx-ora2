@@ -10,6 +10,7 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
+from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language, get_percentage
 from xblock.core import XBlock
@@ -260,7 +261,7 @@ class StaffAreaMixin(object):
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))  # localize for staff user
 
         context = {
-            'submission': submission if submission else None,
+            'submission': update_submission_old_format_answer(submission) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
             'user_timezone': user_preferences['user_timezone'],
