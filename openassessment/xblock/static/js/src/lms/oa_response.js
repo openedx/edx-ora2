@@ -11,45 +11,6 @@
  Returns:
  OpenAssessment.ResponseView
  **/
-var IntervalManager;
-
-IntervalManager = function(ms, fn, timeoutFunc) {
-            this.ms = ms;
-            this.fn = fn;
-            this.timeoutFunc = timeoutFunc;
-            this.intervalID = null;
-            this.failedTries = 0;
-};
-
-IntervalManager.prototype = {
-
-        failed_retry_threshold: 5,
-
-        start : function() {
-            this.fn();
-            if (this.intervalID === null) {
-                this.intervalID = setInterval(this.fn, this.ms);
-                return this.intervalID;
-            }
-            return this.intervalID;
-        },
-
-        stop : function() {
-            clearInterval(this.intervalID);
-            this.intervalID = null;
-            this.failedTries = 0;
-            return this.intervalID;
-        },
-
-        backOff : function() {
-            this.failedTries++;
-            if (this.failedTries >= this.failed_retry_threshold) {
-                this.timeoutFunc();
-                this.stop();
-            }
-        }
-
-};
 
 OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, data) {
     this.element = element;
@@ -70,7 +31,6 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.announceStatus = false;
     this.isRendering = false;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
-    this.task_poller = null;
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -110,7 +70,6 @@ OpenAssessment.ResponseView.prototype = {
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
                 view.dateFactory.apply();
-                view.disableCodeOutputArea();
             }
         ).fail(function() {
             view.baseView.showLoadError('response');
@@ -135,17 +94,15 @@ OpenAssessment.ResponseView.prototype = {
         var handleChange = function() {view.handleResponseChanged();};
         sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
 
+        // Adding on change handler for dropdown
+        sel.find('select#submission__answer__language').on('change', handleChange);
+
         var handlePrepareUpload = function(eventData) {view.prepareUpload(eventData.target.files, uploadType);};
         sel.find('input[type=file]').on('change', handlePrepareUpload);
 
         var submit = $('.step--response__submit', this.element);
         this.textResponse = $(submit).attr('text_response');
         this.fileUploadResponse = $(submit).attr('file_upload_response');
-        this.task_poller = new IntervalManager(this.AUTO_SAVE_POLL_INTERVAL, function () {
-            return view.startPolling();
-        }, function () {
-            view.saveStatus('Request Timeout');
-        });
 
         // Install a click handler for submission
         sel.find('.step--response__submit').click(
@@ -195,35 +152,6 @@ OpenAssessment.ResponseView.prototype = {
      */
     getPrompts: function(){
         return $('.response__submission .submission__answer__part__text__value', this.element);
-    },
-    /**
-     Disable every prompt, except the first, on loading ORA
-     **/
-    disableCodeOutputArea: function(){
-        var sel = $('.response__submission .submission__answer__part__text__value', this.element);
-        sel.map(function (index) {
-            if(index!==0){
-                $(this).prop('readonly', true);
-            }
-        });
-    },
-
-    startPolling: function(){
-    var view = this;
-
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:18000/api/courses/v1/blocks/"
-        // url: "http://localhost:18000/api/courses/v1/blocks/block-v1:Arbx+ed314+2018+type@course+block@course/?all_blocks=true&depth=all&block_types_filter=video&student_view_data=video"
-    }).done(function (response) {
-        view.task_poller.stop();
-//        view.updateCodeOutput(response.root);
-        view.saveEnabled(true);
-        view.saveStatus("");
-    }).fail(function (response) {
-//        view.updateCodeOutput(response.responseText);
-        view.task_poller.backOff();
-    });
     },
 
     /*
@@ -314,6 +242,13 @@ OpenAssessment.ResponseView.prototype = {
         }
     },
 
+    /*
+        Get the currently selected language from the dropdown
+    */
+    getLanguage: function(){
+        return $("select#submission__answer__language", this.element).val();
+    },
+
     /**
      Enable or disable autosave polling.
 
@@ -346,9 +281,10 @@ OpenAssessment.ResponseView.prototype = {
      *
      */
     checkSubmissionAbility: function(filesFiledIsNotBlank) {
-        var textFieldsIsNotBlank = !this.response('save').every(function(element) {
-            return $.trim(element) === '';
-        });
+        var currentResponse = this.response('save');
+        var textFieldsIsNotBlank = !(Object.keys(currentResponse).forEach(function(key) {
+            return $.trim(currentResponse[key]) === '';
+        }));
 
         filesFiledIsNotBlank = filesFiledIsNotBlank || false;
         $('.submission__answer__file', this.element).each(function() {
@@ -379,9 +315,10 @@ OpenAssessment.ResponseView.prototype = {
      *
      */
     checkSaveAbility: function() {
-        var textFieldsIsNotBlank = !this.response('save').every(function(element) {
-            return $.trim(element) === '';
-        });
+        var currentResponse = this.response('save');
+        var textFieldsIsNotBlank = !(Object.keys(currentResponse).forEach(function(key) {
+            return $.trim(currentResponse[key]) === '';
+        }));
 
         return !((this.textResponse === 'required') && !textFieldsIsNotBlank);
     },
@@ -494,28 +431,13 @@ OpenAssessment.ResponseView.prototype = {
      array of strings: The current response texts.
      **/
     response: function(action) {
+
         var sel = $('.response__submission .submission__answer__part__text__value', this.element);
-        if(action==='load' || action==='save'){
-            var data_list = (sel.map(function() {
+        var data_list = (sel.map(function() {
                 return $(this).val();
-            }).get());
-            return [data_list[0]];
-        }
-        else if(action==='submit'){
-            var data_list = (sel.map(function() {
-                return $(this).val();
-            }).get());
-            return [data_list[0]]
-        }
-        // if (typeof texts === 'undefined') {
-        //     return sel.map(function() {
-        //         return $.trim($(this).val());
-        //     }).get()[0].split();
-        // } else {
-        //     sel.map(function(index) {
-        //         $(this).val(texts[index]);
-        //     });
-        // }
+        }).get());
+
+        return {"submission": data_list[0], "language": this.getLanguage()};
     },
 
     /**
@@ -525,8 +447,9 @@ OpenAssessment.ResponseView.prototype = {
      **/
     responseChanged: function() {
         var savedResponse = this.savedResponse;
-        return this.response('save').some(function(element, index) {
-            return element !== savedResponse[index];
+        var currentResponse = this.response('save');
+        return Object.keys(currentResponse).forEach(function(key) {
+            return savedResponse[key] !== currentResponse[key];
         });
     },
 
@@ -585,6 +508,12 @@ OpenAssessment.ResponseView.prototype = {
         // we'll set this back to true in the error handler.
         this.errorOnLastSave = false;
 
+        // If no language from dropdown has been selected, show the error and stop the execution
+        if(this.getLanguage() === null){
+            this.showRunError(gettext("Please select a language from the list"));
+            return;
+        }
+
         // Update the save status and error notifications
         this.saveStatus(gettext('Code execution in progress'));
         this.baseView.toggleActionError('save', null);
@@ -613,10 +542,6 @@ OpenAssessment.ResponseView.prototype = {
             // since hitting the save button.
             view.checkSubmissionAbility();
 
-            var currentResponse = view.response('load');
-            var currentResponseEqualsSaved = currentResponse.every(function(element, index) {
-                return element === savedResponse[index];
-            });
             view.saveEnabled(true);
             view.baseView.toggleActionError('save', null);
         }).fail(function(errMsg) {
@@ -635,6 +560,13 @@ OpenAssessment.ResponseView.prototype = {
      Send a response submission to the server and update the view.
      **/
     submit: function() {
+
+        // If no language is selected, don't do the submission
+        if(this.getLanguage() === null){
+            this.showRunError(gettext("Please select a language from the list"));
+            return;
+        }
+
         // Immediately disable the submit button to prevent multiple submission
         this.submitEnabled(false);
 

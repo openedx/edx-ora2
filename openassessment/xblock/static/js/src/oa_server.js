@@ -174,7 +174,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({submission: submission}),
+                    data: JSON.stringify(submission),
                     contentType: jsonContentType
                 }).done(function(data) {
                     var success = data[0];
@@ -207,7 +207,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                  prevRequest = $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({submission: submission}),
+                    data: JSON.stringify(submission),
                     contentType: jsonContentType,
                     beforeSend: function(){
                     if(prevRequest != null){

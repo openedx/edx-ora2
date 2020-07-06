@@ -10,7 +10,7 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict, create_submission_dict_v2
+from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language, get_percentage
 from xblock.core import XBlock
@@ -261,7 +261,7 @@ class StaffAreaMixin(object):
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))  # localize for staff user
 
         context = {
-            'submission': create_submission_dict_v2(submission, self.prompts, staff_view=True) if submission else None,
+            'submission': update_submission_old_format_answer(submission) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
             'user_timezone': user_preferences['user_timezone'],
@@ -269,11 +269,16 @@ class StaffAreaMixin(object):
             "prompts_type": self.prompts_type,
         }
         if submission:
+            sample_run = submission['answer']['sample_run']
+            staff_run = submission['answer']['staff_run']
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
-            context['code_language'] = get_code_language(submission['answer']['parts'][0])
+            context['code_language'] = get_code_language(submission['answer']['language'])
             context['staff_view'] = True
-            context['result_percentage'] = get_percentage(submission['answer']['parts'][1], submission['answer']['parts'][2])
+            context['result_percentage'] = get_percentage(sample_run, staff_run)
+
+            context['total_tests'] = sample_run['total_tests'] + staff_run['total_tests']
+            context['tests_passed'] = sample_run['correct'] + staff_run['correct']
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt

@@ -16,12 +16,27 @@ logger = logging.getLogger(__name__)
 
 class TestGrader:
 
+    ALLOWED_LANGUAGES = ['python', 'java', 'c++']
+
+    # the extensions of language-specific code files
+    LANGUAGE_EXTENSION_MAP = {
+        'python': 'py',
+        'java': 'java',
+        'c++': 'cpp'
+    }
     __SECRET_DATA_DIR__ = "/grader_data/"
     __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
 
     def grade(self, response, add_staff_cases=False):
         problem_name = response['problem_name']
-        source_code = response['submission'][0]
+        source_code = response['submission']
+        language = response.get('language')
+
+        if not language or (language and language.lower() not in self.ALLOWED_LANGUAGES):
+            return self.response_with_error_v2("Language can only be Python, Java, or C++")
+        else:
+            language = self.LANGUAGE_EXTENSION_MAP[language.lower()]
+
         code_file_name = "auto_generated_code_file_" + str(uuid.uuid4()).replace('-', '')
         if not os.path.exists(TestGrader.__TMP_DATA_DIR__ + code_file_name):
             os.mkdir(TestGrader.__TMP_DATA_DIR__ + code_file_name)
@@ -29,8 +44,11 @@ class TestGrader:
         code_file_path = TestGrader.__TMP_DATA_DIR__ + code_file_name + "/" + code_file_name
 
         try:
-            lang, student_response = self.detect_code_language(source_code, code_file_name)
-            full_code_file_name = '{0}.{1}'.format(code_file_path, lang)
+            if language.lower() == 'java':
+                student_response = self.update_java_code(source_code, code_file_name)
+            else:
+                student_response = source_code
+            full_code_file_name = '{0}.{1}'.format(code_file_path, language)
             self.write_code_file(student_response, full_code_file_name)
         except UnicodeEncodeError as e:
             return self.response_with_error_v2("{} - {} : {}".format(
@@ -40,10 +58,10 @@ class TestGrader:
             return self.response_with_error_v2(exc.message)
 
         output = []
-        sample_result = self.run_code('sample', lang, code_file_name, full_code_file_name, problem_name)
+        sample_result = self.run_code('sample', language, code_file_name, full_code_file_name, problem_name)
         output.append(sample_result)
         if add_staff_cases:
-            staff_result = self.run_code('staff', lang, code_file_name, full_code_file_name, problem_name)
+            staff_result = self.run_code('staff', language, code_file_name, full_code_file_name, problem_name)
             output.append(staff_result)
 
         shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
@@ -183,32 +201,13 @@ class TestGrader:
             raise Exception
         return output
 
-    def detect_code_language(self, source_code, code_file_name):
+    def update_java_code(self, source_code, code_file_name):
         """
-        detects language using guesslang module and raises exception if
-        language is not in one of these. JAVA, C++, PYTHON. for java
-        replaces the public class name with file name to execute the code.
-        LIMIT: Expects only one public class in Java solution
+        Rewrite java code to have public class name replaced with the uuid generated name.
         """
-        output = self.run_as_subprocess("echo '" + source_code + "' | guesslang")
-
-        if 'Python' not in output and 'Java' not in output and 'C++' not in output:
-            output = source_code.split("\n")[0]
-
-        if 'Python' in output:
-            lang = "py"
-        elif 'Java' in output:
-            lang = 'java'
-            source_code = re.sub(
-                'public class (.*) {', 'public class {0} {{'.format(code_file_name), source_code
-            )
-        elif 'C++' in output:
-            lang = 'cpp'
-        else:
-            raise Exception('Language can only be C++, Java or Python.')
-        # else:
-        #     lang = "py"
-        return lang, source_code
+        return re.sub(
+            'public class (.*) {', 'public class {0} {{'.format(code_file_name), source_code
+        )
 
     def write_code_file(self, source_code, full_code_file_name):
         """

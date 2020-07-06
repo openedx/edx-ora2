@@ -9,9 +9,9 @@ from django.utils.translation import ugettext as _
 
 from lazy import lazy
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
+from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from xblock.core import XBlock
 
-from .data_conversion import create_submission_dict_v2
 from .utils import get_code_language
 
 
@@ -134,13 +134,13 @@ class GradeMixin(object):
         # when all the criteria in the rubric are feedback-only (no options).
         score = workflow['score']
 
-        context = {'student_submission': create_submission_dict_v2(student_submission, self.prompts)}
+        context = {'student_submission': update_submission_old_format_answer(student_submission)}
 
         context.update({
             'score': score,
             'feedback_text': feedback_text,
             'has_submitted_feedback': has_submitted_feedback,
-            'code_language': get_code_language(context["student_submission"]['answer']['parts'][0]),
+            'code_language': get_code_language(context["student_submission"]['answer']['language']),
             'peer_assessments': peer_assessments,
             'grade_details': self.grade_details(
                 submission_uuid,
