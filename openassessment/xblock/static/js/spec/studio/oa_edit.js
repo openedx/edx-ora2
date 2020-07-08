@@ -217,7 +217,7 @@ describe("OpenAssessment.StudioView", function() {
         expect(view.alert.isVisible()).toBe(false);
 
         // Introduce a validation error (date field does format invalid)
-        view.settingsView.submissionStart("Not a valid date!", "00:00");
+        view.scheduleView.submissionStart("Not a valid date!", "00:00");
 
         // Try to save the view
         view.save();
@@ -233,7 +233,7 @@ describe("OpenAssessment.StudioView", function() {
         );
 
         // Fix the error and try to save again
-        view.settingsView.submissionStart("2014-04-01", "00:00");
+        view.scheduleView.submissionStart("2014-04-01", "00:00");
         view.save();
 
         // Expect that the validation errors were cleared

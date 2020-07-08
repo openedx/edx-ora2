@@ -108,8 +108,8 @@ OpenAssessment.IntField.prototype = {
  Args:
  checkboxSel (JQuery selector): The checkbox used to toggle whether sections
  are shown or hidden.
- shownSel (JQuery selector): The section to show when the checkbox is checked.
- hiddenSel (JQuery selector): The section to show when the checkbox is unchecked.
+ shownSel (list of JQuery selectors): Sections to show when the checkbox is checked.
+ hiddenSel (list of JQuery selectors): Sections to show when the checkbox is unchecked.
  notifier (OpenAssessment.Notifier): Receives notifications when the checkbox state changes.
 
  Sends the following notifications:
@@ -118,8 +118,8 @@ OpenAssessment.IntField.prototype = {
  **/
 OpenAssessment.ToggleControl = function(checkboxSel, shownSel, hiddenSel, notifier) {
     this.checkbox = checkboxSel;
-    this.shownSection = shownSel;
-    this.hiddenSection = hiddenSel;
+    this.shownSections = shownSel;
+    this.hiddenSections = hiddenSel;
     this.notifier = notifier;
 };
 
@@ -151,13 +151,21 @@ OpenAssessment.ToggleControl.prototype = {
     },
 
     show: function() {
-        this.hiddenSection.addClass('is--hidden');
-        this.shownSection.removeClass('is--hidden');
+        $.each(this.hiddenSections, function(i, section) {
+            section.addClass('is--hidden');
+        });
+        $.each(this.shownSections, function(i, section) {
+            section.removeClass('is--hidden');
+        });
     },
 
     hide: function() {
-        this.shownSection.addClass('is--hidden');
-        this.hiddenSection.removeClass('is--hidden');
+        $.each(this.shownSections, function(i, section) {
+            section.addClass('is--hidden');
+        });
+        $.each(this.hiddenSections, function(i, section) {
+            section.removeClass('is--hidden');
+        });
     },
 };
 
