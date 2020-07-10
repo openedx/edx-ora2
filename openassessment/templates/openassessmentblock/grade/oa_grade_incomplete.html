@@ -23,6 +23,12 @@
     <div class="ui-slidable__content" aria-labelledby="oa_grade_{{ xblock_id }}" id="oa_grade_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__content">
+                {% if score_explanation %}
+                <div class="step__message message message--waiting">
+                    <h5 class="message__title">{% trans "Status" %}</h5>
+                    <div class="message__content">{{ score_explanation }}</div>
+                </div>
+                {% endif %}
                 <div class="grade__value__description">
                     <p>{% trans "You have not completed all the steps of this problem." %}</p>
                 </div>

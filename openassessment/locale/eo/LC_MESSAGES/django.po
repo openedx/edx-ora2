@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-17 10:45-0400\n"
+"POT-Creation-Date: 2020-06-19 14:07-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -706,6 +706,26 @@ msgid "Assessments of Your Response"
 msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
+msgid "Status"
+msgstr "Stätüs Ⱡ'σяєм ιρѕυ#"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Overall Grade"
 msgstr "Övéräll Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
@@ -729,23 +749,6 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Submitting Feedback"
 msgstr "Süßmïttïng Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
-msgid "Status"
-msgstr "Stätüs Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid ""
@@ -2321,6 +2324,43 @@ msgstr "Wäïtïng för péér révïéws Ⱡ'σяєм ιρѕυм ∂σłσя ѕ
 #: openassessment/xblock/grade_mixin.py
 msgid "Peer"
 msgstr "Péér Ⱡ'σяєм ι#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý ýöür Stäff Grädé. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý thé médïän sçöré öf ýöür Péér "
+"Àsséssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr ""
+"Thé grädé för thïs prößlém ïs détérmïnéd ßý ýöür Sélf Àsséssmént. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/grade_mixin.py
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr ""
+"Ýöü hävé süççéssfüllý çömplétéd thïs prößlém änd réçéïvéd ä "
+"{earned_points}/{total_points}. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/grade_mixin.py
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr ""
+"Ýöü hävé nöt ýét réçéïvéd äll néçéssärý péér révïéws tö détérmïné ýöür fïnäl"
+" grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: openassessment/xblock/peer_assessment_mixin.py
 msgid "You must submit a response before you can perform a peer assessment."
