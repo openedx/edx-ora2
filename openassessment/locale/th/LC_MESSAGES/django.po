@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-17 10:45-0400\n"
-"PO-Revision-Date: 2020-06-19 06:29+0000\n"
+"POT-Creation-Date: 2020-06-19 14:07-0400\n"
+"PO-Revision-Date: 2020-07-10 18:28+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Thai (http://www.transifex.com/open-edx/edx-platform/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -568,28 +568,10 @@ msgstr ""
 msgid "Assessments of Your Response"
 msgstr "การประเมินสำหรับคำตอบของคุณ"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:59
-msgid "Overall Grade"
-msgstr "เกรดรวม"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
-msgid "Points"
-msgstr "คะแนน"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:90
-msgid "Additional comments on your response"
-msgstr "ความเห็นเพิ่มเติมในคำตอบของคุณ"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:111
-msgid "Provide feedback on peer assessments"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:120
-msgid "Submitting Feedback"
-msgstr "ส่งผลตอบกลับ"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:132
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:28
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:28
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:4
@@ -606,54 +588,75 @@ msgstr "ส่งผลตอบกลับ"
 msgid "Status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:128
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
+msgid "Overall Grade"
+msgstr "เกรดรวม"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:70
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
+msgid "Points"
+msgstr "คะแนน"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:96
+msgid "Additional comments on your response"
+msgstr "ความเห็นเพิ่มเติมในคำตอบของคุณ"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:117
+msgid "Provide feedback on peer assessments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+msgid "Submitting Feedback"
+msgstr "ส่งผลตอบกลับ"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr "ผลตอบกลับของคุณส่งเรียบร้อยแล้ว เจ้าหน้าที่หลักสูตรจะสามารถเห็นผลตอบกลับเมื่อเจ้าหน้าที่ตรวจสอบบันทึกหลักสูตร"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr "เต้าหน้าที่หลักสูตรจะสามารถเห็นผลตอบกลับใดๆก็ตามที่คุณส่งมาให้เมื่อเจ้าที่ตรวจสอบบันทึกหลักสูตร"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:146
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:149
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
 msgstr "การประเมินเหล่านี้มีประโยชน์"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:158
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
 msgstr "การประเมินเหล่านี้ไม่ก่อประโยชน์"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:167
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr "ไม่เห็นด้วยกับความเห็นการประเมินอันหนึ่งหรือมากกว่านั้น ต่อคำตอบของของคุณ"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:176
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:182
 msgid "Some comments I received were inappropriate."
 msgstr "บางความเห็นที่ได้รับนั้นไม่เหมาะสม"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:184
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
 msgstr "คุณรู้สึกว่าผลตอบกลับที่ได้นั้น..."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:194
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
 msgstr "เราไม่สามารถส่งผลตอบรับของคุณ"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
 msgstr ""
 
@@ -661,7 +664,7 @@ msgstr ""
 msgid "Not Completed"
 msgstr "ยังไม่ครบ"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:27
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
 msgstr "คุณยังไม่เสร็จสิ้นทุกขั้นตอนของปัญหานี้"
 
@@ -677,7 +680,7 @@ msgstr "คุณยังไม่ได้เริ่มปัญหาข้
 msgid "Waiting for Assessments"
 msgstr "รอการประเมิน"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:27
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:33
 msgid ""
 "You have completed your steps in the assignment, but some assessments still "
 "need to be done on your response. When the assessments of your response are "
@@ -1288,7 +1291,7 @@ msgid ""
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:351
+#: openassessment/xblock/grade_mixin.py:357
 msgid "Staff Grade"
 msgstr ""
 
@@ -1753,7 +1756,7 @@ msgstr ""
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:74
+#: openassessment/xblock/grade_mixin.py:75
 #: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:60
@@ -1761,61 +1764,88 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr "เกิดข้อผิดพลาดที่คาดไม่ถึง"
 
-#: openassessment/xblock/grade_mixin.py:169
+#: openassessment/xblock/grade_mixin.py:171
 msgid "Peer Assessment"
 msgstr "การประเมินผลโดยเพื่อน"
 
-#: openassessment/xblock/grade_mixin.py:171
+#: openassessment/xblock/grade_mixin.py:173
 msgid "Self Assessment"
 msgstr "การประเมินตนเอง"
 
-#: openassessment/xblock/grade_mixin.py:207
+#: openassessment/xblock/grade_mixin.py:213
 msgid "Assessment feedback could not be saved."
 msgstr "ผลตอบกลับการประเมินไม่สามารถบันทึก"
 
-#: openassessment/xblock/grade_mixin.py:218
+#: openassessment/xblock/grade_mixin.py:224
 msgid "Feedback saved."
 msgstr "ผลตอบกลับบันทึกแล้ว"
 
-#: openassessment/xblock/grade_mixin.py:352
-#: openassessment/xblock/grade_mixin.py:498
+#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:504
 msgid "Staff Comments"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:364
 msgid "Peer Median Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:363
-#: openassessment/xblock/grade_mixin.py:505
+#: openassessment/xblock/grade_mixin.py:369
+#: openassessment/xblock/grade_mixin.py:511
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:370
 msgid "Peer Comments"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:374
+#: openassessment/xblock/grade_mixin.py:380
 msgid "Self Assessment Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:374
+#: openassessment/xblock/grade_mixin.py:380
 msgid "Your Self Assessment"
 msgstr "การประเมินส่วนตัว"
 
-#: openassessment/xblock/grade_mixin.py:375
-#: openassessment/xblock/grade_mixin.py:517
+#: openassessment/xblock/grade_mixin.py:381
+#: openassessment/xblock/grade_mixin.py:523
 msgid "Your Comments"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:471
+#: openassessment/xblock/grade_mixin.py:477
 msgid "Waiting for peer reviews"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:510
+#: openassessment/xblock/grade_mixin.py:516
 msgid "Peer"
 msgstr "เพื่อน"
+
+#: openassessment/xblock/grade_mixin.py:663
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:665
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:668
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:679
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:686
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."

@@ -39,8 +39,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-17 10:45-0400\n"
-"PO-Revision-Date: 2020-06-19 06:29+0000\n"
+"POT-Creation-Date: 2020-06-19 14:07-0400\n"
+"PO-Revision-Date: 2020-07-10 18:28+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -592,28 +592,10 @@ msgstr "您的上传"
 msgid "Assessments of Your Response"
 msgstr "对您答案的评分结果"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:59
-msgid "Overall Grade"
-msgstr "总分"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
-msgid "Points"
-msgstr "分"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:90
-msgid "Additional comments on your response"
-msgstr "对您答案的附加评语"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:111
-msgid "Provide feedback on peer assessments"
-msgstr "提供互评反馈"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:120
-msgid "Submitting Feedback"
-msgstr "提交评语"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:132
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:28
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:28
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:4
@@ -630,54 +612,75 @@ msgstr "提交评语"
 msgid "Status"
 msgstr "状态"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:128
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
+msgid "Overall Grade"
+msgstr "总分"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:70
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
+msgid "Points"
+msgstr "分"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:96
+msgid "Additional comments on your response"
+msgstr "对您答案的附加评语"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:117
+msgid "Provide feedback on peer assessments"
+msgstr "提供互评反馈"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+msgid "Submitting Feedback"
+msgstr "提交评语"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr "您的评语已经被提交。课程老师将会在他们检查课程记录时看到这条评语。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr "课程老师可以查看您发表于此的所有评语。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:146
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
 msgstr "请选出最能反映您互评体验的表述。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:149
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
 msgstr "这些评判很有价值。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:158
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
 msgstr "这些评判没有价值。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:167
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr "有些同学的评判我无法苟同。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:176
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:182
 msgid "Some comments I received were inappropriate."
 msgstr "我认为有些评语并不恰当。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr "提供您对从同学那里获得的评分或评论的反馈。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:184
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
 msgstr "我感觉我收到的反馈……"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:194
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
 msgstr "我们无法提交您的反馈意见"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
 msgstr "提交关于同学评估的反馈"
 
@@ -685,7 +688,7 @@ msgstr "提交关于同学评估的反馈"
 msgid "Not Completed"
 msgstr "尚未完成"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:27
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
 msgstr "您还没有完成该问题的所有步骤。"
 
@@ -701,7 +704,7 @@ msgstr "您还没有开始完成这个问题"
 msgid "Waiting for Assessments"
 msgstr "等待评判"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:27
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:33
 msgid ""
 "You have completed your steps in the assignment, but some assessments still "
 "need to be done on your response. When the assessments of your response are "
@@ -1312,7 +1315,7 @@ msgid ""
 msgstr "截止日期已过，该步骤已关闭。您无法完成自我评分或继续进行该作业，且您的评分将被定为“未完成”。"
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:351
+#: openassessment/xblock/grade_mixin.py:357
 msgid "Staff Grade"
 msgstr "员工评分"
 
@@ -1777,7 +1780,7 @@ msgstr "您必须在评估中提供整体反馈。"
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "您必须在评估中提供对标准的反馈。"
 
-#: openassessment/xblock/grade_mixin.py:74
+#: openassessment/xblock/grade_mixin.py:75
 #: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:60
@@ -1785,61 +1788,88 @@ msgstr "您必须在评估中提供对标准的反馈。"
 msgid "An unexpected error occurred."
 msgstr "发生了意外错误。"
 
-#: openassessment/xblock/grade_mixin.py:169
+#: openassessment/xblock/grade_mixin.py:171
 msgid "Peer Assessment"
 msgstr "学生互评"
 
-#: openassessment/xblock/grade_mixin.py:171
+#: openassessment/xblock/grade_mixin.py:173
 msgid "Self Assessment"
 msgstr "自我评分"
 
-#: openassessment/xblock/grade_mixin.py:207
+#: openassessment/xblock/grade_mixin.py:213
 msgid "Assessment feedback could not be saved."
 msgstr "评判评语无法保存。"
 
-#: openassessment/xblock/grade_mixin.py:218
+#: openassessment/xblock/grade_mixin.py:224
 msgid "Feedback saved."
 msgstr "评语已保存。"
 
-#: openassessment/xblock/grade_mixin.py:352
-#: openassessment/xblock/grade_mixin.py:498
+#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:504
 msgid "Staff Comments"
 msgstr "员工评论"
 
-#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:364
 msgid "Peer Median Grade"
 msgstr "同伴平均分数"
 
-#: openassessment/xblock/grade_mixin.py:363
-#: openassessment/xblock/grade_mixin.py:505
+#: openassessment/xblock/grade_mixin.py:369
+#: openassessment/xblock/grade_mixin.py:511
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "同学{peer_index}"
 
-#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:370
 msgid "Peer Comments"
 msgstr "同学评论"
 
-#: openassessment/xblock/grade_mixin.py:374
+#: openassessment/xblock/grade_mixin.py:380
 msgid "Self Assessment Grade"
 msgstr "自我评分分数"
 
-#: openassessment/xblock/grade_mixin.py:374
+#: openassessment/xblock/grade_mixin.py:380
 msgid "Your Self Assessment"
 msgstr "自我评分结果"
 
-#: openassessment/xblock/grade_mixin.py:375
-#: openassessment/xblock/grade_mixin.py:517
+#: openassessment/xblock/grade_mixin.py:381
+#: openassessment/xblock/grade_mixin.py:523
 msgid "Your Comments"
 msgstr "您的评论"
 
-#: openassessment/xblock/grade_mixin.py:471
+#: openassessment/xblock/grade_mixin.py:477
 msgid "Waiting for peer reviews"
 msgstr "等待同学评语"
 
-#: openassessment/xblock/grade_mixin.py:510
+#: openassessment/xblock/grade_mixin.py:516
 msgid "Peer"
 msgstr "同学"
+
+#: openassessment/xblock/grade_mixin.py:663
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:665
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:668
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:679
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:686
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
