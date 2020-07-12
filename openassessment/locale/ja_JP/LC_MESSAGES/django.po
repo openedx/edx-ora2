@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-17 10:45-0400\n"
-"PO-Revision-Date: 2020-06-19 06:29+0000\n"
+"POT-Creation-Date: 2020-06-19 14:07-0400\n"
+"PO-Revision-Date: 2020-07-10 18:28+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -571,28 +571,10 @@ msgstr "あなたのアップロード"
 msgid "Assessments of Your Response"
 msgstr "解答の評価"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:59
-msgid "Overall Grade"
-msgstr "総合成績"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
-msgid "Points"
-msgstr "点"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:90
-msgid "Additional comments on your response"
-msgstr "解答に関する追加コメント"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:111
-msgid "Provide feedback on peer assessments"
-msgstr "ピア・アセスメントのフィードバックを入力"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:120
-msgid "Submitting Feedback"
-msgstr "フィードバックを提出中"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:132
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:28
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:28
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:4
@@ -609,54 +591,75 @@ msgstr "フィードバックを提出中"
 msgid "Status"
 msgstr "ステータス"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:128
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
+msgid "Overall Grade"
+msgstr "総合成績"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:70
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
+msgid "Points"
+msgstr "点"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:96
+msgid "Additional comments on your response"
+msgstr "解答に関する追加コメント"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:117
+msgid "Provide feedback on peer assessments"
+msgstr "ピア・アセスメントのフィードバックを入力"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+msgid "Submitting Feedback"
+msgstr "フィードバックを提出中"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr "フィードバックが提出されました。講座スタッフは講座レコードを確認する際、この内容を見ることができます。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr "講座スタッフは講座レコードを確認する際、ここで入力したフィードバックを見ることができます。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:146
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
 msgstr "ピア・アセスメントでのあなたの体験に最もあてはまるものを選択してください。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:149
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
 msgstr "この評価は役に立った。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:158
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
 msgstr "この評価は役に立たなかった。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:167
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr "私の解答に対するピア・アセスメントのうち１つ以上に異論があります。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:176
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:182
 msgid "Some comments I received were inappropriate."
 msgstr "受け取ったコメントに不適切なものがありました。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr "他の受講者による採点やコメントに対してフィードバックを記入してください。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:184
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
 msgstr "私が受け取ったフィードバックは..."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:194
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
 msgstr "フィードバックを提出できませんでした"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
 msgstr "ピア・アセスメントのフィードバックを提出する"
 
@@ -664,7 +667,7 @@ msgstr "ピア・アセスメントのフィードバックを提出する"
 msgid "Not Completed"
 msgstr "未完了"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:27
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
 msgstr "あなたはこの課題の全ステップを完了していません。"
 
@@ -680,7 +683,7 @@ msgstr "まだ問題を始めていません。"
 msgid "Waiting for Assessments"
 msgstr "評価待ち"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:27
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:33
 msgid ""
 "You have completed your steps in the assignment, but some assessments still "
 "need to be done on your response. When the assessments of your response are "
@@ -1291,7 +1294,7 @@ msgid ""
 msgstr "このステップは締切を過ぎたため、閉じられています。今後はセルフ・アセスメントをしたり、この課題を継続することはできません。あなたの成績は'未完了'となります。"
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:351
+#: openassessment/xblock/grade_mixin.py:357
 msgid "Staff Grade"
 msgstr "スタッフによる採点"
 
@@ -1756,7 +1759,7 @@ msgstr "全体のフィードバックを入力してください。"
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "評価基準に関するフィードバックを入力してください。"
 
-#: openassessment/xblock/grade_mixin.py:74
+#: openassessment/xblock/grade_mixin.py:75
 #: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:60
@@ -1764,61 +1767,88 @@ msgstr "評価基準に関するフィードバックを入力してください
 msgid "An unexpected error occurred."
 msgstr "予期せぬエラーが発生しました。"
 
-#: openassessment/xblock/grade_mixin.py:169
+#: openassessment/xblock/grade_mixin.py:171
 msgid "Peer Assessment"
 msgstr "ピア・アセスメント"
 
-#: openassessment/xblock/grade_mixin.py:171
+#: openassessment/xblock/grade_mixin.py:173
 msgid "Self Assessment"
 msgstr "セルフ・アセスメント"
 
-#: openassessment/xblock/grade_mixin.py:207
+#: openassessment/xblock/grade_mixin.py:213
 msgid "Assessment feedback could not be saved."
 msgstr "フィードバックが保存できませんでした。"
 
-#: openassessment/xblock/grade_mixin.py:218
+#: openassessment/xblock/grade_mixin.py:224
 msgid "Feedback saved."
 msgstr "フィードバックが保存されました。"
 
-#: openassessment/xblock/grade_mixin.py:352
-#: openassessment/xblock/grade_mixin.py:498
+#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:504
 msgid "Staff Comments"
 msgstr "スタッフのコメント"
 
-#: openassessment/xblock/grade_mixin.py:358
+#: openassessment/xblock/grade_mixin.py:364
 msgid "Peer Median Grade"
 msgstr "他の受講者の成績中央値"
 
-#: openassessment/xblock/grade_mixin.py:363
-#: openassessment/xblock/grade_mixin.py:505
+#: openassessment/xblock/grade_mixin.py:369
+#: openassessment/xblock/grade_mixin.py:511
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "他の受講者 {peer_index}"
 
-#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:370
 msgid "Peer Comments"
 msgstr "他の受講者のコメント"
 
-#: openassessment/xblock/grade_mixin.py:374
+#: openassessment/xblock/grade_mixin.py:380
 msgid "Self Assessment Grade"
 msgstr "セルフ・アセスメントの成績"
 
-#: openassessment/xblock/grade_mixin.py:374
+#: openassessment/xblock/grade_mixin.py:380
 msgid "Your Self Assessment"
 msgstr "セルフ・アセスメント"
 
-#: openassessment/xblock/grade_mixin.py:375
-#: openassessment/xblock/grade_mixin.py:517
+#: openassessment/xblock/grade_mixin.py:381
+#: openassessment/xblock/grade_mixin.py:523
 msgid "Your Comments"
 msgstr "あなたのコメント"
 
-#: openassessment/xblock/grade_mixin.py:471
+#: openassessment/xblock/grade_mixin.py:477
 msgid "Waiting for peer reviews"
 msgstr "他の受講者のレビュー待ち"
 
-#: openassessment/xblock/grade_mixin.py:510
+#: openassessment/xblock/grade_mixin.py:516
 msgid "Peer"
 msgstr "他の受講者"
+
+#: openassessment/xblock/grade_mixin.py:663
+msgid "The grade for this problem is determined by your Staff Grade."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:665
+msgid ""
+"The grade for this problem is determined by the median score of your Peer "
+"Assessments."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:668
+msgid "The grade for this problem is determined by your Self Assessment."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:679
+#, python-brace-format
+msgid ""
+"You have successfully completed this problem and received a "
+"{earned_points}/{total_points}."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:686
+msgid ""
+"You have not yet received all necessary peer reviews to determine your final"
+" grade."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
