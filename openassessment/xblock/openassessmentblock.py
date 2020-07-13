@@ -5,6 +5,7 @@ import datetime as dt
 import json
 import logging
 import os
+import re
 
 import pkg_resources
 import pytz
@@ -12,6 +13,7 @@ import pytz
 from django.conf import settings
 from django.template.loader import get_template
 
+from bleach.sanitizer import Cleaner
 from lazy import lazy
 from webob import Response
 from xblock.core import XBlock
@@ -1242,3 +1244,46 @@ class OpenAssessmentBlock(MessageMixin,
         Returns the xblock id
         """
         return str(self.scope_ids.usage_id)
+
+    def _clean_data(self, data):
+        cleaner = Cleaner(tags=[], strip=True)
+        cleaned_text = " ".join(re.split(r"\s+", cleaner.clean(data), flags=re.UNICODE)).strip()
+        return cleaned_text
+
+    def index_dictionary(self):
+        """
+        Return dictionary prepared with module content and type for indexing.
+        """
+
+        # return key/value fields in a Python dict object
+        # values may be numeric / string or dict
+        # default implementation is an empty dict
+        xblock_body = super(OpenAssessmentBlock, self).index_dictionary()
+
+        # Check whether there is only one prompt or more than one
+        # If there is single prompt, self.prompt would be simply a string
+        # otherwise self.prompt would have json embedded in the string.
+        try:
+            prompt = {
+                "prompt_{}".format(prompt_i): self._clean_data(prompt.get("description", ""))
+                for prompt_i, prompt in enumerate(json.loads(self.prompt))
+            }
+        except ValueError:
+            prompt = {
+                "prompt": self._clean_data(self.prompt)
+            }
+
+        content = {
+            "display_name": self.display_name,
+            "title": self.title,
+            **prompt
+        }
+
+        if "content" in xblock_body:
+            xblock_body["content"].update(content)
+        else:
+            xblock_body["content"] = content
+
+        xblock_body["content_type"] = "ORA"
+
+        return xblock_body
