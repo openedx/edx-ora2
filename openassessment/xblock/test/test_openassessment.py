@@ -915,3 +915,57 @@ class TestDates(XBlockHandlerTestCase):
         xblock.xmodule_runtime.get_real_user.return_value = None
 
         self.assertIsNone(xblock.get_username('unknown_id'))
+
+
+class OpenAssessmentIndexingTestCase(XBlockHandlerTestCase):
+    """Tests indexibility of Open Assessment"""
+
+    @scenario('data/basic_scenario.xml')
+    def test_ora_indexibility_with_multiple_prompts(self, xblock):
+        result = xblock.index_dictionary()
+        content, content_type = result["content"], result["content_type"]
+        self.assertEqual(content_type, "ORA")
+        self.assertEqual(content["title"], "Open Assessment Test")
+        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(
+            [key.startswith("prompt") and content[key] != "" for key in content.keys()].count(True), 2
+        )
+
+    @scenario('data/empty_prompt.xml')
+    def test_ora_indexibility_with_no_prompt(self, xblock):
+        result = xblock.index_dictionary()
+        content, content_type = result["content"], result["content_type"]
+        self.assertEqual(content_type, "ORA")
+        self.assertEqual(content["title"], "Open Assessment Test")
+        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["prompt"], "")
+
+    @scenario('data/file_upload_missing_scenario.xml')
+    def test_ora_indexibility_with_single_prompt(self, xblock):
+        result = xblock.index_dictionary()
+        content, content_type = result["content"], result["content_type"]
+        self.assertEqual(content_type, "ORA")
+        self.assertEqual(
+            content["prompt"],
+            "Given the state of the world today, what do you think should be done to combat poverty? "
+            "Please answer in a short essay of 200-300 words."
+        )
+
+    @scenario('data/assessment_with_single_html_prompt.xml')
+    def test_ora_indexibility_with_single_html_prompt(self, xblock):
+        result = xblock.index_dictionary()
+        content, content_type = result["content"], result["content_type"]
+        self.assertEqual(content_type, "ORA")
+        self.assertEqual(content["title"], "Quiz about computers")
+        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["prompt"], "What is computer? It is a machine")
+
+    @scenario('data/assessment_with_multiple_html_prompt.xml')
+    def test_ora_indexibility_with_multiple_html_prompt(self, xblock):
+        result = xblock.index_dictionary()
+        content, content_type = result["content"], result["content_type"]
+        self.assertEqual(content_type, "ORA")
+        self.assertEqual(content["title"], "Quiz about computers")
+        self.assertEqual(content["display_name"], "Open Response Assessment")
+        self.assertEqual(content["prompt_0"], "What is computer? It is a machine")
+        self.assertEqual(content["prompt_1"], "Is it a calculator? Or is it a microwave")

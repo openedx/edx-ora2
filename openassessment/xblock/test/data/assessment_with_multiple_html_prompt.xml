@@ -1,0 +1,96 @@
+<openassessment url_name="35809bfd971f4acc9b55e5a7c737b77d" submission_start="2001-01-01T00:00:00+00:00" submission_due="2029-01-01T00:00:00+00:00" text_response="required" allow_latex="False" prompts_type="html">
+  <title>Quiz about computers</title>
+  <assessments>
+    <assessment name="student-training">
+      <example>
+        <answer>
+          <part>Ideas: 3, Content: 3</part>
+        </answer>
+        <select criterion="Ideas" option="Fair"/>
+        <select criterion="Content" option="Good"/>
+      </example>
+      <example>
+        <answer>
+          <part>Ideas: 0, Content: 3</part>
+        </answer>
+        <select criterion="Ideas" option="Poor"/>
+        <select criterion="Content" option="Good"/>
+      </example>
+    </assessment>
+    <assessment name="peer-assessment" must_grade="3" must_be_graded_by="3" start="2001-01-01T00:00:00+00:00" due="2029-01-01T00:00:00+00:00"/>
+    <assessment name="self-assessment" start="2001-01-01T00:00:00+00:00" due="2029-01-01T00:00:00+00:00"/>
+  </assessments>
+  <prompts>
+    <prompt>
+      <description>&lt;p&gt;&lt;strong&gt;What&lt;/strong&gt; is &lt;span style="text-decoration: underline;"&gt;computer&lt;/span&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://open.edx.org/wp-content/themes/openedx/src/assets/images/open-edx-logo-white.svg" alt="OpenEdX Logo" type="saveimage" target="[object Object]" width="123" height="47" /&gt;&lt;/p&gt;
+&lt;p&gt;It is a&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;machine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;</description>
+    </prompt>
+    <prompt>
+      <description>&lt;p&gt;&lt;strong&gt;Is&lt;/strong&gt; it a &lt;span style="text-decoration: underline;"&gt;calculator&lt;/span&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://open.edx.org/wp-content/themes/openedx/src/assets/images/open-edx-logo-white.svg" alt="OpenEdX Logo" type="saveimage" target="[object Object]" width="123" height="47" /&gt;&lt;/p&gt;
+&lt;p&gt;Or is it a&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;microwave&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;</description>
+    </prompt>
+  </prompts>
+  <rubric>
+    <criterion feedback="optional">
+      <name>Ideas</name>
+      <label>Ideas</label>
+      <prompt>Determine if there is a unifying theme or main idea.</prompt>
+      <option points="0">
+        <name>Poor</name>
+        <label>Poor</label>
+        <explanation>Difficult for the reader to discern the main idea.  Too brief or too repetitive to establish or maintain a focus.</explanation>
+      </option>
+      <option points="3">
+        <name>Fair</name>
+        <label>Fair</label>
+        <explanation>Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task.</explanation>
+      </option>
+      <option points="5">
+        <name>Good</name>
+        <label>Good</label>
+        <explanation>Presents a unifying theme or main idea without going off on tangents.  Stays completely focused on topic and task.</explanation>
+      </option>
+    </criterion>
+    <criterion>
+      <name>Content</name>
+      <label>Content</label>
+      <prompt>Assess the content of the submission</prompt>
+      <option points="0">
+        <name>Poor</name>
+        <label>Poor</label>
+        <explanation>Includes little information with few or no details or unrelated details.  Unsuccessful in attempts to explore any facets of the topic.</explanation>
+      </option>
+      <option points="1">
+        <name>Fair</name>
+        <label>Fair</label>
+        <explanation>Includes little information and few or no details.  Explores only one or two facets of the topic.</explanation>
+      </option>
+      <option points="3">
+        <name>Good</name>
+        <label>Good</label>
+        <explanation>Includes sufficient information and supporting details. (Details may not be fully developed; ideas may be listed.)  Explores some facets of the topic.</explanation>
+      </option>
+      <option points="3">
+        <name>Excellent</name>
+        <label>Excellent</label>
+        <explanation>Includes in-depth information and exceptional supporting details that are fully developed.  Explores all facets of the topic.</explanation>
+      </option>
+    </criterion>
+    <feedbackprompt>(Optional) What aspects of this response stood out to you? What did it do well? How could it be improved?
+</feedbackprompt>
+    <feedback_default_text>I think that this response...
+</feedback_default_text>
+  </rubric>
+</openassessment>
