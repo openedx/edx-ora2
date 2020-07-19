@@ -2,10 +2,15 @@
 Aggregate data for openassessment.
 """
 
-
 from collections import defaultdict
+from io import StringIO
+from urllib.parse import urljoin
+from zipfile import ZipFile
 import csv
 import json
+import os
+
+import requests
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -13,6 +18,7 @@ from django.db.models import F
 
 from submissions import api as sub_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
+from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
 
 
@@ -670,3 +676,148 @@ class OraAggregateData:
                 result[item_id][status] += 1
 
         return result
+
+
+class OraDownloadData:
+    """
+    Helper class, that is used for downloading and compressing data related
+    to submissions (attachments, answer texts).
+    """
+
+    ATTACHMENT = 'attachment'
+    TEXT = 'text'
+    DOWNLOADS_CSV_HEADER = (
+        'course_id',
+        'block_id',
+        'student_id',
+        'key',
+        'name',
+        'type',
+        'description',
+        'size',
+        'file_path',
+    )
+
+    @classmethod
+    def _download_file_by_key(cls, key):
+        download_url = urljoin(
+            settings.LMS_ROOT_URL, get_download_url(key)
+        )
+
+        response = requests.get(download_url)
+        response.raise_for_status()
+
+        return response.content
+
+    @classmethod
+    def create_zip_with_attachments(cls, file, course_id, submission_files_data):
+        """
+        Opens given stream as a zip file and writes into it all submission
+        attachments and csv with list of all downloads.
+
+        Example of result zip file structure:
+        ```
+        .
+        └── CourseId
+            ├── BlockId1
+            │   ├── StudentId1
+            │   │   ├── attachments
+            │   │   │   ├── SomeFile1
+            │   │   │   └── SomeFile2
+            │   │   ├── part_0.txt
+            │   │   └── part_1.txt
+            │   └── StudentId2
+            │       ├── part_0.txt
+            │       └── part_1.txt
+            ├── BlockId2
+            │   └── StudentId3
+            │       ├── attachments
+            │       │   └── SomeFile4
+            │       └── part_0.txt
+            └── downloads.csv
+        ```
+        """
+        csv_output_buffer = StringIO()
+
+        csvwriter = csv.DictWriter(csv_output_buffer, cls.DOWNLOADS_CSV_HEADER, extrasaction='ignore')
+        csvwriter.writeheader()
+
+        with ZipFile(file, 'w') as zip_file:
+            for file_data in submission_files_data:
+                file_content = (
+                    cls._download_file_by_key(file_data['key'])
+                    if file_data['type'] == cls.ATTACHMENT
+                    else file_data['content']
+                )
+
+                zip_file.writestr(file_data['file_path'], file_content)
+                csvwriter.writerow(file_data)
+
+            downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
+
+            zip_file.writestr(
+                downloads_csv_path,
+                csv_output_buffer.getvalue().encode('utf-8')
+            )
+
+        file.seek(0)
+
+        return True
+
+    @classmethod
+    def collect_ora2_submission_files(cls, course_id):
+        """
+        Generator, that yields dictionaries with information about submission
+        attachment or answer text.
+        """
+
+        all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
+
+        for student, submission, _ in all_submission_information:
+            answer = submission['answer']
+
+            # collecting submission attachments with metadata
+            for index, file_key in enumerate(answer.get('file_keys', [])):
+                file_name = answer['files_names'][index]
+
+                yield {
+                    'type': cls.ATTACHMENT,
+                    'course_id': course_id,
+                    'block_id': student['item_id'],
+                    'student_id': student['student_id'],
+                    'key': file_key,
+                    'name': file_name,
+                    'description': answer['files_descriptions'][index],
+                    'size': answer['files_sizes'][index],
+                    'file_path': os.path.join(
+                        str(course_id),
+                        student['item_id'],
+                        student['student_id'],
+                        'attachments',
+                        file_name,
+                    )
+                }
+
+            # collecting submission answer texts
+            for index, part in enumerate(answer.get('parts', [])):
+                content = part['text']
+
+                file_name = 'part_{}.txt'.format(index)
+
+                yield {
+                    'type': cls.TEXT,
+                    'course_id': course_id,
+                    'block_id': student['item_id'],
+                    'student_id': student['student_id'],
+                    'key': '',
+                    'name': file_name,
+                    'description': 'Submission text.',
+                    'content': content,
+                    'size': len(content),
+                    'file_path': os.path.join(
+                        str(course_id),
+                        student['item_id'],
+                        student['student_id'],
+                        file_name,
+                    )
+                }

@@ -1,6 +1,6 @@
 {
   "name": "edx-ora2",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
     "backbone": "~1.2.3",
