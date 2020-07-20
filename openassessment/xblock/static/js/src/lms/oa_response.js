@@ -209,8 +209,8 @@ OpenAssessment.ResponseView.prototype = {
     */
     showResultSummary: function(correct, total){
 
-        var summary = correct + " out of " + total + " test cases passed"
-        $("#test_cases_summary").html("<p style='text-align:center;'>" + summary + "</p>")
+        var summary = "<b>Results</b>: " + correct + " out of " + total + " test cases passed"
+        $("#test_cases_summary").html("<p class='bold_text'>" + summary + "</p>")
     },
 
     /*
@@ -656,7 +656,7 @@ OpenAssessment.ResponseView.prototype = {
     confirmSubmission: function() {
         // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
         // eslint-disable-next-line max-len
-        var msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
+        var msg = gettext('Are you sure you want to submit your response? After submitting the response, you cannot change or submit a new answer for this problem.');
         // TODO -- UI for confirmation dialog instead of JS confirm
         // eslint-disable-next-line new-cap
         return $.Deferred(function(defer) {

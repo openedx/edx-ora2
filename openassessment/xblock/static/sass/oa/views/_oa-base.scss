@@ -65,7 +65,6 @@
       @extend %btn--primary;
       @extend %action-2;
       @include margin-left($baseline-v/2);
-      margin-top: ($baseline-v/2);
 
       .copy, .icon {
         display: inline;
@@ -623,6 +622,10 @@
     .response__submission__actions {
       @extend %action-items
     }
+
+    .action--save {
+      margin-top: ($baseline-v/2);
+    }
   }
 
 
@@ -1087,7 +1090,8 @@
     }
 
     .action--save {
-      @extend %action-button !optional
+      @extend %action-button !optional;
+      margin-top: ($baseline-v/2);
     }
 
     .feedback {
@@ -1190,6 +1194,7 @@
     @extend %btn--secondary;
     @extend %action-2;
     @include margin-right(($baseline-v/2));
+    margin-top: ($baseline-v/2);
   }
 }
 
@@ -1207,4 +1212,8 @@ select#submission__answer__language{
     float: right;
     margin-bottom: 10px;
     width: 20%;
+}
+
+div.testSummary{
+    padding: 10px;
 }

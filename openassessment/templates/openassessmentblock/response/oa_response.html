@@ -94,36 +94,32 @@
                             </li>
 
 
-
                         {% if text_response %}
-                        <div id="test_cases_summary">
-
-                        </div>
-
-                        <div id="test_case_status_result">
-
-                        </div>
 
                         <li class="field">
                             <div class="response__submission__actions">
-                                <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <div class="message__content"></div>
-                                </div>
-
 
                                 <ul class="list list--actions">
                                     <li class="list--actions__item">
                                         <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}">
                                             {% trans "Run Code" %}
                                         </button>
-
                                         <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
                                             <span class="sr">{% trans "Your Submission Status" %}:</span>
                                             {{ save_status }}
                                         </div>
+                                        <button type="submit" class="action action--submit step--response__submit"
+                                                style="float:right;"
+                                                text_response="{{text_response}}"
+                                                file_upload_response="{{file_upload_response}}"
+                                                {{submit_enabled|yesno:",disabled" }}>
+                                            {% trans "Submit your response" %}
+                                        </button>
                                     </li>
                                 </ul>
-
+                                <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                    <div class="message__content"></div>
+                                </div>
                             </div>
                         </li>
                         {% endif %}
@@ -144,30 +140,29 @@
                         <li class="field">
                         {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
                         </li>
+
                     </ol>
 
-                    <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
-
                 </form>
-            </div>
 
-            <div class="step__actions">
-                <div class="message message--inline message--error message--error-server" tabindex="-1">
-                    <h5 class="message__title">{% trans "We could not submit your response" %}</h5>
-                    <div class="message__content"></div>
+                <div class="step__actions" >
+                        <div class="message message--inline message--error message--error-server" tabindex="-1">
+                            <h5 class="message__title">{% trans "We could not submit your response" %}</h5>
+                            <div class="message__content"></div>
+                        </div>
                 </div>
+                 {% if text_response %}
+                <div class="testSummary">
+                    <div id="test_cases_summary"></div>
+                    <div id="test_case_status_result"></div>
 
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
-                        <button type="submit" class="action action--submit step--response__submit"
-                                text_response="{{text_response}}"
-                                file_upload_response="{{file_upload_response}}"
-                                {{submit_enabled|yesno:",disabled" }}>
-                            {% trans "Submit your response" %}
-                        </button>
-                    </li>
-                </ul>
+                </div>
+                {% endif %}
+
+
             </div>
+
+
         </div>
     </div>
     {% endblock %}
