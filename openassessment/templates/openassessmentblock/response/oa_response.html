@@ -1,6 +1,13 @@
 {% load tz %}
 {% load i18n %}
 {% spaceless %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/codemirror.min.css'  %}">
+<script src="{% static 'js/lib/codemirror/codemirror.min.js' %}"></script>
+<script src="{% static 'js/lib/codemirror/clike.min.js' %}"></script>
+<script src="{% static 'js/lib/codemirror/python.min.js' %}"></script>
+
 {% block list_item %}
 <li class="openassessment__steps__step step--response is--in-progress is--showing ui-slidable__container"
     tabindex="-1">
@@ -80,14 +87,16 @@
 
                                     </div>
 
-                                    <textarea
-                                        id="submission__answer__part__text__{{ xblock_id }}"
-                                        class="submission__answer__part__text__value"
-                                        data-preview="submission"
-                                        aria-labelledby="submission__answer__part__text__title__{{ xblock_id }}"
-                                        aria-describedby="submission__answer__tip__{{ xblock_id }}"
-                                    >{{ saved_response.submission }}</textarea>
-
+                                    <div>
+                                        <br>
+                                        <textarea
+                                            id="submission__answer__part__text__{{ xblock_id }}"
+                                            class="submission__answer__part__text__value"
+                                            data-preview="submission"
+                                            aria-labelledby="submission__answer__part__text__title__{{ xblock_id }}"
+                                            aria-describedby="submission__answer__tip__{{ xblock_id }}"
+                                        >{{ saved_response.submission }}</textarea>
+                                    </div>
                                 </div>
 
                                 {% endif %}

@@ -31,6 +31,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.announceStatus = false;
     this.isRendering = false;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
+    this.codeEditor = null;
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -64,6 +65,8 @@ OpenAssessment.ResponseView.prototype = {
                 // Load the HTML and install event handlers
                 $(stepID, view.element).replaceWith(html);
                 view.server.renderLatex($(stepID, view.element));
+                // Editor should be setup before registering all the handlers
+                view.setupCodeEditor();
                 view.installHandlers();
                 view.setAutoSaveEnabled(false);
                 view.isRendering = false;
@@ -92,10 +95,14 @@ OpenAssessment.ResponseView.prototype = {
         // Install change handler for textarea (to enable submission button)
         this.savedResponse = this.response('load');
         var handleChange = function() {view.handleResponseChanged();};
-        sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
+        var langChange = function(){view.handleLanguageSelectionChanged(); };
+
+        if(view.codeEditor != null) {
+            view.codeEditor.on('change keyup drop paste', handleChange);
+        }
 
         // Adding on change handler for dropdown
-        sel.find('select#submission__answer__language').on('change', handleChange);
+        sel.find('select#submission__answer__language').on('change', langChange);
 
         var handlePrepareUpload = function(eventData) {view.prepareUpload(eventData.target.files, uploadType);};
         sel.find('input[type=file]').on('change', handlePrepareUpload);
@@ -172,6 +179,25 @@ OpenAssessment.ResponseView.prototype = {
 
     createOutputHeader: function(value, width){
         return "<span style='width:" + width + "%; display:inline-block; font: 18px bold;'>"+ value +"</span>"
+    },
+
+    /*
+     Setup code editor in place of textarea
+    */
+    setupCodeEditor: function(){
+    var textArea = this.getPrompts()[0];
+    if(textArea != null){
+        this.codeEditor = window.CodeMirror.fromTextArea(textArea, {
+            lineNumbers: true,
+            showCursorWhenSelecting: true,
+            inputStyle: "contenteditable",
+            smartIndent: true,
+            indentWithTabs: true,
+            indentUnit: 4
+            }
+        );
+        this.codeEditor.setSize(null, 800);
+    }
     },
 
     /*
@@ -431,13 +457,14 @@ OpenAssessment.ResponseView.prototype = {
      array of strings: The current response texts.
      **/
     response: function(action) {
-
-        var sel = $('.response__submission .submission__answer__part__text__value', this.element);
-        var data_list = (sel.map(function() {
-                return $(this).val();
-        }).get());
-
-        return {"submission": data_list[0], "language": this.getLanguage()};
+        var editorValue;
+        if(this.codeEditor != null){
+            editorValue = this.codeEditor.getValue();
+        }
+        else{
+            editorValue = null;
+        }
+        return {"submission": editorValue, "language": this.getLanguage()};
     },
 
     /**
@@ -475,10 +502,29 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
+    Update the code editor language mode based on the selected language.
+    **/
+    handleLanguageSelectionChanged: function(){
+    var language = this.getLanguage();
+
+    if(language == "Python"){
+        this.codeEditor.setOption("mode", {name: "python", version: 3});
+    }
+    else if(language == "Java"){
+        this.codeEditor.setOption("mode", "text/x-java");
+    }
+    else if(language == "C++"){
+        this.codeEditor.setOption("mode", "text/x-c++src");
+    }
+    this.handleResponseChanged();
+
+    },
+    /**
      Enable/disable the submission and save buttons based on whether
      the user has entered a response.
      **/
     handleResponseChanged: function() {
+        this.codeEditor.refresh();
         this.checkSubmissionAbility();
 
         // Update the save button, save status, and "unsaved changes" warning
