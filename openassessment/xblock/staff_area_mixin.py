@@ -12,6 +12,7 @@ import logging
 from submissions.errors import SubmissionNotFoundError
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
+from openassessment.fileupload.api import delete_shared_files_for_user
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
@@ -488,6 +489,9 @@ class StaffAreaMixin:
         submission and individual submissions so that the team can create a new submission.
         """
         student_item_string = "course {} item {} user {}".format(course_id, item_id, user_id)
+
+        # Delete shared files and clear file state
+        delete_shared_files_for_user(user_id, course_id, item_id)
 
         if not submissions:
             logger.warning('Attempted to reset team state for %s but no submission was found', student_item_string)
