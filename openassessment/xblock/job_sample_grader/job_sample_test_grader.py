@@ -55,7 +55,7 @@ class TestGrader:
                 e.start, e.end, e.reason
             ))
         except Exception as exc:
-            return self.response_with_error_v2(exc.message)
+            return self.response_with_error_v2(str(exc))
 
         output = []
         sample_result = self.run_code('sample', language, code_file_name, full_code_file_name, problem_name)
@@ -261,17 +261,4 @@ class TestGrader:
             result = self.compare_outputs(output, expected_output_file, problem_name)
             return result
         except Exception as e:
-            return self.respond_with_error(e.message)
-
-
-if __name__ == '__main__':
-    grader = TestGrader()
-    inp_file = os.path.dirname(__file__) + '/secret_data/tree.py'
-    data = {
-        'problem_name': 'tree',
-        'submission': [
-            open(inp_file, 'r').read()
-        ]
-    }
-    output = grader.grade(data)[0]
-    print(output['output'][1]['correct'])
+            return self.respond_with_error(str(e))
