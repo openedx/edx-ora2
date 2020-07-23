@@ -440,11 +440,11 @@ class PeerWorkflowItem(models.Model):
     assessment represents the completed assessment for this work item.
 
     """
-    scorer = models.ForeignKey(PeerWorkflow, related_name='graded')
-    author = models.ForeignKey(PeerWorkflow, related_name='graded_by')
+    scorer = models.ForeignKey(PeerWorkflow, related_name='graded', on_delete=models.CASCADE)
+    author = models.ForeignKey(PeerWorkflow, related_name='graded_by', on_delete=models.CASCADE)
     submission_uuid = models.CharField(max_length=128, db_index=True)
     started_at = models.DateTimeField(default=now, db_index=True)
-    assessment = models.ForeignKey(Assessment, null=True)
+    assessment = models.ForeignKey(Assessment, null=True, on_delete=models.CASCADE)
 
     # This WorkflowItem was used to determine the final score for the Workflow.
     scored = models.BooleanField(default=False)

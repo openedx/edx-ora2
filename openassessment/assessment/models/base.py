@@ -109,7 +109,7 @@ class Rubric(models.Model):
         rubric_dict.pop("content_hash", None)
 
         canonical_form = json.dumps(rubric_dict, sort_keys=True)
-        return sha1(canonical_form).hexdigest()
+        return sha1(canonical_form.encode('utf-8')).hexdigest()
 
     @staticmethod
     def structure_hash_from_dict(rubric_dict):
@@ -152,7 +152,7 @@ class Criterion(models.Model):
 
     All Rubrics have at least one Criterion.
     """
-    rubric = models.ForeignKey(Rubric, related_name="criteria")
+    rubric = models.ForeignKey(Rubric, related_name="criteria", on_delete=models.CASCADE)
 
     # Backwards compatibility: The "name" field was formerly
     # used both as a display name and as a unique identifier.
@@ -192,7 +192,7 @@ class CriterionOption(models.Model):
     Assessment. That state is stored in :class:`AssessmentPart`.
     """
     # All Criteria must have at least one CriterionOption.
-    criterion = models.ForeignKey(Criterion, related_name="options")
+    criterion = models.ForeignKey(Criterion, related_name="options", on_delete=models.CASCADE)
 
     # 0-based order in Criterion
     order_num = models.PositiveIntegerField()
@@ -417,7 +417,7 @@ class Assessment(models.Model):
     MAX_FEEDBACK_SIZE = 1024 * 100
 
     submission_uuid = models.CharField(max_length=128, db_index=True)
-    rubric = models.ForeignKey(Rubric)
+    rubric = models.ForeignKey(Rubric, on_delete=models.CASCADE)
 
     scored_at = models.DateTimeField(default=now, db_index=True)
     scorer_id = models.CharField(max_length=40, db_index=True)
@@ -613,7 +613,7 @@ class AssessmentPart(models.Model):
     """
     MAX_FEEDBACK_SIZE = 1024 * 100
 
-    assessment = models.ForeignKey(Assessment, related_name='parts')
+    assessment = models.ForeignKey(Assessment, related_name='parts', on_delete=models.CASCADE)
 
     # Assessment parts are usually associated with an option
     # (representing the point value selected for a particular criterion)
@@ -621,8 +621,8 @@ class AssessmentPart(models.Model):
     # only written feedback, with no point value.
     # In this case, the assessment part is associated with a criterion,
     # but not with any option (the `option` field is set to null).
-    criterion = models.ForeignKey(Criterion, related_name="+")
-    option = models.ForeignKey(CriterionOption, null=True, related_name="+")
+    criterion = models.ForeignKey(Criterion, related_name="+", on_delete=models.CASCADE)
+    option = models.ForeignKey(CriterionOption, null=True, related_name="+", on_delete=models.CASCADE)
 
     # Free-form text feedback for the specific criterion
     # Note that the `Assessment` model also has a feedback field,
