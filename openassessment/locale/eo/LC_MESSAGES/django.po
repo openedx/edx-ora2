@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 14:07-0400\n"
+"POT-Creation-Date: 2020-07-22 16:34-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -233,8 +233,8 @@ msgstr ""
 " ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "Select Team Set"
-msgstr "Séléçt Téäm Sét Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+msgid "Select Team-Set"
+msgstr "Séléçt Téäm-Sét Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
@@ -1035,15 +1035,15 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"            This is a team assignment for team set \"%(teamset_name)s\".\n"
-"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
-"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
 "            "
 msgstr ""
 "\n"
-"            Thïs ïs ä téäm ässïgnmént för téäm sét \"%(teamset_name)s\".\n"
-"            Ýöü äré çürréntlý nöt ön ä téäm ïn téäm sét \"%(teamset_name)s\".\n"
-"            Ýöü müst ßé ön ä téäm ïn téäm sét \"%(teamset_name)s\" tö äççéss thïs téäm ässïgnmént.\n"
+"            Thïs ïs ä téäm ässïgnmént för téäm-sét \"%(teamset_name)s\".\n"
+"            Ýöü äré çürréntlý nöt ön ä téäm ïn téäm-sét \"%(teamset_name)s\".\n"
+"            Ýöü müst ßé ön ä téäm ïn téäm-sét \"%(teamset_name)s\" tö äççéss thïs téäm ässïgnmént.\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяι#"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html
