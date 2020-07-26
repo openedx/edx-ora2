@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 14:07-0400\n"
-"PO-Revision-Date: 2020-07-10 18:28+0000\n"
+"POT-Creation-Date: 2020-07-22 17:19-0400\n"
+"PO-Revision-Date: 2020-07-24 18:30+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -31,34 +31,34 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: openassessment/assessment/api/student_training.py:180
+#: openassessment/assessment/api/student_training.py:178
 msgid "Could not parse serialized rubric"
 msgstr "Seri olarak yayınlanmış rubrik ayrıştırılamaz."
 
-#: openassessment/assessment/api/student_training.py:192
+#: openassessment/assessment/api/student_training.py:190
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
 msgstr "Eğer göreviniz öğrenci eğitim basamağı içeriyorsa, rubrik en az bir tane ölçüte sahip olmalıdır, ve bu ölçek en az bir seçeneğe sahip olmalıdır."
 
-#: openassessment/assessment/api/student_training.py:204
+#: openassessment/assessment/api/student_training.py:202
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "Örnek {example_number} 'de bir doğrulama hatası var: {error}"
 
-#: openassessment/assessment/api/student_training.py:218
+#: openassessment/assessment/api/student_training.py:216
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "{example_number} numaralı örnek \"{criterion_name}\" için geçersiz seçeneğe sahip: \"{option_name}\""
 
-#: openassessment/assessment/api/student_training.py:228
+#: openassessment/assessment/api/student_training.py:226
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "{example_number} numaralı örnek \"{criterion_name}\" ekstra seçeneğe sahip."
 
-#: openassessment/assessment/api/student_training.py:241
+#: openassessment/assessment/api/student_training.py:239
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "\"{criterion_name}\" için eksik ayar örnek {example_number}"
@@ -198,7 +198,7 @@ msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:161
-msgid "Select Team Set"
+msgid "Select Team-Set"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
@@ -235,19 +235,19 @@ msgid "Feedback for This Criterion"
 msgstr "Bu Ölçüt için Dönüt"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:54
+#: openassessment/xblock/studio_mixin.py:52
 msgid "None"
 msgstr "Hiçbiri"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:53
+#: openassessment/xblock/studio_mixin.py:51
 msgid "Optional"
 msgstr "İsteğe Bağlı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:91
-#: openassessment/xblock/studio_mixin.py:52
+#: openassessment/xblock/studio_mixin.py:50
 msgid "Required"
 msgstr "Gerekli"
 
@@ -827,9 +827,9 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"            This is a team assignment for team set \"%(teamset_name)s\".\n"
-"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
-"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
 "            "
 msgstr ""
 
@@ -972,7 +972,7 @@ msgstr "Ödevinizi gönderemiyoruz"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:156
+#: openassessment/xblock/staff_assessment_mixin.py:157
 msgid "Cancelled"
 msgstr "İptal Edildi"
 
@@ -1031,8 +1031,8 @@ msgstr "Tüm gönderilen kişi cevapları değerlendirildi. Daha çok öğrencin
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:149
-#: openassessment/xblock/staff_assessment_mixin.py:173
+#: openassessment/xblock/staff_assessment_mixin.py:150
+#: openassessment/xblock/staff_assessment_mixin.py:174
 msgid "Not Available"
 msgstr "Kullanılabilir değil"
 
@@ -1214,8 +1214,8 @@ msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an k
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:163
-#: openassessment/xblock/staff_assessment_mixin.py:186
+#: openassessment/xblock/staff_assessment_mixin.py:164
+#: openassessment/xblock/staff_assessment_mixin.py:187
 msgid "Complete"
 msgstr "Tamamlanmış"
 
@@ -1298,7 +1298,7 @@ msgid ""
 msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an kapalı. Artık kendi değerlendirmenizi tamamlayamaz ya da bu görev ile devam edemezsiniz ve eksik not alacaksınız."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:357
+#: openassessment/xblock/grade_mixin.py:358
 msgid "Staff Grade"
 msgstr "Personel Notu"
 
@@ -1752,104 +1752,104 @@ msgstr "Öğrenci Eğitim Örneklerini Yüklerken Hata"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Öğrenci Eğitim Adımındaki bu görev yüklenemedi."
 
-#: openassessment/xblock/data_conversion.py:267
+#: openassessment/xblock/data_conversion.py:263
 msgid "You must provide options selected in the assessment."
 msgstr "Değerlendirme için gerekli seçenekleri sağlamalısınız."
 
-#: openassessment/xblock/data_conversion.py:270
+#: openassessment/xblock/data_conversion.py:266
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:273
+#: openassessment/xblock/data_conversion.py:269
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:75
-#: openassessment/xblock/leaderboard_mixin.py:59
+#: openassessment/xblock/grade_mixin.py:76
+#: openassessment/xblock/leaderboard_mixin.py:58
 #: openassessment/xblock/self_assessment_mixin.py:42
-#: openassessment/xblock/student_training_mixin.py:60
-#: openassessment/xblock/student_training_mixin.py:267
+#: openassessment/xblock/student_training_mixin.py:56
+#: openassessment/xblock/student_training_mixin.py:263
 msgid "An unexpected error occurred."
 msgstr "Beklenmeyen bir hata oluştu."
 
-#: openassessment/xblock/grade_mixin.py:171
+#: openassessment/xblock/grade_mixin.py:172
 msgid "Peer Assessment"
 msgstr "Akran Değerlendirmesi"
 
-#: openassessment/xblock/grade_mixin.py:173
+#: openassessment/xblock/grade_mixin.py:174
 msgid "Self Assessment"
 msgstr "Öz Değerlendirme"
 
-#: openassessment/xblock/grade_mixin.py:213
+#: openassessment/xblock/grade_mixin.py:214
 msgid "Assessment feedback could not be saved."
 msgstr "Değerlendirme geri bildirimi kaydedilemedi."
 
-#: openassessment/xblock/grade_mixin.py:224
+#: openassessment/xblock/grade_mixin.py:225
 msgid "Feedback saved."
 msgstr "Geri bildiriminiz kaydedildi."
 
-#: openassessment/xblock/grade_mixin.py:358
-#: openassessment/xblock/grade_mixin.py:504
+#: openassessment/xblock/grade_mixin.py:359
+#: openassessment/xblock/grade_mixin.py:505
 msgid "Staff Comments"
 msgstr "Ekip Yorumları"
 
-#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:365
 msgid "Peer Median Grade"
 msgstr "Akran Ortalama Notu"
 
-#: openassessment/xblock/grade_mixin.py:369
-#: openassessment/xblock/grade_mixin.py:511
+#: openassessment/xblock/grade_mixin.py:370
+#: openassessment/xblock/grade_mixin.py:512
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:370
+#: openassessment/xblock/grade_mixin.py:371
 msgid "Peer Comments"
 msgstr "Akran Yorumları"
 
-#: openassessment/xblock/grade_mixin.py:380
+#: openassessment/xblock/grade_mixin.py:381
 msgid "Self Assessment Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:380
+#: openassessment/xblock/grade_mixin.py:381
 msgid "Your Self Assessment"
 msgstr "Öz-değerlendirmeniz"
 
-#: openassessment/xblock/grade_mixin.py:381
-#: openassessment/xblock/grade_mixin.py:523
+#: openassessment/xblock/grade_mixin.py:382
+#: openassessment/xblock/grade_mixin.py:524
 msgid "Your Comments"
 msgstr "Yorumunuz"
 
-#: openassessment/xblock/grade_mixin.py:477
+#: openassessment/xblock/grade_mixin.py:478
 msgid "Waiting for peer reviews"
 msgstr "Akran incelemeleri bekleniyor"
 
-#: openassessment/xblock/grade_mixin.py:516
+#: openassessment/xblock/grade_mixin.py:517
 msgid "Peer"
 msgstr "Kişi"
 
-#: openassessment/xblock/grade_mixin.py:663
+#: openassessment/xblock/grade_mixin.py:648
 msgid "The grade for this problem is determined by your Staff Grade."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:665
+#: openassessment/xblock/grade_mixin.py:650
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:668
+#: openassessment/xblock/grade_mixin.py:653
 msgid "The grade for this problem is determined by your Self Assessment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:679
+#: openassessment/xblock/grade_mixin.py:659
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:686
+#: openassessment/xblock/grade_mixin.py:667
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
@@ -1871,7 +1871,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "Eş-değerlendirmeniz gönderilemedi."
 
 #: openassessment/xblock/peer_assessment_mixin.py:118
-#: openassessment/xblock/student_training_mixin.py:273
+#: openassessment/xblock/student_training_mixin.py:269
 msgid "Could not update workflow status."
 msgstr "İş akışı durumu güncellenemedi."
 
@@ -1892,33 +1892,33 @@ msgstr "Değerlendirmenizi gönderin ve sonraki adıma geçin"
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "Değerlendirmenizi gönderin ve #{response_number} numaralı cevaba geçin"
 
-#: openassessment/xblock/resolve_dates.py:54
+#: openassessment/xblock/resolve_dates.py:52
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "'{date}' geçersiz tarih formatı. Tarih formatının GG-AA-YYYY SA:DK:SN olduğundan emin olun."
 
-#: openassessment/xblock/resolve_dates.py:59
+#: openassessment/xblock/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
 msgstr "'{date}' tarih dizgesi ya da tarih zamanı olmalı"
 
-#: openassessment/xblock/resolve_dates.py:212
+#: openassessment/xblock/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "Bu adımın başlangıç tarihi '{start}', önceki adımın başlangıç tarihinden '{prev}' önce olamaz"
 
-#: openassessment/xblock/resolve_dates.py:220
+#: openassessment/xblock/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "Bu adımın son tarihi '{due}' sonraki adımın son tarihi '{prev}'den sonra olamaz."
 
-#: openassessment/xblock/resolve_dates.py:236
+#: openassessment/xblock/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "Başlangıç tarihi '{start}' son tarih '{due}'den sonra olamaz."
@@ -1998,234 +1998,234 @@ msgid ""
 "allow the team to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:47
+#: openassessment/xblock/staff_assessment_mixin.py:48
 msgid "The submission ID of the submission being assessed was not found."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:74
-#: openassessment/xblock/staff_assessment_mixin.py:81
+#: openassessment/xblock/staff_assessment_mixin.py:75
+#: openassessment/xblock/staff_assessment_mixin.py:82
 msgid "Your staff assessment could not be submitted."
 msgstr "Personel değerlendirmeniz gönderilemedi."
 
-#: openassessment/xblock/staff_assessment_mixin.py:115
-#: openassessment/xblock/staff_assessment_mixin.py:122
+#: openassessment/xblock/staff_assessment_mixin.py:116
+#: openassessment/xblock/staff_assessment_mixin.py:123
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:174
+#: openassessment/xblock/staff_assessment_mixin.py:175
 msgid "Waiting for a Staff Grade"
 msgstr "Personel Notu Bekleniyor"
 
-#: openassessment/xblock/staff_assessment_mixin.py:175
+#: openassessment/xblock/staff_assessment_mixin.py:176
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "Yanıtınızın bir akademik personel tarafından değerlendirip değerlendirmediğini görmek için daha sonra tekrar kontrol edin. Değerlendirmeniz tamamlandığında notunuzu alacaksınız."
 
-#: openassessment/xblock/staff_assessment_mixin.py:188
+#: openassessment/xblock/staff_assessment_mixin.py:189
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "Notunuzu Görmek için Aşağıdaki Adımları Tamamlamanız Gerekiyor"
 
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: openassessment/xblock/staff_assessment_mixin.py:190
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
 "problem."
 msgstr ""
 
-#: openassessment/xblock/student_training_mixin.py:230
+#: openassessment/xblock/student_training_mixin.py:226
 msgid "Missing options_selected key in request"
 msgstr "İstekteki seçilmiş_seçenekler anahtarı kayıp"
 
-#: openassessment/xblock/student_training_mixin.py:232
+#: openassessment/xblock/student_training_mixin.py:228
 msgid "options_selected must be a dictionary"
 msgstr "seçilmiş_seçenekler sözlük olmalıdır"
 
-#: openassessment/xblock/student_training_mixin.py:257
-#: openassessment/xblock/student_training_mixin.py:262
+#: openassessment/xblock/student_training_mixin.py:253
+#: openassessment/xblock/student_training_mixin.py:258
 msgid "Your scores could not be checked."
 msgstr "Sonuçlarınız kontrol edilemedi."
 
-#: openassessment/xblock/studio_mixin.py:195
-#: openassessment/xblock/studio_mixin.py:207
+#: openassessment/xblock/studio_mixin.py:193
+#: openassessment/xblock/studio_mixin.py:205
 msgid "Error updating XBlock configuration"
 msgstr "XBlock yapılandırması güncellenirken hata"
 
-#: openassessment/xblock/studio_mixin.py:210
+#: openassessment/xblock/studio_mixin.py:208
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:213
+#: openassessment/xblock/studio_mixin.py:211
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:216
+#: openassessment/xblock/studio_mixin.py:214
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:240
+#: openassessment/xblock/studio_mixin.py:238
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Doğrulama hatası: {error}"
 
-#: openassessment/xblock/studio_mixin.py:268
+#: openassessment/xblock/studio_mixin.py:266
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock başarıyla yüklendi."
 
-#: openassessment/xblock/submission_mixin.py:94
+#: openassessment/xblock/submission_mixin.py:93
 msgid "\"submission\" required to submit answer."
 msgstr "Cevap göndermek için \"gönderim\" gereklidir."
 
-#: openassessment/xblock/submission_mixin.py:115
+#: openassessment/xblock/submission_mixin.py:114
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Cevap göndermek için, bu bileşeni Ön İzleme ve ya Canlı modda görüntüle."
 
-#: openassessment/xblock/submission_mixin.py:121
+#: openassessment/xblock/submission_mixin.py:120
 msgid "Multiple submissions are not allowed."
 msgstr "Çoklu gönderimlere izin verilmez."
 
-#: openassessment/xblock/submission_mixin.py:165
+#: openassessment/xblock/submission_mixin.py:164
 msgid "API returned unclassified exception."
 msgstr "API sınıflandırılmamiş ayrıcalık döndürdü."
 
-#: openassessment/xblock/submission_mixin.py:216
+#: openassessment/xblock/submission_mixin.py:215
 msgid "This response could not be saved."
 msgstr "Bu cevap kaydedilemedi."
 
-#: openassessment/xblock/submission_mixin.py:220
+#: openassessment/xblock/submission_mixin.py:219
 msgid "This response was not submitted."
 msgstr "Bu cevap gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:236
+#: openassessment/xblock/submission_mixin.py:235
 msgid "Files descriptions were not submitted."
 msgstr "Dosya açıklamaları gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:273
+#: openassessment/xblock/submission_mixin.py:272
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:395
+#: openassessment/xblock/submission_mixin.py:394
 msgid "There was an error uploading your file."
 msgstr "Dosyanızı yüklerken hata oluştu."
 
-#: openassessment/xblock/submission_mixin.py:404
+#: openassessment/xblock/submission_mixin.py:403
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "İçerik tipi, GIF, PNG veya JPG olmalıdır. "
 
-#: openassessment/xblock/submission_mixin.py:407
+#: openassessment/xblock/submission_mixin.py:406
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "İçerik tipi PDF, GIF, PNG veya JPG olmalıdır. "
 
-#: openassessment/xblock/submission_mixin.py:410
+#: openassessment/xblock/submission_mixin.py:409
 msgid "File type must be one of the following types: {}"
 msgstr "Dosya tipi şunlardan biri olmalıdır: {}"
 
-#: openassessment/xblock/submission_mixin.py:414
+#: openassessment/xblock/submission_mixin.py:413
 msgid "File type is not allowed."
 msgstr "Dosya türüne izin verilmiyor."
 
-#: openassessment/xblock/submission_mixin.py:421
+#: openassessment/xblock/submission_mixin.py:420
 msgid "Error retrieving upload URL."
 msgstr "URL yükleme alırken hata"
 
-#: openassessment/xblock/submission_mixin.py:653
+#: openassessment/xblock/submission_mixin.py:652
 msgid "This response has been saved but not submitted."
 msgstr "Bu cevap kaydedildi, ancak gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:654
+#: openassessment/xblock/submission_mixin.py:653
 msgid "This response has not been saved."
 msgstr "Bu cevap kaydedilmedi."
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:117
 msgid "This problem must include at least one assessment."
 msgstr "Bu sorun en azından bir değelendirme içermelidir."
 
-#: openassessment/xblock/validation.py:125
+#: openassessment/xblock/validation.py:121
 msgid "The assessment order you selected is invalid."
 msgstr "Seçtiğiniz değerlendirme sırası geçersiz."
 
-#: openassessment/xblock/validation.py:135
+#: openassessment/xblock/validation.py:131
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Eş değerlendirmede, \"Puanlandırılmalı\" değeri pozitif tam sayı olmalıdır."
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:134
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Eş değerlendirmede, \"Puanlandıran\" değeri pozitif tam sayı olmalıdır."
 
-#: openassessment/xblock/validation.py:142
+#: openassessment/xblock/validation.py:138
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Eş değerlendirmede, \"Puanlandırılmalı\" değeri \"Puanlandırılan\" değerinden büyük ya da eşit olmalıdır."
 
-#: openassessment/xblock/validation.py:151
+#: openassessment/xblock/validation.py:147
 msgid "You must provide at least one example response for learner training."
 msgstr "Öğrenci eğitimi için en az bir örnek cevap sağlamalısınız."
 
-#: openassessment/xblock/validation.py:154
+#: openassessment/xblock/validation.py:150
 msgid "Each example response for learner training must be unique."
 msgstr "Öğrenci eğitimi için olan her örnek cevap eşsiz olmalıdır."
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:157
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 
-#: openassessment/xblock/validation.py:165
+#: openassessment/xblock/validation.py:161
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Problem yayımlandıktan sonra değerlendirme sayısı değiştirilemez. "
 
-#: openassessment/xblock/validation.py:170
+#: openassessment/xblock/validation.py:166
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Problem yayımlandıktan sonra değerlendirme tipi değiştirilemez."
 
-#: openassessment/xblock/validation.py:193
+#: openassessment/xblock/validation.py:189
 msgid "This rubric definition is not valid."
 msgstr "Bu rubrik tanımı geçerli değil."
 
-#: openassessment/xblock/validation.py:199
+#: openassessment/xblock/validation.py:195
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "'{criterion}'daki seçenekler yinelenen isim(ler)e sahip: {duplicates}"
 
-#: openassessment/xblock/validation.py:207
+#: openassessment/xblock/validation.py:203
 msgid "Criteria with no options must require written feedback."
 msgstr "Seçenekleri olmayan kriterler yazılı geri bildirim gerektirir."
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:212
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Problem yayımlandıktan sonra komutlar oluşturulamaz ve silinemez."
 
-#: openassessment/xblock/validation.py:220
+#: openassessment/xblock/validation.py:216
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Problem yayımlandıktan sonra kriter sayısı değiştirilemez."
 
-#: openassessment/xblock/validation.py:233
+#: openassessment/xblock/validation.py:229
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Problem yayımlandıktan sonra kriter isimleri değiştirilemez."
 
-#: openassessment/xblock/validation.py:238
+#: openassessment/xblock/validation.py:234
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Problem yayımlandıktan sonra seçeneklerin sayısı değiştirilemez."
 
-#: openassessment/xblock/validation.py:243
+#: openassessment/xblock/validation.py:239
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Problem yayımlandıktan sonra nokta değerleri değiştirilemez."
 
-#: openassessment/xblock/validation.py:294
+#: openassessment/xblock/validation.py:290
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:359
+#: openassessment/xblock/validation.py:355
 msgid "Leaderboard number is invalid."
 msgstr "Afiş sayısı geçersiz."
 
-#: openassessment/xblock/validation.py:382
+#: openassessment/xblock/validation.py:378
 msgid "The submission format is invalid."
 msgstr "Gönderi formatı geçersiz."
