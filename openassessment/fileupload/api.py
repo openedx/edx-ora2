@@ -113,6 +113,17 @@ def delete_shared_files_for_user(student_id, course_id, item_id):
         upload.delete()
 
 
+def delete_shared_files_for_team(course_id, item_id, team_id):
+    """
+    Delete shared files for a team for this block
+    """
+    uploads = SharedFileUpload.by_team_course_item(team_id, course_id, item_id)
+
+    for upload in uploads:
+        remove_file(upload.file_key)
+        upload.delete()
+
+
 def _safe_load_json_list(field, log_error=False):
     """
     Tries to load JSON-ified string,

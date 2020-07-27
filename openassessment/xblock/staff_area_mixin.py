@@ -12,7 +12,7 @@ import logging
 from submissions.errors import SubmissionNotFoundError
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
-from openassessment.fileupload.api import delete_shared_files_for_user
+from openassessment.fileupload.api import delete_shared_files_for_team
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
@@ -490,9 +490,6 @@ class StaffAreaMixin:
         """
         student_item_string = "course {} item {} user {}".format(course_id, item_id, user_id)
 
-        # Delete shared files and clear file state
-        delete_shared_files_for_user(user_id, course_id, item_id)
-
         if not submissions:
             logger.warning('Attempted to reset team state for %s but no submission was found', student_item_string)
             return
@@ -514,9 +511,15 @@ class StaffAreaMixin:
             "Student and team state cleared",
             requesting_user_id
         )
+
         # Tell the submissions API to orphan the submissions to prevent them from being accessed
         from submissions import team_api as team_submissions_api
         team_submissions_api.reset_scores(team_submission_uuid, clear_state=True)
+
+        # Clean up shared files for the team
+        team_id = team_submissions_api.get_team_submission(team_submission_uuid).get('team_id', None)
+        if team_id:
+            delete_shared_files_for_team(course_id, item_id, team_id)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)
