@@ -142,7 +142,7 @@ OpenAssessment.ResponseView.prototype = {
         sel.find('#team_text_response_warning_closebtn').click(
             function(eventObject) {
                 eventObject.preventDefault();
-                sel.find('#team_text_response_warning').remove()
+                sel.find('#team_text_response_warning').remove();
             }
         );
     },
