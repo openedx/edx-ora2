@@ -518,8 +518,7 @@ class StaffAreaMixin:
 
         # Clean up shared files for the team
         team_id = team_submissions_api.get_team_submission(team_submission_uuid).get('team_id', None)
-        if team_id:
-            delete_shared_files_for_team(course_id, item_id, team_id)
+        delete_shared_files_for_team(course_id, item_id, team_id)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)

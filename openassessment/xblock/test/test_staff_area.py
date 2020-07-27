@@ -932,7 +932,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @patch('openassessment.xblock.staff_area_mixin.delete_shared_files_for_team')
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_delete_team_state_clears_team_files(self, xblock, delete_files_patch):
+    def test_staff_clear_team_state_with_submission_clears_files(self, xblock, delete_files_patch):
         # Given we are staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, 'Bob'
@@ -946,6 +946,23 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Then we delete files for the team
         delete_files_patch.assert_called_with(STUDENT_ITEM['course_id'], xblock.scope_ids.usage_id, MOCK_TEAM_ID)
+
+    @patch('openassessment.xblock.staff_area_mixin.delete_shared_files_for_team')
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_clear_team_state_without_submission(self, xblock, delete_files_patch):
+        # Given we are staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, 'Bob'
+        )
+
+        # ... on a team ORA w/out a team submission
+        xblock.is_team_assignment = Mock(return_value=True)
+
+        # When we clear team state
+        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, STUDENT_ITEM['student_id'])
+
+        # We don't know team info, so don't clear files
+        delete_files_patch.assert_not_called()
 
     def _parse_workflow_status_counts(self, status_counts):
         """ Helper to transform status counts from a list of dicts to a single dict """
