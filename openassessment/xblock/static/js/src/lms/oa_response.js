@@ -137,6 +137,14 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install click handlers for delete file buttons.
         sel.find('.delete__uploaded__file').click(this.handleDeleteFileClick());
+
+        // Install a click handler to close the text response warning
+        sel.find('#team_text_response_warning_closebtn').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                sel.find('#team_text_response_warning').remove();
+            }
+        );
     },
 
     handleDeleteFileClick: function() {

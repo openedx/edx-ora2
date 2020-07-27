@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-22 16:34-0400\n"
+"POT-Creation-Date: 2020-07-27 09:29-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1423,6 +1423,29 @@ msgstr ""
 "¢σηѕє¢тєтυя#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Close"
+msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid ""
+"\n"
+"                                        The text response of the first learner on your team who presses the submit button will be recorded\n"
+"                                        as the text submission for the entire team, and all files uploaded by all team members at that\n"
+"                                        point will also be included in the team submission.\n"
+"                                        After the learner submits a response for your team, it cannot be edited.\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        Thé téxt réspönsé öf thé fïrst léärnér ön ýöür téäm whö préssés thé süßmït ßüttön wïll ßé réçördéd\n"
+"                                        äs thé téxt süßmïssïön för thé éntïré téäm, änd äll fïlés üplöädéd ßý äll téäm mémßérs ät thät\n"
+"                                        pöïnt wïll älsö ßé ïnçlüdéd ïn thé téäm süßmïssïön.\n"
+"                                        Àftér thé léärnér süßmïts ä réspönsé för ýöür téäm, ït çännöt ßé édïtéd.\n"
+"                                    #"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "You are on team "
 msgstr "Ýöü äré ön téäm  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
@@ -1673,12 +1696,6 @@ msgstr "Mänägé Téäm Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "View Assignment Statistics"
 msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
-msgid "Close"
-msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "Manage Teams"
