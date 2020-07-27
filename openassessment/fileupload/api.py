@@ -102,17 +102,6 @@ def can_delete_file(current_user_id, teams_enabled, key, team_id=None, shared_fi
     return True
 
 
-def delete_shared_files_for_user(student_id, course_id, item_id):
-    """
-    Delete shared files for a user for this block
-    """
-    uploads = SharedFileUpload.by_student_course_item(student_id, course_id, item_id)
-
-    for upload in uploads:
-        remove_file(upload.file_key)
-        upload.delete()
-
-
 def delete_shared_files_for_team(course_id, item_id, team_id):
     """
     Delete shared files for a team for this block
