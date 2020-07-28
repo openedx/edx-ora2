@@ -38,7 +38,7 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from webob import Response
 from xblock.core import XBlock
 from xblock.fields import Boolean, Integer, List, Scope, String
-from xblock.fragment import Fragment
+from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)
 
