@@ -579,7 +579,8 @@ class SubmissionMixin:
         """
         return file_upload_api.get_student_file_key(self.get_student_item_dict(), index=num)
 
-    def _get_url_by_file_key(self, key):
+    @classmethod
+    def _get_url_by_file_key(cls, key):
         """
         Return download url for some particular file key.
 
@@ -596,7 +597,8 @@ class SubmissionMixin:
 
         return url
 
-    def get_download_urls_from_submission(self, submission):
+    @classmethod
+    def get_download_urls_from_submission(cls, submission):
         """
         Returns a download URLs for retrieving content within a submission.
 
@@ -615,7 +617,7 @@ class SubmissionMixin:
         raw_answer = submission.get('answer')
         answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
         for file_upload in answer.get_file_uploads(missing_blank=True):
-            file_download_url = self._get_url_by_file_key(file_upload.key)
+            file_download_url = cls._get_url_by_file_key(file_upload.key)
             if file_download_url:
                 urls.append(
                     file_upload_api.FileDescriptor(

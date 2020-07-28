@@ -669,3 +669,57 @@ class GradeMixin:
                 )
 
         return "{} {}".format(first_sentence, second_sentence).strip()
+
+    def generate_report_data(self, user_state_iterator, limit_responses=None):
+        """
+        Return a list of student responses and assessments for this block in a readable way.
+
+        Arguments:
+            user_state_iterator: iterator over UserStateClient objects.
+                E.g. the result of user_state_client.iter_all_for_block(block_key)
+            limit_responses (int|None): maximum number of responses to include.
+                Set to None (default) to include all.
+        Returns:
+            each call yields a tuple like:
+                ("my_username", {
+                    'Submission ID': 'c6551...',
+                    'Item ID': 5,
+                    'Anonymized Student ID': 'c801..',
+                    'Assessment ID': 4,
+                    'Assessment Scored Date': '2020-02-01',
+                    'Assessment Scored Time': '10:03:07.218280+00:00',
+                    'Assessment Type': 'PE',
+                    'Anonymous Scorer Id': '6e9a...',
+                    'Criterion 1: Ideas": 'Poor',
+                    'Points 1': 0,
+                    'Median Score 1': 0,
+                    'Feedback 1': 'Does not answer the question.',
+                    'Criterion 2: Content": 'Excellent',
+                    'Points 2': 3,
+                    'Median Score 2': 3.0,
+                    'Feedback 2': 'Well described.',
+                    'Criteria Count': 'Well described.',
+                    'Overall Feedback': 'try again',
+                    'Date/Time Final Score Given': 2020-02-01 10:03:07.218280+00:00',,
+                    'Final Score Points Earned': 1,
+                    'Final Score Points Possible': 5,
+                    'Feedback Statements Selected': "",
+                    'Feedback on Assessment': "",
+                    'Response files': 'http://lms.url/...',
+                    'Response': '{"file_descriptions"...}',
+                    'Assessment scored At': 2020-02-01 10:03:07.218280+00:00',,
+                })
+        """
+        from openassessment.data import OraAggregateData
+
+        xblock_id = self.get_xblock_id()
+        num_rows = 0
+        for user_state in user_state_iterator:
+            submission_uuid = user_state.state.get('submission_uuid')
+            for row in OraAggregateData.generate_assessment_data(xblock_id, submission_uuid):
+                num_rows += 1
+                yield (user_state.username, row)
+
+            if limit_responses is not None and num_rows >= limit_responses:
+                # End the iterator here
+                break

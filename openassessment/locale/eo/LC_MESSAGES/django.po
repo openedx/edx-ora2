@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 16:13-0500\n"
+"POT-Creation-Date: 2021-03-01 01:07-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -66,6 +66,95 @@ msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 "Éxämplé {example_number} ïs mïssïng än öptïön för \"{criterion_name}\" "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/data.py
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr "Çrïtérïön {number}: {label} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/data.py
+#, python-brace-format
+msgid "Points {number}"
+msgstr "Pöïnts {number} Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: openassessment/data.py
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr "Médïän Sçöré {number} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/data.py
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr "Féédßäçk {number} Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/data.py
+msgid "Item ID"
+msgstr "Ìtém ÌD Ⱡ'σяєм ιρѕυм #"
+
+#: openassessment/data.py
+msgid "Submission ID"
+msgstr "Süßmïssïön ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/data.py
+msgid "Anonymized Student ID"
+msgstr "Ànönýmïzéd Stüdént ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/data.py
+msgid "Assessment ID"
+msgstr "Àsséssmént ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/data.py
+msgid "Assessment Scored Date"
+msgstr "Àsséssmént Sçöréd Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/data.py
+msgid "Assessment Scored Time"
+msgstr "Àsséssmént Sçöréd Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/data.py
+msgid "Assessment Type"
+msgstr "Àsséssmént Týpé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/data.py
+msgid "Anonymous Scorer Id"
+msgstr "Ànönýmöüs Sçörér Ìd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: openassessment/data.py
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+msgid "Overall Feedback"
+msgstr "Övéräll Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/data.py
+msgid "Assessment Score Earned"
+msgstr "Àsséssmént Sçöré Éärnéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: openassessment/data.py
+msgid "Assessment Scored At"
+msgstr "Àsséssmént Sçöréd Àt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/data.py
+msgid "Date/Time Final Score Given"
+msgstr "Däté/Tïmé Fïnäl Sçöré Gïvén Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: openassessment/data.py
+msgid "Final Score Earned"
+msgstr "Fïnäl Sçöré Éärnéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/data.py
+msgid "Final Score Possible"
+msgstr "Fïnäl Sçöré Pössïßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/data.py
+msgid "Feedback Statements Selected"
+msgstr "Féédßäçk Stätéménts Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: openassessment/data.py
+msgid "Feedback on Assessment"
+msgstr "Féédßäçk ön Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/data.py
+msgid "Response Files"
+msgstr "Réspönsé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: openassessment/data.py
 msgid "No description provided."
@@ -2468,10 +2557,6 @@ msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
 msgid "Points Possible"
 msgstr "Pöïnts Pössïßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
-msgid "Overall Feedback"
-msgstr "Övéräll Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Learn to Assess Responses"
