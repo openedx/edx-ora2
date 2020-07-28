@@ -24,7 +24,7 @@ from openassessment.xblock.validation import validator
 from voluptuous import MultipleInvalid
 from xblock.core import XBlock
 from xblock.fields import List, Scope
-from xblock.fragment import Fragment
+from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)
 
