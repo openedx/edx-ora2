@@ -197,11 +197,18 @@ def update_from_assessments(submission_uuid, assessment_requirements, override_s
             relationship between submissions and workflows, so this uniquely
             identifies the `AssessmentWorkflow`.
         assessment_requirements (dict): Dictionary that currently looks like:
-            `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+            `{"peer": {
+                 "must_grade": <int>,
+                 "must_be_graded_by": <int>,
+                 "enable_flexible_grading": <bool>
+            }}`
             `must_grade` is the number of assessments a student must complete.
             `must_be_graded_by` is the number of assessments a submission must
             receive to be scored. `must_grade` should be greater than
             `must_be_graded_by` to ensure that everyone will get scored.
+            `enable_flexible_grading` loosens the number of required peer
+            assessments to `floor(0.7 * must_be_graded_by)` in case the
+            submission is more than 7 days old
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
         override_submitter_requirements (bool): If True, the presence of a new

@@ -571,6 +571,13 @@ def parse_assessments_xml(assessments_root):
             except ValueError:
                 raise UpdateFromXmlError('The "must_be_graded_by" value must be a positive integer.')
 
+        # Assessment enable_flexible_grading
+        if 'enable_flexible_grading' in assessment.attrib:
+            try:
+                assessment_dict['enable_flexible_grading'] = _parse_boolean(assessment.get('enable_flexible_grading'))
+            except ValueError:
+                raise UpdateFromXmlError('The "enable_flexible_grading" value must be a boolean.')
+
         # Assessment required
         if 'required' in assessment.attrib:
 
@@ -662,6 +669,9 @@ def serialize_assessments(assessments_root, oa_block):
 
         if 'must_be_graded_by' in assessment_dict:
             assessment.set('must_be_graded_by', str(assessment_dict['must_be_graded_by']))
+
+        if 'enable_flexible_grading' in assessment_dict:
+            assessment.set('enable_flexible_grading', str(assessment_dict['enable_flexible_grading']))
 
         if assessment_dict.get('start') is not None:
             assessment.set('start', str(assessment_dict['start']))
