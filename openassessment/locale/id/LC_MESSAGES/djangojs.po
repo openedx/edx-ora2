@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-22 17:19-0400\n"
+"POT-Creation-Date: 2020-07-27 09:29-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Indonesian (http://www.transifex.com/open-edx/edx-platform/language/id/)\n"
@@ -227,94 +227,94 @@ msgid ""
 msgstr "Jika Anda meninggalkan halaman ini tanpa mengirimkan penilaian sebaya Anda, Anda akan kehilangan pekerjaan yang Anda lakukan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:310
+#: openassessment/xblock/static/js/src/lms/oa_response.js:318
 msgid "Your file "
 msgstr "Berkas Anda"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:334
+#: openassessment/xblock/static/js/src/lms/oa_response.js:342
 msgid "Status of Your Response"
 msgstr "Status respon Anda"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:408
+#: openassessment/xblock/static/js/src/lms/oa_response.js:416
 msgid "This response has not been saved."
 msgstr "Respon belum disimpan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:413
+#: openassessment/xblock/static/js/src/lms/oa_response.js:421
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "Jika Anda meninggalkan halaman ini tanpa menyimpan atau mengirim tanggapan Anda, Anda akan kehilangan semua pekerjaan yang Anda buat pada tanggapan Anda."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:431
+#: openassessment/xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving..."
 msgstr "Sedang menyimpan ..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:453
+#: openassessment/xblock/static/js/src/lms/oa_response.js:461
 msgid "This response has been saved but not submitted."
 msgstr "Respon ini akan disimpan namun tidak dikirimkan."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:458
+#: openassessment/xblock/static/js/src/lms/oa_response.js:466
 msgid "Error"
 msgstr "Kesalahan"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:484
+#: openassessment/xblock/static/js/src/lms/oa_response.js:492
 msgid "Do you want to upload your file before submitting?"
 msgstr "Apakah Anda ingin mengunggah berkas Anda sebelum mengirimkan?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:560
+#: openassessment/xblock/static/js/src/lms/oa_response.js:568
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Anda akan mengirimkan tanggapan Anda untuk tugas ini. Setelah Anda mengirimkan tanggapan ini, Anda tidak dapat mengubah atau menyampaikan tanggapan baru."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:597
+#: openassessment/xblock/static/js/src/lms/oa_response.js:605
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:607
-#: openassessment/xblock/static/js/src/lms/oa_response.js:614
-#: openassessment/xblock/static/js/src/lms/oa_response.js:621
+#: openassessment/xblock/static/js/src/lms/oa_response.js:615
+#: openassessment/xblock/static/js/src/lms/oa_response.js:622
+#: openassessment/xblock/static/js/src/lms/oa_response.js:629
 msgid "You can upload files with these file types: "
 msgstr "Anda dapat mengunggah berkas dengan jenis sebagai berikut:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:629
+#: openassessment/xblock/static/js/src/lms/oa_response.js:637
 msgid "File type is not allowed."
 msgstr "Jenis berkas ini tidak diperkenankan"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:637
+#: openassessment/xblock/static/js/src/lms/oa_response.js:645
 msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:683
-#: openassessment/xblock/static/js/src/lms/oa_response.js:689
+#: openassessment/xblock/static/js/src/lms/oa_response.js:691
+#: openassessment/xblock/static/js/src/lms/oa_response.js:697
 msgid "Describe "
 msgstr "Deskripsikan"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:683
+#: openassessment/xblock/static/js/src/lms/oa_response.js:691
 msgid "(required):"
 msgstr "(wajib diisi):"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:703
+#: openassessment/xblock/static/js/src/lms/oa_response.js:711
 msgid "Thumbnail view of "
 msgstr "Tampilan thumbnail dari"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:803
+#: openassessment/xblock/static/js/src/lms/oa_response.js:811
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
