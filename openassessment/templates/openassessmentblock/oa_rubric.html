@@ -51,7 +51,7 @@
                                 data-preview="criteria__{{ criterion.name }}"
                                 data-criterion-name="{{ criterion.name }}"
                                 aria-describedby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"
-                                maxlength="1000"
+                                maxlength="10000"
                                 {% if criterion.feedback == 'required' %}required{% endif %}
                                 >
                             </textarea>
@@ -74,7 +74,7 @@
                     id="{{ rubric_type }}__assessment__rubric__question--feedback__value__{{ xblock_id }}"
                     data-preview="feedback"
                     placeholder="{{ rubric_feedback_default_text }}"
-                    maxlength="1000"
+                    maxlength="10000"
                 >
                 </textarea>
                 {% include "openassessmentblock/oa_latex_preview.html" with id="feedback__"|add:rubric_type elem="div" preview_name="feedback" submit_enabled=True %}
