@@ -1058,7 +1058,7 @@ msgstr "Вы можете сохранить свою работу и завер
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:66
 msgid "After you submit your response, you cannot edit it"
-msgstr "После того, как вы отправите свой ответ на проверку, вы не сможете его изменить."
+msgstr "После того как вы отправите свой ответ на проверку, вы не сможете его изменить"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:75
 msgid "The prompt for this section"
