@@ -19,6 +19,7 @@ from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import staff as staff_api
+from openassessment.assessment.api import teams as teams_api
 from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.tests.factories import UserFactory
 from openassessment.workflow import api as workflow_api
@@ -714,6 +715,30 @@ class TestCourseStaff(XBlockHandlerTestCase):
         status_counts = self._parse_workflow_status_counts(status_counts)
         self.assertEqual(status_counts['cancelled'], 1)
 
+    @scenario('data/team_submission.xml', user_id='StaffMember')
+    def test_staff_area_team_assignment_staff_assessment_with_no_final_grade(self, xblock):
+        """
+        If a user has a staff assessment, they should also have a final grade.
+        """
+        # Set up team assignment and submission
+        team_submission = self._setup_xblock_and_create_submission(
+            xblock,
+            anonymous_user_id='StaffMember',
+            team=True,
+            has_team=False
+        )
+        teams_api.create_assessment(
+            team_submission['team_submission_uuid'],
+            "StaffMember",
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            "Team assignment complete!!!!!",
+            {'criteria': xblock.rubric_criteria},
+        )
+        _, context = xblock.get_student_info_path_and_context('Bob')
+        self.assertIsNotNone(context['staff_assessment'])
+        self.assertIsNone(context['score'])
+
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
     def test_staff_assessment_counts(self, xblock):
         """
@@ -1086,7 +1111,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         mock_runtime = Mock(
             course_id='test_course',
             item_id=item_id,
-            anonymous_student_id='Bob',
+            anonymous_student_id=anonymous_user_id,
             user_is_staff=is_staff,
             user_is_admin=is_admin,
             user_is_beta=user_is_beta,
@@ -1164,18 +1189,18 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 context['staff_file_urls']
             )
 
-    def _setup_xblock_and_create_submission(self, xblock, team=False, **kwargs):
+    def _setup_xblock_and_create_submission(self, xblock, anonymous_user_id='Bob', team=False, has_team=True, **kwargs):
         """
         A shortcut method to setup ORA xblock and add a user submission or a team submission to the block.
         """
         xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, 'Bob'
+            xblock.scope_ids.usage_id, True, False, anonymous_user_id
         )
         # pylint: disable=protected-access
         xblock.runtime._services['user'] = NullUserService()
         xblock.runtime._services['user_state'] = UserStateService()
         if team:
-            xblock.runtime._services['teams'] = MockTeamsService(True)
+            xblock.runtime._services['teams'] = MockTeamsService(has_team)
 
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
@@ -1194,7 +1219,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 MOCK_TEAM_ID,
                 arbitrary_test_user.id,
                 anonymous_user_ids_for_team,
-                "this is an answer to a team assignment",
+                {'parts': [{'text': 'This is a team response'}]}
             )
         else:
             return self._create_submission(student_item, {
