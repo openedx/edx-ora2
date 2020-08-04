@@ -126,7 +126,11 @@ class WorkflowMixin:
             AssessmentWorkflowError
         """
         if self.is_team_assignment():
-            return self.get_team_workflow_info()
+            if submission_uuid:
+                team_submission_uuid = self.get_team_submission_uuid_from_individual_submission_uuid(submission_uuid)
+            else:
+                team_submission_uuid = None
+            return self.get_team_workflow_info(team_submission_uuid)
 
         if submission_uuid is None:
             submission_uuid = self.get_submission_uuid()

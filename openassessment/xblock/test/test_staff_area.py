@@ -716,28 +716,36 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(status_counts['cancelled'], 1)
 
     @scenario('data/team_submission.xml', user_id='StaffMember')
-    def test_staff_area_team_assignment_staff_assessment_with_no_final_grade(self, xblock):
+    def test_staff_area__team_assignment__staff_assessment_with_final_grade(self, xblock):
         """
         If a user has a staff assessment, they should also have a final grade.
         """
-        # Set up team assignment and submission
+        # Set up team assignment and submission. StaffMember is not on any team.
         team_submission = self._setup_xblock_and_create_submission(
             xblock,
             anonymous_user_id='StaffMember',
             team=True,
             has_team=False
         )
+        # Assess team submission
+        feedback = "Team assignment complete!!!!!"
         teams_api.create_assessment(
             team_submission['team_submission_uuid'],
             "StaffMember",
             ASSESSMENT_DICT['options_selected'],
             ASSESSMENT_DICT['criterion_feedback'],
-            "Team assignment complete!!!!!",
+            feedback,
             {'criteria': xblock.rubric_criteria},
         )
         _, context = xblock.get_student_info_path_and_context('Bob')
+
+        # Context should contain score and staff assessment
         self.assertIsNotNone(context['staff_assessment'])
-        self.assertIsNone(context['score'])
+        assessment = context['staff_assessment'][0]
+        self.assertEqual(assessment['scorer_id'], 'StaffMember')
+        self.assertEqual(assessment['feedback'], feedback)
+        self.assertIsNotNone(context['score'])
+        self.assertEqual(context['score']['annotations'][0]['creator'], 'StaffMember')
 
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
     def test_staff_assessment_counts(self, xblock):
