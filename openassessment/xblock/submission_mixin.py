@@ -684,7 +684,7 @@ class SubmissionMixin:
             and `context` (dict) is the template context.
 
         """
-        workflow = self.get_workflow_info()
+        workflow = self.get_team_workflow_info() if self.teams_enabled else self.get_workflow_info()
         problem_closed, reason, start_date, due_date = self.is_closed('submission')
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
@@ -766,7 +766,12 @@ class SubmissionMixin:
             context['submit_enabled'] = submit_enabled
             path = "openassessmentblock/response/oa_response.html"
         elif workflow["status"] == "cancelled":
-            context["workflow_cancellation"] = self.get_workflow_cancellation_info(self.submission_uuid)
+            if self.teams_enabled:
+                context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
+                    workflow["team_submission_uuid"])
+            else:
+                context["workflow_cancellation"] = self.get_workflow_cancellation_info(
+                    self.submission_uuid)
             context["student_submission"] = self.get_user_submission(
                 workflow["submission_uuid"]
             )

@@ -3,6 +3,8 @@
 Test submission to the OpenAssessment XBlock.
 """
 
+import logging
+
 import datetime as dt
 import json
 
@@ -15,19 +17,65 @@ import boto
 from boto.s3.key import Key
 from moto import mock_s3_deprecated
 from django.contrib.auth import get_user_model
-from submissions import api as sub_api
+from submissions import (
+    api as sub_api,
+    team_api as team_sub_api
+)
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 from submissions.models import TeamSubmission
 from openassessment.fileupload import api
-from openassessment.workflow import api as workflow_api
+from openassessment.tests.factories import UserFactory
+from openassessment.workflow import (
+    api as workflow_api,
+    team_api as team_workflow_api
+)
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 
+from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME, MOCK_TEAM_ID
+
 from .base import XBlockHandlerTestCase, scenario
+from .test_staff_area import NullUserService, UserStateService, STUDENT_ITEM
 
 
-class SubmissionTest(XBlockHandlerTestCase):
+class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
+    @staticmethod
+    def setup_mock_team(xblock):
+        """ Enable teams and configure a mock team to be returned from the teams service
+
+            Returns:
+                the mock team for use in test validation
+        """
+
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='r5'
+        )
+
+        mock_team = {
+            'team_id': MOCK_TEAM_ID,
+            'team_name': 'Red Squadron',
+            'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
+            'team_url': 'rebel_alliance.org'
+        }
+
+        xblock.teams_enabled = True
+        xblock.team_submissions_enabled = True
+
+        xblock.has_team = Mock(return_value=True)
+        xblock.get_team_info = Mock(return_value=mock_team)
+        xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
+        password = 'password'
+        user = get_user_model().objects.create_user(username='Red Five', password=password)
+        xblock.get_real_user = Mock(return_value=user)
+
+        return mock_team
+
+
+class SubmissionTest(SubmissionXBlockHandlerTestCase):
     """ Test Submissions Api for Open Assessments. """
     SUBMISSION = json.dumps({
         "submission": ["This is my answer to the first prompt!", "This is my answer to the second prompt!"]
@@ -356,38 +404,6 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = json.loads(resp.decode('utf-8'))
         self.assertEqual(resp['username'], 'UserName1')
 
-    @staticmethod
-    def setup_mock_team(xblock):
-        """ Enable teams and configure a mock team to be returned from the teams service
-
-            Returns:
-                the mock team for use in test validation
-        """
-
-        xblock.xmodule_runtime = Mock(
-            course_id='test_course',
-            anonymous_student_id='r5'
-        )
-
-        mock_team = {
-            'team_id': 'rs-04',
-            'team_name': 'Red Squadron',
-            'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
-            'team_url': 'rebel_alliance.org'
-        }
-
-        xblock.teams_enabled = True
-        xblock.team_submissions_enabled = True
-
-        xblock.has_team = Mock(return_value=True)
-        xblock.get_team_info = Mock(return_value=mock_team)
-        xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
-        password = 'password'
-        user = get_user_model().objects.create_user(username='Red Five', password=password)
-        xblock.get_real_user = Mock(return_value=user)
-
-        return mock_team
-
     @scenario('data/basic_scenario.xml', user_id='Red Five')
     def test_team_submission(self, xblock):
         """ If teams are enabled, a submission by any member should submit for each member of the team """
@@ -537,7 +553,7 @@ class SubmissionTest(XBlockHandlerTestCase):
             mock_download_url.assert_has_calls([call('key-1')])
 
 
-class SubmissionRenderTest(XBlockHandlerTestCase):
+class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     """
     Test rendering of the submission step.
     To cover all states in a maintainable way, we mostly check the
@@ -1018,8 +1034,73 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'workflow_cancellation': {
                     'comments': 'Inappropriate language',
-                    'cancelled_at': xblock.get_workflow_cancellation_info(submission['uuid']).get('cancelled_at'),
+                    'cancelled_at': xblock.get_workflow_cancellation_info(
+                        submission['uuid']).get('cancelled_at'),
                     'cancelled_by_id': 'Bob',
+                    'cancelled_by': mock_staff
+                },
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': False,
+            }
+        )
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_cancelled_team_submission(self, xblock):
+        team = self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        usage_id = xblock.scope_ids.usage_id
+        xblock.location = usage_id
+        xblock.user_state_upload_data_enabled = Mock(return_value=True)
+        xblock.teams_enabled = True
+        xblock.is_team_assignment = Mock(return_value=True)
+        anonymous_user_ids_for_team = ['Red Five', 'Bob', 'Alice', 'Chris']
+        xblock.get_anonymous_user_ids_for_team = Mock(
+            return_value=anonymous_user_ids_for_team
+        )
+        team_submission = xblock.create_team_submission(
+            ('a man must have a code', 'a man must also have a towel')
+        )
+        student_submission = dict(sub_api.get_submissions(
+            dict(
+                student_id="Chris",
+                item_id=usage_id,
+                course_id='test_course',
+                item_type='openassessment'
+            ),
+            1)[0])
+
+        comments = "Cancelled by staff"
+        staff_id = "Andy"
+        mock_staff = Mock(name=staff_id)
+        xblock.get_username = Mock(return_value=mock_staff)
+
+        team_workflow_api.cancel_workflow(
+            team_submission_uuid=team_submission['team_submission_uuid'],
+            comments=comments,
+            cancelled_by_id=staff_id
+        )
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_cancelled.html',
+            {
+                'text_response': 'required',
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'allow_latex': False,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission': student_submission,
+                'workflow_cancellation': {
+                    'comments': comments,
+                    'cancelled_at': xblock.get_team_workflow_cancellation_info(
+                        team_submission['team_submission_uuid']).get('cancelled_at'),
+                    'cancelled_by_id': staff_id,
                     'cancelled_by': mock_staff
                 },
                 'user_timezone': None,

@@ -2,11 +2,15 @@
 Contract tests for calling team_workflow_api from team_workflow_mixin
 """
 
+import logging
 
+from types import SimpleNamespace
+from copy import copy
 from unittest import TestCase
 from mock import patch, Mock
 from submissions.errors import TeamSubmissionNotFoundError
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
+
 
 STUDENT_ITEM_DICT = dict(
     student_id='student_id_1',
@@ -14,6 +18,22 @@ STUDENT_ITEM_DICT = dict(
     course_id='course1',
     item_type='openassessment'
 )
+
+SUBMISSION_UUID = 'submission 1'
+TEAM_SUB_ID_1 = 'team_submission 1'
+TEAM_SUB_ID_2 = 'team_submission 2'
+USER_ID = 'fake_UsEr'
+USERNAME = 'usEr naMe'
+MODULE = 'openassessment.xblock.team_workflow_mixin'
+TEAM_WORKFLOW = {
+    'submission_uuid': SUBMISSION_UUID
+}
+CREATED_AT = 12
+MODEL_CREATED_AT = 13
+CANCELLATION_INFO = {
+    "created_at": 12,
+    "cancelled_by_id": USER_ID,
+}
 
 
 class TestBlock(TeamWorkflowMixin):
@@ -28,6 +48,12 @@ class TestBlock(TeamWorkflowMixin):
 
     def has_team(self):
         return self._has_team
+
+
+def _mock_get_cancellation_info(team_submission_uuid):
+    if team_submission_uuid == TEAM_SUB_ID_1:
+        return None
+    return copy(CANCELLATION_INFO)
 
 
 class TestTeamWorkflowMixin(TestCase):
@@ -82,4 +108,48 @@ class TestTeamWorkflowMixin(TestCase):
             STUDENT_ITEM_DICT['course_id'],
             STUDENT_ITEM_DICT['item_id'],
             self.test_block.team.team_id
+        )
+
+    @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
+    def test_get_team_workflow_cancellation_info_no_info(self, mock_get_cancellation):
+        mock_get_cancellation.side_effect = _mock_get_cancellation_info
+        info = self.test_block.get_team_workflow_cancellation_info(TEAM_SUB_ID_1)
+        self.assertIsNone(info)
+
+    @patch('{}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation'.format(MODULE))
+    @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
+    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE), return_value=TEAM_WORKFLOW)
+    def test_get_team_workflow_cancellation_info_no_model(
+            self,
+            mock_get_workflow,
+            mock_get_cancellation,
+            mock_get_workflow_cancellation):
+        mock_get_cancellation.side_effect = _mock_get_cancellation_info
+        self.test_block.get_username = Mock(return_value=USERNAME)
+        mock_get_workflow_cancellation.return_value = None
+        info = self.test_block.get_team_workflow_cancellation_info(TEAM_SUB_ID_2)
+        self.assertEqual(
+            info,
+            {"cancelled_by_id": USER_ID, "cancelled_by": USERNAME}
+        )
+
+    @patch('{}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation'.format(MODULE))
+    @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
+    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE), return_value=TEAM_WORKFLOW)
+    def test_get_team_workflow_cancellation_info_with_model(
+            self,
+            mock_get_workflow,
+            mock_get_cancellation,
+            mock_get_workflow_cancellation):
+        mock_get_cancellation.side_effect = _mock_get_cancellation_info
+        self.test_block.get_username = Mock(return_value=USERNAME)
+        mock_get_workflow_cancellation.return_value = SimpleNamespace(**{"created_at": MODEL_CREATED_AT})
+        info = self.test_block.get_team_workflow_cancellation_info(TEAM_SUB_ID_2)
+        self.assertEqual(
+            info,
+            {
+                "cancelled_by_id": USER_ID,
+                "cancelled_by": USERNAME,
+                "cancelled_at": MODEL_CREATED_AT
+            }
         )
