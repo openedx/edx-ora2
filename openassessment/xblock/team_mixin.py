@@ -4,6 +4,8 @@ import logging
 from django.utils.functional import cached_property
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
+from submissions.team_api import get_team_submission_from_individual_submission
+
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -125,3 +127,10 @@ class TeamMixin:
 
             return self.teams_service.get_anonymous_user_ids_for_team(user, self.team)
         return None
+
+    def get_team_submission_uuid_from_individual_submission_uuid(self, individual_submission_uuid):
+        """
+        Given an individual submission uuid, return the uuid of the related team submission
+        """
+        team_submission = get_team_submission_from_individual_submission(individual_submission_uuid)
+        return team_submission['team_submission_uuid']
