@@ -704,6 +704,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         status_counts = self._parse_workflow_status_counts(status_counts)
         self.assertEqual(status_counts['teams'], 1)
 
+        # The staff area student context should not include a workflow cancellation
+        _, context = xblock.get_student_info_path_and_context('Bob')
+        self.assertIsNone(context['workflow_cancellation'])
+
         # Cancel the team submission
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
         self.assertIn("The team’s submission has been removed from grading.", resp['msg'])
@@ -714,6 +718,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(total_submissions, 1)
         status_counts = self._parse_workflow_status_counts(status_counts)
         self.assertEqual(status_counts['cancelled'], 1)
+
+        # The staff area student context will still not include a workflow cancellation
+        _, context = xblock.get_student_info_path_and_context('Bob')
+        self.assertIsNone(context['workflow_cancellation'])
 
     @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_staff_area__team_assignment__staff_assessment_with_final_grade(self, xblock):
