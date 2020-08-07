@@ -687,10 +687,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("Submission for team assignment has no associated team submission", resp['msg'])
         self.assertFalse(resp['success'])
 
-    @scenario('data/team_submission.xml', user_id='Bob')
+    @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_cancel_team_submission(self, xblock):
         # Set up team assignment and submission
-        team_submission = self._setup_xblock_and_create_submission(xblock, team=True)
+        team_submission = self._setup_xblock_and_create_submission(xblock, team=True, anonymous_user_id='StaffMember')
         xblock.get_user_submission = Mock(
             return_value={
                 'team_submission_uuid': team_submission['team_submission_uuid']
@@ -721,7 +721,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # The staff area student context will still not include a workflow cancellation
         _, context = xblock.get_student_info_path_and_context('Bob')
-        self.assertIsNone(context['workflow_cancellation'])
+        workflow_cancellation = context['workflow_cancellation']
+        self.assertIsNotNone(workflow_cancellation)
+        self.assertEqual(workflow_cancellation['cancelled_by_id'], 'StaffMember')
+        self.assertEqual(workflow_cancellation['comments'], params['comments'])
 
     @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_staff_area__team_assignment__staff_assessment_with_final_grade(self, xblock):

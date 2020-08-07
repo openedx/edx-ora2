@@ -428,7 +428,7 @@ class StaffAreaMixin:
                 is_staff=True,
             )
 
-        workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
+        workflow_cancellation = self.get_workflow_cancellation_info(workflow['submission_uuid'])
 
         context.update({
             'self_assessment': [self_assessment] if self_assessment else None,
