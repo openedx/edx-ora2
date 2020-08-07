@@ -2,8 +2,6 @@
 Contract tests for calling team_workflow_api from team_workflow_mixin
 """
 
-import logging
-
 from types import SimpleNamespace
 from copy import copy
 from unittest import TestCase
@@ -48,6 +46,9 @@ class TestBlock(TeamWorkflowMixin):
 
     def has_team(self):
         return self._has_team
+
+    def get_username(self, user):
+        return USERNAME
 
 
 def _mock_get_cancellation_info(team_submission_uuid):
@@ -118,14 +119,14 @@ class TestTeamWorkflowMixin(TestCase):
 
     @patch('{}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation'.format(MODULE))
     @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
-    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE), return_value=TEAM_WORKFLOW)
+    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE))
     def test_get_team_workflow_cancellation_info_no_model(
             self,
             mock_get_workflow,
             mock_get_cancellation,
             mock_get_workflow_cancellation):
+        mock_get_workflow.return_value = TEAM_WORKFLOW
         mock_get_cancellation.side_effect = _mock_get_cancellation_info
-        self.test_block.get_username = Mock(return_value=USERNAME)
         mock_get_workflow_cancellation.return_value = None
         info = self.test_block.get_team_workflow_cancellation_info(TEAM_SUB_ID_2)
         self.assertEqual(
@@ -135,14 +136,14 @@ class TestTeamWorkflowMixin(TestCase):
 
     @patch('{}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation'.format(MODULE))
     @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
-    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE), return_value=TEAM_WORKFLOW)
+    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE))
     def test_get_team_workflow_cancellation_info_with_model(
             self,
             mock_get_workflow,
             mock_get_cancellation,
             mock_get_workflow_cancellation):
+        mock_get_workflow.return_value = TEAM_WORKFLOW
         mock_get_cancellation.side_effect = _mock_get_cancellation_info
-        self.test_block.get_username = Mock(return_value=USERNAME)
         mock_get_workflow_cancellation.return_value = SimpleNamespace(**{"created_at": MODEL_CREATED_AT})
         info = self.test_block.get_team_workflow_cancellation_info(TEAM_SUB_ID_2)
         self.assertEqual(

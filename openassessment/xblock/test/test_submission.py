@@ -3,8 +3,6 @@
 Test submission to the OpenAssessment XBlock.
 """
 
-import logging
-
 import datetime as dt
 import json
 
@@ -17,14 +15,10 @@ import boto
 from boto.s3.key import Key
 from moto import mock_s3_deprecated
 from django.contrib.auth import get_user_model
-from submissions import (
-    api as sub_api,
-    team_api as team_sub_api
-)
+from submissions import api as sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 from submissions.models import TeamSubmission
 from openassessment.fileupload import api
-from openassessment.tests.factories import UserFactory
 from openassessment.workflow import (
     api as workflow_api,
     team_api as team_workflow_api
@@ -33,10 +27,10 @@ from openassessment.xblock.data_conversion import create_submission_dict, prepar
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 
-from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_MEMBERS, MOCK_TEAM_NAME, MOCK_TEAM_ID
+from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
 from .base import XBlockHandlerTestCase, scenario
-from .test_staff_area import NullUserService, UserStateService, STUDENT_ITEM
+from .test_staff_area import NullUserService, UserStateService
 
 
 class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
@@ -1048,7 +1042,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
     @scenario('data/team_submission.xml', user_id="Red Five")
     def test_cancelled_team_submission(self, xblock):
-        team = self.setup_mock_team(xblock)
+        self.setup_mock_team(xblock)
 
         # pylint: disable=protected-access
         xblock.runtime._services['user'] = NullUserService()
