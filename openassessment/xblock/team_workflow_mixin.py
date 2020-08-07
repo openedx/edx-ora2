@@ -115,11 +115,12 @@ class TeamWorkflowMixin:
 
         :param team_submission_uuid: The team_submission identifier associated with the
         sumbission to return information for.
-        :return: The cancellation information, or None if the submission has
+        :return: The cancellation information, or None if the team submission has
         not been cancelled.
         """
         cancellation_info = team_workflow_api.get_assessment_workflow_cancellation(
-            team_submission_uuid)
+            team_submission_uuid
+        )
         if not cancellation_info:
             return None
 
@@ -130,7 +131,8 @@ class TeamWorkflowMixin:
         del cancellation_info['created_at']
         workflow = team_workflow_api.get_workflow_for_submission(team_submission_uuid)
         cancellation_model = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(
-            workflow['submission_uuid'])
+            workflow['submission_uuid']
+        )
         if cancellation_model:
             cancellation_info['cancelled_at'] = cancellation_model.created_at
 

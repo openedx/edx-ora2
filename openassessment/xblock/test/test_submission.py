@@ -1061,14 +1061,16 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         team_submission = xblock.create_team_submission(
             ('a man must have a code', 'a man must also have a towel')
         )
-        student_submission = dict(sub_api.get_submissions(
+        student_submissions = sub_api.get_submissions(
             dict(
                 student_id="Chris",
                 item_id=usage_id,
                 course_id='test_course',
                 item_type='openassessment'
             ),
-            1)[0])
+            1
+        )
+        student_submission = dict(student_submissions[0])
 
         comments = "Cancelled by staff"
         staff_id = "Andy"
@@ -1088,6 +1090,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_latex': False,
+                # date listed in xml scenario.
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': student_submission,
                 'workflow_cancellation': {

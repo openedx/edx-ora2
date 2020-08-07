@@ -47,6 +47,7 @@ class TestBlock(TeamWorkflowMixin):
     def has_team(self):
         return self._has_team
 
+    # pylint: disable=unused-argument
     def get_username(self, user):
         return USERNAME
 
