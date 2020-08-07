@@ -169,7 +169,7 @@
                     {% if not is_team_assignment %}
                         <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
                     {% else %}
-                        <p>{% trans "The teams's submission has been removed from peer assessment. The team receives a grade of zero unless you delete the team's state for the problem to allow them to resubmit a response." %}</p>
+                        <p>{% trans "The team’s submission has been removed from grading. The team receives a grade of zero unless you delete the a team member’s state for the problem to allow the team to resubmit a response" %}</p>
                     {% endif %}
                 </div>
             {% elif workflow_status == None %}
