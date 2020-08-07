@@ -899,6 +899,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_delete_student_state_for_team_assessment(self, xblock):
+        # Given a team with a submission
         self._setup_xblock_and_create_submission(xblock, team=True)
 
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
@@ -906,12 +907,17 @@ class TestCourseStaff(XBlockHandlerTestCase):
         status_counts = self._parse_workflow_status_counts(status_counts)
         self.assertEqual(status_counts['teams'], 1)
 
+        # When I clear the team's state
         xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, STUDENT_ITEM['student_id'])
 
+        # Then the submission goes into cancelled state
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
         self.assertEqual(total_submissions, 1)
         status_counts = self._parse_workflow_status_counts(status_counts)
         self.assertEqual(status_counts['cancelled'], 1)
+
+        # And the submissions are cleared to allow a new submission workflow
+        self.assertEqual(xblock.get_team_workflow_info(), {})
 
     def _parse_workflow_status_counts(self, status_counts):
         """ Helper to transform status counts from a list of dicts to a single dict """
