@@ -8,6 +8,7 @@ from xblock.core import XBlock
 from submissions import team_api as team_sub_api
 from submissions.errors import TeamSubmissionNotFoundError, TeamSubmissionInternalError
 from openassessment.workflow import team_api as team_workflow_api
+from openassessment.workflow.models import AssessmentWorkflowCancellation
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -62,12 +63,12 @@ class TeamWorkflowMixin:
         Raises:
             AssessmentWorkflowError
         """
-
         if team_submission_uuid is None:
             team_submission_uuid = self.get_team_submission_uuid()
 
         if team_submission_uuid is None:
             return {}
+
         return team_workflow_api.get_workflow_for_submission(team_submission_uuid)
 
     def get_team_submission_uuid(self):
@@ -107,3 +108,32 @@ class TeamWorkflowMixin:
         )
         num_submissions = sum(item['count'] for item in status_counts)
         return status_counts, num_submissions
+
+    def get_team_workflow_cancellation_info(self, team_submission_uuid):
+        """
+        Returns cancellation information for a particular team submission.
+
+        :param team_submission_uuid: The team_submission identifier associated with the
+        sumbission to return information for.
+        :return: The cancellation information, or None if the team submission has
+        not been cancelled.
+        """
+        cancellation_info = team_workflow_api.get_assessment_workflow_cancellation(
+            team_submission_uuid
+        )
+        if not cancellation_info:
+            return None
+
+        # Add the username of the staff member who cancelled the submission
+        cancellation_info['cancelled_by'] = self.get_username(cancellation_info['cancelled_by_id'])
+
+        # Add the date that the workflow was cancelled (in preference to the serialized date string)
+        del cancellation_info['created_at']
+        workflow = team_workflow_api.get_workflow_for_submission(team_submission_uuid)
+        cancellation_model = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(
+            workflow['submission_uuid']
+        )
+        if cancellation_model:
+            cancellation_info['cancelled_at'] = cancellation_model.created_at
+
+        return cancellation_info
