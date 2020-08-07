@@ -512,7 +512,7 @@ class StaffAreaMixin:
         )
         # Tell the submissions API to orphan the submissions to prevent them from being accessed
         from submissions import team_api as team_submissions_api
-        team_submissions_api.reset_scores(team_submission_uuid)
+        team_submissions_api.reset_scores(team_submission_uuid, clear_state=True)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)
