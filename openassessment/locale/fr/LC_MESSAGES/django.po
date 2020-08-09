@@ -40,8 +40,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-27 09:29-0400\n"
-"PO-Revision-Date: 2020-07-27 18:43+0000\n"
+"POT-Creation-Date: 2020-08-07 10:31-0400\n"
+"PO-Revision-Date: 2020-08-08 06:13+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -1598,9 +1598,9 @@ msgstr "La réponse de l'étudiant a été supprimée de la notation par les pai
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid ""
-"The teams's submission has been removed from peer assessment. The team "
-"receives a grade of zero unless you delete the team's state for the problem "
-"to allow them to resubmit a response."
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete the a team member’s state for the problem to"
+" allow the team to resubmit a response."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
