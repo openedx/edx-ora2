@@ -14,13 +14,13 @@
 # MS, 2016,2018
 # Nlaranjo <numicola@gmail.com>, 2014
 # Nlaranjo <numicola@gmail.com>, 2014
-# Rui Ribeiro <rui.ribeiro@fccn.pt>, 2019
+# Rui Ribeiro <info@nau.edu.pt>, 2019
 # Teresa Guerreiro <t.guerreiro@sapo.pt>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-27 09:29-0400\n"
+"POT-Creation-Date: 2020-08-07 10:31-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
