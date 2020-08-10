@@ -908,6 +908,56 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("response was not found", resp.body.decode('utf-8').lower())
 
+    @patch('openassessment.xblock.staff_area_mixin.remove_file')
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_staff_delete_student_state_with_files(self, xblock, remove_file_patch):
+        # Given we are course staff...
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, 'Bob'
+        )
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+
+        # and a student has a submission files and corresponding workflow...
+        submission = self._create_submission(
+            bob_item,
+            {
+                'text': "Bob Answer",
+                'file_keys': SAVED_FILES_NAMES,
+                'files_descriptions': SAVED_FILES_DESCRIPTIONS
+            },
+            ['self']
+        )
+
+        # which has already been assessed
+        self_api.create_assessment(
+            submission['uuid'],
+            STUDENT_ITEM["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            {'criteria': xblock.rubric_criteria},
+        )
+
+        request = namedtuple('Request', 'params')
+        request.params = {"student_username": 'Bob'}
+
+        # Verify that we can see the student's grade
+        resp = xblock.render_student_info(request)
+        self.assertIn("final grade", resp.body.decode('utf-8').lower())
+
+        # When we clear the student's state
+        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, bob_item['student_id'])
+
+        # Verify that the submission was cleared
+        resp = xblock.render_student_info(request)
+        self.assertIn("response was not found", resp.body.decode('utf-8').lower())
+
+        # and verify that the files were removed
+        remove_file_patch.assert_has_calls([call(key) for key in SAVED_FILES_NAMES])
+
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_delete_student_state_for_team_assessment(self, xblock):
         # Given a team with a submission
