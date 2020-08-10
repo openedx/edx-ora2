@@ -29,7 +29,7 @@ django-pyfs==2.2          # via -r requirements/test.txt
 django-simple-history==2.11.0  # via -r requirements/test.txt
 django==2.2.15            # via -c requirements/constraints.txt, -r requirements/test.txt, django-model-utils, django-pyfs, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
 djangorestframework==3.9.4  # via -r requirements/test.txt, edx-submissions
-docker==4.2.2             # via -r requirements/test.txt, moto
+docker==4.3.0             # via -r requirements/test.txt, moto
 docutils==0.15.2          # via -r requirements/test.txt, botocore
 ecdsa==0.14.1             # via -r requirements/test.txt, python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/test.txt
@@ -43,7 +43,7 @@ fs==2.0.18                # via -c requirements/constraints.txt, -r requirements
 future==0.18.2            # via -r requirements/test.txt, aws-xray-sdk
 html5lib==1.1             # via -r requirements/test.txt
 idna==2.8                 # via -c requirements/constraints.txt, -r requirements/test.txt, moto, requests
-importlib-metadata==1.7.0  # via -r requirements/test.txt, importlib-resources, jsonpickle, jsonschema, pluggy, tox, virtualenv
+importlib-metadata==1.7.0  # via -r requirements/test.txt, importlib-resources, jsonpickle, jsonschema, path, pluggy, tox, virtualenv
 importlib-resources==1.5.0  # via -r requirements/test.txt, cfn-lint, virtualenv
 jinja2==2.11.2            # via -r requirements/test.txt, moto
 jmespath==0.10.0          # via -r requirements/test.txt, boto3, botocore
@@ -65,7 +65,7 @@ moto==1.3.14              # via -r requirements/test.txt
 networkx==2.4             # via -r requirements/test.txt, cfn-lint
 packaging==20.4           # via -r requirements/test.txt, bleach, tox
 path.py==12.5.0           # via -r requirements/test.txt, edx-i18n-tools
-path==15.0.0              # via -r requirements/test.txt, path.py
+path==13.1.0              # via -c requirements/constraints.txt, -r requirements/test.txt, path.py
 pluggy==0.13.1            # via -r requirements/test.txt, pytest, tox
 polib==1.1.0              # via -r requirements/test.txt, edx-i18n-tools
 py==1.9.0                 # via -r requirements/test.txt, pytest, tox

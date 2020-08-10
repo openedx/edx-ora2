@@ -26,7 +26,7 @@ distlib==0.3.1            # via virtualenv
 django-model-utils==4.0.0  # via -r requirements/base.txt, edx-submissions
 django-pyfs==2.2          # via -r requirements/test.in
 django-simple-history==2.11.0  # via -r requirements/base.txt
-docker==4.2.2             # via moto
+docker==4.3.0             # via moto
 docutils==0.15.2          # via botocore
 ecdsa==0.14.1             # via python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/base.txt
@@ -40,7 +40,7 @@ fs==2.0.18                # via -c requirements/constraints.txt, -r requirements
 future==0.18.2            # via aws-xray-sdk
 html5lib==1.1             # via -r requirements/base.txt
 idna==2.8                 # via -c requirements/constraints.txt, -r requirements/base.txt, moto, requests
-importlib-metadata==1.7.0  # via importlib-resources, jsonpickle, jsonschema, pluggy, tox, virtualenv
+importlib-metadata==1.7.0  # via -r requirements/base.txt, importlib-resources, jsonpickle, jsonschema, path, pluggy, tox, virtualenv
 importlib-resources==1.5.0  # via cfn-lint, virtualenv
 jinja2==2.11.2            # via moto
 jmespath==0.10.0          # via boto3, botocore
@@ -57,12 +57,12 @@ loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements
 lxml==4.5.2               # via -r requirements/base.txt, xblock
 markupsafe==1.1.1         # via -r requirements/base.txt, jinja2, xblock
 mock==3.0.5               # via -c requirements/constraints.txt, -r requirements/test.in, moto
-more-itertools==8.4.0     # via -r requirements/test.in, pytest, zipp
+more-itertools==8.4.0     # via -r requirements/base.txt, -r requirements/test.in, pytest, zipp
 moto==1.3.14              # via -r requirements/test.in
 networkx==2.4             # via cfn-lint
 packaging==20.4           # via -r requirements/base.txt, bleach, tox
 path.py==12.5.0           # via -r requirements/base.txt, edx-i18n-tools
-path==15.0.0              # via -r requirements/base.txt, path.py
+path==13.1.0              # via -c requirements/constraints.txt, -r requirements/base.txt, path.py
 pluggy==0.13.1            # via pytest, tox
 polib==1.1.0              # via -r requirements/base.txt, edx-i18n-tools
 py==1.9.0                 # via pytest, tox
@@ -102,7 +102,7 @@ wrapt==1.11.2             # via -c requirements/constraints.txt, aws-xray-sdk
 xblock-sdk==0.2.2         # via -r requirements/test.in
 xblock==1.4.0             # via -r requirements/base.txt
 xmltodict==0.12.0         # via moto
-zipp==1.0.0               # via -c requirements/constraints.txt, importlib-metadata, importlib-resources
+zipp==1.0.0               # via -c requirements/constraints.txt, -r requirements/base.txt, importlib-metadata, importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
