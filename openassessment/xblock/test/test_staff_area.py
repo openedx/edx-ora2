@@ -941,21 +941,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
             {'criteria': xblock.rubric_criteria},
         )
 
-        request = namedtuple('Request', 'params')
-        request.params = {"student_username": 'Bob'}
-
-        # Verify that we can see the student's grade
-        resp = xblock.render_student_info(request)
-        self.assertIn("final grade", resp.body.decode('utf-8').lower())
-
         # When we clear the student's state
         xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, bob_item['student_id'])
 
-        # Verify that the submission was cleared
-        resp = xblock.render_student_info(request)
-        self.assertIn("response was not found", resp.body.decode('utf-8').lower())
-
-        # and verify that the files were removed
+        # Verify that the files were removed
         remove_file_patch.assert_has_calls([call(key) for key in SAVED_FILES_NAMES])
 
     @scenario('data/team_submission.xml', user_id='Bob')
