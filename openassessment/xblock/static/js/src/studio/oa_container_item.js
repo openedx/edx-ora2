@@ -749,3 +749,45 @@ OpenAssessment.TrainingExample.prototype = {
         );
     },
 };
+
+
+/**
+ Simple helper class, that adds click event listener to some control element, and on
+ click removes control itself and ``is--hidden`` class from another element.
+
+ Args:
+ controlElement (JQuery Object): control element.
+ hiddenElement (JQuery Object): element with ``is--hidden`` class, that will be showed.
+
+ Returns:
+ OpenAssessment.ShowControl
+
+ **/
+OpenAssessment.ShowControl = function(controlElement, hiddenElement) {
+    this.controlElement = controlElement;
+    this.hiddenElement = hiddenElement;
+};
+
+OpenAssessment.ShowControl.prototype = {
+    install: function() {
+        var self = this;
+
+        this.controlElement.click(
+            function(event) {
+                event.preventDefault();
+
+                self.showHiddenElement();
+                self.hideSelf();
+            }
+        );
+        return this;
+    },
+
+    showHiddenElement: function() {
+        this.hiddenElement.removeClass('is--hidden');
+    },
+
+    hideSelf: function() {
+        this.controlElement.addClass('is--hidden');
+    },
+};

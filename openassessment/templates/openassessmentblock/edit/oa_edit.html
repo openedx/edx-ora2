@@ -7,12 +7,15 @@
     data-is-released="{{ is_released|lower }}"
 >
     <div class="openassessment_editor_content_and_tabs">
-
         {% include "openassessmentblock/edit/oa_edit_header_and_validation.html" %}
 
-        {% include "openassessmentblock/edit/oa_edit_prompts.html"  %}
+        {% include "openassessmentblock/edit/oa_edit_prompts.html" %}
 
-        {% include "openassessmentblock/edit/oa_edit_rubric.html"  %}
+        {% include "openassessmentblock/edit/oa_edit_rubric.html" %}
+
+        {% include "openassessmentblock/edit/oa_edit_schedule.html" %}
+
+        {% include "openassessmentblock/edit/oa_edit_assessment_steps.html" %}
 
         {% include "openassessmentblock/edit/oa_edit_settings.html" %}
 

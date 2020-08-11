@@ -111,16 +111,21 @@ describe("OpenAssessment.ToggleControl", function() {
         notifier = new StubNotifier();
         toggleControl = new OpenAssessment.ToggleControl(
             $("#checkbox"),
-            $("#shown_section"),
-            $("#hidden_section"),
+            [$("#shown_section")],
+            [$("#hidden_section")],
             notifier
         ).install();
     });
 
     it("shows and hides elements", function() {
         var assertIsVisible = function(isVisible) {
-            expect(toggleControl.hiddenSection.hasClass('is--hidden')).toBe(isVisible);
-            expect(toggleControl.shownSection.hasClass('is--hidden')).toBe(!isVisible);
+            toggleControl.hiddenSections.forEach(function(section) {
+                expect(section.hasClass('is--hidden')).toBe(isVisible);
+            });
+
+            toggleControl.shownSections.forEach(function(section) {
+                expect(section.hasClass('is--hidden')).toBe(!isVisible);
+            });
         };
 
         // Initially, the section is visible (default from the fixture)

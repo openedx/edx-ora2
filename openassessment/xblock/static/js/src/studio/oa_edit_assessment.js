@@ -3,14 +3,16 @@
 
  Args:
  element (DOM element): The DOM element representing this view.
-
+ scheduleElement (DOM element): The DOM element representing EditScheduleView.
  Returns:
  OpenAssessment.EditPeerAssessmentView
 
  **/
-OpenAssessment.EditPeerAssessmentView = function(element) {
+OpenAssessment.EditPeerAssessmentView = function(element, scheduleElement) {
     this.element = element;
     this.name = 'peer-assessment';
+    this.scheduleElement = scheduleElement;
+
     this.mustGradeField = new OpenAssessment.IntField(
         $('#peer_assessment_must_grade', this.element),
         {min: 0, max: 99}
@@ -23,22 +25,30 @@ OpenAssessment.EditPeerAssessmentView = function(element) {
     // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
         $('#include_peer_assessment', this.element),
-        $('#peer_assessment_settings_editor', this.element),
-        $('#peer_assessment_description_closed', this.element),
+        [
+            $('#peer_assessment_settings_editor', this.element),
+            $('#peer_assessment_schedule_editor', this.scheduleElement),
+        ],
+        [],
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
     ).install();
 
+    new OpenAssessment.ShowControl(
+        $('#peer_assessment_settings_editor_show_details', this.element),
+        $('#peer_assessment_settings_editor_details', this.element)
+    ).install();
+
     // Configure the date and time fields
     this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
+        this.scheduleElement,
         '#peer_assessment_start_date',
         '#peer_assessment_start_time'
     ).install();
 
     this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
+        this.scheduleElement,
         '#peer_assessment_due_date',
         '#peer_assessment_due_time'
     ).install();
@@ -219,15 +229,22 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
  OpenAssessment.EditSelfAssessmentView
 
  **/
-OpenAssessment.EditSelfAssessmentView = function(element) {
+OpenAssessment.EditSelfAssessmentView = function(element, scheduleElement) {
     this.element = element;
+    this.scheduleElement = scheduleElement;
+
     this.name = 'self-assessment';
 
     // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
         $('#include_self_assessment', this.element),
-        $('#self_assessment_settings_editor', this.element),
-        $('#self_assessment_description_closed', this.element),
+        [
+            $('#self_assessment_settings_editor', this.element),
+            $('#self_assessment_schedule_editor', this.scheduleElement),
+        ],
+        [
+            $('#self_assessment_description_closed', this.element),
+        ],
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
@@ -235,13 +252,13 @@ OpenAssessment.EditSelfAssessmentView = function(element) {
 
     // Configure the date and time fields
     this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
+        this.scheduleElement,
         '#self_assessment_start_date',
         '#self_assessment_start_time'
     ).install();
 
     this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
+        this.scheduleElement,
         '#self_assessment_due_date',
         '#self_assessment_due_time'
     ).install();
@@ -387,11 +404,18 @@ OpenAssessment.EditStudentTrainingView = function(element) {
 
     new OpenAssessment.ToggleControl(
         $('#include_student_training', this.element),
-        $('#student_training_settings_editor', this.element),
-        $('#student_training_description_closed', this.element),
+        [
+            $('#student_training_settings_editor', this.element),
+        ],
+        [],
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
+    ).install();
+
+    new OpenAssessment.ShowControl(
+        $('#student_training_settings_editor_show_details', this.element),
+        $('#student_training_settings_editor_details', this.element)
     ).install();
 
     this.exampleContainer = new OpenAssessment.Container(
@@ -539,8 +563,12 @@ OpenAssessment.EditStaffAssessmentView = function(element) {
     // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
         $('#include_staff_assessment', this.element),
-        $('#staff_assessment_description', this.element),
-        $('#staff_assessment_description', this.element), // open and closed selectors are the same!
+        [
+            $('#staff_assessment_description', this.element),
+        ],
+        [
+            $('#staff_assessment_description', this.element),
+        ], // open and closed selectors are the same!
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
