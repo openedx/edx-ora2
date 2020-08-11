@@ -12,6 +12,7 @@ import logging
 from submissions.errors import SubmissionNotFoundError
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
+from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
@@ -472,6 +473,11 @@ class StaffAreaMixin:
                 # Remove the submission from grading pools
                 self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
 
+                # Delete files from the backend
+                if 'file_keys' in sub['answer']:
+                    for key in sub['answer']['file_keys']:
+                        remove_file(key)
+
                 # Tell the submissions API to orphan the submission to prevent it from being accessed
                 submission_api.reset_score(
                     user_id,
@@ -510,8 +516,14 @@ class StaffAreaMixin:
             "Student and team state cleared",
             requesting_user_id
         )
-        # Tell the submissions API to orphan the submissions to prevent them from being accessed
+
         from submissions import team_api as team_submissions_api
+
+        # Clean up shared files for the team
+        team_id = team_submissions_api.get_team_submission(team_submission_uuid).get('team_id', None)
+        delete_shared_files_for_team(course_id, item_id, team_id)
+
+        # Tell the submissions API to orphan the submissions to prevent them from being accessed
         team_submissions_api.reset_scores(team_submission_uuid, clear_state=True)
 
     @XBlock.json_handler

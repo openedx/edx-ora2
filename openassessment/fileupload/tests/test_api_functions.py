@@ -138,6 +138,29 @@ def test_cannot_delete_file_if_user_ids_do_not_match(shared_file_upload_fixture)
 
 
 @pytest.mark.django_db
+@mock.patch('openassessment.fileupload.api.remove_file', autospec=True)
+def test_delete_shared_files_for_team(mock_remove_file, shared_file_upload_fixture, mock_block):
+    # Given some shared files for a team, among other similar files
+    files_to_delete = [{'file_key': 'key-1'}, {'file_key': 'key-2'}, {'file_key': 'key-3'}]
+    same_team_different_block = [{'file_key': 'key-4', 'item_id': 'not the item you\'re looking for'}]
+    different_team_same_block = [{'file_key': 'key-5', 'team_id': 'team_rocket'}]
+
+    all_files = files_to_delete + same_team_different_block + different_team_same_block
+
+    for file_info in all_files:
+        _ = shared_file_upload_fixture(**file_info)
+
+    assert SharedFileUpload.objects.all().count() == len(all_files)
+
+    # When I ask to delete the files
+    api.delete_shared_files_for_team(DEFAULT_COURSE_ID, DEFAULT_ITEM_ID, DEFAULT_TEAM_ID)
+
+    # Each file is removed from the backend and the models are deleted
+    assert mock_remove_file.call_count == len(files_to_delete)
+    assert SharedFileUpload.objects.all().count() == len(all_files) - len(files_to_delete)
+
+
+@pytest.mark.django_db
 def test_shared_uploads_for_student_by_key(shared_file_upload_fixture, mock_block):
     file_keys = ['key-1', 'key-2', 'key-3']
 
