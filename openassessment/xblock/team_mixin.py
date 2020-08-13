@@ -102,6 +102,22 @@ class TeamMixin:
         """
         return self.is_course_staff or self.in_studio_preview or self.has_team()
 
+    def add_team_submission_context(
+        self, context, team_submission_uuid=None, individual_submission_uuid=None
+    ):
+        if not any(team_submission_uuid, individual_submission_uuid):
+            raise TypeError("One of team_submission_uuid or individual_submission_uuid must be provided")
+
+        if team_submission_uuid:
+            team_submission = get_team_submission(team_submission_uuid)
+        elif individual_submission_uuid:
+            team_submission = get_team_submission_from_individual_submission(individual_submission_uuid)
+
+        team = self.team_service.get_team(team_submission['team_id'])
+        context['team_name'] = team.name
+        team_submission_usernames = [self.get_username(student_id) for student_id in team_submission['student_ids']]
+        context['team_usernames'] = team_submission_usernames
+
     def get_team_info(self):
         """
         Return a dict with team data if the user is on a team, or an

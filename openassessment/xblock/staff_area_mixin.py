@@ -218,27 +218,6 @@ class StaffAreaMixin:
                     submission_context = self.get_student_submission_context(
                         self.get_username(anonymous_student_id), submission
                     )
-                    # Add team info to context
-                    submission_context['teams_enabled'] = self.teams_enabled
-                    if self.teams_enabled:
-                        user = self.get_real_user(anonymous_student_id)
-
-                        if not user:
-                            logger.error(
-                                '{}: User lookuip for anonymous_user_id {} failed'.format(
-                                    self.location,
-                                    anonymous_student_id
-                                )
-                            )
-                            raise ObjectDoesNotExist()
-
-                        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
-
-                        submission_context['team_name'] = team.name
-                        submission_context['team_usernames'] = list_to_conversational_format(
-                            [user.username for user in team.users.all()]
-                        )
-
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._(u"Error loading the checked out learner response."))
@@ -289,6 +268,7 @@ class StaffAreaMixin:
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
+            'teams_enabled': self.teams_enabled,
             "is_team_assignment": self.is_team_assignment(),
         }
 
@@ -311,6 +291,9 @@ class StaffAreaMixin:
                             block=str(self.location)
                         ))
                     context['staff_file_urls'] = self.get_all_upload_urls_for_user(student_username)
+
+            if self.teams_enabled:
+                self.add_team_submission_context(context, individual_submission_uuid=submission['uuid'])
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
