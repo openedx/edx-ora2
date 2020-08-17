@@ -183,7 +183,7 @@ def test_shared_uploads_for_student_by_key(shared_file_upload_fixture, mock_bloc
 
 
 @pytest.mark.django_db
-def test_file_descriptor_tuples_no_team(mock_block):
+def test_filess(mock_block):
     block = mock_block(
         descriptions=['The first file', 'The second file'],
         names=['File A', 'File B'],
@@ -193,23 +193,23 @@ def test_file_descriptor_tuples_no_team(mock_block):
 
     file_manager = api.FileUploadManager(block)
 
-    actual_descriptors = file_manager.file_descriptor_tuples()
-    expected_descriptors = [
-        api.FileDescriptor(download_url='', name='File A', description='The first file', show_delete_button=True),
-        api.FileDescriptor(download_url='', name='File B', description='The second file', show_delete_button=True),
+    actual_metadata = file_manager.files_metadata()
+    expected_metadata = [
+        {'download_url': '', 'name': 'File A', 'description': 'The first file', 'show_delete_button': True},
+        {'download_url': '', 'name': 'File B', 'description': 'The second file', 'show_delete_button': True},
     ]
 
-    assert expected_descriptors == actual_descriptors
+    assert expected_metadata == actual_metadata
 
 
 @pytest.mark.django_db
 @mock.patch('openassessment.fileupload.api.remove_file', autospec=True)
 @mock.patch('openassessment.fileupload.api.get_download_url', autospec=True)
-def test_file_descriptor_tuples_after_sharing_with_old_team(
+def test_files_metadata_after_sharing_with_old_team(
         mock_get_download_url, mock_remove_file, shared_file_upload_fixture, mock_block
 ):
-    # Include a deleted file entry, and later assert that we have an empty FileDescriptor
-    # record returned by ``file_descriptor_tuples()``
+    # Include a deleted file entry, and later assert that we have empty metadata
+    # returned by ``files_metadata()``
     block = mock_block(
         descriptions=['The first file', 'The deleted file', 'The second file'],
         names=['File A', 'File that is deleted', 'File B'],
@@ -241,31 +241,31 @@ def test_file_descriptor_tuples_after_sharing_with_old_team(
     # go and delete the file we want to delete
     file_manager.delete_upload(1)
 
-    # team_file_descriptor_tuples() should only give back a record for the upload shared with the current team
-    actual_descriptors = file_manager.file_descriptor_tuples(include_deleted=True)
-    expected_descriptors = [
-        api.FileDescriptor(
-            download_url=None,
-            name=None,
-            description=None,
-            show_delete_button=False,
-        ),
-        api.FileDescriptor(
-            download_url=mock_get_download_url.return_value,
-            name='File B',
-            description='The second file',
-            show_delete_button=True,
-        ),
+    # files_metadata() should only give back a record for the upload shared with the current team
+    actual_metadata = file_manager.files_metadata(include_deleted=True)
+    expected_metadata = [
+        {
+            'download_url': None,
+            'name': None,
+            'description': None,
+            'show_delete_button': False,
+        },
+        {
+            'download_url': mock_get_download_url.return_value,
+            'name': 'File B',
+            'description': 'The second file',
+            'show_delete_button': True,
+        },
     ]
 
-    assert expected_descriptors == actual_descriptors
+    assert expected_metadata == actual_metadata
     mock_get_download_url.assert_called_once_with(key_b)
     mock_remove_file.assert_called_once_with(key_deleted)
 
 
 @pytest.mark.django_db
 @mock.patch('openassessment.fileupload.api.get_download_url', autospec=True)
-def test_team_file_descriptor_tuples(mock_get_download_url, shared_file_upload_fixture, mock_block):
+def test_team_files_metadata(mock_get_download_url, shared_file_upload_fixture, mock_block):
     mock_get_download_url.return_value = "some-download-url"
     block = mock_block(
         descriptions=['The first file'],
@@ -310,24 +310,24 @@ def test_team_file_descriptor_tuples(mock_get_download_url, shared_file_upload_f
 
     file_manager = api.FileUploadManager(block)
 
-    # team_file_descriptor_tuples() should only give back records for files owned by teammates
-    actual_descriptors = file_manager.team_file_descriptor_tuples()
+    # team_files_metadata() should only give back records for files owned by teammates
+    actual_metadata = file_manager.team_files_metadata()
 
-    expected_descriptors = [
-        api.TeamFileDescriptor(
-            download_url=mock_get_download_url.return_value,
-            name='File Beta',
-            description='Another file',
-            uploaded_by='some_username',
-        ),
-        api.TeamFileDescriptor(
-            download_url=mock_get_download_url.return_value,
-            name='File Delta',
-            description='Yet another file',
-            uploaded_by='some_username',
-        ),
+    expected_metadata = [
+        {
+            'download_url': mock_get_download_url.return_value,
+            'name': 'File Beta',
+            'description': 'Another file',
+            'uploaded_by': 'some_username',
+        },
+        {
+            'download_url': mock_get_download_url.return_value,
+            'name': 'File Delta',
+            'description': 'Yet another file',
+            'uploaded_by': 'some_username',
+        },
     ]
-    assert expected_descriptors == actual_descriptors
+    assert expected_metadata == actual_metadata
     mock_get_download_url.assert_has_calls([
         mock.call(key_beta),
         mock.call(key_delta),

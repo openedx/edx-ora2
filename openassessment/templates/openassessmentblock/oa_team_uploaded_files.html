@@ -1,5 +1,6 @@
 {% spaceless %}
 {% load i18n %}
+{% load oa_extras%}
 
 {% if file_upload_type %}
   <div class="{{ class_prefix }}__display__file {% if not team_file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
@@ -10,7 +11,9 @@
         {% endif %}
 
         <div class="submission__answer__files">
-        {% for file_url, file_description, file_name, owner_username in team_file_urls %}
+        {% for file in team_file_urls %}
+        {% with file_url=file|get_item:"download_url" file_description=file|get_item:"description" file_name=file|get_item:"name" owner_username=file|get_item:"uploaded_by" %}
+
             <div class="submission__answer__team__file__block submission__answer__team__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
             {% if file_url %}
                 {% if file_upload_type == "image" %}
@@ -31,6 +34,7 @@
                 [{% trans "Uploaded by" %} <strong class="emphasis">{{ owner_username }}</strong>]
             {% endif %}
             </div>
+        {% endwith %}
         {% endfor %}
         </div>
     </div>
