@@ -3,10 +3,13 @@ import logging
 
 from django.utils.functional import cached_property
 from django.core.exceptions import ObjectDoesNotExist
+from openassessment.xblock.data_conversion import list_to_conversational_format
 from xblock.exceptions import NoSuchServiceError
 from submissions.team_api import (
+    get_team_submission,
     get_team_submission_from_individual_submission,
-    get_team_submission_for_student
+    get_team_submission_for_student,
+    get_team_submission_student_ids
 )
 from submissions.errors import TeamSubmissionNotFoundError
 
@@ -105,7 +108,21 @@ class TeamMixin:
     def add_team_submission_context(
         self, context, team_submission_uuid=None, individual_submission_uuid=None
     ):
-        if not any(team_submission_uuid, individual_submission_uuid):
+        """
+        Adds team submission information to context dictionary, based on existing team submissions
+        Specifically team name and team_usernames
+
+        Params:
+            - context (dict): a context dict for rendering a page that we will add values to
+            - team_submission_uuid (string): [optional] the uuid of the team submission we want to add context info for
+            - individual_submission_uuid (string): [optional] the uuid of an individual submission that's a part of
+                                                the team submission we want to add context info for
+        
+        One of team_submission_uuid and individual_submission_uuid are required, and if they are both provided,
+        individual_submission_uuid will be ignored.
+        """
+        # import pdb; pdb.set_trace()
+        if not any((team_submission_uuid, individual_submission_uuid)):
             raise TypeError("One of team_submission_uuid or individual_submission_uuid must be provided")
 
         if team_submission_uuid:
@@ -113,10 +130,12 @@ class TeamMixin:
         elif individual_submission_uuid:
             team_submission = get_team_submission_from_individual_submission(individual_submission_uuid)
 
-        team = self.team_service.get_team(team_submission['team_id'])
+        team = self.teams_service.get_team_by_team_id(team_submission['team_id'])
         context['team_name'] = team.name
-        team_submission_usernames = [self.get_username(student_id) for student_id in team_submission['student_ids']]
-        context['team_usernames'] = team_submission_usernames
+
+        student_ids = get_team_submission_student_ids(team_submission['team_submission_uuid'])
+        usernames = [self.get_username(student_id) for student_id in student_ids]
+        context['team_usernames'] = usernames
 
     def get_team_info(self):
         """
@@ -133,6 +152,7 @@ class TeamMixin:
             try:
                 students_team_submission = get_team_submission_for_student(student_item_dict)
                 if self.team.team_id != students_team_submission['team_id']:
+                    import pdb; pdb.set_trace()
                     previous_team_name = self.teams_service.get_team_by_team_id(
                         students_team_submission['team_id']
                     ).name
