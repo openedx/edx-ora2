@@ -36,3 +36,5 @@ def get_item(dictionary, key):
     """
     if key:
         return dictionary.get(key)
+    else:
+        return None
