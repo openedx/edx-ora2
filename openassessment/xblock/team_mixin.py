@@ -106,7 +106,7 @@ class TeamMixin:
         return self.is_course_staff or self.in_studio_preview or self.has_team()
 
     def add_team_submission_context(
-        self, context, team_submission_uuid=None, individual_submission_uuid=None
+        self, context, team_submission_uuid=None, individual_submission_uuid=None, transform_usernames=False
     ):
         """
         Adds team submission information to context dictionary, based on existing team submissions
@@ -121,10 +121,9 @@ class TeamMixin:
         One of team_submission_uuid and individual_submission_uuid are required, and if they are both provided,
         individual_submission_uuid will be ignored.
         """
-        # import pdb; pdb.set_trace()
         if not any((team_submission_uuid, individual_submission_uuid)):
             raise TypeError("One of team_submission_uuid or individual_submission_uuid must be provided")
-
+        # import pdb; pdb.set_trace()
         if team_submission_uuid:
             team_submission = get_team_submission(team_submission_uuid)
         elif individual_submission_uuid:
@@ -135,6 +134,8 @@ class TeamMixin:
 
         student_ids = get_team_submission_student_ids(team_submission['team_submission_uuid'])
         usernames = [self.get_username(student_id) for student_id in student_ids]
+        if transform_usernames:
+            usernames = list_to_conversational_format(usernames)
         context['team_usernames'] = usernames
 
     def get_team_info(self):

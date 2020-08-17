@@ -17,6 +17,7 @@ TEAMSET_ID = 'teamset-1-id'
 TEAMSET_NAME = 'teamset-1-name'
 
 MOCK_TEAM_MEMBER_USERNAMES = ['UserA', 'UserB', 'UserC']
+MOCK_TEAM_MEMBER_USERNAMES_CONV = 'UserA, UserB, and UserC'
 MOCK_TEAM_MEMBER_STUDENT_IDS = ['ua-1111', 'ub-2222', 'uc-3333']
 MOCK_TEAM_NAME = 'TeamName'
 MOCK_TEAM_NAME_2 = 'TeamName2'
@@ -241,15 +242,22 @@ class TeamMixinTest(TestCase):
         'openassessment.xblock.team_mixin.get_team_submission_student_ids',
         return_value=MOCK_TEAM_MEMBER_STUDENT_IDS
     )
-    def test_add_team_submission_context__team_submission(self, _1, _2):
+    @ddt.data(False, True)
+    def test_add_team_submission_context__team_submission(self, _1, _2, transform_usernames):
         block = MockBlock()
         context = {}
-        block.add_team_submission_context(context, team_submission_uuid='some-team-submission-uuid')
+        block.add_team_submission_context(
+            context,
+            team_submission_uuid='some-team-submission-uuid',
+            transform_usernames=transform_usernames
+        )
         self.assertDictEqual(
             context,
             {
                 'team_name': MOCK_TEAM_NAME,
-                'team_usernames': MOCK_TEAM_MEMBER_USERNAMES
+                'team_usernames': (
+                    MOCK_TEAM_MEMBER_USERNAMES_CONV if transform_usernames else MOCK_TEAM_MEMBER_USERNAMES
+                )
             }
         )
 

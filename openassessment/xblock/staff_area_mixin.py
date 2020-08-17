@@ -218,6 +218,10 @@ class StaffAreaMixin:
                     submission_context = self.get_student_submission_context(
                         self.get_username(anonymous_student_id), submission
                     )
+                    if self.is_team_assignment():
+                        self.add_team_submission_context(
+                            submission_context, individual_submission_uuid=submission['uuid'], transform_usernames=True
+                        )
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._(u"Error loading the checked out learner response."))
@@ -292,9 +296,6 @@ class StaffAreaMixin:
                         ))
                     context['staff_file_urls'] = self.get_all_upload_urls_for_user(student_username)
 
-            if self.teams_enabled:
-                self.add_team_submission_context(context, individual_submission_uuid=submission['uuid'])
-
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
 
@@ -314,7 +315,7 @@ class StaffAreaMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
-
+        # import pdb; pdb.set_trace()
         anonymous_user_id = None
         student_item = None
         submissions = None
@@ -344,14 +345,20 @@ class StaffAreaMixin:
         # Add team info to context
         context['team_name'] = None
         if anonymous_user_id and self.is_team_assignment():
-            try:
-                context['team_name'] = getattr(self.get_team_for_anonymous_user(anonymous_user_id), 'name', None)
-            except ObjectDoesNotExist:
-                # A student outside of the course will not exist and is valid
-                pass
+            if submission_uuid:
+                self.add_team_submission_context(
+                    context, individual_submission_uuid=submission_uuid
+                )
+            else:
+                try:
+                    context['team_name'] = getattr(self.get_team_for_anonymous_user(anonymous_user_id), 'name', None)
+                except ObjectDoesNotExist:
+                    # A student outside of the course will not exist and is valid
+                    pass
 
         path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
+
 
     def add_submission_context(self, submission_uuid, context):
         """
