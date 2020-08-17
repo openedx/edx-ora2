@@ -92,12 +92,26 @@ class LeaderboardMixin:
                     if file_download_url:
                         file_description = descriptions[idx] if idx < len(descriptions) else ''
                         file_name = file_names[idx] if idx < len(file_names) else ''
-                        score['files'].append((file_download_url, file_description, file_name, False))
+                        score['files'].append(
+                            {
+                                'download_url': file_download_url,
+                                'description': file_description,
+                                'name': file_name,
+                                'show_delete_button': False
+                            }
+                        )
 
             elif 'file_key' in score['content']:
                 file_download_url = self._get_file_download_url(score['content']['file_key'])
                 if file_download_url:
-                    score['files'].append((file_download_url, '', '', False))
+                    score['files'].append(
+                        {
+                            'download_url': file_download_url,
+                            'description': '',
+                            'name': '',
+                            'show_delete_button': False
+                        }
+                    )
             if 'text' in score['content'] or 'parts' in score['content']:
                 submission = {'answer': score.pop('content')}
                 score['submission'] = create_submission_dict(submission, self.prompts)
