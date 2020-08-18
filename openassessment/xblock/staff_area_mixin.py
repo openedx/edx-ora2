@@ -315,7 +315,6 @@ class StaffAreaMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
-        # import pdb; pdb.set_trace()
         anonymous_user_id = None
         student_item = None
         submissions = None

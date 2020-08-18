@@ -1109,36 +1109,55 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['team_name'])
 
     @scenario('data/team_submission.xml', user_id='StaffMember')
-    def test_staff_delete_student_state_for_team_assessment(self, xblock):
+    def test_staff_area_student_info__different_team(self, xblock):
         """
         If a user has submitted with a team, and then moved to another team,
         test that a staff member entering their username will be shown their submission
         rather than their new team's submission.
         """
-        # Setup the xblock, but don't create team submissions 
+        # Setup the xblock, but don't create team submissions
         self._setup_xblock(xblock, team=True, anonymous_user_id='StaffMember')
 
-        status_counts, total_submissions = xblock.get_team_workflow_status_counts()
-        self.assertEqual(total_submissions, 1)
-        status_counts = self._parse_workflow_status_counts(status_counts)
-        self.assertEqual(status_counts['teams'], 1)
-
-        # When I clear the team's state
-        xblock.clear_student_state(
-            MOCK_TEAM_MEMBER_STUDENT_IDS[0],
-            'test_course',
-            xblock.scope_ids.usage_id,
-            STUDENT_ITEM['student_id']
+        # Create a team submission that UserA has already been a part of
+        arbitrary_user = UserFactory.create()
+        other_team_student_ids = [MOCK_TEAM_MEMBER_STUDENT_IDS[0], 'someother-teammate-studentid', 'a-third-person-id']
+        other_team_id = 'this-is-some-other-team-s-team-id'
+        other_team_name = 'some-other-team-name'
+        existing_team_submission = self._create_team_submission(
+            TEAMMATE_ITEM['course_id'],
+            xblock.location,
+            other_team_id,
+            arbitrary_user.id,
+            other_team_student_ids,
+            {'text': 'Previously existing team submission answer'}
         )
 
-        # Then the submission goes into cancelled state
-        status_counts, total_submissions = xblock.get_team_workflow_status_counts()
-        self.assertEqual(total_submissions, 1)
-        status_counts = self._parse_workflow_status_counts(status_counts)
-        self.assertEqual(status_counts['cancelled'], 1)
+        # Create a team submission for the test team, excluding UserA
+        test_team_submission = self._create_team_submission(
+            TEAMMATE_ITEM['course_id'],
+            xblock.location,
+            MOCK_TEAM_ID,
+            arbitrary_user.id,
+            MOCK_TEAM_MEMBER_STUDENT_IDS[1:],
+            {'text': "Test team's submission without User A"}
+        )
 
-        # And the submissions are cleared to allow a new submission workflow
-        self.assertEqual(xblock.get_team_workflow_info(), {})
+        mock_team = MagicMock()
+        mock_team.configure_mock(name=other_team_name)
+        # Ideally we could do a full integration test of this, but asserting that this
+        # is called with the desired parameters is still a sound test
+        with patch.object(MockTeamsService, 'get_team_by_team_id') as mock_get_team:
+            mock_get_team.return_value = mock_team
+            _, context = xblock.get_student_info_path_and_context(MOCK_TEAM_MEMBER_USERNAMES[0])
+            mock_get_team.assert_called_with(other_team_id)
+
+        self.assertEqual(context['team_name'], other_team_name)
+        expected_usernames = list(other_team_student_ids)
+        expected_usernames[0] = MOCK_TEAM_MEMBER_USERNAMES[0]
+        self.assertEqual(
+            set(context['team_usernames']),
+            set(expected_usernames)
+        )
 
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
@@ -1383,12 +1402,21 @@ class TestCourseStaff(XBlockHandlerTestCase):
             anonymous_user_ids_for_team = MOCK_TEAM_MEMBER_STUDENT_IDS
             xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)
 
+            # For both functions, map values in MOCK_TEAM_MEMBER_STUDENT_IDS to values in MOCK_TEAM_MEMBER_USERNAMES,
+            # and if the parameters are not in those, just return the value itself. These are only defined in the 
+            # team case because otherwise MOCK_TEAM_MEMBER_(STUDENT_IDS|USERNAMES) have no meaning.
             def mock_get_username(student_id):
                 if student_id in MOCK_TEAM_MEMBER_STUDENT_IDS:
                     return MOCK_TEAM_MEMBER_USERNAMES[MOCK_TEAM_MEMBER_STUDENT_IDS.index(student_id)]
                 return student_id
 
+            def mock_get_anonymous_id(username, course_id):
+                if username in MOCK_TEAM_MEMBER_USERNAMES:
+                    return MOCK_TEAM_MEMBER_STUDENT_IDS[MOCK_TEAM_MEMBER_USERNAMES.index(username)]
+                return username
+
             xblock.get_username = Mock(side_effect=mock_get_username)
+            xblock.get_anonymous_user_id = Mock(side_effect=mock_get_anonymous_id)
 
     @staticmethod
     def _verify_user_state_usage_log_present(logger, **kwargs):
