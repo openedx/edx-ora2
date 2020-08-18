@@ -12,6 +12,7 @@ from openassessment.workflow.models import AssessmentWorkflowCancellation
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
+
 class TeamWorkflowMixin:
     """
     Handle OpenAssessment, team centric XBlock requests to the Workflow API.

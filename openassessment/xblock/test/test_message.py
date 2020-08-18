@@ -929,7 +929,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         mock_teamset.configure_mock(name='Teamset Name')
         xblock.teamset_config = mock_teamset
 
-        expected_context = { 'xblock_id': xblock.scope_ids.usage_id }
+        expected_context = {'xblock_id': xblock.scope_ids.usage_id}
         if status is None:
             expected_context['teamset_name'] = 'Teamset Name'
         elif status in ('done', 'teams'):

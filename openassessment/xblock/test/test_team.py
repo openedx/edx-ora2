@@ -216,7 +216,7 @@ class TeamMixinTest(TestCase):
         block = MockBlock()
         block.selected_teamset_id = 'some-other-teamset'
         self.assertIsNone(block.teamset_config)
-    
+
     @mock.patch(
         'openassessment.xblock.team_mixin.get_team_submission_from_individual_submission',
         return_value=MOCK_TEAM_SUBMISSION

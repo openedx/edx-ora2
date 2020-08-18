@@ -359,7 +359,6 @@ class StaffAreaMixin:
         path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
 
-
     def add_submission_context(self, submission_uuid, context):
         """
         Add the submission information (self asssessment, peer assessments, final grade, etc.)

@@ -1115,8 +1115,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         test that a staff member entering their username will be shown their submission
         rather than their new team's submission.
         """
-        # Setup the xblock, but 
-        self._setup_xblock_and_create_submission(xblock, team=True, anonymous_user_id='StaffMember')
+        # Setup the xblock, but don't create team submissions 
+        self._setup_xblock(xblock, team=True, anonymous_user_id='StaffMember')
 
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
         self.assertEqual(total_submissions, 1)
@@ -1361,9 +1361,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 'files_names': kwargs.get('files_names', [])
             }, ['staff'])
 
-    
     def _setup_xblock(self, xblock, anonymous_user_id='Bob', team=False, has_team=True, **kwargs):
-        """ 
+        """
         Setup an xblock for teams / individual testing without creating a submission
         """
         xblock.xmodule_runtime = self._create_mock_runtime(
@@ -1390,7 +1389,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 return student_id
 
             xblock.get_username = Mock(side_effect=mock_get_username)
-
 
     @staticmethod
     def _verify_user_state_usage_log_present(logger, **kwargs):

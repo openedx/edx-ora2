@@ -13,6 +13,7 @@ from submissions.team_api import (
 )
 from submissions.errors import TeamSubmissionNotFoundError
 
+
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -116,8 +117,11 @@ class TeamMixin:
             - context (dict): a context dict for rendering a page that we will add values to
             - team_submission_uuid (string): [optional] the uuid of the team submission we want to add context info for
             - individual_submission_uuid (string): [optional] the uuid of an individual submission that's a part of
-                                                the team submission we want to add context info for
-        
+                                                   the team submission for which we want to add context info
+            - transform_usernames (bool): [optional default: False] If False, context['team_usernames'] will be a list
+                                          of username strings. If True, it will be a string, in the form
+                                          "Username1, Username2, ... UsernameN, and UsernameN+1"
+
         One of team_submission_uuid and individual_submission_uuid are required, and if they are both provided,
         individual_submission_uuid will be ignored.
         """
