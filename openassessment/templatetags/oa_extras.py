@@ -26,15 +26,3 @@ def link_and_linebreak(text):
         escaped_text = conditional_escape(text)
         return mark_safe(linebreaks(bleach.linkify(escaped_text, callbacks=[callbacks.target_blank])))
     return None
-
-
-@register.filter()
-def get_item(dictionary, key):
-    """
-    Get values from a dictionary in Django template.
-    Usage example: {{ your_dict|get_item:your_key }}
-    """
-    if key:
-        return dictionary.get(key)
-    else:
-        return None
