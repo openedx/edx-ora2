@@ -119,7 +119,11 @@ class TestGrader:
             )
             # If execution faced error, stop processing
             if run_output['errors']:
-                output['error'] = run_output['errors']
+                try:
+                    output_error = run_output['errors'][0]
+                except IndexError:
+                    output_error = run_output['errors']
+                output['error'] = self.truncate_error_output(output_error)
                 break
             if run_output['correct']:
                 output['correct'] += 1
@@ -194,7 +198,7 @@ class TestGrader:
             compiled_file_full_name_with_path = code_full_file_name + '.o'
             if not compiled_file_full_name_with_path.startswith('/'):
                 compiled_file_full_name_with_path = '/' + compiled_file_full_name_with_path
-            self.run_as_subprocess('g++ ' + code_full_file_name + ' -o ' + compiled_file_full_name_with_path + ' -lcurl -ljsoncpp', compiling=True)
+            self.run_as_subprocess('g++ ' + code_full_file_name + ' -o ' + compiled_file_full_name_with_path, compiling=True)
             output = self.run_as_subprocess(compiled_file_full_name_with_path + " " + input_file, running_code=True, timeout=timeout)
 
         else:
@@ -262,3 +266,13 @@ class TestGrader:
             return result
         except Exception as e:
             return self.respond_with_error(str(e))
+
+    def truncate_error_output(self, output):
+        """
+        Truncate error output to last 150 lines if it is very long.
+        """
+        if len(output.split('\n')) > 150:
+            actual_output = output.split("\n")[-150:]
+            actual_output.append("... Extra output Trimmed.")
+            return "\n".join(actual_output)
+        return output
