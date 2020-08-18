@@ -731,8 +731,8 @@ class SubmissionMixin:
         file_urls = None
 
         if self.file_upload_type:
-            context['file_urls'] = self.file_manager.files_metadata(include_deleted=True)
-            context['team_file_urls'] = self.file_manager.team_files_metadata()
+            context['file_urls'] = self.file_manager.file_descriptors(include_deleted=True)
+            context['team_file_urls'] = self.file_manager.team_file_descriptors()
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 

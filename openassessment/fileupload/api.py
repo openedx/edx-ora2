@@ -4,6 +4,7 @@ associated with submissions. This can be used to upload new files, manage
 URLs of existing files, and delete files.
 """
 
+from collections import namedtuple
 import json
 import logging
 
@@ -210,6 +211,10 @@ class FileUpload:
         return self._to_dict() == other._to_dict()  # pylint: disable=protected-access
 
 
+FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'show_delete_button'])
+TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'uploaded_by'])
+
+
 class FileUploadManager:
     """
     Manages the CRUD operations of file uploads
@@ -306,17 +311,18 @@ class FileUploadManager:
             ) for shared_upload in shared_uploads_from_other_users
         ]
 
-    def files_metadata(self, include_deleted=False):
+    def file_descriptors(self, include_deleted=False):
         """
-        Get a dictionary of metadata for a file upload:
-        - download_url
-        - description
-        - name
-        - owner
+        Used in the response template context to provide file information
+        (file URL, description, name, show_delete_button) for each uploaded
+        file in this block.
+
+        If self.block is team-enabled, this will return only entries for files
+        that have been shared with the block's current user's team.
         """
         team_id = self.block.team.team_id if self.block.has_team() else None
 
-        files_metadata = []
+        descriptors = []
 
         for upload in self.get_uploads(include_deleted=include_deleted):
             show_delete_button = bool(upload.exists)
@@ -331,27 +337,27 @@ class FileUploadManager:
                     shared_file=shared_upload,
                 )
 
-            files_metadata.append({
-                "download_url": upload.download_url,
-                "description": upload.description,
-                "name": upload.name,
-                "show_delete_button": show_delete_button,
-            })
+            descriptors.append(FileDescriptor(
+                download_url=upload.download_url,
+                description=upload.description,
+                name=upload.name,
+                show_delete_button=show_delete_button,
+            )._asdict())
 
-        return files_metadata
+        return descriptors
 
-    def team_files_metadata(self):
+    def team_file_descriptors(self):
         """
-        Returns metadata of files owned by other team members
+        Returns the list of TeamFileDescriptors owned by other team members
         shown to a user when self.block is a team assignment.
         """
         return [
-            {
-                'download_url': upload.download_url,
-                'description': upload.description,
-                'name': upload.name,
-                'uploaded_by': self.block.get_username(upload.student_id)
-            }
+            TeamFileDescriptor(
+                download_url=upload.download_url,
+                description=upload.description,
+                name=upload.name,
+                uploaded_by=self.block.get_username(upload.student_id)
+            )._asdict()
             for upload in self.get_team_uploads()
         ]
 

@@ -185,10 +185,10 @@ class FileUploadManagerTests(TestCase):
             mock_default_storage.exists.return_value = True
             other_users_file_manager = FileUploadManager(other_users_block)
 
-            actual_metadata = other_users_file_manager.team_files_metadata()
-            self.assertEqual(2, len(actual_metadata))
-            for metadata in actual_metadata:
-                self.assertEqual(mock_default_storage.url.return_value, metadata['download_url'])
+            actual_descriptors = other_users_file_manager.team_file_descriptors()
+            self.assertEqual(2, len(actual_descriptors))
+            for descriptor in actual_descriptors:
+                self.assertEqual(mock_default_storage.url.return_value, descriptor['download_url'])
 
             actual_file_uploads = other_users_file_manager.get_team_uploads()
             self.assertEqual(2, len(actual_file_uploads))
