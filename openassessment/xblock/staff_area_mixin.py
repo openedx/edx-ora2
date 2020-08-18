@@ -14,7 +14,7 @@ from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
+from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 
 from .user_data import get_user_preferences

@@ -950,14 +950,18 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_delete_student_state_for_team_assessment(self, xblock):
         # Given a team with a submission
         self._setup_xblock_and_create_submission(xblock, team=True)
-
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
         self.assertEqual(total_submissions, 1)
         status_counts = self._parse_workflow_status_counts(status_counts)
         self.assertEqual(status_counts['teams'], 1)
 
         # When I clear the team's state
-        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, STUDENT_ITEM['student_id'])
+        xblock.clear_student_state(
+            MOCK_TEAM_MEMBER_STUDENT_IDS[0],
+            'test_course',
+            xblock.scope_ids.usage_id,
+            STUDENT_ITEM['student_id']
+        )
 
         # Then the submission goes into cancelled state
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
@@ -980,7 +984,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self._setup_xblock_and_create_submission(xblock, team=True)
 
         # When we clear team state
-        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, STUDENT_ITEM['student_id'])
+        xblock.clear_student_state(
+            MOCK_TEAM_MEMBER_STUDENT_IDS[0],
+            'test_course',
+            xblock.scope_ids.usage_id,
+            STUDENT_ITEM['student_id']
+        )
 
         # Then we delete files for the team
         delete_files_patch.assert_called_with(STUDENT_ITEM['course_id'], xblock.scope_ids.usage_id, MOCK_TEAM_ID)
@@ -1123,7 +1132,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         other_team_student_ids = [MOCK_TEAM_MEMBER_STUDENT_IDS[0], 'someother-teammate-studentid', 'a-third-person-id']
         other_team_id = 'this-is-some-other-team-s-team-id'
         other_team_name = 'some-other-team-name'
-        existing_team_submission = self._create_team_submission(
+        self._create_team_submission(
             TEAMMATE_ITEM['course_id'],
             xblock.location,
             other_team_id,
@@ -1133,7 +1142,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         # Create a team submission for the test team, excluding UserA
-        test_team_submission = self._create_team_submission(
+        self._create_team_submission(
             TEAMMATE_ITEM['course_id'],
             xblock.location,
             MOCK_TEAM_ID,
@@ -1359,7 +1368,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         """
         A shortcut method to setup ORA xblock and add a user submission or a team submission to the block.
         """
-        self._setup_xblock(xblock, anonymous_user_id=anonymous_user_id, team=team, has_team=has_team, **kwargs)
+        self._setup_xblock(xblock, anonymous_user_id=anonymous_user_id, team=team, has_team=has_team)
         if team:
             arbitrary_test_user = UserFactory.create()
             return self._create_team_submission(
@@ -1380,7 +1389,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 'files_names': kwargs.get('files_names', [])
             }, ['staff'])
 
-    def _setup_xblock(self, xblock, anonymous_user_id='Bob', team=False, has_team=True, **kwargs):
+    def _setup_xblock(self, xblock, anonymous_user_id='Bob', team=False, has_team=True):
         """
         Setup an xblock for teams / individual testing without creating a submission
         """
@@ -1403,14 +1412,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)
 
             # For both functions, map values in MOCK_TEAM_MEMBER_STUDENT_IDS to values in MOCK_TEAM_MEMBER_USERNAMES,
-            # and if the parameters are not in those, just return the value itself. These are only defined in the 
+            # and if the parameters are not in those, just return the value itself. These are only defined in the
             # team case because otherwise MOCK_TEAM_MEMBER_(STUDENT_IDS|USERNAMES) have no meaning.
             def mock_get_username(student_id):
                 if student_id in MOCK_TEAM_MEMBER_STUDENT_IDS:
                     return MOCK_TEAM_MEMBER_USERNAMES[MOCK_TEAM_MEMBER_STUDENT_IDS.index(student_id)]
                 return student_id
 
-            def mock_get_anonymous_id(username, course_id):
+            def mock_get_anonymous_id(username, _):
                 if username in MOCK_TEAM_MEMBER_USERNAMES:
                     return MOCK_TEAM_MEMBER_STUDENT_IDS[MOCK_TEAM_MEMBER_USERNAMES.index(username)]
                 return username

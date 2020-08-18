@@ -3,10 +3,10 @@ Basic tests for teams functionality of the ORA XBlock.
 """
 
 from unittest import TestCase
+from uuid import uuid4
 
 import ddt
 import mock
-from uuid import uuid4
 
 from mock import patch
 from django.core.exceptions import ObjectDoesNotExist
