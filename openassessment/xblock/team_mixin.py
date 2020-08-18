@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
 from submissions.team_api import (
     get_team_submission,
+    get_team_submission_for_team,
     get_team_submission_from_individual_submission,
     get_team_submission_for_student,
     get_team_submission_student_ids
@@ -188,3 +189,16 @@ class TeamMixin:
         """
         team_submission = get_team_submission_from_individual_submission(individual_submission_uuid)
         return team_submission['team_submission_uuid']
+
+    def does_team_have_submission(self, team_id):
+        try:
+            student_item_dict = self.get_student_item_dict()
+            get_team_submission_for_team(
+                student_item_dict['course_id'],
+                student_item_dict['item_id'],
+                team_id
+            )
+            # If there's no submission, we will raise a TeamSubmissionNotFoundError
+            return True
+        except TeamSubmissionNotFoundError:
+            return False

@@ -1328,6 +1328,57 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
         self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
 
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_team_has_already_submitted(self, xblock):
+        """
+        Test that if a user is on a team hat has already submitted, but they themself have not submitted,
+        the correct page is rendered.
+        """
+        self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Create a submission for the team, but without r5.
+        arbitrary_user = get_user_model().objects.create_user(username='someuser', password='asdfasdfasf')
+        self._create_team_submission_and_workflow(
+            'test_course',
+            xblock.scope_ids.usage_id,
+            MOCK_TEAM_ID,
+            arbitrary_user.id,
+            ['rl', 'r2'],
+            {'text': 'This is the answer'},
+        )
+
+        # Assert that we return the 'team already submitted' path
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_team_already_submitted.html',
+            {
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
+                'allow_latex': False,
+                'team_id': MOCK_TEAM_ID,
+                'user_timezone': None,
+                'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
+                'file_upload_response': None,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'file_upload_type': None,
+                'submit_enabled': False,
+                'prompts_type': 'text',
+                'user_language': None,
+                'enable_delete_files': True,
+                'team_url': 'rebel_alliance.org',
+                'save_status': 'This response has not been saved.',
+                'team_name': 'Red Squadron',
+                'text_response': 'required'
+            }
+        )
+
     def _create_team_submission_and_workflow(
         self, course_id, item_id, team_id, submitter_id, team_member_student_ids, answer
     ):
@@ -1362,7 +1413,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         """
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
-
         path, context = xblock.submission_path_and_context()
         self.maxDiff = None  # pylint: disable=invalid-name
         self.assertEqual(path, expected_path)
