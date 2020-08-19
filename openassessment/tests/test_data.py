@@ -4,18 +4,19 @@ Tests for openassessment data aggregation.
 """
 
 import csv
-from io import StringIO
+from io import StringIO, BytesIO
 import json
 import os.path
+import zipfile
 
 import ddt
-from mock import Mock, patch
+from mock import call, Mock, patch
 
 from django.core.management import call_command
 
 from submissions import api as sub_api, team_api as team_sub_api
 import openassessment.assessment.api.peer as peer_api
-from openassessment.data import CsvWriter, OraAggregateData
+from openassessment.data import CsvWriter, OraAggregateData, OraDownloadData
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
 from openassessment.workflow import api as workflow_api, team_api as team_workflow_api
@@ -791,3 +792,169 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.assertEqual(data[ITEM_ID], {'total': 2, 'peer': 2, 'staff': 0})
         self.assertEqual(data[item_id2], {'total': 1, 'peer': 1, 'staff': 0})
         self.assertEqual(data[item_id3], {'total': 1, 'peer': 1, 'staff': 0})
+
+
+@ddt.ddt
+class TestOraDownloadDataIntegration(TransactionCacheResetTest):
+    def setUp(self):
+        super().setUp()
+        self.maxDiff = None  # pylint: disable=invalid-name
+
+        self.submission = self._create_submission(STUDENT_ITEM)
+        self.scorer_submission = self._create_submission(SCORER_ITEM)
+
+        self.file_name_1 = 'file_name_1.jpg'
+        self.file_name_2 = 'file_name_2.pdf'
+        self.file_name_3 = 'file_name_3.png'
+
+        self.file_key_1 = '{}/{}/{}'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
+        self.file_key_2 = '{}/{}/{}/1'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
+        self.file_key_3 = '{}/{}/{}/2'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
+
+        self.file_description_1 = 'Some Description 1'
+        self.file_description_2 = 'Some Description 2'
+        self.file_description_3 = 'Some Description 3'
+
+        self.file_size_1 = 2 ** 20
+        self.file_size_2 = 2 ** 21
+        self.file_size_3 = 2 ** 22
+
+        self.answer_text = 'First Response'
+        self.answer = {
+            'parts': [{'text': self.answer_text}],
+            'file_keys': [
+                self.file_key_1,
+                self.file_key_2,
+                self.file_key_3,
+            ],
+            'files_descriptions': [
+                self.file_description_1,
+                self.file_description_2,
+                self.file_description_3],
+            'files_names': [self.file_name_1, self.file_name_2, self.file_name_3],
+            'files_sizes': [self.file_size_1, self.file_size_2, self.file_size_3],
+        }
+
+        self.submission_files_data = [
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': STUDENT_ID,
+                'key': self.file_key_1,
+                'name': self.file_name_1,
+                'type': OraDownloadData.ATTACHMENT,
+                'description': self.file_description_1,
+                'size': self.file_size_1,
+                'file_path': '{}/{}/{}/attachments/{}'.format(
+                    COURSE_ID, ITEM_ID, STUDENT_ID, self.file_name_1
+                ),
+            },
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': STUDENT_ID,
+                'key': self.file_key_2,
+                'name': self.file_name_2,
+                'type': OraDownloadData.ATTACHMENT,
+                'description': self.file_description_2,
+                'size': self.file_size_2,
+                'file_path': '{}/{}/{}/attachments/{}'.format(
+                    COURSE_ID, ITEM_ID, STUDENT_ID, self.file_name_2
+                ),
+            },
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': STUDENT_ID,
+                'key': self.file_key_3,
+                'name': self.file_name_3,
+                'type': OraDownloadData.ATTACHMENT,
+                'description': self.file_description_3,
+                'size': self.file_size_3,
+                'file_path': '{}/{}/{}/attachments/{}'.format(
+                    COURSE_ID, ITEM_ID, STUDENT_ID, self.file_name_3
+                ),
+            },
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': STUDENT_ID,
+                'key': '',
+                'name': 'part_0.txt',
+                'type': OraDownloadData.TEXT,
+                'description': 'Submission text.',
+                'content': self.answer_text,
+                'size': len(self.answer_text),
+                'file_path': '{}/{}/{}/{}'.format(
+                    COURSE_ID, ITEM_ID, STUDENT_ID, 'part_0.txt'
+                ),
+            },
+        ]
+
+    def _create_submission(self, student_item_dict, steps=None):
+        """
+        Creates a submission and initializes a peer grading workflow.
+        """
+        submission = sub_api.create_submission(student_item_dict, ANSWER)
+        submission_uuid = submission['uuid']
+        peer_api.on_start(submission_uuid)
+        workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
+        return submission
+
+    def test_collect_ora2_submission_files(self):
+        submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
+        submission.answer = self.answer
+        submission.save()
+
+        # answer for scorer submission is just a string, and `collect_ora2_submission_files`
+        # raises exception because of it, so we change it to empty dict
+        scorer_submission = sub_api._get_submission_model(  # pylint: disable=protected-access
+            self.scorer_submission['uuid']
+        )
+        scorer_submission.answer = {}
+        scorer_submission.save()
+
+        assert list(OraDownloadData.collect_ora2_submission_files(COURSE_ID)) == self.submission_files_data
+
+    def test_create_zip_with_attachments(self):
+        file = BytesIO()
+
+        file_content = b'file_content'
+
+        with patch(
+            'openassessment.data.OraDownloadData._download_file_by_key', return_value=file_content
+        ) as download_mock:
+            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+
+            download_mock.assert_has_calls([
+                call(self.file_key_1),
+                call(self.file_key_2),
+                call(self.file_key_3),
+            ])
+
+        zip_file = zipfile.ZipFile(file)
+
+        # archive should contain three attachments, one part text file and one csv
+        self.assertEqual(len(zip_file.infolist()), 5)
+
+        # check that all attachments have been written to the archive
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[0]['file_path']),
+            file_content
+        )
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[1]['file_path']),
+            file_content
+        )
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[2]['file_path']),
+            file_content
+        )
+
+        # check that all texts are also here
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[3]['file_path']),
+            self.answer_text.encode('utf-8')
+        )
+
+        self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
