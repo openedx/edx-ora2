@@ -93,24 +93,24 @@ class LeaderboardMixin:
                         file_description = descriptions[idx] if idx < len(descriptions) else ''
                         file_name = file_names[idx] if idx < len(file_names) else ''
                         score['files'].append(
-                            {
-                                'download_url': file_download_url,
-                                'description': file_description,
-                                'name': file_name,
-                                'show_delete_button': False
-                            }
+                            file_upload_api.FileDescriptor(
+                                download_url=file_download_url,
+                                description=file_description,
+                                name=file_name,
+                                show_delete_button=False
+                            )._asdict()
                         )
 
             elif 'file_key' in score['content']:
                 file_download_url = self._get_file_download_url(score['content']['file_key'])
                 if file_download_url:
                     score['files'].append(
-                        {
-                            'download_url': file_download_url,
-                            'description': '',
-                            'name': '',
-                            'show_delete_button': False
-                        }
+                        file_upload_api.FileDescriptor(
+                            download_url=file_download_url,
+                            description='',
+                            name='',
+                            show_delete_button=False
+                        )._asdict()
                     )
             if 'text' in score['content'] or 'parts' in score['content']:
                 submission = {'answer': score.pop('content')}
