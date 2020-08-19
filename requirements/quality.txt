@@ -36,7 +36,7 @@ docutils==0.15.2          # via -r requirements/test.txt, botocore
 ecdsa==0.14.1             # via -r requirements/test.txt, python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/test.txt
 edx-lint==1.5.0           # via -r requirements/quality.in
-edx-submissions==3.1.12   # via -r requirements/test.txt
+edx-submissions==3.2.1   # via -r requirements/test.txt
 factory-boy==2.12.0       # via -r requirements/test.txt
 faker==4.1.1              # via -r requirements/test.txt, factory-boy
 filelock==3.0.12          # via -r requirements/test.txt, tox, virtualenv
