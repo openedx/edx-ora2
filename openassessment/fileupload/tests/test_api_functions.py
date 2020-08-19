@@ -244,18 +244,18 @@ def test_file_descriptors_after_sharing_with_old_team(
     # file_descriptors() should only give back a record for the upload shared with the current team
     actual_descriptors = file_manager.file_descriptors(include_deleted=True)
     expected_descriptors = [
-        api.FileDescriptor(
-            download_url=None,
-            name=None,
-            description=None,
-            show_delete_button=False,
-        )._asdict(),
-        api.FileDescriptor(
-            download_url=mock_get_download_url.return_value,
-            name='File B',
-            description='The second file',
-            show_delete_button=True,
-        )._asdict(),
+        {
+            'download_url': None,
+            'name': None,
+            'description': None,
+            'show_delete_button': False,
+        },
+        {
+            'download_url': mock_get_download_url.return_value,
+            'name': 'File B',
+            'description': 'The second file',
+            'show_delete_button': True,
+        }
     ]
 
     assert expected_descriptors == actual_descriptors
@@ -314,18 +314,18 @@ def test_team_files_metadata(mock_get_download_url, shared_file_upload_fixture, 
     actual_descriptors = file_manager.team_file_descriptors()
 
     expected_descriptors = [
-        api.TeamFileDescriptor(
-            download_url=mock_get_download_url.return_value,
-            name='File Beta',
-            description='Another file',
-            uploaded_by='some_username',
-        )._asdict(),
-        api.TeamFileDescriptor(
-            download_url=mock_get_download_url.return_value,
-            name='File Delta',
-            description='Yet another file',
-            uploaded_by='some_username',
-        )._asdict(),
+        {
+            'download_url': mock_get_download_url.return_value,
+            'name': 'File Beta',
+            'description': 'Another file',
+            'uploaded_by': 'some_username',
+        },
+        {
+            'download_url': mock_get_download_url.return_value,
+            'name': 'File Delta',
+            'description': 'Yet another file',
+            'uploaded_by': 'some_username',
+        }
     ]
     assert expected_descriptors == actual_descriptors
     mock_get_download_url.assert_has_calls([
