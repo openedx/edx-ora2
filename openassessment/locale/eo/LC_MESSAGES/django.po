@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
+"POT-Creation-Date: 2020-08-20 16:37-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1495,6 +1495,25 @@ msgstr "Ýöü äré ön téäm  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Team Members: "
 msgstr "Téäm Mémßérs:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#, python-format
+msgid ""
+"\n"
+"                                        You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                        when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                        response and will receive the same grade for this assignment as your former teammates.\n"
+"                                        You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                        receive a grade for their submission.\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        Ýöü äré çürréntlý ön Téäm %(team_name)s. Sïnçé ýöü wéré ön Téäm %(previous_team_name)s\n"
+"                                        whén théý süßmïttéd ä réspönsé tö thïs ässïgnmént, ýöü äré sééïng Téäm %(previous_team_name)s’s\n"
+"                                        réspönsé änd wïll réçéïvé thé sämé grädé för thïs ässïgnmént äs ýöür förmér téämmätés.\n"
+"                                        Ýöü wïll nöt ßé pärt öf Téäm %(team_name)s’s süßmïssïön för thïs ässïgnmént änd wïll nöt\n"
+"                                        réçéïvé ä grädé för théïr süßmïssïön.\n"
+"                                    #"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
