@@ -13,8 +13,8 @@ from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestG
 logger = logging.getLogger(__name__)
 
 
-@task(base=LoggedTask, name="run_and_save_staff_cases_cases")
-def run_and_save_staff_cases_cases(sub_uuid, problem_name):
+@task(base=LoggedTask, name="run_and_save_staff_test_cases")
+def run_and_save_staff_test_cases(sub_uuid, problem_name):
     """
     Celery task for running staff test cases and updating the submission
     against a given uuid.
@@ -24,7 +24,7 @@ def run_and_save_staff_cases_cases(sub_uuid, problem_name):
     If staff response present, attempt saving it
     If not saved, add a default error response and log the exception
     """
-    logger.info("Kicking off run_and_save_staff_cases_cases task")
+    logger.info("Kicking off run_and_save_staff_test_cases task")
     try:
         submission = _get_submission_model(sub_uuid)
     except Exception:

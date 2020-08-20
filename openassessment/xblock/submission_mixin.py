@@ -9,7 +9,7 @@ from six.moves import range
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.tasks import run_and_save_staff_cases_cases
+from openassessment.xblock.tasks import run_and_save_staff_test_cases
 from xblock.core import XBlock
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
@@ -131,7 +131,7 @@ class SubmissionMixin(object):
                     student_sub_data,
                     saved_files_descriptions
                 )
-                run_and_save_staff_cases_cases.apply_async(args=[submission["uuid"], self.display_name])
+                run_and_save_staff_test_cases.apply_async(args=[submission["uuid"], self.display_name])
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
