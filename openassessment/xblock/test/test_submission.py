@@ -896,7 +896,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         """
         xblock.file_manager.get_uploads = Mock(return_value=[
             api.FileUpload(
-                description='file-1',
+                description='file 1 description',
                 name='file-1.pdf',
                 size=200,
                 student_id='Valchek',
@@ -917,7 +917,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         xblock.file_manager.get_team_uploads = Mock(return_value=[
             api.FileUpload(
-                description='file-5',
+                description='file 5 description',
                 name='file-5.pdf',
                 size=500,
                 student_id='Bob',
@@ -941,6 +941,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             'file-5.pdf',
             'file-1-url',
             'file-5-url',
+            'file 1 description',
+            'file 5 description',
         ]
 
         for expected_string in expected_strings:

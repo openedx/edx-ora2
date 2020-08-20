@@ -467,6 +467,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             payload = urllib.parse.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("http://www.example.com/image.jpeg", resp)
+            self.assertIn("test_description", resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_many_images_submission(self, xblock):
@@ -1309,6 +1310,11 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 }],
                 context['staff_file_urls']
             )
+
+            # Check the rendered template
+            payload = urllib.parse.urlencode({"student_username": "Bob"})
+            resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
+            self.assertIn("http://www.example.com/image.jpeg", resp)
 
     def _setup_xblock_and_create_submission(self, xblock, anonymous_user_id='Bob', team=False, has_team=True, **kwargs):
         """
