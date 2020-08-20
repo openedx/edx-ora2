@@ -18,7 +18,7 @@
         {% endif %}
         <div class="submission__answer__files">
         {% for file in file_urls %}
-            <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
+            <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}" {% if not file.download_url %} deleted {% endif %}>
             {% if file.download_url %}
                 {% if file_upload_type == "image" %}
                     {% if file.description %}

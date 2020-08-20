@@ -14,7 +14,7 @@
             <div class="submission__answer__team__file__block submission__answer__team__file__block__{{ forloop.counter0 }}" {% if not file.download_url %} deleted {% endif %}>
             {% if file.download_url %}
                 {% if file_upload_type == "image" %}
-                    {% if file_description %}
+                    {% if file.description %}
                     <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}">{{ file.description }}:</div>
                     {% endif %}
                     <div><img class="submission__answer__file submission--image" src="{{ file.download_url }}"
