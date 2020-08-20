@@ -112,10 +112,10 @@ class TeamMixin:
         if self.in_studio_preview:
             return self.STAFF_OR_PREVIEW_INFO
         elif self.has_team():
-            dict = self.get_student_item_dict()
+            student_item_dict = self.get_student_item_dict()
             previous_team_name = None
             try:
-                students_team_submission = get_team_submission_for_student(dict)
+                students_team_submission = get_team_submission_for_student(student_item_dict)
                 if self.team.team_id != students_team_submission['team_id']:
                     previous_team_name = self.teams_service.get_team_by_team_id(
                         students_team_submission['team_id']
