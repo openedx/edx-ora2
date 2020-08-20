@@ -11,6 +11,7 @@ import logging
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
+from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestGrader
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language, get_percentage
 from xblock.core import XBlock
@@ -270,7 +271,9 @@ class StaffAreaMixin(object):
         }
         if submission:
             sample_run = submission['answer']['sample_run']
-            staff_run = submission['answer']['staff_run']
+            staff_run = submission['answer'].get('staff_run')
+            if not staff_run:
+                staff_run = TestGrader.get_error_response('staff', 'Staff test case result is not available.')
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
             context['code_language'] = get_code_language(submission['answer']['language'])
