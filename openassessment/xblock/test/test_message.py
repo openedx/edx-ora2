@@ -871,7 +871,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_staff_assessment_only.xml', user_id="Linda")
+    @scenario('data/message_scenario_team_assignment.xml', user_id="Linda")
     @ddt.data(False, True)
     def test_no_team(self, xblock, teamset_found):
         status = None
@@ -901,4 +901,41 @@ class TestMessageRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, expected_path, expected_context,
             status, deadline_information, has_peers_to_grade
+        )
+
+    @scenario('data/message_scenario_team_assignment.xml', user_id="Linda")
+    @ddt.data(
+        ('done', 'openassessmentblock/message/oa_message_complete.html'),
+        ('cancelled', 'openassessmentblock/message/oa_message_unavailable.html'),
+        ('teams', 'openassessmentblock/message/oa_message_complete.html'),
+        (None, 'openassessmentblock/message/oa_message_no_team.html'),
+    )
+    @ddt.unpack
+    def test_team_submission_without_team(self, xblock, status, expected_path):
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.FUTURE),
+            'staff-assessment': (False, None, self.FAR_PAST, self.FAR_FUTURE),
+            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE)
+        }
+        # Mock out xblock fields
+        xblock.teams_enabled = True
+        xblock.selected_teamset_id = 'teamset_message_id'
+
+        # In all cases, we aren't on a team and we aren't staff
+        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=False)
+
+        # Mock out the teamset name
+        mock_teamset = mock.MagicMock()
+        mock_teamset.configure_mock(name='Teamset Name')
+        xblock.teamset_config = mock_teamset
+
+        expected_context = {'xblock_id': xblock.scope_ids.usage_id}
+        if status is None:
+            expected_context['teamset_name'] = 'Teamset Name'
+        elif status in ('done', 'teams'):
+            expected_context['waiting'] = False
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, False
         )
