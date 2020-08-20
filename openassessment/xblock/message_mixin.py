@@ -47,17 +47,16 @@ class MessageMixin:
 
         # Render the instruction message based on the status of the workflow
         # and the closed status.
-        if status in ("done", "waiting", "teams"):
+        if self.teams_enabled and not self.valid_access_to_team_assessment():
+            path, context = self.render_message_no_team()
+        elif status in ("done", "waiting"):
             path, context = self.render_message_complete(status_details)
         elif problem_is_closed or active_step_deadline_info.get('is_closed'):
             path, context = self.render_message_closed(active_step_deadline_info)
         elif status in ("self", "peer", "training"):
             path, context = self.render_message_incomplete(status, deadline_info)
         elif status is None:
-            if self.teams_enabled and not self.valid_access_to_team_assessment():
-                path, context = self.render_message_no_team()
-            else:
-                path, context = self.render_message_open(deadline_info)
+            path, context = self.render_message_open(deadline_info)
         else:
             # Default path leads to an "instruction-unavailable" block
             # Default context is empty
