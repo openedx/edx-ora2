@@ -739,6 +739,7 @@ class SubmissionMixin:
             ]
             context["team_members_with_external_submissions"] = students_with_external_submissions
             return context
+        return None
 
     def submission_path_and_context(self):
         """
