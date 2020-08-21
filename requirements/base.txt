@@ -4,37 +4,43 @@
 #
 #    make upgrade
 #
+amqp==1.4.9               # via kombu
+anyjson==0.3.3            # via kombu
 appdirs==1.4.4            # via fs
+billiard==3.3.0.23        # via celery
 bleach==3.1.5             # via -r requirements/base.in
 boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.in
+celery==3.1.26.post2      # via -r requirements/base.in, django-celery, edx-celeryutils
 certifi==2020.6.20        # via requests
 chardet==3.0.4            # via requests
 defusedxml==0.6.0         # via -r requirements/base.in
-django-model-utils==4.0.0  # via -r requirements/base.in, edx-submissions
+django-celery==3.3.1      # via -r requirements/base.in
+django-model-utils==4.0.0  # via -r requirements/base.in, edx-celeryutils, edx-submissions
 django-simple-history==2.11.0  # via -r requirements/base.in
-django==2.2.14            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2
+django==2.2.15            # via -c requirements/constraints.txt, -r requirements/base.in, django-celery, django-model-utils, edx-celeryutils, edx-i18n-tools, edx-submissions, jsonfield2
 djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
+edx-celeryutils==0.5.1    # via -r requirements/base.in
 edx-i18n-tools==0.5.3     # via -r requirements/base.in
-edx-submissions==3.1.12   # via -r requirements/base.in
+edx-submissions==3.2.0    # via -r requirements/base.in
 fs==2.0.18                # via -c requirements/constraints.txt, xblock
+future==0.18.2            # via edx-celeryutils
 html5lib==1.1             # via -r requirements/base.in
 idna==2.8                 # via -c requirements/constraints.txt, requests
-importlib-metadata==1.7.0  # via path
-jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
+jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-celeryutils, edx-submissions
+kombu==3.0.37             # via celery
 lazy==1.4                 # via -r requirements/base.in
 libsass==0.20.0           # via -r requirements/base.in
 loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
 lxml==4.5.2               # via -r requirements/base.in, xblock
 markupsafe==1.1.1         # via xblock
-more-itertools==8.4.0     # via zipp
 packaging==20.4           # via bleach
-path.py==12.4.0           # via -r requirements/base.in, edx-i18n-tools
-path==13.1.0              # via path.py
+path.py==12.5.0           # via -r requirements/base.in, edx-i18n-tools
+path==15.0.0              # via path.py
 polib==1.1.0              # via edx-i18n-tools
 pyparsing==2.4.7          # via packaging
 python-dateutil==2.4.0    # via -c requirements/constraints.txt, -r requirements/base.in, xblock
 python-swiftclient==3.10.0  # via -c requirements/constraints.txt, -r requirements/base.in
-pytz==2020.1              # via -r requirements/base.in, django, edx-submissions, fs, xblock
+pytz==2020.1              # via -r requirements/base.in, celery, django, edx-submissions, fs, xblock
 pyyaml==5.3.1             # via edx-i18n-tools, xblock
 requests==2.24.0          # via python-swiftclient
 six==1.15.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, packaging, python-dateutil, python-swiftclient, xblock
@@ -44,8 +50,7 @@ voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements
 web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock
-xblock==1.3.1             # via -r requirements/base.in
-zipp==1.0.0               # via -c requirements/constraints.txt, importlib-metadata
+xblock==1.4.0             # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

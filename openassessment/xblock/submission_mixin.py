@@ -9,13 +9,14 @@ from six.moves import range
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.tasks import run_and_save_staff_test_cases
 from xblock.core import XBlock
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from .job_sample_grader.job_sample_test_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-from .utils import get_code_language
+from .utils import get_code_language, grade_response
 
 logger = logging.getLogger(__name__)
 
@@ -88,24 +89,18 @@ class SubmissionMixin(object):
             )
 
         status = False
-        grade_output = self.grade_response_v2(data, add_staff_output=True)
+        grade_output = grade_response(data, self.display_name, add_staff_output=False)
 
         # Check if sample and staff grade output is present
         # If not, add a default error response
         try:
-            sample_run = grade_output[0]
-        except IndexError:
+            sample_run = grade_output
+        except KeyError:
             sample_run = TestGrader.get_error_response("sample", "Submission Missing")
-
-        try:
-            staff_run = grade_output[1]
-        except IndexError:
-            staff_run = TestGrader.get_error_response("staff", "Staff Submission Missing")
 
         # Add sample and staff run to submission
         data.update({
-            'sample_run': sample_run,
-            'staff_run': staff_run
+            'sample_run': sample_run
         })
 
         student_sub_data = data
@@ -136,6 +131,7 @@ class SubmissionMixin(object):
                     student_sub_data,
                     saved_files_descriptions
                 )
+                run_and_save_staff_test_cases.apply_async(args=[submission["uuid"], self.display_name])
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -200,53 +196,6 @@ class SubmissionMixin(object):
                 # some errors, then add an empty string
                 data['submission'].append('')
 
-    def grade_response(self, data, add_staff_output=False):
-        """
-        Grade the response and return appropriate output.
-        """
-        data.update({'problem_name': self.display_name})
-        grader = TestGrader()
-        output = grader.grade(data)
-        result = {self.SAMPLE_OUTPUT: '', self.SAMPLE_EXPECTED: ''}
-        if output['tests']:
-            result[self.SAMPLE_OUTPUT] = output['tests'][0][2]
-            result[self.SAMPLE_EXPECTED] = output['tests'][0][1]
-            result['correctness'] = output['correct']
-            if add_staff_output:
-                result.update({self.STAFF_OUTPUT: '', self.STAFF_EXPECTED: ''})
-                # If there is an error during the staff output generation
-                # Add that error to the submission
-                try:
-                    result[self.STAFF_OUTPUT] = output['tests'][1][2]
-                    result[self.STAFF_EXPECTED] = output['tests'][1][1]
-                except IndexError:
-                    if output['errors']:
-                        try:
-                            result[self.STAFF_OUTPUT] = output['errors'][0]
-                        except IndexError:
-                            result[self.STAFF_OUTPUT] = output['errors']
-        elif output['errors']:
-            try:
-                result[self.SAMPLE_OUTPUT] = output['errors'][0]
-            except IndexError:
-                result[self.SAMPLE_OUTPUT] = output['errors']
-        return result
-
-    def grade_response_v2(self, data, add_staff_output=False):
-        """
-        Grade the response with per file test case feature.
-        """
-        data.update({'problem_name': self.display_name})
-        grader = TestGrader()
-        output = grader.grade(data, add_staff_cases=add_staff_output)
-
-        sample_output = output[0]
-        if add_staff_output:
-            # If staff output is required, send the original result as it is.
-            return output
-        sample_output.pop('run_type')
-        return sample_output
-
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -264,7 +213,8 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
-            grade_output = self.grade_response_v2(data)
+            grade_output = grade_response(data, self.display_name)
+            grade_output.pop('run_type')
             student_sub_data = data
             try:
                 self.saved_response = json.dumps(student_sub_data)

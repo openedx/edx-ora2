@@ -6,9 +6,12 @@ edx-i18n-tools
 edx-submissions
 djangorestframework
 Xblock
+celery
 
 django
 django-simple-history
+django-celery
+edx-celeryutils
 
 # Third Party Requirements
 bleach

@@ -8,10 +8,10 @@ import uuid
 
 from collections import OrderedDict
 
-from openassessment.xblock.utils import OOP_PROBLEM_NAMES
-
 
 logger = logging.getLogger(__name__)
+
+OOP_PROBLEM_NAMES = ["call-center", "car-parking", "email-client"]
 
 
 class TestGrader:
