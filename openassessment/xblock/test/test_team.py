@@ -6,7 +6,6 @@ from unittest import TestCase
 
 import ddt
 import mock
-import pytest
 
 from mock import patch
 from django.core.exceptions import ObjectDoesNotExist
@@ -137,7 +136,6 @@ class TeamMixinTest(TestCase):
         block = MockBlock(has_team=False)
         self.assertIsNone(block.team)
 
-    @pytest.mark.django_db
     @patch('openassessment.xblock.team_mixin.get_team_submission_for_student')
     def test_get_team_info_student_has_previous_team(self, mock_student_submission):
         block = MockBlock()
@@ -157,7 +155,6 @@ class TeamMixinTest(TestCase):
             }
         )
 
-    @pytest.mark.django_db
     @patch('openassessment.xblock.team_mixin.get_team_submission_for_student')
     def test_get_team_info_student_no_previous_team(self, mock_student_submission):
         block = MockBlock()
