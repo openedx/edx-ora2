@@ -4,10 +4,9 @@ import mock
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.utils import override_settings
-from moto import mock_s3_deprecated
 
 from openassessment.assessment.models.base import SharedFileUpload
-from openassessment.fileupload.api import get_student_file_key, FileUpload, FileUploadManager
+from openassessment.fileupload.api import FileUploadManager
 
 
 class MockBlock:
@@ -185,10 +184,10 @@ class FileUploadManagerTests(TestCase):
             mock_default_storage.exists.return_value = True
             other_users_file_manager = FileUploadManager(other_users_block)
 
-            actual_descriptors = other_users_file_manager.team_file_descriptor_tuples()
+            actual_descriptors = other_users_file_manager.team_file_descriptors()
             self.assertEqual(2, len(actual_descriptors))
             for descriptor in actual_descriptors:
-                self.assertEqual(mock_default_storage.url.return_value, descriptor.download_url)
+                self.assertEqual(mock_default_storage.url.return_value, descriptor['download_url'])
 
             actual_file_uploads = other_users_file_manager.get_team_uploads()
             self.assertEqual(2, len(actual_file_uploads))

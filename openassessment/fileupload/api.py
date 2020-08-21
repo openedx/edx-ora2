@@ -311,10 +311,12 @@ class FileUploadManager:
             ) for shared_upload in shared_uploads_from_other_users
         ]
 
-    def file_descriptor_tuples(self, include_deleted=False):
+    def file_descriptors(self, include_deleted=False):
         """
-        Used in the response template context to provide a (file URL, description, name, show_delete_button boolean)
-        for each uploaded file in this block to render in the client.
+        Used in the response template context to provide file information
+        (file URL, description, name, show_delete_button) for each uploaded
+        file in this block.
+
         If self.block is team-enabled, this will return only entries for files
         that have been shared with the block's current user's team.
         """
@@ -340,11 +342,11 @@ class FileUploadManager:
                 description=upload.description,
                 name=upload.name,
                 show_delete_button=show_delete_button,
-            ))
+            )._asdict())
 
         return descriptors
 
-    def team_file_descriptor_tuples(self):
+    def team_file_descriptors(self):
         """
         Returns the list of TeamFileDescriptors owned by other team members
         shown to a user when self.block is a team assignment.
@@ -355,7 +357,7 @@ class FileUploadManager:
                 description=upload.description,
                 name=upload.name,
                 uploaded_by=self.block.get_username(upload.student_id)
-            )
+            )._asdict()
             for upload in self.get_team_uploads()
         ]
 
