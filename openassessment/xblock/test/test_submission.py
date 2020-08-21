@@ -30,6 +30,8 @@ from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
 from .base import XBlockHandlerTestCase, scenario
 from .test_staff_area import NullUserService, UserStateService
+import logging
+logger = logging.getLogger(__name__)
 
 COURSE_ID = 'test_course'
 
@@ -709,9 +711,9 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         mock_external_team_submissions.return_value = external_submissions
 
-        xblock.course_id = COURSE_ID
         xblock.get_team_info = Mock(return_value=team_info)
         xblock.xmodule_runtime = Mock(
+            course_id=COURSE_ID,
             anonymous_student_id="Red Five"
         )
         xblock.get_student_item_dict = Mock(return_value=student_item_dict)
@@ -720,6 +722,11 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         )
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
 
+        expected_context = {
+            'team_members_with_external_submissions': student_usernames,
+            'team_id': MOCK_TEAM_ID,
+            'team_info_extra': 'more team info'
+        }
         context = xblock.get_team_context({})
         mock_external_team_submissions.assert_called_with(
             COURSE_ID,
@@ -727,10 +734,14 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             MOCK_TEAM_ID,
             student_ids
         )
-        self.assertEqual(
-            context,
-            {'team_members_with_external_submissions': external_submissions}.update(team_info)
-        )
+        self.assertEqual(context, expected_context)
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_get_team_context__no_team(self, xblock):
+        team_info = None
+        xblock.get_team_info = Mock(return_value=team_info)
+        context = xblock.get_team_context({})
+        self.assertEqual(context, None)
 
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
     def test_open_no_deadline(self, xblock):
