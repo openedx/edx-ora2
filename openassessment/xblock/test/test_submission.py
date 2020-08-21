@@ -729,7 +729,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
         }
-        context = xblock.get_team_context({})
+        context = {}
+        xblock.get_team_context(context)
         mock_external_team_submissions.assert_called_with(
             COURSE_ID,
             usage_id,
