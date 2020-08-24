@@ -13,7 +13,6 @@ from xblock.exceptions import NoSuchServiceError
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
-from submissions import team_api as team_sub_api
 
 from .data_conversion import (
     create_submission_dict,
@@ -721,6 +720,7 @@ class SubmissionMixin:
             (dict): context arg with additional team-related fields
         """
 
+        from submissions import team_api
         team_info = self.get_team_info()
         if team_info:
             context.update(team_info)
@@ -730,7 +730,7 @@ class SubmissionMixin:
                 anonymous_user_id=submitter_anonymous_user_id
             )
             external_submissions = (
-                team_sub_api.get_teammates_with_submissions_from_other_teams(
+                team_api.get_teammates_with_submissions_from_other_teams(
                     self.course_id,
                     student_item_dict["item_id"],
                     team_info["team_id"],
