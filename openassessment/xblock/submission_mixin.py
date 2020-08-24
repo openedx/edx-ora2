@@ -705,14 +705,14 @@ class SubmissionMixin:
         path, context = self.submission_path_and_context()
         return self.render_assessment(path, context_dict=context)
 
-    def get_team_context(self, context):
+    def get_team_submission_context(self, context):
         """
         Populate the passed context object with team info, including a set of students on
         the team with submissions to the current item from another team, under the key
         `team_members_with_external_submissions`.
 
         Args:
-            submission_uuid (str): The uuid for the submission to retrieve.
+            context (dict): render context to add team submission context into
         Returns
             (dict): context arg with additional team-related fields
         """
@@ -834,7 +834,7 @@ class SubmissionMixin:
 
             if self.teams_enabled:
                 try:
-                    self.get_team_context(context)
+                    self.get_team_submission_context(context)
                 except ObjectDoesNotExist:
                     error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
                     logger.error(error_msg.format(

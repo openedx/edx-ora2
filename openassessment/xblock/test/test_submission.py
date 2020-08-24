@@ -689,7 +689,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
     @patch('openassessment.xblock.submission_mixin.team_sub_api.get_teammates_with_submissions_from_other_teams')
     @scenario('data/submission_open.xml', user_id="Red Five")
-    def test_get_team_context(self, xblock, mock_external_team_submissions):
+    def test_get_team_submission_context(self, xblock, mock_external_team_submissions):
         team_info = {
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
@@ -730,7 +730,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             'team_info_extra': 'more team info'
         }
         context = {}
-        xblock.get_team_context(context)
+        xblock.get_team_submission_context(context)
         mock_external_team_submissions.assert_called_with(
             COURSE_ID,
             usage_id,
@@ -740,10 +740,10 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertEqual(context, expected_context)
 
     @scenario('data/submission_open.xml', user_id="Red Five")
-    def test_get_team_context__no_team(self, xblock):
+    def test_get_team_submission_context__no_team(self, xblock):
         team_info = None
         xblock.get_team_info = Mock(return_value=team_info)
-        context = xblock.get_team_context({})
+        context = xblock.get_team_submission_context({})
         self.assertEqual(context, None)
 
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
