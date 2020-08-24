@@ -685,9 +685,14 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             }
         )
 
+    @patch('openassessment.xblock.submission_mixin.list_to_conversational_format')
     @patch('openassessment.xblock.submission_mixin.team_sub_api.get_teammates_with_submissions_from_other_teams')
     @scenario('data/submission_open.xml', user_id="Red Five")
-    def test_get_team_submission_context(self, xblock, mock_external_team_submissions):
+    def test_get_team_submission_context(
+            self,
+            xblock,
+            mock_external_team_submissions,
+            mock_formatter):
         team_info = {
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
@@ -696,8 +701,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         student_item_dict = {
             'item_id': usage_id
         }
-        student_ids = ['11111111111111', '222222222222222']
-        student_usernames = ['User 1', 'User 2']
+        student_ids = ['11111111111111', '222222222222222', '333333333333']
+        student_usernames = ['User 1', 'User 2', 'User 3']
         external_submissions = [
             {
                 'student_id': student_ids[0],
@@ -706,6 +711,10 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'student_id': student_ids[1],
                 'team_id': 'still another team',
+            },
+            {
+                'student_id': student_ids[2],
+                'team_id': 'final team',
             }
         ]
 
@@ -720,10 +729,11 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.get_username = Mock(
             side_effect=lambda student_id: student_usernames[student_ids.index(student_id)]
         )
-        xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
 
+        mock_formatter.side_effect=(lambda usernames: ','.join(usernames))
+        xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
         expected_context = {
-            'team_members_with_external_submissions': student_usernames,
+            'team_members_with_external_submissions': mock_formatter(student_usernames),
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
         }

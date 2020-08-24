@@ -14,7 +14,11 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from submissions import team_api as team_sub_api
 
-from .data_conversion import create_submission_dict, prepare_submission_for_serialization
+from .data_conversion import (
+    create_submission_dict,
+    list_to_conversational_format,
+    prepare_submission_for_serialization
+)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
@@ -732,10 +736,10 @@ class SubmissionMixin:
                 )
             )
 
-            students_with_external_submissions = [
+            team_usernames = list_to_conversational_format([
                 self.get_username(submission['student_id']) for submission in external_submissions
-            ]
-            context["team_members_with_external_submissions"] = students_with_external_submissions
+            ])
+            context["team_members_with_external_submissions"] = team_usernames
             return context
         return None
 
