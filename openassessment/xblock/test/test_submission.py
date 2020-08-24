@@ -732,7 +732,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             side_effect=lambda student_id: student_usernames[student_ids.index(student_id)]
         )
 
-        mock_formatter.side_effect=(lambda usernames: ','.join(usernames))
+        mock_formatter.side_effect = (lambda usernames: ','.join(usernames))
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
         expected_context = {
             'team_members_with_external_submissions': mock_formatter(student_usernames),
