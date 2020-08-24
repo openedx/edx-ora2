@@ -686,7 +686,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         )
 
     @patch('openassessment.xblock.submission_mixin.list_to_conversational_format')
-    @patch('openassessment.xblock.submission_mixin.team_sub_api.get_teammates_with_submissions_from_other_teams')
+    @patch('submissions.team_api.get_teammates_with_submissions_from_other_teams')
     @scenario('data/submission_open.xml', user_id="Red Five")
     def test_get_team_submission_context(
             self,
