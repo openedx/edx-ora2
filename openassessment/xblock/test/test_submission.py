@@ -436,9 +436,10 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
         # given a learner is on a team and file uploads are enabled
         mock_team = self.setup_mock_team(xblock)
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         xblock.file_upload_type = 'pdf-and-image'
 
-        xblock.file_manager.get_uploads = Mock(side_effect=lambda: [
+        xblock.file_manager.get_uploads = Mock(side_effect=lambda team_id: [
             api.FileUpload(
                 description='file-1',
                 name='file-1.pdf',
@@ -450,7 +451,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             ),
         ])
 
-        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda: [
+        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda team_id: [
             api.FileUpload(
                 description='file-5',
                 name='file-5.pdf',
