@@ -30,8 +30,6 @@ from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
 from .base import XBlockHandlerTestCase, scenario
 from .test_staff_area import NullUserService, UserStateService
-import logging
-logger = logging.getLogger(__name__)
 
 COURSE_ID = 'test_course'
 
@@ -730,7 +728,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             side_effect=lambda student_id: student_usernames[student_ids.index(student_id)]
         )
 
-        mock_formatter.side_effect = (lambda usernames: ','.join(usernames))
+        mock_formatter.side_effect = ','.join
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
         expected_context = {
             'team_members_with_external_submissions': mock_formatter(student_usernames),
