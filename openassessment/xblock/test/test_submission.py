@@ -676,7 +676,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'team_name': mock_team['team_name'],
                 'team_url': mock_team['team_url'],
                 'team_usernames': mock_team['team_usernames'],
-                'team_members_with_external_submissions': [],
+                'team_members_with_external_submissions': '',
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
