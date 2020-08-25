@@ -283,7 +283,7 @@ class FileUploadManager:
 
     def _uploads_owned_by_teammates(self, team_id):
         """
-        Returns a list of FileUpload objects owned by other members of the team.
+        Returns a list of FileUpload objects owned by other members of the given team.
         Does not include FileUploads of the current user.
         """
         shared_uploads_from_other_users = sorted(
