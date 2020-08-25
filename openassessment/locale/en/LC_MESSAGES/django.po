@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-24 17:17-0400\n"
+"POT-Creation-Date: 2020-08-25 12:39-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1177,49 +1177,59 @@ msgstr ""
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:141
+#: openassessment/templates/openassessmentblock/response/oa_response.html:135
+msgid ""
+"\n"
+"                                        have/has already submitted a "
+"response to this assignment with another team,\n"
+"                                        and will not be a part of your "
+"team's submission or assignment grade.\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:144
 msgid ""
 "Note: this is a team assignment. Make sure to coordinate with your teammates "
 "to avoid overwriting each other's work."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:148
+#: openassessment/templates/openassessmentblock/response/oa_response.html:151
 msgid "We could not save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:155
+#: openassessment/templates/openassessmentblock/response/oa_response.html:158
 msgid "Save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:159
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Your Submission Status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:171
+#: openassessment/templates/openassessmentblock/response/oa_response.html:174
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:177
+#: openassessment/templates/openassessmentblock/response/oa_response.html:180
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:181
+#: openassessment/templates/openassessmentblock/response/oa_response.html:184
 msgid "Select a file to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:183
+#: openassessment/templates/openassessmentblock/response/oa_response.html:186
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:196
+#: openassessment/templates/openassessmentblock/response/oa_response.html:199
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:203
+#: openassessment/templates/openassessmentblock/response/oa_response.html:206
 msgid "We could not submit your response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:213
+#: openassessment/templates/openassessmentblock/response/oa_response.html:216
 msgid "Submit your response and move to the next step"
 msgstr ""
 
