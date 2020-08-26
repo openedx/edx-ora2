@@ -839,17 +839,10 @@ class SubmissionMixin:
 
             if self.teams_enabled:
                 self.get_team_submission_context(context)
+                if self.does_team_have_submission(context['team_id']):
+                    no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
 
-            submit_enabled = True
-            if self.text_response == 'required' and not self.saved_response:
-                submit_enabled = False
-            if self.file_upload_response == 'required' and not file_urls:
-                submit_enabled = False
-            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
-                    and not self.saved_response and not file_urls:
-                submit_enabled = False
-            context['submit_enabled'] = submit_enabled
-            path = "openassessmentblock/response/oa_response.html"
+            path = no_workflow_path
         elif workflow["status"] == "cancelled":
             if self.teams_enabled:
                 context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
