@@ -16,6 +16,7 @@ from boto.s3.key import Key
 from moto import mock_s3_deprecated
 from django.contrib.auth import get_user_model
 from submissions import api as sub_api
+from submissions import team_api as team_sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 from submissions.models import TeamSubmission
 from openassessment.fileupload import api
@@ -435,9 +436,10 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
         # given a learner is on a team and file uploads are enabled
         mock_team = self.setup_mock_team(xblock)
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         xblock.file_upload_type = 'pdf-and-image'
 
-        xblock.file_manager.get_uploads = Mock(side_effect=lambda: [
+        xblock.file_manager.get_uploads = Mock(side_effect=lambda team_id: [
             api.FileUpload(
                 description='file-1',
                 name='file-1.pdf',
@@ -449,7 +451,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             ),
         ])
 
-        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda: [
+        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda team_id: [
             api.FileUpload(
                 description='file-5',
                 name='file-5.pdf',
@@ -1071,23 +1073,12 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
         xblock.teams_enabled = True
         xblock.is_team_assignment = Mock(return_value=True)
-        anonymous_user_ids_for_team = ['Red Five', 'Bob', 'Alice', 'Chris']
-        xblock.get_anonymous_user_ids_for_team = Mock(
-            return_value=anonymous_user_ids_for_team
-        )
         team_submission = xblock.create_team_submission(
             ('a man must have a code', 'a man must also have a towel')
         )
-        student_submissions = sub_api.get_submissions(
-            dict(
-                student_id="Chris",
-                item_id=usage_id,
-                course_id='test_course',
-                item_type='openassessment'
-            ),
-            1
-        )
-        student_submission = dict(student_submissions[0])
+
+        workflow = xblock.get_workflow_info()
+        student_submission = sub_api.get_submission(workflow['submission_uuid'])
 
         comments = "Cancelled by staff"
         staff_id = "Andy"
@@ -1300,6 +1291,57 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         )
         mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
         mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, None)
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_change_team_with_submission(self, xblock):
+        """
+        Test that if a user submits with one team, then joins another team, they will see their original submission
+
+        The user was originally part of TeamA, which was where they submitted their submission,
+        then joined TestTeam
+        """
+        self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Assert that Red Five is on our test team
+        self.assertEqual(xblock.team.name, "TeamName")
+
+        # Create Red Five's existing submission with some other team
+        arbitrary_user = get_user_model().objects.create_user(username='someuser', password='asdfasdfasf')
+        _, team_workflow = self._create_team_submission_and_workflow(
+            'test_course',
+            xblock.scope_ids.usage_id,
+            'TeamA',
+            arbitrary_user.id,
+            ['r5', 'tA1', 'tA2', 'tA3'],
+            {'text': 'This is the answer'},
+        )
+        individual_submission = sub_api.get_submission(team_workflow.submission_uuid)
+
+        # Assert that the xblock will render Red Five's existing submission rather that
+        # no submission (because TestTeam does not yet have a submission)
+        path, context = xblock.submission_path_and_context()
+        self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
+        self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
+
+    def _create_team_submission_and_workflow(
+        self, course_id, item_id, team_id, submitter_id, team_member_student_ids, answer
+    ):
+        """ Create a team submission and team workflow with the given info """
+        team_submission = team_sub_api.create_submission_for_team(
+            course_id,
+            item_id,
+            team_id,
+            submitter_id,
+            team_member_student_ids,
+            answer
+        )
+        team_workflow = team_workflow_api.create_workflow(team_submission['team_submission_uuid'])
+        return team_submission, team_workflow
 
     def _assert_path_and_context(self, xblock, expected_path, expected_context):
         """

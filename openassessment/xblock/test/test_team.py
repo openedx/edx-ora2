@@ -3,6 +3,7 @@ Basic tests for teams functionality of the ORA XBlock.
 """
 
 from unittest import TestCase
+from uuid import uuid4
 
 import ddt
 import mock
@@ -15,11 +16,18 @@ from openassessment.xblock.team_mixin import TeamMixin
 TEAMSET_ID = 'teamset-1-id'
 TEAMSET_NAME = 'teamset-1-name'
 
-MOCK_TEAM_MEMBERS = ['UserA', 'UserB', 'UserC']
+MOCK_TEAM_MEMBER_USERNAMES = ['UserA', 'UserB', 'UserC']
+MOCK_TEAM_MEMBER_USERNAMES_CONV = 'UserA, UserB, and UserC'
+MOCK_TEAM_MEMBER_STUDENT_IDS = ['ua-1111', 'ub-2222', 'uc-3333']
 MOCK_TEAM_NAME = 'TeamName'
 MOCK_TEAM_NAME_2 = 'TeamName2'
 MOCK_TEAM_ID = 'TeamID'
 MOCK_TEAM_ID_2 = 'TeamID2'
+
+MOCK_TEAM_SUBMISSION = {
+    'team_submission_uuid': str(uuid4()),
+    'team_id': MOCK_TEAM_ID,
+}
 
 
 class MockTeamsConfigurationService:
@@ -48,24 +56,23 @@ class MockTeamsService:
         # This is required because 'name' is a reserved property for mocks
         self.team.configure_mock(name=MOCK_TEAM_NAME, team_id=MOCK_TEAM_ID)
         self.team.users.all.return_value = [
-            mock.MagicMock(username=MOCK_TEAM_MEMBERS[0]),
-            mock.MagicMock(username=MOCK_TEAM_MEMBERS[1]),
-            mock.MagicMock(username=MOCK_TEAM_MEMBERS[2]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBER_USERNAMES[0]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBER_USERNAMES[1]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBER_USERNAMES[2]),
         ]
+        self.team2 = mock.MagicMock(team_id=MOCK_TEAM_ID_2)
+        # This is required because 'name' is a reserved property for mocks
+        self.team2.configure_mock(name=MOCK_TEAM_NAME_2)
 
     def get_team(self, user, course_id, teamset_id):  # pylint: disable=unused-argument
         return self.team if self.has_team else None
 
-    def get_team_by_team_id(self, team_id):  # pylint: disable=unused-argument
-        team = mock.MagicMock(team_id='the-team-id')
-        # This is required because 'name' is a reserved property for mocks
-        team.configure_mock(name=MOCK_TEAM_NAME_2, team_id=MOCK_TEAM_ID_2)
-        team.users.all.return_value = [
-            mock.MagicMock(username=MOCK_TEAM_MEMBERS[0]),
-            mock.MagicMock(username=MOCK_TEAM_MEMBERS[1]),
-            mock.MagicMock(username=MOCK_TEAM_MEMBERS[2]),
-        ]
-        return team if self.has_team else None
+    def get_team_by_team_id(self, team_id):
+        if team_id == self.team.team_id:
+            return self.team
+        elif team_id == self.team2.team_id:
+            return self.team2
+        return None
 
 
 class MockRuntime:
@@ -108,6 +115,8 @@ class MockBlock(TeamMixin):
     ):
         self.runtime = MockRuntime(has_teams_service, has_team, has_teams_configuration_service)
         self.has_user = has_user
+        # Returns the usernames of the team in order as called
+        self.get_username = mock.MagicMock(side_effect=MOCK_TEAM_MEMBER_USERNAMES)
 
     def get_real_user(self, anonymous_user_id):  # pylint: disable=unused-argument
         return mock.MagicMock() if self.has_user else None
@@ -139,7 +148,7 @@ class TeamMixinTest(TestCase):
     @patch('openassessment.xblock.team_mixin.get_team_submission_for_student')
     def test_get_team_info_student_has_previous_team(self, mock_student_submission):
         block = MockBlock()
-        mock_student_submission.return_value = {'team_id': 'previous team'}
+        mock_student_submission.return_value = {'team_id': MOCK_TEAM_ID_2}
         self.assertDictEqual(
             block.get_team_info(),
             {
@@ -207,3 +216,53 @@ class TeamMixinTest(TestCase):
         block = MockBlock()
         block.selected_teamset_id = 'some-other-teamset'
         self.assertIsNone(block.teamset_config)
+
+    @mock.patch(
+        'openassessment.xblock.team_mixin.get_team_submission_from_individual_submission',
+        return_value=MOCK_TEAM_SUBMISSION
+    )
+    @mock.patch(
+        'openassessment.xblock.team_mixin.get_team_submission_student_ids',
+        return_value=MOCK_TEAM_MEMBER_STUDENT_IDS
+    )
+    def test_add_team_submission_context__individual_submission(self, _1, _2):
+        block = MockBlock()
+        context = {}
+        block.add_team_submission_context(context, individual_submission_uuid='some-individual-submission-uuid')
+        self.assertDictEqual(
+            context,
+            {
+                'team_name': MOCK_TEAM_NAME,
+                'team_usernames': MOCK_TEAM_MEMBER_USERNAMES
+            }
+        )
+
+    @mock.patch('openassessment.xblock.team_mixin.get_team_submission', return_value=MOCK_TEAM_SUBMISSION)
+    @mock.patch(
+        'openassessment.xblock.team_mixin.get_team_submission_student_ids',
+        return_value=MOCK_TEAM_MEMBER_STUDENT_IDS
+    )
+    @ddt.data(False, True)
+    def test_add_team_submission_context__team_submission(self, _1, _2, transform_usernames):
+        block = MockBlock()
+        context = {}
+        block.add_team_submission_context(
+            context,
+            team_submission_uuid='some-team-submission-uuid',
+            transform_usernames=transform_usernames
+        )
+        self.assertDictEqual(
+            context,
+            {
+                'team_name': MOCK_TEAM_NAME,
+                'team_usernames': (
+                    MOCK_TEAM_MEMBER_USERNAMES_CONV if transform_usernames else MOCK_TEAM_MEMBER_USERNAMES
+                )
+            }
+        )
+
+    def test_add_team_submission_context__missing_params(self):
+        block = MockBlock()
+        msg = "One of team_submission_uuid or individual_submission_uuid must be provided"
+        with self.assertRaises(TypeError, msg=msg):
+            block.add_team_submission_context({})

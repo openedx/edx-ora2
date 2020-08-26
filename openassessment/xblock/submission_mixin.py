@@ -6,6 +6,7 @@ import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
+from submissions.team_api import get_team_submission
 
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
@@ -360,9 +361,10 @@ class SubmissionMixin:
         for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
             student_sub_dict[field] = []
 
-        uploads = self.file_manager.get_uploads()
+        team_id = None if not self.has_team() else self.team.team_id
+        uploads = self.file_manager.get_uploads(team_id=team_id)
         if self.is_team_assignment():
-            uploads += self.file_manager.get_team_uploads()
+            uploads += self.file_manager.get_team_uploads(team_id=team_id)
 
         for upload in uploads:
             student_sub_dict['file_keys'].append(upload.key)
@@ -738,9 +740,21 @@ class SubmissionMixin:
 
         file_urls = None
 
+        team_id_for_shared_files = None
+        if self.is_team_assignment():
+            if not workflow:
+                team_id_for_shared_files = self.get_team_info().get('team_id', None)
+            else:
+                team_submission = get_team_submission(workflow['team_submission_uuid'])
+                team_id_for_shared_files = team_submission['team_id']
+
         if self.file_upload_type:
-            context['file_urls'] = self.file_manager.file_descriptors(include_deleted=True)
-            context['team_file_urls'] = self.file_manager.team_file_descriptors()
+            context['file_urls'] = self.file_manager.file_descriptors(
+                team_id=team_id_for_shared_files, include_deleted=True
+            )
+            context['team_file_urls'] = self.file_manager.team_file_descriptors(
+                team_id=team_id_for_shared_files
+            )
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 

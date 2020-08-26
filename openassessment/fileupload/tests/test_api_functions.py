@@ -242,7 +242,7 @@ def test_file_descriptors_after_sharing_with_old_team(
     file_manager.delete_upload(1)
 
     # file_descriptors() should only give back a record for the upload shared with the current team
-    actual_descriptors = file_manager.file_descriptors(include_deleted=True)
+    actual_descriptors = file_manager.file_descriptors(team_id=block.team.team_id, include_deleted=True)
     expected_descriptors = [
         {
             'download_url': None,
@@ -311,7 +311,7 @@ def test_team_files_metadata(mock_get_download_url, shared_file_upload_fixture, 
     file_manager = api.FileUploadManager(block)
 
     # team_file_descriptors() should only give back records for files owned by teammates
-    actual_descriptors = file_manager.team_file_descriptors()
+    actual_descriptors = file_manager.team_file_descriptors(team_id=block.team.team_id)
 
     expected_descriptors = [
         {

@@ -73,21 +73,14 @@ class TeamWorkflowMixin:
 
     def get_team_submission_uuid(self):
         """
-        Gets the uuid for the team submission for this user's team.
+        Gets the uuid for the team submission that this user is associated with.
 
         Returns: team submission uuid if one exists, or
                  None if none exists or there was an error looking it up
         """
-        if not self.has_team():
-            return None
-
         student_item_dict = self.get_student_item_dict()
         try:
-            team_submission = team_sub_api.get_team_submission_for_team(
-                student_item_dict['course_id'],
-                student_item_dict['item_id'],
-                self.team.team_id
-            )
+            team_submission = team_sub_api.get_team_submission_for_student(student_item_dict)
         except (TeamSubmissionNotFoundError, TeamSubmissionInternalError):
             return None
         return team_submission['team_submission_uuid']
