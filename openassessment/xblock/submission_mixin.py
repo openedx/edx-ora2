@@ -721,24 +721,30 @@ class SubmissionMixin:
         """
 
         from submissions import team_api
-        team_info = self.get_team_info()
-        if team_info:
-            context.update(team_info)
+        try:
+            team_info = self.get_team_info()
+            if team_info:
+                context.update(team_info)
 
-            submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
-            student_item_dict = self.get_student_item_dict(
-                anonymous_user_id=submitter_anonymous_user_id
-            )
-            external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
-                self.course_id,
-                student_item_dict["item_id"],
-                team_info["team_id"],
-                self.get_anonymous_user_ids_for_team()
-            )
+                student_item_dict = self.get_student_item_dict()
+                external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
+                    self.course_id,
+                    student_item_dict["item_id"],
+                    team_info["team_id"],
+                    self.get_anonymous_user_ids_for_team()
+                )
 
-            context["team_members_with_external_submissions"] = list_to_conversational_format([
-                self.get_username(submission['student_id']) for submission in external_submissions
-            ])
+                context["team_members_with_external_submissions"] = list_to_conversational_format([
+                    self.get_username(submission['student_id']) for submission in external_submissions
+                ])
+        except ObjectDoesNotExist:
+            error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
+            logger.error(error_msg.format(
+                str(self.location),
+                self.get_student_item_dict()['student_id'],
+            ))
+        except NoSuchServiceError:
+            logger.error('{}: Teams service is unavailable'.format(str(self.location)))
 
     def submission_path_and_context(self):
         """
@@ -832,20 +838,18 @@ class SubmissionMixin:
             context['submit_enabled'] = submit_enabled
 
             if self.teams_enabled:
-                try:
-                    self.get_team_submission_context(context)
-                except ObjectDoesNotExist:
-                    error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
-                    logger.error(error_msg.format(
-                        str(self.location),
-                        self.get_student_item_dict()['student_id'],
-                    ))
-                except NoSuchServiceError:
-                    logger.error('{}: Teams service is unavailable'.format(str(self.location)))
-                if self.does_team_have_submission(context['team_id']):
-                    no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
+                self.get_team_submission_context(context)
 
-            path = no_workflow_path
+            submit_enabled = True
+            if self.text_response == 'required' and not self.saved_response:
+                submit_enabled = False
+            if self.file_upload_response == 'required' and not file_urls:
+                submit_enabled = False
+            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
+                    and not self.saved_response and not file_urls:
+                submit_enabled = False
+            context['submit_enabled'] = submit_enabled
+            path = "openassessmentblock/response/oa_response.html"
         elif workflow["status"] == "cancelled":
             if self.teams_enabled:
                 context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
