@@ -729,21 +729,16 @@ class SubmissionMixin:
             student_item_dict = self.get_student_item_dict(
                 anonymous_user_id=submitter_anonymous_user_id
             )
-            external_submissions = (
-                team_api.get_teammates_with_submissions_from_other_teams(
-                    self.course_id,
-                    student_item_dict["item_id"],
-                    team_info["team_id"],
-                    self.get_anonymous_user_ids_for_team()
-                )
+            external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
+                self.course_id,
+                student_item_dict["item_id"],
+                team_info["team_id"],
+                self.get_anonymous_user_ids_for_team()
             )
 
-            team_usernames = list_to_conversational_format([
+            context["team_members_with_external_submissions"] = list_to_conversational_format([
                 self.get_username(submission['student_id']) for submission in external_submissions
             ])
-            context["team_members_with_external_submissions"] = team_usernames
-            return context
-        return None
 
     def submission_path_and_context(self):
         """
