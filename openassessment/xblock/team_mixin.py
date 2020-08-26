@@ -156,7 +156,6 @@ class TeamMixin:
             try:
                 students_team_submission = get_team_submission_for_student(student_item_dict)
                 if self.team.team_id != students_team_submission['team_id']:
-                    import pdb; pdb.set_trace()
                     previous_team_name = self.teams_service.get_team_by_team_id(
                         students_team_submission['team_id']
                     ).name
