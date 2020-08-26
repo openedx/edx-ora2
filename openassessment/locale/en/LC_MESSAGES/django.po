@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
+"POT-Creation-Date: 2020-08-20 16:37-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1177,49 +1177,66 @@ msgstr ""
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:133
+#: openassessment/templates/openassessmentblock/response/oa_response.html:134
+#, python-format
+msgid ""
+"\n"
+"                                        You are currently on Team "
+"%(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                        when they submitted a response to "
+"this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                        response and will receive the same "
+"grade for this assignment as your former teammates.\n"
+"                                        You will not be part of Team "
+"%(team_name)s’s submission for this assignment and will not\n"
+"                                        receive a grade for their "
+"submission.\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:144
 msgid ""
 "Note: this is a team assignment. Make sure to coordinate with your teammates "
 "to avoid overwriting each other's work."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:151
 msgid "We could not save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:158
 msgid "Save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "Your Submission Status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:163
+#: openassessment/templates/openassessmentblock/response/oa_response.html:174
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:169
+#: openassessment/templates/openassessmentblock/response/oa_response.html:180
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:184
 msgid "Select a file to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:175
+#: openassessment/templates/openassessmentblock/response/oa_response.html:186
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:188
+#: openassessment/templates/openassessmentblock/response/oa_response.html:199
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:195
+#: openassessment/templates/openassessmentblock/response/oa_response.html:206
 msgid "We could not submit your response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:205
+#: openassessment/templates/openassessmentblock/response/oa_response.html:216
 msgid "Submit your response and move to the next step"
 msgstr ""
 
@@ -1997,66 +2014,66 @@ msgstr ""
 msgid "Your self assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:183
+#: openassessment/xblock/staff_area_mixin.py:184
 msgid "Error getting learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:243
+#: openassessment/xblock/staff_area_mixin.py:244
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:245
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:246
+#: openassessment/xblock/staff_area_mixin.py:247
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:267
+#: openassessment/xblock/staff_area_mixin.py:268
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:540
+#: openassessment/xblock/staff_area_mixin.py:552
 msgid "Please enter valid reason to remove the submission."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:551
+#: openassessment/xblock/staff_area_mixin.py:563
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:562
+#: openassessment/xblock/staff_area_mixin.py:574
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:589
+#: openassessment/xblock/staff_area_mixin.py:601
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:624
+#: openassessment/xblock/staff_area_mixin.py:636
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "

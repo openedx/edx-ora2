@@ -7,6 +7,7 @@ from unittest import TestCase
 import ddt
 import mock
 
+from mock import patch
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
 from openassessment.xblock.team_mixin import TeamMixin
@@ -16,7 +17,9 @@ TEAMSET_NAME = 'teamset-1-name'
 
 MOCK_TEAM_MEMBERS = ['UserA', 'UserB', 'UserC']
 MOCK_TEAM_NAME = 'TeamName'
+MOCK_TEAM_NAME_2 = 'TeamName2'
 MOCK_TEAM_ID = 'TeamID'
+MOCK_TEAM_ID_2 = 'TeamID2'
 
 
 class MockTeamsConfigurationService:
@@ -52,6 +55,17 @@ class MockTeamsService:
 
     def get_team(self, user, course_id, teamset_id):  # pylint: disable=unused-argument
         return self.team if self.has_team else None
+
+    def get_team_by_team_id(self, team_id):  # pylint: disable=unused-argument
+        team = mock.MagicMock(team_id='the-team-id')
+        # This is required because 'name' is a reserved property for mocks
+        team.configure_mock(name=MOCK_TEAM_NAME_2, team_id=MOCK_TEAM_ID_2)
+        team.users.all.return_value = [
+            mock.MagicMock(username=MOCK_TEAM_MEMBERS[0]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBERS[1]),
+            mock.MagicMock(username=MOCK_TEAM_MEMBERS[2]),
+        ]
+        return team if self.has_team else None
 
 
 class MockRuntime:
@@ -98,6 +112,9 @@ class MockBlock(TeamMixin):
     def get_real_user(self, anonymous_user_id):  # pylint: disable=unused-argument
         return mock.MagicMock() if self.has_user else None
 
+    def get_student_item_dict(self):
+        return mock.MagicMock()
+
 
 @ddt.ddt
 class TeamMixinTest(TestCase):
@@ -119,13 +136,35 @@ class TeamMixinTest(TestCase):
         block = MockBlock(has_team=False)
         self.assertIsNone(block.team)
 
-    def test_get_team_info_student(self):
+    @patch('openassessment.xblock.team_mixin.get_team_submission_for_student')
+    def test_get_team_info_student_has_previous_team(self, mock_student_submission):
         block = MockBlock()
+        mock_student_submission.return_value = {'team_id': 'previous team'}
         self.assertDictEqual(
             block.get_team_info(),
             {
-                'team_id': 'TeamID',
-                'team_name': 'TeamName',
+                'team_id': MOCK_TEAM_ID,
+                'team_name': MOCK_TEAM_NAME,
+                'previous_team_name': MOCK_TEAM_NAME_2,
+                'team_usernames': [
+                    'UserA',
+                    'UserB',
+                    'UserC',
+                ],
+                'team_url': 'this-is-a-url',
+            }
+        )
+
+    @patch('openassessment.xblock.team_mixin.get_team_submission_for_student')
+    def test_get_team_info_student_no_previous_team(self, mock_student_submission):
+        block = MockBlock()
+        mock_student_submission.return_value = {'team_id': MOCK_TEAM_ID}
+        self.assertDictEqual(
+            block.get_team_info(),
+            {
+                'team_id': MOCK_TEAM_ID,
+                'team_name': MOCK_TEAM_NAME,
+                'previous_team_name': None,
                 'team_usernames': [
                     'UserA',
                     'UserB',

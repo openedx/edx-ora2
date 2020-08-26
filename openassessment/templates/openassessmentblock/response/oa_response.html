@@ -129,6 +129,17 @@
                                 {% trans "Team Members: " %}
                                 <strong class="emphasis">{{team_usernames|join:", "}}</strong>
                             </div>
+                            {% if previous_team_name %}
+                                <div id='team_user_has_previous_submission'>
+                                    {% blocktrans %}
+                                        You are currently on Team {{team_name}}. Since you were on Team {{previous_team_name}}
+                                        when they submitted a response to this assignment, you are seeing Team {{previous_team_name}}’s
+                                        response and will receive the same grade for this assignment as your former teammates.
+                                        You will not be part of Team {{team_name}}’s submission for this assignment and will not
+                                        receive a grade for their submission.
+                                    {% endblocktrans %}
+                                </div>
+                            {% endif %}
                             <div id='team_concurrency_notice'>
                                 {% trans "Note: this is a team assignment. Make sure to coordinate with your teammates to avoid overwriting each other's work."%}
                             </div>

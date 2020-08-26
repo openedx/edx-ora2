@@ -4,8 +4,11 @@ import logging
 from django.utils.functional import cached_property
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
-from submissions.team_api import get_team_submission_from_individual_submission
-
+from submissions.team_api import (
+    get_team_submission_from_individual_submission,
+    get_team_submission_for_student
+)
+from submissions.errors import TeamSubmissionNotFoundError
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -109,11 +112,23 @@ class TeamMixin:
         if self.in_studio_preview:
             return self.STAFF_OR_PREVIEW_INFO
         elif self.has_team():
+            student_item_dict = self.get_student_item_dict()
+            previous_team_name = None
+            try:
+                students_team_submission = get_team_submission_for_student(student_item_dict)
+                if self.team.team_id != students_team_submission['team_id']:
+                    previous_team_name = self.teams_service.get_team_by_team_id(
+                        students_team_submission['team_id']
+                    ).name
+            except TeamSubmissionNotFoundError:
+                pass
+
             return {
                 'team_id': self.team.team_id,
                 'team_name': self.team.name,
                 'team_usernames': [user.username for user in self.team.users.all()],
                 'team_url': self.teams_service.get_team_detail_url(self.team),
+                'previous_team_name': previous_team_name,
             }
         elif self.is_course_staff:
             return self.STAFF_OR_PREVIEW_INFO
