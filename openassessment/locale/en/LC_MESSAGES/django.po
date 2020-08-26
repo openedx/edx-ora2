@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 12:22-0400\n"
+"POT-Creation-Date: 2020-08-26 12:58-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -602,6 +602,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:29
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:25
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
@@ -1348,6 +1349,24 @@ msgid ""
 "                        You still need to complete the %(start_tag)sself "
 "assessment%(end_tag)s step.\n"
 "                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
+msgid "Error"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they "
+"submitted a response for this assignment\n"
+"                            and you will not receive a grade for their "
+"response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. "
+"Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
