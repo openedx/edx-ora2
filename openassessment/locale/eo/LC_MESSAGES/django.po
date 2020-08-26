@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 11:23-0400\n"
+"POT-Creation-Date: 2020-08-26 13:23-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1496,6 +1496,21 @@ msgstr "Ýöü äré ön téäm  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Team Members: "
 msgstr "Téäm Mémßérs:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#, python-format
+msgid ""
+"\n"
+"                                        %(team_members_with_external_submissions)s\n"
+"                                        have/has already submitted a response to this assignment with another team,\n"
+"                                        and will not be a part of your team's submission or assignment grade.\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        %(team_members_with_external_submissions)s\n"
+"                                        hävé/häs älréädý süßmïttéd ä réspönsé tö thïs ässïgnmént wïth änöthér téäm,\n"
+"                                        änd wïll nöt ßé ä pärt öf ýöür téäm's süßmïssïön ör ässïgnmént grädé.\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ η#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 #, python-format

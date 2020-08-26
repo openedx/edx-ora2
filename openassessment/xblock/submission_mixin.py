@@ -14,7 +14,11 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from .data_conversion import create_submission_dict, prepare_submission_for_serialization
+from .data_conversion import (
+    create_submission_dict,
+    list_to_conversational_format,
+    prepare_submission_for_serialization
+)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
@@ -704,6 +708,44 @@ class SubmissionMixin:
         path, context = self.submission_path_and_context()
         return self.render_assessment(path, context_dict=context)
 
+    def get_team_submission_context(self, context):
+        """
+        Populate the passed context object with team info, including a set of students on
+        the team with submissions to the current item from another team, under the key
+        `team_members_with_external_submissions`.
+
+        Args:
+            context (dict): render context to add team submission context into
+        Returns
+            (dict): context arg with additional team-related fields
+        """
+
+        from submissions import team_api
+        try:
+            team_info = self.get_team_info()
+            if team_info:
+                context.update(team_info)
+
+                student_item_dict = self.get_student_item_dict()
+                external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
+                    self.course_id,
+                    student_item_dict["item_id"],
+                    team_info["team_id"],
+                    self.get_anonymous_user_ids_for_team()
+                )
+
+                context["team_members_with_external_submissions"] = list_to_conversational_format([
+                    self.get_username(submission['student_id']) for submission in external_submissions
+                ])
+        except ObjectDoesNotExist:
+            error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
+            logger.error(error_msg.format(
+                str(self.location),
+                self.get_student_item_dict()['student_id'],
+            ))
+        except NoSuchServiceError:
+            logger.error('{}: Teams service is unavailable'.format(str(self.location)))
+
     def submission_path_and_context(self):
         """
         Determine the template path and context to use when
@@ -796,20 +838,9 @@ class SubmissionMixin:
             context['submit_enabled'] = submit_enabled
 
             if self.teams_enabled:
-                try:
-                    team_info = self.get_team_info()
-                    if team_info:
-                        context.update(team_info)
-                        if self.does_team_have_submission(team_info['team_id']):
-                            no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
-                except ObjectDoesNotExist:
-                    error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
-                    logger.error(error_msg.format(
-                        str(self.location),
-                        self.get_student_item_dict()['student_id'],
-                    ))
-                except NoSuchServiceError:
-                    logger.error('{}: Teams service is unavailable'.format(str(self.location)))
+                self.get_team_submission_context(context)
+                if self.does_team_have_submission(context['team_id']):
+                    no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
 
             path = no_workflow_path
         elif workflow["status"] == "cancelled":
