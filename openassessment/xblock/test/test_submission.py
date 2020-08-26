@@ -516,8 +516,18 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             # Even though one of the keys had no good download URL, we should
             # still return data for keys that came after it.
             expected_urls = [
-                ('download-url-1', 'desc-1', 'name-1', False),
-                ('download-url-3', 'desc-3', 'name-3', False),
+                {
+                    'download_url': 'download-url-1',
+                    'description': 'desc-1',
+                    'name': 'name-1',
+                    'show_delete_button': False
+                },
+                {
+                    'download_url': 'download-url-3',
+                    'description': 'desc-3',
+                    'name': 'name-3',
+                    'show_delete_button': False
+                },
             ]
             self.assertEqual(expected_urls, actual_urls)
 
@@ -540,7 +550,12 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
             actual_urls = xblock.get_download_urls_from_submission(mock_submission)
             expected_urls = [
-                ('download-url-1', '', '', False),
+                {
+                    'download_url': 'download-url-1',
+                    'description': '',
+                    'name': '',
+                    'show_delete_button': False
+                }
             ]
             self.assertEqual(expected_urls, actual_urls)
 
@@ -819,8 +834,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
-                    ('', 'file-1', None, True),
-                    ('', 'file-2', None, True)
+                    {'download_url': '', 'description': 'file-1', 'name': None, 'show_delete_button': True},
+                    {'download_url': '', 'description': 'file-2', 'name': None, 'show_delete_button': True}
                 ],
                 'team_file_urls': [],
                 'saved_response': create_submission_dict({
@@ -881,7 +896,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         """
         xblock.file_manager.get_uploads = Mock(return_value=[
             api.FileUpload(
-                description='file-1',
+                description='file 1 description',
                 name='file-1.pdf',
                 size=200,
                 student_id='Valchek',
@@ -902,7 +917,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         xblock.file_manager.get_team_uploads = Mock(return_value=[
             api.FileUpload(
-                description='file-5',
+                description='file 5 description',
                 name='file-5.pdf',
                 size=500,
                 student_id='Bob',
@@ -926,6 +941,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             'file-5.pdf',
             'file-1-url',
             'file-5-url',
+            'file 1 description',
+            'file 5 description',
         ]
 
         for expected_string in expected_strings:

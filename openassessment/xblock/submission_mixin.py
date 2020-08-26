@@ -528,12 +528,26 @@ class SubmissionMixin:
                     except AttributeError:
                         file_name = ''
                         logger.error('descriptions[idx] is None in {}'.format(submission))
-                    urls.append((file_download_url, file_description, file_name, False))
+                    urls.append(
+                        file_upload_api.FileDescriptor(
+                            download_url=file_download_url,
+                            description=file_description,
+                            name=file_name,
+                            show_delete_button=False
+                        )._asdict()
+                    )
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
             file_download_url = self._get_url_by_file_key(key)
             if file_download_url:
-                urls.append((file_download_url, '', '', False))
+                urls.append(
+                    file_upload_api.FileDescriptor(
+                        download_url=file_download_url,
+                        description='',
+                        name='',
+                        show_delete_button=False
+                    )._asdict()
+                )
         return urls
 
     def get_files_info_from_user_state(self, username):
@@ -567,7 +581,14 @@ class SubmissionMixin:
                 download_url = self._get_url_by_file_key(file_key)
                 if download_url:
                     file_name = files_names[index] if index < len(files_names) else ''
-                    files_info.append((download_url, description, file_name, False))
+                    files_info.append(
+                        file_upload_api.FileDescriptor(
+                            download_url=download_url,
+                            description=description,
+                            name=file_name,
+                            show_delete_button=False
+                        )._asdict()
+                    )
                 else:
                     # If file has been removed, the URL doesn't exist
                     logger.info("URLWorkaround: no URL for description {desc} & key {key} for user:{user}".format(
@@ -610,7 +631,14 @@ class SubmissionMixin:
                     user=username_or_email,
                     block=str(self.location)
                 ))
-                file_uploads.append((download_url, '', '', False))
+                file_uploads.append(
+                    file_upload_api.FileDescriptor(
+                        download_url=download_url,
+                        description='',
+                        name='',
+                        show_delete_button=False
+                    )._asdict()
+                )
             else:
                 continue
 
@@ -711,8 +739,8 @@ class SubmissionMixin:
         file_urls = None
 
         if self.file_upload_type:
-            context['file_urls'] = self.file_manager.file_descriptor_tuples(include_deleted=True)
-            context['team_file_urls'] = self.file_manager.team_file_descriptor_tuples()
+            context['file_urls'] = self.file_manager.file_descriptors(include_deleted=True)
+            context['team_file_urls'] = self.file_manager.team_file_descriptors()
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 
