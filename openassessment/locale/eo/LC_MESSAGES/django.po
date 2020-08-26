@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-20 16:37-0400\n"
+"POT-Creation-Date: 2020-08-26 11:23-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -763,6 +763,7 @@ msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσ
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
 msgid "Status"
@@ -1688,6 +1689,27 @@ msgstr ""
 "\n"
 "                        Ýöü stïll nééd tö çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
 "                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html
+msgid "Error"
+msgstr "Érrör Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr ""
+"\n"
+"                            Ýöü jöïnéd Téäm %(team_name)s äftér théý süßmïttéd ä réspönsé för thïs ässïgnmént\n"
+"                            änd ýöü wïll nöt réçéïvé ä grädé för théïr réspönsé. Ýöü hävé älsö nöt prévïöüslý süßmïttéd\n"
+"                            ä réspönsé tö thïs ässïgnmént wïth änöthér téäm. Pléäsé çöntäçt çöürsé stäff tö dïsçüss ýöür\n"
+"                            öptïöns för thïs ässïgnmént.\n"
+"                        #"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
 msgid "Assess Your Response"
