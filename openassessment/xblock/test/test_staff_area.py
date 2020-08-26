@@ -859,7 +859,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         })
 
     @scenario('data/team_submission.xml', user_id='Bob')
-    def test_staff_form_for_team_assessment(self, xblock, ):
+    def test_staff_form_for_team_assessment(self, xblock):
         self._setup_xblock_and_create_submission(xblock, team=True)
 
         team_submission_enabled = 'data-team-submission="True"'
