@@ -1487,7 +1487,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'team_url': 'rebel_alliance.org',
                 'save_status': 'This response has not been saved.',
                 'team_name': 'Red Squadron',
-                'text_response': 'required'
+                'text_response': 'required',
+                'team_members_with_external_submissions': ''
             }
         )
 
