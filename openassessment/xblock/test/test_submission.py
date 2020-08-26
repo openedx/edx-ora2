@@ -753,7 +753,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.get_team_info = Mock(return_value=team_info)
         context = {}
         xblock.get_team_submission_context(context)
-        self.assertEqual(context, None)
+        self.assertEqual(context, {})
 
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
     def test_open_no_deadline(self, xblock):
