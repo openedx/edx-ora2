@@ -723,7 +723,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.get_team_info = Mock(return_value=team_info)
         xblock.xmodule_runtime = Mock(
             course_id=COURSE_ID,
-            anonymous_student_id="Red Five"
+            anonymous_student_id="Red Five",
+            user_is_staff=False
         )
         xblock.get_student_item_dict = Mock(return_value=student_item_dict)
         xblock.get_username = Mock(
@@ -750,10 +751,30 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/submission_open.xml', user_id="Red Five")
     def test_get_team_submission_context__no_team(self, xblock):
         team_info = None
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False
+        )
         xblock.get_team_info = Mock(return_value=team_info)
         context = {}
         xblock.get_team_submission_context(context)
         self.assertEqual(context, {})
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_get_team_submission_context__staff_view(self, xblock):
+        # In staff view, team info is available, but not submission info.
+        # verify that the team info is loaded into context, and nothing else,
+        # and that no exceptions are thrown
+        team_info = {
+            'team_id': MOCK_TEAM_ID,
+            'team_info_extra': 'more team info'
+        }
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=True
+        )
+        xblock.get_team_info = Mock(return_value=team_info)
+        context = {}
+        xblock.get_team_submission_context(context)
+        self.assertEqual(context, team_info)
 
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
     def test_open_no_deadline(self, xblock):

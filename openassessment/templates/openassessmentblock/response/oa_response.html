@@ -127,7 +127,7 @@
                                 {% trans "You are on team " %}
                                 <a href="{{team_url}}">{{team_name}}</a>.
                                 {% trans "Team Members: " %}
-                                <strong class="emphasis">{{team_usernames}}.</strong>
+                                <strong class="emphasis">{{team_usernames|join:", "}}.</strong>
                                 {% if team_members_with_external_submissions %}
                                   <br />
                                   <strong class="emphasis">
@@ -138,7 +138,6 @@
                                     {% endblocktrans %}
                                   </strong>
                                 {% endif %}
-                            </div>
                             </div>
                             {% if previous_team_name %}
                                 <div id='team_user_has_previous_submission'>
