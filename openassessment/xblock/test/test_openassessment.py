@@ -98,6 +98,65 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIn("openassessment__staff-area-unavailable", body_html)
 
     @scenario('data/basic_scenario.xml')
+    def test__create_ui_models(self, xblock):
+        # default assessments from the rubric include peer and self assessments.
+        # always include grade and submission.
+        # assessments from rubric are loaded into the ui model.
+        models = xblock._create_ui_models()
+        self.assertEqual(len(models), 4)
+        UI_MODELS = openassessmentblock.UI_MODELS
+        self.assertEqual(models[0], UI_MODELS["submission"])
+        self.assertEqual(models[1], dict(
+            xblock.rubric_assessments[0],
+            **UI_MODELS["peer-assessment"]
+        ))
+        self.assertEqual(models[2], dict(
+            xblock.rubric_assessments[1],
+            **UI_MODELS["self-assessment"]
+        ))
+        self.assertEqual(models[3], UI_MODELS["grade"])
+
+    @scenario('data/basic_scenario.xml')
+    def test__create_ui_models__teams_enabled(self, xblock):
+        # peer and self assessment types are not include in VALID_ASSESSMENT_TYPES_FOR_TEAMS
+        xblock.teams_enabled = True
+        models = xblock._create_ui_models()
+        self.assertEqual(len(models), 2)
+        UI_MODELS = openassessmentblock.UI_MODELS
+        self.assertEqual(models[0], UI_MODELS["submission"])
+        self.assertEqual(models[1], UI_MODELS["grade"])
+
+    @scenario('data/basic_scenario.xml')
+    def test__create_ui_models__leaderboard(self, xblock):
+        # if leaderboard_show is > 0, append leaderboard
+        xblock.leaderboard_show = 10
+        models = xblock._create_ui_models()
+        self.assertEqual(len(models), 5)
+        UI_MODELS = openassessmentblock.UI_MODELS
+        self.assertEqual(models[0], UI_MODELS["submission"])
+        self.assertEqual(models[1], dict(
+            xblock.rubric_assessments[0],
+            **UI_MODELS["peer-assessment"]
+        ))
+        self.assertEqual(models[2], dict(
+            xblock.rubric_assessments[1],
+            **UI_MODELS["self-assessment"]
+        ))
+        self.assertEqual(models[3], UI_MODELS["grade"])
+        self.assertEqual(models[4], UI_MODELS["leaderboard"])
+
+    @scenario('data/basic_scenario.xml')
+    def test__create_ui_models__no_leaderboard_if_teams_enabled(self, xblock):
+        # do not show leaderboard in teams ORAS, even if leaderboard_show is set.
+        xblock.leaderboard_show = 10
+        xblock.teams_enabled = True
+        models = xblock._create_ui_models()
+        self.assertEqual(len(models), 2)
+        UI_MODELS = openassessmentblock.UI_MODELS
+        self.assertEqual(models[0], UI_MODELS["submission"])
+        self.assertEqual(models[1], UI_MODELS["grade"])
+
+    @scenario('data/basic_scenario.xml')
     def test_ora_blocks_listing_view(self, xblock):
         """
         Test view for listing all courses OA blocks.
