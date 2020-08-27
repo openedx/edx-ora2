@@ -761,6 +761,9 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
     @scenario('data/submission_open.xml', user_id="Red Five")
     def test_get_team_submission_context__staff_view(self, xblock):
+        # In staff view, team info is available, but not submission info.
+        # verify that the team info is loaded into context, and nothing else,
+        # and that no exceptions are thrown
         team_info = {
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
