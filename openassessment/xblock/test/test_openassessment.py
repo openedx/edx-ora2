@@ -102,7 +102,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # default assessments from the rubric include peer and self assessments.
         # always include grade and submission.
         # assessments from rubric are loaded into the ui model.
-        models = xblock._create_ui_models()
+        models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 4)
         UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
@@ -120,7 +120,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     def test__create_ui_models__teams_enabled(self, xblock):
         # peer and self assessment types are not include in VALID_ASSESSMENT_TYPES_FOR_TEAMS
         xblock.teams_enabled = True
-        models = xblock._create_ui_models()
+        models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 2)
         UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
@@ -130,7 +130,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     def test__create_ui_models__leaderboard(self, xblock):
         # if leaderboard_show is > 0, append leaderboard
         xblock.leaderboard_show = 10
-        models = xblock._create_ui_models()
+        models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 5)
         UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
@@ -150,7 +150,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # do not show leaderboard in teams ORAS, even if leaderboard_show is set.
         xblock.leaderboard_show = 10
         xblock.teams_enabled = True
-        models = xblock._create_ui_models()
+        models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 2)
         UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
