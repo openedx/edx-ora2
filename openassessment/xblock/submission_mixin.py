@@ -725,7 +725,8 @@ class SubmissionMixin:
             team_info = self.get_team_info()
             if team_info:
                 context.update(team_info)
-
+                if self.is_course_staff:
+                    return
                 student_item_dict = self.get_student_item_dict()
                 external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
                     self.course_id,

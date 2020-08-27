@@ -25,6 +25,7 @@ class TeamMixin:
         'team_name': '< TEAM NAME >',
         'team_usernames': ['< USERNAMES >'],
         'team_url': '#TEAM_URL',
+        'team_id': 'TEAM_ID',
     }
 
     def is_team_assignment(self):
