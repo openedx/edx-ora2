@@ -118,7 +118,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test__create_ui_models__teams_enabled(self, xblock):
-        # peer and self assessment types are not include in VALID_ASSESSMENT_TYPES_FOR_TEAMS
+        # peer and self assessment types are not included in VALID_ASSESSMENT_TYPES_FOR_TEAMS
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 2)
