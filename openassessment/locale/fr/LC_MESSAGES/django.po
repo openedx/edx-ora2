@@ -7,7 +7,7 @@
 # Aguilar Lucas <destroyeralpha@hotmail.fr>, 2015
 # Alexandre DS <alexandre@cleverm8.com>, 2020
 # Andy Armstrong <andya@edx.org>, 2014
-# Arnaud Dupin de Beyssat <a.adupinbe@orange.fr>, 2020
+# 0169fee580ff5de3f9b7241d14f30af9_5f30934 <1948a2319336319ed4429b6139c8c1c2_916898>, 2020
 # Benjamin PENA <benjamin.pena@fun-mooc.fr>, 2019
 # Daniel Le Berre, 2014-2015
 # Faty B <fatybayo@gmail.com>, 2015
@@ -40,9 +40,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
-"PO-Revision-Date: 2020-08-11 18:36+0000\n"
-"Last-Translator: Julien Colmonts <julien.colmonts@student.uclouvain.be>\n"
+"POT-Creation-Date: 2020-08-26 13:23-0400\n"
+"PO-Revision-Date: 2020-08-26 18:18+0000\n"
+"Last-Translator: Olivier Marquez <oliviermarquez@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -633,6 +633,7 @@ msgstr "Évaluations de votre réponse"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:29
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:25
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
@@ -1182,49 +1183,71 @@ msgstr ""
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:133
+#: openassessment/templates/openassessmentblock/response/oa_response.html:134
+#, python-format
+msgid ""
+"\n"
+"                                        %(team_members_with_external_submissions)s\n"
+"                                        have/has already submitted a response to this assignment with another team,\n"
+"                                        and will not be a part of your team's submission or assignment grade.\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:145
+#, python-format
+msgid ""
+"\n"
+"                                        You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                        when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                        response and will receive the same grade for this assignment as your former teammates.\n"
+"                                        You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                        receive a grade for their submission.\n"
+"                                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid ""
 "Note: this is a team assignment. Make sure to coordinate with your teammates"
 " to avoid overwriting each other's work."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:162
 msgid "We could not save your progress"
 msgstr "Votre réponse n'a pas pu être enregistrée"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:169
 msgid "Save your progress"
 msgstr "Enregistrer votre réponse"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: openassessment/templates/openassessmentblock/response/oa_response.html:173
 msgid "Your Submission Status"
 msgstr "Statut de votre envoi"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:163
+#: openassessment/templates/openassessmentblock/response/oa_response.html:185
 msgid "We could not upload files"
 msgstr "Nous n'avons pas pu charger les fichiers"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:169
+#: openassessment/templates/openassessmentblock/response/oa_response.html:191
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
+#: openassessment/templates/openassessmentblock/response/oa_response.html:195
 msgid "Select a file to upload for this submission."
 msgstr "Sélectionnez un fichier à envoyer pour cette réponse."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:175
+#: openassessment/templates/openassessmentblock/response/oa_response.html:197
 msgid "Upload files"
 msgstr "Charger un fichier"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:188
+#: openassessment/templates/openassessmentblock/response/oa_response.html:210
 msgid "You may continue to work on your response until you submit it."
 msgstr "Vous pouvez continuer à travailler sur votre réponse jusqu'à ce que vous l'envoyez."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:195
+#: openassessment/templates/openassessmentblock/response/oa_response.html:217
 msgid "We could not submit your response"
 msgstr "Votre réponse n'a pas pu être envoyée"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:205
+#: openassessment/templates/openassessmentblock/response/oa_response.html:227
 msgid "Submit your response and move to the next step"
 msgstr "Envoyez votre réponse et passez à l'étape suivante"
 
@@ -1319,6 +1342,21 @@ msgid ""
 "                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
 msgstr "\nVous devez compléter l'étape %(start_tag)sd'auto-évaluation%(end_tag)s."
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
+msgid "Error"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
@@ -1986,43 +2024,43 @@ msgstr "Vous devez envoyer une réponse avant de pouvoir effectuer une auto-éva
 msgid "Your self assessment could not be submitted."
 msgstr "Votre auto-évaluation n'a pas pu être envoyée."
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "Vous n'avez pas la permission de planifier la formation"
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "Vous n'avez pas la permission de reporter les tâches."
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations réservées à l'équipe enseignante."
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations des apprenants."
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations de notations réservées à l'équipe enseignante."
 
-#: openassessment/xblock/staff_area_mixin.py:183
+#: openassessment/xblock/staff_area_mixin.py:184
 msgid "Error getting learner information."
 msgstr "Erreur lors de l'obtention d'information sur l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:243
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "Error loading the checked out learner response."
 msgstr "Erreur lors du chargement de la réponse de l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:228
 msgid "No other learner responses are available for grading at this time."
 msgstr "Aucune autre réponse d'apprenant disponible pour notation en ce moment."
 
-#: openassessment/xblock/staff_area_mixin.py:246
+#: openassessment/xblock/staff_area_mixin.py:230
 msgid "Error getting staff grade information."
 msgstr "Erreur lors de la récupération de la note de l'équipe pédagogique."
 
-#: openassessment/xblock/staff_area_mixin.py:267
+#: openassessment/xblock/staff_area_mixin.py:251
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Erreur lors de la récupération des notes attribuées par l'équipe pédagogique et leur compte."
 
@@ -2130,67 +2168,67 @@ msgstr "Erreur de validation : {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock a été correctement mis à jour"
 
-#: openassessment/xblock/submission_mixin.py:93
+#: openassessment/xblock/submission_mixin.py:98
 msgid "\"submission\" required to submit answer."
 msgstr "La soumission nécessite au moins une réponse."
 
-#: openassessment/xblock/submission_mixin.py:114
+#: openassessment/xblock/submission_mixin.py:119
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Pour soumettre une réponse, afficher ce composant dans Aperçu ou en mode Direct."
 
-#: openassessment/xblock/submission_mixin.py:120
+#: openassessment/xblock/submission_mixin.py:125
 msgid "Multiple submissions are not allowed."
 msgstr "Les soumissions multiples ne sont pas autorisées."
 
-#: openassessment/xblock/submission_mixin.py:164
+#: openassessment/xblock/submission_mixin.py:169
 msgid "API returned unclassified exception."
 msgstr "l'API a renvoyé un code d'exception non classé"
 
-#: openassessment/xblock/submission_mixin.py:215
+#: openassessment/xblock/submission_mixin.py:220
 msgid "This response could not be saved."
 msgstr "Cette réponse n'a pas pu être enregistrée."
 
-#: openassessment/xblock/submission_mixin.py:219
+#: openassessment/xblock/submission_mixin.py:224
 msgid "This response was not submitted."
 msgstr "Cette réponse n'a pas été soumise."
 
-#: openassessment/xblock/submission_mixin.py:235
+#: openassessment/xblock/submission_mixin.py:240
 msgid "Files descriptions were not submitted."
 msgstr "Les descriptions des fichiers n'ont pas pu être envoyées"
 
-#: openassessment/xblock/submission_mixin.py:272
+#: openassessment/xblock/submission_mixin.py:277
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:394
+#: openassessment/xblock/submission_mixin.py:400
 msgid "There was an error uploading your file."
 msgstr "Il y a eu une erreur lors de l'envoi de votre fichier."
 
-#: openassessment/xblock/submission_mixin.py:403
+#: openassessment/xblock/submission_mixin.py:409
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "Le format de fichier doit être GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:406
+#: openassessment/xblock/submission_mixin.py:412
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "Le format du fichier doit être PDF, GIF, PNG ou JPG."
 
-#: openassessment/xblock/submission_mixin.py:409
+#: openassessment/xblock/submission_mixin.py:415
 msgid "File type must be one of the following types: {}"
 msgstr "Le format de fichier doit être l'un de ceux-ci: {}"
 
-#: openassessment/xblock/submission_mixin.py:413
+#: openassessment/xblock/submission_mixin.py:419
 msgid "File type is not allowed."
 msgstr "Type de fichier non supporté."
 
-#: openassessment/xblock/submission_mixin.py:420
+#: openassessment/xblock/submission_mixin.py:426
 msgid "Error retrieving upload URL."
 msgstr "Une erreur s'est produite lors de la récupération de l'URL de chargement."
 
-#: openassessment/xblock/submission_mixin.py:652
+#: openassessment/xblock/submission_mixin.py:686
 msgid "This response has been saved but not submitted."
 msgstr "Cette réponse est enregistrée mais n'a pas été envoyée."
 
-#: openassessment/xblock/submission_mixin.py:653
+#: openassessment/xblock/submission_mixin.py:687
 msgid "This response has not been saved."
 msgstr "Cette réponse n'a pas été enregistrée."
 
