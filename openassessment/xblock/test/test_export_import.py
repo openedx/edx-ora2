@@ -34,9 +34,6 @@ class TestExportImport(XBlockHandlerTestCase):
         self.assertTrue(xblock.teams_enabled)
         self.assertEqual(TEAMSET_ID, xblock.selected_teamset_id)
 
-        # Store the fields of the XBlock
-        old_fields = copy.deepcopy(xblock.fields)
-
         # Export the XBlock from the runtime
         output_buffer = BytesIO()
         self.runtime.export_to_xml(xblock, output_buffer)
