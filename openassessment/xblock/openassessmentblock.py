@@ -813,7 +813,8 @@ class OpenAssessmentBlock(MessageMixin,
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']
-
+        block.teams_enabled = config['teams_enabled']
+        block.selected_teamset_id = config['selected_teamset_id']
         return block
 
     @property
