@@ -339,9 +339,16 @@
 // Staff edit settings form
 #oa_basic_settings_editor {
   #openassessment_leaderboard_wrapper {
-    span.icon.fa-exclamation-circle {
-      font-size: 1.5rem;
-      color: #ffd875;
+    p.setting-help.teams-warning {
+      width: 600px;
+      background: #fffaed;
+      border: 1px solid #ffd875;
+      padding: .75rem 1.25rem;
+
+      span.icon.fa-exclamation-circle {
+        font-size: 1.5rem;
+        color: #ffd875;
+      }
     }
   }
 }
