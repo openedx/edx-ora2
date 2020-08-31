@@ -59,6 +59,10 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             if (peerAssessment.isEnabled()) {
                 self.setHidden($('#peer_assessment_schedule_editor', peerAssessment.scheduleElement), false);
             }
+
+            self.setHidden($("#openassessment_leaderboard_wrapper .disabled-label"), true);
+            self.setHidden($("#openassessment_leaderboard_wrapper .teams-warning"), true);
+            $("#openassessment_leaderboard_editor").prop("disabled", false);
         } else {
             self.setHidden(teamsetElement, false);
 
@@ -69,6 +73,9 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             self.setHidden($('#self_assessment_schedule_editor', selfAssessment.scheduleElement), true);
             self.setHidden($('#peer_assessment_schedule_editor', peerAssessment.scheduleElement), true);
 
+            self.setHidden($("#openassessment_leaderboard_wrapper .disabled-label"), false);
+            self.setHidden($("#openassessment_leaderboard_wrapper .teams-warning"), false);
+            $("#openassessment_leaderboard_editor").prop("disabled", true)
             staffAssessment.isEnabled(true);
         }
     }

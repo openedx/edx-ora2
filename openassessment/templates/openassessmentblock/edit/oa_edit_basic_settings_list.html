@@ -71,17 +71,30 @@
         <p class="setting-help">{% trans "Specify whether learners can write LaTeX formatted strings"%}</p>
     </li>
     <li id="openassessment_leaderboard_wrapper" class="field comp-setting-entry">
-        <div class="wrapper-comp-setting">
-            <label for="openassessment_leaderboard_editor" class="setting-label">{% trans "Top Responses" %}</label>
-            <input
-                id="openassessment_leaderboard_editor"
-                class="input setting-input"
-                type="number"
-                value="{{ leaderboard_show }}"
-                min="0" max="99"
-            />
-        </div>
-        <p class="setting-help">{% trans "Specify the number of top scoring responses to display. Valid numbers are 0 to 99. If the number is 0, the Top Responses section does not appear to learners." %}</p>
+      <div class="wrapper-comp-setting teams-enabled">
+        <label for="openassessment_leaderboard_editor" class="setting-label">
+          {% trans "Top Responses" %}
+          <span class="disabled-label {% if teams_enabled %}is--hidden{% endif %}">
+            {% trans " (Disabled)" %}
+          </span>
+        </label>
+        <input
+          id="openassessment_leaderboard_editor"
+          class="input setting-input"
+          type="number"
+          value="{{ leaderboard_show }}"
+          min="0" max="99"
+          {% if teams_enabled %}disabled{% endif %}
+        />
+      </div>
+      <p class="setting-help">
+        {% trans "Specify the number of top scoring responses to display. Valid numbers are 0 to 99. If the number is 0, the Top Responses section does not appear to learners." %}
+      </p>
+      <br />
+      <p class="setting-help teams-warning {% if teams_enabled %}is--hidden{% endif %}">
+        <span class="icon fa fa-exclamation-circle" area-hidden="false"></span>
+        {% trans "When Teams Enabled is set to true, Top Responses will be disabled" %}
+      </p>
     </li>
     {% if teams_feature_enabled %}
         <li id="openassessment_team_settings_wrapper" class="field comp-setting-entry">
