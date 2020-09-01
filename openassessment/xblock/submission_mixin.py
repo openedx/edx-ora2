@@ -778,25 +778,33 @@ class SubmissionMixin:
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
 
+        # For team assignments, if a user submitted with a past team, that gets precidence.
+        # So we first see if they have a submission and load context from that.
+        # Otherwise, we fall back to the current team.
+        team_id_for_current_submission = None
+        if self.is_team_assignment():
+            if not workflow:
+                team_id_for_current_submission = self.get_team_info().get('team_id', None)
+            else:
+                team_submission = get_team_submission(workflow['team_submission_uuid'])
+                team_id_for_current_submission = team_submission['team_id']
+
+            # If it's a team assignment, the user hasn't submitted and is not on a team, the assignment is unavailable.
+            if team_id_for_current_submission is None:
+                path = 'openassessmentblock/response/oa_response_unavailable.html'
+                return path, context
+
         context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
 
         file_urls = None
 
-        team_id_for_shared_files = None
-        if self.is_team_assignment():
-            if not workflow:
-                team_id_for_shared_files = self.get_team_info().get('team_id', None)
-            else:
-                team_submission = get_team_submission(workflow['team_submission_uuid'])
-                team_id_for_shared_files = team_submission['team_id']
-
         if self.file_upload_type:
             context['file_urls'] = self.file_manager.file_descriptors(
-                team_id=team_id_for_shared_files, include_deleted=True
+                team_id=team_id_for_current_submission, include_deleted=True
             )
             context['team_file_urls'] = self.file_manager.team_file_descriptors(
-                team_id=team_id_for_shared_files
+                team_id=team_id_for_current_submission
             )
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
