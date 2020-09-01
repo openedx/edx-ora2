@@ -48,7 +48,11 @@ class MessageMixin:
         # Render the instruction message based on the status of the workflow
         # and the closed status.
         if self.teams_enabled and not self.valid_access_to_team_assessment():
-            path, context = self.render_message_no_team()
+            # If the learner is not on a team and hasn't submitted, warn them
+            if status is None:
+                path, context = self.render_message_no_team()
+            else:
+                path, context = 'openassessmentblock/message/oa_message_unavailable.html', {}
         elif status in ("done", "waiting"):
             path, context = self.render_message_complete(status_details)
         elif problem_is_closed or active_step_deadline_info.get('is_closed'):
