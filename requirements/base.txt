@@ -22,11 +22,11 @@ idna==2.8                 # via -c requirements/constraints.txt, requests
 importlib-metadata==1.7.0  # via path
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
 lazy==1.4                 # via -r requirements/base.in
-libsass==0.20.0           # via -r requirements/base.in
+libsass==0.20.1           # via -r requirements/base.in
 loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
 lxml==4.5.2               # via -r requirements/base.in, xblock
 markupsafe==1.1.1         # via xblock
-more-itertools==8.4.0     # via zipp
+more-itertools==8.5.0     # via zipp
 packaging==20.4           # via bleach
 path.py==12.5.0           # via -r requirements/base.in, edx-i18n-tools
 path==13.1.0              # via -c requirements/constraints.txt, path.py
