@@ -1460,6 +1460,61 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
 
     @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_leave_team_with_submission(self, xblock):
+        """
+        If a user was on a team that submitted, but leaves the team in the future. They will still
+        see their original submission.
+        """
+        self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Assert that Red Five is on our test team
+        self.assertEqual(xblock.team.name, "TeamName")
+
+        # Create Red Five's existing submission with some other team
+        arbitrary_user = get_user_model().objects.create_user(username='someuser', password='asdfasdfasf')
+        _, team_workflow = self._create_team_submission_and_workflow(
+            'test_course',
+            xblock.scope_ids.usage_id,
+            'TeamA',
+            arbitrary_user.id,
+            ['r5', 'tA1', 'tA2', 'tA3'],
+            {'text': 'This is the answer'},
+        )
+        individual_submission = sub_api.get_submission(team_workflow.submission_uuid)
+
+        # Red Five leaves the team
+        xblock.has_team = Mock(return_value=False)
+
+        # Assert that the xblock will render Red Five's existing submission rather that no submission
+        path, context = xblock.submission_path_and_context()
+        self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
+        self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_get_sumbission_context_no_team(self, xblock):
+        """
+        A student who tries to view a team assignment w/out being on a team will see the "response unavialable" view
+        """
+        # Set up a team assignment, but remove the user from the team
+        self.setup_mock_team(xblock)
+        xblock.has_team = Mock(return_value=False)
+        xblock.get_team_info = Mock(return_value={})
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Assert that the xblock renders an unavailablbe submission
+        path, context = xblock.submission_path_and_context()
+        self.assertEqual(path, 'openassessmentblock/response/oa_response_unavailable.html')
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
     def test_team_has_already_submitted(self, xblock):
         """
         Test that if a user is on a team hat has already submitted, but they themself have not submitted,
