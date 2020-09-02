@@ -1511,7 +1511,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.runtime._services['teams'] = MockTeamsService(True)
 
         # Assert that the xblock renders an unavailablbe submission
-        path, context = xblock.submission_path_and_context()
+        path, _ = xblock.submission_path_and_context()
         self.assertEqual(path, 'openassessmentblock/response/oa_response_unavailable.html')
 
     @scenario('data/team_submission.xml', user_id="Red Five")
