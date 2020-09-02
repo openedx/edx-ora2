@@ -713,7 +713,7 @@ class OpenAssessmentBlock(MessageMixin,
 
         ui_models.append(UI_MODELS["grade"])
 
-        if self.leaderboard_show > 0:
+        if self.leaderboard_show > 0 and not self.teams_enabled:
             ui_models.append(UI_MODELS["leaderboard"])
 
         return ui_models
