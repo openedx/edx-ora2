@@ -673,7 +673,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_cancel_team_submission_submission_not_found(self, xblock):
         # Set up team assignment and submission
-        self._setup_xblock_and_create_submission(xblock, team=True, anonymous_user_id='StaffMember')
+        self._setup_xblock_and_create_submission(xblock, anonymous_user_id='StaffMember')
         mock_get_user_submission = Mock()
         xblock.get_user_submission = mock_get_user_submission
 
@@ -695,7 +695,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_cancel_team_submission_no_team_uuid(self, xblock):
         # Set up team assignment and submission
-        self._setup_xblock_and_create_submission(xblock, team=True, anonymous_user_id='StaffMember')
+        self._setup_xblock_and_create_submission(xblock, anonymous_user_id='StaffMember')
         xblock.get_user_submission = Mock(return_value={'team_submission_uuid': ''})
 
         params = {"submission_uuid": 'abc', "comments": "Inappropriate language."}
@@ -708,7 +708,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_cancel_team_submission(self, xblock):
         # Set up team assignment and submission
-        team_submission = self._setup_xblock_and_create_submission(xblock, team=True, anonymous_user_id='StaffMember')
+        team_submission = self._setup_xblock_and_create_submission(xblock, anonymous_user_id='StaffMember')
         xblock.get_user_submission = Mock(
             return_value={
                 'team_submission_uuid': team_submission['team_submission_uuid']
@@ -753,7 +753,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         team_submission = self._setup_xblock_and_create_submission(
             xblock,
             anonymous_user_id='StaffMember',
-            team=True,
             has_team=False
         )
         # Assess team submission
@@ -860,7 +859,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_form_for_team_assessment(self, xblock):
-        self._setup_xblock_and_create_submission(xblock, team=True)
+        self._setup_xblock_and_create_submission(xblock)
 
         team_submission_enabled = 'data-team-submission="True"'
         team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
@@ -949,7 +948,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_delete_student_state_for_team_assessment(self, xblock):
         # Given a team with a submission
-        self._setup_xblock_and_create_submission(xblock, team=True)
+        self._setup_xblock_and_create_submission(xblock)
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
         self.assertEqual(total_submissions, 1)
         status_counts = self._parse_workflow_status_counts(status_counts)
@@ -981,7 +980,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         # ... on a team ORA w/ a team submission (which presumably also has files)
-        self._setup_xblock_and_create_submission(xblock, team=True)
+        self._setup_xblock_and_create_submission(xblock)
 
         # When we clear team state
         xblock.clear_student_state(
@@ -1074,7 +1073,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_area_has_team_info(self, xblock):
         # Given that we are course staff, managing a team assignment
-        self._setup_xblock_and_create_submission(xblock, team=True)
+        self._setup_xblock_and_create_submission(xblock)
 
         # When I get the staff context
         __, context = xblock.get_staff_path_and_context()
@@ -1085,7 +1084,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/team_submission.xml', user_id='Bob', )
     def test_staff_area_student_info_has_team_info(self, xblock):
         # Given that we are course staff and teams enabled
-        student = self._setup_xblock_and_create_submission(xblock, team=True)['submitted_by']
+        student = self._setup_xblock_and_create_submission(xblock)['submitted_by']
 
         # When I get the student context
         __, context = xblock.get_student_info_path_and_context(student)
@@ -1125,7 +1124,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         rather than their new team's submission.
         """
         # Setup the xblock, but don't create team submissions
-        self._setup_xblock(xblock, team=True, anonymous_user_id='StaffMember')
+        self._setup_xblock(xblock, anonymous_user_id='StaffMember')
 
         # Create a team submission that UserA has already been a part of
         arbitrary_user = UserFactory.create()
@@ -1364,12 +1363,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
-    def _setup_xblock_and_create_submission(self, xblock, anonymous_user_id='Bob', team=False, has_team=True, **kwargs):
+    def _setup_xblock_and_create_submission(self, xblock, anonymous_user_id='Bob', has_team=True, **kwargs):
         """
         A shortcut method to setup ORA xblock and add a user submission or a team submission to the block.
         """
-        self._setup_xblock(xblock, anonymous_user_id=anonymous_user_id, team=team, has_team=has_team)
-        if team:
+        self._setup_xblock(xblock, anonymous_user_id=anonymous_user_id, has_team=has_team)
+        if xblock.teams_enabled:
             arbitrary_test_user = UserFactory.create()
             return self._create_team_submission(
                 STUDENT_ITEM['course_id'],
@@ -1389,7 +1388,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 'files_names': kwargs.get('files_names', [])
             }, ['staff'])
 
-    def _setup_xblock(self, xblock, anonymous_user_id='Bob', team=False, has_team=True):
+    def _setup_xblock(self, xblock, anonymous_user_id='Bob', has_team=True):
         """
         Setup an xblock for teams / individual testing without creating a submission
         """
@@ -1399,14 +1398,13 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # pylint: disable=protected-access
         xblock.runtime._services['user'] = NullUserService()
         xblock.runtime._services['user_state'] = UserStateService()
-        if team:
+        if xblock.teams_enabled:
             xblock.runtime._services['teams'] = MockTeamsService(has_team)
 
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
-        if team:
-            xblock.teams_enabled = True
+        if xblock.teams_enabled:
             xblock.is_team_assignment = Mock(return_value=True)
             anonymous_user_ids_for_team = MOCK_TEAM_MEMBER_STUDENT_IDS
             xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)

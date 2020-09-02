@@ -746,6 +746,12 @@ def serialize_content_to_xml(oa_block, root):
     rubric_root = etree.SubElement(root, 'rubric')
     serialize_rubric(rubric_root, oa_block)
 
+    # Team info
+    if oa_block.teams_enabled is not None:
+        root.set('teams_enabled', str(oa_block.teams_enabled))
+    if oa_block.selected_teamset_id is not None:
+        root.set('selected_teamset_id', str(oa_block.selected_teamset_id))
+
 
 def serialize_content(oa_block):
     """
@@ -907,6 +913,14 @@ def parse_from_xml(root):
         except (TypeError, ValueError):
             raise UpdateFromXmlError('The leaderboard must have an integer value.')
 
+    # Retrieve teams info
+    teams_enabled = False
+    selected_teamset_id = None
+    if 'teams_enabled' in root.attrib:
+        teams_enabled = _parse_boolean(str(root.attrib['teams_enabled']))
+    if 'selected_teamset_id' in root.attrib:
+        selected_teamset_id = str(root.attrib['selected_teamset_id'])
+
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
@@ -930,7 +944,9 @@ def parse_from_xml(root):
         'white_listed_file_types': white_listed_file_types,
         'allow_latex': allow_latex,
         'group_access': group_access,
-        'leaderboard_show': leaderboard_show
+        'leaderboard_show': leaderboard_show,
+        'teams_enabled': teams_enabled,
+        'selected_teamset_id': selected_teamset_id
     }
 
 

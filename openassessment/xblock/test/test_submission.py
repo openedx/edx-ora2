@@ -656,7 +656,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
-        xblock.teams_enabled = True
         xblock.is_team_assignment = Mock(return_value=True)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
@@ -1204,7 +1203,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
-        xblock.teams_enabled = True
         xblock.is_team_assignment = Mock(return_value=True)
         team_submission = xblock.create_team_submission(
             ('a man must have a code', 'a man must also have a towel')
