@@ -24,6 +24,21 @@ logger = logging.getLogger("openassessment.assessment.api.peer")  # pylint: disa
 PEER_TYPE = "PE"
 
 
+def can_be_skipped(submission_uuid, peer_requirements):  # pylint: disable=unused-argument
+    """
+    Peer workflow step can be always skipped.
+
+    Args:
+        submission_uuid (str): The UUID of the submission being tracked.
+        peer_requirements (dict): Dictionary with the key "must_grade" indicating
+            the required number of submissions the student must grade.
+
+    Returns:
+        bool
+    """
+    return peer_requirements is not None
+
+
 def submitter_is_finished(submission_uuid, peer_requirements):
     """
     Check whether the submitter has made the required number of assessments.

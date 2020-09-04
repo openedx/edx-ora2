@@ -72,6 +72,17 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             submission["uuid"], data["requirements"]
         )
         del workflow_from_get['status_details']
+
+        # as peer step is skipable, we expect next possible status to be current status
+        if first_step == 'peer' and data["steps"].index('peer') < len(data["steps"]) - 1:
+            workflow = dict(workflow)
+            workflow['status'] = data["steps"][data["steps"].index('peer') + 1]
+            workflow_from_get = dict(workflow_from_get)
+
+            # the change in `workflow` variable causes modified field to get changed.
+            del workflow['modified']
+            del workflow_from_get['modified']
+
         self.assertEqual(workflow, workflow_from_get)
 
         # Test that the Peer Workflow is, or is not created, based on when peer
