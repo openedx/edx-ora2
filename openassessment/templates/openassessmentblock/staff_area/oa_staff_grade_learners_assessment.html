@@ -9,6 +9,9 @@
       data-team-usernames="{{ team_usernames|default:"" }}"
     >
         <div class="wrapper--staff-assessment">
+            <script>
+                MathJax.Hub.Typeset()
+            </script>
             <div>
                 {% if teams_enabled %}
                   <p>{% trans "Give this team a grade using the problem's rubric." %}</p>
