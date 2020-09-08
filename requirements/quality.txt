@@ -72,6 +72,7 @@ networkx==2.4             # via -c requirements/constraints.txt, -r requirements
 packaging==20.4           # via -r requirements/test.txt, bleach, tox
 path.py==12.5.0           # via -r requirements/test.txt, edx-i18n-tools
 path==13.1.0              # via -c requirements/constraints.txt, -r requirements/test.txt, path.py
+pathlib2==2.3.5           # via -r requirements/test.txt, pytest
 pluggy==0.13.1            # via -r requirements/test.txt, pytest, tox
 polib==1.1.0              # via -r requirements/test.txt, edx-i18n-tools
 py==1.9.0                 # via -r requirements/test.txt, pytest, tox
@@ -96,7 +97,7 @@ requests==2.24.0          # via -r requirements/test.txt, docker, moto, python-s
 responses==0.12.0         # via -r requirements/test.txt, moto
 rsa==4.6                  # via -r requirements/test.txt, python-jose
 s3transfer==0.3.3         # via -r requirements/test.txt, boto3
-six==1.15.0               # via -r requirements/test.txt, astroid, aws-sam-translator, bleach, cfn-lint, cryptography, django-simple-history, docker, ecdsa, edx-i18n-tools, edx-lint, freezegun, fs, fs-s3fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pyrsistent, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
+six==1.15.0               # via -r requirements/test.txt, astroid, aws-sam-translator, bleach, cfn-lint, cryptography, django-simple-history, docker, ecdsa, edx-i18n-tools, edx-lint, freezegun, fs, fs-s3fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pathlib2, pyrsistent, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
 sqlparse==0.3.1           # via -r requirements/test.txt, django
 sshpubkeys==3.1.0         # via -r requirements/test.txt, moto
 testfixtures==6.14.2      # via -r requirements/test.txt
