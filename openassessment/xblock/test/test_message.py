@@ -902,3 +902,38 @@ class TestMessageRender(XBlockHandlerTestCase):
             xblock, expected_path, expected_context,
             status, deadline_information, has_peers_to_grade
         )
+
+    @scenario('data/message_scenario_staff_assessment_only.xml', user_id="Linda")
+    @ddt.data(True, False)
+    def test_no_team_with_prior_sumbission(self, xblock, has_prior_submbission):
+        status = "staff" if has_prior_submbission else None
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.FUTURE),
+            'staff-assessment': (False, None, self.FAR_PAST, self.FAR_FUTURE),
+            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE)
+        }
+        has_peers_to_grade = False
+
+        xblock.teams_enabled = True
+        xblock.selected_teamset_id = 'teamset_message_id'
+        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=False)
+
+        mock_teamset = mock.MagicMock()
+        mock_teamset.configure_mock(name='Teamset Name')
+        xblock.teamset_config = mock_teamset
+
+        expected_context = {}
+
+        # Hide the message if the learner has already submitted
+        if has_prior_submbission:
+            expected_path = 'openassessmentblock/message/oa_message_unavailable.html'
+        else:
+            expected_path = 'openassessmentblock/message/oa_message_no_team.html'
+            expected_context['teamset_name'] = "Teamset Name"
+
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
