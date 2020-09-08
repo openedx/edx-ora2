@@ -59,7 +59,7 @@ markupsafe==1.1.1         # via -r requirements/base.txt, jinja2, xblock
 mock==3.0.5               # via -c requirements/constraints.txt, -r requirements/test.in, moto
 more-itertools==8.5.0     # via -r requirements/base.txt, -r requirements/test.in, pytest, zipp
 moto==1.3.14              # via -c requirements/constraints.txt, -r requirements/test.in
-networkx==2.5             # via cfn-lint
+networkx==2.4             # via -c requirements/constraints.txt, cfn-lint
 packaging==20.4           # via -r requirements/base.txt, bleach, tox
 path.py==12.5.0           # via -r requirements/base.txt, edx-i18n-tools
 path==13.1.0              # via -c requirements/constraints.txt, -r requirements/base.txt, path.py
