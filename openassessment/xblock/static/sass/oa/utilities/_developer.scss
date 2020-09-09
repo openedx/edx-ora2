@@ -1115,9 +1115,8 @@
 
   #team_concurrency_notice {
     margin: ($baseline-v/2) 0;
-    border: 1px solid $color-error;
-    background-color: $color-error-back;
-    color: $color-error;
+    border: 1px solid #ffd875;
+    background-color: #fffaed;
     padding: $baseline-v;
   }
 
