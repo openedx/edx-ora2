@@ -206,8 +206,12 @@
                         </li>
                     </ol>
 
-                    <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
-
+                    {% if team_name %}
+                        <h5 class="submission__answer__part__tip__title">{% trans "Team Submission" %}</h5>
+                        <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "Once one member of your team has entered a response and uploaded files, that team member may submit on behalf of the entire team." %}</span>
+                    {% else %}
+                        <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
+                    {% endif %}
                 </form>
             </div>
 
