@@ -871,6 +871,57 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
+    @scenario('data/message_scenario.xml', user_id="Linda")
+    def test_cancelled(self, xblock):
+        status = 'cancelled'
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.YESTERDAY),
+            'peer-assessment': (False, None, self.YESTERDAY, self.TODAY),
+            'self-assessment': (False, None, self.YESTERDAY, self.TODAY),
+            'over-all': (False, None, self.FAR_PAST, self.TODAY)
+        }
+        has_peers_to_grade = False
+
+        expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
+        expected_context = {
+            'is_team_assignment': False,
+            'xblock_id': xblock.scope_ids.usage_id,
+        }
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
+
+    @scenario('data/message_scenario.xml', user_id="Linda")
+    def test_cancelled_team(self, xblock):
+        status = 'cancelled'
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.YESTERDAY),
+            'staff-assessment': (False, None, self.YESTERDAY, self.TOMORROW),
+            'over-all': (False, None, self.FAR_PAST, self.TOMORROW)
+        }
+        has_peers_to_grade = False
+
+        xblock.teams_enabled = True
+        xblock.is_team_assignment = mock.MagicMock(return_value=True)
+        xblock.selected_teamset_id = 'teamset_message_id'
+        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=True)
+        mock_teamset = mock.MagicMock()
+        mock_teamset.configure_mock(name='Teamset Name')
+        xblock.teamset_config = mock_teamset
+
+        expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
+        expected_context = {
+            'is_team_assignment': True,
+            'xblock_id': xblock.scope_ids.usage_id,
+        }
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
+
     @scenario('data/message_scenario_staff_assessment_only.xml', user_id="Linda")
     @ddt.data(False, True)
     def test_no_team(self, xblock, teamset_found):
