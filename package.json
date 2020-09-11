@@ -18,7 +18,7 @@
     "jshint": "2.10.2",
     "karma": "^5.0.9",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.1",
+    "karma-coverage": "^2.0.3",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "~0.2",
     "karma-jasmine-jquery": "git+https://github.com/nkoder/karma-jasmine-jquery.git#be1566e6a069c867812b3845a46c9c6ca73b1e9f",
