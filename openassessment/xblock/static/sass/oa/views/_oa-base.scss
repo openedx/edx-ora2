@@ -555,7 +555,9 @@
     }
   }
 
-  .submission__upload__files__title {
+  .submission__upload__files__title,
+  .submission__answer__part__tip__title,
+  {
     @extend %t-heading;
   }
 
