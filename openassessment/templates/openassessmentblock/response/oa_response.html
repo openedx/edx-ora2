@@ -64,9 +64,10 @@
                 <p>
                   {% if team_name %}
                     {% trans "Enter your team's response to the prompt." %}
-                    {% trans "You can save your progress and return to complete your team's response " %}
                     {% if submission_due %}
-                      {% trans "at any time before the due date" %}
+                      {% blocktrans %}
+                        You can save your progress and return to complete your team's response at any time before the due date
+                      {% endblocktrans %}
                       (<span class="step__deadline">
                         <span id="oa_step_deadline_response"
                           class="date ora-datetime"
@@ -77,7 +78,9 @@
                         </span>
                       </span>).
                     {% else %}
-                      {% trans "at any time." %}
+                      {% blocktrans %}
+                        You can save your progress and return to complete your team's response at any time.
+                      {% endblocktrans %}
                     {% endif %}
                     <strong class="emphasis">
                       {% trans "After you submit a response on behalf of your team, it cannot be edited" %}
@@ -85,12 +88,20 @@
                   {% else %}
                     {% trans "Enter your response to the prompt." %}
                     {% if submission_due %}
-                    {% trans "You can save your progress and return to complete your response at any time before the due date" %}
-                    (<span class="step__deadline">
-                        <span id="oa_step_deadline_response" class="date ora-datetime" data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}" data-timezone="{{ user_timezone }}" data-format="longDateTime" data-language="{{ user_language }}"></span>
-                    </span>).
+                      {% blocktrans %}
+                        You can save your progress and return to complete your response at any time before the due date
+                      {% endblocktrans %}
+                      (<span class="step__deadline">
+                          <span id="oa_step_deadline_response"
+                            class="date ora-datetime"
+                            data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}"
+                            data-timezone="{{ user_timezone }}"
+                            data-format="longDateTime"
+                            data-language="{{ user_language }}">
+                          </span>
+                      </span>).
                     {% else %}
-                    {% trans "You can save your progress and return to complete your response at any time." %}
+                      {% trans "You can save your progress and return to complete your response at any time." %}
                     {% endif %}
                     <strong class="emphasis">{% trans "After you submit your response, you cannot edit it" %}</strong>.
                   {% endif %}
