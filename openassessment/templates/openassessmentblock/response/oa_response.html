@@ -19,7 +19,16 @@
             <h4 class="step__title">
                 <span class="step__counter"></span>
                 <span class="wrapper--copy">
-                    <span id="oa_step_title_response" class="step__label" aria-describedby="oa_step_status_response oa_step_deadline_response">{% trans "Your Response" %}</span>
+                    <span
+                      id="oa_step_title_response"
+                      class="step__label"
+                      aria-describedby="oa_step_status_response oa_step_deadline_response">
+                      {% if team_name %}
+                        {% trans "Your Team's Response" %}
+                      {% else %}
+                        {% trans "Your Response" %}
+                      {% endif %}
+                    </span>
                 </span>
             </h4>
         </span>
@@ -53,6 +62,27 @@
         <div class="wrapper--step__content">
             <div class="step__instruction">
                 <p>
+                  {% if team_name %}
+                    {% trans "Enter your team's response to the prompt." %}
+                    {% trans "You can save your progress and return to complete your team's response " %}
+                    {% if submission_due %}
+                      {% trans "at any time before the due date" %}
+                      (<span class="step__deadline">
+                        <span id="oa_step_deadline_response"
+                          class="date ora-datetime"
+                          data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}"
+                          data-timezone="{{ user_timezone }}"
+                          data-format="longDateTime"
+                          data-language="{{ user_language }}">
+                        </span>
+                      </span>).
+                    {% else %}
+                      {% trans "at any time." %}
+                    {% endif %}
+                    <strong class="emphasis">
+                      {% trans "After you submit a response on behalf of your team, it cannot be edited" %}
+                    </strong>.
+                  {% else %}
                     {% trans "Enter your response to the prompt." %}
                     {% if submission_due %}
                     {% trans "You can save your progress and return to complete your response at any time before the due date" %}
@@ -63,6 +93,7 @@
                     {% trans "You can save your progress and return to complete your response at any time." %}
                     {% endif %}
                     <strong class="emphasis">{% trans "After you submit your response, you cannot edit it" %}</strong>.
+                  {% endif %}
                 </p>
             </div>
 
@@ -83,17 +114,51 @@
                                 </article>
 
 
+                                {% if team_name %}
+                                  <div id='team_name_and_users'>
+                                      {% trans "You are on team " %}
+                                      <a href="{{team_url}}">{{team_name}}</a>.
+                                      {% trans "Team Members: " %}
+                                      <strong class="emphasis">{{team_usernames|join:", "}}.</strong>
+                                      {% if team_members_with_external_submissions %}
+                                        <br />
+                                        <strong class="emphasis">
+                                          {% blocktrans %}
+                                              {{team_members_with_external_submissions}}
+                                              have/has already submitted a response to this assignment with another team,
+                                              and will not be a part of your team's submission or assignment grade.
+                                          {% endblocktrans %}
+                                        </strong>
+                                      {% endif %}
+                                  </div>
+                                {% endif %}
+
                                 {% if text_response %}
                                 <div class="field field--textarea submission__answer__part__text">
                                     <div class="submission__answer__part__text">
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                             class="submission__answer__part__text__title">
+                                          {% if team_name %}
+                                            {% trans "Team Response " %}
+                                          {% else %}
+                                            {% trans "Your Response " %}
+                                          {% endif %}
+
                                           {% if text_response == "required" %}
-                                            {% trans "Your response (required)" %}
+                                            {% trans "(Required)" %}
                                           {% elif text_response == "optional" %}
-                                            {% trans "Your response (optional)" %}
+                                            {% trans "(Optional)" %}
                                           {% endif %}
                                         </h5>
+                                        {% if team_name %}
+                                          {% blocktrans %}
+                                              Teams should designate one team member to submit a response on behalf of the
+                                              entire team.  All team members can use this space to work on draft responses,
+                                              but you will not be able to see your teammates' drafts made in this space, so
+                                              please coordinate with them to decide on the final response the designated team
+                                              member should submit.
+                                          {% endblocktrans %}
+                                        {% endif %}
                                     </div>
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
@@ -111,47 +176,15 @@
                                 {% endif %}
                             </li>
                         {% endfor %}
-                        {% if team_name %}
-                            {% if text_response %}
-                                <div id="team_text_response_warning">
-                                    <button id="team_text_response_warning_closebtn"><span class="sr">{% trans "Close" %}</span> <span class="icon fa fa-close" aria-hidden="true"></span></button>
-                                    {% blocktrans %}
-                                        The text response of the first learner on your team who presses the submit button will be recorded
-                                        as the text submission for the entire team, and all files uploaded by all team members at that
-                                        point will also be included in the team submission.
-                                        After the learner submits a response for your team, it cannot be edited.
-                                    {% endblocktrans %}
-                                </div>
-                            {% endif %}
-                            <div id='team_name_and_users'>
-                                {% trans "You are on team " %}
-                                <a href="{{team_url}}">{{team_name}}</a>.
-                                {% trans "Team Members: " %}
-                                <strong class="emphasis">{{team_usernames|join:", "}}.</strong>
-                                {% if team_members_with_external_submissions %}
-                                  <br />
-                                  <strong class="emphasis">
-                                    {% blocktrans %}
-                                        {{team_members_with_external_submissions}}
-                                        have/has already submitted a response to this assignment with another team,
-                                        and will not be a part of your team's submission or assignment grade.
-                                    {% endblocktrans %}
-                                  </strong>
-                                {% endif %}
-                            </div>
-                            {% if previous_team_name %}
-                                <div id='team_user_has_previous_submission'>
-                                    {% blocktrans %}
-                                        You are currently on Team {{team_name}}. Since you were on Team {{previous_team_name}}
-                                        when they submitted a response to this assignment, you are seeing Team {{previous_team_name}}’s
-                                        response and will receive the same grade for this assignment as your former teammates.
-                                        You will not be part of Team {{team_name}}’s submission for this assignment and will not
-                                        receive a grade for their submission.
-                                    {% endblocktrans %}
-                                </div>
-                            {% endif %}
-                            <div id='team_concurrency_notice'>
-                                {% trans "Note: this is a team assignment. Make sure to coordinate with your teammates to avoid overwriting each other's work."%}
+                        {% if team_name and previous_team_name %}
+                            <div id='team_user_has_previous_submission'>
+                                {% blocktrans %}
+                                    You are currently on Team {{team_name}}. Since you were on Team {{previous_team_name}}
+                                    when they submitted a response to this assignment, you are seeing Team {{previous_team_name}}’s
+                                    response and will receive the same grade for this assignment as your former teammates.
+                                    You will not be part of Team {{team_name}}’s submission for this assignment and will not
+                                    receive a grade for their submission.
+                                {% endblocktrans %}
                             </div>
                         {% endif %}
                         {% if text_response %}
@@ -178,24 +211,36 @@
                         </li>
                         {% endif %}
                         {% if file_upload_type %}
-                        <li class="field">
-                            <div class="upload__error">
-                                <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <h5 class="message__title">{% trans "We could not upload files" %}</h5>
-                                    <div class="message__content"></div>
-                                </div>
-                            </div>
-                            <div class="delete__error">
-                                <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <h5 class="message__title">{% trans "We could not delete files" %}</h5>
-                                    <div class="message__content"></div>
-                                </div>
-                            </div>
-                            <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
-                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" multiple="">
-                            <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload files" %}</button>
-                            <div class="files__descriptions"></div>
-                        </li>
+                          <h5 class="submission__upload__files__title">
+                            {% trans "File Uploads " %} 
+                            {% if file_upload_response == "required" %}
+                              {% trans "(Required)" %}
+                            {% elif file_upload_response == "optional" %}
+                              {% trans "(Optional)" %}
+                            {% endif %}
+                          </h5>
+                          {% blocktrans %}
+                            Upload files and review files uploadded by you and your teammates below.  Be sure to add
+                            descriptions to your files to help your teammantes identify them.
+                          {% endblocktrans %}
+                          <li class="field">
+                              <div class="upload__error">
+                                  <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                      <h5 class="message__title">{% trans "We could not upload files" %}</h5>
+                                      <div class="message__content"></div>
+                                  </div>
+                              </div>
+                              <div class="delete__error">
+                                  <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                      <h5 class="message__title">{% trans "We could not delete files" %}</h5>
+                                      <div class="message__content"></div>
+                                  </div>
+                              </div>
+                              <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
+                              <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" multiple="">
+                              <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload files" %}</button>
+                              <div class="files__descriptions"></div>
+                          </li>
                         {% endif %}
                         <li class="field">
                         {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
@@ -214,6 +259,16 @@
                     {% endif %}
                 </form>
             </div>
+            {% if team_name %}
+              <div id='team_concurrency_notice'>
+                {% blocktrans %}
+                  *Please note, this section is for the designated team member to submit a final response to this
+                  assignment for your team.  Team members may continue to upload files to be included as part of
+                  the team response and save progress on their drafts until the designated team member is ready
+                  to submit.
+                {% endblocktrans %}
+              </div>
+            {% endif %}
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server" tabindex="-1">

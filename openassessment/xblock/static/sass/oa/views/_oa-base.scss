@@ -544,7 +544,6 @@
     @extend %t-heading;
   }
 
-
   .submission__answer__part__text__value {
     margin: ($baseline-v/2) 0;
     border-color: $gray-d7;
@@ -554,6 +553,10 @@
       background-color: $white;
       padding: $baseline-v;
     }
+  }
+
+  .submission__upload__files__title {
+    @extend %t-heading;
   }
 
   .submission__file__description__label {

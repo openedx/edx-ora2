@@ -1115,9 +1115,8 @@
 
   #team_concurrency_notice {
     margin: ($baseline-v/2) 0;
-    border: 1px solid $color-error;
-    background-color: $color-error-back;
-    color: $color-error;
+    border: 1px solid $color-warning;
+    background-color: $color-warning-back;
     padding: $baseline-v;
   }
 
@@ -1127,34 +1126,6 @@
     background-color: $color-error-back;
     color: $color-error;
     padding: $baseline-v;
-  }
-
-  #team_text_response_warning {
-    margin: ($baseline-v/2) 0;
-    border: 4px solid $color-error;
-    background-color: $color-error-back;
-    color: $color-error;
-    padding: $baseline-v;
-
-    #team_text_response_warning_closebtn {
-        margin: 0 ($baseline-v/2);
-        padding: 0;
-        border: 0;
-        float: left;
-
-        // Remove button styling
-        font-size: 12px;
-        -webkit-appearance: none;
-        background-image: none;
-        text-shadow: none;
-        box-shadow: none;
-        border: none;
-        border-image: none;
-
-        &:hover {
-          color: darken($color-error, 50%);
-        }
-      }
   }
 }
 .self-assessment__display__header
