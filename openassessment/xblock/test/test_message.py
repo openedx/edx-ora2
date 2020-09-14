@@ -903,13 +903,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         }
         has_peers_to_grade = False
 
-        xblock.teams_enabled = True
-        xblock.is_team_assignment = mock.MagicMock(return_value=True)
-        xblock.selected_teamset_id = 'teamset_message_id'
-        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=True)
-        mock_teamset = mock.MagicMock()
-        mock_teamset.configure_mock(name='Teamset Name')
-        xblock.teamset_config = mock_teamset
+        self._enable_team_assignment(xblock)
 
         expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
         expected_context = {
@@ -933,16 +927,9 @@ class TestMessageRender(XBlockHandlerTestCase):
         }
         has_peers_to_grade = False
 
-        xblock.teams_enabled = True
-        xblock.selected_teamset_id = 'teamset_message_id'
-        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=False)
-
-        if teamset_found:
-            mock_teamset = mock.MagicMock()
-            mock_teamset.configure_mock(name='Teamset Name')
-        else:
-            mock_teamset = None
-        xblock.teamset_config = mock_teamset
+        self._enable_team_assignment(xblock, user_on_team=False)
+        if not teamset_found:
+            xblock.teamset_config = None
 
         expected_path = 'openassessmentblock/message/oa_message_no_team.html'
         expected_context = {
@@ -965,13 +952,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         }
         has_peers_to_grade = False
 
-        xblock.teams_enabled = True
-        xblock.selected_teamset_id = 'teamset_message_id'
-        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=False)
-
-        mock_teamset = mock.MagicMock()
-        mock_teamset.configure_mock(name='Teamset Name')
-        xblock.teamset_config = mock_teamset
+        self._enable_team_assignment(xblock, user_on_team=False)
 
         expected_context = {}
 
@@ -988,3 +969,21 @@ class TestMessageRender(XBlockHandlerTestCase):
             xblock, expected_path, expected_context,
             status, deadline_information, has_peers_to_grade
         )
+
+    def _enable_team_assignment(self, xblock, user_on_team=True):
+        """
+        Enable teams for this ORA.
+
+        Args:
+            xblock - the xblock to enable teams on
+            user_on_team (boolean) - whether or not the user is on a team for this team assignment
+        """
+        xblock.teams_enabled = True
+        xblock.is_team_assignment = mock.MagicMock(return_value=True)
+
+        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=user_on_team)
+
+        xblock.selected_teamset_id = 'teamset_message_id'
+        mock_teamset = mock.MagicMock()
+        mock_teamset.configure_mock(name='Teamset Name')
+        xblock.teamset_config = mock_teamset
