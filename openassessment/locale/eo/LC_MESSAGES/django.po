@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-02 10:21-0400\n"
+"POT-Creation-Date: 2020-09-14 12:45-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -762,6 +762,7 @@ msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσ
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html
+#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
@@ -949,6 +950,35 @@ msgid ""
 msgstr ""
 "Àftér ýöü çömplété äll thé stéps öf thïs ässïgnmént, ýöü çän séé thé töp-"
 "sçörïng réspönsés fröm ýöür péérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html
+msgid ""
+"Your team’s submission has been cancelled. Your team will receive a grade of"
+" zero unless course staff resets your assessment to allow the team to "
+"resubmit a response."
+msgstr ""
+"Ýöür téäm’s süßmïssïön häs ßéén çänçélléd. Ýöür téäm wïll réçéïvé ä grädé öf"
+" zérö ünléss çöürsé stäff réséts ýöür ässéssmént tö ällöw thé téäm tö "
+"résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg "
+"єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт "
+"єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт "
+"αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη "
+"νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
+"σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ι#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html
+msgid ""
+"Your submission has been cancelled. You will receive a grade of zero unless "
+"course staff resets your assessment to allow you to resubmit a response."
+msgstr ""
+"Ýöür süßmïssïön häs ßéén çänçélléd. Ýöü wïll réçéïvé ä grädé öf zérö ünléss "
+"çöürsé stäff réséts ýöür ässéssmént tö ällöw ýöü tö résüßmït ä réspönsé. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html
 msgid ""
