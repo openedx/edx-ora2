@@ -33,7 +33,7 @@ path==13.1.0              # via -c requirements/constraints.txt, path.py
 polib==1.1.0              # via edx-i18n-tools
 pyparsing==2.4.7          # via packaging
 python-dateutil==2.4.0    # via -c requirements/constraints.txt, -r requirements/base.in, xblock
-python-swiftclient==3.10.0  # via -c requirements/constraints.txt, -r requirements/base.in
+python-swiftclient==3.10.1  # via -c requirements/constraints.txt, -r requirements/base.in
 pytz==2020.1              # via -r requirements/base.in, django, edx-submissions, fs, xblock
 pyyaml==5.3.1             # via edx-i18n-tools, xblock
 requests==2.24.0          # via python-swiftclient
