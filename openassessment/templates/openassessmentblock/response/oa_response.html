@@ -269,11 +269,18 @@
             </div>
             {% if team_name %}
               <div id='team_concurrency_notice'>
+                {% trans "This is a team submission." %}
+                {% if file_upload_type and text_response %}
+                    {% trans "One team member should submit a response with the team’s shared files and a text response on behalf of the entire team." %}
+                {% elif file_upload_type %}
+                    {% trans "One team member should submit a response with the team’s shared files on behalf of the entire team." %}
+                {% elif text_response %}
+                    {% trans "One team member should submit a text response on behalf of the entire team." %}
+                {% else %}
+                    {% trans "One team member should submit on behalf of the entire team."%}
+                {% endif %}
                 {% blocktrans %}
-                  *Please note, this section is for the designated team member to submit a final response to this
-                  assignment for your team.  Team members may continue to upload files to be included as part of
-                  the team response and save progress on their drafts until the designated team member is ready
-                  to submit.
+                Learn more about team assignments here: (<a href="" >link</a>)
                 {% endblocktrans %}
               </div>
             {% endif %}
