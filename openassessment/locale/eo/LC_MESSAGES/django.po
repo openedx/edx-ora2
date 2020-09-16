@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-11 11:20-0400\n"
+"POT-Creation-Date: 2020-09-16 13:09-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1444,18 +1444,23 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
-"You can save your progress and return to complete your team's response "
+"\n"
+"                        You can save your progress and return to complete your team's response at any time before the due date\n"
+"                      "
 msgstr ""
-"Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür téäm's réspönsé  "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+"\n"
+"                        Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür téäm's réspönsé ät äný tïmé ßéföré thé düé däté\n"
+"                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αη#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
-msgid "at any time before the due date"
-msgstr "ät äný tïmé ßéföré thé düé däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html
-msgid "at any time."
-msgstr "ät äný tïmé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+msgid ""
+"\n"
+"                        You can save your progress and return to complete your team's response at any time.\n"
+"                      "
+msgstr ""
+"\n"
+"                        Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür téäm's réspönsé ät äný tïmé.\n"
+"                       Ⱡ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
@@ -1471,11 +1476,13 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
-"You can save your progress and return to complete your response at any time "
-"before the due date"
+"\n"
+"                        You can save your progress and return to complete your response at any time before the due date\n"
+"                      "
 msgstr ""
-"Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür réspönsé ät äný tïmé "
-"ßéföré thé düé däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+"\n"
+"                        Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür réspönsé ät äný tïmé ßéföré thé düé däté\n"
+"                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
@@ -1625,38 +1632,53 @@ msgid "Upload files"
 msgstr "Ûplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
-msgid "Team Submission"
-msgstr "Téäm Süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html
-msgid ""
-"Once one member of your team has entered a response and uploaded files, that"
-" team member may submit on behalf of the entire team."
-msgstr ""
-"Önçé öné mémßér öf ýöür téäm häs éntéréd ä réspönsé änd üplöädéd fïlés, thät"
-" téäm mémßér mäý süßmït ön ßéhälf öf thé éntïré téäm. Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 "Ýöü mäý çöntïnüé tö wörk ön ýöür réspönsé üntïl ýöü süßmït ït. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "This is a team submission."
+msgstr "Thïs ïs ä téäm süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ä réspönsé wïth thé téäm’s shäréd fïlés änd ä "
+"téxt réspönsé ön ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ä réspönsé wïth thé téäm’s shäréd fïlés ön "
+"ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ä téxt réspönsé ön ßéhälf öf thé éntïré téäm. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "One team member should submit on behalf of the entire team."
+msgstr ""
+"Öné téäm mémßér shöüld süßmït ön ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
 "\n"
-"                  *Please note, this section is for the designated team member to submit a final response to this\n"
-"                  assignment for your team.  Team members may continue to upload files to be included as part of\n"
-"                  the team response and save progress on their drafts until the designated team member is ready\n"
-"                  to submit.\n"
+"                Learn more about team assignments here: (<a href=\"\" >link</a>)\n"
 "                "
 msgstr ""
 "\n"
-"                  *Pléäsé nöté, thïs séçtïön ïs för thé désïgnätéd téäm mémßér tö süßmït ä fïnäl réspönsé tö thïs\n"
-"                  ässïgnmént för ýöür téäm.  Téäm mémßérs mäý çöntïnüé tö üplöäd fïlés tö ßé ïnçlüdéd äs pärt öf\n"
-"                  thé téäm réspönsé änd sävé prögréss ön théïr dräfts üntïl thé désïgnätéd téäm mémßér ïs réädý\n"
-"                  tö süßmït.\n"
-"                #"
+"                Léärn möré äßöüt téäm ässïgnménts héré: (<a href=\"\" >lïnk</a>)\n"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "We could not submit your response"

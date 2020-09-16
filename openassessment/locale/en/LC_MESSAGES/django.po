@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-11 11:20-0400\n"
+"POT-Creation-Date: 2020-09-16 13:09-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1130,54 +1130,60 @@ msgstr ""
 msgid "Enter your team's response to the prompt."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:67
-msgid "You can save your progress and return to complete your team's response "
+#: openassessment/templates/openassessmentblock/response/oa_response.html:68
+msgid ""
+"\n"
+"                        You can save your progress and return to complete "
+"your team's response at any time before the due date\n"
+"                      "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:69
-msgid "at any time before the due date"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:80
-msgid "at any time."
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:83
-msgid "After you submit a response on behalf of your team, it cannot be edited"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:81
+msgid ""
+"\n"
+"                        You can save your progress and return to complete "
+"your team's response at any time.\n"
+"                      "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:86
+msgid "After you submit a response on behalf of your team, it cannot be edited"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:89
 msgid "Enter your response to the prompt."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:88
+#: openassessment/templates/openassessmentblock/response/oa_response.html:91
 msgid ""
-"You can save your progress and return to complete your response at any time "
-"before the due date"
+"\n"
+"                        You can save your progress and return to complete "
+"your response at any time before the due date\n"
+"                      "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:93
+#: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid ""
 "You can save your progress and return to complete your response at any time."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:95
+#: openassessment/templates/openassessmentblock/response/oa_response.html:106
 msgid "After you submit your response, you cannot edit it"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:105
+#: openassessment/templates/openassessmentblock/response/oa_response.html:116
 msgid "The prompt for this section"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:119
+#: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "You are on team "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
+#: openassessment/templates/openassessmentblock/response/oa_response.html:132
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:126
+#: openassessment/templates/openassessmentblock/response/oa_response.html:137
 #, python-format
 msgid ""
 "\n"
@@ -1189,25 +1195,25 @@ msgid ""
 "                                          "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:142
+#: openassessment/templates/openassessmentblock/response/oa_response.html:153
 msgid "Team Response "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:144
+#: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid "Your Response "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:148
-#: openassessment/templates/openassessmentblock/response/oa_response.html:217
+#: openassessment/templates/openassessmentblock/response/oa_response.html:159
+#: openassessment/templates/openassessmentblock/response/oa_response.html:228
 msgid "(Required)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:150
-#: openassessment/templates/openassessmentblock/response/oa_response.html:219
+#: openassessment/templates/openassessmentblock/response/oa_response.html:161
+#: openassessment/templates/openassessmentblock/response/oa_response.html:230
 msgid "(Optional)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:154
+#: openassessment/templates/openassessmentblock/response/oa_response.html:165
 msgid ""
 "\n"
 "                                              Teams should designate one "
@@ -1222,11 +1228,11 @@ msgid ""
 "                                          "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:169
+#: openassessment/templates/openassessmentblock/response/oa_response.html:180
 msgid "Enter your response to the prompt above."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:181
+#: openassessment/templates/openassessmentblock/response/oa_response.html:192
 #, python-format
 msgid ""
 "\n"
@@ -1242,23 +1248,23 @@ msgid ""
 "                                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:194
+#: openassessment/templates/openassessmentblock/response/oa_response.html:205
 msgid "We could not save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:201
+#: openassessment/templates/openassessmentblock/response/oa_response.html:212
 msgid "Save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:205
+#: openassessment/templates/openassessmentblock/response/oa_response.html:216
 msgid "Your Submission Status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:215
+#: openassessment/templates/openassessmentblock/response/oa_response.html:226
 msgid "File Uploads "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:222
+#: openassessment/templates/openassessmentblock/response/oa_response.html:233
 msgid ""
 "\n"
 "                            Upload files and review files uploadded by you "
@@ -1268,54 +1274,64 @@ msgid ""
 "                          "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:229
+#: openassessment/templates/openassessmentblock/response/oa_response.html:240
 msgid "We could not upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:235
+#: openassessment/templates/openassessmentblock/response/oa_response.html:246
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:239
+#: openassessment/templates/openassessmentblock/response/oa_response.html:250
 msgid "Select a file to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:241
+#: openassessment/templates/openassessmentblock/response/oa_response.html:252
 msgid "Upload files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:255
-msgid "Team Submission"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:256
-msgid ""
-"Once one member of your team has entered a response and uploaded files, that "
-"team member may submit on behalf of the entire team."
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:258
+#: openassessment/templates/openassessmentblock/response/oa_response.html:266
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:264
+#: openassessment/templates/openassessmentblock/response/oa_response.html:272
+msgid "This is a team submission."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:274
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:276
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:280
+msgid "One team member should submit on behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:282
 msgid ""
 "\n"
-"                  *Please note, this section is for the designated team "
-"member to submit a final response to this\n"
-"                  assignment for your team.  Team members may continue to "
-"upload files to be included as part of\n"
-"                  the team response and save progress on their drafts until "
-"the designated team member is ready\n"
-"                  to submit.\n"
+"                Learn more about team assignments here: (<a href=\"\" >link</"
+"a>)\n"
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:275
+#: openassessment/templates/openassessmentblock/response/oa_response.html:290
 msgid "We could not submit your response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:285
+#: openassessment/templates/openassessmentblock/response/oa_response.html:300
 msgid "Submit your response and move to the next step"
 msgstr ""
 
