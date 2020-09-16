@@ -59,6 +59,8 @@ class MessageMixin:
             path, context = self.render_message_closed(active_step_deadline_info)
         elif status in ("self", "peer", "training"):
             path, context = self.render_message_incomplete(status, deadline_info)
+        elif status == "cancelled":
+            path, context = self.render_message_cancelled()
         elif status is None:
             path, context = self.render_message_open(deadline_info)
         else:
@@ -147,6 +149,21 @@ class MessageMixin:
         }
 
         return 'openassessmentblock/message/oa_message_open.html', context
+
+    def render_message_cancelled(self):
+        """
+        Renders the assessment "cancelled" message state
+
+        Args:
+            status (String): indicates the current step to be completed
+
+        Returns:
+            The path (String) and context (dict) to render the "cancelled" message template
+        """
+        context = {
+            "is_team_assignment": self.is_team_assignment()
+        }
+        return 'openassessmentblock/message/oa_message_cancelled.html', context
 
     def _get_deadline_info(self):
         """
