@@ -177,3 +177,12 @@
     {% endblock %}
 </li>
 {% endspaceless %}
+
+<script>
+$(document).ready(function() {
+    var savedLanguage = "{{saved_response.language}}";
+    if(savedLanguage !== ""){
+        $("#submission__answer__language").val(savedLanguage).change();
+    }
+});
+</script>

@@ -155,18 +155,10 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /*
-
+    Get text areas
      */
     getPrompts: function(){
         return $('.response__submission .submission__answer__part__text__value', this.element);
-    },
-
-    /*
-    Update code area with run result
-     */
-    updateCodeOutput: function(output, index){
-    var sel = this.getPrompts();
-    $(sel[index]).val(output);
     },
 
     createTextArea: function(value, width){
@@ -197,6 +189,7 @@ OpenAssessment.ResponseView.prototype = {
             }
         );
         this.codeEditor.setSize(null, 800);
+        this.updateEditorMode(this.getLanguage());
     }
     },
 
@@ -257,19 +250,16 @@ OpenAssessment.ResponseView.prototype = {
     Show the response is either correct/incorrect based on the given value
     */
     indicateCorrectness: function(correctness){
-        var output_prompt = $(this.getPrompts()[1]);
         if(correctness==true){
-        output_prompt.attr('style', "border:5px solid green");
-        this.saveStatus(gettext("Code output matches the expected output"));
+          this.saveStatus(gettext("Code output matches the expected output"));
         }
         else{
-        output_prompt.attr('style', "border:5px solid red");
-        this.saveStatus(gettext("Code output mismatch / Execution error"));
+          this.saveStatus(gettext("Code output mismatch / Execution error"));
         }
     },
 
     /*
-        Get the currently selected language from the dropdown
+    Get the currently selected language from the dropdown
     */
     getLanguage: function(){
         return $("select#submission__answer__language", this.element).val();
@@ -502,23 +492,30 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
-    Update the code editor language mode based on the selected language.
+    Handle if the language selection dropdown has been changed
     **/
     handleLanguageSelectionChanged: function(){
     var language = this.getLanguage();
-
-    if(language == "Python"){
-        this.codeEditor.setOption("mode", {name: "python", version: 3});
-    }
-    else if(language == "Java"){
-        this.codeEditor.setOption("mode", "text/x-java");
-    }
-    else if(language == "C++"){
-        this.codeEditor.setOption("mode", "text/x-c++src");
-    }
+    this.updateEditorMode(language);
     this.handleResponseChanged();
 
     },
+
+    /**
+    Update the code editor mode based on the passed language
+    **/
+    updateEditorMode: function(language){
+      if(language == "Python"){
+        this.codeEditor.setOption("mode", {name: "python", version: 3});
+      }
+      else if(language == "Java"){
+        this.codeEditor.setOption("mode", "text/x-java");
+      }
+      else if(language == "C++"){
+        this.codeEditor.setOption("mode", "text/x-c++src");
+      }
+    },
+
     /**
      Enable/disable the submission and save buttons based on whether
      the user has entered a response.
