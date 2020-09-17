@@ -13,17 +13,17 @@ ORA is broken into two separate repositories:
 
 Using ORA with docker devstack
 ------------------------------
-Note - "from inside the lms", means you've run 'make lms-shell' from the devstack directory and are on a command prompt inside the lms container.
+Note - "from inside the lms", means you've run ``make lms-shell`` from the devstack directory and are on a command prompt inside the lms container.
 
 1. Clone edx-ora2 repo into ../src/ directory (relative to your 'devstack' repo location). 
 
 2. From the src directory, run the following command to install ora2 in the lms's and studio's virtual environments:
 
- ``make install-local-ora``
+  ``make install-local-ora``
 
 Alternatively, one can log into either lms (``make lms-shell``) or studio (``make studio-shell``) and execute the following commands to uninstall ora2 and reinstall your local copy;
  
- ``pip uninstall ora2 -y; pip install -e /edx/src/edx-ora2/``
+``pip uninstall ora2 -y; pip install -e /edx/src/edx-ora2/``
 
 3. Now, get your edx-ora2 development environment set up: (the virtual environment MUST be named **edx-ora2**)
 This must be done from inside either lms or studio docker container.
@@ -47,17 +47,12 @@ ORA code also depends on edx-submissions. As a result, anytime a new version of 
 
 For devstack:
 
-- ``make lms-shell``   # get into docker container
-
-- ``cd /edx/src/edx-ora2`` # goto into ora2 folder
-
-- ``source edx-ora2/bin/activate`` # activate ora2 virtual environment
-
-- ``pip install -U edx-submissions`` # installs latest version of submissions from pypi
-
-          OR
-          
-- ``pip install -e /edx/src/edx-submissions`` # istalls local version of submissions
+ - ``make lms-shell``   # get into docker container
+ - ``cd /edx/src/edx-ora2`` # goto into ora2 folder
+ - ``source edx-ora2/bin/activate`` # activate ora2 virtual environment
+ - ``pip install -U edx-submissions`` # installs latest version of submissions from pypi
+          OR          
+ - ``pip install -e /edx/src/edx-submissions`` # istalls local version of submissions
 
 Available make commands
 -----------------------

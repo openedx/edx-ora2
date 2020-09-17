@@ -17,7 +17,6 @@ Github Checklist
 
 Updating translations
 ---------------------
-
 If you change any text that is ultimately wrapped by ugettext (in a python, JS, or HTML file), you'll have to update translations.
 
 Do the following inside **your docker container**, with the **virtual env activated**:
@@ -27,13 +26,13 @@ Do the following inside **your docker container**, with the **virtual env activa
 
 - Because the detect_changed_source_translations make target looks at your remote branch for determining the up-to-datedness of your files, you'll have to:
 
- - commit your changed translation files (git diff for a quick sanity check first)
+  - commit your changed translation files (git diff for a quick sanity check first)
  
- - push these changes to your remote branch
+  - push these changes to your remote branch
  
 - The translations quality check on travis should now pass.
 
- - To verify that you're in a good state, you can again run ``make check_translations_up_to_date`` from your container.  It should pass.  It will also modify the POT timestamps of some files - you can discard these by doing git checkout . (this just resets your locally changed files to their remote branch state).
+  - To verify that you're in a good state, you can again run ``make check_translations_up_to_date`` from your container.  It should pass.  It will also modify the POT timestamps of some files - you can discard these by doing git checkout . (this just resets your locally changed files to their remote branch state).
  
 Releasing edx-submissions
 -------------------------
