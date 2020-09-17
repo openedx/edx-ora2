@@ -18,18 +18,21 @@ Note - "from inside the lms", means you've run ``make lms-shell`` from the devst
 1. Clone edx-ora2 repo into ../src/ directory (relative to your 'devstack' repo location). 
 
 2. From the src directory, run the following command to install ora2 in the lms's and studio's virtual environments:
-  - ``make install-local-ora``
+
+- ``make install-local-ora``
 
 Alternatively, one can log into either lms (``make lms-shell``) or studio (``make studio-shell``) and execute the following commands to uninstall ora2 and reinstall your local copy:
-  - ``pip uninstall ora2 -y; pip install -e /edx/src/edx-ora2/``
+
+- ``pip uninstall ora2 -y; pip install -e /edx/src/edx-ora2/``
 
 3. Now, get your edx-ora2 development environment set up: (the virtual environment MUST be named **edx-ora2**)
 This must be done from inside either lms or studio docker container.
-  - ``cd /edx/src/edx-ora2``
-  - ``virtualenv edx-ora2``
-  - ``source edx-ora2/bin/activate``
-  - ``make install``
-  - ensure that your virtual environment is named **edx-ora2**. Using a different name will cause errors when trying to generate translations.
+
+- ``cd /edx/src/edx-ora2``
+  ``virtualenv edx-ora2``
+  ``source edx-ora2/bin/activate``
+  ``make install``
+  ensure that your virtual environment is named **edx-ora2**. Using a different name will cause errors when trying to generate translations.
 
 4. Now, in the devstack directory on your host, run:
 ``make lms-restart lms-logs``
@@ -48,8 +51,7 @@ For devstack:
 - ``cd /edx/src/edx-ora2`` # goto into ora2 folder
 - ``source edx-ora2/bin/activate`` # activate ora2 virtual environment
 - ``pip install -U edx-submissions`` # installs latest version of submissions from pypi
-          OR          
-- ``pip install -e /edx/src/edx-submissions`` # istalls local version of submissions
+- ``pip install -e /edx/src/edx-submissions`` # installs latest local version of submissions
 
 Available make commands
 -----------------------
