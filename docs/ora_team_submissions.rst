@@ -70,20 +70,16 @@ Diagrams
 Behavior on Submit
 ------------------
 - For team ORA submissions, only staff assessment types are allowed (or no assessment types at all, in the case of practice assignments).
-
- - Peers should not see Team Submissions in their workflows.
-
- - “Selves” should not see Team Submissions in their workflows.
-
+  - Peers should not see Team Submissions in their workflows.
+  - “Selves” should not see Team Submissions in their workflows.
 - A ``Submission`` record should be created for each member of the team.
 
 - One ``TeamSubmission`` record should be created for the team.
 
 - One ``TeamAssessmentWorkflow`` should be created for the team.
 
- - Because this inherits from ``AssessmentWorkflow``, we can use ``AssessmentWorkflowCancellation`` for team workflows, too, without any model changes.
-
- - There will be one “content reference” submission that points to the ``AssessmentWorkflow`` that’s associated with the ``TeamAssessmentWorkflow`` - this is the submission that’s used to show text/file content to instructors while the team submission is being assessed.
+  - Because this inherits from ``AssessmentWorkflow``, we can use ``AssessmentWorkflowCancellation`` for team workflows, too, without any model changes.
+  - There will be one “content reference” submission that points to the ``AssessmentWorkflow`` that’s associated with the ``TeamAssessmentWorkflow`` - this is the submission that’s used to show text/file content to instructors while the team submission is being assessed.
 
 - If the `staff` assessment step (which is the only valid assessment type for team-based ORAs) is selected for the block, one ``TeamStaffWorkflow`` record is created for the team.
 
