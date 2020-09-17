@@ -29,13 +29,14 @@ Alternatively, one can log into either lms (``make lms-shell``) or studio (``mak
 This must be done from inside either lms or studio docker container.
 
 - ``cd /edx/src/edx-ora2``
-  ``virtualenv edx-ora2``
-  ``source edx-ora2/bin/activate``
-  ``make install``
-  ensure that your virtual environment is named **edx-ora2**. Using a different name will cause errors when trying to generate translations.
+- ``virtualenv edx-ora2``
+- ``source edx-ora2/bin/activate``
+- ``make install``
+- ensure that your virtual environment is named **edx-ora2**. Using a different name will cause errors when trying to generate translations.
 
 4. Now, in the devstack directory on your host, run:
-``make lms-restart lms-logs``
+
+- ``make lms-restart lms-logs``
 
 5. That's it, you're good to go! See Makefile for all the available commands, most are fairly self-explanatory
 In order to simulate a given tox environment (django18, django111, quality, js), run tox -e <env> for the env in question (after re-activating your edx-ora2 virtual environment).
