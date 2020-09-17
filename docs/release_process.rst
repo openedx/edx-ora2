@@ -42,18 +42,14 @@ Releasing edx-submissions
 
 - generate a diff between the new tag and the old one
 
- - e.g. https://github.com/edx/edx-submissions/compare/0.1.2...0.1.3
- 
- - verify that only the expected changes are included
- 
- - ask anyone with commits to verify their changes on stage
+  - e.g. https://github.com/edx/edx-submissions/compare/0.1.2...0.1.3 
+  - verify that only the expected changes are included 
+  - ask anyone with commits to verify their changes on stage
  
 - create a PR to update edx-platform to refer to the new release:
 
- - modify the edx-submissions line in requirements files in edx platform
- 
- - Once the PR has been merged, edx-submissions will release with the next edx-platform release
- 
+  - modify the edx-submissions line in requirements files in edx platform 
+  - Once the PR has been merged, edx-submissions will release with the next edx-platform release
   - Note: this means that it should be tested on stage as with any other platform change
   
 Releasing edx-ora2
@@ -66,11 +62,9 @@ Releasing edx-ora2
 
 - generate a diff between the new tag and the old one
 
- - e.g. https://github.com/edx/edx-ora2/compare/0.2.2...0.2.3
- 
- - verify that only the expected changes are included
- 
- - ask anyone with commits to verify their changes on stage
+  - e.g. https://github.com/edx/edx-ora2/compare/0.2.2...0.2.3
+  - verify that only the expected changes are included
+  - ask anyone with commits to verify their changes on stage
  
 - create a PR to update edx-platform to refer to the new release if immediate release is needed. Otherwise an automated job will auto-update the edx-platform version around 5am EST
 
