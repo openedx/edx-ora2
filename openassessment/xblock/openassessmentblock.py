@@ -43,6 +43,7 @@ from openassessment.xblock.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
+from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTemplatesMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -114,6 +115,7 @@ class OpenAssessmentBlock(MessageMixin,
                           CourseItemsListingMixin,
                           ConfigMixin,
                           TeamMixin,
+                          OpenAssessmentTemplatesMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
@@ -127,6 +129,13 @@ class OpenAssessmentBlock(MessageMixin,
     VALID_ASSESSMENT_TYPES_FOR_TEAMS = [  # pylint: disable=invalid-name
         'staff-assessment',
     ]
+
+    VALID_ASSESSMENT_TYPES_DISPLAY_NAMES = {
+        "student-training": "Student Training",
+        "peer-assessment": "Peer Assessment",
+        "self-assessment": "Self Assessment",
+        "staff-assessment": "Staff Assessment",
+    }
 
     public_dir = 'static'
 
