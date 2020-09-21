@@ -7,15 +7,15 @@
 appdirs==1.4.4            # via -r requirements/base.txt, fs, virtualenv
 atomicwrites==1.4.0       # via pytest
 attrs==20.2.0             # via jsonschema, pytest
-aws-sam-translator==1.26.0  # via cfn-lint
+aws-sam-translator==1.27.0  # via cfn-lint
 aws-xray-sdk==2.6.0       # via moto
-bleach==3.1.5             # via -r requirements/base.txt
-boto3==1.14.38            # via -r requirements/base.txt, aws-sam-translator, fs-s3fs, moto
-boto==2.39.0              # via moto
-botocore==1.17.38         # via -r requirements/base.txt, aws-xray-sdk, boto3, moto, s3transfer
+bleach==3.2.1             # via -r requirements/base.txt
+boto3==1.15.1             # via -r requirements/base.txt, aws-sam-translator, fs-s3fs, moto
+boto==2.49.0              # via moto
+botocore==1.18.1          # via -r requirements/base.txt, aws-xray-sdk, boto3, moto, s3transfer
 certifi==2020.6.20        # via -r requirements/base.txt, requests
 cffi==1.14.3              # via cryptography
-cfn-lint==0.35.1          # via moto
+cfn-lint==0.36.0          # via moto
 chardet==3.0.4            # via -r requirements/base.txt, requests
 coverage==5.3             # via -r requirements/test.in, pytest-cov
 cryptography==3.1         # via moto, sshpubkeys
@@ -26,8 +26,7 @@ distlib==0.3.1            # via virtualenv
 django-model-utils==4.0.0  # via -r requirements/base.txt, edx-submissions
 django-pyfs==2.2          # via -r requirements/test.in
 django-simple-history==2.11.0  # via -r requirements/base.txt
-docker==4.3.0             # via moto
-docutils==0.15.2          # via -r requirements/base.txt, botocore
+docker==4.3.1             # via moto
 ecdsa==0.14.1             # via python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/base.txt
 edx-submissions==3.2.2    # via -r requirements/base.txt
@@ -63,7 +62,6 @@ networkx==2.4             # via -c requirements/constraints.txt, cfn-lint
 packaging==20.4           # via -r requirements/base.txt, bleach, tox
 path.py==12.5.0           # via -r requirements/base.txt, edx-i18n-tools
 path==13.1.0              # via -c requirements/constraints.txt, -r requirements/base.txt, path.py
-pathlib2==2.3.5           # via pytest
 pluggy==0.13.1            # via pytest, tox
 polib==1.1.0              # via -r requirements/base.txt, edx-i18n-tools
 py==1.9.0                 # via pytest, tox
@@ -83,7 +81,7 @@ requests==2.24.0          # via -r requirements/base.txt, docker, moto, python-s
 responses==0.12.0         # via moto
 rsa==4.6                  # via python-jose
 s3transfer==0.3.3         # via -r requirements/base.txt, boto3
-six==1.15.0               # via -r requirements/base.txt, aws-sam-translator, bleach, cfn-lint, cryptography, django-simple-history, docker, ecdsa, edx-i18n-tools, freezegun, fs, fs-s3fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pathlib2, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
+six==1.15.0               # via -r requirements/base.txt, aws-sam-translator, bleach, cfn-lint, cryptography, django-simple-history, docker, ecdsa, edx-i18n-tools, freezegun, fs, fs-s3fs, html5lib, jsonschema, junit-xml, libsass, mock, moto, packaging, pytest, python-dateutil, python-jose, python-swiftclient, responses, tox, virtualenv, websocket-client, xblock
 sqlparse==0.3.1           # via -r requirements/base.txt, django
 sshpubkeys==3.1.0         # via moto
 testfixtures==6.14.2      # via -r requirements/test.in
@@ -92,7 +90,7 @@ toml==0.10.1              # via tox
 tox==3.20.0               # via -r requirements/test.in
 urllib3==1.25.10          # via -r requirements/base.txt, botocore, requests, responses
 virtualenv==20.0.31       # via tox
-voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.txt
+voluptuous==0.12.0        # via -c requirements/constraints.txt, -r requirements/base.txt
 wcwidth==0.2.5            # via pytest
 web-fragments==0.3.2      # via -r requirements/base.txt, xblock
 webencodings==0.5.1       # via -r requirements/base.txt, bleach, html5lib
