@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
+"POT-Creation-Date: 2020-09-16 13:37-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
@@ -483,11 +483,11 @@ msgid ""
 msgstr "As alterações às etapas que não estão selecionados como parte da tarefa, não serão guardadas."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:95
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:102
 msgid "File types can not be empty."
 msgstr "Indique o tipo de ficheiro. "
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:105
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:112
 msgid "The following file types are not allowed: "
 msgstr "Os seguintes tipos de ficheiro não são permitidos: "

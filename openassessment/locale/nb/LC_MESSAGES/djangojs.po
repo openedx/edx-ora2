@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
+"POT-Creation-Date: 2020-09-16 13:37-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/open-edx/edx-platform/language/nb/)\n"
@@ -476,11 +476,11 @@ msgid ""
 msgstr "Endringer i trinn som ikke er valgt som en del av oppgaven, blir ikke lagret."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:95
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:102
 msgid "File types can not be empty."
 msgstr "Filtyper kan ikke være tomme."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:105
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:112
 msgid "The following file types are not allowed: "
 msgstr "Følgende filtyper er ikke tillatt:"

@@ -1,0 +1,41 @@
+{% extends "openassessmentblock/response/oa_response.html" %}
+{% load i18n %}
+{% load tz %}
+
+{% block list_item %}
+    <li id="openassessment__response__{{ xblock_id }}"
+        class="openassessment__steps__step step--response has--error is--showing ui-slidable__container"
+        tabindex="-1">
+{% endblock %}
+
+{% block title %}
+    <span class="step__status">
+        <span id="oa_step_status_response" class="step__status__value">
+            <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
+            <span class="copy">{% trans "Error" %}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block body %}
+    <div class="ui-slidable__content" aria-labelledby="oa_response_{{ xblock_id }}" id="oa_response_{{ xblock_id }}_content">
+        <div class="wrapper--step__content">
+            <div class="step__message message message--incomplete">
+
+                <h5 class="message__title">{% trans "Status" %}</h5>
+
+                <div class="message__content">
+                    <p>
+                        {% blocktrans %}
+                            You joined Team {{ team_name }} after they submitted a response for this assignment
+                            and you will not receive a grade for their response. You have also not previously submitted
+                            a response to this assignment with another team. Please contact course staff to discuss your
+                            options for this assignment.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

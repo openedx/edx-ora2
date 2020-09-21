@@ -184,4 +184,28 @@ describe("OpenAssessment.EditSettingsView", function() {
         // for team assessments, it also automatically selects 'staff-assessment'
         expect(assessmentViews[STAFF].isEnabled()).toBe(true);
     });
+
+    it('disables leaderboard and shows warnings when teams are enabled', function() {
+        var warning_selectors = [
+          '#openassessment_leaderboard_wrapper .teams-warning',
+          '#openassessment_leaderboard_wrapper .disabled-label',
+        ];
+
+        // Default config: teams are disabled, warnings are hidden and input is enabled
+        view.teamsEnabled(false);
+        expect(view.teamsEnabled()).toBe(false);
+        warning_selectors.forEach(function(selector) {
+          expect(view.isHidden($(selector))).toBe(true);
+        });
+        expect($('#openassessment_leaderboard_editor').prop('disabled')).toBe(false);
+
+        // Teams config: teams are enabled, so warnings are shown and input is disabled
+        view.teamsEnabled(true);
+        expect(view.teamsEnabled()).toBe(true);
+
+        warning_selectors.forEach(function(selector) {
+          expect(view.isHidden($(selector))).toBe(false);
+        });
+        expect($('#openassessment_leaderboard_editor').prop('disabled')).toBe(true);
+    });
 });

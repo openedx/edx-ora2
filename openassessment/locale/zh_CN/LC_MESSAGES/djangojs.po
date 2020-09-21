@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
+"POT-Creation-Date: 2020-09-16 13:37-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -484,11 +484,11 @@ msgid ""
 msgstr "未作为作业部分的步骤变更将不会被保存。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:95
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:102
 msgid "File types can not be empty."
 msgstr "文件类型不能为空。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:105
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:112
 msgid "The following file types are not allowed: "
 msgstr "下列文件类型不可用："

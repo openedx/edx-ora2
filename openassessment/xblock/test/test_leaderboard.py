@@ -182,7 +182,12 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
                 Body=b"How d'ya do?",
             )
             files_url_and_description = [
-                (api.get_download_url(file_key), file_descriptions[idx], file_names[idx], False)
+                {
+                    'download_url': api.get_download_url(file_key),
+                    'description': file_descriptions[idx],
+                    'name': file_names[idx],
+                    'show_delete_button': False
+                }
                 for idx, file_key in enumerate(file_keys)
             ]
 
@@ -222,7 +227,14 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             Body=b"How d'ya do?",
         )
 
-        file_download_url = [(api.get_download_url('foo'), '', '', False)]
+        file_download_url = [
+            {
+                'download_url': api.get_download_url('foo'),
+                'description': '',
+                'name': '',
+                'show_delete_button': False
+            }
+        ]
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_key'] = 'foo'
@@ -354,6 +366,9 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         for score in scores:
             if score.get('files'):
                 score['files'] = [
-                    (_clean_query_string(file_info[0]), file_info[1]) for file_info in score['files']
+                    {
+                        'download_url': _clean_query_string(file_info['download_url']),
+                        'description': file_info['description']
+                    } for file_info in score['files']
                 ]
         return scores

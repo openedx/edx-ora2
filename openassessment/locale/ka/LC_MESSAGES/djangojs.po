@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-11 09:59-0400\n"
+"POT-Creation-Date: 2020-09-16 13:37-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
@@ -473,11 +473,11 @@ msgid ""
 msgstr "საფეხურებში, რომლებიც არ არიან მონიშნული, როგორც მოცემული დავალების ნაწილი, ცვლილებები არ შეინახება."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:95
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:102
 msgid "File types can not be empty."
 msgstr "დაუშვებელია ფაილის ტიპების მნიშვნელობა ცარიელი იყოს."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:105
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:112
 msgid "The following file types are not allowed: "
 msgstr "შემდეგი ტიპის ფაილები ნებადართული არ არის:"

@@ -15,6 +15,7 @@ import boto3
 from moto import mock_s3
 from django.contrib.auth import get_user_model
 from submissions import api as sub_api
+from submissions import team_api as team_sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
 from submissions.models import TeamSubmission
 from openassessment.fileupload import api
@@ -25,11 +26,12 @@ from openassessment.workflow import (
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.workflow_mixin import WorkflowMixin
-
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
 from .base import XBlockHandlerTestCase, scenario
 from .test_staff_area import NullUserService, UserStateService
+
+COURSE_ID = 'test_course'
 
 
 class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
@@ -44,7 +46,7 @@ class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(
             user_is_staff=False,
             user_is_beta_tester=False,
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='r5'
         )
 
@@ -127,7 +129,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         # even though we're running in Preview mode.  We should check the scope id
         # to determine whether we're in Preview mode or not.
         xblock.xmodule_runtime = Mock(
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='test_student'
         )
 
@@ -195,7 +197,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
     def test_upload_url(self, xblock):
         """ Test generate correct upload URL """
         xblock.xmodule_runtime = Mock(
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='test_student',
         )
         resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
@@ -226,7 +228,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
 
         xblock.xmodule_runtime = Mock(
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='test_student',
         )
 
@@ -272,7 +274,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         """
         self._create_uploaded_files(5, xblock.scope_ids.usage_id)
         xblock.xmodule_runtime = Mock(
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='test_student',
         )
 
@@ -354,7 +356,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         Tests that files with upper case extention uploaded successfully
         """
         xblock.xmodule_runtime = Mock(
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='test_student',
         )
         resp = self.request(xblock, 'upload_url', json.dumps({'contentType': 'filename',
@@ -392,7 +394,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             username='UserName1'
         )
         xblock.xmodule_runtime = Mock(
-            course_id='test_course',
+            course_id=COURSE_ID,
             anonymous_student_id='test_student',
             get_real_user=lambda _: mock_user
         )
@@ -437,9 +439,10 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
         # given a learner is on a team and file uploads are enabled
         mock_team = self.setup_mock_team(xblock)
+        xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
         xblock.file_upload_type = 'pdf-and-image'
 
-        xblock.file_manager.get_uploads = Mock(side_effect=lambda: [
+        xblock.file_manager.get_uploads = Mock(side_effect=lambda team_id: [
             api.FileUpload(
                 description='file-1',
                 name='file-1.pdf',
@@ -451,7 +454,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             ),
         ])
 
-        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda: [
+        xblock.file_manager.get_team_uploads = Mock(side_effect=lambda team_id: [
             api.FileUpload(
                 description='file-5',
                 name='file-5.pdf',
@@ -518,8 +521,18 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             # Even though one of the keys had no good download URL, we should
             # still return data for keys that came after it.
             expected_urls = [
-                ('download-url-1', 'desc-1', 'name-1', False),
-                ('download-url-3', 'desc-3', 'name-3', False),
+                {
+                    'download_url': 'download-url-1',
+                    'description': 'desc-1',
+                    'name': 'name-1',
+                    'show_delete_button': False
+                },
+                {
+                    'download_url': 'download-url-3',
+                    'description': 'desc-3',
+                    'name': 'name-3',
+                    'show_delete_button': False
+                },
             ]
             self.assertEqual(expected_urls, actual_urls)
 
@@ -542,7 +555,12 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
             actual_urls = xblock.get_download_urls_from_submission(mock_submission)
             expected_urls = [
-                ('download-url-1', '', '', False),
+                {
+                    'download_url': 'download-url-1',
+                    'description': '',
+                    'name': '',
+                    'show_delete_button': False
+                }
             ]
             self.assertEqual(expected_urls, actual_urls)
 
@@ -627,6 +645,137 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': True,
             }
         )
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_team_open_unanswered(self, xblock):
+        mock_team = SubmissionTest.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        usage_id = xblock.scope_ids.usage_id
+        xblock.location = usage_id
+        xblock.user_state_upload_data_enabled = Mock(return_value=True)
+        xblock.is_team_assignment = Mock(return_value=True)
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'text_response': 'required',
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
+                'save_status': 'This response has not been saved.',
+                'submit_enabled': False,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'team_id': mock_team['team_id'],
+                'team_name': mock_team['team_name'],
+                'team_url': mock_team['team_url'],
+                'team_usernames': mock_team['team_usernames'],
+                'team_members_with_external_submissions': '',
+                'allow_latex': False,
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': True,
+            }
+        )
+
+    @patch('openassessment.xblock.submission_mixin.list_to_conversational_format')
+    @patch('submissions.team_api.get_teammates_with_submissions_from_other_teams')
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_get_team_submission_context(
+            self,
+            xblock,
+            mock_external_team_submissions,
+            mock_formatter):
+        team_info = {
+            'team_id': MOCK_TEAM_ID,
+            'team_info_extra': 'more team info'
+        }
+        usage_id = xblock.scope_ids.usage_id
+        student_item_dict = {
+            'item_id': usage_id
+        }
+        student_ids = ['11111111111111', '222222222222222', '333333333333']
+        student_usernames = ['User 1', 'User 2', 'User 3']
+        external_submissions = [
+            {
+                'student_id': student_ids[0],
+                'team_id': 'other team'
+            },
+            {
+                'student_id': student_ids[1],
+                'team_id': 'still another team',
+            },
+            {
+                'student_id': student_ids[2],
+                'team_id': 'final team',
+            }
+        ]
+
+        mock_external_team_submissions.return_value = external_submissions
+
+        xblock.get_team_info = Mock(return_value=team_info)
+        xblock.xmodule_runtime = Mock(
+            course_id=COURSE_ID,
+            anonymous_student_id="Red Five",
+            user_is_staff=False
+        )
+        xblock.get_student_item_dict = Mock(return_value=student_item_dict)
+        xblock.get_username = Mock(
+            side_effect=lambda student_id: student_usernames[student_ids.index(student_id)]
+        )
+
+        mock_formatter.side_effect = ','.join
+        xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
+        expected_context = {
+            'team_members_with_external_submissions': mock_formatter(student_usernames),
+            'team_id': MOCK_TEAM_ID,
+            'team_info_extra': 'more team info'
+        }
+        context = {}
+        xblock.get_team_submission_context(context)
+        mock_external_team_submissions.assert_called_with(
+            COURSE_ID,
+            usage_id,
+            MOCK_TEAM_ID,
+            student_ids
+        )
+        self.assertEqual(context, expected_context)
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_get_team_submission_context__no_team(self, xblock):
+        team_info = None
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False
+        )
+        xblock.get_team_info = Mock(return_value=team_info)
+        context = {}
+        xblock.get_team_submission_context(context)
+        self.assertEqual(context, {})
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_get_team_submission_context__staff_view(self, xblock):
+        # In staff view, team info is available, but not submission info.
+        # verify that the team info is loaded into context, and nothing else,
+        # and that no exceptions are thrown
+        team_info = {
+            'team_id': MOCK_TEAM_ID,
+            'team_info_extra': 'more team info'
+        }
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=True
+        )
+        xblock.get_team_info = Mock(return_value=team_info)
+        context = {}
+        xblock.get_team_submission_context(context)
+        self.assertEqual(context, team_info)
 
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
     def test_open_no_deadline(self, xblock):
@@ -821,8 +970,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
-                    ('', 'file-1', None, True),
-                    ('', 'file-2', None, True)
+                    {'download_url': '', 'description': 'file-1', 'name': None, 'show_delete_button': True},
+                    {'download_url': '', 'description': 'file-2', 'name': None, 'show_delete_button': True}
                 ],
                 'team_file_urls': [],
                 'saved_response': create_submission_dict({
@@ -883,7 +1032,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         """
         xblock.file_manager.get_uploads = Mock(return_value=[
             api.FileUpload(
-                description='file-1',
+                description='file 1 description',
                 name='file-1.pdf',
                 size=200,
                 student_id='Valchek',
@@ -904,7 +1053,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         xblock.file_manager.get_team_uploads = Mock(return_value=[
             api.FileUpload(
-                description='file-5',
+                description='file 5 description',
                 name='file-5.pdf',
                 size=500,
                 student_id='Bob',
@@ -928,6 +1077,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             'file-5.pdf',
             'file-1-url',
             'file-5-url',
+            'file 1 description',
+            'file 5 description',
         ]
 
         for expected_string in expected_strings:
@@ -1054,25 +1205,13 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
-        xblock.teams_enabled = True
         xblock.is_team_assignment = Mock(return_value=True)
-        anonymous_user_ids_for_team = ['Red Five', 'Bob', 'Alice', 'Chris']
-        xblock.get_anonymous_user_ids_for_team = Mock(
-            return_value=anonymous_user_ids_for_team
-        )
         team_submission = xblock.create_team_submission(
             ('a man must have a code', 'a man must also have a towel')
         )
-        student_submissions = sub_api.get_submissions(
-            dict(
-                student_id="Chris",
-                item_id=usage_id,
-                course_id='test_course',
-                item_type='openassessment'
-            ),
-            1
-        )
-        student_submission = dict(student_submissions[0])
+
+        workflow = xblock.get_workflow_info()
+        student_submission = sub_api.get_submission(workflow['submission_uuid'])
 
         comments = "Cancelled by staff"
         staff_id = "Andy"
@@ -1286,6 +1425,164 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
         mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, None)
 
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_change_team_with_submission(self, xblock):
+        """
+        Test that if a user submits with one team, then joins another team, they will see their original submission
+
+        The user was originally part of TeamA, which was where they submitted their submission,
+        then joined TestTeam
+        """
+        self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Assert that Red Five is on our test team
+        self.assertEqual(xblock.team.name, "TeamName")
+
+        # Create Red Five's existing submission with some other team
+        arbitrary_user = get_user_model().objects.create_user(username='someuser', password='asdfasdfasf')
+        _, team_workflow = self._create_team_submission_and_workflow(
+            'test_course',
+            xblock.scope_ids.usage_id,
+            'TeamA',
+            arbitrary_user.id,
+            ['r5', 'tA1', 'tA2', 'tA3'],
+            {'text': 'This is the answer'},
+        )
+        individual_submission = sub_api.get_submission(team_workflow.submission_uuid)
+
+        # Assert that the xblock will render Red Five's existing submission rather that
+        # no submission (because TestTeam does not yet have a submission)
+        path, context = xblock.submission_path_and_context()
+        self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
+        self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_leave_team_with_submission(self, xblock):
+        """
+        If a user was on a team that submitted, but leaves the team in the future. They will still
+        see their original submission.
+        """
+        self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Assert that Red Five is on our test team
+        self.assertEqual(xblock.team.name, "TeamName")
+
+        # Create Red Five's existing submission with some other team
+        arbitrary_user = get_user_model().objects.create_user(username='someuser', password='asdfasdfasf')
+        _, team_workflow = self._create_team_submission_and_workflow(
+            'test_course',
+            xblock.scope_ids.usage_id,
+            'TeamA',
+            arbitrary_user.id,
+            ['r5', 'tA1', 'tA2', 'tA3'],
+            {'text': 'This is the answer'},
+        )
+        individual_submission = sub_api.get_submission(team_workflow.submission_uuid)
+
+        # Red Five leaves the team
+        xblock.has_team = Mock(return_value=False)
+
+        # Assert that the xblock will render Red Five's existing submission rather that no submission
+        path, context = xblock.submission_path_and_context()
+        self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
+        self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_get_sumbission_context_no_team(self, xblock):
+        """
+        A student who tries to view a team assignment w/out being on a team will see the "response unavialable" view
+        """
+        # Set up a team assignment, but remove the user from the team
+        self.setup_mock_team(xblock)
+        xblock.has_team = Mock(return_value=False)
+        xblock.get_team_info = Mock(return_value={})
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Assert that the xblock renders an unavailablbe submission
+        path, _ = xblock.submission_path_and_context()
+        self.assertEqual(path, 'openassessmentblock/response/oa_response_unavailable.html')
+
+    @scenario('data/team_submission.xml', user_id="Red Five")
+    def test_team_has_already_submitted(self, xblock):
+        """
+        Test that if a user is on a team hat has already submitted, but they themself have not submitted,
+        the correct page is rendered.
+        """
+        self.setup_mock_team(xblock)
+
+        # pylint: disable=protected-access
+        xblock.runtime._services['user'] = NullUserService()
+        xblock.runtime._services['user_state'] = UserStateService()
+        xblock.runtime._services['teams'] = MockTeamsService(True)
+
+        # Create a submission for the team, but without r5.
+        arbitrary_user = get_user_model().objects.create_user(username='someuser', password='asdfasdfasf')
+        self._create_team_submission_and_workflow(
+            'test_course',
+            xblock.scope_ids.usage_id,
+            MOCK_TEAM_ID,
+            arbitrary_user.id,
+            ['rl', 'r2'],
+            {'text': 'This is the answer'},
+        )
+
+        # Assert that we return the 'team already submitted' path
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_team_already_submitted.html',
+            {
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
+                'allow_latex': False,
+                'team_id': MOCK_TEAM_ID,
+                'user_timezone': None,
+                'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
+                'file_upload_response': None,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'file_upload_type': None,
+                'submit_enabled': False,
+                'prompts_type': 'text',
+                'user_language': None,
+                'enable_delete_files': True,
+                'team_url': 'rebel_alliance.org',
+                'save_status': 'This response has not been saved.',
+                'team_name': 'Red Squadron',
+                'text_response': 'required',
+                'team_members_with_external_submissions': ''
+            }
+        )
+
+    def _create_team_submission_and_workflow(
+        self, course_id, item_id, team_id, submitter_id, team_member_student_ids, answer
+    ):
+        """ Create a team submission and team workflow with the given info """
+        team_submission = team_sub_api.create_submission_for_team(
+            course_id,
+            item_id,
+            team_id,
+            submitter_id,
+            team_member_student_ids,
+            answer
+        )
+        team_workflow = team_workflow_api.create_workflow(team_submission['team_submission_uuid'])
+        return team_submission, team_workflow
+
     def _assert_path_and_context(self, xblock, expected_path, expected_context):
         """
         Render the submission step and verify that the correct template
@@ -1305,7 +1602,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         """
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
-
         path, context = xblock.submission_path_and_context()
         self.maxDiff = None  # pylint: disable=invalid-name
         self.assertEqual(path, expected_path)

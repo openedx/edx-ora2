@@ -6,6 +6,7 @@ import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
+from submissions.team_api import get_team_submission
 
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
@@ -13,7 +14,11 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from .data_conversion import create_submission_dict, prepare_submission_for_serialization
+from .data_conversion import (
+    create_submission_dict,
+    list_to_conversational_format,
+    prepare_submission_for_serialization
+)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
@@ -360,9 +365,10 @@ class SubmissionMixin:
         for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
             student_sub_dict[field] = []
 
-        uploads = self.file_manager.get_uploads()
+        team_id = None if not self.has_team() else self.team.team_id
+        uploads = self.file_manager.get_uploads(team_id=team_id)
         if self.is_team_assignment():
-            uploads += self.file_manager.get_team_uploads()
+            uploads += self.file_manager.get_team_uploads(team_id=team_id)
 
         for upload in uploads:
             student_sub_dict['file_keys'].append(upload.key)
@@ -528,12 +534,26 @@ class SubmissionMixin:
                     except AttributeError:
                         file_name = ''
                         logger.error('descriptions[idx] is None in {}'.format(submission))
-                    urls.append((file_download_url, file_description, file_name, False))
+                    urls.append(
+                        file_upload_api.FileDescriptor(
+                            download_url=file_download_url,
+                            description=file_description,
+                            name=file_name,
+                            show_delete_button=False
+                        )._asdict()
+                    )
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
             file_download_url = self._get_url_by_file_key(key)
             if file_download_url:
-                urls.append((file_download_url, '', '', False))
+                urls.append(
+                    file_upload_api.FileDescriptor(
+                        download_url=file_download_url,
+                        description='',
+                        name='',
+                        show_delete_button=False
+                    )._asdict()
+                )
         return urls
 
     def get_files_info_from_user_state(self, username):
@@ -567,7 +587,14 @@ class SubmissionMixin:
                 download_url = self._get_url_by_file_key(file_key)
                 if download_url:
                     file_name = files_names[index] if index < len(files_names) else ''
-                    files_info.append((download_url, description, file_name, False))
+                    files_info.append(
+                        file_upload_api.FileDescriptor(
+                            download_url=download_url,
+                            description=description,
+                            name=file_name,
+                            show_delete_button=False
+                        )._asdict()
+                    )
                 else:
                     # If file has been removed, the URL doesn't exist
                     logger.info("URLWorkaround: no URL for description {desc} & key {key} for user:{user}".format(
@@ -610,7 +637,14 @@ class SubmissionMixin:
                     user=username_or_email,
                     block=str(self.location)
                 ))
-                file_uploads.append((download_url, '', '', False))
+                file_uploads.append(
+                    file_upload_api.FileDescriptor(
+                        download_url=download_url,
+                        description='',
+                        name='',
+                        show_delete_button=False
+                    )._asdict()
+                )
             else:
                 continue
 
@@ -674,6 +708,45 @@ class SubmissionMixin:
         path, context = self.submission_path_and_context()
         return self.render_assessment(path, context_dict=context)
 
+    def get_team_submission_context(self, context):
+        """
+        Populate the passed context object with team info, including a set of students on
+        the team with submissions to the current item from another team, under the key
+        `team_members_with_external_submissions`.
+
+        Args:
+            context (dict): render context to add team submission context into
+        Returns
+            (dict): context arg with additional team-related fields
+        """
+
+        from submissions import team_api
+        try:
+            team_info = self.get_team_info()
+            if team_info:
+                context.update(team_info)
+                if self.is_course_staff:
+                    return
+                student_item_dict = self.get_student_item_dict()
+                external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
+                    self.course_id,
+                    student_item_dict["item_id"],
+                    team_info["team_id"],
+                    self.get_anonymous_user_ids_for_team()
+                )
+
+                context["team_members_with_external_submissions"] = list_to_conversational_format([
+                    self.get_username(submission['student_id']) for submission in external_submissions
+                ])
+        except ObjectDoesNotExist:
+            error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
+            logger.error(error_msg.format(
+                str(self.location),
+                self.get_student_item_dict()['student_id'],
+            ))
+        except NoSuchServiceError:
+            logger.error('{}: Teams service is unavailable'.format(str(self.location)))
+
     def submission_path_and_context(self):
         """
         Determine the template path and context to use when
@@ -705,14 +778,34 @@ class SubmissionMixin:
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
 
+        # For team assignments, if a user submitted with a past team, that gets precidence.
+        # So we first see if they have a submission and load context from that.
+        # Otherwise, we fall back to the current team.
+        team_id_for_current_submission = None
+        if self.is_team_assignment():
+            if not workflow:
+                team_id_for_current_submission = self.get_team_info().get('team_id', None)
+            else:
+                team_submission = get_team_submission(workflow['team_submission_uuid'])
+                team_id_for_current_submission = team_submission['team_id']
+
+            # If it's a team assignment, the user hasn't submitted and is not on a team, the assignment is unavailable.
+            if team_id_for_current_submission is None:
+                path = 'openassessmentblock/response/oa_response_unavailable.html'
+                return path, context
+
         context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
 
         file_urls = None
 
         if self.file_upload_type:
-            context['file_urls'] = self.file_manager.file_descriptor_tuples(include_deleted=True)
-            context['team_file_urls'] = self.file_manager.team_file_descriptor_tuples()
+            context['file_urls'] = self.file_manager.file_descriptors(
+                team_id=team_id_for_current_submission, include_deleted=True
+            )
+            context['team_file_urls'] = self.file_manager.team_file_descriptors(
+                team_id=team_id_for_current_submission
+            )
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 
@@ -725,6 +818,8 @@ class SubmissionMixin:
         elif not workflow:
             # For backwards compatibility. Initially, problems had only one prompt
             # and a string answer. We convert it to the appropriate dict.
+            no_workflow_path = "openassessmentblock/response/oa_response.html"
+
             try:
                 json.loads(self.saved_response)
                 saved_response = {
@@ -741,20 +836,6 @@ class SubmissionMixin:
             context['save_status'] = self.save_status
             context['enable_delete_files'] = True
 
-            if self.teams_enabled:
-                try:
-                    team_info = self.get_team_info()
-                    if team_info:
-                        context.update(team_info)
-                except ObjectDoesNotExist:
-                    error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
-                    logger.error(error_msg.format(
-                        str(self.location),
-                        self.get_student_item_dict()['student_id'],
-                    ))
-                except NoSuchServiceError:
-                    logger.error('{}: Teams service is unavailable'.format(str(self.location)))
-
             submit_enabled = True
             if self.text_response == 'required' and not self.saved_response:
                 submit_enabled = False
@@ -764,7 +845,13 @@ class SubmissionMixin:
                     and not self.saved_response and not file_urls:
                 submit_enabled = False
             context['submit_enabled'] = submit_enabled
-            path = "openassessmentblock/response/oa_response.html"
+
+            if self.teams_enabled:
+                self.get_team_submission_context(context)
+                if self.does_team_have_submission(context['team_id']):
+                    no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
+
+            path = no_workflow_path
         elif workflow["status"] == "cancelled":
             if self.teams_enabled:
                 context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
