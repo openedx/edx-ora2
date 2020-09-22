@@ -230,10 +230,12 @@
                               {% trans "(Optional)" %}
                             {% endif %}
                           </h5>
-                          {% blocktrans %}
-                            Upload files and review files uploaded by you and your teammates below. Be sure to add
-                            descriptions to your files to help your teammates identify them.
-                          {% endblocktrans %}
+                          {% if team_name %}
+                            {% blocktrans %}
+                                Upload files and review files uploaded by you and your teammates below. Be sure to add
+                                descriptions to your files to help your teammates identify them.
+                            {% endblocktrans %}
+                          {% endif %}
                           <li class="field">
                               <div class="upload__error">
                                   <div class="message message--inline message--error message--error-server" tabindex="-1">
