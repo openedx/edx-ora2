@@ -5,7 +5,7 @@
 #    make upgrade
 #
 appdirs==1.4.4            # via fs
-bleach==3.1.5             # via -r requirements/base.in
+bleach==3.2.1             # via -r requirements/base.in
 boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/base.in
 certifi==2020.6.20        # via requests
 chardet==3.0.4            # via requests
@@ -40,7 +40,7 @@ requests==2.24.0          # via python-swiftclient
 six==1.15.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, packaging, python-dateutil, python-swiftclient, xblock
 sqlparse==0.3.1           # via django
 urllib3==1.25.10          # via requests
-voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.in
+voluptuous==0.12.0        # via -c requirements/constraints.txt, -r requirements/base.in
 web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock

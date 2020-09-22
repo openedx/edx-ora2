@@ -7,16 +7,16 @@
 appdirs==1.4.4            # via -r requirements/test.txt, fs, virtualenv
 atomicwrites==1.4.0       # via -r requirements/test.txt, pytest
 attrs==20.2.0             # via -r requirements/test.txt, jsonschema, pytest
-aws-sam-translator==1.26.0  # via -r requirements/test.txt, cfn-lint
+aws-sam-translator==1.27.0  # via -r requirements/test.txt, cfn-lint
 aws-xray-sdk==2.6.0       # via -r requirements/test.txt, moto
-bleach==3.1.5             # via -r requirements/test.txt
+bleach==3.2.1             # via -r requirements/test.txt
 bok-choy==1.1.1           # via -r requirements/test-acceptance.in
-boto3==1.14.61            # via -r requirements/test.txt, aws-sam-translator, fs-s3fs, moto
+boto3==1.15.2             # via -r requirements/test.txt, aws-sam-translator, fs-s3fs, moto
 boto==2.39.0              # via -c requirements/constraints.txt, -r requirements/test.txt, moto
-botocore==1.17.61         # via -r requirements/test.txt, aws-xray-sdk, boto3, moto, s3transfer
+botocore==1.18.2          # via -r requirements/test.txt, aws-xray-sdk, boto3, moto, s3transfer
 certifi==2020.6.20        # via -r requirements/test.txt, requests
 cffi==1.14.3              # via -r requirements/test.txt, cryptography
-cfn-lint==0.35.1          # via -r requirements/test.txt, moto
+cfn-lint==0.36.1          # via -r requirements/test.txt, moto
 chardet==3.0.4            # via -r requirements/test.txt, requests
 coverage==5.3             # via -r requirements/test.txt, pytest-cov
 cryptography==3.1         # via -r requirements/test.txt, moto, sshpubkeys
@@ -30,7 +30,6 @@ django-simple-history==2.11.0  # via -r requirements/test.txt
 django==2.2.16            # via -c requirements/constraints.txt, -r requirements/test.txt, django-model-utils, django-pyfs, edx-i18n-tools, edx-submissions, jsonfield2, xblock-sdk
 djangorestframework==3.9.4  # via -r requirements/test.txt, edx-submissions
 docker==4.3.1             # via -r requirements/test.txt, moto
-docutils==0.15.2          # via -r requirements/test.txt, botocore
 ecdsa==0.14.1             # via -r requirements/test.txt, python-jose, sshpubkeys
 edx-i18n-tools==0.5.3     # via -r requirements/test.txt
 edx-submissions==3.2.2    # via -r requirements/test.txt
@@ -98,7 +97,7 @@ toml==0.10.1              # via -r requirements/test.txt, tox
 tox==3.20.0               # via -r requirements/test.txt
 urllib3==1.25.10          # via -r requirements/test.txt, botocore, requests, responses, selenium
 virtualenv==20.0.31       # via -r requirements/test.txt, tox
-voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/test.txt
+voluptuous==0.12.0        # via -c requirements/constraints.txt, -r requirements/test.txt
 wcwidth==0.2.5            # via -r requirements/test.txt, pytest
 web-fragments==0.3.2      # via -r requirements/test.txt, xblock
 webencodings==0.5.1       # via -r requirements/test.txt, bleach, html5lib
