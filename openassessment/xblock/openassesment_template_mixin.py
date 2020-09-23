@@ -20,6 +20,7 @@ class OpenAssessmentTemplatesMixin(object):
             templates.append(template)
         return templates
 
+    @classmethod
     def _create_template_dict(cls, template_id, display_name):
         """
         Returns a template dictionary which can be used with Studio API
