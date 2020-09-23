@@ -173,7 +173,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         file_keys = ['foo', 'bar']
         file_descriptions = ['{}-description'.format(file_key) for file_key in file_keys]
-        file_names = ['{}-file_name'.format(file_key) for file_key in file_keys]
+        files_names = ['{}-file_name'.format(file_key) for file_key in file_keys]
         conn = boto.connect_s3()
         bucket = conn.create_bucket('mybucket')
         for file_key in file_keys:
@@ -183,7 +183,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
                 {
                     'download_url': api.get_download_url(file_key),
                     'description': file_descriptions[idx],
-                    'name': file_names[idx],
+                    'name': files_names[idx],
                     'show_delete_button': False
                 }
                 for idx, file_key in enumerate(file_keys)
@@ -193,7 +193,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_keys'] = file_keys
         submission[u'files_descriptions'] = file_descriptions
-        submission[u'files_name'] = file_names
+        submission[u'files_names'] = files_names
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])

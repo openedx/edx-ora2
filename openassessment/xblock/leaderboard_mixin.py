@@ -86,7 +86,7 @@ class LeaderboardMixin:
             if 'file_keys' in score['content']:
                 file_keys = score['content'].get('file_keys', [])
                 descriptions = score['content'].get('files_descriptions', [])
-                file_names = score['content'].get('files_name', [])
+                file_names = score['content'].get('files_names', [])
                 for idx, key in enumerate(file_keys):
                     file_download_url = self._get_file_download_url(key)
                     if file_download_url:
