@@ -808,7 +808,6 @@ class SubmissionMixin:
             context['team_file_urls'] = self.file_manager.team_file_descriptors(
                 team_id=team_id_for_current_submission
             )
-        if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 
         if not workflow and problem_closed:
