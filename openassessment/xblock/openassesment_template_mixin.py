@@ -1,4 +1,6 @@
-from openassessment.xblock.defaults import PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES, SELF_TO_PEER_ASSESSMENT_MODULES, SELF_TO_STAFF_ASSESSMENT_MODULES, STAFF_ASSESSMENT_MODULES
+from openassessment.xblock.defaults import (PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES,
+                                            SELF_TO_PEER_ASSESSMENT_MODULES, SELF_TO_STAFF_ASSESSMENT_MODULES,
+                                            STAFF_ASSESSMENT_MODULES)
 from django.utils.translation import ugettext as _
 
 
@@ -9,11 +11,11 @@ class OpenAssessmentTemplatesMixin(object):
     """
 
     VALID_ASSESSMENT_TYPES_DISPLAY_NAMES = {
-        "peer-assessment": "Peer Assessment Only",
-        "self-assessment": "Self Assessment Only",
-        "staff-assessment": "Staff Assessment Only",
-        "self-to-peer": "Self Assessment to Peer Assessment",
-        "self-to-staff": "Self Assessment to Peer Assessment"
+        "peer-assessment": _("Peer Assessment Only"),
+        "self-assessment": _("Self Assessment Only"),
+        "staff-assessment": _("Staff Assessment Only"),
+        "self-to-peer": _("Self Assessment to Peer Assessment"),
+        "self-to-staff": _("Self Assessment to Peer Assessment")
     }
 
     VALID_ASSESSMENT_TYPES_ASSESSMENT_MODULE = {
