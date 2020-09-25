@@ -340,7 +340,6 @@ class OpenAssessmentBlock(MessageMixin,
         if self.white_listed_file_types:
             return self.white_listed_file_types
         elif self.file_upload_type == 'image':
-            self.white_listed_file_types
             return self.ALLOWED_IMAGE_EXTENSIONS
         elif self.file_upload_type == 'pdf-and-image':
             return self.ALLOWED_FILE_EXTENSIONS
