@@ -1,21 +1,37 @@
+from openassessment.xblock.defaults import PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES, SELF_TO_PEER_ASSESSMENT_MODULES, SELF_TO_STAFF_ASSESSMENT_MODULES, STAFF_ASSESSMENT_MODULES
+from django.utils.translation import ugettext as _
+
+
 class OpenAssessmentTemplatesMixin(object):
     """
     This helps to get templates for different type of assessment that is
     offered.
     """
 
+    VALID_ASSESSMENT_TYPES_DISPLAY_NAMES = {
+        "peer-assessment": "Peer Assessment Only",
+        "self-assessment": "Self Assessment Only",
+        "staff-assessment": "Staff Assessment Only",
+        "self-to-peer": "Self Assessment to Peer Assessment",
+        "self-to-staff": "Self Assessment to Peer Assessment"
+    }
+
+    VALID_ASSESSMENT_TYPES_ASSESSMENT_MODULE = {
+        "peer-assessment": PEER_ASSESSMENT_MODULES,
+        "self-assessment": SELF_ASSESSMENT_MODULES,
+        "staff-assessment": STAFF_ASSESSMENT_MODULES,
+        "self-to-peer": SELF_TO_PEER_ASSESSMENT_MODULES,
+        "self-to-staff": SELF_TO_STAFF_ASSESSMENT_MODULES
+    }
+
     @classmethod
     def templates(cls):
         """
         Returns a list of dictionary field: value objects that describe possible templates.
-
-        VALID_ASSESSMENT_TYPES needs to be declared as a class variable to use it.
         """
         templates = []
-        for assesment_type in cls.VALID_ASSESSMENT_TYPES:
+        for assesment_type, display_name in cls.VALID_ASSESSMENT_TYPES_DISPLAY_NAMES.items():
             template_id = assesment_type
-            display_name = cls.VALID_ASSESSMENT_TYPES_DISPLAY_NAMES.get(
-                assesment_type)
             template = cls._create_template_dict(template_id, display_name)
             templates.append(template)
         return templates
@@ -23,11 +39,51 @@ class OpenAssessmentTemplatesMixin(object):
     @classmethod
     def _create_template_dict(cls, template_id, display_name):
         """
-        Returns a template dictionary which can be used with Studio API
+        Creates a dictionary for serving various metadata for the template.
+
+        Args:
+            template_id(str): template id of what assessement template needs to be served.
+            display_name(str): display name of template.
+
+        Returns:
+            A dictionary with proper keys to be consumed.
         """
         return {
             "template_id": template_id,
             "metadata": {
                 "display_name": display_name,
             }
+        }
+
+    @classmethod
+    def get_template(cls, template_id):
+        """
+        Helps to generate various option level template for ORA.
+
+        Args:
+            template_id(str): template id of what assessement template needs to be served.
+
+        Returns:
+            A dictionary of payload to be consumed by Studio.
+        """
+        rubric_assessments = cls._create_rubric_assessment_dict(template_id)
+        return {
+            "data": rubric_assessments
+        }
+
+    @classmethod
+    def _create_rubric_assessment_dict(cls, template_id):
+        """
+        Creates a dictionary of parameters to be passed while creating ORA xblock.
+
+        Args:
+            template_id(str): template id of what assessement template needs to be served.
+
+        Returns:
+            A dictionary of payload to be consumed by Studio.
+        """
+        assessment_module = cls.VALID_ASSESSMENT_TYPES_ASSESSMENT_MODULE \
+            .get(template_id)
+        return {
+            "rubric_assessments": assessment_module
         }

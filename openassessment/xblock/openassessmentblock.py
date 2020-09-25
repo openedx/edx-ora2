@@ -130,13 +130,6 @@ class OpenAssessmentBlock(MessageMixin,
         'staff-assessment',
     ]
 
-    VALID_ASSESSMENT_TYPES_DISPLAY_NAMES = {
-        "student-training": "Student Training",
-        "peer-assessment": "Peer Assessment",
-        "self-assessment": "Self Assessment",
-        "staff-assessment": "Staff Assessment",
-    }
-
     public_dir = 'static'
 
     submission_start = String(
