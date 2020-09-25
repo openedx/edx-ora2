@@ -952,6 +952,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.saved_files_sizes = json.dumps([200])
 
         xblock.file_upload_type = 'pdf-and-image'
+        xblock.white_listed_file_types = 'pdf,gif,jpg,jpgeg,jfif,pjpeg,pjp,png'
         xblock.file_upload_response = 'optional'
 
         xblock.get_team_info = Mock(return_value={})
@@ -985,6 +986,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'user_language': None,
                 'prompts_type': 'text',
                 'enable_delete_files': True,
+                'white_listed_file_types': 'pdf,gif,jpg,jpgeg,jfif,pjpeg,pjp,png'
             }
         )
 
