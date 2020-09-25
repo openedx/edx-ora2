@@ -543,6 +543,22 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.text_response_raw = 'optional'
         self.assertEqual(xblock.text_response, 'optional')
 
+    @scenario('data/file_upload_scenario.xml')
+    def test_file_upload_loads_file_allow_list(self, xblock):
+        """
+        Ensure that when an ORA w/ file uploads is loaded, but w/out a "white_listed_file_types" field,
+        we inherit default values matching the preset
+        """
+        upload_type = xblock.file_upload_type
+        self.assertEqual(xblock.white_listed_file_types, xblock.FILE_UPLOAD_PRESETS[upload_type]['extensions'])
+
+    @scenario('data/custom_file_upload.xml')
+    def test_custom_file_upload_loads_file_allow_list(self, xblock):
+        """
+        Ensure that when an ORA w/ file uploads is loaded, it maintains its custom allowed file types
+        """
+        self.assertEqual(xblock.white_listed_file_types, ["pdf"])
+
 
 class TestDates(XBlockHandlerTestCase):
     """ Test Assessment Dates. """

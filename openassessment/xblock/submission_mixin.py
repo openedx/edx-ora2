@@ -65,6 +65,18 @@ class SubmissionMixin:
         'htm', 'html',
     ]
 
+    FILE_UPLOAD_PRESETS = {
+        'image': {
+            'mime_types': ALLOWED_IMAGE_MIME_TYPES,
+            'extensions': ALLOWED_IMAGE_EXTENSIONS
+        },
+        'pdf-and-image': {
+            'mime_types': ALLOWED_FILE_MIME_TYPES,
+            'extensions': ALLOWED_FILE_EXTENSIONS,
+        },
+        'custom': {}
+    }
+
     @cached_property
     def file_manager(self):
         return file_upload_api.FileUploadManager(self)
