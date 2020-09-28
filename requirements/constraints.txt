@@ -2,7 +2,6 @@
 
 # Base dependencies
 Django<2.3                         # Stay on the latest LTS release of Django
-boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
 fs<=2.0.18                         # Constrained by edx-platform
 jsonfield2<3.1.0                   # jsonfield2 3.1.0 drops support for python 3.5
 loremipsum<2.0.0
@@ -34,3 +33,9 @@ pytest-django==3.7.0
 
 # path 13.2.0 drops support for Python 3.5
 path<13.2.0
+
+# Needed to resolve requirements between path and tox
+# path only requires >=0.5 but tox requires <2
+# path is defined in base.in so it compiles to the most recent version in base.txt, 
+#     and tox comes in in test.in 
+importlib-metadata<2

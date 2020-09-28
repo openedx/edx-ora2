@@ -15,58 +15,62 @@ from django.urls import reverse_lazy
 from django.test import TestCase
 from django.test.utils import override_settings
 
-import boto
-from boto.s3.key import Key
-from moto import mock_s3_deprecated
+import boto3
+from moto import mock_s3
 from pytest import raises
 from openassessment.fileupload import api, exceptions, urls
 from openassessment.fileupload import views_filesystem as views
 from openassessment.fileupload.backends.base import Settings as FileUploadSettings
-from openassessment.fileupload.backends.filesystem import get_cache as get_filesystem_cache
+from openassessment.fileupload.backends.filesystem import (
+    get_cache as get_filesystem_cache,
+)
 
 
 @ddt.ddt
 class TestFileUploadService(TestCase):
-
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
-        AWS_ACCESS_KEY_ID='foobar',
-        AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
     )
     def test_get_upload_url(self):
-        conn = boto.connect_s3()
-        conn.create_bucket('mybucket')
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
         uploadUrl = api.get_upload_url("foo", "bar")
         self.assertIn("/submissions_attachments/foo", uploadUrl)
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
-        AWS_ACCESS_KEY_ID='foobar',
-        AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
     )
     def test_get_download_url(self):
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/foo"
-        key.set_contents_from_string("How d'ya do?")
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        conn.put_object(
+            Bucket="mybucket",
+            Key="submissions_attachments/foo",
+            Body=b"How d'ya do?"
+        )
         downloadUrl = api.get_download_url("foo")
         self.assertIn("/submissions_attachments/foo", downloadUrl)
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
-        AWS_ACCESS_KEY_ID='foobar',
-        AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
     )
     def test_remove_file(self):
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/foo"
-        key.set_contents_from_string("Test")
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
+        conn.put_object(
+            Bucket="mybucket",
+            Key="submissions_attachments/foo",
+            Body=b"Test"
+        )
         result = api.remove_file("foo")
         self.assertTrue(result)
         result = api.remove_file("foo")
@@ -80,35 +84,35 @@ class TestFileUploadService(TestCase):
         with raises(exceptions.FileUploadRequestError):
             api.get_upload_url("", "bar")
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
-        AWS_ACCESS_KEY_ID='foobar',
-        AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
     )
-    @patch.object(boto, 'connect_s3')
-    def test_get_upload_url_error(self, mock_s3_deprecated):
+    @patch.object(boto3, "client")
+    def test_get_upload_url_error(self, mock_s3):
         with raises(exceptions.FileUploadInternalError):
-            mock_s3_deprecated.side_effect = Exception("Oh noes")
+            mock_s3.side_effect = Exception("Oh noes")
             api.get_upload_url("foo", "bar")
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
-        AWS_ACCESS_KEY_ID='foobar',
-        AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        AWS_ACCESS_KEY_ID="foobar",
+        AWS_SECRET_ACCESS_KEY="bizbaz",
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket",
     )
-    @patch.object(boto, 'connect_s3')
-    def test_get_download_url_error(self, mock_s3_deprecated):
+    @patch.object(boto3, "client")
+    def test_get_download_url_error(self, mock_s3):
         with raises(exceptions.FileUploadInternalError):
-            mock_s3_deprecated.side_effect = Exception("Oh noes")
+            mock_s3.side_effect = Exception("Oh noes")
             api.get_download_url("foo")
 
 
 @override_settings(
     ORA2_FILEUPLOAD_BACKEND="filesystem",
-    ORA2_FILEUPLOAD_ROOT='/tmp',
-    ORA2_FILEUPLOAD_CACHE_NAME='default',
+    ORA2_FILEUPLOAD_ROOT="/tmp",
+    ORA2_FILEUPLOAD_CACHE_NAME="default",
     FILE_UPLOAD_STORAGE_BUCKET_NAME="testbucket",
 )
 class TestFileUploadServiceWithFilesystemBackend(TestCase):
@@ -157,9 +161,9 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
             os.path.join(
                 settings.ORA2_FILEUPLOAD_ROOT,
                 settings.FILE_UPLOAD_STORAGE_BUCKET_NAME,
-                "mykey1"
+                "mykey1",
             ),
-            os.path.dirname(path1)
+            os.path.dirname(path1),
         )
         self.assertNotEqual(path1, path2)
 
@@ -168,19 +172,12 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
             settings.ORA2_FILEUPLOAD_ROOT,
             settings.FILE_UPLOAD_STORAGE_BUCKET_NAME,
             "key",
-            "content"
+            "content",
         )
+        self.assertEqual(expected_path, os.path.abspath(views.get_file_path("../key")))
+        self.assertEqual(expected_path, os.path.abspath(views.get_file_path("../key/")))
         self.assertEqual(
-            expected_path,
-            os.path.abspath(views.get_file_path("../key"))
-        )
-        self.assertEqual(
-            expected_path,
-            os.path.abspath(views.get_file_path("../key/"))
-        )
-        self.assertEqual(
-            expected_path,
-            os.path.abspath(views.get_file_path(" ../key/ "))
+            expected_path, os.path.abspath(views.get_file_path(" ../key/ "))
         )
 
     def test_safe_save(self):
@@ -188,7 +185,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
             exceptions.FileUploadRequestError,
             views.safe_save,
             "/tmp/nonauthorisedbucket/file.txt",
-            "content"
+            "content",
         )
 
     def test_delete_file_data_on_metadata_saving_error(self):
@@ -196,26 +193,34 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         file_path = views.get_file_path(key)
         non_existing_path = "/non/existing/path"
 
-        with patch('openassessment.fileupload.views_filesystem.get_metadata_path') as mock_get_metadata_path:
+        with patch(
+            "openassessment.fileupload.views_filesystem.get_metadata_path"
+        ) as mock_get_metadata_path:
             mock_get_metadata_path.return_value = non_existing_path
             self.assertRaises(
                 exceptions.FileUploadRequestError,
                 views.save_to_file,
-                "key", "content", "metadata"
+                "key",
+                "content",
+                "metadata",
             )
 
         self.assertFalse(os.path.exists(file_path))
         self.assertFalse(os.path.exists(non_existing_path))
 
-    @override_settings(ORA2_FILEUPLOAD_ROOT='')
+    @override_settings(ORA2_FILEUPLOAD_ROOT="")
     def test_undefined_file_upload_root(self):
-        self.assertRaises(exceptions.FileUploadInternalError, views.get_file_path, self.key)
+        self.assertRaises(
+            exceptions.FileUploadInternalError, views.get_file_path, self.key
+        )
 
-    @override_settings(ORA2_FILEUPLOAD_ROOT='/tmp/nonexistingdirectory')
+    @override_settings(ORA2_FILEUPLOAD_ROOT="/tmp/nonexistingdirectory")
     def test_file_upload_root_does_not_exist(self):
         if os.path.exists(settings.ORA2_FILEUPLOAD_ROOT):
             shutil.rmtree(settings.ORA2_FILEUPLOAD_ROOT)
-        self.assertRaises(exceptions.FileUploadInternalError, views.save_to_file, self.key, "content")
+        self.assertRaises(
+            exceptions.FileUploadInternalError, views.save_to_file, self.key, "content"
+        )
 
     def test_post_is_405(self):
         upload_url = self.backend.get_upload_url(self.key, "bar")
@@ -226,12 +231,16 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.content_type = "image/bmp"
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
 
-        self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         metadata_path = views.get_metadata_path(self.key_name)
         metadata = json.load(open(metadata_path))
 
         self.assertIsNotNone(metadata_path)
-        self.assertTrue(os.path.exists(metadata_path), "No metadata found at %s" % metadata_path)
+        self.assertTrue(
+            os.path.exists(metadata_path), "No metadata found at %s" % metadata_path
+        )
         self.assertIn("Content-Type", metadata)
         self.assertIn("Date", metadata)
         self.assertIn("Content-MD5", metadata)
@@ -242,23 +251,25 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         download_url = self.backend.get_download_url(self.key)
         file_path = views.get_file_path(self.key_name)
 
-        upload_response = self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        upload_response = self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         download_response = self.client.get(download_url)
         self.content.seek(0)
 
         self.assertIn("/" + self.key, upload_url)
         self.assertEqual(200, upload_response.status_code)
-        self.assertEqual("", upload_response.content.decode('utf-8'))
+        self.assertEqual("", upload_response.content.decode("utf-8"))
         self.assertEqual(200, download_response.status_code)
         self.assertEqual(
             "attachment; filename=" + self.key,
-            download_response.get('Content-Disposition')
+            download_response.get("Content-Disposition"),
         )
-        self.assertEqual(self.content_type, download_response.get('Content-Type'))
-        self.assertIn("foobar content", download_response.content.decode('utf-8'))
+        self.assertEqual(self.content_type, download_response.get("Content-Type"))
+        self.assertIn("foobar content", download_response.content.decode("utf-8"))
         self.assertTrue(os.path.exists(file_path), "File %s does not exist" % file_path)
         with open(file_path) as f:
-            self.assertEqual(self.content.read().decode('utf-8'), f.read())
+            self.assertEqual(self.content.read().decode("utf-8"), f.read())
 
     def test_download_content_with_no_content_type(self):
         views.save_to_file(self.key_name, "uploaded content", metadata=None)
@@ -266,20 +277,26 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
 
         download_response = self.client.get(download_url)
         self.assertEqual(200, download_response.status_code)
-        self.assertEqual('application/octet-stream', download_response["Content-Type"])
+        self.assertEqual("application/octet-stream", download_response["Content-Type"])
 
     def test_upload_with_unauthorized_key(self):
-        upload_url = reverse_lazy("openassessment-filesystem-storage", kwargs={'key': self.key_name})
+        upload_url = reverse_lazy(
+            "openassessment-filesystem-storage", kwargs={"key": self.key_name}
+        )
 
         cache_before_request = get_filesystem_cache().get(self.key_name)
-        upload_response = self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        upload_response = self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         cache_after_request = get_filesystem_cache().get(self.key_name)
         self.assertIsNone(cache_before_request)
         self.assertEqual(404, upload_response.status_code)
         self.assertIsNone(cache_after_request)
 
     def test_download_url_with_unauthorized_key(self):
-        download_url = reverse_lazy("openassessment-filesystem-storage", kwargs={'key': self.key_name})
+        download_url = reverse_lazy(
+            "openassessment-filesystem-storage", kwargs={"key": self.key_name}
+        )
         views.save_to_file(self.key_name, "uploaded content")
         download_response = self.client.get(download_url)
 
@@ -290,7 +307,9 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
         download_url = self.backend.get_download_url(self.key)
 
-        upload_response = self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        upload_response = self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         download_response = self.client.get(download_url)
 
         self.assertEqual(200, upload_response.status_code)
@@ -299,7 +318,9 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
     def test_remove_file(self):
         self.set_key(u"noël.jpg")
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
-        self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         result = self.backend.remove_file(self.key)
         self.assertTrue(result)
         result = self.backend.remove_file(self.key)
@@ -308,25 +329,28 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
     def test_file_extension_is_added_on_download(self):
         self.set_key(u"myfile")
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
-        self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         download_url = self.backend.get_download_url(self.key)
         download_response = self.client.get(download_url)
         self.assertEqual(
             "attachment; filename=myfile.jpg",
-            download_response.get('Content-Disposition')
+            download_response.get("Content-Disposition"),
         )
 
 
 @override_settings(
-    ORA2_FILEUPLOAD_BACKEND='swift',
-    ORA2_SWIFT_URL='http://www.example.com:12345',
-    ORA2_SWIFT_KEY='bar',
-    FILE_UPLOAD_STORAGE_BUCKET_NAME='bucket_name'
+    ORA2_FILEUPLOAD_BACKEND="swift",
+    ORA2_SWIFT_URL="http://www.example.com:12345",
+    ORA2_SWIFT_KEY="bar",
+    FILE_UPLOAD_STORAGE_BUCKET_NAME="bucket_name",
 )
 class TestSwiftBackend(TestCase):
     """
     Test open assessment file upload to swift object storage.
     """
+
     def setUp(self):
         super(TestSwiftBackend, self).setUp()
         self.backend = api.backends.get_backend()
@@ -349,10 +373,10 @@ class TestSwiftBackend(TestCase):
         """
         Verify the upload URL.
         """
-        url = self.backend.get_upload_url('foo', '_text')
+        url = self.backend.get_upload_url("foo", "_text")
         self._verify_url(url)
 
-    @patch('openassessment.fileupload.backends.swift.requests.get')
+    @patch("openassessment.fileupload.backends.swift.requests.get")
     def test_get_download_url_success(self, requests_get_mock):
         """
         Verify the download URL when the object already exists in storage.
@@ -360,10 +384,10 @@ class TestSwiftBackend(TestCase):
         fake_resp = Mock()
         fake_resp.status_code = 200  # always return a 200 status code
         requests_get_mock.return_value = fake_resp
-        url = self.backend.get_download_url('foo')
+        url = self.backend.get_download_url("foo")
         self._verify_url(url)
 
-    @patch('openassessment.fileupload.backends.swift.requests.get')
+    @patch("openassessment.fileupload.backends.swift.requests.get")
     def test_get_download_url_no_object(self, requests_get_mock):
         """
         Verify the download URL is empty when the object
@@ -372,8 +396,8 @@ class TestSwiftBackend(TestCase):
         fake_resp = Mock()
         fake_resp.status_code = 404  # always return a 404 status code
         requests_get_mock.return_value = fake_resp
-        url = self.backend.get_download_url('foo')
-        self.assertEqual(url, '')
+        url = self.backend.get_download_url("foo")
+        self.assertEqual(url, "")
 
 
 @override_settings(
@@ -392,9 +416,11 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
     def setUp(self):
         super(TestFileUploadServiceWithDjangoStorageBackend, self).setUp()
         self.backend = api.backends.get_backend()
-        self.username = 'test_user'
-        self.password = 'password'
-        self.user = get_user_model().objects.create_user(username=self.username, password=self.password)
+        self.username = "test_user"
+        self.password = "password"
+        self.user = get_user_model().objects.create_user(
+            username=self.username, password=self.password
+        )
 
         self.content = tempfile.TemporaryFile()
         self.content.write(b"foobar content")
@@ -434,7 +460,9 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # Upload file
         self.client.login(username=self.username, password=self.password)
         upload_url = self.backend.get_upload_url(self.key, "bar")
-        response = self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        response = self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         self.assertEqual(200, response.status_code)
 
         # Check updated download URL
@@ -455,7 +483,9 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # Upload file
         self.client.login(username=self.username, password=self.password)
         upload_url = self.backend.get_upload_url(self.key, "bar")
-        response = self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        response = self.client.put(
+            upload_url, data=self.content.read(), content_type=self.content_type
+        )
         self.assertEqual(200, response.status_code)
 
         # File exists now
