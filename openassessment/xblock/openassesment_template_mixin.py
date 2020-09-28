@@ -23,8 +23,8 @@ class OpenAssessmentTemplatesMixin:
     }
 
     VALID_ASSESSMENT_TYPES_ASSESSMENT_MODULE = {
-        "peer-assessment": PEER_ASSESSMENT_MODULES,
         "self-assessment": SELF_ASSESSMENT_MODULES,
+        "peer-assessment": PEER_ASSESSMENT_MODULES,
         "staff-assessment": STAFF_ASSESSMENT_MODULES,
         "self-to-peer": SELF_TO_PEER_ASSESSMENT_MODULES,
         "self-to-staff": SELF_TO_STAFF_ASSESSMENT_MODULES
