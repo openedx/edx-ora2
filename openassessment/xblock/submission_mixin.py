@@ -761,6 +761,18 @@ class SubmissionMixin:
         except NoSuchServiceError:
             logger.error('{}: Teams service is unavailable'.format(str(self.location)))
 
+    def get_allowed_file_types_or_preset(self):
+        """
+        If allowed files are not explicitly set for file uploads, use preset extensions
+        """
+        if self.white_listed_file_types:
+            return self.white_listed_file_types
+        elif self.file_upload_type == 'image':
+            return self.ALLOWED_IMAGE_EXTENSIONS
+        elif self.file_upload_type == 'pdf-and-image':
+            return self.ALLOWED_FILE_EXTENSIONS
+        return None
+
     def submission_path_and_context(self):
         """
         Determine the template path and context to use when
@@ -820,7 +832,7 @@ class SubmissionMixin:
             context['team_file_urls'] = self.file_manager.team_file_descriptors(
                 team_id=team_id_for_current_submission
             )
-            context['white_listed_file_types'] = self.white_listed_file_types
+            context['white_listed_file_types'] = self.get_allowed_file_types_or_preset()
 
         if not workflow and problem_closed:
             if reason == 'due':

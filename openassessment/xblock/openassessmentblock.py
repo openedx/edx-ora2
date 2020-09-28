@@ -336,22 +336,11 @@ class OpenAssessmentBlock(MessageMixin,
         """
         self.file_upload_type_raw = value
 
-    def get_allowed_file_types_or_preset(self):
-        if self.white_listed_file_types:
-            return self.white_listed_file_types
-        elif self.file_upload_type == 'image':
-            return self.ALLOWED_IMAGE_EXTENSIONS
-        elif self.file_upload_type == 'pdf-and-image':
-            return self.ALLOWED_FILE_EXTENSIONS
-        return None
-
     @property
     def white_listed_file_types_string(self):
         """
-        Join the allowed file types into comma delimited string
+        Join the white listed file types into comma delimited string
         """
-        self.white_listed_file_types = self.get_allowed_file_types_or_preset()
-
         if self.white_listed_file_types:
             return ','.join(self.white_listed_file_types)
         return ''

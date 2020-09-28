@@ -138,6 +138,9 @@ class StudioMixin:
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
         course_id = self.location.course_key if hasattr(self, 'location') else None
 
+        # If allowed file types haven't been explicitly set, load from a preset
+        white_listed_file_types = self.get_allowed_file_types_or_preset()
+
         return {
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
