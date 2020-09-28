@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 11:56-0400\n"
+"POT-Creation-Date: 2020-09-28 17:56-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2680,6 +2680,28 @@ msgid ""
 msgstr ""
 "Ýöü hävé nöt ýét réçéïvéd äll néçéssärý péér révïéws tö détérmïné ýöür fïnäl"
 " grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: openassessment/xblock/openassesment_template_mixin.py
+msgid "Peer Assessment Only"
+msgstr "Péér Àsséssmént Önlý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/openassesment_template_mixin.py
+msgid "Self Assessment Only"
+msgstr "Sélf Àsséssmént Önlý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/openassesment_template_mixin.py
+msgid "Staff Assessment Only"
+msgstr "Stäff Àsséssmént Önlý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/openassesment_template_mixin.py
+msgid "Self Assessment to Peer Assessment"
+msgstr ""
+"Sélf Àsséssmént tö Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/xblock/openassesment_template_mixin.py
+msgid "Self Assessment to Staff Assessment"
+msgstr ""
+"Sélf Àsséssmént tö Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/xblock/peer_assessment_mixin.py
 msgid "You must submit a response before you can perform a peer assessment."
