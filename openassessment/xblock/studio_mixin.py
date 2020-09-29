@@ -140,6 +140,7 @@ class StudioMixin:
 
         # If allowed file types haven't been explicitly set, load from a preset
         white_listed_file_types = self.get_allowed_file_types_or_preset()
+        white_listed_file_types_string = ','.join(white_listed_file_types) if white_listed_file_types else ''
 
         return {
             'prompts': self.prompts,
@@ -155,7 +156,7 @@ class StudioMixin:
             'file_upload_response': self.file_upload_response if self.file_upload_response else '',
             'necessity_options': self.NECESSITY_OPTIONS,
             'file_upload_type': self.file_upload_type,
-            'white_listed_file_types': self.white_listed_file_types_string,
+            'white_listed_file_types': white_listed_file_types_string,
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
