@@ -9,6 +9,8 @@ import six
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
 from submissions import api as sub_api
 from django.contrib.sites.models import Site
+from django.urls import reverse
+from openassessment.utils import anonymized_id_to_username
 
 
 class SummariseAllAssesments(APIView):
@@ -26,11 +28,11 @@ class SummariseAllAssesments(APIView):
         """
 
         responses = OraAggregateData.collect_ora2_responses(str(course_id))
-        
+
         all_valid_ora_statuses = set()
         all_valid_ora_statuses.update(AssessmentWorkflow().STATUS_VALUES)
         all_valid_ora_statuses.update(TeamAssessmentWorkflow().STATUS_VALUES)
-        
+
         openassessment_blocks = modulestore().get_items(
             CourseKey.from_string(course_id), qualifiers={'category': 'openassessment'}
         )
@@ -47,12 +49,13 @@ class SummariseAllAssesments(APIView):
                 result[location] = responses[location]
             else:
                 result[location] = {key: 0 for key in all_valid_ora_statuses}
-            
+
             if parent_str not in parent_names:
                 parent_names[parent_str] = modulestore().get_item(block.parent).display_name
             result[location]['unit'] = parent_names[parent_str]
-        
+
         return Response(result)
+
 
 class ListWaitingAssessments(APIView):
     """
@@ -69,16 +72,19 @@ class ListWaitingAssessments(APIView):
         """
 
         result = []
-        domain = Site.objects.get_current().domain
-        # Blocker: How do i get the site name? From the request or through Site like above?
-        # Blocker: How do i get the name of the student? TODO later
         all_waiting_workflows = AssessmentWorkflow.objects.filter(course_id=course_id, status="waiting")
 
         for workflow in all_waiting_workflows:
             response = {}
             student_item = sub_api.get_submission_and_student(workflow.submission_uuid)['student_item']
-            response['user'] = student_item
-            response['link'] = 'https://{domain}/xblock/{xblock_id}'.format(domain=domain, xblock_id=student_item['item_id'])
+            response['link'] = reverse(
+                'jump_to',
+                kwargs={
+                    'course_id': student_item['course_id'],
+                    'location': student_item['item_id'],
+                },
+            )
+            response['username'] = anonymized_id_to_username(sub_api, student_item['student_id'])
             result.append(response)
 
         return Response(result)
