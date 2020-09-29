@@ -806,12 +806,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.file_upload_response = config['file_upload_response']
         block.allow_file_upload = config['allow_file_upload']
         block.file_upload_type = config['file_upload_type']
-        # Load preset allowed file types if not explicitly set
-        if not config['white_listed_file_types']:
-            white_listed_file_types = cls.FILE_UPLOAD_PRESETS.get(config['file_upload_type'], {}).get('extensions', '')
-            block.white_listed_file_types_string = ','.join(white_listed_file_types)
-        else:
-            block.white_listed_file_types_string = config['white_listed_file_types']
+        block.white_listed_file_types_string = config['white_listed_file_types']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']
