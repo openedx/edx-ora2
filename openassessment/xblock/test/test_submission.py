@@ -1568,8 +1568,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml', user_id="Bob")
     def test_load_file_extension_presets(self, xblock):
         """
-        Loading a problem w/ a file upload preset (e.g. pdf-and-image) will load the list of allowed extensions into the context
-        This allows us to communicate to students what files are allowed for upload for any upload configuration
+        Loading an ORA w/ a file upload preset (e.g. pdf-and-image) will load the list of allowed extensions into
+        the context. This allows us to show what files types are allowed for any upload configuration.
         """
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
