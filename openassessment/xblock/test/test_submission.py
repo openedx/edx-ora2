@@ -1565,6 +1565,36 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             }
         )
 
+    @scenario('data/file_upload_scenario.xml', user_id="Bob")
+    def test_load_file_extension_presets(self, xblock):
+        """
+        Loading a problem w/ a file upload preset (e.g. pdf-and-image) will load the list of allowed extensions into the context
+        This allows us to communicate to students what files are allowed for upload for any upload configuration
+        """
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'text_response': 'required',
+                'file_upload_response': 'optional',
+                'file_upload_type': 'pdf-and-image',
+                'file_urls': [],
+                'team_file_urls': [],
+                'white_listed_file_types': ['pdf', 'gif', 'jpg', 'jpgeg', 'jfif', 'pjpeg', 'pjp', 'png'],
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
+                'save_status': 'This response has not been saved.',
+                'submit_enabled': False,
+                'allow_latex': False,
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': True,
+            }
+        )
+
     def _create_team_submission_and_workflow(
         self, course_id, item_id, team_id, submitter_id, team_member_student_ids, answer
     ):
