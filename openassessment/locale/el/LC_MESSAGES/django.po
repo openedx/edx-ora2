@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-16 13:36-0400\n"
-"PO-Revision-Date: 2020-09-18 06:16+0000\n"
+"PO-Revision-Date: 2020-09-21 16:08+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -375,7 +375,7 @@ msgstr "Υποβολή μέχρι"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:40
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
-msgstr ""
+msgstr "Ώρα λήξης της προθεσμίας υποβολής"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
@@ -449,11 +449,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:43
 msgid "Response Due Date"
-msgstr ""
+msgstr "Ημερομηνία λήξης της προθεσμίας υποβολής της εργασίας σας"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:56
 msgid "Response Due Time"
-msgstr ""
+msgstr "Ώρα λήξης της προθεσμίας υποβολής της εργασίας σας"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "The date and time when learners can no longer submit responses."
@@ -628,7 +628,7 @@ msgstr "Αξιολογήσεις της Εργασίας σας"
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "Τρέχουσα κατάσταση"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -655,7 +655,7 @@ msgstr ""
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr ""
+msgstr "Τα σχόλιά σας έχουν υποβληθεί. Το προσωπικό θα αποκτήσει πρόσβαση σε αυτά μόλις ξεκινήσει να ελέγχει τις καταχωρήσεις του μαθήματος."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
@@ -1041,7 +1041,7 @@ msgstr "Η προθεσμία για αυτή την διαδικασία έχε
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
-msgstr ""
+msgstr "Oλοκληρώθηκε"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:31
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:41
@@ -1365,7 +1365,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr ""
+msgstr "Η προθεσμία ολοκλήρωσης αυτού του βήματος έχει παρέλθει. Δεν μπορείτε στο εξής να υποβάλετε την εργασίας σας ή να συνεχίσετε να την επεξεργάζεστε. Ο βαθμός που θα λάβετε για την εργασία σας είναι \"Ανολοκλήρωτο\". Εάν αποθηκεύσατε αλλά δεν υποβάλατε την εργασία σας, αυτή θα εμφανίζεται απλώς στο αρχείο του μαθήματος."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:20
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
