@@ -9,7 +9,6 @@ from uuid import uuid4
 
 import pkg_resources
 
-from django.conf import settings
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy
 
