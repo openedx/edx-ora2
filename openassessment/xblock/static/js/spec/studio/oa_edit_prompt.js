@@ -1,3 +1,6 @@
+import EditPromptsView from 'studio/oa_edit_prompts';
+import { Prompt } from 'studio/oa_container_item';
+
 /**
 Tests for OpenAssessment prompt editing view.
 **/
@@ -26,11 +29,11 @@ describe("OpenAssessment.EditPromptViews", function() {
         // Create the view
         var element = $("#oa_prompts_editor_wrapper").get(0);
         notifier = new StubNotifier();
-        view = new OpenAssessment.EditPromptsView(element, notifier);
+        view = new EditPromptsView(element, notifier);
     });
 
     afterEach(function() {
-        OpenAssessment.Prompt.prototype.tinyMCEEnabled = undefined;
+        Prompt.prototype.tinyMCEEnabled = undefined;
     });
 
     it("reads prompts from the editor", function() {
@@ -65,13 +68,13 @@ describe("OpenAssessment.EditPromptViews", function() {
     });
 
     it("creates new html prompts", function() {
-        OpenAssessment.Prompt.prototype.tinyMCEEnabled = true;
-        spyOn(OpenAssessment.Prompt.prototype, 'attachWysiwygToPrompt');
-        spyOn(OpenAssessment.Prompt.prototype, 'addHandler');
+        Prompt.prototype.tinyMCEEnabled = true;
+        spyOn(Prompt.prototype, 'attachWysiwygToPrompt');
+        spyOn(Prompt.prototype, 'addHandler');
 
         view.addPrompt();
-        expect(OpenAssessment.Prompt.prototype.attachWysiwygToPrompt).toHaveBeenCalled();
-        expect(OpenAssessment.Prompt.prototype.addHandler).toHaveBeenCalled();
+        expect(Prompt.prototype.attachWysiwygToPrompt).toHaveBeenCalled();
+        expect(Prompt.prototype.addHandler).toHaveBeenCalled();
     });
 });
 
@@ -100,7 +103,7 @@ describe("OpenAssessment.EditPromptViews after release", function() {
         // Create the view
         var element = $("#oa_prompts_editor_wrapper").get(0);
         notifier = new StubNotifier();
-        view = new OpenAssessment.EditPromptsView(element, notifier);
+        view = new EditPromptsView(element, notifier);
     });
 
     it("does not allow adding prompts", function() {

@@ -1,3 +1,4 @@
+import Server from 'oa_server';
 /*
 Tests for OA XBlock server interactions.
 */
@@ -9,7 +10,7 @@ describe("OpenAssessment.Server", function() {
         handlerUrl: function(element, handler) { return "/" + handler; }
     };
 
-    var server = null;
+    let server = null;
 
     var jsonContentType = "application/json; charset=utf-8";
 
@@ -92,7 +93,8 @@ describe("OpenAssessment.Server", function() {
         // Create the server
         // Since the runtime is a stub implementation that ignores the element passed to it,
         // we can set the element parameter to null.
-        server = new OpenAssessment.Server(runtime, null);
+        console.log('beforeEach');
+        server = new Server(runtime, null);
     });
 
     it("renders the XBlock as HTML", function() {
@@ -564,7 +566,7 @@ describe("OpenAssessment.Server", function() {
             membership: [{user: {username: 'user1'}}, {user: {username: 'user1'}}, {user: {username: 'user1'}}]
         }
         stubAjax(true, expectedTeamDetail);
-        receivedDetail = null
+        let receivedDetail = null
         server.getTeamDetail('team id').done(function(teamDetail) {receivedDetail = teamDetail})
         expect(receivedDetail).toEqual(expectedTeamDetail)
     });
@@ -594,6 +596,7 @@ describe("OpenAssessment.Server", function() {
         var expectedUsername = 'expected-username'
         stubAjax(true, {username: expectedUsername});
         var receivedUsername = "";
+        console.log({ server });
         server.getUsername().done(function(username) {receivedUsername = username});
         expect(receivedUsername).toEqual(expectedUsername)
     });

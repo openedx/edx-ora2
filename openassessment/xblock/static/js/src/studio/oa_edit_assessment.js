@@ -1,3 +1,17 @@
+/* eslint-disable max-classes-per-file */
+import Container from './oa_container';
+import {
+  DatetimeControl,
+  Fields,
+  IntField,
+  ToggleControl,
+} from './oa_edit_fields';
+import {
+  ShowControl,
+  TrainingExample,
+} from './oa_container_item';
+import { AssessmentToggleListener } from './oa_edit_listeners';
+import Notifier from './oa_edit_notifier';
 /**
  Interface for editing peer assessment settings.
 
@@ -7,56 +21,56 @@
  Returns:
  OpenAssessment.EditPeerAssessmentView
 
- **/
-OpenAssessment.EditPeerAssessmentView = function(element, scheduleElement) {
+ * */
+
+export class EditPeerAssessmentView {
+  constructor(element, scheduleElement) {
     this.element = element;
     this.name = 'peer-assessment';
     this.scheduleElement = scheduleElement;
 
-    this.mustGradeField = new OpenAssessment.IntField(
-        $('#peer_assessment_must_grade', this.element),
-        {min: 0, max: 99}
+    this.mustGradeField = new IntField(
+      $('#peer_assessment_must_grade', this.element),
+      { min: 0, max: 99 },
     );
-    this.mustBeGradedByField = new OpenAssessment.IntField(
-        $('#peer_assessment_graded_by', this.element),
-        {min: 0, max: 99}
+    this.mustBeGradedByField = new IntField(
+      $('#peer_assessment_graded_by', this.element),
+      { min: 0, max: 99 },
     );
 
     // Configure the toggle checkbox to enable/disable this assessment
-    new OpenAssessment.ToggleControl(
-        $('#include_peer_assessment', this.element),
-        [
-            $('#peer_assessment_settings_editor', this.element),
-            $('#peer_assessment_schedule_editor', this.scheduleElement),
-        ],
-        [],
-        new OpenAssessment.Notifier([
-            new OpenAssessment.AssessmentToggleListener(),
-        ])
+    new ToggleControl(
+      $('#include_peer_assessment', this.element),
+      [
+        $('#peer_assessment_settings_editor', this.element),
+        $('#peer_assessment_schedule_editor', this.scheduleElement),
+      ],
+      [],
+      new Notifier([
+        new AssessmentToggleListener(),
+      ]),
     ).install();
 
-    new OpenAssessment.ShowControl(
-        $('#peer_assessment_settings_editor_show_details', this.element),
-        $('#peer_assessment_settings_editor_details', this.element)
+    new ShowControl(
+      $('#peer_assessment_settings_editor_show_details', this.element),
+      $('#peer_assessment_settings_editor_details', this.element),
     ).install();
 
     // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.scheduleElement,
-        '#peer_assessment_start_date',
-        '#peer_assessment_start_time'
+    this.startDatetimeControl = new DatetimeControl(
+      this.scheduleElement,
+      '#peer_assessment_start_date',
+      '#peer_assessment_start_time',
     ).install();
 
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.scheduleElement,
-        '#peer_assessment_due_date',
-        '#peer_assessment_due_time'
+    this.dueDatetimeControl = new DatetimeControl(
+      this.scheduleElement,
+      '#peer_assessment_due_date',
+      '#peer_assessment_due_time',
     ).install();
-};
+  }
 
-OpenAssessment.EditPeerAssessmentView.prototype = {
-
-    /**
+  /**
      Return a description of the assessment.
 
      Returns:
@@ -70,17 +84,17 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
          start: null,
          due: "2014-04-1T00:00"
      }
-     **/
-    description: function() {
-        return {
-            must_grade: this.mustGradeNum(),
-            must_be_graded_by: this.mustBeGradedByNum(),
-            start: this.startDatetime(),
-            due: this.dueDatetime(),
-        };
-    },
+     * */
+  description() {
+    return {
+      must_grade: this.mustGradeNum(),
+      must_be_graded_by: this.mustBeGradedByNum(),
+      start: this.startDatetime(),
+      due: this.dueDatetime(),
+    };
+  }
 
-    /**
+  /**
      Get or set whether the assessment is enabled.
 
      Args:
@@ -88,21 +102,21 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
      Returns:
      boolean
-     ***/
-    isEnabled: function(isEnabled) {
-        var sel = $('#include_peer_assessment', this.element);
-        return OpenAssessment.Fields.booleanField(sel, isEnabled);
-    },
+     ** */
+  isEnabled(isEnabled) {
+    const sel = $('#include_peer_assessment', this.element);
+    return Fields.booleanField(sel, isEnabled);
+  }
 
-    /**
+  /**
      Toggle whether the assessment is enabled or disabled.
      This triggers the actual click event and is mainly useful for testing.
-     **/
-    toggleEnabled: function() {
-        $('#include_peer_assessment', this.element).click();
-    },
+     * */
+  toggleEnabled() {
+    $('#include_peer_assessment', this.element).click();
+  }
 
-    /**
+  /**
      Get or set the required number of submissions a student must peer-assess.
 
      Args:
@@ -110,13 +124,13 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
      Returns:
      int
-     **/
-    mustGradeNum: function(num) {
-        if (num !== undefined) {this.mustGradeField.set(num);}
-        return this.mustGradeField.get();
-    },
+     * */
+  mustGradeNum(num) {
+    if (num !== undefined) { this.mustGradeField.set(num); }
+    return this.mustGradeField.get();
+  }
 
-    /**
+  /**
      Get or set the required number of peer-assessments a student must receive.
 
      Args:
@@ -124,13 +138,13 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
      Returns:
      int
-     **/
-    mustBeGradedByNum: function(num) {
-        if (num !== undefined) {this.mustBeGradedByField.set(num);}
-        return this.mustBeGradedByField.get();
-    },
+     * */
+  mustBeGradedByNum(num) {
+    if (num !== undefined) { this.mustBeGradedByField.set(num); }
+    return this.mustBeGradedByField.get();
+  }
 
-    /**
+  /**
      Get or set the start date and time of the assessment.
 
      Args:
@@ -139,12 +153,12 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
      Returns:
      string (ISO-formatted UTC datetime)
-     **/
-    startDatetime: function(dateString, timeString) {
-        return this.startDatetimeControl.datetime(dateString, timeString);
-    },
+     * */
+  startDatetime(dateString, timeString) {
+    return this.startDatetimeControl.datetime(dateString, timeString);
+  }
 
-    /**
+  /**
      Get or set the due date and time of the assessment.
 
      Args:
@@ -153,71 +167,71 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
      Returns:
      string (ISO-formatted UTC datetime)
-     **/
-    dueDatetime: function(dateString, timeString) {
-        return this.dueDatetimeControl.datetime(dateString, timeString);
-    },
+     * */
+  dueDatetime(dateString, timeString) {
+    return this.dueDatetimeControl.datetime(dateString, timeString);
+  }
 
-    /**
+  /**
      Gets the ID of the assessment
 
      Returns:
      string (CSS ID of the Element object)
-     **/
-    getID: function() {
-        return $(this.element).attr('id');
-    },
+     * */
+  getID() {
+    return $(this.element).attr('id');
+  }
 
-    /**
+  /**
      Mark validation errors.
 
      Returns:
      Boolean indicating whether the view is valid.
 
-     **/
-    validate: function() {
-        var startValid = this.startDatetimeControl.validate();
-        var dueValid = this.dueDatetimeControl.validate();
-        var mustGradeValid = this.mustGradeField.validate();
-        var mustBeGradedByValid = this.mustBeGradedByField.validate();
-        return startValid && dueValid && mustGradeValid && mustBeGradedByValid;
-    },
+     * */
+  validate() {
+    const startValid = this.startDatetimeControl.validate();
+    const dueValid = this.dueDatetimeControl.validate();
+    const mustGradeValid = this.mustGradeField.validate();
+    const mustBeGradedByValid = this.mustBeGradedByField.validate();
+    return startValid && dueValid && mustGradeValid && mustBeGradedByValid;
+  }
 
-    /**
+  /**
      Return a list of validation errors visible in the UI.
      Mainly useful for testing.
 
      Returns:
      list of string
 
-     **/
-    validationErrors: function() {
-        var errors = [];
-        if (this.startDatetimeControl.validationErrors().length > 0) {
-            errors.push('Peer assessment start is invalid');
-        }
-        if (this.dueDatetimeControl.validationErrors().length > 0) {
-            errors.push('Peer assessment due is invalid');
-        }
-        if (this.mustGradeField.validationErrors().length > 0) {
-            errors.push('Peer assessment must grade is invalid');
-        }
-        if (this.mustBeGradedByField.validationErrors().length > 0) {
-            errors.push('Peer assessment must be graded by is invalid');
-        }
-        return errors;
-    },
+     * */
+  validationErrors() {
+    const errors = [];
+    if (this.startDatetimeControl.validationErrors().length > 0) {
+      errors.push('Peer assessment start is invalid');
+    }
+    if (this.dueDatetimeControl.validationErrors().length > 0) {
+      errors.push('Peer assessment due is invalid');
+    }
+    if (this.mustGradeField.validationErrors().length > 0) {
+      errors.push('Peer assessment must grade is invalid');
+    }
+    if (this.mustBeGradedByField.validationErrors().length > 0) {
+      errors.push('Peer assessment must be graded by is invalid');
+    }
+    return errors;
+  }
 
-    /**
+  /**
      Clear all validation errors from the UI.
-     **/
-    clearValidationErrors: function() {
-        this.startDatetimeControl.clearValidationErrors();
-        this.dueDatetimeControl.clearValidationErrors();
-        this.mustGradeField.clearValidationErrors();
-        this.mustBeGradedByField.clearValidationErrors();
-    },
-};
+     * */
+  clearValidationErrors() {
+    this.startDatetimeControl.clearValidationErrors();
+    this.dueDatetimeControl.clearValidationErrors();
+    this.mustGradeField.clearValidationErrors();
+    this.mustBeGradedByField.clearValidationErrors();
+  }
+}
 
 /**
  Interface for editing self assessment settings.
@@ -228,45 +242,44 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
  Returns:
  OpenAssessment.EditSelfAssessmentView
 
- **/
-OpenAssessment.EditSelfAssessmentView = function(element, scheduleElement) {
+ * */
+export class EditSelfAssessmentView {
+  constructor(element, scheduleElement) {
     this.element = element;
     this.scheduleElement = scheduleElement;
 
     this.name = 'self-assessment';
 
     // Configure the toggle checkbox to enable/disable this assessment
-    new OpenAssessment.ToggleControl(
-        $('#include_self_assessment', this.element),
-        [
-            $('#self_assessment_settings_editor', this.element),
-            $('#self_assessment_schedule_editor', this.scheduleElement),
-        ],
-        [
-            $('#self_assessment_description_closed', this.element),
-        ],
-        new OpenAssessment.Notifier([
-            new OpenAssessment.AssessmentToggleListener(),
-        ])
+    new ToggleControl(
+      $('#include_self_assessment', this.element),
+      [
+        $('#self_assessment_settings_editor', this.element),
+        $('#self_assessment_schedule_editor', this.scheduleElement),
+      ],
+      [
+        $('#self_assessment_description_closed', this.element),
+      ],
+      new Notifier([
+        new AssessmentToggleListener(),
+      ]),
     ).install();
 
     // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.scheduleElement,
-        '#self_assessment_start_date',
-        '#self_assessment_start_time'
+    this.startDatetimeControl = new DatetimeControl(
+      this.scheduleElement,
+      '#self_assessment_start_date',
+      '#self_assessment_start_time',
     ).install();
 
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.scheduleElement,
-        '#self_assessment_due_date',
-        '#self_assessment_due_time'
+    this.dueDatetimeControl = new DatetimeControl(
+      this.scheduleElement,
+      '#self_assessment_due_date',
+      '#self_assessment_due_time',
     ).install();
-};
+  }
 
-OpenAssessment.EditSelfAssessmentView.prototype = {
-
-    /**
+  /**
      Return a description of the assessment.
 
      Returns:
@@ -279,15 +292,15 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
          due: "2014-04-1T00:00"
      }
 
-     **/
-    description: function() {
-        return {
-            start: this.startDatetime(),
-            due: this.dueDatetime(),
-        };
-    },
+     * */
+  description() {
+    return {
+      start: this.startDatetime(),
+      due: this.dueDatetime(),
+    };
+  }
 
-    /**
+  /**
      Get or set whether the assessment is enabled.
 
      Args:
@@ -295,21 +308,21 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
 
      Returns:
      boolean
-     ***/
-    isEnabled: function(isEnabled) {
-        var sel = $('#include_self_assessment', this.element);
-        return OpenAssessment.Fields.booleanField(sel, isEnabled);
-    },
+     ** */
+  isEnabled(isEnabled) {
+    const sel = $('#include_self_assessment', this.element);
+    return Fields.booleanField(sel, isEnabled);
+  }
 
-    /**
+  /**
      Toggle whether the assessment is enabled or disabled.
      This triggers the actual click event and is mainly useful for testing.
-     **/
-    toggleEnabled: function() {
-        $('#include_self_assessment', this.element).click();
-    },
+     * */
+  toggleEnabled() {
+    $('#include_self_assessment', this.element).click();
+  }
 
-    /**
+  /**
      Get or set the start date and time of the assessment.
 
      Args:
@@ -318,12 +331,12 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
 
      Returns:
      string (ISO-formatted UTC datetime)
-     **/
-    startDatetime: function(dateString, timeString) {
-        return this.startDatetimeControl.datetime(dateString, timeString);
-    },
+     * */
+  startDatetime(dateString, timeString) {
+    return this.startDatetimeControl.datetime(dateString, timeString);
+  }
 
-    /**
+  /**
      Get or set the due date and time of the assessment.
 
      Args:
@@ -332,61 +345,61 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
 
      Returns:
      string (ISO-formatted UTC datetime)
-     **/
-    dueDatetime: function(dateString, timeString) {
-        return this.dueDatetimeControl.datetime(dateString, timeString);
-    },
+     * */
+  dueDatetime(dateString, timeString) {
+    return this.dueDatetimeControl.datetime(dateString, timeString);
+  }
 
-    /**
+  /**
      Gets the ID of the assessment
 
      Returns:
      string (CSS ID of the Element object)
-     **/
-    getID: function() {
-        return $(this.element).attr('id');
-    },
+     * */
+  getID() {
+    return $(this.element).attr('id');
+  }
 
-    /**
+  /**
      Mark validation errors.
 
      Returns:
      Boolean indicating whether the view is valid.
 
-     **/
-    validate: function() {
-        var startValid = this.startDatetimeControl.validate();
-        var dueValid = this.dueDatetimeControl.validate();
-        return startValid && dueValid;
-    },
+     * */
+  validate() {
+    const startValid = this.startDatetimeControl.validate();
+    const dueValid = this.dueDatetimeControl.validate();
+    return startValid && dueValid;
+  }
 
-    /**
+  /**
      Return a list of validation errors visible in the UI.
      Mainly useful for testing.
 
      Returns:
      list of string
 
-     **/
-    validationErrors: function() {
-        var errors = [];
-        if (this.startDatetimeControl.validationErrors().length > 0) {
-            errors.push('Self assessment start is invalid');
-        }
-        if (this.dueDatetimeControl.validationErrors().length > 0) {
-            errors.push('Self assessment due is invalid');
-        }
-        return errors;
-    },
+     * */
+  validationErrors() {
+    const errors = [];
+    if (this.startDatetimeControl.validationErrors().length > 0) {
+      errors.push('Self assessment start is invalid');
+    }
+    if (this.dueDatetimeControl.validationErrors().length > 0) {
+      errors.push('Self assessment due is invalid');
+    }
+    return errors;
+  }
 
-    /**
+  /**
      Clear all validation errors from the UI.
-     **/
-    clearValidationErrors: function() {
-        this.startDatetimeControl.clearValidationErrors();
-        this.dueDatetimeControl.clearValidationErrors();
-    },
-};
+     * */
+  clearValidationErrors() {
+    this.startDatetimeControl.clearValidationErrors();
+    this.dueDatetimeControl.clearValidationErrors();
+  }
+}
 
 /**
  Interface for editing student training assessment settings.
@@ -397,43 +410,42 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
  Returns:
  OpenAssessment.EditStudentTrainingView
 
- **/
-OpenAssessment.EditStudentTrainingView = function(element) {
+ * */
+export class EditStudentTrainingView {
+  constructor(element) {
     this.element = element;
     this.name = 'student-training';
 
-    new OpenAssessment.ToggleControl(
-        $('#include_student_training', this.element),
-        [
-            $('#student_training_settings_editor', this.element),
-        ],
-        [],
-        new OpenAssessment.Notifier([
-            new OpenAssessment.AssessmentToggleListener(),
-        ])
+    new ToggleControl(
+      $('#include_student_training', this.element),
+      [
+        $('#student_training_settings_editor', this.element),
+      ],
+      [],
+      new Notifier([
+        new AssessmentToggleListener(),
+      ]),
     ).install();
 
-    new OpenAssessment.ShowControl(
-        $('#student_training_settings_editor_show_details', this.element),
-        $('#student_training_settings_editor_details', this.element)
+    new ShowControl(
+      $('#student_training_settings_editor_show_details', this.element),
+      $('#student_training_settings_editor_details', this.element),
     ).install();
 
-    this.exampleContainer = new OpenAssessment.Container(
-        OpenAssessment.TrainingExample, {
-            containerElement: $('#openassessment_training_example_list', this.element).get(0),
-            templateElement: $('#openassessment_training_example_template', this.element).get(0),
-            addButtonElement: $('.openassessment_add_training_example', this.element).get(0),
-            removeButtonClass: 'openassessment_training_example_remove',
-            containerItemClass: 'openassessment_training_example',
-        }
+    this.exampleContainer = new Container(
+      TrainingExample, {
+        containerElement: $('#openassessment_training_example_list', this.element).get(0),
+        templateElement: $('#openassessment_training_example_template', this.element).get(0),
+        addButtonElement: $('.openassessment_add_training_example', this.element).get(0),
+        removeButtonClass: 'openassessment_training_example_remove',
+        containerItemClass: 'openassessment_training_example',
+      },
     );
 
     this.exampleContainer.addEventListeners();
-};
+  }
 
-OpenAssessment.EditStudentTrainingView.prototype = {
-
-    /**
+  /**
      Return a description of the assessment.
 
      Returns:
@@ -449,24 +461,24 @@ OpenAssessment.EditStudentTrainingView.prototype = {
                      {
                          criterion: "brevity",
                          option: "suberb"
-                     },
+                     }
                          criterion: "accuracy",
                          option: "alright"
                      }
                      ...
                  ]
-             },
+             }
      ...
      ]
      }
-     **/
-    description: function() {
-        return {
-            examples: this.exampleContainer.getItemValues(),
-        };
-    },
+     * */
+  description() {
+    return {
+      examples: this.exampleContainer.getItemValues(),
+    };
+  }
 
-    /**
+  /**
      Get or set whether the assessment is enabled.
 
      Args:
@@ -474,80 +486,80 @@ OpenAssessment.EditStudentTrainingView.prototype = {
 
      Returns:
      boolean
-     ***/
-    isEnabled: function(isEnabled) {
-        var sel = $('#include_student_training', this.element);
-        return OpenAssessment.Fields.booleanField(sel, isEnabled);
-    },
+     ** */
+  isEnabled(isEnabled) {
+    const sel = $('#include_student_training', this.element);
+    return Fields.booleanField(sel, isEnabled);
+  }
 
-    /**
+  /**
      Toggle whether the assessment is enabled or disabled.
      This triggers the actual click event and is mainly useful for testing.
-     **/
-    toggleEnabled: function() {
-        $('#include_student_training', this.element).click();
-    },
+     * */
+  toggleEnabled() {
+    $('#include_student_training', this.element).click();
+  }
 
-    /**
+  /**
      Gets the ID of the assessment
 
      Returns:
      string (CSS ID of the Element object)
-     **/
-    getID: function() {
-        return $(this.element).attr('id');
-    },
+     * */
+  getID() {
+    return $(this.element).attr('id');
+  }
 
-    /**
+  /**
      Mark validation errors.
 
      Returns:
      Boolean indicating whether the view is valid.
 
-     **/
-    validate: function() {
-        var isValid = true;
+     * */
+  validate() {
+    let isValid = true;
 
-        $.each(this.exampleContainer.getAllItems(), function() {
-            isValid = this.validate() && isValid;
-        });
+    $.each(this.exampleContainer.getAllItems(), function () {
+      isValid = this.validate() && isValid;
+    });
 
-        return isValid;
-    },
+    return isValid;
+  }
 
-    /**
+  /**
      Return a list of validation errors visible in the UI.
      Mainly useful for testing.
 
      Returns:
      list of string
 
-     **/
-    validationErrors: function() {
-        var errors = [];
-        $.each(this.exampleContainer.getAllItems(), function() {
-            errors = errors.concat(this.validationErrors());
-        });
-        return errors;
-    },
+     * */
+  validationErrors() {
+    let errors = [];
+    $.each(this.exampleContainer.getAllItems(), function () {
+      errors = errors.concat(this.validationErrors());
+    });
+    return errors;
+  }
 
-    /**
+  /**
      Clear all validation errors from the UI.
-     **/
-    clearValidationErrors: function() {
-        $.each(this.exampleContainer.getAllItems(), function() {
-            this.clearValidationErrors();
-        });
-    },
+     * */
+  clearValidationErrors() {
+    $.each(this.exampleContainer.getAllItems(), function () {
+      this.clearValidationErrors();
+    });
+  }
 
-    /**
+  /**
      Adds a new training example by copying the training example template.
      Primarily used for testing.
-     **/
-    addTrainingExample: function() {
-        this.exampleContainer.add();
-    },
-};
+     * */
+  addTrainingExample() {
+    this.exampleContainer.add();
+  }
+}
 
 /**
  * Interface for editing staff assessment settings.
@@ -556,90 +568,89 @@ OpenAssessment.EditStudentTrainingView.prototype = {
  * @constructor
  *
  */
-OpenAssessment.EditStaffAssessmentView = function(element) {
+export class EditStaffAssessmentView {
+  constructor(element) {
     this.element = element;
     this.name = 'staff-assessment';
 
     // Configure the toggle checkbox to enable/disable this assessment
-    new OpenAssessment.ToggleControl(
-        $('#include_staff_assessment', this.element),
-        [
-            $('#staff_assessment_description', this.element),
-        ],
-        [
-            $('#staff_assessment_description', this.element),
-        ], // open and closed selectors are the same!
-        new OpenAssessment.Notifier([
-            new OpenAssessment.AssessmentToggleListener(),
-        ])
+    new ToggleControl(
+      $('#include_staff_assessment', this.element),
+      [
+        $('#staff_assessment_description', this.element),
+      ],
+      [
+        $('#staff_assessment_description', this.element),
+      ], // open and closed selectors are the same!
+      new Notifier([
+        new AssessmentToggleListener(),
+      ]),
     ).install();
-};
+  }
 
-OpenAssessment.EditStaffAssessmentView.prototype = {
-
-    /**
+  /**
      * Return a description of the assessment.
      *
      * @return {Object} Representation of the view.
      */
-    description: function() {
-        return {
-            required: this.isEnabled(),
-        };
-    },
+  description() {
+    return {
+      required: this.isEnabled(),
+    };
+  }
 
-    /**
+  /**
      * Get or set whether the assessment is enabled.
      *
      * @param {Boolean} isEnabled - If provided, set the enabled state of the assessment.
      * @return {Boolean}
      */
-    isEnabled: function(isEnabled) {
-        var sel = $('#include_staff_assessment', this.element);
-        return OpenAssessment.Fields.booleanField(sel, isEnabled);
-    },
+  isEnabled(isEnabled) {
+    const sel = $('#include_staff_assessment', this.element);
+    return Fields.booleanField(sel, isEnabled);
+  }
 
-    /**
+  /**
      * Toggle whether the assessment is enabled or disabled.
      * This triggers the actual click event and is mainly useful for testing.
      */
-    toggleEnabled: function() {
-        $('#include_staff_assessment', this.element).click();
-    },
+  toggleEnabled() {
+    $('#include_staff_assessment', this.element).click();
+  }
 
-    /**
+  /**
      * Gets the ID of the assessment
      *
      * @return {String} CSS class of the Element object
      */
-    getID: function() {
-        return $(this.element).attr('id');
-    },
+  getID() {
+    return $(this.element).attr('id');
+  }
 
-    /**
+  /**
      * Mark validation errors.
      *
      * @return {Boolean} Whether the view is valid.
      *
      */
-    validate: function() {
-        return true; // Nothing to validate, the only input is a boolean and either state is valid
-    },
+  validate() {
+    return true; // Nothing to validate, the only input is a boolean and either state is valid
+  }
 
-    /**
+  /**
      * Return a list of validation errors visible in the UI.
      * Mainly useful for testing.
      *
      * @return {Array} - always empty, function called but not actually used.
      */
-    validationErrors: function() {
-        return [];
-    },
+  validationErrors() {
+    return [];
+  }
 
-    /**
+  /**
      * Clear all validation errors from the UI.
      */
-    clearValidationErrors: function() {
-        // do nothing
-    },
-};
+  clearValidationErrors() {
+    // do nothing
+  }
+}

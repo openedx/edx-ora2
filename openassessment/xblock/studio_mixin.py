@@ -81,14 +81,11 @@ class StudioMixin:
             self.STUDIO_EDITING_TEMPLATE
         ).render(self.editor_context())
         fragment = Fragment(rendered_template)
-        if settings.DEBUG:
-            self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
-            self.add_javascript_files(fragment, "static/js/src/oa_server.js")
-            self.add_javascript_files(fragment, "static/js/src/studio")
-        else:
-            # TODO: switch to add_javascript_url once XBlock resources are loaded from the CDN
-            js_bytes = pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js")
-            fragment.add_javascript(js_bytes.decode('utf-8'))
+
+        # TODO: switch to add_javascript_url once XBlock resources are loaded from the CDN
+        js_bytes = pkg_resources.resource_string(__name__, "static/js/openassessment-studio.js")
+        fragment.add_javascript(js_bytes.decode('utf-8'))
+
         js_context_dict = {
             "ALLOWED_IMAGE_EXTENSIONS": self.ALLOWED_IMAGE_EXTENSIONS,
             "ALLOWED_FILE_EXTENSIONS": self.ALLOWED_FILE_EXTENSIONS,

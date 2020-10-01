@@ -14,39 +14,33 @@ Returns:
     JQuery promise
 
 */
-OpenAssessment.FileUploader = function() {
-    this.upload = function(url, file) {
-        // eslint-disable-next-line new-cap
-        return $.Deferred(
-            function(defer) {
-                $.ajax({
-                    url: url,
-                    type: 'PUT',
-                    data: file,
-                    async: false,
-                    processData: false,
-                    contentType: file.type,
-                }).done(
-                    function() {
-                        // Log an analytics event
-                        Logger.log(
-                            'openassessment.upload_file',
-                            {
-                                fileName: file.name,
-                                fileSize: file.size,
-                                fileType: file.type,
-                            }
-                        );
+export class FileUploader {
+  upload(url, file) {
+    // eslint-disable-next-line new-cap
+    return $.Deferred((defer) => {
+      $.ajax({
+        url,
+        type: 'PUT',
+        data: file,
+        async: false,
+        processData: false,
+        contentType: file.type,
+      }).done(() => {
+        // Log an analytics event
+        Logger.log(
+          'openassessment.upload_file',
+          {
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type,
+          },
+        );
 
-                        // Return control to the caller
-                        defer.resolve();
-                    }
-                ).fail(
-                    function(data, textStatus) {
-                        defer.rejectWith(this, [textStatus]);
-                    }
-                );
-            }
-        ).promise();
-    };
-};
+        // Return control to the caller
+        defer.resolve();
+      }).fail((data, textStatus) => defer.rejectWith(this, [textStatus]));
+    }).promise();
+  }
+}
+
+export default FileUploader;

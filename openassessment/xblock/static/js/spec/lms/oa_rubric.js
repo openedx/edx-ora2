@@ -1,3 +1,4 @@
+import Rubric from 'lms/oa_rubric';
 /**
 Tests for an Open Assessment rubric.
 **/
@@ -10,7 +11,7 @@ describe("OpenAssessment.Rubric", function() {
         loadFixtures('oa_rubric.html');
 
         var el = $(".peer-assessment--001__assessment").get(0);
-        rubric = new OpenAssessment.Rubric(el);
+        rubric = new Rubric(el);
     });
 
     it("enables the submit button only when all options and required feedback have been provided", function() {

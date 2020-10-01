@@ -3,8 +3,12 @@
   "version": "2.10.3",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
+    "@edx/frontend-build": "^5.2.0",
+    "@edx/paragon": "^12.0.0",
+    "axios": "^0.19.2",
     "backbone": "~1.2.3",
     "backgrid": "~0.3.8",
+    "dotenv-webpack": "^2.0.0",
     "edx-ui-toolkit": "1.5.3",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.28",
@@ -12,6 +16,8 @@
     "underscore": "^1.11.0"
   },
   "devDependencies": {
+    "dotenv-expand": "^5.1.0",
+    "dotenvi": "^0.9.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "jasmine": "^2.3.0",
@@ -25,13 +31,15 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.3",
     "karma-spec-reporter": "^0.0.31",
+    "karma-webpack": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.14",
     "sinon": "^7.5.0",
-    "uglify-js": "^3.11.1"
+    "webpack": "^4.44.2"
   },
   "scripts": {
+    "build": "fedx-scripts webpack -p",
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
-    "lint": "eslint openassessment/xblock/static/js/src/**/*.js",
-    "lint-fix": "eslint --fix openassessment/xblock/static/js/src/**/*.js"
+    "lint": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/",
+    "lint-fix": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/ --fix"
   }
 }

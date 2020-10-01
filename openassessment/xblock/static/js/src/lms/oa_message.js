@@ -8,28 +8,31 @@ Args:
 
 Returns:
     OpenAssessment.ResponseView
-**/
-OpenAssessment.MessageView = function(element, server, baseView) {
+* */
+
+export class MessageView {
+  constructor(element, server, baseView) {
     this.element = element;
     this.server = server;
     this.baseView = baseView;
-};
+  }
 
-OpenAssessment.MessageView.prototype = {
-    /**
+  /**
     Loads the message view.
-    **/
-    load: function() {
-        var view = this;
-        var baseView = this.baseView;
-        this.server.render('message').done(
-            function(html) {
-                // Load the HTML
-                $('.openassessment__message', view.element).replaceWith(html);
-                view.server.renderLatex($('.openassessment__message', view.element));
-            }
-        ).fail(function(errMsg) {
-            baseView.showLoadError('message', errMsg);
-        });
-    },
-};
+    * */
+  load() {
+    const view = this;
+    const { baseView } = this;
+    this.server.render('message').done(
+      (html) => {
+        // Load the HTML
+        $('.openassessment__message', view.element).replaceWith(html);
+        view.server.renderLatex($('.openassessment__message', view.element));
+      },
+    ).fail((errMsg) => {
+      baseView.showLoadError('message', errMsg);
+    });
+  }
+}
+
+export default MessageView;

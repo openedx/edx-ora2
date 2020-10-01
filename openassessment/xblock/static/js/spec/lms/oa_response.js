@@ -1,3 +1,6 @@
+import BaseView from 'lms/oa_base';
+import ResponseView from 'lms/oa_response';
+
 /**
 Tests for OpenAssessment response (submission) view.
 **/
@@ -148,6 +151,12 @@ describe("OpenAssessment.ResponseView", function() {
         stubConfirm = didConfirm;
     };
 
+    // Store window URL object for replacing after tests;
+    const windowURL = window.URL;
+    const mockURL = {
+      createObjectURL: () => 'url',
+    };
+
     beforeEach(function() {
         // Load the DOM fixture
         loadFixtures('oa_response.html');
@@ -168,8 +177,8 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Create and install the view
         var responseElement = $('.step--response').get(0);
-        var baseView = new OpenAssessment.BaseView(runtime, responseElement, server, {});
-        view = new OpenAssessment.ResponseView(responseElement, server, fileUploader, baseView, data);
+        var baseView = new BaseView(runtime, responseElement, server, {});
+        view = new ResponseView(responseElement, server, fileUploader, baseView, data);
         view.installHandlers();
 
         // Stub the confirmation step
@@ -177,7 +186,7 @@ describe("OpenAssessment.ResponseView", function() {
         // To instead simulate the user cancelling the submission,
         // set `stubConfirm` to false.
         setStubConfirm(true);
-        fakeConfirm = function() {
+        const fakeConfirm = function() {
             return $.Deferred(function(defer) {
                 if (stubConfirm) { defer.resolve(); }
                 else { defer.reject(); }
@@ -194,6 +203,7 @@ describe("OpenAssessment.ResponseView", function() {
                 defer.resolve();
             });
         });
+        window.URL = mockURL;
     });
 
     afterEach(function() {
@@ -201,7 +211,9 @@ describe("OpenAssessment.ResponseView", function() {
         view.setAutoSaveEnabled(false);
 
         // Disable the unsaved page warning (if set)
-        OpenAssessment.clearUnsavedChanges();
+        view.baseView.clearUnsavedChanges();
+
+        window.URL = windowURL;
     });
 
     it("updates and retrieves response text correctly", function() {

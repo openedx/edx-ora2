@@ -1,3 +1,5 @@
+import EditAssessmentsStepsView from 'studio/oa_edit_assessments_steps';
+
 /**
 Tests for the edit assessments step view.
 **/
@@ -52,7 +54,7 @@ describe("OpenAssessment.EditAssessmentsStepsView", function() {
 
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
-        view = new OpenAssessment.EditAssessmentsStepsView(element, assessmentViews);
+        view = new EditAssessmentsStepsView(element, assessmentViews);
     });
 
     it("builds a description of enabled assessments", function() {

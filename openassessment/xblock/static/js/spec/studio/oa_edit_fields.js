@@ -1,3 +1,13 @@
+import {
+  DatetimeControl,
+  ToggleControl,
+  SelectControl,
+  InputControl,
+} from 'studio/oa_edit_fields';
+
+
+// TODO: add test for Fields export
+
 var StubNotifier = function() {
     this.receivedNotifications = [];
     this.notificationFired = function(name, data) {
@@ -24,7 +34,7 @@ describe("OpenAssessment.DatetimeControl", function() {
 
         // Create the datetime control, which uses elements
         // available in the fixture.
-        datetimeControl = new OpenAssessment.DatetimeControl(
+        datetimeControl = new DatetimeControl(
             $("#datetime_parent").get(0),
             ".date_field",
             ".time_field"
@@ -109,7 +119,7 @@ describe("OpenAssessment.ToggleControl", function() {
         );
 
         notifier = new StubNotifier();
-        toggleControl = new OpenAssessment.ToggleControl(
+        toggleControl = new ToggleControl(
             $("#checkbox"),
             [$("#shown_section")],
             [$("#hidden_section")],
@@ -184,7 +194,7 @@ describe("OpenAssessment.SelectControl", function() {
         );
 
         notifier = new StubNotifier();
-        selectControl = new OpenAssessment.SelectControl(
+        selectControl = new SelectControl(
             $("#select"),
             {'1': $("#shown_for_option1"), '2': $("#shown_for_option2")},
             notifier
@@ -243,7 +253,7 @@ describe("OpenAssessment.InputControl", function() {
             '<div><input type="text" id="input"></div><p class="message-status error" id="error"></p>'
         );
 
-        inputControl = new OpenAssessment.InputControl($("#input"), validator);
+        inputControl = new InputControl($("#input"), validator);
     });
 
     it("should call validator function when validate is called", function() {

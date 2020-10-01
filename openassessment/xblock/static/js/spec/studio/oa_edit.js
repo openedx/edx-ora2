@@ -1,3 +1,5 @@
+import { StudioView } from 'studio/oa_edit';
+
 /**
 Tests for OA XBlock editing.
 **/
@@ -137,7 +139,7 @@ describe("OpenAssessment.StudioView", function() {
 
         // Create the object under test
         var el = $('#openassessment-editor').get(0);
-        view = new OpenAssessment.StudioView(runtime, el, server, data);
+        view = new StudioView(runtime, el, server, data);
     });
 
     it("sends the editor context to the server", function() {
