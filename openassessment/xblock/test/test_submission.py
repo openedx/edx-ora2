@@ -941,7 +941,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 resp
             )
 
-    @scenario('data/submission_open.xml', user_id="Bob")
+    @scenario('data/file_upload_scenario.xml', user_id="Bob")
     def test_open_saved_response_misaligned_file_data(self, xblock):
         """
         Test the case where the XBlock user state contains a different number of
@@ -953,7 +953,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.saved_files_names = json.dumps([])
         xblock.saved_files_sizes = json.dumps([200])
 
-        xblock.file_upload_type = 'pdf-and-image'
         xblock.file_upload_response = 'optional'
 
         xblock.get_team_info = Mock(return_value={})
@@ -966,7 +965,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
+                'text_response': None,
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
@@ -981,12 +980,12 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 }, xblock.prompts),
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
                 'user_timezone': None,
                 'user_language': None,
                 'prompts_type': 'text',
                 'enable_delete_files': True,
+                'white_listed_file_types': ['pdf', 'gif', 'jpg', 'jpgeg', 'jfif', 'pjpeg', 'pjp', 'png']
             }
         )
 
@@ -1565,6 +1564,36 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'team_name': 'Red Squadron',
                 'text_response': 'required',
                 'team_members_with_external_submissions': ''
+            }
+        )
+
+    @scenario('data/file_upload_scenario.xml', user_id="Bob")
+    def test_load_file_extension_presets(self, xblock):
+        """
+        Loading an ORA w/ a file upload preset (e.g. pdf-and-image) will load the list of allowed extensions into
+        the context. This allows us to show what files types are allowed for any upload configuration.
+        """
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'text_response': 'required',
+                'file_upload_response': 'optional',
+                'file_upload_type': 'pdf-and-image',
+                'file_urls': [],
+                'team_file_urls': [],
+                'white_listed_file_types': ['pdf', 'gif', 'jpg', 'jpgeg', 'jfif', 'pjpeg', 'pjp', 'png'],
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
+                'save_status': 'This response has not been saved.',
+                'submit_enabled': False,
+                'allow_latex': False,
+                'user_timezone': None,
+                'user_language': None,
+                'prompts_type': 'text',
+                'enable_delete_files': True,
             }
         )
 

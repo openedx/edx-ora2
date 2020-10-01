@@ -44,8 +44,10 @@ class SubmissionMixin:
     """
 
     ALLOWED_IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png']  # pragma: no cover
+    ALLOWED_IMAGE_EXTENSIONS = ['gif', 'jpg', 'jpgeg', 'jfif', 'pjpeg', 'pjp', 'png']  # pragma: no cover
 
     ALLOWED_FILE_MIME_TYPES = ['application/pdf'] + ALLOWED_IMAGE_MIME_TYPES  # pragma: no cover
+    ALLOWED_FILE_EXTENSIONS = ['pdf'] + ALLOWED_IMAGE_EXTENSIONS  # pragma: no cover
 
     MAX_FILES_COUNT = 20  # pragma: no cover
 
@@ -62,6 +64,18 @@ class SubmissionMixin:
         'rgs', 'run', 'sct', 'shb', 'shs', 'u3p', 'vbscript', 'vbe', 'workflow',
         'htm', 'html',
     ]
+
+    FILE_UPLOAD_PRESETS = {
+        'image': {
+            'mime_types': ALLOWED_IMAGE_MIME_TYPES,
+            'extensions': ALLOWED_IMAGE_EXTENSIONS
+        },
+        'pdf-and-image': {
+            'mime_types': ALLOWED_FILE_MIME_TYPES,
+            'extensions': ALLOWED_FILE_EXTENSIONS,
+        },
+        'custom': {}
+    }
 
     @cached_property
     def file_manager(self):
@@ -747,6 +761,18 @@ class SubmissionMixin:
         except NoSuchServiceError:
             logger.error('{}: Teams service is unavailable'.format(str(self.location)))
 
+    def get_allowed_file_types_or_preset(self):
+        """
+        If allowed files are not explicitly set for file uploads, use preset extensions
+        """
+        if self.white_listed_file_types:
+            return self.white_listed_file_types
+        elif self.file_upload_type == 'image':
+            return self.ALLOWED_IMAGE_EXTENSIONS
+        elif self.file_upload_type == 'pdf-and-image':
+            return self.ALLOWED_FILE_EXTENSIONS
+        return None
+
     def submission_path_and_context(self):
         """
         Determine the template path and context to use when
@@ -806,8 +832,7 @@ class SubmissionMixin:
             context['team_file_urls'] = self.file_manager.team_file_descriptors(
                 team_id=team_id_for_current_submission
             )
-        if self.file_upload_type == 'custom':
-            context['white_listed_file_types'] = self.white_listed_file_types
+            context['white_listed_file_types'] = self.get_allowed_file_types_or_preset()
 
         if not workflow and problem_closed:
             if reason == 'due':
