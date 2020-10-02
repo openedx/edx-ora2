@@ -216,6 +216,7 @@ OpenAssessment.EditSettingsView.prototype = {
             if (uploadType !== undefined) {
                 sel.val(uploadType);
             }
+            $(sel).trigger('change');
             return sel.val();
         }
 
