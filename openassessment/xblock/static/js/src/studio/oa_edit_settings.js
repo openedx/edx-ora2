@@ -40,10 +40,13 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
 
     function onFileUploadTypeChanged(selectedValue) {
         var el = $('#openassessment_submission_white_listed_file_types', self.element);
+        var extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', self.element);
         if (selectedValue === 'custom') {
             el.prop('disabled', false);
+            self.setHidden(extNote, true);
         } else {
             el.prop('disabled', true);
+            self.setHidden(extNote, false);
         }
     }
 
@@ -287,6 +290,7 @@ OpenAssessment.EditSettingsView.prototype = {
     setHidden: function(selector, hidden) {
         selector.toggleClass('is--hidden', hidden);
         selector.attr('aria-hidden', hidden ? 'true' : 'false');
+        selector.css('display', hidden ? 'none': 'inherit');
     },
 
     /**

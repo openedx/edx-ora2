@@ -58,6 +58,9 @@
                     {% trans "Enter the file extensions, separated by commas, that you want learners to be able to upload. For example: pdf,doc,docx." %}
                 </p>&nbsp;
                 <p class="setting-help message-status error"></p>
+                <p class="setting-help warning-banner extension-warning {% if file_upload_type == "custom" %}is--hidden{% endif %}">
+                    {% trans "To add more file extensions, select Custom File Types and enter the full list of acceptable file extensions you'd like to include." %}
+                </p>
             </div>
         </div>
     </li>
@@ -92,7 +95,7 @@
         {% trans "Specify the number of top scoring responses to display. Valid numbers are 0 to 99. If the number is 0, the Top Responses section does not appear to learners." %}
       </p>
       <br />
-      <p class="setting-help teams-warning {% if teams_enabled %}is--hidden{% endif %}">
+      <p class="setting-help warning-banner teams-warning {% if teams_enabled %}is--hidden{% endif %}">
         <span class="icon fa fa-exclamation-circle" area-hidden="false"></span>
         {% trans "When Teams Enabled is set to true, Top Responses will be disabled." %}
       </p>
