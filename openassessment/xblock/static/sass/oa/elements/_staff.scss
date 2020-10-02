@@ -343,6 +343,10 @@
     border: 1px solid #ffd875;
     padding: .75rem 1.25rem;
 
+    &.is--hidden {
+      display: none;
+    }
+
     span.icon.fa-exclamation-circle {
       font-size: 1.5rem;
       color: #ffd875;

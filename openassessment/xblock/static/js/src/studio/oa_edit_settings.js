@@ -303,7 +303,6 @@ OpenAssessment.EditSettingsView.prototype = {
     setHidden: function(selector, hidden) {
         selector.toggleClass('is--hidden', hidden);
         selector.attr('aria-hidden', hidden ? 'true' : 'false');
-        selector.css('display', hidden ? 'none': 'inherit');
     },
 
     /**
