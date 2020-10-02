@@ -32,11 +32,20 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
 
     new OpenAssessment.SelectControl(
         $('#openassessment_submission_upload_selector', this.element),
-        {'custom': $('#openassessment_submission_white_listed_file_types_wrapper', this.element)},
+        onFileUploadTypeChanged,
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
     ).install();
+
+    function onFileUploadTypeChanged(selectedValue) {
+        var el = $('#openassessment_submission_white_listed_file_types', self.element);
+        if (selectedValue === 'custom') {
+            el.prop('disabled', false);
+        } else {
+            el.prop('disabled', true);
+        }
+    }
 
     function onTeamsEnabledChange(selectedValue) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
