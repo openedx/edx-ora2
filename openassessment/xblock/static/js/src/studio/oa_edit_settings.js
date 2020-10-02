@@ -44,7 +44,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
      */
     function onFileUploadTypeChanged(selectedValue) {
         var el = $('#openassessment_submission_white_listed_file_types', self.element);
-        var extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-57', self.element);
+        var extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', self.element);
 
         if (selectedValue === 'custom') {
             // Enable the "allowed file types" field and hide the note banner
@@ -220,6 +220,7 @@ OpenAssessment.EditSettingsView.prototype = {
             return sel.val();
         }
 
+        $(sel).trigger('change');
         return '';
     },
 
