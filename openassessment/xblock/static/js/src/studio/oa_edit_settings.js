@@ -220,7 +220,6 @@ OpenAssessment.EditSettingsView.prototype = {
             return sel.val();
         }
 
-        $(sel).trigger('change');
         return '';
     },
 
