@@ -161,12 +161,12 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Image/PDF uploads populate with the correct extensions, are disabled, and show a note about adding extensions
         view.fileUploadType('image');
-        expect(view.fileTypeWhiteList()).toBe('png,jpg,gif');
+        expect(view.fileTypeWhiteList()).toBe('png, jpg, gif');
         expect($(fileTypesSelector).prop('disabled')).toBe(true);
         expect(view.isHidden($(extensionBanner))).toBe(false);
 
         view.fileUploadType('image-and-pdf');
-        expect(view.fileTypeWhiteList()).toBe('pdf,md');
+        expect(view.fileTypeWhiteList()).toBe('pdf, md');
         expect($(fileTypesSelector).prop('disabled')).toBe(true);
         expect(view.isHidden($(extensionBanner))).toBe(false);
     });

@@ -53,9 +53,9 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         } else {
             // Fill, but disable, the "allowed file types" field and show the note banner
             if (selectedValue === 'image') {
-                el.val(data.ALLOWED_IMAGE_EXTENSIONS);
+                el.val(data.ALLOWED_IMAGE_EXTENSIONS.join(', '));
             } else if (selectedValue === 'pdf-and-image') {
-                el.val(data.ALLOWED_FILE_EXTENSIONS);
+                el.val(data.ALLOWED_FILE_EXTENSIONS.join(', '));
             }
 
             el.prop('disabled', true);
