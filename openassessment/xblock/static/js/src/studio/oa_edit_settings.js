@@ -44,7 +44,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
      */
     function onFileUploadTypeChanged(selectedValue) {
         var el = $('#openassessment_submission_white_listed_file_types', self.element);
-        var extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', self.element);
+        var extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-57', self.element);
 
         if (selectedValue === 'custom') {
             // Enable the "allowed file types" field and hide the note banner
@@ -52,9 +52,9 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             self.setHidden(extNote, true);
         } else {
             // Fill, but disable, the "allowed file types" field and show the note banner
-            if (selectedValue == 'image') {
+            if (selectedValue === 'image') {
                 el.val(data.ALLOWED_IMAGE_EXTENSIONS);
-            } else if (selectedValue == 'pdf-and-image') {
+            } else if (selectedValue === 'pdf-and-image') {
                 el.val(data.ALLOWED_FILE_EXTENSIONS);
             }
 
