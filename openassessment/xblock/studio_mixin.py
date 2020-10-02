@@ -90,6 +90,8 @@ class StudioMixin:
             js_bytes = pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js")
             fragment.add_javascript(js_bytes.decode('utf-8'))
         js_context_dict = {
+            "ALLOWED_IMAGE_EXTENSIONS": self.ALLOWED_IMAGE_EXTENSIONS,
+            "ALLOWED_FILE_EXTENSIONS": self.ALLOWED_FILE_EXTENSIONS,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
         }
         fragment.initialize_js('OpenAssessmentEditor', js_context_dict)
