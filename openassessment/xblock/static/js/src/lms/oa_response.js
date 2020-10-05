@@ -591,14 +591,27 @@ OpenAssessment.ResponseView.prototype = {
         this.filesType = uploadType;
         this.filesUploaded = false;
 
-        var ext = null;
-        var fileType = null;
         var errorCheckerTriggered = false;
 
-        for (var i = 0; i < files.length; i++) {
-            ext = files[i].name.split('.').pop().toLowerCase();
-            fileType = files[i].type;
+        var isUploadSupported = function(file, uploadType) {
+            var ext = file.name.split('.').pop().toLowerCase();
+            var fileType = file.type;
 
+            // Check upload type/extension matches allowed types
+            if (uploadType === 'image' && this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1) {
+                return false;
+            } else if (uploadType === 'pdf-and-image' && this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1) {
+                return false;
+            } else if (uploadType === 'custom' && this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1) {
+                return false;
+            } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }.bind(this);
+
+        for (var i = 0; i < files.length; i++) {
             if (files[i].size > this.MAX_FILE_SIZE) {
                 this.baseView.toggleActionError(
                     'upload',
@@ -609,32 +622,15 @@ OpenAssessment.ResponseView.prototype = {
                 );
                 errorCheckerTriggered = true;
                 break;
-            } else if (uploadType === 'image' && this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1) {
+            }
+
+            if (!isUploadSupported(files[i], uploadType)) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext('You can upload files with these file types: ') + 'JPG, PNG or GIF'
-                );
-                errorCheckerTriggered = true;
-                break;
-            } else if (uploadType === 'pdf-and-image' && this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1) {
-                this.baseView.toggleActionError(
-                    'upload',
-                    gettext('You can upload files with these file types: ') + 'JPG, PNG, GIF or PDF'
-                );
-                errorCheckerTriggered = true;
-                break;
-            } else if (uploadType === 'custom' && this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1) {
-                this.baseView.toggleActionError(
-                    'upload',
-                    gettext('You can upload files with these file types: ') +
-                    this.data.FILE_TYPE_WHITE_LIST.join(', ')
-                );
-                errorCheckerTriggered = true;
-                break;
-            } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
-                this.baseView.toggleActionError(
-                    'upload',
-                    gettext('File type is not allowed.')
+                    gettext('File upload failed: unsupported file type. ' +
+                        'Only the supported file types can be uploaded. ' +
+                        'If you have questions, please reach out to the course team.'
+                    )
                 );
                 errorCheckerTriggered = true;
                 break;

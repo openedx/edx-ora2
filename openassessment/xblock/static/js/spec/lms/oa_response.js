@@ -23,7 +23,10 @@ describe("OpenAssessment.ResponseView", function() {
     var FILE_TYPE_WHITE_LIST = ['pdf', 'doc', 'docx', 'html'];
     var FILE_EXT_BLACK_LIST = ['exe', 'msi', 'app', 'dmg'];
     var MAXIMUM_FILE_UPLOAD_COUNT = 20;
-    var COURSE_ID = 'course_id'
+    var COURSE_ID = 'course_id';
+
+    var BAD_FILETYPE_MESSAGE = 'File upload failed: unsupported file type. ' +
+        'Only the supported file types can be uploaded. If you have questions, please reach out to the course team.';
 
     var StubServer = function() {
 
@@ -554,7 +557,7 @@ describe("OpenAssessment.ResponseView", function() {
         var files = [{type: 'image/jpg', size: 1024, name: 'picture.exe', data: ''}];
         view.prepareUpload(files, 'image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith(
-            'upload', 'You can upload files with these file types: JPG, PNG or GIF'
+            'upload', BAD_FILETYPE_MESSAGE
         );
     });
 
@@ -563,7 +566,7 @@ describe("OpenAssessment.ResponseView", function() {
         var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
         view.prepareUpload(files, 'pdf-and-image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith(
-            'upload', 'You can upload files with these file types: JPG, PNG, GIF or PDF'
+            'upload', BAD_FILETYPE_MESSAGE
         );
     });
 
@@ -572,7 +575,7 @@ describe("OpenAssessment.ResponseView", function() {
         var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
         view.prepareUpload(files, 'custom');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith(
-            'upload', 'You can upload files with these file types: pdf, doc, docx, html'
+            'upload', BAD_FILETYPE_MESSAGE
         );
     });
 
@@ -582,7 +585,7 @@ describe("OpenAssessment.ResponseView", function() {
         var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
         view.prepareUpload(files, 'custom');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            'File type is not allowed.');
+            BAD_FILETYPE_MESSAGE);
     });
 
     it("selects one small and one large file", function() {
@@ -601,7 +604,7 @@ describe("OpenAssessment.ResponseView", function() {
                      {type: 'image/jpeg', size: 1024, name: 'small-picture-2.jpg', data: ''}];
         view.prepareUpload(files, 'image');
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            'You can upload files with these file types: JPG, PNG or GIF');
+            BAD_FILETYPE_MESSAGE);
     });
 
     it("uploads an image using a one-time URL", function() {
