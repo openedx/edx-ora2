@@ -418,7 +418,7 @@ class SubmissionMixin:
                     "Only the supported file types can be uploaded."
                     "If you have questions, please reach out to the course team."
                 )}
-        except:
+        except KeyError:
             return {'success': False, 'msg': self._("There was an error uploading your file.")}
 
         # Attempt to upload
