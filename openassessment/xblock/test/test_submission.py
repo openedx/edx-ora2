@@ -985,7 +985,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'user_language': None,
                 'prompts_type': 'text',
                 'enable_delete_files': True,
-                'white_listed_file_types': ['pdf', 'gif', 'jpg', 'jpgeg', 'jfif', 'pjpeg', 'pjp', 'png']
+                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png']
             }
         )
 
@@ -1581,7 +1581,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [],
                 'team_file_urls': [],
-                'white_listed_file_types': ['pdf', 'gif', 'jpg', 'jpgeg', 'jfif', 'pjpeg', 'pjp', 'png'],
+                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png'],
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ("", "")
