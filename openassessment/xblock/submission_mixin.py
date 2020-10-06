@@ -3,6 +3,7 @@
 
 import json
 import logging
+import os
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
@@ -411,33 +412,50 @@ class SubmissionMixin:
 
         """
         if 'contentType' not in data or 'filename' not in data:
-            return {'success': False, 'msg': self._(u"There was an error uploading your file.")}
+            return {'success': False, 'msg': self._("There was an error uploading your file.")}
+
+        _, file_ext = os.path.splitext(data['filename'])
+        file_ext = file_ext.strip('.') if file_ext else None
         content_type = data['contentType']
-        file_name = data['filename']
-        file_name_parts = file_name.split('.')
 
+        # Validate that there are no data issues and file type is allowed
+        if not self.is_supported_upload_type(file_ext, content_type):
+            return {'success': False, 'msg': self._(
+                "File upload failed: unsupported file type."
+                "Only the supported file types can be uploaded."
+                "If you have questions, please reach out to the course team."
+            )}
+
+        # Attempt to upload
         file_num = int(data.get('filenum', 0))
-
-        file_ext = file_name_parts[-1] if len(file_name_parts) > 1 else None
-        if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
-            return {'success': False, 'msg': self._(u"Content type must be GIF, PNG or JPG.")}
-
-        if self.file_upload_type == 'pdf-and-image' and content_type not in self.ALLOWED_FILE_MIME_TYPES:
-            return {'success': False, 'msg': self._(u"Content type must be PDF, GIF, PNG or JPG.")}
-
-        if self.file_upload_type == 'custom' and file_ext.lower() not in self.white_listed_file_types:
-            return {'success': False, 'msg': self._(u"File type must be one of the following types: {}").format(
-                ', '.join(self.white_listed_file_types))}
-
-        if file_ext in self.FILE_EXT_BLACK_LIST:
-            return {'success': False, 'msg': self._(u"File type is not allowed.")}
         try:
             key = self._get_student_item_key(file_num)
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
-            logger.exception(u"FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
-            return {'success': False, 'msg': self._(u"Error retrieving upload URL.")}
+            logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
+            return {'success': False, 'msg': self._("Error retrieving upload URL.")}
+
+    def is_supported_upload_type(self, file_ext, content_type):
+        """
+        Determine if the uploaded file type/extension is allowed for the configured file upload configuration
+
+        Returns:
+            True/False if file type is supported/unsupported
+        """
+        if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
+            return False
+
+        elif self.file_upload_type == 'pdf-and-image' and content_type not in self.ALLOWED_FILE_MIME_TYPES:
+            return False
+
+        elif self.file_upload_type == 'custom' and file_ext.lower() not in self.white_listed_file_types:
+            return False
+
+        elif file_ext in self.FILE_EXT_BLACK_LIST:
+            return False
+
+        return True
 
     @XBlock.json_handler
     def download_url(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -832,7 +850,7 @@ class SubmissionMixin:
             context['team_file_urls'] = self.file_manager.team_file_descriptors(
                 team_id=team_id_for_current_submission
             )
-            context['white_listed_file_types'] = self.get_allowed_file_types_or_preset()
+            context['white_listed_file_types'] = ['.' + ext for ext in self.get_allowed_file_types_or_preset()]
 
         if not workflow and problem_closed:
             if reason == 'due':
