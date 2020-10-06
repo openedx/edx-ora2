@@ -19,10 +19,14 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         $('#openassessment_submission_file_upload_response', this.element),
         function(selectedValue) {
             var el = $('#openassessment_submission_file_upload_type_wrapper', self.element);
+            var uploadType = $('#openassessment_submission_upload_selector', self.element).val();
+
             if (!selectedValue) {
                 el.addClass('is--hidden');
             } else {
                 el.removeClass('is--hidden');
+                // trigger refresh of file upload type to load extension list
+                onFileUploadTypeChanged(uploadType);
             }
         },
         new OpenAssessment.Notifier([
