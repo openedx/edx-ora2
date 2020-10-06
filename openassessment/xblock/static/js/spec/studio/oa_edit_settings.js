@@ -53,6 +53,8 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // mock data from backend
         data = {
+            ALLOWED_IMAGE_EXTENSIONS: ['png', 'jpg', 'gif'],
+            ALLOWED_FILE_EXTENSIONS: ['pdf', 'md'],
             FILE_EXT_BLACK_LIST: ['exe', 'app'],
         };
 
@@ -135,6 +137,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // expect white list field is not empty when upload type is custom
         view.fileUploadType("custom");
+        view.fileTypeWhiteList('');
         expect(view.validate()).toBe(false);
         expect(view.validationErrors()).toContain('File types can not be empty.');
 
@@ -143,6 +146,29 @@ describe("OpenAssessment.EditSettingsView", function() {
         view.fileTypeWhiteList("pdf, EXE, .app");
         expect(view.validate()).toBe(false);
         expect(view.validationErrors()).toContain('The following file types are not allowed: exe,app');
+    });
+
+    it('shows and enables/disables extension list for preset file upload types', function() {
+        var fileTypesSelector = '#openassessment_submission_white_listed_file_types',
+            extensionBanner = '#openassessment_submission_white_listed_file_types_wrapper .extension-warning';
+
+        view.fileUploadResponseNecessity('optional', true);
+
+        // Custom uploads allow for entering extensions, and hides the note about custom uploads
+        view.fileUploadType('custom');
+        expect($(fileTypesSelector).prop('disabled')).toBe(false);
+        expect(view.isHidden($(extensionBanner))).toBe(true);
+
+        // Image/PDF uploads populate with the correct extensions, are disabled, and show a note about adding extensions
+        view.fileUploadType('image');
+        expect(view.fileTypeWhiteList()).toBe('png, jpg, gif');
+        expect($(fileTypesSelector).prop('disabled')).toBe(true);
+        expect(view.isHidden($(extensionBanner))).toBe(false);
+
+        view.fileUploadType('image-and-pdf');
+        expect(view.fileTypeWhiteList()).toBe('pdf, md');
+        expect($(fileTypesSelector).prop('disabled')).toBe(true);
+        expect(view.isHidden($(extensionBanner))).toBe(false);
     });
 
     it("enables the teamset selector when teams are enabled, and disabled it otherwise", function() {
