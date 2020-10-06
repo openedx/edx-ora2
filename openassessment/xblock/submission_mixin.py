@@ -3,6 +3,7 @@
 
 import json
 import logging
+import os
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
@@ -410,20 +411,23 @@ class SubmissionMixin:
             A URL to be used to upload content associated with this submission.
 
         """
-        # Validate that there are no data issues and file type is allowed
-        try:
-            if not self.is_supported_upload_type(data):
-                return {'success': False, 'msg': self._(
-                    "File upload failed: unsupported file type."
-                    "Only the supported file types can be uploaded."
-                    "If you have questions, please reach out to the course team."
-                )}
-        except KeyError:
+        if 'contentType' not in data or 'filename' not in data:
             return {'success': False, 'msg': self._("There was an error uploading your file.")}
+
+        _, file_ext = os.path.splitext(data['filename'])
+        file_ext = file_ext.strip('.') if file_ext else None
+        content_type = data['contentType']
+
+        # Validate that there are no data issues and file type is allowed
+        if not self.is_supported_upload_type(file_ext, content_type):
+            return {'success': False, 'msg': self._(
+                "File upload failed: unsupported file type."
+                "Only the supported file types can be uploaded."
+                "If you have questions, please reach out to the course team."
+            )}
 
         # Attempt to upload
         file_num = int(data.get('filenum', 0))
-        content_type = data['contentType']
         try:
             key = self._get_student_item_key(file_num)
             url = file_upload_api.get_upload_url(key, content_type)
@@ -432,24 +436,13 @@ class SubmissionMixin:
             logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
             return {'success': False, 'msg': self._("Error retrieving upload URL.")}
 
-    def is_supported_upload_type(self, data):
+    def is_supported_upload_type(self, file_ext, content_type):
         """
-        Determine if the uploaded file type is allowed for our upload configuration
+        Determine if the uploaded file type/extension is allowed for the configured file upload configuration
 
         Returns:
             True/False if file type is supported/unsupported
-
-        Raises:
-            KeyError when upload data is missing or incomplete
         """
-        if 'contentType' not in data or 'filename' not in data:
-            raise KeyError()
-
-        content_type = data['contentType']
-        file_name = data['filename']
-        file_name_parts = file_name.split('.')
-        file_ext = file_name_parts[-1] if len(file_name_parts) > 1 else None
-
         if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
             return False
 
