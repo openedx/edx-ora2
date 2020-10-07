@@ -86,18 +86,32 @@ class LeaderboardMixin:
             if 'file_keys' in score['content']:
                 file_keys = score['content'].get('file_keys', [])
                 descriptions = score['content'].get('files_descriptions', [])
-                file_names = score['content'].get('files_name', [])
+                file_names = score['content'].get('files_names', [])
                 for idx, key in enumerate(file_keys):
                     file_download_url = self._get_file_download_url(key)
                     if file_download_url:
                         file_description = descriptions[idx] if idx < len(descriptions) else ''
                         file_name = file_names[idx] if idx < len(file_names) else ''
-                        score['files'].append((file_download_url, file_description, file_name, False))
+                        score['files'].append(
+                            file_upload_api.FileDescriptor(
+                                download_url=file_download_url,
+                                description=file_description,
+                                name=file_name,
+                                show_delete_button=False
+                            )._asdict()
+                        )
 
             elif 'file_key' in score['content']:
                 file_download_url = self._get_file_download_url(score['content']['file_key'])
                 if file_download_url:
-                    score['files'].append((file_download_url, '', '', False))
+                    score['files'].append(
+                        file_upload_api.FileDescriptor(
+                            download_url=file_download_url,
+                            description='',
+                            name='',
+                            show_delete_button=False
+                        )._asdict()
+                    )
             if 'text' in score['content'] or 'parts' in score['content']:
                 submission = {'answer': score.pop('content')}
                 score['submission'] = create_submission_dict(submission, self.prompts)

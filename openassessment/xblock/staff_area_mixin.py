@@ -12,8 +12,9 @@ import logging
 from submissions.errors import SubmissionNotFoundError
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
+from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict, list_to_conversational_format
+from openassessment.xblock.data_conversion import create_submission_dict
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 
 from .user_data import get_user_preferences
@@ -218,27 +219,10 @@ class StaffAreaMixin:
                     submission_context = self.get_student_submission_context(
                         self.get_username(anonymous_student_id), submission
                     )
-                    # Add team info to context
-                    submission_context['teams_enabled'] = self.teams_enabled
-                    if self.teams_enabled:
-                        user = self.get_real_user(anonymous_student_id)
-
-                        if not user:
-                            logger.error(
-                                '{}: User lookuip for anonymous_user_id {} failed'.format(
-                                    self.location,
-                                    anonymous_student_id
-                                )
-                            )
-                            raise ObjectDoesNotExist()
-
-                        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
-
-                        submission_context['team_name'] = team.name
-                        submission_context['team_usernames'] = list_to_conversational_format(
-                            [user.username for user in team.users.all()]
+                    if self.is_team_assignment():
+                        self.add_team_submission_context(
+                            submission_context, individual_submission_uuid=submission['uuid'], transform_usernames=True
                         )
-
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
                 return self.render_error(self._(u"Error loading the checked out learner response."))
@@ -289,6 +273,7 @@ class StaffAreaMixin:
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
+            'teams_enabled': self.teams_enabled,
             "is_team_assignment": self.is_team_assignment(),
         }
 
@@ -331,7 +316,6 @@ class StaffAreaMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
-
         anonymous_user_id = None
         student_item = None
         submissions = None
@@ -361,11 +345,16 @@ class StaffAreaMixin:
         # Add team info to context
         context['team_name'] = None
         if anonymous_user_id and self.is_team_assignment():
-            try:
-                context['team_name'] = getattr(self.get_team_for_anonymous_user(anonymous_user_id), 'name', None)
-            except ObjectDoesNotExist:
-                # A student outside of the course will not exist and is valid
-                pass
+            if submission_uuid:
+                self.add_team_submission_context(
+                    context, individual_submission_uuid=submission_uuid
+                )
+            else:
+                try:
+                    context['team_name'] = getattr(self.get_team_for_anonymous_user(anonymous_user_id), 'name', None)
+                except ObjectDoesNotExist:
+                    # A student outside of the course will not exist and is valid
+                    pass
 
         path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
@@ -429,7 +418,7 @@ class StaffAreaMixin:
                 is_staff=True,
             )
 
-        workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
+        workflow_cancellation = self.get_workflow_cancellation_info(workflow['submission_uuid'])
 
         context.update({
             'self_assessment': [self_assessment] if self_assessment else None,
@@ -473,6 +462,11 @@ class StaffAreaMixin:
                 # Remove the submission from grading pools
                 self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
 
+                # Delete files from the backend
+                if 'file_keys' in sub['answer']:
+                    for key in sub['answer']['file_keys']:
+                        remove_file(key)
+
                 # Tell the submissions API to orphan the submission to prevent it from being accessed
                 submission_api.reset_score(
                     user_id,
@@ -511,9 +505,15 @@ class StaffAreaMixin:
             "Student and team state cleared",
             requesting_user_id
         )
-        # Tell the submissions API to orphan the submissions to prevent them from being accessed
+
         from submissions import team_api as team_submissions_api
-        team_submissions_api.reset_scores(team_submission_uuid)
+
+        # Clean up shared files for the team
+        team_id = team_submissions_api.get_team_submission(team_submission_uuid).get('team_id', None)
+        delete_shared_files_for_team(course_id, item_id, team_id)
+
+        # Tell the submissions API to orphan the submissions to prevent them from being accessed
+        team_submissions_api.reset_scores(team_submission_uuid, clear_state=True)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)

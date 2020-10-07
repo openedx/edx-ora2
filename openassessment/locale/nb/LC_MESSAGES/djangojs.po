@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 14:07-0400\n"
+"POT-Creation-Date: 2020-09-16 13:37-0400\n"
 "PO-Revision-Date: 2020-05-06 19:58+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/open-edx/edx-platform/language/nb/)\n"
@@ -226,94 +226,94 @@ msgid ""
 msgstr "Dersom du forlater denne siden uten å levere din hverandrevurdering, vil det arbeidet du har gjort gå tapt."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:310
+#: openassessment/xblock/static/js/src/lms/oa_response.js:318
 msgid "Your file "
 msgstr "Din fil"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:334
+#: openassessment/xblock/static/js/src/lms/oa_response.js:342
 msgid "Status of Your Response"
 msgstr "Status på ditt svar"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:408
+#: openassessment/xblock/static/js/src/lms/oa_response.js:416
 msgid "This response has not been saved."
 msgstr "Dette svaret har ikke blitt lagret."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:413
+#: openassessment/xblock/static/js/src/lms/oa_response.js:421
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "Hvis du forlater denne siden uten å lagre eller sende inn svaret ditt, vil alt arbeid du har gjort på svaret ditt gå tapt."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:431
+#: openassessment/xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving..."
 msgstr "Lagrer..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:453
+#: openassessment/xblock/static/js/src/lms/oa_response.js:461
 msgid "This response has been saved but not submitted."
 msgstr "Svaret har blitt lagret men er ikke innlevert."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:458
+#: openassessment/xblock/static/js/src/lms/oa_response.js:466
 msgid "Error"
 msgstr "Feil"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:484
+#: openassessment/xblock/static/js/src/lms/oa_response.js:492
 msgid "Do you want to upload your file before submitting?"
 msgstr "Vil du laste opp filen din før du sender inn?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:560
+#: openassessment/xblock/static/js/src/lms/oa_response.js:568
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Du er i ferd med å levere ditt svar på denne oppgaven. Etter at du leverer svaret kan du ikke endre det eller levere et nytt svar."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:597
+#: openassessment/xblock/static/js/src/lms/oa_response.js:605
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:607
-#: openassessment/xblock/static/js/src/lms/oa_response.js:614
-#: openassessment/xblock/static/js/src/lms/oa_response.js:621
+#: openassessment/xblock/static/js/src/lms/oa_response.js:615
+#: openassessment/xblock/static/js/src/lms/oa_response.js:622
+#: openassessment/xblock/static/js/src/lms/oa_response.js:629
 msgid "You can upload files with these file types: "
 msgstr "Du kan laste opp filer med disse filtypene:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:629
+#: openassessment/xblock/static/js/src/lms/oa_response.js:637
 msgid "File type is not allowed."
 msgstr "Filtypen er ikke tillatt."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:637
+#: openassessment/xblock/static/js/src/lms/oa_response.js:645
 msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:683
-#: openassessment/xblock/static/js/src/lms/oa_response.js:689
+#: openassessment/xblock/static/js/src/lms/oa_response.js:691
+#: openassessment/xblock/static/js/src/lms/oa_response.js:697
 msgid "Describe "
 msgstr "Beskriv"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:683
+#: openassessment/xblock/static/js/src/lms/oa_response.js:691
 msgid "(required):"
 msgstr "(nødvendig):"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:703
+#: openassessment/xblock/static/js/src/lms/oa_response.js:711
 msgid "Thumbnail view of "
 msgstr "Miniatyrbilde av"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:803
+#: openassessment/xblock/static/js/src/lms/oa_response.js:811
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
@@ -372,49 +372,49 @@ msgid "Not Selected"
 msgstr "Ikke valgt"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:155
 msgid "Couldn't Save This Assignment"
 msgstr "Kunne ikke lagre denne oppgaven"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:156
 msgid "Please correct the outlined fields."
 msgstr "Vennligst rett opp de uthevede feltene."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:178
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:188
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
 msgstr "Dette problemet har allerede blitt utgitt. Enhver endringer vil kun gjelde for kommende vurderinger."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:392
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:410
 msgid "Paragraph"
 msgstr "Avsnitt"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:393
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:411
 msgid "Preformatted"
 msgstr "Forhåndsformatert"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:394
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:412
 msgid "Heading 3"
 msgstr "Overskrift 3"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:395
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:413
 msgid "Heading 4"
 msgstr "Overskrift 4"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:396
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:414
 msgid "Heading 5"
 msgstr "Overskrift 5"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:397
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:415
 msgid "Heading 6"
 msgstr "Overskrift 6"
 
@@ -476,11 +476,11 @@ msgid ""
 msgstr "Endringer i trinn som ikke er valgt som en del av oppgaven, blir ikke lagret."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:99
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:102
 msgid "File types can not be empty."
 msgstr "Filtyper kan ikke være tomme."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:109
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:112
 msgid "The following file types are not allowed: "
 msgstr "Følgende filtyper er ikke tillatt:"

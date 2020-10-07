@@ -139,6 +139,9 @@ class TestSerializeContent(TestCase):
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
         self.oa_block.group_access = json.loads(data.get('group_access', "{}"))
 
+        self.oa_block.teams_enabled = data.get('teams_enabled', None)
+        self.oa_block.selected_teamset_id = data.get('selected_teamset_id', None)
+
     @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):
         self._configure_xblock(data)

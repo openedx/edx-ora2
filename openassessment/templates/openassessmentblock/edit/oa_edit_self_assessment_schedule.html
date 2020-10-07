@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+<li id="self_assessment_schedule_editor" class="{% if not assessments.self_assessment %} is--hidden {% endif %}">
+    <p class="openassessment_schedule_setting_header">{% trans "Self Assessment Deadlines" %}</p>
+
+    <ul class="list-input settings-list">
+        <li class="field comp-setting-entry">
+            <div class="wrapper-comp-setting">
+                <label for="self_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
+                <input
+                    id="self_assessment_start_date"
+                    type="text"
+                    class="input setting-input"
+                    value="{{ assessments.self_assessment.start|utc|date:"Y-m-d" }}"
+                >
+            </div>
+            <div class="wrapper-comp-setting">
+                <label for="self_assessment_start_time" class="setting-label">{% trans "Start Time" %}</label>
+                <input
+                    id="self_assessment_start_time"
+                    type="text"
+                    class="input setting-input"
+                    value="{{ assessments.self_assessment.start|utc|date:"H:i" }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "The date and time when learners can begin assessing their responses." %}</p>
+        </li>
+        <li class="field comp-setting-entry">
+            <div class="wrapper-comp-setting">
+                <label for="self_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
+                <input
+                    id="self_assessment_due_date"
+                    type="text"
+                    class="input setting-input"
+                    value="{{ assessments.self_assessment.due|utc|date:"Y-m-d" }}"
+                >
+            </div>
+            <div class="wrapper-comp-setting">
+                <label for="self_assessment_due_time" class="setting-label">{% trans "Due Time" %}</label>
+                <input
+                    id="self_assessment_due_time"
+                    type="text"
+                    class="input setting-input"
+                    value="{{ assessments.self_assessment.due|utc|date:"H:i" }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "The date and time when all self assessments must be complete." %}</p>
+        </li>
+    </ul>
+</li>
+{% endspaceless %}

@@ -524,9 +524,6 @@ class OpenAssessmentBlock(MessageMixin,
         }
         template = get_template("openassessmentblock/oa_base.html")
 
-        if self.teams_enabled and not self.valid_access_to_team_assessment():
-            context_dict['rubric_assessments'] = []
-
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):
@@ -719,7 +716,7 @@ class OpenAssessmentBlock(MessageMixin,
 
         ui_models.append(UI_MODELS["grade"])
 
-        if self.leaderboard_show > 0:
+        if self.leaderboard_show > 0 and not self.teams_enabled:
             ui_models.append(UI_MODELS["leaderboard"])
 
         return ui_models
@@ -820,7 +817,8 @@ class OpenAssessmentBlock(MessageMixin,
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']
-
+        block.teams_enabled = config['teams_enabled']
+        block.selected_teamset_id = config['selected_teamset_id']
         return block
 
     @property

@@ -4,10 +4,10 @@ import mock
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.utils import override_settings
-from moto import mock_s3_deprecated
+from moto import mock_s3
 
 from openassessment.assessment.models.base import SharedFileUpload
-from openassessment.fileupload.api import get_student_file_key, FileUpload, FileUploadManager
+from openassessment.fileupload.api import FileUploadManager
 
 
 class MockBlock:
@@ -130,7 +130,7 @@ class FileUploadManagerTests(TestCase):
             upload_dict('name2', 'desc2', 200),
             upload_dict('name3', 'desc3', 300),
         )
-        files = self.team_manager.get_uploads()
+        files = self.team_manager.get_uploads(team_id=self.team_id)
         self.assertEqual(3, len(files))
         self.assert_file_upload(files[0], 'name1', 'desc1', 100)
         self.assert_file_upload(files[1], 'name2', 'desc2', 200)
@@ -146,7 +146,7 @@ class FileUploadManagerTests(TestCase):
         self.team_manager.append_uploads(
             upload_dict('name4', 'desc4', 400)
         )
-        files = self.team_manager.get_uploads()
+        files = self.team_manager.get_uploads(team_id=self.team_id)
         self.assertEqual(4, len(files))
         self.assert_file_upload(files[3], 'name4', 'desc4', 400)
         shared_uploads = self._get_shared_uploads(self.team_manager)
@@ -156,7 +156,7 @@ class FileUploadManagerTests(TestCase):
             self.assertEqual(shared_upload.owner_id, self.team_manager.block.student_id)
 
         self.team_manager.delete_upload(2)
-        files = self.team_manager.get_uploads()
+        files = self.team_manager.get_uploads(team_id=self.team_id)
         self.assertEqual(3, len(files))
         self.assert_file_upload(files[0], 'name1', 'desc1', 100)
         self.assert_file_upload(files[1], 'name2', 'desc2', 200)
@@ -185,12 +185,12 @@ class FileUploadManagerTests(TestCase):
             mock_default_storage.exists.return_value = True
             other_users_file_manager = FileUploadManager(other_users_block)
 
-            actual_descriptors = other_users_file_manager.team_file_descriptor_tuples()
+            actual_descriptors = other_users_file_manager.team_file_descriptors(team_id=self.team_id)
             self.assertEqual(2, len(actual_descriptors))
             for descriptor in actual_descriptors:
-                self.assertEqual(mock_default_storage.url.return_value, descriptor.download_url)
+                self.assertEqual(mock_default_storage.url.return_value, descriptor['download_url'])
 
-            actual_file_uploads = other_users_file_manager.get_team_uploads()
+            actual_file_uploads = other_users_file_manager.get_team_uploads(team_id=self.team_id)
             self.assertEqual(2, len(actual_file_uploads))
             for index, upload in enumerate(actual_file_uploads):
                 self.assertEqual(index, upload.index)
@@ -199,7 +199,7 @@ class FileUploadManagerTests(TestCase):
         self.team_manager.append_uploads(
             upload_dict('name1', 'desc1', 100),
         )
-        uploaded_file = self.team_manager.get_uploads()[0]
+        uploaded_file = self.team_manager.get_uploads(team_id=self.team_id)[0]
 
         with self.assertRaises(IntegrityError):
             self.team_manager.create_shared_upload(uploaded_file)

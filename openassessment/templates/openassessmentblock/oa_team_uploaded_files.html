@@ -10,25 +10,25 @@
         {% endif %}
 
         <div class="submission__answer__files">
-        {% for file_url, file_description, file_name, owner_username in team_file_urls %}
-            <div class="submission__answer__team__file__block submission__answer__team__file__block__{{ forloop.counter0 }}" {% if not file_url %} deleted {% endif %}>
-            {% if file_url %}
+        {% for file in team_file_urls %}
+            <div class="submission__answer__team__file__block submission__answer__team__file__block__{{ forloop.counter0 }}" {% if not file.download_url %} deleted {% endif %}>
+            {% if file.download_url %}
                 {% if file_upload_type == "image" %}
-                    {% if file_description %}
-                    <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}">{{ file_description }}:</div>
+                    {% if file.description %}
+                    <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}">{{ file.description }}:</div>
                     {% endif %}
-                    <div><img class="submission__answer__file submission--image" src="{{ file_url }}"
+                    <div><img class="submission__answer__file submission--image" src="{{ file.download_url }}"
                             aria-labelledby="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}" /></div>
                 {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
-                    <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
-                        {% if file_description %}
-                        {{ file_description }} ( {{file_name}} )
+                    <a href="{{ file.download_url }}" class="submission__answer__file submission--file" target="_blank">
+                        {% if file.description %}
+                        {{ file.description }} ( {{file.name}} )
                         {% else %}
                         {% trans "View the files associated with this submission:" %} #{{ forloop.counter }}
                         {% endif %}
                     </a>
                 {% endif %}
-                [{% trans "Uploaded by" %} <strong class="emphasis">{{ owner_username }}</strong>]
+                [{% trans "Uploaded by" %} <strong class="emphasis">{{ file.uploaded_by }}</strong>]
             {% endif %}
             </div>
         {% endfor %}

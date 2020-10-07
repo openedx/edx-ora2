@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 14:07-0400\n"
-"PO-Revision-Date: 2020-07-10 18:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-09-16 13:36-0400\n"
+"PO-Revision-Date: 2020-09-18 06:16+0000\n"
+"Last-Translator: YAHAYA MWAVURIZI <translations_1@camara.ie>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,115 +24,99 @@ msgstr ""
 "Language: sw_KE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: openassessment/assessment/api/student_training.py:180
+#: openassessment/assessment/api/student_training.py:178
 msgid "Could not parse serialized rubric"
 msgstr "Haikuweza kuchanganua maelezo ya mtiririko"
 
-#: openassessment/assessment/api/student_training.py:192
+#: openassessment/assessment/api/student_training.py:190
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
 msgstr "Kama mazoezi yako ni pamoja na hatua za mafundisho ya mwanafunzi, maelezo lazima yawe na angalau kigezo kimoja, na kigezo lazima kiwe na angalau chaguo  moja la hiari ."
 
-#: openassessment/assessment/api/student_training.py:204
+#: openassessment/assessment/api/student_training.py:202
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "Mfano {example_number} ina kosa la uthibitishaji {error}"
 
-#: openassessment/assessment/api/student_training.py:218
+#: openassessment/assessment/api/student_training.py:216
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "Mfano {example_number} ina chaguo lisilo halali kwa \"{criterion_name}\": \"{option_name}\""
 
-#: openassessment/assessment/api/student_training.py:228
+#: openassessment/assessment/api/student_training.py:226
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "Mfano {example_number} una chaguo la ziada kwa \"{criterion_name}\""
 
-#: openassessment/assessment/api/student_training.py:241
+#: openassessment/assessment/api/student_training.py:239
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "Mfano {example_number} inakosa chaguo la \"{criterion_name}\""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:25
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
 msgstr "Hifadhi"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:29
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:32
 msgid "Cancel"
 msgstr "Batilisha"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:6
+#: openassessment/templates/openassessmentblock/edit/oa_edit_assessment_steps.html:6
+msgid ""
+"Open Response Assessments allow you to configure single or multiple steps in"
+" a rubric based open response assessment sequence. The steps available below"
+" can be enabled, disable, and ordered for a flexible set of pedagogical "
+"needs."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
 msgstr "Onesha Jina"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
 msgstr "Jina la kizinzo kwa kipengele hiki."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:16
-msgid "Response Start Date"
-msgstr "Jibu la Tarehe ya Kuanza"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:29
-msgid "Response Start Time"
-msgstr "Muda wa Kuanza Kujibu"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
-msgid "The date and time when learners can begin submitting responses."
-msgstr "Tarehe na wakati ambapo wanafunzi wanaweza kuwasilisha majibu."
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
-msgid "Response Due Date"
-msgstr "Tarehe inayotakiwa kujibiwa"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
-msgid "Response Due Time"
-msgstr "JIbu la Wakati Tarajiwa"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
-msgid "The date and time when learners can no longer submit responses."
-msgstr "Tarehe na Muda ambao wanafunzi hawawezi tena kuwasilisha majibu yao."
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
 msgstr "'Majibu' ya Maandishi"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:79
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
 msgstr "Bainisha ikiwa wanafunzi wanalazimika kuweka jibu la maandishi kwenye swali hili."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
 msgid "File Uploads Response"
 msgstr "'Majibu' ya Faili la Upakiaji"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:92
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:33
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
 msgstr "Bainisha ikiwa wanafunzi wanaweza kupakia mafaili kama sehemu ya majibu yao."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:37
 msgid "File Upload Types"
 msgstr "Aina za 'Upakiaji' Faili"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:98
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:39
 msgid "PDF or Image Files"
 msgstr "PDF au Faili la Picha"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:99
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:40
 msgid "Image Files"
 msgstr "Faili la Picha"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:100
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:41
 msgid "Custom File Types"
 msgstr "Desturi ya Aina za Faili"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
 msgid ""
 "Specify whether learners can submit files along with their text responses. "
 "Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
@@ -141,57 +125,65 @@ msgid ""
 "with caution.)"
 msgstr "Bainisha ikiwa wanafunzi wanaweza kuwasilisha mafaili sambamba na majibu yao ya maandishi. Chagua Picha kuruhusu mafaili ya JPG, GIF, or PNG. Chagua PDF au Picha kuruhusu mafaili na picha za PDF. Chagua Custom File Types kuruhusu mafaili pamoja na ziada utakazobainisha hapo chini. (Tumia kipengele cha Custom File Types kwa tahadhari.)"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:108
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:49
 msgid "File Types"
 msgstr "Aina za Faili"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:116
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:57
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "Ingiza ziada ya faili, zikitenganishwa na alama za mkato, ambazo unahitaji wanafunzi wanaweze kupakia. Kwa mfano: pdf,doc,docx."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:124
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:65
 msgid "Allow LaTeX Responses"
 msgstr "Ruhusu Majibu ya LaTeX"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:126
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:151
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:105
 msgid "False"
 msgstr "Si kweli"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:127
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:152
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:68
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:106
 msgid "True"
 msgstr "Kweli"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:130
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "Taja kama wanafunzi wanaweza kuandika mistari ya mfumo wa LaTeX"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:134
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
 msgstr "Majibu ya Juu"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:143
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:78
+msgid " (Disabled)"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
 msgstr "Taja idadi ya majibu yaliyo na alama za juu. Namba zilizo halali ni 0 mpaka 99. Kama namba ni 0, kifungu cha Majibu ya Juu hakitokezi kwa wanafunzi. "
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:149
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
+msgid "When Teams Enabled is set to true, Top Responses will be disabled."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:103
 msgid "Teams Enabled"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:156
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
 msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:161
-msgid "Select Team Set"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
+msgid "Select Team-Set"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
@@ -228,19 +220,19 @@ msgid "Feedback for This Criterion"
 msgstr "Majibu ya Kigezo Hiki"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:54
+#: openassessment/xblock/studio_mixin.py:52
 msgid "None"
 msgstr "Hakuna"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:53
+#: openassessment/xblock/studio_mixin.py:51
 msgid "Optional"
 msgstr "Hiari"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:91
-#: openassessment/xblock/studio_mixin.py:52
+#: openassessment/xblock/studio_mixin.py:50
 msgid "Required"
 msgstr "Inahitajika"
 
@@ -255,30 +247,38 @@ msgid "Open Response Assessment"
 msgstr "Fungua Jibu la Tathmini"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:5
-msgid "Settings"
-msgstr "Mitegesho"
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
+msgid "Prompt"
+msgstr "Haraka "
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:6
 msgid "Rubric"
 msgstr "Utaratibu"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:7
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
-msgid "Prompt"
-msgstr "Haraka "
+msgid "Schedule"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:14
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:8
+msgid "Assessment steps"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:9
+msgid "Settings"
+msgstr "Mitegesho"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:16
 msgid "Rubric Change Impacts Settings Section"
 msgstr "Matokeo ya mabadiliko ya kipengele cha mitegesho. "
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:15
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:17
 msgid ""
 "A change that you made to this assessment's rubric has an impact on some "
 "examples laid out in the settings tab. For more information, go to the "
 "Settings section and fix the areas highlighted in red."
 msgstr "Badiliko ulilofanya kwa tathmini ya rubric hii ina athari kwa baadhi ya mifano iliyoekwa katika tab ya mitegesho. Kwa maelezo zaidi, nenda kwenye kifungu cha Mitegesho na urekebishe sehemu zilizo angaziwa kwa wekundu."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:19
+#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:21
 msgid "close alert"
 msgstr "funga tahadhari"
 
@@ -302,65 +302,76 @@ msgstr "Maelezo ya Hiari"
 msgid "Step: Peer Assessment"
 msgstr "Hatua: Tathmini rika"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:14
 msgid ""
-"Learners assess a specified number of other learners' responses using the "
-"rubric for the assignment."
-msgstr "Wanafunzi wanatathmini idadi maalum ya majibu ya wanafunzi kutumia maelezo ya zoezi."
+"Peer Assessment allows students to provide feedback to other students and "
+"also receive feedback from others in their final grade. Often, though not "
+"always, this step is preceded by Self Assessment or Learner Training steps."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
-msgid "Specify the following values for the peer assessment step."
-msgstr "Bainisha thamani zifuatazo kwa hatua ya tathmini rika. "
+msgid ""
+"Configuration: For this step to be configured you must specify the number of"
+" peer reviews a student will be assessed with, and the number of peer a "
+"student must grade. Additional options can be specified."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:22
+msgid "View Options & Configuration"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:28
 msgid "Must Grade"
 msgstr "Lazima ipewe Alama"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:25
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:31
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
 msgstr "Bainisha namba ya tathimini rika ambayo kila 'mwanafunzi' lazima aikamilishe. Namba halali ni 0 mpaka 99."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:35
 msgid "Graded By"
 msgstr "Imepewa Alama Na"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:38
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
 msgstr "Taja idadi ya wanafunzi ambao watatathmini kila jibu. Namba halali ni 0 mpaka 99."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:5
+msgid "Peer Assessment Deadlines"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:10
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:10
 msgid "Start Date"
 msgstr "Tarehe ya Kuanza"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:31
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:19
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
 msgstr "Muda wa Kuanza"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
-msgid ""
-"Enter the date and time when learners can begin assessing peer responses."
-msgstr "Ingiza tarehe na muda ambao wanafunzi wanaweza kutathmini majibu 'rika'."
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing peer responses."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:109
 msgid "Due Date"
 msgstr "Tarehe Stahiki"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:66
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:52
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:40
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
 msgstr "Muda Stahiki"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:74
-msgid "Enter the date and time when all peer assessments must be complete."
-msgstr "Ingiza tarehe na wakati ambao tathmini rika zote lazima zikamilike. "
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
+msgid "The date and time when all peer assessments must be complete."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
@@ -412,37 +423,55 @@ msgid ""
 "feedback. Use this text to show learners a good example peer assessment."
 msgstr "Ingiza majibu ya nakala ambayo wanafunzi wataona kabla hawajaingiza majibu yao wenyewe. Tumia nakala hii kuonesha mfano mzuri wa tathmini rika. "
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:5
+msgid "Course Deadlines"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:13
+msgid "Response Start Date"
+msgstr "Jibu la Tarehe ya Kuanza"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:26
+msgid "Response Start Time"
+msgstr "Muda wa Kuanza Kujibu"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:35
+msgid "The date and time when learners can begin submitting responses."
+msgstr "Tarehe na wakati ambapo wanafunzi wanaweza kuwasilisha majibu."
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:43
+msgid "Response Due Date"
+msgstr "Tarehe inayotakiwa kujibiwa"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:56
+msgid "Response Due Time"
+msgstr "JIbu la Wakati Tarajiwa"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:65
+msgid "The date and time when learners can no longer submit responses."
+msgstr "Tarehe na Muda ambao wanafunzi hawawezi tena kuwasilisha majibu yao."
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
 msgstr "Hatua: Tathmini ya Binafsi"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:12
 msgid ""
-"Learners assess their own responses using the rubric for the assignment."
-msgstr "Wanafunzi wanatathmini majibu yao wenyewe kutumia ufafanuzi wa zoezi."
+"Self Assessment asks learners to grade their own submissions against the "
+"rubric."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
-msgid "Specify start and due dates for the self assessment step."
-msgstr "Taja tarehe za kuanza na kumaliza kwa hatua za tathmini ya binafsi."
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:5
+msgid "Self Assessment Deadlines"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
-msgid ""
-"Enter the date and time when learners can begin assessing their responses."
-msgstr "Ingiza tarehe na wakati ambapo wanafunzi wanaweza kuanza kutathmini majibu yao."
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:27
+msgid "The date and time when learners can begin assessing their responses."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
-msgid "Enter the date and time when all self assessments must be complete."
-msgstr "Ingiza tarehe na wakati ambapo tathmini zote za binafsi lazima zikamilike."
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_settings.html:8
-msgid ""
-"In this assignment, you can include learner training, peer assessment, self "
-"assessment, and staff assessment steps. Select the steps that you want "
-"below, and then drag them into the order you want. If you include a learner "
-"training step, it must precede all other steps. If you include a staff "
-"assessment step, it must be the final step. After you release an ORA "
-"assignment, you cannot change the type and number of assessment steps."
-msgstr "Katika zoezi hili, waweza kuongezea mafunzo ya mwanafunzi pamoja na hatua za, tathmini rika, tathmini ya ubinafsi, na tathmini ya walimu. Chagua hatua uzihijiazo hapo chini, na kisha uziburute katika mpangilio uutakao. Ukiongezea hatua ya mafunzo ya mwanagenzi, lazima itangulie hatua zote nyingine. Ukiongezea hatua ya tathmini ya mfanyakazi, lazima iwe hatua ya mwisho. Baada kutoa/kuachilia zoezi la ORA, huwezi kubadilisha aina na idadi ya hatua za tathmini."
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:48
+msgid "The date and time when all self assessments must be complete."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
@@ -450,9 +479,9 @@ msgstr "Hatua: Tathmini ya Mwalimu"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
 msgid ""
-"Staff members assess learners' responses using the rubric for the "
-"assignment."
-msgstr "Walimui wanatathmini majibu ya wanafunzi kutumia ufafanuzi wa zoezi."
+"Staff Assessment gates sets the final grade for students if enabled with "
+"other steps, though it can also be used as a standalone step."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
@@ -460,21 +489,24 @@ msgstr "Hatua: Mafunzo ya Mwanafunzi"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:14
 msgid ""
-"Learners learn to assess responses by scoring pre-assessed sample responses "
-"that you provide. Learners move to the next step when the scores they give "
-"match your scores. Note that if you add this step, you must also add a peer "
-"assessment step. This step must come before the peer assessment step."
-msgstr "Wanafunzi wanajifunza kutathmini majibu kwa kutoa alama za sampuli ya majibu kwa tathmini unayotoa. Wanafunzi husonga kwa hatua ifuatayo ikiwa alama walizotoa zalingana na alama zako. Tambua ya kwamba ukiongeza hatua hii, lazima pia oungeze hatua ya tathmini rika. Hatua hii lazima ije kabla ya hatua ya tathmini rika. "
+"Learner Training is used to help students practice grading a simulated peer "
+"submission in order to train them on the rubric and ensure learner's "
+"understand the rubric for either Self or Peer Assessment steps."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:17
 msgid ""
-"Enter one or more sample responses that you've created, and then specify the"
-" options that you would choose for each criterion in your rubric. Note that "
-"you must add your rubric to the Rubric tab before you can complete this "
-"step."
-msgstr "Ingiza sampuli moja au zaidi ya majibu ambayo umebuni, na kisha taja hiari ungechagua kufikia kigezo katika maelezo yako. Tambua kwamba lazima uongeze maelezo kwa tab ya maelezo kabla uweze kukamililsha hatua hii. "
+"Configuration: For this step to be fully configured you must provide one or "
+"more graded sample responses. Learners must then match this instructor score"
+" to advance and are provided feedback when their score doesn't match the "
+"sample response."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:22
+msgid "View / Add Sample Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
 msgstr "Weka Sampuli ya Majibu"
 
@@ -556,7 +588,7 @@ msgid ""
 msgstr "\n%(points_earned)skati ya%(points_possible)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
-#: openassessment/templates/openassessmentblock/response/oa_response.html:22
+#: openassessment/templates/openassessmentblock/response/oa_response.html:29
 msgid "Your Response"
 msgstr "JIbu Lako"
 
@@ -572,6 +604,7 @@ msgstr "Tathmini ya Jibu Lako"
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:132
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:28
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:28
+#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:4
@@ -583,6 +616,7 @@ msgstr "Tathmini ya Jibu Lako"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:29
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:25
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
@@ -721,6 +755,19 @@ msgid ""
 "scoring responses from your peers."
 msgstr "Baada ya kumaliza hatua zote za zoezi hili, waweza kuona majibu yaliyo na alama za juu kutoka kwa wenzako."
 
+#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:8
+msgid ""
+"Your team’s submission has been cancelled. Your team will receive a grade of"
+" zero unless course staff resets your assessment to allow the team to "
+"resubmit a response."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:10
+msgid ""
+"Your submission has been cancelled. You will receive a grade of zero unless "
+"course staff resets your assessment to allow you to resubmit a response."
+msgstr ""
+
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:8
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
@@ -820,9 +867,9 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"            This is a team assignment for team set \"%(teamset_name)s\".\n"
-"            You are currently not on a team in team set \"%(teamset_name)s\".\n"
-"            You must be on a team in team set \"%(teamset_name)s\" to access this team assignment.\n"
+"            This is a team assignment for team-set \"%(teamset_name)s\".\n"
+"            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
+"            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
 "            "
 msgstr ""
 
@@ -965,7 +1012,7 @@ msgstr "Hatukuweza kuwasilisha \"tathmini\" yako"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:156
+#: openassessment/xblock/staff_assessment_mixin.py:157
 msgid "Cancelled"
 msgstr "Batilishwa"
 
@@ -1024,8 +1071,8 @@ msgstr "Majibu rika yote yaliyowasilishwa yamefanyiwa tathmini. Rudi tena baadae
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:149
-#: openassessment/xblock/staff_assessment_mixin.py:173
+#: openassessment/xblock/staff_assessment_mixin.py:150
+#: openassessment/xblock/staff_assessment_mixin.py:174
 msgid "Not Available"
 msgstr "Haipatikani"
 
@@ -1045,10 +1092,14 @@ msgid ""
 " your response."
 msgstr "Majibu rika yote yaliyopo yamefanyiwa tathmini. Rudia tena baadae kuangalia kama wanafunzi zaidi wamewasilisha majibu. Utapata daraja lako baada ya kukamilisha hatua zote za swali hili na baada ya wenzako kutathmini majibu yako."
 
+#: openassessment/templates/openassessmentblock/response/oa_response.html:27
+msgid "Your Team's Response"
+msgstr ""
+
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/response/oa_response.html:30
+#: openassessment/templates/openassessmentblock/response/oa_response.html:39
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1059,7 +1110,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/response/oa_response.html:37
+#: openassessment/templates/openassessmentblock/response/oa_response.html:46
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1067,97 +1118,202 @@ msgid ""
 "            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:45
+#: openassessment/templates/openassessmentblock/response/oa_response.html:54
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
 msgid "In Progress"
 msgstr "Ina Endelea"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:56
+#: openassessment/templates/openassessmentblock/response/oa_response.html:66
+msgid "Enter your team's response to the prompt."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:68
+msgid ""
+"\n"
+"                        You can save your progress and return to complete your team's response at any time before the due date\n"
+"                      "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:81
+msgid ""
+"\n"
+"                        You can save your progress and return to complete your team's response at any time.\n"
+"                      "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:86
+msgid ""
+"After you submit a response on behalf of your team, it cannot be edited"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:89
 msgid "Enter your response to the prompt."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:58
+#: openassessment/templates/openassessmentblock/response/oa_response.html:91
 msgid ""
-"You can save your progress and return to complete your response at any time "
-"before the due date"
-msgstr "Unaweza kuhifadhi maendeleo yako na urudi ukamilishe majibu yako wakati wowote kabla ya tarehe husika"
+"\n"
+"                        You can save your progress and return to complete your response at any time before the due date\n"
+"                      "
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:63
+#: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid ""
 "You can save your progress and return to complete your response at any time."
 msgstr "Unaweza kuhifadhi maendeleo ya kazi yako na urudi kukamilisha majibu yako wakati wowote."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:65
+#: openassessment/templates/openassessmentblock/response/oa_response.html:106
 msgid "After you submit your response, you cannot edit it"
 msgstr "Baada ya kuwasilisha jibu lako, huwezi kulihakiki"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:74
+#: openassessment/templates/openassessmentblock/response/oa_response.html:116
 msgid "The prompt for this section"
 msgstr "Alama ya kipengele cha sehemu hii"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:92
-msgid "Your response (required)"
-msgstr "Jibu lako (linahitajika)"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:94
-msgid "Your response (optional)"
-msgstr "Jibu lako (sio lazima)"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:104
-msgid "Enter your response to the prompt above."
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:116
+#: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "You are on team "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+#: openassessment/templates/openassessmentblock/response/oa_response.html:132
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:122
+#: openassessment/templates/openassessmentblock/response/oa_response.html:137
+#, python-format
 msgid ""
-"Note: this is a team assignment. Make sure to coordinate with your teammates"
-" to avoid overwriting each other's work."
+"\n"
+"                                              %(team_members_with_external_submissions)s\n"
+"                                              have/has already submitted a response to this assignment with another team,\n"
+"                                              and will not be a part of your team's submission or assignment grade.\n"
+"                                          "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:129
+#: openassessment/templates/openassessmentblock/response/oa_response.html:153
+msgid "Team Response "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:155
+msgid "Your Response "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:159
+#: openassessment/templates/openassessmentblock/response/oa_response.html:228
+msgid "(Required)"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:161
+#: openassessment/templates/openassessmentblock/response/oa_response.html:230
+msgid "(Optional)"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:165
+msgid ""
+"\n"
+"                                              Teams should designate one team member to submit a response on behalf of the\n"
+"                                              entire team.  All team members can use this space to work on draft responses,\n"
+"                                              but you will not be able to see your teammates' drafts made in this space, so\n"
+"                                              please coordinate with them to decide on the final response the designated team\n"
+"                                              member should submit.\n"
+"                                          "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:180
+msgid "Enter your response to the prompt above."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:192
+#, python-format
+msgid ""
+"\n"
+"                                    You are currently on Team %(team_name)s. Since you were on Team %(previous_team_name)s\n"
+"                                    when they submitted a response to this assignment, you are seeing Team %(previous_team_name)s’s\n"
+"                                    response and will receive the same grade for this assignment as your former teammates.\n"
+"                                    You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
+"                                    receive a grade for their submission.\n"
+"                                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:205
 msgid "We could not save your progress"
 msgstr "Hatukuweza kuhifadhi maendeleo ya kazi yako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:136
+#: openassessment/templates/openassessmentblock/response/oa_response.html:212
 msgid "Save your progress"
 msgstr "Hifadhi maendeleo ya kazi yako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:216
 msgid "Your Submission Status"
 msgstr "Hali Halisi ya Uwasilishaji Wako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:152
+#: openassessment/templates/openassessmentblock/response/oa_response.html:226
+msgid "File Uploads "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:233
+msgid ""
+"\n"
+"                            Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                            descriptions to your files to help your teammates identify them.\n"
+"                          "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:240
 msgid "We could not upload files"
 msgstr "Hatukuweza kupakia mafaili"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:158
+#: openassessment/templates/openassessmentblock/response/oa_response.html:246
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:162
+#: openassessment/templates/openassessmentblock/response/oa_response.html:250
 msgid "Select a file to upload for this submission."
 msgstr "Chagua faili upakie kwa wasilisho hili."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:164
+#: openassessment/templates/openassessmentblock/response/oa_response.html:252
 msgid "Upload files"
 msgstr "Pakia mafaili"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:177
+#: openassessment/templates/openassessmentblock/response/oa_response.html:266
 msgid "You may continue to work on your response until you submit it."
 msgstr "Unaweza kuendelea kushughulikia jibu lako mpaka utakapofanikiwa kulituma."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:184
+#: openassessment/templates/openassessmentblock/response/oa_response.html:272
+msgid "This is a team submission."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:274
+msgid ""
+"One team member should submit a response with the team’s shared files and a "
+"text response on behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:276
+msgid ""
+"One team member should submit a response with the team’s shared files on "
+"behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+msgid ""
+"One team member should submit a text response on behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:280
+msgid "One team member should submit on behalf of the entire team."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:282
+msgid ""
+"\n"
+"                Learn more about team assignments here: (<a href=\"\" >link</a>)\n"
+"                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:290
 msgid "We could not submit your response"
 msgstr "Hatukuweza kutuma jibu lako"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:194
+#: openassessment/templates/openassessmentblock/response/oa_response.html:300
 msgid "Submit your response and move to the next step"
 msgstr "Tuma jibu lako na uendelee kwa hatua ifuatayo"
 
@@ -1207,8 +1363,8 @@ msgstr "Tarehe husika kwa ajili ya hatua hii imepita. Hatua hii sasa imfungwa. H
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:163
-#: openassessment/xblock/staff_assessment_mixin.py:186
+#: openassessment/xblock/staff_assessment_mixin.py:164
+#: openassessment/xblock/staff_assessment_mixin.py:187
 msgid "Complete"
 msgstr "Kamili"
 
@@ -1253,6 +1409,21 @@ msgid ""
 "                    "
 msgstr "\nBado unahitajika kukamilisha %(start_tag)s hatua za tathmini binafsi%(end_tag)s."
 
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
+msgid "Error"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
+#, python-format
+msgid ""
+"\n"
+"                            You joined Team %(team_name)s after they submitted a response for this assignment\n"
+"                            and you will not receive a grade for their response. You have also not previously submitted\n"
+"                            a response to this assignment with another team. Please contact course staff to discuss your\n"
+"                            options for this assignment.\n"
+"                        "
+msgstr ""
+
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
 msgstr "Tathmini Jibu Lako"
@@ -1291,7 +1462,7 @@ msgid ""
 msgstr "Tarehe husika kwa ajili ya hatua hiii imepita. Hatua hii sasa imefungwa. Huwezi tena kukamilisha tathmini rika wala kuendelea na zoezi, na utapata daraja la ubora lisiliokamilika."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:357
+#: openassessment/xblock/grade_mixin.py:358
 msgid "Staff Grade"
 msgstr "Daraja ya ubora ya Walimu"
 
@@ -1561,9 +1732,9 @@ msgstr "Wasilisho la mwanafunzi limeondolewa kutoka kwa tathmini ya pamoja. Mwan
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid ""
-"The teams's submission has been removed from peer assessment. The team "
-"receives a grade of zero unless you delete the team's state for the problem "
-"to allow them to resubmit a response."
+"The team’s submission has been removed from grading. The team receives a "
+"grade of zero unless you delete the a team member’s state for the problem to"
+" allow the team to resubmit a response."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
@@ -1745,104 +1916,104 @@ msgstr "Hitilafu Kupakia Mifano ya Mafunzo ya Mwanafunzi"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Hatua za Mafunzo ya Mwanafunzi katika zoezi hili haikuweza kupakiwa. "
 
-#: openassessment/xblock/data_conversion.py:267
+#: openassessment/xblock/data_conversion.py:263
 msgid "You must provide options selected in the assessment."
 msgstr "Lazima utoe hiari zilizochaguliwa katika tathmini."
 
-#: openassessment/xblock/data_conversion.py:270
+#: openassessment/xblock/data_conversion.py:266
 msgid "You must provide overall feedback in the assessment."
 msgstr "Lazima utoe mrejesho wa jumla katika tathmini."
 
-#: openassessment/xblock/data_conversion.py:273
+#: openassessment/xblock/data_conversion.py:269
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "Lazima utoe mrejesho kwa kigezo katika tathmini."
 
-#: openassessment/xblock/grade_mixin.py:75
-#: openassessment/xblock/leaderboard_mixin.py:59
+#: openassessment/xblock/grade_mixin.py:76
+#: openassessment/xblock/leaderboard_mixin.py:58
 #: openassessment/xblock/self_assessment_mixin.py:42
-#: openassessment/xblock/student_training_mixin.py:60
-#: openassessment/xblock/student_training_mixin.py:267
+#: openassessment/xblock/student_training_mixin.py:56
+#: openassessment/xblock/student_training_mixin.py:263
 msgid "An unexpected error occurred."
 msgstr "Hitilafu isiyotarajiwa imetokea."
 
-#: openassessment/xblock/grade_mixin.py:171
+#: openassessment/xblock/grade_mixin.py:172
 msgid "Peer Assessment"
 msgstr "Tathmini ya Wataalam"
 
-#: openassessment/xblock/grade_mixin.py:173
+#: openassessment/xblock/grade_mixin.py:174
 msgid "Self Assessment"
 msgstr "Tathmini Binafsi"
 
-#: openassessment/xblock/grade_mixin.py:213
+#: openassessment/xblock/grade_mixin.py:214
 msgid "Assessment feedback could not be saved."
 msgstr "Haikuwezekana kuhifadhi majibu ya tathmini. "
 
-#: openassessment/xblock/grade_mixin.py:224
+#: openassessment/xblock/grade_mixin.py:225
 msgid "Feedback saved."
 msgstr "Jibu limehifadhiwa."
 
-#: openassessment/xblock/grade_mixin.py:358
-#: openassessment/xblock/grade_mixin.py:504
+#: openassessment/xblock/grade_mixin.py:359
+#: openassessment/xblock/grade_mixin.py:505
 msgid "Staff Comments"
 msgstr "Maoni ya Wafanyakazi"
 
-#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:365
 msgid "Peer Median Grade"
 msgstr "Daraja la kati kwa kati la Wataalamu"
 
-#: openassessment/xblock/grade_mixin.py:369
-#: openassessment/xblock/grade_mixin.py:511
+#: openassessment/xblock/grade_mixin.py:370
+#: openassessment/xblock/grade_mixin.py:512
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "Rika {peer_index}"
 
-#: openassessment/xblock/grade_mixin.py:370
+#: openassessment/xblock/grade_mixin.py:371
 msgid "Peer Comments"
 msgstr "Maoni ya Wataalamu"
 
-#: openassessment/xblock/grade_mixin.py:380
+#: openassessment/xblock/grade_mixin.py:381
 msgid "Self Assessment Grade"
 msgstr "Daraja la Tathmini Binafsi"
 
-#: openassessment/xblock/grade_mixin.py:380
+#: openassessment/xblock/grade_mixin.py:381
 msgid "Your Self Assessment"
 msgstr "Tathmini Yako  Binafsi"
 
-#: openassessment/xblock/grade_mixin.py:381
-#: openassessment/xblock/grade_mixin.py:523
+#: openassessment/xblock/grade_mixin.py:382
+#: openassessment/xblock/grade_mixin.py:524
 msgid "Your Comments"
 msgstr "Maoni Yako"
 
-#: openassessment/xblock/grade_mixin.py:477
+#: openassessment/xblock/grade_mixin.py:478
 msgid "Waiting for peer reviews"
 msgstr "Inasubiri kupitiwa na wataalam wengine"
 
-#: openassessment/xblock/grade_mixin.py:516
+#: openassessment/xblock/grade_mixin.py:517
 msgid "Peer"
 msgstr "Rika"
 
-#: openassessment/xblock/grade_mixin.py:663
+#: openassessment/xblock/grade_mixin.py:648
 msgid "The grade for this problem is determined by your Staff Grade."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:665
+#: openassessment/xblock/grade_mixin.py:650
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:668
+#: openassessment/xblock/grade_mixin.py:653
 msgid "The grade for this problem is determined by your Self Assessment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:679
+#: openassessment/xblock/grade_mixin.py:659
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:686
+#: openassessment/xblock/grade_mixin.py:667
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
@@ -1864,7 +2035,7 @@ msgid "Your peer assessment could not be submitted."
 msgstr "Tathmini yako ya pamoja  haikuweza kutumwa. "
 
 #: openassessment/xblock/peer_assessment_mixin.py:118
-#: openassessment/xblock/student_training_mixin.py:273
+#: openassessment/xblock/student_training_mixin.py:269
 msgid "Could not update workflow status."
 msgstr "Haikuweza kutengeneza upya hali ya mtiririko wa kazi."
 
@@ -1885,33 +2056,33 @@ msgstr "Wasilisha tathmini yako na nenda kwenye hatua ifuatayo"
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "Wasilisha tathmini yako na nenda kwenye jibu #{response_number}"
 
-#: openassessment/xblock/resolve_dates.py:54
+#: openassessment/xblock/resolve_dates.py:52
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "'{date}' ni muundo batili wa tarehe. Hakikisha tarehe imeundwa kama YYYY-MM-DDTHH:MM:SS."
 
-#: openassessment/xblock/resolve_dates.py:59
+#: openassessment/xblock/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
 msgstr "'{date}' lazima uwe mstari wa tarehe au tarehe na wakati"
 
-#: openassessment/xblock/resolve_dates.py:212
+#: openassessment/xblock/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "Hatua hii ya tarehe ya kuanza '{start}' haiwezi kuwa mapema kuliko hatua iliyopita ya tarehe ya kuanza '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:220
+#: openassessment/xblock/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "Hatua hii ya tarehe stahiki '{due}' haiwezi kuchelewa zaidi ya hatua ifuatayo ya tarehe ya mwisho '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:236
+#: openassessment/xblock/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "Tarehe ya kuanza '{start}' haiwezi kuwa baada ya tarehe ya mwisho/kumaliza '{due}'"
@@ -1925,43 +2096,43 @@ msgstr "Lazima ufikishe jibu kabla kuanza kufanya tathmini binafsi."
 msgid "Your self assessment could not be submitted."
 msgstr "Tathmini yako binafsi halikuweza kuwasilishwa."
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "Huna ruhusa kupanga ratiba ya mafunzo"
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "Huna ruhusa kuratibisha upya majukumu."
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "Huna ruhusa kuingia kwenye eneo la walimu la ORA"
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "Huna ruhusa kuingia kwenye kipengele cha taarifa ya mwanafunzi kwa ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Huna ruhusa ya kuingia kwenye kipengele cha utoaji daraja wa walimu kwa ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:183
+#: openassessment/xblock/staff_area_mixin.py:184
 msgid "Error getting learner information."
 msgstr "Hitilafu ya kupata taarifa za mwanafunzi."
 
-#: openassessment/xblock/staff_area_mixin.py:243
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "Error loading the checked out learner response."
 msgstr "Hitilafu ya kupakia jibu la mwanafunzi lililopitiwa upya."
 
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:228
 msgid "No other learner responses are available for grading at this time."
 msgstr "Hakuna majibu ya mwanafunzi mwengine yaliyopo kwa utoaji daraja kwa wakati huu."
 
-#: openassessment/xblock/staff_area_mixin.py:246
+#: openassessment/xblock/staff_area_mixin.py:230
 msgid "Error getting staff grade information."
 msgstr "Hitilafu ya kupata habari za madaraja ya walimu."
 
-#: openassessment/xblock/staff_area_mixin.py:267
+#: openassessment/xblock/staff_area_mixin.py:251
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Hitilafu katika kupata ukatizaji wakutoa daraja za wafanyakazi na kupitia upya akaunti zao. "
 
@@ -1991,234 +2162,234 @@ msgid ""
 "allow the team to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:47
+#: openassessment/xblock/staff_assessment_mixin.py:48
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "Kitambulisho cha tathmini ya wasilisho lililotathminiwa hakikupatikana."
 
-#: openassessment/xblock/staff_assessment_mixin.py:74
-#: openassessment/xblock/staff_assessment_mixin.py:81
+#: openassessment/xblock/staff_assessment_mixin.py:75
+#: openassessment/xblock/staff_assessment_mixin.py:82
 msgid "Your staff assessment could not be submitted."
 msgstr "Tathmini ya walimu wako haikuwasilishwa."
 
-#: openassessment/xblock/staff_assessment_mixin.py:115
-#: openassessment/xblock/staff_assessment_mixin.py:122
+#: openassessment/xblock/staff_assessment_mixin.py:116
+#: openassessment/xblock/staff_assessment_mixin.py:123
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:174
+#: openassessment/xblock/staff_assessment_mixin.py:175
 msgid "Waiting for a Staff Grade"
 msgstr "Inasubiri Kupewa Daraja na Walimu"
 
-#: openassessment/xblock/staff_assessment_mixin.py:175
+#: openassessment/xblock/staff_assessment_mixin.py:176
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "Angalia tena baadae uone kama mwalimu wa kozi amekadiria jibu lako. Utapokea daraja lako baada ya tathmini kukamilika."
 
-#: openassessment/xblock/staff_assessment_mixin.py:188
+#: openassessment/xblock/staff_assessment_mixin.py:189
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "Lazima Ukamilishe Hatua Za Hapo Juu Kutizama Daraja Lako "
 
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: openassessment/xblock/staff_assessment_mixin.py:190
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
 "problem."
 msgstr "Ingawa mwalimu wa kozi amekadiria jibu lako, utapokea daraja lako pindi baada ya kumaliza hatua zote zihitajikazo kwa swali hili.  "
 
-#: openassessment/xblock/student_training_mixin.py:230
+#: openassessment/xblock/student_training_mixin.py:226
 msgid "Missing options_selected key in request"
 msgstr "Hiari zinazokosekana_ufunguo uliyochaguliwa unahitajika"
 
-#: openassessment/xblock/student_training_mixin.py:232
+#: openassessment/xblock/student_training_mixin.py:228
 msgid "options_selected must be a dictionary"
 msgstr "hiari_kilichochaguliwa lazima kiwe ni kamusi"
 
-#: openassessment/xblock/student_training_mixin.py:257
-#: openassessment/xblock/student_training_mixin.py:262
+#: openassessment/xblock/student_training_mixin.py:253
+#: openassessment/xblock/student_training_mixin.py:258
 msgid "Your scores could not be checked."
 msgstr "Alama zako hazikuweza kuhakikiwa."
 
-#: openassessment/xblock/studio_mixin.py:195
-#: openassessment/xblock/studio_mixin.py:207
+#: openassessment/xblock/studio_mixin.py:193
+#: openassessment/xblock/studio_mixin.py:205
 msgid "Error updating XBlock configuration"
 msgstr "Hitlafu katika kupakia usabidi wa XBlock"
 
-#: openassessment/xblock/studio_mixin.py:210
+#: openassessment/xblock/studio_mixin.py:208
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr "Hitilafu: jibu la maandishi na lile la upakiaji hayawezi kuzuiwa"
 
-#: openassessment/xblock/studio_mixin.py:213
+#: openassessment/xblock/studio_mixin.py:211
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr "Hitilafu: itakapotokea jibu la maandishi halikutokea jibu la upakiaji faili litahitajika"
 
-#: openassessment/xblock/studio_mixin.py:216
+#: openassessment/xblock/studio_mixin.py:214
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr "Hitilafu: itakapotokea jibu la upakiaji faili  haukuwezekana jibu la maandishi litahitajika"
 
-#: openassessment/xblock/studio_mixin.py:240
+#: openassessment/xblock/studio_mixin.py:238
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Hitilafu ya uthibitishaji: {error}"
 
-#: openassessment/xblock/studio_mixin.py:268
+#: openassessment/xblock/studio_mixin.py:266
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Imefanikiwa kusasisha OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:94
+#: openassessment/xblock/submission_mixin.py:98
 msgid "\"submission\" required to submit answer."
 msgstr "\"uwasilishaji\" inahitajika kuwasilisha jibu."
 
-#: openassessment/xblock/submission_mixin.py:115
+#: openassessment/xblock/submission_mixin.py:119
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Kuwasilisha jibu, tizama kipengele hiki kwa Mtazamo kabla au Mubashara."
 
-#: openassessment/xblock/submission_mixin.py:121
+#: openassessment/xblock/submission_mixin.py:125
 msgid "Multiple submissions are not allowed."
 msgstr "Kuwasilisha zaidi ya mara moja hakuruhusiwi."
 
-#: openassessment/xblock/submission_mixin.py:165
+#: openassessment/xblock/submission_mixin.py:169
 msgid "API returned unclassified exception."
 msgstr "API imerudisha taarifa zisizo muhimu."
 
-#: openassessment/xblock/submission_mixin.py:216
+#: openassessment/xblock/submission_mixin.py:220
 msgid "This response could not be saved."
 msgstr "Jibu hili halikuweza kuhifadhiwa."
 
-#: openassessment/xblock/submission_mixin.py:220
+#: openassessment/xblock/submission_mixin.py:224
 msgid "This response was not submitted."
 msgstr "Jibu hili halikuwasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:236
+#: openassessment/xblock/submission_mixin.py:240
 msgid "Files descriptions were not submitted."
 msgstr "Maelezo ya mafaili hayakuwasilishwa"
 
-#: openassessment/xblock/submission_mixin.py:273
+#: openassessment/xblock/submission_mixin.py:277
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:395
+#: openassessment/xblock/submission_mixin.py:400
 msgid "There was an error uploading your file."
 msgstr "Kulikuwa na hitilafu kupakia faili lako."
 
-#: openassessment/xblock/submission_mixin.py:404
+#: openassessment/xblock/submission_mixin.py:409
 msgid "Content type must be GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:407
+#: openassessment/xblock/submission_mixin.py:412
 msgid "Content type must be PDF, GIF, PNG or JPG."
 msgstr "Maandishi lazima yawe katika PDF, GIF, PNG au JPG."
 
-#: openassessment/xblock/submission_mixin.py:410
+#: openassessment/xblock/submission_mixin.py:415
 msgid "File type must be one of the following types: {}"
 msgstr "Aina ya faili lazima iwe moja ya aina zifuatazo: {}"
 
-#: openassessment/xblock/submission_mixin.py:414
+#: openassessment/xblock/submission_mixin.py:419
 msgid "File type is not allowed."
 msgstr "Aina ya faili haihitajiki."
 
-#: openassessment/xblock/submission_mixin.py:421
+#: openassessment/xblock/submission_mixin.py:426
 msgid "Error retrieving upload URL."
 msgstr "Hitilafu imetokea wakati kurudisha upakiaji wa URL."
 
-#: openassessment/xblock/submission_mixin.py:653
+#: openassessment/xblock/submission_mixin.py:686
 msgid "This response has been saved but not submitted."
 msgstr "Jibu hili limehifadhiwa lakini halijawasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:654
+#: openassessment/xblock/submission_mixin.py:687
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:117
 msgid "This problem must include at least one assessment."
 msgstr "Tatizo hili lazima liwekewe japo tathmini moja. "
 
-#: openassessment/xblock/validation.py:125
+#: openassessment/xblock/validation.py:121
 msgid "The assessment order you selected is invalid."
 msgstr "Mpangilio wa tathmini uliouchagua sio halali."
 
-#: openassessment/xblock/validation.py:135
+#: openassessment/xblock/validation.py:131
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Katika tathmini ya, thamani ya \"Must Grade\" lazima iwe namba chanya. "
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:134
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Katika tathmini ya pamoja, thamani ya \"Graded By\" lazima iwe namba chanya."
 
-#: openassessment/xblock/validation.py:142
+#: openassessment/xblock/validation.py:138
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Katika tathmini ya pamoja, thamani ya \"Must Grade\" lazima iwe kubwa zaidi au sawa na thamani ya \"Graded By\"."
 
-#: openassessment/xblock/validation.py:151
+#: openassessment/xblock/validation.py:147
 msgid "You must provide at least one example response for learner training."
 msgstr "Lazima utoe japo mfano mmoja wa jibu kwa ajili ya mafunzo ya mwanafunzi."
 
-#: openassessment/xblock/validation.py:154
+#: openassessment/xblock/validation.py:150
 msgid "Each example response for learner training must be unique."
 msgstr "Kila mfano wa jibu kwa ajili ya mafunzo ya mwanafunzi lazima uwe wa kipekee."
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:157
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "Thamani \"inayohitajika\" lazima iwe kweli kama tathmini ya wafanyakazi ndio hatua ya pekee."
 
-#: openassessment/xblock/validation.py:165
+#: openassessment/xblock/validation.py:161
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Idadi ya tathmini haiwezi kugeuzwa baada ya tatizo kuoneshwa."
 
-#: openassessment/xblock/validation.py:170
+#: openassessment/xblock/validation.py:166
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Aina ya tathmini haiwezi kugeuzwa baada ya tatizo kuoneshwa."
 
-#: openassessment/xblock/validation.py:193
+#: openassessment/xblock/validation.py:189
 msgid "This rubric definition is not valid."
 msgstr "Tafsiri hii ya maelezo sio halali."
 
-#: openassessment/xblock/validation.py:199
+#: openassessment/xblock/validation.py:195
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "Hiari katika '{criterion}' zina jina maradufu(s): {duplicates}"
 
-#: openassessment/xblock/validation.py:207
+#: openassessment/xblock/validation.py:203
 msgid "Criteria with no options must require written feedback."
 msgstr "Kigezo kisicho na hiari kinahitaji mrejesho wa maandishi."
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:212
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Vishawishi hawezi kutengenezwa au kufutwa baada ya tatizo kutolewa."
 
-#: openassessment/xblock/validation.py:220
+#: openassessment/xblock/validation.py:216
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Idadi za vigezo haiwezi kubadilishwa baada ya tatizo kuondolewa."
 
-#: openassessment/xblock/validation.py:233
+#: openassessment/xblock/validation.py:229
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Majina ya vigezo hayawezi kubadilishwa baada ya tatizo kuondolewa."
 
-#: openassessment/xblock/validation.py:238
+#: openassessment/xblock/validation.py:234
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Idadi za hiari haziwezi kubadilishwa baada ya tatizo kuondolewa."
 
-#: openassessment/xblock/validation.py:243
+#: openassessment/xblock/validation.py:239
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Thamani za alama haziwezi kubadilishwa baada ya tatizo kuondolewa."
 
-#: openassessment/xblock/validation.py:294
+#: openassessment/xblock/validation.py:290
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:359
+#: openassessment/xblock/validation.py:355
 msgid "Leaderboard number is invalid."
 msgstr "Nambari kwenye ubao wa muongozo sio sahihi."
 
-#: openassessment/xblock/validation.py:382
+#: openassessment/xblock/validation.py:378
 msgid "The submission format is invalid."
 msgstr "Muundo wa kuwasilisha sio sahihi."

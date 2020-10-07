@@ -30,20 +30,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         this.clearValidationErrors = function() { validationErrors = []; };
     };
 
-    var testValidateDate = function(datetimeControl, expectedError) {
-        // Test an invalid datetime
-        datetimeControl.datetime("invalid", "invalid");
-        expect(view.validate()).toBe(false);
-        expect(view.validationErrors()).toContain(expectedError);
-
-        view.clearValidationErrors();
-
-        // Test a valid datetime
-        datetimeControl.datetime("2014-04-05", "00:00");
-        expect(view.validate()).toBe(true);
-        expect(view.validationErrors()).toEqual([]);
-    };
-
     var view = null;
     var assessmentViews = null;
     var data = null;
@@ -67,14 +53,14 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // mock data from backend
         data = {
-            FILE_EXT_BLACK_LIST: ['exe','app']
+            ALLOWED_IMAGE_EXTENSIONS: ['png', 'jpg', 'gif'],
+            ALLOWED_FILE_EXTENSIONS: ['pdf', 'md'],
+            FILE_EXT_BLACK_LIST: ['exe', 'app'],
         };
 
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
         view = new OpenAssessment.EditSettingsView(element, assessmentViews, data);
-        view.submissionStart("2014-01-01", "00:00");
-        view.submissionDue("2014-03-04", "00:00");
     });
 
     it("sets and loads display name", function() {
@@ -82,14 +68,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.displayName()).toEqual("");
         view.displayName("This is the name of the problem!");
         expect(view.displayName()).toEqual("This is the name of the problem!");
-    });
-
-    it("sets and loads the submission start/due dates", function() {
-        view.submissionStart("2014-04-01", "12:34");
-        expect(view.submissionStart()).toEqual("2014-04-01T12:34");
-
-        view.submissionDue("2014-05-02", "12:34");
-        expect(view.submissionDue()).toEqual("2014-05-02T12:34");
     });
 
     it("sets and loads the file upload state", function() {
@@ -124,69 +102,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.leaderboardNum()).toEqual(0);
     });
 
-    it("builds a description of enabled assessments", function() {
-        // Depends on the template having an original order
-        // of training --> peer --> self --> ai
-
-        // Disable all assessments, and expect an empty description
-        assessmentViews[PEER].isEnabled(false);
-        assessmentViews[SELF].isEnabled(false);
-        assessmentViews[TRAINING].isEnabled(false);
-        assessmentViews[STAFF].isEnabled(false);
-        expect(view.assessmentsDescription()).toEqual([]);
-
-        // Enable the first assessment only
-        assessmentViews[PEER].isEnabled(false);
-        assessmentViews[SELF].isEnabled(true);
-        assessmentViews[TRAINING].isEnabled(false);
-        expect(view.assessmentsDescription()).toEqual([
-            {
-                name: "self-assessment",
-                dummy: "Self assessment description"
-            }
-        ]);
-
-        // Enable the second assessment only
-        assessmentViews[PEER].isEnabled(true);
-        assessmentViews[SELF].isEnabled(false);
-        assessmentViews[TRAINING].isEnabled(false);
-        expect(view.assessmentsDescription()).toEqual([
-            {
-                name: "peer-assessment",
-                dummy: "Peer assessment description"
-            }
-        ]);
-
-        // Enable both assessments
-        assessmentViews[PEER].isEnabled(true);
-        assessmentViews[SELF].isEnabled(true);
-        assessmentViews[TRAINING].isEnabled(false);
-        expect(view.assessmentsDescription()).toEqual([
-            {
-                name: "peer-assessment",
-                dummy: "Peer assessment description"
-            },
-            {
-                name: "self-assessment",
-                dummy: "Self assessment description"
-            }
-        ]);
-    });
-
-    it("validates submission start datetime fields", function() {
-        testValidateDate(
-            view.startDatetimeControl,
-            "Submission start is invalid"
-        );
-    });
-
-    it("validates submission due datetime fields", function() {
-        testValidateDate(
-            view.dueDatetimeControl,
-            "Submission due is invalid"
-        );
-    });
-
     it("validates the leaderboard number field", function() {
         // Valid value for the leaderboard number
         view.leaderboardNum(0);
@@ -213,35 +128,6 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.validate()).toBe(false);
     });
 
-    it("validates assessment views", function() {
-        // Simulate one of the assessment views being invalid
-        assessmentViews[PEER].isValid = false;
-        assessmentViews[PEER].setValidationErrors(["test error"]);
-        assessmentViews[PEER].isEnabled(true);
-
-        // Expect that the parent view is also invalid
-        expect(view.validate()).toBe(false);
-        expect(view.validationErrors()).toContain("test error");
-    });
-
-    it("validates only assessments that are enabled", function() {
-        // Simulate one of the assessment views being invalid but disabled
-        assessmentViews[PEER].isValid = false;
-        assessmentViews[PEER].setValidationErrors(["test error"]);
-        assessmentViews[PEER].isEnabled(false);
-
-        // Spy on the assessment view's validate() method so we can
-        // verify that it doesn't get called (thus marking the DOM)
-        spyOn(assessmentViews[PEER], 'validate').and.callThrough();
-
-        // Expect that the parent view is still valid
-        expect(view.validate()).toBe(true);
-
-        // Check that the assessment view didn't get a chance
-        // to mark anything as invalid
-        expect(assessmentViews[PEER].validate).not.toHaveBeenCalled();
-    });
-
     it("validates file upload type and white list fields", function() {
         view.fileUploadResponseNecessity('optional', true);
 
@@ -251,6 +137,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // expect white list field is not empty when upload type is custom
         view.fileUploadType("custom");
+        view.fileTypeWhiteList('');
         expect(view.validate()).toBe(false);
         expect(view.validationErrors()).toContain('File types can not be empty.');
 
@@ -261,27 +148,35 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.validationErrors()).toContain('The following file types are not allowed: exe,app');
     });
 
+    it('shows and enables/disables extension list for preset file upload types', function() {
+        var fileTypesSelector = '#openassessment_submission_white_listed_file_types',
+            extensionBanner = '#openassessment_submission_white_listed_file_types_wrapper .extension-warning';
+
+        view.fileUploadResponseNecessity('optional', true);
+
+        // Custom uploads allow for entering extensions, and hides the note about custom uploads
+        view.fileUploadType('custom');
+        expect($(fileTypesSelector).prop('disabled')).toBe(false);
+        expect(view.isHidden($(extensionBanner))).toBe(true);
+
+        // Image/PDF uploads populate with the correct extensions, are disabled, and show a note about adding extensions
+        view.fileUploadType('image');
+        expect(view.fileTypeWhiteList()).toBe('png, jpg, gif');
+        expect($(fileTypesSelector).prop('disabled')).toBe(true);
+        expect(view.isHidden($(extensionBanner))).toBe(false);
+
+        view.fileUploadType('image-and-pdf');
+        expect(view.fileTypeWhiteList()).toBe('pdf, md');
+        expect($(fileTypesSelector).prop('disabled')).toBe(true);
+        expect(view.isHidden($(extensionBanner))).toBe(false);
+    });
+
     it("enables the teamset selector when teams are enabled, and disabled it otherwise", function() {
         view.teamsEnabled(false);
         expect(view.teamsEnabled()).toBe(false);
 
         view.teamsEnabled(true);
         expect(view.teamsEnabled()).toBe(true);
-    });
-
-    it('can hide/show elements on the page', function() {
-        var selector = $(assessmentViews[PEER].element);
-
-        // element shown by default should return hidden = false
-        expect(view.isHidden(selector)).toBe(false);
-
-        // explicitly hiding an element should return hidden = true
-        view.setHidden(selector, true);
-        expect(view.isHidden(selector)).toBe(true);
-
-        // explicitly showing an element should return hidden = false
-        view.setHidden(selector, false);
-        expect(view.isHidden(selector)).toBe(false);
     });
 
     it('hides the training, self, and peer assessment types when teams are enabled', function() {
@@ -316,20 +211,27 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(assessmentViews[STAFF].isEnabled()).toBe(true);
     });
 
-    it('treats hidden assessment types as unselected', function() {
-        // Select all assessment types
-        var allAssessmentTypes = [SELF, TRAINING, PEER, STAFF];
-        allAssessmentTypes.forEach(function(type) {
-            assessmentViews[type].isEnabled(true);
+    it('disables leaderboard and shows warnings when teams are enabled', function() {
+        var warning_selectors = [
+          '#openassessment_leaderboard_wrapper .teams-warning',
+          '#openassessment_leaderboard_wrapper .disabled-label',
+        ];
+
+        // Default config: teams are disabled, warnings are hidden and input is enabled
+        view.teamsEnabled(false);
+        expect(view.teamsEnabled()).toBe(false);
+        warning_selectors.forEach(function(selector) {
+          expect(view.isHidden($(selector))).toBe(true);
         });
+        expect($('#openassessment_leaderboard_editor').prop('disabled')).toBe(false);
 
-        expect(view.assessmentsDescription().length).toBe(4);
+        // Teams config: teams are enabled, so warnings are shown and input is disabled
+        view.teamsEnabled(true);
+        expect(view.teamsEnabled()).toBe(true);
 
-        // Hide some assessments, but leave them enabled
-        view.setHidden($(assessmentViews[SELF].element), true);
-        view.setHidden($(assessmentViews[PEER].element), true);
-
-        // "Saved" assessment types should be limited to visible types
-        expect(view.assessmentsDescription().length).toBe(2);
+        warning_selectors.forEach(function(selector) {
+          expect(view.isHidden($(selector))).toBe(false);
+        });
+        expect($('#openassessment_leaderboard_editor').prop('disabled')).toBe(true);
     });
 });

@@ -871,6 +871,51 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
+    @scenario('data/message_scenario.xml', user_id="Linda")
+    def test_cancelled(self, xblock):
+        status = 'cancelled'
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.YESTERDAY),
+            'peer-assessment': (False, None, self.YESTERDAY, self.TODAY),
+            'self-assessment': (False, None, self.YESTERDAY, self.TODAY),
+            'over-all': (False, None, self.FAR_PAST, self.TODAY)
+        }
+        has_peers_to_grade = False
+
+        expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
+        expected_context = {
+            'is_team_assignment': False,
+            'xblock_id': xblock.scope_ids.usage_id,
+        }
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
+
+    @scenario('data/message_scenario.xml', user_id="Linda")
+    def test_cancelled_team(self, xblock):
+        status = 'cancelled'
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.YESTERDAY),
+            'staff-assessment': (False, None, self.YESTERDAY, self.TOMORROW),
+            'over-all': (False, None, self.FAR_PAST, self.TOMORROW)
+        }
+        has_peers_to_grade = False
+
+        self._enable_team_assignment(xblock)
+
+        expected_path = 'openassessmentblock/message/oa_message_cancelled.html'
+        expected_context = {
+            'is_team_assignment': True,
+            'xblock_id': xblock.scope_ids.usage_id,
+        }
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
+
     @scenario('data/message_scenario_staff_assessment_only.xml', user_id="Linda")
     @ddt.data(False, True)
     def test_no_team(self, xblock, teamset_found):
@@ -882,16 +927,9 @@ class TestMessageRender(XBlockHandlerTestCase):
         }
         has_peers_to_grade = False
 
-        xblock.teams_enabled = True
-        xblock.selected_teamset_id = 'teamset_message_id'
-        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=False)
-
-        if teamset_found:
-            mock_teamset = mock.MagicMock()
-            mock_teamset.configure_mock(name='Teamset Name')
-        else:
-            mock_teamset = None
-        xblock.teamset_config = mock_teamset
+        self._enable_team_assignment(xblock, user_on_team=False)
+        if not teamset_found:
+            xblock.teamset_config = None
 
         expected_path = 'openassessmentblock/message/oa_message_no_team.html'
         expected_context = {
@@ -902,3 +940,50 @@ class TestMessageRender(XBlockHandlerTestCase):
             xblock, expected_path, expected_context,
             status, deadline_information, has_peers_to_grade
         )
+
+    @scenario('data/message_scenario_staff_assessment_only.xml', user_id="Linda")
+    @ddt.data(True, False)
+    def test_no_team_with_prior_sumbission(self, xblock, has_prior_submbission):
+        status = "staff" if has_prior_submbission else None
+        deadline_information = {
+            'submission': (False, None, self.FAR_PAST, self.FUTURE),
+            'staff-assessment': (False, None, self.FAR_PAST, self.FAR_FUTURE),
+            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE)
+        }
+        has_peers_to_grade = False
+
+        self._enable_team_assignment(xblock, user_on_team=False)
+
+        expected_context = {}
+
+        # Hide the message if the learner has already submitted
+        if has_prior_submbission:
+            expected_path = 'openassessmentblock/message/oa_message_unavailable.html'
+        else:
+            expected_path = 'openassessmentblock/message/oa_message_no_team.html'
+            expected_context['teamset_name'] = "Teamset Name"
+
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade
+        )
+
+    def _enable_team_assignment(self, xblock, user_on_team=True):
+        """
+        Enable teams for this ORA.
+
+        Args:
+            xblock - the xblock to enable teams on
+            user_on_team (boolean) - whether or not the user is on a team for this team assignment
+        """
+        xblock.teams_enabled = True
+        xblock.is_team_assignment = mock.MagicMock(return_value=True)
+
+        xblock.valid_access_to_team_assessment = mock.MagicMock(return_value=user_on_team)
+
+        xblock.selected_teamset_id = 'teamset_message_id'
+        mock_teamset = mock.MagicMock()
+        mock_teamset.configure_mock(name='Teamset Name')
+        xblock.teamset_config = mock_teamset

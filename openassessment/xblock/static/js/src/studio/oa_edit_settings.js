@@ -1,5 +1,5 @@
 /**
-Editing interface for OpenAssessment settings (including assessments).
+Editing interface for OpenAssessment settings.
 
 Args:
     element (DOM element): The DOM element representing this view.
@@ -13,30 +13,20 @@ Returns:
 OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     var self = this;
     this.settingsElement = element;
-    this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
     this.assessmentViews = assessmentViews;
-
-    // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        '#openassessment_submission_start_date',
-        '#openassessment_submission_start_time'
-    ).install();
-
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        '#openassessment_submission_due_date',
-        '#openassessment_submission_due_time'
-    ).install();
 
     new OpenAssessment.SelectControl(
         $('#openassessment_submission_file_upload_response', this.element),
         function(selectedValue) {
             var el = $('#openassessment_submission_file_upload_type_wrapper', self.element);
+            var uploadType = $('#openassessment_submission_upload_selector', self.element).val();
+
             if (!selectedValue) {
                 el.addClass('is--hidden');
             } else {
                 el.removeClass('is--hidden');
+                // trigger refresh of file upload type to load extension list
+                onFileUploadTypeChanged(uploadType);
             }
         },
         new OpenAssessment.Notifier([
@@ -46,11 +36,36 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
 
     new OpenAssessment.SelectControl(
         $('#openassessment_submission_upload_selector', this.element),
-        {'custom': $('#openassessment_submission_white_listed_file_types_wrapper', this.element)},
+        onFileUploadTypeChanged,
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener(),
         ])
     ).install();
+
+    /**
+     * When file upload type is changed, show the corresponding extensions that will be allowed for upload
+     * @param {String} selectedValue
+     */
+    function onFileUploadTypeChanged(selectedValue) {
+        var el = $('#openassessment_submission_white_listed_file_types', self.element);
+        var extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', self.element);
+
+        if (selectedValue === 'custom') {
+            // Enable the "allowed file types" field and hide the note banner
+            el.prop('disabled', false);
+            self.setHidden(extNote, true);
+        } else {
+            // Fill, but disable, the "allowed file types" field and show the note banner
+            if (selectedValue === 'image') {
+                el.val(data.ALLOWED_IMAGE_EXTENSIONS.join(', '));
+            } else if (selectedValue === 'pdf-and-image') {
+                el.val(data.ALLOWED_FILE_EXTENSIONS.join(', '));
+            }
+
+            el.prop('disabled', true);
+            self.setHidden(extNote, false);
+        }
+    }
 
     function onTeamsEnabledChange(selectedValue) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
@@ -66,6 +81,17 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             self.setHidden($(selfAssessment.element), false);
             self.setHidden($(peerAssessment.element), false);
             self.setHidden($(trainingAssessment.element), false);
+
+            if (selfAssessment.isEnabled()) {
+                self.setHidden($('#self_assessment_schedule_editor', selfAssessment.scheduleElement), false);
+            }
+            if (peerAssessment.isEnabled()) {
+                self.setHidden($('#peer_assessment_schedule_editor', peerAssessment.scheduleElement), false);
+            }
+
+            self.setHidden($('#openassessment_leaderboard_wrapper .disabled-label'), true);
+            self.setHidden($('#openassessment_leaderboard_wrapper .teams-warning'), true);
+            $('#openassessment_leaderboard_editor').prop('disabled', false);
         } else {
             self.setHidden(teamsetElement, false);
 
@@ -73,6 +99,12 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             self.setHidden($(peerAssessment.element), true);
             self.setHidden($(trainingAssessment.element), true);
 
+            self.setHidden($('#self_assessment_schedule_editor', selfAssessment.scheduleElement), true);
+            self.setHidden($('#peer_assessment_schedule_editor', peerAssessment.scheduleElement), true);
+
+            self.setHidden($('#openassessment_leaderboard_wrapper .disabled-label'), false);
+            self.setHidden($('#openassessment_leaderboard_wrapper .teams-warning'), false);
+            $('#openassessment_leaderboard_editor').prop('disabled', true);
             staffAssessment.isEnabled(true);
         }
     }
@@ -113,50 +145,10 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         }
     );
 
-    this.initializeSortableAssessments();
     onTeamsEnabledChange($('#openassessment_team_enabled_selector').val());
 };
 
 OpenAssessment.EditSettingsView.prototype = {
-
-    /**
-    Installs click listeners which initialize drag and drop functionality for assessment modules.
-    **/
-    initializeSortableAssessments: function() {
-        var view = this;
-        // Initialize Drag and Drop of Assessment Modules
-        $('#openassessment_assessment_module_settings_editors', view.element).sortable({
-            // On Start, we want to collapse all draggable items so that dragging is visually simple (no scrolling)
-            start: function(event, ui) {
-                // Hide all of the contents (not the headers) of the divs, to collapse during dragging.
-                $('.openassessment_assessment_module_editor', view.element).hide();
-
-                // Because of the way that JQuery actively resizes elements during dragging (directly setting
-                // the style property), the only way to over come it is to use an important tag ( :( ), or
-                // to tell JQuery to set the height to be Automatic (i.e. resize to the minimum nescesary size.)
-                // Because all of the information we don't want displayed is now hidden, an auto height will
-                // perform the apparent "collapse" that we are looking for in the Placeholder and Helper.
-                var targetHeight = 'auto';
-                // Shrink the blank area behind the dragged item.
-                ui.placeholder.height(targetHeight);
-                // Shrink the dragged item itself.
-                ui.helper.height(targetHeight);
-                // Update the sortable to reflect these changes.
-                $('#openassessment_assessment_module_settings_editors', view.element)
-                    .sortable('refresh').sortable('refreshPositions');
-            },
-            // On stop, we redisplay the divs to their original state
-            stop: function() {
-                $('.openassessment_assessment_module_editor', view.element).show();
-            },
-            snap: true,
-            axis: 'y',
-            handle: '.drag-handle',
-            cursorAt: {top: 20},
-        });
-        $('#openassessment_assessment_module_settings_editors .drag-handle', view.element).disableSelection();
-    },
-
     /**
     Get or set the display name of the problem.
 
@@ -170,36 +162,6 @@ OpenAssessment.EditSettingsView.prototype = {
     displayName: function(name) {
         var sel = $('#openassessment_title_editor', this.settingsElement);
         return OpenAssessment.Fields.stringField(sel, name);
-    },
-
-    /**
-    Get or set the submission start date.
-
-    Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
-        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-    Returns:
-        string (ISO-format UTC datetime)
-
-    **/
-    submissionStart: function(dateString, timeString) {
-        return this.startDatetimeControl.datetime(dateString, timeString);
-    },
-
-    /**
-    Get or set the submission end date.
-
-    Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
-        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-    Returns:
-        string (ISO-format UTC datetime)
-
-    **/
-    submissionDue: function(dateString, timeString) {
-        return this.dueDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
@@ -258,6 +220,7 @@ OpenAssessment.EditSettingsView.prototype = {
             if (uploadType !== undefined) {
                 sel.val(uploadType);
             }
+            $(sel).trigger('change');
             return sel.val();
         }
 
@@ -338,6 +301,16 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
+     * Check whether elements are hidden.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to check.
+     * @return {boolean} - True if all the elements are hidden, else false.
+     */
+    isHidden: function(selector) {
+        return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
+    },
+
+    /**
      * Hide elements, including setting the aria-hidden attribute for screen readers.
      *
      * @param {JQuery.selector} selector - The selector matching the elements to hide.
@@ -346,16 +319,6 @@ OpenAssessment.EditSettingsView.prototype = {
     setHidden: function(selector, hidden) {
         selector.toggleClass('is--hidden', hidden);
         selector.attr('aria-hidden', hidden ? 'true' : 'false');
-    },
-
-    /**
-     * Check whether elements are hidden.
-     *
-     * @param {JQuery.selector} selector - The selector matching the elements to check.
-     * @return {boolean} - True if all the elements are hidden, else false.
-     */
-    isHidden: function(selector) {
-        return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
     },
 
     /**
@@ -398,72 +361,6 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    Construct a list of enabled assessments and their properties.
-
-
-    Returns:
-        list of object literals representing the assessments.
-
-    Example usage:
-    >>> editSettingsView.assessmentsDescription()
-    [
-        {
-            name: "peer-assessment",
-            start: "2014-04-01T00:00",
-            due: null
-            must_grade: 5,
-            must_be_graded_by: 2,
-        },
-        {
-            name: "self-assessment",
-            start: null,
-            due: null
-        }
-    ]
-    **/
-    assessmentsDescription: function() {
-        var assessmentDescList = [];
-        var view = this;
-
-        // Find all assessment modules within our element in the DOM,
-        // and append their definitions to the description
-        $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each(
-            function() {
-                var asmntView = view.assessmentViews[$(this).attr('id')];
-                var isVisible = !view.isHidden($(asmntView.element));
-
-                if (asmntView.isEnabled() && isVisible) {
-                    var description = asmntView.description();
-                    description.name = asmntView.name;
-                    assessmentDescList.push(description);
-                }
-            }
-        );
-        return assessmentDescList;
-    },
-
-    /**
-    Retrieve the names of all assessments in the editor,
-    in the order that the user defined,
-    including assessments that are not currently active.
-
-    Returns:
-        list of strings
-
-    **/
-    editorAssessmentsOrder: function() {
-        var editorAssessments = [];
-        var view = this;
-        $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each(
-            function() {
-                var asmntView = view.assessmentViews[$(this).attr('id')];
-                editorAssessments.push(asmntView.name);
-            }
-        );
-        return editorAssessments;
-    },
-
-    /**
     Mark validation errors.
 
     Returns:
@@ -474,8 +371,6 @@ OpenAssessment.EditSettingsView.prototype = {
         // Validate the start and due datetime controls
         var isValid = true;
 
-        isValid = (this.startDatetimeControl.validate() && isValid);
-        isValid = (this.dueDatetimeControl.validate() && isValid);
         isValid = (this.leaderboardIntField.validate() && isValid);
         if (this.fileUploadType() === 'custom') {
             isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
@@ -486,13 +381,6 @@ OpenAssessment.EditSettingsView.prototype = {
                 this.fileTypeWhiteListInputField.set('');
             }
         }
-
-        // Validate each of the *enabled* assessment views
-        $.each(this.assessmentViews, function() {
-            if (this.isEnabled()) {
-                isValid = (this.validate() && isValid);
-            }
-        });
 
         return isValid;
     },
@@ -508,22 +396,12 @@ OpenAssessment.EditSettingsView.prototype = {
     validationErrors: function() {
         var errors = [];
 
-        if (this.startDatetimeControl.validationErrors().length > 0) {
-            errors.push('Submission start is invalid');
-        }
-        if (this.dueDatetimeControl.validationErrors().length > 0) {
-            errors.push('Submission due is invalid');
-        }
         if (this.leaderboardIntField.validationErrors().length > 0) {
             errors.push('Leaderboard number is invalid');
         }
         if (this.fileTypeWhiteListInputField.validationErrors().length > 0) {
             errors = errors.concat(this.fileTypeWhiteListInputField.validationErrors());
         }
-
-        $.each(this.assessmentViews, function() {
-            errors = errors.concat(this.validationErrors());
-        });
 
         return errors;
     },
@@ -532,12 +410,7 @@ OpenAssessment.EditSettingsView.prototype = {
     Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
-        this.startDatetimeControl.clearValidationErrors();
-        this.dueDatetimeControl.clearValidationErrors();
         this.leaderboardIntField.clearValidationErrors();
         this.fileTypeWhiteListInputField.clearValidationErrors();
-        $.each(this.assessmentViews, function() {
-            this.clearValidationErrors();
-        });
     },
 };

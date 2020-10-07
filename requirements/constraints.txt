@@ -2,7 +2,6 @@
 
 # Base dependencies
 Django<2.3                         # Stay on the latest LTS release of Django
-boto<=2.39.0                       # Constrained by edx-platform and its dependencies.
 fs<=2.0.18                         # Constrained by edx-platform
 jsonfield2<3.1.0                   # jsonfield2 3.1.0 drops support for python 3.5
 loremipsum<2.0.0
@@ -21,3 +20,22 @@ ddt==1.0.0                          # Test failures at versions > 1.0.0
 idna<2.9.0                          # moto version moto==1.3.14 requires idna<2.9.0
 fs-s3fs==0.1.8                      # Constrained by edx-platform
 wrapt==1.11.*                       # Constrained by astroid
+freezegun<=0.3.14                   # Test failures on 0.3.15
+# Moto 1.3.15 have build issues
+moto<1.3.15
+# Networkx 2.5 drops support for python 3.5
+networkx<2.5
+
+# https://github.com/edx/edx-ora2/pull/1303
+pytest==4.5.0
+pytest-cov==2.7.1
+pytest-django==3.7.0
+
+# path 13.2.0 drops support for Python 3.5
+path<13.2.0
+
+# Needed to resolve requirements between path and tox
+# path only requires >=0.5 but tox requires <2
+# path is defined in base.in so it compiles to the most recent version in base.txt, 
+#     and tox comes in in test.in 
+importlib-metadata<2

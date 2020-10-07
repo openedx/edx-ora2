@@ -366,7 +366,6 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         student_item = STUDENT_ITEM.copy()
         student_item["item_id"] = usage_id
 
-        xblock.teams_enabled = True
         xblock.is_team_assignment = Mock(return_value=True)
         anonymous_user_ids_for_team = ['Bob', 'Alice', 'Chris']
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=anonymous_user_ids_for_team)

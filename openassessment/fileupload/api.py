@@ -102,6 +102,17 @@ def can_delete_file(current_user_id, teams_enabled, key, team_id=None, shared_fi
     return True
 
 
+def delete_shared_files_for_team(course_id, item_id, team_id):
+    """
+    Delete shared files for a team for this block
+    """
+    uploads = SharedFileUpload.by_team_course_item(team_id, course_id, item_id)
+
+    for upload in uploads:
+        remove_file(upload.file_key)
+        upload.delete()
+
+
 def _safe_load_json_list(field, log_error=False):
     """
     Tries to load JSON-ified string,
@@ -224,18 +235,14 @@ class FileUploadManager:
     """
     def __init__(self, openassessment_xblock):
         self.block = openassessment_xblock
+        self.shared_uploads_for_team_by_key_cache = dict()
 
     @cached_property
     def student_item_dict(self):
         """ Returns a dict containing 'student_id', 'course_id', and 'item_id'. """
         return self.block.get_student_item_dict()
 
-    @property
-    def team_id(self):
-        """ Returns the current team_id or None. """
-        return self.block.team.team_id if self.block.has_team() else None
-
-    def get_uploads(self, include_deleted=False):
+    def get_uploads(self, team_id=None, include_deleted=False):
         """
         Returns:
             A list of FileUpload objects associated with an instance of an Open Assessment Block.
@@ -246,26 +253,26 @@ class FileUploadManager:
         user_uploads = self._file_uploads_from_list_fields(descriptions, names, sizes, include_deleted=include_deleted)
 
         if self.block.is_team_assignment():
-            return self._uploads_shared_with_team_by_current_user(user_uploads)
+            return self._uploads_shared_with_team_by_current_user(user_uploads, team_id)
 
         return user_uploads
 
-    def get_team_uploads(self):
+    def get_team_uploads(self, team_id=None):
         if self.block.is_team_assignment():
-            return self._uploads_owned_by_teammates()
+            return self._uploads_owned_by_teammates(team_id)
         return []
 
-    def _uploads_shared_with_team_by_current_user(self, user_uploads):
+    def _uploads_shared_with_team_by_current_user(self, user_uploads, team_id):
         """
         Helper function that filters a given list of ``user_uploads``
         down to those ``FileUploads`` that are owned by the current user
-        **and** the current user's current team (if any).
+        **and** the given team
         """
         jointly_owned_uploads = []
 
         for upload in user_uploads:
             shared_upload = self.shared_uploads_for_student_by_key.get(upload.key)
-            if shared_upload and (shared_upload.team_id == self.team_id):
+            if shared_upload and (shared_upload.team_id == team_id):
                 jointly_owned_uploads.append(upload)
             elif not upload.exists:
                 # we should return entries for deleted files, here,
@@ -274,15 +281,15 @@ class FileUploadManager:
 
         return jointly_owned_uploads
 
-    def _uploads_owned_by_teammates(self):
+    def _uploads_owned_by_teammates(self, team_id):
         """
-        Returns a list of FileUpload objects owned by other members of the team.
+        Returns a list of FileUpload objects owned by other members of the given team.
         Does not include FileUploads of the current user.
         """
         shared_uploads_from_other_users = sorted(
             [
                 shared_upload
-                for shared_upload in self.shared_uploads_for_team_by_key.values()
+                for shared_upload in self.shared_uploads_for_team_by_key(team_id).values()
                 if shared_upload.owner_id != self.student_item_dict['student_id']
             ],
             key=lambda upload: upload.file_key,
@@ -300,22 +307,23 @@ class FileUploadManager:
             ) for shared_upload in shared_uploads_from_other_users
         ]
 
-    def file_descriptor_tuples(self, include_deleted=False):
+    def file_descriptors(self, team_id=None, include_deleted=False):
         """
-        Used in the response template context to provide a (file URL, description, name, show_delete_button boolean)
-        for each uploaded file in this block to render in the client.
+        Used in the response template context to provide file information
+        (file URL, description, name, show_delete_button) for each uploaded
+        file in this block.
+
         If self.block is team-enabled, this will return only entries for files
-        that have been shared with the block's current user's team.
+        that have been shared with the specified team
         """
-        team_id = self.block.team.team_id if self.block.has_team() else None
 
         descriptors = []
 
-        for upload in self.get_uploads(include_deleted=include_deleted):
+        for upload in self.get_uploads(team_id=team_id, include_deleted=include_deleted):
             show_delete_button = bool(upload.exists)
 
             if upload.exists and self.block.is_team_assignment():
-                shared_upload = self.shared_uploads_for_team_by_key[upload.key]
+                shared_upload = self.shared_uploads_for_team_by_key(team_id)[upload.key]
                 show_delete_button = can_delete_file(
                     self.student_item_dict['student_id'],
                     self.block.is_team_assignment(),
@@ -329,11 +337,11 @@ class FileUploadManager:
                 description=upload.description,
                 name=upload.name,
                 show_delete_button=show_delete_button,
-            ))
+            )._asdict())
 
         return descriptors
 
-    def team_file_descriptor_tuples(self):
+    def team_file_descriptors(self, team_id=None):
         """
         Returns the list of TeamFileDescriptors owned by other team members
         shown to a user when self.block is a team assignment.
@@ -344,8 +352,8 @@ class FileUploadManager:
                 description=upload.description,
                 name=upload.name,
                 uploaded_by=self.block.get_username(upload.student_id)
-            )
-            for upload in self.get_team_uploads()
+            )._asdict()
+            for upload in self.get_team_uploads(team_id=team_id)
         ]
 
     @cached_property
@@ -357,18 +365,24 @@ class FileUploadManager:
         shared_uploads = SharedFileUpload.by_student_course_item(**self.student_item_dict)
         return {shared_upload.file_key: shared_upload for shared_upload in shared_uploads}
 
-    @cached_property
-    def shared_uploads_for_team_by_key(self):
+    def shared_uploads_for_team_by_key(self, team_id):
         """
         Returns **and caches** all of the SharedFileUpload records
-        for this student/course/item.
+        for this student/course/item and team.
+
+        Realistically, only one team_id will ever be requested, but this is a simple enough pattern
         """
-        shared_uploads = SharedFileUpload.by_team_course_item(
-            team_id=self.team_id,
-            course_id=self.student_item_dict['course_id'],
-            item_id=self.student_item_dict['item_id'],
-        )
-        return {shared_upload.file_key: shared_upload for shared_upload in shared_uploads}
+        if team_id not in self.shared_uploads_for_team_by_key_cache:
+            shared_uploads = SharedFileUpload.by_team_course_item(
+                team_id=team_id,
+                course_id=self.student_item_dict['course_id'],
+                item_id=self.student_item_dict['item_id'],
+            )
+            shared_uploads_for_team_by_key = {
+                shared_upload.file_key: shared_upload for shared_upload in shared_uploads
+            }
+            self.shared_uploads_for_team_by_key_cache[team_id] = shared_uploads_for_team_by_key
+        return self.shared_uploads_for_team_by_key_cache[team_id]
 
     def invalidate_cached_shared_file_dicts(self):
         """
@@ -377,8 +391,7 @@ class FileUploadManager:
         if hasattr(self, 'shared_uploads_for_student_by_key'):
             del self.shared_uploads_for_student_by_key
 
-        if hasattr(self, 'shared_uploads_for_team_by_key'):
-            del self.shared_uploads_for_team_by_key
+        self.shared_uploads_for_team_by_key_cache = dict()
 
     def append_uploads(self, *new_uploads):
         """

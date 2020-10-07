@@ -90,6 +90,8 @@ class StudioMixin:
             js_bytes = pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js")
             fragment.add_javascript(js_bytes.decode('utf-8'))
         js_context_dict = {
+            "ALLOWED_IMAGE_EXTENSIONS": self.ALLOWED_IMAGE_EXTENSIONS,
+            "ALLOWED_FILE_EXTENSIONS": self.ALLOWED_FILE_EXTENSIONS,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
         }
         fragment.initialize_js('OpenAssessmentEditor', js_context_dict)
@@ -138,6 +140,10 @@ class StudioMixin:
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
         course_id = self.location.course_key if hasattr(self, 'location') else None
 
+        # If allowed file types haven't been explicitly set, load from a preset
+        white_listed_file_types = self.get_allowed_file_types_or_preset()
+        white_listed_file_types_string = ','.join(white_listed_file_types) if white_listed_file_types else ''
+
         return {
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
@@ -152,8 +158,8 @@ class StudioMixin:
             'file_upload_response': self.file_upload_response if self.file_upload_response else '',
             'necessity_options': self.NECESSITY_OPTIONS,
             'file_upload_type': self.file_upload_type,
-            'white_listed_file_types': self.white_listed_file_types_string,
             'allow_multiple_files': self.allow_multiple_files,
+            'white_listed_file_types': white_listed_file_types_string,
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [

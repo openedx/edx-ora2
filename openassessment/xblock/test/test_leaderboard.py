@@ -13,9 +13,8 @@ import mock
 from django.core.cache import cache
 from django.test.utils import override_settings
 
-import boto
-from boto.s3.key import Key
-from moto import mock_s3_deprecated
+import boto3
+from moto import mock_s3
 from submissions import api as sub_api
 from openassessment.fileupload import api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
@@ -140,7 +139,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {'score': 1, 'files': []}
         ])
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -149,8 +148,8 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
     @scenario('data/leaderboard_show.xml')
     def test_non_text_submission(self, xblock):
         # Create a mock bucket
-        conn = boto.connect_s3()
-        conn.create_bucket('mybucket')
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
         # Create a non-text submission (the submission dict doesn't contain 'text')
         api.get_download_url('s3key')
         self._create_submissions_and_scores(xblock, [('s3key', 1)], submission_key='file_key')
@@ -160,7 +159,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {'score': 1, 'files': [], 'submission': ''}
         ])
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -173,14 +172,22 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         file_keys = ['foo', 'bar']
         file_descriptions = ['{}-description'.format(file_key) for file_key in file_keys]
-        file_names = ['{}-file_name'.format(file_key) for file_key in file_keys]
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
+        files_names = ['{}-file_name'.format(file_key) for file_key in file_keys]
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket="mybucket")
         for file_key in file_keys:
-            key = Key(bucket, 'submissions_attachments/{}'.format(file_key))
-            key.set_contents_from_string("How d'ya do?")
+            conn.put_object(
+                Bucket="mybucket",
+                Key="submissions_attachments/{}".format(file_key),
+                Body=b"How d'ya do?",
+            )
             files_url_and_description = [
-                (api.get_download_url(file_key), file_descriptions[idx], file_names[idx], False)
+                {
+                    'download_url': api.get_download_url(file_key),
+                    'description': file_descriptions[idx],
+                    'name': files_names[idx],
+                    'show_delete_button': False
+                }
                 for idx, file_key in enumerate(file_keys)
             ]
 
@@ -188,7 +195,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_keys'] = file_keys
         submission[u'files_descriptions'] = file_descriptions
-        submission[u'files_name'] = file_names
+        submission[u'files_names'] = files_names
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])
@@ -200,7 +207,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             )}
         ])
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
@@ -212,12 +219,22 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         Tests that text and image submission works as expected
         """
         # Create a file and get the download URL
-        conn = boto.connect_s3()
-        bucket = conn.create_bucket('mybucket')
-        key = Key(bucket, 'submissions_attachments/foo')
-        key.set_contents_from_string("How d'ya do?")
+        conn = boto3.client("s3")
+        conn.create_bucket(Bucket='mybucket')
+        conn.put_object(
+            Bucket="mybucket",
+            Key="submissions_attachments/foo",
+            Body=b"How d'ya do?",
+        )
 
-        file_download_url = [(api.get_download_url('foo'), '', '', False)]
+        file_download_url = [
+            {
+                'download_url': api.get_download_url('foo'),
+                'description': '',
+                'name': '',
+                'show_delete_button': False
+            }
+        ]
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
         submission[u'file_key'] = 'foo'
@@ -350,6 +367,9 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         for score in scores:
             if score.get('files'):
                 score['files'] = [
-                    (_clean_query_string(file_info[0]), file_info[1]) for file_info in score['files']
+                    {
+                        'download_url': _clean_query_string(file_info['download_url']),
+                        'description': file_info['description']
+                    } for file_info in score['files']
                 ]
         return scores

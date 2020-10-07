@@ -1,0 +1,73 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+<div id="oa_schedule_editor_wrapper" class="oa_editor_content_wrapper wrapper-comp-settings">
+    <p class="openassessment_schedule_setting_header">{% trans "Course Deadlines" %}</p>
+
+    <ul class="list-input settings-list">
+        <li class="field comp-setting-entry">
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_start_date"
+                    class="setting-label">
+                    {% trans "Response Start Date" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_start_date"
+                    value="{{ submission_start|utc|date:"Y-m-d" }}"
+                >
+            </div>
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_start_time"
+                    class="setting-label">
+                    {% trans "Response Start Time" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_start_time"
+                    value="{{ submission_start|utc|date:"H:i" }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "The date and time when learners can begin submitting responses." %}</p>
+        </li>
+
+        <li class="field comp-setting-entry">
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_due_date"
+                    class="setting-label">
+                    {% trans "Response Due Date" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_due_date"
+                    value="{{ submission_due|utc|date:"Y-m-d" }}"
+                >
+            </div>
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_due_time"
+                    class="setting-label">
+                    {% trans "Response Due Time" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_due_time"
+                    value="{{ submission_due|utc|date:"H:i" }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "The date and time when learners can no longer submit responses." %}</p>
+        </li>
+
+        {% include "openassessmentblock/edit/oa_edit_peer_assessment_schedule.html" %}
+
+        {% include "openassessmentblock/edit/oa_edit_self_assessment_schedule.html" %}
+    </ul>
+</div>
+{% endspaceless %}
