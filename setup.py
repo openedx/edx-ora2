@@ -62,6 +62,20 @@ setup(
     entry_points={
         'xblock.v1': [
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
+        ],
+        'lms.djangoapp': [
+            'openassessment = openassessment.apps:OraConfig',
+            'openassessment_fileupload = openassessment.fileupload.apps:OraFileuploadConfig',
+            'openassessment_workflow = openassessment.workflow.apps:OraWorkflowConfig',
+            'openassessment_assessment = openassessment.assessment.apps:OraAssessmentConfig',
+            'openassessment_xblock = openassessment.xblock.apps:OraXblockConfig',
+        ],
+        'cms.djangoapp': [
+            'openassessment = openassessment.apps:OraConfig',
+            'openassessment_fileupload = openassessment.fileupload.apps:OraFileuploadConfig',
+            'openassessment_workflow = openassessment.workflow.apps:OraWorkflowConfig',
+            'openassessment_assessment = openassessment.assessment.apps:OraAssessmentConfig',
+            'openassessment_xblock = openassessment.xblock.apps:OraXblockConfig',
         ]
     },
 )
