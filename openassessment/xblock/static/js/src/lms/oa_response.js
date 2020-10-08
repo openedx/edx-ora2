@@ -886,7 +886,8 @@ OpenAssessment.ResponseView.prototype = {
         var sel = $('.step--response', this.element);
         var handleError = function(errMsg) {
             view.baseView.toggleActionError('upload', errMsg);
-            sel.find('.file__upload').prop('disabled', false);
+            sel.find('button.file__upload').prop('disabled', false);
+            sel.find('input.file--upload').val(null);
         };
 
         // Call getUploadUrl to get the one-time upload URL for this file. Once
