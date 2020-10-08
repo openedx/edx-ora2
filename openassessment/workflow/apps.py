@@ -14,6 +14,7 @@ class OraWorkflowConfig(AppConfig):
     """
 
     name = 'openassessment.workflow'
+    label = "workflow"
     app_label = "workflow"
 
     plugin_app = {}

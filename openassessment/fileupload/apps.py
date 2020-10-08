@@ -14,6 +14,8 @@ class OraFileuploadConfig(AppConfig):
     """
 
     name = 'openassessment.fileupload'
+    label = "openassessment.fileupload"
+    app_label = "openassessment.fileupload"
 
     plugin_app = {
         'url_config': {
