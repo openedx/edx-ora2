@@ -239,7 +239,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             resp['url']
         )
 
-    @mock_s3_deprecated
+    @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
