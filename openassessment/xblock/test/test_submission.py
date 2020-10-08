@@ -699,6 +699,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'text_response': 'required',
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'allow_multiple_files': True,
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ("", "")
@@ -1268,6 +1269,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'text_response': 'required',
                 'file_upload_response': None,
+                'allow_multiple_files': True,
                 'file_upload_type': None,
                 'allow_latex': False,
                 # date listed in xml scenario.
@@ -1598,6 +1600,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'user_timezone': None,
                 'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
                 'file_upload_response': None,
+                'allow_multiple_files': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'file_upload_type': None,
                 'submit_enabled': False,
@@ -1623,6 +1626,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'text_response': 'required',
                 'file_upload_response': 'optional',
+                'allow_multiple_files': True,
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [],
                 'team_file_urls': [],
