@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"POT-Creation-Date: 2020-10-09 09:59-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -126,6 +126,37 @@ msgstr ""
 "réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Allow Multiple Files"
+msgstr "Àllöw Mültïplé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "False"
+msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "True"
+msgstr "Trüé Ⱡ'σяєм ι#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Specify whether learners can upload more than one file. Has no effect if "
+"File Uploads Response is None. Set to True automatically for Team "
+"Assignments. "
+msgstr ""
+"Spéçïfý whéthér léärnérs çän üplöäd möré thän öné fïlé. Häs nö éfféçt ïf "
+"Fïlé Ûplöäds Réspönsé ïs Nöné. Sét tö Trüé äütömätïçällý för Téäm "
+"Àssïgnménts.  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂"
+" ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ "
+"мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ "
+"єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє "
+"νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "File Upload Types"
 msgstr "Fïlé Ûplöäd Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
@@ -171,16 +202,6 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Allow LaTeX Responses"
 msgstr "Àllöw LäTéX Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "False"
-msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-msgid "True"
-msgstr "Trüé Ⱡ'σяєм ι#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "Specify whether learners can write LaTeX formatted strings"
@@ -1651,6 +1672,12 @@ msgid "We could not delete files"
 msgstr "Wé çöüld nöt délété fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "Select one or more files to upload for this submission."
+msgstr ""
+"Séléçt öné ör möré fïlés tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Select a file to upload for this submission."
 msgstr ""
 "Séléçt ä fïlé tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
@@ -1663,6 +1690,10 @@ msgstr "Süppörtéd fïlé týpés:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Upload files"
 msgstr "Ûplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "Upload file"
+msgstr "Ûplöäd fïlé Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "You may continue to work on your response until you submit it."
@@ -2996,6 +3027,12 @@ msgid "There was an error uploading your file."
 msgstr ""
 "Théré wäs än érrör üplöädïng ýöür fïlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
+
+#: openassessment/xblock/submission_mixin.py
+msgid "Only a single file upload is allowed for this assessment."
+msgstr ""
+"Önlý ä sïnglé fïlé üplöäd ïs ällöwéd för thïs ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/xblock/submission_mixin.py
 msgid ""
