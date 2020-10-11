@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-16 13:36-0400\n"
-"PO-Revision-Date: 2020-09-25 12:22+0000\n"
+"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"PO-Revision-Date: 2020-10-09 13:03+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -125,71 +125,73 @@ msgstr "Özel Dosya Türleri"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
 msgid ""
-"Specify whether learners can submit files along with their text responses. "
-"Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
-" PDF files and images. Select Custom File Types to allow files with "
-"extensions that you specify below. (Use the Select Custom File Types option "
-"with caution.)"
-msgstr "Öğrencilerin dosyaları kendi metin yanıtlarıyla yükleyip yüklemeyeceğini belirleyin. JPG, GIF veya PNG dosyalarına izin vermek için görselleri seçin. PDF dosyalarına ve görsellere izin vermek için PDF veya görsel seçin. Aşağıda belirlediğiniz uzantılı dosyalara izin vermek için Özel Yapılmış Dosya Türleri'ni seçin. (Bu seçeneği dikkatli kullanın.)"
+"Specify whether learners can submit files along with their text responses."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:49
 msgid "File Types"
 msgstr " Dosya Türleri"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:57
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "Öğrencilerin yüklemesinin mümkün olmasını istediğiniz dosya uzantılarını virgülle ayırarak girin. Örneğin: pdf,doc,docx."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:65
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:63
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
 msgid "Allow LaTeX Responses"
 msgstr "LaTeX Yanıtlarına İzin Ver"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:105
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:72
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
 msgid "False"
 msgstr "Yanlış"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:68
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:73
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:111
 msgid "True"
 msgstr "Doğru"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "Öğrencilerin LaTeX formatlı dizileri düzenleyip düzenleyemeyeceğini belirle"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:81
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
 msgstr "En İyi Yanıtlar"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:78
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:83
 msgid " (Disabled)"
-msgstr ""
+msgstr "(Devre dışı)"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
 msgstr "Görüntülemek için üst puanlama yanıtlarının sayısını belirtiniz. Geçerli sayılar 0'dan 99'a kadar. Eğer sayı 0 ise, En İyi Yanıtlar bölümü öğrencilere görünmez."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:101
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:103
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:108
 msgid "Teams Enabled"
 msgstr "Takımlar Etkin"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
 msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:120
 msgid "Select Team-Set"
 msgstr ""
 
@@ -527,7 +529,7 @@ msgstr "Cevap Puanı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:27
 msgid "Response"
-msgstr "Cevap"
+msgstr "Yanıt"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
@@ -597,7 +599,7 @@ msgstr "\n                                             %(points_possible)s üzer
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
 #: openassessment/templates/openassessmentblock/response/oa_response.html:29
 msgid "Your Response"
-msgstr "Cevabınız"
+msgstr "Yanıtınız"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
 msgid "Your Upload"
@@ -1197,16 +1199,16 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:153
 msgid "Team Response "
-msgstr ""
+msgstr "Takım Yanıtı"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid "Your Response "
-msgstr ""
+msgstr "Yanıtınız"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:159
 #: openassessment/templates/openassessmentblock/response/oa_response.html:228
 msgid "(Required)"
-msgstr ""
+msgstr "(Gerekli)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:161
 #: openassessment/templates/openassessmentblock/response/oa_response.html:230
@@ -1254,73 +1256,77 @@ msgstr "Yükleme Durumunuz"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:226
 msgid "File Uploads "
-msgstr ""
+msgstr "Dosya Yüklemeleri"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:233
+#: openassessment/templates/openassessmentblock/response/oa_response.html:234
 msgid ""
 "\n"
-"                            Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
-"                            descriptions to your files to help your teammates identify them.\n"
-"                          "
+"                                Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                descriptions to your files to help your teammates identify them.\n"
+"                            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:240
+#: openassessment/templates/openassessmentblock/response/oa_response.html:242
 msgid "We could not upload files"
 msgstr "Dosyaları yükleyemedik"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:246
+#: openassessment/templates/openassessmentblock/response/oa_response.html:248
 msgid "We could not delete files"
 msgstr "Dosyaları silemedik"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:250
+#: openassessment/templates/openassessmentblock/response/oa_response.html:252
 msgid "Select a file to upload for this submission."
 msgstr "Bu gönderi için yüklemek istediğiniz dosyayı seçiniz."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:252
+#: openassessment/templates/openassessmentblock/response/oa_response.html:255
+msgid "Supported file types: "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:257
 msgid "Upload files"
 msgstr "Dosyaları yükle"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:266
+#: openassessment/templates/openassessmentblock/response/oa_response.html:271
 msgid "You may continue to work on your response until you submit it."
 msgstr "Gönderene kadar cevabınızın üzerinde çalışmaya devam edebilirsiniz."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:272
+#: openassessment/templates/openassessmentblock/response/oa_response.html:277
 msgid "This is a team submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:274
+#: openassessment/templates/openassessmentblock/response/oa_response.html:279
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:276
+#: openassessment/templates/openassessmentblock/response/oa_response.html:281
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+#: openassessment/templates/openassessmentblock/response/oa_response.html:283
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:280
+#: openassessment/templates/openassessmentblock/response/oa_response.html:285
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:282
+#: openassessment/templates/openassessmentblock/response/oa_response.html:287
 msgid ""
 "\n"
 "                Learn more about team assignments here: (<a href=\"\" >link</a>)\n"
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:290
+#: openassessment/templates/openassessmentblock/response/oa_response.html:295
 msgid "We could not submit your response"
 msgstr "Cevabınızı gönderemiyoruz."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:300
+#: openassessment/templates/openassessmentblock/response/oa_response.html:305
 msgid "Submit your response and move to the next step"
 msgstr "Cevabınızı gönderin ve bir sonraki adıma ilerleyin"
 
@@ -1379,7 +1385,7 @@ msgstr "Tamamlanmış"
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
-msgstr "Cevabınız"
+msgstr "Yanıtınız"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:54
@@ -1480,7 +1486,7 @@ msgstr "Bireysel Öğrencileri Yönet"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:10
 msgid "Manage Team Responses"
-msgstr ""
+msgstr "Takım Yanıtlarını Yönet"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:61
@@ -1495,7 +1501,7 @@ msgstr "Kapat"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:27
 msgid "Manage Teams"
-msgstr ""
+msgstr "Takımları Yönet"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:40
 msgid "Enter an individual learner's username or email"
@@ -1503,7 +1509,7 @@ msgstr "Öğrencilerin bireysel kullanıcı adı veya e-postasını girin."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
 msgid "Enter a team member's username or edX email"
-msgstr ""
+msgstr "Bir takım üyesinin kullanıcı adı ya da edX e-postasını girin"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:46
 msgid "Submit"
@@ -1614,7 +1620,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 msgid "Team Response"
-msgstr ""
+msgstr "Takım Yanıtı"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
@@ -2149,7 +2155,7 @@ msgstr "Gönderimi kaldırmak için geçerli bir sebep girin."
 
 #: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
-msgstr ""
+msgstr "Gönderim bulunamadı"
 
 #: openassessment/xblock/staff_area_mixin.py:562
 msgid "Submission for team assignment has no associated team submission"
@@ -2181,7 +2187,7 @@ msgstr "Personel değerlendirmeniz gönderilemedi."
 #: openassessment/xblock/staff_assessment_mixin.py:116
 #: openassessment/xblock/staff_assessment_mixin.py:123
 msgid "Your team assessment could not be submitted."
-msgstr ""
+msgstr "Takım değerlendirmeniz gönderilemedi."
 
 #: openassessment/xblock/staff_assessment_mixin.py:175
 msgid "Waiting for a Staff Grade"
@@ -2217,97 +2223,87 @@ msgstr "seçilmiş_seçenekler sözlük olmalıdır"
 msgid "Your scores could not be checked."
 msgstr "Sonuçlarınız kontrol edilemedi."
 
-#: openassessment/xblock/studio_mixin.py:193
-#: openassessment/xblock/studio_mixin.py:205
+#: openassessment/xblock/studio_mixin.py:199
+#: openassessment/xblock/studio_mixin.py:211
 msgid "Error updating XBlock configuration"
 msgstr "XBlock yapılandırması güncellenirken hata"
 
-#: openassessment/xblock/studio_mixin.py:208
+#: openassessment/xblock/studio_mixin.py:214
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:211
+#: openassessment/xblock/studio_mixin.py:217
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:214
+#: openassessment/xblock/studio_mixin.py:220
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:238
+#: openassessment/xblock/studio_mixin.py:244
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Doğrulama hatası: {error}"
 
-#: openassessment/xblock/studio_mixin.py:266
+#: openassessment/xblock/studio_mixin.py:272
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock başarıyla yüklendi."
 
-#: openassessment/xblock/submission_mixin.py:98
+#: openassessment/xblock/submission_mixin.py:113
 msgid "\"submission\" required to submit answer."
 msgstr "Cevap göndermek için \"gönderim\" gereklidir."
 
-#: openassessment/xblock/submission_mixin.py:119
+#: openassessment/xblock/submission_mixin.py:134
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Cevap göndermek için, bu bileşeni Ön İzleme ve ya Canlı modda görüntüle."
 
-#: openassessment/xblock/submission_mixin.py:125
+#: openassessment/xblock/submission_mixin.py:140
 msgid "Multiple submissions are not allowed."
 msgstr "Çoklu gönderimlere izin verilmez."
 
-#: openassessment/xblock/submission_mixin.py:169
+#: openassessment/xblock/submission_mixin.py:184
 msgid "API returned unclassified exception."
 msgstr "API sınıflandırılmamiş ayrıcalık döndürdü."
 
-#: openassessment/xblock/submission_mixin.py:220
+#: openassessment/xblock/submission_mixin.py:235
 msgid "This response could not be saved."
 msgstr "Bu cevap kaydedilemedi."
 
-#: openassessment/xblock/submission_mixin.py:224
+#: openassessment/xblock/submission_mixin.py:239
 msgid "This response was not submitted."
 msgstr "Bu cevap gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:240
+#: openassessment/xblock/submission_mixin.py:255
 msgid "Files descriptions were not submitted."
 msgstr "Dosya açıklamaları gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:277
+#: openassessment/xblock/submission_mixin.py:292
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:400
+#: openassessment/xblock/submission_mixin.py:415
 msgid "There was an error uploading your file."
 msgstr "Dosyanızı yüklerken hata oluştu."
 
-#: openassessment/xblock/submission_mixin.py:409
-msgid "Content type must be GIF, PNG or JPG."
-msgstr "İçerik tipi, GIF, PNG veya JPG olmalıdır. "
+#: openassessment/xblock/submission_mixin.py:424
+msgid ""
+"File upload failed: unsupported file type.Only the supported file types can "
+"be uploaded.If you have questions, please reach out to the course team."
+msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:412
-msgid "Content type must be PDF, GIF, PNG or JPG."
-msgstr "İçerik tipi PDF, GIF, PNG veya JPG olmalıdır. "
-
-#: openassessment/xblock/submission_mixin.py:415
-msgid "File type must be one of the following types: {}"
-msgstr "Dosya tipi şunlardan biri olmalıdır: {}"
-
-#: openassessment/xblock/submission_mixin.py:419
-msgid "File type is not allowed."
-msgstr "Dosya türüne izin verilmiyor."
-
-#: openassessment/xblock/submission_mixin.py:426
+#: openassessment/xblock/submission_mixin.py:437
 msgid "Error retrieving upload URL."
 msgstr "URL yükleme alırken hata"
 
-#: openassessment/xblock/submission_mixin.py:686
+#: openassessment/xblock/submission_mixin.py:718
 msgid "This response has been saved but not submitted."
 msgstr "Bu cevap kaydedildi, ancak gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:687
+#: openassessment/xblock/submission_mixin.py:719
 msgid "This response has not been saved."
 msgstr "Bu cevap kaydedilmedi."
 
