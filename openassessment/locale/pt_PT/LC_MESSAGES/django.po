@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-16 13:36-0400\n"
-"PO-Revision-Date: 2020-09-18 06:16+0000\n"
-"Last-Translator: Developer QUEO <developer@queo.pt>\n"
+"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"PO-Revision-Date: 2020-10-07 06:16+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -121,71 +121,73 @@ msgstr "Tipos de Ficheiro Personalizados"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
 msgid ""
-"Specify whether learners can submit files along with their text responses. "
-"Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
-" PDF files and images. Select Custom File Types to allow files with "
-"extensions that you specify below. (Use the Select Custom File Types option "
-"with caution.)"
-msgstr "Especifique se os estudantes podem enviar ficheiros anexados às suas respostas de texto. Selecione a opção Imagens para permitir ficheiros JPG, GIF ou PNG. Selecione a opção PDF ou imagens para permitir ficheiros em PDF e imagens. Selecione tipos de ficheiros personalizados para permitir o carregamento de ficheiros com extensões especificadas abaixo. (Utilize a opção Selecionar Tipos de Ficheiro Personalizados com atenção.)"
+"Specify whether learners can submit files along with their text responses."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:49
 msgid "File Types"
 msgstr "Tipos de Ficheiros"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:57
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "Determine as extensões de ficheiro, separadas por vírgulas, que pretende que os trabalhos dos estudantes sejam carregados. Por exemplo: PDF, Doc, docx."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:65
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:63
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
 msgid "Allow LaTeX Responses"
 msgstr "Permitir respostas LaTeX"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:105
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:72
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
 msgid "False"
 msgstr "Falso"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:68
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:73
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:111
 msgid "True"
 msgstr "Verdadeiro"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "Especifique se os estudantes podem escrever sequências de caracteres formatados LaTeX"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:81
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
 msgstr "Respostas com Pontuação mais Elevada"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:78
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:83
 msgid " (Disabled)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
 msgstr "Especifique o número com respostas com pontuação mais elevada. Os números válidos estão compreendidos entre 0 e 99. Se o número for 0, a seção 'Respostas com Pontuação mais Elevada' não será visível para os estudantes."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:101
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:103
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:108
 msgid "Teams Enabled"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
 msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:120
 msgid "Select Team-Set"
 msgstr ""
 
@@ -1252,71 +1254,75 @@ msgstr "O seu Estado de Envio"
 msgid "File Uploads "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:233
+#: openassessment/templates/openassessmentblock/response/oa_response.html:234
 msgid ""
 "\n"
-"                            Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
-"                            descriptions to your files to help your teammates identify them.\n"
-"                          "
+"                                Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                descriptions to your files to help your teammates identify them.\n"
+"                            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:240
+#: openassessment/templates/openassessmentblock/response/oa_response.html:242
 msgid "We could not upload files"
 msgstr "Não foi possível carregar os ficheiros"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:246
+#: openassessment/templates/openassessmentblock/response/oa_response.html:248
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:250
+#: openassessment/templates/openassessmentblock/response/oa_response.html:252
 msgid "Select a file to upload for this submission."
 msgstr "Selecione um ficheiro para carregar e enviar."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:252
+#: openassessment/templates/openassessmentblock/response/oa_response.html:255
+msgid "Supported file types: "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:257
 msgid "Upload files"
 msgstr "Ficheiros carregados"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:266
+#: openassessment/templates/openassessmentblock/response/oa_response.html:271
 msgid "You may continue to work on your response until you submit it."
 msgstr "Poderá continuar a trabalhar na sua resposta até que a possa enviar."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:272
+#: openassessment/templates/openassessmentblock/response/oa_response.html:277
 msgid "This is a team submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:274
+#: openassessment/templates/openassessmentblock/response/oa_response.html:279
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:276
+#: openassessment/templates/openassessmentblock/response/oa_response.html:281
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+#: openassessment/templates/openassessmentblock/response/oa_response.html:283
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:280
+#: openassessment/templates/openassessmentblock/response/oa_response.html:285
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:282
+#: openassessment/templates/openassessmentblock/response/oa_response.html:287
 msgid ""
 "\n"
 "                Learn more about team assignments here: (<a href=\"\" >link</a>)\n"
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:290
+#: openassessment/templates/openassessmentblock/response/oa_response.html:295
 msgid "We could not submit your response"
 msgstr "Não foi possível submeter a sua resposta"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:300
+#: openassessment/templates/openassessmentblock/response/oa_response.html:305
 msgid "Submit your response and move to the next step"
 msgstr "Envie sua resposta e transfira-a para a próxima etapa"
 
@@ -2213,97 +2219,87 @@ msgstr "options_selected deve ser um dicionário"
 msgid "Your scores could not be checked."
 msgstr "A suas pontuações não puderam ser validadas."
 
-#: openassessment/xblock/studio_mixin.py:193
-#: openassessment/xblock/studio_mixin.py:205
+#: openassessment/xblock/studio_mixin.py:199
+#: openassessment/xblock/studio_mixin.py:211
 msgid "Error updating XBlock configuration"
 msgstr "Erro ao atualizar a configuração do XBlock"
 
-#: openassessment/xblock/studio_mixin.py:208
+#: openassessment/xblock/studio_mixin.py:214
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr "Erro: ambas as respostas de texto e de envio do ficheiro não podem ser desativadas"
 
-#: openassessment/xblock/studio_mixin.py:211
+#: openassessment/xblock/studio_mixin.py:217
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr "Erro: no caso da resposta de texto estar desativada, deve ser obrigatória a resposta envio do ficheiro "
 
-#: openassessment/xblock/studio_mixin.py:214
+#: openassessment/xblock/studio_mixin.py:220
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr "Erro: no caso da resposta ao envio do ficheiro estar desativada, deve ser obrigatória uma resposta de texto "
 
-#: openassessment/xblock/studio_mixin.py:238
+#: openassessment/xblock/studio_mixin.py:244
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Erro de validação: {error}"
 
-#: openassessment/xblock/studio_mixin.py:266
+#: openassessment/xblock/studio_mixin.py:272
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Atualização bem-sucedida do OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:98
+#: openassessment/xblock/submission_mixin.py:113
 msgid "\"submission\" required to submit answer."
 msgstr "\"submissão\" exigida para enviar a resposta."
 
-#: openassessment/xblock/submission_mixin.py:119
+#: openassessment/xblock/submission_mixin.py:134
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Para enviar uma resposta, exiba este componente em modo Pré-visualização ou Tempo Real."
 
-#: openassessment/xblock/submission_mixin.py:125
+#: openassessment/xblock/submission_mixin.py:140
 msgid "Multiple submissions are not allowed."
 msgstr "Várias submissões não são permitidas."
 
-#: openassessment/xblock/submission_mixin.py:169
+#: openassessment/xblock/submission_mixin.py:184
 msgid "API returned unclassified exception."
 msgstr "API retornou uma exceção sem classificação."
 
-#: openassessment/xblock/submission_mixin.py:220
+#: openassessment/xblock/submission_mixin.py:235
 msgid "This response could not be saved."
 msgstr "Esta resposta não pode ser guardada."
 
-#: openassessment/xblock/submission_mixin.py:224
+#: openassessment/xblock/submission_mixin.py:239
 msgid "This response was not submitted."
 msgstr "Esta resposta não pode ser submetida."
 
-#: openassessment/xblock/submission_mixin.py:240
+#: openassessment/xblock/submission_mixin.py:255
 msgid "Files descriptions were not submitted."
 msgstr "As descrições dos ficheiros não foram submetidas."
 
-#: openassessment/xblock/submission_mixin.py:277
+#: openassessment/xblock/submission_mixin.py:292
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:400
+#: openassessment/xblock/submission_mixin.py:415
 msgid "There was an error uploading your file."
 msgstr "Ocorreu um erro ao carregar o seu ficheiro."
 
-#: openassessment/xblock/submission_mixin.py:409
-msgid "Content type must be GIF, PNG or JPG."
-msgstr "O tipo de conteúdo deve ser GIF, PNG ou JPG."
+#: openassessment/xblock/submission_mixin.py:424
+msgid ""
+"File upload failed: unsupported file type.Only the supported file types can "
+"be uploaded.If you have questions, please reach out to the course team."
+msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:412
-msgid "Content type must be PDF, GIF, PNG or JPG."
-msgstr "O tipo de conteúdo deve ser PDF, GIF, PNG ou JPG."
-
-#: openassessment/xblock/submission_mixin.py:415
-msgid "File type must be one of the following types: {}"
-msgstr "O tipo de ficheiro deve ser um dos seguintes: {}"
-
-#: openassessment/xblock/submission_mixin.py:419
-msgid "File type is not allowed."
-msgstr "O tipo de ficheiro não é permitido."
-
-#: openassessment/xblock/submission_mixin.py:426
+#: openassessment/xblock/submission_mixin.py:437
 msgid "Error retrieving upload URL."
 msgstr "Erro ao recuperar o url de carregamento."
 
-#: openassessment/xblock/submission_mixin.py:686
+#: openassessment/xblock/submission_mixin.py:718
 msgid "This response has been saved but not submitted."
 msgstr "Esta resposta foi guardada mas não foi submetida."
 
-#: openassessment/xblock/submission_mixin.py:687
+#: openassessment/xblock/submission_mixin.py:719
 msgid "This response has not been saved."
 msgstr "Esta resposta não foi guardada."
 
