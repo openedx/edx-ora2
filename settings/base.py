@@ -2,8 +2,6 @@
 Base settings for ORA2.
 """
 
-
-
 import os
 
 DEBUG = True
@@ -159,4 +157,7 @@ FEATURES = {
     # Set to True to add deanonymized usernames to ORA data report
     # See: https://openedx.atlassian.net/browse/TNL-7273
     'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False,
+
+    # Set to True to enable this Xblock in mobile apps.
+    'ENABLE_ORA_MOBILE_SUPPORT': False,
 }

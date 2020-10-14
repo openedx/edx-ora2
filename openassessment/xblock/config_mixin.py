@@ -6,16 +6,17 @@ Mixin for determining configuration and feature-toggle state relevant to an ORA 
 from django.conf import settings
 from django.utils.functional import cached_property
 
-
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
-ALL_FILES_URLS = "all_files_urls"
+ALL_FILES_URLS = 'all_files_urls'
+MOBILE_SUPPORT = 'mobile_support'
 TEAM_SUBMISSIONS = 'team_submissions'
-USER_STATE_UPLOAD_DATA = "user_state_upload_data"
+USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
-    TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
+    MOBILE_SUPPORT: 'ENABLE_ORA_MOBILE_SUPPORT',
+    TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA'
 }
 
@@ -111,3 +112,10 @@ class ConfigMixin:
         Returns a boolean indicating the all files urls feature flag is enabled or not.
         """
         return self.is_feature_enabled(ALL_FILES_URLS)
+
+    @cached_property
+    def is_mobile_support_waffle_enabled(self):
+        """
+        Returns a boolean indicating if the mobile support feature flag is enabled or not.
+        """
+        return self.is_feature_enabled(MOBILE_SUPPORT)

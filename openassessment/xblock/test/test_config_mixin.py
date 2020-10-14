@@ -12,6 +12,7 @@ from openassessment.xblock.config_mixin import (
     ConfigMixin,
     ALL_FILES_URLS,
     FEATURE_TOGGLES_BY_FLAG_NAME,
+    MOBILE_SUPPORT,
     TEAM_SUBMISSIONS,
     USER_STATE_UPLOAD_DATA,
 )
@@ -102,6 +103,31 @@ class ConfigMixinTest(TestCase):
             mock_waffle_flag,
             mock_waffle_switch,
             'is_fetch_all_urls_waffle_enabled',
+        )
+
+    @ddt.data(
+        *list(itertools.product([True, False], repeat=3))
+    )
+    @ddt.unpack
+    @mock.patch('openassessment.xblock.config_mixin.import_waffle_switch', autospec=True)
+    @mock.patch('openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True)
+    def test_mobile_support_enabled(
+            self, waffle_switch_input, waffle_flag_input, settings_input, mock_waffle_flag, mock_waffle_switch
+    ):
+        """
+        The "ora mobile support" workaround is expected to be enabled if at least one of the following conditions holds:
+          1) The all_files_urls waffle switch is enabled.
+          2) The all_files_urls course waffle flag is enabled.
+          3) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
+        """
+        self._run_feature_toggle_test(
+            MOBILE_SUPPORT,
+            waffle_switch_input,
+            waffle_flag_input,
+            settings_input,
+            mock_waffle_flag,
+            mock_waffle_switch,
+            'is_mobile_support_waffle_enabled',
         )
 
     def _run_feature_toggle_test(
