@@ -40,7 +40,7 @@
                     <option value="1" {% if allow_multiple_files %} selected="true" {% endif %}>{% trans "True"%}</option>
                 </select>
             </div>
-            <p class="setting-help">{% trans "Specify whether learners can upload more than one file. Has no effect if File Uploads Response is None. Set to True automatically for Team Assignments. "%}</p>
+            <p class="setting-help">{% trans "Specify whether learners can upload more than one file. This has no effect if File Uploads Response is set to None. This is automatically set to True for Team Assignments. "%}</p>
             <div class="wrapper-comp-setting">
                 <label for="openassessment_submission_upload_selector" class="setting-label">{% trans "File Upload Types"%}</label>
                 <select id="openassessment_submission_upload_selector" class="input setting-input" name="upload submission">
