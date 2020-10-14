@@ -107,19 +107,21 @@
                   {% endif %}
                 </p>
             </div>
-            <div class="step__rubric">
-                <div class="rubric_display_container ui-slidable__container is--initially--collapsed" id="read_only_rubric_container">
-                        <div class="ui-slidable__control question__title">
+            {% if show_rubric_during_response %}
+                <div class="step__rubric">
+                    <div class="rubric_display_container ui-slidable__container is--initially--collapsed" id="read_only_rubric_container">
+                        <div class="ui-slidable__control question__title" id="read_only_rubric_header_control">
                             <button class="ui-slidable" aria-expanded="true" id="oa_rubric__read_only__control" aria-controls="oa_rubric__read_only__content">
-                                <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                                <span class="icon fa fa-caret-right" id="read-only-rubric-button" aria-hidden="true"></span>
                                 <span id="read_only___assessment__rubric__header" class="ui-slidable__control__copy question__title__copy">{% trans "Rubric" %}</span>
                             </button>
                         </div>
-                    <div class="ui-slidable__content" aria-labelledby="oa_rubric__read_only__control" id="oa_rubric__read_only__content">
-                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="read_only" %}
+                        <div class="ui-slidable__content" aria-labelledby="oa_rubric__read_only__control" id="oa_rubric__read_only__content">
+                            {% include "openassessmentblock/oa_rubric.html" with rubric_type="read_only" %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="step__content">
                 <form class="response__submission">
                     <ol class="list list--fields response__submission__content">
