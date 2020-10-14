@@ -31,7 +31,7 @@
 # YUAN Tian <Sweetyuantian@msn.cn>, 2014
 # Yue Fang <yfang@juilliard.edu>, 2016
 # zhouxuan <lion19930924@163.com>, 2015
-# qiaoyafeng <qiao_yafeng@qq.com>, 2019
+# 亚峰 乔 <qiao_yafeng@qq.com>, 2019
 # 张太红 <zth@xjau.edu.cn>, 2014,2017
 # 汤和果 <hgtang93@163.com>, 2015
 # 竹轩 <fmyzjs@gmail.com>, 2014
@@ -39,9 +39,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-16 13:36-0400\n"
-"PO-Revision-Date: 2020-09-18 06:16+0000\n"
-"Last-Translator: abby li <yc.li@eliteu.cn>\n"
+"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"PO-Revision-Date: 2020-10-07 06:16+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -143,71 +143,73 @@ msgstr "自定义文件类型"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:45
 msgid ""
-"Specify whether learners can submit files along with their text responses. "
-"Select Images to allow JPG, GIF, or PNG files. Select PDF or Images to allow"
-" PDF files and images. Select Custom File Types to allow files with "
-"extensions that you specify below. (Use the Select Custom File Types option "
-"with caution.)"
-msgstr "指定学员是否可以随文本解答提交附加文件。选择“图像”则允许上传JPG、GIF或PNG文件，选择“PDF或图像”则允许上传PDF和图像文件。选择“自定义文件类型”则允许上传以下您指定的扩展名文件。（请谨慎使用此选项）"
+"Specify whether learners can submit files along with their text responses."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:49
 msgid "File Types"
 msgstr "文件类型"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:57
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "输入您希望学员可以上传的文件类型的扩展名，使用逗号隔开。例如：pdf、doc、docx。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:65
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:63
+msgid ""
+"To add more file extensions, select Custom File Types and enter the full "
+"list of acceptable file extensions to be included."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
 msgid "Allow LaTeX Responses"
 msgstr "允许LaTeX响应"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:67
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:105
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:72
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
 msgid "False"
 msgstr "否"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:68
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:73
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:111
 msgid "True"
 msgstr "是"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:71
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "详细说明学员是否可以写入 LaTeX 格式的字符串"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:76
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:81
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
 msgid "Top Responses"
 msgstr "最佳答复"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:78
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:83
 msgid " (Disabled)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
 "learners."
 msgstr "指定您要显示的最佳答复的数量。有效值介于0到99之间。如果设置为0，最佳答复部分将不会显示给学生。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:96
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:101
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:103
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:108
 msgid "Teams Enabled"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:110
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
 msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:115
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:120
 msgid "Select Team-Set"
 msgstr ""
 
@@ -1273,71 +1275,75 @@ msgstr "您的提交状态"
 msgid "File Uploads "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:233
+#: openassessment/templates/openassessmentblock/response/oa_response.html:234
 msgid ""
 "\n"
-"                            Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
-"                            descriptions to your files to help your teammates identify them.\n"
-"                          "
+"                                Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
+"                                descriptions to your files to help your teammates identify them.\n"
+"                            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:240
+#: openassessment/templates/openassessmentblock/response/oa_response.html:242
 msgid "We could not upload files"
 msgstr "无法上传文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:246
+#: openassessment/templates/openassessmentblock/response/oa_response.html:248
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:250
+#: openassessment/templates/openassessmentblock/response/oa_response.html:252
 msgid "Select a file to upload for this submission."
 msgstr "选择一个要为此提交上传的文件。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:252
+#: openassessment/templates/openassessmentblock/response/oa_response.html:255
+msgid "Supported file types: "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:257
 msgid "Upload files"
 msgstr "上传文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:266
+#: openassessment/templates/openassessmentblock/response/oa_response.html:271
 msgid "You may continue to work on your response until you submit it."
 msgstr "在提交之前，您可以继续对答案进行修改。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:272
+#: openassessment/templates/openassessmentblock/response/oa_response.html:277
 msgid "This is a team submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:274
+#: openassessment/templates/openassessmentblock/response/oa_response.html:279
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:276
+#: openassessment/templates/openassessmentblock/response/oa_response.html:281
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+#: openassessment/templates/openassessmentblock/response/oa_response.html:283
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:280
+#: openassessment/templates/openassessmentblock/response/oa_response.html:285
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:282
+#: openassessment/templates/openassessmentblock/response/oa_response.html:287
 msgid ""
 "\n"
 "                Learn more about team assignments here: (<a href=\"\" >link</a>)\n"
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:290
+#: openassessment/templates/openassessmentblock/response/oa_response.html:295
 msgid "We could not submit your response"
 msgstr "我们无法提交您的答案"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:300
+#: openassessment/templates/openassessmentblock/response/oa_response.html:305
 msgid "Submit your response and move to the next step"
 msgstr "提交您的答案并进行下一步"
 
@@ -2233,97 +2239,87 @@ msgstr "选中的分值必须是一个字典"
 msgid "Your scores could not be checked."
 msgstr "无法查看您的得分。"
 
-#: openassessment/xblock/studio_mixin.py:193
-#: openassessment/xblock/studio_mixin.py:205
+#: openassessment/xblock/studio_mixin.py:199
+#: openassessment/xblock/studio_mixin.py:211
 msgid "Error updating XBlock configuration"
 msgstr "更新XBlock配置出错"
 
-#: openassessment/xblock/studio_mixin.py:208
+#: openassessment/xblock/studio_mixin.py:214
 msgid "Error: both text and file upload responses can't be disabled"
 msgstr "错误：不能同时禁用文本解答和文件上传"
 
-#: openassessment/xblock/studio_mixin.py:211
+#: openassessment/xblock/studio_mixin.py:217
 msgid ""
 "Error: in case if text response is disabled file upload response must be "
 "required"
 msgstr "错误：如果禁用了文本解答，则必须开启文件上传解答"
 
-#: openassessment/xblock/studio_mixin.py:214
+#: openassessment/xblock/studio_mixin.py:220
 msgid ""
 "Error: in case if file upload response is disabled text response must be "
 "required"
 msgstr "错误：如果禁用了文件上传解答，则必须开启文本解答"
 
-#: openassessment/xblock/studio_mixin.py:238
+#: openassessment/xblock/studio_mixin.py:244
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "验证错误: {error}"
 
-#: openassessment/xblock/studio_mixin.py:266
+#: openassessment/xblock/studio_mixin.py:272
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: openassessment/xblock/submission_mixin.py:98
+#: openassessment/xblock/submission_mixin.py:113
 msgid "\"submission\" required to submit answer."
 msgstr "要交答案，必须有“submission\"。"
 
-#: openassessment/xblock/submission_mixin.py:119
+#: openassessment/xblock/submission_mixin.py:134
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "要提交答案，请在预览或实时模式查看该组件。"
 
-#: openassessment/xblock/submission_mixin.py:125
+#: openassessment/xblock/submission_mixin.py:140
 msgid "Multiple submissions are not allowed."
 msgstr "不允许批量提交。"
 
-#: openassessment/xblock/submission_mixin.py:169
+#: openassessment/xblock/submission_mixin.py:184
 msgid "API returned unclassified exception."
 msgstr "API返回的未分类的异常"
 
-#: openassessment/xblock/submission_mixin.py:220
+#: openassessment/xblock/submission_mixin.py:235
 msgid "This response could not be saved."
 msgstr "该答案无法保存。"
 
-#: openassessment/xblock/submission_mixin.py:224
+#: openassessment/xblock/submission_mixin.py:239
 msgid "This response was not submitted."
 msgstr "该答案提交不成功。"
 
-#: openassessment/xblock/submission_mixin.py:240
+#: openassessment/xblock/submission_mixin.py:255
 msgid "Files descriptions were not submitted."
 msgstr "文件描述未能提交。"
 
-#: openassessment/xblock/submission_mixin.py:277
+#: openassessment/xblock/submission_mixin.py:292
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:400
+#: openassessment/xblock/submission_mixin.py:415
 msgid "There was an error uploading your file."
 msgstr "您的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:409
-msgid "Content type must be GIF, PNG or JPG."
-msgstr "内容格式必须是 GIF、 PNG 或 JPG。"
+#: openassessment/xblock/submission_mixin.py:424
+msgid ""
+"File upload failed: unsupported file type.Only the supported file types can "
+"be uploaded.If you have questions, please reach out to the course team."
+msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:412
-msgid "Content type must be PDF, GIF, PNG or JPG."
-msgstr "内容格式必须是 PDF、GIF、 PNG 或 JPG。"
-
-#: openassessment/xblock/submission_mixin.py:415
-msgid "File type must be one of the following types: {}"
-msgstr "文件类型必须为以下类型中的一种：{}"
-
-#: openassessment/xblock/submission_mixin.py:419
-msgid "File type is not allowed."
-msgstr "文件类型不可用。"
-
-#: openassessment/xblock/submission_mixin.py:426
+#: openassessment/xblock/submission_mixin.py:437
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:686
+#: openassessment/xblock/submission_mixin.py:718
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:687
+#: openassessment/xblock/submission_mixin.py:719
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 

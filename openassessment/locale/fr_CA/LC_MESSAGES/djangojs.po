@@ -57,9 +57,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-16 13:37-0400\n"
-"PO-Revision-Date: 2020-05-12 20:37+0000\n"
-"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
+"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"PO-Revision-Date: 2020-10-07 07:16+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -319,45 +319,40 @@ msgid ""
 msgstr "Vous êtes sur le point de soumettre votre réponse pour ce devoir. Après avoir soumis la réponse, vous ne pouvez pas la modifier ou soumettre une nouvelle réponse."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:605
+#: openassessment/xblock/static/js/src/lms/oa_response.js:618
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr "La taille de chaque fichier individuel doit être de {max_files_mb} Mo ou moins."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:615
-#: openassessment/xblock/static/js/src/lms/oa_response.js:622
-#: openassessment/xblock/static/js/src/lms/oa_response.js:629
-msgid "You can upload files with these file types: "
-msgstr "Vous pouvez téléverser des fichiers avec ces formats : "
+#: openassessment/xblock/static/js/src/lms/oa_response.js:630
+msgid ""
+"File upload failed: unsupported file type. Only the supported file types can"
+" be uploaded. If you have questions, please reach out to the course team."
+msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:637
-msgid "File type is not allowed."
-msgstr "Format de fichier non permis."
-
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:645
+#: openassessment/xblock/static/js/src/lms/oa_response.js:641
 msgid "Only "
 msgstr "Seulement"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:691
-#: openassessment/xblock/static/js/src/lms/oa_response.js:697
+#: openassessment/xblock/static/js/src/lms/oa_response.js:687
+#: openassessment/xblock/static/js/src/lms/oa_response.js:693
 msgid "Describe "
 msgstr "Décrire"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:691
+#: openassessment/xblock/static/js/src/lms/oa_response.js:687
 msgid "(required):"
 msgstr "(requis) :"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:711
+#: openassessment/xblock/static/js/src/lms/oa_response.js:707
 msgid "Thumbnail view of "
 msgstr "Vue miniature de"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:811
+#: openassessment/xblock/static/js/src/lms/oa_response.js:807
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
@@ -520,11 +515,11 @@ msgid ""
 msgstr "Les modifications apportées aux étapes qui ne sont pas sélectionnés dans le cadre du devoir ne seront pas sauvegardées."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:102
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:131
 msgid "File types can not be empty."
 msgstr "Les formats de fichiers ne peuvent être vides."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:112
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:141
 msgid "The following file types are not allowed: "
 msgstr "Les formats de fichiers suivants ne sont pas permis : "
