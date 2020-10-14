@@ -1127,6 +1127,51 @@
     color: $color-error;
     padding: $baseline-v;
   }
+
+    // assessment form
+    .step__rubric {
+        padding: ($baseline-v/2) ($baseline-h/4) $baseline-v ($baseline-h/4);
+        background: $color-decorative-quaternary;
+        border-radius: ($baseline-v/10);
+
+        
+        #read_only_rubric_header_control {
+            padding-bottom: ($baseline-v/4);
+        }
+
+        #read-only-rubric-button{
+            @extend %icon-1;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        #read_only___assessment__rubric__header{
+            @extend %t-heading;
+            @include margin-left(($baseline-h/4));
+            white-space: pre-wrap;
+            display: inline; 
+        }
+
+
+        // fields
+        .assessment__fields {
+          margin-bottom: $baseline-v;
+        }
+    
+        // rubric question
+        .assessment__rubric__question {
+          @extend %ui-rubric-question;
+
+
+        }
+    
+        // rubric options
+        .question__answers {
+          @extend %ui-rubric-answers;
+          overflow: visible; // needed for ui-hints
+        }
+      }
+    
 }
 .self-assessment__display__header
 .self-assessment__display__title,
