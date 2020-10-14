@@ -831,8 +831,8 @@ class SubmissionMixin:
             "show_rubric_during_response": self.show_rubric_during_response,
         }
 
-        # if self.show_rubric_during_response:
-        context['rubric_criteria'] = copy.deepcopy(self.rubric_criteria_with_labels)
+        if self.show_rubric_during_response:
+            context['rubric_criteria'] = copy.deepcopy(self.rubric_criteria_with_labels)
 
         # Due dates can default to the distant future, in which case
         # there's effectively no due date.
