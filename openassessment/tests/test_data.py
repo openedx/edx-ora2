@@ -952,7 +952,8 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         submission.save()
 
         # Answers once had a different format
-        old_style_submission = sub_api._get_submission_model(self.old_style_submission['uuid'])  # pylint: disable=protected-access
+        old_uuid = self.old_style_submission['uuid']
+        old_style_submission = sub_api._get_submission_model(old_uuid)  # pylint: disable=protected-access
         old_style_submission.answer = self.old_style_answer
         old_style_submission.save()
 
