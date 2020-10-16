@@ -69,6 +69,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
 
     function onTeamsEnabledChange(selectedValue) {
         var teamsetElement = $('#openassessment_teamset_selection_wrapper', self.element);
+        var multipleFilesElement = $('#openassessment_submission_nfile_editor', self.element);
 
         var selfAssessment = self.assessmentViews.oa_self_assessment_editor;
         var peerAssessment = self.assessmentViews.oa_peer_assessment_editor;
@@ -92,6 +93,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             self.setHidden($('#openassessment_leaderboard_wrapper .disabled-label'), true);
             self.setHidden($('#openassessment_leaderboard_wrapper .teams-warning'), true);
             $('#openassessment_leaderboard_editor').prop('disabled', false);
+            multipleFilesElement.prop('disabled', false);
         } else {
             self.setHidden(teamsetElement, false);
 
@@ -106,6 +108,8 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             self.setHidden($('#openassessment_leaderboard_wrapper .teams-warning'), false);
             $('#openassessment_leaderboard_editor').prop('disabled', true);
             staffAssessment.isEnabled(true);
+            multipleFilesElement.prop('disabled', true);
+            multipleFilesElement.val(1);
         }
     }
 
@@ -263,6 +267,17 @@ OpenAssessment.EditSettingsView.prototype = {
         return sel.val() === '1';
     },
 
+    /**
+    Enable / disable multiple files upload
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable multiple files upload
+    Returns:
+        boolean
+    **/
+    multipleFilesEnabled: function(isEnabled) {
+        return this.settingSelectorEnabled('#openassessment_submission_nfile_editor', isEnabled);
+    },
     /**
     Enable / disable latex rendering.
 

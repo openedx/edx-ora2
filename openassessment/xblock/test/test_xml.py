@@ -134,6 +134,7 @@ class TestSerializeContent(TestCase):
 
         self.oa_block.file_upload_type = data.get('file_upload_type')
         self.oa_block.white_listed_file_types = data.get('white_listed_file_types')
+        self.oa_block.allow_multiple_files = data.get('allow_multiple_files')
         self.oa_block.allow_latex = data.get('allow_latex')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
         self.oa_block.group_access = json.loads(data.get('group_access', "{}"))
@@ -525,6 +526,7 @@ class TestParseFromXml(TestCase):
             'assessments',
             'file_upload_type',
             'white_listed_file_types',
+            'allow_multiple_files',
             'allow_latex',
             'leaderboard_show'
         ]

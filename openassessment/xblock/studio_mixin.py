@@ -158,6 +158,7 @@ class StudioMixin:
             'file_upload_response': self.file_upload_response if self.file_upload_response else '',
             'necessity_options': self.NECESSITY_OPTIONS,
             'file_upload_type': self.file_upload_type,
+            'allow_multiple_files': self.allow_multiple_files,
             'white_listed_file_types': white_listed_file_types_string,
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
@@ -264,6 +265,7 @@ class StudioMixin:
         else:
             self.file_upload_type = None
             self.white_listed_file_types_string = None
+        self.allow_multiple_files = bool(data['allow_multiple_files'])
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
         self.teams_enabled = bool(data.get('teams_enabled', False))

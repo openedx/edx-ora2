@@ -200,6 +200,7 @@ OpenAssessment.StudioView.prototype = {
 
         var view = this;
         var fileUploadType = view.settingsView.fileUploadType();
+        var teamsEnabled = view.settingsView.teamsEnabled();
 
         this.server.updateEditorContext({
             prompts: view.promptsView.promptsDefinition(),
@@ -215,10 +216,11 @@ OpenAssessment.StudioView.prototype = {
             fileUploadResponse: view.settingsView.fileUploadResponseNecessity(),
             fileUploadType: fileUploadType !== '' ? fileUploadType : null,
             fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
+            multipleFilesEnabled: teamsEnabled ? true : view.settingsView.multipleFilesEnabled(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.assessmentsStepsView.editorAssessmentsOrder(),
-            teamsEnabled: view.settingsView.teamsEnabled(),
+            teamsEnabled: teamsEnabled,
             selectedTeamsetId: view.settingsView.teamset(),
         }).done(
             // Notify the client-side runtime that we finished saving

@@ -109,6 +109,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     'allow_file_upload': bool,  # Backwards compatibility.
     Required('file_upload_type', default=None): Any(All(utf8_validator, In(VALID_UPLOAD_FILE_TYPES)), None),
     'white_listed_file_types': utf8_validator,
+    Required('allow_multiple_files'): bool,
     Required('allow_latex'): bool,
     Required('leaderboard_show'): int,
     Optional('teams_enabled'): bool,

@@ -191,6 +191,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertFalse(resp['corrections'])
         expected_context = {
+            "allow_multiple_files": True,
             "allow_latex": False,
             'prompts_type': 'text',
             'user_timezone': None,
@@ -331,6 +332,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         expected_template = "openassessmentblock/student_training/student_training_closed.html"
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00",
+            'allow_multiple_files': True,
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': None,
@@ -347,6 +349,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         })
         expected_template = "openassessmentblock/student_training/student_training_cancelled.html"
         expected_context = {
+            'allow_multiple_files': True,
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': None,
@@ -368,6 +371,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         expected_template = "openassessmentblock/student_training/student_training_unavailable.html"
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),
+            'allow_multiple_files': True,
             'allow_latex': False,
             'prompts_type': 'text',
             'user_timezone': None,

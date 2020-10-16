@@ -449,6 +449,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 file_upload_response: options.fileUploadResponse,
                 file_upload_type: options.fileUploadType,
                 white_listed_file_types: options.fileTypeWhiteList,
+                allow_multiple_files: options.multipleFilesEnabled,
                 allow_latex: options.latexEnabled,
                 leaderboard_show: options.leaderboardNum,
                 teams_enabled: options.teamsEnabled,

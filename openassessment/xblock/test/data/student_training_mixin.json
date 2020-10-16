@@ -15,6 +15,7 @@
                     }
                 ]}
             },
+            "allow_multiple_files": true,
             "allow_latex": false,
             "prompts_type": "text",
             "training_rubric": {

@@ -414,6 +414,20 @@ class SubmissionMixin:
         if 'contentType' not in data or 'filename' not in data:
             return {'success': False, 'msg': self._("There was an error uploading your file.")}
 
+        if not self.allow_multiple_files:
+
+            # Here we check if there are existing file uploads by checking for
+            # an existing download url for any of the upload slots.
+            # Note that we can't use self.saved_files_descriptions because that
+            # is populated before files are uploaded
+            for i in range(self.MAX_FILES_COUNT):
+                file_url = self._get_download_url(i)
+                if file_url:
+                    return {'success': False,
+                            'msg': self._(u"Only a single file upload is allowed for this assessment.")}
+
+        file_num = int(data.get('filenum', 0))
+
         _, file_ext = os.path.splitext(data['filename'])
         file_ext = file_ext.strip('.') if file_ext else None
         content_type = data['contentType']
@@ -839,6 +853,7 @@ class SubmissionMixin:
                 return path, context
 
         context['file_upload_type'] = self.file_upload_type
+        context['allow_multiple_files'] = self.allow_multiple_files
         context['allow_latex'] = self.allow_latex
 
         file_urls = None

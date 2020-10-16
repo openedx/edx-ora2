@@ -131,6 +131,7 @@ class StudentTrainingMixin:
         context = {"xblock_id": self.get_xblock_id()}
         template = 'openassessmentblock/student_training/student_training_unavailable.html'
 
+        context['allow_multiple_files'] = self.allow_multiple_files
         # add allow_latex field to the context
         context['allow_latex'] = self.allow_latex
         context['prompts_type'] = self.prompts_type

@@ -1,12 +1,12 @@
 {
   "name": "edx-ora2",
-  "version": "2.10.1",
+  "version": "2.10.2",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
     "backbone": "~1.2.3",
     "backgrid": "~0.3.8",
     "edx-ui-toolkit": "1.5.3",
-    "moment": "^2.27.0",
+    "moment": "^2.29.1",
     "moment-timezone": "^0.5.28",
     "requirejs": "~2.3.2",
     "underscore": "^1.11.0"
@@ -16,7 +16,7 @@
     "eslint-config-google": "^0.14.0",
     "jasmine": "^2.3.0",
     "jshint": "^2.12.0",
-    "karma": "^5.0.9",
+    "karma": "^5.2.3",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^2.0.3",
     "karma-jasmine": "^1.1.0",
@@ -27,7 +27,7 @@
     "karma-spec-reporter": "^0.0.31",
     "phantomjs-prebuilt": "^2.1.14",
     "sinon": "^7.5.0",
-    "uglify-js": "^3.10.3"
+    "uglify-js": "^3.11.1"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",

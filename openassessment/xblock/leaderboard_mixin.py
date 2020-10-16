@@ -124,6 +124,7 @@ class LeaderboardMixin:
             score.pop('content', None)
 
         context = {'topscores': scores,
+                   'allow_multiple_files': self.allow_multiple_files,
                    'allow_latex': self.allow_latex,
                    'prompts_type': self.prompts_type,
                    'file_upload_type': self.file_upload_type,
