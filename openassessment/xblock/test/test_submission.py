@@ -7,13 +7,16 @@ import datetime as dt
 import json
 
 from mock import ANY, Mock, call, patch
+from testfixtures import LogCapture
 import pytz
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.test.utils import override_settings
 
 import boto3
 from moto import mock_s3
 from django.contrib.auth import get_user_model
+from xblock.exceptions import NoSuchServiceError
 from submissions import api as sub_api
 from submissions import team_api as team_sub_api
 from submissions.api import SubmissionInternalError, SubmissionRequestError
@@ -565,6 +568,48 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             self.assertEqual(expected_urls, actual_urls)
 
             mock_download_url.assert_has_calls([call('key-1')])
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    def test_get_team_context_exceptions(self, xblock):
+        """
+        Unit tests for error behavior in get_team_submission_context
+        """
+        xblock.location = 'some-uuid'
+        self.setup_mock_team(xblock)
+
+        #If there's no teams config, just return without adding anyting to the context, but log an error
+        with LogCapture() as logger:
+            xblock.get_team_info = Mock(side_effect=NoSuchServiceError)
+            context = {}
+            xblock.get_team_submission_context(context)
+            self.assertEqual(context, {})
+            logger.check_present(
+                (
+                    'openassessment.xblock.submission_mixin',
+                    'ERROR',
+                    '{}: Teams service is unavailable'.format(
+                        xblock.location,
+                    )
+                )
+            )
+
+
+        # If we can't resolve the anonymous_id to a real user, again just don't do anything but log
+        with LogCapture() as logger:
+            xblock.get_team_info = Mock(side_effect=ObjectDoesNotExist)
+            context = {}
+            xblock.get_team_submission_context(context)
+            self.assertEqual(context, {})
+            logger.check_present(
+                (
+                    'openassessment.xblock.submission_mixin',
+                    'ERROR',
+                    '{}: User associated with anonymous_user_id {} can not be found.'.format(
+                        xblock.location,
+                        xblock.xmodule_runtime.anonymous_student_id
+                    )
+                )
+            )
 
 
 class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
