@@ -774,11 +774,20 @@ class OraDownloadData:
         all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
 
         for student, submission, _ in all_submission_information:
-            answer = submission['answer']
+            answer = submission.get('answer', dict())
 
             # collecting submission attachments with metadata
             for index, file_key in enumerate(answer.get('file_keys', [])):
-                file_name = answer['files_names'][index]
+                # Old submissions (approx. pre-2020) have file names under the key "files_name"
+                file_names = answer.get('files_names', answer.get('files_name', []))
+                file_name = file_names[index]
+
+                # 'files_sizes' was added sometime around the beginning of 2020, so older submissions
+                # will not have it
+                file_size = 0
+                file_sizes = answer.get('files_sizes')
+                if file_sizes:
+                    file_size = file_sizes[index]
 
                 yield {
                     'type': cls.ATTACHMENT,
@@ -788,7 +797,7 @@ class OraDownloadData:
                     'key': file_key,
                     'name': file_name,
                     'description': answer['files_descriptions'][index],
-                    'size': answer['files_sizes'][index],
+                    'size': file_size,
                     'file_path': os.path.join(
                         str(course_id),
                         student['item_id'],
