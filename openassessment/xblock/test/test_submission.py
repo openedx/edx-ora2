@@ -577,7 +577,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         xblock.location = 'some-uuid'
         self.setup_mock_team(xblock)
 
-        #If there's no teams config, just return without adding anyting to the context, but log an error
+        # If there's no teams config, just return without adding anyting to the context, but log an error
         with LogCapture() as logger:
             xblock.get_team_info = Mock(side_effect=NoSuchServiceError)
             context = {}
@@ -592,7 +592,6 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
                     )
                 )
             )
-
 
         # If we can't resolve the anonymous_id to a real user, again just don't do anything but log
         with LogCapture() as logger:
