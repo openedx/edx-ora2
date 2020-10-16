@@ -25,6 +25,7 @@ from openassessment.workflow import api as workflow_api, team_api as team_workfl
 COURSE_ID = "Test_Course"
 
 STUDENT_ID = u"Student"
+OLD_STUDENT_ID = "Old_Student"
 
 STUDENT_USERNAME = "Student Username"
 
@@ -48,6 +49,13 @@ ITEM_DISPLAY_NAME = "Open Response Assessment"
 
 STUDENT_ITEM = dict(
     student_id=STUDENT_ID,
+    course_id=COURSE_ID,
+    item_id=ITEM_ID,
+    item_type="openassessment"
+)
+
+OLD_STUDENT_ITEM = dict(
+    student_id=OLD_STUDENT_ID,
     course_id=COURSE_ID,
     item_id=ITEM_ID,
     item_type="openassessment"
@@ -801,19 +809,23 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.maxDiff = None  # pylint: disable=invalid-name
 
         self.submission = self._create_submission(STUDENT_ITEM)
+        self.old_style_submission = self._create_submission(OLD_STUDENT_ITEM)
         self.scorer_submission = self._create_submission(SCORER_ITEM)
 
         self.file_name_1 = 'file_name_1.jpg'
         self.file_name_2 = 'file_name_2.pdf'
         self.file_name_3 = 'file_name_3.png'
+        self.file_name_4 = 'file_name_4.png'
 
         self.file_key_1 = '{}/{}/{}'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
         self.file_key_2 = '{}/{}/{}/1'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
         self.file_key_3 = '{}/{}/{}/2'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
+        self.file_key_4 = '{}/{}/{}'.format(OLD_STUDENT_ID, COURSE_ID, ITEM_ID)
 
         self.file_description_1 = 'Some Description 1'
         self.file_description_2 = 'Some Description 2'
         self.file_description_3 = 'Some Description 3'
+        self.file_description_4 = 'Some Description 4'
 
         self.file_size_1 = 2 ** 20
         self.file_size_2 = 2 ** 21
@@ -835,7 +847,43 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'files_sizes': [self.file_size_1, self.file_size_2, self.file_size_3],
         }
 
+        # Older responses (approx. pre-2020) won't have files_sizes
+        # and will have the key 'files_name' rather than 'files_names'
+        self.old_style_answer = {
+            'parts': [{'text': self.answer_text}],
+            'file_keys': [self.file_key_4],
+            'files_descriptions': [self.file_description_4],
+            'files_name': [self.file_name_4]
+        }
+
         self.submission_files_data = [
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': OLD_STUDENT_ID,
+                'key': self.file_key_4,
+                'name': self.file_name_4,
+                'type': OraDownloadData.ATTACHMENT,
+                'description': self.file_description_4,
+                'size': 0,
+                'file_path': '{}/{}/{}/attachments/{}'.format(
+                    COURSE_ID, ITEM_ID, OLD_STUDENT_ID, self.file_name_4
+                ),
+            },
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': OLD_STUDENT_ID,
+                'key': '',
+                'name': 'part_0.txt',
+                'type': OraDownloadData.TEXT,
+                'description': 'Submission text.',
+                'content': self.answer_text,
+                'size': len(self.answer_text),
+                'file_path': '{}/{}/{}/{}'.format(
+                    COURSE_ID, ITEM_ID, OLD_STUDENT_ID, 'part_0.txt'
+                ),
+            },
             {
                 'course_id': COURSE_ID,
                 'block_id': ITEM_ID,
@@ -906,6 +954,12 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         submission.answer = self.answer
         submission.save()
 
+        # Answers once had a different format
+        old_uuid = self.old_style_submission['uuid']
+        old_style_submission = sub_api._get_submission_model(old_uuid)  # pylint: disable=protected-access
+        old_style_submission.answer = self.old_style_answer
+        old_style_submission.save()
+
         # answer for scorer submission is just a string, and `collect_ora2_submission_files`
         # raises exception because of it, so we change it to empty dict
         scorer_submission = sub_api._get_submission_model(  # pylint: disable=protected-access
@@ -914,7 +968,8 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         scorer_submission.answer = {}
         scorer_submission.save()
 
-        assert list(OraDownloadData.collect_ora2_submission_files(COURSE_ID)) == self.submission_files_data
+        collected_ora_files_data = list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
+        assert collected_ora_files_data == self.submission_files_data
 
     def test_create_zip_with_attachments(self):
         file = BytesIO()
@@ -927,6 +982,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
 
             download_mock.assert_has_calls([
+                call(self.file_key_4),
                 call(self.file_key_1),
                 call(self.file_key_2),
                 call(self.file_key_3),
@@ -934,26 +990,34 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         zip_file = zipfile.ZipFile(file)
 
-        # archive should contain three attachments, one part text file and one csv
-        self.assertEqual(len(zip_file.infolist()), 5)
+        # archive should contain four attachments, two parts text file and one csv
+        self.assertEqual(len(zip_file.infolist()), 7)
 
-        # check that all attachments have been written to the archive
+        # check for old_user's file and text
         self.assertEqual(
             zip_file.read(self.submission_files_data[0]['file_path']),
             file_content
         )
         self.assertEqual(
             zip_file.read(self.submission_files_data[1]['file_path']),
-            file_content
+            self.answer_text.encode('utf-8')
         )
+        # check that main user's attachments have been written to the archive
         self.assertEqual(
             zip_file.read(self.submission_files_data[2]['file_path']),
             file_content
         )
-
-        # check that all texts are also here
         self.assertEqual(
             zip_file.read(self.submission_files_data[3]['file_path']),
+            file_content
+        )
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[4]['file_path']),
+            file_content
+        )
+        # main user's text response
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[5]['file_path']),
             self.answer_text.encode('utf-8')
         )
 
