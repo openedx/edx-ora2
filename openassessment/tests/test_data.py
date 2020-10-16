@@ -847,7 +847,8 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'files_sizes': [self.file_size_1, self.file_size_2, self.file_size_3],
         }
 
-        # Older responses (approx. pre-2020) won't have files_sizes and will have the key 'files_name' rather than 'files_names'
+        # Older responses (approx. pre-2020) won't have files_sizes 
+        # and will have the key 'files_name' rather than 'files_names'
         self.old_style_answer = {
             'parts': [{'text': self.answer_text}],
             'file_keys': [self.file_key_4],
