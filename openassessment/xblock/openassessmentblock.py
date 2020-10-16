@@ -29,6 +29,7 @@ from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
+from openassessment.xblock.mobile import togglable_mobile_support
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
@@ -489,6 +490,7 @@ class OpenAssessmentBlock(MessageMixin,
         else:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, item))
 
+    @togglable_mobile_support
     def student_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
