@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"POT-Creation-Date: 2020-10-14 12:44-0400\n"
 "PO-Revision-Date: 2020-10-07 07:16+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
@@ -81,62 +81,62 @@ msgstr "Una o más tareas de re-programación falló."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:464
+#: openassessment/xblock/static/js/src/oa_server.js:465
 msgid "This problem could not be saved."
 msgstr "Este problema no pudo ser guardado."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:486
+#: openassessment/xblock/static/js/src/oa_server.js:487
 msgid "The server could not be contacted."
 msgstr "No se ha podido contactar con el servidor."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:513
+#: openassessment/xblock/static/js/src/oa_server.js:514
 msgid "Could not retrieve upload url."
 msgstr "No se pudo recuperar la url de subida."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:533
-#: openassessment/xblock/static/js/src/oa_server.js:553
+#: openassessment/xblock/static/js/src/oa_server.js:534
+#: openassessment/xblock/static/js/src/oa_server.js:554
 msgid "Server error."
 msgstr "Error en el servidor."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:574
+#: openassessment/xblock/static/js/src/oa_server.js:575
 msgid "Could not retrieve download url."
 msgstr "No se pudo recuperar la url de descarga."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:600
+#: openassessment/xblock/static/js/src/oa_server.js:601
 msgid "The submission could not be removed from the grading pool."
 msgstr "La entrega no pudo ser eliminada de la lista de evaluaciones"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:656
+#: openassessment/xblock/static/js/src/oa_server.js:657
 msgid "Multiple teams returned for course"
 msgstr "Varios equipos encontrados para el curso"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:665
+#: openassessment/xblock/static/js/src/oa_server.js:666
 msgid "Could not load teams information."
 msgstr "No se pudo cargar la información de los equipos."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:687
+#: openassessment/xblock/static/js/src/oa_server.js:688
 msgid "User lookup failed"
 msgstr "Falló búsqueda del usuario"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:693
+#: openassessment/xblock/static/js/src/oa_server.js:694
 msgid "Error when looking up username"
 msgstr "Error al buscar el nombre de usuario"
 
@@ -388,32 +388,32 @@ msgid ""
 msgstr "Este problema ya ha sido liberado. Cualquier cambio en el mismo se aplicará solo a los envío futuros."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:410
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:412
 msgid "Paragraph"
 msgstr "Párrafo"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:411
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:413
 msgid "Preformatted"
 msgstr "Preformateado"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:412
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:414
 msgid "Heading 3"
 msgstr "Encabezado 3"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:413
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:415
 msgid "Heading 4"
 msgstr "Encabezado 4"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:414
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:416
 msgid "Heading 5"
 msgstr "Encabezado 5"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:415
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:417
 msgid "Heading 6"
 msgstr "Encabezado 6"
 
@@ -475,11 +475,11 @@ msgid ""
 msgstr "Los cambios en los pasos que no están seleccionados como parte de la tarea no serán guardados."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:131
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:135
 msgid "File types can not be empty."
 msgstr "Tipo de archivo no puede ser vacío."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:141
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:145
 msgid "The following file types are not allowed: "
 msgstr "Los siguientes tipos de archivos son soportados:"
