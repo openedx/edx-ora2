@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-06 15:29-0400\n"
+"POT-Creation-Date: 2020-10-14 12:44-0400\n"
 "PO-Revision-Date: 2020-10-07 07:16+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -83,62 +83,62 @@ msgstr "一個或多個任務重新安排失敗。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:464
+#: openassessment/xblock/static/js/src/oa_server.js:465
 msgid "This problem could not be saved."
 msgstr "此問題無法儲存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:486
+#: openassessment/xblock/static/js/src/oa_server.js:487
 msgid "The server could not be contacted."
 msgstr "無法聯繫服務器。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:513
+#: openassessment/xblock/static/js/src/oa_server.js:514
 msgid "Could not retrieve upload url."
 msgstr "無法找到上傳網址"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:533
-#: openassessment/xblock/static/js/src/oa_server.js:553
+#: openassessment/xblock/static/js/src/oa_server.js:534
+#: openassessment/xblock/static/js/src/oa_server.js:554
 msgid "Server error."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:574
+#: openassessment/xblock/static/js/src/oa_server.js:575
 msgid "Could not retrieve download url."
 msgstr "無法找到下載網址"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:600
+#: openassessment/xblock/static/js/src/oa_server.js:601
 msgid "The submission could not be removed from the grading pool."
 msgstr "此提交不能從評分庫中移除。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:656
+#: openassessment/xblock/static/js/src/oa_server.js:657
 msgid "Multiple teams returned for course"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:665
+#: openassessment/xblock/static/js/src/oa_server.js:666
 msgid "Could not load teams information."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:687
+#: openassessment/xblock/static/js/src/oa_server.js:688
 msgid "User lookup failed"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:693
+#: openassessment/xblock/static/js/src/oa_server.js:694
 msgid "Error when looking up username"
 msgstr ""
 
@@ -390,32 +390,32 @@ msgid ""
 msgstr "此問題已經被釋出了。任何更改都只會在未來的評分中出現。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:410
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:412
 msgid "Paragraph"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:411
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:413
 msgid "Preformatted"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:412
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:414
 msgid "Heading 3"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:413
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:415
 msgid "Heading 4"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:414
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:416
 msgid "Heading 5"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:415
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:417
 msgid "Heading 6"
 msgstr ""
 
@@ -477,11 +477,11 @@ msgid ""
 msgstr "您已取消選擇此評分步驟，這將使它不會被儲存。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:131
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:135
 msgid "File types can not be empty."
 msgstr "檔案類型不可空白。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:141
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:145
 msgid "The following file types are not allowed: "
 msgstr "下列檔案類型是不允許的："
