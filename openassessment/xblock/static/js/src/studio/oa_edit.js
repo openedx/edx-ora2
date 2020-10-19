@@ -204,42 +204,42 @@ export class StudioView {
 
   /**
    * Save the updated problem definition to the server.
-   **/
+   * */
   updateEditorContext() {
     // Notify the client-side runtime that we are starting
     // to save so it can show the "Saving..." notification
-    this.runtime.notify('save', {state: 'start'});
+    this.runtime.notify('save', { state: 'start' });
 
-    const fileUploadType = view.settingsView.fileUploadType();
-    const teamsEnabled = view.settingsView.teamsEnabled();
+    const fileUploadType = this.settingsView.fileUploadType();
+    const teamsEnabled = this.settingsView.teamsEnabled();
 
     this.server.updateEditorContext({
-      prompts: view.promptsView.promptsDefinition(),
-      prompts_type: view.promptsView.promptsType(),
-      feedbackPrompt: view.rubricView.feedbackPrompt(),
-      feedback_default_text: view.rubricView.feedback_default_text(),
-      criteria: view.rubricView.criteriaDefinition(),
-      title: view.settingsView.displayName(),
-      submissionStart: view.scheduleView.submissionStart(),
-      submissionDue: view.scheduleView.submissionDue(),
-      assessments: view.assessmentsStepsView.assessmentsDescription(),
-      textResponse: view.settingsView.textResponseNecessity(),
-      fileUploadResponse: view.settingsView.fileUploadResponseNecessity(),
+      prompts: this.promptsView.promptsDefinition(),
+      prompts_type: this.promptsView.promptsType(),
+      feedbackPrompt: this.rubricView.feedbackPrompt(),
+      feedback_default_text: this.rubricView.feedback_default_text(),
+      criteria: this.rubricView.criteriaDefinition(),
+      title: this.settingsView.displayName(),
+      submissionStart: this.scheduleView.submissionStart(),
+      submissionDue: this.scheduleView.submissionDue(),
+      assessments: this.assessmentsStepsView.assessmentsDescription(),
+      textResponse: this.settingsView.textResponseNecessity(),
+      fileUploadResponse: this.settingsView.fileUploadResponseNecessity(),
       fileUploadType: fileUploadType !== '' ? fileUploadType : null,
-      fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
-      multipleFilesEnabled: teamsEnabled ? true : view.settingsView.multipleFilesEnabled(),
-      latexEnabled: view.settingsView.latexEnabled(),
-      leaderboardNum: view.settingsView.leaderboardNum(),
-      editorAssessmentsOrder: view.assessmentsStepsView.editorAssessmentsOrder(),
-      teamsEnabled: teamsEnabled,
-      selectedTeamsetId: view.settingsView.teamset(),
+      fileTypeWhiteList: this.settingsView.fileTypeWhiteList(),
+      multipleFilesEnabled: teamsEnabled ? true : this.settingsView.multipleFilesEnabled(),
+      latexEnabled: this.settingsView.latexEnabled(),
+      leaderboardNum: this.settingsView.leaderboardNum(),
+      editorAssessmentsOrder: this.assessmentsStepsView.editorAssessmentsOrder(),
+      teamsEnabled,
+      selectedTeamsetId: this.settingsView.teamset(),
     }).done(
       // Notify the client-side runtime that we finished saving
       // so it can hide the "Saving..." notification.
       // Then reload the view.
-      () => this.runtime.notify('save', { state: 'end' })
+      () => this.runtime.notify('save', { state: 'end' }),
     ).fail(
-      (msg) => this.showError(msg)
+      (msg) => this.showError(msg),
     );
   }
 

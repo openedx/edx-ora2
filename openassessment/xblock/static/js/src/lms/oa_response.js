@@ -578,7 +578,7 @@ export class ResponseView {
      uploadType (string): uploaded file type allowed, could be none, image,
      file or custom.
 
-     **/
+     */
     prepareUpload(files, uploadType, descriptions) {
       this.files = null;
       this.filesType = uploadType;
@@ -586,55 +586,29 @@ export class ResponseView {
 
       let errorCheckerTriggered = false;
 
-      const isUploadSupported = (file, uploadType) => {
-        let ext = file.name.split('.').pop().toLowerCase();
-        let fileType = file.type;
-
-        // Check upload type/extension matches allowed types
-        if (uploadType === 'image' &&
-          this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1
-        ) {
-          return false;
-        } else if (
-          uploadType === 'pdf-and-image' &&
-          this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1
-        ) {
-          return false;
-        } else if (
-          uploadType === 'custom' &&
-          this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1
-        ) {
-          return false;
-        } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
-          return false;
-        }
-
-        return true;
-      }
-
       for (let i = 0; i < files.length; i++) {
         if (files[i].size > this.MAX_FILE_SIZE) {
           this.baseView.toggleActionError(
             'upload',
             gettext(
-              'Individual file size must be {max_files_mb}MB or less.'
+              'Individual file size must be {max_files_mb}MB or less.',
             ).replace(
               '{max_files_mb}',
-              this.MAX_FILES_MB
-            )
+              this.MAX_FILES_MB,
+            ),
           );
           errorCheckerTriggered = true;
           break;
         }
 
-        if (!isUploadSupported(files[i], uploadType)) {
+        if (!this.isUploadSupported(files[i], uploadType)) {
           this.baseView.toggleActionError(
             'upload',
             gettext(
-              'File upload failed: unsupported file type. ' +
-              'Only the supported file types can be uploaded. ' +
-              'If you have questions, please reach out to the course team.'
-            )
+              'File upload failed: unsupported file type. '
+              + 'Only the supported file types can be uploaded. '
+              + 'If you have questions, please reach out to the course team.',
+            ),
           );
           errorCheckerTriggered = true;
           break;
@@ -663,77 +637,103 @@ export class ResponseView {
       }
     }
 
-    /**
+   isUploadSupported = (file, uploadType) => {
+     const ext = file.name.split('.').pop().toLowerCase();
+     const fileType = file.type;
+
+     // Check upload type/extension matches allowed types
+     if (uploadType === 'image'
+        && this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1
+     ) {
+       return false;
+     } if (
+       uploadType === 'pdf-and-image'
+        && this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1
+     ) {
+       return false;
+     } if (
+       uploadType === 'custom'
+        && this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1
+     ) {
+       return false;
+     } if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
+       return false;
+     }
+
+     return true;
+   };
+
+   /**
      Render textarea fields to input description for each uploaded file.
 
      */
-    /* jshint -W083 */
-    updateFilesDescriptionsFields(files, descriptions, uploadType) {
-      const filesDescriptions = $(this.element).find('.files__descriptions').first();
-      let mainDiv = null;
-      let divLabel = null;
-      let divTextarea = null;
-      let divImage = null;
-      let img = null;
-      let textarea = null;
-      let descriptionsExists = true;
+   /* jshint -W083 */
+   updateFilesDescriptionsFields(files, descriptions, uploadType) {
+     const filesDescriptions = $(this.element).find('.files__descriptions').first();
+     let mainDiv = null;
+     let divLabel = null;
+     let divTextarea = null;
+     let divImage = null;
+     let img = null;
+     let textarea = null;
+     let descriptionsExists = true;
 
-      this.filesDescriptions = descriptions || [];
-      this.fileNames = [];
+     this.filesDescriptions = descriptions || [];
+     this.fileNames = [];
 
-      $(filesDescriptions).show().html('');
+     $(filesDescriptions).show().html('');
 
-      for (let i = 0; i < files.length; i++) {
-        mainDiv = $('<div/>');
+     for (let i = 0; i < files.length; i++) {
+       mainDiv = $('<div/>');
 
-        divLabel = $('<div/>');
-        divLabel.addClass('submission__file__description__label');
-        divLabel.text(`${gettext('Describe ') + files[i].name} ${gettext('(required):')}`);
-        divLabel.appendTo(mainDiv);
+       divLabel = $('<div/>');
+       divLabel.addClass('submission__file__description__label');
+       divLabel.text(`${gettext('Describe ') + files[i].name} ${gettext('(required):')}`);
+       divLabel.appendTo(mainDiv);
 
-        divTextarea = $('<div/>');
-        divTextarea.addClass('submission__file__description');
-        textarea = $('<textarea />', {
-          'aria-label': gettext('Describe ') + files[i].name,
-        });
-        if ((this.filesDescriptions.indexOf(i) !== -1) && (this.filesDescriptions[i] !== '')) {
-          textarea.val(this.filesDescriptions[i]);
-        } else {
-          descriptionsExists = false;
-        }
-        textarea.addClass(`file__description file__description__${i}`);
-        textarea.appendTo(divTextarea);
+       divTextarea = $('<div/>');
+       divTextarea.addClass('submission__file__description');
+       textarea = $('<textarea />', {
+         'aria-label': gettext('Describe ') + files[i].name,
+       });
+       if ((this.filesDescriptions.indexOf(i) !== -1) && (this.filesDescriptions[i] !== '')) {
+         textarea.val(this.filesDescriptions[i]);
+       } else {
+         descriptionsExists = false;
+       }
+       textarea.addClass(`file__description file__description__${i}`);
+       textarea.appendTo(divTextarea);
 
-        if (uploadType === 'image') {
-          img = $('<img/>', {
-            src: window.URL.createObjectURL(files[i]),
-            height: 80,
-            alt: gettext('Thumbnail view of ') + files[i].name,
-          });
-          img.onload = function () {
-            window.URL.revokeObjectURL(this.src);
-          };
+       if (uploadType === 'image') {
+         img = $('<img/>', {
+           src: window.URL.createObjectURL(files[i]),
+           height: 80,
+           alt: gettext('Thumbnail view of ') + files[i].name,
+         });
+         img.onload = function () {
+           window.URL.revokeObjectURL(this.src);
+         };
 
-          divImage = $('<div/>');
-          divImage.addClass('submission__img__preview');
-          img.appendTo(divImage);
-          divImage.appendTo(mainDiv);
-        }
+         divImage = $('<div/>');
+         divImage.addClass('submission__img__preview');
+         img.appendTo(divImage);
+         divImage.appendTo(mainDiv);
+       }
 
-        divTextarea.appendTo(mainDiv);
+       divTextarea.appendTo(mainDiv);
 
-        mainDiv.appendTo(filesDescriptions);
-        textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
-      }
+       mainDiv.appendTo(filesDescriptions);
+       textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
+     }
 
-      // We can upload if descriptions exist
-      this.uploadEnabled(descriptionsExists);
+     // We can upload if descriptions exist
+     this.uploadEnabled(descriptionsExists);
 
-      // Submissions should be disabled when missing descriptions
-      this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
-    }
+     // Submissions should be disabled when missing descriptions
+     this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
+   }
 
-    /**
+   /**
      * Called when user updates a file description field:
      * Check that file descriptions exist for all to-be-uploaded files and enable/disable upload button
      * If successful (each file has a non-empty description), save file descriptions to page state
@@ -741,240 +741,240 @@ export class ResponseView {
      * @returns {boolean} true if file descriptions were found for each upload (passes validation)
      * or false in the event of an error
      */
-    collectFilesDescriptions() {
-      let isError = false;
-      const filesDescriptions = [];
+   collectFilesDescriptions() {
+     let isError = false;
+     const filesDescriptions = [];
 
-      $(this.element).find('.file__description').each(function () {
-        const filesDescriptionVal = $.trim($(this).val());
-        if (filesDescriptionVal) {
-          filesDescriptions.push(filesDescriptionVal);
-        } else {
-          isError = true;
-        }
-      });
+     $(this.element).find('.file__description').each(function () {
+       const filesDescriptionVal = $.trim($(this).val());
+       if (filesDescriptionVal) {
+         filesDescriptions.push(filesDescriptionVal);
+       } else {
+         isError = true;
+       }
+     });
 
-      this.uploadEnabled(!isError);
+     this.uploadEnabled(!isError);
 
-      if (!isError) {
-        this.filesDescriptions = filesDescriptions;
-      }
+     if (!isError) {
+       this.filesDescriptions = filesDescriptions;
+     }
 
-      return !isError;
-    }
+     return !isError;
+   }
 
-    /**
+   /**
      Clear field with files descriptions.
 
      */
-    removeFilesDescriptions() {
-      const filesDescriptions = $(this.element).find('.files__descriptions').first();
-      $(filesDescriptions).hide().html('');
-    }
+   removeFilesDescriptions() {
+     const filesDescriptions = $(this.element).find('.files__descriptions').first();
+     $(filesDescriptions).hide().html('');
+   }
 
-    /**
+   /**
      Returns the number of file blocks rendered on the page. includeDeleted is necessary in
      order to get the count of all files (even deleted ones) since our url logic is based on an index that
      is always incrementing. When includeDeleted is false - returns only the  count of files that are "live".
      */
-    getSavedFileCount(includeDeleted) {
-      // There may be multiple ORA blocks in a single vertical/page.
-      // Find the content element of THIS ORA block, and then the
-      // file submission elements therein.
-      if (includeDeleted) {
-        return $(this.baseView.element).find('.submission__answer__file__block').length;
-      }
-      return $(this.baseView.element).find('.submission__answer__file__block').filter(':parent').length;
-    }
+   getSavedFileCount(includeDeleted) {
+     // There may be multiple ORA blocks in a single vertical/page.
+     // Find the content element of THIS ORA block, and then the
+     // file submission elements therein.
+     if (includeDeleted) {
+       return $(this.baseView.element).find('.submission__answer__file__block').length;
+     }
+     return $(this.baseView.element).find('.submission__answer__file__block').filter(':parent').length;
+   }
 
-    /**
+   /**
      Remove a previously uploaded file.
 
      */
-    removeUploadedFile(filenum) {
-      const view = this;
-      return view.confirmRemoveUploadedFile(filenum).done(() => view.server.removeUploadedFile(filenum).done(() => {
-        const sel = $('.step--response', view.element);
-        const block = sel.find(`.submission__answer__file__block__${filenum}`);
-        block.html('');
-        block.prop('deleted', true);
-        view.checkSubmissionAbility();
-      }).fail((errMsg) => {
-        view.baseView.toggleActionError('delete', errMsg);
-      }));
-    }
+   removeUploadedFile(filenum) {
+     const view = this;
+     return view.confirmRemoveUploadedFile(filenum).done(() => view.server.removeUploadedFile(filenum).done(() => {
+       const sel = $('.step--response', view.element);
+       const block = sel.find(`.submission__answer__file__block__${filenum}`);
+       block.html('');
+       block.prop('deleted', true);
+       view.checkSubmissionAbility();
+     }).fail((errMsg) => {
+       view.baseView.toggleActionError('delete', errMsg);
+     }));
+   }
 
-    confirmRemoveUploadedFile(filenum) {
-      let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
-      msg += this.getFileNameAndDescription(filenum);
-      // eslint-disable-next-line new-cap
-      return $.Deferred((defer) => {
-        if (window.confirm(msg)) { defer.resolve(); } else { defer.reject(); }
-      });
-    }
+   confirmRemoveUploadedFile(filenum) {
+     let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
+     msg += this.getFileNameAndDescription(filenum);
+     // eslint-disable-next-line new-cap
+     return $.Deferred((defer) => {
+       if (window.confirm(msg)) { defer.resolve(); } else { defer.reject(); }
+     });
+   }
 
-    /**
+   /**
      * Given a filenum, look up the block for that filenum and return the text displayed
      * '<file_description> (<filename>)'
      */
-    getFileNameAndDescription(filenum) {
-      const fileBlock = $(this.baseView.element).find(`.submission__answer__file__block__${filenum} > a`);
-      if (fileBlock.length) {
-        return fileBlock[0].text.trim();
-      }
-      return '';
-    }
+   getFileNameAndDescription(filenum) {
+     const fileBlock = $(this.baseView.element).find(`.submission__answer__file__block__${filenum} > a`);
+     if (fileBlock.length) {
+       return fileBlock[0].text.trim();
+     }
+     return '';
+   }
 
-    /**
+   /**
      Sends request to server to save all file descriptions.
 
      */
-    saveFilesDescriptions() {
-      const view = this;
-      const sel = $('.step--response', this.element);
-      const fileMetaData = [];
-      for (let i = 0; i < this.filesDescriptions.length; i++) {
-        this.fileNames.push(this.files[i].name);
-        const entry = {
-          description: this.filesDescriptions[i],
-          fileName: this.files[i].name,
-          fileSize: this.files[i].size,
-        };
-        fileMetaData.push(entry);
-      }
-      return this.server.saveFilesDescriptions(fileMetaData).done(
-        () => {
-          view.removeFilesDescriptions();
-        },
-      ).fail((errMsg) => {
-        view.baseView.toggleActionError('upload', errMsg);
-        sel.find('.file__upload').prop('disabled', false);
-      });
-    }
+   saveFilesDescriptions() {
+     const view = this;
+     const sel = $('.step--response', this.element);
+     const fileMetaData = [];
+     for (let i = 0; i < this.filesDescriptions.length; i++) {
+       this.fileNames.push(this.files[i].name);
+       const entry = {
+         description: this.filesDescriptions[i],
+         fileName: this.files[i].name,
+         fileSize: this.files[i].size,
+       };
+       fileMetaData.push(entry);
+     }
+     return this.server.saveFilesDescriptions(fileMetaData).done(
+       () => {
+         view.removeFilesDescriptions();
+       },
+     ).fail((errMsg) => {
+       view.baseView.toggleActionError('upload', errMsg);
+       sel.find('.file__upload').prop('disabled', false);
+     });
+   }
 
-    /**
+   /**
      Manages file uploads for submission attachments.
-     **/
-    uploadFiles() {
-      const view = this;
-      let promise = null;
-      const fileCount = view.files.length;
-      const sel = $('.step--response', this.element);
+     * */
+   uploadFiles() {
+     const view = this;
+     let promise = null;
+     const fileCount = view.files.length;
+     const sel = $('.step--response', this.element);
 
-      sel.find('.file__upload').prop('disabled', true);
+     sel.find('.file__upload').prop('disabled', true);
 
-      promise = view.saveFilesDescriptions();
+     promise = view.saveFilesDescriptions();
 
-      view.fileCountBeforeUpload = view.getSavedFileCount(true);
-      $.each(view.files, (index, file) => {
-        promise = promise.then(() => view.fileUpload(
-          view,
-          file.type,
-          file.name,
-          view.fileCountBeforeUpload + index,
-          file,
-          fileCount === (index + 1),
-        ));
-      });
+     view.fileCountBeforeUpload = view.getSavedFileCount(true);
+     $.each(view.files, (index, file) => {
+       promise = promise.then(() => view.fileUpload(
+         view,
+         file.type,
+         file.name,
+         view.fileCountBeforeUpload + index,
+         file,
+         fileCount === (index + 1),
+       ));
+     });
 
-      return promise;
-    }
+     return promise;
+   }
 
-    /**
+   /**
      Retrieves a one-time upload URL from the server, and uses it to upload images
      to a designated location.
-     **/
-    fileUpload(view, filetype, filename, filenum, file, finalUpload) {
-        let sel = $('.step--response', this.element);
-        let handleError = function(errMsg) {
-          view.baseView.toggleActionError('upload', errMsg);
-          sel.find('button.file__upload').prop('disabled', false);
-          sel.find('input.file--upload').val(null);
-        };
+     * */
+   fileUpload(view, filetype, filename, filenum, file, finalUpload) {
+     const sel = $('.step--response', this.element);
+     const handleError = function (errMsg) {
+       view.baseView.toggleActionError('upload', errMsg);
+       sel.find('button.file__upload').prop('disabled', false);
+       sel.find('input.file--upload').val(null);
+     };
 
-        // Call getUploadUrl to get the one-time upload URL for this file. Once
-        // completed, execute a sequential AJAX call to upload to the returned
-        // URL. This request requires appropriate CORS configuration for AJAX
-        // PUT requests on the server.
-        return view.server.getUploadUrl(filetype, filename, filenum).done(
-            (url) => {
-              view.fileUploader.upload(url, file)
-                .done(() => {
-                  view.fileUrl(filenum);
-                  view.baseView.toggleActionError('upload', null);
-                  if (finalUpload) {
-                    sel.find('input[type=file]').val('');
-                    view.filesUploaded = true;
-                    view.checkSubmissionAbility(true);
-                  }
-                }).fail(handleError);
-            }
-        ).fail(handleError);
-    }
+     // Call getUploadUrl to get the one-time upload URL for this file. Once
+     // completed, execute a sequential AJAX call to upload to the returned
+     // URL. This request requires appropriate CORS configuration for AJAX
+     // PUT requests on the server.
+     return view.server.getUploadUrl(filetype, filename, filenum).done(
+       (url) => {
+         view.fileUploader.upload(url, file)
+           .done(() => {
+             view.fileUrl(filenum);
+             view.baseView.toggleActionError('upload', null);
+             if (finalUpload) {
+               sel.find('input[type=file]').val('');
+               view.filesUploaded = true;
+               view.checkSubmissionAbility(true);
+             }
+           }).fail(handleError);
+       },
+     ).fail(handleError);
+   }
 
-    /**
+   /**
      Set the file URL, or retrieve it.
-     **/
-    fileUrl(filenum) {
-      const view = this;
-      const sel = $('.step--response', this.element);
-      view.server.getDownloadUrl(filenum).done((url) => {
-        const className = `submission__answer__file__block__${filenum}`;
-        let file = null;
-        let img = null;
-        let fileBlock = null;
-        const fileBlockExists = !!sel.find(`.${className}`).length;
-        let div1 = null;
-        let div2 = null;
-        let ariaLabelledBy = null;
-        let button = null;
+     * */
+   fileUrl(filenum) {
+     const view = this;
+     const sel = $('.step--response', this.element);
+     view.server.getDownloadUrl(filenum).done((url) => {
+       const className = `submission__answer__file__block__${filenum}`;
+       let file = null;
+       let img = null;
+       let fileBlock = null;
+       const fileBlockExists = !!sel.find(`.${className}`).length;
+       let div1 = null;
+       let div2 = null;
+       let ariaLabelledBy = null;
+       let button = null;
 
-        if (!fileBlockExists) {
-          fileBlock = $('<div/>');
-          fileBlock.addClass(`submission__answer__file__block ${className}`);
-          fileBlock.appendTo(sel.find('.submission__answer__files').first());
-        }
+       if (!fileBlockExists) {
+         fileBlock = $('<div/>');
+         fileBlock.addClass(`submission__answer__file__block ${className}`);
+         fileBlock.appendTo(sel.find('.submission__answer__files').first());
+       }
 
-        if (view.filesType === 'image') {
-          ariaLabelledBy = `file_description_${Math.random().toString(36).substr(2, 9)}`;
+       if (view.filesType === 'image') {
+         ariaLabelledBy = `file_description_${Math.random().toString(36).substr(2, 9)}`;
 
-          div1 = $('<div/>', {
-            id: ariaLabelledBy,
-          });
-          div1.addClass('submission__file__description__label');
-          div1.text(`${view.filesDescriptions[filenum - view.fileCountBeforeUpload]}:`);
-          div1.appendTo(fileBlock);
+         div1 = $('<div/>', {
+           id: ariaLabelledBy,
+         });
+         div1.addClass('submission__file__description__label');
+         div1.text(`${view.filesDescriptions[filenum - view.fileCountBeforeUpload]}:`);
+         div1.appendTo(fileBlock);
 
-          img = $('<img />');
-          img.addClass('submission__answer__file submission--image');
-          img.attr('aria-labelledby', ariaLabelledBy);
-          img.attr('src', url);
+         img = $('<img />');
+         img.addClass('submission__answer__file submission--image');
+         img.attr('aria-labelledby', ariaLabelledBy);
+         img.attr('src', url);
 
-          div2 = $('<div/>');
-          div2.html(img);
-          div2.appendTo(fileBlock);
-        } else {
-          const description = view.filesDescriptions[filenum - view.fileCountBeforeUpload];
-          const fileName = view.fileNames[filenum - view.fileCountBeforeUpload];
-          file = $('<a />', {
-            href: url,
-            text: `${description} (${fileName})`,
-          });
-          file.addClass('submission__answer__file submission--file');
-          file.attr('target', '_blank');
-          file.appendTo(fileBlock);
-        }
+         div2 = $('<div/>');
+         div2.html(img);
+         div2.appendTo(fileBlock);
+       } else {
+         const description = view.filesDescriptions[filenum - view.fileCountBeforeUpload];
+         const fileName = view.fileNames[filenum - view.fileCountBeforeUpload];
+         file = $('<a />', {
+           href: url,
+           text: `${description} (${fileName})`,
+         });
+         file.addClass('submission__answer__file submission--file');
+         file.attr('target', '_blank');
+         file.appendTo(fileBlock);
+       }
 
-        button = $('<button />');
-        button.text('Delete File');
-        button.addClass('delete__uploaded__file');
-        button.attr('filenum', filenum);
-        button.click(view.handleDeleteFileClick());
-        button.appendTo(fileBlock);
+       button = $('<button />');
+       button.text('Delete File');
+       button.addClass('delete__uploaded__file');
+       button.attr('filenum', filenum);
+       button.click(view.handleDeleteFileClick());
+       button.appendTo(fileBlock);
 
-        return url;
-      });
-    }
+       return url;
+     });
+   }
 }
 
 export default ResponseView;

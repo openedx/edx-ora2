@@ -24,37 +24,34 @@ export class EditSettingsView {
     const self = this;
     this.settingsElement = element;
     this.assessmentViews = assessmentViews;
+    this.data = data;
 
     new SelectControl(
-        $('#openassessment_submission_file_upload_response', this.element),
-        (selectedValue) => {
-            const el = $('#openassessment_submission_file_upload_type_wrapper', this.element);
-            const uploadType = $('#openassessment_submission_upload_selector', this.element).val();
+      $('#openassessment_submission_file_upload_response', this.element),
+      (selectedValue) => {
+        const el = $('#openassessment_submission_file_upload_type_wrapper', this.element);
+        const uploadType = $('#openassessment_submission_upload_selector', this.element).val();
 
-            if (!selectedValue) {
-                el.addClass('is--hidden');
-            } else {
-                el.removeClass('is--hidden');
-                // trigger refresh of file upload type to load extension list
-                onFileUploadTypeChanged(uploadType);
-            }
-        },
-        new Notifier([ new AssessmentToggleListener() ])
+        if (!selectedValue) {
+          el.addClass('is--hidden');
+        } else {
+          el.removeClass('is--hidden');
+          // trigger refresh of file upload type to load extension list
+          this.onFileUploadTypeChanged(uploadType);
+        }
+      },
+      new Notifier([new AssessmentToggleListener()]),
     ).install();
 
     new SelectControl(
-        $('#openassessment_submission_upload_selector', this.element),
-        onFileUploadTypeChanged,
-        new Notifier([ new AssessmentToggleListener() ])
+      $('#openassessment_submission_upload_selector', this.element),
+      this.onFileUploadTypeChanged,
+      new Notifier([new AssessmentToggleListener()]),
     ).install();
-
-
-
-
 
     this.teamsEnabledSelectControl = new SelectControl(
       $('#openassessment_team_enabled_selector', this.element),
-      onTeamsEnabledChange,
+      this.onTeamsEnabledChange,
       new Notifier([
         new AssessmentToggleListener(),
       ]),
@@ -76,7 +73,7 @@ export class EditSettingsView {
         }
         const whiteList = $.map(value.replace(/\./g, '').toLowerCase().split(','), $.trim);
         $.each(whiteList, (index, ext) => {
-          if (data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
+          if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
             badExts.push(ext);
           }
         });
@@ -97,24 +94,24 @@ export class EditSettingsView {
    * @param {String} selectedValue
    */
   onFileUploadTypeChanged(selectedValue) {
-      const el = $('#openassessment_submission_white_listed_file_types', this.element);
-      const extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', this.element);
+    const el = $('#openassessment_submission_white_listed_file_types', this.element);
+    const extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', this.element);
 
-      if (selectedValue === 'custom') {
-          // Enable the "allowed file types" field and hide the note banner
-          el.prop('disabled', false);
-          this.setHidden(extNote, true);
-      } else {
-          // Fill, but disable, the "allowed file types" field and show the note banner
-          if (selectedValue === 'image') {
-              el.val(data.ALLOWED_IMAGE_EXTENSIONS.join(', '));
-          } else if (selectedValue === 'pdf-and-image') {
-              el.val(data.ALLOWED_FILE_EXTENSIONS.join(', '));
-          }
-
-          el.prop('disabled', true);
-          this.setHidden(extNote, false);
+    if (selectedValue === 'custom') {
+      // Enable the "allowed file types" field and hide the note banner
+      el.prop('disabled', false);
+      this.setHidden(extNote, true);
+    } else {
+      // Fill, but disable, the "allowed file types" field and show the note banner
+      if (selectedValue === 'image') {
+        el.val(this.data.ALLOWED_IMAGE_EXTENSIONS.join(', '));
+      } else if (selectedValue === 'pdf-and-image') {
+        el.val(this.data.ALLOWED_FILE_EXTENSIONS.join(', '));
       }
+
+      el.prop('disabled', true);
+      this.setHidden(extNote, false);
+    }
   }
 
   onTeamsEnabledChange(selectedValue) {
@@ -227,7 +224,7 @@ export class EditSettingsView {
     Returns:
         string (image, file or custom)
 
-    **/
+    * */
   fileUploadType(uploadType) {
     const fileUploadTypeWrapper = $('#openassessment_submission_file_upload_type_wrapper', this.settingsElement);
     const fileUploadAllowed = !$(fileUploadTypeWrapper).hasClass('is--hidden');
@@ -286,9 +283,9 @@ export class EditSettingsView {
       isEnabled(boolean, optional): if provided enable/disable multiple files upload
   Returns:
       boolean
-  **/
+  * */
   multipleFilesEnabled(isEnabled) {
-      return this.settingSelectorEnabled('#openassessment_submission_nfile_editor', isEnabled);
+    return this.settingSelectorEnabled('#openassessment_submission_nfile_editor', isEnabled);
   }
 
   /**
