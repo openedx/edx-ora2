@@ -56,7 +56,6 @@ export class EditSettingsView {
         } else {
           el.removeClass('is--hidden');
           // trigger refresh of file upload type to load extension list
-          console.log("gonna change file upload type");
           this.onFileUploadTypeChanged(uploadType);
         }
       },
@@ -114,21 +113,19 @@ export class EditSettingsView {
    * @param {String} selectedValue
    */
   onFileUploadTypeChanged(selectedValue) {
-    console.log("onFileUploadTypeChanged");
     const el = $(
       '#openassessment_submission_white_listed_file_types',
-      this.element
+      this.element,
     );
     const extNote = $(
       '#openassessment_submission_white_listed_file_types_wrapper .extension-warning',
-      this.element
+      this.element,
     );
 
     if (selectedValue === 'custom') {
       // Enable the "allowed file types" field and hide the note banner
       el.prop('disabled', false);
       this.setHidden(extNote, true);
-      console.log("extNote should be hidden");
     } else {
       // Fill, but disable, the "allowed file types" field and show the note banner
       if (selectedValue === 'image') {
@@ -256,13 +253,13 @@ export class EditSettingsView {
   fileUploadType(uploadType) {
     const fileUploadTypeWrapper = $(
       '#openassessment_submission_file_upload_type_wrapper',
-      this.settingsElement
+      this.settingsElement,
     );
     const fileUploadAllowed = !$(fileUploadTypeWrapper).hasClass('is--hidden');
     if (fileUploadAllowed) {
       const sel = $(
         '#openassessment_submission_upload_selector',
-        this.settingsElement
+        this.settingsElement,
       );
       if (uploadType !== undefined) {
         sel.val(uploadType);
@@ -356,12 +353,6 @@ export class EditSettingsView {
      * @return {boolean} - True if all the elements are hidden, else false.
      */
   isHidden(selector) {
-    console.log({
-      isHidden: {
-        "hasClass('is--hidden')": selector.hasClass('is--hidden'),
-        "aria-hidden": selector.attr('aria-hidden')
-      }
-    });
     return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
   }
 
@@ -372,15 +363,8 @@ export class EditSettingsView {
      * @param {boolean} hidden - Whether to hide or show the elements.
      */
   setHidden(selector, hidden) {
-    console.log({ setHidden: { selectorLength: $(selector).length, hidden } });
     selector.toggleClass('is--hidden', hidden);
     selector.attr('aria-hidden', hidden ? 'true' : 'false');
-    console.log({
-      afterSetHidden: {
-        "hasClass('is--hidden')": selector.hasClass('is--hidden'),
-        "aria-hidden": selector.prop('aria-hidden')
-      }
-    });
   }
 
   /**

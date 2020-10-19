@@ -472,7 +472,7 @@ export class Server {
       teams_enabled: options.teamsEnabled,
       selected_teamset_id: options.selectedTeamsetId,
     });
-    return $.Deferred(function(defer) {
+    return $.Deferred((defer) => {
       $.ajax({
         type: 'POST', url, data: payload, contentType: jsonContentType,
       }).done(function (data) {
