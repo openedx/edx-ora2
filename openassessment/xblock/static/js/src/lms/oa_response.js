@@ -587,58 +587,57 @@ export class ResponseView {
       let errorCheckerTriggered = false;
 
       const isUploadSupported = (file, uploadType) => {
-          let ext = file.name.split('.').pop().toLowerCase();
-          let fileType = file.type;
+        let ext = file.name.split('.').pop().toLowerCase();
+        let fileType = file.type;
 
-          // Check upload type/extension matches allowed types
-          if (uploadType === 'image' &&
-            this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1
-          ) {
-            return false;
-          } else if (
-            uploadType === 'pdf-and-image' &&
-            this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1
-          ) {
-            return false;
-          } else if (
-            uploadType === 'custom' &&
-            this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1
-          ) {
-            return false;
-          } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
-            return false;
-          }
+        // Check upload type/extension matches allowed types
+        if (uploadType === 'image' &&
+          this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(fileType) === -1
+        ) {
+          return false;
+        } else if (
+          uploadType === 'pdf-and-image' &&
+          this.data.ALLOWED_FILE_MIME_TYPES.indexOf(fileType) === -1
+        ) {
+          return false;
+        } else if (
+          uploadType === 'custom' &&
+          this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1
+        ) {
+          return false;
+        } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
+          return false;
+        }
 
-          return true;
-        };
+        return true;
+      }
 
-        for (let i = 0; i < files.length; i++) {
-          if (files[i].size > this.MAX_FILE_SIZE) {
-            this.baseView.toggleActionError(
-              'upload',
-              gettext(
-                'Individual file size must be {max_files_mb}MB or less.'
-              ).replace(
-                '{max_files_mb}',
-                this.MAX_FILES_MB
-              )
-            );
-            errorCheckerTriggered = true;
-            break;
-          }
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.MAX_FILE_SIZE) {
+          this.baseView.toggleActionError(
+            'upload',
+            gettext(
+              'Individual file size must be {max_files_mb}MB or less.'
+            ).replace(
+              '{max_files_mb}',
+              this.MAX_FILES_MB
+            )
+          );
+          errorCheckerTriggered = true;
+          break;
+        }
 
-          if (!isUploadSupported(files[i], uploadType)) {
-            this.baseView.toggleActionError(
-              'upload',
-              gettext(
-                'File upload failed: unsupported file type. ' +
-                'Only the supported file types can be uploaded. ' +
-                'If you have questions, please reach out to the course team.'
-              )
-            );
-            errorCheckerTriggered = true;
-            break;
-          }
+        if (!isUploadSupported(files[i], uploadType)) {
+          this.baseView.toggleActionError(
+            'upload',
+            gettext(
+              'File upload failed: unsupported file type. ' +
+              'Only the supported file types can be uploaded. ' +
+              'If you have questions, please reach out to the course team.'
+            )
+          );
+          errorCheckerTriggered = true;
+          break;
         }
       }
 
