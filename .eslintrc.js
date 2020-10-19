@@ -2,6 +2,7 @@ const { createConfig } = require('@edx/frontend-build');
 
 const config = createConfig('eslint');
 
+// These rule overrides should be removed at a later date, and the associated code fixed.
 config.rules["import/no-named-as-default"] = "off";
 config.rules["no-underscore-dangle"] = "off";
 config.rules["prefer-rest-params"] = "off";
