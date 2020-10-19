@@ -156,21 +156,28 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         view.fileUploadResponseNecessity('optional', true);
 
+        console.log("1");
         // Custom uploads allow for entering extensions, and hides the note about custom uploads
         view.fileUploadType('custom');
         expect($(fileTypesSelector).prop('disabled')).toBe(false);
         expect(view.isHidden($(extensionBanner))).toBe(true);
+        console.log(view.isHidden($(extensionBanner)));
 
+        console.log("2");
         // Image/PDF uploads populate with the correct extensions, are disabled, and show a note about adding extensions
         view.fileUploadType('image');
         expect(view.fileTypeWhiteList()).toBe('png, jpg, gif');
         expect($(fileTypesSelector).prop('disabled')).toBe(true);
         expect(view.isHidden($(extensionBanner))).toBe(false);
+        console.log(view.isHidden($(extensionBanner)));
 
+        console.log("3");
         view.fileUploadType('image-and-pdf');
         expect(view.fileTypeWhiteList()).toBe('pdf, md');
         expect($(fileTypesSelector).prop('disabled')).toBe(true);
         expect(view.isHidden($(extensionBanner))).toBe(false);
+        console.log(view.isHidden($(extensionBanner)));
+        console.log("4");
     });
 
     it("enables the teamset selector when teams are enabled, and disabled it otherwise", function() {

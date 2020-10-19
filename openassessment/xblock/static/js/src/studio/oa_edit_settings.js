@@ -26,6 +26,25 @@ export class EditSettingsView {
     this.assessmentViews = assessmentViews;
     this.data = data;
 
+    this.onFileUploadTypeChanged = this.onFileUploadTypeChanged.bind(this);
+    this.onTeamsEnabledChange = this.onTeamsEnabledChange.bind(this);
+    this.displayName = this.displayName.bind(this);
+    this.textResponseNecessity = this.textResponseNecessity.bind(this);
+    this.fileUploadResponseNecessity = this.fileUploadResponseNecessity.bind(this);
+    this.fileUploadType = this.fileUploadType.bind(this);
+    this.fileTypeWhiteList = this.fileTypeWhiteList.bind(this);
+    this.settingSelectorEnabled = this.settingSelectorEnabled.bind(this);
+    this.multipleFilesEnabled = this.multipleFilesEnabled.bind(this);
+    this.latexEnabled = this.latexEnabled.bind(this);
+    this.teamsEnabled = this.teamsEnabled.bind(this);
+    this.isHidden = this.isHidden.bind(this);
+    this.setHidden = this.setHidden.bind(this);
+    this.teamset = this.teamset.bind(this);
+    this.leaderboardNum = this.leaderboardNum.bind(this);
+    this.validate = this.validate.bind(this);
+    this.validationErrors = this.validationErrors.bind(this);
+    this.clearValidationErrors = this.clearValidationErrors.bind(this);
+
     new SelectControl(
       $('#openassessment_submission_file_upload_response', this.element),
       (selectedValue) => {
@@ -37,6 +56,7 @@ export class EditSettingsView {
         } else {
           el.removeClass('is--hidden');
           // trigger refresh of file upload type to load extension list
+          console.log("gonna change file upload type");
           this.onFileUploadTypeChanged(uploadType);
         }
       },
@@ -94,13 +114,21 @@ export class EditSettingsView {
    * @param {String} selectedValue
    */
   onFileUploadTypeChanged(selectedValue) {
-    const el = $('#openassessment_submission_white_listed_file_types', this.element);
-    const extNote = $('#openassessment_submission_white_listed_file_types_wrapper .extension-warning', this.element);
+    console.log("onFileUploadTypeChanged");
+    const el = $(
+      '#openassessment_submission_white_listed_file_types',
+      this.element
+    );
+    const extNote = $(
+      '#openassessment_submission_white_listed_file_types_wrapper .extension-warning',
+      this.element
+    );
 
     if (selectedValue === 'custom') {
       // Enable the "allowed file types" field and hide the note banner
       el.prop('disabled', false);
       this.setHidden(extNote, true);
+      console.log("extNote should be hidden");
     } else {
       // Fill, but disable, the "allowed file types" field and show the note banner
       if (selectedValue === 'image') {
@@ -226,14 +254,20 @@ export class EditSettingsView {
 
     * */
   fileUploadType(uploadType) {
-    const fileUploadTypeWrapper = $('#openassessment_submission_file_upload_type_wrapper', this.settingsElement);
+    const fileUploadTypeWrapper = $(
+      '#openassessment_submission_file_upload_type_wrapper',
+      this.settingsElement
+    );
     const fileUploadAllowed = !$(fileUploadTypeWrapper).hasClass('is--hidden');
     if (fileUploadAllowed) {
-      const sel = $('#openassessment_submission_upload_selector', this.settingsElement);
+      const sel = $(
+        '#openassessment_submission_upload_selector',
+        this.settingsElement
+      );
       if (uploadType !== undefined) {
         sel.val(uploadType);
-        $(sel).trigger('change');
       }
+      $(sel).trigger('change');
       return sel.val();
     }
 
@@ -322,6 +356,12 @@ export class EditSettingsView {
      * @return {boolean} - True if all the elements are hidden, else false.
      */
   isHidden(selector) {
+    console.log({
+      isHidden: {
+        "hasClass('is--hidden')": selector.hasClass('is--hidden'),
+        "aria-hidden": selector.attr('aria-hidden')
+      }
+    });
     return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
   }
 
@@ -332,8 +372,15 @@ export class EditSettingsView {
      * @param {boolean} hidden - Whether to hide or show the elements.
      */
   setHidden(selector, hidden) {
+    console.log({ setHidden: { selectorLength: $(selector).length, hidden } });
     selector.toggleClass('is--hidden', hidden);
     selector.attr('aria-hidden', hidden ? 'true' : 'false');
+    console.log({
+      afterSetHidden: {
+        "hasClass('is--hidden')": selector.hasClass('is--hidden'),
+        "aria-hidden": selector.prop('aria-hidden')
+      }
+    });
   }
 
   /**

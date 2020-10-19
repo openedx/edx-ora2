@@ -466,13 +466,13 @@ export class Server {
       file_upload_response: options.fileUploadResponse,
       file_upload_type: options.fileUploadType,
       white_listed_file_types: options.fileTypeWhiteList,
-      allow_multiple_files: options.multipleFileEnabled,
+      allow_multiple_files: options.multipleFilesEnabled,
       allow_latex: options.latexEnabled,
       leaderboard_show: options.leaderboardNum,
       teams_enabled: options.teamsEnabled,
       selected_teamset_id: options.selectedTeamsetId,
     });
-    return $.Deferred((defer) => {
+    return $.Deferred(function(defer) {
       $.ajax({
         type: 'POST', url, data: payload, contentType: jsonContentType,
       }).done(function (data) {

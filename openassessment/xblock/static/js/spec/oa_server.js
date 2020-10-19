@@ -93,7 +93,6 @@ describe("OpenAssessment.Server", function() {
         // Create the server
         // Since the runtime is a stub implementation that ignores the element passed to it,
         // we can set the element parameter to null.
-        console.log('beforeEach');
         server = new Server(runtime, null);
     });
 
@@ -596,7 +595,6 @@ describe("OpenAssessment.Server", function() {
         var expectedUsername = 'expected-username'
         stubAjax(true, {username: expectedUsername});
         var receivedUsername = "";
-        console.log({ server });
         server.getUsername().done(function(username) {receivedUsername = username});
         expect(receivedUsername).toEqual(expectedUsername)
     });
