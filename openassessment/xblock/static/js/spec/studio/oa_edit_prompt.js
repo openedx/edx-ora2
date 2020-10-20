@@ -68,6 +68,8 @@ describe("OpenAssessment.EditPromptViews", function() {
     });
 
     it("creates new html prompts", function() {
+        const oldTinyMCE = window.tinyMCE;
+        window.tinyMCE = () => ({});
         Prompt.prototype.tinyMCEEnabled = true;
         spyOn(Prompt.prototype, 'attachWysiwygToPrompt');
         spyOn(Prompt.prototype, 'addHandler');
@@ -75,6 +77,7 @@ describe("OpenAssessment.EditPromptViews", function() {
         view.addPrompt();
         expect(Prompt.prototype.attachWysiwygToPrompt).toHaveBeenCalled();
         expect(Prompt.prototype.addHandler).toHaveBeenCalled();
+        window.tinyMCE = oldTinyMCE;
     });
 });
 
