@@ -30,7 +30,6 @@ Object.assign(config, {
 });
 
 config.resolve.modules = ['node_modules'].concat(
-  // UPDATE ME
   path.resolve(__dirname, 'openassessment/xblock/static/js/src')
 );
 

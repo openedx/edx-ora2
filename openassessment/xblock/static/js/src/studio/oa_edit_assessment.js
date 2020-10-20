@@ -461,7 +461,8 @@ export class EditStudentTrainingView {
                      {
                          criterion: "brevity",
                          option: "suberb"
-                     }
+                     },
+                     {
                          criterion: "accuracy",
                          option: "alright"
                      }

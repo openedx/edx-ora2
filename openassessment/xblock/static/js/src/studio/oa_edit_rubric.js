@@ -58,7 +58,7 @@ export class EditRubricView {
              }
              ...
          ]
-     }
+     },
      ...
      ]
 
