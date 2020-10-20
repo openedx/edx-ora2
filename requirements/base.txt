@@ -6,13 +6,13 @@
 #
 appdirs==1.4.4            # via fs
 bleach==3.2.1             # via -r requirements/base.in
-boto3==1.15.7             # via -r requirements/base.in
-botocore==1.18.7          # via boto3, s3transfer
+boto3==1.16.0             # via -r requirements/base.in
+botocore==1.19.0          # via boto3, s3transfer
 certifi==2020.6.20        # via requests
 chardet==3.0.4            # via requests
 defusedxml==0.6.0         # via -r requirements/base.in
 django-model-utils==4.0.0  # via -r requirements/base.in, edx-submissions
-django-simple-history==2.11.0  # via -r requirements/base.in
+django-simple-history==2.12.0  # via -r requirements/base.in
 django==2.2.16            # via -c requirements/constraints.txt, -r requirements/base.in, django-model-utils, edx-i18n-tools, edx-submissions, jsonfield2
 djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
 edx-i18n-tools==0.5.3     # via -r requirements/base.in
@@ -26,7 +26,7 @@ jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements
 lazy==1.4                 # via -r requirements/base.in
 libsass==0.20.1           # via -r requirements/base.in
 loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
-lxml==4.5.2               # via -r requirements/base.in, xblock
+lxml==4.6.1               # via -r requirements/base.in, xblock
 markupsafe==1.1.1         # via xblock
 more-itertools==8.5.0     # via zipp
 packaging==20.4           # via bleach
@@ -41,8 +41,8 @@ pyyaml==5.3.1             # via edx-i18n-tools, xblock
 requests==2.24.0          # via python-swiftclient
 s3transfer==0.3.3         # via boto3
 six==1.15.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, packaging, python-dateutil, python-swiftclient, xblock
-sqlparse==0.3.1           # via django
-urllib3==1.25.10          # via botocore, requests
+sqlparse==0.4.1           # via django
+urllib3==1.25.11          # via botocore, requests
 voluptuous==0.12.0        # via -c requirements/constraints.txt, -r requirements/base.in
 web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
