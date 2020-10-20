@@ -77,12 +77,12 @@ export const ItemUtilities = {
  * */
 export class Prompt {
   constructor(element, notifier) {
-    if (this.tinyMCEEnabled) {
-      element = this.attachWysiwygToPrompt(element);
-    }
     this.element = element;
     this.notifier = notifier;
     this.tinyMCEEnabled = window.tinyMCE !== undefined;
+    if (this.tinyMCEEnabled) {
+      element = this.attachWysiwygToPrompt(element);
+    }
   }
 
   /**
