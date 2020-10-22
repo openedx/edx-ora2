@@ -1,3 +1,5 @@
+import Container from 'studio/oa_container';
+
 /**
  Tests for the Openassessment Container Object.
  **/
@@ -27,7 +29,7 @@ describe("OpenAssessment.Container", function() {
 
     var container = null;
     var createContainer = function() {
-        return new OpenAssessment.Container(
+        return new Container(
             StubContainerItem, {
                 containerElement: $("#container").get(0),
                 templateElement: $("#template").get(0),

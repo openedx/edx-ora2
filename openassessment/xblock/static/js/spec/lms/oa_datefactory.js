@@ -1,3 +1,5 @@
+import DateTimeFactory from 'lms/oa_datefactory';
+
 /**
 Tests for OA dateutil factory.
 **/
@@ -12,7 +14,7 @@ describe('OpenAssessment.DateTimeFactory', function() {
     describe('apply', function() {
         it('has the correct HTML elements', function() {
             var timeElement = $('.step__title').get(0);
-            var datetimeFactory = new OpenAssessment.DateTimeFactory(timeElement);
+            var datetimeFactory = new DateTimeFactory(timeElement);
             datetimeFactory.apply();
             $('.ora-datetime', timeElement).each(function() {
                 var self = this;
@@ -25,7 +27,7 @@ describe('OpenAssessment.DateTimeFactory', function() {
     describe('determineContext', function() {
         it('generates a context dict', function() {
             var timeElement = $('.step__title').get(0);
-            var datetimeFactory = new OpenAssessment.DateTimeFactory(timeElement);
+            var datetimeFactory = new DateTimeFactory(timeElement);
 
             $('.ora-datetime', timeElement).each(function() {
                 var self = this;
@@ -47,7 +49,7 @@ describe('OpenAssessment.DateTimeFactory', function() {
     describe('determineDateToken', function() {
         it('defaults', function() {
             var timeElement = $('.step__title').get(0);
-            var datetimeFactory = new OpenAssessment.DateTimeFactory(timeElement);
+            var datetimeFactory = new DateTimeFactory(timeElement);
 
             $('.ora-datetime', timeElement).each(function() {
                 var el = this;
@@ -69,7 +71,7 @@ describe('OpenAssessment.DateTimeFactory', function() {
     describe('isValid', function() {
         it('checks a valid variable', function() {
             var timeElement = $('.step__title').get(0);
-            var datetimeFactory = new OpenAssessment.DateTimeFactory(timeElement);
+            var datetimeFactory = new DateTimeFactory(timeElement);
             var testDict = {
                 'Invalid date': false,
                 'invalid date': true,

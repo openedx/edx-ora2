@@ -1,3 +1,5 @@
+import BaseView from 'lms/oa_base';
+
 /**
 Tests for OA student-facing views.
 **/
@@ -60,7 +62,7 @@ describe("OpenAssessment.BaseView", function() {
 
         // Create the object under test
         var el = $(".openassessment").get(0);
-        view = new OpenAssessment.BaseView(runtime, el, server);
+        view = new BaseView(runtime, el, server);
         view.load();
         expect($(".openassessment__steps__step").hasClass('is--loading')).toBeFalsy();
     });

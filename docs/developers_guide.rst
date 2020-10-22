@@ -79,14 +79,21 @@ If any changes are made to the .html files, it is necessary to re-do the transla
 
 The above command will generate translations files which will have to be checked into git.
 
-Minifying js/html
+Building JS
+------------
+This is required if there were any JS changes:
+
+- from local directory (not in lms shell)
+- ``npm run build``
+
+Minifying css
 -----------------
-This is required if there were any js/html changes:
+This is required if there were any scss changes:
 
 - be inside the shell
 - ``cd /edx/src/edx-ora2``
 - ``source edx-ora2/bin/activate``
-- ``make javascript sass``
+- ``make sass``
 
 Running Unit Tests
 ------------------

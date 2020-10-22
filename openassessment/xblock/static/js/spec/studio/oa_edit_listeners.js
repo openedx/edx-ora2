@@ -1,3 +1,13 @@
+import {
+  StudentTrainingListener,
+  AssessmentToggleListener,
+  StudentTrainingListenerWithTrainingExamples,
+} from 'studio/oa_edit_listeners';
+import {
+  EditStudentTrainingView,
+} from 'studio/oa_edit_assessment';
+import ValidationAlert from 'studio/oa_edit_validation_alert';
+
 /**
 Tests for the student training listener,
 which dynamically updates student training examples
@@ -42,7 +52,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
 
     beforeEach(function() {
         loadFixtures('oa_edit_student_training.html');
-        listener = new OpenAssessment.StudentTrainingListener();
+        listener = new StudentTrainingListener();
     });
 
     it("updates the label and points of an option", function() {
@@ -318,7 +328,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
 
     it("does not display an alert when student training is disabled", function() {
         var studentTrainingView =
-            new OpenAssessment.EditStudentTrainingView($('#oa_student_training_editor'));
+            new EditStudentTrainingView($('#oa_student_training_editor'));
         studentTrainingView.isEnabled(false);
         // Initial state, set by the fixture
         assertExampleLabels(
@@ -342,7 +352,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
     it("does not display an alert with no training examples", function() {
         // Clear out all examples.
         var studentTrainingView =
-            new OpenAssessment.EditStudentTrainingView($('#oa_student_training_editor'));
+            new EditStudentTrainingView($('#oa_student_training_editor'));
         var items = studentTrainingView.exampleContainer.getAllItems();
         $(items).each(function(){
             studentTrainingView.exampleContainer.remove(this);
@@ -367,8 +377,8 @@ describe("OpenAssessment.AssessmentToggleListener", function() {
 
     beforeEach(function() {
         loadFixtures('oa_edit.html');
-        alert = new OpenAssessment.ValidationAlert().install();
-        listener = new OpenAssessment.AssessmentToggleListener();
+        alert = new ValidationAlert().install();
+        listener = new AssessmentToggleListener();
     });
 
     it("displays an alert when the user disables an assessment", function() {
@@ -424,8 +434,8 @@ describe("OpenAssessment.StudentTrainingListenerWithTrainingExamples", function(
 
     beforeEach(function() {
         loadFixtures('oa_edit_student_training.html');
-        listener = new OpenAssessment.StudentTrainingListener();
-        view = new OpenAssessment.EditStudentTrainingView('#oa_student_training_editor');
+        listener = new StudentTrainingListener();
+        view = new EditStudentTrainingView('#oa_student_training_editor');
     });
 
 

@@ -57,8 +57,9 @@ Kwargs:
         New items will be assigned this class.
     notifier (OpenAssessment.Notifier): Used to send notifications of updates to container items.
 
-**/
-OpenAssessment.Container = function(ContainerItem, kwargs) {
+* */
+export class Container {
+  constructor(ContainerItem, kwargs) {
     this.containerElement = kwargs.containerElement;
     this.templateElement = kwargs.templateElement;
     this.addButtonElement = kwargs.addButtonElement;
@@ -70,89 +71,87 @@ OpenAssessment.Container = function(ContainerItem, kwargs) {
     // Since every container item should be instantiated with
     // the notifier we were given, create a helper method
     // that does this automatically.
-    var container = this;
-    this.createContainerItem = function(element) {
-        return new ContainerItem(element, container.notifier);
+    const container = this;
+    this.createContainerItem = function (element) {
+      return new ContainerItem(element, container.notifier);
     };
-};
+  }
 
-OpenAssessment.Container.prototype = {
-
-    /**
+  /**
      Adds event listeners to the container and its children. Must be
      called explicitly when the container is initially created.
      */
-    addEventListeners: function() {
-        var container = this;
+  addEventListeners() {
+    const container = this;
 
-        if (this.addRemoveEnabled) {
-            // Install a click handler for the add button
-            $(this.addButtonElement).click($.proxy(this.add, this));
+    if (this.addRemoveEnabled) {
+      // Install a click handler for the add button
+      $(this.addButtonElement).click($.proxy(this.add, this));
 
-            // Find items already in the container and install click
-            // handlers for the delete buttons.
-            $('.' + this.removeButtonClass, this.containerElement).click(
-                function(eventData) {
-                    var item = container.createContainerItem(eventData.target);
-                    container.remove(item);
-                }
-            );
-        } else {
-            $(this.addButtonElement).addClass('is--disabled');
-            $('.' + this.removeButtonClass, this.containerElement).addClass('is--disabled');
-        }
+      // Find items already in the container and install click
+      // handlers for the delete buttons.
+      $(`.${this.removeButtonClass}`, this.containerElement).click(
+        (eventData) => {
+          const item = container.createContainerItem(eventData.target);
+          container.remove(item);
+        },
+      );
+    } else {
+      $(this.addButtonElement).addClass('is--disabled');
+      $(`.${this.removeButtonClass}`, this.containerElement).addClass('is--disabled');
+    }
 
-        // Initialize existing items, in case they need to install their
-        // own event handlers.
-        $('.' + this.containerItemClass, this.containerElement).each(
-            function(index, element) {
-                var item = container.createContainerItem(element);
-                item.addEventListeners();
-            }
-        );
-    },
+    // Initialize existing items, in case they need to install their
+    // own event handlers.
+    $(`.${this.containerItemClass}`, this.containerElement).each(
+      (index, element) => {
+        const item = container.createContainerItem(element);
+        item.addEventListeners();
+      },
+    );
+  }
 
-    /**
+  /**
     Adds a new item to the container.
-    **/
-    add: function() {
-        // Copy the template into the container
-        // Remove any CSS IDs (since now the element is not unique)
-        // and add the item class so we can find it later.
-        // Note that the element we add is the first child of the template element.
-        // For more on the template structure expected, see the class comment
-        $(this.templateElement)
-            .children().first()
-            .clone()
-            .removeAttr('id')
-            .toggleClass('is--hidden', false)
-            .toggleClass(this.containerItemClass, true)
-            .appendTo($(this.containerElement));
+    * */
+  add() {
+    // Copy the template into the container
+    // Remove any CSS IDs (since now the element is not unique)
+    // and add the item class so we can find it later.
+    // Note that the element we add is the first child of the template element.
+    // For more on the template structure expected, see the class comment
+    $(this.templateElement)
+      .children().first()
+      .clone()
+      .removeAttr('id')
+      .toggleClass('is--hidden', false)
+      .toggleClass(this.containerItemClass, true)
+      .appendTo($(this.containerElement));
 
-        // Since we just added the new element to the container,
-        // it should be the last one.
-        var container = this;
-        var containerItem = $('.' + this.containerItemClass, this.containerElement).last();
+    // Since we just added the new element to the container,
+    // it should be the last one.
+    const container = this;
+    const containerItem = $(`.${this.containerItemClass}`, this.containerElement).last();
 
-        // Install a click handler for the delete button
-        if (this.addRemoveEnabled) {
-            containerItem.find('.' + this.removeButtonClass)
-                .click(function(eventData) {
-                    var containerItem = container.createContainerItem(eventData.target);
-                    container.remove(containerItem);
-                });
-        } else {
-            containerItem.find('.' + this.removeButtonClass).addClass('is--disabled');
-        }
+    // Install a click handler for the delete button
+    if (this.addRemoveEnabled) {
+      containerItem.find(`.${this.removeButtonClass}`)
+        .click((eventData) => {
+          const containerItemToRemove = container.createContainerItem(eventData.target);
+          container.remove(containerItemToRemove);
+        });
+    } else {
+      containerItem.find(`.${this.removeButtonClass}`).addClass('is--disabled');
+    }
 
-        // Initialize the item, allowing it to install event handlers.
-        // Fire event handler for adding a new element
-        var handlerItem = container.createContainerItem(containerItem);
-        handlerItem.addEventListeners();
-        handlerItem.addHandler();
-    },
+    // Initialize the item, allowing it to install event handlers.
+    // Fire event handler for adding a new element
+    const handlerItem = container.createContainerItem(containerItem);
+    handlerItem.addEventListeners();
+    handlerItem.addHandler();
+  }
 
-    /**
+  /**
     Remove the item associated with an element.
     If the element is not itself an item, traverse up the
     DOM tree until an item is found.
@@ -160,38 +159,38 @@ OpenAssessment.Container.prototype = {
     Args:
         item: The container item object to remove.
 
-    **/
-    remove: function(item) {
-        var itemElement = $(item.element).closest('.' + this.containerItemClass);
-        var containerItem = this.createContainerItem(itemElement);
-        containerItem.removeHandler();
-        itemElement.remove();
-    },
+    * */
+  remove(item) {
+    const itemElement = $(item.element).closest(`.${this.containerItemClass}`);
+    const containerItem = this.createContainerItem(itemElement);
+    containerItem.removeHandler();
+    itemElement.remove();
+  }
 
-    /**
+  /**
     Retrieves the values that each container defines for itself, in the order in which they are
     presented in the DOM.
 
     Returns:
         array: The values representing each container item.
 
-    **/
-    getItemValues: function() {
-        var values = [];
-        var container = this;
+    * */
+  getItemValues() {
+    const values = [];
+    const container = this;
 
-        $('.' + this.containerItemClass, this.containerElement).each(
-            function(index, element) {
-                var containerItem = container.createContainerItem(element);
-                var fieldValues = containerItem.getFieldValues();
-                values.push(fieldValues);
-            }
-        );
+    $(`.${this.containerItemClass}`, this.containerElement).each(
+      (index, element) => {
+        const containerItem = container.createContainerItem(element);
+        const fieldValues = containerItem.getFieldValues();
+        values.push(fieldValues);
+      },
+    );
 
-        return values;
-    },
+    return values;
+  }
 
-    /**
+  /**
     Retrieve the element representing an item in this container.
 
     Args:
@@ -200,22 +199,24 @@ OpenAssessment.Container.prototype = {
     Returns:
         Container item object or null.
 
-    **/
-    getItem: function(index) {
-        var element = $('.' + this.containerItemClass, this.containerElement).get(index);
-        return (element !== undefined) ? this.createContainerItem(element) : null;
-    },
+    * */
+  getItem(index) {
+    const element = $(`.${this.containerItemClass}`, this.containerElement).get(index);
+    return (element !== undefined) ? this.createContainerItem(element) : null;
+  }
 
-    /**
+  /**
     Retrieve all elements representing items in this container.
 
     Returns:
         array of container item objects
 
-    **/
-    getAllItems: function() {
-        var container = this;
-        return $('.' + this.containerItemClass, this.containerElement)
-            .map(function() {return container.createContainerItem(this);});
-    },
-};
+    * */
+  getAllItems() {
+    const container = this;
+    return $(`.${this.containerItemClass}`, this.containerElement)
+      .map(function () { return container.createContainerItem(this); });
+  }
+}
+
+export default Container;
