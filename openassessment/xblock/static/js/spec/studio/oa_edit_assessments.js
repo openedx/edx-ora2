@@ -1,3 +1,12 @@
+import ValidationAlert from 'studio/oa_edit_validation_alert';
+import {
+  EditPeerAssessmentView,
+  EditSelfAssessmentView,
+  EditStaffAssessmentView,
+  EditStudentTrainingView,
+} from 'studio/oa_edit_assessment';
+
+
 /**
 Tests for assessment editing views.
 **/
@@ -27,7 +36,7 @@ describe("OpenAssessment edit assessment views", function() {
     };
 
     var testAlertOnDisable = function(view) {
-        var alert = new OpenAssessment.ValidationAlert();
+        var alert = new ValidationAlert();
         expect(alert.isVisible()).toBe(false);
 
         // Set the assessment to enabled initially
@@ -58,7 +67,7 @@ describe("OpenAssessment edit assessment views", function() {
 
         beforeEach(function() {
             var element = $("#oa_peer_assessment_editor").get(0);
-            view = new OpenAssessment.EditPeerAssessmentView(element);
+            view = new EditPeerAssessmentView(element);
             view.startDatetime("2014-01-01", "00:00");
             view.dueDatetime("2014-01-01", "00:00");
         });
@@ -128,7 +137,7 @@ describe("OpenAssessment edit assessment views", function() {
 
         beforeEach(function() {
             var element = $("#oa_self_assessment_editor").get(0);
-            view = new OpenAssessment.EditSelfAssessmentView(element);
+            view = new EditSelfAssessmentView(element);
             view.startDatetime("2014-01-01", "00:00");
             view.dueDatetime("2014-01-01", "00:00");
         });
@@ -170,7 +179,7 @@ describe("OpenAssessment edit assessment views", function() {
             loadFixtures('oa_edit_student_training.html');
 
             var element = $("#oa_student_training_editor").get(0);
-            view = new OpenAssessment.EditStudentTrainingView(element);
+            view = new EditStudentTrainingView(element);
         });
 
         it("enables and disables", function() { testEnableAndDisable(view); });
@@ -242,7 +251,7 @@ describe("OpenAssessment edit assessment views", function() {
         var view = null;
 
         beforeEach(function() {
-            view = new OpenAssessment.EditStaffAssessmentView();
+            view = new EditStaffAssessmentView();
             view.isEnabled(true);
         });
 

@@ -1,3 +1,5 @@
+import EditRubricView from 'studio/oa_edit_rubric';
+
 /**
 Tests for the rubric editing view.
 **/
@@ -21,7 +23,7 @@ describe("OpenAssessment.EditRubricView", function() {
         loadFixtures('oa_edit.html');
         var el = $("#oa_rubric_editor_wrapper").get(0);
         notifier = new StubNotifier();
-        view = new OpenAssessment.EditRubricView(el, notifier);
+        view = new EditRubricView(el, notifier);
     });
 
     it("reads a criteria definition from the editor", function() {

@@ -1,3 +1,5 @@
+import BaseView from 'lms/oa_base';
+import StaffAreaView from 'lms/oa_staff_area';
 /**
  * Tests for OpenAssessment Student Training view.
  */
@@ -82,6 +84,7 @@ describe('OpenAssessment.StaffAreaView', function() {
     // Stubs
     var server = null;
     var runtime = {};
+    let baseView;
 
     /**
      * Create a staff area view.
@@ -98,15 +101,15 @@ describe('OpenAssessment.StaffAreaView', function() {
             server.staffAreaTemplate = staffAreaTemplate;
         }
         var assessmentElement = $('.openassessment').get(0);
-        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
-        var view = new OpenAssessment.StaffAreaView(assessmentElement, server, baseView);
+        baseView = new BaseView(runtime, assessmentElement, server, {});
+        var view = new StaffAreaView(assessmentElement, server, baseView);
         view.load();
         return view;
     };
 
     var createGradeAvailableResponsesView = function() {
         var assessmentElement = $('.openassessment').get(0);
-        var view = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
+        var view = new BaseView(runtime, assessmentElement, server, {});
         view.staffAreaView.installHandlers();
         return view;
     };
@@ -196,7 +199,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         afterEach(function() {
             // Disable the unsaved page warnings (if set).
-            OpenAssessment.clearUnsavedChanges();
+            baseView.clearUnsavedChanges();
         });
 
         it('tracks unsubmitted assessments in multiple views', function() {
@@ -552,7 +555,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             afterEach(function() {
                 // Disable the unsaved page warning (if set)
-                OpenAssessment.clearUnsavedChanges();
+                baseView.clearUnsavedChanges();
             });
 
             it('enables the submit button when all required fields are specified', function() {
@@ -670,7 +673,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         afterEach(function() {
             // Disable the unsaved page warnings (if set).
-            OpenAssessment.clearUnsavedChanges();
+            baseView.clearUnsavedChanges();
         });
 
         it('hides the "Grade Available Responses" panel when the close button is clicked', function() {

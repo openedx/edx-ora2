@@ -1,3 +1,5 @@
+import EditSettingsView from 'studio/oa_edit_settings';
+
 /**
 Tests for the edit settings view.
 **/
@@ -60,7 +62,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
-        view = new OpenAssessment.EditSettingsView(element, assessmentViews, data);
+        view = new EditSettingsView(element, assessmentViews, data);
     });
 
     it("sets and loads display name", function() {

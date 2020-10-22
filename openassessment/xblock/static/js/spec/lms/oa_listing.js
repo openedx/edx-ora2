@@ -1,3 +1,5 @@
+import CourseItemsListingView from 'lms/oa_course_items_listing';
+
 /**
  Tests for course items listing.
  **/
@@ -22,7 +24,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
         section = $('.open-response-assessment-block');
         rootElement = section.parent();
-        return new OpenAssessment.CourseItemsListingView(runtime, rootElement);
+        return new CourseItemsListingView(runtime, rootElement);
     };
 
     var stubAjax = function(success, responseData) {

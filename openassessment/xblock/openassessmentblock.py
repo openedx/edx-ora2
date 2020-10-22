@@ -614,24 +614,14 @@ class OpenAssessmentBlock(MessageMixin,
         else:
             css_url = "static/css/openassessment-ltr.css"
 
-        if settings.DEBUG:
-            for css in additional_css:
-                fragment.add_css_url(self.runtime.local_resource_url(self, css))
-            fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
+        # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+        for css in additional_css:
+            fragment.add_css(load(css))
+        fragment.add_css(load(css_url))
 
-            for js in additional_js:  # pylint: disable=invalid-name
-                self.add_javascript_files(fragment, js)
-            self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
-            self.add_javascript_files(fragment, "static/js/src/oa_server.js")
-            self.add_javascript_files(fragment, "static/js/src/lms")
-        else:
-            # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
-            for css in additional_css:
-                fragment.add_css(load(css))
-            fragment.add_css(load(css_url))
+        # minified additional_js should be already included in 'make javascript'
+        fragment.add_javascript(load("static/js/openassessment-lms.js"))
 
-            # minified additional_js should be already included in 'make javascript'
-            fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
             "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,

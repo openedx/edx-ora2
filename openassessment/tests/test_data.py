@@ -25,7 +25,10 @@ from openassessment.workflow import api as workflow_api, team_api as team_workfl
 COURSE_ID = "Test_Course"
 
 STUDENT_ID = u"Student"
-OLD_STUDENT_ID = "Old_Student"
+
+PRE_FILE_SIZE_STUDENT_ID = "Pre_FileSize_Student"
+
+PRE_FILE_NAME_STUDENT_ID = "Pre_FileName_Student"
 
 STUDENT_USERNAME = "Student Username"
 
@@ -54,8 +57,15 @@ STUDENT_ITEM = dict(
     item_type="openassessment"
 )
 
-OLD_STUDENT_ITEM = dict(
-    student_id=OLD_STUDENT_ID,
+PRE_FILE_SIZE_STUDENT_ITEM = dict(
+    student_id=PRE_FILE_SIZE_STUDENT_ID,
+    course_id=COURSE_ID,
+    item_id=ITEM_ID,
+    item_type="openassessment"
+)
+
+PRE_FILE_NAME_STUDENT_ITEM = dict(
+    student_id=PRE_FILE_NAME_STUDENT_ID,
     course_id=COURSE_ID,
     item_id=ITEM_ID,
     item_type="openassessment"
@@ -809,7 +819,8 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.maxDiff = None  # pylint: disable=invalid-name
 
         self.submission = self._create_submission(STUDENT_ITEM)
-        self.old_style_submission = self._create_submission(OLD_STUDENT_ITEM)
+        self.pre_file_size_submission = self._create_submission(PRE_FILE_SIZE_STUDENT_ITEM)
+        self.pre_file_name_submission = self._create_submission(PRE_FILE_NAME_STUDENT_ITEM)
         self.scorer_submission = self._create_submission(SCORER_ITEM)
 
         self.file_name_1 = 'file_name_1.jpg'
@@ -820,12 +831,14 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.file_key_1 = '{}/{}/{}'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
         self.file_key_2 = '{}/{}/{}/1'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
         self.file_key_3 = '{}/{}/{}/2'.format(STUDENT_ID, COURSE_ID, ITEM_ID)
-        self.file_key_4 = '{}/{}/{}'.format(OLD_STUDENT_ID, COURSE_ID, ITEM_ID)
+        self.file_key_4 = '{}/{}/{}'.format(PRE_FILE_SIZE_STUDENT_ID, COURSE_ID, ITEM_ID)
+        self.file_key_5 = '{}/{}/{}'.format(PRE_FILE_NAME_STUDENT_ID, COURSE_ID, ITEM_ID)
 
         self.file_description_1 = 'Some Description 1'
         self.file_description_2 = 'Some Description 2'
         self.file_description_3 = 'Some Description 3'
         self.file_description_4 = 'Some Description 4'
+        self.file_description_5 = 'Some Description 5'
 
         self.file_size_1 = 2 ** 20
         self.file_size_2 = 2 ** 21
@@ -849,31 +862,39 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         # Older responses (approx. pre-2020) won't have files_sizes
         # and will have the key 'files_name' rather than 'files_names'
-        self.old_style_answer = {
+        self.pre_file_size_answer = {
             'parts': [{'text': self.answer_text}],
             'file_keys': [self.file_key_4],
             'files_descriptions': [self.file_description_4],
             'files_name': [self.file_name_4]
         }
 
+        # And answers a bit older than that (approx. pre-Nov. 2019) won't
+        # have any file name data
+        self.pre_file_name_answer = {
+            'parts': [{'text': self.answer_text}],
+            'file_keys': [self.file_key_5],
+            'files_descriptions': [self.file_description_5],
+        }
+
         self.submission_files_data = [
             {
                 'course_id': COURSE_ID,
                 'block_id': ITEM_ID,
-                'student_id': OLD_STUDENT_ID,
-                'key': self.file_key_4,
-                'name': self.file_name_4,
+                'student_id': PRE_FILE_NAME_STUDENT_ID,
+                'key': self.file_key_5,
+                'name': 'File_1',
                 'type': OraDownloadData.ATTACHMENT,
-                'description': self.file_description_4,
+                'description': self.file_description_5,
                 'size': 0,
                 'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, OLD_STUDENT_ID, self.file_name_4
+                    COURSE_ID, ITEM_ID, PRE_FILE_NAME_STUDENT_ID, "File_1"
                 ),
             },
             {
                 'course_id': COURSE_ID,
                 'block_id': ITEM_ID,
-                'student_id': OLD_STUDENT_ID,
+                'student_id': PRE_FILE_NAME_STUDENT_ID,
                 'key': '',
                 'name': 'part_0.txt',
                 'type': OraDownloadData.TEXT,
@@ -881,7 +902,34 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'content': self.answer_text,
                 'size': len(self.answer_text),
                 'file_path': '{}/{}/{}/{}'.format(
-                    COURSE_ID, ITEM_ID, OLD_STUDENT_ID, 'part_0.txt'
+                    COURSE_ID, ITEM_ID, PRE_FILE_NAME_STUDENT_ID, 'part_0.txt'
+                ),
+            },
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': PRE_FILE_SIZE_STUDENT_ID,
+                'key': self.file_key_4,
+                'name': self.file_name_4,
+                'type': OraDownloadData.ATTACHMENT,
+                'description': self.file_description_4,
+                'size': 0,
+                'file_path': '{}/{}/{}/attachments/{}'.format(
+                    COURSE_ID, ITEM_ID, PRE_FILE_SIZE_STUDENT_ID, self.file_name_4
+                ),
+            },
+            {
+                'course_id': COURSE_ID,
+                'block_id': ITEM_ID,
+                'student_id': PRE_FILE_SIZE_STUDENT_ID,
+                'key': '',
+                'name': 'part_0.txt',
+                'type': OraDownloadData.TEXT,
+                'description': 'Submission text.',
+                'content': self.answer_text,
+                'size': len(self.answer_text),
+                'file_path': '{}/{}/{}/{}'.format(
+                    COURSE_ID, ITEM_ID, PRE_FILE_SIZE_STUDENT_ID, 'part_0.txt'
                 ),
             },
             {
@@ -954,11 +1002,16 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         submission.answer = self.answer
         submission.save()
 
-        # Answers once had a different format
-        old_uuid = self.old_style_submission['uuid']
-        old_style_submission = sub_api._get_submission_model(old_uuid)  # pylint: disable=protected-access
-        old_style_submission.answer = self.old_style_answer
-        old_style_submission.save()
+        # older submission formats
+        pre_filesize_uuid = self.pre_file_size_submission['uuid']
+        pre_file_size_submission = sub_api._get_submission_model(pre_filesize_uuid)  # pylint: disable=protected-access
+        pre_file_size_submission.answer = self.pre_file_size_answer
+        pre_file_size_submission.save()
+
+        pre_filename_uuid = self.pre_file_name_submission['uuid']
+        pre_file_name_submission = sub_api._get_submission_model(pre_filename_uuid)  # pylint: disable=protected-access
+        pre_file_name_submission.answer = self.pre_file_name_answer
+        pre_file_name_submission.save()
 
         # answer for scorer submission is just a string, and `collect_ora2_submission_files`
         # raises exception because of it, so we change it to empty dict
@@ -982,6 +1035,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
 
             download_mock.assert_has_calls([
+                call(self.file_key_5),
                 call(self.file_key_4),
                 call(self.file_key_1),
                 call(self.file_key_2),
@@ -990,10 +1044,10 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         zip_file = zipfile.ZipFile(file)
 
-        # archive should contain four attachments, two parts text file and one csv
-        self.assertEqual(len(zip_file.infolist()), 7)
+        # archive should contain five attachments, three parts text file and one csv
+        self.assertEqual(len(zip_file.infolist()), 9)
 
-        # check for old_user's file and text
+        # check for pre_file_name_user's file and text
         self.assertEqual(
             zip_file.read(self.submission_files_data[0]['file_path']),
             file_content
@@ -1002,22 +1056,31 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             zip_file.read(self.submission_files_data[1]['file_path']),
             self.answer_text.encode('utf-8')
         )
-        # check that main user's attachments have been written to the archive
+        # check for pre_file_size_user's file and text
         self.assertEqual(
             zip_file.read(self.submission_files_data[2]['file_path']),
             file_content
         )
         self.assertEqual(
             zip_file.read(self.submission_files_data[3]['file_path']),
-            file_content
+            self.answer_text.encode('utf-8')
         )
+        # check that main user's attachments have been written to the archive
         self.assertEqual(
             zip_file.read(self.submission_files_data[4]['file_path']),
             file_content
         )
-        # main user's text response
         self.assertEqual(
             zip_file.read(self.submission_files_data[5]['file_path']),
+            file_content
+        )
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[6]['file_path']),
+            file_content
+        )
+        # main user's text response
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[7]['file_path']),
             self.answer_text.encode('utf-8')
         )
 

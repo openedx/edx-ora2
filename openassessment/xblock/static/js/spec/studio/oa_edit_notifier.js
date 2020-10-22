@@ -1,3 +1,5 @@
+import Notifier from 'studio/oa_edit_notifier';
+
 describe("OpenAssessment.Notifier", function() {
 
     var notifier = null;
@@ -12,7 +14,7 @@ describe("OpenAssessment.Notifier", function() {
 
     beforeEach(function() {
         listeners = [ new StubListener(), new StubListener() ];
-        notifier = new OpenAssessment.Notifier(listeners);
+        notifier = new Notifier(listeners);
     });
 
     it("notifies listeners when a notification fires", function() {

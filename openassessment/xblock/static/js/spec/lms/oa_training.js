@@ -1,3 +1,6 @@
+import BaseView from 'lms/oa_base';
+import StudentTrainingView from 'lms/oa_training';
+
 /**
 Tests for OpenAssessment Student Training view.
 **/
@@ -44,8 +47,8 @@ describe("OpenAssessment.StudentTrainingView", function() {
 
         // Create the object under test
         var trainingElement = $('.step--student-training').get(0);
-        var baseView = new OpenAssessment.BaseView(runtime, trainingElement, server, {});
-        view = new OpenAssessment.StudentTrainingView(trainingElement, server, baseView);
+        var baseView = new BaseView(runtime, trainingElement, server, {});
+        view = new StudentTrainingView(trainingElement, server, baseView);
         view.installHandlers();
     });
 

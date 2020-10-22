@@ -1,3 +1,5 @@
+import FileUploader from 'lms/oa_file_upload';
+
 describe("OpenAssessment.FileUploader", function() {
 
     var fileUploader = null;
@@ -10,7 +12,7 @@ describe("OpenAssessment.FileUploader", function() {
     };
 
     beforeEach(function() {
-        fileUploader = new OpenAssessment.FileUploader();
+        fileUploader = new FileUploader();
     });
 
     it("logs a file upload event", function() {

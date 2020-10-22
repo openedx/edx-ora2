@@ -1,3 +1,6 @@
+import BaseView from 'lms/oa_base';
+import PeerView from 'lms/oa_peer';
+
 /**
  Tests for OpenAssessment Peer view.
  **/
@@ -36,18 +39,19 @@ describe("OpenAssessment.PeerView", function() {
     // Stubs
     var server = null;
     var runtime = {};
+    let baseView;
 
-    var createPeerAssessmentView = function(template) {
+    const createPeerAssessmentView = function(template) {
         loadFixtures(template);
 
-        var rootElement = $('.step--peer-assessment').parent().get(0);
-        var baseView = new OpenAssessment.BaseView(runtime, rootElement, server, {});
-        var view = new OpenAssessment.PeerView(rootElement, server, baseView);
+        const rootElement = $('.step--peer-assessment').parent().get(0);
+        baseView = new BaseView(runtime, rootElement, server, {});
+        const view = new PeerView(rootElement, server, baseView);
         view.installHandlers();
         return view;
     };
 
-    var submitPeerAssessment = function(view) {
+    const submitPeerAssessment = (view) => {
         spyOn(server, 'peerAssess').and.callThrough();
 
         // Select options in the rubric
@@ -75,7 +79,10 @@ describe("OpenAssessment.PeerView", function() {
         // Expect that the peer assessment was sent to the server
         // with the options and feedback we selected
         expect(server.peerAssess).toHaveBeenCalledWith(
-            optionsSelected, criterionFeedback, overallFeedback, uuid
+            optionsSelected,
+            criterionFeedback,
+            overallFeedback,
+            uuid
         );
     };
 
@@ -86,16 +93,16 @@ describe("OpenAssessment.PeerView", function() {
     });
 
     afterEach(function() {
-        OpenAssessment.clearUnsavedChanges();
+        baseView.clearUnsavedChanges();
     });
 
     it("sends a peer assessment to the server", function() {
-        var view = createPeerAssessmentView('oa_peer_assessment.html');
+        const view = createPeerAssessmentView('oa_peer_assessment.html');
         submitPeerAssessment(view);
     });
 
     it("re-enables the peer assess button on error", function() {
-        var view = createPeerAssessmentView('oa_peer_assessment.html');
+        const view = createPeerAssessmentView('oa_peer_assessment.html');
         // Simulate a server error
         spyOn(server, 'peerAssess').and.callFake(function() {
             expect(view.peerSubmitEnabled()).toBe(false);
@@ -110,7 +117,7 @@ describe("OpenAssessment.PeerView", function() {
     });
 
     it("re-enables the continued grading button on error", function() {
-        var view = createPeerAssessmentView('oa_peer_complete.html');
+        const view = createPeerAssessmentView('oa_peer_complete.html');
 
         // Simulate a server error
         spyOn(server, 'renderContinuedPeer').and.callFake(function() {
@@ -126,7 +133,7 @@ describe("OpenAssessment.PeerView", function() {
     });
 
     it("warns of unsubmitted assessments", function() {
-        var view = createPeerAssessmentView('oa_peer_assessment.html');
+        const view = createPeerAssessmentView('oa_peer_assessment.html');
 
         expect(view.baseView.unsavedWarningEnabled()).toBe(false);
 
@@ -157,12 +164,12 @@ describe("OpenAssessment.PeerView", function() {
 
     describe("Turbo Mode", function() {
         it("can submit assessments in turbo mode", function() {
-            var view = createPeerAssessmentView('oa_turbo_mode.html');
+            const view = createPeerAssessmentView('oa_turbo_mode.html');
             submitPeerAssessment(view);
         });
 
         it("can continue assessing upon completion of required assessments", function() {
-            var view = createPeerAssessmentView('oa_peer_complete.html');
+            const view = createPeerAssessmentView('oa_peer_complete.html');
             $(".action--continue--grading", view.element).click();
 
             // Verify that a peer assessment can now be submitted

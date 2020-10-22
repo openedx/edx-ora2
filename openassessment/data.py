@@ -778,9 +778,13 @@ class OraDownloadData:
 
             # collecting submission attachments with metadata
             for index, file_key in enumerate(answer.get('file_keys', [])):
-                # Old submissions (approx. pre-2020) have file names under the key "files_name"
+                # Old submissions (approx. pre-2020) have file names under the key "files_name",
+                # and even older ones don't have file names at all
                 file_names = answer.get('files_names', answer.get('files_name', []))
-                file_name = file_names[index]
+                try:
+                    file_name = file_names[index]
+                except IndexError:
+                    file_name = "File_" + str(index + 1)
 
                 # 'files_sizes' was added sometime around the beginning of 2020, so older submissions
                 # will not have it

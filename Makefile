@@ -69,9 +69,8 @@ update-npm-requirements: ## update NPM requrements
 	cp ./node_modules/backgrid/lib/backgrid*.js $(STATIC_JS)/lib/backgrid/
 	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
 
-javascript: update-npm-requirements ## Minify JavaScript source files
-	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/lms/*.js $(STATIC_JS)/lib/backgrid/backgrid.min.js > "$(STATIC_JS)/openassessment-lms.min.js"
-	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/studio/*.js $(STATIC_JS)/lib/backgrid/backgrid.min.js > "$(STATIC_JS)/openassessment-studio.min.js"
+javascript: ## Webpack JavaScript source files
+	npm run build
 
 sass: ## Compile SASS files
 	python scripts/compile_sass.py
@@ -109,7 +108,6 @@ check_translations_up_to_date: extract_translations compile_translations generat
 ################
 
 quality: ## Run linting and code quality checks
-	./node_modules/.bin/jshint $(STATIC_JS)/src -c .jshintrc --verbose
 	npm run lint
 	./scripts/run-pycodestyle.sh
 	./scripts/run-pylint.sh

@@ -1,3 +1,5 @@
+import EditScheduleView from 'studio/oa_edit_schedule';
+
 /**
 Tests for the edit schedule view.
 **/
@@ -24,7 +26,7 @@ describe('OpenAssessment.EditScheduleView', function() {
 
         // Create the view
         var element = $('#oa_schedule_editor_wrapper', this.element).get(0);
-        view = new OpenAssessment.EditScheduleView(element);
+        view = new EditScheduleView(element);
 
         view.submissionStart('2014-01-01', '00:00');
         view.submissionDue('2014-03-04', '00:00');

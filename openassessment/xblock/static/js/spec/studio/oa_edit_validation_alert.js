@@ -1,10 +1,12 @@
+import ValidationAlert from 'studio/oa_edit_validation_alert';
+
 describe("OpenAssessment.ValidationAlert", function() {
 
     var alert = null;
 
     beforeEach(function() {
         loadFixtures('oa_edit.html');
-        alert = new OpenAssessment.ValidationAlert().install();
+        alert = new ValidationAlert().install();
     });
 
     it("shows and hides an alert", function() {
