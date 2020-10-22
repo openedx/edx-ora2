@@ -69,7 +69,7 @@ update-npm-requirements: ## update NPM requrements
 	cp ./node_modules/backgrid/lib/backgrid*.js $(STATIC_JS)/lib/backgrid/
 	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
 
-javascript: update-npm-requirements ## Minify JavaScript source files
+javascript: ## Webpack JavaScript source files
 	npm run build
 
 sass: ## Compile SASS files
