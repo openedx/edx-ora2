@@ -53,7 +53,7 @@ DEFAULT_RUBRIC_CRITERIA = [
                 'explanation': """Includes sufficient information and supporting details. (Details may not be fully developed; ideas may be listed.)  Explores some facets of the topic."""  # nopep8
             },
             {
-                'order_num': 3, 'points': 3, 'name': 'Excellent', 'label': 'Excellent',
+                'order_num': 3, 'points': 5, 'name': 'Excellent', 'label': 'Excellent',
                 'explanation': """Includes in-depth information and exceptional supporting details that are fully developed.  Explores all facets of the topic."""  # nopep8
             },
         ],
