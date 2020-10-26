@@ -184,29 +184,44 @@
         </div>
     </div>
 
-    {% if not workflow_cancellation %}
-        {% if not are_grades_frozen %}
-            <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
-                <div class="ui-slidable__control">
-                    <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
-                        <h2 class="staff-info__title ui-staff__subtitle">
-                            <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                            {% if not is_team_assignment %}
-                                <span>{% trans "Submit Assessment Grade Override" %}</span>
-                            {% else %}
-                                <span>{% trans "Submit Team Grade Override" %}</span>
-                            {% endif %}
-                        </h2>
-                    </button>
-                </div>
-                <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
-                    <div class="wrapper--input">
-                        {% include "openassessmentblock/staff_area/oa_staff_override_assessment.html" %}
+    <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
+        <div class="ui-slidable__control">
+            <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
+                <h2 class="staff-info__title ui-staff__subtitle">
+                    <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                    {% if not is_team_assignment %}
+                        <span>{% trans "Submit Assessment Grade Override" %}</span>
+                    {% else %}
+                        <span>{% trans "Submit Team Grade Override" %}</span>
+                    {% endif %}
+                </h2>
+            </button>
+        </div>
+        <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
+            <div class="wrapper--input">
+                {% if are_grades_frozen or workflow_cancellation %}
+                    <div class="step__message message message--warning" tabindex="-1">
+                        <h5 class="message__title">{% trans "Unable to perform grade override" %}</h5>
+                        {% if are_grades_frozen %}
+                            <div class="message__content">
+                                {% trans "Grades are frozen."%}
+                            </div>
+                        {% endif %}
+                        <br>
+                        {% if workflow_cancellation %}
+                            <div class="message__content">
+                                {% trans "This submission has been cancelled and cannot recieve a grade. Refer to documentation for how to reset a cancelled submission." %}
+                            </div>
+                        {% endif %}
                     </div>
-                </div>
+                {% else %}
+                    {% include "openassessmentblock/staff_area/oa_staff_override_assessment.html" %}
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
+    </div>
 
+    {% if not workflow_cancellation and not are_grades_frozen %}
         <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
             <div class="ui-slidable__control">
                 <button class="ui-staff ui-slidable" aria-controls="remove_submission_content_{{ submission.uuid }}" aria-expanded="false" id="remove_submission_{{ submission.uuid }}">
