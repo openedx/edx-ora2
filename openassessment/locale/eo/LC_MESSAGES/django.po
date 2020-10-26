@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-19 16:54-0400\n"
+"POT-Creation-Date: 2020-10-26 13:06-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2315,6 +2315,23 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Submit Team Grade Override"
 msgstr "Süßmït Téäm Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Unable to perform grade override"
+msgstr ""
+"Ûnäßlé tö pérförm grädé övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Grades are frozen."
+msgstr "Grädés äré frözén. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"This submission has been cancelled and cannot recieve a grade. Refer to "
+"documentation for how to reset a cancelled submission."
+msgstr ""
+"Thïs süßmïssïön häs ßéén çänçélléd änd çännöt réçïévé ä grädé. Référ tö "
+"döçüméntätïön för höw tö rését ä çänçélléd süßmïssïön. Ⱡ'σяєм#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Remove Submission From Peer Grading"
