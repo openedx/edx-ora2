@@ -1363,6 +1363,50 @@ class TestCourseStaff(XBlockHandlerTestCase):
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
+    @ddt.data(
+        (False, False),
+        (True, False),
+        (False, True),
+        (True, True),
+    )
+    @ddt.unpack
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_show_unavailable_staff_override_section(self, xblock, cancelled_submission, grades_frozen):
+        """
+        If grades are frozen or a submission is cancelled, we want to show the override dropdown, but show a warning rather than the override form
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
+        # Create a submission
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        submission = self._create_submission(bob_item, {'text': "Bob Answer"}, ['staff'])
+
+        if cancelled_submission:
+            workflow_api.cancel_workflow(
+                submission_uuid=submission["uuid"],
+                comments="Inappropriate language",
+                cancelled_by_id=bob_item['student_id'],
+                assessment_requirements={}
+            )
+        if grades_frozen:
+            mock_are_grades_frozen = Mock(return_value=True)
+            mock_grade_utils = Mock(are_grades_frozen=mock_are_grades_frozen)
+            xblock.runtime._services['grade_utils'] = mock_grade_utils  # pylint: disable=protected-access
+
+        payload = urllib.parse.urlencode({"student_username": "Bob"})
+        resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
+        self.assertIn("Submit Assessment Grade Override", resp)
+        if cancelled_submission:
+            self.assertIn("Unable to perform grade override", resp)
+            self.assertIn("This submission has been cancelled and cannot recieve a grade", resp)
+        if grades_frozen:
+            self.assertIn("Unable to perform grade override", resp)
+            self.assertIn("Grades are frozen", resp)
+
     def _setup_xblock_and_create_submission(self, xblock, anonymous_user_id='Bob', has_team=True, **kwargs):
         """
         A shortcut method to setup ORA xblock and add a user submission or a team submission to the block.
