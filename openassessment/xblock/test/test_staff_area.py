@@ -1373,7 +1373,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_show_unavailable_staff_override_section(self, xblock, cancelled_submission, grades_frozen):
         """
-        If grades are frozen or a submission is cancelled, we want to show the override dropdown, but show a warning rather than the override form
+        If grades are frozen or a submission is cancelled, we want to show the override dropdown,
+        but show a warning rather than the override form
         """
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
