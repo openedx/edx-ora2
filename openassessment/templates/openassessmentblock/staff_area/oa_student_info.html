@@ -197,19 +197,19 @@
                 </h2>
             </button>
         </div>
+        aaaaa
         <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
             <div class="wrapper--input">
                 {% if are_grades_frozen or workflow_cancellation %}
                     <div class="step__message message message--warning" tabindex="-1">
                         <h5 class="message__title">{% trans "Unable to perform grade override" %}</h5>
                         {% if are_grades_frozen %}
-                            <div class="message__content">
+                            <div class="message__content staff_area_override_unaavilable_msg">
                                 {% trans "Grades are frozen. Grades are automatically frozen 30 days after the course end date." %}
                             </div>
                         {% endif %}
-                        <br>
                         {% if workflow_cancellation %}
-                            <div class="message__content">
+                            <div class="message__content staff_area_override_unaavilable_msg">
                                 {% trans "This submission has been cancelled and cannot recieve a grade. Refer to documentation for how to reset a cancelled submission." %}
                             </div>
                         {% endif %}
