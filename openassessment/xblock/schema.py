@@ -164,5 +164,6 @@ EDITOR_UPDATE_SCHEMA = Schema({
                 })
             ]
         })
-    ]
+    ],
+    Required('show_rubric_during_response'): bool,
 })

@@ -284,6 +284,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="The id of the selected teamset.",
     )
 
+    show_rubric_during_response = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Should the rubric be visible to learners in the response section?"
+    )
+
     @property
     def course_id(self):
         return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
