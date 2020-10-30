@@ -5,6 +5,7 @@
  absolutely sure there isn't a way to encapsulate it in
  an object!
  * */
+import 'backgrid';
 
 // Stub gettext if the runtime doesn't provide it
 if (typeof window.gettext === 'undefined') {
