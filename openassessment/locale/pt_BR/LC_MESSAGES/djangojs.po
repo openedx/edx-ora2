@@ -7,6 +7,7 @@
 # ALEXANDRE SILVA <alexandre.alves@gmail.com>, 2014
 # Angela Amaro <angelasimei@gmail.com>, 2016
 # Emili Costa <m.lee.costa@gmail.com>, 2015
+# Emmanuel Halbout <emmanuelhalbout@neojiba.org>, 2020
 # Fabricio Lourencone <fa_gatto7@yahoo.com.br>, 2017
 # Leonardo Lehnemann <lehneman@gmail.com>, 2014
 # Leonardo Lehnemann <lehneman@gmail.com>, 2014
@@ -23,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-19 16:54-0400\n"
-"PO-Revision-Date: 2020-10-07 07:16+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-10-27 11:56-0400\n"
+"PO-Revision-Date: 2020-10-28 18:04+0000\n"
+"Last-Translator: Emmanuel Halbout <emmanuelhalbout@neojiba.org>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/edx-platform/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
