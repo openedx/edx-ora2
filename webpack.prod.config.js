@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'production';
 
 const { createConfig } = require('@edx/frontend-build');
 
+const webpack = require('webpack');
 const config = createConfig('webpack-prod');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
@@ -25,7 +26,10 @@ Object.assign(config, {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-    })
+    }),
+    new webpack.ProvidePlugin({
+      Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid'))
+    }),
   ],
 });
 
