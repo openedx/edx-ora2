@@ -525,7 +525,6 @@ class OpenAssessmentBlock(MessageMixin,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
-
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):
@@ -876,7 +875,13 @@ class OpenAssessmentBlock(MessageMixin,
 
     @property
     def assessment_steps(self):
-        return [asmnt['name'] for asmnt in self.valid_assessments]
+        assessment_steps = []
+        for asmnt in self.valid_assessments:
+            if asmnt['name'] == 'staff-assessment' and asmnt["required"] is False:
+                if not self.staff_assessment_exists(self.submission_uuid):
+                    continue
+            assessment_steps.append(asmnt['name'])
+        return assessment_steps
 
     @lazy
     def rubric_criteria_with_labels(self):
