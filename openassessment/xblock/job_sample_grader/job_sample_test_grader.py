@@ -25,7 +25,7 @@ class TestGrader:
         'c++': 'cpp'
     }
     __SECRET_DATA_DIR__ = "/grader_data/"
-    __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
+    __TMP_DATA_DIR__ = "/tmp/"
 
     def grade(self, response, add_staff_cases=False):
         problem_name = response['problem_name']
