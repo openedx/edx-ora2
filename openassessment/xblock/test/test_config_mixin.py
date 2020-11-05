@@ -106,29 +106,22 @@ class ConfigMixinTest(TestCase):
         )
 
     @ddt.data(
-        *list(itertools.product([True, False], repeat=3))
+        (True, True),
+        (False, False),
+        (None, False),
     )
     @ddt.unpack
-    @mock.patch('openassessment.xblock.config_mixin.import_waffle_switch', autospec=True)
-    @mock.patch('openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True)
     def test_mobile_support_enabled(
-            self, waffle_switch_input, waffle_flag_input, settings_input, mock_waffle_flag, mock_waffle_switch
+            self, settings_input, expected_output
     ):
         """
-        The "ora mobile support" workaround is expected to be enabled if at least one of the following conditions holds:
-          1) The all_files_urls waffle switch is enabled.
-          2) The all_files_urls course waffle flag is enabled.
-          3) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
+        The mobile support is expected to be enabled only if:
+          1) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
         """
-        self._run_feature_toggle_test(
-            MOBILE_SUPPORT,
-            waffle_switch_input,
-            waffle_flag_input,
-            settings_input,
-            mock_waffle_flag,
-            mock_waffle_switch,
-            'is_mobile_support_waffle_enabled',
-        )
+        my_block = MockBlock()
+        settings_feature_key = FEATURE_TOGGLES_BY_FLAG_NAME[MOBILE_SUPPORT]
+        with self.settings(FEATURES={settings_feature_key: settings_input}):
+            self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
 
     def _run_feature_toggle_test(
             self, flag_name, waffle_switch_input, waffle_flag_input, settings_input,

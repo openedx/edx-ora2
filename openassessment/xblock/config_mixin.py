@@ -114,8 +114,8 @@ class ConfigMixin:
         return self.is_feature_enabled(ALL_FILES_URLS)
 
     @cached_property
-    def is_mobile_support_waffle_enabled(self):
+    def is_mobile_support_enabled(self):
         """
         Returns a boolean indicating if the mobile support feature flag is enabled or not.
         """
-        return self.is_feature_enabled(MOBILE_SUPPORT)
+        return self._settings_toggle_enabled(FEATURE_TOGGLES_BY_FLAG_NAME.get(MOBILE_SUPPORT))
