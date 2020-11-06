@@ -4,6 +4,7 @@
 # edX Internal Requirements
 edx-i18n-tools
 edx-submissions
+edx-toggles
 djangorestframework
 Xblock
 
