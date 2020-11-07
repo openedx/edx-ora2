@@ -876,11 +876,11 @@ class OpenAssessmentBlock(MessageMixin,
     @property
     def assessment_steps(self):
         assessment_steps = []
-        for asmnt in self.valid_assessments:
-            if asmnt['name'] == 'staff-assessment' and asmnt["required"] is False:
+        for assessment in self.valid_assessments:
+            if assessment['name'] == 'staff-assessment' and assessment["required"] is False:
                 if not self.staff_assessment_exists(self.submission_uuid):
                     continue
-            assessment_steps.append(asmnt['name'])
+            assessment_steps.append(assessment['name'])
         return assessment_steps
 
     @lazy
