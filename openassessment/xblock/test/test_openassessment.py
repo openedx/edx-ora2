@@ -480,6 +480,41 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Check that we can render the student view without error
         self.runtime.render(xblock, 'student_view')
 
+    @scenario('data/grade_scenario_self_staff.xml', user_id='Bob')
+    def test_assessment_type_with_staff(self, xblock):
+        # Check that staff-assessment is in assessment_steps
+        self.assertIn('staff-assessment', xblock.assessment_steps)
+
+        # Check that we can render the student view without error
+        self.runtime.render(xblock, 'student_view')
+
+    @scenario('data/grade_scenario_self_only.xml', user_id='Bob')
+    def test_assessment_type_without_staff(self, xblock):
+        # Check that staff-assessment is not in assessment_steps
+        self.assertNotIn('staff-assessment', xblock.assessment_steps)
+
+        # Check that we can render the student view without error
+        self.runtime.render(xblock, 'student_view')
+
+    @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
+    def test_assessment_type_with_staff_not_required(self, xblock):
+        # Check that staff-assessment is not in assessment_steps
+        self.assertNotIn('staff-assessment', xblock.assessment_steps)
+
+        # Check that we can render the student view without error
+        self.runtime.render(xblock, 'student_view')
+
+    @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
+    def test_assessment_type_with_staff_override(self, xblock):
+        # Override the staff_assessment_exists function to always return True
+        xblock.staff_assessment_exists = lambda submission_uuid : True
+
+        # Check that staff-assessment is in assessment_steps
+        self.assertIn('staff-assessment', xblock.assessment_steps)
+
+        # Check that we can render the student view without error
+        self.runtime.render(xblock, 'student_view')
+
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_prompts_fields(self, xblock):
 
