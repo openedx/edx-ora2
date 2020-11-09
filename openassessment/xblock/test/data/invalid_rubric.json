@@ -48,6 +48,7 @@
         "allow_file_upload": true,
         "leaderboard_show": true,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "criteria": [
             {
