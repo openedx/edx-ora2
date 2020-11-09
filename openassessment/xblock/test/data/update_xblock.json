@@ -36,6 +36,7 @@
         "file_upload_type": null,
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -96,6 +97,7 @@
         "file_upload_type": null,
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -152,6 +154,7 @@
         "file_upload_type": null,
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -208,6 +211,7 @@
         "file_upload_type": null,
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -275,6 +279,7 @@
         "file_upload_type": null,
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "title": "My new title.",
@@ -331,6 +336,7 @@
         "file_upload_type": "image",
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "title": "My new title.",
@@ -387,6 +393,7 @@
         "file_upload_type": "pdf-and-image",
         "white_listed_file_types": null,
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "title": "My new title.",
@@ -443,6 +450,7 @@
         "file_upload_type": "custom",
         "white_listed_file_types": "pdf,doc,docx",
         "allow_multiple_files": true,
+        "show_rubric_during_response": false,
         "allow_latex": false,
         "leaderboard_show": 0,
         "title": "My new title.",

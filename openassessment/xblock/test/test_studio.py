@@ -31,6 +31,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "file_upload_type": None,
         "white_listed_file_types": '',
         "allow_multiple_files": True,
+        "show_rubric_during_response": False,
         "allow_latex": False,
         "leaderboard_show": 4,
         "assessments": [{"name": "self-assessment"}],
