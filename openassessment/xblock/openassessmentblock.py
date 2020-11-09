@@ -875,6 +875,15 @@ class OpenAssessmentBlock(MessageMixin,
 
     @property
     def assessment_steps(self):
+        """
+        Return a list of assessment steps by name.
+        Also filter out assessments that have required set to false and do not
+        contain a staff grade override.
+
+        Returns:
+            list
+
+        """
         assessment_steps = []
         for assessment in self.valid_assessments:
             if assessment['name'] == 'staff-assessment' and assessment["required"] is False:
