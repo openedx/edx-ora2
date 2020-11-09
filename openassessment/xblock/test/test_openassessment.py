@@ -507,7 +507,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_override(self, xblock):
         # Override the staff_assessment_exists function to always return True
-        xblock.staff_assessment_exists = lambda submission_uuid : True
+        xblock.staff_assessment_exists = lambda submission_uuid: True
 
         # Check that staff-assessment is in assessment_steps
         self.assertIn('staff-assessment', xblock.assessment_steps)
