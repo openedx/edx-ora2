@@ -161,16 +161,22 @@ OpenAssessment.ResponseView.prototype = {
         return $('.response__submission .submission__answer__part__text__value', this.element);
     },
 
-    createTextArea: function(value, width){
-        return "<textarea rows=5 style='width:" +width + "%; height:auto;' readonly>" + value + "</textarea>";
+    createTextArea: function(value){
+        var $elem = $('<p></p>');
+        $elem.text(value);
+        $elem.addClass('output_text_area');
+        return $elem;
     },
 
     errorTextArea: function(value){
-        return "<textarea rows=10 style='width:70%; height:auto;' readonly>" + value + "</textarea>";
+        var $elem = $('<p></p>');
+        $elem.text(value);
+        $elem.addClass('output_error_text_area');
+        return $elem;
     },
 
-    createOutputHeader: function(value, width){
-        return "<span style='width:" + width + "%; display:inline-block; font: 18px bold;'>"+ value +"</span>"
+    createOutputHeader: function(value){
+        return "<p class='output_text_area'>"+ value +"</p>"
     },
 
     /*
@@ -188,7 +194,7 @@ OpenAssessment.ResponseView.prototype = {
             indentUnit: 4
             }
         );
-        this.codeEditor.setSize(null, 800);
+        this.codeEditor.setSize(null, 600);
         this.updateEditorMode(this.getLanguage());
     }
     },
@@ -198,38 +204,53 @@ OpenAssessment.ResponseView.prototype = {
     */
     showTestCaseResult: function(test_results){
 
-        var test_status_elem = $("#test_case_status_result", this.element);
-        test_status_elem.html("");
-        var out_textarea =
-            "<p>" +
-            this.createOutputHeader("Test Input", 33) +
-            this.createOutputHeader("Your Output", 33) +
-            this.createOutputHeader("Expected Output", 33) +
-            "</p>";
+        var $table, $row, style;
+        var header_keys = ["Test Input", "Your Output", "Expected Output"];
+        var data_keys = ["test_input", "actual_output", "expected_output"];
 
-        for(var key in test_results){
-            var style= "red";
-            if(test_results[key]['correct']==true){
-                style= "green";
-            }
-            out_textarea += (
-            "<p style='outline: 3px solid " + style + "';>" +
-            this.createTextArea(test_results[key]['test_input'], 33) +
-            this.createTextArea(test_results[key]['actual_output'], 33) +
-            this.createTextArea(test_results[key]['expected_output'], 34) +
-            "</p>"
-            )
+        // Setup Table
+        $table = $("<table>");
+        $table.addClass("results_table");
+
+        // Setup Table header HTML and values
+        $table.append('<thead>');
+        $table.find('thead').append("<tr>");
+        $row = $table.find("thead > tr:last");
+        for(var idx in header_keys){
+            $row.append("<th>");
+            $row.find("th:last").append(this.createOutputHeader(header_keys[idx]));
         }
-        test_status_elem.html(out_textarea);
+
+        // Setup Table body HTML and values
+        $table.append('<tbody>');
+        for(var key in test_results){
+            $table.find('tbody').append("<tr>");
+            $row = $table.find("tbody > tr:last");
+
+            style= "rgba(205, 0, 0, 0.3)";
+            if(test_results[key]['correct']==true){
+                style= "rgba(0, 205, 0, 0.3)";
+            }
+            $row.css('background', style);
+
+            for(var index in data_keys){
+                $row.append("<td>");
+                $row.find("td:last").append(this.createTextArea(test_results[key][data_keys[index]]));
+            }
+        }
+
+        // Update the summary element with created table
+        $("#test_case_status_result", this.element).html($table);
     },
 
     /*
     Add the HTML to show how many test cases passed from the total number
     */
     showResultSummary: function(correct, total){
-
-        var summary = "<b>Results</b>: " + correct + " out of " + total + " test cases passed"
-        $("#test_cases_summary").html("<p class='bold_text'>" + summary + "</p>")
+        var $summary = $("<p>");
+        $summary.addClass('results_summary');
+        $summary.append("<strong>Test Cases Result: " + correct + "/" + total + "</strong></p>");
+        $("#test_cases_summary").html($summary);
     },
 
     /*
@@ -254,8 +275,15 @@ OpenAssessment.ResponseView.prototype = {
           this.saveStatus(gettext("Code output matches the expected output"));
         }
         else{
-          this.saveStatus(gettext("Code output mismatch / Execution error"));
+          this.saveStatus(gettext("Code output does not match with the expected output"));
         }
+    },
+
+    /*
+    Code Execution error message
+    */
+    indicateError: function(){
+          this.saveStatus(gettext("Execution Error"));
     },
 
     /*
@@ -572,7 +600,7 @@ OpenAssessment.ResponseView.prototype = {
             view.savedResponse = savedResponse;
             if(data.error){
                 view.showRunError(data.error);
-                view.indicateCorrectness(false);
+                view.indicateError();
                 view.clearResultSummary();
             }
             else{
