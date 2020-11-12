@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-19 16:54-0400\n"
-"PO-Revision-Date: 2020-10-20 15:09+0000\n"
+"POT-Creation-Date: 2020-10-27 11:56-0400\n"
+"PO-Revision-Date: 2020-11-06 10:25+0000\n"
 "Last-Translator: Abel Camacho <abelcama@gmail.com>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/open-edx/edx-platform/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -590,7 +590,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
-msgstr ""
+msgstr "Bidalketa bertan behera geratu da."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:19
 #, python-format
@@ -919,11 +919,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
-msgstr "Igotzen"
+msgstr "Kargatzen"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
 msgid "Preview in LaTeX"
-msgstr ""
+msgstr "Aurreikusi LaTeXen"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
@@ -931,7 +931,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
 msgid "Preview Response"
-msgstr ""
+msgstr "Aurreikusi erantzuna"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
@@ -939,7 +939,7 @@ msgstr "Iruzkinak"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr ""
+msgstr "Atal honetarako galdera"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
 msgid "Files that were uploaded by your teammates:"
@@ -978,7 +978,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -989,7 +989,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
@@ -1027,7 +1027,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
 #: openassessment/xblock/staff_assessment_mixin.py:157
 msgid "Cancelled"
-msgstr ""
+msgstr "Bertan behera utzita"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:20
 #, python-format
@@ -1118,7 +1118,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1129,7 +1129,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:54
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
@@ -1185,11 +1185,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "You are on team "
-msgstr ""
+msgstr "Ondoko taldean zaude:"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:132
 msgid "Team Members: "
-msgstr ""
+msgstr "Taldekideak:"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:137
 #, python-format
@@ -1203,7 +1203,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:153
 msgid "Team Response "
-msgstr ""
+msgstr "Taldearen erantzuna "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid "Your Response "
@@ -1296,7 +1296,7 @@ msgstr "Kargatu fitxategiak"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:268
 msgid "Upload file"
-msgstr ""
+msgstr "Kargatu fitxategia"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:284
 msgid "You may continue to work on your response until you submit it."
@@ -1657,11 +1657,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
-msgstr ""
+msgstr "Ikaslearen erantzuna"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
 msgid "Team's Response"
-msgstr ""
+msgstr "Taldearen erantzuna"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
@@ -1709,11 +1709,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
-msgstr ""
+msgstr "Ikaslearen azken kalifikazioa"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
-msgstr ""
+msgstr "Taldearen azken kalifikazioa"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
@@ -1725,7 +1725,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
-msgstr ""
+msgstr "Azken kalifikazioaren xehetasunak"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:139
 #, python-format
@@ -1764,53 +1764,70 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
-msgstr ""
+msgstr "Ariketa ez da hasi."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:181
 msgid "The problem has not been completed."
-msgstr ""
+msgstr "Ariketa ez da osatu."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:193
 msgid "Submit Assessment Grade Override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
 msgid "Submit Team Grade Override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:216
-msgid "Remove Submission From Peer Grading"
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+msgid "Unable to perform grade override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:218
-msgid "Remove Team Submission from Grading"
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:207
+msgid ""
+"Grades are frozen. Grades are automatically frozen 30 days after the course "
+"end date."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:228
-msgid "Caution: This Action Cannot Be Undone"
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
+msgid ""
+"This submission has been cancelled and cannot recieve a grade. Refer to "
+"documentation for how to delete the learner’s state for this problem to "
+"allow them to resubmit."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:230
+msgid "Remove Submission From Peer Grading"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:232
+msgid "Remove Team Submission from Grading"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:242
+msgid "Caution: This Action Cannot Be Undone"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:244
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:232
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:246
 msgid ""
 "Removing a team's submission cannot be undone and should be done with "
 "caution."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:238
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:252
 msgid "Comments:"
 msgstr "Iruzkinak:"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:247
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:261
 msgid "Remove submission"
 msgstr "Ezabatu bidalketa"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:262
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
 msgstr ""
 

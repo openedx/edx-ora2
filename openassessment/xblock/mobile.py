@@ -16,7 +16,7 @@ class TogglableMobileSupport(ConfigMixin):
         Add mobile support if the feature flag is enabled.
         """
         try:
-            if self.is_mobile_support_waffle_enabled:
+            if self.is_mobile_support_enabled:
                 return XBlock.supports('multi_device')(view)
         except ImportError:
             # Openedx libraries are not available in testing

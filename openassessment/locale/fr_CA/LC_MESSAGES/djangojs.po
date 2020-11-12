@@ -33,7 +33,7 @@
 # pacha <patrick.chau@wanadoo.fr>, 2015
 # Philippe Chiu <philippe.chiu@gmail.com>, 2013
 # Pierre-Emmanuel Colas <transiflex@atnock.fr>, 2015
-# Pierre Mailhot <pierre.mailhot@gmail.com>, 2016,2018-2019
+# Pierre Mailhot <pierre.mailhot@gmail.com>, 2016,2018-2020
 # Pierre Roland Bonvin <pierre@bonvin.name>, 2016
 # qcappart <quentin.c@swing.be>, 2014
 # Régis Behmo <transifex.stuff@behmo.com>, 2016
@@ -57,9 +57,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-19 16:54-0400\n"
-"PO-Revision-Date: 2020-10-07 07:16+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-10-27 11:56-0400\n"
+"PO-Revision-Date: 2020-11-04 22:40+0000\n"
+"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -315,7 +315,7 @@ msgstr "La taille de chaque fichier individuel doit être de {max_files_mb} Mo o
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "Échec du téléversement du fichier: type de fichier non pris en charge. Seuls les types de fichiers pris en charge peuvent être téléversés. Si vous avez des questions, veuillez contacter l'équipe du cours."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:302
 msgid "Only "
