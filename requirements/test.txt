@@ -18,7 +18,7 @@ cffi==1.14.3              # via cryptography
 cfn-lint==0.38.0          # via moto
 chardet==3.0.4            # via -r requirements/base.txt, requests
 coverage==5.3             # via -r requirements/test.in, pytest-cov
-cryptography==3.1.1       # via moto, sshpubkeys
+cryptography==3.2         # via moto, sshpubkeys
 ddt==1.0.0                # via -c requirements/constraints.txt, -r requirements/test.in
 decorator==4.4.2          # via networkx
 defusedxml==0.6.0         # via -r requirements/base.txt
