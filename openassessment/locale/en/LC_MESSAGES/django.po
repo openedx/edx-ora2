@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-28 17:56-0400\n"
+"POT-Creation-Date: 2020-11-13 01:53-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1311,44 +1311,56 @@ msgstr ""
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:252
+#: openassessment/templates/openassessmentblock/response/oa_response.html:255
+msgid "Select one or more files to upload for this submission."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:257
 msgid "Select a file to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:254
+#: openassessment/templates/openassessmentblock/response/oa_response.html:262
+msgid "Supported file types: "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:266
 msgid "Upload files"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:268
+msgid "Upload file"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:284
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:274
+#: openassessment/templates/openassessmentblock/response/oa_response.html:290
 msgid "This is a team submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:276
+#: openassessment/templates/openassessmentblock/response/oa_response.html:292
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+#: openassessment/templates/openassessmentblock/response/oa_response.html:294
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:280
+#: openassessment/templates/openassessmentblock/response/oa_response.html:296
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:282
+#: openassessment/templates/openassessmentblock/response/oa_response.html:298
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:284
+#: openassessment/templates/openassessmentblock/response/oa_response.html:300
 msgid ""
 "\n"
 "                Learn more about team assignments here: (<a href=\"\" >link</"
@@ -1356,11 +1368,11 @@ msgid ""
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:292
+#: openassessment/templates/openassessmentblock/response/oa_response.html:308
 msgid "We could not submit your response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:302
+#: openassessment/templates/openassessmentblock/response/oa_response.html:318
 msgid "Submit your response and move to the next step"
 msgstr ""
 
