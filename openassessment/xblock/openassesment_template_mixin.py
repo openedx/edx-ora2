@@ -4,7 +4,7 @@
 
 from openassessment.xblock.defaults import (PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES,
                                             SELF_TO_PEER_ASSESSMENT_MODULES, SELF_TO_STAFF_ASSESSMENT_MODULES,
-                                            STAFF_ASSESSMENT_MODULES)
+                                            STAFF_ASSESSMENT_MODULES, BLANK_ASSESSMENT_MODULES)
 from django.utils.translation import ugettext as _
 
 
@@ -27,7 +27,8 @@ class OpenAssessmentTemplatesMixin:
         "peer-assessment": PEER_ASSESSMENT_MODULES,
         "staff-assessment": STAFF_ASSESSMENT_MODULES,
         "self-to-peer": SELF_TO_PEER_ASSESSMENT_MODULES,
-        "self-to-staff": SELF_TO_STAFF_ASSESSMENT_MODULES
+        "self-to-staff": SELF_TO_STAFF_ASSESSMENT_MODULES,
+        "blank-assessment": BLANK_ASSESSMENT_MODULES
     }
 
     @classmethod
