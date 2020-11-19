@@ -111,19 +111,14 @@ class StudioViewTest(XBlockHandlerTestCase):
     @classmethod
     def setUpClass(cls):
         super(StudioViewTest, cls).setUpClass()
-        cls.waffle_switch_patcher = patch(
-            'openassessment.xblock.config_mixin.import_waffle_switch'
-        )
         cls.waffle_course_flag_patcher = patch(
             'openassessment.xblock.config_mixin.import_course_waffle_flag'
         )
-        cls.waffle_switch_patcher.start()
         cls.waffle_course_flag_patcher.start()
 
     @classmethod
     def tearDownClass(cls):
         super(StudioViewTest, cls).tearDownClass()
-        cls.waffle_switch_patcher.stop()
         cls.waffle_course_flag_patcher.stop()
 
     @scenario('data/basic_scenario.xml')
