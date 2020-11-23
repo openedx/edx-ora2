@@ -819,7 +819,7 @@ class OraDownloadData:
 
 
 class SubmissionFileUpload:
-    """ 
+    """
     A SubmissionFileUpload represents a file that was uploaded and submitted as a part of an ORA
     submission. It has the following fields:
         - key: The unique key used by the file upload backend to identify the file.
@@ -877,7 +877,7 @@ class OraSubmission:
     def get_text_responses(self):
         """
         Get the list of text responses for the submission
-        
+
         Returns: list of strings
         """
         raise NotImplementedError()
@@ -893,7 +893,7 @@ class TextOnlySubmission(OraSubmission):
 
     @staticmethod
     def matches(raw_answer):
-        keys = list(raw_answer.keys()) 
+        keys = list(raw_answer.keys())
         return len(keys) == 1 and keys == ['parts']
 
     def __init__(self, submission):
@@ -1005,14 +1005,14 @@ class ZippedListSubmission(OraSubmission):
         if self.text_responses is None:
             self.text_responses = [part.get('text') for part in self.submission.get('parts', [])]
         return self.text_responses
-    
-    def _index_safe_get(self, i, l, default=None):
+
+    def _index_safe_get(self, i, target_list, default=None):
         """
-        Attempts to get item at l[i]. If the index is out of bounds, returns default.
+        Attempts to get item at target_list[i]. If the index is out of bounds, returns default.
         More or less dict.get() but for lists
         """
         try:
-            return l[i]
+            return target_list[i]
         except IndexError:
             return default
 

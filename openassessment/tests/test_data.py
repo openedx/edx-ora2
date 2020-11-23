@@ -1091,11 +1091,12 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
 
+
 submission_test_parts = [{'text': 'text_response_' + str(i)} for i in range(3)]
-submission_test_file_keys = ['test-key-'+str(i) for i in range(3)]
-submission_test_file_names = ['test-name-'+str(i) for i in range(3)]
-submission_test_file_descriptions = ['Description for file '+str(i) for i in range(3)]
-submission_test_file_sizes = [i for i in range(3)]
+submission_test_file_keys = ['test-key-' + str(i) for i in range(3)]
+submission_test_file_names = ['test-name-' + str(i) for i in range(3)]
+submission_test_file_descriptions = ['Description for file ' + str(i) for i in range(3)]
+submission_test_file_sizes = list(range(3))
 
 version_1_submission = {
     'file_key': 'test-key-0',
@@ -1143,6 +1144,7 @@ class SubmissionFileUploadTest(TestCase):
         self.assertEqual(upload.description, SubmissionFileUpload.DEFAULT_DESCRIPTION)
         self.assertEqual(upload.size, 0)
 
+
 class OraSubmissionFactoryTest(TestCase):
     """ Unit tests for OraSubmissionFactoryTest """
 
@@ -1161,6 +1163,7 @@ class OraSubmissionFactoryTest(TestCase):
     def test_parse_submission_raw_answer__unknown(self):
         with self.assertRaisesMessage(VersionNotFoundException, "No ORA Submission version recognized"):
             OraSubmissionFactory.parse_submission_raw_answer(unknown_submission)
+
 
 @ddt.ddt
 class TextOnlySubmissionTest(TestCase):
@@ -1222,7 +1225,7 @@ class ZippedListSubmissionTest(TestCase):
     def test_get_version(self, submission, version):
         self.assertEqual(
             ZippedListSubmission.get_version(submission),
-            ZIPPED_LIST_SUBMISSION_VERSIONS[version-1] # Adjusted version -> index
+            ZIPPED_LIST_SUBMISSION_VERSIONS[version - 1]  # Adjusted version -> index
         )
 
     def test_get_version_not_found(self):
@@ -1270,7 +1273,7 @@ class ZippedListSubmissionTest(TestCase):
         version_5 = ZIPPED_LIST_SUBMISSION_VERSIONS[4]
         no_description_submission = deepcopy(version_5_submission)
         no_description_submission[version_5.description] = []
-        
+
         submission = ZippedListSubmission(no_description_submission)
         self.assertEqual(submission.version, version_5)
 
@@ -1305,8 +1308,3 @@ class ZippedListSubmissionTest(TestCase):
                 self.assertEqual(file_upload.name, submission_test_file_names[i])
             self.assertEqual(file_upload.description, submission_test_file_descriptions[i])
             self.assertEqual(file_upload.size, submission_test_file_sizes[i])
-
-
-
-
-
