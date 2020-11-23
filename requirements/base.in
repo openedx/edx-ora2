@@ -4,6 +4,8 @@
 # edX Internal Requirements
 edx-i18n-tools
 edx-submissions
+edx-django-utils
+edx-toggles
 djangorestframework
 Xblock
 

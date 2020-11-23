@@ -3,6 +3,9 @@ Mixin for determining configuration and feature-toggle state relevant to an ORA 
 """
 
 
+from edx_django_utils.monitoring import set_custom_attribute
+from edx_toggles.toggles.__future__ import WaffleSwitch
+
 from django.conf import settings
 from django.utils.functional import cached_property
 
@@ -24,10 +27,9 @@ FEATURE_TOGGLES_BY_FLAG_NAME = {
 def import_waffle_switch():
     """
     Helper method that imports WaffleSwitch from edx-platform at runtime.
-    https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/waffle_utils/__init__.py#L187
+    WARNING: This method is now deprecated and should not be relied upon.
     """
-    # pylint: disable=import-error
-    from openedx.core.djangoapps.waffle_utils import WaffleSwitch
+    set_custom_attribute("deprecated_edx_ora2", "import_waffle_switch")
     return WaffleSwitch
 
 
@@ -51,8 +53,8 @@ class ConfigMixin:
         Returns a ``WaffleSwitch`` object in WAFFLE_NAMESPACE
         with the given ``switch_name``.
         """
-        WaffleSwitch = import_waffle_switch()  # pylint: disable=invalid-name
-        return WaffleSwitch(WAFFLE_NAMESPACE, switch_name)  # pylint: disable=feature-toggle-needs-doc
+        # pylint: disable=feature-toggle-needs-doc
+        return WaffleSwitch("{}.{}".format(WAFFLE_NAMESPACE, switch_name), module_name=__name__)
 
     @staticmethod
     def _course_waffle_flag(flag_name):
