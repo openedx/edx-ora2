@@ -2,7 +2,7 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from io import StringIO
 from urllib.parse import urljoin
 from zipfile import ZipFile
@@ -834,3 +834,227 @@ class OraDownloadData:
                         file_name,
                     )
                 }
+
+
+class SubmissionFileUpload:
+    """ 
+    A SubmissionFileUpload represents a file that was uploaded and submitted as a part of an ORA
+    submission. It has the following fields:
+        - key: The unique key used by the file upload backend to identify the file.
+        - name: The filename of the submitted file.
+        - description: An uploader-provided description of the submitted file.
+        - size: The filesize of the submitted file.
+
+    Due to historical considerations, only the file key is _required_ to exist,
+    but all files uploaded after November 25th, 2019, _should_ contain all fields.
+
+    If fields are missing, they will default to the following values:
+        - name: key
+        - description: SubmissionFileUpload.DEFAULT_DESCRIPTION
+        - size: 0
+    """
+
+    DEFAULT_DESCRIPTION = "No description provided."
+
+    def __init__(self, key, name=None, description=None, size=0):
+        self.key = key
+        self.name = name if name else key
+        self.description = description if description else SubmissionFileUpload.DEFAULT_DESCRIPTION
+        self.size = size
+
+
+class OraSubmissionFactory:
+    """ A factory class that takes the parsed json raw_answer from a submission and returns an OraSubmission """
+
+    @staticmethod
+    def parse_submission_raw_answer(raw_answer):
+        """
+        Currently this function does a basic test and returns a ZippedListSubmission or a TextOnlySubmission
+        In the future if we were to change the way we do submissions, we would check here and return accordingly.
+        """
+        if TextOnlySubmission.matches(raw_answer):
+            return TextOnlySubmission(raw_answer)
+        elif ZippedListSubmission.matches(raw_answer):
+            return ZippedListSubmission(raw_answer)
+        else:
+            raise VersionNotFoundException("No ORA Submission version recognized for {}".format(raw_answer))
+
+
+class OraSubmission:
+    """ Abstract interface for ORA Submissions """
+    def __init__(self, raw_submission):
+        self.submission = raw_submission
+
+    @staticmethod
+    def matches(raw_answer):
+        """
+        Check if the raw answer fits this type of OraSubmission
+        """
+        raise NotImplementedError()
+
+    def get_text_responses(self):
+        """
+        Get the list of text responses for the submission
+        
+        Returns: list of strings
+        """
+        raise NotImplementedError()
+
+    def get_file_uploads(self):
+        """
+        Get the list of FileUploads for this submission
+        """
+        raise NotImplementedError()
+
+
+class TextOnlySubmission(OraSubmission):
+
+    @staticmethod
+    def matches(raw_answer):
+        keys = list(raw_answer.keys()) 
+        return len(keys) == 1 and keys == ['parts']
+
+    def __init__(self, submission):
+        super().__init__(submission)
+        self.text_responses = None
+
+    def get_text_responses(self):
+        """
+        Parse and cache text responses from the submission
+        """
+        if self.text_responses is None:
+            self.text_responses = [part.get('text') for part in self.submission.get('parts', [])]
+        return self.text_responses
+
+    def get_file_uploads(self):
+        return None
+
+
+# This namedtuple represents the different shapes different versions of ORA Submissions have taken.
+# Below is a table of the dates and commits that introduced each version:
+#   Version | Date              | Commit
+#   -----------------------------------------------------------------------
+#   1       | July      8, 2014 | 42cf870695c3f2ca010abcf4e69a47d34dc56275
+#   2       | April    27, 2017 | 7568a7008706db6fee5d3081e455b6687d84d659
+#   3       | October  28, 2019 | 9d8b2de0a04c410c3da7d2894ce0eab8bbc9f254
+#   4       | November 12, 2019 | 6c062ecc03e9bcc93d3dc78345cf63bcf910c58f
+#   5       | November 25, 2019 | e0e56ac6bc054b7cd71c5e10c8cb99592511cac9
+#  -------------------------------------------------------------------------
+
+ZippedListsSubmissionVersion = namedtuple(
+    'ZippedListsSubmissionVersion',
+    ['key', 'description', 'name', 'size']
+)
+
+VERSION_1 = ZippedListsSubmissionVersion('file_key', None, None, None)
+VERSION_2 = ZippedListsSubmissionVersion('file_keys', 'files_descriptions', None, None)
+VERSION_3 = ZippedListsSubmissionVersion('file_keys', 'files_descriptions', 'files_name', None)
+VERSION_4 = ZippedListsSubmissionVersion(
+    'file_keys', 'files_descriptions', 'files_name', 'files_sizes'
+)
+VERSION_5 = ZippedListsSubmissionVersion(
+    'file_keys', 'files_descriptions', 'files_names', 'files_sizes'
+)
+ZIPPED_LIST_SUBMISSION_VERSIONS = [
+    VERSION_1, VERSION_2, VERSION_3, VERSION_4, VERSION_5
+]
+
+
+class VersionNotFoundException(Exception):
+    """ Raised when we are unable to resolve a given submission to a submission version """
+
+
+class ZippedListSubmission(OraSubmission):
+    """
+    Representation of a type of ORA submission where there are multiple lists, each
+    representing a field. They are "zipped" together to represent individual files.
+    """
+    CURRENT_VERSION = 5
+
+    @staticmethod
+    def matches(raw_answer):
+        try:
+            ZippedListSubmission.get_version(raw_answer)
+        except VersionNotFoundException:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def get_version_keys(version):
+        """
+        Given a ZippedListsSubmissionVersion, return the set of keys in the version, as well as
+        'parts', since that exists in all versions
+        """
+        result = {version_key for version_key in version if version_key}
+        result.add('parts')
+        return result
+
+    @staticmethod
+    def get_version(submission):
+        """
+        Determines the version associated with a submission by working  ackwards from the most recent
+        submission version and checking if the set of keys in the given submission matches the set
+        of keys in the version.
+
+        Raises:
+            - VersionNotFoundException if the version cannot be determined.
+        """
+        submission_keys = set(submission.keys())
+        for version in reversed(ZIPPED_LIST_SUBMISSION_VERSIONS):
+            if submission_keys == ZippedListSubmission.get_version_keys(version):
+                return version
+        raise VersionNotFoundException("No zipped list version found with keys {}".format(submission_keys))
+
+    def __init__(self, submission):
+        """
+        Raises:
+            - VersionNotFoundException if a version cannot be matched against the given submission
+        """
+        super().__init__(submission)
+        self.text_responses = None
+        self.file_uploads = None
+        self.version = ZippedListSubmission.get_version(submission)
+
+    def get_text_responses(self):
+        """
+        Parse and cache text responses from the submission
+        """
+        if self.text_responses is None:
+            self.text_responses = [part.get('text') for part in self.submission.get('parts', [])]
+        return self.text_responses
+    
+    def _index_safe_get(self, i, l, default=None):
+        """
+        Attempts to get item at l[i]. If the index is out of bounds, returns default.
+        More or less dict.get() but for lists
+        """
+        try:
+            return l[i]
+        except IndexError:
+            return default
+
+    def get_file_uploads(self):
+        """
+        Parse and cache file upload responses from the submission
+        """
+        if self.file_uploads is None:
+            file_keys = self.submission.get(self.version.key, [])
+            # The very earliest version of ora submissions with files only allowed one file, and so is the only
+            #  situation in which any of these fields is not a list
+            if not isinstance(file_keys, list):
+                file_keys = [file_keys]
+
+            files = []
+            file_names = self.submission.get(self.version.name, [])
+            file_descriptions = self.submission.get(self.version.description, [])
+            file_sizes = self.submission.get(self.version.size, [])
+            for i, key in enumerate(file_keys):
+                name = self._index_safe_get(i, file_names)
+                description = self._index_safe_get(i, file_descriptions)
+                size = self._index_safe_get(i, file_sizes, 0)
+
+                file_upload = SubmissionFileUpload(key, name=name, description=description, size=size)
+                files.append(file_upload)
+            self.file_uploads = files
+        return self.file_uploads
