@@ -141,6 +141,17 @@ class TestGrader:
 
         return output
 
+    @classmethod
+    def get_test_case_count(cls, problem_name, run_type):
+        """
+        Return the test case count of a given run type for a problem.
+
+        Returns:
+            Count of the test cases or None
+        """
+        test_cases = glob.glob("{}{}/{}/*".format(cls.__SECRET_DATA_DIR__, problem_name, run_type))
+        return len(test_cases) if test_cases else None
+
     def run_as_subprocess(self, cmd, compiling=False, running_code=False, timeout=None):
         """
         runs the subprocess and execute the command. if timeout is given kills the
