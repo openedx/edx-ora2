@@ -21,6 +21,7 @@ from openassessment.xblock.course_items_listing_mixin import CourseItemsListingM
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.grade_mixin import GradeMixin
+from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestGrader
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
@@ -1127,3 +1128,18 @@ class OpenAssessmentBlock(MessageMixin,
         Returns the xblock id
         """
         return text_type(self.scope_ids.usage_id)
+
+    def get_test_cases_count(self):
+        """
+        Returns a dict containing the count of staff & sample test cases.
+
+        Returns(dict):
+                * keys: value
+                    * staff: Staff test cases count
+                    * sample: sample or public test cases count
+            If the test cases details are not found, both keys will have None as the value
+        """
+        return {
+            'sample': TestGrader.get_test_case_count(self.display_name, 'sample'),
+            'staff': TestGrader.get_test_case_count(self.display_name, 'staff')
+        }
