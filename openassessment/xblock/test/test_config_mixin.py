@@ -34,11 +34,7 @@ class ConfigMixinTest(TestCase):
         *list(itertools.product([True, False], repeat=3))
     )
     @ddt.unpack
-    @mock.patch('openassessment.xblock.config_mixin.import_waffle_switch', autospec=True)
-    @mock.patch('openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True)
-    def test_team_submission_enabled(
-            self, waffle_switch_input, waffle_flag_input, settings_input, mock_waffle_flag, mock_waffle_switch
-    ):
+    def test_team_submission_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
         """
         Team submissions are expected to be enabled if at least one of the following conditions holds:
           1) The team_submissions waffle switch is enabled.
@@ -50,8 +46,6 @@ class ConfigMixinTest(TestCase):
             waffle_switch_input,
             waffle_flag_input,
             settings_input,
-            mock_waffle_flag,
-            mock_waffle_switch,
             'team_submissions_enabled',
         )
 
@@ -59,11 +53,7 @@ class ConfigMixinTest(TestCase):
         *list(itertools.product([True, False], repeat=3))
     )
     @ddt.unpack
-    @mock.patch('openassessment.xblock.config_mixin.import_waffle_switch', autospec=True)
-    @mock.patch('openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True)
-    def test_user_state_upload_data_enabled(
-            self, waffle_switch_input, waffle_flag_input, settings_input, mock_waffle_flag, mock_waffle_switch
-    ):
+    def test_user_state_upload_data_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
         """
         The user state data workaround is expected to be enabled if at least one of the following conditions holds:
           1) The user_state_upload_data waffle switch is enabled.
@@ -75,8 +65,6 @@ class ConfigMixinTest(TestCase):
             waffle_switch_input,
             waffle_flag_input,
             settings_input,
-            mock_waffle_flag,
-            mock_waffle_switch,
             'user_state_upload_data_enabled',
         )
 
@@ -84,11 +72,7 @@ class ConfigMixinTest(TestCase):
         *list(itertools.product([True, False], repeat=3))
     )
     @ddt.unpack
-    @mock.patch('openassessment.xblock.config_mixin.import_waffle_switch', autospec=True)
-    @mock.patch('openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True)
-    def test_all_files_urls_enabled(
-            self, waffle_switch_input, waffle_flag_input, settings_input, mock_waffle_flag, mock_waffle_switch
-    ):
+    def test_all_files_urls_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
         """
         The "all file urls" workaround is expected to be enabled if at least one of the following conditions holds:
           1) The all_files_urls waffle switch is enabled.
@@ -100,39 +84,27 @@ class ConfigMixinTest(TestCase):
             waffle_switch_input,
             waffle_flag_input,
             settings_input,
-            mock_waffle_flag,
-            mock_waffle_switch,
             'is_fetch_all_urls_waffle_enabled',
         )
 
     @ddt.data(
-        *list(itertools.product([True, False], repeat=3))
+        (True, True),
+        (False, False),
+        (None, False),
     )
     @ddt.unpack
-    @mock.patch('openassessment.xblock.config_mixin.import_waffle_switch', autospec=True)
-    @mock.patch('openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True)
-    def test_mobile_support_enabled(
-            self, waffle_switch_input, waffle_flag_input, settings_input, mock_waffle_flag, mock_waffle_switch
-    ):
+    def test_mobile_support_enabled(self, settings_input, expected_output):
         """
-        The "ora mobile support" workaround is expected to be enabled if at least one of the following conditions holds:
-          1) The all_files_urls waffle switch is enabled.
-          2) The all_files_urls course waffle flag is enabled.
-          3) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
+        The mobile support is expected to be enabled only if:
+          1) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
         """
-        self._run_feature_toggle_test(
-            MOBILE_SUPPORT,
-            waffle_switch_input,
-            waffle_flag_input,
-            settings_input,
-            mock_waffle_flag,
-            mock_waffle_switch,
-            'is_mobile_support_waffle_enabled',
-        )
+        my_block = MockBlock()
+        settings_feature_key = FEATURE_TOGGLES_BY_FLAG_NAME[MOBILE_SUPPORT]
+        with self.settings(FEATURES={settings_feature_key: settings_input}):
+            self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
 
     def _run_feature_toggle_test(
-            self, flag_name, waffle_switch_input, waffle_flag_input, settings_input,
-            mock_waffle_flag, mock_waffle_switch, feature_property
+        self, flag_name, waffle_switch_input, waffle_flag_input, settings_input, feature_property
     ):
         """
         Any feature name is expected to be enabled if at least one of the following conditions holds:
@@ -146,15 +118,17 @@ class ConfigMixinTest(TestCase):
             expected_output = False
 
         my_block = MockBlock()
-
-        # pylint: disable=invalid-name
-        MockWaffleSwitch, MockCourseWaffleFlag = self._setup_waffle_switch_and_flag(
-            mock_waffle_switch, waffle_switch_input, mock_waffle_flag, waffle_flag_input
-        )
-
         settings_feature_key = FEATURE_TOGGLES_BY_FLAG_NAME[flag_name]
-        with self.settings(FEATURES={settings_feature_key: settings_input}):
-            self.assertEqual(expected_output, getattr(my_block, feature_property, None))
+
+        with mock.patch('openassessment.xblock.config_mixin.WaffleSwitch', autospec=True) as MockWaffleSwitch:
+            MockWaffleSwitch.return_value.is_enabled.return_value = waffle_switch_input
+            with mock.patch(
+                'openassessment.xblock.config_mixin.import_course_waffle_flag', autospec=True
+            ) as mock_course_waffle_flag:
+                MockCourseWaffleFlag = mock_course_waffle_flag.return_value
+                MockCourseWaffleFlag.return_value.is_enabled.return_value = waffle_flag_input
+                with self.settings(FEATURES={settings_feature_key: settings_input}):
+                    self.assertEqual(expected_output, getattr(my_block, feature_property, None))
 
         mock_flag_instance = MockCourseWaffleFlag.return_value
         mock_flag_instance.is_enabled.assert_called_once_with(my_block.location.course_key)
@@ -162,16 +136,3 @@ class ConfigMixinTest(TestCase):
         if not waffle_flag_input:
             mock_switch_instance = MockWaffleSwitch.return_value
             mock_switch_instance.is_enabled.assert_called_once_with()
-
-    def _setup_waffle_switch_and_flag(
-            self, mock_waffle_switch, switch_return_value, mock_waffle_flag, flag_return_value
-    ):
-        """
-        Configures and returns mocked WaffleSwitch and CourseWaffleFlag objects.
-        """
-        # pylint: disable=invalid-name
-        MockWaffleSwitch = mock_waffle_switch.return_value
-        MockWaffleSwitch.return_value.is_enabled.return_value = switch_return_value
-        MockCourseWaffleFlag = mock_waffle_flag.return_value
-        MockCourseWaffleFlag.return_value.is_enabled.return_value = flag_return_value
-        return MockWaffleSwitch, MockCourseWaffleFlag
