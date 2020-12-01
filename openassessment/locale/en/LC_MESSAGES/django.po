@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 11:56-0400\n"
+"POT-Creation-Date: 2020-11-13 01:53-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2112,6 +2112,26 @@ msgstr ""
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final "
 "grade."
+msgstr ""
+
+#: openassessment/xblock/openassesment_template_mixin.py:18
+msgid "Peer Assessment Only"
+msgstr ""
+
+#: openassessment/xblock/openassesment_template_mixin.py:19
+msgid "Self Assessment Only"
+msgstr ""
+
+#: openassessment/xblock/openassesment_template_mixin.py:20
+msgid "Staff Assessment Only"
+msgstr ""
+
+#: openassessment/xblock/openassesment_template_mixin.py:21
+msgid "Self Assessment to Peer Assessment"
+msgstr ""
+
+#: openassessment/xblock/openassesment_template_mixin.py:22
+msgid "Self Assessment to Staff Assessment"
 msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
