@@ -234,6 +234,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             status_dict[step.name] = {
                 "complete": step.is_submitter_complete(),
                 "graded": step.is_assessment_complete(),
+                "skipped": step.skipped
             }
         return status_dict
 
@@ -284,10 +285,17 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         If the status is done, we do nothing. Once something is done, we never
         move back to any other status.
 
-        If an assessment API says that our submitter's requirements are met,
-        then move to the next assessment.  For example, in peer assessment,
-        if the submitter we're tracking has assessed the required number
-        of submissions, they're allowed to continue.
+        If an assessment API says that our submitter's requirements are met, or if
+        current assessment step can be skipped, then move to the next assessment.
+        For example, in student training, if the submitter we're tracking has completed
+        the training, they're allowed to continue. Whereas in peer assessment, it is
+        allowed to skip that step so we mark it as started and move to the next assessment.
+        So all skippable steps are in progress until completed. But user can complete
+        next steps before those skippable ones.
+
+        For every possible assessments, we find out all skippable assessments and mark
+        them as skipped and consider that step already started (calling `on_start` for
+        that assessmet api). Then choose the next un-skippable step as current step.
 
         If the submitter has finished all the assessments, then we change
         their status to `waiting`.
@@ -358,9 +366,40 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         for step in steps:
             step.update(self.submission_uuid, assessment_requirements)
 
-        # Fetch name of the first step that the submitter hasn't yet completed.
+        possible_statuses = []
+        skipped_statuses = []
+        all_statuses = []
+
+        # find which are the next unskippable steps and steps that can be skipped
+        for step in steps:
+            all_statuses.append(step.name)
+            if step.submitter_completed_at is None:
+                if step.can_skip(self.submission_uuid, assessment_requirements):
+                    skipped_statuses.append(step.name)
+                else:
+                    possible_statuses.append(step.name)
+
+        # if there is no unskippable steps and only skippable steps left
+        # then consider 1st skippable step as unskippable
+        if len(possible_statuses) == 0 and len(skipped_statuses) > 0:
+            unskip_step = skipped_statuses.pop()
+            possible_statuses.append(unskip_step)
+            if step_for_name.get(unskip_step):
+                step_for_name[unskip_step].unskip()
+
+        # mark skippable step as skipped only if current it's the current step
+        # this prevent skipping a step too early
+        for step_name in skipped_statuses:
+            skip_step = step_for_name.get(step_name)
+            if skip_step:
+                # skip when its the current status or were before than current status
+                if self.status in all_statuses and all_statuses.index(self.status) >= all_statuses.index(step_name):
+                    skip_step.skip()
+                    # skiping an assessment step should also start it
+                    skip_step.start(self.submission_uuid)
+
         new_status = next(
-            (step.name for step in steps if step.submitter_completed_at is None),
+            iter(possible_statuses),
             self.STATUS.waiting  # if nothing's left to complete, we're waiting
         )
 
@@ -368,9 +407,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # appropriate assessment API.
         new_step = step_for_name.get(new_status)
         if new_step is not None:
-            on_start_func = getattr(new_step.api(), 'on_start', None)
-            if on_start_func is not None:
-                on_start_func(self.submission_uuid)
+            new_step.start(self.submission_uuid)
 
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
@@ -785,6 +822,7 @@ class AssessmentWorkflowStep(models.Model):
     submitter_completed_at = models.DateTimeField(default=None, null=True)
     assessment_completed_at = models.DateTimeField(default=None, null=True)
     order_num = models.PositiveIntegerField()
+    skipped = models.BooleanField(default=False, null=True)
 
     staff_step_types = [AssessmentWorkflow.STAFF_STEP_NAME, TeamAssessmentWorkflow.TEAM_STAFF_STEP_NAME]
 
@@ -807,6 +845,30 @@ class AssessmentWorkflowStep(models.Model):
 
     def is_staff_step(self):
         return self.name in self.staff_step_types
+
+    def can_skip(self, submission_uuid, assessment_requirements):
+        if assessment_requirements is None:
+            step_reqs = None
+        else:
+            step_reqs = assessment_requirements.get(self.name)
+
+        can_be_skipped = getattr(self.api(), 'can_be_skipped', lambda sid, reqs: False)
+        return can_be_skipped(submission_uuid, step_reqs)
+
+    def skip(self):
+        if not self.skipped:
+            self.skipped = True
+            self.save()
+
+    def start(self, submission_uuid):
+        on_start_func = getattr(self.api(), 'on_start', None)
+        if on_start_func is not None:
+            on_start_func(submission_uuid)
+
+    def unskip(self):
+        if self.skipped:
+            self.skipped = False
+            self.save()
 
     def api(self):
         """

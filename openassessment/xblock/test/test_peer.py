@@ -42,7 +42,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         student_item = xblock.get_student_item_dict()
         submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
         workflow_info = xblock.get_workflow_info()
-        self.assertEqual(workflow_info["status"], u'peer')
+
+        # peer step is skipable. So we expect next status to be current status.
+        self.assertEqual(workflow_info["status"], u'self')
 
         # Validate Submission Rendering.
         request = namedtuple('Request', 'params')
@@ -70,7 +72,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Verify that Sally's workflow is not marked done, as the requirements are higher than 1.
         mock_requirements.return_value = {"peer": {"must_grade": 2, "must_be_graded_by": 2}}
         workflow_info = xblock.get_workflow_info()
-        self.assertEqual(workflow_info["status"], u'peer')
+
+        # peer step is skipable. So we expect next status to be current status.
+        self.assertEqual(workflow_info["status"], u'self')
 
         # Now, change the requirements and verify that Sally's workflow updates to 'self' status.
         mock_requirements.return_value = {"peer": {"must_grade": 1, "must_be_graded_by": 1}}
@@ -187,7 +191,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
         workflow_info = xblock.get_workflow_info()
-        self.assertEqual(workflow_info["status"], u'peer')
+
+        # peer step is skipable. So we expect next status to be current status.
+        self.assertEqual(workflow_info["status"], u'self')
 
         # Validate Submission Rendering.
         request = namedtuple('Request', 'params')
@@ -244,7 +250,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # If Over Grading is on, this should now return Sally's response to Bob.
         submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
         workflow_info = xblock.get_workflow_info()
-        self.assertEqual(workflow_info["status"], u'peer')
+
+        # peer step is skipable. So we expect next status to be current status.
+        self.assertEqual(workflow_info["status"], u'self')
 
         # Validate Submission Rendering.
         request = namedtuple('Request', 'params')

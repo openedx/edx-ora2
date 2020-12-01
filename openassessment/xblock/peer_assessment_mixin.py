@@ -194,6 +194,7 @@ class PeerAssessmentMixin:
         workflow = self.get_workflow_info()
         workflow_status = workflow.get('status')
         peer_complete = workflow.get('status_details', {}).get('peer', {}).get('complete', False)
+        peer_skipped = workflow.get('status_details', {}).get('peer', {}).get('skipped', False)
         continue_grading = continue_grading and peer_complete
 
         student_item = self.get_student_item_dict()
@@ -247,7 +248,7 @@ class PeerAssessmentMixin:
         elif reason == 'start' and problem_closed:
             context_dict["peer_start"] = start_date
             path = 'openassessmentblock/peer/oa_peer_unavailable.html'
-        elif workflow.get("status") == "peer":
+        elif workflow.get("status") == "peer" or peer_skipped:
             peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
