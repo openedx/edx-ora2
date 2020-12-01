@@ -219,18 +219,21 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     def test_open_in_peer_step(self, xblock):
         # Make a submission, so we're in the peer-assessment step
         xblock.create_submission(
-            xblock.get_student_item_dict(), u"ⱣȺꝑȺ đøn'ŧ ŧȺꝁɇ nø mɇss."
+            xblock.get_student_item_dict(), ("ⱣȺꝑȺ đøn'ŧ ŧȺꝁɇ nø mɇss.", "Sample answer",)
         )
 
-        # Should still not be able to access self-assessment
+        # Should still be able to access self-assessment because peer status can be skipped
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_unavailable.html',
-            {
+            xblock, 'openassessmentblock/self/oa_self_assessment.html', {
+                'file_upload_type': True,
+                'self_submission': True,
+                'prompts_type': True,
+                'self_file_urls': True,
+                'rubric_criteria': True,
+                'user_language': True,
+                'allow_latex': True,
+                'user_timezone': True,
                 'allow_multiple_files': True,
-                'allow_latex': False,
-                'prompts_type': 'text',
-                'user_timezone': pytz.utc,
-                'user_language': 'en'
             }
         )
 

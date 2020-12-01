@@ -773,7 +773,7 @@ export class ShowControl {
   }
 
   install() {
-    this.controlElement.click(function (event) {
+    this.controlElement.click((event) => {
       event.preventDefault();
       this.showHiddenElement();
       this.hideSelf();
