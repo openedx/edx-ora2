@@ -25,6 +25,7 @@ export class FileUploader {
         async: false,
         processData: false,
         contentType: file.type,
+        headers: { 'Content-Disposition': `attachment; filename="${file.name}"` },
       }).done(() => {
         // Log an analytics event
         Logger.log(
