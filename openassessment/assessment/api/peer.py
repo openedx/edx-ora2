@@ -23,6 +23,39 @@ logger = logging.getLogger("openassessment.assessment.api.peer")  # pylint: disa
 
 PEER_TYPE = "PE"
 
+FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS = 7
+FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE = 30
+
+
+def required_peer_grades(submission_uuid, peer_requirements):
+    """
+    Given a submission id, finds how many peer assessment required.
+
+    Args:
+        submission_uuid (str): The UUID of the submission being tracked.
+        peer_requirements (dict): Dictionary with the key "must_grade" indicating
+            the required number of submissions the student must grade
+            and "enable_flexible_grading" indicating if flexible grading enabled.
+
+    Returns:
+        int
+    """
+
+    submission = sub_api.get_submission(submission_uuid)
+
+    must_grade = peer_requirements["must_be_graded_by"]
+
+    if peer_requirements.get("enable_flexible_grading"):
+
+        # find how many days elapsed since subimitted
+        days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
+
+        # check if flexible grading applies. if it does, then update must_grade
+        if days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS:
+            must_grade = int(must_grade * FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE / 100)
+
+    return must_grade
+
 
 def can_be_skipped(submission_uuid, peer_requirements):  # pylint: disable=unused-argument
     """
@@ -104,7 +137,7 @@ def assessment_is_finished(submission_uuid, peer_requirements):
         assessment__submission_uuid=submission_uuid,
         assessment__score_type=PEER_TYPE
     )
-    return scored_items.count() >= peer_requirements["must_be_graded_by"]
+    return scored_items.count() >= required_peer_grades(submission_uuid, peer_requirements)
 
 
 def on_start(submission_uuid):
@@ -164,6 +197,7 @@ def get_score(submission_uuid, peer_requirements):
         contributing_assessments information, along with a None staff_id.
 
     """
+
     if peer_requirements is None:
         return None
 
@@ -183,8 +217,8 @@ def get_score(submission_uuid, peer_requirements):
         assessment__score_type=PEER_TYPE
     ).order_by('-assessment')
 
-    submission_finished = items.count() >= peer_requirements["must_be_graded_by"]
-    if not submission_finished:
+    # Check if enough peers have graded this submission
+    if items.count() < required_peer_grades(submission_uuid, peer_requirements):
         return None
 
     # Unfortunately, we cannot use update() after taking a slice,

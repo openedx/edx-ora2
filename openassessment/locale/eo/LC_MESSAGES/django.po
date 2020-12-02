@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-28 17:56-0400\n"
+"POT-Creation-Date: 2020-12-01 22:15-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -132,12 +132,14 @@ msgstr "Àllöw Mültïplé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт �
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "False"
 msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "True"
 msgstr "Trüé Ⱡ'σяєм ι#"
 
@@ -441,6 +443,20 @@ msgid ""
 msgstr ""
 "Spéçïfý thé nümßér öf léärnérs thät éäçh réspönsé müst ßé ässésséd ßý. Välïd"
 " nümßérs äré 0 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+msgid "Enable Flexible Peer Grade Averaging"
+msgstr ""
+"Énäßlé Fléxïßlé Péér Grädé Àvérägïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#, python-format
+msgid ""
+"When enabled, learners who have received at least 30%% of the required \\"
+msgstr ""
+"Whén énäßléd, léärnérs whö hävé réçéïvéd ät léäst 30%% öf thé réqüïréd \\ "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
 msgid "Peer Assessment Deadlines"
