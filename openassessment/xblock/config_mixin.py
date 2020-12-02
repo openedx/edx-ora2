@@ -4,7 +4,7 @@ Mixin for determining configuration and feature-toggle state relevant to an ORA 
 
 
 from edx_django_utils.monitoring import set_custom_attribute
-from edx_toggles.toggles.__future__ import WaffleSwitch
+from edx_toggles.toggles import WaffleSwitch
 
 from django.conf import settings
 from django.utils.functional import cached_property
