@@ -7,12 +7,12 @@
 appdirs==1.4.4            # via -r requirements/base.txt, fs, virtualenv
 atomicwrites==1.4.0       # via pytest
 attrs==20.3.0             # via jsonschema, pytest
-aws-sam-translator==1.31.0  # via cfn-lint
+aws-sam-translator==1.32.0  # via cfn-lint
 aws-xray-sdk==2.6.0       # via moto
 bleach==3.2.1             # via -r requirements/base.txt
-boto3==1.16.26            # via -r requirements/base.txt, aws-sam-translator, fs-s3fs, moto
+boto3==1.16.28            # via -r requirements/base.txt, aws-sam-translator, fs-s3fs, moto
 boto==2.49.0              # via moto
-botocore==1.19.26         # via -r requirements/base.txt, aws-xray-sdk, boto3, moto, s3transfer
+botocore==1.19.28         # via -r requirements/base.txt, aws-xray-sdk, boto3, moto, s3transfer
 certifi==2020.11.8        # via -r requirements/base.txt, requests
 cffi==1.14.4              # via cryptography
 cfn-lint==0.42.0          # via moto
@@ -26,7 +26,7 @@ decorator==4.4.2          # via networkx
 defusedxml==0.6.0         # via -r requirements/base.txt
 distlib==0.3.1            # via virtualenv
 django-crum==0.7.9        # via -r requirements/base.txt, edx-django-utils, edx-toggles
-django-model-utils==4.1.0  # via -r requirements/base.txt, edx-submissions
+django-model-utils==4.1.1  # via -r requirements/base.txt, edx-submissions
 django-pyfs==2.2          # via -r requirements/test.in
 django-simple-history==2.12.0  # via -r requirements/base.txt
 django-waffle==2.0.0      # via -r requirements/base.txt, edx-django-utils, edx-toggles
@@ -34,7 +34,7 @@ docker==4.4.0             # via moto
 ecdsa==0.14.1             # via python-jose, sshpubkeys
 edx-django-utils==3.13.0  # via -r requirements/base.txt, edx-toggles
 edx-i18n-tools==0.5.3     # via -r requirements/base.txt
-edx-submissions==3.2.2    # via -r requirements/base.txt
+edx-submissions==3.2.3    # via -r requirements/base.txt
 edx-toggles==1.2.0        # via -r requirements/base.txt
 factory-boy==3.1.0        # via -r requirements/test.in
 faker==4.18.0             # via factory-boy
@@ -51,7 +51,7 @@ jinja2==2.11.2            # via -r requirements/base.txt, code-annotations, moto
 jmespath==0.10.0          # via -r requirements/base.txt, boto3, botocore
 jsondiff==1.1.2           # via moto
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.txt, edx-submissions
-jsonpatch==1.27           # via cfn-lint
+jsonpatch==1.28           # via cfn-lint
 jsonpickle==1.4.2         # via aws-xray-sdk
 jsonpointer==2.0          # via jsonpatch
 jsonschema==3.2.0         # via aws-sam-translator, cfn-lint

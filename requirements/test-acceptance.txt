@@ -7,13 +7,13 @@
 appdirs==1.4.4            # via -r requirements/test.txt, fs, virtualenv
 atomicwrites==1.4.0       # via -r requirements/test.txt, pytest
 attrs==20.3.0             # via -r requirements/test.txt, jsonschema, pytest
-aws-sam-translator==1.31.0  # via -r requirements/test.txt, cfn-lint
+aws-sam-translator==1.32.0  # via -r requirements/test.txt, cfn-lint
 aws-xray-sdk==2.6.0       # via -r requirements/test.txt, moto
 bleach==3.2.1             # via -r requirements/test.txt
 bok-choy==1.1.1           # via -r requirements/test-acceptance.in
-boto3==1.16.26            # via -r requirements/test.txt, aws-sam-translator, fs-s3fs, moto
+boto3==1.16.28            # via -r requirements/test.txt, aws-sam-translator, fs-s3fs, moto
 boto==2.49.0              # via -r requirements/test.txt, moto
-botocore==1.19.26         # via -r requirements/test.txt, aws-xray-sdk, boto3, moto, s3transfer
+botocore==1.19.28         # via -r requirements/test.txt, aws-xray-sdk, boto3, moto, s3transfer
 certifi==2020.11.8        # via -r requirements/test.txt, requests
 cffi==1.14.4              # via -r requirements/test.txt, cryptography
 cfn-lint==0.42.0          # via -r requirements/test.txt, moto
@@ -27,17 +27,17 @@ decorator==4.4.2          # via -r requirements/test.txt, networkx
 defusedxml==0.6.0         # via -r requirements/test.txt
 distlib==0.3.1            # via -r requirements/test.txt, virtualenv
 django-crum==0.7.9        # via -r requirements/test.txt, edx-django-utils, edx-toggles
-django-model-utils==4.1.0  # via -r requirements/test.txt, edx-submissions
+django-model-utils==4.1.1  # via -r requirements/test.txt, edx-submissions
 django-pyfs==2.2          # via -r requirements/test.txt
 django-simple-history==2.12.0  # via -r requirements/test.txt
 django-waffle==2.0.0      # via -r requirements/test.txt, edx-django-utils, edx-toggles
-django==2.2.17            # via -c requirements/constraints.txt, -r requirements/test.txt, code-annotations, django-crum, django-model-utils, django-pyfs, edx-django-utils, edx-i18n-tools, edx-submissions, edx-toggles, jsonfield2, xblock-sdk
-djangorestframework==3.9.4  # via -r requirements/test.txt, edx-submissions
+django==2.2.17            # via -c requirements/constraints.txt, -r requirements/test.txt, code-annotations, django-crum, django-model-utils, django-pyfs, djangorestframework, edx-django-utils, edx-i18n-tools, edx-submissions, edx-toggles, jsonfield2, xblock-sdk
+djangorestframework==3.12.2  # via -r requirements/test.txt, edx-submissions
 docker==4.4.0             # via -r requirements/test.txt, moto
 ecdsa==0.14.1             # via -r requirements/test.txt, python-jose, sshpubkeys
 edx-django-utils==3.13.0  # via -r requirements/test.txt, edx-toggles
 edx-i18n-tools==0.5.3     # via -r requirements/test.txt
-edx-submissions==3.2.2    # via -r requirements/test.txt
+edx-submissions==3.2.3    # via -r requirements/test.txt
 edx-toggles==1.2.0        # via -r requirements/test.txt
 factory-boy==3.1.0        # via -r requirements/test.txt
 faker==4.18.0             # via -r requirements/test.txt, factory-boy
@@ -54,7 +54,7 @@ jinja2==2.11.2            # via -r requirements/test.txt, code-annotations, moto
 jmespath==0.10.0          # via -r requirements/test.txt, boto3, botocore
 jsondiff==1.1.2           # via -r requirements/test.txt, moto
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/test.txt, edx-submissions
-jsonpatch==1.27           # via -r requirements/test.txt, cfn-lint
+jsonpatch==1.28           # via -r requirements/test.txt, cfn-lint
 jsonpickle==1.4.2         # via -r requirements/test.txt, aws-xray-sdk
 jsonpointer==2.0          # via -r requirements/test.txt, jsonpatch
 jsonschema==3.2.0         # via -r requirements/test.txt, aws-sam-translator, cfn-lint
