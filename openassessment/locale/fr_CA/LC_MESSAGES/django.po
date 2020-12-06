@@ -96,8 +96,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 11:56-0400\n"
-"PO-Revision-Date: 2020-11-06 02:41+0000\n"
+"POT-Creation-Date: 2020-12-01 22:15-0500\n"
+"PO-Revision-Date: 2020-12-04 10:36+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -189,12 +189,14 @@ msgstr "Autoriser plusieurs fichiers"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:39
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:80
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:118
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
 msgid "False"
 msgstr "Faux"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:40
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:81
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:119
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:46
 msgid "True"
 msgstr "Vrai"
 
@@ -395,47 +397,57 @@ msgstr "Points de l'option"
 msgid "Option Explanation"
 msgstr "Explications de l'option"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
 msgstr "Étape : évaluation entre pairs"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:14
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:15
 msgid ""
 "Peer Assessment allows students to provide feedback to other students and "
 "also receive feedback from others in their final grade. Often, though not "
 "always, this step is preceded by Self Assessment or Learner Training steps."
 msgstr "L'évaluation par les pairs permet aux étudiants de fournir des commentaires à d'autres étudiants et de recevoir également des commentaires des autres dans leur note finale. Souvent, mais pas toujours, cette étape est précédée par des étapes d'auto-évaluation ou de formation des apprenants."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:18
 msgid ""
 "Configuration: For this step to be configured you must specify the number of"
 " peer reviews a student will be assessed with, and the number of peer a "
 "student must grade. Additional options can be specified."
 msgstr "Configuration: Pour que cette étape soit configurée, vous devez spécifier le nombre d'évaluation par les pairs avec lesquels un étudiant sera évalué, et le nombre de pairs qu'un étudiant doit noter. Des options supplémentaires peuvent être spécifiées."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:23
 msgid "View Options & Configuration"
 msgstr "Afficher les options et la configuration"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:28
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
 msgstr "Doit Noter"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:31
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
 msgstr "Indiquez le nombre d'évaluations par les pairs que chaque apprenant doit remplir. Les nombres valides sont de 0 à 99."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:35
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
 msgstr "Noté par"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:38
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
 msgstr "Indiquez le nombre d'apprenants pour lesquels chaque réponse doit être évaluée. Les nombres valides sont de 0 à 99."
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
+msgid "Enable Flexible Peer Grade Averaging"
+msgstr "Activer la moyenne flexible des notes par les pairs"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:49
+#, python-format
+msgid ""
+"When enabled, learners who have received at least 30%% of the required \\"
+msgstr "Lorsqu'elle est activée, les apprenants qui ont reçu au moins 30%% des requis \\"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
@@ -2145,6 +2157,26 @@ msgid ""
 " grade."
 msgstr "Vous n'avez pas encore reçu toutes les évaluations par les pairs nécessaires pour déterminer votre note finale."
 
+#: openassessment/xblock/openassesment_template_mixin.py:18
+msgid "Peer Assessment Only"
+msgstr "Évaluation par les pairs seulement"
+
+#: openassessment/xblock/openassesment_template_mixin.py:19
+msgid "Self Assessment Only"
+msgstr "Auto-évaluation seulement"
+
+#: openassessment/xblock/openassesment_template_mixin.py:20
+msgid "Staff Assessment Only"
+msgstr "Évaluation par l'équipe enseignante seulement"
+
+#: openassessment/xblock/openassesment_template_mixin.py:21
+msgid "Self Assessment to Peer Assessment"
+msgstr "Auto-évaluation à évaluation par les pairs"
+
+#: openassessment/xblock/openassesment_template_mixin.py:22
+msgid "Self Assessment to Staff Assessment"
+msgstr "Auto-évaluation à évaluation par l'équipe enseignante"
+
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "Vous devez soumettre une réponse avant de pouvoir effectuer une évaluation par les pairs."
@@ -2169,15 +2201,15 @@ msgstr "Impossible de mettre à jour l'état du workflow."
 msgid "Could not load peer assessment."
 msgstr "Impossible de charger l'évaluation par les pairs."
 
-#: openassessment/xblock/peer_assessment_mixin.py:212
+#: openassessment/xblock/peer_assessment_mixin.py:213
 msgid "Submit your assessment and review another response"
 msgstr "Soumettre votre évaluation et examiner une autre réponse."
 
-#: openassessment/xblock/peer_assessment_mixin.py:216
+#: openassessment/xblock/peer_assessment_mixin.py:217
 msgid "Submit your assessment and move to next step"
 msgstr "Soumettre votre évaluation et passer à l'étape suivante"
 
-#: openassessment/xblock/peer_assessment_mixin.py:220
+#: openassessment/xblock/peer_assessment_mixin.py:221
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "Soumettre votre évaluation et passer à la réponse #{response_number}"
