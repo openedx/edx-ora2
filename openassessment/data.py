@@ -774,47 +774,29 @@ class OraDownloadData:
         all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
 
         for student, submission, _ in all_submission_information:
-            answer = submission.get('answer', dict())
-
-            # collecting submission attachments with metadata
-            for index, file_key in enumerate(answer.get('file_keys', [])):
-                # Old submissions (approx. pre-2020) have file names under the key "files_name",
-                # and even older ones don't have file names at all
-                file_names = answer.get('files_names', answer.get('files_name', []))
-                try:
-                    file_name = file_names[index]
-                except IndexError:
-                    file_name = "File_" + str(index + 1)
-
-                # 'files_sizes' was added sometime around the beginning of 2020, so older submissions
-                # will not have it
-                file_size = 0
-                file_sizes = answer.get('files_sizes')
-                if file_sizes:
-                    file_size = file_sizes[index]
-
+            raw_answer = submission.get('answer', dict())
+            answer = OraSubmissionFactory.parse_submission_raw_answer(raw_answer)
+            for uploaded_file in answer.get_file_uploads():
                 yield {
                     'type': cls.ATTACHMENT,
                     'course_id': course_id,
                     'block_id': student['item_id'],
                     'student_id': student['student_id'],
-                    'key': file_key,
-                    'name': file_name,
-                    'description': answer['files_descriptions'][index],
-                    'size': file_size,
+                    'key': uploaded_file.key,
+                    'name': uploaded_file.name,
+                    'description': uploaded_file.description,
+                    'size': uploaded_file.size,
                     'file_path': os.path.join(
                         str(course_id),
                         student['item_id'],
                         student['student_id'],
                         'attachments',
-                        file_name,
+                        uploaded_file.name,
                     )
                 }
 
             # collecting submission answer texts
-            for index, part in enumerate(answer.get('parts', [])):
-                content = part['text']
-
+            for index, text_response in enumerate(answer.get_text_responses()):
                 file_name = 'part_{}.txt'.format(index)
 
                 yield {
@@ -825,7 +807,7 @@ class OraDownloadData:
                     'key': '',
                     'name': file_name,
                     'description': 'Submission text.',
-                    'content': content,
+                    'content': text_response,
                     'size': len(content),
                     'file_path': os.path.join(
                         str(course_id),
@@ -858,8 +840,8 @@ class SubmissionFileUpload:
 
     def __init__(self, key, name=None, description=None, size=0):
         self.key = key
-        self.name = name if name else key
-        self.description = description if description else SubmissionFileUpload.DEFAULT_DESCRIPTION
+        self.name = name if name is not None else key
+        self.description = description if description is not None else SubmissionFileUpload.DEFAULT_DESCRIPTION
         self.size = size
 
 
@@ -926,7 +908,7 @@ class TextOnlySubmission(OraSubmission):
             self.text_responses = [part.get('text') for part in self.submission.get('parts', [])]
         return self.text_responses
 
-    def get_file_uploads(self):
+    def get_file_uploads(self, missing_blank=False):
         return None
 
 
@@ -1034,10 +1016,11 @@ class ZippedListSubmission(OraSubmission):
         except IndexError:
             return default
 
-    def get_file_uploads(self):
+    def get_file_uploads(self, missing_blank=False):
         """
         Parse and cache file upload responses from the submission
         """
+        default_missing_value = '' if missing_blank else None
         if self.file_uploads is None:
             file_keys = self.submission.get(self.version.key, [])
             # The very earliest version of ora submissions with files only allowed one file, and so is the only
@@ -1050,8 +1033,8 @@ class ZippedListSubmission(OraSubmission):
             file_descriptions = self.submission.get(self.version.description, [])
             file_sizes = self.submission.get(self.version.size, [])
             for i, key in enumerate(file_keys):
-                name = self._index_safe_get(i, file_names)
-                description = self._index_safe_get(i, file_descriptions)
+                name = self._index_safe_get(i, file_names, default_missing_value)
+                description = self._index_safe_get(i, file_descriptions, default_missing_value)
                 size = self._index_safe_get(i, file_sizes, 0)
 
                 file_upload = SubmissionFileUpload(key, name=name, description=description, size=size)
