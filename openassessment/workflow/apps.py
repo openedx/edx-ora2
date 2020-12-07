@@ -13,7 +13,7 @@ class OraWorkflowConfig(AppConfig):
     Configuration for the openassessment.workflow Django application.
     """
 
-    name = 'openassessment.workflow'
+    name = "openassessment.workflow"
     label = "workflow"
     app_label = "workflow"
 

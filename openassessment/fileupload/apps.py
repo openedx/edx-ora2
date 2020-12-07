@@ -13,7 +13,7 @@ class OraFileuploadConfig(AppConfig):
     Configuration for the openassessment.fileupload Django application.
     """
 
-    name = 'openassessment.fileupload'
+    name = "openassessment.fileupload"
     label = "openassessment.fileupload"
     app_label = "openassessment.fileupload"
 

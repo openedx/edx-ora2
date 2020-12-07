@@ -13,7 +13,7 @@ class OraXblockConfig(AppConfig):
     Configuration for the openassessment.xblock Django application.
     """
 
-    name = 'openassessment.xblock'
+    name = "openassessment.xblock"
     label = "openassessment.xblock"
     app_label = "openassessment.xblock"
 

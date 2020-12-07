@@ -13,6 +13,6 @@ class OraConfig(AppConfig):
     Configuration for the openassessment Django application.
     """
 
-    name = 'openassessment'
+    name = "openassessment"
 
     plugin_app = {}
