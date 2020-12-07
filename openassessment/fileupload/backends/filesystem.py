@@ -44,7 +44,7 @@ class Backend(BaseBackend):
 
     def get_download_url(self, key):
         key_name = self._get_key_name(key)
-        if self._is_file_existing(key_name):
+        if self._file_exists(key_name):
             make_download_url_available(key_name, self.DOWNLOAD_URL_TIMEOUT)
             return self._get_url(key)
         return None
@@ -58,7 +58,7 @@ class Backend(BaseBackend):
         url = reverse("openassessment-filesystem-storage", kwargs={'key': key_name})
         return url
 
-    def _is_file_existing(self, key_name):
+    def _file_exists(self, key_name):
         from openassessment.fileupload.views_filesystem import get_file_path
 
         file_path = get_file_path(key_name)
