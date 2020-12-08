@@ -23,6 +23,7 @@ from web_fragments.fragment import Fragment
 
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
+from openassessment.xblock.embed_mixin import EmbedMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.grade_mixin import GradeMixin
@@ -113,6 +114,7 @@ class OpenAssessmentBlock(MessageMixin,
                           StudentTrainingMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
+                          EmbedMixin,
                           ConfigMixin,
                           TeamMixin,
                           OpenAssessmentTemplatesMixin,
