@@ -15,7 +15,7 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from ..data import OraSubmissionFactory
+from ..data import OraSubmissionAnswerFactory
 from .data_conversion import (
     create_submission_dict,
     list_to_conversational_format,
@@ -569,7 +569,7 @@ class SubmissionMixin:
         """
         urls = []
         raw_answer = submission.get('answer')
-        answer = OraSubmissionFactory.parse_submission_raw_answer(raw_answer)
+        answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
         for file_upload in answer.get_file_uploads(missing_blank=True):
             file_download_url = self._get_url_by_file_key(file_upload.key)
             urls.append(

@@ -775,7 +775,7 @@ class OraDownloadData:
 
         for student, submission, _ in all_submission_information:
             raw_answer = submission.get('answer', dict())
-            answer = OraSubmissionFactory.parse_submission_raw_answer(raw_answer)
+            answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
             for uploaded_file in answer.get_file_uploads():
                 yield {
                     'type': cls.ATTACHMENT,
@@ -834,6 +834,9 @@ class SubmissionFileUpload:
         - name: key
         - description: SubmissionFileUpload.DEFAULT_DESCRIPTION
         - size: 0
+
+    A SubmissionFileUpload is distinct from any of the data classes in openassessment/fileupload/api.py.
+    FileDescriptor is a display-level construct and FileUpload represents a file that has been uploaded but not submitted.
     """
 
     DEFAULT_DESCRIPTION = "No description provided."
@@ -845,32 +848,32 @@ class SubmissionFileUpload:
         self.size = size
 
 
-class OraSubmissionFactory:
-    """ A factory class that takes the parsed json raw_answer from a submission and returns an OraSubmission """
+class OraSubmissionAnswerFactory:
+    """ A factory class that takes the parsed json raw_answer from a submission and returns an OraSubmissionAnswer """
 
     @staticmethod
     def parse_submission_raw_answer(raw_answer):
         """
-        Currently this function does a basic test and returns a ZippedListSubmission or a TextOnlySubmission
+        Currently this function does a basic test and returns a ZippedListSubmissionAnswer or a TextOnlySubmissionAnswer
         In the future if we were to change the way we do submissions, we would check here and return accordingly.
         """
-        if TextOnlySubmission.matches(raw_answer):
-            return TextOnlySubmission(raw_answer)
-        elif ZippedListSubmission.matches(raw_answer):
-            return ZippedListSubmission(raw_answer)
+        if TextOnlySubmissionAnswer.matches(raw_answer):
+            return TextOnlySubmissionAnswer(raw_answer)
+        elif ZippedListSubmissionAnswer.matches(raw_answer):
+            return ZippedListSubmissionAnswer(raw_answer)
         else:
-            raise VersionNotFoundException("No ORA Submission version recognized for {}".format(raw_answer))
+            raise VersionNotFoundException("No ORA Submission Answer version recognized for {}".format(raw_answer))
 
 
-class OraSubmission:
+class OraSubmissionAnswer:
     """ Abstract interface for ORA Submissions """
-    def __init__(self, raw_submission):
-        self.submission = raw_submission
+    def __init__(self, raw_answer):
+        self.raw_answer = raw_answer
 
     @staticmethod
     def matches(raw_answer):
         """
-        Check if the raw answer fits this type of OraSubmission
+        Check if the raw answer fits this type of OraSubmissionAnswer
         """
         raise NotImplementedError()
 
@@ -889,7 +892,7 @@ class OraSubmission:
         raise NotImplementedError()
 
 
-class TextOnlySubmission(OraSubmission):
+class TextOnlySubmissionAnswer(OraSubmissionAnswer):
 
     @staticmethod
     def matches(raw_answer):
@@ -905,7 +908,7 @@ class TextOnlySubmission(OraSubmission):
         Parse and cache text responses from the submission
         """
         if self.text_responses is None:
-            self.text_responses = [part.get('text') for part in self.submission.get('parts', [])]
+            self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
         return self.text_responses
 
     def get_file_uploads(self, missing_blank=False):
@@ -946,7 +949,7 @@ class VersionNotFoundException(Exception):
     """ Raised when we are unable to resolve a given submission to a submission version """
 
 
-class ZippedListSubmission(OraSubmission):
+class ZippedListSubmissionAnswer(OraSubmissionAnswer):
     """
     Representation of a type of ORA submission where there are multiple lists, each
     representing a field. They are "zipped" together to represent individual files.
@@ -956,7 +959,7 @@ class ZippedListSubmission(OraSubmission):
     @staticmethod
     def matches(raw_answer):
         try:
-            ZippedListSubmission.get_version(raw_answer)
+            ZippedListSubmissionAnswer.get_version(raw_answer)
         except VersionNotFoundException:
             return False
         else:
@@ -973,7 +976,7 @@ class ZippedListSubmission(OraSubmission):
         return result
 
     @staticmethod
-    def get_version(submission):
+    def get_version(raw_answer):
         """
         Determines the version associated with a submission by working  ackwards from the most recent
         submission version and checking if the set of keys in the given submission matches the set
@@ -982,28 +985,28 @@ class ZippedListSubmission(OraSubmission):
         Raises:
             - VersionNotFoundException if the version cannot be determined.
         """
-        submission_keys = set(submission.keys())
+        submission_keys = set(raw_answer.keys())
         for version in reversed(ZIPPED_LIST_SUBMISSION_VERSIONS):
-            if submission_keys == ZippedListSubmission.get_version_keys(version):
+            if submission_keys == ZippedListSubmissionAnswer.get_version_keys(version):
                 return version
         raise VersionNotFoundException("No zipped list version found with keys {}".format(submission_keys))
 
-    def __init__(self, submission):
+    def __init__(self, raw_answer):
         """
         Raises:
             - VersionNotFoundException if a version cannot be matched against the given submission
         """
-        super().__init__(submission)
+        super().__init__(raw_answer)
         self.text_responses = None
         self.file_uploads = None
-        self.version = ZippedListSubmission.get_version(submission)
+        self.version = ZippedListSubmissionAnswer.get_version(raw_answer)
 
     def get_text_responses(self):
         """
         Parse and cache text responses from the submission
         """
         if self.text_responses is None:
-            self.text_responses = [part.get('text') for part in self.submission.get('parts', [])]
+            self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
         return self.text_responses
 
     def _index_safe_get(self, i, target_list, default=None):
@@ -1018,20 +1021,20 @@ class ZippedListSubmission(OraSubmission):
 
     def get_file_uploads(self, missing_blank=False):
         """
-        Parse and cache file upload responses from the submission
+        Parse and cache file upload responses from the raw_answer
         """
         default_missing_value = '' if missing_blank else None
         if self.file_uploads is None:
-            file_keys = self.submission.get(self.version.key, [])
+            file_keys = self.raw_answer.get(self.version.key, [])
             # The very earliest version of ora submissions with files only allowed one file, and so is the only
             #  situation in which any of these fields is not a list
             if not isinstance(file_keys, list):
                 file_keys = [file_keys]
 
             files = []
-            file_names = self.submission.get(self.version.name, [])
-            file_descriptions = self.submission.get(self.version.description, [])
-            file_sizes = self.submission.get(self.version.size, [])
+            file_names = self.raw_answer.get(self.version.name, [])
+            file_descriptions = self.raw_answer.get(self.version.description, [])
+            file_sizes = self.raw_answer.get(self.version.size, [])
             for i, key in enumerate(file_keys):
                 name = self._index_safe_get(i, file_names, default_missing_value)
                 description = self._index_safe_get(i, file_descriptions, default_missing_value)

@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
-from openassessment.data import OraSubmissionFactory
+from openassessment.data import OraSubmissionAnswerFactory
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import create_submission_dict
@@ -83,8 +83,8 @@ class LeaderboardMixin:
             self.leaderboard_show
         )
         for score in scores:
-            raw_score_content_answer = score['content']:
-            answer = OraSubmissionFactory.parse_submission_raw_answer(raw_score_content_answer) 
+            raw_score_content_answer = score['content']
+            answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_score_content_answer) 
             score['files'] = []
             for uploaded_file in answer.get_file_uploads(missing_blank=True):
                 file_download_url = self._get_file_download_url(uploaded_file.key)
@@ -94,24 +94,6 @@ class LeaderboardMixin:
                             download_url=file_download_url,
                             description=uploaded_file.description,
                             name=uploaded_file.name,
-                            show_delete_button=False
-                        )._asdict()
-                    )
-
-            if 'file_keys' in score['content']:
-                file_keys = score['content'].get('file_keys', [])
-                descriptions = score['content'].get('files_descriptions', [])
-                file_names = score['content'].get('files_names', [])
-                for idx, key in enumerate(file_keys):
-
-            elif 'file_key' in score['content']:
-                file_download_url = self._get_file_download_url(score['content']['file_key'])
-                if file_download_url:
-                    score['files'].append(
-                        file_upload_api.FileDescriptor(
-                            download_url=file_download_url,
-                            description='',
-                            name='',
                             show_delete_button=False
                         )._asdict()
                     )

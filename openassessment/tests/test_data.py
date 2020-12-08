@@ -19,8 +19,8 @@ from django.test import TestCase
 from submissions import api as sub_api, team_api as team_sub_api
 import openassessment.assessment.api.peer as peer_api
 from openassessment.data import (
-    CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionFactory, VersionNotFoundException,
-    ZippedListSubmission, OraSubmission, ZIPPED_LIST_SUBMISSION_VERSIONS, TextOnlySubmission
+    CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory, VersionNotFoundException,
+    ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS, TextOnlySubmissionAnswer
 )
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
@@ -1098,40 +1098,44 @@ submission_test_file_names = ['test-name-' + str(i) for i in range(3)]
 submission_test_file_descriptions = ['Description for file ' + str(i) for i in range(3)]
 submission_test_file_sizes = list(range(3))
 
-version_1_submission = {
+version_1_submission_answer = {
     'file_key': 'test-key-0',
     'parts': submission_test_parts
 }
-version_2_submission = {
+version_2_submission_answer = {
     'file_keys': submission_test_file_keys,
     'files_descriptions': submission_test_file_descriptions,
     'parts': submission_test_parts
 }
-version_3_submission = {
+version_3_submission_answer = {
     'file_keys': submission_test_file_keys,
     'files_descriptions': submission_test_file_descriptions,
     'files_name': submission_test_file_names,
     'parts': submission_test_parts
 }
-version_4_submission = {
+version_4_submission_answer = {
     'file_keys': submission_test_file_keys,
     'files_descriptions': submission_test_file_descriptions,
     'files_name': submission_test_file_names,
     'files_sizes': submission_test_file_sizes,
     'parts': submission_test_parts
 }
-version_5_submission = {
+version_5_submission_answer = {
     'file_keys': submission_test_file_keys,
     'files_descriptions': submission_test_file_descriptions,
     'files_names': submission_test_file_names,
     'files_sizes': submission_test_file_sizes,
     'parts': submission_test_parts
 }
-all_version_submissions = [
-    version_1_submission, version_2_submission, version_3_submission, version_4_submission, version_5_submission
+all_version_submission_answers = [
+    version_1_submission_answer,
+    version_2_submission_answer,
+    version_3_submission_answer,
+    version_4_submission_answer,
+    version_5_submission_answer
 ]
-unknown_submission = {'color': 'Light Bronze Mist Metallic', 'year': 2002, 'make': 'Chevrolet', 'model': 'Tracker'}
-text_only_submission = {'parts': submission_test_parts}
+unknown_submission_answer = {'color': 'Light Bronze Mist Metallic', 'year': 2002, 'make': 'Chevrolet', 'model': 'Tracker'}
+text_only_submission_answer = {'parts': submission_test_parts}
 
 
 class SubmissionFileUploadTest(TestCase):
@@ -1145,44 +1149,46 @@ class SubmissionFileUploadTest(TestCase):
         self.assertEqual(upload.size, 0)
 
 
-class OraSubmissionFactoryTest(TestCase):
-    """ Unit tests for OraSubmissionFactoryTest """
+class OraSubmissionAnswerFactoryTest(TestCase):
+    """ Unit tests for OraSubmissionAnswerFactory """
 
     def test_parse_submission_raw_answer__text_only(self):
-        submission = OraSubmissionFactory.parse_submission_raw_answer(
+        submission = OraSubmissionAnswerFactory.parse_submission_raw_answer(
             {'parts': submission_test_parts}
         )
-        self.assertTrue(isinstance(submission, OraSubmission))
-        self.assertTrue(isinstance(submission, TextOnlySubmission))
+        self.assertTrue(isinstance(submission, OraSubmissionAnswer))
+        self.assertTrue(isinstance(submission, TextOnlySubmissionAnswer))
 
     def test_parse_submission_raw_answer__zipped_list_submission(self):
-        submission = OraSubmissionFactory.parse_submission_raw_answer(version_1_submission)
-        self.assertTrue(isinstance(submission, OraSubmission))
-        self.assertTrue(isinstance(submission, ZippedListSubmission))
+        submission = OraSubmissionAnswerFactory.parse_submission_raw_answer(
+            version_1_submission_answer
+        )
+        self.assertTrue(isinstance(submission, OraSubmissionAnswer))
+        self.assertTrue(isinstance(submission, ZippedListSubmissionAnswer))
 
     def test_parse_submission_raw_answer__unknown(self):
         with self.assertRaisesMessage(VersionNotFoundException, "No ORA Submission version recognized"):
-            OraSubmissionFactory.parse_submission_raw_answer(unknown_submission)
+            OraSubmissionAnswerFactory.parse_submission_raw_answer(unknown_submission_answer)
 
 
 @ddt.ddt
-class TextOnlySubmissionTest(TestCase):
-    """ Unit tests for TextOnlySubmission """
+class TextOnlySubmissionAnswerTest(TestCase):
+    """ Unit tests for TextOnlySubmissionAnswer """
     @ddt.unpack
     @ddt.data(
-        (version_1_submission, False),
-        (version_2_submission, False),
-        (version_3_submission, False),
-        (version_4_submission, False),
-        (version_5_submission, False),
-        (text_only_submission, True),
-        (unknown_submission, False),
+        (version_1_submission_answer, False),
+        (version_2_submission_answer, False),
+        (version_3_submission_answer, False),
+        (version_4_submission_answer, False),
+        (version_5_submission_answer, False),
+        (text_only_submission_answer, True),
+        (unknown_submission_answer, False),
     )
     def test_matches(self, submission, should_match):
-        self.assertEqual(TextOnlySubmission.matches(submission), should_match)
+        self.assertEqual(TextOnlySubmissionAnswer.matches(submission), should_match)
 
     def test_get_responses(self):
-        submission = TextOnlySubmission(text_only_submission)
+        submission = TextOnlySubmissionAnswer(text_only_submission_answer)
         text_responses = submission.get_text_responses()
         self.assertEqual(len(text_responses), 3)
         for i, text_response in enumerate(text_responses):
@@ -1191,60 +1197,60 @@ class TextOnlySubmissionTest(TestCase):
 
 
 @ddt.ddt
-class ZippedListSubmissionTest(TestCase):
-    """ Unit tests for ZippedListSubmission """
+class ZippedListSubmissionAnswerTest(TestCase):
+    """ Unit tests for ZippedListSubmissionAnswer """
 
     def test_get_version_keys(self):
         self.assertEqual(
             # Version 5
-            ZippedListSubmission.get_version_keys(ZIPPED_LIST_SUBMISSION_VERSIONS[4]),
+            ZippedListSubmissionAnswer.get_version_keys(ZIPPED_LIST_SUBMISSION_VERSIONS[4]),
             set(['file_keys', 'files_descriptions', 'files_names', 'files_sizes', 'parts'])
         )
 
     @ddt.unpack
     @ddt.data(
-        (version_1_submission, True),
-        (version_2_submission, True),
-        (version_3_submission, True),
-        (version_4_submission, True),
-        (version_5_submission, True),
-        (text_only_submission, False),
-        (unknown_submission, False),
+        (version_1_submission_answer, True),
+        (version_2_submission_answer, True),
+        (version_3_submission_answer, True),
+        (version_4_submission_answer, True),
+        (version_5_submission_answer, True),
+        (text_only_submission_answer, False),
+        (unknown_submission_answer, False),
     )
     def test_matches(self, submission, should_match):
-        self.assertEqual(ZippedListSubmission.matches(submission), should_match)
+        self.assertEqual(ZippedListSubmissionAnswer.matches(submission), should_match)
 
     @ddt.data(
-        (version_1_submission, 1),
-        (version_2_submission, 2),
-        (version_3_submission, 3),
-        (version_4_submission, 4),
-        (version_5_submission, 5),
+        (version_1_submission_answer, 1),
+        (version_2_submission_answer, 2),
+        (version_3_submission_answer, 3),
+        (version_4_submission_answer, 4),
+        (version_5_submission_answer, 5),
     )
     @ddt.unpack
     def test_get_version(self, submission, version):
         self.assertEqual(
-            ZippedListSubmission.get_version(submission),
+            ZippedListSubmissionAnswer.get_version(submission),
             ZIPPED_LIST_SUBMISSION_VERSIONS[version - 1]  # Adjusted version -> index
         )
 
     def test_get_version_not_found(self):
         """ Test that a non-recognized submission version will raise an exception """
         with self.assertRaisesMessage(VersionNotFoundException, "No zipped list version found with keys"):
-            ZippedListSubmission.get_version(unknown_submission)
+            ZippedListSubmissionAnswer.get_version(unknown_submission_answer)
 
-    @ddt.data(*all_version_submissions)
+    @ddt.data(*all_version_submission_answers)
     def test_get_submission_values(self, raw_submission):
         """
         Test that the files are parsed from the submission correctly
         """
-        submission = ZippedListSubmission(raw_submission)
+        submission = ZippedListSubmissionAnswer(raw_submission)
         self.assertEqual(
             submission.get_text_responses(),
             ['text_response_0', 'text_response_1', 'text_response_2']
         )
         file_uploads = submission.get_file_uploads()
-        if raw_submission == version_1_submission:
+        if raw_submission == version_1_submission_answer:
             self.assertEqual(len(file_uploads), 1)
         else:
             self.assertEqual(len(file_uploads), 3)
@@ -1271,10 +1277,10 @@ class ZippedListSubmissionTest(TestCase):
         """ Test that for submissions with missing data, files can still be parsed correctly """
         # Submission with no descriptions. The key will exist, but it will be an empty list
         version_5 = ZIPPED_LIST_SUBMISSION_VERSIONS[4]
-        no_description_submission = deepcopy(version_5_submission)
+        no_description_submission = deepcopy(version_5_submission_answer)
         no_description_submission[version_5.description] = []
 
-        submission = ZippedListSubmission(no_description_submission)
+        submission = ZippedListSubmissionAnswer(no_description_submission)
         self.assertEqual(submission.version, version_5)
 
         file_uploads = submission.get_file_uploads()
@@ -1292,10 +1298,10 @@ class ZippedListSubmissionTest(TestCase):
         """ Test that for submissions with missing data, files can still be parsed correctly """
         # Submission with only one file name
         version_5 = ZIPPED_LIST_SUBMISSION_VERSIONS[4]
-        misaligned_names_submission = deepcopy(version_5_submission)
+        misaligned_names_submission = deepcopy(version_5_submission_answer)
         misaligned_names_submission[version_5.name].pop()
 
-        submission = ZippedListSubmission(misaligned_names_submission)
+        submission = ZippedListSubmissionAnswer(misaligned_names_submission)
         self.assertEqual(submission.version, version_5)
 
         file_uploads = submission.get_file_uploads()
