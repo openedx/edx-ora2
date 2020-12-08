@@ -40,14 +40,13 @@ export class FileUploader {
         // Return control to the caller
         defer.resolve();
       }).fail((data, textStatus, errorThrown) => {
-        // Log an analytics event
         Logger.log(
           'openassessment.upload_file_error',
           {
             errorThrown,
           },
         );
-        defer.rejectWith(this, [errorThrown]);
+        defer.rejectWith(this, [textStatus]);
       });
     }).promise();
   }
