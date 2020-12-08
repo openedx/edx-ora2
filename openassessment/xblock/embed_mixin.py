@@ -3,7 +3,6 @@ The Embed Mixin renders views that might be embedded by other services like MFE.
 """
 
 
-import json
 import six
 
 from django.urls import reverse
@@ -41,6 +40,7 @@ class EmbedMixin:
 
         # webob request doesn't have META which is request for
         # is_mobile_app and is_learning_mfe utility functions
+        # pylint: disable=protected-access
         django_request = request._request
 
         render_context = {
