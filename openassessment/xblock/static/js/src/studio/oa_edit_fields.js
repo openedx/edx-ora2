@@ -396,7 +396,7 @@ export class InputControl {
     if (this.errors.length) {
       this.input.addClass('openassessment_highlighted_field');
       this.input.parent().nextAll('.message-status').text(this.errors.join(';'));
-      this.input.parent().nextAll('.message-status').addClass('is-shown');
+      this.input.parent().nextAll('.message-status').removeClass('is--hidden');
     }
     return this.errors.length === 0;
   }
@@ -406,7 +406,7 @@ export class InputControl {
      * */
   clearValidationErrors() {
     this.input.removeClass('openassessment_highlighted_field');
-    this.input.parent().nextAll('.message-status').removeClass('is-shown');
+    this.input.parent().nextAll('.message-status').addClass('is--hidden');
   }
 
   /**
