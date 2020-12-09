@@ -572,14 +572,15 @@ class SubmissionMixin:
         answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
         for file_upload in answer.get_file_uploads(missing_blank=True):
             file_download_url = self._get_url_by_file_key(file_upload.key)
-            urls.append(
-                file_upload_api.FileDescriptor(
-                    download_url=file_download_url,
-                    description=file_upload.description,
-                    name=file_upload.name,
-                    show_delete_button=False
-                )._asdict()
-            )
+            if file_download_url:
+                urls.append(
+                    file_upload_api.FileDescriptor(
+                        download_url=file_download_url,
+                        description=file_upload.description,
+                        name=file_upload.name,
+                        show_delete_button=False
+                    )._asdict()
+                )
         return urls
 
     def get_files_info_from_user_state(self, username):

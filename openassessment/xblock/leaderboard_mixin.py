@@ -84,7 +84,7 @@ class LeaderboardMixin:
         )
         for score in scores:
             raw_score_content_answer = score['content']
-            answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_score_content_answer) 
+            answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_score_content_answer)
             score['files'] = []
             for uploaded_file in answer.get_file_uploads(missing_blank=True):
                 file_download_url = self._get_file_download_url(uploaded_file.key)

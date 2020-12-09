@@ -128,17 +128,6 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ])
         self._assert_leaderboard_visible(xblock, True)
 
-    @scenario('data/leaderboard_show.xml')
-    def test_no_text_key_submission(self, xblock):
-        # Instead of using the default submission as a dict with 'text',
-        # make the submission a string.
-        self._create_submissions_and_scores(xblock, [('test answer', 1)], submission_key=None)
-
-        # It should still work
-        self._assert_scores(xblock, [
-            {'score': 1, 'files': []}
-        ])
-
     @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
@@ -193,9 +182,10 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
-        submission[u'file_keys'] = file_keys
-        submission[u'files_descriptions'] = file_descriptions
-        submission[u'files_names'] = files_names
+        submission['file_keys'] = file_keys
+        submission['files_descriptions'] = file_descriptions
+        submission['files_names'] = files_names
+        submission['files_sizes'] = []
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])

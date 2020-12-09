@@ -551,7 +551,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Create an image submission for Bob, and corresponding workflow.
         self._create_submission(bob_item, {
             'text': "Bob Answer",
-            'file_keys': ["test_key"]
+            'file_keys': ["test_key"],
+            'files_descriptions': []
         }, ['self'])
 
         # Mock the file upload API to simulate an error
@@ -1184,7 +1185,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self._setup_xblock_and_create_submission(xblock, **{
             'file_keys': [FILE_URL, FILE_URL],
             'files_descriptions': [SAVED_FILES_DESCRIPTIONS[1], SAVED_FILES_DESCRIPTIONS[0]],
-            'files_names': [SAVED_FILES_NAMES[1], SAVED_FILES_NAMES[0]]
+            'files_names': [SAVED_FILES_NAMES[1], SAVED_FILES_NAMES[0]],
+            'files_sizes': [],
         })
         with patch("openassessment.fileupload.api.get_download_url") as get_download_url:
             get_download_url.return_value = FILE_URL
@@ -1333,6 +1335,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'text': "Bob Answer",
             'file_keys': ["test_key"],
             'files_descriptions': ["test_description"],
+            'files_sizes': [],
             key: ["test_fileName"],
         }, ['self'])
 
@@ -1430,7 +1433,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 'text': "Text Answer",
                 'file_keys': kwargs.get('file_keys', []),
                 'files_descriptions': kwargs.get('files_descriptions', []),
-                'files_names': kwargs.get('files_names', [])
+                'files_names': kwargs.get('files_names', []),
+                'files_sizes': kwargs.get('files_sizes', [])
             }, ['staff'])
 
     def _setup_xblock(self, xblock, anonymous_user_id='Bob', has_team=True):

@@ -15,6 +15,7 @@ import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import F
+from django.utils.translation import ugettext as _
 
 from submissions import api as sub_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
@@ -808,7 +809,7 @@ class OraDownloadData:
                     'name': file_name,
                     'description': 'Submission text.',
                     'content': text_response,
-                    'size': len(content),
+                    'size': len(text_response),
                     'file_path': os.path.join(
                         str(course_id),
                         student['item_id'],
@@ -836,10 +837,11 @@ class SubmissionFileUpload:
         - size: 0
 
     A SubmissionFileUpload is distinct from any of the data classes in openassessment/fileupload/api.py.
-    FileDescriptor is a display-level construct and FileUpload represents a file that has been uploaded but not submitted.
+    FileDescriptor is a display-level construct and FileUpload represents a file that has been uploaded
+    but not submitted.
     """
 
-    DEFAULT_DESCRIPTION = "No description provided."
+    DEFAULT_DESCRIPTION = _("No description provided.")
 
     def __init__(self, key, name=None, description=None, size=0):
         self.key = key
@@ -885,7 +887,7 @@ class OraSubmissionAnswer:
         """
         raise NotImplementedError()
 
-    def get_file_uploads(self):
+    def get_file_uploads(self, missing_blank=False):
         """
         Get the list of FileUploads for this submission
         """
@@ -912,7 +914,7 @@ class TextOnlySubmissionAnswer(OraSubmissionAnswer):
         return self.text_responses
 
     def get_file_uploads(self, missing_blank=False):
-        return None
+        return []
 
 
 # This namedtuple represents the different shapes different versions of ORA Submissions have taken.
@@ -966,19 +968,24 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
             return True
 
     @staticmethod
-    def get_version_keys(version):
+    def does_version_match(submission_keys, version):
         """
-        Given a ZippedListsSubmissionVersion, return the set of keys in the version, as well as
-        'parts', since that exists in all versions
+        Given a ZippedListsSubmissionVersion and a set of keys from a raw_answer,
+        returns whether or not the version and keys match.
+
+        Matching means that either the set of keys in the version matches the given set of keys,
+        or the version keys plus the key "parts" matches the given set.
         """
-        result = {version_key for version_key in version if version_key}
-        result.add('parts')
-        return result
+        version_keys = {version_key for version_key in version if version_key}
+        if version_keys == submission_keys:
+            return True
+        version_keys.add('parts')
+        return version_keys == submission_keys
 
     @staticmethod
     def get_version(raw_answer):
         """
-        Determines the version associated with a submission by working  ackwards from the most recent
+        Determines the version associated with a submission by working backwards from the most recent
         submission version and checking if the set of keys in the given submission matches the set
         of keys in the version.
 
@@ -987,7 +994,7 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         """
         submission_keys = set(raw_answer.keys())
         for version in reversed(ZIPPED_LIST_SUBMISSION_VERSIONS):
-            if submission_keys == ZippedListSubmissionAnswer.get_version_keys(version):
+            if ZippedListSubmissionAnswer.does_version_match(submission_keys, version):
                 return version
         raise VersionNotFoundException("No zipped list version found with keys {}".format(submission_keys))
 
