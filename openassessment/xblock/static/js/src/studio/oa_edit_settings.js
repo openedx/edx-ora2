@@ -122,6 +122,8 @@ export class EditSettingsView {
       this.element,
     );
 
+    this.fileTypeWhiteListInputField.clearValidationErrors();
+
     if (selectedValue === 'custom') {
       // Enable the "allowed file types" field and hide the note banner
       el.prop('disabled', false);
