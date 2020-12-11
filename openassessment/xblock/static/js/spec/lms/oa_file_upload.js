@@ -52,7 +52,7 @@ describe("OpenAssessment.FileUploader", function() {
     it("logs a file upload error event", function(done) {
         // Stub the AJAX call, simulating success
         var failurePromise = $.Deferred(
-            function(defer) { defer.rejectWith(this, ['data', 'textStatus', 'errorThrown']); }
+            function(defer) { defer.rejectWith(this, [{statusText: "We're gonna need a bigger boat"}, 'textStatus']); }
         ).promise();
         spyOn($, 'ajax').and.returnValue(failurePromise);
 
@@ -71,7 +71,7 @@ describe("OpenAssessment.FileUploader", function() {
         // Verify that the event was logged
         expect(Logger.log).toHaveBeenCalledWith(
             "openassessment.upload_file_error", {
-                errorThrown: 'errorThrown'
+                statusText: "We're gonna need a bigger boat"
             }
         );
     });
