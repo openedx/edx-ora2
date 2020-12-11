@@ -2,28 +2,33 @@
 
 Before Merging a pull request:
 
-- [ ] If any user-facing text has changed, run `make check_translations_up_to_date` and check in any updated files
-- [ ] If your changes include JS/CSS changes, run `make javascript sass` 
+- [ ] If any user-facing text has changed, run `make check_translations_up_to_date` to recompile translation files
+- [ ] If your changes include JS/CSS changes, run `make javascript sass` to rebuild static assets
 - [ ] Get a green Travis build for this PR
-- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json)
 - [ ] Address PR comments
-- [ ] Get approving review from code owners
+- [ ] Get approving review from code owner
+- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json) following [semantic versioning](https://semver.org/) conventionss
 
 ## Publish to PyPi
 
 When a PR is ready to release, do the following to publish a new version of ORA:
 
 - [ ] Merge to `master`
-- [ ] Create a [release tag on GitHub](https://github.com/edx/edx-ora2/releases) with updated version number (e.g. `v3.1.4`)
-- [ ] Manually inspect diff at https://github.com/edx/edx-ora2/compare/0.x.n-1...0.x.n, email contributors
+- [ ] Create a [release tag on GitHub](https://github.com/edx/edx-ora2/releases) matching version number in setup.py/package.json
+- [ ] Grab a coffee while our automated process submits the build to PyPi
 - [ ] Confirm new version appears in [PyPi: ora2](https://pypi.org/project/ora2)
 
 ## Release to Production
 
-After a new version of ORA is published to PyPi, update [edx-platform](https://github.com/edx/edx-platform) to use new version:
+For non time-critical changes:
 
-- [ ] Update ORA version in [edx-platform](https://github.com/edx/edx-platform) requirements files: `requirements/edx/{github.in,base.txt,development.txt,testing.txt}`
-- [ ] Open edx-platform PR and test with a sandbox or devstack.
-- [ ] Get green build on the edx-platform PR, merge.
-- [ ] Consider any feature flags that must be changed.
-- [ ] Once your code has been released to production, try to test it there, too.
+- [x] Dependencies in [edx-platform](https://github.com/edx/edx-platform) are routinely updated every few days as part of a dependency update job
+- [ ] Communicate/coordinate updated feature flags/configuration changes to stakeholders
+- [ ] After the next update task run, monitor the updated functionality in sandboxes/production
+
+To expedite the release process:
+
+- [ ] Create a new PR in [edx-platform](https://github.com/edx/edx-platform), changing ORA version in requirements files: `requirements/edx/{github.in,base.txt,development.txt,testing.txt}`
+- [ ] Communicate/coordinate updated feature flags/configuration changes to stakeholders
+- [ ] Follow the testing/release process for [edx-platform](https://github.com/edx/edx-platform)
+- [ ] After merging, monitor the updated functionality in sandboxes/production
