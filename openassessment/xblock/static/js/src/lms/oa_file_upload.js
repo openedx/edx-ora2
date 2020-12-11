@@ -39,11 +39,11 @@ export class FileUploader {
 
         // Return control to the caller
         defer.resolve();
-      }).fail((data, textStatus, errorThrown) => {
+      }).fail((data, textStatus) => {
         Logger.log(
           'openassessment.upload_file_error',
           {
-            errorThrown,
+            statusText: data.statusText,
           },
         );
         defer.rejectWith(this, [textStatus]);
