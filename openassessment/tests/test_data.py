@@ -883,18 +883,19 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'files_descriptions': [self.file_description_5],
         }
 
+        file_5_generated_name = SubmissionFileUpload.generate_name_from_key(self.file_key_5)
         self.submission_files_data = [
             {
                 'course_id': COURSE_ID,
                 'block_id': ITEM_ID,
                 'student_id': PRE_FILE_NAME_STUDENT_ID,
                 'key': self.file_key_5,
-                'name': self.file_key_5,
+                'name': file_5_generated_name,
                 'type': OraDownloadData.ATTACHMENT,
                 'description': self.file_description_5,
                 'size': 0,
                 'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, PRE_FILE_NAME_STUDENT_ID, self.file_key_5
+                    COURSE_ID, ITEM_ID, PRE_FILE_NAME_STUDENT_ID, file_5_generated_name
                 ),
             },
             {
@@ -1145,7 +1146,7 @@ class SubmissionFileUploadTest(TestCase):
 
     def test_default_values(self):
         upload = SubmissionFileUpload(self.KEY)
-        self.assertEqual(upload.name, self.KEY)
+        self.assertEqual(upload.name, SubmissionFileUpload.generate_name_from_key(self.KEY))
         self.assertEqual(upload.description, SubmissionFileUpload.DEFAULT_DESCRIPTION)
         self.assertEqual(upload.size, 0)
 
@@ -1284,7 +1285,7 @@ class ZippedListSubmissionAnswerTest(TestCase):
             self.assertEqual(
                 file_upload.name,
                 submission_test_file_names[i] if submission.version.name
-                else file_upload.key
+                else SubmissionFileUpload.generate_name_from_key(file_upload.key)
             )
             self.assertEqual(
                 file_upload.description,
@@ -1333,7 +1334,7 @@ class ZippedListSubmissionAnswerTest(TestCase):
         for i, file_upload in enumerate(file_uploads):
             self.assertEqual(file_upload.key, submission_test_file_keys[i])
             if i == 2:
-                self.assertEqual(file_upload.name, file_upload.key)
+                self.assertEqual(file_upload.name, SubmissionFileUpload.generate_name_from_key(file_upload.key))
             else:
                 self.assertEqual(file_upload.name, submission_test_file_names[i])
             self.assertEqual(file_upload.description, submission_test_file_descriptions[i])

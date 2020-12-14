@@ -845,9 +845,17 @@ class SubmissionFileUpload:
 
     def __init__(self, key, name=None, description=None, size=0):
         self.key = key
-        self.name = name if name is not None else key
+        self.name = name if name is not None else SubmissionFileUpload.generate_name_from_key(key)
         self.description = description if description is not None else SubmissionFileUpload.DEFAULT_DESCRIPTION
         self.size = size
+
+    @staticmethod
+    def generate_name_from_key(key):
+        """
+        Return the hex representation of the absolute hash of a value.
+        Used to generate arbitrary file names for files with no name.
+        """
+        return format(abs(hash(key)), 'x')
 
 
 class OraSubmissionAnswerFactory:
