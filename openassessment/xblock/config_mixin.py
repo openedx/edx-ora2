@@ -63,7 +63,8 @@ class ConfigMixin:
         with the given ``flag_name``.
         """
         CourseWaffleFlag = import_course_waffle_flag()  # pylint: disable=invalid-name
-        return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name)  # pylint: disable=feature-toggle-needs-doc
+        # pylint: disable=feature-toggle-needs-doc
+        return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name, module_name=__name__)
 
     @staticmethod
     def _settings_toggle_enabled(toggle_name):
