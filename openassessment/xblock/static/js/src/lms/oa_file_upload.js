@@ -39,7 +39,15 @@ export class FileUploader {
 
         // Return control to the caller
         defer.resolve();
-      }).fail((data, textStatus) => defer.rejectWith(this, [textStatus]));
+      }).fail((data, textStatus) => {
+        Logger.log(
+          'openassessment.upload_file_error',
+          {
+            statusText: data.statusText,
+          },
+        );
+        defer.rejectWith(this, [textStatus]);
+      });
     }).promise();
   }
 }

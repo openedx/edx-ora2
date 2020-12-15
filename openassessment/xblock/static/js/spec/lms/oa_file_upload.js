@@ -48,4 +48,31 @@ describe("OpenAssessment.FileUploader", function() {
             }
         );
     });
+
+    it("logs a file upload error event", function(done) {
+        // Stub the AJAX call, simulating success
+        var failurePromise = $.Deferred(
+            function(defer) { defer.rejectWith(this, [{statusText: "We're gonna need a bigger boat"}, 'textStatus']); }
+        ).promise();
+        spyOn($, 'ajax').and.returnValue(failurePromise);
+
+        // Stub the event logger
+        spyOn(Logger, 'log');
+
+        // Upload a file
+        fileUploader.upload(TEST_URL, TEST_FILE).then(function() {
+            // Verify that the promise was not resolved
+            done(new Error('File upload error should not be resolved'));
+        }, function(reason) {
+            expect(reason).toBe('textStatus');
+            done();
+        });
+
+        // Verify that the event was logged
+        expect(Logger.log).toHaveBeenCalledWith(
+            "openassessment.upload_file_error", {
+                statusText: "We're gonna need a bigger boat"
+            }
+        );
+    });
 });
