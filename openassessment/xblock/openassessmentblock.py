@@ -58,12 +58,12 @@ UI_MODELS = {
     "student-training": {
         "name": "student-training",
         "class_id": "step--student-training",
-        "title": "Learn to Assess"
+        "title": "Learn to Assess Responses"
     },
     "peer-assessment": {
         "name": "peer-assessment",
         "class_id": "step--peer-assessment",
-        "title": "Assess Peers' Responses"
+        "title": "Assess Peers"
     },
     "self-assessment": {
         "name": "self-assessment",
@@ -83,7 +83,7 @@ UI_MODELS = {
     "leaderboard": {
         "name": "leaderboard",
         "class_id": "step--leaderboard",
-        "title": "Leaderboard"
+        "title": "Top Responses"
     }
 }
 
