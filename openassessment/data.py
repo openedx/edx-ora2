@@ -2,7 +2,7 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from io import StringIO
 from urllib.parse import urljoin
 from zipfile import ZipFile
@@ -15,6 +15,7 @@ import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import F
+from django.utils.translation import ugettext as _
 
 from submissions import api as sub_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
@@ -774,47 +775,29 @@ class OraDownloadData:
         all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
 
         for student, submission, _ in all_submission_information:
-            answer = submission.get('answer', dict())
-
-            # collecting submission attachments with metadata
-            for index, file_key in enumerate(answer.get('file_keys', [])):
-                # Old submissions (approx. pre-2020) have file names under the key "files_name",
-                # and even older ones don't have file names at all
-                file_names = answer.get('files_names', answer.get('files_name', []))
-                try:
-                    file_name = file_names[index]
-                except IndexError:
-                    file_name = "File_" + str(index + 1)
-
-                # 'files_sizes' was added sometime around the beginning of 2020, so older submissions
-                # will not have it
-                file_size = 0
-                file_sizes = answer.get('files_sizes')
-                if file_sizes:
-                    file_size = file_sizes[index]
-
+            raw_answer = submission.get('answer', dict())
+            answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
+            for uploaded_file in answer.get_file_uploads():
                 yield {
                     'type': cls.ATTACHMENT,
                     'course_id': course_id,
                     'block_id': student['item_id'],
                     'student_id': student['student_id'],
-                    'key': file_key,
-                    'name': file_name,
-                    'description': answer['files_descriptions'][index],
-                    'size': file_size,
+                    'key': uploaded_file.key,
+                    'name': uploaded_file.name,
+                    'description': uploaded_file.description,
+                    'size': uploaded_file.size,
                     'file_path': os.path.join(
                         str(course_id),
                         student['item_id'],
                         student['student_id'],
                         'attachments',
-                        file_name,
+                        uploaded_file.name,
                     )
                 }
 
             # collecting submission answer texts
-            for index, part in enumerate(answer.get('parts', [])):
-                content = part['text']
-
+            for index, text_response in enumerate(answer.get_text_responses()):
                 file_name = 'part_{}.txt'.format(index)
 
                 yield {
@@ -825,8 +808,8 @@ class OraDownloadData:
                     'key': '',
                     'name': file_name,
                     'description': 'Submission text.',
-                    'content': content,
-                    'size': len(content),
+                    'content': text_response,
+                    'size': len(text_response),
                     'file_path': os.path.join(
                         str(course_id),
                         student['item_id'],
@@ -834,3 +817,245 @@ class OraDownloadData:
                         file_name,
                     )
                 }
+
+
+class SubmissionFileUpload:
+    """
+    A SubmissionFileUpload represents a file that was uploaded and submitted as a part of an ORA
+    submission. It has the following fields:
+        - key: The unique key used by the file upload backend to identify the file.
+        - name: The filename of the submitted file.
+        - description: An uploader-provided description of the submitted file.
+        - size: The filesize of the submitted file.
+
+    Due to historical considerations, only the file key is _required_ to exist,
+    but all files uploaded after November 25th, 2019, _should_ contain all fields.
+
+    If fields are missing, they will default to the following values:
+        - name: key
+        - description: SubmissionFileUpload.DEFAULT_DESCRIPTION
+        - size: 0
+
+    A SubmissionFileUpload is distinct from any of the data classes in openassessment/fileupload/api.py.
+    FileDescriptor is a display-level construct and FileUpload represents a file that has been uploaded
+    but not submitted.
+    """
+
+    DEFAULT_DESCRIPTION = _("No description provided.")
+
+    def __init__(self, key, name=None, description=None, size=0):
+        self.key = key
+        self.name = name if name is not None else SubmissionFileUpload.generate_name_from_key(key)
+        self.description = description if description is not None else SubmissionFileUpload.DEFAULT_DESCRIPTION
+        self.size = size
+
+    @staticmethod
+    def generate_name_from_key(key):
+        """
+        Return the hex representation of the absolute hash of a value.
+        Used to generate arbitrary file names for files with no name.
+        """
+        return format(abs(hash(key)), 'x')
+
+
+class OraSubmissionAnswerFactory:
+    """ A factory class that takes the parsed json raw_answer from a submission and returns an OraSubmissionAnswer """
+
+    @staticmethod
+    def parse_submission_raw_answer(raw_answer):
+        """
+        Currently this function does a basic test and returns a ZippedListSubmissionAnswer or a TextOnlySubmissionAnswer
+        In the future if we were to change the way we do submissions, we would check here and return accordingly.
+        """
+        if TextOnlySubmissionAnswer.matches(raw_answer):
+            return TextOnlySubmissionAnswer(raw_answer)
+        elif ZippedListSubmissionAnswer.matches(raw_answer):
+            return ZippedListSubmissionAnswer(raw_answer)
+        else:
+            raise VersionNotFoundException("No ORA Submission Answer version recognized for {}".format(raw_answer))
+
+
+class OraSubmissionAnswer:
+    """ Abstract interface for ORA Submissions """
+    def __init__(self, raw_answer):
+        self.raw_answer = raw_answer
+
+    @staticmethod
+    def matches(raw_answer):
+        """
+        Check if the raw answer fits this type of OraSubmissionAnswer
+        """
+        raise NotImplementedError()
+
+    def get_text_responses(self):
+        """
+        Get the list of text responses for the submission
+
+        Returns: list of strings
+        """
+        raise NotImplementedError()
+
+    def get_file_uploads(self, missing_blank=False):
+        """
+        Get the list of FileUploads for this submission
+        """
+        raise NotImplementedError()
+
+
+class TextOnlySubmissionAnswer(OraSubmissionAnswer):
+
+    @staticmethod
+    def matches(raw_answer):
+        keys = list(raw_answer.keys())
+        return len(keys) == 1 and keys == ['parts']
+
+    def __init__(self, submission):
+        super().__init__(submission)
+        self.text_responses = None
+
+    def get_text_responses(self):
+        """
+        Parse and cache text responses from the submission
+        """
+        if self.text_responses is None:
+            self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
+        return self.text_responses
+
+    def get_file_uploads(self, missing_blank=False):
+        return []
+
+
+# This namedtuple represents the different shapes different versions of ORA Submissions have taken.
+# Below is a table of the dates and commits that introduced each version:
+#   Version | Date              | Commit
+#   -----------------------------------------------------------------------
+#   1       | July      8, 2014 | 42cf870695c3f2ca010abcf4e69a47d34dc56275
+#   2       | April    27, 2017 | 7568a7008706db6fee5d3081e455b6687d84d659
+#   3       | October  28, 2019 | 9d8b2de0a04c410c3da7d2894ce0eab8bbc9f254
+#   4       | November 12, 2019 | 6c062ecc03e9bcc93d3dc78345cf63bcf910c58f
+#   5       | November 25, 2019 | e0e56ac6bc054b7cd71c5e10c8cb99592511cac9
+#  -------------------------------------------------------------------------
+
+ZippedListsSubmissionVersion = namedtuple(
+    'ZippedListsSubmissionVersion',
+    ['key', 'description', 'name', 'size']
+)
+
+VERSION_1 = ZippedListsSubmissionVersion('file_key', None, None, None)
+VERSION_2 = ZippedListsSubmissionVersion('file_keys', 'files_descriptions', None, None)
+VERSION_3 = ZippedListsSubmissionVersion('file_keys', 'files_descriptions', 'files_name', None)
+VERSION_4 = ZippedListsSubmissionVersion(
+    'file_keys', 'files_descriptions', 'files_name', 'files_sizes'
+)
+VERSION_5 = ZippedListsSubmissionVersion(
+    'file_keys', 'files_descriptions', 'files_names', 'files_sizes'
+)
+ZIPPED_LIST_SUBMISSION_VERSIONS = [
+    VERSION_1, VERSION_2, VERSION_3, VERSION_4, VERSION_5
+]
+
+
+class VersionNotFoundException(Exception):
+    """ Raised when we are unable to resolve a given submission to a submission version """
+
+
+class ZippedListSubmissionAnswer(OraSubmissionAnswer):
+    """
+    Representation of a type of ORA submission where there are multiple lists, each
+    representing a field. They are "zipped" together to represent individual files.
+    """
+    CURRENT_VERSION = 5
+
+    @staticmethod
+    def matches(raw_answer):
+        try:
+            ZippedListSubmissionAnswer.get_version(raw_answer)
+        except VersionNotFoundException:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def does_version_match(submission_keys, version):
+        """
+        Given a ZippedListsSubmissionVersion and a set of keys from a raw_answer,
+        returns whether or not the version and keys match.
+
+        Matching means that either the set of keys in the version matches the given set of keys,
+        or the version keys plus the key "parts" matches the given set.
+        """
+        version_keys = {version_key for version_key in version if version_key}
+        if version_keys == submission_keys:
+            return True
+        version_keys.add('parts')
+        return version_keys == submission_keys
+
+    @staticmethod
+    def get_version(raw_answer):
+        """
+        Determines the version associated with a submission by working backwards from the most recent
+        submission version and checking if the set of keys in the given submission matches the set
+        of keys in the version.
+
+        Raises:
+            - VersionNotFoundException if the version cannot be determined.
+        """
+        submission_keys = set(raw_answer.keys())
+        for version in reversed(ZIPPED_LIST_SUBMISSION_VERSIONS):
+            if ZippedListSubmissionAnswer.does_version_match(submission_keys, version):
+                return version
+        raise VersionNotFoundException("No zipped list version found with keys {}".format(submission_keys))
+
+    def __init__(self, raw_answer):
+        """
+        Raises:
+            - VersionNotFoundException if a version cannot be matched against the given submission
+        """
+        super().__init__(raw_answer)
+        self.text_responses = None
+        self.file_uploads = None
+        self.version = ZippedListSubmissionAnswer.get_version(raw_answer)
+
+    def get_text_responses(self):
+        """
+        Parse and cache text responses from the submission
+        """
+        if self.text_responses is None:
+            self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
+        return self.text_responses
+
+    def _index_safe_get(self, i, target_list, default=None):
+        """
+        Attempts to get item at target_list[i]. If the index is out of bounds, returns default.
+        More or less dict.get() but for lists
+        """
+        try:
+            return target_list[i]
+        except IndexError:
+            return default
+
+    def get_file_uploads(self, missing_blank=False):
+        """
+        Parse and cache file upload responses from the raw_answer
+        """
+        default_missing_value = '' if missing_blank else None
+        if self.file_uploads is None:
+            file_keys = self.raw_answer.get(self.version.key, [])
+            # The very earliest version of ora submissions with files only allowed one file, and so is the only
+            #  situation in which any of these fields is not a list
+            if not isinstance(file_keys, list):
+                file_keys = [file_keys]
+
+            files = []
+            file_names = self.raw_answer.get(self.version.name, [])
+            file_descriptions = self.raw_answer.get(self.version.description, [])
+            file_sizes = self.raw_answer.get(self.version.size, [])
+            for i, key in enumerate(file_keys):
+                name = self._index_safe_get(i, file_names, default_missing_value)
+                description = self._index_safe_get(i, file_descriptions, default_missing_value)
+                size = self._index_safe_get(i, file_sizes, 0)
+
+                file_upload = SubmissionFileUpload(key, name=name, description=description, size=size)
+                files.append(file_upload)
+            self.file_uploads = files
+        return self.file_uploads

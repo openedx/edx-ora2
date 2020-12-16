@@ -538,9 +538,11 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
     def test_get_download_urls_from_submission(self, xblock):
         mock_submission = {
             'answer': {
+                'parts': [],
                 'file_keys': ['key-1', 'key-2', 'key-3'],
                 'files_descriptions': ['desc-1', None, 'desc-3'],
                 'files_names': ['name-1', None, 'name-3'],
+                'files_sizes': []
             },
         }
         with patch('openassessment.fileupload.api.get_download_url') as mock_download_url:
@@ -578,6 +580,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
     def test_get_download_urls_from_submission_single_key(self, xblock):
         mock_submission = {
             'answer': {
+                'parts': [],
                 'file_key': 'key-1',
             },
         }

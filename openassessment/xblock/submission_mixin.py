@@ -15,6 +15,7 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 
+from ..data import OraSubmissionAnswerFactory
 from .data_conversion import (
     create_submission_dict,
     list_to_conversational_format,
@@ -567,36 +568,16 @@ class SubmissionMixin:
 
         """
         urls = []
-        if 'file_keys' in submission['answer']:
-            file_keys = submission['answer'].get('file_keys', [])
-            descriptions = submission['answer'].get('files_descriptions', [])
-            file_names = submission['answer'].get('files_name', submission['answer'].get('files_names', []))
-            for idx, key in enumerate(file_keys):
-                file_download_url = self._get_url_by_file_key(key)
-                if file_download_url:
-                    file_description = descriptions[idx].strip() if idx < len(descriptions) else ''
-                    try:
-                        file_name = file_names[idx].strip() if idx < len(file_names) else ''
-                    except AttributeError:
-                        file_name = ''
-                        logger.error('descriptions[idx] is None in {}'.format(submission))
-                    urls.append(
-                        file_upload_api.FileDescriptor(
-                            download_url=file_download_url,
-                            description=file_description,
-                            name=file_name,
-                            show_delete_button=False
-                        )._asdict()
-                    )
-        elif 'file_key' in submission['answer']:
-            key = submission['answer'].get('file_key', '')
-            file_download_url = self._get_url_by_file_key(key)
+        raw_answer = submission.get('answer')
+        answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
+        for file_upload in answer.get_file_uploads(missing_blank=True):
+            file_download_url = self._get_url_by_file_key(file_upload.key)
             if file_download_url:
                 urls.append(
                     file_upload_api.FileDescriptor(
                         download_url=file_download_url,
-                        description='',
-                        name='',
+                        description=file_upload.description,
+                        name=file_upload.name,
                         show_delete_button=False
                     )._asdict()
                 )

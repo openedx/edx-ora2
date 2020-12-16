@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-14 11:00-0500\n"
+"POT-Creation-Date: 2020-12-15 13:09-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -66,6 +66,10 @@ msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 "Éxämplé {example_number} ïs mïssïng än öptïön för \"{criterion_name}\" "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/data.py
+msgid "No description provided."
+msgstr "Nö désçrïptïön prövïdéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Save"
