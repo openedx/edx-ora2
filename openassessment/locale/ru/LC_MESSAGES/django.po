@@ -2,7 +2,7 @@
 # edX translation file
 # Copyright (C) 2018 edX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-# 
+#
 # Translators:
 # Alexandr Kosharny <acosarnii@gmail.com>, 2016
 # ovoschee <all.spam.there@gmail.com>, 2014
@@ -727,7 +727,7 @@ msgstr "Задание ещё недоступно. Для выполнения 
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr "Задание закрыто. Срок выполнения одного или нескольких шагов этого задания истёк. Вы частичную получите оценку за незавершённое задание."
+msgstr "Задание закрыто. Срок выполнения одного или нескольких шагов этого задания истёк. Вы получите частичную оценку за незавершённое задание."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
