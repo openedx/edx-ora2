@@ -25,7 +25,7 @@
             <span class="answer__source__value">{{ title }}</span>
         </div>
         <div class="feedback__value">
-            <p class="feedback__value__raw">{{ assessment.feedback }}</p>
+            <p class="feedback__value__raw">{{ assessment.feedback|linebreaks }}</p>
         </div>
       {% endif %}
     {% endif %}
