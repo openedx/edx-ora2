@@ -42,8 +42,8 @@ You can get help with this code on our `mailing lists`_ or in real-time conversa
 .. _mailing lists: https://open.edx.org/getting-help
 .. _Slack: https://open.edx.org/getting-help
 
-.. |build-status| image:: https://travis-ci.org/edx/edx-ora2.png?branch=master
-   :target: https://travis-ci.org/edx/edx-ora2
+.. |build-status| image:: https://travis-ci.com/edx/edx-ora2.svg?branch=master
+   :target: https://travis-ci.com/edx/edx-ora2
    :alt: Travis build status
 .. |coverage-status| image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
