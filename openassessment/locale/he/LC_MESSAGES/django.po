@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 22:15-0500\n"
-"PO-Revision-Date: 2020-12-02 15:39+0000\n"
+"POT-Creation-Date: 2020-12-15 13:09-0500\n"
+"PO-Revision-Date: 2020-12-16 21:33+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -60,6 +60,10 @@ msgstr "דוגמה {example_number} מכילה אפשרות עודפת עבור\
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "חסרה בדוגמה {example_number} אפשרות עבור \n\"{criterion_name}\""
+
+#: openassessment/data.py:844
+msgid "No description provided."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
@@ -177,7 +181,7 @@ msgstr "ציין אם הלומדים יכולים לכתוב מחרוזות מע
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:89
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
 msgstr "תשובות מובילות"
 
@@ -253,7 +257,7 @@ msgstr "רשות"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:91
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:93
 #: openassessment/xblock/studio_mixin.py:49
 msgid "Required"
 msgstr "נדרש"
@@ -560,7 +564,7 @@ msgstr "לא נבחר "
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: openassessment/templates/openassessmentblock/oa_rubric.html:37
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:126
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:128
 msgid "points"
 msgstr "נקודות"
 
@@ -783,7 +787,7 @@ msgstr "%(num_points)s נקודות"
 msgid "Your peer's response to the prompt above"
 msgstr "תגובה של העמית שלך להנחיה שלמעלה"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
@@ -1882,11 +1886,11 @@ msgstr "נקודות אפשריות"
 msgid "Overall Feedback"
 msgstr "משוב כולל"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:16
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
 msgstr "למד להעריך תשובות"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:25
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:27
 #, python-format
 msgid ""
 "\n"
@@ -1897,7 +1901,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:36
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:38
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1908,7 +1912,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:43
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:45
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1916,12 +1920,12 @@ msgid ""
 "            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:56
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:64
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:58
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
 msgstr "למידה הערכת תשובות"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:59
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:61
 msgid ""
 "Before you begin to assess your peers' responses, you'll learn how to "
 "complete peer assessments by reviewing responses that instructors have "
@@ -1930,39 +1934,39 @@ msgid ""
 "same options, you'll review the response and try again."
 msgstr "לפני התחלת הערכתך את תשובות עמיתיך, תלמד כיצד להשלים הערכת עמיתים באמצעות סקירת תשובות שהעריכו כבר המדריכים. במידה ותבחר את אותן האפשרויות עבור התשובות שבחר המדריך, תוכל לעבור לשלב הבא. במידה ולא, תידרש לסקור את התשובות ולנסות שוב.   "
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:67
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:69
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
 msgstr "הערכתך תשובה זו שונה מזו של המדריך. עבור על התשובה וחשוב מדוע המדריך עשוי היה להעריך את התשובה באופן שונה. לאחר מכן, נסה להשלים שוב את המשימה.  "
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:74
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:76
 msgid "The response to the prompt above:"
 msgstr "התגובה להנחיה הנ\"ל:"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:96
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
 msgstr "אפשרויות מוסכמות שנבחרו "
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:99
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
 msgstr "האפשרות שבחרת היא האפשרות שבחר המדריך."
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:103
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:105
 msgid "Selected Options Differ"
 msgstr "אפשרויות אחרות שנבחרו"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:106
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr "האפשרות שבחרת אינה האפשרות שבחר המדריך."
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:142
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:144
 msgid "We could not check your assessment"
 msgstr "לא הצלחנו לבדוק את הערכתך"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:149
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
 msgstr "השווה את בחירתך עם זו של המדריך."
 
@@ -1994,7 +1998,7 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr "עליך לספק משוב עבור הקריטריונים בהערכה."
 
 #: openassessment/xblock/grade_mixin.py:76
-#: openassessment/xblock/leaderboard_mixin.py:58
+#: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:56
 #: openassessment/xblock/student_training_mixin.py:264
@@ -2325,61 +2329,61 @@ msgstr "שגיאת אימות: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock עודכן בהצלחה"
 
-#: openassessment/xblock/submission_mixin.py:113
+#: openassessment/xblock/submission_mixin.py:114
 msgid "\"submission\" required to submit answer."
 msgstr "דרושה \"הגשה\" על מנת להגיש תשובה."
 
-#: openassessment/xblock/submission_mixin.py:134
+#: openassessment/xblock/submission_mixin.py:135
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "על מנת להגיש תשובה, ראה רכיב זה בתצוגה מקדימה או בזמן אמת."
 
-#: openassessment/xblock/submission_mixin.py:140
+#: openassessment/xblock/submission_mixin.py:141
 msgid "Multiple submissions are not allowed."
 msgstr "לא ניתן לבצע הגשות מרובות. "
 
-#: openassessment/xblock/submission_mixin.py:184
+#: openassessment/xblock/submission_mixin.py:185
 msgid "API returned unclassified exception."
 msgstr "API החזיר חריג בלתי מסווג."
 
-#: openassessment/xblock/submission_mixin.py:235
+#: openassessment/xblock/submission_mixin.py:236
 msgid "This response could not be saved."
 msgstr "לא ניתן לשמור תגובה זו."
 
-#: openassessment/xblock/submission_mixin.py:239
+#: openassessment/xblock/submission_mixin.py:240
 msgid "This response was not submitted."
 msgstr "תשובה זו לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:255
+#: openassessment/xblock/submission_mixin.py:256
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:292
+#: openassessment/xblock/submission_mixin.py:293
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:415
+#: openassessment/xblock/submission_mixin.py:416
 msgid "There was an error uploading your file."
 msgstr "אירעה שגיאה בעת העלאת הקובץ שלך."
 
-#: openassessment/xblock/submission_mixin.py:427
+#: openassessment/xblock/submission_mixin.py:428
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:438
+#: openassessment/xblock/submission_mixin.py:439
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:451
+#: openassessment/xblock/submission_mixin.py:452
 msgid "Error retrieving upload URL."
 msgstr "שגיאה באחזור כתובת URL להעלאה."
 
-#: openassessment/xblock/submission_mixin.py:732
+#: openassessment/xblock/submission_mixin.py:713
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:733
+#: openassessment/xblock/submission_mixin.py:714
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 

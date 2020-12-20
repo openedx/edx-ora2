@@ -96,9 +96,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 22:15-0500\n"
-"PO-Revision-Date: 2020-12-04 10:36+0000\n"
-"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
+"POT-Creation-Date: 2020-12-15 13:09-0500\n"
+"PO-Revision-Date: 2020-12-16 21:33+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -137,6 +137,10 @@ msgstr "L'exemple {example_number} contient une option supplémentaire pour \"{c
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "Il manque une option pour \"{criterion_name}\" dans l'exemple {example_number}"
+
+#: openassessment/data.py:844
+msgid "No description provided."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
@@ -254,7 +258,7 @@ msgstr "Préciser si les étudiants peuvent écrire des chaines de caractères f
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:89
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
 msgstr "Meilleures réponses"
 
@@ -330,7 +334,7 @@ msgstr "Optionnel"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:91
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:93
 #: openassessment/xblock/studio_mixin.py:49
 msgid "Required"
 msgstr "Requis"
@@ -637,7 +641,7 @@ msgstr "Non sélectionné"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: openassessment/templates/openassessmentblock/oa_rubric.html:37
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:126
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:128
 msgid "points"
 msgstr "points"
 
@@ -858,7 +862,7 @@ msgstr "%(num_points)s points"
 msgid "Your peer's response to the prompt above"
 msgstr "La réponse de vos pairs à l'invite ci-dessus"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
@@ -1955,11 +1959,11 @@ msgstr "Points possibles"
 msgid "Overall Feedback"
 msgstr "Commentaire global"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:16
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
 msgstr "Apprendre à évaluer les réponses"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:25
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:27
 #, python-format
 msgid ""
 "\n"
@@ -1970,7 +1974,7 @@ msgstr "\n                      En cours (%(current_progress_num)s de %(training
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:36
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:38
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1981,7 +1985,7 @@ msgstr "\n            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:43
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:45
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1989,12 +1993,12 @@ msgid ""
 "            "
 msgstr "\n            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:56
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:64
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:58
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
 msgstr "Apprendre à évaluer des réponses"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:59
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:61
 msgid ""
 "Before you begin to assess your peers' responses, you'll learn how to "
 "complete peer assessments by reviewing responses that instructors have "
@@ -2003,39 +2007,39 @@ msgid ""
 "same options, you'll review the response and try again."
 msgstr "Avant de commencer à évaluer les réponses de vos pairs, vous allez apprendre comment effectuer une évaluation par les pairs en examinant des réponses que les enseignants ont déjà évaluées. Si vous choisissez les mêmes options que l'enseignant, vous passerez à l'étape suivante. Si vous ne choisissez pas les mêmes options, vous examinerez à nouveau la réponse et effectuerez un nouveau choix."
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:67
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:69
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
 msgstr "Votre évaluation est différente de celle de l'enseignant pour cette réponse. Réexaminez la réponse et considérez les raisons pour lesquelles l'enseignant l'a évaluée différemment. Puis refaites une nouvelle évaluation."
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:74
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:76
 msgid "The response to the prompt above:"
 msgstr "La réponse à l'invite ci-dessus :"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:96
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
 msgstr "Les options sélectionnées concordent"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:99
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
 msgstr "L'option que vous avez sélectionnée est celle que l'enseignant a sélectionné également."
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:103
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:105
 msgid "Selected Options Differ"
 msgstr "Les options choisies sont différentes"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:106
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr "L'option que vous avez sélectionnée n'est pas celle que l'enseignant a choisie."
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:142
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:144
 msgid "We could not check your assessment"
 msgstr "Nous n'avons pas pu vérifier votre évaluation"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:149
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
 msgstr "Comparez vos sélections avec celles de l'enseignant"
 
@@ -2067,7 +2071,7 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr "Vous devez fournir un commentaire sur les critères dans l'évaluation."
 
 #: openassessment/xblock/grade_mixin.py:76
-#: openassessment/xblock/leaderboard_mixin.py:58
+#: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:56
 #: openassessment/xblock/student_training_mixin.py:264
@@ -2398,61 +2402,61 @@ msgstr "Erreur de validation : {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock a été correctement mis à jour"
 
-#: openassessment/xblock/submission_mixin.py:113
+#: openassessment/xblock/submission_mixin.py:114
 msgid "\"submission\" required to submit answer."
 msgstr "La soumission nécessite au moins une réponse."
 
-#: openassessment/xblock/submission_mixin.py:134
+#: openassessment/xblock/submission_mixin.py:135
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Pour soumettre une réponse, afficher ce composant dans Aperçu ou en mode Direct."
 
-#: openassessment/xblock/submission_mixin.py:140
+#: openassessment/xblock/submission_mixin.py:141
 msgid "Multiple submissions are not allowed."
 msgstr "Les soumissions multiples ne sont pas autorisées."
 
-#: openassessment/xblock/submission_mixin.py:184
+#: openassessment/xblock/submission_mixin.py:185
 msgid "API returned unclassified exception."
 msgstr "l'API a renvoyé un code d'exception non classé"
 
-#: openassessment/xblock/submission_mixin.py:235
+#: openassessment/xblock/submission_mixin.py:236
 msgid "This response could not be saved."
 msgstr "Cette réponse n'a pas pu être enregistrée."
 
-#: openassessment/xblock/submission_mixin.py:239
+#: openassessment/xblock/submission_mixin.py:240
 msgid "This response was not submitted."
 msgstr "Cette réponse n'a pas été soumise."
 
-#: openassessment/xblock/submission_mixin.py:255
+#: openassessment/xblock/submission_mixin.py:256
 msgid "Files descriptions were not submitted."
 msgstr "Les descriptions des fichiers n'ont pas été soumis."
 
-#: openassessment/xblock/submission_mixin.py:292
+#: openassessment/xblock/submission_mixin.py:293
 msgid "Files metadata could not be saved."
 msgstr "Les métadonnées des fichiers n'ont pu être sauvegardées."
 
-#: openassessment/xblock/submission_mixin.py:415
+#: openassessment/xblock/submission_mixin.py:416
 msgid "There was an error uploading your file."
 msgstr "Il y a eu une erreur lors de l'envoi de votre fichier."
 
-#: openassessment/xblock/submission_mixin.py:427
+#: openassessment/xblock/submission_mixin.py:428
 msgid "Only a single file upload is allowed for this assessment."
 msgstr "Un seul téléchargement de fichier est autorisé pour cette évaluation."
 
-#: openassessment/xblock/submission_mixin.py:438
+#: openassessment/xblock/submission_mixin.py:439
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr "Échec du téléchargement du fichier: type de fichier non pris en charge. Seuls les types de fichiers pris en charge peuvent être téléchargés. Si vous avez des questions, veuillez contacter l'équipe du cours."
 
-#: openassessment/xblock/submission_mixin.py:451
+#: openassessment/xblock/submission_mixin.py:452
 msgid "Error retrieving upload URL."
 msgstr "Une erreur s'est produite lors de la récupération de l'URL de chargement."
 
-#: openassessment/xblock/submission_mixin.py:732
+#: openassessment/xblock/submission_mixin.py:713
 msgid "This response has been saved but not submitted."
 msgstr "Cette réponse a été enregistrée mais n'a pas été soumise."
 
-#: openassessment/xblock/submission_mixin.py:733
+#: openassessment/xblock/submission_mixin.py:714
 msgid "This response has not been saved."
 msgstr "Cette réponse n'a pas été enregistrée."
 

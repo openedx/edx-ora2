@@ -39,8 +39,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 22:15-0500\n"
-"PO-Revision-Date: 2020-12-02 15:39+0000\n"
+"POT-Creation-Date: 2020-12-15 13:09-0500\n"
+"PO-Revision-Date: 2020-12-16 21:33+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -80,6 +80,10 @@ msgstr "样例答案 {example_number}的“{criterion_name}”得分点存在额
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "样例答案{example_number} 的“{criterion_name}”得分点缺少分值选项"
+
+#: openassessment/data.py:844
+msgid "No description provided."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
@@ -197,7 +201,7 @@ msgstr "详细说明学员是否可以写入 LaTeX 格式的字符串"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:89
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:8
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
 msgstr "最佳答复"
 
@@ -273,7 +277,7 @@ msgstr "可选的"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:91
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:93
 #: openassessment/xblock/studio_mixin.py:49
 msgid "Required"
 msgstr "必要的"
@@ -580,7 +584,7 @@ msgstr "未选中"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: openassessment/templates/openassessmentblock/oa_rubric.html:37
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:126
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:128
 msgid "points"
 msgstr "分"
 
@@ -800,7 +804,7 @@ msgstr "%(num_points)s分"
 msgid "Your peer's response to the prompt above"
 msgstr "同学对上述题目的回复"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
@@ -1896,11 +1900,11 @@ msgstr "满分"
 msgid "Overall Feedback"
 msgstr "整体评语"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:16
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
 msgstr "学习如何评分"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:25
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:27
 #, python-format
 msgid ""
 "\n"
@@ -1911,7 +1915,7 @@ msgstr "\n进行中（正进行%(current_progress_num)s，可训练%(training_av
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:36
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:38
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1922,7 +1926,7 @@ msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetim
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:43
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:45
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1930,12 +1934,12 @@ msgid ""
 "            "
 msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:56
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:64
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:58
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
 msgstr "正在学习如何评分"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:59
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:61
 msgid ""
 "Before you begin to assess your peers' responses, you'll learn how to "
 "complete peer assessments by reviewing responses that instructors have "
@@ -1944,39 +1948,39 @@ msgid ""
 "same options, you'll review the response and try again."
 msgstr "在开始为其他同学的答案评分之前，您需要通过参考导师的评分来学习如何对您同学的答案进行评分。如果您的评分和导师的一致，您可进行下一步。否则，您需要继续学习如何进行评分。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:67
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:69
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
 msgstr "您的评分与导师的评分存在差异。重新检查答案，弄明白导师为什么给出了不同的评分，然后尝试重新评分。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:74
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:76
 msgid "The response to the prompt above:"
 msgstr "针对上述题目的回复："
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:96
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
 msgstr "选择的分值相同"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:99
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
 msgstr "您选择的分值和导师所选择的分值一致。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:103
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:105
 msgid "Selected Options Differ"
 msgstr "选择的分值不同"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:106
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr "您选择的分值和导师所选择的分值不一致。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:142
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:144
 msgid "We could not check your assessment"
 msgstr "我们无法校验您的评分。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:149
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
 msgstr "比较您和导师选择的分值"
 
@@ -2008,7 +2012,7 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr "您必须在评估中提供对标准的反馈。"
 
 #: openassessment/xblock/grade_mixin.py:76
-#: openassessment/xblock/leaderboard_mixin.py:58
+#: openassessment/xblock/leaderboard_mixin.py:59
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:56
 #: openassessment/xblock/student_training_mixin.py:264
@@ -2339,61 +2343,61 @@ msgstr "验证错误: {error}"
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: openassessment/xblock/submission_mixin.py:113
+#: openassessment/xblock/submission_mixin.py:114
 msgid "\"submission\" required to submit answer."
 msgstr "要交答案，必须有“submission\"。"
 
-#: openassessment/xblock/submission_mixin.py:134
+#: openassessment/xblock/submission_mixin.py:135
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "要提交答案，请在预览或实时模式查看该组件。"
 
-#: openassessment/xblock/submission_mixin.py:140
+#: openassessment/xblock/submission_mixin.py:141
 msgid "Multiple submissions are not allowed."
 msgstr "不允许批量提交。"
 
-#: openassessment/xblock/submission_mixin.py:184
+#: openassessment/xblock/submission_mixin.py:185
 msgid "API returned unclassified exception."
 msgstr "API返回的未分类的异常"
 
-#: openassessment/xblock/submission_mixin.py:235
+#: openassessment/xblock/submission_mixin.py:236
 msgid "This response could not be saved."
 msgstr "该答案无法保存。"
 
-#: openassessment/xblock/submission_mixin.py:239
+#: openassessment/xblock/submission_mixin.py:240
 msgid "This response was not submitted."
 msgstr "该答案提交不成功。"
 
-#: openassessment/xblock/submission_mixin.py:255
+#: openassessment/xblock/submission_mixin.py:256
 msgid "Files descriptions were not submitted."
 msgstr "文件描述未能提交。"
 
-#: openassessment/xblock/submission_mixin.py:292
+#: openassessment/xblock/submission_mixin.py:293
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:415
+#: openassessment/xblock/submission_mixin.py:416
 msgid "There was an error uploading your file."
 msgstr "您的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:427
+#: openassessment/xblock/submission_mixin.py:428
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:438
+#: openassessment/xblock/submission_mixin.py:439
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:451
+#: openassessment/xblock/submission_mixin.py:452
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:732
+#: openassessment/xblock/submission_mixin.py:713
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:733
+#: openassessment/xblock/submission_mixin.py:714
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 
