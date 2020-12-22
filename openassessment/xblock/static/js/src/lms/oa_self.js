@@ -39,6 +39,9 @@ export class SelfView {
           view.isRendering = false;
 
           view.server.renderLatex($(stepID, view.element));
+
+          this.renderResponseViaEditor()
+
           view.installHandlers();
           view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
           view.dateFactory.apply();
@@ -46,6 +49,16 @@ export class SelfView {
       ).fail(() => {
         view.showLoadError('self-assessment');
       });
+    }
+
+    /**
+     Use Response Editor to render response
+     * */
+    renderResponseViaEditor() {
+      const sel = $('.step--self-assessment', this.element);
+      const responseElements = sel.find('.submission__answer__part__text__value');
+      this.responseEditorController = new window.OpenAssessmentResponseEditor();
+      return this.responseEditorController.load(responseElements);
     }
 
     /**

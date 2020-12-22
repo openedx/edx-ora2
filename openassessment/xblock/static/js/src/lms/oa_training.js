@@ -37,6 +37,9 @@ export class StudentTrainingView {
         $(stepID, view.element).replaceWith(html);
         this.isRendering = false;
         this.server.renderLatex($(stepID, view.element));
+
+        this.renderResponseViaEditor()
+
         this.installHandlers();
 
         this.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
@@ -46,6 +49,16 @@ export class StudentTrainingView {
     ).fail(() => {
       this.baseView.showLoadError('student-training');
     });
+  }
+
+  /**
+    Use Response Editor to render response
+    * */
+  renderResponseViaEditor() {
+    const sel = $('.step--student-training', this.element);
+    const responseElements = sel.find('.submission__answer__part__text__value');
+    this.responseEditorController = new window.OpenAssessmentResponseEditor();
+    return this.responseEditorController.load(responseElements);
   }
 
   /**

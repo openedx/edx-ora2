@@ -34,8 +34,20 @@ function loadTinyMCE() {
 /**
  Build and return TinyMCE Configuration.
  * */
-function getTinyMCEConfig() {
-  return {};
+function getTinyMCEConfig(readonly) {
+  let config = {}
+
+  // if readonly hide toolbar, menubar and statusbar
+  if (readonly) {
+    config = Object.assign(config, {
+      menubar: false,
+      statusbar: false,
+      toolbar: false,
+      readonly: 1
+    })
+  }
+
+  return config;
 }
 
 
@@ -52,9 +64,13 @@ class EditorTinymce {
    * */
   load(elements) {
     this.elements = elements;
+
+    // check if it's readonly
+    const disabled = this.elements.attr('disabled')
+
     return new Promise((resolve, reject) => {
       loadTinyMCE().then(() => {
-        this.elements.tinymce(getTinyMCEConfig());
+        this.elements.tinymce(getTinyMCEConfig(disabled));
         resolve();
       }).catch((reason) => reject(reason));
     });

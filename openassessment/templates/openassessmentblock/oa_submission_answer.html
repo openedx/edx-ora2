@@ -19,9 +19,9 @@
             {% if part.text %}
             <div class="submission__answer__part__text">
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
-                <div class="submission__answer__part__text__value">
+                <textarea class="submission__answer__part__text__value" disabled>
                     {{ part.text|escape|link_and_linebreak }}
-                </div>
+                </textarea>
             </div>
             {% endif %}
         </li>

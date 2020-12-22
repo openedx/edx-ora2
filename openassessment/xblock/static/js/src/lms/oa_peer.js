@@ -52,6 +52,9 @@ export class PeerView {
           view.isRendering = false;
 
           view.server.renderLatex($(stepID, view.element));
+
+          this.renderResponseViaEditor()
+
           view.installHandlers(false);
 
           view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
@@ -64,6 +67,16 @@ export class PeerView {
       // Called to update Messagview with info on whether or not it was able to grab a submission
       // See detailed explanation/Methodology in oa_base.loadAssessmentModules
       view.baseView.loadMessageView();
+    }
+
+    /**
+     Use Response Editor to render response
+     * */
+    renderResponseViaEditor() {
+      const sel = $('.step--peer-assessment', this.element);
+      const responseElements = sel.find('.submission__answer__part__text__value');
+      this.responseEditorController = new window.OpenAssessmentResponseEditor();
+      return this.responseEditorController.load(responseElements);
     }
 
     /**
