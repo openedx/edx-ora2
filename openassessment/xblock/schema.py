@@ -4,6 +4,7 @@ Schema for validating and sanitizing data received from the JavaScript client.
 
 import dateutil
 from pytz import utc
+from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 
 from voluptuous import (
     All,
@@ -77,10 +78,8 @@ NECESSITY_OPTIONS = [
     u''
 ]
 
-AVAILABLE_EDITOR_OPTIONS = [
-    'text',
-    'tinymce',
-]
+# Build editor options from AVAILABLE_EDITORS
+AVAILABLE_EDITOR_OPTIONS = AVAILABLE_EDITORS.keys()
 
 VALID_ASSESSMENT_TYPES = [
     u'peer-assessment',

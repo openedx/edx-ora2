@@ -11,6 +11,7 @@ import pkg_resources
 import pytz
 
 from django.conf import settings
+from django.contrib.staticfiles import finders
 from django.template.loader import get_template
 
 from bleach.sanitizer import Cleaner
@@ -45,6 +46,7 @@ from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTemplatesMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -92,6 +94,16 @@ def load(path):
     """Handy helper for getting resources from our kit."""
     data = pkg_resources.resource_string(__name__, path)
     return data.decode("utf8")
+
+
+def load_from_anyapp(path):
+    """Helper for getting resources from any django app."""
+    absolute_path = finders.find(path)
+    if absolute_path:
+        with open(absolute_path) as f:
+            data = f.read()
+        return data
+    raise Exception('Invalid path - {}'.format(path))
 
 
 @XBlock.needs("i18n")
@@ -645,6 +657,19 @@ class OpenAssessmentBlock(MessageMixin,
 
         # minified additional_js should be already included in 'make javascript'
         fragment.add_javascript(load("static/js/openassessment-lms.js"))
+
+        # Get currently selected editor configuration
+        response_editor_config = AVAILABLE_EDITORS[self.text_response_editor]
+
+        # Add additional JS files for currently selected editor
+        if response_editor_config.get('js'):
+            for editor_js in response_editor_config['js']:
+                fragment.add_javascript(load_from_anyapp(editor_js))
+
+        # Add additional CSS files for currently selected editor
+        if response_editor_config.get('css'):
+            for editor_css in response_editor_config['css']:
+                fragment.add_css(load_from_anyapp(editor_css))
 
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,

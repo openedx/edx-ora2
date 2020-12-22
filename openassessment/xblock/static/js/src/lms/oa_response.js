@@ -36,6 +36,7 @@ export class ResponseView {
       this.baseView = baseView;
       this.savedResponse = [];
       this.textResponse = 'required';
+      this.textResponseEditor = 'text';
       this.fileUploadResponse = '';
       this.files = null;
       this.filesDescriptions = [];
@@ -66,17 +67,34 @@ export class ResponseView {
           // Load the HTML and install event handlers
           $(stepID, view.element).replaceWith(html);
           view.server.renderLatex($(stepID, view.element));
-          view.installHandlers();
-          view.setAutoSaveEnabled(true);
-          view.isRendering = false;
-          view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
-          view.announceStatus = false;
-          view.dateFactory.apply();
-          view.checkSubmissionAbility();
+
+          // First load response editor then apply other things
+          view.loadResponseEditor().then(() => {
+            view.installHandlers();
+            view.setAutoSaveEnabled(true);
+            view.isRendering = false;
+            view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+            view.announceStatus = false;
+            view.dateFactory.apply();
+            view.checkSubmissionAbility();
+          });
         },
       ).fail(() => {
         view.baseView.showLoadError('response');
       });
+    }
+
+    /**
+     * Load currently selected editor.
+     *
+     * Returns: promise
+     */
+    loadResponseEditor() {
+      const sel = $('.step--response', this.element);
+      const editorElements = sel.find('.submission__answer__part__text__value');
+
+      this.responseEditorController = new window.OpenAssessmentResponseEditor();
+      return this.responseEditorController.load(editorElements);
     }
 
     /**
@@ -92,10 +110,11 @@ export class ResponseView {
       // Install a click handler for collapse/expand
       this.baseView.setUpCollapseExpand(sel);
 
-      // Install change handler for textarea (to enable submission button)
+      // Install change handler for editor (to enable submission button)
       this.savedResponse = this.response();
-      const handleChange = function () { view.handleResponseChanged(); };
-      sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
+      ['change', 'keyup', 'drop', 'paste'].forEach(eventName => {
+        this.responseEditorController.setEventListener(eventName, this.handleResponseChanged.bind(this));
+      });
 
       const handlePrepareUpload = function (eventData) { view.prepareUpload(eventData.target.files, uploadType); };
       sel.find('input[type=file]').on('change', handlePrepareUpload);
@@ -356,15 +375,7 @@ export class ResponseView {
      * */
     /* eslint-disable-next-line consistent-return */
     response(texts) {
-      const sel = $('.response__submission .submission__answer__part__text__value', this.element);
-      if (typeof texts === 'undefined') {
-        return sel.map(function () {
-          return $.trim($(this).val());
-        }).get();
-      }
-      sel.each(function (index) {
-        $(this).val(texts[index]);
-      });
+      return this.responseEditorController.response(texts);
     }
 
     /**

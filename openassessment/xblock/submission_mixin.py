@@ -806,6 +806,7 @@ class SubmissionMixin:
             'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
+            "text_response_editor": self.text_response_editor,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
             "enable_delete_files": False,

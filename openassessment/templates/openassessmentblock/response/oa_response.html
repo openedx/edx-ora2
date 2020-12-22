@@ -179,6 +179,7 @@
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the prompt above." %}"
                                         maxlength="100000"
+                                        text_response_editor="{{text_response_editor}}"
                                     >{{ part.text }}</textarea>
                                 </div>
                                 {% with forloop.counter|stringformat:"s" as submission_num %}
@@ -223,7 +224,7 @@
                         {% endif %}
                         {% if file_upload_type %}
                           <h5 class="submission__upload__files__title">
-                            {% trans "File Uploads " %} 
+                            {% trans "File Uploads " %}
                             {% if file_upload_response == "required" %}
                               {% trans "(Required)" %}
                             {% elif file_upload_response == "optional" %}

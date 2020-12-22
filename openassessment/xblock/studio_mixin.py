@@ -25,6 +25,7 @@ from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEF
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
+from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -51,9 +52,9 @@ class StudioMixin:
         "": ugettext_lazy("None")
     }
 
+    # Build editor options from AVAILABLE_EDITORS
     AVAILABLE_EDITOR_OPTIONS = {
-        "text": ugettext_lazy("Simple Text Editor"),
-        "tinymce": ugettext_lazy("WYSIWYG Editor"),
+        key: ugettext_lazy(val.get('display', key)) for key, val in AVAILABLE_EDITORS.items()
     }
 
     STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'
