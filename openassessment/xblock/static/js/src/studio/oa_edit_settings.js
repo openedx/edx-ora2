@@ -30,6 +30,7 @@ export class EditSettingsView {
     this.onTeamsEnabledChange = this.onTeamsEnabledChange.bind(this);
     this.displayName = this.displayName.bind(this);
     this.textResponseNecessity = this.textResponseNecessity.bind(this);
+    this.textResponseEditor = this.textResponseEditor.bind(this);
     this.fileUploadResponseNecessity = this.fileUploadResponseNecessity.bind(this);
     this.fileUploadType = this.fileUploadType.bind(this);
     this.fileTypeWhiteList = this.fileTypeWhiteList.bind(this);
@@ -214,6 +215,23 @@ export class EditSettingsView {
      */
   textResponseNecessity(value) {
     const sel = $('#openassessment_submission_text_response', this.settingsElement);
+    if (value !== undefined) {
+      sel.val(value);
+    }
+    return sel.val();
+  }
+
+  /**
+     Get or set response editor.
+
+    Args:
+        value (string, optional): If provided, set text response necessity.
+
+    Returns:
+        string: One of available response editors
+     */
+  textResponseEditor(value) {
+    const sel = $('#openassessment_submission_text_response_editor', this.settingsElement);
     if (value !== undefined) {
       sel.val(value);
     }

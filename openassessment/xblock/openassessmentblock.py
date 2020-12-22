@@ -148,6 +148,11 @@ class OpenAssessmentBlock(MessageMixin,
         scope=Scope.settings
     )
 
+    text_response_editor_raw = String(
+        help="Select which editor learners will use to include a text based response to this problem's prompt.",
+        scope=Scope.settings
+    )
+
     file_upload_response_raw = String(
         help="Specify whether learners are able to upload files as a part of their response.",
         default=None,
@@ -306,6 +311,24 @@ class OpenAssessmentBlock(MessageMixin,
         Setter for text_response_raw
         """
         self.text_response_raw = value if value else None
+
+    @property
+    def text_response_editor(self):
+        """
+        Backward compatibility for existing blocks that were created without
+        text_response_editor field. These blocks will be treated as simple
+        text field being used.
+        """
+        if not self.text_response_editor_raw:
+            return 'text'
+        return self.text_response_editor_raw
+
+    @text_response_editor.setter
+    def text_response_editor(self, value):
+        """
+        Setter for text_response_editor_raw
+        """
+        self.text_response_editor_raw = value if value else None
 
     @property
     def file_upload_response(self):
@@ -802,6 +825,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.prompts = config['prompts']
         block.prompts_type = config['prompts_type']
         block.text_response = config['text_response']
+        block.text_response_editor = config['text_response_editor']
         block.file_upload_response = config['file_upload_response']
         block.allow_file_upload = config['allow_file_upload']
         block.file_upload_type = config['file_upload_type']

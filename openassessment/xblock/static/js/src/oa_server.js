@@ -463,6 +463,7 @@ export class Server {
       assessments: options.assessments,
       editor_assessments_order: options.editorAssessmentsOrder,
       text_response: options.textResponse,
+      text_response_editor: options.textResponseEditor,
       file_upload_response: options.fileUploadResponse,
       file_upload_type: options.fileUploadType,
       white_listed_file_types: options.fileTypeWhiteList,

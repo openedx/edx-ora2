@@ -77,6 +77,10 @@ NECESSITY_OPTIONS = [
     u''
 ]
 
+AVAILABLE_EDITOR_OPTIONS = [
+    'text',
+    'tinymce',
+]
 
 VALID_ASSESSMENT_TYPES = [
     u'peer-assessment',
@@ -105,6 +109,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('submission_start'): Any(datetime_validator, None),
     Required('submission_due'): Any(datetime_validator, None),
     Required('text_response', default='required'): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
+    Required('text_response_editor', default='text'): Any(All(utf8_validator, In(AVAILABLE_EDITOR_OPTIONS)), None),
     Required('file_upload_response', default=None): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
     'allow_file_upload': bool,  # Backwards compatibility.
     Required('file_upload_type', default=None): Any(All(utf8_validator, In(VALID_UPLOAD_FILE_TYPES)), None),
