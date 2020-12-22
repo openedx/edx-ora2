@@ -14,9 +14,11 @@ Returns:
 export class SelfView {
     UNSAVED_WARNING_KEY = 'self-assessment';
 
-    constructor(element, server, baseView) {
+    constructor(element, server, responseEditorLoader, data, baseView) {
       this.element = element;
       this.server = server;
+      this.responseEditorLoader = responseEditorLoader;
+      this.data = data;
       this.baseView = baseView;
       this.rubric = null;
       this.isRendering = false;
@@ -39,6 +41,9 @@ export class SelfView {
           view.isRendering = false;
 
           view.server.renderLatex($(stepID, view.element));
+
+          this.renderResponseViaEditor();
+
           view.installHandlers();
           view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
           view.dateFactory.apply();
@@ -46,6 +51,15 @@ export class SelfView {
       ).fail(() => {
         view.showLoadError('self-assessment');
       });
+    }
+
+    /**
+     Use Response Editor to render response
+     * */
+    renderResponseViaEditor() {
+      const sel = $('.step--self-assessment', this.element);
+      const responseElements = sel.find('.submission__answer__part__text__value');
+      return this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
     }
 
     /**

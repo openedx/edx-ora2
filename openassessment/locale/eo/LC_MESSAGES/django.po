@@ -118,6 +118,18 @@ msgstr ""
 "prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid "Response Editor"
+msgstr "Réspönsé Édïtör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+msgid ""
+"Select which editor learners will use to include a text based response to "
+"this problem's prompt."
+msgstr ""
+"Séléçt whïçh édïtör léärnérs wïll üsé tö ïnçlüdé ä téxt ßäséd réspönsé tö "
+"thïs prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
 msgid "File Uploads Response"
 msgstr "Fïlé Ûplöäds Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 

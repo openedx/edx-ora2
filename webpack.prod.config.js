@@ -14,6 +14,7 @@ Object.assign(config, {
   entry: {
     "openassessment-lms": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms_index.js'),
     "openassessment-studio": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/studio_index.js'),
+    "openassessment-editor-textarea": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js')
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/js'),
@@ -37,4 +38,4 @@ config.resolve.modules = ['node_modules'].concat(
   path.resolve(__dirname, 'openassessment/xblock/static/js/src')
 );
 
-module.exports = config;
+module.exports = [config];
