@@ -29,10 +29,11 @@ export class ResponseView {
 
     UNSAVED_WARNING_KEY = 'learner-response';
 
-    constructor(element, server, fileUploader, baseView, data) {
+    constructor(element, server, fileUploader, responseEditorLoader, baseView, data) {
       this.element = element;
       this.server = server;
       this.fileUploader = fileUploader;
+      this.responseEditorLoader = responseEditorLoader;
       this.baseView = baseView;
       this.savedResponse = [];
       this.textResponse = 'required';
@@ -69,7 +70,8 @@ export class ResponseView {
           view.server.renderLatex($(stepID, view.element));
 
           // First load response editor then apply other things
-          view.loadResponseEditor().then(() => {
+          view.loadResponseEditor().then((editorController) => {
+            view.responseEditorController = editorController;
             view.installHandlers();
             view.setAutoSaveEnabled(true);
             view.isRendering = false;
@@ -92,9 +94,7 @@ export class ResponseView {
     loadResponseEditor() {
       const sel = $('.step--response', this.element);
       const editorElements = sel.find('.submission__answer__part__text__value');
-
-      this.responseEditorController = new window.OpenAssessmentResponseEditor();
-      return this.responseEditorController.load(editorElements);
+      return this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, editorElements);
     }
 
     /**
@@ -112,9 +112,7 @@ export class ResponseView {
 
       // Install change handler for editor (to enable submission button)
       this.savedResponse = this.response();
-      ['change', 'keyup', 'drop', 'paste'].forEach(eventName => {
-        this.responseEditorController.setEventListener(eventName, this.handleResponseChanged.bind(this));
-      });
+      this.responseEditorController.setOnChangeListener(this.handleResponseChanged.bind(this));
 
       const handlePrepareUpload = function (eventData) { view.prepareUpload(eventData.target.files, uploadType); };
       sel.find('input[type=file]').on('change', handlePrepareUpload);

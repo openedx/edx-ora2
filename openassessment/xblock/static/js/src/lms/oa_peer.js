@@ -15,9 +15,11 @@ Returns:
 export class PeerView {
     UNSAVED_WARNING_KEY = 'peer-assessment';
 
-    constructor(element, server, baseView) {
+    constructor(element, server, responseEditorLoader, data, baseView) {
       this.element = element;
       this.server = server;
+      this.responseEditorLoader = responseEditorLoader;
+      this.data = data;
       this.baseView = baseView;
       this.rubric = null;
       this.isRendering = false;
@@ -53,7 +55,7 @@ export class PeerView {
 
           view.server.renderLatex($(stepID, view.element));
 
-          this.renderResponseViaEditor()
+          this.renderResponseViaEditor();
 
           view.installHandlers(false);
 
@@ -75,8 +77,7 @@ export class PeerView {
     renderResponseViaEditor() {
       const sel = $('.step--peer-assessment', this.element);
       const responseElements = sel.find('.submission__answer__part__text__value');
-      this.responseEditorController = new window.OpenAssessmentResponseEditor();
-      return this.responseEditorController.load(responseElements);
+      this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
     }
 
     /**

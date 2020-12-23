@@ -96,16 +96,6 @@ def load(path):
     return data.decode("utf8")
 
 
-def load_from_anyapp(path):
-    """Helper for getting resources from any django app."""
-    absolute_path = finders.find(path)
-    if absolute_path:
-        with open(absolute_path) as f:
-            data = f.read()
-        return data
-    raise Exception('Invalid path - {}'.format(path))
-
-
 @XBlock.needs("i18n")
 @XBlock.needs("user")
 @XBlock.needs("user_state")
@@ -658,26 +648,15 @@ class OpenAssessmentBlock(MessageMixin,
         # minified additional_js should be already included in 'make javascript'
         fragment.add_javascript(load("static/js/openassessment-lms.js"))
 
-        # Get currently selected editor configuration
-        response_editor_config = AVAILABLE_EDITORS[self.text_response_editor]
-
-        # Add additional JS files for currently selected editor
-        if response_editor_config.get('js'):
-            for editor_js in response_editor_config['js']:
-                fragment.add_javascript(load_from_anyapp(editor_js))
-
-        # Add additional CSS files for currently selected editor
-        if response_editor_config.get('css'):
-            for editor_css in response_editor_config['css']:
-                fragment.add_css(load_from_anyapp(editor_css))
-
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
             "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
             "MAXIMUM_FILE_UPLOAD_COUNT": self.MAX_FILES_COUNT,
-            "TEAM_ASSIGNMENT": self.is_team_assignment()
+            "TEAM_ASSIGNMENT": self.is_team_assignment(),
+            "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
+            "TEXT_RESPONSE_EDITOR": self.text_response_editor,
         }
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment

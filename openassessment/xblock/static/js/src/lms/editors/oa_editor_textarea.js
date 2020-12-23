@@ -2,70 +2,67 @@
  Handles Response Editor of simple textarea type.
  * */
 
-class EditorTextarea {
+(function (define) {
+  define(() => {
+    class EditorTextarea {
+      /**
+       Loads textarea editor. Just a simple promise that resolves immediately.
 
-  /**
-   Loads textarea editor. Just a simple promise that resolves immediately.
+      Args:
+      elements (object): editor elements selected by jQuery
+      * */
+      load(elements) {
+        this.elements = elements;
 
-   Args:
-   elements (object): editor elements selected by jQuery
+        // check if it's readonly
+        const disabled = this.elements.attr('disabled');
 
-   Returns:
-   Promise: Resolves when editor is loaded
-   * */
-  load(elements) {
-    this.elements = elements;
-
-    // check if it's readonly
-    const disabled = this.elements.attr('disabled')
-
-    return new Promise(((resolve, reject) => {
-
-      if(disabled) {
-        this.elements.each((i, elem) => {
-          const divElem = '<div class="' + $(elem).attr('class') + '">'+ $(elem).val() +'</div>'
-          $(divElem).insertAfter(elem)
-          $(elem).css('display', 'none')
-        })
+        // if readonly show response in a div instead.
+        if (disabled) {
+          this.elements.each((i, elem) => {
+            const divElem = `<div class="${$(elem).attr('class')}">${$(elem).val()}</div>`;
+            $(divElem).insertAfter(elem);
+            $(elem).css('display', 'none');
+          });
+        }
       }
 
-      resolve();
-    }));
-  }
+      /**
+       Set on change listener to the editor.
 
-  /**
-   Set event listener to the editor.
+      Args:
+      handler (Function)
+      * */
+      setOnChangeListener(handler) {
+        this.elements.on('change keyup drop paste', handler);
+      }
 
-   Args:
-   eventName (string)
-   handler (Function)
-   * */
-  setEventListener(eventName, handler) {
-    this.elements.on(eventName, handler);
-  }
+      /**
+       Set the response texts.
+      Retrieve the response texts.
 
-  /**
-   Set the response texts.
-   Retrieve the response texts.
+      Args:
+      texts (array of strings): If specified, the texts to set for the response.
 
-   Args:
-   texts (array of strings): If specified, the texts to set for the response.
-
-   Returns:
-   array of strings: The current response texts.
-   * */
-  /* eslint-disable-next-line consistent-return */
-  response(texts) {
-    if (typeof texts === 'undefined') {
-      return this.elements.map(function () {
-        return $.trim($(this).val());
-      }).get();
+      Returns:
+      array of strings: The current response texts.
+      * */
+      /* eslint-disable-next-line consistent-return */
+      response(texts) {
+        if (typeof texts === 'undefined') {
+          return this.elements.map(function () {
+            return $.trim($(this).val());
+          }).get();
+        }
+        this.elements.each(function (index) {
+          $(this).val(texts[index]);
+        });
+      }
     }
-    this.elements.each(function (index) {
-      $(this).val(texts[index]);
-    });
-  }
-}
 
-// Make this editor accessible from openassessment-lms script
-window.OpenAssessmentResponseEditor = EditorTextarea;
+    // return a function, to be able to create new instance everytime.
+    return function () {
+      return new EditorTextarea();
+    };
+  });
+}).call(window, window.define || window.RequireJS.define);
