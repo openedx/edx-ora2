@@ -123,7 +123,7 @@ def create_assessment(
     # Check that there are not any assessments for this submission
     if Assessment.objects.filter(submission_uuid=submission_uuid, score_type=SELF_TYPE).exists():
         msg = (
-            u"Cannot submit a self-assessment for the submission {uuid} "
+            "Cannot submit a self-assessment for the submission {uuid} "
             "because another self-assessment already exists for that submission."
         ).format(uuid=submission_uuid)
         raise SelfAssessmentRequestError(msg)
@@ -133,10 +133,10 @@ def create_assessment(
         submission = get_submission_and_student(submission_uuid)
         if submission['student_item']['student_id'] != user_id:
             msg = (
-                u"Cannot submit a self-assessment for the submission {uuid} "
-                u"because it was created by another learner "
-                u"(submission learner ID {student_id} does not match your "
-                u"learner id {other_id})"
+                "Cannot submit a self-assessment for the submission {uuid} "
+                "because it was created by another learner "
+                "(submission learner ID {student_id} does not match your "
+                "learner id {other_id})"
             ).format(
                 uuid=submission_uuid,
                 student_id=submission['student_item']['student_id'],
@@ -145,7 +145,7 @@ def create_assessment(
             raise SelfAssessmentRequestError(msg)
     except SubmissionNotFoundError:
         msg = (
-            u"Could not submit a self-assessment because no submission exists with UUID {uuid}"
+            "Could not submit a self-assessment because no submission exists with UUID {uuid}"
         ).format(uuid=submission_uuid)
         raise SelfAssessmentRequestError()
 
@@ -170,7 +170,7 @@ def create_assessment(
         raise SelfAssessmentRequestError(msg)
     except DatabaseError:
         error_message = (
-            u"Error creating self assessment for submission {}"
+            "Error creating self assessment for submission {}"
         ).format(submission_uuid)
         logger.exception(error_message)
         raise SelfAssessmentInternalError(error_message)
@@ -294,7 +294,7 @@ def get_assessment_scores_by_criteria(submission_uuid):
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
         error_message = (
-            u"Error getting self assessment scores for submission {}"
+            "Error getting self assessment scores for submission {}"
         ).format(submission_uuid)
         logger.exception(error_message)
         raise SelfAssessmentInternalError(error_message)
@@ -313,9 +313,9 @@ def _log_assessment(assessment, submission):
 
     """
     logger.info(
-        u"Created self-assessment {assessment_id} for learner {user} on "
-        u"submission {submission_uuid}, course {course_id}, item {item_id} "
-        u"with rubric {rubric_content_hash}"
+        "Created self-assessment {assessment_id} for learner {user} on "
+        "submission {submission_uuid}, course {course_id}, item {item_id} "
+        "with rubric {rubric_content_hash}"
         .format(
             assessment_id=assessment.id,
             user=submission['student_item']['student_id'],

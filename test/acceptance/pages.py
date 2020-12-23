@@ -31,7 +31,7 @@ class BaseAssessmentPage(PageObject):  # pylint: disable=abstract-method
             problem_location (unicode): URL path for the problem, appended to the base URL.
 
         """
-        super(BaseAssessmentPage, self).__init__(browser)
+        super().__init__(browser)
         self._problem_location = problem_location
 
     @property
@@ -61,7 +61,7 @@ class StudioPage(PageObject):
         """
         Configure a page object for a studio page.
         """
-        super(StudioPage, self).__init__(browser)
+        super().__init__(browser)
         self.base_url = ORA_SANDBOX_STUDIO_URL
         self.course_id = course_id
 
@@ -93,7 +93,7 @@ class StudioSettingsPage(StudioPage):
         """
         self.wait_for_element_presence(
             css_selector,
-            'Element matching "{}" selector is present'.format(css_selector)
+            f'Element matching "{css_selector}" selector is present'
         )
         results = self.q(css=css_selector)
         return results[0] if results else None
@@ -103,8 +103,8 @@ class StudioSettingsPage(StudioPage):
         """
         Clicks save button
         """
-        btn_css = u'div#page-notification button.action-save'
-        self.browser.execute_script(u"$('{}').focus().click()".format(btn_css))
+        btn_css = 'div#page-notification button.action-save'
+        self.browser.execute_script(f"$('{btn_css}').focus().click()")
         self.wait_for_ajax()
         self.wait_for_element_visibility(
             '#alert-confirmation-title',
@@ -177,7 +177,7 @@ class OpenAssessmentPage(BaseAssessmentPage):  # pylint: disable=abstract-method
         Every problem has a vertical index assigned to it, which creates a vertical index class like
         `vert-{vertical_index}. If there is one problem on unit page, problem would have .vert-0 class attached to it.
         """
-        return ".vert-{vertical_index}".format(vertical_index=self.vertical_index)
+        return f".vert-{self.vertical_index}"
 
     def submit(self, button_css=".action--submit"):
         """
@@ -429,7 +429,7 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
             *args: Passed to the base class.
 
         """
-        super(AssessmentPage, self).__init__(*args)
+        super().__init__(*args)
         if assessment_type not in self.ASSESSMENT_TYPES:
             msg = "Invalid assessment type; must choose one: {choices}".format(
                 choices=", ".join(self.ASSESSMENT_TYPES)
@@ -441,7 +441,7 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         """
         Return `selector`, but limited to this Assignment Page.
         """
-        return super(AssessmentPage, self)._bounded_selector('.step--{assessment_type} {selector}'.format(
+        return super()._bounded_selector('.step--{assessment_type} {selector}'.format(
             assessment_type=self._assessment_type, selector=selector))
 
     def is_browser_on_page(self):
@@ -461,7 +461,7 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         css_sel = ".{assessment_type}__display .submission__answer__part__text__value".format(
             assessment_type=self._assessment_type
         )
-        return u" ".join(self.q(css=self._bounded_selector(css_sel)).text)
+        return " ".join(self.q(css=self._bounded_selector(css_sel)).text)
 
     def wait_for_complete(self):
         """
@@ -631,7 +631,7 @@ class GradePage(OpenAssessmentPage):
         """
         Return `selector`, but limited to the student grade view.
         """
-        return super(GradePage, self)._bounded_selector('.step--grade {selector}'.format(selector=selector))
+        return super()._bounded_selector(f'.step--grade {selector}')
 
     def is_browser_on_page(self):
         return self.q(css=".step--grade").is_present()
@@ -697,11 +697,11 @@ class GradePage(OpenAssessmentPage):
         if isinstance(question, int):
             question = question + 1
         self.wait_for_element_visibility(
-            self._bounded_selector('.question--{} .feedback__value'.format(question)),
+            self._bounded_selector(f'.question--{question} .feedback__value'),
             "Feedback is visible",
         )
         feedback = self.q(
-            css=self._bounded_selector('.question--{} .feedback__value'.format(question))
+            css=self._bounded_selector(f'.question--{question} .feedback__value')
         )
 
         return feedback[column].text.strip()
@@ -733,7 +733,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         Return `selector`, but limited to the staff area management area.
         """
-        return super(StaffAreaPage, self)._bounded_selector('.openassessment__staff-area {}'.format(selector))
+        return super()._bounded_selector(f'.openassessment__staff-area {selector}')
 
     def is_browser_on_page(self):
         return self.q(css=".openassessment__staff-area").is_present()
@@ -757,7 +757,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Returns the names of the selected toolbar buttons.
         """
         buttons = self.q(css=self._bounded_selector(".ui-staff__button"))
-        return [button.text for button in buttons if u'is--active' in button.get_attribute('class')]
+        return [button.text for button in buttons if 'is--active' in button.get_attribute('class')]
 
     @property
     def visible_staff_panels(self):
@@ -771,7 +771,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         Returns True if button_name is visible, else False
         """
-        button = self.q(css=self._bounded_selector(".button-{button_name}".format(button_name=button_name)))
+        button = self.q(css=self._bounded_selector(f".button-{button_name}"))
         return button.is_present()
 
     def click_staff_toolbar_button(self, button_name):
@@ -781,8 +781,8 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         # Disable JQuery animations (for slideUp/slideDown).
         self.browser.execute_script("jQuery.fx.off = true;")
-        button_selector = self._bounded_selector(".button-{button_name}".format(button_name=button_name))
-        self.wait_for_element_visibility(button_selector, "Button {} is present".format(button_name))
+        button_selector = self._bounded_selector(f".button-{button_name}")
+        self.wait_for_element_visibility(button_selector, f"Button {button_name} is present")
         buttons = self.q(css=button_selector)
         buttons.first.click()
 
@@ -792,7 +792,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         :return:
         """
         self.q(
-            css=self._bounded_selector(".wrapper--{panel_name} .ui-staff_close_button".format(panel_name=panel_name))
+            css=self._bounded_selector(f".wrapper--{panel_name} .ui-staff_close_button")
         ).click()
 
     def show_learner(self, username):
@@ -969,7 +969,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Returns: array of strings representing the text(for example, ['Good', u'5', u'5', u'Excellent', u'3', u'3'])
 
         """
-        return self._get_table_text(".staff-info__{} .staff-info__status__table .value".format(section))
+        return self._get_table_text(f".staff-info__{section} .staff-info__status__table .value")
 
     def overall_feedback(self, section):
         """
@@ -982,7 +982,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Returns: the text present in "Overall Feedback"
         """
         return self.q(
-            css=self._bounded_selector(".staff-info__{} .student__answer__display__content".format(section))
+            css=self._bounded_selector(f".staff-info__{section} .student__answer__display__content")
         ).text[0]
 
     def _get_table_text(self, selector):

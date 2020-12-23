@@ -4,7 +4,7 @@ Tests for Django signals and receivers defined by the workflow API.
 
 
 import ddt
-import mock
+from unittest import mock
 
 from django.db import DatabaseError
 
@@ -31,7 +31,7 @@ class UpdateWorkflowSignalTest(CacheResetTest):
         """
         Create a submission.
         """
-        super(UpdateWorkflowSignalTest, self).setUp()
+        super().setUp()
         submission = sub_api.create_submission(self.STUDENT_ITEM, "test answer")
         self.submission_uuid = submission['uuid']
 

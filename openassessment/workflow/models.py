@@ -39,9 +39,9 @@ logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=
 # that implements the corresponding assessment API.
 # For backwards compatibility, we provide a default configuration as well
 DEFAULT_ASSESSMENT_API_DICT = {
-    u'peer': 'openassessment.assessment.api.peer',
-    u'self': 'openassessment.assessment.api.self',
-    u'training': 'openassessment.assessment.api.student_training',
+    'peer': 'openassessment.assessment.api.peer',
+    'self': 'openassessment.assessment.api.self',
+    'training': 'openassessment.assessment.api.student_training',
 }
 ASSESSMENT_API_DICT = getattr(
     settings, 'ORA2_ASSESSMENTS',
@@ -70,9 +70,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # User has done all necessary assessment but hasn't been
         # graded yet -- we're waiting for assessments of their
         # submission by others.
-        u"waiting",
-        u"done",  # Complete
-        u"cancelled"  # User submission has been cancelled.
+        "waiting",
+        "done",  # Complete
+        "cancelled"  # User submission has been cancelled.
     ]
 
     STATUS_VALUES = STEPS + STATUSES
@@ -110,7 +110,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         app_label = "workflow"
 
     def __init__(self, *args, **kwargs):
-        super(AssessmentWorkflow, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if 'staff' not in AssessmentWorkflow.STEPS:
             new_list = ['staff']
             new_list.extend(AssessmentWorkflow.STEPS)
@@ -425,7 +425,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.status = new_status
             self.save()
             logger.info((
-                u"Workflow for submission UUID {uuid} has updated status to {status}"
+                "Workflow for submission UUID {uuid} has updated status to {status}"
             ).format(uuid=self.submission_uuid, status=new_status))
 
     def _get_steps(self):
@@ -570,7 +570,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.status = self.STATUS.cancelled
             self.save()
             logger.info(
-                u"Workflow for submission UUID {uuid} has updated status to {status}".format(
+                "Workflow for submission UUID {uuid} has updated status to {status}".format(
                     uuid=self.submission_uuid, status=self.STATUS.cancelled
                 )
             )
@@ -602,11 +602,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             # Cancel the related step's workflow.
             workflow.cancel(assessment_requirements)
         except (cls.DoesNotExist, cls.MultipleObjectsReturned):
-            error_message = u"Error finding workflow for submission UUID {}.".format(submission_uuid)
+            error_message = "Error finding workflow for submission UUID {}.".format(submission_uuid)
             logger.exception(error_message)
             raise AssessmentWorkflowError(error_message)
         except DatabaseError:
-            error_message = u"Error creating assessment workflow cancellation for submission UUID {}.".format(
+            error_message = "Error creating assessment workflow cancellation for submission UUID {}.".format(
                 submission_uuid)
             logger.exception(error_message)
             raise AssessmentWorkflowInternalError(error_message)
@@ -635,7 +635,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         except cls.DoesNotExist:
             return None
         except DatabaseError as exc:
-            message = u"Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
+            message = "Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
             logger.exception(message)
             raise AssessmentWorkflowError(message)
 
@@ -902,8 +902,8 @@ class AssessmentWorkflowStep(models.Model):
             # that are not configured -- for example, if a new assessment
             # type is added, then the code is rolled back.
             msg = (
-                u"No assessment configured for '{name}'.  "
-                u"Check the ORA2_ASSESSMENTS Django setting."
+                "No assessment configured for '{name}'.  "
+                "Check the ORA2_ASSESSMENTS Django setting."
             ).format(name=self.name)
             logger.warning(msg)
             return None
@@ -967,18 +967,18 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
         workflow.update_from_assessments(None)
     except AssessmentWorkflow.DoesNotExist:
-        msg = u"Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
+        msg = "Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
         logger.exception(msg)
     except DatabaseError:
         msg = (
-            u"Database error occurred while updating "
-            u"the workflow for submission UUID {}"
+            "Database error occurred while updating "
+            "the workflow for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
     except Exception:  # pylint: disable=broad-except
         msg = (
-            u"Unexpected error occurred while updating the workflow "
-            u"for submission UUID {}"
+            "Unexpected error occurred while updating the workflow "
+            "for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
 

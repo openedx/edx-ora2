@@ -45,9 +45,9 @@ def submitter_is_finished(submission_uuid, training_requirements):
     try:
         num_required = int(training_requirements['num_required'])
     except KeyError:
-        raise StudentTrainingRequestError(u'Requirements dict must contain "num_required" key')
+        raise StudentTrainingRequestError('Requirements dict must contain "num_required" key')
     except ValueError:
-        raise StudentTrainingRequestError(u'Number of requirements must be an integer')
+        raise StudentTrainingRequestError('Number of requirements must be an integer')
 
     try:
         workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
@@ -79,8 +79,8 @@ def on_start(submission_uuid):
         StudentTrainingWorkflow.create_workflow(submission_uuid)
     except Exception:
         msg = (
-            u"An internal error has occurred while creating the learner "
-            u"training workflow for submission UUID {}".format(submission_uuid)
+            "An internal error has occurred while creating the learner "
+            "training workflow for submission UUID {}".format(submission_uuid)
         )
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
@@ -175,7 +175,7 @@ def validate_training_examples(rubric, examples):
         }
     except (ValueError, KeyError):
         logger.warning("Could not parse serialized rubric", exc_info=True)
-        return [_(u"Could not parse serialized rubric")]
+        return [_("Could not parse serialized rubric")]
 
     # Check that at least one criterion in the rubric has options
     # If this is not the case (that is, if all rubric criteria are written feedback only),
@@ -199,7 +199,7 @@ def validate_training_examples(rubric, examples):
         is_format_valid, format_errors = validate_training_example_format(example_dict)
         if not is_format_valid:
             format_errors = [
-                _(u"Example {example_number} has a validation error: {error}").format(
+                _("Example {example_number} has a validation error: {error}").format(
                     example_number=order_num, error=error
                 )
                 for error in format_errors
@@ -213,8 +213,8 @@ def validate_training_examples(rubric, examples):
                     valid_options = criteria_options[criterion_name]
                     if option_name not in valid_options:
                         msg = _(
-                            u"Example {example_number} has an invalid option "
-                            u"for \"{criterion_name}\": \"{option_name}\""
+                            "Example {example_number} has an invalid option "
+                            "for \"{criterion_name}\": \"{option_name}\""
                         ).format(
                             example_number=order_num,
                             criterion_name=criterion_name,
@@ -223,8 +223,8 @@ def validate_training_examples(rubric, examples):
                         errors.append(msg)
                 else:
                     msg = _(
-                        u"Example {example_number} has an extra option "
-                        u"for \"{criterion_name}\""
+                        "Example {example_number} has an extra option "
+                        "for \"{criterion_name}\""
                     ).format(
                         example_number=order_num,
                         criterion_name=criterion_name
@@ -236,8 +236,8 @@ def validate_training_examples(rubric, examples):
             all_example_criteria = set(list(options_selected.keys()) + criteria_without_options)
             for missing_criterion in set(criteria_options.keys()) - all_example_criteria:
                 msg = _(
-                    u"Example {example_number} is missing an option "
-                    u"for \"{criterion_name}\""
+                    "Example {example_number} is missing an option "
+                    "for \"{criterion_name}\""
                 ).format(
                     example_number=order_num,
                     criterion_name=missing_criterion
@@ -274,8 +274,8 @@ def get_num_completed(submission_uuid):
             return workflow.num_completed
     except DatabaseError:
         msg = (
-            u"An unexpected error occurred while "
-            u"retrieving the learner training workflow status for submission UUID {}"
+            "An unexpected error occurred while "
+            "retrieving the learner training workflow status for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
@@ -370,7 +370,7 @@ def get_training_example(submission_uuid, rubric, examples):
         errors = validate_training_examples(rubric, examples)
         if errors:
             msg = (
-                u"Training examples do not match the rubric (submission UUID is {uuid}): {errors}"
+                "Training examples do not match the rubric (submission UUID is {uuid}): {errors}"
             ).format(uuid=submission_uuid, errors="\n".join(errors))
             raise StudentTrainingRequestError(msg)
 
@@ -445,8 +445,8 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
         item = workflow.current_item
         if item is None:
             msg = (
-                u"No items are available in the learner training workflow associated with "
-                u"submission UUID {}"
+                "No items are available in the learner training workflow associated with "
+                "submission UUID {}"
             ).format(submission_uuid)
             raise StudentTrainingRequestError(msg)
 
@@ -459,12 +459,12 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
             item.mark_complete()
         return corrections
     except StudentTrainingWorkflow.DoesNotExist:
-        msg = u"Could not find learner training workflow for submission UUID {}".format(submission_uuid)
+        msg = "Could not find learner training workflow for submission UUID {}".format(submission_uuid)
         raise StudentTrainingRequestError(msg)
     except DatabaseError:
         msg = (
-            u"An error occurred while comparing the learner's assessment "
-            u"to the training example.  The submission UUID for the learner is {}"
+            "An error occurred while comparing the learner's assessment "
+            "to the training example.  The submission UUID for the learner is {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)

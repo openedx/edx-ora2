@@ -105,10 +105,10 @@ def safe_save(path, content):
     """
     dir_path = os.path.abspath(os.path.dirname(path))
     if not dir_path.startswith(get_bucket_path()):
-        raise exceptions.FileUploadRequestError(u"Uploaded file name not allowed: '%s'" % path)
+        raise exceptions.FileUploadRequestError("Uploaded file name not allowed: '%s'" % path)
     root_directory = get_root_directory_path()
     if not os.path.exists(root_directory):
-        raise exceptions.FileUploadInternalError(u"File upload root directory does not exist: %s" % root_directory)
+        raise exceptions.FileUploadInternalError("File upload root directory does not exist: %s" % root_directory)
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
     mode = "w"

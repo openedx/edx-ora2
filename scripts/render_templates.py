@@ -40,10 +40,10 @@ from django.template.context import Context
 from django.template.loader import get_template
 
 
-USAGE = u"{prog} TEMPLATE_DESC"
+USAGE = "{prog} TEMPLATE_DESC"
 
 
-DATETIME_REGEX = re.compile("^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
+DATETIME_REGEX = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
 
 django.setup()
 
@@ -109,8 +109,8 @@ def render_templates(root_dir, template_json):
         try:
             with open(output_path, 'w') as output_file:
                 output_file.write(rendered)
-        except IOError:
-            print("Could not write rendered template to file: {}".format(output_path))
+        except OSError:
+            print(f"Could not write rendered template to file: {output_path}")
             sys.exit(1)
 
 
@@ -126,12 +126,12 @@ def main():
         with open(sys.argv[1]) as template_json:
             root_dir = os.path.dirname(sys.argv[1])
             render_templates(root_dir, json.load(template_json))
-    except IOError as ex:
-        print(u"Could not open template description file: {}".format(sys.argv[1]))
+    except OSError as ex:
+        print("Could not open template description file: {}".format(sys.argv[1]))
         print(ex)
         sys.exit(1)
     except ValueError as ex:
-        print(u"Could not parse template description as JSON: {}".format(sys.argv[1]))
+        print("Could not parse template description as JSON: {}".format(sys.argv[1]))
         print(ex)
         sys.exit(1)
 

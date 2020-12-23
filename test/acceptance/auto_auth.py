@@ -33,7 +33,7 @@ class AutoAuthPage(PageObject):
 
         Note that "global staff" is NOT the same as course staff.
         """
-        super(AutoAuthPage, self).__init__(browser)
+        super().__init__(browser)
 
         # Create query string parameters if provided
         self._params = {}

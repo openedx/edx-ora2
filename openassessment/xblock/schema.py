@@ -36,7 +36,7 @@ def utf8_validator(value):
             return value.decode('utf-8')
         return str(value)
     except (ValueError, TypeError):
-        raise Invalid(u"Could not load unicode from value \"{val}\"".format(val=value))
+        raise Invalid(f"Could not load unicode from value \"{value}\"")
 
 
 def datetime_validator(value):
@@ -56,39 +56,39 @@ def datetime_validator(value):
         # The dateutil parser defaults empty values to the current day,
         # which is NOT what we want.
         if value is None or value == '':
-            raise Invalid(u"Datetime value cannot be \"{val}\"".format(val=value))
+            raise Invalid(f"Datetime value cannot be \"{value}\"")
 
         # Parse the date and interpret it as UTC
         value = dateutil.parser.parse(value).replace(tzinfo=utc)
         return str(value.isoformat())
     except (ValueError, TypeError):
-        raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
+        raise Invalid(f"Could not parse datetime from value \"{value}\"")
 
 
 PROMPTS_TYPES = [
-    u'text',
-    u'html',
+    'text',
+    'html',
 ]
 
 
 NECESSITY_OPTIONS = [
-    u'required',
-    u'optional',
-    u''
+    'required',
+    'optional',
+    ''
 ]
 
 
 VALID_ASSESSMENT_TYPES = [
-    u'peer-assessment',
-    u'self-assessment',
-    u'student-training',
-    u'staff-assessment',
+    'peer-assessment',
+    'self-assessment',
+    'student-training',
+    'staff-assessment',
 ]
 
 VALID_UPLOAD_FILE_TYPES = [
-    u'image',
-    u'pdf-and-image',
-    u'custom'
+    'image',
+    'pdf-and-image',
+    'custom'
 ]
 
 # Schema definition for an update from the Studio JavaScript editor.
@@ -140,7 +140,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('editor_assessments_order'): [
         All(utf8_validator, In(VALID_ASSESSMENT_TYPES))
     ],
-    Required('feedbackprompt', default=u""): utf8_validator,
+    Required('feedbackprompt', default=""): utf8_validator,
     Required('criteria'): [
         Schema({
             Required('order_num'): All(int, Range(min=0)),

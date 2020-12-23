@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 Serializers common to all assessment types.
 """

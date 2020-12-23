@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Test that the student can save a response.
 """
@@ -7,7 +6,7 @@ Test that the student can save a response.
 import json
 
 import ddt
-import mock
+from unittest import mock
 
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 
@@ -34,7 +33,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
         payload = json.dumps({'submission': submission})
         resp = self.request(xblock, 'save_submission', payload, response_format="json")
         self.assertTrue(resp['success'])
-        self.assertEqual(resp['msg'], u'')
+        self.assertEqual(resp['msg'], '')
 
         # Reload the submission UI
         resp = self.request(xblock, 'render_submission', json.dumps({}))
@@ -48,12 +47,12 @@ class SaveResponseTest(XBlockHandlerTestCase):
 
         # XBlock has a saved response already
         xblock.saved_response = prepare_submission_for_serialization([
-            u"THAT'ꙅ likɘ A 40-bɘgᴙɘɘ bAY.",
-            u"Aiᴎ'T ᴎodobY goT ᴎoTHiᴎg To ꙅAY AdoUT A 40-bɘgᴙɘɘ bAY."
+            "THAT'ꙅ likɘ A 40-bɘgᴙɘɘ bAY.",
+            "Aiᴎ'T ᴎodobY goT ᴎoTHiᴎg To ꙅAY AdoUT A 40-bɘgᴙɘɘ bAY."
         ])
 
         # Save another response
-        submission = [u"ГЂіи lіиэ ъэтшээи", u"Ђэаvэи аиↁ Ђэѓэ."]
+        submission = ["ГЂіи lіиэ ъэтшээи", "Ђэаvэи аиↁ Ђэѓэ."]
         payload = json.dumps({'submission': submission})
         resp = self.request(xblock, 'save_submission', payload, response_format="json")
         self.assertTrue(resp['success'])

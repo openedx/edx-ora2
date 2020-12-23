@@ -33,8 +33,8 @@ class RubricAdmin(admin.ModelAdmin):
     def criteria_summary(self, rubric_obj):
         """Short description of criteria for presenting in a list."""
         rubric_data = RubricSerializer.serialized_from_cache(rubric_obj)
-        return u", ".join(
-            u"{} - {}: {}".format(criterion["name"], criterion['label'], criterion["points_possible"])
+        return ", ".join(
+            "{} - {}: {}".format(criterion["name"], criterion['label'], criterion["points_possible"])
             for criterion in rubric_data["criteria"]
         )
 
@@ -42,7 +42,7 @@ class RubricAdmin(admin.ModelAdmin):
         """Full JSON string of rubric, indented and HTML formatted."""
         rubric_data = RubricSerializer.serialized_from_cache(rubric_obj)
         return format_html(
-            u"<pre>\n{}\n</pre>", json.dumps(rubric_data, sort_keys=True, indent=4))
+            "<pre>\n{}\n</pre>", json.dumps(rubric_data, sort_keys=True, indent=4))
 
 
 class PeerWorkflowItemInline(admin.StackedInline):
@@ -97,7 +97,7 @@ class AssessmentAdmin(admin.ModelAdmin):
             args=[assessment_obj.rubric.id]
         )
         return format_html(
-            u'<a href="{}">{}</a>', url, assessment_obj.rubric.content_hash)
+            '<a href="{}">{}</a>', url, assessment_obj.rubric.content_hash)
     rubric_link.admin_order_field = 'rubric__content_hash'
     rubric_link.short_description = 'Rubric'
 
@@ -105,7 +105,7 @@ class AssessmentAdmin(admin.ModelAdmin):
         """
         Returns the parts summary of this assessment as HTML.
         """
-        return format_html_join("<br/>", u"{}/{} - {} - {}: {} - {} - {}", ((
+        return format_html_join("<br/>", "{}/{} - {} - {}: {} - {} - {}", ((
             part.points_earned,
             part.points_possible,
             part.criterion.name,

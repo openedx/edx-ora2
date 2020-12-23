@@ -56,7 +56,7 @@ class LeaderboardMixin:
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_leaderboard_incomplete()
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
-            return self.render_error(_(u"An unexpected error occurred."))
+            return self.render_error(_("An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -139,7 +139,7 @@ class LeaderboardMixin:
         try:
             file_download_url = file_upload_api.get_download_url(file_key)
         except FileUploadError as exc:
-            logger.exception(u'FileUploadError: URL retrieval failed for key {file_key} with error {error}'.format(
+            logger.exception('FileUploadError: URL retrieval failed for key {file_key} with error {error}'.format(
                 file_key=file_key,
                 error=exc
             ))

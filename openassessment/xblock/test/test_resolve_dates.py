@@ -21,7 +21,7 @@ class ResolveDatesTest(TestCase):
     """ Tests dates for resolved correctly. """
 
     def setUp(self):
-        super(ResolveDatesTest, self).setUp()
+        super().setUp()
         # Construct a dictionary of datetimes for our test data to index
         self.DATES = {  # pylint: disable=invalid-name
             (day - 1): datetime.datetime(2014, 1, day).replace(tzinfo=pytz.UTC)

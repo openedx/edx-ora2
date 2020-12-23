@@ -54,7 +54,7 @@ class ConfigMixin:
         with the given ``switch_name``.
         """
         # pylint: disable=feature-toggle-needs-doc
-        return WaffleSwitch("{}.{}".format(WAFFLE_NAMESPACE, switch_name), module_name=__name__)
+        return WaffleSwitch(f"{WAFFLE_NAMESPACE}.{switch_name}", module_name=__name__)
 
     @staticmethod
     def _course_waffle_flag(flag_name):

@@ -2,7 +2,7 @@
 
 from contextlib import contextmanager
 import ddt
-import mock
+from unittest import mock
 from freezegun import freeze_time
 
 from django.utils.timezone import now

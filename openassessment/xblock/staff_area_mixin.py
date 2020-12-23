@@ -39,8 +39,8 @@ def require_global_admin(error_key):
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
-                "SCHEDULE_TRAINING": xblock._(u"You do not have permission to schedule training"),
-                "RESCHEDULE_TASKS": xblock._(u"You do not have permission to reschedule tasks."),
+                "SCHEDULE_TRAINING": xblock._("You do not have permission to schedule training"),
+                "RESCHEDULE_TASKS": xblock._("You do not have permission to reschedule tasks."),
             }
             if not xblock.is_admin or xblock.in_studio_preview:
                 return {'success': False, 'msg': permission_errors[error_key]}
@@ -66,9 +66,9 @@ def require_course_staff(error_key, with_json_handler=False):
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
-                "STAFF_AREA": xblock._(u"You do not have permission to access the ORA staff area"),
-                "STUDENT_INFO": xblock._(u"You do not have permission to access ORA learner information."),
-                "STUDENT_GRADE": xblock._(u"You do not have permission to access ORA staff grading."),
+                "STAFF_AREA": xblock._("You do not have permission to access the ORA staff area"),
+                "STUDENT_INFO": xblock._("You do not have permission to access ORA learner information."),
+                "STUDENT_GRADE": xblock._("You do not have permission to access ORA staff grading."),
             }
 
             if not xblock.is_course_staff and with_json_handler:
@@ -182,7 +182,7 @@ class StaffAreaMixin:
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
-            return self.render_error(self._(u"Error getting learner information."))
+            return self.render_error(self._("Error getting learner information."))
 
     @XBlock.handler
     @require_course_staff("STUDENT_GRADE")
@@ -225,10 +225,10 @@ class StaffAreaMixin:
                         )
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
-                return self.render_error(self._(u"Error loading the checked out learner response."))
-            return self.render_error(self._(u"No other learner responses are available for grading at this time."))
+                return self.render_error(self._("Error loading the checked out learner response."))
+            return self.render_error(self._("No other learner responses are available for grading at this time."))
         except PeerAssessmentInternalError:
-            return self.render_error(self._(u"Error getting staff grade information."))
+            return self.render_error(self._("Error getting staff grade information."))
 
     @XBlock.handler
     @require_course_staff("STUDENT_GRADE")
@@ -249,7 +249,7 @@ class StaffAreaMixin:
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
-            return self.render_error(self._(u"Error getting staff grade ungraded and checked out counts."))
+            return self.render_error(self._("Error getting staff grade ungraded and checked out counts."))
 
     def get_student_submission_context(self, student_username, submission):
         """
@@ -281,7 +281,7 @@ class StaffAreaMixin:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
             if self.should_use_user_state(context["staff_file_urls"]):
-                logger.info(u"Checking student module for upload info for user: {username} in block: {block}".format(
+                logger.info("Checking student module for upload info for user: {username} in block: {block}".format(
                     username=student_username,
                     block=str(self.location)
                 ))
@@ -291,7 +291,7 @@ class StaffAreaMixin:
                 # and gets all the upload URLs if feature enabled.
                 if self.should_get_all_files_urls(context['staff_file_urls']):
                     logger.info(
-                        u"Retrieving all uploaded files by user:{username} in block:{block}".format(
+                        "Retrieving all uploaded files by user:{username} in block:{block}".format(
                             username=student_username,
                             block=str(self.location)
                         ))
@@ -482,7 +482,7 @@ class StaffAreaMixin:
         to remove it from the grading pools, and pass through to the submissions team API to orphan the team
         submission and individual submissions so that the team can create a new submission.
         """
-        student_item_string = "course {} item {} user {}".format(course_id, item_id, user_id)
+        student_item_string = f"course {course_id} item {item_id} user {user_id}"
 
         if not submissions:
             logger.warning('Attempted to reset team state for %s but no submission was found', student_item_string)
@@ -538,7 +538,7 @@ class StaffAreaMixin:
         comments = data.get('comments')
 
         if not comments:
-            return {"success": False, "msg": self._(u'Please enter valid reason to remove the submission.')}
+            return {"success": False, "msg": self._('Please enter valid reason to remove the submission.')}
 
         if self.is_team_assignment():
             return self._cancel_team_submission(submission_uuid, comments)
@@ -587,10 +587,10 @@ class StaffAreaMixin:
             return {
                 "success": True,
                 'msg': self._(
-                    u"The learner submission has been removed from peer assessment. "
-                    u"The learner receives a grade of zero unless you delete "
-                    u"the learner's state for the problem to allow them to "
-                    u"resubmit a response."
+                    "The learner submission has been removed from peer assessment. "
+                    "The learner receives a grade of zero unless you delete "
+                    "the learner's state for the problem to allow them to "
+                    "resubmit a response."
                 )
             }
         except (

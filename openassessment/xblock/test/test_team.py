@@ -6,9 +6,9 @@ from unittest import TestCase
 from uuid import uuid4
 
 import ddt
-import mock
+from unittest import mock
 
-from mock import patch
+from unittest.mock import patch
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
 from openassessment.xblock.team_mixin import TeamMixin

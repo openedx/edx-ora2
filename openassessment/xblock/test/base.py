@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Base class for handler-level testing of the XBlock.
 """
@@ -9,7 +8,7 @@ from functools import wraps
 import json
 import os.path
 
-import mock
+from unittest import mock
 
 import webob
 from submissions import api as submissions_api
@@ -22,39 +21,39 @@ from openassessment.workflow import api as workflow_api
 # Sample peer assessments
 PEER_ASSESSMENTS = [
     {
-        'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Good'},
+        'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ﻉซƈﻉɭɭﻉกՇ', 'Form': 'Good'},
         'criterion_feedback': {
-            u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
+            '𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
         },
-        'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
+        'overall_feedback': 'єאςєɭɭєภՇ ฬ๏гк!',
     },
     {
-        'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Ġööḋ', u'Form': u'Fair'},
+        'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Ġööḋ', 'Form': 'Fair'},
         'criterion_feedback': {
-            u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
-            u'Form': u'Peer 2: ƒαιя נσв'
+            '𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+            'Form': 'Peer 2: ƒαιя נσв'
         },
-        'overall_feedback': u'Good job!',
+        'overall_feedback': 'Good job!',
     },
 ]
 
 # Sample self assessment
 SELF_ASSESSMENT = {
-    'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
+    'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ﻉซƈﻉɭɭﻉกՇ', 'Form': 'Fair'},
     'criterion_feedback': {
-        u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
+        '𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
     },
-    'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
+    'overall_feedback': 'єאςєɭɭєภՇ ฬ๏гк!',
 }
 
 # A sample good staff assessment
 STAFF_GOOD_ASSESSMENT = {
-    'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
+    'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ﻉซƈﻉɭɭﻉกՇ', 'Form': 'Fair'},
     'criterion_feedback': {
-        u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ฝﻉɭɭ ɗѻกﻉ!',
-        u'Form': u'Staff: ƒαιя נσв'
+        '𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Staff: ฝﻉɭɭ ɗѻกﻉ!',
+        'Form': 'Staff: ƒαιя נσв'
     },
-    'overall_feedback': u'Staff: good job!',
+    'overall_feedback': 'Staff: good job!',
     'assess_type': 'full-grade'
 }
 
@@ -82,12 +81,12 @@ TEAM_GOOD_ASSESSMENT_REGRADE = {
 
 # A sample bad staff assessment
 STAFF_BAD_ASSESSMENT = {
-    'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ק๏๏г', u'Form': u'Poor'},
+    'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ק๏๏г', 'Form': 'Poor'},
     'criterion_feedback': {
-        u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ק๏๏г נσв',
-        u'Form': u'Staff: ק๏๏г נσв'
+        '𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Staff: ק๏๏г נσв',
+        'Form': 'Staff: ק๏๏г נσв'
     },
-    'overall_feedback': u'Staff: very poor',
+    'overall_feedback': 'Staff: very poor',
     'assess_type': 'full-grade'
 }
 
@@ -128,7 +127,7 @@ def scenario(scenario_path, user_id=None):
                 if isinstance(self, XBlockHandlerTestCaseMixin):
 
                     # Print a debug message
-                    print(u"Loading scenario from {path}".format(path=scenario_path))
+                    print(f"Loading scenario from {scenario_path}")
 
                     # Configure the runtime with our user id
                     self.set_user(user_id)
@@ -154,7 +153,7 @@ class XBlockHandlerTestCaseMixin:
         """
         Create the runtime.
         """
-        super(XBlockHandlerTestCaseMixin, self).setUp()
+        super().setUp()
         self.runtime = WorkbenchRuntime()
         mock_publish = mock.MagicMock(side_effect=self.runtime.publish)
         self.runtime.publish = mock_publish
@@ -225,7 +224,7 @@ class XBlockHandlerTestCaseMixin:
         elif response_format == 'json':
             return json.loads(response.body.decode('utf-8'))
         else:
-            raise NotImplementedError(u"Response format '{format}' not supported".format(format=response_format))
+            raise NotImplementedError(f"Response format '{response_format}' not supported")
 
     def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
         """ Checks assessment event published successfuly. """
@@ -323,7 +322,7 @@ class SubmitAssessmentsMixin:
 
     PEERS = ['McNulty', 'Moreland']
 
-    SUBMISSION = (u'ՇﻉรՇ', u'รપ๒๓ٱรรٱѻก')
+    SUBMISSION = ('ՇﻉรՇ', 'รપ๒๓ٱรรٱѻก')
 
     STEPS = ['peer', 'self']
 
