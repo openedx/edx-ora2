@@ -89,8 +89,8 @@ def on_init(submission_uuid):
         )
     except DatabaseError:
         error_message = (
-            u"An internal error occurred while creating a new staff "
-            u"workflow for submission {}"
+            "An internal error occurred while creating a new staff "
+            "workflow for submission {}"
             .format(submission_uuid)
         )
         logger.exception(error_message)
@@ -120,8 +120,8 @@ def on_cancel(submission_uuid):
         pass
     except DatabaseError:
         error_message = (
-            u"An internal error occurred while cancelling the staff"
-            u"workflow for submission {}"
+            "An internal error occurred while cancelling the staff"
+            "workflow for submission {}"
             .format(submission_uuid)
         )
         logger.exception(error_message)
@@ -188,8 +188,8 @@ def get_latest_staff_assessment(submission_uuid):
         )[:1]
     except DatabaseError as ex:
         msg = (
-            u"An error occurred while retrieving staff assessments "
-            u"for the submission with UUID {uuid}: {ex}"
+            "An error occurred while retrieving staff assessments "
+            "for the submission with UUID {uuid}: {ex}"
         ).format(uuid=submission_uuid, ex=ex)
         logger.exception(msg)
         raise StaffAssessmentInternalError(msg)
@@ -227,7 +227,7 @@ def get_assessment_scores_by_criteria(submission_uuid):
         # same as the only score.
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
-        error_message = u"Error getting staff assessment scores for {}".format(submission_uuid)
+        error_message = "Error getting staff assessment scores for {}".format(submission_uuid)
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message)
 
@@ -270,13 +270,13 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
             return submission_data
         except submissions_api.SubmissionNotFoundError:
             error_message = (
-                u"Could not find a submission with the uuid {}"
+                "Could not find a submission with the uuid {}"
             ).format(student_submission_uuid)
             logger.exception(error_message)
             raise StaffAssessmentInternalError(error_message)
     else:
         logger.info(
-            u"No submission found for staff to assess ({}, {})"
+            "No submission found for staff to assess ({}, {})"
             .format(
                 course_id,
                 item_id,
@@ -374,16 +374,16 @@ def create_assessment(
         return full_assessment_dict(assessment)
 
     except InvalidRubric:
-        error_message = u"The rubric definition is not valid."
+        error_message = "The rubric definition is not valid."
         logger.exception(error_message)
         raise StaffAssessmentRequestError(error_message)
     except InvalidRubricSelection:
-        error_message = u"Invalid options were selected in the rubric."
+        error_message = "Invalid options were selected in the rubric."
         logger.warning(error_message, exc_info=True)
         raise StaffAssessmentRequestError(error_message)
     except DatabaseError:
         error_message = (
-            u"An error occurred while creating an assessment by the scorer with this ID: {}"
+            "An error occurred while creating an assessment by the scorer with this ID: {}"
         ).format(scorer_id)
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message)

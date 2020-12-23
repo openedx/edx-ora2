@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # pylint: skip-file
 
 
@@ -20,7 +19,7 @@ class Migration(migrations.Migration):
                 ('scored_at', models.DateTimeField(default=django.utils.timezone.now, db_index=True)),
                 ('scorer_id', models.CharField(max_length=40, db_index=True)),
                 ('score_type', models.CharField(max_length=2)),
-                ('feedback', models.TextField(default=u'', max_length=10000, blank=True)),
+                ('feedback', models.TextField(default='', max_length=10000, blank=True)),
             ],
             options={
                 'ordering': ['-scored_at', '-id'],
@@ -31,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('submission_uuid', models.CharField(unique=True, max_length=128, db_index=True)),
-                ('feedback_text', models.TextField(default=u'', max_length=10000)),
+                ('feedback_text', models.TextField(default='', max_length=10000)),
                 ('assessments', models.ManyToManyField(default=None, related_name='assessment_feedback', to='assessment.Assessment')),
             ],
         ),
@@ -46,7 +45,7 @@ class Migration(migrations.Migration):
             name='AssessmentPart',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('feedback', models.TextField(default=u'', blank=True)),
+                ('feedback', models.TextField(default='', blank=True)),
                 ('assessment', models.ForeignKey(related_name='parts', to='assessment.Assessment', on_delete=models.CASCADE)),
             ],
         ),
@@ -187,6 +186,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='studenttrainingworkflowitem',
-            unique_together=set([('workflow', 'order_num')]),
+            unique_together={('workflow', 'order_num')},
         ),
     ]

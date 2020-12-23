@@ -2,7 +2,7 @@
 
 
 import ddt
-from mock import patch
+from unittest.mock import patch
 
 from django.db import DatabaseError
 from django.test.utils import override_settings

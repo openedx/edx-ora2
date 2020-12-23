@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Test submission to the OpenAssessment XBlock.
 """
@@ -6,7 +5,7 @@ Test submission to the OpenAssessment XBlock.
 import datetime as dt
 import json
 
-from mock import ANY, Mock, call, patch
+from unittest.mock import ANY, Mock, call, patch
 from testfixtures import LogCapture
 import pytz
 
@@ -176,13 +175,13 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
+        expected_prompt = "<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
     def test_prompt_html_to_text(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        expected_prompt = u"<code><strong>Question 123</strong></code>"
+        expected_prompt = "<code><strong>Question 123</strong></code>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
         xblock.prompts_type = "text"
@@ -1021,7 +1020,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertIn('"submission__answer__file__block submission__answer__file__block__1"  deleted', resp)
         for index in range(len(file_uploads)):
             self.assertIn(
-                '"submission__answer__file__block submission__answer__file__block__{}"'.format(index),
+                f'"submission__answer__file__block submission__answer__file__block__{index}"',
                 resp
             )
 

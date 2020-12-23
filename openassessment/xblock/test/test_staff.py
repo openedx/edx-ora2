@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for staff assessment handlers in Open Assessment XBlock.
 """
@@ -7,7 +6,7 @@ Tests for staff assessment handlers in Open Assessment XBlock.
 import copy
 import json
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from submissions import team_api as team_sub_api
 from openassessment.assessment.api import (
@@ -181,7 +180,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertEqual(assessment['points_possible'], 6)
         self.assertEqual(assessment['scorer_id'], 'Bob')
         self.assertEqual(assessment['score_type'], 'ST')
-        self.assertEqual(assessment['feedback'], u'Staff: good job!')
+        self.assertEqual(assessment['feedback'], 'Staff: good job!')
 
         self.assert_assessment_event_published(
             xblock, 'openassessmentblock.staff_assess', assessment, type='full-grade'
@@ -191,15 +190,15 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         parts.sort(key=lambda x: x['option']['name'])
 
         self.assertEqual(len(parts), 2)
-        self.assertEqual(parts[0]['option']['criterion']['name'], u'Form')
+        self.assertEqual(parts[0]['option']['criterion']['name'], 'Form')
         self.assertEqual(parts[0]['option']['name'], 'Fair')
-        self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
-        self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
+        self.assertEqual(parts[1]['option']['criterion']['name'], '𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
+        self.assertEqual(parts[1]['option']['name'], 'ﻉซƈﻉɭɭﻉกՇ')
 
         # get the assessment scores by criteria
         assessment_by_crit = staff_api.get_assessment_scores_by_criteria(submission["uuid"])
-        self.assertEqual(assessment_by_crit[u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮'], 3)
-        self.assertEqual(assessment_by_crit[u'Form'], 2)
+        self.assertEqual(assessment_by_crit['𝓒𝓸𝓷𝓬𝓲𝓼𝓮'], 3)
+        self.assertEqual(assessment_by_crit['Form'], 2)
 
         score = staff_api.get_score(submission["uuid"], None)
         self.assertEqual(assessment['points_earned'], score['points_earned'])

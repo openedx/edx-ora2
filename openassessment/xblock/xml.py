@@ -58,7 +58,7 @@ def _safe_get_text(element):
     Returns:
         unicode
     """
-    return str(element.text) if element.text is not None else u""
+    return str(element.text) if element.text is not None else ""
 
 
 def _serialize_prompts(prompts_root, prompts_list):
@@ -81,7 +81,7 @@ def _serialize_prompts(prompts_root, prompts_list):
 
         # Prompt description
         prompt_description = etree.SubElement(prompt_el, 'description')
-        prompt_description.text = str(prompt.get('description', u''))
+        prompt_description.text = str(prompt.get('description', ''))
 
 
 def _serialize_options(options_root, options_list):
@@ -115,11 +115,11 @@ def _serialize_options(options_root, options_list):
 
         # Label (default to the option name, then an empty string)
         option_label = etree.SubElement(option_el, 'label')
-        option_label.text = str(option.get('label', option.get('name', u'')))
+        option_label.text = str(option.get('label', option.get('name', '')))
 
         # Explanation (default to empty str)
         option_explanation = etree.SubElement(option_el, 'explanation')
-        option_explanation.text = str(option.get('explanation', u''))
+        option_explanation.text = str(option.get('explanation', ''))
 
 
 def _serialize_criteria(criteria_root, criteria_list):
@@ -143,7 +143,7 @@ def _serialize_criteria(criteria_root, criteria_list):
         criterion_el = etree.SubElement(criteria_root, 'criterion')
 
         # Criterion name (default to a UUID)
-        criterion_name = etree.SubElement(criterion_el, u'name')
+        criterion_name = etree.SubElement(criterion_el, 'name')
         if 'name' in criterion:
             criterion_name.text = str(criterion['name'])
         else:
@@ -151,11 +151,11 @@ def _serialize_criteria(criteria_root, criteria_list):
 
         # Criterion label (default to the name, then an empty string)
         criterion_label = etree.SubElement(criterion_el, 'label')
-        criterion_label.text = str(criterion.get('label', criterion.get('name', u'')))
+        criterion_label.text = str(criterion.get('label', criterion.get('name', '')))
 
         # Criterion prompt (default to empty string)
         criterion_prompt = etree.SubElement(criterion_el, 'prompt')
-        criterion_prompt.text = str(criterion.get('prompt', u''))
+        criterion_prompt.text = str(criterion.get('prompt', ''))
 
         # Criterion feedback disabled, optional, or required
         # If disabled, do not set the attribute.
@@ -227,8 +227,8 @@ def parse_date(date_str, name=""):
         return str(formatted_date)
     except (ValueError, TypeError):
         msg = (
-            u'The format of the given date ({date}) for the {name} is invalid. '
-            u'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
+            'The format of the given date ({date}) for the {name} is invalid. '
+            'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
         ).format(date=date_str, name=name)
         raise UpdateFromXmlError(msg)
 
@@ -477,7 +477,7 @@ def parse_examples_xml(examples):
         answers_list = list()
         answer_elements = example_el.findall('answer')
         if len(answer_elements) != 1:
-            raise UpdateFromXmlError(u'Each "example" element must contain exactly one "answer" element')
+            raise UpdateFromXmlError('Each "example" element must contain exactly one "answer" element')
 
         answer_part_elements = answer_elements[0].findall('part')
         if answer_part_elements:
@@ -493,9 +493,9 @@ def parse_examples_xml(examples):
         example_dict['options_selected'] = []
         for select_el in example_el.findall('select'):
             if 'criterion' not in select_el.attrib:
-                raise UpdateFromXmlError(u'Each "select" element must have a "criterion" attribute')
+                raise UpdateFromXmlError('Each "select" element must have a "criterion" attribute')
             if 'option' not in select_el.attrib:
-                raise UpdateFromXmlError(u'Each "select" element must have an "option" attribute')
+                raise UpdateFromXmlError('Each "select" element must have an "option" attribute')
 
             example_dict['options_selected'].append({
                 'criterion': str(select_el.get('criterion')),
@@ -631,9 +631,9 @@ def serialize_training_examples(examples, assessment_el):
             for part in parts:
                 part_el = etree.SubElement(answer_el, 'part')
                 # pylint: disable=unicode-format-string
-                part_el.text = str(part.get('text', u''))
+                part_el.text = str(part.get('text', ''))
         except Exception:  # excuse the bare-except, looking for more information on EDUCATOR-1817
-            log.exception(u'Error parsing training example: %s', example_dict)
+            log.exception('Error parsing training example: %s', example_dict)
             raise
 
         # Options selected from the rubric

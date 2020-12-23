@@ -111,7 +111,7 @@ class SubmissionMixin:
             return (
                 False,
                 'EBADARGS',
-                self._(u'"submission" required to submit answer.')
+                self._('"submission" required to submit answer.')
             )
 
         status = False
@@ -132,13 +132,13 @@ class SubmissionMixin:
             return (
                 False,
                 'ENOPREVIEW',
-                self._(u'To submit a response, view this component in Preview or Live mode.')
+                self._('To submit a response, view this component in Preview or Live mode.')
             )
 
         workflow = self.get_workflow_info()
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
-        status_text = self._(u'Multiple submissions are not allowed.')
+        status_text = self._('Multiple submissions are not allowed.')
 
         if not workflow:
             try:
@@ -169,20 +169,20 @@ class SubmissionMixin:
                     status_tag = 'EANSWERLENGTH'
                 else:
                     msg = (
-                        u"The submissions API reported an invalid request error "
-                        u"when submitting a response for the user: {student_item}"
+                        "The submissions API reported an invalid request error "
+                        "when submitting a response for the user: {student_item}"
                     ).format(student_item=student_item_dict)
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
                     status_text = msg
             except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
                 msg = (
-                    u"An unknown error occurred while submitting "
-                    u"a response for the user: {student_item}"
+                    "An unknown error occurred while submitting "
+                    "a response for the user: {student_item}"
                 ).format(student_item=student_item_dict)
                 logger.exception(msg)
                 status_tag = 'EUNKNOWN'
-                status_text = self._(u'API returned unclassified exception.')
+                status_text = self._('API returned unclassified exception.')
 
         # error cases fall through to here
         return status, status_tag, status_text
@@ -233,11 +233,11 @@ class SubmissionMixin:
                     {"saved_response": self.saved_response}
                 )
             except Exception:  # pylint: disable=broad-except
-                return {'success': False, 'msg': self._(u"This response could not be saved.")}
+                return {'success': False, 'msg': self._("This response could not be saved.")}
             else:
-                return {'success': True, 'msg': u''}
+                return {'success': True, 'msg': ''}
         else:
-            return {'success': False, 'msg': self._(u"This response was not submitted.")}
+            return {'success': False, 'msg': self._("This response was not submitted.")}
 
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -253,7 +253,7 @@ class SubmissionMixin:
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
-        failure_response = {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
+        failure_response = {'success': False, 'msg': self._("Files descriptions were not submitted.")}
 
         if 'fileMetadata' not in data:
             return failure_response
@@ -286,13 +286,13 @@ class SubmissionMixin:
                 {"saved_response": self.saved_files_descriptions}
             )
         except FileUploadError as exc:
-            logger.exception(u"FileUploadError: file description for data {data} failed with error {error}".format(
+            logger.exception("FileUploadError: file description for data {data} failed with error {error}".format(
                 data=data,
                 error=exc
             ))
-            return {'success': False, 'msg': self._(u"Files metadata could not be saved.")}
+            return {'success': False, 'msg': self._("Files metadata could not be saved.")}
 
-        return {'success': True, 'msg': u''}
+        return {'success': True, 'msg': ''}
 
     def create_team_submission(self, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
@@ -425,7 +425,7 @@ class SubmissionMixin:
                 file_url = self._get_download_url(i)
                 if file_url:
                     return {'success': False,
-                            'msg': self._(u"Only a single file upload is allowed for this assessment.")}
+                            'msg': self._("Only a single file upload is allowed for this assessment.")}
 
         file_num = int(data.get('filenum', 0))
 
@@ -448,7 +448,7 @@ class SubmissionMixin:
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
-            logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
+            logger.exception(f"FileUploadError:Error retrieving upload URL for the data:{data}.")
             return {'success': False, 'msg': self._("Error retrieving upload URL.")}
 
     def is_supported_upload_type(self, file_ext, content_type):
@@ -498,7 +498,7 @@ class SubmissionMixin:
         if self._can_delete_file(filenum):
             try:
                 self.file_manager.delete_upload(filenum)
-                logger.debug("Deleted file {student_item_key}".format(student_item_key=student_item_key))
+                logger.debug(f"Deleted file {student_item_key}")
                 return {'success': True}
             except FileUploadError as exc:
                 logger.exception("FileUploadError: Error when deleting file {student_item_key} : {exc}".format(
@@ -545,7 +545,7 @@ class SubmissionMixin:
             if key:
                 url = file_upload_api.get_download_url(key)
         except FileUploadError as exc:
-            logger.exception(u"FileUploadError: Download url for file key {key} failed with error {error}".format(
+            logger.exception("FileUploadError: Download url for file key {key} failed with error {error}".format(
                 key=key,
                 error=exc
             ))
@@ -599,7 +599,7 @@ class SubmissionMixin:
         files_info = []
         user_state = self.get_user_state(username)
         item_dict = self.get_student_item_dict_from_username_or_email(username)
-        if u'saved_files_descriptions' in user_state:
+        if 'saved_files_descriptions' in user_state:
             # pylint: disable=protected-access
             files_descriptions = file_upload_api._safe_load_json_list(
                 user_state.get('saved_files_descriptions'),
@@ -659,7 +659,7 @@ class SubmissionMixin:
                 pass
 
             if download_url:
-                logger.info(u"Download URL exists for key {key} in block {block} for user {user}".format(
+                logger.info("Download URL exists for key {key} in block {block} for user {user}".format(
                     key=file_key,
                     user=username_or_email,
                     block=str(self.location)
@@ -710,8 +710,8 @@ class SubmissionMixin:
         Returns:
             unicode
         """
-        return self._(u'This response has been saved but not submitted.') if self.has_saved else self._(
-            u'This response has not been saved.')
+        return self._('This response has been saved but not submitted.') if self.has_saved else self._(
+            'This response has not been saved.')
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):  # pylint: disable=unused-argument

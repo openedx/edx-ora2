@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 """
 Tests for course items listing handlers.
 """
 
 import json
 
-from mock import patch
+from unittest.mock import patch
 
 from .base import SubmitAssessmentsMixin, XBlockHandlerTestCase, scenario
 

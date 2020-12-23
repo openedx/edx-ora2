@@ -41,7 +41,7 @@ class AssessmentFeedbackOption(models.Model):
         app_label = "assessment"
 
     def __str__(self):
-        return u'"{}"'.format(self.text)
+        return f'"{self.text}"'
 
 
 class AssessmentFeedback(models.Model):
@@ -58,7 +58,7 @@ class AssessmentFeedback(models.Model):
 
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)
-    feedback_text = models.TextField(max_length=10000, default=u"")
+    feedback_text = models.TextField(max_length=10000, default="")
     options = models.ManyToManyField(AssessmentFeedbackOption, related_name='assessment_feedback', default=None)
 
     class Meta:
@@ -170,8 +170,8 @@ class PeerWorkflow(models.Model):
             return None
         except DatabaseError:
             error_message = (
-                u"Error finding workflow for submission UUID {}. Workflow must be "
-                u"created for submission before beginning peer assessment."
+                "Error finding workflow for submission UUID {}. Workflow must be "
+                "created for submission before beginning peer assessment."
             ).format(submission_uuid)
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)
@@ -211,8 +211,8 @@ class PeerWorkflow(models.Model):
             return item
         except DatabaseError:
             error_message = (
-                u"An internal error occurred while creating a new peer workflow "
-                u"item for workflow {}"
+                "An internal error occurred while creating a new peer workflow "
+                "item for workflow {}"
             ).format(scorer_workflow)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
@@ -320,8 +320,8 @@ class PeerWorkflow(models.Model):
             return peer_workflows[0].submission_uuid
         except DatabaseError:
             error_message = (
-                u"An internal error occurred while retrieving a peer submission "
-                u"for learner {}"
+                "An internal error occurred while retrieving a peer submission "
+                "for learner {}"
             ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
@@ -361,8 +361,8 @@ class PeerWorkflow(models.Model):
             return random_workflow.submission_uuid
         except DatabaseError:
             error_message = (
-                u"An internal error occurred while retrieving a peer submission "
-                u"for learner {}"
+                "An internal error occurred while retrieving a peer submission "
+                "for learner {}"
             ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
@@ -390,8 +390,8 @@ class PeerWorkflow(models.Model):
             items = list(item_query[:1])
             if not items:
                 msg = (
-                    u"No open assessment was found for learner {} while assessing "
-                    u"submission UUID {}."
+                    "No open assessment was found for learner {} while assessing "
+                    "submission UUID {}."
                 ).format(self.student_id, submission_uuid)
                 raise PeerAssessmentWorkflowError(msg)
             item = items[0]
@@ -405,9 +405,9 @@ class PeerWorkflow(models.Model):
 
         except (DatabaseError, PeerWorkflowItem.DoesNotExist):
             error_message = (
-                u"An internal error occurred while retrieving a workflow item for "
-                u"learner {}. Workflow Items are created when submissions are "
-                u"pulled for assessment."
+                "An internal error occurred while retrieving a workflow item for "
+                "learner {}. Workflow Items are created when submissions are "
+                "pulled for assessment."
             ).format(self.student_id)
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)

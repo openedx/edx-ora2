@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 Django models shared by all assessment types.
 
@@ -303,8 +302,8 @@ class RubricIndex:
         """
         if criterion_name not in self._criteria_index:
             msg = (
-                u"Could not find criterion named \"{criterion}\" "
-                u"in the rubric with content hash \"{rubric_hash}\""
+                "Could not find criterion named \"{criterion}\" "
+                "in the rubric with content hash \"{rubric_hash}\""
             ).format(
                 criterion=criterion_name,
                 rubric_hash=self.rubric.content_hash
@@ -330,8 +329,8 @@ class RubricIndex:
         key = (criterion_name, option_name)
         if key not in self._option_index:
             msg = (
-                u"Option \"{option}\" not found in rubric "
-                u"with hash {rubric_hash} for criterion \"{criterion}\""
+                "Option \"{option}\" not found in rubric "
+                "with hash {rubric_hash} for criterion \"{criterion}\""
             ).format(
                 option=option_name,
                 criterion=criterion_name,
@@ -360,8 +359,8 @@ class RubricIndex:
         key = (criterion_name, option_points)
         if key not in self._option_points_index:
             msg = (
-                u"Option with points {option_points} not found in rubric "
-                u"with hash {rubric_hash} for criterion {criterion}"
+                "Option with points {option_points} not found in rubric "
+                "with hash {rubric_hash} for criterion {criterion}"
             ).format(
                 option_points=option_points,
                 criterion=criterion_name,
@@ -427,7 +426,7 @@ class Assessment(models.Model):
     scorer_id = models.CharField(max_length=40, db_index=True)
     score_type = models.CharField(max_length=2)
 
-    feedback = models.TextField(max_length=10000, default=u"", blank=True)
+    feedback = models.TextField(max_length=10000, default="", blank=True)
 
     class Meta:
         ordering = ["-scored_at", "-id"]
@@ -455,7 +454,7 @@ class Assessment(models.Model):
         return float(self.points_earned) / self.points_possible
 
     def __str__(self):
-        return u"Assessment {}".format(self.id)
+        return f"Assessment {self.id}"
 
     @classmethod
     def create(cls, rubric, scorer_id, submission_uuid, score_type, feedback=None, scored_at=None):
@@ -630,7 +629,7 @@ class AssessmentPart(models.Model):
     # Free-form text feedback for the specific criterion
     # Note that the `Assessment` model also has a feedback field,
     # which is feedback on the submission as a whole.
-    feedback = models.TextField(default=u"", blank=True)
+    feedback = models.TextField(default="", blank=True)
 
     class Meta:
         app_label = "assessment"
@@ -674,7 +673,7 @@ class AssessmentPart(models.Model):
         # then fill in feedback-only criteria with an empty string for feedback.
         if feedback is None:
             feedback = {
-                criterion.name: u""
+                criterion.name: ""
                 for criterion in rubric_index.find_criteria_without_options()
             }
 
@@ -689,7 +688,7 @@ class AssessmentPart(models.Model):
             {
                 'criterion': rubric_index.find_criterion(criterion_name),
                 'option': rubric_index.find_option(criterion_name, option_name),
-                'feedback': feedback.get(criterion_name, u"")[0:cls.MAX_FEEDBACK_SIZE],
+                'feedback': feedback.get(criterion_name, "")[0:cls.MAX_FEEDBACK_SIZE],
             }
             for criterion_name, option_name in selected.items()
         ]
@@ -762,9 +761,9 @@ class AssessmentPart(models.Model):
 
         # Validate that we have selections for all criteria
         # This will raise an exception if we're missing any criteria
-        cls._check_has_all_criteria(rubric_index, set(
+        cls._check_has_all_criteria(rubric_index, {
             part['criterion'].name for part in assessment_parts
-        ))
+        })
 
         # Create assessment parts for each criterion and associate them with the assessment
         # Since we're not accepting written feedback, set all feedback to an empty string.
@@ -773,7 +772,7 @@ class AssessmentPart(models.Model):
                 assessment=assessment,
                 criterion=assessment_part['criterion'],
                 option=assessment_part['option'],
-                feedback=u""
+                feedback=""
             )
             for assessment_part in assessment_parts
         ])
@@ -795,7 +794,7 @@ class AssessmentPart(models.Model):
         """
         missing_criteria = rubric_index.find_missing_criteria(selected_criteria)
         if missing_criteria:
-            msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
+            msg = f"Missing selections for criteria: {missing_criteria}"
             raise InvalidRubricSelection(msg)
 
     @classmethod
@@ -827,7 +826,7 @@ class AssessmentPart(models.Model):
         missing_criteria = zero_option_criteria_missing_feedback | optioned_criteria_missing_selection
 
         if missing_criteria:
-            msg = u"Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
+            msg = "Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
             raise InvalidRubricSelection(msg)
 
 
@@ -843,12 +842,12 @@ class SharedFileUpload(TimeStampedModel):
     owner_id = models.CharField(max_length=255, db_index=True)
     file_key = models.CharField(max_length=255, unique=True)
     history = HistoricalRecords()
-    description = models.TextField(default=u"", blank=True)
+    description = models.TextField(default="", blank=True)
     size = models.BigIntegerField(default=0, blank=True)
-    name = models.CharField(max_length=255, default=u"")
+    name = models.CharField(max_length=255, default="")
 
     def __str__(self):
-        return u"SharedFileUpload {}".format(self.file_key)
+        return f"SharedFileUpload {self.file_key}"
 
     @cached_property
     def index(self):

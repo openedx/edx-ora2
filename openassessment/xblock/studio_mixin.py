@@ -238,7 +238,7 @@ class StudioMixin:
             leaderboard_show=data['leaderboard_show']
         )
         if not success:
-            return {'success': False, 'msg': self._(u'Validation error: {error}').format(error=msg)}
+            return {'success': False, 'msg': self._('Validation error: {error}').format(error=msg)}
 
         # At this point, all the input data has been validated,
         # so we can safely modify the XBlock fields.
@@ -267,7 +267,7 @@ class StudioMixin:
         self.teams_enabled = bool(data.get('teams_enabled', False))
         self.selected_teamset_id = data.get('selected_teamset_id', '')
 
-        return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
+        return {'success': True, 'msg': self._('Successfully updated OpenAssessment XBlock')}
 
     @XBlock.json_handler
     def check_released(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -286,7 +286,7 @@ class StudioMixin:
         # There aren't currently any server-side error conditions we report to the client,
         # but we send success/msg values anyway for consistency with other handlers.
         return {
-            'success': True, 'msg': u'',
+            'success': True, 'msg': '',
             'is_released': self.is_released()
         }
 

@@ -3,7 +3,7 @@ Tests for student training models.
 """
 
 
-import mock
+from unittest import mock
 
 from django.db import IntegrityError
 

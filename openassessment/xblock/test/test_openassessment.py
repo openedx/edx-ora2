@@ -9,7 +9,7 @@ from io import StringIO
 import json
 
 import ddt
-from mock import MagicMock, Mock, PropertyMock, patch
+from unittest.mock import MagicMock, Mock, PropertyMock, patch
 import pytz
 
 from freezegun import freeze_time
@@ -209,7 +209,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
         present_prompt_text = "you'll provide a response to the prompt"
-        missing_article = u'<article class="submission__answer__part__prompt'
+        missing_article = '<article class="submission__answer__part__prompt'
         self.assertIn(present_prompt_text, body_html)
         self.assertNotIn(missing_article, body_html)
 
@@ -520,12 +520,12 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
         self.assertEqual(xblock.prompts, [
             {
-                'description': (u'Given the state of the world today, what do you think should be done to '
-                                u'combat poverty? Please answer in a short essay of 200-300 words.')
+                'description': ('Given the state of the world today, what do you think should be done to '
+                                'combat poverty? Please answer in a short essay of 200-300 words.')
             },
             {
-                'description': (u'Given the state of the world today, what do you think should be done to '
-                                u'combat pollution?')
+                'description': ('Given the state of the world today, what do you think should be done to '
+                                'combat pollution?')
             }
         ])
 

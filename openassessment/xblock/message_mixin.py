@@ -86,8 +86,8 @@ class MessageMixin:
 
         context = {
             status: True,
-            "{}_approaching".format(status): step_info.get('approaching', False),
-            "{}_not_released".format(status): (step_info.get("reason") == "start"),
+            f"{status}_approaching": step_info.get('approaching', False),
+            f"{status}_not_released": (step_info.get("reason") == "start"),
 
             # Uses a static field in the XBlock to determine if the PeerAssessment Block
             # was able to pick up an assessment.

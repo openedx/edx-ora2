@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 Tests for staff assessments.
 """
@@ -9,7 +8,7 @@ from datetime import timedelta
 
 from ddt import data, ddt, unpack
 from freezegun import freeze_time
-import mock
+from unittest import mock
 
 from django.db import DatabaseError
 from django.utils.timezone import now
@@ -337,7 +336,7 @@ class TestStaffAssessment(CacheResetTest):
                 OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
                 invalid_rubric,
             )
-        self.assertEqual(str(context_manager.exception), u"The rubric definition is not valid.")
+        self.assertEqual(str(context_manager.exception), "The rubric definition is not valid.")
 
     @data("criterion_not_found", "option_not_found", "missing_criteria", "some_criteria_not_assessed")
     def test_invalid_rubric_options_exception(self, invalid_reason):
@@ -363,7 +362,7 @@ class TestStaffAssessment(CacheResetTest):
                 dict_to_use, dict(), "",
                 RUBRIC,
             )
-        self.assertEqual(str(context_manager.exception), u"Invalid options were selected in the rubric.")
+        self.assertEqual(str(context_manager.exception), "Invalid options were selected in the rubric.")
 
     @mock.patch('openassessment.assessment.models.Assessment.objects.filter')
     def test_database_filter_error_handling(self, mock_filter):
@@ -380,7 +379,7 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(
             str(context_manager.exception),
             (
-                u"An error occurred while retrieving staff assessments for the submission with UUID {uuid}: {ex}"
+                "An error occurred while retrieving staff assessments for the submission with UUID {uuid}: {ex}"
             ).format(uuid=tim_sub["uuid"], ex="KABOOM!")
         )
 
@@ -389,7 +388,7 @@ class TestStaffAssessment(CacheResetTest):
             staff_api.get_assessment_scores_by_criteria(tim_sub["uuid"])
         self.assertEqual(
             str(context_manager.exception),
-            u"Error getting staff assessment scores for {}".format(tim_sub["uuid"])
+            "Error getting staff assessment scores for {}".format(tim_sub["uuid"])
         )
 
     @mock.patch('openassessment.assessment.models.Assessment.create')
@@ -406,7 +405,7 @@ class TestStaffAssessment(CacheResetTest):
             )
         self.assertEqual(
             str(context_manager.exception),
-            u"An error occurred while creating an assessment by the scorer with this ID: {}".format("Dumbledore")
+            "An error occurred while creating an assessment by the scorer with this ID: {}".format("Dumbledore")
         )
 
     def test_fetch_next_submission(self):

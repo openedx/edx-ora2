@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for serializing to/from XML.
 """
@@ -9,7 +8,7 @@ import json
 
 import dateutil.parser
 import ddt
-import mock
+from unittest import mock
 import pytz
 
 from django.test import TestCase
@@ -80,7 +79,7 @@ class TestSerializeContent(TestCase):
             "due": "2014-05-30T00:00:00.92926",
             "examples": [
                 {
-                    "answer": u"ẗëṡẗ äṅṡẅëṛ",
+                    "answer": "ẗëṡẗ äṅṡẅëṛ",
                     "options_selected": [
                         {
                             "criterion": "Test criterion",
@@ -112,7 +111,7 @@ class TestSerializeContent(TestCase):
         """
         Mock the OA XBlock.
         """
-        super(TestSerializeContent, self).setUp()
+        super().setUp()
         self.oa_block = mock.MagicMock(OpenAssessmentBlock)
 
     def _configure_xblock(self, data):
@@ -153,7 +152,7 @@ class TestSerializeContent(TestCase):
         try:
             parsed_actual = etree.fromstring(xml)
         except (ValueError, etree.XMLSyntaxError):
-            self.fail(u"Could not parse output XML:\n{}".format(xml))
+            self.fail(f"Could not parse output XML:\n{xml}")
 
         # Assume that the test data XML is valid; if not, this will raise an error
         # instead of a test failure.
@@ -168,20 +167,20 @@ class TestSerializeContent(TestCase):
         expected_elements = list(parsed_expected.getiterator())
         self.assertEqual(
             len(actual_elements), len(expected_elements),
-            msg=u"Incorrect XML output:\nActual: {}\nExpected: {}".format(xml, pretty_expected)
+            msg=f"Incorrect XML output:\nActual: {xml}\nExpected: {pretty_expected}"
         )
 
         for actual, expected in zip(actual_elements, expected_elements):
             self.assertEqual(actual.tag, expected.tag)
             self.assertEqual(
                 actual.text, expected.text,
-                msg=u"Incorrect text for {tag}.  Expected '{expected}' but found '{actual}'".format(
+                msg="Incorrect text for {tag}.  Expected '{expected}' but found '{actual}'".format(
                     tag=actual.tag, expected=expected.text, actual=actual.text
                 )
             )
             self.assertCountEqual(
                 list(actual.items()), list(expected.items()),
-                msg=u"Incorrect attributes for {tag}.  Expected {expected} but found {actual}".format(
+                msg="Incorrect attributes for {tag}.  Expected {expected} but found {actual}".format(
                     tag=actual.tag, expected=list(expected.items()), actual=list(actual.items())
                 )
             )
@@ -226,7 +225,7 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:     # pylint:disable=W0703
-                    msg = u"Could not parse mutated criteria dict {criteria}\n{ex}".format(criteria=mutated_dict, ex=ex)
+                    msg = f"Could not parse mutated criteria dict {mutated_dict}\n{ex}"
                     self.fail(msg)
 
     def test_mutated_prompts_dict(self):
@@ -240,7 +239,7 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:  # pylint:disable=W0703
-                    msg = u"Could not parse mutated prompts list {prompts}\n{ex}".format(prompts=mutated_list, ex=ex)
+                    msg = f"Could not parse mutated prompts list {mutated_list}\n{ex}"
                     self.fail(msg)
 
     def test_mutated_assessments_dict(self):
@@ -254,7 +253,7 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:     # pylint:disable=W0703
-                    msg = u"Could not parse mutated assessment dict {assessment}\n{ex}".format(
+                    msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(
                         assessment=mutated_dict, ex=ex
                     )
                     self.fail(msg)
@@ -263,14 +262,14 @@ class TestSerializeContent(TestCase):
     def test_mutated_field(self, field):
         self._configure_xblock({})
 
-        for mutated_value in [0, u"\u9282", None]:
+        for mutated_value in [0, "\u9282", None]:
             setattr(self.oa_block, field, mutated_value)
             xml = serialize_content(self.oa_block)
 
             try:
                 etree.fromstring(xml)
             except Exception as ex:     # pylint:disable=W0703
-                msg = u"Could not parse mutated field {field} with value {value}\n{ex}".format(
+                msg = "Could not parse mutated field {field} with value {value}\n{ex}".format(
                     field=field, value=mutated_value, ex=ex
                 )
                 self.fail(msg)
@@ -299,12 +298,12 @@ class TestSerializeContent(TestCase):
         options_count = 0
         for criterion in content_dict['rubric_criteria']:
             criterion_names.add(criterion['name'])
-            self.assertEqual(criterion['label'], u'')
+            self.assertEqual(criterion['label'], '')
             criteria_count += 1
 
             for option in criterion['options']:
                 option_names.add(option['name'])
-                self.assertEqual(option['label'], u'')
+                self.assertEqual(option['label'], '')
                 options_count += 1
 
         self.assertEqual(len(criterion_names), criteria_count)
@@ -328,18 +327,17 @@ class TestSerializeContent(TestCase):
         for key, val in input_dict.items():
 
             # Mutation #1: Remove the key
-            print(u"== Removing key {}".format(key))
+            print(f"== Removing key {key}")
             yield {k: v for k, v in input_dict.items() if k != key}
 
             if isinstance(val, dict):
 
                 # Mutation #2: Empty dict
-                print(u"== Emptying dict {}".format(key))
+                print(f"== Emptying dict {key}")
                 yield self._mutate_dict(input_dict, key, dict())
 
                 # Mutation #3-5: value mutations
-                for mutated in self._value_mutations(input_dict, key):
-                    yield mutated
+                yield from self._value_mutations(input_dict, key)
 
                 # Recursively mutate sub keys
                 for sub_mutation in self._dict_mutations(val):
@@ -347,12 +345,11 @@ class TestSerializeContent(TestCase):
 
             elif isinstance(val, list):
                 # Mutation #2: Empty list
-                print(u"== Emptying list {}".format(key))
+                print(f"== Emptying list {key}")
                 yield self._mutate_dict(input_dict, key, list())
 
                 # Mutation #3-5: value mutations
-                for mutated in self._value_mutations(input_dict, key):
-                    yield mutated
+                yield from self._value_mutations(input_dict, key)
 
                 # Recursively mutate sub-items
                 for item in val:
@@ -362,8 +359,7 @@ class TestSerializeContent(TestCase):
 
             else:
                 # Mutation #3-5: value mutations
-                for mutated in self._value_mutations(input_dict, key):
-                    yield mutated
+                yield from self._value_mutations(input_dict, key)
 
     def _list_mutations(self, input_list):
         """
@@ -383,8 +379,7 @@ class TestSerializeContent(TestCase):
         yield list()
 
         # Mutation #3-5: value mutations
-        for mutated in (None, u"\u9731", 0):
-            yield mutated
+        yield from (None, "\u9731", 0)
 
         # Recursively mutate sub-items
         for index, item in enumerate(input_list):
@@ -403,13 +398,13 @@ class TestSerializeContent(TestCase):
         Yields:
             dict
         """
-        print(u"== None value {}".format(key))
+        print(f"== None value {key}")
         yield self._mutate_dict(input_dict, key, None)
 
-        print(u"== Unicode value {}".format(key))
-        yield self._mutate_dict(input_dict, key, u"\u9731")
+        print(f"== Unicode value {key}")
+        yield self._mutate_dict(input_dict, key, "\u9731")
 
-        print(u"== int value {}".format(key))
+        print(f"== int value {key}")
         yield self._mutate_dict(input_dict, key, 0)
 
     @staticmethod
@@ -540,7 +535,7 @@ class TestParseFromXml(TestCase):
 
                 self.assertEqual(
                     actual, expected,
-                    msg=u"Wrong value for '{key}': was {actual} but expected {expected}".format(
+                    msg="Wrong value for '{key}': was {actual} but expected {expected}".format(
                         key=field_name,
                         actual=repr(actual),
                         expected=repr(expected)
