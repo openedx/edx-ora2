@@ -58,7 +58,7 @@ class TestGrader:
             return self.response_with_error_v2(str(exc))
 
         output = []
-        if problem_name in OOP_PROBLEM_NAMES:
+        if self.is_design_problem(problem_name):
             output.append(self.run_design_code(language, code_file_name, lang_extension_file_path))
         else:
             sample_result = self.run_code('sample', language, code_file_name, lang_extension_file_path, problem_name)
@@ -372,3 +372,10 @@ class TestGrader:
         except IndexError:
             output_error = error
         return self.truncate_error_output(output_error)
+
+    @staticmethod
+    def is_design_problem(problem_name):
+        """
+        Temporary helper method to check if a coding problem is a design problem.
+        """
+        return problem_name in OOP_PROBLEM_NAMES

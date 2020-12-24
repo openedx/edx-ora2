@@ -641,6 +641,7 @@ class SubmissionMixin(object):
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
 
+            context["design_problem"] = TestGrader.is_design_problem(self.display_name)
             context["student_submission"] = update_submission_old_format_answer(student_submission)
             context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
 
