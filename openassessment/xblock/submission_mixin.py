@@ -13,7 +13,7 @@ from openassessment.xblock.tasks import run_and_save_staff_test_cases
 from xblock.core import XBlock
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from .job_sample_grader.job_sample_test_grader import TestGrader
+from .job_sample_grader.code_grader import TestGrader
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .utils import get_code_language, grade_response

@@ -11,7 +11,7 @@ import logging
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestGrader
+from openassessment.xblock.job_sample_grader.code_grader import TestGrader
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language, get_percentage
 from xblock.core import XBlock

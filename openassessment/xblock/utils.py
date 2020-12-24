@@ -1,7 +1,7 @@
 """
 Grader ORA utils.
 """
-from .job_sample_grader.job_sample_test_grader import TestGrader
+from .job_sample_grader.code_grader import TestGrader
 
 
 # Map language name to be used in template code class

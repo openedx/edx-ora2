@@ -11,7 +11,7 @@ from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
-OOP_PROBLEM_NAMES = ["call-center", "car-parking", "email-client"]
+OOP_PROBLEM_NAMES = ["call-center", "car-parking", "email-client", "even"]
 
 
 class TestGrader:
@@ -24,8 +24,8 @@ class TestGrader:
         'java': 'java',
         'c++': 'cpp'
     }
-    __SECRET_DATA_DIR__ = "/grader_data/"
-    __TMP_DATA_DIR__ = "/tmp/"
+    __SECRET_DATA_DIR__ = os.path.dirname(__file__) + "/secret_data/"
+    __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
 
     def grade(self, response, add_staff_cases=False):
         problem_name = response['problem_name']
@@ -48,8 +48,8 @@ class TestGrader:
                 student_response = self.update_java_code(source_code, code_file_name)
             else:
                 student_response = source_code
-            full_code_file_name = '{0}.{1}'.format(code_file_path, language)
-            self.write_code_file(student_response, full_code_file_name)
+            lang_extension_file_path = '{0}.{1}'.format(code_file_path, language)
+            self.write_code_file(student_response, lang_extension_file_path)
         except UnicodeEncodeError as e:
             return self.response_with_error_v2("{} - {} : {}".format(
                 e.start, e.end, e.reason
@@ -58,11 +58,14 @@ class TestGrader:
             return self.response_with_error_v2(str(exc))
 
         output = []
-        sample_result = self.run_code('sample', language, code_file_name, full_code_file_name, problem_name)
-        output.append(sample_result)
-        if add_staff_cases:
-            staff_result = self.run_code('staff', language, code_file_name, full_code_file_name, problem_name)
-            output.append(staff_result)
+        if problem_name in OOP_PROBLEM_NAMES:
+            output.append(self.run_design_code(language, code_file_name, lang_extension_file_path))
+        else:
+            sample_result = self.run_code('sample', language, code_file_name, lang_extension_file_path, problem_name)
+            output.append(sample_result)
+            if add_staff_cases:
+                staff_result = self.run_code('staff', language, code_file_name, lang_extension_file_path, problem_name)
+                output.append(staff_result)
 
         shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
 
@@ -89,7 +92,7 @@ class TestGrader:
             'error': [error]
         }
 
-    def run_code(self, run_type, lang, code_file_name, full_code_file_name, problem_name):
+    def run_code(self, run_type, lang, code_file_name, lang_extension_file_path, problem_name):
 
         test_cases = glob.glob("{}{}/{}/*".format(self.__SECRET_DATA_DIR__, problem_name, run_type))
 
@@ -111,7 +114,7 @@ class TestGrader:
             expected_output_file = "{}/output.out".format(case)
             run_output = self.run_test_cases(
                 lang, code_file_name,
-                full_code_file_name,
+                lang_extension_file_path,
                 input_file,
                 expected_output_file,
                 timeout=5,
@@ -119,11 +122,7 @@ class TestGrader:
             )
             # If execution faced error, stop processing
             if run_output['errors']:
-                try:
-                    output_error = run_output['errors'][0]
-                except IndexError:
-                    output_error = run_output['errors']
-                output['error'] = self.truncate_error_output(output_error)
+                output['error'] = self.process_execution_error(run_output['errors'])
                 break
             if run_output['correct']:
                 output['correct'] += 1
@@ -138,6 +137,34 @@ class TestGrader:
                 'expected_output': expected_output,
                 'correct': run_output['correct']
             }
+
+        return output
+
+    def run_design_code(self, lang, code_file_name, lang_extension_file_path):
+        """
+        Method to run the design based problems i.e. problems with no test case files
+        Args:
+            lang(str): code language
+            code_file_name(str): name of the code file
+            lang_extension_file_path(str): complete path of the code file with proper lang extension
+
+        Returns(dict):
+                Returns a dict with the following keys containing the result of code execution:
+                    * is_design_problem(str): Boolean to specify if the problem is design problem
+                    * output(str): the code execution output
+                    * error(str): any error occurred during the code execution
+                    * run_type(str): defaults to sample
+        """
+        output = {
+            'is_design_problem': True,
+            'run_type': 'sample',
+            'output': None,
+            'error': None
+        }
+        try:
+            output['output'] = self.execute_code(lang, code_file_name, lang_extension_file_path, None, timeout=15)
+        except Exception as e:
+            output['error'] = self.process_execution_error([str(e)])
 
         return output
 
@@ -186,35 +213,83 @@ class TestGrader:
             'tests': []
         }
 
-    def execute_code(self, lang, code_file_name, code_full_file_name, input_file, timeout=10):
+    def execute_code(self, lang, code_file_name, lang_extension_file_path, input_file, timeout=10):
         """
-        compiles the code, runs the code for python, java and c++ and returns output of the code
+        compiles the code, runs the code for python, java and c++ and returns output of the code.
         """
         if lang == 'py':
-            output = self.run_as_subprocess('python3 {} {}'.format(code_full_file_name, input_file), running_code=True,
-                                       timeout=timeout)
-
+            return self.run_python_code(lang_extension_file_path, timeout, input_file)
         elif lang == 'java':
-            self.run_as_subprocess(
-                'javac -cp {0} {1}'.format(TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar", code_full_file_name),
-                compiling=True)
-            output = self.run_as_subprocess(
-                'java -cp {0} {1} {2}'.format(
-                    TestGrader.__TMP_DATA_DIR__ + code_file_name + ":" + TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar",
-                    code_file_name, input_file),
-                running_code=True, timeout=timeout
-            )
-
+            return self.run_java_code(code_file_name, timeout, input_file)
         elif lang == 'cpp':
-            compiled_file_full_name_with_path = code_full_file_name + '.o'
-            if not compiled_file_full_name_with_path.startswith('/'):
-                compiled_file_full_name_with_path = '/' + compiled_file_full_name_with_path
-            self.run_as_subprocess('g++ ' + code_full_file_name + ' -o ' + compiled_file_full_name_with_path, compiling=True)
-            output = self.run_as_subprocess(compiled_file_full_name_with_path + " " + input_file, running_code=True, timeout=timeout)
-
+            return self.run_cpp_code(lang_extension_file_path, timeout, input_file)
         else:
             raise Exception
-        return output
+
+    def run_python_code(self, code_file, timeout, code_input_file=None):
+        """
+        Wrapper to run python code.
+        Args:
+            code_file(str): path to code file
+            timeout(int): time after which the code execution will be forced-kill.
+            code_input_file(str): Optional parameter, path to the input file that will be provided to code file.
+
+        Returns:
+            str output of the code execution
+        """
+        execution_command = 'python3 ' + code_file
+        if code_input_file:
+            execution_command += ' {}'.format(code_input_file)
+        return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
+
+    def run_java_code(self, code_file_name, timeout, code_input_file=None):
+        """
+        Wrapper to run Java code.
+        Args:
+            code_file_name(str): name of the code file
+            timeout(int): time after which the code execution will be forced-kill.
+            code_input_file(str): Optional parameter, path to the input file that will be provided to code file.
+
+        Returns:
+            str output of the code execution
+        """
+        filename_with_lang_extension = "{}{}/{}.{}".format(
+            TestGrader.__TMP_DATA_DIR__, code_file_name, code_file_name, 'java'
+        )
+        compilation_command = 'javac -cp {0} {1}'.format(
+            TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar", filename_with_lang_extension
+        )
+        execution_command = "java -cp {} {}".format(
+            TestGrader.__TMP_DATA_DIR__ + code_file_name + ":" + TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar",
+            code_file_name
+        )
+        if code_input_file:
+            execution_command += " {}".format(code_input_file)
+        self.run_as_subprocess(compilation_command, compiling=True)
+        return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
+
+    def run_cpp_code(self, code_file, timeout, code_input_file=None):
+        """
+        Wrapper to run C++ code.
+        Args:
+            code_file(str): path to code file
+            timeout(int): time after which the code execution will be forced-kill.
+            code_input_file(str): Optional parameter, path to the input file that will be provided to code file.
+
+        Returns:
+            str output of the code execution
+        """
+        compiled_file_path = code_file + '.o'
+        if not compiled_file_path.startswith('/'):
+            compiled_file_path = '/' + compiled_file_path
+
+        compilation_command = 'g++ ' + code_file + ' -o ' + compiled_file_path
+        self.run_as_subprocess(compilation_command, compiling=True)
+
+        execution_command = compiled_file_path
+        if code_input_file:
+            execution_command += " {}".format(code_input_file)
+        return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
 
     def update_java_code(self, source_code, code_file_name):
         """
@@ -268,17 +343,17 @@ class TestGrader:
                 'tests': [[True, "", actual_output.strip()]]
             }
 
-    def run_test_cases(self, lang, code_file_name, full_code_file_name, input_file_argument,
+    def run_test_cases(self, lang, code_file_name, lang_extension_file_path, input_file_argument,
                        expected_output_file, timeout=10, problem_name=''):
-        # Run Sample Test Case
         try:
-            output = self.execute_code(lang, code_file_name, full_code_file_name, input_file_argument, timeout)
+            output = self.execute_code(lang, code_file_name, lang_extension_file_path, input_file_argument, timeout)
             result = self.compare_outputs(output, expected_output_file, problem_name)
             return result
         except Exception as e:
             return self.respond_with_error(str(e))
 
-    def truncate_error_output(self, output):
+    @staticmethod
+    def truncate_error_output(output):
         """
         Truncate error output to last 150 lines if it is very long.
         """
@@ -287,3 +362,13 @@ class TestGrader:
             actual_output.append("... Extra output Trimmed.")
             return "\n".join(actual_output)
         return output
+
+    def process_execution_error(self, error):
+        """
+        Helper method to process and extract the execution error
+        """
+        try:
+            output_error = error[0]
+        except IndexError:
+            output_error = error
+        return self.truncate_error_output(output_error)

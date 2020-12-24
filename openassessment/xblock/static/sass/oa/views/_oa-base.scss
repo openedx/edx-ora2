@@ -1229,6 +1229,18 @@ p.output_text_area {
   white-space: pre-wrap;
 }
 
+p.execution_output {
+  background: rgba(0, 205, 0, 0.3);
+  font-size: $text-size;
+  height: $text-area-height;
+  padding: $baseline-v/4;
+  margin: $baseline-v/4;
+  overflow: auto;
+  text-overflow: clip;
+  white-space: pre-wrap;
+  border: 2px solid black;
+}
+
 p.output_error_text_area {
   background: $error-background;
   border: 2px solid $black;

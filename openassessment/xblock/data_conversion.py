@@ -8,7 +8,7 @@ import json
 
 import six
 
-from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestGrader
+from openassessment.xblock.job_sample_grader.code_grader import TestGrader
 
 
 def convert_training_examples_list_to_dict(examples_list):

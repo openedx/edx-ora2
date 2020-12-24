@@ -244,6 +244,16 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /*
+    Render the code output for the design problems
+    */
+    showExecutionResults: function(output){
+        var $elem = $('<p></p>');
+        $elem.text(output);
+        $elem.addClass('execution_output');
+        $("#test_case_status_result", this.element).html($elem);
+    },
+
+    /*
     Add the HTML to show how many test cases passed from the total number
     */
     showResultSummary: function(correct, total){
@@ -284,6 +294,13 @@ OpenAssessment.ResponseView.prototype = {
     */
     indicateError: function(){
           this.saveStatus(gettext("Execution Error"));
+    },
+
+    /*
+    Indicate successful code execution
+    */
+    indicateExecutionSuccess: function(){
+        this.saveStatus(gettext("Code Execution Successful"));
     },
 
     /*
@@ -603,10 +620,14 @@ OpenAssessment.ResponseView.prototype = {
                 view.indicateError();
                 view.clearResultSummary();
             }
-            else{
+            else if(data.is_design_problem === undefined || !data.is_design_problem){
                 view.showResultSummary(data.correct, data.total_tests);
                 view.showTestCaseResult(data.output);
                 view.indicateCorrectness(data.correct === data.total_tests);
+            } else{
+                view.indicateExecutionSuccess();
+                view.showExecutionResults(data.output);
+
             }
 
             // ... but update the UI based on what the user may have entered
