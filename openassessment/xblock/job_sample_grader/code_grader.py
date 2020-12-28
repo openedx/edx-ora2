@@ -11,7 +11,7 @@ from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
-OOP_PROBLEM_NAMES = ["call-center", "car-parking", "email-client", "even"]
+OOP_PROBLEM_NAMES = ["design-problem-1", "design-problem-2", "design-problem-3"]
 
 
 class TestGrader:
@@ -24,8 +24,8 @@ class TestGrader:
         'java': 'java',
         'c++': 'cpp'
     }
-    __SECRET_DATA_DIR__ = os.path.dirname(__file__) + "/secret_data/"
-    __TMP_DATA_DIR__ = os.path.dirname(__file__) + "/tmp_data/"
+    __SECRET_DATA_DIR__ = "/grader_data/"
+    __TMP_DATA_DIR__ = "/tmp/"
 
     def grade(self, response, add_staff_cases=False):
         problem_name = response['problem_name']

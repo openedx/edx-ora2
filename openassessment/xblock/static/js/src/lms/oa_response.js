@@ -247,10 +247,34 @@ OpenAssessment.ResponseView.prototype = {
     Render the code output for the design problems
     */
     showExecutionResults: function(output){
-        var $elem = $('<p></p>');
-        $elem.text(output);
-        $elem.addClass('execution_output');
-        $("#test_case_status_result", this.element).html($elem);
+        var $header, $content;
+        $header = this.getExecutionResultHeader();
+        $content = $('<p></p>')
+        $content.text(output);
+        $content.addClass('execution_output');
+        $content = $header.add($content);
+        $("#test_case_status_result", this.element).html($content);
+    },
+
+    /*
+    Render the code execution errors for the design problems
+    */
+    showExecutionError: function(error){
+        var $header, $content;
+        $header = this.getExecutionResultHeader();
+        $content = this.errorTextArea(error);
+        $content = $header.add($content);
+        $("#test_case_status_result", this.element).html($content);
+    },
+
+    /*
+    Create and return the header for design problem execution
+    */
+    getExecutionResultHeader: function(){
+    var $header = $('<h2></h2>');
+    $header.text(gettext("Code Execution Result"));
+    $header.css('color', 'black');
+    return $header
     },
 
     /*
@@ -616,7 +640,12 @@ OpenAssessment.ResponseView.prototype = {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
             if(data.error){
-                view.showRunError(data.error);
+                if(data.is_design_problem !== undefined && data.is_design_problem){
+                    view.showExecutionError(data.error);
+                }
+                else{
+                    view.showRunError(data.error);
+                }
                 view.indicateError();
                 view.clearResultSummary();
             }

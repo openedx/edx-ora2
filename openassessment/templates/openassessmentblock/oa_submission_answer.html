@@ -21,8 +21,10 @@
 
     {% if design_problem %}
 
-        <p>{{answer.sample_run.output}}</p>
-
+    <li>
+        {% trans "Code Execution Result" as header_content %}
+        {% include "openassessmentblock/render_execution_details.html" with response=answer.sample_run header_content=header_content %}
+    </li>
     {% else %}
 
         {% if staff_view %}
@@ -41,7 +43,7 @@
             {% trans "Test Case Result Breakdown" as header_content %}
             {% trans "Your Output" as code_output_label %}
             {% trans "Expected Output" as expected_output_label %}
-            {% include "openassessmentblock/render_submission_details.html" with response=answer.sample_run student_output_header=code_output_label expected_output_header=expected_output_label header_content=header_content%}
+            {% include "openassessmentblock/render_submission_details.html" with response=answer.sample_run student_output_header=code_output_label expected_output_header=expected_output_label header_content=header_content %}
         </li>
 
         {% if staff_view %}
