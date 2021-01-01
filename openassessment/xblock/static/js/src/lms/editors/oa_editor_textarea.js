@@ -6,7 +6,7 @@
   define(() => {
     class EditorTextarea {
       /**
-       Loads textarea editor. Just a simple promise that resolves immediately.
+       Loads textarea editor.
 
       Args:
       elements (object): editor elements selected by jQuery

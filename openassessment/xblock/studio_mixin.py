@@ -54,7 +54,7 @@ class StudioMixin:
 
     # Build editor options from AVAILABLE_EDITORS
     AVAILABLE_EDITOR_OPTIONS = {
-        key: ugettext_lazy(val.get('display', key)) for key, val in AVAILABLE_EDITORS.items()
+        key: ugettext_lazy(val.get('display_name', key)) for key, val in AVAILABLE_EDITORS.items()
     }
 
     STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'

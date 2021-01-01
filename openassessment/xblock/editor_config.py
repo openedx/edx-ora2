@@ -7,12 +7,11 @@ editor_overrides = getattr(settings, 'ORA_AVAILABLE_EDITORS', {})
 
 AVAILABLE_EDITORS = {
     'text': {
-        'display': 'Simple Text Editor',
+        'display_name': 'Simple Text Editor',
         'js': ['/static/js/openassessment-editor-textarea.js'],
     },
     'tinymce': {
-        'id': 'tinymce',
-        'display': 'WYSIWYG Editor',
+        'display_name': 'WYSIWYG Editor',
         'js': ['/static/js/openassessment-editor-tinymce.js'],
         'css': ['/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css'],
     },

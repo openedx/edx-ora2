@@ -35,9 +35,10 @@ export class ResponseEditorLoader {
         const requiredJSFiles = editorConfig.js;
 
         /* eslint-disable-next-line import/no-dynamic-require */
-        require(requiredJSFiles, (getEditor) => {
+        require(requiredJSFiles, (...args) => {
           // create a new instance to avoid overlapping with other ORA blocks
-          const editor = getEditor();
+          // assume last item in args will be the editor controller
+          const editor = args[args.length - 1]();
           editor.load(elements);
           resolve(editor);
         });
