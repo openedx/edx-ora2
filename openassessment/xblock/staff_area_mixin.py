@@ -11,7 +11,7 @@ import logging
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestGrader
+from openassessment.xblock.job_sample_grader.code_grader import TestGrader
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language, get_percentage
 from xblock.core import XBlock
@@ -268,6 +268,7 @@ class StaffAreaMixin(object):
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
+            "design_problem": TestGrader.is_design_problem(self.display_name)
         }
         if submission:
             sample_run = submission['answer']['sample_run']
@@ -278,10 +279,12 @@ class StaffAreaMixin(object):
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
             context['code_language'] = get_code_language(submission['answer']['language'])
             context['staff_view'] = True
-            context['result_percentage'] = get_percentage(sample_run, staff_run)
 
-            context['total_tests'] = sample_run['total_tests'] + staff_run['total_tests']
-            context['tests_passed'] = sample_run['correct'] + staff_run['correct']
+            # Percentage information is not added for design problems
+            if not sample_run.get('is_design_problem'):
+                context['result_percentage'] = get_percentage(sample_run, staff_run)
+                context['total_tests'] = sample_run['total_tests'] + staff_run['total_tests']
+                context['tests_passed'] = sample_run['correct'] + staff_run['correct']
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt

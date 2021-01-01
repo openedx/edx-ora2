@@ -1,7 +1,7 @@
 """
 Grader ORA utils.
 """
-from .job_sample_grader.job_sample_test_grader import TestGrader
+from .job_sample_grader.code_grader import TestGrader
 
 
 # Map language name to be used in template code class
@@ -24,11 +24,11 @@ def get_code_language(language):
 
 
 def get_percentage(sample_submission, staff_submission):
-    sample_correct = sample_submission['correct']
-    sample_total = sample_submission['total_tests']
+    sample_correct = sample_submission.get('correct', 0)
+    sample_total = sample_submission.get('total_tests', 0)
 
-    staff_correct = staff_submission['correct']
-    staff_total = staff_submission['total_tests']
+    staff_correct = staff_submission.get('correct', 0)
+    staff_total = staff_submission.get('total_tests', 0)
 
     try:
         return ((float(sample_correct + staff_correct)) / (staff_total + sample_total)) * 100

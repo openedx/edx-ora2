@@ -8,7 +8,7 @@ from celery_utils.logged_task import LoggedTask
 from submissions.api import _get_submission_model
 
 from openassessment.xblock.utils import grade_response
-from openassessment.xblock.job_sample_grader.job_sample_test_grader import TestGrader
+from openassessment.xblock.job_sample_grader.code_grader import TestGrader
 
 logger = logging.getLogger(__name__)
 

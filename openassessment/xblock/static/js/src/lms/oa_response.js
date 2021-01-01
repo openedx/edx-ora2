@@ -244,6 +244,40 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /*
+    Render the code output for the design problems
+    */
+    showExecutionResults: function(output){
+        var $header, $content;
+        $header = this.getExecutionResultHeader();
+        $content = $('<p></p>')
+        $content.text(output);
+        $content.addClass('execution_output');
+        $content = $header.add($content);
+        $("#test_case_status_result", this.element).html($content);
+    },
+
+    /*
+    Render the code execution errors for the design problems
+    */
+    showExecutionError: function(error){
+        var $header, $content;
+        $header = this.getExecutionResultHeader();
+        $content = this.errorTextArea(error);
+        $content = $header.add($content);
+        $("#test_case_status_result", this.element).html($content);
+    },
+
+    /*
+    Create and return the header for design problem execution
+    */
+    getExecutionResultHeader: function(){
+    var $header = $('<h2></h2>');
+    $header.text(gettext("Code Execution Result"));
+    $header.css('color', 'black');
+    return $header
+    },
+
+    /*
     Add the HTML to show how many test cases passed from the total number
     */
     showResultSummary: function(correct, total){
@@ -284,6 +318,13 @@ OpenAssessment.ResponseView.prototype = {
     */
     indicateError: function(){
           this.saveStatus(gettext("Execution Error"));
+    },
+
+    /*
+    Indicate successful code execution
+    */
+    indicateExecutionSuccess: function(){
+        this.saveStatus(gettext("Code Execution Successful"));
     },
 
     /*
@@ -599,14 +640,23 @@ OpenAssessment.ResponseView.prototype = {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
             if(data.error){
-                view.showRunError(data.error);
+                if(data.is_design_problem !== undefined && data.is_design_problem){
+                    view.showExecutionError(data.error);
+                }
+                else{
+                    view.showRunError(data.error);
+                }
                 view.indicateError();
                 view.clearResultSummary();
             }
-            else{
+            else if(data.is_design_problem === undefined || !data.is_design_problem){
                 view.showResultSummary(data.correct, data.total_tests);
                 view.showTestCaseResult(data.output);
                 view.indicateCorrectness(data.correct === data.total_tests);
+            } else{
+                view.indicateExecutionSuccess();
+                view.showExecutionResults(data.output);
+
             }
 
             // ... but update the UI based on what the user may have entered
