@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-15 13:09-0500\n"
+"POT-Creation-Date: 2020-12-18 17:14-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -314,11 +314,11 @@ msgstr "Réqüïréd Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid ""
-"Select one of the options above. This describes whether or not the learner "
+"Select one of the options above. This describes whether or not the reviewer "
 "will have to provide criterion feedback."
 msgstr ""
-"Séléçt öné öf thé öptïöns äßövé. Thïs désçrïßés whéthér ör nöt thé léärnér "
-"wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σł#"
+"Séléçt öné öf thé öptïöns äßövé. Thïs désçrïßés whéthér ör nöt thé révïéwér "
+"wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σ#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
 msgid "Open Response Assessment"
