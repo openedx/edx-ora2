@@ -141,7 +141,7 @@ class Rubric(models.Model):
             for criterion in rubric_dict.get('criteria', [])
         ]
         canonical_form = json.dumps(structure, sort_keys=True)
-        return sha1(canonical_form).hexdigest()
+        return sha1(canonical_form.encode('utf-8')).hexdigest()
 
 
 class Criterion(models.Model):
