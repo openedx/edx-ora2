@@ -119,6 +119,7 @@ class TestSerializeContent(TestCase):
         """ Helper method of xblock configuration for tests. """
         self.oa_block.title = data.get('title', '')
         self.oa_block.text_response = data.get('text_response', '')
+        self.oa_block.text_response_editor = data.get('text_response_editor', 'text')
         self.oa_block.file_upload_response = data.get('file_upload_response', None)
         self.oa_block.prompt = data.get('prompt')
         self.oa_block.prompts = create_prompts_list(data.get('prompt'))
