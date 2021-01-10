@@ -10,6 +10,7 @@
 # e2f_ar r3 <e2f_ar_r3@outlook.com>, 2017
 # may <may@qordoba.com>, 2014-2015
 # Nabeel El-Dughailib <nabeel@qordoba.com>, 2014-2015
+# NELC Open edX Translation <openedx@elc.edu.sa>, 2020
 # Sahbi BG <sahbi.g@gmail.com>, 2017
 # sahel gheriani <sahel2002@hotmail.com>, 2017
 # shefaa abu jabel <shefaa.aj@gmail.com>, 2017
@@ -18,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-15 13:09-0500\n"
-"PO-Revision-Date: 2020-10-07 07:16+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-12-18 17:14-0500\n"
+"PO-Revision-Date: 2020-12-25 07:47+0000\n"
+"Last-Translator: NELC Open edX Translation <openedx@elc.edu.sa>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,7 +116,7 @@ msgstr "تعذّر استرجاع رابط التحميل."
 #: openassessment/xblock/static/js/src/oa_server.js:547
 #: openassessment/xblock/static/js/src/oa_server.js:566
 msgid "Server error."
-msgstr ""
+msgstr "خطأ في الخادم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -136,115 +137,115 @@ msgstr "تعذّرت إزالة التقديم من مجموعة التقييم.
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:668
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "عودة عدة فرق للمساق"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:675
 msgid "Could not load teams information."
-msgstr ""
+msgstr "لا يمكن تحميل معلومات الفرق"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:697
 msgid "User lookup failed"
-msgstr ""
+msgstr "فشل عملية العثور على المستخدم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:702
 msgid "Error when looking up username"
-msgstr ""
+msgstr "خطأ في العثور على اسم المستخدم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:50
 msgid "Unit Name"
-msgstr ""
+msgstr "اسم الوحدة"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:51
 msgid "Units"
-msgstr ""
+msgstr "الوحدات"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:58
 msgid "Assessment"
-msgstr ""
+msgstr "تقييم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:59
 msgid "Assessments"
-msgstr ""
+msgstr "التقييمات"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:66
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:67
 msgid "Total Responses"
-msgstr ""
+msgstr "إجمالي الردود"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:74
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:75
 msgid "Training"
-msgstr ""
+msgstr "التدريب"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:82
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:83
 msgid "Peer"
-msgstr ""
+msgstr "زميل"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:90
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:91
 msgid "Self"
-msgstr ""
+msgstr "مُقيَّم ذاتيًّا"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:98
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:99
 msgid "Waiting"
-msgstr ""
+msgstr "بالإنتظار"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:106
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:107
 msgid "Staff"
-msgstr ""
+msgstr "الطاقم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:114
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:115
 msgid "Final Grade Received"
-msgstr ""
+msgstr "الدرجة النهائية المستحقة"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:146
 msgid "List of Open Assessments is unavailable"
-msgstr ""
+msgstr "قائمة التقييمات المفتوحة غير متاحة"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:246
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:297
 msgid "Please wait"
-msgstr ""
+msgstr "يرجى الانتظار"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:270
 msgid "Block view is unavailable"
-msgstr ""
+msgstr "عرض \"الحِزَم\" غير متوفر"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:304
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:282
 msgid "Back to Full List"
-msgstr ""
+msgstr "العودة إلى القائمة الكاملة"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 msgid "Your file "
-msgstr ""
+msgstr "ملفك"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:343
@@ -287,41 +288,41 @@ msgstr "إنّت على وشك تقديم إجابتك عن هذا الواحب.
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:594
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "حجم كل ملف يجب أن يكون {max_files_mb}أو أقل."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:608
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "فشل تحميل الملف: صيغة الملف غير مدعومة. يمكن فقط تحميل الملف المدعومة. عند وجود أي استفسار يرجى الاتصال بفريق المساق."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 msgid "Only "
-msgstr ""
+msgstr "فقط"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:691
 #: openassessment/xblock/static/js/src/lms/oa_response.js:697
 msgid "Describe "
-msgstr ""
+msgstr "صف"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:691
 msgid "(required):"
-msgstr ""
+msgstr "(مطلوب):"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:711
 msgid "Thumbnail view of "
-msgstr ""
+msgstr "صورة مصغرة لـ"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:808
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr ""
+msgstr "هل أنت واثق من رغبتك في حذف الملف التالي؟ لايمكن استعادته بعد الحذف.\nالملف:"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_self.js:124
@@ -346,7 +347,7 @@ msgstr "يجب إدخال اسم المتعلّم."
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr ""
+msgstr "سيتم اعتماد هذه الدرجة لجميع أعضاء الفريق. هل ترغب بالاستمرار؟"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:285
@@ -379,37 +380,37 @@ msgstr "تعذّر إجراء التحميل."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr ""
+msgstr "فقرة"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_tiny_mce.js:67
 msgid "Preformatted"
-msgstr ""
+msgstr "مُنسَّق مسبقاً"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_tiny_mce.js:68
 msgid "Heading 3"
-msgstr ""
+msgstr "العنوان الرئيسي 3"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_tiny_mce.js:69
 msgid "Heading 4"
-msgstr ""
+msgstr "العنوان الرئيسي 4"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_tiny_mce.js:70
 msgid "Heading 5"
-msgstr ""
+msgstr "العنوان الرئيسي 5"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_tiny_mce.js:71
 msgid "Heading 6"
-msgstr ""
+msgstr "العنوان الرئيسي 6"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
