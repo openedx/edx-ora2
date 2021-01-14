@@ -32,6 +32,10 @@ class NoTeamToCreateSubmissionForError(Exception):
     pass
 
 
+class EmptySubmissionError(Exception):
+    pass
+
+
 class SubmissionMixin:
     """Submission Mixin introducing all Submission-related functionality.
 
@@ -169,20 +173,31 @@ class SubmissionMixin:
                     status_tag = 'EANSWERLENGTH'
                 else:
                     msg = (
-                        u"The submissions API reported an invalid request error "
-                        u"when submitting a response for the user: {student_item}"
+                        "The submissions API reported an invalid request error "
+                        "when submitting a response for the user: {student_item}"
                     ).format(student_item=student_item_dict)
                     logger.exception(msg)
                     status_tag = 'EBADFORM'
                     status_text = msg
+            except EmptySubmissionError:
+                msg = (
+                    "Attempted to submit submission for user {student_item}, "
+                    "but submission contained no content."
+                ).format(student_item=student_item_dict)
+                logger.exception(msg)
+                status_tag = 'EEMPTYSUB'
+                status_text = self._(
+                    'Submission cannot be empty. '
+                    'Please refresh the page and try again.'
+                )
             except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
                 msg = (
-                    u"An unknown error occurred while submitting "
-                    u"a response for the user: {student_item}"
+                    "An unknown error occurred while submitting "
+                    "a response for the user: {student_item}"
                 ).format(student_item=student_item_dict)
                 logger.exception(msg)
                 status_tag = 'EUNKNOWN'
-                status_text = self._(u'API returned unclassified exception.')
+                status_text = self._('API returned unclassified exception.')
 
         # error cases fall through to here
         return status, status_tag, status_text
@@ -313,6 +328,9 @@ class SubmissionMixin:
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         self._collect_files_for_submission(student_sub_dict)
+
+        self.check_for_empty_submission_and_raise_error(student_sub_dict)
+
         submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
         user = self.get_real_user(submitter_anonymous_user_id)
         student_item_dict = self.get_student_item_dict(anonymous_user_id=submitter_anonymous_user_id)
@@ -353,6 +371,8 @@ class SubmissionMixin:
 
         self._collect_files_for_submission(student_sub_dict)
 
+        self.check_for_empty_submission_and_raise_error(student_sub_dict)
+
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
         self.submission_uuid = submission["uuid"]
@@ -371,6 +391,24 @@ class SubmissionMixin:
         )
 
         return submission
+
+    def check_for_empty_submission_and_raise_error(self, student_sub_dict):
+        """
+        Check if student_sub_dict has any submission content so that we don't
+        create empty submissions.
+        
+        If there are no text responses and no file responses, raise an EmptySubmissionError
+        """
+        has_content = False
+
+        # Does the student_sub_dict have any non-zero-length strings in 'parts'?
+        has_content |= any(part.get('text', '') for part in student_sub_dict.get('parts', []))
+
+        # Are there any file_keys in student_sub_dict?
+        has_content |= len(student_sub_dict.get('file_keys', [])) > 0
+
+        if not has_content:
+            raise EmptySubmissionError
 
     def _collect_files_for_submission(self, student_sub_dict):
         """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
