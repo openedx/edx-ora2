@@ -1208,7 +1208,7 @@ class TestPeerApi(CacheResetTest):
         submission = peer_api.get_submission_to_assess(submission['uuid'], 3)
         self.assertIsNotNone(submission)
         self.assertEqual(submission["answer"], u"Bob's answer")
-        self.assertEqual(submission["student_item"], 2)
+        self.assertEqual(submission["student_item"], 284)
         self.assertEqual(submission["attempt_number"], 1)
 
     def test_no_submissions_to_evaluate_for_tim(self):
@@ -1465,27 +1465,29 @@ class TestPeerApi(CacheResetTest):
 
         buffy_workflow = AssessmentWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
         expected_status = {
-            u"peer": {
+            "peer": {
                 "peers_graded_count": 1,
                 "complete": False,
                 "graded_by_count": 0,
+                "skipped": False,
                 "graded": False,
             },
-            u"self": {"complete": False, "graded": False},
-            u"staff": {"complete": True, "graded": True},
+            "self": {"complete": False, "skipped": False, "graded": False},
+            "staff": {"complete": True, "skipped": False, "graded": True},
         }
         self.assertEqual(expected_status, buffy_workflow.status_details())
 
         xander_workflow = AssessmentWorkflow.get_by_submission_uuid(xander_sub['uuid'])
         expected_status = {
-            u"peer": {
+            "peer": {
                 "peers_graded_count": 0,
                 "complete": False,
                 "graded_by_count": 1,
+                "skipped": False,
                 "graded": False,
             },
-            u"self": {"complete": False, "graded": False},
-            u"staff": {"complete": True, "graded": True},
+            "self": {"complete": False, "skipped": False, "graded": False},
+            "staff": {"complete": True, "skipped": False, "graded": True},
         }
         self.assertEqual(expected_status, xander_workflow.status_details())
 
