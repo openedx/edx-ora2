@@ -208,7 +208,10 @@ class StudioMixin:
                 return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
         if not data['text_response'] and not data['file_upload_response']:
-            return {'success': False, 'msg': self._("Error: Text Response and File Upload Response cannot both be disabled")}
+            return {
+                'success': False,
+                'msg': self._("Error: Text Response and File Upload Response cannot both be disabled")
+            }
         if not data['text_response'] and data['file_upload_response'] == 'optional':
             return {'success': False,
                     'msg': self._("Error: When Text Response is disabled, File Upload Response must be Required")}

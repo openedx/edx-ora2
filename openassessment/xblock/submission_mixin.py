@@ -396,7 +396,7 @@ class SubmissionMixin:
         """
         Check if student_sub_dict has any submission content so that we don't
         create empty submissions.
-        
+
         If there are no text responses and no file responses, raise an EmptySubmissionError
         """
         has_content = False

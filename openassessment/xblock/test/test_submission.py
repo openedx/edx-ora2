@@ -623,12 +623,11 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             )
 
     @scenario('data/submission_open.xml', user_id="Red Five")
-    # pylint: disable=bad-whitespace
     @ddt.data(
-        (['', ''],     None,           True),
-        (['', ''],     [],             True),
-        (['abc', ''],  None,           False),
-        (['', 'abc'],  [],             False),
+        (['', ''], None, True),
+        (['', ''], [], True),
+        (['abc', ''], None, False),
+        (['', 'abc'], [], False),
         (['', '', ''], ['file_1_key'], False),
     )
     @ddt.unpack
@@ -647,6 +646,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             xblock.check_for_empty_submission_and_raise_error(submission_dict)
 
     @scenario('data/basic_scenario.xml', user_id='Red Five')
+    @ddt.data(False, True)
     def test_empty_submission_error(self, xblock, team_assignment):
         """
         Test that if users try to create an empty submission, an error will be raised
