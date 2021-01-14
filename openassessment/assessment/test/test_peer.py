@@ -1208,7 +1208,7 @@ class TestPeerApi(CacheResetTest):
         submission = peer_api.get_submission_to_assess(submission['uuid'], 3)
         self.assertIsNotNone(submission)
         self.assertEqual(submission["answer"], u"Bob's answer")
-        self.assertEqual(submission["student_item"], 284)
+        self.assertEqual(submission["student_item"], 2)
         self.assertEqual(submission["attempt_number"], 1)
 
     def test_no_submissions_to_evaluate_for_tim(self):
