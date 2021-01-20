@@ -59,7 +59,7 @@ export class SelfView {
     renderResponseViaEditor() {
       const sel = $('.step--self-assessment', this.element);
       const responseElements = sel.find('.submission__answer__part__text__value');
-      this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
+      return this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
     }
 
     /**
