@@ -1548,7 +1548,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
-        "expected_error": "error: both text and file upload responses can't be disabled"
+        "expected_error": "error: text response and file upload response cannot both be disabled"
     },
 
     "text_response_none_and_file_upload_response_optional": {
@@ -1604,7 +1604,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
-        "expected_error": "error: in case if text response is disabled file upload response must be required"
+        "expected_error": "error: when text response is disabled, file upload response must be required"
     },
 
     "text_response_optional_and_file_upload_response_none": {
@@ -1660,7 +1660,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
-        "expected_error": "error: in case if file upload response is disabled text response must be required"
+        "expected_error": "error: when file upload response is disabled, text response must be required"
     },
 
     "invalid_prompt_type": {

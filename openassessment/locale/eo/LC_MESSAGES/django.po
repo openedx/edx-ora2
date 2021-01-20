@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 12:02-0500\n"
+"POT-Creation-Date: 2021-01-20 14:08-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -3015,26 +3015,24 @@ msgstr ""
 "Érrör üpdätïng XBlöçk çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/xblock/studio_mixin.py
-msgid "Error: both text and file upload responses can't be disabled"
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
-"Érrör: ßöth téxt änd fïlé üplöäd réspönsés çän't ßé dïsäßléd Ⱡ'σяєм ιρѕυм "
-"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"Érrör: Téxt Réspönsé änd Fïlé Ûplöäd Réspönsé çännöt ßöth ßé dïsäßléd Ⱡ'σяєм"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: openassessment/xblock/studio_mixin.py
 msgid ""
-"Error: in case if text response is disabled file upload response must be "
-"required"
+"Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
-"Érrör: ïn çäsé ïf téxt réspönsé ïs dïsäßléd fïlé üplöäd réspönsé müst ßé "
-"réqüïréd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+"Érrör: Whén Téxt Réspönsé ïs dïsäßléd, Fïlé Ûplöäd Réspönsé müst ßé Réqüïréd"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
 #: openassessment/xblock/studio_mixin.py
 msgid ""
-"Error: in case if file upload response is disabled text response must be "
-"required"
+"Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
-"Érrör: ïn çäsé ïf fïlé üplöäd réspönsé ïs dïsäßléd téxt réspönsé müst ßé "
-"réqüïréd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+"Érrör: Whén Fïlé Ûplöäd Réspönsé ïs dïsäßléd, Téxt Réspönsé müst ßé Réqüïréd"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
 #: openassessment/xblock/studio_mixin.py
 #, python-brace-format
@@ -3064,6 +3062,12 @@ msgid "Multiple submissions are not allowed."
 msgstr ""
 "Mültïplé süßmïssïöns äré nöt ällöwéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
+
+#: openassessment/xblock/submission_mixin.py
+msgid "Submission cannot be empty. Please refresh the page and try again."
+msgstr ""
+"Süßmïssïön çännöt ßé émptý. Pléäsé réfrésh thé pägé änd trý ägäïn. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: openassessment/xblock/submission_mixin.py
 msgid "API returned unclassified exception."

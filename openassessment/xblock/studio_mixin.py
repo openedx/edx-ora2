@@ -208,13 +208,16 @@ class StudioMixin:
                 return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
         if not data['text_response'] and not data['file_upload_response']:
-            return {'success': False, 'msg': self._("Error: both text and file upload responses can't be disabled")}
+            return {
+                'success': False,
+                'msg': self._("Error: Text Response and File Upload Response cannot both be disabled")
+            }
         if not data['text_response'] and data['file_upload_response'] == 'optional':
             return {'success': False,
-                    'msg': self._("Error: in case if text response is disabled file upload response must be required")}
+                    'msg': self._("Error: When Text Response is disabled, File Upload Response must be Required")}
         if not data['file_upload_response'] and data['text_response'] == 'optional':
             return {'success': False,
-                    'msg': self._("Error: in case if file upload response is disabled text response must be required")}
+                    'msg': self._("Error: When File Upload Response is disabled, Text Response must be Required")}
 
         # Backwards compatibility: We used to treat "name" as both a user-facing label
         # and a unique identifier for criteria and options.
