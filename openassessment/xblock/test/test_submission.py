@@ -339,6 +339,19 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             response_format='json'
         )
         self.assertTrue(resp['success'])
+
+        student_item_key = api.get_student_file_key(
+            xblock.get_student_item_dict(),
+            index=file_index_to_remove
+        )
+        self.assert_event_published(
+            xblock,
+            'openassessmentblock.remove_uploaded_file',
+            {
+                "student_item_key": student_item_key
+            }
+        )
+
         with patch('submissions.api.create_submission') as mocked_submit:
             with patch.object(WorkflowMixin, 'create_workflow'):
                 mocked_submit.return_value = {

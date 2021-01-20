@@ -498,6 +498,12 @@ class SubmissionMixin:
         if self._can_delete_file(filenum):
             try:
                 self.file_manager.delete_upload(filenum)
+                # Emit analytics event...
+                self.runtime.publish(
+                    self,
+                    "openassessmentblock.remove_uploaded_file",
+                    {"student_item_key": student_item_key}
+                )
                 logger.debug("Deleted file {student_item_key}".format(student_item_key=student_item_key))
                 return {'success': True}
             except FileUploadError as exc:
