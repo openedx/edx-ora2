@@ -1,9 +1,7 @@
 """ Test Cases for Api"""
-
-
-import ddt
 from unittest.mock import patch
 
+import ddt
 from django.db import DatabaseError
 from django.test.utils import override_settings
 from pytest import raises

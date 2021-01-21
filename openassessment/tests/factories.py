@@ -5,12 +5,14 @@ Create factories for assessments and all of their related models.
 
 import datetime
 import factory
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from factory.django import DjangoModelFactory
 from pytz import UTC
 
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
                                               Criterion, CriterionOption, Rubric, StaffWorkflow, TeamStaffWorkflow)
+
+User = get_user_model()
 
 
 class RubricFactory(DjangoModelFactory):

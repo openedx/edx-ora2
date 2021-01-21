@@ -5,10 +5,11 @@ import os
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
-from submissions.team_api import get_team_submission
-
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
+
+from submissions.team_api import get_team_submission
+
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -484,7 +485,7 @@ class SubmissionMixin:
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
-            logger.exception(f"FileUploadError:Error retrieving upload URL for the data:{data}.")
+            logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
             return {'success': False, 'msg': self._("Error retrieving upload URL.")}
 
     def is_supported_upload_type(self, file_ext, content_type):
@@ -541,7 +542,6 @@ class SubmissionMixin:
                     {"student_item_key": student_item_key}
                 )
                 logger.debug("Deleted file {student_item_key}".format(student_item_key=student_item_key))
-                logger.debug(f"Deleted file {student_item_key}")
                 return {'success': True}
             except FileUploadError as exc:
                 logger.exception("FileUploadError: Error when deleting file {student_item_key} : {exc}".format(

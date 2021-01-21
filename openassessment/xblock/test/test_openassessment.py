@@ -1,15 +1,13 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
-
-
 from collections import namedtuple
 import datetime as dt
 from io import StringIO
 import json
+from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 import ddt
-from unittest.mock import MagicMock, Mock, PropertyMock, patch
 import pytz
 
 from freezegun import freeze_time

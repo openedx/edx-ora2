@@ -46,12 +46,12 @@ def _parse_date(value, _):
     elif isinstance(value, str):
         try:
             return parse_date(value).replace(tzinfo=pytz.utc)
-        except ValueError:
+        except ValueError as ex:
             raise InvalidDateFormat(
                 _(
                     "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS."
                 ).format(date=value)
-            )
+            ) from ex
 
     else:
         raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))

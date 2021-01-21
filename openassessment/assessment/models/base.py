@@ -22,7 +22,6 @@ import math
 
 from django.core.cache import cache
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django.utils.timezone import now
 
@@ -184,7 +183,6 @@ class Criterion(models.Model):
         return max(option_points) if option_points else 0
 
 
-@python_2_unicode_compatible
 class CriterionOption(models.Model):
     """What an assessor chooses when assessing against a Criteria.
 
@@ -408,7 +406,6 @@ class RubricIndex:
         return self._criteria_without_options
 
 
-@python_2_unicode_compatible
 class Assessment(models.Model):
     """An evaluation made against a particular Submission and Rubric.
 
@@ -830,7 +827,6 @@ class AssessmentPart(models.Model):
             raise InvalidRubricSelection(msg)
 
 
-@python_2_unicode_compatible
 class SharedFileUpload(TimeStampedModel):
     """
     Define a single file uploaded by a student when attached to a team.

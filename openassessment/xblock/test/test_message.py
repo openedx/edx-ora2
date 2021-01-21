@@ -1,13 +1,11 @@
 """
 Tests for message handlers in Open Assessment XBlock.
 """
-
-
 import copy
 import datetime as dt
+from unittest import mock
 
 import ddt
-from unittest import mock
 import pytz
 
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock

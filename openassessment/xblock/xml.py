@@ -225,12 +225,12 @@ def parse_date(date_str, name=""):
         parsed_date = dateutil.parser.parse(str(date_str)).replace(tzinfo=pytz.utc)
         formatted_date = parsed_date.strftime("%Y-%m-%dT%H:%M:%S")
         return str(formatted_date)
-    except (ValueError, TypeError):
+    except (ValueError, TypeError) as ex:
         msg = (
             'The format of the given date ({date}) for the {name} is invalid. '
             'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
         ).format(date=date_str, name=name)
-        raise UpdateFromXmlError(msg)
+        raise UpdateFromXmlError(msg) from ex
 
 
 def _parse_boolean(boolean_str):
@@ -321,8 +321,8 @@ def _parse_options_xml(options_root):
         if 'points' in option.attrib:
             try:
                 option_dict['points'] = int(option.get('points'))
-            except ValueError:
-                raise UpdateFromXmlError('The value for "points" must be an integer.')
+            except ValueError as ex:
+                raise UpdateFromXmlError('The value for "points" must be an integer.') from ex
         else:
             raise UpdateFromXmlError('Every "option" element must contain a "points" attribute.')
 
@@ -561,22 +561,22 @@ def parse_assessments_xml(assessments_root):
         if 'must_grade' in assessment.attrib:
             try:
                 assessment_dict['must_grade'] = int(assessment.get('must_grade'))
-            except ValueError:
-                raise UpdateFromXmlError('The "must_grade" value must be a positive integer.')
+            except ValueError as ex:
+                raise UpdateFromXmlError('The "must_grade" value must be a positive integer.') from ex
 
         # Assessment must_be_graded_by
         if 'must_be_graded_by' in assessment.attrib:
             try:
                 assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
-            except ValueError:
-                raise UpdateFromXmlError('The "must_be_graded_by" value must be a positive integer.')
+            except ValueError as ex:
+                raise UpdateFromXmlError('The "must_be_graded_by" value must be a positive integer.') from ex
 
         # Assessment enable_flexible_grading
         if 'enable_flexible_grading' in assessment.attrib:
             try:
                 assessment_dict['enable_flexible_grading'] = _parse_boolean(assessment.get('enable_flexible_grading'))
-            except ValueError:
-                raise UpdateFromXmlError('The "enable_flexible_grading" value must be a boolean.')
+            except ValueError as ex:
+                raise UpdateFromXmlError('The "enable_flexible_grading" value must be a boolean.') from ex
 
         # Assessment required
         if 'required' in assessment.attrib:
@@ -927,8 +927,8 @@ def parse_from_xml(root):
     if 'leaderboard_show' in root.attrib:
         try:
             leaderboard_show = int(root.attrib['leaderboard_show'])
-        except (TypeError, ValueError):
-            raise UpdateFromXmlError('The leaderboard must have an integer value.')
+        except (TypeError, ValueError) as ex:
+            raise UpdateFromXmlError('The leaderboard must have an integer value.') from ex
 
     # Retrieve teams info
     teams_enabled = False
@@ -1004,8 +1004,8 @@ def _unicode_to_xml(xml):
     # http://docs.python.org/2/library/xml.html#xml-vulnerabilities
     try:
         return safe_etree.fromstring(xml.encode('utf-8'))
-    except (ValueError, safe_etree.ParseError):
-        raise UpdateFromXmlError("An error occurred while parsing the XML content.")
+    except (ValueError, safe_etree.ParseError) as ex:
+        raise UpdateFromXmlError("An error occurred while parsing the XML content.") from ex
 
 
 def parse_examples_from_xml_str(xml):

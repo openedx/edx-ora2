@@ -18,7 +18,6 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import DatabaseError, models, transaction
 from django.dispatch import receiver
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from model_utils import Choices
@@ -601,15 +600,15 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             AssessmentWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
             # Cancel the related step's workflow.
             workflow.cancel(assessment_requirements)
-        except (cls.DoesNotExist, cls.MultipleObjectsReturned):
+        except (cls.DoesNotExist, cls.MultipleObjectsReturned) as ex:
             error_message = "Error finding workflow for submission UUID {}.".format(submission_uuid)
             logger.exception(error_message)
-            raise AssessmentWorkflowError(error_message)
-        except DatabaseError:
+            raise AssessmentWorkflowError(error_message) from ex
+        except DatabaseError as ex:
             error_message = "Error creating assessment workflow cancellation for submission UUID {}.".format(
                 submission_uuid)
             logger.exception(error_message)
-            raise AssessmentWorkflowInternalError(error_message)
+            raise AssessmentWorkflowInternalError(error_message) from ex
 
     @classmethod
     def get_by_submission_uuid(cls, submission_uuid):
@@ -637,7 +636,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         except DatabaseError as exc:
             message = "Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
             logger.exception(message)
-            raise AssessmentWorkflowError(message)
+            raise AssessmentWorkflowError(message) from exc
 
     @property
     def is_cancelled(self):
@@ -687,7 +686,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
                 "Error finding workflow for team submission UUID {uuid} due to error: {exc}."
             ).format(uuid=team_submission_uuid, exc=exc)
             logger.exception(message)
-            raise AssessmentWorkflowError(message)
+            raise AssessmentWorkflowError(message) from exc
 
     @classmethod
     @transaction.atomic
@@ -696,10 +695,10 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         team_submission_dict = sub_team_api.get_team_submission(team_submission_uuid)
         try:
             referrence_learner_submission_uuid = team_submission_dict['submission_uuids'][0]
-        except IndexError:
+        except IndexError as ex:
             msg = 'No individual submission found for team submisison uuid {}'.format(team_submission_uuid)
             logger.exception(msg)
-            raise AssessmentWorkflowInternalError(msg)
+            raise AssessmentWorkflowInternalError(msg) from ex
 
         # Create the workflow in the database
         # For now, set the status to waiting; we'll modify it later
@@ -895,8 +894,8 @@ class AssessmentWorkflowStep(models.Model):
         if api_path is not None:
             try:
                 return importlib.import_module(api_path)
-            except (ImportError, ValueError):
-                raise AssessmentApiLoadError(self.name, api_path)
+            except (ImportError, ValueError) as ex:
+                raise AssessmentApiLoadError(self.name, api_path) from ex
         else:
             # It's possible for the database to contain steps for APIs
             # that are not configured -- for example, if a new assessment
@@ -983,7 +982,6 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
         logger.exception(msg)
 
 
-@python_2_unicode_compatible
 class AssessmentWorkflowCancellation(models.Model):
     """Model for tracking cancellations of assessment workflow.
 

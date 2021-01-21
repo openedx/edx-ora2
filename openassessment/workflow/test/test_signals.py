@@ -1,11 +1,9 @@
 """
 Tests for Django signals and receivers defined by the workflow API.
 """
-
-
-import ddt
 from unittest import mock
 
+import ddt
 from django.db import DatabaseError
 
 from submissions import api as sub_api

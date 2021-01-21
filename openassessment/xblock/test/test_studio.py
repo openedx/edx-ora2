@@ -5,9 +5,9 @@ View-level tests for Studio view of OpenAssessment XBlock.
 import copy
 import datetime as dt
 import json
+from unittest.mock import MagicMock, patch, Mock
 
 from ddt import ddt, file_data
-from unittest.mock import MagicMock, patch, Mock
 import pytz
 
 from .base import XBlockHandlerTestCase, scenario

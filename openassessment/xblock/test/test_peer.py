@@ -7,9 +7,9 @@ from collections import namedtuple
 import copy
 import datetime as dt
 import json
+from unittest import mock
 
 import ddt
-from unittest import mock
 import pytz
 
 from openassessment.assessment.api import peer as peer_api

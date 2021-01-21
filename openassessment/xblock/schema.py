@@ -35,8 +35,8 @@ def utf8_validator(value):
         if isinstance(value, bytes):
             return value.decode('utf-8')
         return str(value)
-    except (ValueError, TypeError):
-        raise Invalid(f"Could not load unicode from value \"{value}\"")
+    except (ValueError, TypeError) as ex:
+        raise Invalid(f"Could not load unicode from value \"{value}\"") from ex
 
 
 def datetime_validator(value):
@@ -61,8 +61,8 @@ def datetime_validator(value):
         # Parse the date and interpret it as UTC
         value = dateutil.parser.parse(value).replace(tzinfo=utc)
         return str(value.isoformat())
-    except (ValueError, TypeError):
-        raise Invalid(f"Could not parse datetime from value \"{value}\"")
+    except (ValueError, TypeError) as ex:
+        raise Invalid(f"Could not parse datetime from value \"{value}\"") from ex
 
 
 PROMPTS_TYPES = [

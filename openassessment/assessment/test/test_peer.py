@@ -1,11 +1,10 @@
 """ Tests Peer Workflow. """
 
-
 import copy
 import datetime
+from unittest.mock import patch
 
 from ddt import ddt, file_data, data, unpack
-from unittest.mock import patch
 import pytz
 
 from django.db import DatabaseError, IntegrityError

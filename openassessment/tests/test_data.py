@@ -8,9 +8,9 @@ from io import StringIO, BytesIO
 import json
 import os.path
 import zipfile
+from unittest.mock import call, Mock, patch
 
 import ddt
-from unittest.mock import call, Mock, patch
 
 from django.core.management import call_command
 from django.test import TestCase

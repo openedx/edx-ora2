@@ -141,7 +141,7 @@ class CsvWriter:
             for assessment_feedback in feedback_query:
                 self._write_assessment_feedback_to_csv(assessment_feedback)
                 feedback_option_set.update({
-                    option for option in assessment_feedback.options.all()
+                    option for option in assessment_feedback.options.all()  # pylint: disable=unnecessary-comprehension
                 })
 
             if self._progress_callback is not None:

@@ -2,13 +2,12 @@
 Tests for staff assessments.
 """
 
-
 import copy
 from datetime import timedelta
+from unittest import mock
 
 from ddt import data, ddt, unpack
 from freezegun import freeze_time
-from unittest import mock
 
 from django.db import DatabaseError
 from django.utils.timezone import now

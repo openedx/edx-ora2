@@ -1,14 +1,12 @@
 """
 Tests for the student training step in the Open Assessment XBlock.
 """
-
-
 import datetime
 import json
 import pprint
+from unittest.mock import Mock, patch
 
 import ddt
-from unittest.mock import Mock, patch
 import pytz
 
 from django.db import DatabaseError

@@ -2,15 +2,14 @@
 The Staff Area View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
-
-
 import copy
-from django.core.exceptions import ObjectDoesNotExist
-from functools import wraps
 import logging
+from functools import wraps
+
+from django.core.exceptions import ObjectDoesNotExist
+from xblock.core import XBlock
 
 from submissions.errors import SubmissionNotFoundError
-from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError

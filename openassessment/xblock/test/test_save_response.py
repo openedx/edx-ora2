@@ -1,12 +1,10 @@
 """
 Test that the student can save a response.
 """
-
-
 import json
+from unittest import mock
 
 import ddt
-from unittest import mock
 
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 

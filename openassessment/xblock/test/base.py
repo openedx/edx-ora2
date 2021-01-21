@@ -9,10 +9,10 @@ import json
 import os.path
 
 from unittest import mock
+from workbench.runtime import WorkbenchRuntime
 
 import webob
 from submissions import api as submissions_api
-from workbench.runtime import WorkbenchRuntime
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest

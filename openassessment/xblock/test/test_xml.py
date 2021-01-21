@@ -1,14 +1,12 @@
 """
 Tests for serializing to/from XML.
 """
-
-
 import copy
 import json
+from unittest import mock
 
 import dateutil.parser
 import ddt
-from unittest import mock
 import pytz
 
 from django.test import TestCase

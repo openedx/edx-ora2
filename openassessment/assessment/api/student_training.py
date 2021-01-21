@@ -44,10 +44,10 @@ def submitter_is_finished(submission_uuid, training_requirements):
 
     try:
         num_required = int(training_requirements['num_required'])
-    except KeyError:
-        raise StudentTrainingRequestError('Requirements dict must contain "num_required" key')
-    except ValueError:
-        raise StudentTrainingRequestError('Number of requirements must be an integer')
+    except KeyError as ex:
+        raise StudentTrainingRequestError('Requirements dict must contain "num_required" key') from ex
+    except ValueError as ex:
+        raise StudentTrainingRequestError('Number of requirements must be an integer') from ex
 
     try:
         workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
@@ -77,13 +77,13 @@ def on_start(submission_uuid):
     """
     try:
         StudentTrainingWorkflow.create_workflow(submission_uuid)
-    except Exception:
+    except Exception as ex:
         msg = (
             "An internal error has occurred while creating the learner "
             "training workflow for submission UUID {}".format(submission_uuid)
         )
         logger.exception(msg)
-        raise StudentTrainingInternalError(msg)
+        raise StudentTrainingInternalError(msg) from ex
 
 
 def validate_training_examples(rubric, examples):
@@ -272,13 +272,13 @@ def get_num_completed(submission_uuid):
             return 0
         else:
             return workflow.num_completed
-    except DatabaseError:
+    except DatabaseError as ex:
         msg = (
             "An unexpected error occurred while "
             "retrieving the learner training workflow status for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
-        raise StudentTrainingInternalError(msg)
+        raise StudentTrainingInternalError(msg) from ex
 
 
 def get_training_example(submission_uuid, rubric, examples):
@@ -392,17 +392,17 @@ def get_training_example(submission_uuid, rubric, examples):
         logger.exception(
             u"Could not deserialize training examples for submission UUID {}".format(submission_uuid)
         )
-        raise StudentTrainingRequestError(ex)
-    except sub_api.SubmissionNotFoundError:
+        raise StudentTrainingRequestError(ex) from ex
+    except sub_api.SubmissionNotFoundError as ex:
         msg = u"Could not retrieve the submission with UUID {}".format(submission_uuid)
         logger.exception(msg)
-        raise StudentTrainingRequestError(msg)
-    except DatabaseError:
+        raise StudentTrainingRequestError(msg) from ex
+    except DatabaseError as ex:
         msg = (
             u"Could not retrieve a training example for the learner with submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
-        raise StudentTrainingInternalError(msg)
+        raise StudentTrainingInternalError(msg) from ex
 
 
 def assess_training_example(submission_uuid, options_selected, update_workflow=True):
@@ -458,13 +458,13 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
         if update_workflow and not corrections:
             item.mark_complete()
         return corrections
-    except StudentTrainingWorkflow.DoesNotExist:
+    except StudentTrainingWorkflow.DoesNotExist as ex:
         msg = "Could not find learner training workflow for submission UUID {}".format(submission_uuid)
-        raise StudentTrainingRequestError(msg)
-    except DatabaseError:
+        raise StudentTrainingRequestError(msg) from ex
+    except DatabaseError as ex:
         msg = (
             "An error occurred while comparing the learner's assessment "
             "to the training example.  The submission UUID for the learner is {}"
         ).format(submission_uuid)
         logger.exception(msg)
-        raise StudentTrainingInternalError(msg)
+        raise StudentTrainingInternalError(msg) from ex

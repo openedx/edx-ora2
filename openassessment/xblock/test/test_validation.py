@@ -1,12 +1,11 @@
 """
 Test OpenAssessment XBlock validation.
 """
-
 import copy
 from datetime import datetime as dt
+from unittest import mock
 
 import ddt
-from unittest import mock
 import pytz
 
 from django.test import TestCase

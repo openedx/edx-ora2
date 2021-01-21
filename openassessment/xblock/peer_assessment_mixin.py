@@ -93,13 +93,13 @@ class PeerAssessmentMixin:
 
             except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
                 logger.warning(
-                    f"Peer API error for submission UUID {self.submission_uuid}",
+                    "Peer API error for submission UUID {}".format(self.submission_uuid),
                     exc_info=True
                 )
                 return {'success': False, 'msg': self._("Your peer assessment could not be submitted.")}
             except PeerAssessmentInternalError:
                 logger.exception(
-                    f"Peer API internal error for submission UUID: {self.submission_uuid}"
+                    "Peer API internal error for submission UUID: {}".format(self.submission_uuid)
                 )
                 msg = self._("Your peer assessment could not be submitted.")
                 return {'success': False, 'msg': msg}

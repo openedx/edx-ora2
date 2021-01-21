@@ -2,11 +2,10 @@
 Tests for training assessment type.
 """
 
-
 import copy
+from unittest.mock import patch
 
 import ddt
-from unittest.mock import patch
 
 from django.db import DatabaseError
 

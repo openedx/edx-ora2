@@ -143,11 +143,11 @@ def create_assessment(
                 other_id=user_id
             )
             raise SelfAssessmentRequestError(msg)
-    except SubmissionNotFoundError:
+    except SubmissionNotFoundError as ex:
         msg = (
             "Could not submit a self-assessment because no submission exists with UUID {uuid}"
         ).format(uuid=submission_uuid)
-        raise SelfAssessmentRequestError()
+        raise SelfAssessmentRequestError() from ex
 
     try:
         assessment = _complete_assessment(
@@ -163,17 +163,17 @@ def create_assessment(
     except InvalidRubric as ex:
         msg = "Invalid rubric definition: " + str(ex)
         logger.warning(msg, exc_info=True)
-        raise SelfAssessmentRequestError(msg)
+        raise SelfAssessmentRequestError(msg) from ex
     except InvalidRubricSelection as ex:
         msg = "Selected options do not match the rubric: " + str(ex)
         logger.warning(msg, exc_info=True)
-        raise SelfAssessmentRequestError(msg)
-    except DatabaseError:
+        raise SelfAssessmentRequestError(msg) from ex
+    except DatabaseError as ex:
         error_message = (
             "Error creating self assessment for submission {}"
         ).format(submission_uuid)
         logger.exception(error_message)
-        raise SelfAssessmentInternalError(error_message)
+        raise SelfAssessmentInternalError(error_message) from ex
 
     # Return the serialized assessment
     return full_assessment_dict(assessment)
@@ -292,12 +292,12 @@ def get_assessment_scores_by_criteria(submission_uuid):
         # Since this is only being sent one score, the median score will be the
         # same as the only score.
         return Assessment.get_median_score_dict(scores)
-    except DatabaseError:
+    except DatabaseError as ex:
         error_message = (
             "Error getting self assessment scores for submission {}"
         ).format(submission_uuid)
         logger.exception(error_message)
-        raise SelfAssessmentInternalError(error_message)
+        raise SelfAssessmentInternalError(error_message) from ex
 
 
 def _log_assessment(assessment, submission):

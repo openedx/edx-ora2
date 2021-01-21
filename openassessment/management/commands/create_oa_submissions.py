@@ -61,14 +61,14 @@ class Command(BaseCommand):
 
         try:
             num_submissions = int(args[2])
-        except ValueError:
-            raise CommandError('Number of submissions must be an integer')
+        except ValueError as ex:
+            raise CommandError('Number of submissions must be an integer') from ex
 
         try:
             percentage = float(args[3])
             assessments_to_create = (percentage / 100) * num_submissions
-        except ValueError:
-            raise CommandError('Percentage for completed submissions must be an integer or float')
+        except ValueError as ex:
+            raise CommandError('Percentage for completed submissions must be an integer or float') from ex
 
         print("Creating {num} submissions for {item} in {course}".format(
             num=num_submissions, item=item_id, course=course_id
