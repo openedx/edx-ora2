@@ -3,18 +3,19 @@
 from django.conf import settings
 
 
-editor_overrides = getattr(settings, 'ORA_AVAILABLE_EDITORS', {})
+external_editors = getattr(settings, 'ORA_AVAILABLE_EDITORS', {})
 
-AVAILABLE_EDITORS = {
+default_editors = {
     'text': {
         'display_name': 'Simple Text Editor',
-        'js': ['/static/js/openassessment-editor-textarea.js'],
+        'js': ['/xblock/resource/openassessment/static/js/openassessment-editor-textarea.js'],
     },
     'tinymce': {
         'display_name': 'WYSIWYG Editor',
-        'js': ['/static/js/openassessment-editor-tinymce.js'],
-        'css': ['/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css'],
+        'js': ['/xblock/resource/openassessment/static/js/openassessment-editor-tinymce.js'],
     },
 }
 
-AVAILABLE_EDITORS.update(editor_overrides)
+AVAILABLE_EDITORS = {}
+AVAILABLE_EDITORS.update(external_editors)
+AVAILABLE_EDITORS.update(default_editors)
