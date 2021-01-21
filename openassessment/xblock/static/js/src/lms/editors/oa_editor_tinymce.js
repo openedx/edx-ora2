@@ -1,9 +1,15 @@
 /**
  Handles Response Editor of tinymce type.
  * */
+import tinymce from 'tinymce/tinymce';
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+
+// Tell tinymce from where it should load css, plugins etc
+tinymce.baseURL = '/xblock/resource/openassessment/static/vendors/tinymce/';
 
 (function (define) {
-  define(['jquery.tinymce'], () => {
+  define(() => {
     class EditorTinymce {
       editorInstances = [];
 
@@ -12,6 +18,10 @@
        * */
       getTinyMCEConfig(readonly) {
         let config = {
+          menubar: false,
+          statusbar: false,
+          plugins: 'codesample code image link lists',
+          toolbar: 'formatselect | bold italic underline | link blockquote codesample image | numlist bullist outdent indent | strikethrough | code | undo redo',
           setup: (ed) => {
             // keep editor instances for later use
             this.editorInstances.push(ed);
@@ -40,10 +50,19 @@
       load(elements) {
         this.elements = elements;
 
-        // check if it's readonly
-        const disabled = this.elements.attr('disabled');
+        const ctrl = this;
 
-        this.elements.tinymce(this.getTinyMCEConfig(disabled));
+        this.elements.each(function () {
+          // check if it's readonly
+          const disabled = $(this).attr('disabled');
+          const config = ctrl.getTinyMCEConfig(disabled);
+
+          tinymce.init({
+            target: this,
+            ...config,
+          });
+        });
+        // this.elements.tinymce(this.getTinyMCEConfig(disabled));
       }
 
       /**
@@ -73,12 +92,10 @@
       /* eslint-disable-next-line consistent-return */
       response(texts) {
         if (typeof texts === 'undefined') {
-          return this.elements.map(function () {
-            return $.trim($(this).val());
-          }).get();
+          return this.editorInstances.map(editor => editor.getContent());
         }
-        this.elements.each(function (index) {
-          $(this).val(texts[index]);
+        this.editorInstances.forEach((editor, index) => {
+          editor.setContent(texts[index]);
         });
       }
     }
