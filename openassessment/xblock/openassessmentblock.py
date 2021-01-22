@@ -525,6 +525,7 @@ class OpenAssessmentBlock(MessageMixin,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "block_location": str(self.location),
         }
         template = get_template("openassessmentblock/oa_base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
@@ -629,7 +630,8 @@ class OpenAssessmentBlock(MessageMixin,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
             "MAXIMUM_FILE_UPLOAD_COUNT": self.MAX_FILES_COUNT,
-            "TEAM_ASSIGNMENT": self.is_team_assignment()
+            "TEAM_ASSIGNMENT": self.is_team_assignment(),
+            "XBLOCK_LOCATION": self.location
         }
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment

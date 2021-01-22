@@ -12,6 +12,9 @@
     "edx-ui-toolkit": "1.5.3",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.28",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "requirejs": "~2.3.2",
     "underscore": "^1.11.0"
   },

@@ -10,6 +10,10 @@ import MessageView from './oa_message';
 import StaffAreaView from './oa_staff_area';
 import StudentTrainingView from './oa_training';
 import PeerView from './oa_peer';
+
+// react-specific
+import initReactView from './oa_react';
+
 /**
 Interface for student-facing views.
 
@@ -39,8 +43,10 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      this.fileUploader = new FileUploader();
 
+      initReactView(runtime, element, data);
+
+      this.fileUploader = new FileUploader();
       this.responseView = new ResponseView(this.element, this.server, this.fileUploader, this, data);
       this.trainingView = new StudentTrainingView(this.element, this.server, this);
       this.selfView = new SelfView(this.element, this.server, this);
