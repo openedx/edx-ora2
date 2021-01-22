@@ -12,6 +12,9 @@ import StudentTrainingView from './oa_training';
 import PeerView from './oa_peer';
 import ResponseEditorLoader from './oa_response_editor';
 
+// react-specific
+import initReactView from './oa_react';
+
 /**
 Interface for student-facing views.
 
@@ -41,10 +44,11 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      this.fileUploader = new FileUploader();
+
+      initReactView(runtime, element, data);
 
       this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
-
+      this.fileUploader = new FileUploader();
       this.responseView = new ResponseView(
         this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
       );

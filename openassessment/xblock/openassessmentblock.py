@@ -532,6 +532,7 @@ class OpenAssessmentBlock(MessageMixin,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "block_location": str(self.location),
         }
         template = get_template("openassessmentblock/oa_base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
@@ -639,6 +640,7 @@ class OpenAssessmentBlock(MessageMixin,
             "TEAM_ASSIGNMENT": self.is_team_assignment(),
             "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
             "TEXT_RESPONSE_EDITOR": self.text_response_editor,
+            "XBLOCK_LOCATION": self.location
         }
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
