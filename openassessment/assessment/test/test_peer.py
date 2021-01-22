@@ -1,12 +1,10 @@
-# coding=utf-8
 """ Tests Peer Workflow. """
-
 
 import copy
 import datetime
+from unittest.mock import patch
 
 from ddt import ddt, file_data, data, unpack
-from mock import patch
 import pytz
 
 from django.db import DatabaseError, IntegrityError
@@ -33,7 +31,7 @@ STUDENT_ITEM = dict(
     item_type="Peer_Submission",
 )
 
-ANSWER_ONE = u"this is my answer!"
+ANSWER_ONE = "this is my answer!"
 
 # Possible points: 14
 RUBRIC_DICT = {
@@ -47,7 +45,7 @@ RUBRIC_DICT = {
             ]
         },
         {
-            "name": u"ⓢⓐⓕⓔ",
+            "name": "ⓢⓐⓕⓔ",
             "prompt": "Did the writer keep it safe?",
             "options": [
                 {"name": "no", "points": "0", "explanation": ""},
@@ -88,13 +86,13 @@ RUBRIC_DICT = {
 
 # Answers are against RUBRIC_DICT -- this is worth 6 points
 ASSESSMENT_DICT = {
-    'overall_feedback': u"这是中国",
+    'overall_feedback': "这是中国",
     'criterion_feedback': {
-        "giveup": u"𝓨𝓸𝓾 𝓼𝓱𝓸𝓾𝓵𝓭𝓷'𝓽 𝓰𝓲𝓿𝓮 𝓾𝓹!"
+        "giveup": "𝓨𝓸𝓾 𝓼𝓱𝓸𝓾𝓵𝓭𝓷'𝓽 𝓰𝓲𝓿𝓮 𝓾𝓹!"
     },
     'options_selected': {
         "secret": "yes",
-        u"ⓢⓐⓕⓔ": "no",
+        "ⓢⓐⓕⓔ": "no",
         "giveup": "reluctant",
         "singing": "no",
     },
@@ -102,11 +100,11 @@ ASSESSMENT_DICT = {
 
 # Answers are against RUBRIC_DICT -- this is worth 0 points
 ASSESSMENT_DICT_FAIL = {
-    'overall_feedback': u"fail",
+    'overall_feedback': "fail",
     'criterion_feedback': {},
     'options_selected': {
         "secret": "no",
-        u"ⓢⓐⓕⓔ": "no",
+        "ⓢⓐⓕⓔ": "no",
         "giveup": "unwilling",
         "singing": "yes",
     }
@@ -114,11 +112,11 @@ ASSESSMENT_DICT_FAIL = {
 
 # Answers are against RUBRIC_DICT -- this is worth 14 points
 ASSESSMENT_DICT_PASS = {
-    'overall_feedback': u"这是中国",
+    'overall_feedback': "这是中国",
     'criterion_feedback': {},
     'options_selected': {
         "secret": "yes",
-        u"ⓢⓐⓕⓔ": "yes",
+        "ⓢⓐⓕⓔ": "yes",
         "giveup": "eager",
         "singing": "no",
     }
@@ -126,18 +124,18 @@ ASSESSMENT_DICT_PASS = {
 
 # Answers are against RUBRIC_DICT -- this is worth 14 points
 # Feedback text is one character over the limit.
-LONG_FEEDBACK_TEXT = u"是" * Assessment.MAX_FEEDBACK_SIZE + "."
+LONG_FEEDBACK_TEXT = "是" * Assessment.MAX_FEEDBACK_SIZE + "."
 ASSESSMENT_DICT_HUGE = {
     'overall_feedback': LONG_FEEDBACK_TEXT,
     'criterion_feedback': {
         "secret": LONG_FEEDBACK_TEXT,
-        u"ⓢⓐⓕⓔ": LONG_FEEDBACK_TEXT,
+        "ⓢⓐⓕⓔ": LONG_FEEDBACK_TEXT,
         "giveup": LONG_FEEDBACK_TEXT,
         "singing": LONG_FEEDBACK_TEXT,
     },
     'options_selected': {
         "secret": "yes",
-        u"ⓢⓐⓕⓔ": "yes",
+        "ⓢⓐⓕⓔ": "yes",
         "giveup": "eager",
         "singing": "no",
     },
@@ -227,7 +225,7 @@ class TestPeerApi(CacheResetTest):
 
         # Provide written feedback for the feedback-only criterion
         feedback = {
-            "feedback only": u"This is some feedback"
+            "feedback only": "This is some feedback"
         }
         assessment = peer_api.create_assessment(
             bob_sub["uuid"],
@@ -246,7 +244,7 @@ class TestPeerApi(CacheResetTest):
         # Verify the feedback-only criterion assessment part
         self.assertEqual(assessment["parts"][4]["criterion"]["name"], "feedback only")
         self.assertIs(assessment["parts"][4]["option"], None)
-        self.assertEqual(assessment["parts"][4]["feedback"], u"This is some feedback")
+        self.assertEqual(assessment["parts"][4]["feedback"], "This is some feedback")
 
     def test_create_assessment_unknown_criterion_feedback(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -391,7 +389,7 @@ class TestPeerApi(CacheResetTest):
         self._create_student_and_submission("Bob", "Bob's answer")
         self._create_student_and_submission("Sally", "Sally's answer")
         sub = peer_api.get_submission_to_assess(tim_sub['uuid'], REQUIRED_GRADED)
-        self.assertEqual(u"Bob's answer", sub['answer'])
+        self.assertEqual("Bob's answer", sub['answer'])
 
         # And now we cheat; we want to set the clock back such that the lease
         # on this PeerWorkflowItem has expired.
@@ -401,7 +399,7 @@ class TestPeerApi(CacheResetTest):
         pwis[0].save()
 
         sub = peer_api.get_submission_to_assess(tim_sub['uuid'], REQUIRED_GRADED)
-        self.assertEqual(u"Bob's answer", sub['answer'])
+        self.assertEqual("Bob's answer", sub['answer'])
 
         peer_api.create_assessment(
             tim_sub["uuid"], tim["student_id"],
@@ -1206,7 +1204,7 @@ class TestPeerApi(CacheResetTest):
 
         submission = peer_api.get_submission_to_assess(submission['uuid'], 3)
         self.assertIsNotNone(submission)
-        self.assertEqual(submission["answer"], u"Bob's answer")
+        self.assertEqual(submission["answer"], "Bob's answer")
         self.assertEqual(submission["student_item"], 2)
         self.assertEqual(submission["attempt_number"], 1)
 
@@ -1600,8 +1598,8 @@ class TestPeerApi(CacheResetTest):
         for i in range(10):
             user_submissions.append(
                 self._create_student_and_submission(
-                    'Student{}'.format(i),
-                    'Student{} submission'.format(i),
+                    f'Student{i}',
+                    f'Student{i} submission',
                     date=submission_date
                 )
             )
@@ -1702,7 +1700,7 @@ class AssessmentFeedbackTest(CacheResetTest):
     """
 
     def setUp(self):
-        super(AssessmentFeedbackTest, self).setUp()
+        super().setUp()
         self.feedback = AssessmentFeedback.objects.create(
             submission_uuid='test_submission',
             feedback_text='test feedback',
@@ -1783,7 +1781,7 @@ class AssessmentFeedbackTest(CacheResetTest):
 
     def test_unicode(self):
         # Create options with unicode
-        self.feedback.add_options([u'𝓘 𝓵𝓲𝓴𝓮𝓭 𝓶𝔂 𝓪𝓼𝓼𝓮𝓼𝓼𝓶𝓮𝓷𝓽', u'ﾉ ｲんougんｲ ﾶﾘ ﾑ丂丂乇丂丂ﾶ乇刀ｲ wﾑ丂 u刀ｷﾑﾉ尺'])
+        self.feedback.add_options(['𝓘 𝓵𝓲𝓴𝓮𝓭 𝓶𝔂 𝓪𝓼𝓼𝓮𝓼𝓼𝓶𝓮𝓷𝓽', 'ﾉ ｲんougんｲ ﾶﾘ ﾑ丂丂乇丂丂ﾶ乇刀ｲ wﾑ丂 u刀ｷﾑﾉ尺'])
 
         # There should be two options in the database
         self.assertEqual(AssessmentFeedbackOption.objects.count(), 2)

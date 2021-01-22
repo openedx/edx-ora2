@@ -73,7 +73,7 @@ class GradeMixin:
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_grade_incomplete(workflow)
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
-            return self.render_error(self._(u"An unexpected error occurred."))
+            return self.render_error(self._("An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -202,7 +202,7 @@ class GradeMixin:
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
 
-        feedback_text = data.get('feedback_text', u'')
+        feedback_text = data.get('feedback_text', '')
         feedback_options = data.get('feedback_options', list())
 
         try:
@@ -212,7 +212,7 @@ class GradeMixin:
                 'options': feedback_options,
             })
         except (peer_api.PeerAssessmentInternalError, peer_api.PeerAssessmentRequestError):
-            return {'success': False, 'msg': self._(u"Assessment feedback could not be saved.")}
+            return {'success': False, 'msg': self._("Assessment feedback could not be saved.")}
         else:
             self.runtime.publish(
                 self,
@@ -223,7 +223,7 @@ class GradeMixin:
                     'options': feedback_options,
                 }
             )
-            return {'success': True, 'msg': self._(u"Feedback saved.")}
+            return {'success': True, 'msg': self._("Feedback saved.")}
 
     def grade_details(
             self, submission_uuid, peer_assessments, self_assessment, staff_assessment,
@@ -368,8 +368,8 @@ class GradeMixin:
                 'option': self._peer_median_option(submission_uuid, criterion),
                 'individual_assessments': [
                     _get_assessment_part(
-                        _(u'Peer {peer_index}').format(peer_index=index + 1),
-                        _(u'Peer Comments'),
+                        _('Peer {peer_index}').format(peer_index=index + 1),
+                        _('Peer Comments'),
                         criterion_name,
                         peer_assessment
                     )
@@ -481,7 +481,7 @@ class GradeMixin:
         if len(options) == 1:
             return options[0]
         return {
-            'label': u' / '.join([option['label'] for option in options]),
+            'label': ' / '.join([option['label'] for option in options]),
             'points': median_score if median_score != -1 else None,
             'explanation': None,
         }
@@ -510,7 +510,7 @@ class GradeMixin:
             individual_feedback = []
             for peer_index, peer_assessment in enumerate(peer_assessments):
                 individual_feedback.append({
-                    'title': _(u'Peer {peer_index}').format(peer_index=peer_index + 1),
+                    'title': _('Peer {peer_index}').format(peer_index=peer_index + 1),
                     'feedback': peer_assessment.get('feedback')
                 })
             if any(assessment_feedback['feedback'] for assessment_feedback in individual_feedback):

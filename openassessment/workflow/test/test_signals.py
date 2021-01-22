@@ -1,11 +1,9 @@
 """
 Tests for Django signals and receivers defined by the workflow API.
 """
-
+from unittest import mock
 
 import ddt
-import mock
-
 from django.db import DatabaseError
 
 from submissions import api as sub_api
@@ -31,7 +29,7 @@ class UpdateWorkflowSignalTest(CacheResetTest):
         """
         Create a submission.
         """
-        super(UpdateWorkflowSignalTest, self).setUp()
+        super().setUp()
         submission = sub_api.create_submission(self.STUDENT_ITEM, "test answer")
         self.submission_uuid = submission['uuid']
 

@@ -43,7 +43,7 @@ def _duplicates(items):
 
     """
     counts = Counter(items)
-    return set(x for x in items if counts[x] > 1)
+    return {x for x in items if counts[x] > 1}
 
 
 def _is_valid_assessment_sequence(assessments):
@@ -165,7 +165,7 @@ def validate_assessments(assessments, current_assessments, is_released, _):
         if names != current_names:
             return False, _("The assessment type cannot be changed after the problem has been released.")
 
-    return True, u''
+    return True, ''
 
 
 def validate_rubric(rubric_dict, current_rubric, is_released, _):
@@ -186,13 +186,13 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
     try:
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
-        return False, _(u'This rubric definition is not valid.')
+        return False, _('This rubric definition is not valid.')
 
     for criterion in rubric_dict['criteria']:
         # No duplicate option names within a criterion
         duplicates = _duplicates([option['name'] for option in criterion['options']])
         if duplicates:
-            msg = _(u"Options in '{criterion}' have duplicate name(s): {duplicates}").format(
+            msg = _("Options in '{criterion}' have duplicate name(s): {duplicates}").format(
                 criterion=criterion['name'], duplicates=", ".join(duplicates)
             )
             return False, msg
@@ -200,7 +200,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
         # Some criteria may have no options, just written feedback.
         # In this case, written feedback must be required (not optional or disabled).
         if not criterion['options'] and criterion.get('feedback', 'disabled') != 'required':
-            msg = _(u'Criteria with no options must require written feedback.')
+            msg = _('Criteria with no options must require written feedback.')
             return False, msg
 
     # After a problem is released, authors are allowed to change text,
@@ -209,11 +209,11 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
 
         # Number of prompts must be the same
         if len(rubric_dict['prompts']) != len(current_rubric['prompts']):
-            return False, _(u'Prompts cannot be created or deleted after a problem is released.')
+            return False, _('Prompts cannot be created or deleted after a problem is released.')
 
         # Number of criteria must be the same
         if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
-            return False, _(u'The number of criteria cannot be changed after a problem is released.')
+            return False, _('The number of criteria cannot be changed after a problem is released.')
 
         # Criteria names must be the same
         # We use criteria names as unique identifiers (unfortunately)
@@ -223,22 +223,22 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
         # the right way by assigning unique identifiers for criteria;
         # but for now, this is the safest way to avoid breaking problems
         # post-release.
-        current_criterion_names = set(criterion.get('name') for criterion in current_rubric['criteria'])
-        new_criterion_names = set(criterion.get('name') for criterion in rubric_dict['criteria'])
+        current_criterion_names = {criterion.get('name') for criterion in current_rubric['criteria']}
+        new_criterion_names = {criterion.get('name') for criterion in rubric_dict['criteria']}
         if current_criterion_names != new_criterion_names:
-            return False, _(u'Criteria names cannot be changed after a problem is released')
+            return False, _('Criteria names cannot be changed after a problem is released')
 
         # Number of options for each criterion must be the same
         for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
             if len(new_criterion['options']) != len(old_criterion['options']):
-                return False, _(u'The number of options cannot be changed after a problem is released.')
+                return False, _('The number of options cannot be changed after a problem is released.')
 
             else:
                 for new_option, old_option in _match_by_order(new_criterion['options'], old_criterion['options']):
                     if new_option['points'] != old_option['points']:
-                        return False, _(u'Point values cannot be changed after a problem is released.')
+                        return False, _('Point values cannot be changed after a problem is released.')
 
-    return True, u''
+    return True, ''
 
 
 def validate_dates(start, end, date_ranges, _):
@@ -261,7 +261,7 @@ def validate_dates(start, end, date_ranges, _):
     except (DateValidationError, InvalidDateFormat) as ex:
         return False, str(ex)
     else:
-        return True, u''
+        return True, ''
 
 
 def validate_assessment_examples(rubric_dict, assessments, _):
@@ -287,7 +287,7 @@ def validate_assessment_examples(rubric_dict, assessments, _):
             # Must have at least one training example
             if not examples:
                 return False, _(
-                    u"Learner training must have at least one training example."
+                    "Learner training must have at least one training example."
                 )
 
             # Delegate to the student training API to validate the
@@ -296,7 +296,7 @@ def validate_assessment_examples(rubric_dict, assessments, _):
             if errors:
                 return False, "; ".join(errors)
 
-    return True, u''
+    return True, ''
 
 
 def validator(oa_block, _, strict_post_release=True):
@@ -355,7 +355,7 @@ def validator(oa_block, _, strict_post_release=True):
             return False, _("Leaderboard number is invalid.")
 
         # Success!
-        return True, u''
+        return True, ''
 
     return _inner
 
@@ -375,7 +375,7 @@ def validate_submission(submission, prompts, _, text_response='required'):
             and msg describes any validation errors found.
     """
 
-    message = _(u"The submission format is invalid.")
+    message = _("The submission format is invalid.")
 
     if not isinstance(submission, list):
         return False, message
@@ -387,4 +387,4 @@ def validate_submission(submission, prompts, _, text_response='required'):
         if not isinstance(submission_part, str):
             return False, message
 
-    return True, u''
+    return True, ''

@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 """
 Tests for grade explanation in Open Response Assessment XBlock.
 """
-from __future__ import absolute_import
 
 import json
 
-from mock import patch
+from unittest.mock import patch
 
 from ddt import ddt, data
 

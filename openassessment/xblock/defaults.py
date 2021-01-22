@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Default data initializations for the XBlock, with formatting preserved."""
 # pylint: disable=line-too-long
 

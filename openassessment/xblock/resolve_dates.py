@@ -46,15 +46,15 @@ def _parse_date(value, _):
     elif isinstance(value, str):
         try:
             return parse_date(value).replace(tzinfo=pytz.utc)
-        except ValueError:
+        except ValueError as ex:
             raise InvalidDateFormat(
                 _(
-                    u"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS."
+                    "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS."
                 ).format(date=value)
-            )
+            ) from ex
 
     else:
-        raise InvalidDateFormat(_(u"'{date}' must be a date string or datetime").format(date=value))
+        raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))
 
 
 def parse_date_value(date, _):
@@ -207,7 +207,7 @@ def resolve_dates(start, end, date_ranges, _):
 
         if step_start < prev_start:
             msg = _(
-                u"This step's start date '{start}' cannot be earlier than the previous step's start date '{prev}'."
+                "This step's start date '{start}' cannot be earlier than the previous step's start date '{prev}'."
             ).format(
                 start=step_start,
                 prev=prev_start,
@@ -215,7 +215,7 @@ def resolve_dates(start, end, date_ranges, _):
             raise DateValidationError(msg)
 
         if step_end > prev_end:
-            msg = _(u"This step's due date '{due}' cannot be later than the next step's due date '{prev}'.").format(
+            msg = _("This step's due date '{due}' cannot be later than the next step's due date '{prev}'.").format(
                 due=step_end, prev=prev_end
             )
             raise DateValidationError(msg)
@@ -231,7 +231,7 @@ def resolve_dates(start, end, date_ranges, _):
     # Now that we have resolved both start and end dates, we can safely compare them
     for resolved_start, resolved_end in resolved_ranges:
         if resolved_start >= resolved_end:
-            msg = _(u"The start date '{start}' cannot be later than the due date '{due}'").format(
+            msg = _("The start date '{start}' cannot be later than the due date '{due}'").format(
                 start=resolved_start, due=resolved_end
             )
             raise DateValidationError(msg)

@@ -4,7 +4,7 @@ anything related to backends.
 """
 import json
 
-import mock
+from unittest import mock
 import pytest
 
 from openassessment.assessment.models.base import SharedFileUpload

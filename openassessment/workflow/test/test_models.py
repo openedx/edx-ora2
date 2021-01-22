@@ -1,8 +1,8 @@
 """ Tests for ORA workflow models """
+from unittest import mock
 
 from contextlib import contextmanager
 import ddt
-import mock
 from freezegun import freeze_time
 
 from django.utils.timezone import now

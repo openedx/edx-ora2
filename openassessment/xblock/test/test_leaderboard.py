@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for leaderboard handlers in Open Assessment XBlock.
 """
@@ -8,7 +7,7 @@ import json
 from random import randint
 from urllib.parse import urlparse
 
-import mock
+from unittest import mock
 
 from django.core.cache import cache
 from django.test.utils import override_settings
@@ -56,11 +55,11 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ])
         self._assert_scores(xblock, [
             {'score': 2, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 2 part 1', u'test answer 2 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 2 part 1', 'test answer 2 part 2'))},
                 xblock.prompts
             )},
             {'score': 1, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 1 part 1', u'test answer 1 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))},
                 xblock.prompts
             )}
         ])
@@ -78,15 +77,15 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ])
         self._assert_scores(xblock, [
             {'score': 10, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 4 part 1', u'test answer 4 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 4 part 1', 'test answer 4 part 2'))},
                 xblock.prompts
             )},
             {'score': 3, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 5 part 1', u'test answer 5 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 5 part 1', 'test answer 5 part 2'))},
                 xblock.prompts
             )},
             {'score': 2, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 2 part 1', u'test answer 2 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 2 part 1', 'test answer 2 part 2'))},
                 xblock.prompts
             )}
         ])
@@ -101,7 +100,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ])
         self._assert_scores(xblock, [
             {'score': 1, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 1 part 1', u'test answer 1 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))},
                 xblock.prompts
             )},
         ])
@@ -118,11 +117,11 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ])
         self._assert_scores(xblock, [
             {'score': 10, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 2 part 1', u'test answer 2 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 2 part 1', 'test answer 2 part 2'))},
                 xblock.prompts
             )},
             {'score': 1, 'files': [], 'submission': create_submission_dict(
-                {'answer': prepare_submission_for_serialization((u'test answer 1 part 1', u'test answer 1 part 2'))},
+                {'answer': prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))},
                 xblock.prompts
             )}
         ])
@@ -160,14 +159,14 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         Tests that leaderboard works as expected when multiple files are uploaded
         """
         file_keys = ['foo', 'bar']
-        file_descriptions = ['{}-description'.format(file_key) for file_key in file_keys]
-        files_names = ['{}-file_name'.format(file_key) for file_key in file_keys]
+        file_descriptions = [f'{file_key}-description' for file_key in file_keys]
+        files_names = [f'{file_key}-file_name' for file_key in file_keys]
         conn = boto3.client("s3")
         conn.create_bucket(Bucket="mybucket")
         for file_key in file_keys:
             conn.put_object(
                 Bucket="mybucket",
-                Key="submissions_attachments/{}".format(file_key),
+                Key=f"submissions_attachments/{file_key}",
                 Body=b"How d'ya do?",
             )
             files_url_and_description = [
@@ -227,7 +226,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         ]
         # Create a image and text submission
         submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
-        submission[u'file_key'] = 'foo'
+        submission['file_key'] = 'foo'
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])
@@ -263,7 +262,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             # to anything without affecting the test.
             student_item = xblock.get_student_item_dict()
             # adding rand number to the student_id to make it unique.
-            student_item['student_id'] = u'student {num} {num2}'.format(num=num, num2=randint(2, 1000))
+            student_item['student_id'] = 'student {num} {num2}'.format(num=num, num2=randint(2, 1000))
             if submission_key is not None:
                 answer = {submission_key: submission}
             else:

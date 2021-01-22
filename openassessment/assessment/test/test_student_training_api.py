@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 """
 Tests for training assessment type.
 """
 
-
 import copy
+from unittest.mock import patch
 
 import ddt
-from mock import patch
 
 from django.db import DatabaseError
 
@@ -30,7 +28,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         """
         Create a submission.
         """
-        super(StudentTrainingAssessmentTest, self).setUp()
+        super().setUp()
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
         training_api.on_start(submission['uuid'])
         self.submission_uuid = submission['uuid']
@@ -55,8 +53,8 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
         # Give the example different scores than the instructor gave
         incorrect_assessment = {
-            u"vøȼȺƀᵾłȺɍɏ": u"𝓰𝓸𝓸𝓭",
-            u"ﻭɼค๓๓คɼ": u"𝓰𝓸𝓸𝓭",
+            "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+            "ﻭɼค๓๓คɼ": "𝓰𝓸𝓸𝓭",
         }
         corrections = training_api.assess_training_example(
             self.submission_uuid, incorrect_assessment
@@ -158,7 +156,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         errors = training_api.validate_training_examples(
             data['rubric'], data['examples']
         )
-        msg = u"Expected errors {} but got {}".format(data['errors'], errors)
+        msg = "Expected errors {} but got {}".format(data['errors'], errors)
         self.assertCountEqual(errors, data['errors'], msg=msg)
 
     def test_is_finished_no_workflow(self):

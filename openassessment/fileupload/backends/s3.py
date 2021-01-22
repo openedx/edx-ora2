@@ -34,9 +34,9 @@ class Backend(BaseBackend):
             )
         except Exception as ex:
             log.exception(
-                u"An internal exception occurred while generating an upload URL."
+                "An internal exception occurred while generating an upload URL."
             )
-            raise FileUploadInternalError(ex)
+            raise FileUploadInternalError(ex) from ex
 
     def get_download_url(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)
@@ -51,9 +51,9 @@ class Backend(BaseBackend):
             )
         except Exception as ex:
             log.exception(
-                u"An internal exception occurred while generating a download URL."
+                "An internal exception occurred while generating a download URL."
             )
-            raise FileUploadInternalError(ex)
+            raise FileUploadInternalError(ex) from ex
 
     def remove_file(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Test that the student can save a files descriptions.
 """
@@ -6,7 +5,7 @@ Test that the student can save a files descriptions.
 
 import json
 
-import mock
+from unittest import mock
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -35,12 +34,12 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         xblock.has_team = mock.Mock(return_value=False)
 
         # Save the response
-        descriptions = [{'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
-                        {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}]
+        descriptions = [{'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
+                        {'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}]
         payload = json.dumps({'fileMetadata': descriptions})
         resp = self.request(xblock, 'save_files_descriptions', payload, response_format="json")
         self.assertTrue(resp['success'])
-        self.assertEqual(resp['msg'], u'')
+        self.assertEqual(resp['msg'], '')
 
         # Reload the submission UI
         # pylint: disable=protected-access,unnecessary-lambda
@@ -61,13 +60,13 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         xblock.has_team = mock.Mock(return_value=False)
 
         descriptions1 = [
-            {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
-            {'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}
+            {'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
+            {'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}
         ]
         payload = json.dumps({'fileMetadata': descriptions1})
         self.request(xblock, 'save_files_descriptions', payload, response_format="json")
-        descriptions2 = [{'description': u"test1", 'fileName': 'fname1', 'fileSize': 1000},
-                         {'description': u"test2", 'fileName': 'fname2', 'fileSize': 2000}]
+        descriptions2 = [{'description': "test1", 'fileName': 'fname1', 'fileSize': 1000},
+                         {'description': "test2", 'fileName': 'fname2', 'fileSize': 2000}]
         payload = json.dumps({'fileMetadata': descriptions2})
         self.request(xblock, 'save_files_descriptions', payload, response_format="json")
 
@@ -100,7 +99,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         are incorrect.
         """
         base_metadata = {
-            'description': u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!",
+            'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!",
             'fileName': 'fname1',
             'fileSize': 1000,
         }

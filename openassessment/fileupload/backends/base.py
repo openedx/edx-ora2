@@ -155,7 +155,7 @@ class BaseBackend(metaclass=abc.ABCMeta):
         Returns:
             A key name (str) to use constructing URLs.
         """
-        return u"{prefix}/{key}".format(
+        return "{prefix}/{key}".format(
             prefix=Settings.get_prefix(),
             key=key
         )

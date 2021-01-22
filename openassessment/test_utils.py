@@ -17,11 +17,11 @@ class CacheResetTest(TestCase):
     Test case that resets the cache before and after each test.
     """
     def setUp(self):
-        super(CacheResetTest, self).setUp()
+        super().setUp()
         _clear_all_caches()
 
     def tearDown(self):
-        super(CacheResetTest, self).tearDown()
+        super().tearDown()
         _clear_all_caches()
 
 
@@ -30,9 +30,9 @@ class TransactionCacheResetTest(TransactionTestCase):
     Transaction test case that resets the cache.
     """
     def setUp(self):
-        super(TransactionCacheResetTest, self).setUp()
+        super().setUp()
         _clear_all_caches()
 
     def tearDown(self):
-        super(TransactionCacheResetTest, self).tearDown()
+        super().tearDown()
         _clear_all_caches()

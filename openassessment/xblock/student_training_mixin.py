@@ -46,14 +46,14 @@ class StudentTrainingMixin:
 
         """
         if "student-training" not in self.assessment_steps:
-            return Response(u"")
+            return Response("")
 
         try:
             path, context = self.training_path_and_context()
         except Exception:  # pylint: disable=broad-except
-            msg = u"Could not render Learner Training step for submission {}.".format(self.submission_uuid)
+            msg = f"Could not render Learner Training step for submission {self.submission_uuid}."
             logger.exception(msg)
-            return self.render_error(self._(u"An unexpected error occurred."))
+            return self.render_error(self._("An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -95,7 +95,7 @@ class StudentTrainingMixin:
         if not example:
             return (
                 {},
-                u"No training example was returned from the API for student with Submission UUID {}".format(
+                "No training example was returned from the API for student with Submission UUID {}".format(
                     self.submission_uuid
                 )
             )
@@ -110,7 +110,7 @@ class StudentTrainingMixin:
 
         return (submission_dict, "") or (
             {},
-            u"Improperly formatted example, cannot render student training. Example: {}".format(example)
+            f"Improperly formatted example, cannot render student training. Example: {example}"
         )
 
     def training_path_and_context(self):
@@ -224,9 +224,9 @@ class StudentTrainingMixin:
 
         """
         if 'options_selected' not in data:
-            return {'success': False, 'msg': self._(u"Missing options_selected key in request")}
+            return {'success': False, 'msg': self._("Missing options_selected key in request")}
         if not isinstance(data['options_selected'], dict):
-            return {'success': False, 'msg': self._(u"options_selected must be a dictionary")}
+            return {'success': False, 'msg': self._("options_selected must be a dictionary")}
 
         # Check the student's scores against the course author's scores.
         # This implicitly updates the student training workflow (which example essay is shown)
@@ -246,22 +246,22 @@ class StudentTrainingMixin:
             )
         except student_training.StudentTrainingRequestError:
             msg = (
-                u"Could not check learner training scores for the learner with submission UUID {uuid}"
+                "Could not check learner training scores for the learner with submission UUID {uuid}"
             ).format(uuid=self.submission_uuid)
             logger.warning(msg, exc_info=True)
             return {
                 'success': False,
-                'msg': self._(u"Your scores could not be checked.")
+                'msg': self._("Your scores could not be checked.")
             }
         except student_training.StudentTrainingInternalError:
             return {
                 'success': False,
-                'msg': self._(u"Your scores could not be checked.")
+                'msg': self._("Your scores could not be checked.")
             }
         except Exception:  # pylint: disable=broad-except
             return {
                 'success': False,
-                'msg': self._(u"An unexpected error occurred.")
+                'msg': self._("An unexpected error occurred.")
             }
         else:
             try:
@@ -272,6 +272,6 @@ class StudentTrainingMixin:
                 return {'success': False, 'msg': msg}
             return {
                 'success': True,
-                'msg': u'',
+                'msg': '',
                 'corrections': corrections,
             }

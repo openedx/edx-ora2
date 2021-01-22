@@ -5,9 +5,9 @@ View-level tests for Studio view of OpenAssessment XBlock.
 import copy
 import datetime as dt
 import json
+from unittest.mock import MagicMock, patch, Mock
 
 from ddt import ddt, file_data
-from mock import MagicMock, patch, Mock
 import pytz
 
 from .base import XBlockHandlerTestCase, scenario
@@ -110,7 +110,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        super(StudioViewTest, cls).setUpClass()
+        super().setUpClass()
         cls.waffle_course_flag_patcher = patch(
             'openassessment.xblock.config_mixin.import_course_waffle_flag'
         )
@@ -118,7 +118,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        super(StudioViewTest, cls).tearDownClass()
+        super().tearDownClass()
         cls.waffle_course_flag_patcher.stop()
 
     @scenario('data/basic_scenario.xml')

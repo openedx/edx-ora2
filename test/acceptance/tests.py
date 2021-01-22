@@ -44,7 +44,7 @@ def retry(tries=2, delay=4, backoff=2):
                 except (BrokenPromise, AssertionError) as ex:
                     if attempt_num >= (tries - 1):
                         raise
-                    print(u"Test failed with {err}, retrying in {sec} seconds...".format(err=ex, sec=_delay))
+                    print(f"Test failed with {ex}, retrying in {_delay} seconds...")
                     time.sleep(_delay)
                     _delay *= backoff
         return _inner
@@ -59,42 +59,42 @@ class OpenAssessmentTest(WebAppTest):
 
     PROBLEM_LOCATIONS = {
         'staff_only':
-            u'courses/{test_course_id}/courseware/'
-            u'61944efb38a349edb140c762c7419b50/415c3ee1b7d04b58a1887a6fe82b31d6/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '61944efb38a349edb140c762c7419b50/415c3ee1b7d04b58a1887a6fe82b31d6/'.format(test_course_id=TEST_COURSE_ID),
         'self_only':
-            u'courses/{test_course_id}/courseware/'
-            u'a4dfec19cf9b4a6fb5b18be6ccd9cecc/338a4affb58a45459629e0566291381e/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            'a4dfec19cf9b4a6fb5b18be6ccd9cecc/338a4affb58a45459629e0566291381e/'.format(test_course_id=TEST_COURSE_ID),
         'peer_only':
-            u'courses/{test_course_id}/courseware/'
-            u'a4dfec19cf9b4a6fb5b18be6ccd9cecc/417e47b2663a4f79b62dba20b21628c8/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            'a4dfec19cf9b4a6fb5b18be6ccd9cecc/417e47b2663a4f79b62dba20b21628c8/'.format(test_course_id=TEST_COURSE_ID),
         'student_training':
-            u'courses/{test_course_id}/courseware/'
-            u'676026889c884ac1827688750871c825/5663e9b038434636977a4226d668fe02/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '676026889c884ac1827688750871c825/5663e9b038434636977a4226d668fe02/'.format(test_course_id=TEST_COURSE_ID),
         'file_upload':
-            u'courses/{test_course_id}/courseware/'
-            u'57a3f9d51d424f6cb922f0d69cba868d/bb563abc989340d8806920902f267ca3/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '57a3f9d51d424f6cb922f0d69cba868d/bb563abc989340d8806920902f267ca3/'.format(test_course_id=TEST_COURSE_ID),
         'full_workflow_staff_override':
-            u'courses/{test_course_id}/courseware/'
-            u'676026889c884ac1827688750871c825/181ea9ff144c4766be44eb8cb360e34f/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '676026889c884ac1827688750871c825/181ea9ff144c4766be44eb8cb360e34f/'.format(test_course_id=TEST_COURSE_ID),
         'full_workflow_staff_required':
-            u'courses/{test_course_id}/courseware/'
-            u'8d9584d242b44343bc270ea5ef04ab03/0b0dcc728abe45138c650732af178afb/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '8d9584d242b44343bc270ea5ef04ab03/0b0dcc728abe45138c650732af178afb/'.format(test_course_id=TEST_COURSE_ID),
         'feedback_only':
-            u'courses/{test_course_id}/courseware/'
-            u'8d9584d242b44343bc270ea5ef04ab03/a2875e0db1454d0b94728b9a7b28000b/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '8d9584d242b44343bc270ea5ef04ab03/a2875e0db1454d0b94728b9a7b28000b/'.format(test_course_id=TEST_COURSE_ID),
         'multiple_ora':
-            u'courses/{test_course_id}/courseware/'
-            u'3b9aa6e06d8f48818ff6f364b5586f38/b79abd43bb11445486cd1874e6c71a64/'.format(test_course_id=TEST_COURSE_ID),
+            'courses/{test_course_id}/courseware/'
+            '3b9aa6e06d8f48818ff6f364b5586f38/b79abd43bb11445486cd1874e6c71a64/'.format(test_course_id=TEST_COURSE_ID),
     }
 
-    SUBMISSION = u"This is a test submission."
+    SUBMISSION = "This is a test submission."
     # pylint: disable=anomalous-backslash-in-string
-    LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx )[/mathjaxinline]"  # nopep8
+    LATEX_SUBMISSION = r"[mathjaxinline]( \int_{0}^{1}xdx )[/mathjaxinline]"  # nopep8
     OPTIONS_SELECTED = [1, 2]
     STAFF_OVERRIDE_OPTIONS_SELECTED = [0, 1]
     STAFF_OVERRIDE_SCORE = 1
     STAFF_GRADE_EXISTS = "COMPLETE"
-    STAFF_AREA_SCORE = u"Final grade: {} out of 8"
+    STAFF_AREA_SCORE = "Final grade: {} out of 8"
     STAFF_ASSESSMENT_NOT_COMPLETE = "The problem has not been completed."
     EXPECTED_SCORE = 6
     STUDENT_TRAINING_OPTIONS = [
@@ -114,7 +114,7 @@ class OpenAssessmentTest(WebAppTest):
             staff (bool): If True, runs the test with a staff user (defaults to False).
 
         """
-        super(OpenAssessmentTest, self).setUp()
+        super().setUp()
 
         if PROFILING_ENABLED:
             self.profiler = Profiler(use_signal=False)
@@ -130,14 +130,14 @@ class OpenAssessmentTest(WebAppTest):
         self.grade_page = GradePage(self.browser, self.problem_loc)
 
     def log_to_file(self):
-        with open('{}-profile.log'.format(self.id()), 'w') as f:
+        with open(f'{self.id()}-profile.log', 'w') as f:
             f.write(self.profiler.output_text())
 
     def tearDown(self):
         if PROFILING_ENABLED:
             self.profiler.stop()
             self.log_to_file()
-        super(OpenAssessmentTest, self).tearDown()
+        super().tearDown()
 
     def login_user(self, learner, email):
         """
@@ -202,7 +202,7 @@ class OpenAssessmentTest(WebAppTest):
                 try:
                     self.student_training_page.wait_for_num_completed(example_num)
                 except BrokenPromise:
-                    msg = u"Did not complete at least {num} student training example(s).".format(num=example_num)
+                    msg = f"Did not complete at least {example_num} student training example(s)."
                     self.fail(msg)
 
             self.student_training_page.wait_for_page().wait_for_response().assess(options_selected)
@@ -295,7 +295,7 @@ class SelfAssessmentTest(OpenAssessmentTest):
     """
 
     def setUp(self):
-        super(SelfAssessmentTest, self).setUp('self_only')
+        super().setUp('self_only')
 
     @retry()
     @pytest.mark.acceptance
@@ -325,7 +325,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
     """
 
     def setUp(self):
-        super(StaffAssessmentTest, self).setUp('staff_only', staff=True)
+        super().setUp('staff_only', staff=True)
 
     @retry()
     @pytest.mark.acceptance
@@ -373,7 +373,7 @@ class PeerAssessmentTest(OpenAssessmentTest):
     """
 
     def setUp(self):
-        super(PeerAssessmentTest, self).setUp('peer_only')
+        super().setUp('peer_only')
 
     @retry()
     @pytest.mark.acceptance
@@ -398,13 +398,13 @@ class StaffOverrideTest(OpenAssessmentTest):
     This is used as a base class, as the problem type defined by subclasses must be known in setUp().
     """
     def __init__(self, *args, **kwargs):
-        super(StaffOverrideTest, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.problem_type = None
 
     def setUp(self):
         if self.problem_type is None:
             self.fail("Please define self.problem_type in a sub-class")
-        super(StaffOverrideTest, self).setUp(self.problem_type, staff=True)
+        super().setUp(self.problem_type, staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
@@ -443,13 +443,13 @@ class StaffOverrideSelfTest(StaffOverrideTest):
     Subclass of StaffOverrideTest for a 'self_only' problem.
     """
     def __init__(self, *args, **kwargs):
-        super(StaffOverrideSelfTest, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.problem_type = 'self_only'
 
     @retry()
     @pytest.mark.acceptance
     def test_staff_override(self):
-        super(StaffOverrideSelfTest, self)._test_staff_override()
+        super()._test_staff_override()
 
 
 class StaffOverridePeerTest(StaffOverrideTest):
@@ -457,13 +457,13 @@ class StaffOverridePeerTest(StaffOverrideTest):
     Subclass of StaffOverrideTest for a 'peer_only' problem.
     """
     def __init__(self, *args, **kwargs):
-        super(StaffOverridePeerTest, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.problem_type = 'peer_only'
 
     @retry()
     @pytest.mark.acceptance
     def test_staff_override(self):
-        super(StaffOverridePeerTest, self)._test_staff_override()
+        super()._test_staff_override()
 
 
 class StudentTrainingTest(OpenAssessmentTest):
@@ -471,7 +471,7 @@ class StudentTrainingTest(OpenAssessmentTest):
     Test student training (the "learning to assess" step).
     """
     def setUp(self):
-        super(StudentTrainingTest, self).setUp('student_training')
+        super().setUp('student_training')
 
     @retry()
     @pytest.mark.acceptance
@@ -492,7 +492,7 @@ class StaffAreaTest(OpenAssessmentTest):
     """
 
     def setUp(self):
-        super(StaffAreaTest, self).setUp('self_only', staff=True)
+        super().setUp('self_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
         self.studio_page = StudioSettingsPage(self.browser, self.TEST_COURSE_ID)
 
@@ -550,7 +550,7 @@ class StaffAreaTest(OpenAssessmentTest):
             self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
             visible_panels = self.staff_area_page.visible_staff_panels
             self.assertEqual(1, len(visible_panels))
-            self.assertIn(u'openassessment__{button_name}'.format(button_name=panel_name), visible_panels[0])
+            self.assertIn(f'openassessment__{panel_name}', visible_panels[0])
 
             # Click 'Close' and verify that the panel has been closed
             self.staff_area_page.click_staff_panel_close_button(panel_name)
@@ -577,8 +577,8 @@ class StaffAreaTest(OpenAssessmentTest):
         # Click on staff tools and search for user
         self.staff_area_page.show_learner(username)
         self.assertEqual(
-            [u"Learner's Response", u"Learner's Self Assessment", u"Staff Assessment for This Learner",
-             u"Learner's Final Grade", u"Submit Assessment Grade Override", u"Remove Submission From Peer Grading"],
+            ["Learner's Response", "Learner's Self Assessment", "Staff Assessment for This Learner",
+             "Learner's Final Grade", "Submit Assessment Grade Override", "Remove Submission From Peer Grading"],
             self.staff_area_page.learner_report_sections
         )
 
@@ -649,8 +649,8 @@ class StaffAreaTest(OpenAssessmentTest):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEqual(
-            [u'Poor - 0 points', u'Fair',
-             u'Fair - 1 point', u'Good'],
+            ['Poor - 0 points', 'Fair',
+             'Fair - 1 point', 'Good'],
             self.staff_area_page.learner_final_score_table_values
         )
 
@@ -688,7 +688,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Verify that the staff override and submission removal sections are now gone.
         self.assertEqual(
-            [u"Learner's Response", u"Learner's Self Assessment", u"Learner's Final Grade"],
+            ["Learner's Response", "Learner's Self Assessment", "Learner's Final Grade"],
             self.staff_area_page.learner_report_sections
         )
 
@@ -750,7 +750,7 @@ class FileUploadTest(OpenAssessmentTest):
     """
 
     def setUp(self):
-        super(FileUploadTest, self).setUp('file_upload')
+        super().setUp('file_upload')
 
     @retry()
     @pytest.mark.acceptance
@@ -783,15 +783,15 @@ class FullWorkflowMixin:
     (training, self assessment, peer assessment, staff override).
     """
     PEER_ASSESSMENT = [0, 0]
-    STAFF_AREA_PEER_ASSESSMENT = ['Poor', u'', u'0', u'5', u'Poor', u'', u'0', u'3']
+    STAFF_AREA_PEER_ASSESSMENT = ['Poor', '', '0', '5', 'Poor', '', '0', '3']
     PEER_ASSESSMENT_SCORE = 0
     PEER_ASSESSMENT_SCORE_STRING = "Final grade: 0 out of 8"
 
     SELF_ASSESSMENT = [2, 3]
-    STAFF_AREA_SELF_ASSESSMENT = ['Good', u'', u'5', u'5', u'Excellent', u'', u'3', u'3']
+    STAFF_AREA_SELF_ASSESSMENT = ['Good', '', '5', '5', 'Excellent', '', '3', '3']
 
     SUBMITTED_ASSESSMENT = [0, 3]
-    STAFF_AREA_SUBMITTED = ['Poor', u'', u'0', u'5', u'Excellent', u'', u'3', u'3']
+    STAFF_AREA_SUBMITTED = ['Poor', '', '0', '5', 'Excellent', '', '3', '3']
 
     def do_submission(self):
         """
@@ -889,12 +889,12 @@ class FullWorkflowMixin:
             self.verify_grade_entries(
                 [
                     (
-                        u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
-                        u"YOUR SELF ASSESSMENT", u"Good"
+                        "STAFF GRADE - 0 POINTS", "Poor", "PEER MEDIAN GRADE", "Poor", "PEER 1", "- POOR",
+                        "YOUR SELF ASSESSMENT", "Good"
                     ),
                     (
-                        u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE", u"Poor", u"PEER 1", u"- POOR",
-                        u"YOUR SELF ASSESSMENT", u"Excellent"
+                        "STAFF GRADE - 1 POINT", "Fair", "PEER MEDIAN GRADE", "Poor", "PEER 1", "- POOR",
+                        "YOUR SELF ASSESSMENT", "Excellent"
                     )
                 ]
             )
@@ -902,12 +902,12 @@ class FullWorkflowMixin:
             self.verify_grade_entries(
                 [
                     (
-                        u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE',
-                        u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Good"
+                        "STAFF GRADE - 0 POINTS", "Poor", 'PEER MEDIAN GRADE',
+                        'Waiting for peer reviews', "YOUR SELF ASSESSMENT", "Good"
                     ),
                     (
-                        u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE',
-                        u'Waiting for peer reviews', u"YOUR SELF ASSESSMENT", u"Excellent"
+                        "STAFF GRADE - 1 POINT", "Fair", 'PEER MEDIAN GRADE',
+                        'Waiting for peer reviews', "YOUR SELF ASSESSMENT", "Excellent"
                     )
                 ]
             )
@@ -954,7 +954,7 @@ class FullWorkflowMixin:
 
         self.assertTrue(
             peer_grade_exists(),
-            u"Learner still not graded after {} additional attempts".format(max_attempts)
+            f"Learner still not graded after {max_attempts} additional attempts"
         )
 
     def verify_grade_entries(self, expected_entries):
@@ -1001,7 +1001,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
     Tests of complete workflows, combining multiple required steps together.
     """
     def setUp(self):
-        super(FullWorkflowOverrideTest, self).setUp("full_workflow_staff_override", staff=True)
+        super().setUp("full_workflow_staff_override", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
@@ -1038,8 +1038,8 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         )
 
         self.verify_grade_entries(
-            [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"),
-             (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent")]
+            [("PEER MEDIAN GRADE - 0 POINTS", "Poor", "PEER 1", "- POOR", "YOUR SELF ASSESSMENT", "Good"),
+             ("PEER MEDIAN GRADE - 0 POINTS", "Poor", "PEER 1", "- POOR", "YOUR SELF ASSESSMENT", "Excellent")]
         )
 
         # Now do a staff override, changing the score (to 1).
@@ -1067,12 +1067,12 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.verify_grade_entries(
             [
                 (
-                    u"STAFF GRADE - 0 POINTS", u"Poor", u"PEER MEDIAN GRADE", u"Poor",
-                    u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Good"
+                    "STAFF GRADE - 0 POINTS", "Poor", "PEER MEDIAN GRADE", "Poor",
+                    "PEER 1", "- POOR", "YOUR SELF ASSESSMENT", "Good"
                 ),
                 (
-                    u"STAFF GRADE - 1 POINT", u"Fair", u"PEER MEDIAN GRADE",
-                    u"Poor", u"PEER 1", u"- POOR", u"YOUR SELF ASSESSMENT", u"Excellent"
+                    "STAFF GRADE - 1 POINT", "Fair", "PEER MEDIAN GRADE",
+                    "Poor", "PEER 1", "- POOR", "YOUR SELF ASSESSMENT", "Excellent"
                 )
             ]
         )
@@ -1114,14 +1114,14 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.learner_final_score_table_headers
         )
         self.assertEqual(
-            [u'Poor - 0 points', u'Waiting for peer reviews',
-             u'Fair - 1 point', u'Waiting for peer reviews'],
+            ['Poor - 0 points', 'Waiting for peer reviews',
+             'Fair - 1 point', 'Waiting for peer reviews'],
             self.staff_area_page.learner_final_score_table_values
         )
         self.verify_grade_entries(
             [
-                (u"STAFF GRADE - 0 POINTS", u"Poor", u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
-                (u"STAFF GRADE - 1 POINT", u"Fair", u'PEER MEDIAN GRADE', u'Waiting for peer reviews')
+                ("STAFF GRADE - 0 POINTS", "Poor", 'PEER MEDIAN GRADE', 'Waiting for peer reviews'),
+                ("STAFF GRADE - 1 POINT", "Fair", 'PEER MEDIAN GRADE', 'Waiting for peer reviews')
             ]
         )
 
@@ -1132,7 +1132,7 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
     Tests of complete workflows, combining multiple required steps together.
     """
     def setUp(self):
-        super(FullWorkflowRequiredTest, self).setUp("full_workflow_staff_required", staff=True)
+        super().setUp("full_workflow_staff_required", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
@@ -1164,12 +1164,12 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
     assessments.
     """
     def setUp(self):
-        super(FeedbackOnlyTest, self).setUp("feedback_only", staff=True)
+        super().setUp("feedback_only", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def generate_feedback(self, assessment_type, feedback_type):
         """ Generates a feedback for assessment. """
-        return u"{}: {} feedback".format(assessment_type, feedback_type)
+        return f"{assessment_type}: {feedback_type} feedback"
 
     def assess_feedback(self, self_or_peer=""):
         """ Assess feedback for the assessment. """
@@ -1204,7 +1204,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         self.refresh_page()
         self.grade_page.wait_for_page()
         self.verify_grade_entries(
-            [(u'STAFF GRADE - 1 POINT', u'Yes', u'YOUR SELF ASSESSMENT', u'Yes')]
+            [('STAFF GRADE - 1 POINT', 'Yes', 'YOUR SELF ASSESSMENT', 'Yes')]
         )
         for i, assessment_type in enumerate(["staff", "self"]):
             # Criterion feedback first
@@ -1225,11 +1225,11 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         self.staff_area_page.expand_learner_report_sections()
         self.assertEqual(
             self.staff_area_page.learner_final_score_table_headers,
-            [u'CRITERION', u'STAFF GRADE', u'SELF ASSESSMENT GRADE']
+            ['CRITERION', 'STAFF GRADE', 'SELF ASSESSMENT GRADE']
         )
         self.assertEqual(
             self.staff_area_page.learner_final_score_table_values,
-            [u'Yes - 1 point', u'Yes', u'Feedback Recorded', u'Feedback Recorded']
+            ['Yes - 1 point', 'Yes', 'Feedback Recorded', 'Feedback Recorded']
         )
         self.assertEqual(
             self.staff_area_page.status_text('staff__assessments')[5],
@@ -1257,7 +1257,7 @@ class MultipleOpenAssessmentTest(OpenAssessmentTest, MultipleOpenAssessmentMixin
     """
 
     def setUp(self):
-        super(MultipleOpenAssessmentTest, self).setUp('multiple_ora')
+        super().setUp('multiple_ora')
         # Staff area page is not present in OpenAssessmentTest base class, so we are adding it here.
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 

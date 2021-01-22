@@ -5,12 +5,14 @@ Create factories for assessments and all of their related models.
 
 import datetime
 import factory
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from factory.django import DjangoModelFactory
 from pytz import UTC
 
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
                                               Criterion, CriterionOption, Rubric, StaffWorkflow, TeamStaffWorkflow)
+
+User = get_user_model()
 
 
 class RubricFactory(DjangoModelFactory):
@@ -32,8 +34,8 @@ class CriterionFactory(DjangoModelFactory):
         model = Criterion
 
     rubric = factory.SubFactory(RubricFactory)
-    name = factory.Sequence(lambda n: 'criterion_{}'.format(n))  # pylint: disable=unnecessary-lambda
-    label = factory.Sequence(lambda n: 'label_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    name = factory.Sequence(lambda n: f'criterion_{n}')  # pylint: disable=unnecessary-lambda
+    label = factory.Sequence(lambda n: f'label_{n}')  # pylint: disable=unnecessary-lambda
 
     order_num = factory.Sequence(lambda n: n)
 
@@ -51,8 +53,8 @@ class CriterionOptionFactory(DjangoModelFactory):
 
     points = 4
 
-    name = factory.Sequence(lambda n: 'option_{}'.format(n))  # pylint: disable=unnecessary-lambda
-    label = factory.Sequence(lambda n: 'option__label_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    name = factory.Sequence(lambda n: f'option_{n}')  # pylint: disable=unnecessary-lambda
+    label = factory.Sequence(lambda n: f'option__label_{n}')  # pylint: disable=unnecessary-lambda
 
     explanation = """The response makes 3-5 Monty Python references and at least one
                        original Star Wars trilogy reference. Do not select this option
@@ -90,7 +92,7 @@ class AssessmentFeedbackOptionFactory(DjangoModelFactory):
     class Meta:
         model = AssessmentFeedbackOption
 
-    text = factory.Sequence(lambda n: 'feedback_option_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    text = factory.Sequence(lambda n: f'feedback_option_{n}')  # pylint: disable=unnecessary-lambda
 
 
 class AssessmentFeedbackFactory(DjangoModelFactory):
@@ -126,8 +128,8 @@ class StaffWorkflowFactory(DjangoModelFactory):
         model = StaffWorkflow
 
     scorer_id = ''
-    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))  # pylint: disable=unnecessary-lambda
-    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    course_id = factory.Sequence(lambda n: f'default_course_{n}')  # pylint: disable=unnecessary-lambda
+    item_id = factory.Sequence(lambda n: f'default_item_{n}')  # pylint: disable=unnecessary-lambda
     submission_uuid = factory.Faker('sha1')
     assessment = None
 
@@ -138,8 +140,8 @@ class TeamStaffWorkflowFactory(DjangoModelFactory):
         model = TeamStaffWorkflow
 
     scorer_id = ''
-    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))  # pylint: disable=unnecessary-lambda
-    item_id = factory.Sequence(lambda n: 'default_item_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    course_id = factory.Sequence(lambda n: f'default_course_{n}')  # pylint: disable=unnecessary-lambda
+    item_id = factory.Sequence(lambda n: f'default_item_{n}')  # pylint: disable=unnecessary-lambda
     submission_uuid = factory.Faker('sha1')
     assessment = None
     team_submission_uuid = factory.Faker('sha1')
@@ -153,10 +155,10 @@ class UserFactory(DjangoModelFactory):
 
     _DEFAULT_PASSWORD = 'test'
 
-    username = factory.Sequence('robot{0}'.format)
-    email = factory.Sequence('robot+test+{0}@edx.org'.format)
+    username = factory.Sequence('robot{}'.format)
+    email = factory.Sequence('robot+test+{}@edx.org'.format)
     password = factory.PostGenerationMethodCall('set_password', _DEFAULT_PASSWORD)
-    first_name = factory.Sequence('Robot{0}'.format)
+    first_name = factory.Sequence('Robot{}'.format)
     last_name = 'Test'
     is_staff = False
     is_active = True

@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 Serializers common to all assessment types.
 """
@@ -280,7 +279,7 @@ def rubric_from_dict(rubric_dict):
 
     try:
         rubric = Rubric.objects.get(content_hash=content_hash)
-    except Rubric.DoesNotExist:
+    except Rubric.DoesNotExist as ex:
         rubric_dict["content_hash"] = content_hash
         rubric_dict["structure_hash"] = Rubric.structure_hash_from_dict(rubric_dict)
         for crit_idx, criterion in enumerate(rubric_dict.get("criteria", {})):
@@ -292,7 +291,7 @@ def rubric_from_dict(rubric_dict):
 
         rubric_serializer = RubricSerializer(data=rubric_dict)
         if not rubric_serializer.is_valid():
-            raise InvalidRubric(rubric_serializer.errors)
+            raise InvalidRubric(rubric_serializer.errors) from ex
         rubric = rubric_serializer.save()
 
     return rubric

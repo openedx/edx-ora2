@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for self-assessment API.
 """
@@ -6,7 +5,7 @@ Tests for self-assessment API.
 import copy
 import datetime
 
-from mock import patch
+from unittest.mock import patch
 import pytz
 
 from django.db import DatabaseError
@@ -21,7 +20,7 @@ class TestSelfApi(CacheResetTest):
     """ Tests for Self Assessment API. """
 
     STUDENT_ITEM = {
-        'student_id': u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+        'student_id': '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
         'item_id': 'test_item',
         'course_id': 'test_course',
         'item_type': 'test_type'
@@ -67,8 +66,8 @@ class TestSelfApi(CacheResetTest):
     }
 
     OVERALL_FEEDBACK = (
-        u"Unfortunately, the nature of being is too complex to comment, judge, or discern any one"
-        u"arbitrary set of things over another."
+        "Unfortunately, the nature of being is too complex to comment, judge, or discern any one"
+        "arbitrary set of things over another."
     )
 
     def test_create_assessment(self):
@@ -85,7 +84,7 @@ class TestSelfApi(CacheResetTest):
 
         # Create a self-assessment for the submission
         assessment = create_assessment(
-            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
             self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
@@ -102,14 +101,14 @@ class TestSelfApi(CacheResetTest):
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 8)
         self.assertEqual(assessment['points_possible'], 10)
-        self.assertEqual(assessment['feedback'], u'' + self.OVERALL_FEEDBACK)
-        self.assertEqual(assessment['score_type'], u'SE')
+        self.assertEqual(assessment['feedback'], '' + self.OVERALL_FEEDBACK)
+        self.assertEqual(assessment['score_type'], 'SE')
 
     def test_create_assessment_no_submission(self):
         # Attempt to create a self-assessment for a submission that doesn't exist
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                'deadbeef-1234-5678-9100-1234deadbeef', u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                'deadbeef-1234-5678-9100-1234deadbeef', '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -121,7 +120,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment for the submission from a different user
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                'deadbeef-1234-5678-9100-1234deadbeef', u'another user',
+                'deadbeef-1234-5678-9100-1234deadbeef', 'another user',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -136,7 +135,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment with criterion_feedback that do not match the rubric
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, criterion_feedback, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -152,7 +151,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment with options that do not match the rubric
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -168,7 +167,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment with options that do not match the rubric
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -184,7 +183,7 @@ class TestSelfApi(CacheResetTest):
         # Attempt to create a self-assessment with options that do not match the rubric
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
@@ -199,7 +198,7 @@ class TestSelfApi(CacheResetTest):
         # Create a self-assessment for the submission
         # Do not override the scored_at timestamp, so it should be set to the current time
         assessment = create_assessment(
-            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
             self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
         )
 
@@ -217,14 +216,14 @@ class TestSelfApi(CacheResetTest):
 
         # Self assess once
         assessment = create_assessment(
-            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
             self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
         )
 
         # Attempt to self-assess again, which should raise an exception
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
-                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
             )
 
@@ -253,7 +252,7 @@ class TestSelfApi(CacheResetTest):
 
         # Create a self-assessment for the submission
         assessment = create_assessment(
-            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
             self.OPTIONS_SELECTED, criterion_feedback, self.OVERALL_FEEDBACK, rubric,
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
@@ -261,7 +260,7 @@ class TestSelfApi(CacheResetTest):
         # The self-assessment should have set the feedback for
         # the criterion with no options to an empty string
         self.assertEqual(assessment["parts"][2]["option"], None)
-        self.assertEqual(assessment["parts"][2]["feedback"], u"This is the feedback for the Zero Option Criterion.")
+        self.assertEqual(assessment["parts"][2]["feedback"], "This is the feedback for the Zero Option Criterion.")
 
     def test_create_assessment_all_criteria_have_zero_options(self):
         # Create a submission to self-assess
@@ -285,7 +284,7 @@ class TestSelfApi(CacheResetTest):
         overall_feedback = ""
 
         assessment = create_assessment(
-            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
             options_selected, criterion_feedback, overall_feedback,
             rubric, scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
@@ -295,7 +294,7 @@ class TestSelfApi(CacheResetTest):
         for part in assessment["parts"]:
             self.assertEqual(part["option"], None)
             self.assertEqual(
-                part["feedback"], u'I thought it was about as accurate as Scrubs is to the medical profession.'
+                part["feedback"], 'I thought it was about as accurate as Scrubs is to the medical profession.'
             )
 
     @patch('openassessment.assessment.api.self._complete_assessment')
@@ -308,7 +307,7 @@ class TestSelfApi(CacheResetTest):
         with self.assertRaises(SelfAssessmentInternalError):
             # Create a self-assessment for the submission
             create_assessment(
-                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                submission['uuid'], '𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )

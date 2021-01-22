@@ -36,7 +36,7 @@ def load_requirements(*requirements_paths):
 
 setup(
     name='ora2',
-    version='2.13.9',
+    version='3.0.0',
     author='edX',
     author_email='oscm@edx.org',
     url='http://github.com/edx/edx-ora2',
@@ -51,7 +51,6 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.8',
     ],
     packages=find_packages(include=['openassessment*'], exclude=['*.test', '*.tests']),

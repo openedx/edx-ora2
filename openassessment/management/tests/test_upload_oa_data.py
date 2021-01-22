@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for management command that uploads submission/assessment data.
 """
@@ -8,7 +7,6 @@ import tarfile
 from io import BytesIO
 from urllib.parse import urlparse
 
-from six.moves import range
 
 import boto3
 import moto
@@ -24,8 +22,8 @@ class UploadDataTest(CacheResetTest):
     but the contents of the generated CSV files are tested elsewhere.
     """
 
-    COURSE_ID = u"TɘꙅT ↄoUᴙꙅɘ"
-    BUCKET_NAME = u"com.example.data"
+    COURSE_ID = "TɘꙅT ↄoUᴙꙅɘ"
+    BUCKET_NAME = "com.example.data"
     CSV_NAMES = [
         "assessment.csv", "assessment_part.csv",
         "assessment_feedback.csv", "assessment_feedback_option.csv",
@@ -42,12 +40,12 @@ class UploadDataTest(CacheResetTest):
         # the progress indicator code.
         for index in range(50):
             student_item = {
-                'student_id': "test_user_{}".format(index),
+                'student_id': f"test_user_{index}",
                 'course_id': self.COURSE_ID,
                 'item_id': 'test_item',
                 'item_type': 'openassessment',
             }
-            submission_text = u"test submission {}".format(index)
+            submission_text = f"test submission {index}"
             submission = sub_api.create_submission(student_item, submission_text)
             workflow_api.create_workflow(submission['uuid'], ['peer', 'self'])
 
@@ -84,4 +82,4 @@ class UploadDataTest(CacheResetTest):
             parsed_url.netloc,
             ["s3.eu-west-1.amazonaws.com", "s3.amazonaws.com"]
         )
-        self.assertIn("/{}".format(self.BUCKET_NAME), parsed_url.path)
+        self.assertIn(f"/{self.BUCKET_NAME}", parsed_url.path)

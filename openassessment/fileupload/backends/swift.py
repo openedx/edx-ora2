@@ -47,9 +47,9 @@ class Backend(BaseBackend):
             return '%s://%s%s' % (url.scheme, url.netloc, temp_url)
         except Exception as ex:
             logger.exception(
-                u"An internal exception occurred while generating an upload URL."
+                "An internal exception occurred while generating an upload URL."
             )
-            raise FileUploadInternalError(ex)
+            raise FileUploadInternalError(ex) from ex
 
     def get_download_url(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)
@@ -66,9 +66,9 @@ class Backend(BaseBackend):
             return download_url if response.status_code == 200 else ""
         except Exception as ex:
             logger.exception(
-                u"An internal exception occurred while generating a download URL."
+                "An internal exception occurred while generating a download URL."
             )
-            raise FileUploadInternalError(ex)
+            raise FileUploadInternalError(ex) from ex
 
     def remove_file(self, key):
         bucket_name, key_name = self._retrieve_parameters(key)
@@ -84,9 +84,9 @@ class Backend(BaseBackend):
             return response.status_code == 204
         except Exception as ex:
             logger.exception(
-                u"An internal exception occurred while removing object on swift storage."
+                "An internal exception occurred while removing object on swift storage."
             )
-            raise FileUploadInternalError(ex)
+            raise FileUploadInternalError(ex) from ex
 
 
 def get_settings():
