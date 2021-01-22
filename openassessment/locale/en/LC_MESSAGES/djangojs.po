@@ -18,6 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "boolean"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "function"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "number"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "span"
+msgstr ""
+
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
