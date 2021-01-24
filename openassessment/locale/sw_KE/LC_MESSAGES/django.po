@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 17:14-0500\n"
-"PO-Revision-Date: 2021-01-04 21:34+0000\n"
+"POT-Creation-Date: 2021-01-21 13:14-0500\n"
+"PO-Revision-Date: 2021-01-20 21:33+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
@@ -348,8 +348,8 @@ msgstr "Lazima ipewe Alama"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
-"Valid numbers are 0 to 99."
-msgstr "Bainisha namba ya tathimini rika ambayo kila 'mwanafunzi' lazima aikamilishe. Namba halali ni 0 mpaka 99."
+"Valid numbers are 1 to 99."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
@@ -358,8 +358,8 @@ msgstr "Imepewa Alama Na"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
-" numbers are 0 to 99."
-msgstr "Taja idadi ya wanafunzi ambao watatathmini kila jibu. Namba halali ni 0 mpaka 99."
+" numbers are 1 to 99."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
@@ -2176,66 +2176,66 @@ msgstr "Lazima ufikishe jibu kabla kuanza kufanya tathmini binafsi."
 msgid "Your self assessment could not be submitted."
 msgstr "Tathmini yako binafsi halikuweza kuwasilishwa."
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to schedule training"
 msgstr "Huna ruhusa kupanga ratiba ya mafunzo"
 
-#: openassessment/xblock/staff_area_mixin.py:43
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to reschedule tasks."
 msgstr "Huna ruhusa kuratibisha upya majukumu."
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access the ORA staff area"
 msgstr "Huna ruhusa kuingia kwenye eneo la walimu la ORA"
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA learner information."
 msgstr "Huna ruhusa kuingia kwenye kipengele cha taarifa ya mwanafunzi kwa ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:71
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Huna ruhusa ya kuingia kwenye kipengele cha utoaji daraja wa walimu kwa ORA."
 
-#: openassessment/xblock/staff_area_mixin.py:185
+#: openassessment/xblock/staff_area_mixin.py:184
 msgid "Error getting learner information."
 msgstr "Hitilafu ya kupata taarifa za mwanafunzi."
 
-#: openassessment/xblock/staff_area_mixin.py:228
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "Error loading the checked out learner response."
 msgstr "Hitilafu ya kupakia jibu la mwanafunzi lililopitiwa upya."
 
-#: openassessment/xblock/staff_area_mixin.py:229
+#: openassessment/xblock/staff_area_mixin.py:228
 msgid "No other learner responses are available for grading at this time."
 msgstr "Hakuna majibu ya mwanafunzi mwengine yaliyopo kwa utoaji daraja kwa wakati huu."
 
-#: openassessment/xblock/staff_area_mixin.py:231
+#: openassessment/xblock/staff_area_mixin.py:230
 msgid "Error getting staff grade information."
 msgstr "Hitilafu ya kupata habari za madaraja ya walimu."
 
-#: openassessment/xblock/staff_area_mixin.py:252
+#: openassessment/xblock/staff_area_mixin.py:251
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Hitilafu katika kupata ukatizaji wakutoa daraja za wafanyakazi na kupitia upya akaunti zao. "
 
-#: openassessment/xblock/staff_area_mixin.py:541
+#: openassessment/xblock/staff_area_mixin.py:540
 msgid "Please enter valid reason to remove the submission."
 msgstr "Tafadhali ingiza sababu halali kukuwezesha kuondoa wasilisho."
 
-#: openassessment/xblock/staff_area_mixin.py:552
+#: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:563
+#: openassessment/xblock/staff_area_mixin.py:562
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:590
+#: openassessment/xblock/staff_area_mixin.py:589
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Wasilisho la mwanafunzi limeondolewa kutoka kwenye tathmnini ya pamoja. Mwanafunzi anapata daraja sufuri isipokuwa ufute hali ya mwanafunzi kwa tatizo kuwaruhusu wafikishe upya jibu."
 
-#: openassessment/xblock/staff_area_mixin.py:625
+#: openassessment/xblock/staff_area_mixin.py:624
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2295,86 +2295,88 @@ msgstr "Alama zako hazikuweza kuhakikiwa."
 msgid "Error updating XBlock configuration"
 msgstr "Hitlafu katika kupakia usabidi wa XBlock"
 
-#: openassessment/xblock/studio_mixin.py:211
-msgid "Error: both text and file upload responses can't be disabled"
-msgstr "Hitilafu: jibu la maandishi na lile la upakiaji hayawezi kuzuiwa"
-
-#: openassessment/xblock/studio_mixin.py:214
-msgid ""
-"Error: in case if text response is disabled file upload response must be "
-"required"
-msgstr "Hitilafu: itakapotokea jibu la maandishi halikutokea jibu la upakiaji faili litahitajika"
+#: openassessment/xblock/studio_mixin.py:213
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr ""
 
 #: openassessment/xblock/studio_mixin.py:217
 msgid ""
-"Error: in case if file upload response is disabled text response must be "
-"required"
-msgstr "Hitilafu: itakapotokea jibu la upakiaji faili  haukuwezekana jibu la maandishi litahitajika"
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:241
+#: openassessment/xblock/studio_mixin.py:220
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:244
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Hitilafu ya uthibitishaji: {error}"
 
-#: openassessment/xblock/studio_mixin.py:270
+#: openassessment/xblock/studio_mixin.py:273
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Imefanikiwa kusasisha OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:114
+#: openassessment/xblock/submission_mixin.py:117
 msgid "\"submission\" required to submit answer."
 msgstr "\"uwasilishaji\" inahitajika kuwasilisha jibu."
 
-#: openassessment/xblock/submission_mixin.py:135
+#: openassessment/xblock/submission_mixin.py:138
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Kuwasilisha jibu, tizama kipengele hiki kwa Mtazamo kabla au Mubashara."
 
-#: openassessment/xblock/submission_mixin.py:141
+#: openassessment/xblock/submission_mixin.py:144
 msgid "Multiple submissions are not allowed."
 msgstr "Kuwasilisha zaidi ya mara moja hakuruhusiwi."
 
-#: openassessment/xblock/submission_mixin.py:185
+#: openassessment/xblock/submission_mixin.py:189
+msgid "Submission cannot be empty. Please refresh the page and try again."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:199
 msgid "API returned unclassified exception."
 msgstr "API imerudisha taarifa zisizo muhimu."
 
-#: openassessment/xblock/submission_mixin.py:236
+#: openassessment/xblock/submission_mixin.py:250
 msgid "This response could not be saved."
 msgstr "Jibu hili halikuweza kuhifadhiwa."
 
-#: openassessment/xblock/submission_mixin.py:240
+#: openassessment/xblock/submission_mixin.py:254
 msgid "This response was not submitted."
 msgstr "Jibu hili halikuwasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:256
+#: openassessment/xblock/submission_mixin.py:270
 msgid "Files descriptions were not submitted."
 msgstr "Maelezo ya mafaili hayakuwasilishwa"
 
-#: openassessment/xblock/submission_mixin.py:293
+#: openassessment/xblock/submission_mixin.py:307
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:416
+#: openassessment/xblock/submission_mixin.py:453
 msgid "There was an error uploading your file."
 msgstr "Kulikuwa na hitilafu kupakia faili lako."
 
-#: openassessment/xblock/submission_mixin.py:428
+#: openassessment/xblock/submission_mixin.py:465
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:439
+#: openassessment/xblock/submission_mixin.py:476
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:452
+#: openassessment/xblock/submission_mixin.py:489
 msgid "Error retrieving upload URL."
 msgstr "Hitilafu imetokea wakati kurudisha upakiaji wa URL."
 
-#: openassessment/xblock/submission_mixin.py:713
+#: openassessment/xblock/submission_mixin.py:756
 msgid "This response has been saved but not submitted."
 msgstr "Jibu hili limehifadhiwa lakini halijawasilishwa."
 
-#: openassessment/xblock/submission_mixin.py:714
+#: openassessment/xblock/submission_mixin.py:757
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 

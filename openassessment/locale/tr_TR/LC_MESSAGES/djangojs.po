@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 17:14-0500\n"
+"POT-Creation-Date: 2021-01-21 13:14-0500\n"
 "PO-Revision-Date: 2020-10-07 07:16+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
@@ -251,28 +251,34 @@ msgid "Status of Your Response"
 msgstr "Cevabınızın Durumu"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:414
 msgid "This response has not been saved."
 msgstr "Bu cevap kaydedilmedi."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:419
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "Eğer sayfadan cevabınızı kaydetmeden ya da göndermeden ayrılırsanız, cevap için yaptığınız işlemleri kaybedeceksiniz."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:437
 msgid "Saving..."
 msgstr "Kaydediliyor..."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "This response has been saved but not submitted."
 msgstr "Bu cevap kaydedildi, ancak gönderilmedi."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:462
 msgid "Error"
 msgstr "Hata"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:488
 msgid "Do you want to upload your file before submitting?"
 msgstr " Göndermeden önce dosyanızı yüklemek istiyor musunuz?"
 
@@ -353,6 +359,7 @@ msgid "Error getting the number of ungraded responses"
 msgstr "Notlandırılmamış cevapların sayısını çekmede hata"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:518
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -371,6 +378,7 @@ msgid ""
 msgstr "Bu sayfayı özdeğerlendirmenizi yazmadan terk etmeniz durumunda, yaptığınız tüm işleri kaybedeceksiniz."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_base.js:336
 msgid "Unable to load"
 msgstr "Yüklenemedi"
 

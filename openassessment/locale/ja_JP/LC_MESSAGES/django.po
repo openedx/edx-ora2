@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 17:14-0500\n"
-"PO-Revision-Date: 2021-01-04 21:34+0000\n"
+"POT-Creation-Date: 2021-01-21 13:14-0500\n"
+"PO-Revision-Date: 2021-01-20 21:33+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -352,8 +352,8 @@ msgstr "評価必須数"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
-"Valid numbers are 0 to 99."
-msgstr "各受講者が何名のピア・アセスメントをする必要があるかを指定してください。0～99まで指定可能です。"
+"Valid numbers are 1 to 99."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
@@ -362,8 +362,8 @@ msgstr "被評価数"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
-" numbers are 0 to 99."
-msgstr "何名の受講者から評価を受けなくてはならないかを0～99までの数で指定してください。"
+" numbers are 1 to 99."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
@@ -2178,66 +2178,66 @@ msgstr "セルフ・アセスメントを行う前に、解答を提出してく
 msgid "Your self assessment could not be submitted."
 msgstr "あなたのセルフ・アセスメントは提出できませんでした。"
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to schedule training"
 msgstr "トレーニングをスケジューリングする権限がありません"
 
-#: openassessment/xblock/staff_area_mixin.py:43
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to reschedule tasks."
 msgstr "タスクの再スケジューリングをする権限がありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access the ORA staff area"
 msgstr "ORAスタッフ情報へのアクセス権がありません"
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA learner information."
 msgstr "ORA受講者情報へのアクセス権がありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:71
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA staff grading."
 msgstr "ORAスタッフ採点へのアクセスがはありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:185
+#: openassessment/xblock/staff_area_mixin.py:184
 msgid "Error getting learner information."
 msgstr "受講者情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:228
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "Error loading the checked out learner response."
 msgstr "チェックアウト済受講者の解答の読込エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:229
+#: openassessment/xblock/staff_area_mixin.py:228
 msgid "No other learner responses are available for grading at this time."
 msgstr "現在、採点対象の他の受講者の解答はありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:231
+#: openassessment/xblock/staff_area_mixin.py:230
 msgid "Error getting staff grade information."
 msgstr "スタッフ採点情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:252
+#: openassessment/xblock/staff_area_mixin.py:251
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "スタッフ採点の未採点およびチェックアウト済の数の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:541
+#: openassessment/xblock/staff_area_mixin.py:540
 msgid "Please enter valid reason to remove the submission."
 msgstr "提出物を削除する正当な理由を入力してください。"
 
-#: openassessment/xblock/staff_area_mixin.py:552
+#: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:563
+#: openassessment/xblock/staff_area_mixin.py:562
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:590
+#: openassessment/xblock/staff_area_mixin.py:589
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "受講者の提出物はピア・アセスメントから削除されました。あなたが実施内容をリセットして再提出を許可しない限り、この受講者は０点となります。"
 
-#: openassessment/xblock/staff_area_mixin.py:625
+#: openassessment/xblock/staff_area_mixin.py:624
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2297,86 +2297,88 @@ msgstr "あなたの得点は確認できませんでした。"
 msgid "Error updating XBlock configuration"
 msgstr "XBlock設定の更新エラー"
 
-#: openassessment/xblock/studio_mixin.py:211
-msgid "Error: both text and file upload responses can't be disabled"
-msgstr "エラー: テキストもファイルアップロードによる解答もできません"
-
-#: openassessment/xblock/studio_mixin.py:214
-msgid ""
-"Error: in case if text response is disabled file upload response must be "
-"required"
-msgstr "エラー: テキストによる解答ができない場合は、ファイルアップロードによる解答をしてください"
+#: openassessment/xblock/studio_mixin.py:213
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr ""
 
 #: openassessment/xblock/studio_mixin.py:217
 msgid ""
-"Error: in case if file upload response is disabled text response must be "
-"required"
-msgstr "エラー: ファイルアップロードによる解答ができない場合は、テキストによる解答をしてください"
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:241
+#: openassessment/xblock/studio_mixin.py:220
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:244
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "認証エラー: {error}"
 
-#: openassessment/xblock/studio_mixin.py:270
+#: openassessment/xblock/studio_mixin.py:273
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlockの更新完了"
 
-#: openassessment/xblock/submission_mixin.py:114
+#: openassessment/xblock/submission_mixin.py:117
 msgid "\"submission\" required to submit answer."
 msgstr "\"提出\"には解答の提出が必要です。"
 
-#: openassessment/xblock/submission_mixin.py:135
+#: openassessment/xblock/submission_mixin.py:138
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "解答を提出するには、このコンポーネントをプレビューまたはライブモードで表示してください。"
 
-#: openassessment/xblock/submission_mixin.py:141
+#: openassessment/xblock/submission_mixin.py:144
 msgid "Multiple submissions are not allowed."
 msgstr "複数回の提出は許可されていません。"
 
-#: openassessment/xblock/submission_mixin.py:185
+#: openassessment/xblock/submission_mixin.py:189
+msgid "Submission cannot be empty. Please refresh the page and try again."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:199
 msgid "API returned unclassified exception."
 msgstr "APIが分類されていない例外を返しました。"
 
-#: openassessment/xblock/submission_mixin.py:236
+#: openassessment/xblock/submission_mixin.py:250
 msgid "This response could not be saved."
 msgstr "この解答を保存することができませんでした。"
 
-#: openassessment/xblock/submission_mixin.py:240
+#: openassessment/xblock/submission_mixin.py:254
 msgid "This response was not submitted."
 msgstr "この解答は提出されませんでした。"
 
-#: openassessment/xblock/submission_mixin.py:256
+#: openassessment/xblock/submission_mixin.py:270
 msgid "Files descriptions were not submitted."
 msgstr "ファイルの詳細説明が提出されませんでした。"
 
-#: openassessment/xblock/submission_mixin.py:293
+#: openassessment/xblock/submission_mixin.py:307
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:416
+#: openassessment/xblock/submission_mixin.py:453
 msgid "There was an error uploading your file."
 msgstr "ファイルのアップロード時にエラーが発生しました。"
 
-#: openassessment/xblock/submission_mixin.py:428
+#: openassessment/xblock/submission_mixin.py:465
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:439
+#: openassessment/xblock/submission_mixin.py:476
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:452
+#: openassessment/xblock/submission_mixin.py:489
 msgid "Error retrieving upload URL."
 msgstr "アップロードURLの取得エラー。"
 
-#: openassessment/xblock/submission_mixin.py:713
+#: openassessment/xblock/submission_mixin.py:756
 msgid "This response has been saved but not submitted."
 msgstr "この解答は一時保存されていますが、提出されていません。"
 
-#: openassessment/xblock/submission_mixin.py:714
+#: openassessment/xblock/submission_mixin.py:757
 msgid "This response has not been saved."
 msgstr "この解答は保存されていません。"
 
