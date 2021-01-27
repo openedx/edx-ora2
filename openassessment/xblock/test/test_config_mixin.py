@@ -12,7 +12,6 @@ from openassessment.xblock.config_mixin import (
     ConfigMixin,
     ALL_FILES_URLS,
     FEATURE_TOGGLES_BY_FLAG_NAME,
-    MOBILE_SUPPORT,
     TEAM_SUBMISSIONS,
     USER_STATE_UPLOAD_DATA,
 )
@@ -99,8 +98,11 @@ class ConfigMixinTest(TestCase):
           1) The settings.FEATURES['ENABLE_ORA_MOBILE_SUPPORT'] value is True.
         """
         my_block = MockBlock()
-        settings_feature_key = FEATURE_TOGGLES_BY_FLAG_NAME[MOBILE_SUPPORT]
-        with self.settings(FEATURES={settings_feature_key: settings_input}):
+
+        if settings_input is not None:
+            with self.settings(FEATURES={'ENABLE_ORA_MOBILE_SUPPORT': settings_input}):
+                self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
+        else:
             self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
 
     def _run_feature_toggle_test(
