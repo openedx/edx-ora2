@@ -8,6 +8,7 @@ from django.test import TestCase
 from openassessment.xblock import defaults
 from openassessment.xblock.validation import _is_valid_assessment_sequence as is_valid_assessment_sequence
 
+
 @ddt.ddt
 class DefaultAssessmentTests(TestCase):
 
@@ -25,4 +26,3 @@ class DefaultAssessmentTests(TestCase):
             is_valid_assessment_sequence(assessments),
             expect_valid
         )
-
