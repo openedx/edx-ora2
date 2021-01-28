@@ -7,7 +7,10 @@ from . import django_storage, filesystem, s3, swift
 
 
 def get_backend():
-    # Use S3 backend by default (current behaviour)
+    # .. setting_name: ORA2_FILEUPLOAD_BACKEND
+    # .. setting_default: 's3'
+    # .. setting_description: The backend used to upload the ora2 submissions attachments.
+    #     The supported values are: 's3', 'filesystem', 'swift' and 'django'.
     backend_setting = getattr(settings, "ORA2_FILEUPLOAD_BACKEND", "s3")
     if backend_setting == "s3":
         return s3.Backend()
@@ -18,4 +21,4 @@ def get_backend():
     elif backend_setting == "django":
         return django_storage.Backend()
     else:
-        raise ValueError(u"Invalid ORA2_FILEUPLOAD_BACKEND setting value: %s" % backend_setting)
+        raise ValueError("Invalid ORA2_FILEUPLOAD_BACKEND setting value: %s" % backend_setting)

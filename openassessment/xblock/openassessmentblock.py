@@ -245,25 +245,25 @@ class OpenAssessmentBlock(MessageMixin,
     )
 
     saved_response = String(
-        default=u"",
+        default="",
         scope=Scope.user_state,
         help="Saved response submission for the current user."
     )
 
     saved_files_descriptions = String(
-        default=u"",
+        default="",
         scope=Scope.user_state,
         help="Saved descriptions for each uploaded file."
     )
 
     saved_files_names = String(
-        default=u"",
+        default="",
         scope=Scope.user_state,
         help="Saved original names for each uploaded file."
     )
 
     saved_files_sizes = String(
-        default=u"",
+        default="",
         scope=Scope.user_state,
         help="Filesize of each uploaded file in bytes."
     )
@@ -281,7 +281,7 @@ class OpenAssessmentBlock(MessageMixin,
     )
 
     selected_teamset_id = String(
-        default=u"",
+        default="",
         scope=Scope.settings,
         help="The id of the selected teamset.",
     )
@@ -1221,7 +1221,7 @@ class OpenAssessmentBlock(MessageMixin,
             if user:
                 return user
             logger.exception(
-                u"XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
+                "XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
             )
         return None
 
@@ -1271,7 +1271,7 @@ class OpenAssessmentBlock(MessageMixin,
         # return key/value fields in a Python dict object
         # values may be numeric / string or dict
         # default implementation is an empty dict
-        xblock_body = super(OpenAssessmentBlock, self).index_dictionary()
+        xblock_body = super().index_dictionary()
 
         # Check whether there is only one prompt or more than one
         # If there is single prompt, self.prompt would be simply a string

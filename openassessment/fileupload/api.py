@@ -169,7 +169,7 @@ class FileUpload:
             try:
                 return get_download_url(self.key)
             except FileUploadError as exc:
-                logger.exception(u'FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
+                logger.exception('FileUploadError: URL retrieval failed for key {key} with error {error}'.format(
                     key=self.key,
                     error=exc
                 ))
@@ -412,7 +412,7 @@ class FileUploadManager:
                 sizes_to_add,
             ) = self._dicts_to_key_lists(new_uploads, required_keys)
         except FileUploadError as exc:
-            logging.exception(u"FileUploadError: Metadata save for {data} failed with error {error}".format(
+            logging.exception("FileUploadError: Metadata save for {data} failed with error {error}".format(
                 error=exc,
                 data=new_uploads
             ))

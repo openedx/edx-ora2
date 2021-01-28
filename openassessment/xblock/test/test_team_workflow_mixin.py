@@ -5,7 +5,7 @@ Contract tests for calling team_workflow_api from team_workflow_mixin
 from types import SimpleNamespace
 from copy import copy
 from unittest import TestCase
-from mock import patch, Mock
+from unittest.mock import patch, Mock
 from submissions.errors import TeamSubmissionNotFoundError
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 
@@ -98,15 +98,15 @@ class TestTeamWorkflowMixin(TestCase):
         self.assertIsNone(self.test_block.get_team_submission_uuid())
         mock_get_team_sub_for_student.assert_called_with(STUDENT_ITEM_DICT)
 
-    @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
+    @patch(f'{MODULE}.team_workflow_api.get_assessment_workflow_cancellation')
     def test_get_team_workflow_cancellation_info_no_info(self, mock_get_cancellation):
         mock_get_cancellation.side_effect = _mock_get_cancellation_info
         info = self.test_block.get_team_workflow_cancellation_info(TEAM_SUB_ID_1)
         self.assertIsNone(info)
 
-    @patch('{}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation'.format(MODULE))
-    @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
-    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE))
+    @patch(f'{MODULE}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation')
+    @patch(f'{MODULE}.team_workflow_api.get_assessment_workflow_cancellation')
+    @patch(f'{MODULE}.team_workflow_api.get_workflow_for_submission')
     def test_get_team_workflow_cancellation_info_no_model(
             self,
             mock_get_workflow,
@@ -121,9 +121,9 @@ class TestTeamWorkflowMixin(TestCase):
             {"cancelled_by_id": USER_ID, "cancelled_by": USERNAME}
         )
 
-    @patch('{}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation'.format(MODULE))
-    @patch('{}.team_workflow_api.get_assessment_workflow_cancellation'.format(MODULE))
-    @patch('{}.team_workflow_api.get_workflow_for_submission'.format(MODULE))
+    @patch(f'{MODULE}.AssessmentWorkflowCancellation.get_latest_workflow_cancellation')
+    @patch(f'{MODULE}.team_workflow_api.get_assessment_workflow_cancellation')
+    @patch(f'{MODULE}.team_workflow_api.get_workflow_for_submission')
     def test_get_team_workflow_cancellation_info_with_model(
             self,
             mock_get_workflow,

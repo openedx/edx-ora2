@@ -18,7 +18,6 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import DatabaseError, models, transaction
 from django.dispatch import receiver
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from model_utils import Choices
@@ -39,9 +38,9 @@ logger = logging.getLogger('openassessment.workflow.models')  # pylint: disable=
 # that implements the corresponding assessment API.
 # For backwards compatibility, we provide a default configuration as well
 DEFAULT_ASSESSMENT_API_DICT = {
-    u'peer': 'openassessment.assessment.api.peer',
-    u'self': 'openassessment.assessment.api.self',
-    u'training': 'openassessment.assessment.api.student_training',
+    'peer': 'openassessment.assessment.api.peer',
+    'self': 'openassessment.assessment.api.self',
+    'training': 'openassessment.assessment.api.student_training',
 }
 ASSESSMENT_API_DICT = getattr(
     settings, 'ORA2_ASSESSMENTS',
@@ -70,9 +69,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # User has done all necessary assessment but hasn't been
         # graded yet -- we're waiting for assessments of their
         # submission by others.
-        u"waiting",
-        u"done",  # Complete
-        u"cancelled"  # User submission has been cancelled.
+        "waiting",
+        "done",  # Complete
+        "cancelled"  # User submission has been cancelled.
     ]
 
     STATUS_VALUES = STEPS + STATUSES
@@ -110,7 +109,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         app_label = "workflow"
 
     def __init__(self, *args, **kwargs):
-        super(AssessmentWorkflow, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if 'staff' not in AssessmentWorkflow.STEPS:
             new_list = ['staff']
             new_list.extend(AssessmentWorkflow.STEPS)
@@ -435,7 +434,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.status = new_status
             self.save()
             logger.info((
-                u"Workflow for submission UUID {uuid} has updated status to {status}"
+                "Workflow for submission UUID {uuid} has updated status to {status}"
             ).format(uuid=self.submission_uuid, status=new_status))
 
     def _get_steps(self):
@@ -580,7 +579,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.status = self.STATUS.cancelled
             self.save()
             logger.info(
-                u"Workflow for submission UUID {uuid} has updated status to {status}".format(
+                "Workflow for submission UUID {uuid} has updated status to {status}".format(
                     uuid=self.submission_uuid, status=self.STATUS.cancelled
                 )
             )
@@ -611,15 +610,15 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             AssessmentWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
             # Cancel the related step's workflow.
             workflow.cancel(assessment_requirements)
-        except (cls.DoesNotExist, cls.MultipleObjectsReturned):
-            error_message = u"Error finding workflow for submission UUID {}.".format(submission_uuid)
+        except (cls.DoesNotExist, cls.MultipleObjectsReturned) as ex:
+            error_message = "Error finding workflow for submission UUID {}.".format(submission_uuid)
             logger.exception(error_message)
-            raise AssessmentWorkflowError(error_message)
-        except DatabaseError:
-            error_message = u"Error creating assessment workflow cancellation for submission UUID {}.".format(
+            raise AssessmentWorkflowError(error_message) from ex
+        except DatabaseError as ex:
+            error_message = "Error creating assessment workflow cancellation for submission UUID {}.".format(
                 submission_uuid)
             logger.exception(error_message)
-            raise AssessmentWorkflowInternalError(error_message)
+            raise AssessmentWorkflowInternalError(error_message) from ex
 
     @classmethod
     def get_by_submission_uuid(cls, submission_uuid):
@@ -645,9 +644,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         except cls.DoesNotExist:
             return None
         except DatabaseError as exc:
-            message = u"Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
+            message = "Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
             logger.exception(message)
-            raise AssessmentWorkflowError(message)
+            raise AssessmentWorkflowError(message) from exc
 
     @property
     def is_cancelled(self):
@@ -697,7 +696,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
                 "Error finding workflow for team submission UUID {uuid} due to error: {exc}."
             ).format(uuid=team_submission_uuid, exc=exc)
             logger.exception(message)
-            raise AssessmentWorkflowError(message)
+            raise AssessmentWorkflowError(message) from exc
 
     @classmethod
     @transaction.atomic
@@ -706,10 +705,10 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         team_submission_dict = sub_team_api.get_team_submission(team_submission_uuid)
         try:
             referrence_learner_submission_uuid = team_submission_dict['submission_uuids'][0]
-        except IndexError:
+        except IndexError as ex:
             msg = 'No individual submission found for team submisison uuid {}'.format(team_submission_uuid)
             logger.exception(msg)
-            raise AssessmentWorkflowInternalError(msg)
+            raise AssessmentWorkflowInternalError(msg) from ex
 
         # Create the workflow in the database
         # For now, set the status to waiting; we'll modify it later
@@ -905,15 +904,15 @@ class AssessmentWorkflowStep(models.Model):
         if api_path is not None:
             try:
                 return importlib.import_module(api_path)
-            except (ImportError, ValueError):
-                raise AssessmentApiLoadError(self.name, api_path)
+            except (ImportError, ValueError) as ex:
+                raise AssessmentApiLoadError(self.name, api_path) from ex
         else:
             # It's possible for the database to contain steps for APIs
             # that are not configured -- for example, if a new assessment
             # type is added, then the code is rolled back.
             msg = (
-                u"No assessment configured for '{name}'.  "
-                u"Check the ORA2_ASSESSMENTS Django setting."
+                "No assessment configured for '{name}'.  "
+                "Check the ORA2_ASSESSMENTS Django setting."
             ).format(name=self.name)
             logger.warning(msg)
             return None
@@ -977,23 +976,22 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
         workflow.update_from_assessments(None)
     except AssessmentWorkflow.DoesNotExist:
-        msg = u"Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
+        msg = "Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
         logger.exception(msg)
     except DatabaseError:
         msg = (
-            u"Database error occurred while updating "
-            u"the workflow for submission UUID {}"
+            "Database error occurred while updating "
+            "the workflow for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
     except Exception:  # pylint: disable=broad-except
         msg = (
-            u"Unexpected error occurred while updating the workflow "
-            u"for submission UUID {}"
+            "Unexpected error occurred while updating the workflow "
+            "for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
 
 
-@python_2_unicode_compatible
 class AssessmentWorkflowCancellation(models.Model):
     """Model for tracking cancellations of assessment workflow.
 

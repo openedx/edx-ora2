@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 """ Test the collect_ora2_data management command """
 
-from mock import patch
+from unittest.mock import patch
 
 from django.core.management import call_command
 
@@ -11,10 +10,10 @@ from openassessment.test_utils import CacheResetTest
 class CollectOra2DataTest(CacheResetTest):
     """ Test collect_ora2_data output and error conditions """
 
-    COURSE_ID = u"TɘꙅT ↄoUᴙꙅɘ"
+    COURSE_ID = "TɘꙅT ↄoUᴙꙅɘ"
 
     def setUp(self):
-        super(CollectOra2DataTest, self).setUp()
+        super().setUp()
 
         self.test_header = [
             "submission_uuid",
@@ -37,28 +36,28 @@ class CollectOra2DataTest(CacheResetTest):
                 "i4x://edX/DemoX/openassessment/hash_value",
                 "e31b4beb3d191cd47b07e17735728d53",
                 "2014-10-07 20:33:31+00:00",
-                u'{""text"": ""This is a response to a question. #dylan""}',
+                '{""text"": ""This is a response to a question. #dylan""}',
                 "Assessment #1 -- scored_at: 2014-10-07 20:37:54 -- type: T -- scorer_id: hash -- feedback: Test",
                 "Assessment #1 -- Content: Unclear recommendation (5)",
                 "2014-10-07 21:35:47+00:00",
                 "10",
                 "20",
                 "Completed test assessments.",
-                u"They were useful.",
+                "They were useful.",
             ],
             [
                 "row-two-submission-value",
                 "i4x://edX/DemoX/openassessment/hash_value",
                 "e31b4beb3d191cd47b07e17735728d53",
                 "2014-10-07 20:33:31+00:00",
-                u'{""text"": ""This is a response to a question. #dylan""}',
+                '{""text"": ""This is a response to a question. #dylan""}',
                 "Assessment #1 -- scored_at: 2014-10-07 20:37:54 -- type: T -- scorer_id: hash -- feedback: Test",
                 "Assessment #1 -- Content: Unclear recommendation (5)",
                 "2014-10-07 21:35:47+00:00",
                 "10",
                 "20",
                 "Completed test assessments.",
-                u"𝓨𝓸𝓾",
+                "𝓨𝓸𝓾",
             ]
         ]
 
@@ -67,7 +66,7 @@ class CollectOra2DataTest(CacheResetTest):
             "i4x://edX/DemoX/openassessment/hash_value",
             "e31b4beb3d191cd47b07e17735728d53",
             "2014-10-07 20:33:31+00:00",
-            u'{""text"": ""This is a response to a question. #dylan""}',
+            '{""text"": ""This is a response to a question. #dylan""}',
             "Assessment #1 -- scored_at: 2014-10-07 20:37:54 -- type: T -- scorer_id: hash -- feedback: Test",
             "Assessment #1 -- Content: Unclear recommendation (5)",
             "2014-10-07 21:35:47+00:00",

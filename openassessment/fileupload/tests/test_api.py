@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import json
 import os
 import shutil
@@ -7,7 +5,7 @@ import tempfile
 
 import urllib
 import ddt
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -121,7 +119,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
     """
 
     def setUp(self):
-        super(TestFileUploadServiceWithFilesystemBackend, self).setUp()
+        super().setUp()
         self.backend = api.backends.get_backend()
 
         self.content = tempfile.TemporaryFile()
@@ -303,7 +301,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertEqual(404, download_response.status_code)
 
     def test_upload_download_with_accented_key(self):
-        self.set_key(u"noël.jpg")
+        self.set_key("noël.jpg")
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
 
         upload_response = self.client.put(
@@ -316,7 +314,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertEqual(200, download_response.status_code)
 
     def test_remove_file(self):
-        self.set_key(u"noël.jpg")
+        self.set_key("noël.jpg")
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
         self.client.put(
             upload_url, data=self.content.read(), content_type=self.content_type
@@ -327,7 +325,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertFalse(result)
 
     def test_file_extension_is_added_on_download(self):
-        self.set_key(u"myfile")
+        self.set_key("myfile")
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
         self.client.put(
             upload_url, data=self.content.read(), content_type=self.content_type
@@ -352,14 +350,14 @@ class TestSwiftBackend(TestCase):
     """
 
     def setUp(self):
-        super(TestSwiftBackend, self).setUp()
+        super().setUp()
         self.backend = api.backends.get_backend()
 
     def _verify_url(self, url):
         result = urllib.parse.urlparse(url)
-        self.assertEqual(result.scheme, u'http')
-        self.assertEqual(result.netloc, u'www.example.com:12345')
-        self.assertEqual(result.path, u'/v1/bucket_name/submissions_attachments/foo')
+        self.assertEqual(result.scheme, 'http')
+        self.assertEqual(result.netloc, 'www.example.com:12345')
+        self.assertEqual(result.path, '/v1/bucket_name/submissions_attachments/foo')
         self.assertIn(result.params, 'temp_url_sig=')
         self.assertIn(result.params, 'temp_url_expires=')
 
@@ -414,7 +412,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
     """
 
     def setUp(self):
-        super(TestFileUploadServiceWithDjangoStorageBackend, self).setUp()
+        super().setUp()
         self.backend = api.backends.get_backend()
         self.username = "test_user"
         self.password = "password"
@@ -447,7 +445,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         response = self.client.put(upload_url, data={"attachment": self.content})
         self.assertEqual(302, response.status_code)
 
-    @ddt.data(u"noël.txt", "myfile.txt")
+    @ddt.data("noël.txt", "myfile.txt")
     def test_upload_download(self, key):
         """
         Test that uploaded files can be downloaded again.
@@ -468,9 +466,9 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # Check updated download URL
         download_url = self.backend.get_download_url(self.key)
         encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
-        self.assertEqual(u"submissions/{}".format(encoded_key), download_url)
+        self.assertEqual(f"submissions/{encoded_key}", download_url)
 
-    @ddt.data(u"noël.txt", "myfile.txt")
+    @ddt.data("noël.txt", "myfile.txt")
     def test_remove(self, key):
         """
         Test that uploaded files can be removed.
@@ -491,7 +489,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # File exists now
         download_url = self.backend.get_download_url(self.key)
         encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
-        self.assertEqual(u"submissions/{}".format(encoded_key), download_url)
+        self.assertEqual(f"submissions/{encoded_key}", download_url)
 
         # Remove file returns True now, and removes the file
         self.assertTrue(self.backend.remove_file(self.key))

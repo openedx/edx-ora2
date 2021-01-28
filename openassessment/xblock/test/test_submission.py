@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Test submission to the OpenAssessment XBlock.
 """
@@ -6,8 +5,9 @@ Test submission to the OpenAssessment XBlock.
 import datetime as dt
 import json
 
-from mock import ANY, Mock, call, patch
+from unittest.mock import ANY, Mock, call, patch
 from testfixtures import LogCapture
+import ddt
 import pytz
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -28,6 +28,7 @@ from openassessment.workflow import (
 )
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+from openassessment.xblock.submission_mixin import EmptySubmissionError
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
@@ -73,6 +74,7 @@ class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
         return mock_team
 
 
+@ddt.ddt
 class SubmissionTest(SubmissionXBlockHandlerTestCase):
     """ Test Submissions Api for Open Assessments. """
     SUBMISSION = json.dumps({
@@ -141,31 +143,6 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         self.assertEqual(resp[1], "ENOPREVIEW")
         self.assertIsNot(resp[2], None)
 
-    def _ability_to_submit_blank_answer(self, xblock):
-        """
-        Checks ability to submit blank answer if text response is not required
-
-        """
-        empty_submission = json.dumps({"submission": [""]})
-        resp = self.request(xblock, 'submit', empty_submission, response_format='json')
-        self.assertTrue(resp[0])
-
-    @scenario('data/text_response_optional.xml', user_id='Bob')
-    def test_ability_to_submit_blank_answer_if_text_response_optional(self, xblock):
-        """
-        Checks ability to submit blank answer if text response is optional
-
-        """
-        self._ability_to_submit_blank_answer(xblock)
-
-    @scenario('data/text_response_none.xml', user_id='Bob')
-    def test_ability_to_submit_blank_answer_if_text_response_none(self, xblock):
-        """
-        Checks ability to submit blank answer if text response is None
-
-        """
-        self._ability_to_submit_blank_answer(xblock)
-
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
@@ -176,13 +153,13 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        expected_prompt = u"<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
+        expected_prompt = "<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
     def test_prompt_html_to_text(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        expected_prompt = u"<code><strong>Question 123</strong></code>"
+        expected_prompt = "<code><strong>Question 123</strong></code>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
         xblock.prompts_type = "text"
@@ -339,6 +316,19 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             response_format='json'
         )
         self.assertTrue(resp['success'])
+
+        student_item_key = api.get_student_file_key(
+            xblock.get_student_item_dict(),
+            index=file_index_to_remove
+        )
+        self.assert_event_published(
+            xblock,
+            'openassessmentblock.remove_uploaded_file',
+            {
+                "student_item_key": student_item_key
+            }
+        )
+
         with patch('submissions.api.create_submission') as mocked_submit:
             with patch.object(WorkflowMixin, 'create_workflow'):
                 mocked_submit.return_value = {
@@ -643,6 +633,49 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
                     )
                 )
             )
+
+    @scenario('data/submission_open.xml', user_id="Red Five")
+    @ddt.data(
+        (['', ''], None, True),
+        (['', ''], [], True),
+        (['abc', ''], None, False),
+        (['', 'abc'], [], False),
+        (['', '', ''], ['file_1_key'], False),
+    )
+    @ddt.unpack
+    def test_check_for_empty_submission_and_raise_error(self, xblock, parts, file_keys, expect_raises):
+        """
+        Unit tests for check_for_empty_submission_and_raise_error
+        """
+        submission_dict = {'parts': [{'text': part} for part in parts]}
+        if file_keys is not None:
+            submission_dict['file_keys'] = file_keys
+
+        if expect_raises:
+            with self.assertRaises(EmptySubmissionError):
+                xblock.check_for_empty_submission_and_raise_error(submission_dict)
+        else:
+            xblock.check_for_empty_submission_and_raise_error(submission_dict)
+
+    @scenario('data/basic_scenario.xml', user_id='Red Five')
+    @ddt.data(False, True)
+    def test_empty_submission_error(self, xblock, team_assignment):
+        """
+        Test that if users try to create an empty submission, an error will be raised
+        and no submission is created
+        """
+        xblock.file_upload_type = 'pdf-and-image'
+        if team_assignment:
+            self.setup_mock_team(xblock)
+            xblock.runtime._services['teams'] = MockTeamsService(True)  # pylint: disable=protected-access
+
+        empty_submission = json.dumps({"submission": ["", ""]})
+        response = self.request(
+            xblock, 'submit', empty_submission, response_format='json'
+        )
+        self.assertFalse(response[0])
+        self.assertEqual(response[1], "EEMPTYSUB")
+        self.assertIsNotNone(response[2])
 
 
 class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
@@ -1021,7 +1054,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertIn('"submission__answer__file__block submission__answer__file__block__1"  deleted', resp)
         for index in range(len(file_uploads)):
             self.assertIn(
-                '"submission__answer__file__block submission__answer__file__block__{}"'.format(index),
+                f'"submission__answer__file__block submission__answer__file__block__{index}"',
                 resp
             )
 

@@ -3,7 +3,7 @@ Basic tests for configuration/feature toggles of the ORA XBlock.
 """
 
 import itertools
-import mock
+from unittest import mock
 
 import ddt
 from django.test import TestCase

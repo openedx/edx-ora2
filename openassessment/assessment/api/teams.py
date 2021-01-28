@@ -91,12 +91,12 @@ def on_init(team_submission_uuid):
             # It must be filled because of the unique constraint on the field (can't have multiple '' values)
             submission_uuid=team_submission['submission_uuids'][0],
         )
-    except DatabaseError:
+    except DatabaseError as ex:
         error_message = (
             "An internal error occurred while creating a new team staff workflow for team submission {}"
         ).format(team_submission_uuid)
         logger.exception(error_message)
-        raise StaffAssessmentInternalError(error_message)
+        raise StaffAssessmentInternalError(error_message) from ex
 
 
 def on_cancel(team_submission_uuid):
@@ -120,12 +120,12 @@ def on_cancel(team_submission_uuid):
         # If we can't find a workflow, then we don't have to do anything to
         # cancel it.
         pass
-    except DatabaseError:
+    except DatabaseError as ex:
         error_message = (
             "An internal error occurred while cancelling the team staff workflow for submission {}"
         ).format(team_submission_uuid)
         logger.exception(error_message)
-        raise StaffAssessmentInternalError(error_message)
+        raise StaffAssessmentInternalError(error_message) from ex
 
 
 def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unused-argument
@@ -196,7 +196,7 @@ def get_latest_staff_assessment(team_submission_uuid):
             "for the submission with UUID {uuid}: {ex}"
         ).format(uuid=team_submission_uuid, ex=ex)
         logger.exception(msg)
-        raise StaffAssessmentInternalError(msg)
+        raise StaffAssessmentInternalError(msg) from ex
 
     if assessment:
         return full_assessment_dict(assessment)
@@ -233,10 +233,10 @@ def get_assessment_scores_by_criteria(team_submission_uuid):
         # Since this is only being sent one score, the median score will be the
         # same as the only score.
         return Assessment.get_median_score_dict(scores)
-    except DatabaseError:
+    except DatabaseError as ex:
         error_message = "Error getting staff assessment scores for {}".format(team_submission_uuid)
         logger.exception(error_message)
-        raise StaffAssessmentInternalError(error_message)
+        raise StaffAssessmentInternalError(error_message) from ex
 
 
 def get_submission_to_assess(course_id, item_id, scorer_id):
@@ -275,12 +275,12 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
         try:
             submission_data = team_submissions_api.get_team_submission(team_submission_uuid)
             return submission_data
-        except DatabaseError:
+        except DatabaseError as ex:
             error_message = (
                 "Could not find a team submission with the uuid {}"
             ).format(team_submission_uuid)
             logger.exception(error_message)
-            raise StaffAssessmentInternalError(error_message)
+            raise StaffAssessmentInternalError(error_message) from ex
     else:
         logger.info(
             "No team submission found for staff to assess ({}, {})"
@@ -351,17 +351,17 @@ def create_assessment(
 
         return assessment_dicts
 
-    except InvalidRubric:
+    except InvalidRubric as ex:
         error_message = "The rubric definition is not valid."
         logger.exception(error_message)
-        raise StaffAssessmentRequestError(error_message)
-    except InvalidRubricSelection:
+        raise StaffAssessmentRequestError(error_message) from ex
+    except InvalidRubricSelection as ex:
         error_message = "Invalid options were selected in the rubric."
         logger.warning(error_message, exc_info=True)
-        raise StaffAssessmentRequestError(error_message)
-    except DatabaseError:
+        raise StaffAssessmentRequestError(error_message) from ex
+    except DatabaseError as ex:
         error_message = (
             "An error occurred while creating an assessment by the scorer with this ID: {}"
         ).format(scorer_id)
         logger.exception(error_message)
-        raise StaffAssessmentInternalError(error_message)
+        raise StaffAssessmentInternalError(error_message) from ex

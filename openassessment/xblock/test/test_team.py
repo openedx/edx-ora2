@@ -2,13 +2,12 @@
 Basic tests for teams functionality of the ORA XBlock.
 """
 
-from unittest import TestCase
+from unittest import mock, TestCase
+from unittest.mock import patch
 from uuid import uuid4
 
 import ddt
-import mock
 
-from mock import patch
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.exceptions import NoSuchServiceError
 from openassessment.xblock.team_mixin import TeamMixin

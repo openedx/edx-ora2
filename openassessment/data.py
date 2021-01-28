@@ -142,9 +142,9 @@ class CsvWriter:
             )
             for assessment_feedback in feedback_query:
                 self._write_assessment_feedback_to_csv(assessment_feedback)
-                feedback_option_set.update(set(
-                    option for option in assessment_feedback.options.all()
-                ))
+                feedback_option_set.update({
+                    option for option in assessment_feedback.options.all()  # pylint: disable=unnecessary-comprehension
+                })
 
             if self._progress_callback is not None:
                 self._progress_callback()
@@ -248,8 +248,8 @@ class CsvWriter:
                 part.points_earned,
                 part.criterion.name,
                 part.criterion.label,
-                part.option.name if part.option is not None else u"",
-                part.option.label if part.option is not None else u"",
+                part.option.name if part.option is not None else "",
+                part.option.label if part.option is not None else "",
                 part.feedback
             ])
 
@@ -479,16 +479,16 @@ class OraAggregateData:
         """
         usernames_enabled = cls._usernames_enabled()
 
-        returned_string = u""
+        returned_string = ""
         for assessment in assessments:
-            returned_string += u"Assessment #{}\n".format(assessment.id)
-            returned_string += u"-- scored_at: {}\n".format(assessment.scored_at)
-            returned_string += u"-- type: {}\n".format(assessment.score_type)
+            returned_string += f"Assessment #{assessment.id}\n"
+            returned_string += f"-- scored_at: {assessment.scored_at}\n"
+            returned_string += f"-- type: {assessment.score_type}\n"
             if usernames_enabled:
-                returned_string += u"-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
-            returned_string += u"-- scorer_id: {}\n".format(assessment.scorer_id)
-            if assessment.feedback != u"":
-                returned_string += u"-- overall_feedback: {}\n".format(assessment.feedback)
+                returned_string += "-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
+            returned_string += f"-- scorer_id: {assessment.scorer_id}\n"
+            if assessment.feedback != "":
+                returned_string += f"-- overall_feedback: {assessment.feedback}\n"
         return returned_string
 
     @classmethod
@@ -499,18 +499,18 @@ class OraAggregateData:
         Returns:
             string that should be included in the relevant 'assessments_parts' column for this set of assessments' row
         """
-        returned_string = u""
+        returned_string = ""
         for assessment in assessments:
-            returned_string += u"Assessment #{}\n".format(assessment.id)
+            returned_string += f"Assessment #{assessment.id}\n"
             for part in assessment.parts.order_by('criterion__order_num'):
-                returned_string += u"-- {}".format(part.criterion.label)
+                returned_string += f"-- {part.criterion.label}"
                 if part.option is not None and part.option.label is not None:
                     option_label = part.option.label
-                    returned_string += u": {option_label} ({option_points})\n".format(
+                    returned_string += ": {option_label} ({option_points})\n".format(
                         option_label=option_label, option_points=part.option.points
                     )
-                if part.feedback != u"":
-                    returned_string += u"-- feedback: {}\n".format(part.feedback)
+                if part.feedback != "":
+                    returned_string += f"-- feedback: {part.feedback}\n"
         return returned_string
 
     @classmethod
@@ -522,11 +522,11 @@ class OraAggregateData:
             string that should be included in the relevant 'feedback_options' column for this set of assessments' row
         """
 
-        returned_string = u""
+        returned_string = ""
         for assessment in assessments:
             for feedback in assessment.assessment_feedback.all():
                 for option in feedback.options.all():
-                    returned_string += option.text + u"\n"
+                    returned_string += option.text + "\n"
 
         return returned_string
 
@@ -541,7 +541,7 @@ class OraAggregateData:
         try:
             feedback = AssessmentFeedback.objects.get(submission_uuid=submission_uuid)
         except AssessmentFeedback.DoesNotExist:
-            return u""
+            return ""
         return feedback.feedback_text
 
     @classmethod
@@ -926,7 +926,7 @@ class OraDownloadData:
 
             # collecting submission answer texts
             for index, text_response in enumerate(answer.get_text_responses()):
-                file_name = 'part_{}.txt'.format(index)
+                file_name = f'part_{index}.txt'
 
                 yield {
                     'type': cls.TEXT,
@@ -1000,7 +1000,7 @@ class OraSubmissionAnswerFactory:
         elif ZippedListSubmissionAnswer.matches(raw_answer):
             return ZippedListSubmissionAnswer(raw_answer)
         else:
-            raise VersionNotFoundException("No ORA Submission Answer version recognized for {}".format(raw_answer))
+            raise VersionNotFoundException(f"No ORA Submission Answer version recognized for {raw_answer}")
 
 
 class OraSubmissionAnswer:
@@ -1132,7 +1132,7 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         for version in reversed(ZIPPED_LIST_SUBMISSION_VERSIONS):
             if ZippedListSubmissionAnswer.does_version_match(submission_keys, version):
                 return version
-        raise VersionNotFoundException("No zipped list version found with keys {}".format(submission_keys))
+        raise VersionNotFoundException(f"No zipped list version found with keys {submission_keys}")
 
     def __init__(self, raw_answer):
         """

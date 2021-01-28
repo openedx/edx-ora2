@@ -141,12 +141,12 @@ class StaffWorkflow(models.Model):
             workflow.grading_started_at = now()
             workflow.save()
             return workflow.identifying_uuid
-        except DatabaseError:
+        except DatabaseError as ex:
             error_message = (
-                u"An internal error occurred while retrieving a submission for staff grading"
+                "An internal error occurred while retrieving a submission for staff grading"
             )
             logger.exception(error_message)
-            raise StaffAssessmentInternalError(error_message)
+            raise StaffAssessmentInternalError(error_message) from ex
 
     def close_active_assessment(self, assessment, scorer_id):
         """

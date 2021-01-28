@@ -13,8 +13,8 @@ class TeamAssessmentWorkflowFactory(DjangoModelFactory):
 
     team_submission_uuid = factory.Faker('sha1')
     submission_uuid = factory.Faker('sha1')
-    course_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))  # pylint: disable=unnecessary-lambda
-    item_id = factory.Sequence(lambda n: 'default_course_{}'.format(n))  # pylint: disable=unnecessary-lambda
+    course_id = factory.Sequence(lambda n: f'default_course_{n}')  # pylint: disable=unnecessary-lambda
+    item_id = factory.Sequence(lambda n: f'default_course_{n}')  # pylint: disable=unnecessary-lambda
 
 
 class AssessmentWorkflowStepFactory(DjangoModelFactory):

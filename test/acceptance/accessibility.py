@@ -17,7 +17,7 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
     """
 
     def setUp(self, problem_type, staff=False):
-        super(OpenAssessmentA11yTest, self).setUp(problem_type, staff=staff)
+        super().setUp(problem_type, staff=staff)
         self.auto_auth_page.visit()
 
     def _check_a11y(self, page):
@@ -39,7 +39,7 @@ class SelfAssessmentA11yTest(OpenAssessmentA11yTest):
     """
 
     def setUp(self):
-        super(SelfAssessmentA11yTest, self).setUp('self_only')
+        super().setUp('self_only')
 
     def test_self_assessment_a11y(self):
         self.submission_page.visit()
@@ -56,7 +56,7 @@ class PeerAssessmentA11yTest(OpenAssessmentA11yTest):
     """
 
     def setUp(self):
-        super(PeerAssessmentA11yTest, self).setUp('peer_only')
+        super().setUp('peer_only')
 
     def test_peer_assessment_a11y(self):
         # Create a submission for one learner.
@@ -78,7 +78,7 @@ class StudentTrainingA11yTest(OpenAssessmentA11yTest):
     Test the accessibility of student training (the "learning to assess" step).
     """
     def setUp(self):
-        super(StudentTrainingA11yTest, self).setUp('student_training')
+        super().setUp('student_training')
 
     def test_student_training_a11y(self):
         self.submission_page.visit()
@@ -97,7 +97,7 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
     This is testing a problem with "staff assessment only".
     """
     def setUp(self):
-        super(StaffAreaA11yTest, self).setUp('staff_only', staff=True)
+        super().setUp('staff_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def test_staff_tools_panel(self):
@@ -170,7 +170,7 @@ class FullWorkflowA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
     """
 
     def setUp(self):
-        super(FullWorkflowA11yTest, self).setUp('full_workflow_staff_override', staff=True)
+        super().setUp('full_workflow_staff_override', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def test_training_peer_self_staff_override(self):
@@ -218,7 +218,7 @@ class FullWorkflowRequiredA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
     """
 
     def setUp(self):
-        super(FullWorkflowRequiredA11yTest, self).setUp('full_workflow_staff_required', staff=True)
+        super().setUp('full_workflow_staff_required', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def test_multiple_rubrics(self):
@@ -247,7 +247,7 @@ class MultipleOpenAssessmentA11yTest(OpenAssessmentA11yTest, MultipleOpenAssessm
     """
 
     def setUp(self):
-        super(MultipleOpenAssessmentA11yTest, self).setUp('multiple_ora', staff=True)
+        super().setUp('multiple_ora', staff=True)
         # Staff area page is not present in OpenAssessmentTest base class, so we are adding it here.
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
         self.multiple_assessment_page = MultipleAssessmentPage(self.browser, self.problem_loc)
@@ -283,7 +283,7 @@ class FileUploadA11yTest(OpenAssessmentA11yTest):
     """ Accessibility tests for Open Assessments. """
 
     def setUp(self):
-        super(FileUploadA11yTest, self).setUp('file_upload')
+        super().setUp('file_upload')
 
     def test_file_upload(self):
         self.auto_auth_page.visit()
@@ -291,7 +291,7 @@ class FileUploadA11yTest(OpenAssessmentA11yTest):
         self._check_a11y(self.submission_page)
 
     def _configure_a11y_audit_config(self, page):
-        super(FileUploadA11yTest, self)._configure_a11y_audit_config(page)
+        super()._configure_a11y_audit_config(page)
         page.a11y_audit.config.set_rules({
             "ignore": [
                 "list",  # TODO: TNL-5900

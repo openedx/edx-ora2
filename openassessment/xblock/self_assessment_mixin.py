@@ -32,14 +32,14 @@ class SelfAssessmentMixin:
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
         if "self-assessment" not in self.assessment_steps:
-            return Response(u"")
+            return Response("")
 
         try:
             path, context = self.self_path_and_context()
         except Exception:  # pylint: disable=broad-except
-            msg = u"Could not retrieve self assessment for submission {}".format(self.submission_uuid)
+            msg = f"Could not retrieve self assessment for submission {self.submission_uuid}"
             logger.exception(msg)
-            return self.render_error(self._(u"An unexpected error occurred."))
+            return self.render_error(self._("An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -139,7 +139,7 @@ class SelfAssessmentMixin:
         if self.submission_uuid is None:
             return {
                 'success': False,
-                'msg': self._(u"You must submit a response before you can perform a self-assessment.")
+                'msg': self._("You must submit a response before you can perform a self-assessment.")
             }
 
         try:
@@ -157,18 +157,18 @@ class SelfAssessmentMixin:
             self.update_workflow_status()
         except (self_api.SelfAssessmentRequestError, workflow_api.AssessmentWorkflowRequestError):
             logger.warning(
-                u"An error occurred while submitting a self assessment "
-                u"for the submission {}".format(self.submission_uuid),
+                "An error occurred while submitting a self assessment "
+                "for the submission {}".format(self.submission_uuid),
                 exc_info=True
             )
-            msg = self._(u"Your self assessment could not be submitted.")
+            msg = self._("Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}
         except (self_api.SelfAssessmentInternalError, workflow_api.AssessmentWorkflowInternalError):
             logger.exception(
-                u"An error occurred while submitting a self assessment "
-                u"for the submission {}".format(self.submission_uuid),
+                "An error occurred while submitting a self assessment "
+                "for the submission {}".format(self.submission_uuid),
             )
-            msg = self._(u"Your self assessment could not be submitted.")
+            msg = self._("Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}
         else:
-            return {'success': True, 'msg': u""}
+            return {'success': True, 'msg': ""}

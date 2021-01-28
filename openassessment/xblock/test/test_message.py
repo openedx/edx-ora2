@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """
 Tests for message handlers in Open Assessment XBlock.
 """
-
-
 import copy
 import datetime as dt
+from unittest import mock
 
 import ddt
-import mock
 import pytz
 
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock

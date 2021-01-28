@@ -14,7 +14,6 @@ import logging
 import random
 
 from django.db import DatabaseError, models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentWorkflowError
@@ -23,7 +22,6 @@ from openassessment.assessment.models.base import Assessment
 logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
 
 
-@python_2_unicode_compatible
 class AssessmentFeedbackOption(models.Model):
     """
     Option a student can select to provide feedback on the feedback they received.
@@ -41,7 +39,7 @@ class AssessmentFeedbackOption(models.Model):
         app_label = "assessment"
 
     def __str__(self):
-        return u'"{}"'.format(self.text)
+        return f'"{self.text}"'
 
 
 class AssessmentFeedback(models.Model):
@@ -58,7 +56,7 @@ class AssessmentFeedback(models.Model):
 
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)
-    feedback_text = models.TextField(max_length=10000, default=u"")
+    feedback_text = models.TextField(max_length=10000, default="")
     options = models.ManyToManyField(AssessmentFeedbackOption, related_name='assessment_feedback', default=None)
 
     class Meta:
@@ -91,7 +89,6 @@ class AssessmentFeedback(models.Model):
         self.options.add(*options)  # pylint:disable=E1101
 
 
-@python_2_unicode_compatible
 class PeerWorkflow(models.Model):
     """Internal Model for tracking Peer Assessment Workflow
 
@@ -168,13 +165,13 @@ class PeerWorkflow(models.Model):
             return cls.objects.get(submission_uuid=submission_uuid)
         except cls.DoesNotExist:
             return None
-        except DatabaseError:
+        except DatabaseError as ex:
             error_message = (
-                u"Error finding workflow for submission UUID {}. Workflow must be "
-                u"created for submission before beginning peer assessment."
+                "Error finding workflow for submission UUID {}. Workflow must be "
+                "created for submission before beginning peer assessment."
             ).format(submission_uuid)
             logger.exception(error_message)
-            raise PeerAssessmentWorkflowError(error_message)
+            raise PeerAssessmentWorkflowError(error_message) from ex
 
     @classmethod
     def create_item(cls, scorer_workflow, submission_uuid):
@@ -209,13 +206,13 @@ class PeerWorkflow(models.Model):
             item.started_at = now()
             item.save()
             return item
-        except DatabaseError:
+        except DatabaseError as ex:
             error_message = (
-                u"An internal error occurred while creating a new peer workflow "
-                u"item for workflow {}"
+                "An internal error occurred while creating a new peer workflow "
+                "item for workflow {}"
             ).format(scorer_workflow)
             logger.exception(error_message)
-            raise PeerAssessmentInternalError(error_message)
+            raise PeerAssessmentInternalError(error_message) from ex
 
     def find_active_assessments(self):
         """Given a student item, return an active assessment if one is found.
@@ -318,13 +315,13 @@ class PeerWorkflow(models.Model):
                 return None
 
             return peer_workflows[0].submission_uuid
-        except DatabaseError:
+        except DatabaseError as ex:
             error_message = (
-                u"An internal error occurred while retrieving a peer submission "
-                u"for learner {}"
+                "An internal error occurred while retrieving a peer submission "
+                "for learner {}"
             ).format(self)
             logger.exception(error_message)
-            raise PeerAssessmentInternalError(error_message)
+            raise PeerAssessmentInternalError(error_message) from ex
 
     def get_submission_for_over_grading(self):
         """
@@ -359,13 +356,13 @@ class PeerWorkflow(models.Model):
             random_workflow = query[random_int]
 
             return random_workflow.submission_uuid
-        except DatabaseError:
+        except DatabaseError as ex:
             error_message = (
-                u"An internal error occurred while retrieving a peer submission "
-                u"for learner {}"
+                "An internal error occurred while retrieving a peer submission "
+                "for learner {}"
             ).format(self)
             logger.exception(error_message)
-            raise PeerAssessmentInternalError(error_message)
+            raise PeerAssessmentInternalError(error_message) from ex
 
     def close_active_assessment(self, submission_uuid, assessment, num_required_grades):
         """
@@ -390,8 +387,8 @@ class PeerWorkflow(models.Model):
             items = list(item_query[:1])
             if not items:
                 msg = (
-                    u"No open assessment was found for learner {} while assessing "
-                    u"submission UUID {}."
+                    "No open assessment was found for learner {} while assessing "
+                    "submission UUID {}."
                 ).format(self.student_id, submission_uuid)
                 raise PeerAssessmentWorkflowError(msg)
             item = items[0]
@@ -403,14 +400,14 @@ class PeerWorkflow(models.Model):
                     item.author.grading_completed_at = now()
                     item.author.save()
 
-        except (DatabaseError, PeerWorkflowItem.DoesNotExist):
+        except (DatabaseError, PeerWorkflowItem.DoesNotExist) as ex:
             error_message = (
-                u"An internal error occurred while retrieving a workflow item for "
-                u"learner {}. Workflow Items are created when submissions are "
-                u"pulled for assessment."
+                "An internal error occurred while retrieving a workflow item for "
+                "learner {}. Workflow Items are created when submissions are "
+                "pulled for assessment."
             ).format(self.student_id)
             logger.exception(error_message)
-            raise PeerAssessmentWorkflowError(error_message)
+            raise PeerAssessmentWorkflowError(error_message) from ex
 
     def num_peers_graded(self):
         """
@@ -433,7 +430,6 @@ class PeerWorkflow(models.Model):
         return repr(self)
 
 
-@python_2_unicode_compatible
 class PeerWorkflowItem(models.Model):
     """Represents an assessment associated with a particular workflow
 

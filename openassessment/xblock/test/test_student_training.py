@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
 """
 Tests for the student training step in the Open Assessment XBlock.
 """
-
-
 import datetime
 import json
 import pprint
+from unittest.mock import Mock, patch
 
 import ddt
-from mock import Mock, patch
 import pytz
 
 from django.db import DatabaseError
@@ -27,7 +24,7 @@ class StudentTrainingTest(XBlockHandlerTestCase):
     """
 
     SUBMISSION = {
-        'submission': u'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
+        'submission': 'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
     }
 
     def assert_path_and_context(self, xblock, expected_path, expected_context):
@@ -175,10 +172,10 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         expected_context["training_essay"] = {
             'answer': {
                 'parts': [{
-                    'text': u"тєѕт αηѕωєя",
+                    'text': "тєѕт αηѕωєя",
                     'prompt': {
                         'description':
-                            u'Given the state of the world today, what do you think should be done to combat poverty?'
+                            'Given the state of the world today, what do you think should be done to combat poverty?'
                     }
                 }]
             }
@@ -295,7 +292,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
                 iso_date = context['training_due'].isoformat()
                 self.assertEqual(iso_date, expected_context[key])
             else:
-                msg = u"Expected \n {expected} \n but found \n {actual}".format(
+                msg = "Expected \n {expected} \n but found \n {actual}".format(
                     actual=pprint.pformat(context[key]),
                     expected=pprint.pformat(expected_context[key])
                 )

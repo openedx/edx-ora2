@@ -1,5 +1,5 @@
 import json
-import mock
+from unittest import mock
 
 from django.db import IntegrityError
 from django.test import TestCase
@@ -69,7 +69,7 @@ def upload_dict(name, desc, size):
 class FileUploadManagerTests(TestCase):
 
     def setUp(self):
-        super(FileUploadManagerTests, self).setUp()
+        super().setUp()
         block = MockBlock(1)
         self.manager = FileUploadManager(block)
         self.team_id = 'team_0_id'

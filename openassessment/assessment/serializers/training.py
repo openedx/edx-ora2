@@ -34,13 +34,13 @@ def validate_training_example_format(example):
     errors = []
 
     if not isinstance(example, dict):
-        errors.append(u"Training example must be a dictionary")
+        errors.append("Training example must be a dictionary")
 
     if 'answer' not in example:
-        errors.append(u'Training example must contain an "answer" field.')
+        errors.append('Training example must contain an "answer" field.')
 
     if 'options_selected' not in example:
-        errors.append(u'Training example must contain an "options_selected" field.')
+        errors.append('Training example must contain an "options_selected" field.')
 
     is_valid = (len(errors) == 0)
     return is_valid, errors

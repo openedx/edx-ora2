@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 17:14-0500\n"
-"PO-Revision-Date: 2021-01-04 21:34+0000\n"
+"POT-Creation-Date: 2021-01-21 13:14-0500\n"
+"PO-Revision-Date: 2021-01-20 21:33+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Polish (http://www.transifex.com/open-edx/edx-platform/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -354,8 +354,8 @@ msgstr "Liczba prac do ocenienia"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
-"Valid numbers are 0 to 99."
-msgstr "Określ liczbę prac, które musi ocenić każdy student. Podaj wartość od 0 do 99."
+"Valid numbers are 1 to 99."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
@@ -364,8 +364,8 @@ msgstr "Liczba oceniających"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
-" numbers are 0 to 99."
-msgstr "Określ ilu studentów musi ocenić poszczególną pracę. Podaj wartość od 0 do 99."
+" numbers are 1 to 99."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
@@ -2186,66 +2186,66 @@ msgstr "Musisz przesłać odpowiedź, zanim będziesz mógł dokonać samodzieln
 msgid "Your self assessment could not be submitted."
 msgstr "Nie udało się wysłać twojej oceny."
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to schedule training"
 msgstr "Nie posiadasz uprawnień do zaplanowania szkolenia."
 
-#: openassessment/xblock/staff_area_mixin.py:43
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to reschedule tasks."
 msgstr "Nie posiadasz uprawnień do zmieniania terminów czynności."
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access the ORA staff area"
 msgstr "Nie posiadasz uprawnień dostępu do strefy zadań z otwartą odpowiedzią."
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA learner information."
 msgstr "Nie posiadasz uprawnień dostępu do wyników zadań z otwartą odpowiedzią."
 
-#: openassessment/xblock/staff_area_mixin.py:71
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Nie posiadasz uprawnień dostępu do systemu oceniania przez kadrę."
 
-#: openassessment/xblock/staff_area_mixin.py:185
+#: openassessment/xblock/staff_area_mixin.py:184
 msgid "Error getting learner information."
 msgstr "Wystąpił błąd w trakcie uzyskiwania informacji o studentach."
 
-#: openassessment/xblock/staff_area_mixin.py:228
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "Error loading the checked out learner response."
 msgstr "Wystąpił błąd w trakcie wczytywania odpowiedzi sprawdzonych przez studentów."
 
-#: openassessment/xblock/staff_area_mixin.py:229
+#: openassessment/xblock/staff_area_mixin.py:228
 msgid "No other learner responses are available for grading at this time."
 msgstr "W tej chwili brak odpowiedzi dostępnych do ocenienia."
 
-#: openassessment/xblock/staff_area_mixin.py:231
+#: openassessment/xblock/staff_area_mixin.py:230
 msgid "Error getting staff grade information."
 msgstr "Wystąpił błąd w trakcie uzyskiwania informacji o ocenach kadry."
 
-#: openassessment/xblock/staff_area_mixin.py:252
+#: openassessment/xblock/staff_area_mixin.py:251
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Wystąpił błąd w trakcie uzyskiwania statystyk ocenionych i nieocenionych prac przez kadrę."
 
-#: openassessment/xblock/staff_area_mixin.py:541
+#: openassessment/xblock/staff_area_mixin.py:540
 msgid "Please enter valid reason to remove the submission."
 msgstr "Proszę podać powód usunięcia tego zgłoszenia."
 
-#: openassessment/xblock/staff_area_mixin.py:552
+#: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:563
+#: openassessment/xblock/staff_area_mixin.py:562
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:590
+#: openassessment/xblock/staff_area_mixin.py:589
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Zgłoszenie przesłane przez studenta zostało usunięte z systemu wzajemnej oceny. Student otrzyma ocenę zero, chyba, że zdecydujesz się usunąć stan studenta dla ćwiczenia, dzięki czemu będzie mógł przygotować i wysłać nowe zgłoszenie."
 
-#: openassessment/xblock/staff_area_mixin.py:625
+#: openassessment/xblock/staff_area_mixin.py:624
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2305,86 +2305,88 @@ msgstr "Nie udało się sprawdzić twoich wyników."
 msgid "Error updating XBlock configuration"
 msgstr "Wystąpił błąd w trakcie zmiany konfiguracji XBlocka"
 
-#: openassessment/xblock/studio_mixin.py:211
-msgid "Error: both text and file upload responses can't be disabled"
-msgstr "Błąd: nie można równocześnie wyłączyć odpowiedzi tekstowych i odpowiedzi w formie pliku"
-
-#: openassessment/xblock/studio_mixin.py:214
-msgid ""
-"Error: in case if text response is disabled file upload response must be "
-"required"
-msgstr "Błąd: w przypadku wyłączenia odpowiedzi tekstowych wymagane jest przyjmowanie odpowiedzi w formie pliku"
+#: openassessment/xblock/studio_mixin.py:213
+msgid "Error: Text Response and File Upload Response cannot both be disabled"
+msgstr ""
 
 #: openassessment/xblock/studio_mixin.py:217
 msgid ""
-"Error: in case if file upload response is disabled text response must be "
-"required"
-msgstr "Błąd: w przypadku wyłączenia odpowiedzi w formie pliku wymagane jest przyjmowanie odpowiedzi tekstowych"
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:241
+#: openassessment/xblock/studio_mixin.py:220
+msgid ""
+"Error: When File Upload Response is disabled, Text Response must be Required"
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:244
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Błąd walidacji: {error}"
 
-#: openassessment/xblock/studio_mixin.py:270
+#: openassessment/xblock/studio_mixin.py:273
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Pomyślnie zaktualizowano OpenAssessment XBlock"
 
-#: openassessment/xblock/submission_mixin.py:114
+#: openassessment/xblock/submission_mixin.py:117
 msgid "\"submission\" required to submit answer."
 msgstr "Do przesłania odpowiedzi wymagane jest \"submission\"."
 
-#: openassessment/xblock/submission_mixin.py:135
+#: openassessment/xblock/submission_mixin.py:138
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "Aby przesłać odpowiedź, wyświetl ten element w podglądzie lub trybie na żywo."
 
-#: openassessment/xblock/submission_mixin.py:141
+#: openassessment/xblock/submission_mixin.py:144
 msgid "Multiple submissions are not allowed."
 msgstr "Przesyłanie więcej niż jednego zgłoszenia jest niedozwolone."
 
-#: openassessment/xblock/submission_mixin.py:185
+#: openassessment/xblock/submission_mixin.py:189
+msgid "Submission cannot be empty. Please refresh the page and try again."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:199
 msgid "API returned unclassified exception."
 msgstr "API zwróciło nieklasyfikowany wyjątek."
 
-#: openassessment/xblock/submission_mixin.py:236
+#: openassessment/xblock/submission_mixin.py:250
 msgid "This response could not be saved."
 msgstr "Nie udało się zapisać tej odpowiedzi."
 
-#: openassessment/xblock/submission_mixin.py:240
+#: openassessment/xblock/submission_mixin.py:254
 msgid "This response was not submitted."
 msgstr "Nie udało się przesłać tej odpowiedzi."
 
-#: openassessment/xblock/submission_mixin.py:256
+#: openassessment/xblock/submission_mixin.py:270
 msgid "Files descriptions were not submitted."
 msgstr "Nie udało się przesłać opisów plików."
 
-#: openassessment/xblock/submission_mixin.py:293
+#: openassessment/xblock/submission_mixin.py:307
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:416
+#: openassessment/xblock/submission_mixin.py:453
 msgid "There was an error uploading your file."
 msgstr "Wystąpił błąd w trakcie przesyłania twojego pliku."
 
-#: openassessment/xblock/submission_mixin.py:428
+#: openassessment/xblock/submission_mixin.py:465
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:439
+#: openassessment/xblock/submission_mixin.py:476
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:452
+#: openassessment/xblock/submission_mixin.py:489
 msgid "Error retrieving upload URL."
 msgstr "Błąd w trakcie uzyskiwania adresu URL przesłanego pliku."
 
-#: openassessment/xblock/submission_mixin.py:713
+#: openassessment/xblock/submission_mixin.py:756
 msgid "This response has been saved but not submitted."
 msgstr "Ta odpowiedź została zapisania, lecz nie została wysłana."
 
-#: openassessment/xblock/submission_mixin.py:714
+#: openassessment/xblock/submission_mixin.py:757
 msgid "This response has not been saved."
 msgstr "Ta odpowiedź nie została zapisana."
 

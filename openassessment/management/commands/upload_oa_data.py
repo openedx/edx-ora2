@@ -26,7 +26,7 @@ class Command(BaseCommand):
     args = '<COURSE_ID> <S3_BUCKET_NAME>'
 
     OUTPUT_CSV_PATHS = {
-        output_name: "{}.csv".format(output_name)
+        output_name: f"{output_name}.csv"
         for output_name in CsvWriter.MODELS
     }
 
@@ -34,7 +34,7 @@ class Command(BaseCommand):
     PROGRESS_INTERVAL = 10
 
     def __init__(self, *args, **kwargs):
-        super(Command, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._history = list()
         self._submission_counter = 0
 
@@ -62,7 +62,7 @@ class Command(BaseCommand):
 
         """
         if len(args) < 2:
-            raise CommandError(u'Usage: upload_oa_data {}'.format(self.args))
+            raise CommandError(f'Usage: upload_oa_data {self.args}')
 
         course_id, s3_bucket = args[0], args[1]
         if isinstance(course_id, bytes):
@@ -72,14 +72,14 @@ class Command(BaseCommand):
         csv_dir = tempfile.mkdtemp()
 
         try:
-            print(u"Generating CSV files for course '{}'".format(course_id))
+            print(f"Generating CSV files for course '{course_id}'")
             self._dump_to_csv(course_id, csv_dir)
-            print(u"Creating archive of CSV files in {}".format(csv_dir))
+            print(f"Creating archive of CSV files in {csv_dir}")
             archive_path = self._create_archive(csv_dir)
-            print(u"Uploading {} to {}/{}".format(archive_path, s3_bucket, course_id))
+            print(f"Uploading {archive_path} to {s3_bucket}/{course_id}")
             url = self._upload(course_id, archive_path, s3_bucket)
             print("== Upload successful ==")
-            print(u"Download URL (expires in {} hours):\n{}".format(self.URL_EXPIRATION_HOURS, url))
+            print(f"Download URL (expires in {self.URL_EXPIRATION_HOURS} hours):\n{url}")
         finally:
             # Assume that the archive was created in the directory,
             # so to clean up we just need to delete the directory.
@@ -114,7 +114,7 @@ class Command(BaseCommand):
             unicode: Absolute path to the archive.
 
         """
-        tarball_name = u"{}.tar.gz".format(
+        tarball_name = "{}.tar.gz".format(
             datetime.datetime.utcnow().strftime("%Y-%m-%dT%H_%M")
         )
         tarball_path = os.path.join(dir_path, tarball_name)

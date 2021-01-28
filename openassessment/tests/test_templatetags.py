@@ -13,8 +13,8 @@ class OAExtrasTests(unittest.TestCase):
     """ Tests for custom django template tags oa_extras. """
 
     template = Template(
-        u"{% load oa_extras %}"
-        u"{{ text|link_and_linebreak }}"
+        "{% load oa_extras %}"
+        "{{ text|link_and_linebreak }}"
     )
 
     @ddt.data(

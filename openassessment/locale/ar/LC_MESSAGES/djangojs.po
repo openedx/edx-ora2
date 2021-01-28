@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 17:14-0500\n"
+"POT-Creation-Date: 2021-01-21 13:14-0500\n"
 "PO-Revision-Date: 2020-12-25 07:47+0000\n"
 "Last-Translator: NELC Open edX Translation <openedx@elc.edu.sa>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -253,28 +253,34 @@ msgid "Status of Your Response"
 msgstr "حالة ردّك."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:414
 msgid "This response has not been saved."
 msgstr "لم يُحفّظ هذا الردّ بعد."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:419
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "ستفقد أي تغيير كنت قد أجريته على الردّ إذا تركت هذه الصفحة دون حفظ أو تقديم ردّك."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:437
 msgid "Saving..."
 msgstr "جاري الحفظ..."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "This response has been saved but not submitted."
 msgstr "حُفِّظ هذا الردّ ولكن لم يُقدّم بعد. "
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:462
 msgid "Error"
 msgstr "حدث خطأ"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:488
 msgid "Do you want to upload your file before submitting?"
 msgstr "هل ترغب بتحميل ملفّك قبل التقديم؟"
 
@@ -355,6 +361,7 @@ msgid "Error getting the number of ungraded responses"
 msgstr "حدث خطأ أثناء محاولة الحصول على عدد الردود غير المُقيّمة."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:518
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -373,6 +380,7 @@ msgid ""
 msgstr "ستفقد أي تغيير كنت قد أجريته إذا تركت هذه الصفحة دون تقديم تقييمك لردود الزملاء."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_base.js:336
 msgid "Unable to load"
 msgstr "تعذّر إجراء التحميل."
 

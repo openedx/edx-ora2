@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 17:14-0500\n"
+"POT-Creation-Date: 2021-01-21 13:14-0500\n"
 "PO-Revision-Date: 2020-10-07 07:16+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
@@ -248,28 +248,34 @@ msgid "Status of Your Response"
 msgstr "あなたの返信のステータス"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:414
 msgid "This response has not been saved."
 msgstr "この返信は保存されていません。"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:419
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "返信を保存または提出せずに別のページへ移動する場合、記述した内容が失われます。"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:437
 msgid "Saving..."
 msgstr "保存中..."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "This response has been saved but not submitted."
 msgstr "この返信は保存されていますが、提出はされていません。"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:462
 msgid "Error"
 msgstr "エラー"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_response.js:488
 msgid "Do you want to upload your file before submitting?"
 msgstr "提出前にファイルをアップロードしますか？"
 
@@ -350,6 +356,7 @@ msgid "Error getting the number of ungraded responses"
 msgstr "採点対象外の返信数の取得エラー"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:518
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -368,6 +375,7 @@ msgid ""
 msgstr "ピア・アセスメントを提出せずに別のページへ移動する場合、記述した内容が失われます。"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
+#: openassessment/xblock/static/js/src/lms/oa_base.js:336
 msgid "Unable to load"
 msgstr "読み込めません"
 
