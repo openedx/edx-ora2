@@ -6,6 +6,7 @@ from collections import defaultdict, namedtuple
 from io import StringIO
 from urllib.parse import urljoin
 from zipfile import ZipFile
+from itertools import chain
 import csv
 import json
 import os
@@ -18,6 +19,7 @@ from django.db.models import F
 from django.utils.translation import ugettext as _
 
 from submissions import api as sub_api
+from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
@@ -633,6 +635,132 @@ class OraAggregateData:
             'Feedback Statements Selected',
             'Feedback on Peer Assessments'
         ]
+        return header, rows
+
+    @classmethod
+    def collect_ora2_summary(cls, course_id):
+        """
+        Query database for aggregated ora2 summary data.
+
+        Args:
+            course_id (string) - the course id of the course whose data we would like to return
+
+        Returns:
+            A tuple containing two lists: headers and data.
+
+            headers is a list containing strings corresponding to the column headers of the data.
+            data is a list of lists, where each sub-list corresponds to a row in the table of all the data
+                for this course.
+
+            Headers details:
+
+            block_name: id of ora block
+            student_id: anonymized student id
+            status: string indicating the current step or status the student is
+                at. Eg. 'peer', 'done', 'cancelled'. Values are from the AssessmentWorkflow
+                STEPS + STATUSES
+            is_<STEP>_complete: boolean 'complete' status for STEP (0 or 1, or
+                empty if workflow does not include this step)
+            is_<STEP>_graded: boolean 'graded' status for STEP (0 or 1, or
+                empty if workflow does not include this step)
+            num_peers_graded: number of peers that 'student_id' has graded in the peer step
+            num_graded_by_peers: number of peer grades that 'student_id' has received in the peer step
+            is_staff_grade_received: boolean (0 or 1)
+            is_final_grade_received: boolean (0 or 1)
+            final_grade_points_earned: number of points earned in final grade.
+                will be empty if no final grade yet
+            final_grade_points_possible: max number of points possible for
+                final grade. will be empty if no final grade
+        """
+
+        items = AssessmentWorkflow.objects.filter(course_id=course_id)
+
+        # need the workflow steps set and sorted here so the data columns line
+        # up with the headers
+        steps = sorted(AssessmentWorkflow.STEPS)
+
+        rows = []
+        for aw in items:
+            statuses = aw.status_details()
+            try:
+                submission_dict = sub_api.get_submission_and_student(aw.submission_uuid)
+            except SubmissionNotFoundError:
+                continue
+
+            steps_statuses = []
+            peers_graded = 0
+            graded_by_count = 0
+            for step in steps:
+                if not statuses.get(step):
+                    # if no status for step, then the 'complete' and 'graded'
+                    # statuses should be empty.
+                    steps_statuses.append('')
+                    steps_statuses.append('')
+                    continue
+
+                # if we get to here, then a status exists for `step`
+
+                if statuses[step]['complete']:
+                    steps_statuses.append(1)
+                else:
+                    steps_statuses.append(0)
+
+                if statuses[step]['graded']:
+                    steps_statuses.append(1)
+                else:
+                    steps_statuses.append(0)
+
+                # the peer step is special and has extra metadata
+                if step == 'peer':
+                    peers_graded = statuses[step]['peers_graded_count'] or 0
+                    graded_by_count = statuses[step]['graded_by_count'] or 0
+
+            is_staff_grade_received = 1 if aw.staff_score_exists() else 0
+            is_final_grade_received = 1 if aw.status == AssessmentWorkflow.STATUS.done else 0
+
+            score = aw.score
+            if score is not None:
+                final_grade_points_earned = score['points_earned']
+                final_grade_points_possible = score['points_possible']
+            else:
+                final_grade_points_earned = ''
+                final_grade_points_possible = ''
+
+            row = [
+                aw.item_id,
+                submission_dict['student_item']['student_id'],
+                aw.status,
+            ] + steps_statuses + [
+                peers_graded,
+                graded_by_count,
+                is_staff_grade_received,
+                is_final_grade_received,
+                final_grade_points_earned,
+                final_grade_points_possible,
+            ]
+            rows.append(row)
+
+        steps_headers = list(chain.from_iterable((
+            (
+                "is_{}_complete".format(step),
+                "is_{}_graded".format(step),
+            )
+            for step in steps
+        )))
+
+        header = [
+            'block_name',
+            'student_id',
+            'status',
+        ] + steps_headers + [
+            'num_peers_graded',
+            'num_graded_by_peers',
+            'is_staff_grade_received',
+            'is_final_grade_received',
+            'final_grade_points_earned',
+            'final_grade_points_possible',
+        ]
+
         return header, rows
 
     @classmethod
