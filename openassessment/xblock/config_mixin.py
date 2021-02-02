@@ -12,13 +12,11 @@ from django.utils.functional import cached_property
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
 ALL_FILES_URLS = 'all_files_urls'
-MOBILE_SUPPORT = 'mobile_support'
 TEAM_SUBMISSIONS = 'team_submissions'
 USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
-    MOBILE_SUPPORT: 'ENABLE_ORA_MOBILE_SUPPORT',
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA'
 }
@@ -121,4 +119,12 @@ class ConfigMixin:
         """
         Returns a boolean indicating if the mobile support feature flag is enabled or not.
         """
-        return self._settings_toggle_enabled(FEATURE_TOGGLES_BY_FLAG_NAME.get(MOBILE_SUPPORT))
+        # .. toggle_name: FEATURES['ENABLE_ORA_MOBILE_SUPPORT']
+        # .. toggle_implementation: SettingToggle
+        # .. toggle_default: False
+        # .. toggle_description: Set to True to enable the ORA2 Xblock to be rendered
+        #     in mobile apps.
+        # .. toggle_use_cases: open_edx
+        # .. toggle_creation_date: 2020-10-14
+        # .. toggle_tickets: https://github.com/edx/edx-ora2/pull/1445
+        return settings.FEATURES.get('ENABLE_ORA_MOBILE_SUPPORT', False)
