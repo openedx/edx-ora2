@@ -13,7 +13,7 @@ import PeerView from './oa_peer';
 import ResponseEditorLoader from './oa_response_editor';
 
 // react-specific
-import initReactView from './oa_react';
+import initReactView from './oa_react_loader';
 
 /**
 Interface for student-facing views.
@@ -44,8 +44,6 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-
-      initReactView(runtime, element, data);
 
       this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
       this.fileUploader = new FileUploader();
@@ -454,6 +452,16 @@ export const StaffAssessmentBlock = (runtime, element, data) => {
   const server = new Server(runtime, element);
   const view = new BaseView(runtime, element, server, data);
   view.staffAreaView.installHandlers();
+};
+
+/* XBlock JavaScript entry point for OpenAssessmentXBlock. */
+/* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
+export const WaitingStepDetailsBlock = (runtime, element, data) => {
+  /**
+    Render auxiliary view which displays the staff grading area
+  * */
+  initReactView(runtime, element, data);
 };
 
 export default BaseView;
