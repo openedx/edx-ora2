@@ -2,6 +2,8 @@ include LICENSE
 include AUTHORS
 include README.rst
 include setup.cfg
+include openassessment/xblock/static/compiled/*.js
+include openassessment/xblock/static/compiled/*.css
 include openassessment/xblock/static/css/*.css
 include openassessment/xblock/static/css/lib/backgrid/*.css
 include openassessment/xblock/static/js/openassessment*.js

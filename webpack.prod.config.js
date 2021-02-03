@@ -7,18 +7,19 @@ const webpack = require('webpack');
 const config = createConfig('webpack-prod');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 Object.assign(config, {
   entry: {
     "openassessment-lms": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms_index.js'),
     "openassessment-studio": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/studio_index.js'),
+    "openassessment-rtl": path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-rtl.scss'),
+    "openassessment-ltr": path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     "openassessment-editor-textarea": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
-    "openassessment-editor-tinymce": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js')
+    "openassessment-editor-tinymce": path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
   },
   output: {
-    path: path.resolve(process.cwd(), 'openassessment/xblock/static/js'),
+    path: path.resolve(process.cwd(), 'openassessment/xblock/static/compiled'),
   },
   optimization: {},
   plugins: [

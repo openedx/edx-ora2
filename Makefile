@@ -72,9 +72,6 @@ update-npm-requirements: ## update NPM requrements
 javascript: ## Webpack JavaScript source files
 	npm run build
 
-sass: ## Compile SASS files
-	python scripts/compile_sass.py
-
 ################
 #Translations Handling
 ################

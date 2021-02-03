@@ -618,9 +618,9 @@ class OpenAssessmentBlock(MessageMixin,
 
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
-            css_url = "static/css/openassessment-rtl.css"
+            css_url = "static/compiled/openassessment-rtl.css"
         else:
-            css_url = "static/css/openassessment-ltr.css"
+            css_url = "static/compiled/openassessment-ltr.css"
 
         # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
         for css in additional_css:
@@ -628,7 +628,7 @@ class OpenAssessmentBlock(MessageMixin,
         fragment.add_css(load(css_url))
 
         # minified additional_js should be already included in 'make javascript'
-        fragment.add_javascript(load("static/js/openassessment-lms.js"))
+        fragment.add_javascript(load("static/compiled/openassessment-lms.js"))
 
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
