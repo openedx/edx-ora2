@@ -36,7 +36,7 @@ describe("OpenAssessment.FileUploader", function() {
             async: false,
             processData: false,
             contentType: 'image/jpeg',
-            headers: { 'Content-Disposition': `attachment; filename="${TEST_FILE.name}"` },
+            headers: { 'Content-Disposition': `attachment; filename*=UTF-8''${encodeURI(TEST_FILE.name)}` },
         });
 
         // Verify that the event was logged
