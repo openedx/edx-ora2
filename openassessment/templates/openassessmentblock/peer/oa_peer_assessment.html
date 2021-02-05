@@ -28,21 +28,6 @@
             </h4>
         </span>
 
-        {% if peer_start %}
-        <span class="step__deadline">
-            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 00:00 UTC (in 5 days and 45 minutes)" #}
-            {% blocktrans with start_date=peer_start|timezone:"UTC"|date:"c" time_until=peer_start|timeuntil %}
-            <span id="oa_step_deadline_peer" class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
-            {% endblocktrans %}
-        </span>
-        {% elif peer_due %}
-        <span class="step__deadline">
-            {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days and 45 minutes)" #}
-            {% blocktrans with due_date=peer_due|timezone:"UTC"|date:"c" time_until=peer_due|timeuntil %}
-            <span id="oa_step_deadline_peer" class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
-            {% endblocktrans %}
-        </span>
-        {% endif %}
         {% block title %}
         <span class="step__status">
           <span id="oa_step_status_peer" class="step__status__value">

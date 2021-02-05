@@ -119,7 +119,7 @@ DEFAULT_STUDENT_TRAINING = {
 }
 
 DEFAULT_START = "2001-01-01T00:00"
-DEFAULT_DUE = "2029-01-01T00:00"
+DEFAULT_DUE = "2039-01-01T00:00"
 
 # The Default Peer Assessment is created as an example of how this XBlock can be
 # configured. If no configuration is specified, this is the default assessment

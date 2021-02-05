@@ -217,41 +217,6 @@ OpenAssessment.DatetimeControl.prototype = {
     },
 
     /**
-     Mark validation errors.
-
-     Returns:
-     Boolean indicating whether the fields are valid.
-
-     **/
-    validate: function() {
-        var dateString = $(this.datePicker, this.element).val();
-        var timeString = $(this.timePicker, this.element).val();
-
-        //date validation
-        var isDateValid = false;
-
-        try {
-            var parsedDate = $.datepicker.parseDate($.datepicker.ISO_8601, dateString);
-            isDateValid = parsedDate instanceof Date;
-        } catch (err) {
-            // parseDate function throws error if date is not in expected format.
-            // isDateValid flag would remain false.
-        }
-        if (!isDateValid) {
-            $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
-        }
-
-        //time validation
-        var matches = timeString.match(/^\d{2}:\d{2}$/g);
-        var isTimeValid = (matches !== null);
-        if (!isTimeValid) {
-            $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
-        }
-
-        return (isDateValid && isTimeValid);
-    },
-
-    /**
      Clear all validation errors from the UI.
      **/
     clearValidationErrors: function() {

@@ -200,8 +200,6 @@ OpenAssessment.StudioView.prototype = {
             feedback_default_text: view.rubricView.feedback_default_text(),
             criteria: view.rubricView.criteriaDefinition(),
             title: view.settingsView.displayName(),
-            submissionStart: view.settingsView.submissionStart(),
-            submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
             textResponse: view.settingsView.textResponseNecessity(),
             fileUploadResponse: view.settingsView.fileUploadResponseNecessity(),

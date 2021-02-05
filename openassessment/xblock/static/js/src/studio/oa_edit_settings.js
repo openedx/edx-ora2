@@ -16,19 +16,6 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
     this.assessmentViews = assessmentViews;
 
-    // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        "#openassessment_submission_start_date",
-        "#openassessment_submission_start_time"
-    ).install();
-
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        "#openassessment_submission_due_date",
-        "#openassessment_submission_due_time"
-    ).install();
-
     new OpenAssessment.SelectControl(
         $("#openassessment_submission_file_upload_response", this.element),
         function(selectedValue) {
@@ -136,36 +123,6 @@ OpenAssessment.EditSettingsView.prototype = {
     displayName: function(name) {
         var sel = $("#openassessment_title_editor", this.settingsElement);
         return OpenAssessment.Fields.stringField(sel, name);
-    },
-
-    /**
-    Get or set the submission start date.
-
-    Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
-        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-    Returns:
-        string (ISO-format UTC datetime)
-
-    **/
-    submissionStart: function(dateString, timeString) {
-        return this.startDatetimeControl.datetime(dateString, timeString);
-    },
-
-    /**
-    Get or set the submission end date.
-
-    Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
-        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-    Returns:
-        string (ISO-format UTC datetime)
-
-    **/
-    submissionDue: function(dateString, timeString) {
-        return this.dueDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
@@ -358,8 +315,6 @@ OpenAssessment.EditSettingsView.prototype = {
         // Validate the start and due datetime controls
         var isValid = true;
 
-        isValid = (this.startDatetimeControl.validate() && isValid);
-        isValid = (this.dueDatetimeControl.validate() && isValid);
         isValid = (this.leaderboardIntField.validate() && isValid);
         if (this.fileUploadType() === 'custom') {
             isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
@@ -370,13 +325,6 @@ OpenAssessment.EditSettingsView.prototype = {
                 this.fileTypeWhiteListInputField.set('');
             }
         }
-
-        // Validate each of the *enabled* assessment views
-        $.each(this.assessmentViews, function() {
-            if (this.isEnabled()) {
-                isValid = (this.validate() && isValid);
-            }
-        });
 
         return isValid;
     },
@@ -392,12 +340,6 @@ OpenAssessment.EditSettingsView.prototype = {
     validationErrors: function() {
         var errors = [];
 
-        if (this.startDatetimeControl.validationErrors().length > 0) {
-            errors.push("Submission start is invalid");
-        }
-        if (this.dueDatetimeControl.validationErrors().length > 0) {
-            errors.push("Submission due is invalid");
-        }
         if (this.leaderboardIntField.validationErrors().length > 0) {
             errors.push("Leaderboard number is invalid");
         }
@@ -416,8 +358,6 @@ OpenAssessment.EditSettingsView.prototype = {
     Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
-        this.startDatetimeControl.clearValidationErrors();
-        this.dueDatetimeControl.clearValidationErrors();
         this.leaderboardIntField.clearValidationErrors();
         this.fileTypeWhiteListInputField.clearValidationErrors();
         $.each(this.assessmentViews, function() {

@@ -108,12 +108,11 @@ class StudioMixin(object):
         # before displaying them in the editor.
         __, __, date_ranges = resolve_dates(
             self.start, self.due,
-            [(self.submission_start, self.submission_due)] +
+            [(self.start, self.due)] +
             [(asmnt.get('start'), asmnt.get('due')) for asmnt in self.valid_assessments],
             self._
         )
 
-        submission_start, submission_due = date_ranges[0]
         assessments = self._assessments_editor_context(date_ranges[1:])
         self.editor_assessments_order = self._editor_assessments_order_context()
 
@@ -135,8 +134,8 @@ class StudioMixin(object):
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
             'title': self.title,
-            'submission_due': submission_due,
-            'submission_start': submission_start,
+            'submission_due': self.due,
+            'submission_start': self.start,
             'assessments': assessments,
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
@@ -219,8 +218,6 @@ class StudioMixin(object):
         success, msg = xblock_validator(
             create_rubric_dict(data['prompts'], data['criteria']),
             data['assessments'],
-            submission_start=data['submission_start'],
-            submission_due=data['submission_due'],
             leaderboard_show=data['leaderboard_show']
         )
         if not success:
@@ -237,8 +234,6 @@ class StudioMixin(object):
         self.editor_assessments_order = data['editor_assessments_order']
         self.rubric_feedback_prompt = data['feedback_prompt']
         self.rubric_feedback_default_text = data['feedback_default_text']
-        self.submission_start = data['submission_start']
-        self.submission_due = data['submission_due']
         self.text_response = data['text_response']
         self.file_upload_response = data['file_upload_response']
         if data['file_upload_response']:

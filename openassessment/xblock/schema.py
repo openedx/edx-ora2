@@ -93,8 +93,6 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('title'): utf8_validator,
     Required('feedback_prompt'): utf8_validator,
     Required('feedback_default_text'): utf8_validator,
-    Required('submission_start'): Any(datetime_validator, None),
-    Required('submission_due'): Any(datetime_validator, None),
     Required('text_response', default='required'): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
     Required('file_upload_response', default=None): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
     'allow_file_upload': bool,  # Backwards compatibility.

@@ -205,21 +205,6 @@ def resolve_dates(start, end, date_ranges, _):
         __, step_end = date_ranges[reverse_index]
         step_end = _parse_date(step_end, _) if step_end is not None else prev_end
 
-        if step_start < prev_start:
-            msg = _(
-                u"This step's start date '{start}' cannot be earlier than the previous step's start date '{prev}'."
-            ).format(
-                start=step_start,
-                prev=prev_start,
-            )
-            raise DateValidationError(msg)
-
-        if step_end > prev_end:
-            msg = _(u"This step's due date '{due}' cannot be later than the next step's due date '{prev}'.").format(
-                due=step_end, prev=prev_end
-            )
-            raise DateValidationError(msg)
-
         resolved_starts.append(step_start)
         resolved_ends.insert(0, step_end)
         prev_start = step_start

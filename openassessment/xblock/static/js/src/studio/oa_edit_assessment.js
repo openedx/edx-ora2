@@ -29,19 +29,6 @@ OpenAssessment.EditPeerAssessmentView = function(element) {
             new OpenAssessment.AssessmentToggleListener()
         ])
     ).install();
-
-    // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        "#peer_assessment_start_date",
-        "#peer_assessment_start_time"
-    ).install();
-
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        "#peer_assessment_due_date",
-        "#peer_assessment_due_time"
-    ).install();
 };
 
 OpenAssessment.EditPeerAssessmentView.prototype = {
@@ -65,8 +52,6 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         return {
             must_grade: this.mustGradeNum(),
             must_be_graded_by: this.mustBeGradedByNum(),
-            start: this.startDatetime(),
-            due: this.dueDatetime()
         };
     },
 
@@ -121,34 +106,6 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     },
 
     /**
-     Get or set the start date and time of the assessment.
-
-     Args:
-     dateString (string, optional): If provided, set the date (YY-MM-DD).
-     timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-     Returns:
-     string (ISO-formatted UTC datetime)
-     **/
-    startDatetime: function(dateString, timeString) {
-        return this.startDatetimeControl.datetime(dateString, timeString);
-    },
-
-    /**
-     Get or set the due date and time of the assessment.
-
-     Args:
-     dateString (string, optional): If provided, set the date (YY-MM-DD).
-     timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-     Returns:
-     string (ISO-formatted UTC datetime)
-     **/
-    dueDatetime: function(dateString, timeString) {
-        return this.dueDatetimeControl.datetime(dateString, timeString);
-    },
-
-    /**
      Gets the ID of the assessment
 
      Returns:
@@ -166,11 +123,9 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
      **/
     validate: function() {
-        var startValid = this.startDatetimeControl.validate();
-        var dueValid = this.dueDatetimeControl.validate();
         var mustGradeValid = this.mustGradeField.validate();
         var mustBeGradedByValid = this.mustBeGradedByField.validate();
-        return startValid && dueValid && mustGradeValid && mustBeGradedByValid;
+        return mustGradeValid && mustBeGradedByValid;
     },
 
     /**
@@ -183,12 +138,6 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
      **/
     validationErrors: function() {
         var errors = [];
-        if (this.startDatetimeControl.validationErrors().length > 0) {
-            errors.push("Peer assessment start is invalid");
-        }
-        if (this.dueDatetimeControl.validationErrors().length > 0) {
-            errors.push("Peer assessment due is invalid");
-        }
         if (this.mustGradeField.validationErrors().length > 0) {
             errors.push("Peer assessment must grade is invalid");
         }
@@ -202,8 +151,6 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
      Clear all validation errors from the UI.
      **/
     clearValidationErrors: function() {
-        this.startDatetimeControl.clearValidationErrors();
-        this.dueDatetimeControl.clearValidationErrors();
         this.mustGradeField.clearValidationErrors();
         this.mustBeGradedByField.clearValidationErrors();
     },
@@ -232,19 +179,6 @@ OpenAssessment.EditSelfAssessmentView = function(element) {
             new OpenAssessment.AssessmentToggleListener()
         ])
     ).install();
-
-    // Configure the date and time fields
-    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        "#self_assessment_start_date",
-        "#self_assessment_start_time"
-    ).install();
-
-    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
-        this.element,
-        "#self_assessment_due_date",
-        "#self_assessment_due_time"
-    ).install();
 };
 
 OpenAssessment.EditSelfAssessmentView.prototype = {
@@ -265,8 +199,7 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
      **/
     description: function() {
         return {
-            start: this.startDatetime(),
-            due: this.dueDatetime()
+            required: this.isEnabled(),
         };
     },
 
@@ -293,34 +226,6 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     },
 
     /**
-     Get or set the start date and time of the assessment.
-
-     Args:
-     dateString (string, optional): If provided, set the date (YY-MM-DD).
-     timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-     Returns:
-     string (ISO-formatted UTC datetime)
-     **/
-    startDatetime: function(dateString, timeString) {
-        return this.startDatetimeControl.datetime(dateString, timeString);
-    },
-
-    /**
-     Get or set the due date and time of the assessment.
-
-     Args:
-     dateString (string, optional): If provided, set the date (YY-MM-DD).
-     timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
-
-     Returns:
-     string (ISO-formatted UTC datetime)
-     **/
-    dueDatetime: function(dateString, timeString) {
-        return this.dueDatetimeControl.datetime(dateString, timeString);
-    },
-
-    /**
      Gets the ID of the assessment
 
      Returns:
@@ -338,36 +243,24 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
 
      **/
     validate: function() {
-        var startValid = this.startDatetimeControl.validate();
-        var dueValid = this.dueDatetimeControl.validate();
-        return startValid && dueValid;
+        return true; //Nothing to validate, the only input is a boolean and either state is valid
     },
 
     /**
-     Return a list of validation errors visible in the UI.
-     Mainly useful for testing.
-
-     Returns:
-     list of string
-
-     **/
+     * Return a list of validation errors visible in the UI.
+     * Mainly useful for testing.
+     *
+     * @returns {Array} - always empty, function called but not actually used.
+     */
     validationErrors: function() {
-        var errors = [];
-        if (this.startDatetimeControl.validationErrors().length > 0) {
-            errors.push("Self assessment start is invalid");
-        }
-        if (this.dueDatetimeControl.validationErrors().length > 0) {
-            errors.push("Self assessment due is invalid");
-        }
-        return errors;
+        return [];
     },
 
     /**
-     Clear all validation errors from the UI.
-     **/
+     * Clear all validation errors from the UI.
+     */
     clearValidationErrors: function() {
-        this.startDatetimeControl.clearValidationErrors();
-        this.dueDatetimeControl.clearValidationErrors();
+        //do nothing
     }
 };
 

@@ -691,8 +691,6 @@ class OpenAssessmentBlock(MessageMixin,
         xblock_validator(
             create_rubric_dict(config['prompts'], config['rubric_criteria']),
             config['rubric_assessments'],
-            submission_start=config['submission_start'],
-            submission_due=config['submission_due'],
             leaderboard_show=config['leaderboard_show']
         )
 
@@ -887,7 +885,7 @@ class OpenAssessmentBlock(MessageMixin,
             datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
 
         """
-        submission_range = (self.submission_start, self.submission_due)
+        submission_range = (self.start, self.due)
         assessment_ranges = [
             (asmnt.get('start'), asmnt.get('due'))
             for asmnt in self.valid_assessments
