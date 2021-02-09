@@ -150,4 +150,16 @@
 
         </li>
     {% endif %}
+    <li id="openassessment_show_rubric_during_response_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_show_rubric_during_response_selector" class="setting-label">{% trans "Show Rubric During Response"%}</label>
+            <select id="openassessment_show_rubric_during_response_selector" class="input setting-input" name="show rubric during response">
+                <option value="0">{% trans "False"%}</option>
+                <option value="1" {% if show_rubric_during_response %} selected="true" {% endif %}>{% trans "True"%}</option>
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Specify whether learners can see the rubric while they are working on their response." %}
+        </p>
+    </li>
 </ul>

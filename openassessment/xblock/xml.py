@@ -769,6 +769,9 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.selected_teamset_id is not None:
         root.set('selected_teamset_id', str(oa_block.selected_teamset_id))
 
+    if oa_block.show_rubric_during_response is not None:
+        root.set('show_rubric_during_response', str(oa_block.show_rubric_during_response))
+
 
 def serialize_content(oa_block):
     """
@@ -911,6 +914,10 @@ def parse_from_xml(root):
     if 'group_access' in root.attrib:
         group_access = GroupAccessDict().from_json(json.loads(root.attrib['group_access']))
 
+    show_rubric_during_response = False
+    if 'show_rubric_during_response' in root.attrib:
+        show_rubric_during_response = _parse_boolean(str(root.attrib['show_rubric_during_response']))
+
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
@@ -973,7 +980,8 @@ def parse_from_xml(root):
         'group_access': group_access,
         'leaderboard_show': leaderboard_show,
         'teams_enabled': teams_enabled,
-        'selected_teamset_id': selected_teamset_id
+        'selected_teamset_id': selected_teamset_id,
+        'show_rubric_during_response': show_rubric_during_response,
     }
 
 
