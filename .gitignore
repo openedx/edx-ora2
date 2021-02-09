@@ -89,3 +89,5 @@ private.py
 
 # pyenv
 .python-version
+
+!openassessment/xblock/static/dist/

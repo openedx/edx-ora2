@@ -33,7 +33,7 @@ Object.assign(config, {
 });
 
 config.resolve.modules = ['node_modules'].concat(
-  path.resolve(__dirname, 'openassessment/xblock/static/js/src')
+    path.resolve(__dirname, 'openassessment/xblock/static/js/src')
 );
 
 module.exports = config;

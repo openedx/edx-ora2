@@ -88,7 +88,7 @@ class StudioMixin:
         fragment = Fragment(rendered_template)
 
         # TODO: switch to add_javascript_url once XBlock resources are loaded from the CDN
-        js_bytes = pkg_resources.resource_string(__name__, "static/compiled/openassessment-studio.js")
+        js_bytes = pkg_resources.resource_string(__name__, "static/dist/openassessment-studio.js")
         fragment.add_javascript(js_bytes.decode('utf-8'))
 
         js_context_dict = {
