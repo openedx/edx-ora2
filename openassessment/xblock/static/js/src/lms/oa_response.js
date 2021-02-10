@@ -211,7 +211,8 @@ export class ResponseView {
             && !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
         readyToSubmit = false;
       }
-      if (this.hasPendingUploadFiles() && !this.collectFilesDescriptions()) {
+      if (this.hasPendingUploadFiles()) {
+        this.collectFilesDescriptions();
         readyToSubmit = false;
       }
 

@@ -881,10 +881,12 @@ describe("OpenAssessment.ResponseView", function() {
         $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('test2');
 
-        // user finishes adding descriptions which enables submit button
+        // user finishes adding descriptions which enables the upload button
         view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
         expect(view.uploadEnabled()).toBe(true);
+
+        // the submit button remains disabled until files are uploaded
+        expect(view.submitEnabled()).toBe(false);
     });
 
     it("deleting all uploaded files prevents user from submitting", function() {
