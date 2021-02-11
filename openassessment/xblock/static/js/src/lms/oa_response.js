@@ -479,38 +479,24 @@ export class ResponseView {
 
       const view = this;
       const { baseView } = this;
-      // eslint-disable-next-line new-cap
-      let fileDefer = $.Deferred();
 
-      if (view.hasPendingUploadFiles()) {
-        if (!view.hasAllUploadFiles()) {
-          return;
-        }
-        const msg = gettext('Do you want to upload your file before submitting?');
-        if (window.confirm(msg)) {
-          fileDefer = view.uploadFiles();
-          if (fileDefer === false) {
-            return;
-          }
-        }
-      } else {
-        fileDefer.resolve();
+      if (view.hasPendingUploadFiles() && !view.hasAllUploadFiles()) {
+        return;
       }
 
-      fileDefer
-        .pipe(() => view.confirmSubmission()
-        // On confirmation, send the submission to the server
+      // On confirmation, send the submission to the server
+      view.confirmSubmission()
         // The callback returns a promise so we can attach
         // additional callbacks after the confirmation.
         // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
         // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
-          .pipe(() => {
-            const submission = view.response();
-            baseView.toggleActionError('response', null);
+        .pipe(() => {
+          const submission = view.response();
+          baseView.toggleActionError('response', null);
 
-            // Send the submission to the server, returning the promise.
-            return view.server.submit(submission);
-          }))
+          // Send the submission to the server, returning the promise.
+          return view.server.submit(submission);
+        })
 
       // If the submission was submitted successfully, move to the next step
         .done($.proxy(view.moveToNextStep, view))
