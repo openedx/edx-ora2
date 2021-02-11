@@ -480,7 +480,7 @@ export class ResponseView {
       const view = this;
       const { baseView } = this;
 
-      if (view.hasPendingUploadFiles() && !view.hasAllUploadFiles()) {
+      if (view.hasPendingUploadFiles()) {
         return;
       }
 
