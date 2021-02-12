@@ -163,6 +163,17 @@ class StaffAreaMixin:
             'staff_assessment_in_progress': grading_stats['in-progress']
         }
 
+    @staticmethod
+    def get_waiting_step_details_context(course_id, item_id):
+        """
+        WIP WIP
+        """
+        # Import is placed here to avoid model import at project startup.
+        from openassessment.assessment.api import peer as peer_api
+        waiting_step_data = peer_api.get_waiting_step_details(course_id, item_id)
+
+        return {'waiting_step_data': waiting_step_data}
+
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
     def render_student_info(self, data, suffix=''):  # pylint: disable=W0613

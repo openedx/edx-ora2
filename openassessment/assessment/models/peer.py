@@ -214,6 +214,44 @@ class PeerWorkflow(models.Model):
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message) from ex
 
+    @classmethod
+    def get_waiting_step_details(cls, course_id, item_id):
+        """
+        Retrieve information about users in the waiting step (waiting for peer reviews).
+
+        Args:
+            TBD
+
+        Returns:
+            TBD
+
+        Examples:
+            >>> PeerWorkflow.get_waiting_step_details(course_id, item_id)
+            {
+                'student_id': u'Bob',
+                'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>)
+                'graded': 2,
+                'graded_by': 2
+            }
+
+        """
+        waiting = cls.objects.filter(
+            item_id=item_id,course_id=course_id,
+            grading_completed_at__isnull=True,
+        ).annotate(
+            graded_count=models.Count('graded'),
+            graded_by_count=models.Count('graded_by'),
+        )
+
+        return [
+            {
+                'student_id': item.student_id,
+                'created_at': item.created_at,
+                'graded': item.graded_count,
+                'graded_by': item.graded_by_count,
+            } for item in waiting
+        ]
+
     def find_active_assessments(self):
         """Given a student item, return an active assessment if one is found.
 

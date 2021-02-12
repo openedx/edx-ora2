@@ -1003,3 +1003,10 @@ def on_cancel(submission_uuid):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message) from ex
+
+
+def get_waiting_step_details(course_id, item_id):
+    """
+    Something something here.
+    """
+    return PeerWorkflow.get_waiting_step_details(course_id, item_id)
