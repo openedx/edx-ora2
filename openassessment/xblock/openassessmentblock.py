@@ -547,6 +547,7 @@ class OpenAssessmentBlock(MessageMixin,
                     [{"parent_name": "Vertical name",
                       "name": "ORA Display Name",
                       "url_grade_available_responses": "/grade_available_responses_view",
+                      "url_waiting_step_details": "/waiting_step_details_view",
                       "staff_assessment": false,
                       "parent_id": "vertical_block_id",
                       "url_base": "/student_view",
@@ -629,9 +630,12 @@ class OpenAssessmentBlock(MessageMixin,
         }
 
         if peer_assessment_required:
-            context_dict.update({
-                "waiting_step_data_url": "somewhere"
-            })
+            context_dict.update(
+                self.get_waiting_step_details_context(
+                    student_item["course_id"],
+                    student_item["item_id"]
+                )
+            )
 
         template = get_template('openassessmentblock/instructor_dashboard/oa_waiting_step_details.html')
 
@@ -639,6 +643,7 @@ class OpenAssessmentBlock(MessageMixin,
             template,
             context_dict,
             initialize_js_func='WaitingStepDetailsBlock',
+            additional_js_context=context_dict,
         )
 
     def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None, additional_js_context=None):
