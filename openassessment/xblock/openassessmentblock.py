@@ -641,7 +641,7 @@ class OpenAssessmentBlock(MessageMixin,
             initialize_js_func='WaitingStepDetailsBlock',
         )
 
-    def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None):
+    def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None, additional_js_context=None):
         """
         Creates a fragment for display.
 
@@ -676,8 +676,13 @@ class OpenAssessmentBlock(MessageMixin,
             "TEAM_ASSIGNMENT": self.is_team_assignment(),
             "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
             "TEXT_RESPONSE_EDITOR": self.text_response_editor,
-            "XBLOCK_LOCATION": self.location
+            "XBLOCK_LOCATION": self.location,
         }
+        # If there's any additional data to be passed down to JS
+        # include it in the context dict
+        if additional_js_context:
+            js_context_dict.update({"CONTEXT": additional_js_context})
+
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
 
