@@ -630,12 +630,24 @@ class OpenAssessmentBlock(MessageMixin,
         }
 
         if peer_assessment_required:
-            context_dict.update(
-                self.get_waiting_step_details_context(
-                    student_item["course_id"],
-                    student_item["item_id"]
-                )
+            waiting_step_details = self.get_waiting_step_details(
+                student_item["course_id"],
+                student_item["item_id"]
             )
+
+            #
+            from openassessment.data import OraAggregateData
+            username_map = OraAggregateData._map_anonymized_ids_to_usernames(
+                [item['student_id'] for item in waiting_step_details]
+            )
+
+            # Update waiting step details with username mappings
+            for item in waiting_step_details:
+                item.update({
+                    "username": username_map[item['student_id']],
+                })
+
+            context_dict.update({"waiting_step_details": waiting_step_details})
 
         template = get_template('openassessmentblock/instructor_dashboard/oa_waiting_step_details.html')
 
@@ -644,6 +656,10 @@ class OpenAssessmentBlock(MessageMixin,
             context_dict,
             initialize_js_func='WaitingStepDetailsBlock',
             additional_js_context=context_dict,
+            additional_css=[
+                'static/css/lib/edx-paragon.css',
+                'static/css/lib/bootstrap.css',
+            ],
         )
 
     def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None, additional_js_context=None):

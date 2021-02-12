@@ -164,7 +164,7 @@ class StaffAreaMixin:
         }
 
     @staticmethod
-    def get_waiting_step_details_context(course_id, item_id):
+    def get_waiting_step_details(course_id, item_id):
         """
         WIP WIP
         """
@@ -172,7 +172,7 @@ class StaffAreaMixin:
         from openassessment.assessment.api import peer as peer_api
         waiting_step_data = peer_api.get_waiting_step_details(course_id, item_id)
 
-        return {'waiting_step_data': waiting_step_data}
+        return waiting_step_data
 
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
