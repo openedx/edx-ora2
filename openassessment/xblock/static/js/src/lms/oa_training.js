@@ -13,9 +13,11 @@ Returns:
     OpenAssessment.StudentTrainingView
 * */
 export class StudentTrainingView {
-  constructor(element, server, baseView) {
+  constructor(element, server, responseEditorLoader, data, baseView) {
     this.element = element;
     this.server = server;
+    this.responseEditorLoader = responseEditorLoader;
+    this.data = data;
     this.baseView = baseView;
     this.rubric = null;
     this.isRendering = false;
@@ -37,6 +39,9 @@ export class StudentTrainingView {
         $(stepID, view.element).replaceWith(html);
         this.isRendering = false;
         this.server.renderLatex($(stepID, view.element));
+
+        this.renderResponseViaEditor();
+
         this.installHandlers();
 
         this.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
@@ -46,6 +51,15 @@ export class StudentTrainingView {
     ).fail(() => {
       this.baseView.showLoadError('student-training');
     });
+  }
+
+  /**
+    Use Response Editor to render response
+    * */
+  renderResponseViaEditor() {
+    const sel = $('.step--student-training', this.element);
+    const responseElements = sel.find('.submission__answer__part__text__value');
+    return this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
   }
 
   /**

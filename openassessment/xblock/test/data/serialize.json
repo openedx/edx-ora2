@@ -55,7 +55,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -137,7 +137,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" group_access=\"{&quot;381451918&quot;: [1179773159]}\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" group_access=\"{&quot;381451918&quot;: [1179773159]}\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -210,7 +210,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -283,7 +283,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -356,7 +356,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -432,7 +432,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>ƒσσ</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\"  start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -505,7 +505,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
                 "<title>Foo</title>",
                 "<assessments>",
                     "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -578,7 +578,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
                 "<title>Foo</title>",
                 "<assessments>",
                     "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -644,7 +644,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-06-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -724,7 +724,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-06-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -804,7 +804,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -877,7 +877,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" submission_due=\"2020-04-15T00:00:00\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" submission_due=\"2020-04-15T00:00:00\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -951,7 +951,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1025,7 +1025,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1092,7 +1092,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" />",
@@ -1191,7 +1191,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\">",
@@ -1328,7 +1328,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\">",
@@ -1428,7 +1428,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1498,7 +1498,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1567,7 +1567,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" file_upload_type=\"image\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" file_upload_type=\"image\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1639,7 +1639,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1711,7 +1711,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" file_upload_type=\"image\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" file_upload_type=\"image\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1783,7 +1783,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1800,7 +1800,7 @@
                     "<option points=\"0\"><name>No</name><label>No</label><explanation>No explanation</explanation></option>",
                     "<option points=\"2\"><name>Yes</name><label>Yes</label><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>", 
+                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
             "</rubric>",
             "</openassessment>"
         ]
@@ -1864,7 +1864,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" prompts_type=\"html\" teams_enabled=\"True\" selected_teamset_id=\"teamset-1-id\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\" teams_enabled=\"True\" selected_teamset_id=\"teamset-1-id\">",
             "<title>Team Assignment</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",

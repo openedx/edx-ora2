@@ -224,6 +224,7 @@ export class StudioView {
       submissionDue: this.scheduleView.submissionDue(),
       assessments: this.assessmentsStepsView.assessmentsDescription(),
       textResponse: this.settingsView.textResponseNecessity(),
+      textResponseEditor: this.settingsView.textResponseEditor(),
       fileUploadResponse: this.settingsView.fileUploadResponseNecessity(),
       fileUploadType: fileUploadType !== '' ? fileUploadType : null,
       fileTypeWhiteList: this.settingsView.fileTypeWhiteList(),

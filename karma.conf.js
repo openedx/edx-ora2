@@ -50,6 +50,7 @@ module.exports = function(config) {
       { pattern: 'js/spec/**/*.js', watched: false },
       { pattern: 'js/src/oa_shared.js', watched: false },
       { pattern: 'js/src/*_index.js', watched: false },
+      { pattern: 'js/src/lms/editors/**/*.js', included: false},
       { pattern: 'js/src/**/*.js', watched: false },
 
       // fixtures

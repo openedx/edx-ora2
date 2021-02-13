@@ -44,9 +44,16 @@ describe("OpenAssessment.GradeView", function() {
         server = new StubServer();
 
         // Create and install the view
-        var gradeElement = $('.step--grade').get(0);
-        var baseView = new BaseView(runtime, gradeElement, server, {});
-        view = new GradeView(gradeElement, server, baseView);
+        var rootElement = $('.step--grade').parent().get(0);
+        var data = {
+            AVAILABLE_EDITORS: {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
+        }
+        var baseView = new BaseView(runtime, rootElement, server, data);
+        view = baseView.gradeView
         view.installHandlers();
     });
 

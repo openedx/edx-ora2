@@ -20,6 +20,19 @@
             {% trans "Specify whether learners must include a text based response to this problem's prompt." %}
         </p>
     </li>
+    <li id="openassessment_submission_text_response_editor_wrapper" class="field comp-setting-entry">
+        <div class="wrapper-comp-setting">
+            <label for="openassessment_submission_text_response_editor" class="setting-label">{% trans "Response Editor"%}</label>
+            <select id="openassessment_submission_text_response_editor" class="input setting-input" name="text response">
+                {% for option_key, option_name in available_editor_options.items %}
+                <option value="{{ option_key }}" {% if option_key == text_response_editor %} selected="true" {% endif %}>{{ option_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <p class="setting-help">
+            {% trans "Select which editor learners will use to include a text based response to this problem's prompt." %}
+        </p>
+    </li>
     <li id="openassessment_submission_file_wrapper" class="field comp-setting-entry">
         <div class="wrapper-comp-setting">
             <label for="openassessment_submission_file_upload_response" class="setting-label">{% trans "File Uploads Response"%}</label>

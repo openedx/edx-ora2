@@ -37,7 +37,7 @@ describe("OpenAssessment.StudentTrainingView", function() {
     // View under test
     var view = null;
 
-    beforeEach(function() {
+    beforeEach(function(done) {
         // Load the DOM fixture
         loadFixtures('oa_student_training.html');
 
@@ -46,10 +46,20 @@ describe("OpenAssessment.StudentTrainingView", function() {
         server.renderLatex = jasmine.createSpy('renderLatex')
 
         // Create the object under test
-        var trainingElement = $('.step--student-training').get(0);
-        var baseView = new BaseView(runtime, trainingElement, server, {});
-        view = new StudentTrainingView(trainingElement, server, baseView);
-        view.installHandlers();
+        var rootElement = $('.step--student-training').parent().get(0);
+        var baseView = new BaseView(runtime, rootElement, server, {
+            "TEXT_RESPONSE_EDITOR": 'text',
+            "AVAILABLE_EDITORS": {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
+        });
+        view = baseView.trainingView
+        view.renderResponseViaEditor().then(() => {
+            view.installHandlers();
+            done()
+        })
     });
 
     it("submits an assessment for a training example", function() {
