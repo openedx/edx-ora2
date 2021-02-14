@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-21 13:14-0500\n"
-"PO-Revision-Date: 2020-10-07 07:16+0000\n"
+"PO-Revision-Date: 2021-02-13 04:25+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "boolean"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "function"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "number"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
+msgid "span"
+msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -89,71 +105,71 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:481
+#: openassessment/xblock/static/js/src/oa_server.js:482
 msgid "This problem could not be saved."
 msgstr "Το πρόβλημα αυτό δεν μπόρεσε να αποθηκευτεί."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:502
+#: openassessment/xblock/static/js/src/oa_server.js:503
 msgid "The server could not be contacted."
 msgstr "Δεν είναι δυνατή η επικοινωνία με τον server."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:528
+#: openassessment/xblock/static/js/src/oa_server.js:529
 msgid "Could not retrieve upload url."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:547
-#: openassessment/xblock/static/js/src/oa_server.js:566
+#: openassessment/xblock/static/js/src/oa_server.js:548
+#: openassessment/xblock/static/js/src/oa_server.js:567
 msgid "Server error."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:586
+#: openassessment/xblock/static/js/src/oa_server.js:587
 msgid "Could not retrieve download url."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:612
+#: openassessment/xblock/static/js/src/oa_server.js:613
 msgid "The submission could not be removed from the grading pool."
 msgstr "Η υποβληθείσα εργασία δεν ήταν δυνατόν να εξαιρεθεί από την διαδικασία βαθμολόγησης"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:668
+#: openassessment/xblock/static/js/src/oa_server.js:669
 msgid "Multiple teams returned for course"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:675
+#: openassessment/xblock/static/js/src/oa_server.js:676
 msgid "Could not load teams information."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:697
+#: openassessment/xblock/static/js/src/oa_server.js:698
 msgid "User lookup failed"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:702
+#: openassessment/xblock/static/js/src/oa_server.js:703
 msgid "Error when looking up username"
 msgstr ""
 
@@ -245,7 +261,7 @@ msgid "Your file "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:343
+#: openassessment/xblock/static/js/src/lms/oa_response.js:360
 msgid "Status of Your Response"
 msgstr "Κατάσταση της εργασίας σας"
 
@@ -282,19 +298,19 @@ msgid "Do you want to upload your file before submitting?"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:561
+#: openassessment/xblock/static/js/src/lms/oa_response.js:570
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Είστε έτοιμος/η να υποβάλετε την εργασία σας. Αφού την υποβάλετε δεν μπορείτε να πραγματοποιήσετε αλλαγές σε αυτή ή να υποβάλετε νέα εργασία."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:594
+#: openassessment/xblock/static/js/src/lms/oa_response.js:603
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:608
+#: openassessment/xblock/static/js/src/lms/oa_response.js:617
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
@@ -305,30 +321,30 @@ msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:691
-#: openassessment/xblock/static/js/src/lms/oa_response.js:697
+#: openassessment/xblock/static/js/src/lms/oa_response.js:700
+#: openassessment/xblock/static/js/src/lms/oa_response.js:706
 msgid "Describe "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:691
+#: openassessment/xblock/static/js/src/lms/oa_response.js:700
 msgid "(required):"
 msgstr "(υποχρεωτικό πεδίο):"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:711
+#: openassessment/xblock/static/js/src/lms/oa_response.js:720
 msgid "Thumbnail view of "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:808
+#: openassessment/xblock/static/js/src/lms/oa_response.js:817
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_self.js:124
+#: openassessment/xblock/static/js/src/lms/oa_self.js:138
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
@@ -365,12 +381,12 @@ msgid ""
 msgstr "Αν εγκαταλείψετε τη σελίδα χωρίς να υποβάλετε τις αξιολογήσεις σας για τους συμφοιτητές σας, θα χάσετε οποιαδήποτε εργασία έχετε κάνει."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_training.js:116
+#: openassessment/xblock/static/js/src/lms/oa_training.js:130
 msgid "Feedback available for selection."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_peer.js:203
+#: openassessment/xblock/static/js/src/lms/oa_peer.js:217
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
@@ -497,13 +513,13 @@ msgstr "Αλλαγές στα βήματα τα οποία δεν έχουν ε�
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:90
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:91
 msgid "File types can not be empty."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:100
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:101
 msgid "The following file types are not allowed: "
 msgstr ""
 
