@@ -34,6 +34,9 @@ export class StudioView {
     this.server = server;
     this.data = data;
 
+    // Set content direction
+    this.setContentDirection();
+
     // Resize the editing modal
     this.fixModalHeight();
 
@@ -97,6 +100,13 @@ export class StudioView {
     // Install the save and cancel buttons
     $('.openassessment_save_button', this.element).click($.proxy(this.save, this));
     $('.openassessment_cancel_button', this.element).click($.proxy(this.cancel, this));
+  }
+
+  /**
+     Set `dir` attribute for the modal so that content direction based css works fine
+     * */
+  setContentDirection() {
+    $(this.element).attr("dir", $('head').attr("dir"))
   }
 
   /**
