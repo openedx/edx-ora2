@@ -4,10 +4,11 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Abel Camacho <abelcama@gmail.com>, 2015
-# Abel Camacho <abelcama@gmail.com>, 2019-2020
-# Abel Camacho <abelcama@gmail.com>, 2015
-# Pedro Lonbide <plonbide@gmail.com>, 2015
+# danicabliznakinja <dmbliznakinje@yahoo.co.uk>, 2014
+# irmavep <katiatolone@yahoo.it>, 2014
+# Nicola Moretto <nicolamoretto88@gmail.com>, 2014
+# Nicola Cois <nicolacois@hotmail.com>, 2014
+# Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
@@ -15,11 +16,11 @@ msgstr ""
 "POT-Creation-Date: 2021-01-21 13:14-0500\n"
 "PO-Revision-Date: 2021-02-13 06:25+0000\n"
 "Last-Translator: Transifex Bot <>\n"
-"Language-Team: Basque (Spain) (http://www.transifex.com/open-edx/edx-platform/language/eu_ES/)\n"
+"Language-Team: Italian (Italy) (http://www.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: eu_ES\n"
+"Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: openassessment/assessment/api/student_training.py:178
@@ -35,24 +36,24 @@ msgstr ""
 #: openassessment/assessment/api/student_training.py:202
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr "Adibideak {example_number} balioztatze-errorea du: {error}"
+msgstr "Esempio {example_number} ha un errore di validazione: {error}"
 
 #: openassessment/assessment/api/student_training.py:216
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr ""
+msgstr "Esempio {example_number} ha una invalida opzione per \"{criterion_name}\": \"{option_name}\""
 
 #: openassessment/assessment/api/student_training.py:226
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
-msgstr ""
+msgstr "Esempio {example_number} ha un'opzione di più per \"{criterion_name}\""
 
 #: openassessment/assessment/api/student_training.py:239
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr ""
+msgstr "Esempio {example_number} ha un'opzione di meno per \"{criterion_name}\""
 
 #: openassessment/data.py:844
 msgid "No description provided."
@@ -60,11 +61,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
-msgstr "Gorde"
+msgstr "Salva"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:32
 msgid "Cancel"
-msgstr "Utzi"
+msgstr "Annulla"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_assessment_steps.html:6
 msgid ""
@@ -76,11 +77,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
-msgstr "Erakutsi izena"
+msgstr "Mostra il nome"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr "Modulu honetarako erakutsi behar den izena."
+msgstr "Il nome visualizzato per questo componente."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
@@ -121,14 +122,14 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:131
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
 msgid "False"
-msgstr "Gezurra"
+msgstr "Falso"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:53
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:94
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:132
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:46
 msgid "True"
-msgstr "Egia"
+msgstr "Vero"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:56
 msgid ""
@@ -186,7 +187,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
-msgstr "Erantzun onenak"
+msgstr "Migliori risposte"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
@@ -219,22 +220,22 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr "Irizpidea"
+msgstr "Criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr "Ezin duzu irizpidea ezabatu zeregina argitaratu ondoren."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:10
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr "Ezabatu"
+msgstr "Rimuovi"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr "Irizpidearen izena"
+msgstr "Nome del criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
@@ -242,28 +243,28 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:44
 msgid "Add Option"
-msgstr "Gehitu aukera"
+msgstr "Aggiungi opzione"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr "Feedbacka irizpide honetarako"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
 #: openassessment/xblock/studio_mixin.py:52
 msgid "None"
-msgstr "Bat ere ez"
+msgstr "Nessuno"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
 #: openassessment/xblock/studio_mixin.py:51
 msgid "Optional"
-msgstr "Aukerakoa"
+msgstr "Facoltativo"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:93
 #: openassessment/xblock/studio_mixin.py:50
 msgid "Required"
-msgstr "Beharrezkoa"
+msgstr "Richiesto"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:61
 msgid ""
@@ -273,20 +274,20 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:3
 msgid "Open Response Assessment"
-msgstr "Erantzun irekiko ebaluazioa"
+msgstr "Valutazione a Risposta Aperta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:5
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr ""
+msgstr "Suggerimento"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:6
 msgid "Rubric"
-msgstr "Errubrika"
+msgstr "Rubrica"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:7
 msgid "Schedule"
-msgstr "Ordutegia"
+msgstr "Programma"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:8
 msgid "Assessment steps"
@@ -294,7 +295,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:9
 msgid "Settings"
-msgstr "Ezarpenak"
+msgstr "Impostazioni"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:16
 msgid "Rubric Change Impacts Settings Section"
@@ -309,27 +310,27 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:21
 msgid "close alert"
-msgstr "itxi abisua"
+msgstr "chiudi avviso"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr "Aukera"
+msgstr "Opzione"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr "Aukeraren izena"
+msgstr "Nome dell'opzione"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:29
 msgid "Option Points"
-msgstr "Aukeraren puntuak"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr "Aukeraren azalpena"
+msgstr "Spiegazione dell'opzione"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
-msgstr "Aldia: berdinen arteko ebaluazioa"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:15
 msgid ""
@@ -351,7 +352,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
-msgstr "Kalifikazioa behar du"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
@@ -361,7 +362,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
-msgstr "Nork kalifikatua"
+msgstr "Valutata da"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
@@ -386,12 +387,12 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:10
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:10
 msgid "Start Date"
-msgstr "Hasiera-data"
+msgstr "Data di inizio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:19
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
-msgstr "Hasiera-ordua"
+msgstr "Ora di inizio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
@@ -401,12 +402,12 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:109
 msgid "Due Date"
-msgstr "Entregatze-data"
+msgstr "Data finale"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:40
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
-msgstr "Entregatze-ordua"
+msgstr "Ora di Scadenza"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
@@ -436,15 +437,15 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
 msgid "Add Criterion"
-msgstr "Gehitu irizpidea"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
 msgid "Feedback for This Response"
-msgstr "Feedbacka erantzun honetarako"
+msgstr "Commento a questa risposta."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
 msgid "Feedback Instructions"
-msgstr "Feedbackerako argibideak"
+msgstr "Istruzioni sui commenti"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
 msgid ""
@@ -468,11 +469,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:13
 msgid "Response Start Date"
-msgstr "Erantzunaren hasiera-datalater"
+msgstr "Data iniziale di risposta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:26
 msgid "Response Start Time"
-msgstr "Erantzunaren hasiera-ordua"
+msgstr "Ora iniziale di risposta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "The date and time when learners can begin submitting responses."
@@ -480,11 +481,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:43
 msgid "Response Due Date"
-msgstr "Erantzunaren entregatze-data"
+msgstr "Data finale di risposta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:56
 msgid "Response Due Time"
-msgstr "Erantzunaren entregatze-ordua"
+msgstr "Ora finale di risposta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "The date and time when learners can no longer submit responses."
@@ -492,7 +493,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
-msgstr "Aldia: autoebaluazioa"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:12
 msgid ""
@@ -547,7 +548,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
-msgstr "Gehitu adibide gisako erantzuna"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
@@ -559,17 +560,17 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:27
 msgid "Response"
-msgstr "Erantzuna"
+msgstr "Risposta"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr "Aukeratu gabea"
+msgstr "Non Selezionato"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: openassessment/templates/openassessmentblock/oa_rubric.html:37
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:128
 msgid "points"
-msgstr "puntuak"
+msgstr "punti"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_feedback.html:8
 #, python-format
@@ -595,7 +596,7 @@ msgstr[1] ""
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr "Iinformazio gehiago %(name)s -ri buruz"
+msgstr "Più informazioni su %(name)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:14
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:15
@@ -604,7 +605,7 @@ msgstr "Iinformazio gehiago %(name)s -ri buruz"
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:14
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:14
 msgid "Your Grade"
-msgstr "Zure kalifikazioa"
+msgstr "Il Tuo Voto"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:19
 #, python-format
@@ -616,7 +617,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
-msgstr "Bidalketa bertan behera geratu da."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:19
 #, python-format
@@ -629,15 +630,15 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
 #: openassessment/templates/openassessmentblock/response/oa_response.html:29
 msgid "Your Response"
-msgstr "Zure erantzuna"
+msgstr "La Tua Risposta"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
 msgid "Your Upload"
-msgstr "Kargatu duzuna"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:46
 msgid "Assessments of Your Response"
-msgstr "Zure erantzunaren ebaluazioak"
+msgstr "Valutazione della Tua Risposta"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:132
@@ -659,20 +660,20 @@ msgstr "Zure erantzunaren ebaluazioak"
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr "Egoera"
+msgstr "Stato"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
-msgstr ""
+msgstr "Voto Finale"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:70
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
 msgid "Points"
-msgstr "Puntuak"
+msgstr "Punti"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:96
 msgid "Additional comments on your response"
-msgstr "Bestelako iruzkinak zure erantzunean"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
@@ -680,7 +681,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
-msgstr ""
+msgstr "Inoltramento di Feedback"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
@@ -702,19 +703,19 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
-msgstr ""
+msgstr "Queste valutazioni erano utili."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
-msgstr ""
+msgstr "Queste valutazioni non erano utili."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
-msgstr ""
+msgstr "Non sono d'accordo con una o più peer valutazioni della mia risposta."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:182
 msgid "Some comments I received were inappropriate."
-msgstr ""
+msgstr "Alcuni dei commenti ricevuti erano inappropriati."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
 msgid ""
@@ -723,11 +724,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
-msgstr ""
+msgstr "Penso che il feedback che ho ricevuto sia stato..."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
-msgstr ""
+msgstr "Non abbiamo potuto inoltrare il tuo feedback"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
@@ -735,23 +736,23 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:16
 msgid "Not Completed"
-msgstr "Osatu gabea"
+msgstr "Non è Completato"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
-msgstr "Ez dituzu ariketa honen aldi guztiak osatu."
+msgstr "Non hai completato tutti i passaggi di questo problema."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:16
 msgid "Not Started"
-msgstr "Hasi gabea"
+msgstr "Non iniziato"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
-msgstr "Ez duzu oraindik ariketa hau hasi."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:16
 msgid "Waiting for Assessments"
-msgstr ""
+msgstr "In attesa di valutazione"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:33
 msgid ""
@@ -775,12 +776,12 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr "Itxaron, mesedez"
+msgstr "Un attimo, per favore..."
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
-msgstr "%(num_points)s puntu"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
@@ -792,7 +793,7 @@ msgstr ""
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
-msgstr ""
+msgstr "Dopo aver completato tutte le fasi di questo esercizio, potrai vedere le risposte col miglior punteggio date dai tuoi colleghi."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:8
 msgid ""
@@ -930,7 +931,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
-msgstr "Argibideak ez daude eskuragarri"
+msgstr "Istruzioni non disponibili"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:6
 msgid "The instructions for this step could not be loaded."
@@ -945,11 +946,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
-msgstr "Kargatzen"
+msgstr "Caricamento"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
 msgid "Preview in LaTeX"
-msgstr "Aurreikusi LaTeXen"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
@@ -957,15 +958,15 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
 msgid "Preview Response"
-msgstr "Aurreikusi erantzuna"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:46
 msgid "Comments"
-msgstr "Iruzkinak"
+msgstr "Commenti"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr "Atal honetarako galdera"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
 msgid "Files that were uploaded by your teammates:"
@@ -978,7 +979,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:31
 msgid "Uploaded by"
-msgstr "Nork kargatua:"
+msgstr "Caricato da "
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
@@ -993,7 +994,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:26
 msgid "Assess Peers"
-msgstr "Ebaluatu ikaskideak"
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
@@ -1004,7 +1005,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -1015,7 +1016,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
@@ -1053,7 +1054,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
 #: openassessment/xblock/staff_assessment_mixin.py:157
 msgid "Cancelled"
-msgstr "Bertan behera utzita"
+msgstr "Cancellato"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:20
 #, python-format
@@ -1072,7 +1073,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
-msgstr "Osatua"
+msgstr "Completato"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:31
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:41
@@ -1089,7 +1090,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:43
 msgid "Continue Assessing Peers"
-msgstr "Jarraitu ikaskideak ebaluatzen"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:26
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:20
@@ -1098,7 +1099,7 @@ msgid ""
 "\n"
 "        Complete (%(num_graded)s)\n"
 "      "
-msgstr "\n        Osatu (%(num_graded)s)\n      "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:38
 msgid ""
@@ -1113,7 +1114,7 @@ msgstr ""
 #: openassessment/xblock/staff_assessment_mixin.py:150
 #: openassessment/xblock/staff_assessment_mixin.py:174
 msgid "Not Available"
-msgstr "Ez dago eskuragarri"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:20
 #, python-format
@@ -1144,7 +1145,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1155,12 +1156,12 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:54
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
 msgid "In Progress"
-msgstr "Lanean"
+msgstr "In corso"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:66
 msgid "Enter your team's response to the prompt."
@@ -1203,7 +1204,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:106
 msgid "After you submit your response, you cannot edit it"
-msgstr "Erantzuna bidali ondoren, ezin duzu editatu"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:116
 msgid "The prompt for this section"
@@ -1211,11 +1212,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "You are on team "
-msgstr "Ondoko taldean zaude:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:132
 msgid "Team Members: "
-msgstr "Taldekideak:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:137
 #, python-format
@@ -1229,7 +1230,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:153
 msgid "Team Response "
-msgstr "Taldearen erantzuna "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:155
 msgid "Your Response "
@@ -1243,7 +1244,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response.html:161
 #: openassessment/templates/openassessmentblock/response/oa_response.html:230
 msgid "(Optional)"
-msgstr "(Aukerakoa)"
+msgstr "(Facoltativo)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:165
 msgid ""
@@ -1274,7 +1275,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:205
 msgid "We could not save your progress"
-msgstr "Ezin izan dugu zure aurrerapena gorde"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:212
 msgid "Save your progress"
@@ -1310,7 +1311,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:257
 msgid "Select a file to upload for this submission."
-msgstr "Aukera ezazu  kargatzeko fitxategia bidalketa honetarako."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:262
 msgid "Supported file types: "
@@ -1318,15 +1319,15 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:266
 msgid "Upload files"
-msgstr "Kargatu fitxategiak"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:268
 msgid "Upload file"
-msgstr "Kargatu fitxategia"
+msgstr "Carica file"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:284
 msgid "You may continue to work on your response until you submit it."
-msgstr "Zure erantzunean lanean jarrai dezakezu bidali arte."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:290
 msgid "This is a team submission."
@@ -1366,7 +1367,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:318
 msgid "Submit your response and move to the next step"
-msgstr "Bidali erantzuna eta joan hurrengo aldira"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
@@ -1394,13 +1395,13 @@ msgid ""
 "\n"
 "                            Comments: %(comments)s\n"
 "                        "
-msgstr "\n                            Iruzkinak: %(comments)s\n                        "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:19
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:17
 msgid "Incomplete"
-msgstr "Osatu gabea"
+msgstr "Incompleto"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:32
 msgid ""
@@ -1417,18 +1418,18 @@ msgstr ""
 #: openassessment/xblock/staff_assessment_mixin.py:164
 #: openassessment/xblock/staff_assessment_mixin.py:187
 msgid "Complete"
-msgstr "Osatu"
+msgstr "Completata"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:30
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
-msgstr "Zure erantzuna"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr "Kargatu dituzun fitxategiak"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:32
 msgid ""
@@ -1462,7 +1463,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr "Errorea"
+msgstr "Errore"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1477,7 +1478,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
-msgstr "Ebaluatu zeure erantzuna"
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1535,7 +1536,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:59
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:141
 msgid "Close"
-msgstr "Itxi"
+msgstr "Chiudi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:27
 msgid "Manage Teams"
@@ -1551,24 +1552,24 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:46
 msgid "Submit"
-msgstr "Bidali"
+msgstr "Invia"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:68
 msgid "Response total"
-msgstr "Erantzunak denera"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:74
 msgid "Location"
-msgstr "Kokapena"
+msgstr "Posizione"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:80
 msgid "Learner Progress"
-msgstr "Ikaslearen aurrerapena"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:84
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:107
 msgid "Problem Step"
-msgstr "Ariketaren aldia"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:85
 msgid "Active Learners in Step"
@@ -1576,16 +1577,16 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:103
 msgid "Dates"
-msgstr "Datak"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
 msgid "Release Date"
-msgstr "Argitaratze-data:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:121
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:127
 msgid "N/A"
-msgstr "Ez da aplikatzen"
+msgstr "N/A"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
@@ -1634,7 +1635,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
-msgstr "Bidali ebaluazioa"
+msgstr "Invia valutazione"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
@@ -1683,11 +1684,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
-msgstr "Ikaslearen erantzuna"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
 msgid "Team's Response"
-msgstr "Taldearen erantzuna"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
@@ -1711,7 +1712,7 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr "\n                        Iruzkinak: %(comments)s\n                    "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
@@ -1735,11 +1736,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
-msgstr "Ikaslearen azken kalifikazioa"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
-msgstr "Taldearen azken kalifikazioa"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
@@ -1751,7 +1752,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
-msgstr "Azken kalifikazioaren xehetasunak"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:139
 #, python-format
@@ -1790,11 +1791,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
-msgstr "Ariketa ez da hasi."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:181
 msgid "The problem has not been completed."
-msgstr "Ariketa ez da osatu."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:193
 msgid "Submit Assessment Grade Override"
@@ -1847,11 +1848,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:252
 msgid "Comments:"
-msgstr "Iruzkinak:"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:261
 msgid "Remove submission"
-msgstr "Ezabatu bidalketa"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
@@ -1871,15 +1872,15 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr "Hautatutako aukera"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
-msgstr "Feedbacka"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
-msgstr "Puntu posibleak"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
@@ -1887,7 +1888,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
-msgstr "Ikasi erantzunak ebaluatzen"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:27
 #, python-format
@@ -1922,7 +1923,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:58
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
-msgstr "Erantzunak ebaluatzen ikasten"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:61
 msgid ""
@@ -1946,20 +1947,20 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
-msgstr "Hautatutako aukerak bat datoz"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
-msgstr "Hautatu duzun aukera irakasleak aukeratutakoa da."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:105
 msgid "Selected Options Differ"
-msgstr "Hautatutako aukerak ez datoz bat"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
-msgstr "Hautatu duzun aukera ez da irakasleak aukeratutakoa."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:144
 msgid "We could not check your assessment"
@@ -2002,23 +2003,23 @@ msgstr ""
 #: openassessment/xblock/student_training_mixin.py:56
 #: openassessment/xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
-msgstr "Espero ez zen errorea gertatu da."
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:173
 msgid "Peer Assessment"
-msgstr "Ikaskideen arteko ebaluazioa"
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:175
 msgid "Self Assessment"
-msgstr "Autoebaluazioa"
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:215
 msgid "Assessment feedback could not be saved."
-msgstr "Ezin da ebaluazioaren feedbacka- gorde."
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:226
 msgid "Feedback saved."
-msgstr "Feedbacka gorde da."
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:360
 #: openassessment/xblock/grade_mixin.py:506
@@ -2045,12 +2046,12 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:382
 msgid "Your Self Assessment"
-msgstr "Zure autoebaluazioa"
+msgstr "La Tua Propria Valutazione"
 
 #: openassessment/xblock/grade_mixin.py:383
 #: openassessment/xblock/grade_mixin.py:525
 msgid "Your Comments"
-msgstr "Zure iruzkinak"
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:479
 msgid "Waiting for peer reviews"
@@ -2058,7 +2059,7 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:518
 msgid "Peer"
-msgstr "Berdina"
+msgstr "Peer"
 
 #: openassessment/xblock/grade_mixin.py:649
 msgid "The grade for this problem is determined by your Staff Grade."
@@ -2115,21 +2116,21 @@ msgstr ""
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
-msgstr "Feedbacka dagoeneko badali da edo bidalketa bertan behera utzi da."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:99
 #: openassessment/xblock/peer_assessment_mixin.py:104
 msgid "Your peer assessment could not be submitted."
-msgstr "Ikaskideen arteko ebaluazioa ezin izan da bidali."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:118
 #: openassessment/xblock/student_training_mixin.py:270
 msgid "Could not update workflow status."
-msgstr "Ezin izan da lan-jarioaren egoera eguneratu."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:126
 msgid "Could not load peer assessment."
-msgstr "Ezin izan da kargatu ikasleen arteko ebaluazioa."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:213
 msgid "Submit your assessment and review another response"
@@ -2149,12 +2150,12 @@ msgstr ""
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
-msgstr "'{date}' ez da data-formatu baliagarria. Ziurta ezazu data-formatua honelakoxea dela: UUUU-HH-EETOO:MM:SS."
+msgstr ""
 
 #: openassessment/xblock/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' -k data edo data eta ordua izan behar du"
+msgstr ""
 
 #: openassessment/xblock/resolve_dates.py:210
 #, python-brace-format
@@ -2168,29 +2169,29 @@ msgstr ""
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
-msgstr "Aldi honen muga-data '{due}' ezin da izan hurrengo aldiaren muga-data baino beranduagokoa '{prev}'."
+msgstr ""
 
 #: openassessment/xblock/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "Hasiera-data '{start}' ezin da izan muga-data  '{due}' baino beranduagokoa"
+msgstr ""
 
 #: openassessment/xblock/self_assessment_mixin.py:142
 msgid "You must submit a response before you can perform a self-assessment."
-msgstr "Erantzuna bidali behar duzu autoebaluazioa egin baino lehen"
+msgstr ""
 
 #: openassessment/xblock/self_assessment_mixin.py:164
 #: openassessment/xblock/self_assessment_mixin.py:171
 msgid "Your self assessment could not be submitted."
-msgstr "Zure autoebaluazioa ezin izan da bidali."
+msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to schedule training"
-msgstr "Ez duzu baimenik praktika antolatzeko"
+msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to reschedule tasks."
-msgstr "Ez duzu baimenik atazak berrantolatzeko"
+msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access the ORA staff area"
@@ -2226,7 +2227,7 @@ msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:540
 msgid "Please enter valid reason to remove the submission."
-msgstr "Mesedez, idatzi bidaltzeko ezabatzeko arrazoia."
+msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:551
 msgid "Submission not found"
@@ -2296,12 +2297,12 @@ msgstr ""
 #: openassessment/xblock/student_training_mixin.py:254
 #: openassessment/xblock/student_training_mixin.py:259
 msgid "Your scores could not be checked."
-msgstr "Zure puntuazioak ezin izan dira egiaztatu."
+msgstr ""
 
 #: openassessment/xblock/studio_mixin.py:204
 #: openassessment/xblock/studio_mixin.py:216
 msgid "Error updating XBlock configuration"
-msgstr "Errorea XBlock-en ezarpenak eguneratzean"
+msgstr ""
 
 #: openassessment/xblock/studio_mixin.py:221
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
@@ -2320,11 +2321,11 @@ msgstr ""
 #: openassessment/xblock/studio_mixin.py:252
 #, python-brace-format
 msgid "Validation error: {error}"
-msgstr "Balioztatze-errorea: {error}"
+msgstr ""
 
 #: openassessment/xblock/studio_mixin.py:282
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr "OpenAssessment XBlock ondo eguneratu da"
+msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:117
 msgid "\"submission\" required to submit answer."
@@ -2336,7 +2337,7 @@ msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:144
 msgid "Multiple submissions are not allowed."
-msgstr "Hainbat bidalketa ez daude baimenduta."
+msgstr "Non sono consentiti invii multipli."
 
 #: openassessment/xblock/submission_mixin.py:189
 msgid "Submission cannot be empty. Please refresh the page and try again."
@@ -2344,15 +2345,15 @@ msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:199
 msgid "API returned unclassified exception."
-msgstr ""
+msgstr "L'API ha restituito un'eccezione non classificata."
 
 #: openassessment/xblock/submission_mixin.py:250
 msgid "This response could not be saved."
-msgstr "Erantzun hau ezin izan da gorde."
+msgstr "Impossibile salvare la risposta."
 
 #: openassessment/xblock/submission_mixin.py:254
 msgid "This response was not submitted."
-msgstr "Erantzun hau ez da bidali."
+msgstr "La risposta non è stata inviata."
 
 #: openassessment/xblock/submission_mixin.py:270
 msgid "Files descriptions were not submitted."
@@ -2382,19 +2383,19 @@ msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:757
 msgid "This response has been saved but not submitted."
-msgstr "Erantzuna gorde da baina ez da bidali."
+msgstr "Questa risposta è stata salvata, ma non è stata sottoposta."
 
 #: openassessment/xblock/submission_mixin.py:758
 msgid "This response has not been saved."
-msgstr "Erantzun hau ez da gorde."
+msgstr "Questa risposta non è stata salvata."
 
 #: openassessment/xblock/validation.py:117
 msgid "This problem must include at least one assessment."
-msgstr "Ariketak gutxienez ebaluazio bat izan behar du."
+msgstr ""
 
 #: openassessment/xblock/validation.py:121
 msgid "The assessment order you selected is invalid."
-msgstr "Aukeratu duzun ebaluazio-ordena ez da baliagarria."
+msgstr ""
 
 #: openassessment/xblock/validation.py:131
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
@@ -2426,16 +2427,16 @@ msgstr ""
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr "Ebaluazio-kopurua ezin da aldatu ariketa argitaratu ondoren."
+msgstr "Il numero di valutazioni non può essere modficato in seguito alla pubblicazione del problema"
 
 #: openassessment/xblock/validation.py:166
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr " Zeregin-mota ezin da aldatu ariketa argitaratu ondoren."
+msgstr "Il tipo di valutazione non può essere modficata in seguito alla pubblicazione del problema"
 
 #: openassessment/xblock/validation.py:189
 msgid "This rubric definition is not valid."
-msgstr "Errubrikaren definizio hau ez da baliagarria."
+msgstr ""
 
 #: openassessment/xblock/validation.py:195
 #, python-brace-format
@@ -2452,15 +2453,15 @@ msgstr ""
 
 #: openassessment/xblock/validation.py:216
 msgid "The number of criteria cannot be changed after a problem is released."
-msgstr "Irizpide-kopurua ezin da aldatu ariketa argitaratu ondoren."
+msgstr ""
 
 #: openassessment/xblock/validation.py:229
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr "Irizpideen izenak ezin dira aldatu ariketa argitaratu ondoren"
+msgstr ""
 
 #: openassessment/xblock/validation.py:234
 msgid "The number of options cannot be changed after a problem is released."
-msgstr "Aukera-kopurua ezin da aldatu ariketa argitaratu ondoren."
+msgstr ""
 
 #: openassessment/xblock/validation.py:239
 msgid "Point values cannot be changed after a problem is released."
@@ -2472,8 +2473,8 @@ msgstr ""
 
 #: openassessment/xblock/validation.py:355
 msgid "Leaderboard number is invalid."
-msgstr "Sailkapen-taularen zenbakia baliogabea da."
+msgstr ""
 
 #: openassessment/xblock/validation.py:378
 msgid "The submission format is invalid."
-msgstr "Bidalketa-formatua ez da baliagarria."
+msgstr ""
