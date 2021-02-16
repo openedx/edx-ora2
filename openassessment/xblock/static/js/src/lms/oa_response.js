@@ -479,33 +479,35 @@ export class ResponseView {
 
       const view = this;
       const { baseView } = this;
+      let submitDefer = $.Deferred();
 
+      // Block submit if a learner has files staged for upload
       if (view.hasPendingUploadFiles()) {
         return;
       }
 
-      // On confirmation, send the submission to the server
       view.confirmSubmission()
-        // The callback returns a promise so we can attach
-        // additional callbacks after the confirmation.
-        // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
-        // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
-        .pipe(() => {
+        // Proceed with submission
+        .done(() => {
           const submission = view.response();
           baseView.toggleActionError('response', null);
 
-          // Send the submission to the server, returning the promise.
-          return view.server.submit(submission);
+          // Send the submission to the server, async
+          submitDefer = view.server.submit(submission);
         })
+        // Learner cancelled submission, re-enable submit
+        .fail(() => {
+          view.submitEnabled(true);
+        });
 
-      // If the submission was submitted successfully, move to the next step
+      submitDefer
+        // If the submission was submitted successfully, move to the next step
         .done($.proxy(view.moveToNextStep, view))
 
-      // Handle submission failure (either a server error or cancellation),
+        // Handle submission failure
         .fail((errCode, errMsg) => {
-          // If the error is "multiple submissions", then we should move to the next
-          // step.  Otherwise, the user will be stuck on the current step with no
-          // way to continue.
+          // If the error is "multiple submissions", then we should move to the next step.
+          // Otherwise, the user will be stuck on the current step with no way to continue.
           if (errCode === 'ENOMULTI') { view.moveToNextStep(); } else {
             // If there is an error message, display it
             if (errMsg) { baseView.toggleActionError('submit', errMsg); }
