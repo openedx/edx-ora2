@@ -5,28 +5,28 @@
 #    make upgrade
 #
 appdirs==1.4.4            # via fs
-bleach==3.2.1             # via -r requirements/base.in
-boto3==1.16.42            # via -r requirements/base.in
-botocore==1.19.42         # via boto3, s3transfer
+bleach==3.3.0             # via -r requirements/base.in
+boto3==1.17.8             # via -r requirements/base.in
+botocore==1.20.8          # via boto3, s3transfer
 certifi==2020.12.5        # via requests
 chardet==4.0.0            # via requests
 click==7.1.2              # via code-annotations
-code-annotations==0.10.2  # via edx-toggles
+code-annotations==1.1.0   # via edx-toggles
 defusedxml==0.6.0         # via -r requirements/base.in
 django-crum==0.7.9        # via edx-django-utils, edx-toggles
 django-model-utils==4.1.1  # via -r requirements/base.in, edx-submissions
 django-simple-history==2.12.0  # via -r requirements/base.in
-django-waffle==2.0.0      # via edx-django-utils, edx-toggles
-django==2.2.17            # via -c requirements/constraints.txt, -r requirements/base.in, code-annotations, django-crum, django-model-utils, djangorestframework, edx-django-utils, edx-i18n-tools, edx-submissions, edx-toggles, jsonfield2
+django-waffle==2.1.0      # via edx-django-utils, edx-toggles
+django==2.2.18            # via -c requirements/constraints.txt, -r requirements/base.in, code-annotations, django-crum, django-model-utils, djangorestframework, edx-django-utils, edx-i18n-tools, edx-submissions, edx-toggles, jsonfield2
 djangorestframework==3.12.2  # via -r requirements/base.in, edx-submissions
 edx-django-utils==3.13.0  # via -r requirements/base.in, edx-toggles
 edx-i18n-tools==0.5.3     # via -r requirements/base.in
 edx-submissions==3.2.4    # via -r requirements/base.in
-edx-toggles==3.1.0        # via -r requirements/base.in
+edx-toggles==4.0.0        # via -r requirements/base.in
 fs==2.0.18                # via -c requirements/constraints.txt, xblock
 html5lib==1.1             # via -r requirements/base.in
 idna==2.8                 # via -c requirements/constraints.txt, requests
-jinja2==2.11.2            # via code-annotations
+jinja2==2.11.3            # via code-annotations
 jmespath==0.10.0          # via boto3, botocore
 jsonfield2==3.0.3         # via -c requirements/constraints.txt, -r requirements/base.in, edx-submissions
 lazy==1.4                 # via -r requirements/base.in
@@ -34,8 +34,8 @@ libsass==0.20.1           # via -r requirements/base.in
 loremipsum==1.0.5         # via -c requirements/constraints.txt, -r requirements/base.in
 lxml==4.6.2               # via -r requirements/base.in, xblock
 markupsafe==1.1.1         # via jinja2, xblock
-newrelic==5.24.0.153      # via edx-django-utils
-packaging==20.8           # via bleach
+newrelic==6.0.1.155       # via edx-django-utils
+packaging==20.9           # via bleach
 path.py==12.5.0           # via -r requirements/base.in, edx-i18n-tools
 path==13.1.0              # via -c requirements/constraints.txt, path.py
 pbr==5.5.1                # via stevedore
@@ -45,17 +45,17 @@ pyparsing==2.4.7          # via packaging
 python-dateutil==2.4.0    # via -c requirements/constraints.txt, -r requirements/base.in, botocore, xblock
 python-slugify==4.0.1     # via code-annotations
 python-swiftclient==3.11.0  # via -c requirements/constraints.txt, -r requirements/base.in
-pytz==2020.4              # via -r requirements/base.in, django, edx-submissions, fs, xblock
-pyyaml==5.3.1             # via code-annotations, edx-i18n-tools, xblock
+pytz==2021.1              # via -r requirements/base.in, django, edx-submissions, fs, xblock
+pyyaml==5.4.1             # via code-annotations, edx-i18n-tools, xblock
 requests==2.25.1          # via python-swiftclient
-s3transfer==0.3.3         # via boto3
+s3transfer==0.3.4         # via boto3
 six==1.15.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, python-dateutil, python-swiftclient, xblock
 sqlparse==0.4.1           # via django
 stevedore==3.3.0          # via code-annotations, edx-django-utils
 text-unidecode==1.3       # via python-slugify
-urllib3==1.26.2           # via botocore, requests
+urllib3==1.26.3           # via botocore, requests
 voluptuous==0.12.1        # via -c requirements/constraints.txt, -r requirements/base.in
-web-fragments==0.3.2      # via xblock
+web-fragments==1.0.0      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock
 xblock==1.4.0             # via -r requirements/base.in
