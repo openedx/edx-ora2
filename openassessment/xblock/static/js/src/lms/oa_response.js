@@ -263,8 +263,8 @@ export class ResponseView {
      bool: Whether the button is enabled.
 
      Examples:
-     >> view.submitEnabled(true);  // enable the button
-     >> view.submitEnabled();  // check whether the button is enabled
+     >> view.saveEnabled(true);  // enable the button
+     >> view.saveEnabled();  // check whether the button is enabled
      >> true
      * */
     saveEnabled(enabled) {
