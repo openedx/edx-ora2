@@ -719,6 +719,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.text_response:
         root.set('text_response', str(oa_block.text_response))
 
+    # Set text response editor
+    if oa_block.text_response_editor:
+        root.set('text_response_editor', str(oa_block.text_response_editor))
+
     # Set file upload response
     if oa_block.file_upload_response:
         root.set('file_upload_response', str(oa_block.file_upload_response))
@@ -875,6 +879,10 @@ def parse_from_xml(root):
     if 'text_response' in root.attrib:
         text_response = str(root.attrib['text_response'])
 
+    text_response_editor = 'text'
+    if 'text_response_editor' in root.attrib:
+        text_response_editor = str(root.attrib['text_response_editor'])
+
     file_upload_response = None
     if 'file_upload_response' in root.attrib:
         file_upload_response = str(root.attrib['file_upload_response'])
@@ -955,6 +963,7 @@ def parse_from_xml(root):
         'submission_start': submission_start,
         'submission_due': submission_due,
         'text_response': text_response,
+        'text_response_editor': text_response_editor,
         'file_upload_response': file_upload_response,
         'allow_file_upload': allow_file_upload,
         'file_upload_type': file_upload_type,

@@ -62,7 +62,14 @@ describe("OpenAssessment.BaseView", function() {
 
         // Create the object under test
         var el = $(".openassessment").get(0);
-        view = new BaseView(runtime, el, server);
+        var data = {
+            AVAILABLE_EDITORS: {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
+        }
+        view = new BaseView(runtime, el, server, data);
         view.load();
         expect($(".openassessment__steps__step").hasClass('is--loading')).toBeFalsy();
     });

@@ -15,9 +15,11 @@ Returns:
 export class PeerView {
     UNSAVED_WARNING_KEY = 'peer-assessment';
 
-    constructor(element, server, baseView) {
+    constructor(element, server, responseEditorLoader, data, baseView) {
       this.element = element;
       this.server = server;
+      this.responseEditorLoader = responseEditorLoader;
+      this.data = data;
       this.baseView = baseView;
       this.rubric = null;
       this.isRendering = false;
@@ -52,6 +54,9 @@ export class PeerView {
           view.isRendering = false;
 
           view.server.renderLatex($(stepID, view.element));
+
+          this.renderResponseViaEditor();
+
           view.installHandlers(false);
 
           view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
@@ -64,6 +69,15 @@ export class PeerView {
       // Called to update Messagview with info on whether or not it was able to grab a submission
       // See detailed explanation/Methodology in oa_base.loadAssessmentModules
       view.baseView.loadMessageView();
+    }
+
+    /**
+     Use Response Editor to render response
+     * */
+    renderResponseViaEditor() {
+      const sel = $('.step--peer-assessment', this.element);
+      const responseElements = sel.find('.submission__answer__part__text__value');
+      this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
     }
 
     /**

@@ -84,7 +84,7 @@ describe("OpenAssessment.ResponseView", function() {
                 return successPromiseWithResult(this.listTeamsResult)
             };
         }
-        
+
         this.teamDetailError = false
         this.teamDetailResult = {
             id: 'TeamId',
@@ -104,7 +104,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         this.getUsernameError = false
         this.getUsername = function() {
-            return this.getUsernameError ? errorPromise : successPromiseWithResult('this-is-my-username') 
+            return this.getUsernameError ? errorPromise : successPromiseWithResult('this-is-my-username')
         }
     };
 
@@ -157,7 +157,7 @@ describe("OpenAssessment.ResponseView", function() {
       createObjectURL: () => 'url',
     };
 
-    beforeEach(function() {
+    beforeEach(function(done) {
         // Load the DOM fixture
         loadFixtures('oa_response.html');
 
@@ -173,37 +173,48 @@ describe("OpenAssessment.ResponseView", function() {
             "MAXIMUM_FILE_UPLOAD_COUNT": MAXIMUM_FILE_UPLOAD_COUNT,
             "COURSE_ID": COURSE_ID,
             "TEAM_ASSIGNMENT": true,
+            "TEXT_RESPONSE_EDITOR": 'text',
+            "AVAILABLE_EDITORS": {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
         };
 
         // Create and install the view
-        var responseElement = $('.step--response').get(0);
-        var baseView = new BaseView(runtime, responseElement, server, {});
-        view = new ResponseView(responseElement, server, fileUploader, baseView, data);
-        view.installHandlers();
+        var rootElement = $('.step--response').parent().get(0);
+        var baseView = new BaseView(runtime, rootElement, server, data);
+        view = new ResponseView(rootElement, server, fileUploader, baseView.responseEditorLoader, baseView, data);
+        view.loadResponseEditor().then(editorCtrl => {
+            view.responseEditorController = editorCtrl
+            view.installHandlers()
 
-        // Stub the confirmation step
-        // By default, we simulate the user confirming the submission.
-        // To instead simulate the user cancelling the submission,
-        // set `stubConfirm` to false.
-        setStubConfirm(true);
-        const fakeConfirm = function() {
-            return $.Deferred(function(defer) {
-                if (stubConfirm) { defer.resolve(); }
-                else { defer.reject(); }
+            // Stub the confirmation step
+            // By default, we simulate the user confirming the submission.
+            // To instead simulate the user cancelling the submission,
+            // set `stubConfirm` to false.
+            setStubConfirm(true);
+            const fakeConfirm = function() {
+                return $.Deferred(function(defer) {
+                    if (stubConfirm) { defer.resolve(); }
+                    else { defer.reject(); }
+                });
+            };
+            spyOn(view, 'confirmSubmission').and.callFake(fakeConfirm);
+            spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirm);
+            spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
+                for (var i=0; i < this.filesDescriptions.length; i++) {
+                    this.fileNames.push(this.files[i].name);
+                }
+                return $.Deferred(function(defer) {
+                    view.removeFilesDescriptions();
+                    defer.resolve();
+                });
             });
-        };
-        spyOn(view, 'confirmSubmission').and.callFake(fakeConfirm);
-        spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirm);
-        spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
-            for (var i=0; i < this.filesDescriptions.length; i++) {
-                this.fileNames.push(this.files[i].name);
-            }
-            return $.Deferred(function(defer) {
-                view.removeFilesDescriptions();
-                defer.resolve();
-            });
-        });
-        window.URL = mockURL;
+            window.URL = mockURL;
+
+            done()
+        })
     });
 
     afterEach(function() {

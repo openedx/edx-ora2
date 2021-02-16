@@ -25,6 +25,7 @@ from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEF
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
+from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -49,6 +50,11 @@ class StudioMixin:
         "required": ugettext_lazy("Required"),
         "optional": ugettext_lazy("Optional"),
         "": ugettext_lazy("None")
+    }
+
+    # Build editor options from AVAILABLE_EDITORS
+    AVAILABLE_EDITOR_OPTIONS = {
+        key: val.get('display_name', key) for key, val in AVAILABLE_EDITORS.items()
     }
 
     STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'
@@ -151,8 +157,10 @@ class StudioMixin:
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
             'text_response': self.text_response if self.text_response else '',
+            'text_response_editor': self.text_response_editor if self.text_response_editor else 'text',
             'file_upload_response': self.file_upload_response if self.file_upload_response else '',
             'necessity_options': self.NECESSITY_OPTIONS,
+            'available_editor_options': self.AVAILABLE_EDITOR_OPTIONS,
             'file_upload_type': self.file_upload_type,
             'allow_multiple_files': self.allow_multiple_files,
             'white_listed_file_types': white_listed_file_types_string,
@@ -257,6 +265,7 @@ class StudioMixin:
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
         self.text_response = data['text_response']
+        self.text_response_editor = data['text_response_editor']
         self.file_upload_response = data['file_upload_response']
         if data['file_upload_response']:
             self.file_upload_type = data['file_upload_type']

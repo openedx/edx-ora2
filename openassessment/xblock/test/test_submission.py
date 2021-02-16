@@ -694,6 +694,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_unavailable.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
@@ -722,6 +723,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': True,
@@ -741,6 +743,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
@@ -777,6 +780,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_multiple_files': True,
@@ -898,6 +902,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
@@ -934,6 +939,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
@@ -1083,6 +1089,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': None,
+                'text_response_editor': 'text',
                 'allow_multiple_files': True,
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
@@ -1212,6 +1219,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
@@ -1261,6 +1269,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': True,
@@ -1293,6 +1302,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_multiple_files': True,
@@ -1348,6 +1358,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'allow_multiple_files': True,
                 'file_upload_type': None,
@@ -1388,6 +1399,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                     {"prompt": {'description': 'One prompt.'}, "text": "An old format response."}
                 ]}},
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': True,
@@ -1407,6 +1419,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_closed.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
@@ -1431,6 +1444,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': False,
@@ -1464,6 +1478,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_multiple_files': True,
@@ -1495,6 +1510,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_multiple_files': True,
@@ -1691,6 +1707,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'save_status': 'This response has not been saved.',
                 'team_name': 'Red Squadron',
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'team_members_with_external_submissions': ''
             }
         )
@@ -1705,6 +1722,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'text_response': 'required',
+                'text_response_editor': 'text',
                 'file_upload_response': 'optional',
                 'allow_multiple_files': True,
                 'file_upload_type': 'pdf-and-image',

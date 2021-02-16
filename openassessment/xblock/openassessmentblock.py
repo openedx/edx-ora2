@@ -45,6 +45,7 @@ from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTemplatesMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -146,6 +147,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="Specify whether learners must include a text based response to this problem's prompt.",
         default="required",
         scope=Scope.settings
+    )
+
+    text_response_editor = String(
+        help="Select which editor learners will use to include a text based response to this problem's prompt.",
+        scope=Scope.settings,
+        default='text'
     )
 
     file_upload_response_raw = String(
@@ -629,7 +636,9 @@ class OpenAssessmentBlock(MessageMixin,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
             "MAXIMUM_FILE_UPLOAD_COUNT": self.MAX_FILES_COUNT,
-            "TEAM_ASSIGNMENT": self.is_team_assignment()
+            "TEAM_ASSIGNMENT": self.is_team_assignment(),
+            "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
+            "TEXT_RESPONSE_EDITOR": self.text_response_editor,
         }
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
@@ -802,6 +811,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.prompts = config['prompts']
         block.prompts_type = config['prompts_type']
         block.text_response = config['text_response']
+        block.text_response_editor = config['text_response_editor']
         block.file_upload_response = config['file_upload_response']
         block.allow_file_upload = config['allow_file_upload']
         block.file_upload_type = config['file_upload_type']

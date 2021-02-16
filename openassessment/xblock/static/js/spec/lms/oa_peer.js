@@ -45,8 +45,15 @@ describe("OpenAssessment.PeerView", function() {
         loadFixtures(template);
 
         const rootElement = $('.step--peer-assessment').parent().get(0);
-        baseView = new BaseView(runtime, rootElement, server, {});
-        const view = new PeerView(rootElement, server, baseView);
+        var data = {
+            AVAILABLE_EDITORS: {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
+        }
+        baseView = new BaseView(runtime, rootElement, server, data);
+        const view = baseView.peerView
         view.installHandlers();
         return view;
     };
