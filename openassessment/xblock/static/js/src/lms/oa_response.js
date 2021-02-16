@@ -488,7 +488,9 @@ export class ResponseView {
       view.confirmSubmission()
         // The callback returns a promise so we can attach
         // additional callbacks after the confirmation.
-        .then(() => {
+        // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
+        // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
+        .pipe(() => {
           const submission = view.response();
           baseView.toggleActionError('response', null);
 
@@ -496,10 +498,10 @@ export class ResponseView {
           return view.server.submit(submission);
         })
 
-        // If the submission was submitted successfully, move to the next step
+      // If the submission was submitted successfully, move to the next step
         .done($.proxy(view.moveToNextStep, view))
 
-        // Handle submission failure (either a server error or cancellation),
+      // Handle submission failure (either a server error or cancellation),
         .fail((errCode, errMsg) => {
           // If the error is "multiple submissions", then we should move to the next
           // step.  Otherwise, the user will be stuck on the current step with no
