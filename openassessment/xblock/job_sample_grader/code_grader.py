@@ -283,7 +283,7 @@ class TestGrader:
         if not compiled_file_path.startswith('/'):
             compiled_file_path = '/' + compiled_file_path
 
-        compilation_command = 'g++ ' + code_file + ' -o ' + compiled_file_path
+        compilation_command = 'g++ ' + code_file + ' -o ' + compiled_file_path + " -lcurl"
         self.run_as_subprocess(compilation_command, compiling=True)
 
         execution_command = compiled_file_path
