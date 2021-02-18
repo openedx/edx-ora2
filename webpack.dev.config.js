@@ -2,11 +2,68 @@ process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 
 const { createConfig } = require('@edx/frontend-build');
+const { mergeWithRules } = require('webpack-merge');
 
-const config = createConfig('webpack-dev');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PostCssAutoprefixerPlugin = require('autoprefixer');
+const CssNano = require('cssnano');
+
+// Get base config from edx-platform
+let config = createConfig('webpack-prod');
+
+// Modify CSS processing rules (remove PostCssRtlPlugin)
+const modifiedCssRule = {
+  module: {
+    rules: [
+      {
+        test: /(.scss|.css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                PostCssAutoprefixerPlugin({ grid: true }),
+                CssNano(),
+              ],
+            },
+          },
+          'resolve-url-loader',
+          {
+            loader: 'sass-loader', // compiles Sass to CSS
+            options: {
+              sourceMap: true,
+              sassOptions: {
+                includePaths: [
+                  path.join(process.cwd(), 'node_modules'),
+                  path.join(process.cwd(), 'src'),
+                ],
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+
+// Merge back to configuration
+config = mergeWithRules({
+  module: {
+    rules: {
+      test: 'match',
+      use: 'replace',
+    },
+  },
+})(config, modifiedCssRule);
 
 Object.assign(config, {
   entry: {
