@@ -488,7 +488,6 @@ export class ResponseView {
 
       const view = this;
       const { baseView } = this;
-      let submitDefer = $.Deferred();
 
       // Block submit if a learner has files staged for upload
       if (view.hasPendingUploadFiles()) {
@@ -501,29 +500,24 @@ export class ResponseView {
           const submission = view.response();
           baseView.toggleActionError('response', null);
 
-          // Send the submission to the server, async
-          submitDefer = view.server.submit(submission);
+          // Send the submission to the server
+          view.server.submit(submission)
+            .done($.proxy(view.moveToNextStep, view))
+            .fail((errCode, errMsg) => {
+              // If the error is "multiple submissions", then we should move to the next step.
+              // Otherwise, the user will be stuck on the current step with no way to continue.
+              if (errCode === 'ENOMULTI') { view.moveToNextStep(); } else {
+                // If there is an error message, display it
+                if (errMsg) { baseView.toggleActionError('submit', errMsg); }
+
+                // Re-enable the submit button so the user can retry
+                view.submitEnabled(true);
+              }
+            });
         })
         // Learner cancelled submission, re-enable submit
         .fail(() => {
           view.submitEnabled(true);
-        });
-
-      submitDefer
-        // If the submission was submitted successfully, move to the next step
-        .done($.proxy(view.moveToNextStep, view))
-
-        // Handle submission failure
-        .fail((errCode, errMsg) => {
-          // If the error is "multiple submissions", then we should move to the next step.
-          // Otherwise, the user will be stuck on the current step with no way to continue.
-          if (errCode === 'ENOMULTI') { view.moveToNextStep(); } else {
-            // If there is an error message, display it
-            if (errMsg) { baseView.toggleActionError('submit', errMsg); }
-
-            // Re-enable the submit button so the user can retry
-            view.submitEnabled(true);
-          }
         });
     }
 
