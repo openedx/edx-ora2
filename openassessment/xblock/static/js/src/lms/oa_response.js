@@ -502,7 +502,7 @@ export class ResponseView {
 
           // Send the submission to the server
           view.server.submit(submission)
-            .done($.proxy(view.moveToNextStep, view))
+            .done(() => { view.moveToNextStep(); })
             .fail((errCode, errMsg) => {
               // If the error is "multiple submissions", then we should move to the next step.
               // Otherwise, the user will be stuck on the current step with no way to continue.
