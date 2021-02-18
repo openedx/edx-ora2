@@ -772,25 +772,23 @@ export class ResponseView {
 
      */
    removeUploadedFile(filenum) {
-     const view = this;
-     return view.confirmRemoveUploadedFile(filenum).done(() => view.server.removeUploadedFile(filenum).done(() => {
-       const sel = $('.step--response', view.element);
-       const block = sel.find(`.submission__answer__file__block__${filenum}`);
-       block.html('');
-       block.prop('deleted', true);
-       view.checkSubmissionAbility();
-     }).fail((errMsg) => {
-       view.baseView.toggleActionError('delete', errMsg);
-     }));
+     if (this.confirmRemoveUploadedFile(filenum)) {
+       this.server.removeUploadedFile(filenum).done(() => {
+         const sel = $('.step--response', this.element);
+         const block = sel.find(`.submission__answer__file__block__${filenum}`);
+         block.html('');
+         block.prop('deleted', true);
+         this.checkSubmissionAbility();
+       }).fail((errMsg) => {
+         this.baseView.toggleActionError('delete', errMsg);
+       });
+     }
    }
 
    confirmRemoveUploadedFile(filenum) {
      let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
      msg += this.getFileNameAndDescription(filenum);
-     // eslint-disable-next-line new-cap
-     return $.Deferred((defer) => {
-       if (window.confirm(msg)) { defer.resolve(); } else { defer.reject(); }
-     });
+     return window.confirm(msg);
    }
 
    /**
