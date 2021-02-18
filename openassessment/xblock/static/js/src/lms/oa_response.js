@@ -486,38 +486,33 @@ export class ResponseView {
       // Immediately disable the submit button to prevent multiple submission
       this.submitEnabled(false);
 
-      const view = this;
-      const { baseView } = this;
-
       // Block submit if a learner has files staged for upload
-      if (view.hasPendingUploadFiles()) {
-        return;
-      }
+      if (this.hasPendingUploadFiles()) { return; }
 
-      view.confirmSubmission()
+      this.confirmSubmission()
         // Proceed with submission
         .done(() => {
-          const submission = view.response();
-          baseView.toggleActionError('response', null);
+          const submission = this.response();
+          this.baseView.toggleActionError('response', null);
 
           // Send the submission to the server
-          view.server.submit(submission)
-            .done(() => { view.moveToNextStep(); })
+          this.server.submit(submission)
+            .done(() => { this.moveToNextStep(); })
             .fail((errCode, errMsg) => {
               // If the error is "multiple submissions", then we should move to the next step.
               // Otherwise, the user will be stuck on the current step with no way to continue.
-              if (errCode === 'ENOMULTI') { view.moveToNextStep(); } else {
+              if (errCode === 'ENOMULTI') { this.moveToNextStep(); } else {
                 // If there is an error message, display it
-                if (errMsg) { baseView.toggleActionError('submit', errMsg); }
+                if (errMsg) { this.baseView.toggleActionError('submit', errMsg); }
 
                 // Re-enable the submit button so the user can retry
-                view.submitEnabled(true);
+                this.submitEnabled(true);
               }
             });
         })
         // Learner cancelled submission, re-enable submit
         .fail(() => {
-          view.submitEnabled(true);
+          this.submitEnabled(true);
         });
     }
 
