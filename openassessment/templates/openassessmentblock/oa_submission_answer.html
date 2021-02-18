@@ -39,7 +39,7 @@
             </li>
             <br>
         {% endif %}
-        <li class="list_item">
+        <li >
             {% trans "Test Case Result Breakdown" as header_content %}
             {% trans "Your Output" as code_output_label %}
             {% trans "Expected Output" as expected_output_label %}
@@ -48,7 +48,7 @@
 
         {% if staff_view %}
         <br>
-            <li class="list_item">
+            <li>
                 {% trans "Staff Test Case Result Breakdown" as header_content %}
                 {% trans "Staff Test Case Output" as code_output_label %}
                 {% trans "Expected Test Case Output" as expected_output_label %}
