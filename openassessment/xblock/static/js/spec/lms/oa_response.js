@@ -1,3 +1,4 @@
+/* eslint-disable */
 import BaseView from 'lms/oa_base';
 import ResponseView from 'lms/oa_response';
 
@@ -194,14 +195,15 @@ describe("OpenAssessment.ResponseView", function() {
             // To instead simulate the user cancelling the submission,
             // set `stubConfirm` to false.
             setStubConfirm(true);
-            const fakeConfirm = function() {
+            const fakeConfirm = function() { return stubConfirm; }
+            const fakeConfirmDeferred = function() {
                 return $.Deferred(function(defer) {
                     if (stubConfirm) { defer.resolve(); }
                     else { defer.reject(); }
                 });
             };
             spyOn(view, 'confirmSubmission').and.callFake(fakeConfirm);
-            spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirm);
+            spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirmDeferred);
             spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
                 for (var i=0; i < this.filesDescriptions.length; i++) {
                     this.fileNames.push(this.files[i].name);

@@ -489,30 +489,28 @@ export class ResponseView {
       // Block submit if a learner has files staged for upload
       if (this.hasPendingUploadFiles()) { return; }
 
-      this.confirmSubmission()
-        // Proceed with submission
-        .done(() => {
-          const submission = this.response();
-          this.baseView.toggleActionError('response', null);
+      // Learner can cancel submission, re-enables submit button
+      if (!this.confirmSubmission()) {
+        this.submitEnabled(true);
+        return;
+      }
 
-          // Send the submission to the server
-          this.server.submit(submission)
-            .done(() => { this.moveToNextStep(); })
-            .fail((errCode, errMsg) => {
-              // If the error is "multiple submissions", then we should move to the next step.
-              // Otherwise, the user will be stuck on the current step with no way to continue.
-              if (errCode === 'ENOMULTI') { this.moveToNextStep(); } else {
-                // If there is an error message, display it
-                if (errMsg) { this.baseView.toggleActionError('submit', errMsg); }
+      const submission = this.response();
+      this.baseView.toggleActionError('response', null);
 
-                // Re-enable the submit button so the user can retry
-                this.submitEnabled(true);
-              }
-            });
-        })
-        // Learner cancelled submission, re-enable submit
-        .fail(() => {
-          this.submitEnabled(true);
+      // Send the submission to the server
+      this.server.submit(submission)
+        .done(() => { this.moveToNextStep(); })
+        .fail((errCode, errMsg) => {
+          // If the error is "multiple submissions", then we should move to the next step.
+          // Otherwise, the user will be stuck on the current step with no way to continue.
+          if (errCode === 'ENOMULTI') { this.moveToNextStep(); } else {
+            // If there is an error message, display it
+            if (errMsg) { this.baseView.toggleActionError('submit', errMsg); }
+
+            // Re-enable the submit button so the user can retry
+            this.submitEnabled(true);
+          }
         });
     }
 
@@ -538,19 +536,14 @@ export class ResponseView {
      Make the user confirm before submitting a response.
 
      Returns:
-     JQuery deferred object, which is:
-     * resolved if the user confirms the submission
-     * rejected if the user cancels the submission
+     * true if the user confirms the submission
+     * false if the user cancels the submission
      * */
     confirmSubmission() {
       // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
       // eslint-disable-next-line max-len
       const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
-      // TODO -- UI for confirmation dialog instead of JS confirm
-      // eslint-disable-next-line new-cap
-      return $.Deferred((defer) => {
-        if (window.confirm(msg)) { defer.resolve(); } else { defer.reject(); }
-      });
+      return window.confirm(msg);
     }
 
     /**
