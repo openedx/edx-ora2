@@ -656,10 +656,6 @@ class OpenAssessmentBlock(MessageMixin,
             context_dict,
             initialize_js_func='WaitingStepDetailsBlock',
             additional_js_context=context_dict,
-            additional_css=[
-                'static/css/lib/edx-paragon.css',
-                'static/css/lib/bootstrap.css',
-            ],
         )
 
     def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None, additional_js_context=None):
