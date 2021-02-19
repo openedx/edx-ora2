@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import { Button } from '@edx/paragon';
+
+
+
 const getReadableTime = (timestamp) => {
   return moment(timestamp).fromNow(true);
 };
@@ -14,6 +18,11 @@ const App = ({ data }) => {
     <div className="webpack-react-app">
       This is an intermediate view until the Paragon styles start working.
       <br />
+      <Button variant="brand">Brand</Button>{' '}
+      <Button variant="outline-brand">Outline Brand</Button>{' '}
+      <Button variant="primary">Primary</Button>{' '}
+      <Button variant="outline-primary">Outline Primary</Button>{' '}
+      <Button variant="tertiary">Tertiary</Button>{' '}
       <br />
       <table>
         <tr>
