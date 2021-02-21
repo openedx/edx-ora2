@@ -97,8 +97,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-21 13:14-0500\n"
-"PO-Revision-Date: 2021-02-13 06:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2021-02-15 21:37+0000\n"
+"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -178,13 +178,13 @@ msgstr "Précisez si les apprenants doivent donner une réponse textuelle à ce 
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
-msgstr ""
+msgstr "Éditeur de réponse"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:33
 msgid ""
 "Select which editor learners will use to include a text based response to "
 "this problem's prompt."
-msgstr ""
+msgstr "Sélectionnez l'éditeur que les apprenants utiliseront pour inclure une réponse textuelle à l'invite de ce problème."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
@@ -441,7 +441,7 @@ msgstr "Doit Noter"
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 1 to 99."
-msgstr ""
+msgstr "Spécifiez le nombre d'évaluations par les pairs que chaque apprenant doit effectuer. Les nombres valides vont de 1 à 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
@@ -451,7 +451,7 @@ msgstr "Noté par"
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 1 to 99."
-msgstr ""
+msgstr "Spécifiez le nombre d'apprenants par lequel chaque réponse doit être évaluée. Les nombres valides vont de 1 à 99."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
@@ -2389,17 +2389,17 @@ msgstr "Erreur lors de la mise à jour de la configuration du XBlock"
 
 #: openassessment/xblock/studio_mixin.py:221
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr ""
+msgstr "Erreur: la réponse textuelle et la réponse avec téléchargement de fichier ne peuvent pas être toutes les deux désactivées"
 
 #: openassessment/xblock/studio_mixin.py:225
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
-msgstr ""
+msgstr "Erreur: lorsque la réponse textuelle est désactivée, la réponse de téléchargement avec fichier doit être requise"
 
 #: openassessment/xblock/studio_mixin.py:228
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
-msgstr ""
+msgstr "Erreur: lorsque la réponse avec téléchargement de fichier est désactivée, la réponse textuelle doit être requise"
 
 #: openassessment/xblock/studio_mixin.py:252
 #, python-brace-format
@@ -2424,7 +2424,7 @@ msgstr "Les soumissions multiples ne sont pas autorisées."
 
 #: openassessment/xblock/submission_mixin.py:189
 msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr ""
+msgstr "La soumission ne peut pas être vide. Veuillez actualiser la page et réessayer."
 
 #: openassessment/xblock/submission_mixin.py:199
 msgid "API returned unclassified exception."
