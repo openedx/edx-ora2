@@ -1,3 +1,4 @@
+/* eslint-disable */
 import BaseView from 'lms/oa_base';
 import ResponseView from 'lms/oa_response';
 
@@ -194,12 +195,7 @@ describe("OpenAssessment.ResponseView", function() {
             // To instead simulate the user cancelling the submission,
             // set `stubConfirm` to false.
             setStubConfirm(true);
-            const fakeConfirm = function() {
-                return $.Deferred(function(defer) {
-                    if (stubConfirm) { defer.resolve(); }
-                    else { defer.reject(); }
-                });
-            };
+            const fakeConfirm = function() { return stubConfirm; }
             spyOn(view, 'confirmSubmission').and.callFake(fakeConfirm);
             spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirm);
             spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
@@ -892,10 +888,12 @@ describe("OpenAssessment.ResponseView", function() {
         $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('test2');
 
-        // user finishes adding descriptions which enables submit button
+        // user finishes adding descriptions which enables the upload button
         view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
         expect(view.uploadEnabled()).toBe(true);
+
+        // the submit button remains disabled until files are uploaded
+        expect(view.submitEnabled()).toBe(false);
     });
 
     it("deleting all uploaded files prevents user from submitting", function() {

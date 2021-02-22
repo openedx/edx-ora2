@@ -228,7 +228,8 @@ export class ResponseView {
             && !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
         readyToSubmit = false;
       }
-      if (this.hasPendingUploadFiles() && !this.collectFilesDescriptions()) {
+      if (this.hasPendingUploadFiles()) {
+        this.collectFilesDescriptions();
         readyToSubmit = false;
       }
 
@@ -279,8 +280,8 @@ export class ResponseView {
      bool: Whether the button is enabled.
 
      Examples:
-     >> view.submitEnabled(true);  // enable the button
-     >> view.submitEnabled();  // check whether the button is enabled
+     >> view.saveEnabled(true);  // enable the button
+     >> view.saveEnabled();  // check whether the button is enabled
      >> true
      * */
     saveEnabled(enabled) {
@@ -485,55 +486,30 @@ export class ResponseView {
       // Immediately disable the submit button to prevent multiple submission
       this.submitEnabled(false);
 
-      const view = this;
-      const { baseView } = this;
-      // eslint-disable-next-line new-cap
-      let fileDefer = $.Deferred();
+      // Block submit if a learner has files staged for upload
+      if (this.hasPendingUploadFiles()) { return; }
 
-      if (view.hasPendingUploadFiles()) {
-        if (!view.hasAllUploadFiles()) {
-          return;
-        }
-        const msg = gettext('Do you want to upload your file before submitting?');
-        if (window.confirm(msg)) {
-          fileDefer = view.uploadFiles();
-          if (fileDefer === false) {
-            return;
-          }
-        }
-      } else {
-        fileDefer.resolve();
+      // Learner can cancel submission, re-enables submit button
+      if (!this.confirmSubmission()) {
+        this.submitEnabled(true);
+        return;
       }
 
-      fileDefer
-        .pipe(() => view.confirmSubmission()
-        // On confirmation, send the submission to the server
-        // The callback returns a promise so we can attach
-        // additional callbacks after the confirmation.
-        // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
-        // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
-          .pipe(() => {
-            const submission = view.response();
-            baseView.toggleActionError('response', null);
+      const submission = this.response();
+      this.baseView.toggleActionError('response', null);
 
-            // Send the submission to the server, returning the promise.
-            return view.server.submit(submission);
-          }))
-
-      // If the submission was submitted successfully, move to the next step
-        .done($.proxy(view.moveToNextStep, view))
-
-      // Handle submission failure (either a server error or cancellation),
+      // Send the submission to the server
+      this.server.submit(submission)
+        .done(() => { this.moveToNextStep(); })
         .fail((errCode, errMsg) => {
-          // If the error is "multiple submissions", then we should move to the next
-          // step.  Otherwise, the user will be stuck on the current step with no
-          // way to continue.
-          if (errCode === 'ENOMULTI') { view.moveToNextStep(); } else {
+          // If the error is "multiple submissions", then we should move to the next step.
+          // Otherwise, the user will be stuck on the current step with no way to continue.
+          if (errCode === 'ENOMULTI') { this.moveToNextStep(); } else {
             // If there is an error message, display it
-            if (errMsg) { baseView.toggleActionError('submit', errMsg); }
+            if (errMsg) { this.baseView.toggleActionError('submit', errMsg); }
 
             // Re-enable the submit button so the user can retry
-            view.submitEnabled(true);
+            this.submitEnabled(true);
           }
         });
     }
@@ -560,19 +536,14 @@ export class ResponseView {
      Make the user confirm before submitting a response.
 
      Returns:
-     JQuery deferred object, which is:
-     * resolved if the user confirms the submission
-     * rejected if the user cancels the submission
+     * true if the user confirms the submission
+     * false if the user cancels the submission
      * */
     confirmSubmission() {
       // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
       // eslint-disable-next-line max-len
       const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
-      // TODO -- UI for confirmation dialog instead of JS confirm
-      // eslint-disable-next-line new-cap
-      return $.Deferred((defer) => {
-        if (window.confirm(msg)) { defer.resolve(); } else { defer.reject(); }
-      });
+      return window.confirm(msg);
     }
 
     /**
@@ -801,25 +772,23 @@ export class ResponseView {
 
      */
    removeUploadedFile(filenum) {
-     const view = this;
-     return view.confirmRemoveUploadedFile(filenum).done(() => view.server.removeUploadedFile(filenum).done(() => {
-       const sel = $('.step--response', view.element);
-       const block = sel.find(`.submission__answer__file__block__${filenum}`);
-       block.html('');
-       block.prop('deleted', true);
-       view.checkSubmissionAbility();
-     }).fail((errMsg) => {
-       view.baseView.toggleActionError('delete', errMsg);
-     }));
+     if (this.confirmRemoveUploadedFile(filenum)) {
+       this.server.removeUploadedFile(filenum).done(() => {
+         const sel = $('.step--response', this.element);
+         const block = sel.find(`.submission__answer__file__block__${filenum}`);
+         block.html('');
+         block.prop('deleted', true);
+         this.checkSubmissionAbility();
+       }).fail((errMsg) => {
+         this.baseView.toggleActionError('delete', errMsg);
+       });
+     }
    }
 
    confirmRemoveUploadedFile(filenum) {
      let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
      msg += this.getFileNameAndDescription(filenum);
-     // eslint-disable-next-line new-cap
-     return $.Deferred((defer) => {
-       if (window.confirm(msg)) { defer.resolve(); } else { defer.reject(); }
-     });
+     return window.confirm(msg);
    }
 
    /**

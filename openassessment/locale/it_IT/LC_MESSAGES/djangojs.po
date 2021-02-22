@@ -7,14 +7,15 @@
 # anna.ghetti <anna.ghetti@student.unife.it>, 2014
 # danicabliznakinja <dmbliznakinje@yahoo.co.uk>, 2014
 # Pietro Lombardo <pietrolombardo1979@gmail.com>, 2015
+# Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2021
 # Tiziana Longeri <tiziana.longeri@polimi.it>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-21 13:14-0500\n"
-"PO-Revision-Date: 2021-02-13 04:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2021-02-21 19:17+0000\n"
+"Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -325,7 +326,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:700
 msgid "(required):"
-msgstr ""
+msgstr "(campo obbligatorio)"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:720
@@ -517,7 +518,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:101
 msgid "The following file types are not allowed: "
-msgstr ""
+msgstr "I seguenti tipi di file non sono ammessi:"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
