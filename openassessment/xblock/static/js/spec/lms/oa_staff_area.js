@@ -101,15 +101,29 @@ describe('OpenAssessment.StaffAreaView', function() {
             server.staffAreaTemplate = staffAreaTemplate;
         }
         var assessmentElement = $('.openassessment').get(0);
-        baseView = new BaseView(runtime, assessmentElement, server, {});
-        var view = new StaffAreaView(assessmentElement, server, baseView);
+        var data = {
+            AVAILABLE_EDITORS: {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
+        }
+        baseView = new BaseView(runtime, assessmentElement, server, data);
+        var view = baseView.staffAreaView;
         view.load();
         return view;
     };
 
     var createGradeAvailableResponsesView = function() {
         var assessmentElement = $('.openassessment').get(0);
-        var view = new BaseView(runtime, assessmentElement, server, {});
+        var data = {
+            AVAILABLE_EDITORS: {
+                'text': {
+                    'js': ['/base/js/src/lms/editors/oa_editor_textarea.js']
+                }
+            }
+        }
+        var view = new BaseView(runtime, assessmentElement, server, data);
         view.staffAreaView.installHandlers();
         return view;
     };

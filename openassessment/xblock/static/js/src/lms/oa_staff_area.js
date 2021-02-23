@@ -16,9 +16,11 @@ export class StaffAreaView {
 
     OVERRIDE_UNSAVED_WARNING_KEY = 'staff-override';
 
-    constructor(element, server, baseView) {
+    constructor(element, server, responseEditorLoader, data, baseView) {
       this.element = element;
       this.server = server;
+      this.responseEditorLoader = responseEditorLoader;
+      this.data = data;
       this.baseView = baseView;
     }
 
@@ -41,6 +43,15 @@ export class StaffAreaView {
           view.baseView.showLoadError('staff_area');
         });
       }
+    }
+
+    /**
+     Use Response Editor to render response
+     * */
+    renderResponseViaEditor() {
+      const sel = $('.openassessment__staff-area', this.element);
+      const responseElements = sel.find('.submission__answer__part__text__value');
+      this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
     }
 
     /**
@@ -125,6 +136,7 @@ export class StaffAreaView {
               .addClass(view.baseView.IS_SHOWING_CLASS).attr('aria-expanded', 'true').focus();
           }
 
+          view.renderResponseViaEditor();
           deferred.resolve();
         }).fail(() => {
           showFormError(gettext('Unexpected server error.'));
@@ -229,6 +241,7 @@ export class StaffAreaView {
           );
           $staffGradeContainer.addClass(view.baseView.IS_SHOWING_CLASS);
 
+          view.renderResponseViaEditor();
           deferred.resolve();
         }).fail(() => {
           showFormError(gettext('Unexpected server error.'));
