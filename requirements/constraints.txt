@@ -1,8 +1,8 @@
 # Version constraints for pip-installation.
 
-# Base dependencies
-Django<2.3                         # Stay on the latest LTS release of Django
-fs<=2.0.18                         # Constrained by edx-platform
+# Common constraints for edx repos
+-c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
+ fs<=2.0.18                         # Constrained by edx-platform
 jsonfield2<3.1.0                   # jsonfield2 3.1.0 drops support for python 3.5
 loremipsum<2.0.0
 
