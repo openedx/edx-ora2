@@ -56,7 +56,7 @@ export class BaseView {
       this.leaderboardView = new LeaderboardView(this.element, this.server, this);
       this.messageView = new MessageView(this.element, this.server, this);
       // Staff-only area with information and tools for managing student submissions
-      this.staffAreaView = new StaffAreaView(this.element, this.server, this);
+      this.staffAreaView = new StaffAreaView(this.element, this.server, this.responseEditorLoader, data, this);
       this.usageID = '';
       this.srStatusUpdates = [];
 
