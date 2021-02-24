@@ -25,7 +25,7 @@ export class FileUploader {
         async: false,
         processData: false,
         contentType: file.type,
-        headers: { 'Content-Disposition': `attachment; filename*=UTF-8''${encodeURI(file.name)}` },
+        headers: { 'Content-Disposition': `attachment; filename*=UTF-8''${this.encodeRFC5987ValueChars(file.name)}` },
       }).done(() => {
         // Log an analytics event
         Logger.log(
@@ -49,6 +49,19 @@ export class FileUploader {
         defer.rejectWith(this, [textStatus]);
       });
     }).promise();
+  }
+
+  // How to correctly encode filenames in headers (although |?~* are not preserved)
+  // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+  encodeRFC5987ValueChars(str) {
+    return encodeURIComponent(str)
+      // Note that although RFC3986 reserves "!", RFC5987 does not,
+      // so we do not need to escape it
+      .replace(/['()]/g, escape) // i.e., %27 %28 %29
+      .replace(/\*/g, '%2A')
+      // The following are not required for percent-encoding per RFC5987,
+      // so we can allow for a little better readability over the wire: |`^
+      .replace(/%(?:7C|60|5E)/g, unescape);
   }
 }
 
