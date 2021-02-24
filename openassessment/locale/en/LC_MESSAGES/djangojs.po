@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-22 13:59-0500\n"
+"POT-Creation-Date: 2021-02-24 16:13-0500\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -333,25 +333,25 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:130
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:234
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:142
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:247
 msgid "Unexpected server error."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:134
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
 msgid "You must provide a learner name."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:148
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:160
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:285
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:298
 msgid "Error getting the number of ungraded responses"
 msgstr ""
 
