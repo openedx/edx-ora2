@@ -50,8 +50,8 @@ export const oaTinyMCE = (options) => {
   return {
     height: '300',
     font_formats: getFonts(),
-    theme: 'modern',
-    skin: 'studio-tmce4',
+    theme: 'silver',
+    skin: 'oxide',
     schema: 'html5',
     convert_urls: false,
     directionality: $('.wrapper-view, .window-wrap').prop('dir'),
