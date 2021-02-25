@@ -139,6 +139,7 @@ class TestSerializeContent(TestCase):
 
         self.oa_block.teams_enabled = data.get('teams_enabled', None)
         self.oa_block.selected_teamset_id = data.get('selected_teamset_id', None)
+        self.oa_block.show_rubric_during_response = data.get('show_rubric_during_response')
 
     @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):

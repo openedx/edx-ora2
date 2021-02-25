@@ -1,4 +1,5 @@
 import DateTimeFactory from './oa_datefactory';
+import Rubric from './oa_rubric';
 
 /**
  Interface for response (submission) view.
@@ -68,7 +69,6 @@ export class ResponseView {
           // Load the HTML and install event handlers
           $(stepID, view.element).replaceWith(html);
           view.server.renderLatex($(stepID, view.element));
-
           // First load response editor then apply other things
           view.loadResponseEditor().then((editorController) => {
             view.responseEditorController = editorController;

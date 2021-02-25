@@ -472,6 +472,7 @@ export class Server {
       leaderboard_show: options.leaderboardNum,
       teams_enabled: options.teamsEnabled,
       selected_teamset_id: options.selectedTeamsetId,
+      show_rubric_during_response: options.showRubricDuringResponse,
     });
     return $.Deferred((defer) => {
       $.ajax({

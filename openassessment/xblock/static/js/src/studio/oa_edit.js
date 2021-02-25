@@ -234,6 +234,7 @@ export class StudioView {
       editorAssessmentsOrder: this.assessmentsStepsView.editorAssessmentsOrder(),
       teamsEnabled,
       selectedTeamsetId: this.settingsView.teamset(),
+      showRubricDuringResponse: this.settingsView.showRubricDuringResponse(),
     }).done(
       // Notify the client-side runtime that we finished saving
       // so it can hide the "Saving..." notification.

@@ -428,6 +428,18 @@ export class EditSettingsView {
   }
 
   /**
+    Enable / disable showing learners the assessment rubric while working on their response.
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable showing the rubric
+    Returns:
+        boolean
+     * */
+  showRubricDuringResponse(isEnabled) {
+    return this.settingSelectorEnabled('#openassessment_show_rubric_during_response_selector', isEnabled);
+  }
+
+  /**
     Mark validation errors.
 
     Returns:

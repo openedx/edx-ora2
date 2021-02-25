@@ -1,4 +1,5 @@
 """ A Mixin for Response submissions. """
+import copy
 import json
 import logging
 import os
@@ -853,7 +854,11 @@ class SubmissionMixin:
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
             "enable_delete_files": False,
+            "show_rubric_during_response": self.show_rubric_during_response,
         }
+
+        if self.show_rubric_during_response:
+            context['rubric_criteria'] = copy.deepcopy(self.rubric_criteria_with_labels)
 
         # Due dates can default to the distant future, in which case
         # there's effectively no due date.

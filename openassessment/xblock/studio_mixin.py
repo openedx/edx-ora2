@@ -176,6 +176,7 @@ class StudioMixin:
             'is_released': self.is_released(),
             'teamsets': self.get_teamsets(course_id),
             'selected_teamset_id': self.selected_teamset_id,
+            'show_rubric_during_response': self.show_rubric_during_response
         }
 
     @XBlock.json_handler
@@ -278,6 +279,7 @@ class StudioMixin:
         self.leaderboard_show = data['leaderboard_show']
         self.teams_enabled = bool(data.get('teams_enabled', False))
         self.selected_teamset_id = data.get('selected_teamset_id', '')
+        self.show_rubric_during_response = data.get('show_rubric_during_response', False)
 
         return {'success': True, 'msg': self._('Successfully updated OpenAssessment XBlock')}
 

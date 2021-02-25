@@ -12,6 +12,7 @@
         "submission_start": null,
         "submission_due": null,
         "file_upload_type": null,
+        "show_rubric_during_response": true,
         "criteria": [
             {
                 "order_num": 0,
@@ -55,7 +56,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\">",
+            "<openassessment text_response=\"required\" text_response_editor=\"text\" prompts_type=\"html\" show_rubric_during_response=\"True\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
