@@ -116,7 +116,13 @@
       /* eslint-disable-next-line consistent-return */
       response(texts) {
         if (typeof texts === 'undefined') {
-          return this.editorInstances.map(editor => editor.getContent());
+          return this.editorInstances.map(editor => {
+            const content = editor.getContent();
+            // Remove linebreaks from TinyMCE output
+            // This is a workaround for TinyMCE 4 only,
+            // 5.x does not have this bug.
+            return content.replace(/(\r\n|\n|\r)/gm, '');
+          });
         }
         this.editorInstances.forEach((editor, index) => {
           editor.setContent(texts[index]);
