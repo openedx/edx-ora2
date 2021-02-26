@@ -6,6 +6,15 @@
   const dependencies = [];
   const tinymceCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css';
 
+  // Create a flag to determine if we are in lms
+  const isLMS = typeof window.LmsRuntime !== 'undefined';
+
+  // Determine which css file should be loaded to style text in the editor
+  let contentCssFile = '/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css';
+  if (isLMS) {
+    contentCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css';
+  }
+
   if (typeof window.tinymce === 'undefined') {
     // If tinymce is not available, we need to load it
     dependencies.push('tinymce');
@@ -33,6 +42,7 @@
           height: '300',
           schema: 'html5',
           plugins: 'code image link lists',
+          content_css: contentCssFile,
           toolbar: 'formatselect | bold italic underline | link blockquote image | numlist bullist outdent indent | strikethrough | code | undo redo',
           setup: (editor) => {
             // keep editor instances for later use
@@ -66,6 +76,17 @@
         this.elements.each(function () {
           // check if it's readonly
           const disabled = $(this).attr('disabled');
+
+          // In LMS with multiple Unit containing ORA Block with tinyMCE enabled,
+          // We need to destroy if any previously intialized editor exists for current element.
+          const id = $(this).attr('id');
+          if (id !== undefined) {
+            const existingEditor = tinymce.get(id); // eslint-disable-line
+            if (existingEditor) {
+              existingEditor.destroy();
+            }
+          }
+
           const config = ctrl.getTinyMCEConfig(disabled);
           $(this).tinymce(config);
         });
