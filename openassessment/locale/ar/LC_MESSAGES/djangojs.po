@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 13:14-0500\n"
-"PO-Revision-Date: 2021-02-13 04:25+0000\n"
+"POT-Creation-Date: 2021-02-24 16:13-0500\n"
+"PO-Revision-Date: 2021-02-22 19:28+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -108,71 +108,71 @@ msgstr "لم تنجح عملية واحدة أو أكثر من عمليات إع
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:482
+#: openassessment/xblock/static/js/src/oa_server.js:483
 msgid "This problem could not be saved."
 msgstr "تعذّر حفظ هذه المسألة."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:503
+#: openassessment/xblock/static/js/src/oa_server.js:504
 msgid "The server could not be contacted."
 msgstr "تعذّر الاتصال بالمخدّم."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:529
+#: openassessment/xblock/static/js/src/oa_server.js:530
 msgid "Could not retrieve upload url."
 msgstr "تعذّر استرجاع رابط التحميل."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:548
-#: openassessment/xblock/static/js/src/oa_server.js:567
+#: openassessment/xblock/static/js/src/oa_server.js:549
+#: openassessment/xblock/static/js/src/oa_server.js:568
 msgid "Server error."
 msgstr "خطأ في الخادم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:587
+#: openassessment/xblock/static/js/src/oa_server.js:588
 msgid "Could not retrieve download url."
 msgstr "تعذّر استرجاع رابط التنزيل."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:613
+#: openassessment/xblock/static/js/src/oa_server.js:614
 msgid "The submission could not be removed from the grading pool."
 msgstr "تعذّرت إزالة التقديم من مجموعة التقييم."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:669
+#: openassessment/xblock/static/js/src/oa_server.js:670
 msgid "Multiple teams returned for course"
 msgstr "عودة عدة فرق للمساق"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:676
+#: openassessment/xblock/static/js/src/oa_server.js:677
 msgid "Could not load teams information."
 msgstr "لا يمكن تحميل معلومات الفرق"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:698
+#: openassessment/xblock/static/js/src/oa_server.js:699
 msgid "User lookup failed"
 msgstr "فشل عملية العثور على المستخدم"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:703
+#: openassessment/xblock/static/js/src/oa_server.js:704
 msgid "Error when looking up username"
 msgstr "خطأ في العثور على اسم المستخدم"
 
@@ -264,56 +264,46 @@ msgid "Your file "
 msgstr "ملفك"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:360
+#: openassessment/xblock/static/js/src/lms/oa_response.js:361
 msgid "Status of Your Response"
 msgstr "حالة ردّك."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:414
 msgid "This response has not been saved."
 msgstr "لم يُحفّظ هذا الردّ بعد."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:419
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "ستفقد أي تغيير كنت قد أجريته على الردّ إذا تركت هذه الصفحة دون حفظ أو تقديم ردّك."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:437
 msgid "Saving..."
 msgstr "جاري الحفظ..."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "This response has been saved but not submitted."
 msgstr "حُفِّظ هذا الردّ ولكن لم يُقدّم بعد. "
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:462
 msgid "Error"
 msgstr "حدث خطأ"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:488
-msgid "Do you want to upload your file before submitting?"
-msgstr "هل ترغب بتحميل ملفّك قبل التقديم؟"
-
-#: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:570
+#: openassessment/xblock/static/js/src/lms/oa_response.js:545
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "إنّت على وشك تقديم إجابتك عن هذا الواحب. لن تتمكّن، بعد تقديم إجابتك، من تعديلها أو تقديم إجابة جديدة."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:603
+#: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr "حجم كل ملف يجب أن يكون {max_files_mb}أو أقل."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:617
+#: openassessment/xblock/static/js/src/lms/oa_response.js:588
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
@@ -324,23 +314,23 @@ msgid "Only "
 msgstr "فقط"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:700
-#: openassessment/xblock/static/js/src/lms/oa_response.js:706
+#: openassessment/xblock/static/js/src/lms/oa_response.js:671
+#: openassessment/xblock/static/js/src/lms/oa_response.js:677
 msgid "Describe "
 msgstr "صف"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:700
+#: openassessment/xblock/static/js/src/lms/oa_response.js:671
 msgid "(required):"
 msgstr "(مطلوب):"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:720
+#: openassessment/xblock/static/js/src/lms/oa_response.js:691
 msgid "Thumbnail view of "
 msgstr "صورة مصغرة لـ"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:817
+#: openassessment/xblock/static/js/src/lms/oa_response.js:789
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
@@ -354,30 +344,29 @@ msgid ""
 msgstr "ستفقد أي تغيير كنت قد أجريته إذا تركت هذه الصفحة دون تقديم تقييمك الذاتي."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:130
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:234
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:142
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:247
 msgid "Unexpected server error."
 msgstr "حدث خطأ غير متوقّع."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:134
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
 msgid "You must provide a learner name."
 msgstr "يجب إدخال اسم المتعلّم."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:148
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:160
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
 msgstr "سيتم اعتماد هذه الدرجة لجميع أعضاء الفريق. هل ترغب بالاستمرار؟"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:285
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:298
 msgid "Error getting the number of ungraded responses"
 msgstr "حدث خطأ أثناء محاولة الحصول على عدد الردود غير المُقيّمة."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:518
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -396,7 +385,6 @@ msgid ""
 msgstr "ستفقد أي تغيير كنت قد أجريته إذا تركت هذه الصفحة دون تقديم تقييمك لردود الزملاء."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_base.js:336
 msgid "Unable to load"
 msgstr "تعذّر إجراء التحميل."
 
