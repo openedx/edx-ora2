@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 13:14-0500\n"
-"PO-Revision-Date: 2021-02-13 04:25+0000\n"
+"POT-Creation-Date: 2021-02-24 16:13-0500\n"
+"PO-Revision-Date: 2021-02-22 19:28+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/open-edx/edx-platform/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
@@ -105,71 +105,71 @@ msgstr "Jukumu moja au zaidi la kupanga upya limeshindikana."
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:482
+#: openassessment/xblock/static/js/src/oa_server.js:483
 msgid "This problem could not be saved."
 msgstr "Tatizo hili haliwezi kuhifadhiwa."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:503
+#: openassessment/xblock/static/js/src/oa_server.js:504
 msgid "The server could not be contacted."
 msgstr "Sava haikuweza kuarifiwa."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:529
+#: openassessment/xblock/static/js/src/oa_server.js:530
 msgid "Could not retrieve upload url."
 msgstr "Haikuweza kupata url ya kupakia."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:548
-#: openassessment/xblock/static/js/src/oa_server.js:567
+#: openassessment/xblock/static/js/src/oa_server.js:549
+#: openassessment/xblock/static/js/src/oa_server.js:568
 msgid "Server error."
 msgstr "Hitilafu ya seva."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:587
+#: openassessment/xblock/static/js/src/oa_server.js:588
 msgid "Could not retrieve download url."
 msgstr "Haikuweza kupata KIRASA cha kupakua."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:613
+#: openassessment/xblock/static/js/src/oa_server.js:614
 msgid "The submission could not be removed from the grading pool."
 msgstr "Uwasilishaji hauwezi  kuondolewa kutoka kweny madaraja ya 'ubora'."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:669
+#: openassessment/xblock/static/js/src/oa_server.js:670
 msgid "Multiple teams returned for course"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:676
+#: openassessment/xblock/static/js/src/oa_server.js:677
 msgid "Could not load teams information."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:698
+#: openassessment/xblock/static/js/src/oa_server.js:699
 msgid "User lookup failed"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:703
+#: openassessment/xblock/static/js/src/oa_server.js:704
 msgid "Error when looking up username"
 msgstr ""
 
@@ -261,56 +261,46 @@ msgid "Your file "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:360
+#: openassessment/xblock/static/js/src/lms/oa_response.js:361
 msgid "Status of Your Response"
 msgstr "Hali halisi ya majibu Yako"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:414
 msgid "This response has not been saved."
 msgstr "Jibu hili halijahifadhiwa."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:419
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "Kama unatoka kwenye huu ukurasa bila ya kuhifadhi au kuwasilisha majibu yako, utapoteza kazi yote uliofanya ya kujibu maswali."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:437
 msgid "Saving..."
 msgstr "Inahifadhi..."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:457
 msgid "This response has been saved but not submitted."
 msgstr "'Haya' Majibu yamehifadhiwa lakini hayajawasilishwa."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:462
 msgid "Error"
 msgstr "Hitilafu"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:488
-msgid "Do you want to upload your file before submitting?"
-msgstr "Je, wahitaji kupakia faili yako kabla ya kuifikisha?"
-
-#: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:570
+#: openassessment/xblock/static/js/src/lms/oa_response.js:545
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Unakaribia 'kuwasilisha' majibu ya hili zoezi. Baada ya kuwasilisha haya majibu, huwezi kubadilisha au kuwasilisha majibu 'mapya'."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:603
+#: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:617
+#: openassessment/xblock/static/js/src/lms/oa_response.js:588
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
@@ -321,23 +311,23 @@ msgid "Only "
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:700
-#: openassessment/xblock/static/js/src/lms/oa_response.js:706
+#: openassessment/xblock/static/js/src/lms/oa_response.js:671
+#: openassessment/xblock/static/js/src/lms/oa_response.js:677
 msgid "Describe "
 msgstr "Elezea "
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:700
+#: openassessment/xblock/static/js/src/lms/oa_response.js:671
 msgid "(required):"
 msgstr "(inahitajika):"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:720
+#: openassessment/xblock/static/js/src/lms/oa_response.js:691
 msgid "Thumbnail view of "
 msgstr "Muonekano wa alama ya kidole gumba 'wa'"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_response.js:817
+#: openassessment/xblock/static/js/src/lms/oa_response.js:789
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
@@ -351,30 +341,29 @@ msgid ""
 msgstr "Kama ukitoka kwenye huu ukurasa bila kuwasilisha tathmini yako, utapoteza kazi yoyote uliofanya."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:130
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:234
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:142
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:247
 msgid "Unexpected server error."
 msgstr "Hitilafu ya seva isiyotarajiwa."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:134
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
 msgid "You must provide a learner name."
 msgstr "Lazima utoe jina la mwanafunzi."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:148
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:160
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:285
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:298
 msgid "Error getting the number of ungraded responses"
 msgstr "Hitilafu ya kupata idadi ya majibu yasiyo na madaraja"
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:518
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -393,7 +382,6 @@ msgid ""
 msgstr "Ukitoka kwenye ukurasa huu kabla ya kuwasilisha tathmini yenu ya pamoja,, utapoteza kazi yoyote uliofanya."
 
 #: openassessment/xblock/static/js/openassessment-lms.js:317
-#: openassessment/xblock/static/js/src/lms/oa_base.js:336
 msgid "Unable to load"
 msgstr "Haiwezi kupakia"
 
