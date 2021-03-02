@@ -1,15 +1,32 @@
 /**
  Handles Response Editor of tinymce type.
  * */
-import tinymce from 'tinymce/tinymce';
-import 'tinymce/icons/default';
-import 'tinymce/themes/silver';
-
-// Tell tinymce from where it should load css, plugins etc
-tinymce.baseURL = '/xblock/resource/openassessment/static/vendors/tinymce/';
 
 (function (define) {
-  define(() => {
+  const dependencies = [];
+  const tinymceCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css';
+
+  // Create a flag to determine if we are in lms
+  const isLMS = typeof window.LmsRuntime !== 'undefined';
+
+  // Determine which css file should be loaded to style text in the editor
+  let contentCssFile = '/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css';
+  if (isLMS) {
+    contentCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css';
+  }
+
+  if (typeof window.tinymce === 'undefined') {
+    // If tinymce is not available, we need to load it
+    dependencies.push('tinymce');
+    dependencies.push('jquery.tinymce');
+
+    // we also need to add css for tinymce
+    if (!$(`link[href='${tinymceCssFile}']`).length) {
+      $(`<link href="${tinymceCssFile}" type="text/css" rel="stylesheet" />`).appendTo('head');
+    }
+  }
+
+  define(dependencies, () => {
     class EditorTinymce {
       editorInstances = [];
 
@@ -20,19 +37,24 @@ tinymce.baseURL = '/xblock/resource/openassessment/static/vendors/tinymce/';
         let config = {
           menubar: false,
           statusbar: false,
-          plugins: 'codesample code image link lists',
-          toolbar: 'formatselect | bold italic underline | link blockquote codesample image | numlist bullist outdent indent | strikethrough | code | undo redo',
-          setup: (ed) => {
+          theme: 'modern',
+          skin: 'studio-tmce4',
+          height: '300',
+          schema: 'html5',
+          plugins: 'code image link lists',
+          content_css: contentCssFile,
+          toolbar: 'formatselect | bold italic underline | link blockquote image | numlist bullist outdent indent | strikethrough | code | undo redo',
+          setup: (editor) => {
             // keep editor instances for later use
-            this.editorInstances.push(ed);
+            editor.on('init', () => {
+              this.editorInstances.push(editor);
+            });
           },
         };
 
         // if readonly hide toolbar, menubar and statusbar
         if (readonly) {
           config = Object.assign(config, {
-            menubar: false,
-            statusbar: false,
             toolbar: false,
             readonly: 1,
           });
@@ -54,14 +76,20 @@ tinymce.baseURL = '/xblock/resource/openassessment/static/vendors/tinymce/';
         this.elements.each(function () {
           // check if it's readonly
           const disabled = $(this).attr('disabled');
-          const config = ctrl.getTinyMCEConfig(disabled);
 
-          tinymce.init({
-            target: this,
-            ...config,
-          });
+          // In LMS with multiple Unit containing ORA Block with tinyMCE enabled,
+          // We need to destroy if any previously intialized editor exists for current element.
+          const id = $(this).attr('id');
+          if (id !== undefined) {
+            const existingEditor = tinymce.get(id); // eslint-disable-line
+            if (existingEditor) {
+              existingEditor.destroy();
+            }
+          }
+
+          const config = ctrl.getTinyMCEConfig(disabled);
+          $(this).tinymce(config);
         });
-        // this.elements.tinymce(this.getTinyMCEConfig(disabled));
       }
 
       /**
@@ -88,7 +116,13 @@ tinymce.baseURL = '/xblock/resource/openassessment/static/vendors/tinymce/';
       /* eslint-disable-next-line consistent-return */
       response(texts) {
         if (typeof texts === 'undefined') {
-          return this.editorInstances.map(editor => editor.getContent());
+          return this.editorInstances.map(editor => {
+            const content = editor.getContent();
+            // Remove linebreaks from TinyMCE output
+            // This is a workaround for TinyMCE 4 only,
+            // 5.x does not have this bug.
+            return content.replace(/(\r\n|\n|\r)/gm, '');
+          });
         }
         this.editorInstances.forEach((editor, index) => {
           editor.setContent(texts[index]);
