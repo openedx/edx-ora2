@@ -2,7 +2,7 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict, namedtuple
+from collections import defaultdict, namedtuple, OrderedDict
 from io import StringIO
 from urllib.parse import urljoin
 from zipfile import ZipFile
@@ -514,6 +514,34 @@ class OraAggregateData:
         return returned_string
 
     @classmethod
+    def _build_assessment_parts_array(cls, assessment, median_scores):
+        """
+        Args:
+            assessment - assessment containing the parts that we would like to report on.
+            median_scores - dictionary with criterion name keys and median score values,
+               as returned by Assessment.get_median_score_dict()
+
+        Returns:
+            OrderedDict that contains an entries for each criterion of the assessment(s).
+        """
+        parts = OrderedDict()
+        number = 1
+        for part in assessment.parts.order_by('criterion__order_num'):
+            option_label = None
+            option_points = None
+            if part.option:
+                option_label = part.option.label
+                option_points = part.option.points
+
+            criterion_col_label = _(u'Criterion {number}: {label}').format(number=number, label=part.criterion.label)
+            parts[criterion_col_label] = option_label or ''
+            parts[_('Points {number}').format(number=number)] = option_points or 0
+            parts[_('Median Score {number}').format(number=number)] = median_scores.get(part.criterion.name)
+            parts[_('Feedback {number}').format(number=number)] = part.feedback or ''
+            number += 1
+        return parts
+
+    @classmethod
     def _build_feedback_options_cell(cls, assessments):
         """
         Args:
@@ -543,6 +571,26 @@ class OraAggregateData:
         except AssessmentFeedback.DoesNotExist:
             return ""
         return feedback.feedback_text
+
+    @classmethod
+    def _build_response_file_links(cls, submission):
+        """
+        Args:
+            submission - object
+        Returns:
+            string that contains newline-separated URLs to each of the files uploaded for this submission.
+        """
+        file_links = ''
+        sep = "\n"
+        base_url = getattr(settings, 'LMS_ROOT_URL', '')
+
+        from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+        file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
+        for url, _description, _filename, _show_delete in file_downloads:
+            if file_links:
+                file_links += sep
+            file_links += urljoin(base_url, url)
+        return file_links
 
     @classmethod
     def collect_ora2_data(cls, course_id):
@@ -805,6 +853,78 @@ class OraAggregateData:
                 result[item_id][status] += 1
 
         return result
+
+    @classmethod
+    def generate_assessment_data(cls, xblock_id, submission_uuid=None):
+        """
+        Generates an OrderedDict for each submission and/or assessment for the given user state.
+
+        Arguments:
+        * xblock_id: unique identifier for the current XBlock
+        * submission_uuid: unique identifier for the submission, or None
+        """
+        row = OrderedDict()
+        row[_('Item ID')] = xblock_id
+        row[_('Submission ID')] = submission_uuid or ''
+
+        submission = None
+        if submission_uuid:
+            submission = sub_api.get_submission_and_student(submission_uuid)
+
+        if not submission:
+            # If no submission, just report block Item ID.
+            yield row
+            return
+
+        student_item = submission['student_item']
+        row[_('Anonymized Student ID')] = student_item['student_id']
+
+        assessments = cls._use_read_replica(
+            Assessment.objects.prefetch_related('parts').
+            prefetch_related('rubric').
+            filter(
+                submission_uuid=submission['uuid']
+            )
+        )
+        if assessments:
+            scores = Assessment.scores_by_criterion(assessments)
+            median_scores = Assessment.get_median_score_dict(scores)
+        else:
+            # If no assessments, just report submission data.
+            median_scores = []
+            assessments = [None]
+
+        score = sub_api.get_score(student_item) or {}
+        feedback_cell = cls._build_feedback_cell(submission_uuid)
+        response_files = cls._build_response_file_links(submission)
+
+        for assessment in assessments:
+            assessment_row = row.copy()
+            if assessment:
+                assessment_cells = cls._build_assessment_parts_array(assessment, median_scores)
+                feedback_options_cell = cls._build_feedback_options_cell([assessment])
+
+                score_created_at = score.get('created_at', '')
+                if score_created_at:
+                    score_created_at = score_created_at.strftime('%F %T %Z')
+
+                assessment_row[_('Assessment ID')] = assessment.id
+                assessment_row[_('Assessment Scored Date')] = assessment.scored_at.strftime('%F')
+                assessment_row[_('Assessment Scored Time')] = assessment.scored_at.strftime('%T %Z')
+                assessment_row[_('Assessment Type')] = assessment.score_type
+                assessment_row[_('Anonymous Scorer Id')] = assessment.scorer_id
+                assessment_row.update(assessment_cells)
+                assessment_row[_('Overall Feedback')] = assessment.feedback or ''
+                assessment_row[_('Assessment Score Earned')] = assessment.points_earned
+                assessment_row[_('Assessment Scored At')] = assessment.scored_at.strftime('%F %T %Z')
+                assessment_row[_('Date/Time Final Score Given')] = score_created_at
+                assessment_row[_('Final Score Earned')] = score.get('points_earned', '')
+                assessment_row[_('Final Score Possible')] = score.get('points_possible', assessment.points_possible)
+                assessment_row[_('Feedback Statements Selected')] = feedback_options_cell
+                assessment_row[_('Feedback on Assessment')] = feedback_cell
+
+            assessment_row[_('Response Files')] = response_files
+            yield assessment_row
 
 
 class OraDownloadData:

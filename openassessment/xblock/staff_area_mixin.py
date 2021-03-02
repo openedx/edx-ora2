@@ -8,7 +8,6 @@ from functools import wraps
 
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.core import XBlock
-
 from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
