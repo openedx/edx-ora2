@@ -9,9 +9,11 @@ import DateTimeFactory from './oa_datefactory';
  * @constructor
  */
 export class GradeView {
-  constructor(element, server, baseView) {
+  constructor(element, server, responseEditorLoader, data, baseView) {
     this.element = element;
     this.server = server;
+    this.responseEditorLoader = responseEditorLoader;
+    this.data = data;
     this.baseView = baseView;
     this.announceStatus = false;
     this.isRendering = false;
@@ -44,6 +46,15 @@ export class GradeView {
   }
 
   /**
+   Use Response Editor to render response
+    * */
+  renderResponseViaEditor() {
+    const sel = $('.submission__answer__display', this.element);
+    const responseElements = sel.find('.submission__answer__part__text__value');
+    this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
+  }
+
+  /**
      * Install event handlers for the view.
      */
   installHandlers() {
@@ -57,6 +68,7 @@ export class GradeView {
       eventObject.preventDefault();
       view.submitFeedbackOnAssessment();
     });
+    view.renderResponseViaEditor();
   }
 
   /**
