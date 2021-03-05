@@ -10,10 +10,21 @@ Returns:
     OpenAssessment.ResponseView
 * */
 export class LeaderboardView {
-  constructor(element, server, baseView) {
+  constructor(element, server, responseEditorLoader, data, baseView) {
     this.element = element;
     this.server = server;
+    this.responseEditorLoader = responseEditorLoader;
+    this.data = data;
     this.baseView = baseView;
+  }
+
+  /**
+   Use Response Editor to render response
+    * */
+  renderResponseViaEditor() {
+    const sel = $('.leaderboard__score__list', this.element);
+    const responseElements = sel.find('.submission__answer__part__text__value');
+    this.responseEditorLoader.load(this.data.TEXT_RESPONSE_EDITOR, responseElements);
   }
 
   /**
@@ -34,6 +45,7 @@ export class LeaderboardView {
                     && $(stepID, view.element).hasClass('is--showing')) {
           $(`[id='oa_leaderboard_${usageID}']`, view.element).focus();
         }
+        view.renderResponseViaEditor();
       },
     ).fail((errMsg) => {
       baseView.showLoadError('leaderboard', errMsg);
