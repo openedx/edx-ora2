@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 16:13-0500\n"
-"PO-Revision-Date: 2021-02-22 19:28+0000\n"
+"POT-Creation-Date: 2021-03-01 01:07-0500\n"
+"PO-Revision-Date: 2021-03-02 19:27+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -31,22 +31,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
-msgid "boolean"
-msgstr ""
-
-#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
-msgid "function"
-msgstr ""
-
-#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
-msgid "number"
-msgstr ""
-
-#: openassessment/xblock/static/js/openassessment-editor-tinymce.js:1
-msgid "span"
-msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.js:3
 #: openassessment/xblock/static/js/openassessment-studio.js:1
