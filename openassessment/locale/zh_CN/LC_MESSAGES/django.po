@@ -39,9 +39,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 16:13-0500\n"
-"PO-Revision-Date: 2021-02-25 21:29+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-03-01 01:07-0500\n"
+"PO-Revision-Date: 2021-03-02 18:32+0000\n"
+"Last-Translator: GoodLuck <1833447072@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +81,96 @@ msgstr "样例答案 {example_number}的“{criterion_name}”得分点存在额
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "样例答案{example_number} 的“{criterion_name}”得分点缺少分值选项"
 
-#: openassessment/data.py:972
+#: openassessment/data.py:537
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr ""
+
+#: openassessment/data.py:539
+#, python-brace-format
+msgid "Points {number}"
+msgstr ""
+
+#: openassessment/data.py:540
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr ""
+
+#: openassessment/data.py:541
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr ""
+
+#: openassessment/data.py:867
+msgid "Item ID"
+msgstr ""
+
+#: openassessment/data.py:868
+msgid "Submission ID"
+msgstr ""
+
+#: openassessment/data.py:880
+msgid "Anonymized Student ID"
+msgstr ""
+
+#: openassessment/data.py:911
+msgid "Assessment ID"
+msgstr ""
+
+#: openassessment/data.py:912
+msgid "Assessment Scored Date"
+msgstr ""
+
+#: openassessment/data.py:913
+msgid "Assessment Scored Time"
+msgstr ""
+
+#: openassessment/data.py:914
+msgid "Assessment Type"
+msgstr ""
+
+#: openassessment/data.py:915
+msgid "Anonymous Scorer Id"
+msgstr ""
+
+#: openassessment/data.py:917
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
+msgid "Overall Feedback"
+msgstr "整体评语"
+
+#: openassessment/data.py:918
+msgid "Assessment Score Earned"
+msgstr ""
+
+#: openassessment/data.py:919
+msgid "Assessment Scored At"
+msgstr ""
+
+#: openassessment/data.py:920
+msgid "Date/Time Final Score Given"
+msgstr ""
+
+#: openassessment/data.py:921
+msgid "Final Score Earned"
+msgstr ""
+
+#: openassessment/data.py:922
+msgid "Final Score Possible"
+msgstr ""
+
+#: openassessment/data.py:923
+msgid "Feedback Statements Selected"
+msgstr ""
+
+#: openassessment/data.py:924
+msgid "Feedback on Assessment"
+msgstr ""
+
+#: openassessment/data.py:926
+msgid "Response Files"
+msgstr ""
+
+#: openassessment/data.py:1092
 msgid "No description provided."
 msgstr ""
 
@@ -1922,10 +2011,6 @@ msgstr "评语"
 msgid "Points Possible"
 msgstr "满分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
-msgid "Overall Feedback"
-msgstr "整体评语"
-
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
 msgstr "学习如何评分"
@@ -2225,66 +2310,66 @@ msgstr "在进行自我评分之前您必须提交自己的答案"
 msgid "Your self assessment could not be submitted."
 msgstr "自我评分无法提交"
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:40
 msgid "You do not have permission to schedule training"
 msgstr "您没有权限来安排练习"
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to reschedule tasks."
 msgstr "您没有权限来重新安排任务。"
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access the ORA staff area"
 msgstr "您无权访问教员信息"
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA learner information."
 msgstr "您无权访问学生信息。"
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA staff grading."
 msgstr "您无权访问教员评分"
 
-#: openassessment/xblock/staff_area_mixin.py:184
+#: openassessment/xblock/staff_area_mixin.py:183
 msgid "Error getting learner information."
 msgstr "无法获取学生列表"
 
-#: openassessment/xblock/staff_area_mixin.py:227
+#: openassessment/xblock/staff_area_mixin.py:226
 msgid "Error loading the checked out learner response."
 msgstr "无法加载已读学生回复"
 
-#: openassessment/xblock/staff_area_mixin.py:228
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "No other learner responses are available for grading at this time."
 msgstr "目前没有可用的学生回复"
 
-#: openassessment/xblock/staff_area_mixin.py:230
+#: openassessment/xblock/staff_area_mixin.py:229
 msgid "Error getting staff grade information."
 msgstr "无法获取教员评分信息"
 
-#: openassessment/xblock/staff_area_mixin.py:251
+#: openassessment/xblock/staff_area_mixin.py:250
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "获得不合格和已检验的员工评分计数出现错误。"
 
-#: openassessment/xblock/staff_area_mixin.py:540
+#: openassessment/xblock/staff_area_mixin.py:539
 msgid "Please enter valid reason to remove the submission."
 msgstr "请输入合理的理由以移除该提交。"
 
-#: openassessment/xblock/staff_area_mixin.py:551
+#: openassessment/xblock/staff_area_mixin.py:550
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:562
+#: openassessment/xblock/staff_area_mixin.py:561
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:589
+#: openassessment/xblock/staff_area_mixin.py:588
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员提交已从同学评估中删除。除非您删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: openassessment/xblock/staff_area_mixin.py:624
+#: openassessment/xblock/staff_area_mixin.py:623
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2421,11 +2506,11 @@ msgstr ""
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:757
+#: openassessment/xblock/submission_mixin.py:759
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:758
+#: openassessment/xblock/submission_mixin.py:760
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 

@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 16:13-0500\n"
-"PO-Revision-Date: 2021-02-25 21:29+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-03-01 01:07-0500\n"
+"PO-Revision-Date: 2021-03-02 18:32+0000\n"
+"Last-Translator: わたカフェの店長\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,96 @@ msgstr "例 {example_number} の\"{criterion_name}\"に不要な選択肢があ�
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "例 {example_number} の\"{criterion_name}\"に選択肢が足りません。"
 
-#: openassessment/data.py:972
+#: openassessment/data.py:537
+#, python-brace-format
+msgid "Criterion {number}: {label}"
+msgstr ""
+
+#: openassessment/data.py:539
+#, python-brace-format
+msgid "Points {number}"
+msgstr ""
+
+#: openassessment/data.py:540
+#, python-brace-format
+msgid "Median Score {number}"
+msgstr ""
+
+#: openassessment/data.py:541
+#, python-brace-format
+msgid "Feedback {number}"
+msgstr ""
+
+#: openassessment/data.py:867
+msgid "Item ID"
+msgstr ""
+
+#: openassessment/data.py:868
+msgid "Submission ID"
+msgstr ""
+
+#: openassessment/data.py:880
+msgid "Anonymized Student ID"
+msgstr ""
+
+#: openassessment/data.py:911
+msgid "Assessment ID"
+msgstr ""
+
+#: openassessment/data.py:912
+msgid "Assessment Scored Date"
+msgstr ""
+
+#: openassessment/data.py:913
+msgid "Assessment Scored Time"
+msgstr ""
+
+#: openassessment/data.py:914
+msgid "Assessment Type"
+msgstr ""
+
+#: openassessment/data.py:915
+msgid "Anonymous Scorer Id"
+msgstr ""
+
+#: openassessment/data.py:917
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
+msgid "Overall Feedback"
+msgstr "全体フィードバック"
+
+#: openassessment/data.py:918
+msgid "Assessment Score Earned"
+msgstr ""
+
+#: openassessment/data.py:919
+msgid "Assessment Scored At"
+msgstr ""
+
+#: openassessment/data.py:920
+msgid "Date/Time Final Score Given"
+msgstr ""
+
+#: openassessment/data.py:921
+msgid "Final Score Earned"
+msgstr ""
+
+#: openassessment/data.py:922
+msgid "Final Score Possible"
+msgstr ""
+
+#: openassessment/data.py:923
+msgid "Feedback Statements Selected"
+msgstr ""
+
+#: openassessment/data.py:924
+msgid "Feedback on Assessment"
+msgstr ""
+
+#: openassessment/data.py:926
+msgid "Response Files"
+msgstr ""
+
+#: openassessment/data.py:1092
 msgid "No description provided."
 msgstr ""
 
@@ -1901,10 +1990,6 @@ msgstr "フィードバック"
 msgid "Points Possible"
 msgstr "配点"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
-msgid "Overall Feedback"
-msgstr "全体フィードバック"
-
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
 msgstr "評価方法の学習"
@@ -2204,66 +2289,66 @@ msgstr "セルフ・アセスメントを行う前に、解答を提出してく
 msgid "Your self assessment could not be submitted."
 msgstr "あなたのセルフ・アセスメントは提出できませんでした。"
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:40
 msgid "You do not have permission to schedule training"
 msgstr "トレーニングをスケジューリングする権限がありません"
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: openassessment/xblock/staff_area_mixin.py:41
 msgid "You do not have permission to reschedule tasks."
 msgstr "タスクの再スケジューリングをする権限がありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:67
 msgid "You do not have permission to access the ORA staff area"
 msgstr "ORAスタッフ情報へのアクセス権がありません"
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:68
 msgid "You do not have permission to access ORA learner information."
 msgstr "ORA受講者情報へのアクセス権がありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access ORA staff grading."
 msgstr "ORAスタッフ採点へのアクセスがはありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:184
+#: openassessment/xblock/staff_area_mixin.py:183
 msgid "Error getting learner information."
 msgstr "受講者情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:227
+#: openassessment/xblock/staff_area_mixin.py:226
 msgid "Error loading the checked out learner response."
 msgstr "チェックアウト済受講者の解答の読込エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:228
+#: openassessment/xblock/staff_area_mixin.py:227
 msgid "No other learner responses are available for grading at this time."
 msgstr "現在、採点対象の他の受講者の解答はありません。"
 
-#: openassessment/xblock/staff_area_mixin.py:230
+#: openassessment/xblock/staff_area_mixin.py:229
 msgid "Error getting staff grade information."
 msgstr "スタッフ採点情報の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:251
+#: openassessment/xblock/staff_area_mixin.py:250
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "スタッフ採点の未採点およびチェックアウト済の数の取得エラー。"
 
-#: openassessment/xblock/staff_area_mixin.py:540
+#: openassessment/xblock/staff_area_mixin.py:539
 msgid "Please enter valid reason to remove the submission."
 msgstr "提出物を削除する正当な理由を入力してください。"
 
-#: openassessment/xblock/staff_area_mixin.py:551
+#: openassessment/xblock/staff_area_mixin.py:550
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:562
+#: openassessment/xblock/staff_area_mixin.py:561
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:589
+#: openassessment/xblock/staff_area_mixin.py:588
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "受講者の提出物はピア・アセスメントから削除されました。あなたが実施内容をリセットして再提出を許可しない限り、この受講者は０点となります。"
 
-#: openassessment/xblock/staff_area_mixin.py:624
+#: openassessment/xblock/staff_area_mixin.py:623
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2400,11 +2485,11 @@ msgstr ""
 msgid "Error retrieving upload URL."
 msgstr "アップロードURLの取得エラー。"
 
-#: openassessment/xblock/submission_mixin.py:757
+#: openassessment/xblock/submission_mixin.py:759
 msgid "This response has been saved but not submitted."
 msgstr "この解答は一時保存されていますが、提出されていません。"
 
-#: openassessment/xblock/submission_mixin.py:758
+#: openassessment/xblock/submission_mixin.py:760
 msgid "This response has not been saved."
 msgstr "この解答は保存されていません。"
 
