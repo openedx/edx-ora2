@@ -438,6 +438,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     fileTypeWhiteList (string): Comma separated file type white list
          *     latexEnabled: TRUE if latex rendering is enabled.
          *     leaderboardNum (int): The number of scores to show in the leaderboard.
+         *     labels (string): A string with comma-separated values.
          *
          * @returns {promise} A JQuery promise, which resolves with no arguments
          *     and fails with an error message.
@@ -450,6 +451,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 feedback_prompt: options.feedbackPrompt,
                 feedback_default_text: options.feedback_default_text,
                 title: options.title,
+                labels: options.labels,
                 submission_start: options.submissionStart,
                 submission_due: options.submissionDue,
                 criteria: options.criteria,

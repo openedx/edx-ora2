@@ -46,6 +46,28 @@
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label
+                            for="openassessment_labels_editor"
+                            class="setting-label">
+                            {% trans "Labels" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_labels_editor"
+                            value="{{ labels }}"
+                        >
+                    </div>
+                    <p class="setting-help">
+                        {% trans "A comma-separated list of label strings that can be used to categorize a problem. For example, oop, problem solving, dsa, etc." %}
+                        <br /> {% trans "Rules:" %}
+                        <br /> - {% trans "Only lower case alphabets [a-z]." %}
+                        <br /> - {% trans "Special character &lt;space&gt; is allowed." %}
+                        <br /> - {% trans "Use \",\" to separate labels." %}
+                    </p>
+                </li>
+                <li class="openassessment_date_editor field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label
                             for="openassessment_submission_start_date"
                             class="setting-label">
                             {% trans "Response Start Date" %}

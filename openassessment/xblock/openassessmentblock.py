@@ -7,6 +7,8 @@ import datetime as dt
 import json
 import logging
 import os
+import re
+from collections import OrderedDict
 
 import pkg_resources
 import pytz
@@ -245,6 +247,34 @@ class OpenAssessmentBlock(MessageMixin,
         scope=Scope.user_state,
         help="Indicates whether or not there are peers to grade."
     )
+
+    label_list = List(
+        default = DEFAULT_LABEL_LIST,
+        scope = Scope.content,
+        help="List of strings relavent to the content."
+    )
+
+    @property
+    def labels(self):
+        return ",".join(self.label_list)
+
+    @labels.setter
+    def labels(self, value):
+        """
+        Removes duplicates and characters that are not allowed, 
+        and stores label list.
+        """
+        if value is None or value.strip() == "":
+            self.label_list = []
+        else:
+            # Exclude characters that are not in allowed set of characters.
+            labels_str = re.sub(r"((?![a-z ,]).)+", "", value.lower())
+
+            label_list = [label.strip() 
+                            for label in labels_str.split(",") 
+                            if label.strip() != ""]
+            # Remove duplicates and store.
+            self.label_list = list(OrderedDict.fromkeys(label_list))
 
     @property
     def course_id(self):
@@ -720,6 +750,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']
+        block.labels = config.get('labels')
 
         return block
 

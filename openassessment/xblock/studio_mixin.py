@@ -105,7 +105,7 @@ class StudioMixin(object):
             dict with keys
                 'rubric' (unicode), 'prompt' (unicode), 'title' (unicode),
                 'submission_start' (unicode),  'submission_due' (unicode),
-                'assessments (dict)
+                'assessments' (dict), 'labels' (unicode)
 
         """
         # In the authoring GUI, date and time fields should never be null.
@@ -142,6 +142,7 @@ class StudioMixin(object):
             'title': self.title,
             'submission_due': submission_due,
             'submission_start': submission_start,
+            'labels': self.labels,
             'assessments': assessments,
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
@@ -246,6 +247,7 @@ class StudioMixin(object):
         self.submission_due = data['submission_due']
         self.text_response = data['text_response']
         self.file_upload_response = data['file_upload_response']
+        self.labels = data['labels']
         if data['file_upload_response']:
             self.file_upload_type = data['file_upload_type']
             self.white_listed_file_types_string = data['white_listed_file_types']
