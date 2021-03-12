@@ -6,6 +6,7 @@ import logging
 from django.conf import settings
 
 import botocore
+from botocore.config import Config as BotoConfig
 import boto3
 
 from ..exceptions import FileUploadInternalError
@@ -76,11 +77,13 @@ def _connect_to_s3():
     aws_secret_access_key = getattr(settings, "AWS_SECRET_ACCESS_KEY", None)
     endpoint_url = getattr(settings, "AWS_S3_ENDPOINT_URL", None)
 
+    config = BotoConfig(signature_version='v4')
     return boto3.client(
         "s3",
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
         endpoint_url=endpoint_url,
+        config=config,
     )
 
 
