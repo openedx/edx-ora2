@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 01:07-0500\n"
+"POT-Creation-Date: 2021-03-08 00:57-0500\n"
 "PO-Revision-Date: 2021-03-02 18:32+0000\n"
 "Last-Translator: わたカフェの店長\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
@@ -60,22 +60,22 @@ msgstr "例 {example_number} の\"{criterion_name}\"に不要な選択肢があ�
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "例 {example_number} の\"{criterion_name}\"に選択肢が足りません。"
 
-#: openassessment/data.py:537
+#: openassessment/data.py:536
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr ""
 
-#: openassessment/data.py:539
+#: openassessment/data.py:538
 #, python-brace-format
 msgid "Points {number}"
 msgstr ""
 
-#: openassessment/data.py:540
+#: openassessment/data.py:539
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr ""
 
-#: openassessment/data.py:541
+#: openassessment/data.py:540
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr ""
