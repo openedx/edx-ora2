@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 01:07-0500\n"
+"POT-Creation-Date: 2021-03-08 00:57-0500\n"
 "PO-Revision-Date: 2021-03-02 18:32+0000\n"
 "Last-Translator: GoodLuck <1833447072@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -81,22 +81,22 @@ msgstr "样例答案 {example_number}的“{criterion_name}”得分点存在额
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "样例答案{example_number} 的“{criterion_name}”得分点缺少分值选项"
 
-#: openassessment/data.py:537
+#: openassessment/data.py:536
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr ""
 
-#: openassessment/data.py:539
+#: openassessment/data.py:538
 #, python-brace-format
 msgid "Points {number}"
 msgstr ""
 
-#: openassessment/data.py:540
+#: openassessment/data.py:539
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr ""
 
-#: openassessment/data.py:541
+#: openassessment/data.py:540
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr ""
