@@ -965,6 +965,75 @@ class OraDownloadData:
         return response.content
 
     @classmethod
+    def _get_course_blocks(cls, course_id):
+        """
+        Returns untransformed block structure for a given course key.
+        """
+
+        from lms.djangoapps.course_blocks.api import get_course_blocks
+        from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
+        from xmodule.modulestore.django import modulestore
+
+        store = modulestore()
+        course_usage_key = store.make_course_usage_key(course_id)
+
+        # Passing an empty block structure transformer here to avoid user access checks
+        return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+
+    @classmethod
+    def _map_ora_usage_keys_to_path_info(cls, course_id):
+        """
+        Helper function that accepts course key and returns mapping in the form of a dictionary,
+        where key is a string representation of ORA's usage key, and value is a dictionary with
+        all information needed to build the submission file path.
+        """
+
+        def children(usage_key):
+            for index, child in enumerate(blocks.get_xblock_field(usage_key, 'children')):
+                yield index, blocks.get_xblock_field(child, 'display_name'), child
+
+        blocks = cls._get_course_blocks(course_id)
+
+        path_info = {}
+
+        for section_index, section_name, section in children(blocks.root_block_usage_key):
+            for sub_section_index, sub_section_name, sub_section in children(section):
+                for unit_index, unit_name, unit in children(sub_section):
+                    for ora_index, ora_name, ora in children(unit):
+                        path_info[str(ora)] = {
+                            "section_index": section_index,
+                            "section_name": section_name,
+                            "sub_section_index": sub_section_index,
+                            "sub_section_name": sub_section_name,
+                            "unit_index": unit_index,
+                            "unit_name": unit_name,
+                            "ora_index": ora_index,
+                            "ora_name": ora_name,
+                        }
+
+        return path_info
+
+    @classmethod
+    def _submission_file_path(cls, course_id, student_id, file_name, ora_path_info):
+        """
+        Basing on submission information, returns its path inside zip archive.
+        """
+
+        directory_name = ", ".join([
+            f"[{ora_path_info['section_index']}]{ora_path_info['section_name']}",
+            f"[{ora_path_info['sub_section_index']}]{ora_path_info['sub_section_name']}"
+            f"[{ora_path_info['unit_index']}]{ora_path_info['unit_name']}"
+        ])
+
+        file_name = f"[{ora_path_info['ora_index']}] - {student_id} - {file_name}"
+
+        return os.path.join(
+            str(course_id),
+            directory_name,
+            file_name,
+        )
+
+    @classmethod
     def create_zip_with_attachments(cls, file, course_id, submission_files_data):
         """
         Opens given stream as a zip file and writes into it all submission
@@ -1050,6 +1119,7 @@ class OraDownloadData:
         """
 
         all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
+        ora_paths_information = cls._map_ora_usage_keys_to_path_info(course_id)
 
         for student, submission, _ in all_submission_information:
             raw_answer = submission.get('answer', dict())
@@ -1064,18 +1134,17 @@ class OraDownloadData:
                     'name': uploaded_file.name,
                     'description': uploaded_file.description,
                     'size': uploaded_file.size,
-                    'file_path': os.path.join(
-                        str(course_id),
-                        student['item_id'],
+                    'file_path': cls._submission_file_path(
+                        course_id,
                         student['student_id'],
-                        'attachments',
                         uploaded_file.name,
-                    )
+                        ora_paths_information[student['item_id']],
+                    ),
                 }
 
             # collecting submission answer texts
             for index, text_response in enumerate(answer.get_text_responses()):
-                file_name = f'part_{index}.txt'
+                file_name = f'prompt_{index}.txt'
 
                 yield {
                     'type': cls.TEXT,
@@ -1087,12 +1156,12 @@ class OraDownloadData:
                     'description': 'Submission text.',
                     'content': text_response,
                     'size': len(text_response),
-                    'file_path': os.path.join(
-                        str(course_id),
-                        student['item_id'],
+                    'file_path': cls._submission_file_path(
+                        course_id,
                         student['student_id'],
                         file_name,
-                    )
+                        ora_paths_information[student['item_id']],
+                    ),
                 }
 
 
