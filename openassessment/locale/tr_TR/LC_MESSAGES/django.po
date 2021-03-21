@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-08 00:57-0500\n"
-"PO-Revision-Date: 2021-03-11 13:58+0000\n"
+"PO-Revision-Date: 2021-03-18 10:32+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr ""
 #: openassessment/data.py:538
 #, python-brace-format
 msgid "Points {number}"
-msgstr ""
+msgstr "{number} Puan"
 
 #: openassessment/data.py:539
 #, python-brace-format
@@ -81,7 +81,7 @@ msgstr ""
 #: openassessment/data.py:540
 #, python-brace-format
 msgid "Feedback {number}"
-msgstr ""
+msgstr "{number} Geribildirim"
 
 #: openassessment/data.py:867
 msgid "Item ID"
@@ -89,11 +89,11 @@ msgstr "Öğe Kimliği"
 
 #: openassessment/data.py:868
 msgid "Submission ID"
-msgstr ""
+msgstr "Gönderim Kimliği"
 
 #: openassessment/data.py:880
 msgid "Anonymized Student ID"
-msgstr ""
+msgstr "Anonimleştirilmiş Öğrenci Kimliği"
 
 #: openassessment/data.py:911
 msgid "Assessment ID"
@@ -1079,7 +1079,7 @@ msgstr "Bu bölüm için soru"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
 msgid "Files that were uploaded by your teammates:"
-msgstr ""
+msgstr "Takım arkadaşlarınız tarafından yüklenen dosyalar:"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
@@ -1092,7 +1092,7 @@ msgstr "Yükleyen"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
-msgstr ""
+msgstr "Sizin tarafınızdan yüklenen dosyalar:"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
@@ -1420,7 +1420,7 @@ msgstr "Dosyaları silemedik"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:269
 msgid "Select one or more files to upload for this submission."
-msgstr ""
+msgstr "Bu gönderim için yüklenecek bir veya daha fazla dosyayı seçin. "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:271
 msgid "Select a file to upload for this submission."
@@ -1428,7 +1428,7 @@ msgstr "Bu gönderi için yüklemek istediğiniz dosyayı seçiniz."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:276
 msgid "Supported file types: "
-msgstr ""
+msgstr "Desteklene dosya türleri: "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:280
 msgid "Upload files"
@@ -1444,7 +1444,7 @@ msgstr "Gönderene kadar cevabınızın üzerinde çalışmaya devam edebilirsin
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:304
 msgid "This is a team submission."
-msgstr ""
+msgstr "Bu bir takım gönderimidir."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:306
 msgid ""
