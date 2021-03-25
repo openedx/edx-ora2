@@ -57,6 +57,16 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         {min: 0, max: 100}
     );
 
+    this.labelsInputField = new OpenAssessment.InputControl(
+        $('#openassessment_labels_editor', this.element),
+        function(value) {
+            if (/((?![a-z ,]).)+/g.test(value)){
+                return ['Labels do not follow all the format rules.'];
+            }
+            return [];
+        }
+    );
+
     this.fileTypeWhiteListInputField = new OpenAssessment.InputControl(
         $('#openassessment_submission_white_listed_file_types', this.element),
         function(value) {
@@ -137,6 +147,21 @@ OpenAssessment.EditSettingsView.prototype = {
         var sel = $('#openassessment_title_editor', this.settingsElement);
         return OpenAssessment.Fields.stringField(sel, name);
     },
+
+    /**
+    Get or set the labels of the problem.
+
+    Args:
+        labels (string, optional): If provided, set the labels (a string with comma-separated values).
+
+    Returns:
+        string
+
+    **/
+   labels: function(labels) {
+    var sel = $('#openassessment_labels_editor', this.settingsElement);
+    return OpenAssessment.Fields.stringField(sel, labels);
+},
 
     /**
     Get or set the submission start date.
@@ -361,6 +386,7 @@ OpenAssessment.EditSettingsView.prototype = {
         isValid = (this.startDatetimeControl.validate() && isValid);
         isValid = (this.dueDatetimeControl.validate() && isValid);
         isValid = (this.leaderboardIntField.validate() && isValid);
+        isValid = (this.labelsInputField.validate() && isValid);
         if (this.fileUploadType() === 'custom') {
             isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
         } else {
@@ -420,6 +446,7 @@ OpenAssessment.EditSettingsView.prototype = {
         this.dueDatetimeControl.clearValidationErrors();
         this.leaderboardIntField.clearValidationErrors();
         this.fileTypeWhiteListInputField.clearValidationErrors();
+        this.labelsInputField.clearValidationErrors();
         $.each(this.assessmentViews, function() {
             this.clearValidationErrors();
         });
