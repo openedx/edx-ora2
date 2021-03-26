@@ -28,6 +28,19 @@ class TestGrader:
     __TMP_DATA_DIR__ = "/tmp/"
 
     def grade(self, response, add_staff_cases=False):
+        """
+        Setting prerequiste and execute code. 
+            * Submission code is added in directory
+            * File name is auto generated unique string
+            * For designed problem simply code executes but for other problems code executed with
+                test cases.
+        Args:
+            response (dict): 
+                problem_name(str)
+                submission(str): code submitted by user
+                language(str): language in which code is written
+                add_staff_cases (bool, optional): Defaults to False.
+        """
         problem_name = response['problem_name']
         source_code = response['submission']
         language = response.get('language')
@@ -93,6 +106,25 @@ class TestGrader:
         }
 
     def run_code(self, run_type, lang, code_file_name, lang_extension_file_path, problem_name):
+        """
+        Executes learner code with test case files. Response is made on correctness.
+
+        Args:
+            run_type (string): For now staff or sample
+            lang (string): Any language is language set
+            code_file_name (str): Name of file
+            lang_extension_file_path (str): complete path of the code file with proper lang extension
+            problem_name (str)
+
+        Returns(dict):
+                Returns a dict with the following keys containing the result of code execution:
+                    * run_type(str): Same as input
+                    * total_tests(int): Total number of tests
+                    * correct(int): Number of passed tests
+                    * incorrect(int): Number of failed tests
+                    * output(dict): Output of problem and test case
+                    * error(str): any error occurred during the code execution
+        """
 
         test_cases = glob.glob("{}{}/{}/*".format(self.__SECRET_DATA_DIR__, problem_name, run_type))
 
@@ -312,6 +344,10 @@ class TestGrader:
         compares actual and expected output line by line after stripping
         any whitespaces at the ends. Raises Exception if outputs do not match
         otherwise returns response of correct answer
+        Args:
+            actual_output(str): output of learner code
+            expected_output_file(str): file name containing expected output of test case
+            problem_name(str)
         """
 
         if problem_name not in OOP_PROBLEM_NAMES:
@@ -345,6 +381,19 @@ class TestGrader:
 
     def run_test_cases(self, lang, code_file_name, lang_extension_file_path, input_file_argument,
                        expected_output_file, timeout=10, problem_name=''):
+        
+        """
+        Execute given code file and compare output with expected 
+        Args:
+            lang(str): code language
+            code_file_name(str): name of the code file
+            lang_extension_file_path(str): complete path of the code file with proper lang extension
+            input_file_argument(str): file name in which test case input is given
+            expected_output_file: file name containing expected output of test case
+            timeout(int) 
+            problem_name(str)
+        output (test case output) 
+        """
         try:
             output = self.execute_code(lang, code_file_name, lang_extension_file_path, input_file_argument, timeout)
             result = self.compare_outputs(output, expected_output_file, problem_name)
