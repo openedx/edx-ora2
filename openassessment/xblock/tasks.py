@@ -7,14 +7,13 @@ from celery import task
 from celery_utils.logged_task import LoggedTask
 from submissions.api import _get_submission_model
 
-from openassessment.xblock.utils import grade_response
-from openassessment.xblock.job_sample_grader.code_grader import TestGrader
+from openassessment.xblock.job_sample_grader.utils import is_design_problem,get_error_response
 
 logger = logging.getLogger(__name__)
 
 
 @task(base=LoggedTask, name="run_and_save_staff_test_cases")
-def run_and_save_staff_test_cases(sub_uuid, problem_name):
+def run_and_save_staff_test_cases(grader_block, sub_uuid, problem_name):
     """
     Celery task for running staff test cases and updating the submission
     against a given uuid.
@@ -25,7 +24,7 @@ def run_and_save_staff_test_cases(sub_uuid, problem_name):
     If staff response present, attempt saving it
     If not saved, add a default error response and log the exception
     """
-    if not TestGrader.is_design_problem(problem_name):
+    if not is_design_problem(problem_name):
         logger.info(
             "Kicking off run_and_save_staff_test_cases task against sub ID {} and problem {}".format(
                 sub_uuid, problem_name
@@ -39,7 +38,7 @@ def run_and_save_staff_test_cases(sub_uuid, problem_name):
             ))
             return
 
-        default_staff_run_error_response = TestGrader.get_error_response('staff', 'Missing Staff Submission')
+        default_staff_run_error_response = get_error_response('staff', 'Missing Staff Submission')
         answer = submission.answer
         code_submission = answer['submission']
         code_language = answer['language']
@@ -47,7 +46,7 @@ def run_and_save_staff_test_cases(sub_uuid, problem_name):
             'submission': code_submission,
             'language': code_language
         }
-        grade_output = grade_response(grader_data, problem_name, add_staff_output=True)
+        grade_output = grader_block.grade_response(grader_data, problem_name, add_staff_output=True)
 
         try:
             staff_run = grade_output[1]
