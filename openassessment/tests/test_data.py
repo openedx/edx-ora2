@@ -1265,7 +1265,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         with patch(
             'openassessment.data.OraDownloadData._download_file_by_key', return_value=file_content
         ) as download_mock:
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
             download_mock.assert_has_calls([
                 call(self.file_key_5),

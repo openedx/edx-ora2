@@ -950,6 +950,7 @@ class OraDownloadData:
         'file_path',
         'file_found',
     )
+    MAX_FILE_NAME_LENGTH = 255
 
     @classmethod
     def _download_file_by_key(cls, key):
@@ -988,13 +989,13 @@ class OraDownloadData:
         all information needed to build the submission file path.
         """
 
-        def children(usage_key):
-            for index, child in enumerate(blocks.get_xblock_field(usage_key, 'children')):
-                yield index, blocks.get_xblock_field(child, 'display_name'), child
-
         blocks = cls._get_course_blocks(course_id)
 
         path_info = {}
+
+        def children(usage_key):
+            for index, child in enumerate(blocks.get_xblock_field(usage_key, 'children'), 1):
+                yield index, blocks.get_xblock_field(child, 'display_name'), child
 
         for section_index, section_name, section in children(blocks.root_block_usage_key):
             for sub_section_index, sub_section_name, sub_section in children(section):
@@ -1014,27 +1015,89 @@ class OraDownloadData:
         return path_info
 
     @classmethod
-    def _submission_file_path(cls, course_id, student_id, file_name, ora_path_info):
+    def _submission_directory_name(cls, ora_path_info):
         """
-        Basing on submission information, returns its path inside zip archive.
+        Returns submissions directory name in format:
+        `[{section_index}]{section_name}, [sub_section_index]{sub_section_name}, [{unit_index}]{unit_name}`
+
+        Example:
+        `[1]Introduction, [1]Demo Course Overview, [1]Introduction: Video and Sequences`
+
+        If the resulting name length is greater than 255, it truncates name parts in the following order:
+        - Subsection name.
+        - Unit name.
+        - Section name.
         """
 
-        directory_name = ", ".join([
-            f"[{ora_path_info['section_index']}]{ora_path_info['section_name']}",
-            f"[{ora_path_info['sub_section_index']}]{ora_path_info['sub_section_name']}"
-            f"[{ora_path_info['unit_index']}]{ora_path_info['unit_name']}"
-        ])
+        section_index = f"[{ora_path_info['section_index']}]"
+        section_name = ora_path_info["section_name"]
 
-        file_name = f"[{ora_path_info['ora_index']}] - {student_id} - {file_name}"
+        sub_section_index = f"[{ora_path_info['sub_section_index']}]"
+        sub_section_name = ora_path_info["sub_section_name"]
 
+        unit_index = f"[{ora_path_info['unit_index']}]"
+        unit_name = ora_path_info["unit_name"]
+
+        def get_name_and_diff():
+            name = f"{section_index}{section_name}, {sub_section_index}{sub_section_name}, {unit_index}{unit_name}"
+            diff = cls.MAX_FILE_NAME_LENGTH - len(name)
+            return name, diff
+
+        directory_name, diff = get_name_and_diff()
+        if diff >= 0:
+            return directory_name
+
+        sub_section_name = sub_section_name[:diff]
+        directory_name, diff = get_name_and_diff()
+        if diff >= 0:
+            return directory_name
+
+        unit_name = unit_name[:diff]
+        directory_name, diff = get_name_and_diff()
+        if diff >= 0:
+            return directory_name
+
+        section_name = section_name[:diff]
+
+        return get_name_and_diff()[0]
+
+    @classmethod
+    def _submission_filename(cls, ora_index, student_id, original_filename):
+        """
+        Returns submission file name in format:
+        `[{ora_index}] - {student_id} - {attachment_base}{attachment_extention}`
+
+        Example:
+        `[1] - 703dee642c9872a35d84fa9b2d96950f - prompt_1.txt`
+
+        If the resulting name length is greater than 255, it truncates original file base.
+        """
+
+        file_base, file_extention = os.path.splitext(original_filename)
+
+        def get_name():
+            return (
+                f"[{ora_index}] - {student_id} - {file_base}{file_extention}"
+                if file_base
+                else f"[{ora_index}] - {student_id}{file_extention}"
+            )
+
+        file_name = get_name()
+        if cls.MAX_FILE_NAME_LENGTH - len(file_name) >= 0:
+            return file_name
+
+        file_base = file_base[:diff]
+        return get_name()
+
+    @classmethod
+    def _submission_filepath(cls, ora_path_info, student_id, original_filename):
         return os.path.join(
-            str(course_id),
-            directory_name,
-            file_name,
+            cls._submission_directory_name(ora_path_info),
+            cls._submission_filename(ora_path_info["unit_index"], student_id, original_filename)
         )
 
     @classmethod
-    def create_zip_with_attachments(cls, file, course_id, submission_files_data):
+    def create_zip_with_attachments(cls, file, submission_files_data):
         """
         Opens given stream as a zip file and writes into it all submission
         attachments and csv with list of all downloads.
@@ -1100,10 +1163,8 @@ class OraDownloadData:
                 finally:
                     csvwriter.writerow({**file_data, 'file_found': file_found})
 
-            downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
-
             zip_file.writestr(
-                downloads_csv_path,
+                'downloads.csv',
                 csv_output_buffer.getvalue().encode('utf-8')
             )
 
@@ -1134,11 +1195,10 @@ class OraDownloadData:
                     'name': uploaded_file.name,
                     'description': uploaded_file.description,
                     'size': uploaded_file.size,
-                    'file_path': cls._submission_file_path(
-                        course_id,
+                    'file_path': cls._submission_filepath(
+                        ora_paths_information[student['item_id']],
                         student['student_id'],
                         uploaded_file.name,
-                        ora_paths_information[student['item_id']],
                     ),
                 }
 
@@ -1156,11 +1216,10 @@ class OraDownloadData:
                     'description': 'Submission text.',
                     'content': text_response,
                     'size': len(text_response),
-                    'file_path': cls._submission_file_path(
-                        course_id,
+                    'file_path': cls._submission_filepath(
+                        ora_paths_information[student['item_id']],
                         student['student_id'],
                         file_name,
-                        ora_paths_information[student['item_id']],
                     ),
                 }
 
