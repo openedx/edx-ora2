@@ -45,6 +45,22 @@ def _use_read_replica(queryset):
     )
 
 
+def _get_course_blocks(course_id):
+    """
+    Returns untransformed block structure for a given course key.
+    """
+
+    from lms.djangoapps.course_blocks.api import get_course_blocks
+    from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
+    from xmodule.modulestore.django import modulestore
+
+    store = modulestore()
+    course_usage_key = store.make_course_usage_key(course_id)
+
+    # Passing an empty block structure transformer here to avoid user access checks
+    return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+
+
 class CsvWriter:
     """
     Dump openassessment data to CSV files.
@@ -421,9 +437,8 @@ class OraAggregateData:
     @classmethod
     def _map_block_usage_keys_to_display_names(cls, course_id):
         """
-        Fetches all course blocks and build mapping between block usage key
-        string and block display name for those ones, whoose category is equal
-        to ``openassessment``.
+        Builds a mapping between block usage key string and block display
+        name for those ones, whoose category is equal to ``openassessment``.
 
         Args:
             course_id (string or CourseLocator instance) - id of course
@@ -432,18 +447,8 @@ class OraAggregateData:
             dictionary, that contains mapping between block usage
             keys (locations) and block display names.
         """
-        # pylint: disable=import-error
 
-        from lms.djangoapps.course_blocks.api import get_course_blocks
-        from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
-
-        from xmodule.modulestore.django import modulestore
-
-        store = modulestore()
-        course_usage_key = store.make_course_usage_key(course_id)
-
-        # Passing an empty block structure transformer here to avoid user access checks
-        blocks = get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+        blocks = _get_course_blocks(course_id)
 
         block_display_name_map = {}
 
@@ -949,22 +954,6 @@ class OraDownloadData:
         return response.content
 
     @classmethod
-    def _get_course_blocks(cls, course_id):
-        """
-        Returns untransformed block structure for a given course key.
-        """
-
-        from lms.djangoapps.course_blocks.api import get_course_blocks
-        from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
-        from xmodule.modulestore.django import modulestore
-
-        store = modulestore()
-        course_usage_key = store.make_course_usage_key(course_id)
-
-        # Passing an empty block structure transformer here to avoid user access checks
-        return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
-
-    @classmethod
     def _map_ora_usage_keys_to_path_info(cls, course_id):
         """
         Helper function that accepts course key and returns mapping in the form of a dictionary,
@@ -972,7 +961,7 @@ class OraDownloadData:
         all information needed to build the submission file path.
         """
 
-        blocks = cls._get_course_blocks(course_id)
+        blocks = _get_course_blocks(course_id)
 
         path_info = {}
 
