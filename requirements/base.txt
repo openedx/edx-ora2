@@ -7,9 +7,9 @@
 appdirs==1.4.4
     # via fs
 bleach==3.3.0
-    # via -r requirements/base.in
+    # via -r base.in
 boto3==1.17.28
-    # via -r requirements/base.in
+    # via -r base.in
 botocore==1.20.28
     # via
     #   boto3
@@ -23,25 +23,25 @@ click==7.1.2
 code-annotations==1.1.0
     # via edx-toggles
 defusedxml==0.7.1
-    # via -r requirements/base.in
+    # via -r base.in
 django-crum==0.7.9
     # via
     #   edx-django-utils
     #   edx-toggles
 django-model-utils==4.1.1
     # via
-    #   -r requirements/base.in
+    #   -r base.in
     #   edx-submissions
 django-simple-history==2.12.0
-    # via -r requirements/base.in
+    # via -r base.in
 django-waffle==2.1.0
     # via
     #   edx-django-utils
     #   edx-toggles
 django==2.2.19
     # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    #   -c constraints.txt
+    #   -r base.in
     #   code-annotations
     #   django-crum
     #   django-model-utils
@@ -53,27 +53,27 @@ django==2.2.19
     #   jsonfield2
 djangorestframework==3.12.2
     # via
-    #   -r requirements/base.in
+    #   -r base.in
     #   edx-submissions
 edx-django-utils==3.15.0
     # via
-    #   -r requirements/base.in
+    #   -r base.in
     #   edx-toggles
 edx-i18n-tools==0.5.3
-    # via -r requirements/base.in
+    # via -r base.in
 edx-submissions==3.2.4
-    # via -r requirements/base.in
+    # via -r base.in
 edx-toggles==4.0.0
-    # via -r requirements/base.in
+    # via -r base.in
 fs==2.0.18
     # via
-    #   -c requirements/constraints.txt
+    #   -c constraints.txt
     #   xblock
 html5lib==1.1
-    # via -r requirements/base.in
+    # via -r base.in
 idna==2.8
     # via
-    #   -c requirements/constraints.txt
+    #   -c constraints.txt
     #   requests
 jinja2==2.11.3
     # via code-annotations
@@ -83,20 +83,20 @@ jmespath==0.10.0
     #   botocore
 jsonfield2==3.0.3
     # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    #   -c constraints.txt
+    #   -r base.in
     #   edx-submissions
 lazy==1.4
-    # via -r requirements/base.in
+    # via -r base.in
 libsass==0.20.1
-    # via -r requirements/base.in
+    # via -r base.in
 loremipsum==1.0.5
     # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
-lxml==4.6.2
+    #   -c constraints.txt
+    #   -r base.in
+lxml==4.6.3
     # via
-    #   -r requirements/base.in
+    #   -r base.in
     #   xblock
 markupsafe==1.1.1
     # via
@@ -108,11 +108,11 @@ packaging==20.9
     # via bleach
 path.py==12.5.0
     # via
-    #   -r requirements/base.in
+    #   -r base.in
     #   edx-i18n-tools
 path==13.1.0
     # via
-    #   -c requirements/constraints.txt
+    #   -c constraints.txt
     #   path.py
 pbr==5.5.1
     # via stevedore
@@ -124,19 +124,19 @@ pyparsing==2.4.7
     # via packaging
 python-dateutil==2.4.0
     # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    #   -c constraints.txt
+    #   -r base.in
     #   botocore
     #   xblock
 python-slugify==4.0.1
     # via code-annotations
 python-swiftclient==3.11.1
     # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    #   -c constraints.txt
+    #   -r base.in
 pytz==2021.1
     # via
-    #   -r requirements/base.in
+    #   -r base.in
     #   django
     #   edx-submissions
     #   fs
@@ -175,8 +175,8 @@ urllib3==1.26.4
     #   requests
 voluptuous==0.12.1
     # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+    #   -c constraints.txt
+    #   -r base.in
 web-fragments==1.0.0
     # via xblock
 webencodings==0.5.1
@@ -186,7 +186,7 @@ webencodings==0.5.1
 webob==1.8.7
     # via xblock
 xblock==1.4.0
-    # via -r requirements/base.in
+    # via -r base.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
