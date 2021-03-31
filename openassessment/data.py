@@ -16,8 +16,11 @@ import copy
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import F
+from django.db.models import CharField, F, OuterRef, Subquery
+from django.db.models.functions import Coalesce
 from django.utils.translation import ugettext as _
+
+from openedx.core.djangoapps.external_user_ids.models import ExternalId
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
@@ -990,7 +993,44 @@ class OraDownloadData:
         return path_info
 
     @classmethod
-    def _submission_directory_name(cls, ora_path_info):
+    def _map_student_ids_to_path_ids(cls, all_submission_information):
+        """
+        Docstring.
+        """
+
+        student_ids = [item[0]["student_id"] for item in all_submission_information]
+
+        User = get_user_model()
+        external_id_subquery = Subquery(
+            ExternalId.objects.filter(
+                user=OuterRef("pk"),
+                external_id_type__name="mb_coaching"
+            ).values("external_user_id")
+        )
+        username_field = "username" if _usernames_enabled() else "anonymoususerid__anonymous_user_id"
+        users = _use_read_replica(
+            User.objects.filter()
+            .annotate(
+                student_id=F("anonymoususerid__anonymous_user_id"),
+                path_id=Coalesce(external_id_subquery, F(username_field), output_field=CharField())
+            )
+            .values("student_id", "path_id")
+        )
+
+        return {user["student_id"]: user["path_id"] for user in users}
+
+
+    @classmethod
+    def _submission_directory_name(
+        cls,
+        section_index,
+        section_name,
+        sub_section_index,
+        sub_section_name,
+        unit_index,
+        unit_name,
+        **kwargs,
+    ):
         """
         Returns submissions directory name in format:
         `[{section_index}]{section_name}, [sub_section_index]{sub_section_name}, [{unit_index}]{unit_name}`
@@ -1004,17 +1044,8 @@ class OraDownloadData:
         - Section name.
         """
 
-        section_index = f"[{ora_path_info['section_index']}]"
-        section_name = ora_path_info["section_name"]
-
-        sub_section_index = f"[{ora_path_info['sub_section_index']}]"
-        sub_section_name = ora_path_info["sub_section_name"]
-
-        unit_index = f"[{ora_path_info['unit_index']}]"
-        unit_name = ora_path_info["unit_name"]
-
         def get_name_and_diff():
-            name = f"{section_index}{section_name}, {sub_section_index}{sub_section_name}, {unit_index}{unit_name}"
+            name = f"[{section_index}]{section_name}, [{sub_section_index}]{sub_section_name}, [{unit_index}]{unit_name}"
             diff = cls.MAX_FILE_NAME_LENGTH - len(name)
             return name, diff
 
@@ -1050,24 +1081,23 @@ class OraDownloadData:
 
         file_base, file_extention = os.path.splitext(original_filename)
 
-        def get_name():
+        def get_name(file_base):
             return (
                 f"[{ora_index}] - {student_id} - {file_base}{file_extention}"
                 if file_base
                 else f"[{ora_index}] - {student_id}{file_extention}"
             )
 
-        file_name = get_name()
-        if cls.MAX_FILE_NAME_LENGTH - len(file_name) >= 0:
-            return file_name
+        file_name = get_name(file_base)
 
-        file_base = file_base[:diff]
-        return get_name()
+        diff = cls.MAX_FILE_NAME_LENGTH - len(file_name)
+
+        return file_name if diff >= 0 else get_name(file_base[:diff])
 
     @classmethod
     def _submission_filepath(cls, ora_path_info, student_id, original_filename):
         return os.path.join(
-            cls._submission_directory_name(ora_path_info),
+            cls._submission_directory_name(**ora_path_info),
             cls._submission_filename(ora_path_info["unit_index"], student_id, original_filename)
         )
 
@@ -1154,8 +1184,9 @@ class OraDownloadData:
         attachment or answer text.
         """
 
-        all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
-        ora_paths_information = cls._map_ora_usage_keys_to_path_info(course_id)
+        all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
+        all_ora_path_information = cls._map_ora_usage_keys_to_path_info(course_id)
+        student_identifiers_map = cls._map_student_ids_to_path_ids(all_submission_information)
 
         for student, submission, _ in all_submission_information:
             raw_answer = submission.get('answer', dict())
@@ -1171,8 +1202,8 @@ class OraDownloadData:
                     'description': uploaded_file.description,
                     'size': uploaded_file.size,
                     'file_path': cls._submission_filepath(
-                        ora_paths_information[student['item_id']],
-                        student['student_id'],
+                        ora_paths_inforall_ora_path_informationmation[student['item_id']],
+                        student_identifiers_map[student['student_id']],
                         uploaded_file.name,
                     ),
                 }
@@ -1192,8 +1223,8 @@ class OraDownloadData:
                     'content': text_response,
                     'size': len(text_response),
                     'file_path': cls._submission_filepath(
-                        ora_paths_information[student['item_id']],
-                        student['student_id'],
+                        all_ora_path_information[student['item_id']],
+                        student_identifiers_map[student['student_id']],
                         file_name,
                     ),
                 }
