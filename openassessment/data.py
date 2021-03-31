@@ -1001,18 +1001,26 @@ class OraDownloadData:
         student_ids = [item[0]["student_id"] for item in all_submission_information]
 
         User = get_user_model()
+
+        username_field = (
+            "username" if _usernames_enabled()
+            else "anonymoususerid__anonymous_user_id"
+        )
         external_id_subquery = Subquery(
             ExternalId.objects.filter(
                 user=OuterRef("pk"),
                 external_id_type__name="mb_coaching"
             ).values("external_user_id")
         )
-        username_field = "username" if _usernames_enabled() else "anonymoususerid__anonymous_user_id"
         users = _use_read_replica(
             User.objects.filter()
             .annotate(
                 student_id=F("anonymoususerid__anonymous_user_id"),
-                path_id=Coalesce(external_id_subquery, F(username_field), output_field=CharField())
+                path_id=Coalesce(
+                    external_id_subquery,
+                    F(username_field),
+                    output_field=CharField()
+                )
             )
             .values("student_id", "path_id")
         )
@@ -1045,7 +1053,11 @@ class OraDownloadData:
         """
 
         def get_name_and_diff():
-            name = f"[{section_index}]{section_name}, [{sub_section_index}]{sub_section_name}, [{unit_index}]{unit_name}"
+            name = (
+                f"[{section_index}]{section_name}, "
+                f"[{sub_section_index}]{sub_section_name}, "
+                f"[{unit_index}]{unit_name}"
+            )
             diff = cls.MAX_FILE_NAME_LENGTH - len(name)
             return name, diff
 
@@ -1096,6 +1108,10 @@ class OraDownloadData:
 
     @classmethod
     def _submission_filepath(cls, ora_path_info, student_id, original_filename):
+        """
+        Returns the full zip file path for the submission text or attachment.
+        """
+
         return os.path.join(
             cls._submission_directory_name(**ora_path_info),
             cls._submission_filename(ora_path_info["unit_index"], student_id, original_filename)
@@ -1113,23 +1129,19 @@ class OraDownloadData:
         Example of result zip file structure:
         ```
         .
-        └── CourseId
-            ├── BlockId1
-            │   ├── StudentId1
-            │   │   ├── attachments
-            │   │   │   ├── SomeFile1
-            │   │   │   └── SomeFile2
-            │   │   ├── part_0.txt
-            │   │   └── part_1.txt
-            │   └── StudentId2
-            │       ├── part_0.txt
-            │       └── part_1.txt
-            ├── BlockId2
-            │   └── StudentId3
-            │       ├── attachments
-            │       │   └── SomeFile4
-            │       └── part_0.txt
-            └── downloads.csv
+        ├── [1]Some Section, [1]Some Subsection, [1]Unit
+        │   ├── [1] - 00f636b9ac6d480c9fb95c23bf1d2129 - prompt_0.txt
+        │   ├── [1] - 00f636b9ac6d480c9fb95c23bf1d2129 - prompt_1.txt
+        │   ├── [1] - edx - prompt_0.txt
+        │   ├── [1] - edx - prompt_1.txt
+        │   ├── [2] - edx - prompt_0.txt
+        │   └── [2] - edx - Structure and Interpretation of Computer Programs.pdf
+        ├── [1]Some Section, [2]Some Subsection, [1]Unit
+        │   └── [1] - edx - prompt_0.txt
+        ├── [1]Some Section, [2]Some Subsection, [2]Unit
+        │   ├── [1] - edx - prompt_0.txt
+        │   └── [1] - edx - the_most_dangerous_kitten.jpg
+        └── downloads.csv
         ```
         """
         csv_output_buffer = StringIO()
