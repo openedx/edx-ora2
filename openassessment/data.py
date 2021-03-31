@@ -28,6 +28,14 @@ from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWor
 logger = logging.getLogger(__name__)
 
 
+def _usernames_enabled():
+    """
+    Checks if toggle for deanonymized usernames in report enabled.
+    """
+
+    return settings.FEATURES.get('ENABLE_ORA_USERNAMES_ON_DATA_EXPORT', False)
+
+
 def _use_read_replica(queryset):
     """
     If there's a read replica that can be used, return a cursor to that.
@@ -377,14 +385,6 @@ class OraAggregateData:
     """
 
     @classmethod
-    def _usernames_enabled(cls):
-        """
-        Checks if toggle for deanonymized usernames in report enabled.
-        """
-
-        return settings.FEATURES.get('ENABLE_ORA_USERNAMES_ON_DATA_EXPORT', False)
-
-    @classmethod
     def _map_anonymized_ids_to_usernames(cls, anonymized_ids):
         """
         Args:
@@ -468,14 +468,12 @@ class OraAggregateData:
         Returns:
             string that should be included in the 'assessments' column for this set of assessments' row
         """
-        usernames_enabled = cls._usernames_enabled()
-
         returned_string = ""
         for assessment in assessments:
             returned_string += f"Assessment #{assessment.id}\n"
             returned_string += f"-- scored_at: {assessment.scored_at}\n"
             returned_string += f"-- type: {assessment.score_type}\n"
-            if usernames_enabled:
+            if _usernames_enabled():
                 returned_string += "-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
             returned_string += f"-- scorer_id: {assessment.scorer_id}\n"
             if assessment.feedback != "":
@@ -600,7 +598,7 @@ class OraAggregateData:
 
         """
         all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
-        usernames_enabled = cls._usernames_enabled()
+        usernames_enabled = _usernames_enabled()
 
         usernames_map = (
             cls._map_sudents_and_scorers_ids_to_usernames(all_submission_information)
