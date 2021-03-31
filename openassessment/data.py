@@ -56,6 +56,11 @@ def _use_read_replica(queryset):
 def _get_course_blocks(course_id):
     """
     Returns untransformed block structure for a given course key.
+
+    Args:
+        course_id - CourseLocator instance
+    Returns:
+        BlockStructureBlockData instance
     """
 
     from lms.djangoapps.course_blocks.api import get_course_blocks
