@@ -28,6 +28,23 @@ from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWor
 logger = logging.getLogger(__name__)
 
 
+def _use_read_replica(queryset):
+    """
+    If there's a read replica that can be used, return a cursor to that.
+    Otherwise, return a cursor to the regular database.
+
+    Args:
+        queryset (QuerySet): The queryset that we would like to use the read replica for.
+    Returns:
+        QuerySet
+    """
+    return (
+        queryset.using("read_replica")
+        if "read_replica" in settings.DATABASES
+        else queryset
+    )
+
+
 class CsvWriter:
     """
     Dump openassessment data to CSV files.
@@ -131,14 +148,14 @@ class CsvWriter:
 
             # Django 1.4 doesn't follow reverse relations when using select_related,
             # so we select AssessmentPart and follow the foreign key to the Assessment.
-            parts = self._use_read_replica(
+            parts = _use_read_replica(
                 AssessmentPart.objects.select_related('assessment', 'option', 'option__criterion')
                 .filter(assessment__submission_uuid=submission_uuid)
                 .order_by('assessment__pk')
             )
             self._write_assessment_to_csv(parts, rubric_points_cache)
 
-            feedback_query = self._use_read_replica(
+            feedback_query = _use_read_replica(
                 AssessmentFeedback.objects
                 .filter(submission_uuid=submission_uuid)
                 .prefetch_related('options')
@@ -171,7 +188,7 @@ class CsvWriter:
         """
         num_results = 0
         start = 0
-        total_results = self._use_read_replica(
+        total_results = _use_read_replica(
             AssessmentWorkflow.objects.filter(course_id=course_id)
         ).count()
 
@@ -181,7 +198,7 @@ class CsvWriter:
             # so if we counted N at the start of the loop,
             # there should be >= N for us to process.
             end = start + self.QUERY_INTERVAL
-            query = self._use_read_replica(
+            query = _use_read_replica(
                 AssessmentWorkflow.objects
                 .filter(course_id=course_id)
                 .order_by('created')
@@ -337,45 +354,11 @@ class CsvWriter:
             encoded_row = [str(field) for field in row]
             writer.writerow(encoded_row)
 
-    def _use_read_replica(self, queryset):
-        """
-        Use the read replica if it's available.
-
-        Args:
-            queryset (QuerySet)
-
-        Returns:
-            QuerySet
-
-        """
-        return (
-            queryset.using("read_replica")
-            if "read_replica" in settings.DATABASES
-            else queryset
-        )
-
 
 class OraAggregateData:
     """
     Aggregate all the ORA data into a single table-like data structure.
     """
-
-    @classmethod
-    def _use_read_replica(cls, queryset):
-        """
-        If there's a read replica that can be used, return a cursor to that.
-        Otherwise, return a cursor to the regular database.
-
-        Args:
-            queryset (QuerySet): The queryset that we would like to use the read replica for.
-        Returns:
-            QuerySet
-        """
-        return (
-            queryset.using("read_replica")
-            if "read_replica" in settings.DATABASES
-            else queryset
-        )
 
     @classmethod
     def _usernames_enabled(cls):
@@ -396,7 +379,7 @@ class OraAggregateData:
         """
         User = get_user_model()
 
-        users = cls._use_read_replica(
+        users = _use_read_replica(
             User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
             .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
             .values("username", "anonymous_id")
@@ -427,7 +410,7 @@ class OraAggregateData:
             student_ids.append(student_item["student_id"])
             submission_uuids.append(submission["uuid"])
 
-        scorer_ids = cls._use_read_replica(
+        scorer_ids = _use_read_replica(
             Assessment.objects.filter(submission_uuid__in=submission_uuids).values_list(
                 "scorer_id", flat=True
             )
@@ -623,7 +606,7 @@ class OraAggregateData:
 
         rows = []
         for student_item, submission, score in all_submission_information:
-            assessments = cls._use_read_replica(
+            assessments = _use_read_replica(
                 Assessment.objects.prefetch_related('parts').
                 prefetch_related('rubric').
                 filter(
@@ -882,7 +865,7 @@ class OraAggregateData:
         student_item = submission['student_item']
         row[_('Anonymized Student ID')] = student_item['student_id']
 
-        assessments = cls._use_read_replica(
+        assessments = _use_read_replica(
             Assessment.objects.prefetch_related('parts').
             prefetch_related('rubric').
             filter(
