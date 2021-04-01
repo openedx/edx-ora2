@@ -20,8 +20,6 @@ from django.db.models import CharField, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.utils.translation import ugettext as _
 
-from openedx.core.djangoapps.external_user_ids.models import ExternalId
-
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
@@ -1003,6 +1001,7 @@ class OraDownloadData:
         - edX username, if external ID is absent.
         - Anonymized username, if `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT` feature is disabled.
         """
+        from openedx.core.djangoapps.external_user_ids.models import ExternalId
 
         student_ids = [item[0]["student_id"] for item in all_submission_information]
 
@@ -1030,7 +1029,6 @@ class OraDownloadData:
         )
 
         return {user["student_id"]: user["path_id"] for user in users}
-
 
     @classmethod
     def _submission_directory_name(
@@ -1218,7 +1216,7 @@ class OraDownloadData:
                     'description': uploaded_file.description,
                     'size': uploaded_file.size,
                     'file_path': cls._submission_filepath(
-                        ora_paths_inforall_ora_path_informationmation[student['item_id']],
+                        all_ora_path_information[student['item_id']],
                         student_identifiers_map[student['student_id']],
                         uploaded_file.name,
                     ),
