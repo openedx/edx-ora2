@@ -995,32 +995,36 @@ class OraDownloadData:
     @classmethod
     def _map_student_ids_to_path_ids(cls, all_submission_information):
         """
-        Docstring.
+        Builds a mapping between anonymized student ids and their identifier for
+        submission filename.
+
+        The identifier can take three different forms:
+        - External ID of `mb_coaching` type.
+        - edX username, if external ID is absent.
+        - Anonymized username, if `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT` feature is disabled.
         """
 
         student_ids = [item[0]["student_id"] for item in all_submission_information]
 
         User = get_user_model()
 
-        username_field = (
-            "username" if _usernames_enabled()
-            else "anonymoususerid__anonymous_user_id"
-        )
-        external_id_subquery = Subquery(
-            ExternalId.objects.filter(
-                user=OuterRef("pk"),
-                external_id_type__name="mb_coaching"
-            ).values("external_user_id")
-        )
         users = _use_read_replica(
             User.objects.filter()
             .annotate(
                 student_id=F("anonymoususerid__anonymous_user_id"),
                 path_id=Coalesce(
-                    external_id_subquery,
-                    F(username_field),
-                    output_field=CharField()
-                )
+                    Subquery(
+                        ExternalId.objects.filter(
+                            user=OuterRef("pk"), external_id_type__name="mb_coaching"
+                        ).values("external_user_id")
+                    ),
+                    F(
+                        "username"
+                        if _usernames_enabled()
+                        else "anonymoususerid__anonymous_user_id"
+                    ),
+                    output_field=CharField(),
+                ),
             )
             .values("student_id", "path_id")
         )
