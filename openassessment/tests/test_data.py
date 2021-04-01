@@ -1481,6 +1481,74 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 else:
                     self.assertTrue(zipfile.Path(zip_file, row['file_path']).exists())
 
+    @ddt.data(
+        (
+            "Section",
+            "Sub Section",
+            "Unit",
+            "test.jpg",
+            "username",
+            "[1]Section, [1]Sub Section, [1]Unit/[1] - username - test.jpg",
+        ),
+        (
+            "Section",
+            "x" * 1000,
+            "Unit",
+            "test.jpg",
+            "username",
+            # subsection name truncated
+            f"[1]Section, [1]{'x' * 231}, [1]Unit/[1] - username - test.jpg",
+        ),
+        (
+            "Section",
+            "x" * 1000,
+            "y" * 1000,
+            "test.jpg",
+            "username",
+            # subsection name removed, unit name truncated
+            f"[1]Section, [1], [1]{'y' * 235}/[1] - username - test.jpg",
+        ),
+        (
+            "z" * 1000,
+            "x" * 1000,
+            "y" * 1000,
+            "test.jpg",
+            "username",
+            # everything removed, section name truncated
+            f"[1]{'z' * 242}, [1], [1]/[1] - username - test.jpg",
+        ),
+        (
+            "Section",
+            "Sub Section",
+            "Unit",
+            f"{'x' * 251}.jpg",
+            "username",
+            # filename base truncated
+            f"[1]Section, [1]Sub Section, [1]Unit/[1] - username - {'x' * 234}.jpg",
+        ),
+    )
+    @ddt.unpack
+    def test_truncation_of_submission_filepath(
+        self, section_name, sub_section_name, unit_name, file_name, username, file_path
+    ):
+        """
+        Test that `_submission_filepath` truncates less important data first and keeps
+        file name less than 255.
+        """
+
+        path_info = {
+            "section_index": 1,
+            "section_name": section_name,
+            "sub_section_index": 1,
+            "sub_section_name": sub_section_name,
+            "unit_index": 1,
+            "unit_name": unit_name,
+            "ora_index": 1,
+            "ora_name": ITEM_DISPLAY_NAME,
+        }
+
+        assert OraDownloadData._submission_filepath(path_info, username, file_name) == file_path
+
 
 submission_test_parts = [{'text': 'text_response_' + str(i)} for i in range(3)]
 submission_test_file_keys = ['test-key-' + str(i) for i in range(3)]
