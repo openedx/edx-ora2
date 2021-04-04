@@ -970,23 +970,24 @@ class OraDownloadData:
         path_info = {}
 
         def children(usage_key):
-            for index, child in enumerate(blocks.get_xblock_field(usage_key, 'children'), 1):
+            for index, child in enumerate(blocks.get_xblock_field(usage_key, 'children') or [], 1):
                 yield index, blocks.get_xblock_field(child, 'display_name'), child
 
         for section_index, section_name, section in children(blocks.root_block_usage_key):
             for sub_section_index, sub_section_name, sub_section in children(section):
                 for unit_index, unit_name, unit in children(sub_section):
-                    for ora_index, ora_name, ora in children(unit):
-                        path_info[str(ora)] = {
-                            "section_index": section_index,
-                            "section_name": section_name,
-                            "sub_section_index": sub_section_index,
-                            "sub_section_name": sub_section_name,
-                            "unit_index": unit_index,
-                            "unit_name": unit_name,
-                            "ora_index": ora_index,
-                            "ora_name": ora_name,
-                        }
+                    for block_index, block_name, block in children(unit):
+                        if block.block_type == "openassessment":
+                            path_info[str(block)] = {
+                                "section_index": section_index,
+                                "section_name": section_name,
+                                "sub_section_index": sub_section_index,
+                                "sub_section_name": sub_section_name,
+                                "unit_index": unit_index,
+                                "unit_name": unit_name,
+                                "ora_index": block_index,
+                                "ora_name": block_name,
+                            }
 
         return path_info
 
@@ -1114,10 +1115,19 @@ class OraDownloadData:
         Returns the full zip file path for the submission text or attachment.
         """
 
-        return os.path.join(
-            cls._submission_directory_name(**ora_path_info),
-            cls._submission_filename(ora_path_info["unit_index"], student_id, original_filename)
+        directory_name = (
+            cls._submission_directory_name(**ora_path_info)
+            if ora_path_info
+            else "Removed from course"
         )
+
+        submission_filename = cls._submission_filename(
+            ora_path_info["ora_index"] if ora_path_info else "x",
+            student_id,
+            original_filename
+        )
+
+        return os.path.join(directory_name, submission_filename)
 
     @classmethod
     def create_zip_with_attachments(cls, file, submission_files_data):
@@ -1216,7 +1226,7 @@ class OraDownloadData:
                     'description': uploaded_file.description,
                     'size': uploaded_file.size,
                     'file_path': cls._submission_filepath(
-                        all_ora_path_information[student['item_id']],
+                        all_ora_path_information.get(student['item_id']),
                         student_identifiers_map[student['student_id']],
                         uploaded_file.name,
                     ),
@@ -1237,7 +1247,7 @@ class OraDownloadData:
                     'content': text_response,
                     'size': len(text_response),
                     'file_path': cls._submission_filepath(
-                        all_ora_path_information[student['item_id']],
+                        all_ora_path_information.get(student['item_id']),
                         student_identifiers_map[student['student_id']],
                         file_name,
                     ),
