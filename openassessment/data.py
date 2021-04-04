@@ -930,7 +930,7 @@ class OraDownloadData:
 
     ATTACHMENT = 'attachment'
     TEXT = 'text'
-    DOWNLOADS_CSV_HEADER = (
+    SUBMISSIONS_CSV_HEADER = (
         'course_id',
         'block_id',
         'student_id',
@@ -1143,12 +1143,12 @@ class OraDownloadData:
         ├── [1]Some Section, [2]Some Subsection, [2]Unit
         │   ├── [1] - edx - prompt_0.txt
         │   └── [1] - edx - the_most_dangerous_kitten.jpg
-        └── downloads.csv
+        └── submissions.csv
         ```
         """
         csv_output_buffer = StringIO()
 
-        csvwriter = csv.DictWriter(csv_output_buffer, cls.DOWNLOADS_CSV_HEADER, extrasaction='ignore')
+        csvwriter = csv.DictWriter(csv_output_buffer, cls.SUBMISSIONS_CSV_HEADER, extrasaction='ignore')
         csvwriter.writeheader()
 
         with ZipFile(file, 'w') as zip_file:
@@ -1183,7 +1183,7 @@ class OraDownloadData:
                     csvwriter.writerow({**file_data, 'file_found': file_found})
 
             zip_file.writestr(
-                'downloads.csv',
+                'submissions.csv',
                 csv_output_buffer.getvalue().encode('utf-8')
             )
 

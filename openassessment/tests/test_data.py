@@ -1376,7 +1376,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             zip_file.read(get_filepath(7)), self.answer_text.encode('utf-8')
         )
 
-        self.assertTrue(zip_file.read('downloads.csv'))
+        self.assertTrue(zip_file.read('submissions.csv'))
 
     def test_csv_file_for_create_zip_with_attachments(self):
         file = BytesIO()
