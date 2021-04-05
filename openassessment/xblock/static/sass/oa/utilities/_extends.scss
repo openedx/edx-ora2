@@ -210,7 +210,7 @@
 // rubric question
 %ui-rubric-question {
   @include clearfix();
-  margin-bottom: ($baseline-v*2);
+  margin-bottom: 0px;
   @extend %wipe-last-child;
 
   .question__title {

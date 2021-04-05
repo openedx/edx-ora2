@@ -188,6 +188,7 @@
     // rubric question
     .assessment__rubric__question {
       @extend %ui-rubric-question;
+      margin-bottom: 0px;
     }
 
     // rubric options
