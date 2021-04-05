@@ -70,12 +70,15 @@ class LeaderboardMixin(object):
         # Retrieve top scores from the submissions API
         # Since this uses the read-replica and caches the results,
         # there will be some delay in the request latency.
-        scores = sub_api.get_top_submissions(
-            student_item_dict['course_id'],
-            student_item_dict['item_id'],
-            student_item_dict['item_type'],
-            self.leaderboard_show
-        )
+        if self.leaderboard_show:
+            scores = sub_api.get_top_submissions(
+                student_item_dict['course_id'],
+                student_item_dict['item_id'],
+                student_item_dict['item_type'],
+                self.leaderboard_show
+            )
+        else:
+            scores = []
         for score in scores:
             score['files'] = []
             if 'file_keys' in score['content']:
