@@ -17,11 +17,11 @@ attrs==20.3.0
     #   pytest
 aws-sam-translator==1.35.0
     # via cfn-lint
-aws-xray-sdk==2.6.0
+aws-xray-sdk==2.7.0
     # via moto
 bleach==3.3.0
     # via -r requirements/base.txt
-boto3==1.17.28
+boto3==1.17.45
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
@@ -29,7 +29,7 @@ boto3==1.17.28
     #   moto
 boto==2.49.0
     # via moto
-botocore==1.20.28
+botocore==1.20.45
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -42,7 +42,7 @@ certifi==2020.12.5
     #   requests
 cffi==1.14.5
     # via cryptography
-cfn-lint==0.47.2
+cfn-lint==0.48.1
     # via moto
 chardet==4.0.0
     # via
@@ -52,7 +52,7 @@ click==7.1.2
     # via
     #   -r requirements/base.txt
     #   code-annotations
-code-annotations==1.1.0
+code-annotations==1.1.1
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -60,7 +60,7 @@ coverage==5.5
     # via
     #   -r requirements/test.in
     #   pytest-cov
-cryptography==3.4.6
+cryptography==3.4.7
     # via
     #   moto
     #   sshpubkeys
@@ -68,7 +68,7 @@ ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-decorator==4.4.2
+decorator==5.0.5
     # via networkx
 defusedxml==0.7.1
     # via -r requirements/base.txt
@@ -115,7 +115,7 @@ ecdsa==0.14.1
     # via
     #   python-jose
     #   sshpubkeys
-edx-django-utils==3.15.0
+edx-django-utils==3.16.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -123,11 +123,11 @@ edx-i18n-tools==0.5.3
     # via -r requirements/base.txt
 edx-submissions==3.2.4
     # via -r requirements/base.txt
-edx-toggles==4.0.0
+edx-toggles==4.1.0
     # via -r requirements/base.txt
 factory-boy==3.2.0
     # via -r requirements/test.in
-faker==6.6.1
+faker==8.0.0
     # via factory-boy
 filelock==3.0.12
     # via
@@ -177,8 +177,6 @@ jsonfield2==3.0.3
     #   edx-submissions
 jsonpatch==1.32
     # via cfn-lint
-jsonpickle==2.0.0
-    # via aws-xray-sdk
 jsonpointer==2.1
     # via jsonpatch
 jsonschema==3.2.0
@@ -195,7 +193,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-lxml==4.6.2
+lxml==4.6.3
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -247,7 +245,7 @@ pluggy==0.13.1
     # via
     #   pytest
     #   tox
-polib==1.1.0
+polib==1.1.1
     # via
     #   -r requirements/base.txt
     #   edx-i18n-tools
@@ -327,11 +325,11 @@ requests==2.25.1
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.12.1
+responses==0.13.2
     # via moto
 rsa==4.7.2
     # via python-jose
-s3transfer==0.3.4
+s3transfer==0.3.6
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -391,7 +389,7 @@ urllib3==1.26.4
     #   botocore
     #   requests
     #   responses
-virtualenv==20.4.2
+virtualenv==20.4.3
     # via tox
 voluptuous==0.12.1
     # via
