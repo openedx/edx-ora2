@@ -9,7 +9,7 @@ appdirs==1.4.4
     #   -r requirements/test.txt
     #   fs
     #   virtualenv
-astroid==2.5.1
+astroid==2.5.2
     # via
     #   pylint
     #   pylint-celery
@@ -26,13 +26,13 @@ aws-sam-translator==1.35.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-aws-xray-sdk==2.6.0
+aws-xray-sdk==2.7.0
     # via
     #   -r requirements/test.txt
     #   moto
 bleach==3.3.0
     # via -r requirements/test.txt
-boto3==1.17.28
+boto3==1.17.45
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -42,7 +42,7 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-botocore==1.20.28
+botocore==1.20.45
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -57,7 +57,7 @@ cffi==1.14.5
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.47.2
+cfn-lint==0.48.1
     # via
     #   -r requirements/test.txt
     #   moto
@@ -73,7 +73,7 @@ click==7.1.2
     #   click-log
     #   code-annotations
     #   edx-lint
-code-annotations==1.1.0
+code-annotations==1.1.1
     # via
     #   -r requirements/test.txt
     #   edx-lint
@@ -82,7 +82,7 @@ coverage==5.5
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==3.4.6
+cryptography==3.4.7
     # via
     #   -r requirements/test.txt
     #   moto
@@ -91,7 +91,7 @@ ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-decorator==4.4.2
+decorator==5.0.5
     # via
     #   -r requirements/test.txt
     #   networkx
@@ -135,7 +135,7 @@ django==2.2.19
     #   edx-toggles
     #   jsonfield2
     #   xblock-sdk
-djangorestframework==3.12.2
+djangorestframework==3.12.4
     # via
     #   -r requirements/test.txt
     #   edx-submissions
@@ -148,21 +148,21 @@ ecdsa==0.14.1
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==3.15.0
+edx-django-utils==3.16.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
 edx-i18n-tools==0.5.3
     # via -r requirements/test.txt
-edx-lint==4.1.0
+edx-lint==5.0.0
     # via -r requirements/quality.in
 edx-submissions==3.2.4
     # via -r requirements/test.txt
-edx-toggles==4.0.0
+edx-toggles==4.1.0
     # via -r requirements/test.txt
 factory-boy==3.2.0
     # via -r requirements/test.txt
-faker==6.6.1
+faker==8.0.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -199,7 +199,7 @@ idna==2.8
     #   -r requirements/test.txt
     #   moto
     #   requests
-isort==5.7.0
+isort==5.8.0
     # via pylint
 jinja2==2.11.3
     # via
@@ -224,10 +224,6 @@ jsonpatch==1.32
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-jsonpickle==2.0.0
-    # via
-    #   -r requirements/test.txt
-    #   aws-xray-sdk
 jsonpointer==2.1
     # via
     #   -r requirements/test.txt
@@ -241,7 +237,7 @@ junit-xml==1.9
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.6.0
     # via astroid
 lazy==1.4
     # via -r requirements/test.txt
@@ -251,7 +247,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-lxml==4.6.2
+lxml==4.6.3
     # via
     #   -r requirements/test.txt
     #   xblock
@@ -307,7 +303,7 @@ pluggy==0.13.1
     #   -r requirements/test.txt
     #   pytest
     #   tox
-polib==1.1.0
+polib==1.1.1
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
@@ -339,7 +335,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pylint==2.7.2
+pylint==2.7.4
     # via
     #   edx-lint
     #   pylint-celery
@@ -411,7 +407,7 @@ requests==2.25.1
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.12.1
+responses==0.13.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -419,7 +415,7 @@ rsa==4.7.2
     # via
     #   -r requirements/test.txt
     #   python-jose
-s3transfer==0.3.4
+s3transfer==0.3.6
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -485,7 +481,7 @@ urllib3==1.26.4
     #   botocore
     #   requests
     #   responses
-virtualenv==20.4.2
+virtualenv==20.4.3
     # via
     #   -r requirements/test.txt
     #   tox

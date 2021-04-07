@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.28
+boto3==1.17.45
     # via -r requirements/base.in
-botocore==1.20.28
+botocore==1.20.45
     # via
     #   boto3
     #   s3transfer
@@ -20,7 +20,7 @@ chardet==4.0.0
     # via requests
 click==7.1.2
     # via code-annotations
-code-annotations==1.1.0
+code-annotations==1.1.1
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
@@ -51,11 +51,11 @@ django==2.2.19
     #   edx-submissions
     #   edx-toggles
     #   jsonfield2
-djangorestframework==3.12.2
+djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==3.15.0
+edx-django-utils==3.16.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -63,7 +63,7 @@ edx-i18n-tools==0.5.3
     # via -r requirements/base.in
 edx-submissions==3.2.4
     # via -r requirements/base.in
-edx-toggles==4.0.0
+edx-toggles==4.1.0
     # via -r requirements/base.in
 fs==2.0.18
     # via
@@ -94,7 +94,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-lxml==4.6.2
+lxml==4.6.3
     # via
     #   -r requirements/base.in
     #   xblock
@@ -116,7 +116,7 @@ path==13.1.0
     #   path.py
 pbr==5.5.1
     # via stevedore
-polib==1.1.0
+polib==1.1.1
     # via edx-i18n-tools
 psutil==5.8.0
     # via edx-django-utils
@@ -148,7 +148,7 @@ pyyaml==5.4.1
     #   xblock
 requests==2.25.1
     # via python-swiftclient
-s3transfer==0.3.4
+s3transfer==0.3.6
     # via boto3
 six==1.15.0
     # via
