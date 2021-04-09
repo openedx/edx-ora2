@@ -11,11 +11,10 @@ import logging
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from openassessment.xblock.job_sample_grader.code_grader import TestGrader
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.utils import get_code_language, get_percentage
+from openassessment.xblock.job_sample_grader.utils import is_design_problem, get_error_response
 from xblock.core import XBlock
-
 from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)
@@ -268,13 +267,13 @@ class StaffAreaMixin(object):
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
-            "design_problem": TestGrader.is_design_problem(self.display_name)
+            "design_problem": is_design_problem(self.display_name)
         }
         if submission:
             sample_run = submission['answer']['sample_run']
             staff_run = submission['answer'].get('staff_run')
             if not staff_run:
-                staff_run = TestGrader.get_error_response('staff', 'Staff test case result is not available.')
+                staff_run = get_error_response('staff', 'Staff test case result is not available.')
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
             context['code_language'] = get_code_language(submission['answer']['language'])

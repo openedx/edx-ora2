@@ -8,7 +8,7 @@ import json
 
 import six
 
-from openassessment.xblock.job_sample_grader.code_grader import TestGrader
+from openassessment.xblock.job_sample_grader.utils import get_error_response
 
 
 def convert_training_examples_list_to_dict(examples_list):
@@ -250,7 +250,9 @@ def create_submission_dict_v2(submission, prompts, staff_view=False):
         try:
             submission['answer']['parts'].append(submission['answer']['2'])
         except KeyError:
-            submission['answer']['parts'].append(TestGrader.get_error_response('staff', "Missing Staff Submission"))
+            submission['answer']['parts'].append(
+                get_error_response('staff', "Missing Staff Submission")
+                )
 
     return submission
 
@@ -268,7 +270,9 @@ def update_submission_old_format_answer(submission):
         try:
             new_answer.update({'staff_run': answer['2']})
         except KeyError:
-            new_answer.update({'staff_run': TestGrader.get_error_response('staff', "Missing Staff Submission")})
+            new_answer.update({
+                'staff_run': get_error_response('staff', "Missing Staff Submission")
+                })
 
         try:
             new_answer.update({'language': answer['0'].split('\n')[0]})

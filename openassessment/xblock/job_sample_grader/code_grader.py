@@ -7,14 +7,14 @@ import subprocess
 import uuid
 
 from collections import OrderedDict
+from openassessment.xblock.job_sample_grader.utils import (
+    is_design_problem, get_error_response, truncate_error_output)
 
 
 logger = logging.getLogger(__name__)
 
-OOP_PROBLEM_NAMES = ["design-problem-1", "design-problem-2", "design-problem-3"]
 
-
-class TestGrader:
+class CodeGraderMixin(object):
 
     ALLOWED_LANGUAGES = ['python', 'java', 'c++']
 
@@ -51,10 +51,10 @@ class TestGrader:
             language = self.LANGUAGE_EXTENSION_MAP[language.lower()]
 
         code_file_name = "auto_generated_code_file_" + str(uuid.uuid4()).replace('-', '')
-        if not os.path.exists(TestGrader.__TMP_DATA_DIR__ + code_file_name):
-            os.mkdir(TestGrader.__TMP_DATA_DIR__ + code_file_name)
+        if not os.path.exists(self.__TMP_DATA_DIR__ + code_file_name):
+            os.mkdir(self.__TMP_DATA_DIR__ + code_file_name)
 
-        code_file_path = TestGrader.__TMP_DATA_DIR__ + code_file_name + "/" + code_file_name
+        code_file_path = self.__TMP_DATA_DIR__ + code_file_name + "/" + code_file_name
 
         try:
             if language.lower() == 'java':
@@ -71,7 +71,7 @@ class TestGrader:
             return self.response_with_error_v2(str(exc))
 
         output = []
-        if self.is_design_problem(problem_name):
+        if is_design_problem(problem_name):
             output.append(self.run_design_code(language, code_file_name, lang_extension_file_path))
         else:
             sample_result = self.run_code('sample', language, code_file_name, lang_extension_file_path, problem_name)
@@ -80,7 +80,7 @@ class TestGrader:
                 staff_result = self.run_code('staff', language, code_file_name, lang_extension_file_path, problem_name)
                 output.append(staff_result)
 
-        shutil.rmtree(TestGrader.__TMP_DATA_DIR__ + code_file_name)
+        shutil.rmtree(self.__TMP_DATA_DIR__ + code_file_name)
 
         return output
 
@@ -89,21 +89,9 @@ class TestGrader:
         To make the incorrect language error compatible with per file test
         case run compatible.
         """
-        return [self.get_error_response('sample', error)]
+        return [get_error_response('sample', error)]
 
-    @staticmethod
-    def get_error_response(run_type, error):
-        """
-        Create a sample error response for a given run and the error to be displayed.
-        """
-        return {
-            'run_type': run_type,
-            'total_tests': 0,
-            'correct': 0,
-            'incorrect': 0,
-            'output': None,
-            'error': [error]
-        }
+
 
     def run_code(self, run_type, lang, code_file_name, lang_extension_file_path, problem_name):
         """
@@ -286,13 +274,13 @@ class TestGrader:
             str output of the code execution
         """
         filename_with_lang_extension = "{}{}/{}.{}".format(
-            TestGrader.__TMP_DATA_DIR__, code_file_name, code_file_name, 'java'
+            self.__TMP_DATA_DIR__, code_file_name, code_file_name, 'java'
         )
         compilation_command = 'javac -cp {0} {1}'.format(
-            TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar", filename_with_lang_extension
+            self.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar", filename_with_lang_extension
         )
         execution_command = "java -cp {} {}".format(
-            TestGrader.__TMP_DATA_DIR__ + code_file_name + ":" + TestGrader.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar",
+            self.__TMP_DATA_DIR__ + code_file_name + ":" + self.__SECRET_DATA_DIR__ + "json-simple-1.1.1.jar",
             code_file_name
         )
         if code_input_file:
@@ -350,7 +338,7 @@ class TestGrader:
             problem_name(str)
         """
 
-        if problem_name not in OOP_PROBLEM_NAMES:
+        if not is_design_problem(problem_name):
             expected_output = open(expected_output_file, 'r').read().rstrip()
             actual_output = actual_output.rstrip()
 
@@ -401,17 +389,6 @@ class TestGrader:
         except Exception as e:
             return self.respond_with_error(str(e))
 
-    @staticmethod
-    def truncate_error_output(output):
-        """
-        Truncate error output to last 150 lines if it is very long.
-        """
-        if len(output.split('\n')) > 150:
-            actual_output = output.split("\n")[-150:]
-            actual_output.append("... Extra output Trimmed.")
-            return "\n".join(actual_output)
-        return output
-
     def process_execution_error(self, error):
         """
         Helper method to process and extract the execution error
@@ -420,11 +397,17 @@ class TestGrader:
             output_error = error[0]
         except IndexError:
             output_error = error
-        return self.truncate_error_output(output_error)
+        return truncate_error_output(output_error)
 
-    @staticmethod
-    def is_design_problem(problem_name):
+    def grade_response(self, data, problem_name, add_staff_output=False):
         """
-        Temporary helper method to check if a coding problem is a design problem.
+        Grade the response with per file test case feature.
         """
-        return problem_name in OOP_PROBLEM_NAMES
+        data.update({'problem_name': problem_name})
+        output = self.grade(data, add_staff_cases=add_staff_output)
+
+        sample_output = output[0]
+        if add_staff_output:
+            # If staff output is required, send the original result as it is.
+            return output
+        return sample_output

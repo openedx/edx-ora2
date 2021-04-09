@@ -13,10 +13,10 @@ from openassessment.xblock.tasks import run_and_save_staff_test_cases
 from xblock.core import XBlock
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from .job_sample_grader.code_grader import TestGrader
+from .job_sample_grader.utils import get_error_response, is_design_problem
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-from .utils import get_code_language, grade_response
+from .utils import get_code_language
 
 logger = logging.getLogger(__name__)
 
@@ -89,14 +89,14 @@ class SubmissionMixin(object):
             )
 
         status = False
-        grade_output = grade_response(data, self.display_name, add_staff_output=False)
+        grade_output = self.grade_response(data, self.display_name, add_staff_output=False)
 
         # Check if sample and staff grade output is present
         # If not, add a default error response
         try:
             sample_run = grade_output
         except KeyError:
-            sample_run = TestGrader.get_error_response("sample", "Submission Missing")
+            sample_run = get_error_response("sample", "Submission Missing")
 
         # Add sample and staff run to submission
         data.update({
@@ -131,7 +131,7 @@ class SubmissionMixin(object):
                     student_sub_data,
                     saved_files_descriptions
                 )
-                run_and_save_staff_test_cases.apply_async(args=[submission["uuid"], self.display_name])
+                run_and_save_staff_test_cases.apply_async(args=[self, submission["uuid"], self.display_name])
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -213,7 +213,7 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
-            grade_output = grade_response(data, self.display_name)
+            grade_output = self.grade_response(data, self.display_name)
             grade_output.pop('run_type')
             student_sub_data = data
             try:
@@ -630,7 +630,7 @@ class SubmissionMixin(object):
                 workflow["submission_uuid"]
             )
             context["student_submission"] = update_submission_old_format_answer(student_submission)
-            context["design_problem"] = TestGrader.is_design_problem(self.display_name)
+            context["design_problem"] = is_design_problem(self.display_name)
             context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
@@ -642,7 +642,7 @@ class SubmissionMixin(object):
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
 
-            context["design_problem"] = TestGrader.is_design_problem(self.display_name)
+            context["design_problem"] = is_design_problem(self.display_name)
             context["student_submission"] = update_submission_old_format_answer(student_submission)
             context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
 
