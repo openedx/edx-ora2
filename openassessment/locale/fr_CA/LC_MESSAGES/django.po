@@ -97,7 +97,7 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-08 00:57-0500\n"
-"PO-Revision-Date: 2021-03-02 18:32+0000\n"
+"PO-Revision-Date: 2021-04-07 18:26+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -141,54 +141,54 @@ msgstr "Il manque une option pour \"{criterion_name}\" dans l'exemple {example_n
 #: openassessment/data.py:536
 #, python-brace-format
 msgid "Criterion {number}: {label}"
-msgstr ""
+msgstr "Critère {number}: {label}"
 
 #: openassessment/data.py:538
 #, python-brace-format
 msgid "Points {number}"
-msgstr ""
+msgstr "Points {number}"
 
 #: openassessment/data.py:539
 #, python-brace-format
 msgid "Median Score {number}"
-msgstr ""
+msgstr "Score médian {number}"
 
 #: openassessment/data.py:540
 #, python-brace-format
 msgid "Feedback {number}"
-msgstr ""
+msgstr "Rétroaction {number}"
 
 #: openassessment/data.py:867
 msgid "Item ID"
-msgstr ""
+msgstr "Identifiant de l'élément"
 
 #: openassessment/data.py:868
 msgid "Submission ID"
-msgstr ""
+msgstr "ID de soumission"
 
 #: openassessment/data.py:880
 msgid "Anonymized Student ID"
-msgstr ""
+msgstr "ID d'étudiant anonymisé"
 
 #: openassessment/data.py:911
 msgid "Assessment ID"
-msgstr ""
+msgstr "ID d'évaluation"
 
 #: openassessment/data.py:912
 msgid "Assessment Scored Date"
-msgstr ""
+msgstr "Date de notation de l'évaluation"
 
 #: openassessment/data.py:913
 msgid "Assessment Scored Time"
-msgstr ""
+msgstr "Temps de notation de l'évaluation"
 
 #: openassessment/data.py:914
 msgid "Assessment Type"
-msgstr ""
+msgstr "Type d'évaluation"
 
 #: openassessment/data.py:915
 msgid "Anonymous Scorer Id"
-msgstr ""
+msgstr "Identifiant d'évaluateur anonyme"
 
 #: openassessment/data.py:917
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
@@ -197,35 +197,35 @@ msgstr "Commentaire global"
 
 #: openassessment/data.py:918
 msgid "Assessment Score Earned"
-msgstr ""
+msgstr "Note d'évaluation obtenu"
 
 #: openassessment/data.py:919
 msgid "Assessment Scored At"
-msgstr ""
+msgstr "Évaluation notée à"
 
 #: openassessment/data.py:920
 msgid "Date/Time Final Score Given"
-msgstr ""
+msgstr "Date / heure de la note finale donnée"
 
 #: openassessment/data.py:921
 msgid "Final Score Earned"
-msgstr ""
+msgstr "Note finale obtenue"
 
 #: openassessment/data.py:922
 msgid "Final Score Possible"
-msgstr ""
+msgstr "Note finale possible"
 
 #: openassessment/data.py:923
 msgid "Feedback Statements Selected"
-msgstr ""
+msgstr "Énoncés de rétroaction sélectionnés"
 
 #: openassessment/data.py:924
 msgid "Feedback on Assessment"
-msgstr ""
+msgstr "Rétroaction sur l'évaluation"
 
 #: openassessment/data.py:926
 msgid "Response Files"
-msgstr ""
+msgstr "Fichiers de réponses"
 
 #: openassessment/data.py:1092
 msgid "No description provided."
@@ -392,13 +392,13 @@ msgstr "Sélectionnez un ensemble d'équipes"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
-msgstr ""
+msgstr "Afficher la grille avec la réponse"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:162
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
 "response."
-msgstr ""
+msgstr "Indiquez si les apprenants peuvent voir la grille pendant qu'ils travaillent sur leur réponse."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
@@ -1392,7 +1392,7 @@ msgstr "Après avoir soumis votre réponse, vous ne pouvez plus la modifier"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:116
 msgid "What will this assignment be graded on?"
-msgstr ""
+msgstr "Sur quoi cette évaluation sera-t-elle notée?"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "The prompt for this section"
