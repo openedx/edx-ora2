@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.45
+boto3==1.17.54
     # via -r requirements/base.in
-botocore==1.20.45
+botocore==1.20.54
     # via
     #   boto3
     #   s3transfer
@@ -32,13 +32,13 @@ django-model-utils==4.1.1
     # via
     #   -r requirements/base.in
     #   edx-submissions
-django-simple-history==2.12.0
+django-simple-history==3.0.0
     # via -r requirements/base.in
 django-waffle==2.1.0
     # via
     #   edx-django-utils
     #   edx-toggles
-django==2.2.19
+django==2.2.20
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -148,12 +148,11 @@ pyyaml==5.4.1
     #   xblock
 requests==2.25.1
     # via python-swiftclient
-s3transfer==0.3.6
+s3transfer==0.4.0
     # via boto3
 six==1.15.0
     # via
     #   bleach
-    #   django-simple-history
     #   edx-i18n-tools
     #   fs
     #   html5lib

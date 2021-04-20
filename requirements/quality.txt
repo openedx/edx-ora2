@@ -9,7 +9,7 @@ appdirs==1.4.4
     #   -r requirements/test.txt
     #   fs
     #   virtualenv
-astroid==2.5.2
+astroid==2.5.3
     # via
     #   pylint
     #   pylint-celery
@@ -32,7 +32,7 @@ aws-xray-sdk==2.7.0
     #   moto
 bleach==3.3.0
     # via -r requirements/test.txt
-boto3==1.17.45
+boto3==1.17.54
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -42,7 +42,7 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-botocore==1.20.45
+botocore==1.20.54
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -57,7 +57,7 @@ cffi==1.14.5
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.48.1
+cfn-lint==0.48.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -91,7 +91,7 @@ ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-decorator==5.0.5
+decorator==5.0.7
     # via
     #   -r requirements/test.txt
     #   networkx
@@ -112,14 +112,14 @@ django-model-utils==4.1.1
     #   edx-submissions
 django-pyfs==3.0
     # via -r requirements/test.txt
-django-simple-history==2.12.0
+django-simple-history==3.0.0
     # via -r requirements/test.txt
 django-waffle==2.1.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
     #   edx-toggles
-django==2.2.19
+django==2.2.20
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -139,7 +139,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-docker==4.4.4
+docker==5.0.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -162,7 +162,7 @@ edx-toggles==4.1.0
     # via -r requirements/test.txt
 factory-boy==3.2.0
     # via -r requirements/test.txt
-faker==8.0.0
+faker==8.1.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -329,7 +329,7 @@ pycparser==2.20
     #   cffi
 pylint-celery==0.3
     # via edx-lint
-pylint-django==2.4.2
+pylint-django==2.4.3
     # via edx-lint
 pylint-plugin-utils==0.6
     # via
@@ -415,7 +415,7 @@ rsa==4.7.2
     # via
     #   -r requirements/test.txt
     #   python-jose
-s3transfer==0.3.6
+s3transfer==0.4.0
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -425,8 +425,6 @@ six==1.15.0
     #   aws-sam-translator
     #   bleach
     #   cfn-lint
-    #   django-simple-history
-    #   docker
     #   ecdsa
     #   edx-i18n-tools
     #   edx-lint
