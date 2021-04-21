@@ -21,7 +21,7 @@ aws-xray-sdk==2.7.0
     # via moto
 bleach==3.3.0
     # via -r requirements/base.txt
-boto3==1.17.45
+boto3==1.17.54
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
@@ -29,7 +29,7 @@ boto3==1.17.45
     #   moto
 boto==2.49.0
     # via moto
-botocore==1.20.45
+botocore==1.20.54
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -42,7 +42,7 @@ certifi==2020.12.5
     #   requests
 cffi==1.14.5
     # via cryptography
-cfn-lint==0.48.1
+cfn-lint==0.48.3
     # via moto
 chardet==4.0.0
     # via
@@ -68,7 +68,7 @@ ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-decorator==5.0.5
+decorator==5.0.7
     # via networkx
 defusedxml==0.7.1
     # via -r requirements/base.txt
@@ -85,7 +85,7 @@ django-model-utils==4.1.1
     #   edx-submissions
 django-pyfs==3.0
     # via -r requirements/test.in
-django-simple-history==2.12.0
+django-simple-history==3.0.0
     # via -r requirements/base.txt
 django-waffle==2.1.0
     # via
@@ -109,7 +109,7 @@ django-waffle==2.1.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-docker==4.4.4
+docker==5.0.0
     # via moto
 ecdsa==0.14.1
     # via
@@ -127,7 +127,7 @@ edx-toggles==4.1.0
     # via -r requirements/base.txt
 factory-boy==3.2.0
     # via -r requirements/test.in
-faker==8.0.0
+faker==8.1.0
     # via factory-boy
 filelock==3.0.12
     # via
@@ -329,7 +329,7 @@ responses==0.13.2
     # via moto
 rsa==4.7.2
     # via python-jose
-s3transfer==0.3.6
+s3transfer==0.4.0
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -339,8 +339,6 @@ six==1.15.0
     #   aws-sam-translator
     #   bleach
     #   cfn-lint
-    #   django-simple-history
-    #   docker
     #   ecdsa
     #   edx-i18n-tools
     #   freezegun
