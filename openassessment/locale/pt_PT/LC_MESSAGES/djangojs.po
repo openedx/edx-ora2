@@ -7,6 +7,7 @@
 # Beatriz Magalhães <mbeatrizmagalhaes@gmail.com>, 2016
 # Beatriz Sousa <beatriz.sousa@bridgelk.com>, 2018
 # Cátia Lopes <catia.lopes@bridgelk.com>, 2018
+# Filipa Macieira <filipa.macieira@fccn.pt>, 2021
 # Filipe Boleto <fboleto@gmail.com>, 2015
 # Luis Manuel Moreno <luis.moreno@edunext.co>, 2019
 # Manuela Silva <manuelarodsilva@gmail.com>, 2016,2018
@@ -23,8 +24,8 @@ msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-08 00:57-0500\n"
-"PO-Revision-Date: 2021-03-02 19:27+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2021-04-23 10:50+0000\n"
+"Last-Translator: Filipa Macieira <filipa.macieira@fccn.pt>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -155,7 +156,7 @@ msgstr "Não foi possível remover a submissão da pool de classificação."
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:670
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "Várias equipas voltaram para o curso"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:3
 #: openassessment/xblock/static/dist/openassessment-studio.js:1
@@ -163,7 +164,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:677
 msgid "Could not load teams information."
-msgstr ""
+msgstr "Não foi possível carregar informação das equipas."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:3
 #: openassessment/xblock/static/dist/openassessment-studio.js:1
@@ -171,7 +172,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:699
 msgid "User lookup failed"
-msgstr ""
+msgstr "A procura do utilizador falhou"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:3
 #: openassessment/xblock/static/dist/openassessment-studio.js:1
@@ -179,7 +180,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:704
 msgid "Error when looking up username"
-msgstr ""
+msgstr "Erro ao procurar o nome de utilizador"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:304
 #: openassessment/xblock/static/js/openassessment-lms.js:304
@@ -334,7 +335,7 @@ msgstr "Está prestes a submeter a sua resposta para esta tarefa. Depois de a su
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "O tamanho do ficheiro individual deve ser {max_files_mb}MB ou menos."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:317
 #: openassessment/xblock/static/js/openassessment-lms.js:317
@@ -342,19 +343,19 @@ msgstr ""
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "Falha no carregamento do ficheiro: tipo de ficheiro não suportado. Apenas os tipos de ficheiros suportados podem ser carregados. Se tiver dúvidas, entre em contato com a equipa de curso."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:317
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 msgid "Only "
-msgstr ""
+msgstr "Apenas "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:317
 #: openassessment/xblock/static/js/openassessment-lms.js:317
 #: openassessment/xblock/static/js/src/lms/oa_response.js:671
 #: openassessment/xblock/static/js/src/lms/oa_response.js:677
 msgid "Describe "
-msgstr ""
+msgstr "Descreva "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:317
 #: openassessment/xblock/static/js/openassessment-lms.js:317
@@ -374,7 +375,7 @@ msgstr "Visualização em miniatura de "
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr ""
+msgstr "Tem certeza de que deseja apagar o seguinte ficheiro? Não pode ser restaurado.\nFicheiro: "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:317
 #: openassessment/xblock/static/js/openassessment-lms.js:317
@@ -403,7 +404,7 @@ msgstr "Deve indicar o nome de um estudante."
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr ""
+msgstr "Esta nota será aplicada a todos os membros da equipa. Quer continuar?"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:317
 #: openassessment/xblock/static/js/openassessment-lms.js:317
@@ -557,7 +558,7 @@ msgstr "As alterações às etapas que não estão selecionados como parte da ta
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:91
 msgid "File types can not be empty."
-msgstr ""
+msgstr "O tipo de ficheiro não pode estar vazio."
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:1
 #: openassessment/xblock/static/js/openassessment-studio.js:1
