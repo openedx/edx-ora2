@@ -131,7 +131,9 @@ class SubmissionMixin(object):
                     student_sub_data,
                     saved_files_descriptions
                 )
-                run_and_save_staff_test_cases.apply_async(args=[self, submission["uuid"], self.display_name])
+                run_and_save_staff_test_cases.apply_async(args=[
+                    str(self.scope_ids.usage_id), submission["uuid"], self.display_name
+                ])
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
