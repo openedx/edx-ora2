@@ -275,6 +275,13 @@ export class RubricOption {
     return fields;
   }
 
+  setFieldValues({label, points, explanation}) {
+    this.label(label);
+    this.points(points);
+    this.explanation(explanation);
+  }
+
+
   /**
      Get or set the label of the option.
 
@@ -494,6 +501,17 @@ export class RubricCriterion {
     if (nameString !== '') { fields.name = nameString; }
 
     return fields;
+  }
+
+  setFieldValues({label, prompt, feedback, options}) {
+    this.label(label);
+    this.prompt(prompt);
+    $('.openassessment_criterion_feedback', this.element).val(feedback);
+    const criterion = this;
+    options.forEach(option => {
+      const rubricOption = criterion.optionContainer.add();
+      rubricOption.setFieldValues(option);
+    });
   }
 
   /**

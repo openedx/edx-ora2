@@ -149,6 +149,7 @@ export class Container {
     const handlerItem = container.createContainerItem(containerItem);
     handlerItem.addEventListeners();
     handlerItem.addHandler();
+    return handlerItem;
   }
 
   /**
@@ -165,6 +166,20 @@ export class Container {
     const containerItem = this.createContainerItem(itemElement);
     containerItem.removeHandler();
     itemElement.remove();
+  }
+
+
+  /**
+    Removes all elements of the container.
+   */
+  removeAll() {
+    const container = this;
+    $(`.${this.containerItemClass}`, this.containerElement).each(
+      (index, element) => {
+        const containerItem = container.createContainerItem(element);
+        container.remove(containerItem);
+      },
+    );
   }
 
   /**

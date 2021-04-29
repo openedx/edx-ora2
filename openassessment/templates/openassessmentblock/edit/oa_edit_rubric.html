@@ -15,6 +15,12 @@
         </p>
     </div>
 
+    <div id="openassessment_rubric_test_modify" style="border-style: solid;">
+        <h6>
+            Do Something!!!!!!!
+        </h6>
+    </div>
+
     <ul id="openassessment_criterion_list" >
         {% for criterion in criteria %}
             {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name=criterion.name criterion_label=criterion.label criterion_prompt=criterion.prompt criterion_options=criterion.options criterion_feedback=criterion.feedback %}

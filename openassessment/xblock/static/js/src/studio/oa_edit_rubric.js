@@ -21,7 +21,7 @@ export class EditRubricView {
   constructor(element, notifier) {
     this.element = element;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
-
+    this.criterionTestModifyButton = $('#openassessment_rubric_test_modify', this.element);
     this.criteriaContainer = new Container(
       RubricCriterion, {
         containerElement: $('#openassessment_criterion_list', this.element).get(0),
@@ -33,6 +33,95 @@ export class EditRubricView {
       },
     );
     this.criteriaContainer.addEventListeners();
+    this.addTestModifyEventListener()
+  }
+
+  addTestModifyEventListener() {
+    const self = this;
+    const container = this.criteriaContainer;
+    const testData = {
+      criteria: [
+        {
+          label:"disabled feedback critereon",
+          prompt:"prompt 1",
+          feedback:"disabled",
+          options: [
+            {
+              label:"label 1-1",
+              points:"1",
+              explanation:"exp 1-1",
+            },
+            {
+              label:"label 1-2",
+              points:"2",
+              explanation:"exp 1-2",
+            },
+            {
+              label:"label 1-3",
+              points:"3",
+              explanation:"exp 1-3",
+            },
+          ],
+        },
+        {
+          label:"required feedback critereon",
+          prompt:"prompt 2",
+          feedback:"required",
+          options: [
+            {
+              label:"label 2-1",
+              points:"4",
+              explanation:"exp 2-1",
+            },
+            {
+              label:"label 2-2",
+              points:"5",
+              explanation:"exp 2-2",
+            },
+            {
+              label:"label 2-3",
+              points:"6",
+              explanation:"exp 2-3",
+            },
+          ],
+        },
+        {
+          label:"optional feedback critereon",
+          prompt:"prompt 2",
+          feedback:"optional",
+          options: [
+            {
+              label:"label 3-1",
+              points:"4",
+              explanation:"exp 3-1",
+            },
+            {
+              label:"label 3-2",
+              points:"5",
+              explanation:"exp 3-2",
+            },
+            {
+              label:"label 3-3",
+              points:"6",
+              explanation:"exp 3-3",
+            },
+          ],
+        },
+      ],
+      feedbackPrompt: "this is the feedback prompt",
+      defaultFeedbackText: "This is the default feedback text",
+    }
+    $(this.criterionTestModifyButton).click((eventData) => {
+      console.log("clicked");
+      console.log(container.element);
+      container.removeAll();
+      testData.criteria.forEach(criterion => {
+        const criterionElement = container.add();
+        criterionElement.setFieldValues(criterion);
+      });
+      self.feedbackPrompt(testData.feedbackPrompt);
+      self.feedback_default_text(testData.defaultFeedbackText);
+    });
   }
 
   /**
