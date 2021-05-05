@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.54
+boto3==1.17.64
     # via -r requirements/base.in
-botocore==1.20.54
+botocore==1.20.64
     # via
     #   boto3
     #   s3transfer
@@ -55,7 +55,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==3.16.0
+edx-django-utils==4.0.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -114,7 +114,7 @@ path==13.1.0
     # via
     #   -c requirements/constraints.txt
     #   path.py
-pbr==5.5.1
+pbr==5.6.0
     # via stevedore
 polib==1.1.1
     # via edx-i18n-tools
@@ -128,7 +128,7 @@ python-dateutil==2.4.0
     #   -r requirements/base.in
     #   botocore
     #   xblock
-python-slugify==4.0.1
+python-slugify==5.0.0
     # via code-annotations
 python-swiftclient==3.11.1
     # via
@@ -148,7 +148,7 @@ pyyaml==5.4.1
     #   xblock
 requests==2.25.1
     # via python-swiftclient
-s3transfer==0.4.0
+s3transfer==0.4.2
     # via boto3
 six==1.15.0
     # via

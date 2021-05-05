@@ -9,7 +9,7 @@ appdirs==1.4.4
     #   -r requirements/test.txt
     #   fs
     #   virtualenv
-astroid==2.5.3
+astroid==2.5.6
     # via
     #   pylint
     #   pylint-celery
@@ -26,13 +26,13 @@ aws-sam-translator==1.35.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-aws-xray-sdk==2.7.0
+aws-xray-sdk==2.8.0
     # via
     #   -r requirements/test.txt
     #   moto
 bleach==3.3.0
     # via -r requirements/test.txt
-boto3==1.17.54
+boto3==1.17.64
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -42,7 +42,7 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-botocore==1.20.54
+botocore==1.20.64
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -57,7 +57,7 @@ cffi==1.14.5
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.48.3
+cfn-lint==0.49.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -148,7 +148,7 @@ ecdsa==0.14.1
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==3.16.0
+edx-django-utils==4.0.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -162,7 +162,7 @@ edx-toggles==4.1.0
     # via -r requirements/test.txt
 factory-boy==3.2.0
     # via -r requirements/test.txt
-faker==8.1.0
+faker==8.1.2
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -294,7 +294,7 @@ path==13.1.0
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   path.py
-pbr==5.5.1
+pbr==5.6.0
     # via
     #   -r requirements/test.txt
     #   stevedore
@@ -329,13 +329,13 @@ pycparser==2.20
     #   cffi
 pylint-celery==0.3
     # via edx-lint
-pylint-django==2.4.3
+pylint-django==2.4.4
     # via edx-lint
 pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pylint==2.7.4
+pylint==2.8.2
     # via
     #   edx-lint
     #   pylint-celery
@@ -376,7 +376,7 @@ python-jose==3.2.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==4.0.1
+python-slugify==5.0.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -407,7 +407,7 @@ requests==2.25.1
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.13.2
+responses==0.13.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -415,7 +415,7 @@ rsa==4.7.2
     # via
     #   -r requirements/test.txt
     #   python-jose
-s3transfer==0.4.0
+s3transfer==0.4.2
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -479,7 +479,7 @@ urllib3==1.26.4
     #   botocore
     #   requests
     #   responses
-virtualenv==20.4.3
+virtualenv==20.4.4
     # via
     #   -r requirements/test.txt
     #   tox
@@ -518,7 +518,7 @@ wrapt==1.11.2
     #   -r requirements/test.txt
     #   astroid
     #   aws-xray-sdk
-xblock-sdk==0.2.2
+xblock-sdk==0.3.0
     # via -r requirements/test.txt
 xblock==1.4.0
     # via -r requirements/test.txt
