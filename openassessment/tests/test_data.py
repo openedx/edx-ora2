@@ -22,7 +22,7 @@ import openassessment.assessment.api.peer as peer_api
 from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
-    TextOnlySubmissionAnswer
+    TextOnlySubmissionAnswer, FileMissingException
 )
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
@@ -1315,6 +1315,58 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.assertEqual(
             zip_file.read(self.submission_files_data[7]['file_path']),
             self.answer_text.encode('utf-8')
+        )
+
+        self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
+
+    def test_create_zip_with_failed_attachments(self):
+        file = BytesIO()
+
+        with patch(
+            'openassessment.data.OraDownloadData._download_file_by_key'
+        ) as download_mock:
+            download_mock.side_effect = FileMissingException
+            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+
+            download_mock.assert_has_calls([
+                call(self.file_key_5),
+                call(self.file_key_4),
+                call(self.file_key_1),
+                call(self.file_key_2),
+                call(self.file_key_3),
+            ])
+
+        zip_file = zipfile.ZipFile(file)
+
+        # archive should contain only three parts text file and one csv because all of the attachments are invalid
+        self.assertEqual(len(zip_file.infolist()), 4)
+
+        # check for pre_file_name_user's text file
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[1]['file_path']),
+            self.answer_text.encode('utf-8')
+        )
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[3]['file_path']),
+            self.answer_text.encode('utf-8')
+        )
+
+        # main user's text response
+        self.assertEqual(
+            zip_file.read(self.submission_files_data[7]['file_path']),
+            self.answer_text.encode('utf-8')
+        )
+
+        # expect the submission file to be invalid
+        self.assertEqual(
+            self.submission_files_data[6]['valid'],
+            False
+        )
+
+        # expect file not found in the zip file
+        self.assertRaises(
+            KeyError,
+            lambda: zip_file.read(self.submission_files_data[6]['file_path']),
         )
 
         self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))

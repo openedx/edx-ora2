@@ -10,7 +10,7 @@ from itertools import chain
 import csv
 import json
 import os
-
+import logging
 import requests
 
 from django.conf import settings
@@ -24,6 +24,7 @@ from openassessment.assessment.models import Assessment, AssessmentFeedback, Ass
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
 
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 class CsvWriter:
     """
@@ -945,17 +946,20 @@ class OraDownloadData:
         'description',
         'size',
         'file_path',
+        'valid',
     )
 
     @classmethod
     def _download_file_by_key(cls, key):
+        url = get_download_url(key)
+        if not bool(url):
+            raise FileMissingException
         download_url = urljoin(
-            settings.LMS_ROOT_URL, get_download_url(key)
+            settings.LMS_ROOT_URL, url
         )
 
         response = requests.get(download_url)
         response.raise_for_status()
-
         return response.content
 
     @classmethod
@@ -974,7 +978,7 @@ class OraDownloadData:
             │   │   │   ├── SomeFile1
             │   │   │   └── SomeFile2
             │   │   ├── part_0.txt
-            │   │   └── part_1.txt
+            │   │  n └── part_1.txt
             │   └── StudentId2
             │       ├── part_0.txt
             │       └── part_1.txt
@@ -993,15 +997,26 @@ class OraDownloadData:
 
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                file_content = (
-                    cls._download_file_by_key(file_data['key'])
-                    if file_data['type'] == cls.ATTACHMENT
-                    else file_data['content']
-                )
+                key = file_data['key']
+                file_name = file_data['file_path']
 
-                zip_file.writestr(file_data['file_path'], file_content)
+                try:
+                    file_content = (
+                        cls._download_file_by_key(file_data['key'])
+                        if file_data['type'] == cls.ATTACHMENT
+                        else file_data['content']
+                    )
+                except FileMissingException:
+                    file_data['valid'] = False
+                    # added a header to csv file to indicate that the file in valid or not.
+                    # not sure if I should create a {file_name}.error.txt to indicate the file error more clearly.
+                    logging.warning('File: {file_name} with key: {key} was missing.'
+                                    .format(file_name=file_name, key=key))
+                else:
+                    file_data['valid'] = True
+                    zip_file.writestr(file_name, file_content)
+
                 csvwriter.writerow(file_data)
-
             downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
 
             zip_file.writestr(
@@ -1206,6 +1221,8 @@ ZIPPED_LIST_SUBMISSION_VERSIONS = [
 class VersionNotFoundException(Exception):
     """ Raised when we are unable to resolve a given submission to a submission version """
 
+class FileMissingException(Exception):
+    """ Raise when file is not found on generated CSV"""
 
 class ZippedListSubmissionAnswer(OraSubmissionAnswer):
     """
