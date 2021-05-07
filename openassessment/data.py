@@ -1001,7 +1001,7 @@ class OraDownloadData:
             for file_data in submission_files_data:
                 clone_file_data = copy.copy(file_data)
                 key = clone_file_data['key']
-                file_name = clone_file_data['file_path']
+                file_path = clone_file_data['file_path']
                 try:
                     file_content = (
                         cls._download_file_by_key(key)
@@ -1011,14 +1011,23 @@ class OraDownloadData:
                 except FileMissingException:
                     clone_file_data['file_found'] = False
                     # added a header to csv file to indicate that the file was found or not.
-                    # not sure if I should create a {file_name}.error.txt to indicate the file error more clearly.
+                    # not sure if I should create a {file_path}.error.txt to indicate the file error more clearly.
                     logger.warning(
-                        'File: {file_name} with key: {key} was missing.'
-                        'Full object: {file_data}'.format(file_name=file_name, key=key, file_data=file_data)
+                        'File: \'{file_path}\' with key: \'{key}\' was missing.\n'
+                        'Full detail:'
+                        '\n\tCourse Id: {course_id}'
+                        '\n\tBlock Id: {block_id}'
+                        '\n\tStudent Id: {student_id}'
+                        '\n\tKey: {key}'
+                        '\n\tName: {name}'
+                        '\n\tType: {type}'
+                        '\n\tDescription: {description}'
+                        '\n\tFile Path: {file_path}'
+                        '\n\tFile Size: {size}'.format(**clone_file_data)
                     )
                 else:
                     clone_file_data['file_found'] = True
-                    zip_file.writestr(file_name, file_content)
+                    zip_file.writestr(file_path, file_content)
 
                 csvwriter.writerow(clone_file_data)
             downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
