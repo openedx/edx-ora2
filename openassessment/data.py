@@ -1012,8 +1012,10 @@ class OraDownloadData:
                     clone_file_data['file_found'] = False
                     # added a header to csv file to indicate that the file was found or not.
                     # not sure if I should create a {file_name}.error.txt to indicate the file error more clearly.
-                    logging.warning('File: {file_name} with key: {key} was missing.'
-                                    .format(file_name=file_name, key=key))
+                    logger.warning(
+                        'File: {file_name} with key: {key} was missing.'
+                        'Full object: {file_data}'.format(file_name=file_name, key=key, file_data=file_data)
+                    )
                 else:
                     clone_file_data['file_found'] = True
                     zip_file.writestr(file_name, file_content)
