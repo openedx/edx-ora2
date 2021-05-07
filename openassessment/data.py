@@ -1013,7 +1013,7 @@ class OraDownloadData:
                     # added a header to csv file to indicate that the file was found or not.
                     # not sure if I should create a {file_path}.error.txt to indicate the file error more clearly.
                     logger.warning(
-                        'File: \'{file_path}\' with key: \'{key}\' was missing.\n'
+                        'File for submission could not be downloaded for ORA submission archive.\n'
                         'Full detail:'
                         '\n\tCourse Id: {course_id}'
                         '\n\tBlock Id: {block_id}'
