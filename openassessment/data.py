@@ -978,7 +978,7 @@ class OraDownloadData:
             │   │   │   ├── SomeFile1
             │   │   │   └── SomeFile2
             │   │   ├── part_0.txt
-            │   │  n └── part_1.txt
+            │   │   └── part_1.txt
             │   └── StudentId2
             │       ├── part_0.txt
             │       └── part_1.txt
