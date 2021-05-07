@@ -24,7 +24,8 @@ from openassessment.assessment.models import Assessment, AssessmentFeedback, Ass
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
 
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)
+
 
 class CsvWriter:
     """
@@ -1221,8 +1222,10 @@ ZIPPED_LIST_SUBMISSION_VERSIONS = [
 class VersionNotFoundException(Exception):
     """ Raised when we are unable to resolve a given submission to a submission version """
 
+
 class FileMissingException(Exception):
-    """ Raise when file is not found on generated CSV"""
+    """ Raise when file is not found on generated CSV """
+
 
 class ZippedListSubmissionAnswer(OraSubmissionAnswer):
     """
