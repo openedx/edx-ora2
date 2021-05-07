@@ -1002,17 +1002,16 @@ class OraDownloadData:
 
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                clone_file_data = copy.copy(file_data)
-                key = clone_file_data['key']
-                file_path = clone_file_data['file_path']
+                key = file_data['key']
+                file_path = file_data['file_path']
                 try:
                     file_content = (
                         cls._download_file_by_key(key)
-                        if clone_file_data['type'] == cls.ATTACHMENT
-                        else clone_file_data['content']
+                        if file_data['type'] == cls.ATTACHMENT
+                        else file_data['content']
                     )
                 except FileMissingException:
-                    clone_file_data['file_found'] = False
+                    file_found = False
                     # added a header to csv file to indicate that the file was found or not.
                     # not sure if I should create a {file_path}.error.txt to indicate the file error more clearly.
                     logger.warning(
@@ -1026,13 +1025,14 @@ class OraDownloadData:
                         '\n\tType: {type}'
                         '\n\tDescription: {description}'
                         '\n\tFile Path: {file_path}'
-                        '\n\tFile Size: {size}'.format(**clone_file_data)
+                        '\n\tFile Size: {size}'.format(**file_data)
                     )
                 else:
-                    clone_file_data['file_found'] = True
+                    file_found = True
                     zip_file.writestr(file_path, file_content)
+                finally:
+                    csvwriter.writerow({**file_data, 'file_found': file_found})
 
-                csvwriter.writerow(clone_file_data)
             downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
 
             zip_file.writestr(
