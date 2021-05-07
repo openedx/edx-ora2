@@ -1022,10 +1022,7 @@ class OraDownloadData:
                         '\n\tStudent Id: {student_id}'
                         '\n\tKey: {key}'
                         '\n\tName: {name}'
-                        '\n\tType: {type}'
-                        '\n\tDescription: {description}'
-                        '\n\tFile Path: {file_path}'
-                        '\n\tFile Size: {size}'.format(**file_data)
+                        '\n\tType: {type}'.format(**file_data)
                     )
                 else:
                     file_found = True
