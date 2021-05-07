@@ -1341,6 +1341,11 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         # archive should contain only three parts text file and one csv because all of the attachments are invalid
         self.assertEqual(len(zip_file.infolist()), 4)
 
+        # expect text file found in the zip file
+        self.assertTrue(zipfile.Path(zip_file, self.submission_files_data[1]['file_path']).exists())
+        self.assertTrue(zipfile.Path(zip_file, self.submission_files_data[3]['file_path']).exists())
+        self.assertTrue(zipfile.Path(zip_file, self.submission_files_data[7]['file_path']).exists())
+
         # check for pre_file_name_user's text file
         self.assertEqual(
             zip_file.read(self.submission_files_data[1]['file_path']),
@@ -1357,17 +1362,16 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             self.answer_text.encode('utf-8')
         )
 
-        # expect the submission file to be invalid
-        self.assertEqual(
-            self.submission_files_data[6]['valid'],
-            False
-        )
-
         # expect file not found in the zip file
-        self.assertRaises(
-            KeyError,
-            lambda: zip_file.read(self.submission_files_data[6]['file_path']),
-        )
+        self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[0]['file_path']).exists())
+        self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[2]['file_path']).exists())
+        self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[4]['file_path']).exists())
+        self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[6]['file_path']).exists())
+
+        # expect submission_files_data not to get modify
+        for i in range(8):
+            with self.assertRaises(KeyError):
+                self.submission_files_data[i]['file_found']
 
         self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
 

@@ -12,6 +12,7 @@ import json
 import os
 import logging
 import requests
+import copy
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -947,13 +948,13 @@ class OraDownloadData:
         'description',
         'size',
         'file_path',
-        'valid',
+        'file_found',
     )
 
     @classmethod
     def _download_file_by_key(cls, key):
         url = get_download_url(key)
-        if not bool(url):
+        if not url:
             raise FileMissingException
         download_url = urljoin(
             settings.LMS_ROOT_URL, url
@@ -998,26 +999,26 @@ class OraDownloadData:
 
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                key = file_data['key']
-                file_name = file_data['file_path']
-
+                clone_file_data = copy.copy(file_data)
+                key = clone_file_data['key']
+                file_name = clone_file_data['file_path']
                 try:
                     file_content = (
-                        cls._download_file_by_key(file_data['key'])
-                        if file_data['type'] == cls.ATTACHMENT
-                        else file_data['content']
+                        cls._download_file_by_key(key)
+                        if clone_file_data['type'] == cls.ATTACHMENT
+                        else clone_file_data['content']
                     )
                 except FileMissingException:
-                    file_data['valid'] = False
-                    # added a header to csv file to indicate that the file in valid or not.
+                    clone_file_data['file_found'] = False
+                    # added a header to csv file to indicate that the file was found or not.
                     # not sure if I should create a {file_name}.error.txt to indicate the file error more clearly.
                     logging.warning('File: {file_name} with key: {key} was missing.'
                                     .format(file_name=file_name, key=key))
                 else:
-                    file_data['valid'] = True
+                    clone_file_data['file_found'] = True
                     zip_file.writestr(file_name, file_content)
 
-                csvwriter.writerow(file_data)
+                csvwriter.writerow(clone_file_data)
             downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
 
             zip_file.writestr(
