@@ -1368,7 +1368,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[4]['file_path']).exists())
         self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[6]['file_path']).exists())
 
-        # expect submission_files_data not to get modify
+        # expect submission_files_data not to get modified
         for i in range(8):
             with self.assertRaises(KeyError):
                 self.submission_files_data[i]['file_found']
