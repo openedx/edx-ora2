@@ -970,7 +970,7 @@ class OraDownloadData:
         Opens given stream as a zip file and writes into it all submission
         attachments and csv with list of all downloads.
 
-        Missing file will no be include in the zip. It will show as file_found=False
+        Files that cannot be found in the backend will not be included in the zip. It will be listed as file_found=False
         in the csv file.
 
         Example of result zip file structure:
