@@ -1317,6 +1317,8 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             self.answer_text.encode('utf-8')
         )
 
+        self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
+
     def test_csv_file_for_create_zip_with_attachments(self):
         file = BytesIO()
 
@@ -1333,9 +1335,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.assertTrue(zip_file.read(csv_path))
 
         with zip_file.open(csv_path) as csv_file:
-            # breakpoint()
             csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
-            # csv_reader = csv.reader(csv_file)
             for row in csv_reader:
                 # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
                 for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
