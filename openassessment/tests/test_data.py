@@ -5,7 +5,7 @@ Tests for openassessment data aggregation.
 from collections import OrderedDict
 import csv
 from copy import deepcopy
-from io import StringIO, BytesIO
+from io import StringIO, BytesIO, TextIOWrapper
 import json
 import os.path
 import zipfile
@@ -1317,7 +1317,34 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             self.answer_text.encode('utf-8')
         )
 
-        self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
+    def test_csv_file_for_create_zip_with_attachments(self):
+        file = BytesIO()
+
+        file_content = b'file_content'
+
+        with patch(
+            'openassessment.data.OraDownloadData._download_file_by_key', return_value=file_content
+        ) as download_mock:
+            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+
+        zip_file = zipfile.ZipFile(file)
+        # zip file contain csv file
+        csv_path = os.path.join(COURSE_ID, 'downloads.csv')
+        self.assertTrue(zip_file.read(csv_path))
+
+        with zip_file.open(csv_path) as csv_file:
+            # breakpoint()
+            csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
+            # csv_reader = csv.reader(csv_file)
+            for row in csv_reader:
+                # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
+                for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
+                    # prove that all column exist
+                    self.assertIn(column, row)
+                # file_found column is True for all of them
+                self.assertEqual(row['file_found'], 'True')
+                # all those file exist in the zipfile
+                self.assertTrue(zipfile.Path(zip_file, row['file_path']).exists())
 
     def test_create_zip_with_failed_attachments(self):
         file = BytesIO()
@@ -1368,7 +1395,32 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[4]['file_path']).exists())
         self.assertFalse(zipfile.Path(zip_file, self.submission_files_data[6]['file_path']).exists())
 
-        self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
+    def test_csv_file_for_create_zip_with_failed_attachments(self):
+        file = BytesIO()
+
+        with patch(
+            'openassessment.data.OraDownloadData._download_file_by_key'
+        ) as download_mock:
+            download_mock.side_effect = FileMissingException
+            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+
+        zip_file = zipfile.ZipFile(file)
+        # zip file contain csv file
+        csv_path = os.path.join(COURSE_ID, 'downloads.csv')
+        self.assertTrue(zip_file.read(csv_path))
+
+        with zip_file.open(csv_path) as csv_file:
+            csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
+            for row in csv_reader:
+                # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
+                for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
+                    # prove that all column exist
+                    self.assertIn(column, row)
+                # csv and data in the zip file are consistence
+                if row['file_found'] == 'False':
+                    self.assertFalse(zipfile.Path(zip_file, row['file_path']).exists())
+                else:
+                    self.assertTrue(zipfile.Path(zip_file, row['file_path']).exists())
 
 
 submission_test_parts = [{'text': 'text_response_' + str(i)} for i in range(3)]
