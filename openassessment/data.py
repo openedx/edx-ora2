@@ -10,8 +10,9 @@ from itertools import chain
 import csv
 import json
 import os
-
+import logging
 import requests
+import copy
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -23,6 +24,8 @@ from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
+
+logger = logging.getLogger(__name__)
 
 
 class CsvWriter:
@@ -945,17 +948,20 @@ class OraDownloadData:
         'description',
         'size',
         'file_path',
+        'file_found',
     )
 
     @classmethod
     def _download_file_by_key(cls, key):
+        url = get_download_url(key)
+        if not url:
+            raise FileMissingException
         download_url = urljoin(
-            settings.LMS_ROOT_URL, get_download_url(key)
+            settings.LMS_ROOT_URL, url
         )
 
         response = requests.get(download_url)
         response.raise_for_status()
-
         return response.content
 
     @classmethod
@@ -963,6 +969,9 @@ class OraDownloadData:
         """
         Opens given stream as a zip file and writes into it all submission
         attachments and csv with list of all downloads.
+
+        Files that cannot be found in the backend will not be included in the zip. It will be listed as file_found=False
+        in the csv file.
 
         Example of result zip file structure:
         ```
@@ -993,14 +1002,34 @@ class OraDownloadData:
 
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                file_content = (
-                    cls._download_file_by_key(file_data['key'])
-                    if file_data['type'] == cls.ATTACHMENT
-                    else file_data['content']
-                )
-
-                zip_file.writestr(file_data['file_path'], file_content)
-                csvwriter.writerow(file_data)
+                key = file_data['key']
+                file_path = file_data['file_path']
+                try:
+                    file_content = (
+                        cls._download_file_by_key(key)
+                        if file_data['type'] == cls.ATTACHMENT
+                        else file_data['content']
+                    )
+                except FileMissingException:
+                    file_found = False
+                    # added a header to csv file to indicate that the file was found or not.
+                    # TODO: (EDUCATOR-5777) should we create a {file_path}.error.txt
+                    # to indicate the file error more clearly?
+                    logger.warning(
+                        'File for submission could not be downloaded for ORA submission archive.\n'
+                        'Full detail:'
+                        '\n\tCourse Id: {course_id}'
+                        '\n\tBlock Id: {block_id}'
+                        '\n\tStudent Id: {student_id}'
+                        '\n\tKey: {key}'
+                        '\n\tName: {name}'
+                        '\n\tType: {type}'.format(**file_data)
+                    )
+                else:
+                    file_found = True
+                    zip_file.writestr(file_path, file_content)
+                finally:
+                    csvwriter.writerow({**file_data, 'file_found': file_found})
 
             downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
 
@@ -1205,6 +1234,10 @@ ZIPPED_LIST_SUBMISSION_VERSIONS = [
 
 class VersionNotFoundException(Exception):
     """ Raised when we are unable to resolve a given submission to a submission version """
+
+
+class FileMissingException(Exception):
+    """ Raise when file is not found on generated CSV """
 
 
 class ZippedListSubmissionAnswer(OraSubmissionAnswer):
