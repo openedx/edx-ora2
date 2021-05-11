@@ -1013,7 +1013,7 @@ class OraDownloadData:
                 except FileMissingException:
                     file_found = False
                     # added a header to csv file to indicate that the file was found or not.
-                    # not sure if I should create a {file_path}.error.txt to indicate the file error more clearly.
+                    # TODO: (EDUCATOR-5777) should we create a {file_path}.error.txt to indicate the file error more clearly?
                     logger.warning(
                         'File for submission could not be downloaded for ORA submission archive.\n'
                         'Full detail:'
