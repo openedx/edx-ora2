@@ -17,15 +17,16 @@ export class CourseItemsListingView {
     }
 
     const AssessmentCell = Backgrid.UriCell.extend({
-      staff: false,
+      type: null,
+      url: null,
       render() {
         this.$el.empty();
-        const url = this.model.get(this.staff ? 'url_grade_available_responses' : 'url_base');
+        const url = this.model.get(this.url ? this.url : 'url_base');
         const rawValue = this.model.get(this.column.get('name'));
-        const staffAssessment = this.model.get('staff_assessment');
         const formattedValue = this.formatter.fromRaw(rawValue, this.model);
+        const hasAssessmentType = this.model.get(this.type ? this.type : 'staff_assessment');
         let link = null;
-        if (itemViewEnabled && (!this.staff || (this.staff && staffAssessment))) {
+        if (itemViewEnabled && (!this.type || (this.type && hasAssessmentType))) {
           link = $('<a>', {
             text: formattedValue,
             title: this.title || formattedValue,
@@ -40,8 +41,14 @@ export class CourseItemsListingView {
       },
     });
 
+    const WaitingStepCell = AssessmentCell.extend({
+      type: 'peer_assessment',
+      url: 'url_waiting_step_details',
+    });
+
     const StaffCell = AssessmentCell.extend({
-      staff: true,
+      type: 'staff_assessment',
+      url: 'url_grade_available_responses',
     });
 
     this._columns = [
@@ -97,7 +104,7 @@ export class CourseItemsListingView {
         name: 'waiting',
         label: gettext('Waiting'),
         label_summary: gettext('Waiting'),
-        cell: 'string',
+        cell: WaitingStepCell,
         num: true,
         editable: false,
       },
