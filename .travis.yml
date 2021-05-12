@@ -3,6 +3,8 @@ addons:
     packages:
       - nodejs
 
+dist: focal
+
 language: python
 
 sudo: false

@@ -11,6 +11,7 @@ import StaffAreaView from './oa_staff_area';
 import StudentTrainingView from './oa_training';
 import PeerView from './oa_peer';
 import ResponseEditorLoader from './oa_response_editor';
+import renderWaitingStepDetailsView from './oa_staff_waiting_step';
 
 /**
 Interface for student-facing views.
@@ -450,6 +451,18 @@ export const StaffAssessmentBlock = (runtime, element, data) => {
   const server = new Server(runtime, element);
   const view = new BaseView(runtime, element, server, data);
   view.staffAreaView.installHandlers();
+};
+
+/* XBlock JavaScript entry point for OpenAssessmentXBlock. */
+/* jshint unused:false */
+// eslint-disable-next-line no-unused-vars
+export const WaitingStepDetailsBlock = (runtime, element, data) => {
+  /**
+    Render auxiliary view which displays the staff grading area
+  * */
+  const server = new Server(runtime, element);
+  const baseView = new BaseView(runtime, element, server, data);
+  renderWaitingStepDetailsView(baseView, data);
 };
 
 export default BaseView;

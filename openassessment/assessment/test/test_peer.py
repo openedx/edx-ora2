@@ -210,6 +210,37 @@ class TestPeerApi(CacheResetTest):
             expected_feedback = ASSESSMENT_DICT['criterion_feedback'].get(criterion_name, "")
             self.assertEqual(part['feedback'], expected_feedback)
 
+    def test_get_waiting_step_details(self):
+        """
+        Test that the waiting step details API returns data for students
+        stuck in the waiting step.
+        """
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+        assessment = peer_api.create_assessment(
+            bob_sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        students_waiting = peer_api.get_waiting_step_details(
+            STUDENT_ITEM['course_id'],
+            STUDENT_ITEM['item_id'],
+            [bob_sub['uuid']],
+            must_be_graded_by=1,
+        )
+
+        # Check that the API response - Bob is waiting a peer assessment
+        self.assertEqual(len(students_waiting), 1)
+        # Bob was not graded by anyone and graded Tim
+        self.assertEqual(students_waiting[0]['graded_by'], 0)
+        self.assertEqual(students_waiting[0]['graded'], 1)
+
     def test_create_assessment_criterion_with_zero_options(self):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")

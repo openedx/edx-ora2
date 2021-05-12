@@ -552,6 +552,7 @@ class OpenAssessmentBlock(MessageMixin,
                     [{"parent_name": "Vertical name",
                       "name": "ORA Display Name",
                       "url_grade_available_responses": "/grade_available_responses_view",
+                      "url_waiting_step_details": "/waiting_step_details_view",
                       "staff_assessment": false,
                       "parent_id": "vertical_block_id",
                       "url_base": "/student_view",
@@ -598,7 +599,7 @@ class OpenAssessmentBlock(MessageMixin,
 
         context_dict = {
             "title": self.title,
-            'staff_assessment_required': staff_assessment_required
+            'staff_assessment_required': staff_assessment_required,
         }
 
         if staff_assessment_required:
@@ -610,7 +611,51 @@ class OpenAssessmentBlock(MessageMixin,
 
         return self._create_fragment(template, context_dict, initialize_js_func='StaffAssessmentBlock')
 
-    def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None):
+    def waiting_step_details_view(self, context=None):  # pylint: disable=unused-argument
+        """
+        Waiting Step Details view.
+
+        Auxiliary view which displays a list of students "stuck" in the
+        peer grading step waiting for a grade (used in the Open Response Assessment
+        tab in the Instructor Dashboard of LMS).
+
+        Args:
+            context: Not used for this view.
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock.
+        """
+        student_item = self.get_student_item_dict()
+        peer_assessment_required = "peer-assessment" in self.assessment_steps
+
+        context_dict = {
+            "title": self.title,
+            "peer_assessment_required": peer_assessment_required,
+        }
+
+        if peer_assessment_required:
+            context_dict['waiting_step_data_url'] = self.runtime.handler_url(
+                self, "waiting_step_data",
+            )
+
+        template = get_template('openassessmentblock/instructor_dashboard/oa_waiting_step_details.html')
+
+        return self._create_fragment(
+            template,
+            context_dict,
+            initialize_js_func='WaitingStepDetailsBlock',
+            additional_js_context=context_dict,
+        )
+
+    def _create_fragment(
+        self,
+        template,
+        context_dict,
+        initialize_js_func,
+        additional_css=None,
+        additional_js=None,
+        additional_js_context=None
+    ):
         """
         Creates a fragment for display.
 
@@ -646,6 +691,11 @@ class OpenAssessmentBlock(MessageMixin,
             "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
             "TEXT_RESPONSE_EDITOR": self.text_response_editor,
         }
+        # If there's any additional data to be passed down to JS
+        # include it in the context dict
+        if additional_js_context:
+            js_context_dict.update({"CONTEXT": additional_js_context})
+
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
 
