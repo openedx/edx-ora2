@@ -1117,6 +1117,89 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertFalse(context['is_team_assignment'])
         self.assertIsNone(context['team_name'])
 
+    @patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_waiting_step_details_api(self, xblock, username_map_patch):
+        """
+        Test the waiting step details JSON API response.
+        """
+        # Set mocks
+        xblock.xmodule_runtime = Mock(user_is_staff=True)
+        username_map_patch.return_value = {"Bob": "bob_username"}
+
+        # Make a submission, but no peer assessments available
+        self._setup_xblock_and_create_submission(xblock)
+
+        # Retrieve waiting step details
+        resp = self.request(xblock, 'waiting_step_data', json.dumps({}))
+        waiting_step_details = json.loads(resp.decode('utf-8'))
+
+        # Check the response
+        self.assertCountEqual(
+            waiting_step_details.keys(),
+            [
+                'display_name',
+                'must_grade',
+                'must_be_graded_by',
+                'student_data',
+                'overwritten_count',
+                'waiting_count'
+            ],
+        )
+        # Only a single student is waiting
+        self.assertEqual(len(waiting_step_details['student_data']), 1)
+        self.assertEqual(waiting_step_details['waiting_count'], 1)
+        self.assertEqual(waiting_step_details['overwritten_count'], 0)
+        # Check the response dict
+        self.assertCountEqual(
+            waiting_step_details['student_data'][0].keys(),
+            [
+                'student_id',
+                'graded',
+                'graded_by',
+                'submission_uuid',
+                'username',
+                'staff_grade_status',
+                'workflow_status',
+                'created_at',
+            ],
+        )
+        # Check that the username was correctly mapped
+        self.assertEqual(
+            waiting_step_details['student_data'][0]['username'],
+            "bob_username"
+        )
+
+    @patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames')
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_waiting_step_details_api_no_permission(self, xblock, username_map_patch):
+        """
+        Check that only staff users can use the waiting step details API.
+        """
+        username_map_patch.return_value = {}
+
+        # If user is not staff, API is not available
+        xblock.xmodule_runtime = Mock(user_is_staff=False)
+        resp = self.request(xblock, 'waiting_step_data', json.dumps({}))
+        self.assertIn("you do not have permission", resp.decode('utf-8').lower())
+
+        # If it's course staff then display API results
+        xblock.xmodule_runtime.user_is_staff = True
+        resp = self.request(xblock, 'waiting_step_data', json.dumps({}))
+        body = json.loads(resp.decode('utf-8'))
+
+        self.assertCountEqual(
+            body.keys(),
+            [
+                'display_name',
+                'must_grade',
+                'must_be_graded_by',
+                'student_data',
+                'overwritten_count',
+                'waiting_count'
+            ],
+        )
+
     @scenario('data/team_submission.xml', user_id='StaffMember')
     def test_staff_area_student_info__different_team(self, xblock):
         """

@@ -3,8 +3,10 @@ The Staff Area View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
 import copy
+import json
 import logging
 from functools import wraps
+from webob import Response
 
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.core import XBlock
@@ -161,6 +163,116 @@ class StaffAreaMixin:
             'staff_assessment_ungraded': grading_stats['ungraded'],
             'staff_assessment_in_progress': grading_stats['in-progress']
         }
+
+    @XBlock.handler
+    @require_course_staff("STAFF_AREA")
+    def waiting_step_data(self, data, suffix=''):
+        """
+        Retrieves waiting step details and aggregates information required by the view.
+
+        This returns a dict containing a list of users stuck on the waiting step, along
+        with information about staff grading and staff overrides applied.
+        """
+        student_item = self.get_student_item_dict()
+        peer_step_config = self.get_assessment_module('peer-assessment')
+
+        # Import is placed here to avoid model import at project startup.
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.assessment.api import staff as staff_api
+        from openassessment.workflow.api import get_workflows_for_status
+        from openassessment.data import OraAggregateData
+
+        # Retrieve all items in the `waiting` and `done` steps
+        workflows_waiting = get_workflows_for_status(
+            student_item["course_id"],
+            student_item["item_id"],
+            ["waiting", "done"],
+        )
+        submission_uuids = [item['submission_uuid'] for item in workflows_waiting]
+
+        # Using the workflows retrieved above, filter out all items that
+        # haven't received the required number of peer reviews and retrieve their details.
+        waiting_student_list = peer_api.get_waiting_step_details(
+            student_item["course_id"],
+            student_item["item_id"],
+            submission_uuids,
+            peer_step_config.get('must_be_graded_by'),
+        )
+        # Get external_id to username map
+        username_map = OraAggregateData._map_anonymized_ids_to_usernames(
+            [item['student_id'] for item in waiting_student_list]
+        )
+
+        # Get staff assessment details
+        staff_assessment_data = {}
+        if "staff-assessment" in self.assessment_steps:
+            # Only retrieve this if there's a staff assessment step enabled
+            # when disabled, the UI should only show "Not Applicable"
+            # This function will return either `submitted` or `not_submitted`,
+            # depending on the status on the Staff grading.
+            staff_assessment_data = staff_api.bulk_retrieve_workflow_status(
+                course_id=student_item["course_id"],
+                item_id=student_item["item_id"],
+                # Only retrieve status for assessments that are stuck in the waiting step.
+                submission_uuids=[item['submission_uuid'] for item in waiting_student_list],
+            )
+
+        # Status to readable strings mappings
+        workflow_status_map = {
+            "waiting": self._("Pending"),
+            "done": self._("Complete/Overwritten"),
+        }
+        staff_status_map = {
+            "not_applicable": self._("Not applicable"),
+            "not_submitted": self._("Not submitted"),
+            "submitted": self._("Submitted"),
+        }
+
+        def _get_submission_status(submission_uuid):
+            """
+            Retrieves the workflow submission status from the list
+            of submissions
+            """
+            return next(
+                (
+                    workflow['status'] for workflow in workflows_waiting
+                    if workflow["submission_uuid"] == submission_uuid
+                ),
+                "waiting",
+            )
+
+        # Create user statistics
+        waiting_count = 0
+        overwritten_count = 0
+
+        # Update waiting step details with username mappings
+        for item in waiting_student_list:
+            # Retrieve values from grade status and workflow status
+            staff_grade_status = staff_assessment_data.get(item['submission_uuid'], "not_applicable")
+            workflow_status = _get_submission_status(item['submission_uuid'])
+
+            if workflow_status == 'waiting':
+                waiting_count += 1
+            else:
+                overwritten_count += 1
+
+            # Append to waiting step data, and map status to readable strings
+            item.update({
+                "username": username_map[item['student_id']],
+                "staff_grade_status": staff_status_map.get(staff_grade_status),
+                "workflow_status": workflow_status_map.get(workflow_status),
+            })
+
+        waiting_step_data = {
+            "display_name": self.display_name,
+            "must_grade": peer_step_config.get('must_grade'),
+            "must_be_graded_by": peer_step_config.get('must_be_graded_by'),
+            "waiting_count": waiting_count,
+            "overwritten_count": overwritten_count,
+            "student_data": waiting_student_list,
+        }
+
+        return Response(json_body=waiting_step_data)
 
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
