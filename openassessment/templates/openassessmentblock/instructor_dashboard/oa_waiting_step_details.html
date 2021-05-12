@@ -1,0 +1,30 @@
+{% load i18n %}
+{% spaceless %}
+<div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
+    <div class="openassessment problem">
+        <div class="wrapper--grid">
+            {% if title %}
+                <h4 class="openassessment__title problem__header">{% trans title %}</h4>
+            {% endif %}
+
+            {% if peer_assessment_required %}
+            <div class="openassessment__staff-area">
+                <div class="openassessment__staff-grading wrapper--staff-grading">
+                    <div class="staff-grading ui-staff">
+                        <h5 class="staff-grading__title">
+                            <span class="staff-info__title__copy">{% trans "Waiting Step Details" %}</span>
+                        </h5>
+
+                        <div id="openassessment__waiting-step-details"></div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <div class="openassessment__staff-area-unavailable">
+                    {% trans "Waiting Step details view is unavailable. This item is not configured for peer assessments." %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endspaceless %}
