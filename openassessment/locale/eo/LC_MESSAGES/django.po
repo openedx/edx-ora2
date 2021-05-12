@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 14:40-0400\n"
+"POT-Creation-Date: 2021-05-12 15:45-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1084,6 +1084,18 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html
 msgid "Please wait"
 msgstr "Pléäsé wäït Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html
+msgid "Waiting Step Details"
+msgstr "Wäïtïng Stép Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
+msgstr ""
+"Wäïtïng Stép détäïls vïéw ïs ünäväïläßlé. Thïs ïtém ïs nöt çönfïgüréd för "
+"péér ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
 #, python-format
@@ -2973,6 +2985,26 @@ msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 "Ýöü dö nöt hävé pérmïssïön tö äççéss ÖRÀ stäff grädïng. Ⱡ'σяєм ιρѕυм ∂σłσя "
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Pending"
+msgstr "Péndïng Ⱡ'σяєм ιρѕυм #"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Complete/Overwritten"
+msgstr "Çömplété/Övérwrïttén Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Not applicable"
+msgstr "Nöt äpplïçäßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Not submitted"
+msgstr "Nöt süßmïttéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Submitted"
+msgstr "Süßmïttéd Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: openassessment/xblock/staff_area_mixin.py
 msgid "Error getting learner information."

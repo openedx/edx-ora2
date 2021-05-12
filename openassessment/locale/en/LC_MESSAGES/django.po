@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 14:40-0400\n"
+"POT-Creation-Date: 2021-05-12 15:45-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -873,6 +873,16 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
+msgid "Waiting Step Details"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
@@ -2338,66 +2348,86 @@ msgstr ""
 msgid "Your self assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:183
-msgid "Error getting learner information."
+#: openassessment/xblock/staff_area_mixin.py:222
+msgid "Pending"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:223
+msgid "Complete/Overwritten"
 msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:226
-msgid "Error loading the checked out learner response."
+msgid "Not applicable"
 msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:227
+msgid "Not submitted"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:228
+msgid "Submitted"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:295
+msgid "Error getting learner information."
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:338
+msgid "Error loading the checked out learner response."
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:339
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:229
+#: openassessment/xblock/staff_area_mixin.py:341
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:250
+#: openassessment/xblock/staff_area_mixin.py:362
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:539
+#: openassessment/xblock/staff_area_mixin.py:651
 msgid "Please enter valid reason to remove the submission."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:550
+#: openassessment/xblock/staff_area_mixin.py:662
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:561
+#: openassessment/xblock/staff_area_mixin.py:673
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:588
+#: openassessment/xblock/staff_area_mixin.py:700
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:623
+#: openassessment/xblock/staff_area_mixin.py:735
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
