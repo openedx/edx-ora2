@@ -214,6 +214,61 @@ class PeerWorkflow(models.Model):
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message) from ex
 
+    @classmethod
+    def get_waiting_step_details(
+        cls,
+        course_id,
+        item_id,
+        submission_uuids,
+        must_be_graded_by
+    ):
+        """
+        Retrieves information about users in the waiting step (waiting for peer reviews).
+
+        Args:
+            course_id (str): The course that this problem belongs to.
+            item_id (str): The student_item (problem) that we want to know statistics about.
+            submission_uuids (list): A list of submission UUIDs to filter the results for,
+                                     if None is given, this will return all students which
+                                     the peer step is not complete.
+            must_be_graded_by (int): number of required peer reviews for this problem.
+
+        Returns:
+            dict: a dictionary that contains information about students in the waiting step.
+                  The dictionary includes the following information: `student_id`, `created_at` (
+                  timestamp of when the step was created), `graded` (how many peers the student
+                  graded) and `graded_by` (how many peers graded this student).
+
+        Examples:
+            >>> PeerWorkflow.get_waiting_step_details(course_id, item_id)
+            {
+                'student_id': u'Bob',  // This is the anonymous student ID!
+                'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>)
+                'graded': 2,
+                'graded_by': 2
+            }
+        """
+        waiting = cls.objects.filter(
+            item_id=item_id, course_id=course_id,
+            grading_completed_at__isnull=True,
+            submission_uuid__in=submission_uuids,
+        ).annotate(
+            graded_count=models.Count('graded'),
+            graded_by_count=models.Count('graded_by'),
+        ).filter(
+            graded_by_count__lt=must_be_graded_by
+        )
+
+        return [
+            {
+                'student_id': item.student_id,
+                'created_at': str(item.created_at),
+                'graded': item.graded_count,
+                'graded_by': item.graded_by_count,
+                'submission_uuid': item.submission_uuid,
+            } for item in waiting
+        ]
+
     def find_active_assessments(self):
         """Given a student item, return an active assessment if one is found.
 

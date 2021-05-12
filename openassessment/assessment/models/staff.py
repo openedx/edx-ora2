@@ -148,6 +148,43 @@ class StaffWorkflow(models.Model):
             logger.exception(error_message)
             raise StaffAssessmentInternalError(error_message) from ex
 
+    @classmethod
+    def bulk_retrieve_workflow_status(cls, course_id, item_id, submission_uuids):
+        """
+        Retrieves a dictionary with the requested submission UUIDs statuses.
+
+        Args:
+            course_id (str): The course that this problem belongs to
+            item_ids (list of strings): The student_item (problem) that we want to know statistics about.
+
+        Returns:
+            dict: a dictionary with the submission uuids as keys and their statuses as values.
+                  Example:
+                  {
+                      "uuid_1": "submitted",
+                      "uuid_2": "not_submitted
+                  }
+        """
+        # Retrieve queryed submissions
+        steps = cls.objects.filter(
+            course_id=course_id,
+            item_id=item_id,
+            submission_uuid__in=submission_uuids,
+        )
+
+        # Parse them to a dict readable format
+        assessments_list = {}
+        for assessment in steps:
+            status = None
+            if assessment.grading_completed_at:
+                status = 'submitted'
+            else:
+                status = 'not_submitted'
+
+            assessments_list[assessment.submission_uuid] = status
+
+        return assessments_list
+
     def close_active_assessment(self, assessment, scorer_id):
         """
         Assign assessment to workflow, and mark the grading as complete.

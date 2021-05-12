@@ -447,3 +447,24 @@ def _complete_assessment(
     if scorer_workflow is not None:
         scorer_workflow.close_active_assessment(assessment, scorer_id)
     return assessment
+
+
+def bulk_retrieve_workflow_status(course_id, item_id, submission_uuids=None):
+    """
+    Passthrough method to retrieve bulk states for staff workflows.
+
+    Note that the staff workflow begins things in on_init() instead of
+    on_start(), because staff shoud be able to access the submission
+    regardless of which state the workflow is currently in.
+
+    Args:
+        course_id (str): The course that this problem belongs to.
+        item_id (str): The student_item (problem) that we want to retrieve information about.
+        submission_uuids list(str): List of submission UUIDs to retrieve status for.
+
+    Returns:
+        dict: a dictionary with the submission uuids as keys and their statuses as values.
+    """
+    return StaffWorkflow.bulk_retrieve_workflow_status(
+        course_id, item_id, submission_uuids
+    )

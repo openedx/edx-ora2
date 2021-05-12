@@ -317,6 +317,30 @@ class TestStaffAssessment(CacheResetTest):
             workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
             self.assertFalse(mock_reset.called)
 
+    def test_retrieve_bulk_workflow_status(self):
+        """
+        Test that the bulk workflow API retrieves submission information correctly.
+        """
+        # Create Bob's submission without a submission
+        bob_sub, bob_item = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer")
+        # Create Tim's submission with a submission
+        tim_sub, tim_item = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer")
+        staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT["none"]["options"], dict(), "",
+            RUBRIC,
+        )
+
+        # Retrieve workflow status and test
+        workflow_status = staff_api.bulk_retrieve_workflow_status(
+            tim_item['course_id'],
+            tim_item['item_id'],
+            [tim_sub['uuid'], bob_sub['uuid']]
+        )
+        self.assertEqual(workflow_status[tim_sub['uuid']], "submitted")
+        self.assertEqual(workflow_status[bob_sub['uuid']], "not_submitted")
+
     def test_invalid_rubric_exception(self):
         # Create a submission
         tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")

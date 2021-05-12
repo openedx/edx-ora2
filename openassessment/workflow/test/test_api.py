@@ -490,6 +490,30 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         workflow = workflow_api.get_assessment_workflow_cancellation(submission["uuid"])
         self.assertIsNotNone(workflow)
 
+    def test_get_workflows_for_status(self):
+        """
+        Check that workflows for a given status are correctly retrieved.
+        """
+        workflows = [
+            (
+                status,
+                self._create_workflow_with_status("user", "test/1/1", "peer-problem", status)
+            ) for status in ["peer", "waiting", "done"]
+        ]
+
+        retrieved = workflow_api.get_workflows_for_status(
+            "test/1/1",
+            "peer-problem",
+            ["peer", "done"],
+        )
+
+        # Check that only two items were retrieved
+        self.assertEqual(len(retrieved), 2)
+        self.assertCountEqual(
+            ["peer", "done"],
+            [obj["status"] for obj in retrieved],
+        )
+
     def _create_workflow_with_status(
             self, student_id, course_id, item_id,
             status, answer="answer", steps=None

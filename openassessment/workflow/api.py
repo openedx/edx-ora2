@@ -437,3 +437,29 @@ def is_workflow_cancelled(submission_uuid):
         return workflow.is_cancelled if workflow else False
     except AssessmentWorkflowError:
         return False
+
+
+def get_workflows_for_status(course_id, item_id, status_list):
+    """
+    Retrieves workflow data for all workflows
+
+    Args:
+        course_id (str): The course that this problem belongs to.
+        item_id (str): The student_item (problem) that we want to know statistics about.
+        status_list (list(str)): a list of status to retrieve workflows for
+
+    Returns:
+        list of dictionaries with `submission_id` and `status`
+    """
+    workflows = AssessmentWorkflow.objects.filter(
+        course_id=course_id,
+        item_id=item_id,
+        status__in=status_list
+    )
+    return [
+        {
+            "submission_uuid": workflow.submission_uuid,
+            "status": workflow.status
+        }
+        for workflow in workflows
+    ]
