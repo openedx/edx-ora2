@@ -1386,18 +1386,16 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         with patch(
             'openassessment.data.OraDownloadData._download_file_by_key', return_value=file_content
         ) as download_mock:
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
         zip_file = zipfile.ZipFile(file)
-        # zip file contain csv file
-        csv_path = os.path.join(COURSE_ID, 'downloads.csv')
-        self.assertTrue(zip_file.read(csv_path))
+        self.assertTrue(zip_file.read('submissions.csv'))
 
-        with zip_file.open(csv_path) as csv_file:
+        with zip_file.open('submissions.csv') as csv_file:
             csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
             for row in csv_reader:
-                # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
-                for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
+                # csv file contains OraDownloadData.SUBMISSIONS_CSV_HEADER
+                for column in OraDownloadData.SUBMISSIONS_CSV_HEADER:
                     # prove that all column exist
                     self.assertIn(column, row)
                 # file_found column is True for all of them
@@ -1412,7 +1410,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'openassessment.data.OraDownloadData._download_file_by_key'
         ) as download_mock:
             download_mock.side_effect = FileMissingException
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
             download_mock.assert_has_calls([
                 call(self.file_key_5),
@@ -1461,18 +1459,16 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'openassessment.data.OraDownloadData._download_file_by_key'
         ) as download_mock:
             download_mock.side_effect = FileMissingException
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
         zip_file = zipfile.ZipFile(file)
-        # zip file contain csv file
-        csv_path = os.path.join(COURSE_ID, 'downloads.csv')
-        self.assertTrue(zip_file.read(csv_path))
+        self.assertTrue(zip_file.read('submissions.csv'))
 
-        with zip_file.open(csv_path) as csv_file:
+        with zip_file.open('submissions.csv') as csv_file:
             csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
             for row in csv_reader:
-                # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
-                for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
+                # csv file contains OraDownloadData.SUBMISSIONS_CSV_HEADER
+                for column in OraDownloadData.SUBMISSIONS_CSV_HEADER:
                     # prove that all column exist
                     self.assertIn(column, row)
                 # csv and data in the zip file are consistence
