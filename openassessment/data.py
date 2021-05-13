@@ -969,25 +969,28 @@ class OraDownloadData:
 
         path_info = {}
 
-        def children(usage_key):
-            for index, child in enumerate(blocks.get_xblock_field(usage_key, 'children') or [], 1):
+        def children(usage_key, condition=None):
+            filtered = filter(condition, blocks.get_xblock_field(usage_key, 'children') or [])
+            for index, child in enumerate(filtered, 1):
                 yield index, blocks.get_xblock_field(child, 'display_name'), child
+
+        def only_ora_blocks(block):
+            return block.block_type == "openassessment"
 
         for section_index, section_name, section in children(blocks.root_block_usage_key):
             for sub_section_index, sub_section_name, sub_section in children(section):
                 for unit_index, unit_name, unit in children(sub_section):
-                    for block_index, block_name, block in children(unit):
-                        if block.block_type == "openassessment":
-                            path_info[str(block)] = {
-                                "section_index": section_index,
-                                "section_name": section_name,
-                                "sub_section_index": sub_section_index,
-                                "sub_section_name": sub_section_name,
-                                "unit_index": unit_index,
-                                "unit_name": unit_name,
-                                "ora_index": block_index,
-                                "ora_name": block_name,
-                            }
+                    for block_index, block_name, block in children(unit, only_ora_blocks):
+                        path_info[str(block)] = {
+                            "section_index": section_index,
+                            "section_name": section_name,
+                            "sub_section_index": sub_section_index,
+                            "sub_section_name": sub_section_name,
+                            "unit_index": unit_index,
+                            "unit_name": unit_name,
+                            "ora_index": block_index,
+                            "ora_name": block_name,
+                        }
 
         return path_info
 
