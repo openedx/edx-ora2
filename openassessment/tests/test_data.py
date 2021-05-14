@@ -33,11 +33,15 @@ COURSE_ID = "Test_Course"
 
 STUDENT_ID = "Student"
 
+STUDENT_USERNAME = "Student Username"
+
 PRE_FILE_SIZE_STUDENT_ID = "Pre_FileSize_Student"
+
+PRE_FILE_SIZE_STUDENT_USERNAME = 'Pre_FileSize_Student_Username'
 
 PRE_FILE_NAME_STUDENT_ID = "Pre_FileName_Student"
 
-STUDENT_USERNAME = "Student Username"
+PRE_FILE_NAME_STUDENT_USERNAME = 'Pre_FileName_Student_Username'
 
 SCORER_ID = "Scorer"
 
@@ -51,11 +55,24 @@ USERNAME_MAPPING = {
     STUDENT_ID: STUDENT_USERNAME,
     SCORER_ID: SCORER_USERNAME,
     TEST_SCORER_ID: TEST_SCORER_USERNAME,
+    PRE_FILE_SIZE_STUDENT_ID: PRE_FILE_SIZE_STUDENT_USERNAME,
+    PRE_FILE_NAME_STUDENT_ID: PRE_FILE_NAME_STUDENT_USERNAME,
 }
 
 ITEM_ID = "item"
 
 ITEM_DISPLAY_NAME = "Open Response Assessment"
+
+ITEM_PATH_INFO = {
+    "section_index": "1",
+    "section_name": "Section",
+    "sub_section_index": "1",
+    "sub_section_name": "Sub Section",
+    "unit_index": "1",
+    "unit_name": "Unit",
+    "ora_index": "1",
+    "ora_name": ITEM_DISPLAY_NAME,
+}
 
 STUDENT_ITEM = dict(
     student_id=STUDENT_ID,
@@ -338,12 +355,22 @@ class TestOraAggregateData(TransactionCacheResetTest):
         with patch('openassessment.data.get_user_model') as get_user_model_mock:
             get_user_model_mock.return_value.objects.filter.return_value.annotate.return_value.values.return_value = [
                 {'anonymous_id': STUDENT_ID, 'username': STUDENT_USERNAME},
+                {'anonymous_id': PRE_FILE_SIZE_STUDENT_ID, 'username': PRE_FILE_SIZE_STUDENT_USERNAME},
+                {'anonymous_id': PRE_FILE_NAME_STUDENT_ID, 'username': PRE_FILE_NAME_STUDENT_USERNAME},
                 {'anonymous_id': SCORER_ID, 'username': SCORER_USERNAME},
                 {'anonymous_id': TEST_SCORER_ID, 'username': TEST_SCORER_USERNAME},
             ]
 
             # pylint: disable=protected-access
-            mapping = OraAggregateData._map_anonymized_ids_to_usernames([STUDENT_ID, SCORER_ID, TEST_SCORER_ID])
+            mapping = OraAggregateData._map_anonymized_ids_to_usernames(
+                [
+                    STUDENT_ID,
+                    PRE_FILE_SIZE_STUDENT_ID,
+                    PRE_FILE_NAME_STUDENT_ID,
+                    SCORER_ID,
+                    TEST_SCORER_ID,
+                ]
+            )
 
         self.assertEqual(mapping, USERNAME_MAPPING)
 
@@ -1046,6 +1073,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
 @ddt.ddt
 class TestOraDownloadDataIntegration(TransactionCacheResetTest):
+    """ Unit tests for OraDownloadData """
+
     def setUp(self):
         super().setUp()
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -1108,8 +1137,13 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'file_keys': [self.file_key_5],
             'files_descriptions': [self.file_description_5],
         }
-
         file_5_generated_name = SubmissionFileUpload.generate_name_from_key(self.file_key_5)
+
+        submission_directory = (
+            f"[{ITEM_PATH_INFO['section_index']}]{ITEM_PATH_INFO['section_name']}, "
+            f"[{ITEM_PATH_INFO['sub_section_index']}]{ITEM_PATH_INFO['sub_section_name']}, "
+            f"[{ITEM_PATH_INFO['unit_index']}]{ITEM_PATH_INFO['unit_name']}"
+        )
         self.submission_files_data = [
             {
                 'course_id': COURSE_ID,
@@ -1120,8 +1154,9 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'type': OraDownloadData.ATTACHMENT,
                 'description': self.file_description_5,
                 'size': 0,
-                'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, PRE_FILE_NAME_STUDENT_ID, file_5_generated_name
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[PRE_FILE_NAME_STUDENT_ID]} - {file_5_generated_name}"
                 ),
             },
             {
@@ -1129,13 +1164,14 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'block_id': ITEM_ID,
                 'student_id': PRE_FILE_NAME_STUDENT_ID,
                 'key': '',
-                'name': 'part_0.txt',
+                'name': 'prompt_0.txt',
                 'type': OraDownloadData.TEXT,
                 'description': 'Submission text.',
                 'content': self.answer_text,
                 'size': len(self.answer_text),
-                'file_path': '{}/{}/{}/{}'.format(
-                    COURSE_ID, ITEM_ID, PRE_FILE_NAME_STUDENT_ID, 'part_0.txt'
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[PRE_FILE_NAME_STUDENT_ID]} - prompt_0.txt"
                 ),
             },
             {
@@ -1147,8 +1183,9 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'type': OraDownloadData.ATTACHMENT,
                 'description': self.file_description_4,
                 'size': 0,
-                'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, PRE_FILE_SIZE_STUDENT_ID, self.file_name_4
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[PRE_FILE_SIZE_STUDENT_ID]} - {self.file_name_4}"
                 ),
             },
             {
@@ -1156,13 +1193,14 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'block_id': ITEM_ID,
                 'student_id': PRE_FILE_SIZE_STUDENT_ID,
                 'key': '',
-                'name': 'part_0.txt',
+                'name': 'prompt_0.txt',
                 'type': OraDownloadData.TEXT,
                 'description': 'Submission text.',
                 'content': self.answer_text,
                 'size': len(self.answer_text),
-                'file_path': '{}/{}/{}/{}'.format(
-                    COURSE_ID, ITEM_ID, PRE_FILE_SIZE_STUDENT_ID, 'part_0.txt'
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[PRE_FILE_SIZE_STUDENT_ID]} - prompt_0.txt"
                 ),
             },
             {
@@ -1174,8 +1212,9 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'type': OraDownloadData.ATTACHMENT,
                 'description': self.file_description_1,
                 'size': self.file_size_1,
-                'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, STUDENT_ID, self.file_name_1
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[STUDENT_ID]} - {self.file_name_1}"
                 ),
             },
             {
@@ -1187,8 +1226,9 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'type': OraDownloadData.ATTACHMENT,
                 'description': self.file_description_2,
                 'size': self.file_size_2,
-                'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, STUDENT_ID, self.file_name_2
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[STUDENT_ID]} - {self.file_name_2}"
                 ),
             },
             {
@@ -1200,8 +1240,9 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'type': OraDownloadData.ATTACHMENT,
                 'description': self.file_description_3,
                 'size': self.file_size_3,
-                'file_path': '{}/{}/{}/attachments/{}'.format(
-                    COURSE_ID, ITEM_ID, STUDENT_ID, self.file_name_3
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[STUDENT_ID]} - {self.file_name_3}"
                 ),
             },
             {
@@ -1209,13 +1250,14 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                 'block_id': ITEM_ID,
                 'student_id': STUDENT_ID,
                 'key': '',
-                'name': 'part_0.txt',
+                'name': 'prompt_0.txt',
                 'type': OraDownloadData.TEXT,
                 'description': 'Submission text.',
                 'content': self.answer_text,
                 'size': len(self.answer_text),
-                'file_path': '{}/{}/{}/{}'.format(
-                    COURSE_ID, ITEM_ID, STUDENT_ID, 'part_0.txt'
+                'file_path': (
+                    f"{submission_directory}/[{ITEM_PATH_INFO['ora_index']}]"
+                    f" - {USERNAME_MAPPING[STUDENT_ID]} - prompt_0.txt"
                 ),
             },
         ]
@@ -1230,7 +1272,20 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
+    @patch(
+        'openassessment.data.OraDownloadData._map_ora_usage_keys_to_path_info',
+        Mock(return_value={ITEM_ID: ITEM_PATH_INFO})
+    )
+    @patch(
+        'openassessment.data.OraDownloadData._map_student_ids_to_path_ids',
+        Mock(return_value=USERNAME_MAPPING)
+    )
     def test_collect_ora2_submission_files(self):
+        """
+        Test that `collect_ora2_submission_files` returns correct set of
+        submission texts and attachments for a given course.
+        """
+
         submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
         submission.answer = self.answer
         submission.save()
@@ -1258,6 +1313,11 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         assert collected_ora_files_data == self.submission_files_data
 
     def test_create_zip_with_attachments(self):
+        """
+        Test that ZIP file generated by `create_zip_with_attachments` contains
+        correct files and their paths are also correct.
+        """
+
         file = BytesIO()
 
         file_content = b'file_content'
@@ -1265,7 +1325,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         with patch(
             'openassessment.data.OraDownloadData._download_file_by_key', return_value=file_content
         ) as download_mock:
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
             download_mock.assert_has_calls([
                 call(self.file_key_5),
@@ -1280,44 +1340,43 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         # archive should contain five attachments, three parts text file and one csv
         self.assertEqual(len(zip_file.infolist()), 9)
 
+        def get_filepath(submission_index):
+            return OraDownloadData._submission_filepath(
+                ITEM_PATH_INFO,
+                USERNAME_MAPPING[self.submission_files_data[submission_index]['student_id']],
+                self.submission_files_data[submission_index]['name'],
+            )
+
         # check for pre_file_name_user's file and text
         self.assertEqual(
-            zip_file.read(self.submission_files_data[0]['file_path']),
-            file_content
+            zip_file.read(get_filepath(0)), file_content
         )
         self.assertEqual(
-            zip_file.read(self.submission_files_data[1]['file_path']),
-            self.answer_text.encode('utf-8')
+            zip_file.read(get_filepath(1)), self.answer_text.encode('utf-8')
         )
         # check for pre_file_size_user's file and text
         self.assertEqual(
-            zip_file.read(self.submission_files_data[2]['file_path']),
-            file_content
+            zip_file.read(get_filepath(2)), file_content
         )
         self.assertEqual(
-            zip_file.read(self.submission_files_data[3]['file_path']),
-            self.answer_text.encode('utf-8')
+            zip_file.read(get_filepath(3)), self.answer_text.encode('utf-8')
         )
         # check that main user's attachments have been written to the archive
         self.assertEqual(
-            zip_file.read(self.submission_files_data[4]['file_path']),
-            file_content
+            zip_file.read(get_filepath(4)), file_content
         )
         self.assertEqual(
-            zip_file.read(self.submission_files_data[5]['file_path']),
-            file_content
+            zip_file.read(get_filepath(5)), file_content
         )
         self.assertEqual(
-            zip_file.read(self.submission_files_data[6]['file_path']),
-            file_content
+            zip_file.read(get_filepath(6)), file_content
         )
         # main user's text response
         self.assertEqual(
-            zip_file.read(self.submission_files_data[7]['file_path']),
-            self.answer_text.encode('utf-8')
+            zip_file.read(get_filepath(7)), self.answer_text.encode('utf-8')
         )
 
-        self.assertTrue(zip_file.read(os.path.join(COURSE_ID, 'downloads.csv')))
+        self.assertTrue(zip_file.read('submissions.csv'))
 
     def test_csv_file_for_create_zip_with_attachments(self):
         file = BytesIO()
@@ -1327,18 +1386,16 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         with patch(
             'openassessment.data.OraDownloadData._download_file_by_key', return_value=file_content
         ) as download_mock:
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
         zip_file = zipfile.ZipFile(file)
-        # zip file contain csv file
-        csv_path = os.path.join(COURSE_ID, 'downloads.csv')
-        self.assertTrue(zip_file.read(csv_path))
+        self.assertTrue(zip_file.read('submissions.csv'))
 
-        with zip_file.open(csv_path) as csv_file:
+        with zip_file.open('submissions.csv') as csv_file:
             csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
             for row in csv_reader:
-                # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
-                for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
+                # csv file contains OraDownloadData.SUBMISSIONS_CSV_HEADER
+                for column in OraDownloadData.SUBMISSIONS_CSV_HEADER:
                     # prove that all column exist
                     self.assertIn(column, row)
                 # file_found column is True for all of them
@@ -1353,7 +1410,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'openassessment.data.OraDownloadData._download_file_by_key'
         ) as download_mock:
             download_mock.side_effect = FileMissingException
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
             download_mock.assert_has_calls([
                 call(self.file_key_5),
@@ -1402,18 +1459,16 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
             'openassessment.data.OraDownloadData._download_file_by_key'
         ) as download_mock:
             download_mock.side_effect = FileMissingException
-            OraDownloadData.create_zip_with_attachments(file, COURSE_ID, self.submission_files_data)
+            OraDownloadData.create_zip_with_attachments(file, self.submission_files_data)
 
         zip_file = zipfile.ZipFile(file)
-        # zip file contain csv file
-        csv_path = os.path.join(COURSE_ID, 'downloads.csv')
-        self.assertTrue(zip_file.read(csv_path))
+        self.assertTrue(zip_file.read('submissions.csv'))
 
-        with zip_file.open(csv_path) as csv_file:
+        with zip_file.open('submissions.csv') as csv_file:
             csv_reader = csv.DictReader(TextIOWrapper(csv_file, 'utf-8'))
             for row in csv_reader:
-                # csv file contains OraDownloadData.DOWNLOADS_CSV_HEADER
-                for column in OraDownloadData.DOWNLOADS_CSV_HEADER:
+                # csv file contains OraDownloadData.SUBMISSIONS_CSV_HEADER
+                for column in OraDownloadData.SUBMISSIONS_CSV_HEADER:
                     # prove that all column exist
                     self.assertIn(column, row)
                 # csv and data in the zip file are consistence
@@ -1421,6 +1476,74 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
                     self.assertFalse(zipfile.Path(zip_file, row['file_path']).exists())
                 else:
                     self.assertTrue(zipfile.Path(zip_file, row['file_path']).exists())
+
+    @ddt.data(
+        (
+            "Section",
+            "Sub Section",
+            "Unit",
+            "test.jpg",
+            "username",
+            "[1]Section, [1]Sub Section, [1]Unit/[1] - username - test.jpg",
+        ),
+        (
+            "Section",
+            "x" * 1000,
+            "Unit",
+            "test.jpg",
+            "username",
+            # subsection name truncated
+            f"[1]Section, [1]{'x' * 231}, [1]Unit/[1] - username - test.jpg",
+        ),
+        (
+            "Section",
+            "x" * 1000,
+            "y" * 1000,
+            "test.jpg",
+            "username",
+            # subsection name removed, unit name truncated
+            f"[1]Section, [1], [1]{'y' * 235}/[1] - username - test.jpg",
+        ),
+        (
+            "z" * 1000,
+            "x" * 1000,
+            "y" * 1000,
+            "test.jpg",
+            "username",
+            # everything removed, section name truncated
+            f"[1]{'z' * 242}, [1], [1]/[1] - username - test.jpg",
+        ),
+        (
+            "Section",
+            "Sub Section",
+            "Unit",
+            f"{'x' * 251}.jpg",
+            "username",
+            # filename base truncated
+            f"[1]Section, [1]Sub Section, [1]Unit/[1] - username - {'x' * 234}.jpg",
+        ),
+    )
+    @ddt.unpack
+    def test_truncation_of_submission_filepath(
+        self, section_name, sub_section_name, unit_name, file_name, username, file_path
+    ):
+        """
+        Test that `_submission_filepath` truncates less important data first and keeps
+        file name less than 255.
+        """
+
+        path_info = {
+            "section_index": 1,
+            "section_name": section_name,
+            "sub_section_index": 1,
+            "sub_section_name": sub_section_name,
+            "unit_index": 1,
+            "unit_name": unit_name,
+            "ora_index": 1,
+            "ora_name": ITEM_DISPLAY_NAME,
+        }
+
+        assert OraDownloadData._submission_filepath(path_info, username, file_name) == file_path
 
 
 submission_test_parts = [{'text': 'text_response_' + str(i)} for i in range(3)]

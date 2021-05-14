@@ -16,7 +16,8 @@ import copy
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import F
+from django.db.models import CharField, F, OuterRef, Subquery
+from django.db.models.functions import Coalesce
 from django.utils.translation import ugettext as _
 
 from submissions import api as sub_api
@@ -26,6 +27,52 @@ from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
 
 logger = logging.getLogger(__name__)
+
+
+def _usernames_enabled():
+    """
+    Checks if toggle for deanonymized usernames in report enabled.
+    """
+
+    return settings.FEATURES.get('ENABLE_ORA_USERNAMES_ON_DATA_EXPORT', False)
+
+
+def _use_read_replica(queryset):
+    """
+    If there's a read replica that can be used, return a cursor to that.
+    Otherwise, return a cursor to the regular database.
+
+    Args:
+        queryset (QuerySet): The queryset that we would like to use the read replica for.
+    Returns:
+        QuerySet
+    """
+    return (
+        queryset.using("read_replica")
+        if "read_replica" in settings.DATABASES
+        else queryset
+    )
+
+
+def _get_course_blocks(course_id):
+    """
+    Returns untransformed block structure for a given course key.
+
+    Args:
+        course_id - CourseLocator instance
+    Returns:
+        BlockStructureBlockData instance
+    """
+
+    from lms.djangoapps.course_blocks.api import get_course_blocks
+    from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
+    from xmodule.modulestore.django import modulestore
+
+    store = modulestore()
+    course_usage_key = store.make_course_usage_key(course_id)
+
+    # Passing an empty block structure transformer here to avoid user access checks
+    return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
 
 
 class CsvWriter:
@@ -131,14 +178,14 @@ class CsvWriter:
 
             # Django 1.4 doesn't follow reverse relations when using select_related,
             # so we select AssessmentPart and follow the foreign key to the Assessment.
-            parts = self._use_read_replica(
+            parts = _use_read_replica(
                 AssessmentPart.objects.select_related('assessment', 'option', 'option__criterion')
                 .filter(assessment__submission_uuid=submission_uuid)
                 .order_by('assessment__pk')
             )
             self._write_assessment_to_csv(parts, rubric_points_cache)
 
-            feedback_query = self._use_read_replica(
+            feedback_query = _use_read_replica(
                 AssessmentFeedback.objects
                 .filter(submission_uuid=submission_uuid)
                 .prefetch_related('options')
@@ -171,7 +218,7 @@ class CsvWriter:
         """
         num_results = 0
         start = 0
-        total_results = self._use_read_replica(
+        total_results = _use_read_replica(
             AssessmentWorkflow.objects.filter(course_id=course_id)
         ).count()
 
@@ -181,7 +228,7 @@ class CsvWriter:
             # so if we counted N at the start of the loop,
             # there should be >= N for us to process.
             end = start + self.QUERY_INTERVAL
-            query = self._use_read_replica(
+            query = _use_read_replica(
                 AssessmentWorkflow.objects
                 .filter(course_id=course_id)
                 .order_by('created')
@@ -337,53 +384,11 @@ class CsvWriter:
             encoded_row = [str(field) for field in row]
             writer.writerow(encoded_row)
 
-    def _use_read_replica(self, queryset):
-        """
-        Use the read replica if it's available.
-
-        Args:
-            queryset (QuerySet)
-
-        Returns:
-            QuerySet
-
-        """
-        return (
-            queryset.using("read_replica")
-            if "read_replica" in settings.DATABASES
-            else queryset
-        )
-
 
 class OraAggregateData:
     """
     Aggregate all the ORA data into a single table-like data structure.
     """
-
-    @classmethod
-    def _use_read_replica(cls, queryset):
-        """
-        If there's a read replica that can be used, return a cursor to that.
-        Otherwise, return a cursor to the regular database.
-
-        Args:
-            queryset (QuerySet): The queryset that we would like to use the read replica for.
-        Returns:
-            QuerySet
-        """
-        return (
-            queryset.using("read_replica")
-            if "read_replica" in settings.DATABASES
-            else queryset
-        )
-
-    @classmethod
-    def _usernames_enabled(cls):
-        """
-        Checks if toggle for deanonymized usernames in report enabled.
-        """
-
-        return settings.FEATURES.get('ENABLE_ORA_USERNAMES_ON_DATA_EXPORT', False)
 
     @classmethod
     def _map_anonymized_ids_to_usernames(cls, anonymized_ids):
@@ -396,7 +401,7 @@ class OraAggregateData:
         """
         User = get_user_model()
 
-        users = cls._use_read_replica(
+        users = _use_read_replica(
             User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
             .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
             .values("username", "anonymous_id")
@@ -427,7 +432,7 @@ class OraAggregateData:
             student_ids.append(student_item["student_id"])
             submission_uuids.append(submission["uuid"])
 
-        scorer_ids = cls._use_read_replica(
+        scorer_ids = _use_read_replica(
             Assessment.objects.filter(submission_uuid__in=submission_uuids).values_list(
                 "scorer_id", flat=True
             )
@@ -438,9 +443,8 @@ class OraAggregateData:
     @classmethod
     def _map_block_usage_keys_to_display_names(cls, course_id):
         """
-        Fetches all course blocks and build mapping between block usage key
-        string and block display name for those ones, whoose category is equal
-        to ``openassessment``.
+        Builds a mapping between block usage key string and block display
+        name for those ones, whoose category is equal to ``openassessment``.
 
         Args:
             course_id (string or CourseLocator instance) - id of course
@@ -449,18 +453,8 @@ class OraAggregateData:
             dictionary, that contains mapping between block usage
             keys (locations) and block display names.
         """
-        # pylint: disable=import-error
 
-        from lms.djangoapps.course_blocks.api import get_course_blocks
-        from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
-
-        from xmodule.modulestore.django import modulestore
-
-        store = modulestore()
-        course_usage_key = store.make_course_usage_key(course_id)
-
-        # Passing an empty block structure transformer here to avoid user access checks
-        blocks = get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+        blocks = _get_course_blocks(course_id)
 
         block_display_name_map = {}
 
@@ -480,14 +474,12 @@ class OraAggregateData:
         Returns:
             string that should be included in the 'assessments' column for this set of assessments' row
         """
-        usernames_enabled = cls._usernames_enabled()
-
         returned_string = ""
         for assessment in assessments:
             returned_string += f"Assessment #{assessment.id}\n"
             returned_string += f"-- scored_at: {assessment.scored_at}\n"
             returned_string += f"-- type: {assessment.score_type}\n"
-            if usernames_enabled:
+            if _usernames_enabled():
                 returned_string += "-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
             returned_string += f"-- scorer_id: {assessment.scorer_id}\n"
             if assessment.feedback != "":
@@ -612,7 +604,7 @@ class OraAggregateData:
 
         """
         all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
-        usernames_enabled = cls._usernames_enabled()
+        usernames_enabled = _usernames_enabled()
 
         usernames_map = (
             cls._map_sudents_and_scorers_ids_to_usernames(all_submission_information)
@@ -623,7 +615,7 @@ class OraAggregateData:
 
         rows = []
         for student_item, submission, score in all_submission_information:
-            assessments = cls._use_read_replica(
+            assessments = _use_read_replica(
                 Assessment.objects.prefetch_related('parts').
                 prefetch_related('rubric').
                 filter(
@@ -882,7 +874,7 @@ class OraAggregateData:
         student_item = submission['student_item']
         row[_('Anonymized Student ID')] = student_item['student_id']
 
-        assessments = cls._use_read_replica(
+        assessments = _use_read_replica(
             Assessment.objects.prefetch_related('parts').
             prefetch_related('rubric').
             filter(
@@ -938,7 +930,7 @@ class OraDownloadData:
 
     ATTACHMENT = 'attachment'
     TEXT = 'text'
-    DOWNLOADS_CSV_HEADER = (
+    SUBMISSIONS_CSV_HEADER = (
         'course_id',
         'block_id',
         'student_id',
@@ -950,6 +942,7 @@ class OraDownloadData:
         'file_path',
         'file_found',
     )
+    MAX_FILE_NAME_LENGTH = 255
 
     @classmethod
     def _download_file_by_key(cls, key):
@@ -965,7 +958,182 @@ class OraDownloadData:
         return response.content
 
     @classmethod
-    def create_zip_with_attachments(cls, file, course_id, submission_files_data):
+    def _map_ora_usage_keys_to_path_info(cls, course_id):
+        """
+        Helper function that accepts course key and returns mapping in the form of a dictionary,
+        where key is a string representation of ORA's usage key, and value is a dictionary with
+        all information needed to build the submission file path.
+        """
+
+        blocks = _get_course_blocks(course_id)
+
+        path_info = {}
+
+        def children(usage_key, condition=None):
+            filtered = filter(condition, blocks.get_xblock_field(usage_key, 'children') or [])
+            for index, child in enumerate(filtered, 1):
+                yield index, blocks.get_xblock_field(child, 'display_name'), child
+
+        def only_ora_blocks(block):
+            return block.block_type == "openassessment"
+
+        for section_index, section_name, section in children(blocks.root_block_usage_key):
+            for sub_section_index, sub_section_name, sub_section in children(section):
+                for unit_index, unit_name, unit in children(sub_section):
+                    for block_index, block_name, block in children(unit, only_ora_blocks):
+                        path_info[str(block)] = {
+                            "section_index": section_index,
+                            "section_name": section_name,
+                            "sub_section_index": sub_section_index,
+                            "sub_section_name": sub_section_name,
+                            "unit_index": unit_index,
+                            "unit_name": unit_name,
+                            "ora_index": block_index,
+                            "ora_name": block_name,
+                        }
+
+        return path_info
+
+    @classmethod
+    def _map_student_ids_to_path_ids(cls, all_submission_information):
+        """
+        Builds a mapping between anonymized student ids and their identifier for
+        submission filename.
+
+        The identifier can take three different forms:
+        - External ID of `mb_coaching` type.
+        - edX username, if external ID is absent.
+        - Anonymized username, if `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT` feature is disabled.
+        """
+        from openedx.core.djangoapps.external_user_ids.models import ExternalId
+
+        student_ids = [item[0]["student_id"] for item in all_submission_information]
+
+        User = get_user_model()
+
+        users = _use_read_replica(
+            User.objects.filter()
+            .annotate(
+                student_id=F("anonymoususerid__anonymous_user_id"),
+                path_id=Coalesce(
+                    Subquery(
+                        ExternalId.objects.filter(
+                            user=OuterRef("pk"), external_id_type__name="mb_coaching"
+                        ).values("external_user_id")
+                    ),
+                    F(
+                        "username"
+                        if _usernames_enabled()
+                        else "anonymoususerid__anonymous_user_id"
+                    ),
+                    output_field=CharField(),
+                ),
+            )
+            .values("student_id", "path_id")
+        )
+
+        return {user["student_id"]: user["path_id"] for user in users}
+
+    @classmethod
+    def _submission_directory_name(
+        cls,
+        section_index,
+        section_name,
+        sub_section_index,
+        sub_section_name,
+        unit_index,
+        unit_name,
+        **kwargs,
+    ):
+        """
+        Returns submissions directory name in format:
+        `[{section_index}]{section_name}, [sub_section_index]{sub_section_name}, [{unit_index}]{unit_name}`
+
+        Example:
+        `[1]Introduction, [1]Demo Course Overview, [1]Introduction: Video and Sequences`
+
+        If the resulting name length is greater than 255, it truncates name parts in the following order:
+        - Subsection name.
+        - Unit name.
+        - Section name.
+        """
+
+        def get_name_and_diff():
+            name = (
+                f"[{section_index}]{section_name}, "
+                f"[{sub_section_index}]{sub_section_name}, "
+                f"[{unit_index}]{unit_name}"
+            )
+            diff = cls.MAX_FILE_NAME_LENGTH - len(name)
+            return name, diff
+
+        directory_name, diff = get_name_and_diff()
+        if diff >= 0:
+            return directory_name
+
+        sub_section_name = sub_section_name[:diff]
+        directory_name, diff = get_name_and_diff()
+        if diff >= 0:
+            return directory_name
+
+        unit_name = unit_name[:diff]
+        directory_name, diff = get_name_and_diff()
+        if diff >= 0:
+            return directory_name
+
+        section_name = section_name[:diff]
+
+        return get_name_and_diff()[0]
+
+    @classmethod
+    def _submission_filename(cls, ora_index, student_id, original_filename):
+        """
+        Returns submission file name in format:
+        `[{ora_index}] - {student_id} - {attachment_base}{attachment_extention}`
+
+        Example:
+        `[1] - 703dee642c9872a35d84fa9b2d96950f - prompt_1.txt`
+
+        If the resulting name length is greater than 255, it truncates original file base.
+        """
+
+        file_base, file_extention = os.path.splitext(original_filename)
+
+        def get_name(file_base):
+            return (
+                f"[{ora_index}] - {student_id} - {file_base}{file_extention}"
+                if file_base
+                else f"[{ora_index}] - {student_id}{file_extention}"
+            )
+
+        file_name = get_name(file_base)
+
+        diff = cls.MAX_FILE_NAME_LENGTH - len(file_name)
+
+        return file_name if diff >= 0 else get_name(file_base[:diff])
+
+    @classmethod
+    def _submission_filepath(cls, ora_path_info, student_id, original_filename):
+        """
+        Returns the full zip file path for the submission text or attachment.
+        """
+
+        directory_name = (
+            cls._submission_directory_name(**ora_path_info)
+            if ora_path_info
+            else "Removed from course"
+        )
+
+        submission_filename = cls._submission_filename(
+            ora_path_info["ora_index"] if ora_path_info else "x",
+            student_id,
+            original_filename
+        )
+
+        return os.path.join(directory_name, submission_filename)
+
+    @classmethod
+    def create_zip_with_attachments(cls, file, submission_files_data):
         """
         Opens given stream as a zip file and writes into it all submission
         attachments and csv with list of all downloads.
@@ -976,28 +1144,24 @@ class OraDownloadData:
         Example of result zip file structure:
         ```
         .
-        └── CourseId
-            ├── BlockId1
-            │   ├── StudentId1
-            │   │   ├── attachments
-            │   │   │   ├── SomeFile1
-            │   │   │   └── SomeFile2
-            │   │   ├── part_0.txt
-            │   │   └── part_1.txt
-            │   └── StudentId2
-            │       ├── part_0.txt
-            │       └── part_1.txt
-            ├── BlockId2
-            │   └── StudentId3
-            │       ├── attachments
-            │       │   └── SomeFile4
-            │       └── part_0.txt
-            └── downloads.csv
+        ├── [1]Some Section, [1]Some Subsection, [1]Unit
+        │   ├── [1] - 00f636b9ac6d480c9fb95c23bf1d2129 - prompt_0.txt
+        │   ├── [1] - 00f636b9ac6d480c9fb95c23bf1d2129 - prompt_1.txt
+        │   ├── [1] - edx - prompt_0.txt
+        │   ├── [1] - edx - prompt_1.txt
+        │   ├── [2] - edx - prompt_0.txt
+        │   └── [2] - edx - Structure and Interpretation of Computer Programs.pdf
+        ├── [1]Some Section, [2]Some Subsection, [1]Unit
+        │   └── [1] - edx - prompt_0.txt
+        ├── [1]Some Section, [2]Some Subsection, [2]Unit
+        │   ├── [1] - edx - prompt_0.txt
+        │   └── [1] - edx - the_most_dangerous_kitten.jpg
+        └── submissions.csv
         ```
         """
         csv_output_buffer = StringIO()
 
-        csvwriter = csv.DictWriter(csv_output_buffer, cls.DOWNLOADS_CSV_HEADER, extrasaction='ignore')
+        csvwriter = csv.DictWriter(csv_output_buffer, cls.SUBMISSIONS_CSV_HEADER, extrasaction='ignore')
         csvwriter.writeheader()
 
         with ZipFile(file, 'w') as zip_file:
@@ -1031,10 +1195,8 @@ class OraDownloadData:
                 finally:
                     csvwriter.writerow({**file_data, 'file_found': file_found})
 
-            downloads_csv_path = os.path.join(str(course_id), 'downloads.csv')
-
             zip_file.writestr(
-                downloads_csv_path,
+                'submissions.csv',
                 csv_output_buffer.getvalue().encode('utf-8')
             )
 
@@ -1049,7 +1211,9 @@ class OraDownloadData:
         attachment or answer text.
         """
 
-        all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
+        all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
+        all_ora_path_information = cls._map_ora_usage_keys_to_path_info(course_id)
+        student_identifiers_map = cls._map_student_ids_to_path_ids(all_submission_information)
 
         for student, submission, _ in all_submission_information:
             raw_answer = submission.get('answer', dict())
@@ -1064,18 +1228,16 @@ class OraDownloadData:
                     'name': uploaded_file.name,
                     'description': uploaded_file.description,
                     'size': uploaded_file.size,
-                    'file_path': os.path.join(
-                        str(course_id),
-                        student['item_id'],
-                        student['student_id'],
-                        'attachments',
+                    'file_path': cls._submission_filepath(
+                        all_ora_path_information.get(student['item_id']),
+                        student_identifiers_map[student['student_id']],
                         uploaded_file.name,
-                    )
+                    ),
                 }
 
             # collecting submission answer texts
             for index, text_response in enumerate(answer.get_text_responses()):
-                file_name = f'part_{index}.txt'
+                file_name = f'prompt_{index}.txt'
 
                 yield {
                     'type': cls.TEXT,
@@ -1087,12 +1249,11 @@ class OraDownloadData:
                     'description': 'Submission text.',
                     'content': text_response,
                     'size': len(text_response),
-                    'file_path': os.path.join(
-                        str(course_id),
-                        student['item_id'],
-                        student['student_id'],
+                    'file_path': cls._submission_filepath(
+                        all_ora_path_information.get(student['item_id']),
+                        student_identifiers_map[student['student_id']],
                         file_name,
-                    )
+                    ),
                 }
 
 
