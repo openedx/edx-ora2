@@ -96,8 +96,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-08 00:57-0500\n"
-"PO-Revision-Date: 2021-04-07 18:26+0000\n"
+"POT-Creation-Date: 2021-05-12 15:45-0400\n"
+"PO-Revision-Date: 2021-05-12 21:30+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -138,96 +138,96 @@ msgstr "L'exemple {example_number} contient une option supplémentaire pour \"{c
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "Il manque une option pour \"{criterion_name}\" dans l'exemple {example_number}"
 
-#: openassessment/data.py:536
+#: openassessment/data.py:539
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr "Critère {number}: {label}"
 
-#: openassessment/data.py:538
+#: openassessment/data.py:541
 #, python-brace-format
 msgid "Points {number}"
 msgstr "Points {number}"
 
-#: openassessment/data.py:539
+#: openassessment/data.py:542
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr "Score médian {number}"
 
-#: openassessment/data.py:540
+#: openassessment/data.py:543
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr "Rétroaction {number}"
 
-#: openassessment/data.py:867
+#: openassessment/data.py:870
 msgid "Item ID"
 msgstr "Identifiant de l'élément"
 
-#: openassessment/data.py:868
+#: openassessment/data.py:871
 msgid "Submission ID"
 msgstr "ID de soumission"
 
-#: openassessment/data.py:880
+#: openassessment/data.py:883
 msgid "Anonymized Student ID"
 msgstr "ID d'étudiant anonymisé"
 
-#: openassessment/data.py:911
+#: openassessment/data.py:914
 msgid "Assessment ID"
 msgstr "ID d'évaluation"
 
-#: openassessment/data.py:912
+#: openassessment/data.py:915
 msgid "Assessment Scored Date"
 msgstr "Date de notation de l'évaluation"
 
-#: openassessment/data.py:913
+#: openassessment/data.py:916
 msgid "Assessment Scored Time"
 msgstr "Temps de notation de l'évaluation"
 
-#: openassessment/data.py:914
+#: openassessment/data.py:917
 msgid "Assessment Type"
 msgstr "Type d'évaluation"
 
-#: openassessment/data.py:915
+#: openassessment/data.py:918
 msgid "Anonymous Scorer Id"
 msgstr "Identifiant d'évaluateur anonyme"
 
-#: openassessment/data.py:917
+#: openassessment/data.py:920
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Commentaire global"
 
-#: openassessment/data.py:918
+#: openassessment/data.py:921
 msgid "Assessment Score Earned"
 msgstr "Note d'évaluation obtenu"
 
-#: openassessment/data.py:919
+#: openassessment/data.py:922
 msgid "Assessment Scored At"
 msgstr "Évaluation notée à"
 
-#: openassessment/data.py:920
+#: openassessment/data.py:923
 msgid "Date/Time Final Score Given"
 msgstr "Date / heure de la note finale donnée"
 
-#: openassessment/data.py:921
+#: openassessment/data.py:924
 msgid "Final Score Earned"
 msgstr "Note finale obtenue"
 
-#: openassessment/data.py:922
+#: openassessment/data.py:925
 msgid "Final Score Possible"
 msgstr "Note finale possible"
 
-#: openassessment/data.py:923
+#: openassessment/data.py:926
 msgid "Feedback Statements Selected"
 msgstr "Énoncés de rétroaction sélectionnés"
 
-#: openassessment/data.py:924
+#: openassessment/data.py:927
 msgid "Feedback on Assessment"
 msgstr "Rétroaction sur l'évaluation"
 
-#: openassessment/data.py:926
+#: openassessment/data.py:929
 msgid "Response Files"
 msgstr "Fichiers de réponses"
 
-#: openassessment/data.py:1092
+#: openassessment/data.py:1121
 msgid "No description provided."
 msgstr "Aucune description fournie."
 
@@ -645,7 +645,7 @@ msgstr "Texte de commentaire par défaut"
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
-msgstr "Entrez le texte de commentaire que les apprenants vont voir avant qu'ils entrent dans leurs propres commentaires. Utilisez ce texte pour montrer aux apprenants un exemple de bonne évaluation par les pairs."
+msgstr "Entrez le texte de commentaire que les apprenants vont voir avant qu'ils entrent dans leurs propres commentaires. Utilisez ce texte pour afficher aux apprenants un exemple de bonne évaluation par les pairs."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:5
 msgid "Course Deadlines"
@@ -961,6 +961,16 @@ msgstr "Noter les réponses disponibles est indisponible. Cet élément n'est pa
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
 msgstr "Veuillez patienter"
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
+msgid "Waiting Step Details"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
+msgid ""
+"Waiting Step details view is unavailable. This item is not configured for "
+"peer assessments."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
@@ -2369,66 +2379,86 @@ msgstr "Vous devez soumettre une réponse avant de pouvoir effectuer une auto-é
 msgid "Your self assessment could not be submitted."
 msgstr "Votre auto-évaluation n'a pas pu être soumise."
 
-#: openassessment/xblock/staff_area_mixin.py:40
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "Vous n'avez pas la permission de planifier la formation"
 
-#: openassessment/xblock/staff_area_mixin.py:41
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "Vous n'avez pas la permission de reporter les tâches."
 
-#: openassessment/xblock/staff_area_mixin.py:67
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations réservées à l'équipe enseignante."
 
-#: openassessment/xblock/staff_area_mixin.py:68
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations des apprenants."
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations de notations réservées à l'équipe enseignante."
 
-#: openassessment/xblock/staff_area_mixin.py:183
+#: openassessment/xblock/staff_area_mixin.py:222
+msgid "Pending"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:223
+msgid "Complete/Overwritten"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:226
+msgid "Not applicable"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:227
+msgid "Not submitted"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:228
+msgid "Submitted"
+msgstr ""
+
+#: openassessment/xblock/staff_area_mixin.py:295
 msgid "Error getting learner information."
 msgstr "Erreur lors de l'obtention d'information sur l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:226
+#: openassessment/xblock/staff_area_mixin.py:338
 msgid "Error loading the checked out learner response."
 msgstr "Erreur lors du chargement de la réponse de l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:227
+#: openassessment/xblock/staff_area_mixin.py:339
 msgid "No other learner responses are available for grading at this time."
 msgstr "Aucune autre réponse d'apprenant disponible pour notation en ce moment."
 
-#: openassessment/xblock/staff_area_mixin.py:229
+#: openassessment/xblock/staff_area_mixin.py:341
 msgid "Error getting staff grade information."
 msgstr "Erreur lors de la récupération de la note de l'équipe pédagogique."
 
-#: openassessment/xblock/staff_area_mixin.py:250
+#: openassessment/xblock/staff_area_mixin.py:362
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Erreur lors de la récupération des notes attribuées par l'équipe pédagogique et leur compte."
 
-#: openassessment/xblock/staff_area_mixin.py:539
+#: openassessment/xblock/staff_area_mixin.py:651
 msgid "Please enter valid reason to remove the submission."
 msgstr "Veuillez saisir une raison valide pour supprimer la réponse."
 
-#: openassessment/xblock/staff_area_mixin.py:550
+#: openassessment/xblock/staff_area_mixin.py:662
 msgid "Submission not found"
 msgstr "Soumission introuvable"
 
-#: openassessment/xblock/staff_area_mixin.py:561
+#: openassessment/xblock/staff_area_mixin.py:673
 msgid "Submission for team assignment has no associated team submission"
 msgstr "La soumission pour l'affectation d'équipe n'a pas de soumission d'équipe associée"
 
-#: openassessment/xblock/staff_area_mixin.py:588
+#: openassessment/xblock/staff_area_mixin.py:700
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "La réponse de l'étudiant a été supprimée de la notation par les pairs. L'étudiant obtient une note nulle à moins de réinitialiser l'état de l'exercice pour l'étudiant pour lui permettre de proposer un nouvelle réponse."
 
-#: openassessment/xblock/staff_area_mixin.py:623
+#: openassessment/xblock/staff_area_mixin.py:735
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
