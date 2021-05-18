@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.64
+boto3==1.17.74
     # via -r requirements/base.in
-botocore==1.20.64
+botocore==1.20.74
     # via
     #   boto3
     #   s3transfer
@@ -38,7 +38,7 @@ django-waffle==2.1.0
     # via
     #   edx-django-utils
     #   edx-toggles
-django==2.2.20
+django==2.2.23
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -75,7 +75,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-jinja2==2.11.3
+jinja2==3.0.0
     # via code-annotations
 jmespath==0.10.0
     # via
@@ -98,7 +98,7 @@ lxml==4.6.3
     # via
     #   -r requirements/base.in
     #   xblock
-markupsafe==1.1.1
+markupsafe==2.0.0
     # via
     #   jinja2
     #   xblock
@@ -128,7 +128,7 @@ python-dateutil==2.4.0
     #   -r requirements/base.in
     #   botocore
     #   xblock
-python-slugify==5.0.0
+python-slugify==5.0.2
     # via code-annotations
 python-swiftclient==3.11.1
     # via
@@ -150,7 +150,7 @@ requests==2.25.1
     # via python-swiftclient
 s3transfer==0.4.2
     # via boto3
-six==1.15.0
+six==1.16.0
     # via
     #   bleach
     #   edx-i18n-tools
