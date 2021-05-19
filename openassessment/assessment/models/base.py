@@ -626,7 +626,7 @@ class AssessmentPart(models.Model):
     # Free-form text feedback for the specific criterion
     # Note that the `Assessment` model also has a feedback field,
     # which is feedback on the submission as a whole.
-    feedback = models.TextField(default="", blank=True, max_length=MAX_FEEDBACK_SIZE)
+    feedback = models.TextField(default="", blank=True)
 
     class Meta:
         app_label = "assessment"
