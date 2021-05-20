@@ -162,4 +162,8 @@ FEATURES = {
 
     # Set to True to enable this Xblock in mobile apps.
     'ENABLE_ORA_MOBILE_SUPPORT': False,
+
+    # Set to True to enable copying/reusing rubric data
+    # See: https://openedx.atlassian.net/browse/EDUCATOR-5751
+    'ENABLE_ORA_RUBRIC_REUSE': False
 }

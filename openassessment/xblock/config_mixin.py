@@ -14,11 +14,13 @@ WAFFLE_NAMESPACE = 'openresponseassessment'
 ALL_FILES_URLS = 'all_files_urls'
 TEAM_SUBMISSIONS = 'team_submissions'
 USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
+RUBRIC_REUSE = 'rubric_reuse'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
-    USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA'
+    USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
+    RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
 }
 
 
@@ -39,6 +41,15 @@ def import_course_waffle_flag():
     # pylint: disable=import-error
     from openedx.core.djangoapps.waffle_utils import CourseWaffleFlag
     return CourseWaffleFlag
+
+
+def import_waffle_flag():
+    """
+    Helper method that imports WaffleFlag from edx_toggles at runtime.
+    """
+    # pylint: disable=import-error
+    from edx_toggles.toggles import WaffleFlag
+    return WaffleFlag
 
 
 class ConfigMixin:
@@ -65,6 +76,16 @@ class ConfigMixin:
         return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name, module_name=__name__)
 
     @staticmethod
+    def _waffle_flag(flag_name):
+        """
+        Return a ``WaffleFlag`` object in WAFFLE_NAMESPACE
+        with the given ``flag_name``.
+        """
+        WaffleFlag = import_waffle_flag()  # pylint: disable=invalid-name
+        # pylint: disable=feature-toggle-needs-doc
+        return WaffleFlag(f"{WAFFLE_NAMESPACE}.{flag_name}", module_name=__name__)
+
+    @staticmethod
     def _settings_toggle_enabled(toggle_name):
         """
         Returns True iff ``toggle_name`` is defined and set to ``True``
@@ -86,6 +107,9 @@ class ConfigMixin:
             return True
 
         if self._waffle_switch(flag).is_enabled():
+            return True
+
+        if self._waffle_flag(flag).is_enabled():
             return True
 
         if self._settings_toggle_enabled(FEATURE_TOGGLES_BY_FLAG_NAME.get(flag)):
@@ -128,3 +152,17 @@ class ConfigMixin:
         # .. toggle_creation_date: 2020-10-14
         # .. toggle_tickets: https://github.com/edx/edx-ora2/pull/1445
         return settings.FEATURES.get('ENABLE_ORA_MOBILE_SUPPORT', False)
+
+    @cached_property
+    def is_rubric_reuse_enabled(self):
+        """
+        Return a boolean indicating the reuse of rubric feature is enabled or not.
+        """
+        # .. toggle_name: FEATURES['ENABLE_ORA_RUBRIC_REUSE']
+        # .. toggle_implementation: WaffleFlag
+        # .. toggle_default: False
+        # .. toggle_description: Set to True to enable the reuse of rubric feature
+        # .. toggle_use_cases: monitored_rollout
+        # .. toggle_creation_date: 2021-05-18
+        # .. toggle_tickets:  https://openedx.atlassian.net/browse/EDUCATOR-5751
+        return self.is_feature_enabled(RUBRIC_REUSE)
