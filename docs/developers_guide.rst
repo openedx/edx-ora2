@@ -57,9 +57,8 @@ For devstack:
 Available make commands
 -----------------------
 - ``make install-local-ora`` - installs your local ORA2 code into the LMS and Studio python virtualenvs
-- ``make javascript`` - makes the bundled JavaScript files for LMS and Studio
+- ``make static`` - builds static JS/SASS files for LMS and Studio
 - ``make quality`` - run the JSHint quality tests
-- ``make sass`` - recompiles sass, can be done while edx-platform is running, then refresh the browser to see the changes
 - ``make test`` - run all the tests
 - ``make test`` - acceptance - run the acceptance tests
 - ``make test-a11y`` - run the accessibility tests
