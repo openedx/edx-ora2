@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-28 14:57-0400\n"
+"POT-Creation-Date: 2021-05-25 14:55-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2119,10 +2119,6 @@ msgid "View Assignment Statistics"
 msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
-msgid "View ORA in Studio"
-msgstr "Vïéw ÖRÀ ïn Stüdïö Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "Close"
@@ -2946,6 +2942,24 @@ msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr ""
 "Thé stärt däté '{start}' çännöt ßé lätér thän thé düé däté '{due}' Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/rubric_reuse_mixin.py
+msgid "You must specify a block id from which to copy a rubric."
+msgstr ""
+"Ýöü müst spéçïfý ä ßlöçk ïd fröm whïçh tö çöpý ä rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/rubric_reuse_mixin.py
+msgid "Invalid block id."
+msgstr "Ìnvälïd ßlöçk ïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: openassessment/xblock/rubric_reuse_mixin.py
+#, python-brace-format
+msgid ""
+"No Open Response Assessment found in {course_id} with block id {block_id}"
+msgstr ""
+"Nö Öpén Réspönsé Àsséssmént föünd ïn {course_id} wïth ßlöçk ïd {block_id} "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/xblock/self_assessment_mixin.py
 msgid "You must submit a response before you can perform a self-assessment."

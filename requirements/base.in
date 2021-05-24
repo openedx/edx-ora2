@@ -8,6 +8,7 @@ edx-django-utils
 edx-toggles
 djangorestframework
 Xblock
+edx-opaque-keys
 
 django
 django-simple-history
