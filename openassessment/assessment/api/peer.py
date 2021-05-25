@@ -53,6 +53,8 @@ def required_peer_grades(submission_uuid, peer_requirements):
         # check if flexible grading applies. if it does, then update must_grade
         if days_elapsed >= FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS:
             must_grade = int(must_grade * FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE / 100)
+            if must_grade == 0:
+                must_grade = 1
 
     return must_grade
 
