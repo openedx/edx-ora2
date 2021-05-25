@@ -146,6 +146,11 @@ class StudioMixin:
         white_listed_file_types = self.get_allowed_file_types_or_preset()
         white_listed_file_types_string = ','.join(white_listed_file_types) if white_listed_file_types else ''
 
+        breakpoint()
+        other_ora_blocks = self.get_other_course_ora_blocks()
+        for other_ora_block in other_ora_blocks:
+            logger.info(self._get_rubric(other_ora_block.location))
+
         return {
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
