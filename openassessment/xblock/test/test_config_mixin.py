@@ -14,6 +14,7 @@ from openassessment.xblock.config_mixin import (
     FEATURE_TOGGLES_BY_FLAG_NAME,
     TEAM_SUBMISSIONS,
     USER_STATE_UPLOAD_DATA,
+    RUBRIC_REUSE
 )
 
 
@@ -105,6 +106,24 @@ class ConfigMixinTest(TestCase):
         else:
             self.assertEqual(expected_output, my_block.is_mobile_support_enabled)
 
+    @ddt.data(
+        *list(itertools.product([True, False, None], repeat=3))
+    )
+    @ddt.unpack
+    def test_rubric_reuse_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
+        """
+        The rubric reuse feature is expected to be enabled only if:
+          1) The openresponseassessment.rubric_reuse waffle flag is enabled
+          2) The settings.FEATURES['ENABLE_ORA_RUBRIC_REUSE'] value is True
+        """
+        self._run_feature_toggle_test(
+            RUBRIC_REUSE,
+            waffle_switch_input,
+            waffle_flag_input,
+            settings_input,
+            'is_rubric_reuse_enabled',
+        )
+
     def _run_feature_toggle_test(
         self, flag_name, waffle_switch_input, waffle_flag_input, settings_input, feature_property
     ):
@@ -112,7 +131,8 @@ class ConfigMixinTest(TestCase):
         Any feature name is expected to be enabled if at least one of the following conditions holds:
           1) It's associated waffle switch is enabled.
           2) It's associated course waffle flag is enabled.
-          3) The settings.FEATURES keyed by ``flag_name`` is True.
+          3} It's associated waffle flag is enabled.
+          4) The settings.FEATURES keyed by ``flag_name`` is True.
         """
 
         expected_output = True
@@ -131,9 +151,16 @@ class ConfigMixinTest(TestCase):
                 MockCourseWaffleFlag.return_value.is_enabled.return_value = waffle_flag_input
                 with self.settings(FEATURES={settings_feature_key: settings_input}):
                     self.assertEqual(expected_output, getattr(my_block, feature_property, None))
+                mock_flag_instance = MockCourseWaffleFlag.return_value
+                mock_flag_instance.is_enabled.assert_called_once_with(my_block.location.course_key)
 
-        mock_flag_instance = MockCourseWaffleFlag.return_value
-        mock_flag_instance.is_enabled.assert_called_once_with(my_block.location.course_key)
+        with mock.patch(
+            'openassessment.xblock.config_mixin.import_waffle_flag', autospec=True
+        ) as mock_waffle_flag:
+            MockWaffleFlag = mock_waffle_flag.return_value
+            MockWaffleFlag.return_value.is_enabled.return_value = waffle_flag_input
+            with self.settings(FEATURES={settings_feature_key: settings_input}):
+                self.assertEqual(expected_output, getattr(my_block, feature_property, None))
 
         if not waffle_flag_input:
             mock_switch_instance = MockWaffleSwitch.return_value

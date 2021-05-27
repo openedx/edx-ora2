@@ -17,7 +17,7 @@ atomicwrites==1.4.0
     # via
     #   -r requirements/test.txt
     #   pytest
-attrs==20.3.0
+attrs==21.2.0
     # via
     #   -r requirements/test.txt
     #   jsonschema
@@ -32,7 +32,7 @@ aws-xray-sdk==2.8.0
     #   moto
 bleach==3.3.0
     # via -r requirements/test.txt
-boto3==1.17.64
+boto3==1.17.74
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -42,7 +42,7 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-botocore==1.20.64
+botocore==1.20.74
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -57,7 +57,7 @@ cffi==1.14.5
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.49.0
+cfn-lint==0.49.1
     # via
     #   -r requirements/test.txt
     #   moto
@@ -91,7 +91,7 @@ ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-decorator==5.0.7
+decorator==5.0.9
     # via
     #   -r requirements/test.txt
     #   networkx
@@ -119,7 +119,7 @@ django-waffle==2.1.0
     #   -r requirements/test.txt
     #   edx-django-utils
     #   edx-toggles
-django==2.2.20
+django==2.2.23
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -162,7 +162,7 @@ edx-toggles==4.1.0
     # via -r requirements/test.txt
 factory-boy==3.2.0
     # via -r requirements/test.txt
-faker==8.1.2
+faker==8.1.4
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -201,7 +201,7 @@ idna==2.8
     #   requests
 isort==5.8.0
     # via pylint
-jinja2==2.11.3
+jinja2==3.0.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -251,7 +251,7 @@ lxml==4.6.3
     # via
     #   -r requirements/test.txt
     #   xblock
-markupsafe==1.1.1
+markupsafe==2.0.0
     # via
     #   -r requirements/test.txt
     #   jinja2
@@ -376,7 +376,7 @@ python-jose==3.2.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==5.0.0
+python-slugify==5.0.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -419,7 +419,7 @@ s3transfer==0.4.2
     # via
     #   -r requirements/test.txt
     #   boto3
-six==1.15.0
+six==1.16.0
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -444,7 +444,6 @@ six==1.15.0
     #   responses
     #   tox
     #   virtualenv
-    #   websocket-client
     #   xblock
 sqlparse==0.4.1
     # via
@@ -471,7 +470,7 @@ toml==0.10.2
     #   -r requirements/test.txt
     #   pylint
     #   tox
-tox==3.23.0
+tox==3.23.1
     # via -r requirements/test.txt
 urllib3==1.26.4
     # via
@@ -479,7 +478,7 @@ urllib3==1.26.4
     #   botocore
     #   requests
     #   responses
-virtualenv==20.4.4
+virtualenv==20.4.6
     # via
     #   -r requirements/test.txt
     #   tox
@@ -504,11 +503,11 @@ webob==1.8.7
     # via
     #   -r requirements/test.txt
     #   xblock
-websocket-client==0.58.0
+websocket-client==1.0.0
     # via
     #   -r requirements/test.txt
     #   docker
-werkzeug==1.0.1
+werkzeug==2.0.1
     # via
     #   -r requirements/test.txt
     #   moto

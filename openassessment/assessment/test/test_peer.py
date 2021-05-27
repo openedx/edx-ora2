@@ -1734,6 +1734,26 @@ class TestPeerApi(CacheResetTest):
         else:
             assert score is None
 
+    def test_flexible_peer_grading__zero_graded(self):
+        # create a student with a submission from eight days ago
+        user_submissions = []
+        submission_date = timezone.now() - datetime.timedelta(days=8)
+        submission, user = self._create_student_and_submission(
+            'test-student',
+            'student-submission',
+            date=submission_date
+        )
+        # Backdate created_by so that flexible grading kicks in
+        workflow = PeerWorkflow.get_by_submission_uuid(submission['uuid'])
+        workflow.created_at = submission_date
+        workflow.save()
+
+        # The learner has not been graded by anyone, but flexible grading rounds the required 3 to .9 and casts to 0
+        # The must_grade = 0 is technically disallowed by validation rules but these api calls don't care
+        requirements = {'must_grade': 0, 'must_be_graded_by': 3, 'enable_flexible_grading': True}
+        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], requirements))
+        self.assertIsNone(peer_api.get_score(submission['uuid'], requirements))
+
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):
         """ Creats a student and submission for tests. """
