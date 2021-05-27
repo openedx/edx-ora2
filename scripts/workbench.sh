@@ -6,7 +6,7 @@ cd `dirname $BASH_SOURCE` && cd ..
 # Install dependencies
 make install-python
 make install-js
-make javascript
+make static
 
 # Configure Django settings
 export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"settings.dev"}

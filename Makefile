@@ -1,5 +1,5 @@
 .PHONY: help install-python install-js install-test install \
-		update-npm-requirements javascript sass \
+		update-npm-requirements static \
 		extract_translations compile_translations generate_dummy_translations validate_translations \
 		detect_changed_source_translations pull_translations push_translations check_translations_up_to_date \
 		quality test-python render-templates test-js test-js-debug test test-acceptance test-a11y test-sandbox \
@@ -35,7 +35,7 @@ install-test: ## install requirements for tests
 	pip install -r requirements/test.txt
 	python setup.py develop --quiet  # XBlock plugin (openassessment) has to be installed via entry_points.
 
-install: install-python install-js install-test javascript sass ## install all dependencies
+install: install-python install-js install-test static ## install all dependencies
 
 upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
 upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
@@ -69,7 +69,7 @@ update-npm-requirements: ## update NPM requrements
 	cp ./node_modules/backgrid/lib/backgrid*.js $(STATIC_JS)/lib/backgrid/
 	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
 
-javascript: ## Webpack JavaScript source files
+static: ## Webpack JavaScript and SASS source files
 	npm run build
 
 ################

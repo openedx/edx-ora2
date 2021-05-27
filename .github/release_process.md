@@ -3,11 +3,11 @@
 Before Merging a pull request:
 
 - [ ] If any user-facing text has changed, run `make check_translations_up_to_date` to recompile translation files
-- [ ] If your changes include JS/CSS changes, run `make javascript sass` to rebuild static assets
+- [ ] If your changes include JS/CSS changes, run `make static` to rebuild static assets
 - [ ] Get a green Travis build for this PR
 - [ ] Address PR comments
 - [ ] Get approving review from code owner
-- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json) following [semantic versioning](https://semver.org/) conventionss
+- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json) following [semantic versioning](https://semver.org/) conventions
 
 ## Publish to PyPi
 
