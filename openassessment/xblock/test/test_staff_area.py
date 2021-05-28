@@ -6,9 +6,10 @@ Tests for the staff area.
 
 from collections import namedtuple
 import json
-
 import urllib
+
 import ddt
+from django.test.utils import override_settings
 from mock import MagicMock, Mock, PropertyMock, call, patch
 from testfixtures import log_capture
 
@@ -27,6 +28,7 @@ from openassessment.workflow import team_api as team_workflow_api
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_team import (
+    MockBlock,
     MockTeamsService,
     MOCK_TEAM_MEMBER_USERNAMES,
     MOCK_TEAM_MEMBER_USERNAMES_CONV,
@@ -137,6 +139,43 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime.user_is_staff = True
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_view_in_studio_button(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+
+        # If we are not course staff,then we should NOT see the studio link
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
+        self.assertNotIn("view ora in studio", resp.decode('utf-8').lower())
+
+        # If we ARE course staff, then we should see the studio link
+        xblock.xmodule_runtime.user_is_staff = True
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
+        self.assertIn("view ora in studio", resp.decode('utf-8').lower())
+
+    @override_settings(
+        HTTPS='on',
+        CMS_BASE="studio",
+    )
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_get_studio_url(self, xblock):
+        # Given we are staff viewing an ORA
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        # Mock the location of the vertical, returned when we run str(block)
+        xblock.parent = 'vertical-location'
+
+        # When I get context for the staff area
+        _, context = xblock.get_staff_path_and_context()
+
+        # Then I get the appropriate URL for studio
+        expectedUrl = 'https://studio/container/vertical-location'
+        self.assertIn('studio_edit_url', context)
+        self.assertEqual(expectedUrl, context['studio_edit_url'])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_student_debug_info(self, xblock):
