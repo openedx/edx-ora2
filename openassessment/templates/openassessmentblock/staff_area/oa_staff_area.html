@@ -14,6 +14,7 @@
         {% if staff_assessment_required %}
             <button class="ui-staff__button button-staff-grading" aria-expanded="false" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
         {% endif %}
+        <a href="{{studio_edit_url}}" class="ui-staff__button button-staff-studio" aria-expanded="false" data-panel="openassessment__staff-studio">{% trans "View ORA in Studio" %}</a>
     </div>
 
     <div class="openassessment__staff-tools wrapper--staff-tools wrapper--ui-staff">

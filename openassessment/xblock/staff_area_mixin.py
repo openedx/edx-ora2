@@ -8,6 +8,7 @@ import logging
 from functools import wraps
 from webob import Response
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from xblock.core import XBlock
 from submissions.errors import SubmissionNotFoundError
@@ -148,6 +149,16 @@ class StaffAreaMixin:
         context['is_team_assignment'] = self.is_team_assignment()
 
         context['xblock_id'] = self.get_xblock_id()
+
+        # Add studio URL to link to edit view. We actually want to direct to the vertical instead of the ORA like below:
+        # http://<studio-url>/container/block-v1:<course-id>+type@vertical+block@<block-id>
+        url = '{protocol}://{studio_url}/container/{vertical_location}'.format(
+            protocol='http' if getattr(settings, 'HTTPS', 'on') == 'off' else 'https',
+            studio_url=getattr(settings, 'CMS_BASE', ''),
+            vertical_location=str(self.parent)
+        )
+        context['studio_edit_url'] = url
+
         return path, context
 
     @staticmethod
