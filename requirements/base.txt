@@ -8,19 +8,19 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.74
+boto3==1.17.84
     # via -r requirements/base.in
-botocore==1.20.74
+botocore==1.20.84
     # via
     #   boto3
     #   s3transfer
-certifi==2020.12.5
+certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
-click==7.1.2
+click==8.0.1
     # via code-annotations
-code-annotations==1.1.1
+code-annotations==1.1.2
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
@@ -34,7 +34,7 @@ django-model-utils==4.1.1
     #   edx-submissions
 django-simple-history==3.0.0
     # via -r requirements/base.in
-django-waffle==2.1.0
+django-waffle==2.2.0
     # via
     #   edx-django-utils
     #   edx-toggles
@@ -42,7 +42,6 @@ django==2.2.23
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-    #   code-annotations
     #   django-crum
     #   django-model-utils
     #   djangorestframework
@@ -75,7 +74,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-jinja2==3.0.0
+jinja2==3.0.1
     # via code-annotations
 jmespath==0.10.0
     # via
@@ -88,7 +87,7 @@ jsonfield2==3.0.3
     #   edx-submissions
 lazy==1.4
     # via -r requirements/base.in
-libsass==0.20.1
+libsass==0.21.0
     # via -r requirements/base.in
 loremipsum==1.0.5
     # via
@@ -98,11 +97,11 @@ lxml==4.6.3
     # via
     #   -r requirements/base.in
     #   xblock
-markupsafe==2.0.0
+markupsafe==2.0.1
     # via
     #   jinja2
     #   xblock
-newrelic==6.2.0.156
+newrelic==6.4.0.157
     # via edx-django-utils
 packaging==20.9
     # via bleach
@@ -130,7 +129,7 @@ python-dateutil==2.4.0
     #   xblock
 python-slugify==5.0.2
     # via code-annotations
-python-swiftclient==3.11.1
+python-swiftclient==3.12.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -159,7 +158,6 @@ six==1.16.0
     #   libsass
     #   python-dateutil
     #   python-swiftclient
-    #   xblock
 sqlparse==0.4.1
     # via django
 stevedore==3.3.0
@@ -168,7 +166,7 @@ stevedore==3.3.0
     #   edx-django-utils
 text-unidecode==1.3
     # via python-slugify
-urllib3==1.26.4
+urllib3==1.26.5
     # via
     #   botocore
     #   requests
@@ -184,7 +182,7 @@ webencodings==0.5.1
     #   html5lib
 webob==1.8.7
     # via xblock
-xblock==1.4.0
+xblock==1.4.2
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
