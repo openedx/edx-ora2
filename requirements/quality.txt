@@ -155,6 +155,8 @@ edx-i18n-tools==0.5.3
     # via -r requirements/test.txt
 edx-lint==5.0.0
     # via -r requirements/quality.in
+edx-opaque-keys==2.2.1
+    # via -r requirements/test.txt
 edx-submissions==3.2.4
     # via -r requirements/test.txt
 edx-toggles==4.1.0
@@ -340,6 +342,10 @@ pylint==2.8.3
     #   pylint-celery
     #   pylint-django
     #   pylint-plugin-utils
+pymongo==3.11.4
+    # via
+    #   -r requirements/test.txt
+    #   edx-opaque-keys
 pyparsing==2.4.7
     # via
     #   -r requirements/test.txt
@@ -456,6 +462,7 @@ stevedore==3.3.0
     #   -r requirements/test.txt
     #   code-annotations
     #   edx-django-utils
+    #   edx-opaque-keys
 testfixtures==6.17.1
     # via -r requirements/test.txt
 text-unidecode==1.3

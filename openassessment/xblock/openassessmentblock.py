@@ -32,6 +32,7 @@ from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.mobile import togglable_mobile_support
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
+from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
@@ -117,6 +118,7 @@ class OpenAssessmentBlock(MessageMixin,
                           ConfigMixin,
                           TeamMixin,
                           OpenAssessmentTemplatesMixin,
+                          RubricReuseMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 

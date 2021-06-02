@@ -5,12 +5,24 @@ View-level tests for Studio view of OpenAssessment XBlock.
 import copy
 import datetime as dt
 import json
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import MagicMock, patch, Mock, PropertyMock
 
 from ddt import ddt, file_data
 import pytz
 
 from .base import XBlockHandlerTestCase, scenario
+from openassessment.xblock.config_mixin import ConfigMixin
+
+
+def disable_rubric_reuse(func):
+    """
+    Decorator to disable rubric reuse, since we've mocked away all WaffleFlag calls to be truthy.
+    Rubric reuse hits the modulestore, which requires some complicated mocking as implemented currently.
+    """
+    def wrapper(*args, **kwargs):
+        with patch.object(ConfigMixin, 'is_rubric_reuse_enabled', PropertyMock(return_value=False)):
+            return func(*args, **kwargs)
+    return wrapper
 
 
 @ddt
@@ -127,17 +139,27 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Default value should not be empty
         self.assertEqual(xblock.fields['title'].default, "Open Response Assessment")
 
+    @disable_rubric_reuse
     @scenario('data/basic_scenario.xml')
     def test_render_studio_view(self, xblock):
         self._mock_teamsets(xblock)
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
 
+    @disable_rubric_reuse
     @scenario('data/student_training.xml')
     def test_render_studio_with_training(self, xblock):
         self._mock_teamsets(xblock)
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
+
+    @scenario('data/basic_scenario.xml')
+    def test_render_studio_with_rubric_reuse(self, xblock):
+        self._mock_teamsets(xblock)
+        with patch.object(xblock, 'get_other_ora_blocks_for_rubric_editor_context') as mock_get_rubrics:
+            frag = self.runtime.render(xblock, 'studio_view')
+            self.assertTrue(frag.body_html().find('openassessment-edit'))
+            mock_get_rubrics.assert_called_once()
 
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
@@ -262,6 +284,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertFalse(resp['is_released'])
         self.assertIn('msg', resp)
 
+    @disable_rubric_reuse
     @scenario('data/self_then_peer.xml')
     def test_render_editor_assessment_order(self, xblock):
         self._mock_teamsets(xblock)
@@ -355,6 +378,7 @@ class StudioViewTest(XBlockHandlerTestCase):
                 for option in criterion['options']:
                     self.assertEqual(option['label'], option['name'])
 
+    @disable_rubric_reuse
     @scenario('data/basic_scenario.xml')
     def test_render_studio_with_teamset_names(self, xblock):
         self._mock_teamsets(xblock)

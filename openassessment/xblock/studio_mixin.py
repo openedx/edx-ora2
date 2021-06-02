@@ -146,6 +146,11 @@ class StudioMixin:
         white_listed_file_types = self.get_allowed_file_types_or_preset()
         white_listed_file_types_string = ','.join(white_listed_file_types) if white_listed_file_types else ''
 
+        # If rubric reuse is enabled, include information about the other ORAs in this course
+        other_openassessments_in_course = []
+        if self.is_rubric_reuse_enabled:
+            other_openassessments_in_course = self.get_other_ora_blocks_for_rubric_editor_context()
+
         return {
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
@@ -176,7 +181,9 @@ class StudioMixin:
             'is_released': self.is_released(),
             'teamsets': self.get_teamsets(course_id),
             'selected_teamset_id': self.selected_teamset_id,
-            'show_rubric_during_response': self.show_rubric_during_response
+            'show_rubric_during_response': self.show_rubric_during_response,
+            'rubric_reuse_enabled': self.is_rubric_reuse_enabled,
+            'other_openassessments_in_course': other_openassessments_in_course,
         }
 
     @XBlock.json_handler
