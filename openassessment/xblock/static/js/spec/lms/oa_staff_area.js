@@ -344,20 +344,22 @@ describe('OpenAssessment.StaffAreaView', function() {
         it('shows the correct buttons when full grading is not enabled', function() {
             var view = createStaffArea(),
                 $buttons = $('.ui-staff__button', view.element);
-            expect($buttons.length).toBe(2);
+            expect($buttons.length).toBe(3);
             expect($buttons).toHaveAttr('aria-expanded', 'false');
             expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
             expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
+            expect($($buttons[2]).text().trim()).toEqual('View ORA in Studio');
         });
 
         it('shows the correct buttons for full grading', function() {
             var view = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $buttons = $('.ui-staff__button', view.element);
-            expect($buttons.length).toBe(3);
+            expect($buttons.length).toBe(4);
             expect($buttons).toHaveAttr('aria-expanded', 'false');
             expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
             expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
             expect($($buttons[2]).text().trim()).toEqual('Grade Available Responses');
+            expect($($buttons[3]).text().trim()).toEqual('View ORA in Studio');
         });
 
         it('shows the "Manage Individual Learners" panel when the button is clicked', function() {
