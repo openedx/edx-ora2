@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-25 14:55-0400\n"
+"POT-Creation-Date: 2021-06-02 11:03-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2117,6 +2117,10 @@ msgstr "Mänägé Téäm Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "View Assignment Statistics"
 msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "View ORA in Studio"
+msgstr "Vïéw ÖRÀ ïn Stüdïö Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
