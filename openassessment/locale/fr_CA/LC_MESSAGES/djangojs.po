@@ -57,9 +57,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-12 15:45-0400\n"
-"PO-Revision-Date: 2021-05-19 22:03+0000\n"
-"Last-Translator: David Truong <david.truong@edulib.org>\n"
+"POT-Creation-Date: 2021-06-02 11:03-0400\n"
+"PO-Revision-Date: 2021-06-06 03:48+0000\n"
+"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -468,49 +468,49 @@ msgstr "Nom d'utilisateur"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Peers Assessed"
-msgstr ""
+msgstr "Évalué par les pairs"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Peer Responses Received"
-msgstr ""
+msgstr "Réponses des pairs reçues"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Time Spent On Current Step"
-msgstr ""
+msgstr "Temps écoulé sur l'étape courante"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Staff assessment"
-msgstr ""
+msgstr "Évaluation par l'équipe enseignante"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Grade Status"
-msgstr ""
+msgstr "Statut des notes"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Refresh"
-msgstr ""
+msgstr "Actualiser"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
-msgstr ""
+msgstr "Le problème \"{name}\" requière un minimim de {min_grades} évalutions par les pairs et que vous évaluez au moins {min_graded} pairs."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
-msgstr ""
+msgstr "Il y a {stuck_learners} apprenants dans l'étape d'attente, c'est-à-dire qu'ils n'ont pas encore répondu à l'ensemble des demandes de l'évaluation par les pairs."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr ""
+msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par l'équipe de cours."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 msgid "Error while fetching student data."
-msgstr ""
+msgstr "Erreur lors de la récupération des données étudiantes."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:317
