@@ -19,9 +19,15 @@
             {% if part.text %}
             <div class="submission__answer__part__text">
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
-                <textarea class="submission__answer__part__text__value" disabled>
-                    {{ part.text|escape|link_and_linebreak }}
-                </textarea>
+                {% if text_response_editor == 'tinymce' %}
+                    <textarea class="submission__answer__part__text__value" disabled>
+                        {{ part.text|escape }}
+                    </textarea>
+                {% else %}
+                    <div class="submission__answer__part__text__value">
+                        {{ part.text|escape|link_and_linebreak }}
+                    </div>
+                {% endif %}
             </div>
             {% endif %}
         </li>
