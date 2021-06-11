@@ -18,8 +18,9 @@ import { Fields } from './oa_edit_fields';
 
  * */
 export class EditRubricView {
-  constructor(element, notifier) {
+  constructor(element, notifier, server) {
     this.element = element;
+    this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
 
     this.criteriaContainer = new Container(
@@ -33,6 +34,19 @@ export class EditRubricView {
       },
     );
     this.criteriaContainer.addEventListeners();
+
+    // enable dev API function
+    window.__dev__.replaceRubric = this.cloneRubric.bind(this);
+  }
+
+  /**
+   * Overwrite ORA rubric from existing rubric at location {rubricLocation}
+   * @param {xblock-id} rubricLocation
+   */
+  cloneRubric(rubricLocation) {
+    this.server.cloneRubric(rubricLocation).done((rubricData) => {
+      // this is where we would update the UI w/ rubric data
+    });
   }
 
   /**
