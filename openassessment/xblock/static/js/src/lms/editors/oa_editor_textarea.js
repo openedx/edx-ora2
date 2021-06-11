@@ -13,6 +13,7 @@
       * */
       load(elements) {
         this.elements = elements;
+        return Promise.resolve();
       }
 
       /**

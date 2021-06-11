@@ -39,8 +39,7 @@ export class ResponseEditorLoader {
           // create a new instance to avoid overlapping with other ORA blocks
           // assume last item in args will be the editor controller
           const editor = args[args.length - 1]();
-          editor.load(elements);
-          resolve(editor);
+          editor.load(elements).then(() => resolve(editor));
         });
       }).call(window, window.require || window.RequireJS.require);
 
