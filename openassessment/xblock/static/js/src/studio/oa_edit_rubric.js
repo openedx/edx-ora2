@@ -35,8 +35,8 @@ export class EditRubricView {
     );
     this.criteriaContainer.addEventListeners();
 
-    // enable dev API function
-    window.__dev__.replaceRubric = this.cloneRubric.bind(this);
+    // For dev use, expose to browser
+    window.__dev__ = this;
   }
 
   /**
@@ -45,8 +45,39 @@ export class EditRubricView {
    */
   cloneRubric(rubricLocation) {
     this.server.cloneRubric(rubricLocation).done((rubricData) => {
-      // this is where we would update the UI w/ rubric data
+      // Clear existing rubric data
+      this.clearRubric();
+
+      // Replace feedback prompt and default text
+      this.feedbackPrompt(rubricData.feedback_prompt);
+      this.feedback_default_text(rubricData.feedback_default_text);
+
+      // Replace with new rubric data
+      rubricData.criteria.forEach((criterion, criterionIndex) => {
+        // Create a new criterion and update values
+        this.addCriterion();
+        const criterionItem = this.criteriaContainer.getItem(criterionIndex);
+        criterionItem.label(criterion.label);
+        criterionItem.prompt(criterion.prompt);
+        criterionItem.feedback(criterion.feedback);
+
+        // Add Criterion options
+      });
+
+      // Clear learner training steps??
     });
+  }
+
+  /**
+   * Clear all rubric data in the model & UI
+   */
+  clearRubric() {
+    const rubricCriteria = this.getAllCriteria();
+
+    // The returned object doesn't support newer styles of array looping
+    for (let i = 0; i < rubricCriteria.length; i++) {
+      this.removeCriterion(rubricCriteria[i]);
+    }
   }
 
   /**

@@ -525,15 +525,15 @@ export class RubricCriterion {
   }
 
   /**
-     Get the feedback value for the criterion.
+     Get or set the feedback value for the criterion.
      This is one of: "disabled", "optional", or "required".
 
      Returns:
      string
 
      * */
-  feedback() {
-    return $('.openassessment_criterion_feedback', this.element).val();
+  feedback(value) {
+    return $('.openassessment_criterion_feedback', this.element).val(value);
   }
 
   /**
