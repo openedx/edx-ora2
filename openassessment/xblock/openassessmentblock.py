@@ -1010,6 +1010,8 @@ class OpenAssessmentBlock(MessageMixin,
         if not context_dict:
             context_dict = {}
 
+        context_dict['text_response_editor'] = self.text_response_editor
+
         template = get_template(path)
         return Response(template.render(context_dict), content_type='application/html', charset='UTF-8')
 

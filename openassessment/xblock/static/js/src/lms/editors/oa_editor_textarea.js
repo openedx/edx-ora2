@@ -13,18 +13,6 @@
       * */
       load(elements) {
         this.elements = elements;
-
-        // check if it's readonly
-        const disabled = this.elements.attr('disabled');
-
-        // if readonly show response in a div instead.
-        if (disabled) {
-          this.elements.each((i, elem) => {
-            const divElem = `<div class="${$(elem).attr('class')}">${$(elem).val()}</div>`;
-            $(divElem).insertAfter(elem);
-            $(elem).css('display', 'none');
-          });
-        }
       }
 
       /**
