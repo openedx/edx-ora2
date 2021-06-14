@@ -197,10 +197,9 @@ export class StudioView {
      executed if the user confirms the update.
      * */
   confirmPostReleaseUpdate(onConfirm) {
-
-    const msg = 'This ORA has already been released. ' +
-                'Changes will only affect learners making new submissions. ' +
-                'Existing submissions will not be modified by this change.';
+    const msg = 'This ORA has already been released. '
+                + 'Changes will only affect learners making new submissions. '
+                + 'Existing submissions will not be modified by this change.';
     // TODO: classier confirm dialog
     if (window.confirm(gettext(msg))) { onConfirm(); }
   }
