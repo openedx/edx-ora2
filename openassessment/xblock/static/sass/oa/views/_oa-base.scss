@@ -983,26 +983,7 @@
     // individual answers
     .answer {
       margin-bottom: $baseline-v;
-
-      @include media($bp-ds) {
-        @include bidi-span-columns(3 of 6);
-        @include bidi-omega(2n);
-      }
-
-      @include media($bp-dm) {
-        @include bidi-span-columns(4 of 12);
-        @include bidi-omega(3n);
-      }
-
-      @include media($bp-dl) {
-        @include bidi-span-columns(4 of 12);
-        @include bidi-omega(3n);
-      }
-
-      @include media($bp-dx) {
-        @include bidi-span-columns(4 of 12);
-        @include bidi-omega(3n);
-      }
+      @extend %no-list;
 
       // CASE: self assessment
       &.self-assessment {
