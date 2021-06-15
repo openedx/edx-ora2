@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.84
+boto3==1.17.94
     # via -r requirements/base.in
-botocore==1.20.84
+botocore==1.20.94
     # via
     #   boto3
     #   s3transfer
@@ -38,7 +38,7 @@ django-waffle==2.2.0
     # via
     #   edx-django-utils
     #   edx-toggles
-django==2.2.23
+django==2.2.24
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -54,7 +54,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==4.0.0
+edx-django-utils==4.1.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -103,7 +103,7 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   xblock
-newrelic==6.4.0.157
+newrelic==6.4.1.158
     # via edx-django-utils
 packaging==20.9
     # via bleach
