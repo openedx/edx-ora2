@@ -62,9 +62,16 @@ export class EditRubricView {
         criterionItem.feedback(criterion.feedback);
 
         // Add Criterion options
+        criterion.options.forEach((option, optionIndex) => {
+          this.addOption(criterionIndex);
+          const optionItem = criterionItem.optionContainer.getItem(optionIndex);
+          optionItem.label(option.label);
+          optionItem.explanation(option.explanation);
+          optionItem.points(option.points);
+        });
       });
 
-      // Clear learner training steps??
+      // Clear learner training responses
     });
   }
 
