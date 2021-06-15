@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-02 11:03-0400\n"
+"POT-Creation-Date: 2021-06-14 18:37-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -607,8 +607,12 @@ msgid "Please correct the outlined fields."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+msgid ""
+"This ORA has already been released. Changes will only affect learners making "
+"new submissions. Existing submissions will not be modified by this change."
+msgstr ""
+
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:200
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
