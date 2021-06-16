@@ -462,6 +462,9 @@ export class EditStudentTrainingView {
     );
 
     this.exampleContainer.addEventListeners();
+
+    // For dev use, expose to browser
+    window.__dev__.edit_assessment = this;
   }
 
   /**
