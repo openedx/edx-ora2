@@ -244,8 +244,6 @@ class PeerAssessmentMixin(object):
                 context_dict["peer_file_urls"] = self.get_download_urls_from_submission(peer_sub)
             else:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
-        elif reason == 'due' and problem_closed:
-            path = 'openassessmentblock/peer/oa_peer_closed.html'
         elif reason == 'start' and problem_closed:
             context_dict["peer_start"] = start_date
             path = 'openassessmentblock/peer/oa_peer_unavailable.html'
