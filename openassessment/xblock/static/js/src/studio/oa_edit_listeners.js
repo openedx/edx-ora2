@@ -278,6 +278,15 @@ export class StudentTrainingListener {
   }
 
   /**
+   * Actions to take when a rubric is cloned/replaced. Currently this is:
+   *  - Clear training examples
+   */
+  rubricReplaced() {
+    const trainingExamples = $('#openassessment_training_example_list .openassessment_training_example');
+    trainingExamples.remove();
+  }
+
+  /**
      Retrieve the available criteria labels for training examples.
      This is mainly useful for testing.
 

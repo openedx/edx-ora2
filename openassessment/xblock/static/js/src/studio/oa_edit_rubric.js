@@ -20,6 +20,7 @@ import { Fields } from './oa_edit_fields';
 export class EditRubricView {
   constructor(element, notifier, server) {
     this.element = element;
+    this.notifier = notifier;
     this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
 
@@ -77,7 +78,8 @@ export class EditRubricView {
         criterionItem.updateHandler();
       });
 
-      // Clear learner training responses
+      // Notify that the rubric has been replaced - clears training examples
+      this.notifier.notificationFired('rubricReplaced', {});
     });
   }
 
