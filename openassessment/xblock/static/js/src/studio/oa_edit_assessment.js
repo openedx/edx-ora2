@@ -579,6 +579,17 @@ export class EditStudentTrainingView {
   addTrainingExample() {
     this.exampleContainer.add();
   }
+
+  /**
+   * Remove existing training examples e.g. when cloning a rubric which
+   * invalidates existing examples.
+   */
+  clearTrainingExamples() {
+    const exampleContainer = this.exampleContainer;
+    $.each(exampleContainer.getAllItems(), function () {
+      exampleContainer.remove(this);
+    });
+  }
 }
 
 /**
