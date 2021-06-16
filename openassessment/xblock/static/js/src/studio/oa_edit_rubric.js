@@ -1,5 +1,5 @@
 import Container from './oa_container';
-import { RubricCriterion } from './oa_container_item';
+import { RubricCriterion, ItemUtilities } from './oa_container_item';
 import { Fields } from './oa_edit_fields';
 
 /**
@@ -68,7 +68,13 @@ export class EditRubricView {
           optionItem.label(option.label);
           optionItem.explanation(option.explanation);
           optionItem.points(option.points);
+
+          // Update option in learner training
+          optionItem.updateHandler();
         });
+
+        // Update criterion in learner training
+        criterionItem.updateHandler();
       });
 
       // Clear learner training responses
