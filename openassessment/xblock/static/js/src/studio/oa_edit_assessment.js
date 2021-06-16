@@ -462,9 +462,6 @@ export class EditStudentTrainingView {
     );
 
     this.exampleContainer.addEventListeners();
-
-    // For dev use, expose to browser
-    window.__dev__.edit_assessment = this;
   }
 
   /**
@@ -581,17 +578,6 @@ export class EditStudentTrainingView {
      * */
   addTrainingExample() {
     this.exampleContainer.add();
-  }
-
-  /**
-   * Remove existing training examples e.g. when cloning a rubric which
-   * invalidates existing examples.
-   */
-  clearTrainingExamples() {
-    const exampleContainer = this.exampleContainer;
-    $.each(exampleContainer.getAllItems(), function () {
-      exampleContainer.remove(this);
-    });
   }
 }
 
