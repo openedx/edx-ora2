@@ -44,12 +44,6 @@
           plugins: 'code image link lists',
           content_css: contentCssFile,
           toolbar: 'formatselect | bold italic underline | link blockquote image | numlist bullist outdent indent | strikethrough | code | undo redo',
-          setup: (editor) => {
-            // keep editor instances for later use
-            editor.on('init', () => {
-              this.editorInstances.push(editor);
-            });
-          },
         };
 
         // if readonly hide toolbar, menubar and statusbar
@@ -73,7 +67,7 @@
 
         const ctrl = this;
 
-        this.elements.each(function () {
+        return Promise.all(this.elements.map(function () {
           // check if it's readonly
           const disabled = $(this).attr('disabled');
 
@@ -88,8 +82,14 @@
           }
 
           const config = ctrl.getTinyMCEConfig(disabled);
-          $(this).tinymce(config);
-        });
+          return new Promise(resolve => {
+            config.setup = editor => editor.on('init', () => {
+              ctrl.editorInstances.push(editor);
+              resolve();
+            });
+            $(this).tinymce(config);
+          });
+        }));
       }
 
       /**
