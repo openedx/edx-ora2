@@ -99,7 +99,7 @@ export class StudentTrainingListener {
       this.displayAlertMsg(
         gettext('Criterion Added'),
         // eslint-disable-next-line max-len
-        gettext('You have added a criterion. You will need to select an option for the criterion in the Learner Training step. To do this, click the Settings tab.'),
+        gettext('You have added a criterion. You will need to select an option for the criterion in the Learner Training step. To do this, click the Assessment Steps tab.'),
       );
     }
   }
