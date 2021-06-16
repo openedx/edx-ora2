@@ -446,6 +446,7 @@ export class RubricCriterion {
       containerItemClass: 'openassessment_criterion_option',
       notifier: this.notifier,
     });
+    this.feedbackSel = $('.openassessment_criterion_feedback', this.element);
   }
 
   /**
@@ -532,8 +533,8 @@ export class RubricCriterion {
      string
 
      * */
-  feedback(value) {
-    return $('.openassessment_criterion_feedback', this.element).val(value);
+  feedback(feedback) {
+    return Fields.selectField(this.feedbackSel, feedback);
   }
 
   /**

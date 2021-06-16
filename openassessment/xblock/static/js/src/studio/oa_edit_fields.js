@@ -12,6 +12,11 @@ export const Fields = {
     if (value !== undefined) { sel.prop('checked', value); }
     return sel.prop('checked');
   },
+
+  selectField: (sel, value) => {
+    if (value !== undefined) { sel.val(value); }
+    return sel.val();
+  },
 };
 
 /**
