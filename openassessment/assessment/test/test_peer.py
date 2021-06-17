@@ -218,7 +218,7 @@ class TestPeerApi(CacheResetTest):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
-        assessment = peer_api.create_assessment(
+        peer_api.create_assessment(
             bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -1736,9 +1736,8 @@ class TestPeerApi(CacheResetTest):
 
     def test_flexible_peer_grading__zero_graded(self):
         # create a student with a submission from eight days ago
-        user_submissions = []
         submission_date = timezone.now() - datetime.timedelta(days=8)
-        submission, user = self._create_student_and_submission(
+        submission, _ = self._create_student_and_submission(
             'test-student',
             'student-submission',
             date=submission_date
@@ -1755,14 +1754,67 @@ class TestPeerApi(CacheResetTest):
         self.assertIsNone(peer_api.get_score(submission['uuid'], requirements))
 
     @staticmethod
-    def _create_student_and_submission(student, answer, date=None):
+    def _create_student_and_submission(student, answer, date=None, steps=None):
         """ Creats a student and submission for tests. """
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)
         peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], STEPS)
+        workflow_api.create_workflow(submission["uuid"], steps or STEPS)
         return submission, new_student_item
+
+    def _assert_assessment_workflow_status(self, uuid, expected_status):
+        self.assertEqual(
+            workflow_api.get_workflow_for_submission(uuid, STEP_REQUIREMENTS)['status'],
+            expected_status
+        )
+
+    def test_get_waiting_step_details__peer_item_created_not_assessed(self):
+        # a target student and submission, and some other students and submissions
+        target_learner_sub, target_learner = self._create_student_and_submission(
+            'TargetLearner',
+            'TargetLearner submission',
+            steps=['peer']
+        )
+        other_learner_submissions = [
+            self._create_student_and_submission(f'Student{i}', f'Student{i} submission', steps=['peer'])
+            for i in range(5)
+        ]
+
+        # Have the target student submit her required assessment, they should now be waiting.
+        peer_api.get_submission_to_assess(target_learner_sub['uuid'], target_learner['student_id'])
+        peer_api.create_assessment(
+            target_learner_sub['uuid'],
+            target_learner['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            1
+        )
+        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting')
+
+        # Call get_submission_to_assess so all five learners in other_learner_submissions are
+        # currently assessing target_learner
+        for sub, student in other_learner_submissions:
+            chosen_submission = peer_api.get_submission_to_assess(sub['uuid'], student['student_id'])
+            self.assertIsNotNone(chosen_submission)
+            self.assertEqual(chosen_submission['uuid'], target_learner_sub['uuid'])
+
+        # The target learner is still in waiting and has five pending items but zero peer grades
+        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting')
+        self.assertEqual(PeerWorkflow.get_by_submission_uuid(target_learner_sub['uuid']).graded_by.count(), 5)
+        self.assertEqual(peer_api.get_graded_by_count(target_learner_sub['uuid']), 0)
+
+        # The learner is not returned from 'get_waiting_step_details'
+        students_waiting = peer_api.get_waiting_step_details(
+            STUDENT_ITEM['course_id'],
+            STUDENT_ITEM['item_id'],
+            [target_learner_sub['uuid']] + [sub['uuid'] for sub, _ in other_learner_submissions],
+            must_be_graded_by=1,
+        )
+        waiting_student_ids = {learner['student_id'] for learner in students_waiting}
+        self.assertNotIn(target_learner['student_id'], waiting_student_ids)
 
 
 class PeerWorkflowTest(CacheResetTest):
