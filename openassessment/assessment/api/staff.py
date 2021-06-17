@@ -13,11 +13,10 @@ from submissions import api as submissions_api
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
 from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
+from openassessment.assessment.score_type_constants import STAFF_TYPE
 
 
 logger = logging.getLogger("openassessment.assessment.api.staff")  # pylint: disable=invalid-name
-
-STAFF_TYPE = "ST"
 
 
 def submitter_is_finished(submission_uuid, staff_requirements):  # pylint: disable=unused-argument

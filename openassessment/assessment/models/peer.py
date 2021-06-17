@@ -18,6 +18,7 @@ from django.utils.timezone import now
 
 from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentWorkflowError
 from openassessment.assessment.models.base import Assessment
+from openassessment.assessment.score_type_constants import PEER_TYPE
 
 logger = logging.getLogger("openassessment.assessment.models")  # pylint: disable=invalid-name
 
@@ -248,13 +249,31 @@ class PeerWorkflow(models.Model):
                 'graded_by': 2
             }
         """
+        Count, Q = models.Count, models.Q
         waiting = cls.objects.filter(
             item_id=item_id, course_id=course_id,
             grading_completed_at__isnull=True,
             submission_uuid__in=submission_uuids,
         ).annotate(
-            graded_count=models.Count('graded'),
-            graded_by_count=models.Count('graded_by'),
+            # distinct=True required due to
+            # https://docs.djangoproject.com/en/3.2/topics/db/aggregation/#combining-multiple-aggregations
+            graded_count=Count(
+                'graded',
+                distinct=True,
+                # From PeerWorkflow.num_peers_graded
+                filter=Q(
+                    graded__assessment__isnull=False
+                )
+            ),
+            graded_by_count=Count(
+                'graded_by',
+                distinct=True,
+                # from peer_api.get_graded_by_count
+                filter=Q(
+                    graded_by__assessment__submission_uuid__in=submission_uuids,
+                    graded_by__assessment__score_type=PEER_TYPE
+                )
+            )
         ).filter(
             graded_by_count__lt=must_be_graded_by
         )
