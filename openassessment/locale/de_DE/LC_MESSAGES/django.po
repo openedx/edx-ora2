@@ -18,8 +18,8 @@
 # a36a0269b8b51e1722d5f56c48925c46_d1c0f74 <73679ed1278770c5937bc82b4e3ab971_319776>, 2016
 # a36a0269b8b51e1722d5f56c48925c46_d1c0f74 <73679ed1278770c5937bc82b4e3ab971_319776>, 2016
 # a44cc3e9393feb16b9a6b297471280a5_cf4574c <542714ce952f7f0fa8b5f6591bf1451e_216225>, 2014
-# Ron Lucke <ronlucke@googlemail.com>, 2014
-# Ron Lucke <ronlucke@googlemail.com>, 2014
+# Ron Lucke <lucke@elan-ev.de>, 2014
+# Ron Lucke <lucke@elan-ev.de>, 2014
 # 75b2456ff925a21e1fb1c9b0eec898b6_dd7fae1 <eacf3b7eb4b0679577492913a01c86b6_200915>, 2016
 # 75b2456ff925a21e1fb1c9b0eec898b6_dd7fae1 <eacf3b7eb4b0679577492913a01c86b6_200915>, 2016
 # Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018-2021
@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-02 11:03-0400\n"
+"POT-Creation-Date: 2021-06-16 16:36-0400\n"
 "PO-Revision-Date: 2021-06-02 18:27+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
