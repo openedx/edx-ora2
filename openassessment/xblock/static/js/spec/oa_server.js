@@ -56,6 +56,43 @@ describe("OpenAssessment.Server", function() {
         '</criterion>'+
     '</rubric>';
 
+    var RUBRIC_JSON = {
+        "criteria": [
+            {
+                "label": "𝓒𝓸𝓷𝓬𝓲𝓼𝓮",
+                "prompt": "How concise is it?",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "label": "ﻉซƈﻉɭɭﻉกՇ",
+                        "points": 3,
+                        "explanation": "Extremely concise",
+                        "name": "",
+                        "order_num": 0
+                    },
+                    {
+                        "label": "Ġööḋ",
+                        "points": 2,
+                        "explanation": "Concise",
+                        "name": "",
+                        "order_num": 1
+                    },
+                    {
+                        "label": "ק๏๏г",
+                        "points": 1,
+                        "explanation": "Wordy",
+                        "name": "",
+                        "order_num": 2
+                    }
+                ],
+                "name": "Ideas",
+                "order_num": 0
+            },
+        ],
+        "feedback_prompt": "Feedback instruction ...",
+        "feedback_default_text": "Feedback default text\n"
+    }
+
     var CRITERIA = [
         'criteria',
         'objects',
@@ -181,8 +218,6 @@ describe("OpenAssessment.Server", function() {
             contentType : jsonContentType
         });
     });
-
-
 
     it("sends a peer-assessment to the XBlock", function() {
         stubAjax(true, {success: true, msg: ''});
@@ -598,4 +633,30 @@ describe("OpenAssessment.Server", function() {
         server.getUsername().done(function(username) {receivedUsername = username});
         expect(receivedUsername).toEqual(expectedUsername)
     });
+
+    describe('cloneRubric', () => {
+        it('extracts rubric data from a successful request', () => {
+            let returnedData,
+                expectedData = RUBRIC_JSON;
+            stubAjax(true, { success: true, rubric: RUBRIC_JSON});
+            server.cloneRubric().done((data) => { returnedData = data });
+            expect(returnedData).toEqual(expectedData);
+        });
+
+        it('returns error messages for known failures', () => {
+            let returnedData,
+                errorMsg = 'Danger, Will Robinson!';
+            stubAjax(true, { success: false, msg: errorMsg});
+            server.cloneRubric().fail((data) => { returnedData = data });
+            expect(returnedData).toEqual(errorMsg);
+        });
+
+        it('returns a boilerplate message on other failures', () => {
+            stubAjax(false, null);
+            let returnedMessage = "";
+            server.cloneRubric().fail((msg) => { returnedMessage = msg });
+    
+            expect(returnedMessage).toContain('Failed to clone rubric')
+        })
+    })
 });
