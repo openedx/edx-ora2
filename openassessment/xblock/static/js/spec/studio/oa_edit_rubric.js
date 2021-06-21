@@ -18,6 +18,12 @@ describe("OpenAssessment.EditRubricView", function() {
         };
     };
 
+    // Default fields provided by the test template
+    const defaultFeedbackFields = {
+        feedback_prompt: 'Feedback default prompt',
+        feedback_default_text: 'Feedback default text',
+    };
+
     var view = null;
     beforeEach(function() {
         loadFixtures('oa_edit.html');
@@ -269,4 +275,32 @@ describe("OpenAssessment.EditRubricView", function() {
         expect(view.validationErrors()).toEqual([]);
 
     });
+
+    describe("clearRubric", () => {
+        it('removes all rubric criteria', () => {
+            // Given some existing criteria
+            var criteria = view.criteriaDefinition();
+            expect(criteria.length).toEqual(3);
+
+            // When I call clearRubric
+            view.clearRubric();
+
+            // Then it removes all criteria
+            criteria = view.criteriaDefinition();
+            expect(criteria.length).toEqual(0);
+        });
+
+        it('clears the feedback prompt and default text', () => {
+            // Given existing feedback prompt and default text
+            expect(view.feedbackPrompt()).toEqual(defaultFeedbackFields['feedback_prompt']);
+            expect(view.feedback_default_text()).toEqual(defaultFeedbackFields['feedback_default_text'])
+
+            // When I clear the rubric
+            view.clearRubric()
+
+            // Then it clears feedback prompt/default text
+            expect(view.feedbackPrompt()).toEqual('');
+            expect(view.feedback_default_text()).toEqual('');
+        });
+    })
 });
