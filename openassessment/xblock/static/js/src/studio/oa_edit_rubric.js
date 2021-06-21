@@ -89,10 +89,12 @@ export class EditRubricView {
   clearRubric() {
     const rubricCriteria = this.getAllCriteria();
 
-    // The returned object doesn't support newer styles of array looping
-    for (let i = 0; i < rubricCriteria.length; i++) {
-      this.removeCriterion(rubricCriteria[i]);
-    }
+    $.each(rubricCriteria, (_i, elem) => {
+      this.removeCriterion(elem);
+    });
+
+    this.feedbackPrompt('');
+    this.feedback_default_text('');
   }
 
   /**
