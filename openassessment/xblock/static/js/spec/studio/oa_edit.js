@@ -47,7 +47,7 @@ describe("OpenAssessment.StudioView", function() {
     var EXPECTED_SERVER_DATA = {
         title: "The most important of all questions.",
         prompts: [{"description": "How much do you like waffles?"}, {description : 'How much do you like waffles 2?'}],
-        feedbackPrompt: "",
+        feedbackPrompt: "Feedback default prompt",
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
         fileUploadType: null,

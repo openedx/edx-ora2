@@ -488,6 +488,8 @@
                     "points_possible": 2
                 }
             ],
+            "feedbackprompt": "Feedback default prompt",
+            "feedback_default_text": "Feedback default text",
             "assessments": {
                 "peer_assessment": {
                     "start": "2014-01-02T00:00",
