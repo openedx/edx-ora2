@@ -722,7 +722,7 @@ export class Server {
         if (data.success) {
           defer.resolveWith(this, [data.rubric]);
         } else {
-          defer.rejectWith(this, [data]);
+          defer.rejectWith(this, [data.msg]);
         }
       }).fail(function () {
         defer.rejectWith(this, [gettext('Failed to clone rubric')]);
