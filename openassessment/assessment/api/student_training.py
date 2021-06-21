@@ -389,20 +389,15 @@ def get_training_example(submission_uuid, rubric, examples):
         next_example = workflow.next_training_example(examples)
         return None if next_example is None else serialize_training_example(next_example)
     except (InvalidRubric, InvalidRubricSelection, InvalidTrainingExample) as ex:
-        logger.exception(
-            u"Could not deserialize training examples for submission UUID {}".format(submission_uuid)
-        )
+        logger.exception("Could not deserialize training examples for submission UUID %s", submission_uuid)
         raise StudentTrainingRequestError(ex) from ex
     except sub_api.SubmissionNotFoundError as ex:
-        msg = u"Could not retrieve the submission with UUID {}".format(submission_uuid)
-        logger.exception(msg)
+        logger.exception("Could not retrieve the submission with UUID %s", submission_uuid)
         raise StudentTrainingRequestError(msg) from ex
     except DatabaseError as ex:
-        msg = (
-            u"Could not retrieve a training example for the learner with submission UUID {}"
-        ).format(submission_uuid)
-        logger.exception(msg)
-        raise StudentTrainingInternalError(msg) from ex
+        msg = "Could not retrieve a training example for the learner with submission UUID %s"
+        logger.exception(msg, submission_uuid)
+        raise StudentTrainingInternalError(msg % submission_uuid) from ex
 
 
 def assess_training_example(submission_uuid, options_selected, update_workflow=True):

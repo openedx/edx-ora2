@@ -297,7 +297,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         peer_scores, peer_feedback_num = peer_data()
 
         # Verify that no peer score is shown, and comments are being suppressed
-        self.assertTrue(all([option['label'] == 'Waiting for peer reviews' for option in peer_scores]))
+        self.assertTrue(all(option['label'] == 'Waiting for peer reviews' for option in peer_scores))
         self.assertEqual(peer_feedback_num, 0)
 
         # Submit final peer grade
@@ -314,7 +314,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         updated_peer_scores, updated_peer_feedback_num = peer_data()
 
         # Verify that points and feedback are present now that enough peers have graded
-        self.assertTrue(all([option.get('points', None) is not None for option in updated_peer_scores]))
+        self.assertTrue(all(option.get('points', None) is not None for option in updated_peer_scores))
         self.assertGreater(updated_peer_feedback_num, 0)
 
     @scenario('data/grade_scenario.xml', user_id='Bob')

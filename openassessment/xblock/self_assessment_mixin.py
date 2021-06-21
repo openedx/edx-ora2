@@ -158,7 +158,8 @@ class SelfAssessmentMixin:
         except (self_api.SelfAssessmentRequestError, workflow_api.AssessmentWorkflowRequestError):
             logger.warning(
                 "An error occurred while submitting a self assessment "
-                "for the submission {}".format(self.submission_uuid),
+                "for the submission %s",
+                self.submission_uuid,
                 exc_info=True
             )
             msg = self._("Your self assessment could not be submitted.")
@@ -166,7 +167,8 @@ class SelfAssessmentMixin:
         except (self_api.SelfAssessmentInternalError, workflow_api.AssessmentWorkflowInternalError):
             logger.exception(
                 "An error occurred while submitting a self assessment "
-                "for the submission {}".format(self.submission_uuid),
+                "for the submission %s",
+                self.submission_uuid,
             )
             msg = self._("Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}

@@ -252,13 +252,11 @@ def get_assessment(submission_uuid):
     ).order_by('-scored_at')[:1])
 
     if not serialized_assessments:
-        logger.info(
-            u"No self-assessment found for submission {}".format(submission_uuid)
-        )
+        logger.info("No self-assessment found for submission %s", submission_uuid)
         return None
 
     serialized_assessment = serialized_assessments[0]
-    logger.info(u"Retrieved self-assessment for submission {}".format(submission_uuid))
+    logger.info("Retrieved self-assessment for submission %s", submission_uuid)
 
     return serialized_assessment
 
@@ -311,15 +309,11 @@ def _log_assessment(assessment, submission):
 
     """
     logger.info(
-        "Created self-assessment {assessment_id} for learner {user} on "
-        "submission {submission_uuid}, course {course_id}, item {item_id} "
-        "with rubric {rubric_content_hash}"
-        .format(
-            assessment_id=assessment.id,
-            user=submission['student_item']['student_id'],
-            submission_uuid=submission['uuid'],
-            course_id=submission['student_item']['course_id'],
-            item_id=submission['student_item']['item_id'],
-            rubric_content_hash=assessment.rubric.content_hash
-        )
+        "Created self-assessment %s for learner %s on submission %s, course %s, item %s with rubric %s",
+        assessment.id,
+        submission['student_item']['student_id'],
+        submission['uuid'],
+        submission['student_item']['course_id'],
+        submission['student_item']['item_id'],
+        assessment.rubric.content_hash
     )

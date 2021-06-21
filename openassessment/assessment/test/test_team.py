@@ -180,8 +180,8 @@ class TestTeamApi(CacheResetTest):
         # Then the API returns the rubric dictionary...
         # TODO... with the correct scores
         self.assertEqual(
-            score_criteria.keys(),
-            OPTIONS_SELECTED_DICT["few"]["options"].keys()
+            set(score_criteria.keys()),
+            set(OPTIONS_SELECTED_DICT["few"]["options"].keys())
         )
 
     def test_get_submission_to_assess_none(self):

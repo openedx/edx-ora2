@@ -322,7 +322,7 @@ class TestStaffAssessment(CacheResetTest):
         Test that the bulk workflow API retrieves submission information correctly.
         """
         # Create Bob's submission without a submission
-        bob_sub, bob_item = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer")
+        bob_sub, _ = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer")
         # Create Tim's submission with a submission
         tim_sub, tim_item = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer")
         staff_api.create_assessment(

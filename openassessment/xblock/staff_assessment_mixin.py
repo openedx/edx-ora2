@@ -69,7 +69,8 @@ class StaffAssessmentMixin:
             except StaffAssessmentRequestError:
                 logger.warning(
                     "An error occurred while submitting a staff assessment "
-                    "for the submission {}".format(data['submission_uuid']),
+                    "for the submission %s",
+                    data['submission_uuid'],
                     exc_info=True
                 )
                 msg = self._("Your staff assessment could not be submitted.")
@@ -77,7 +78,8 @@ class StaffAssessmentMixin:
             except StaffAssessmentInternalError:
                 logger.exception(
                     "An error occurred while submitting a staff assessment "
-                    "for the submission {}".format(data['submission_uuid']),
+                    "for the submission %s",
+                    data['submission_uuid']
                 )
                 msg = self._("Your staff assessment could not be submitted.")
                 return {'success': False, 'msg': msg}
@@ -110,7 +112,8 @@ class StaffAssessmentMixin:
         except StaffAssessmentRequestError:
             logger.warning(
                 "An error occurred while submitting a team assessment "
-                "for the submission {}".format(data['submission_uuid']),
+                "for the submission %s",
+                data['submission_uuid'],
                 exc_info=True
             )
             msg = self._("Your team assessment could not be submitted.")
@@ -118,7 +121,8 @@ class StaffAssessmentMixin:
         except StaffAssessmentInternalError:
             logger.exception(
                 "An error occurred while submitting a team assessment "
-                "for the submission {}".format(data['submission_uuid']),
+                "for the submission %s",
+                data['submission_uuid'],
             )
             msg = self._("Your team assessment could not be submitted.")
             return {'success': False, 'msg': msg}
