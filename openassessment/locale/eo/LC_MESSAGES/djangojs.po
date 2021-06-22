@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 15:59-0400\n"
+"POT-Creation-Date: 2021-06-16 16:36-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -307,12 +307,14 @@ msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕ�
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "This response has not been saved."
 msgstr ""
 "Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
@@ -322,11 +324,13 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "Saving..."
 msgstr "Sävïng... Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "This response has been saved but not submitted."
 msgstr ""
 "Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
@@ -334,6 +338,7 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "Error"
 msgstr "Érrör Ⱡ'σяєм ιρѕ#"
 
@@ -455,6 +460,7 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -480,34 +486,42 @@ msgstr ""
 "lösé äný wörk ýöü hävé döné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Username"
 msgstr "Ûsérnämé Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Peers Assessed"
 msgstr "Péérs Àssésséd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Peer Responses Received"
 msgstr "Péér Réspönsés Réçéïvéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Time Spent On Current Step"
 msgstr "Tïmé Spént Ön Çürrént Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Staff assessment"
 msgstr "Stäff ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Grade Status"
 msgstr "Grädé Stätüs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Refresh"
 msgstr "Réfrésh Ⱡ'σяєм ιρѕυм #"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
@@ -517,6 +531,7 @@ msgstr ""
 "αм#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
@@ -525,6 +540,7 @@ msgstr ""
 "théý hävé nöt ýét mét äll réqüïréménts för Péér Àsséssmént.  Ⱡ'σяєм ιρ#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
@@ -533,12 +549,14 @@ msgstr ""
 " thé stäff grädé övérrïdé tööl älréädý. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/js/openassessment-lms.js
 msgid "Error while fetching student data."
 msgstr ""
 "Érrör whïlé fétçhïng stüdént dätä. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
+#: openassessment/xblock/static/js/src/lms/oa_base.js
 msgid "Unable to load"
 msgstr "Ûnäßlé tö löäd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
