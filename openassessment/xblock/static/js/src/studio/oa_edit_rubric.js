@@ -46,41 +46,49 @@ export class EditRubricView {
    */
   cloneRubric(rubricLocation) {
     this.server.cloneRubric(rubricLocation).done((rubricData) => {
-      // Clear existing rubric data
-      this.clearRubric();
+      this.setRubric(rubricData);
+    }).fail((errorMsg) => {
+      // eslint-disable-next-line no-console
+      console.error(errorMsg);
+      // TODO - replace with user-facing messaging in final implementation
+    });
+  }
 
-      // Replace feedback prompt and default text
-      this.feedbackPrompt(rubricData.feedback_prompt);
-      this.feedback_default_text(rubricData.feedback_default_text);
+  setRubric(rubricData) {
+    // Clear existing rubric data
+    this.clearRubric();
 
-      // Replace with new rubric data
-      rubricData.criteria.forEach((criterion, criterionIndex) => {
-        // Create a new criterion and update values
-        this.addCriterion();
-        const criterionItem = this.criteriaContainer.getItem(criterionIndex);
-        criterionItem.label(criterion.label);
-        criterionItem.prompt(criterion.prompt);
-        criterionItem.feedback(criterion.feedback);
+    // Replace feedback prompt and default text
+    this.feedbackPrompt(rubricData.feedback_prompt);
+    this.feedback_default_text(rubricData.feedback_default_text);
 
-        // Add Criterion options
-        criterion.options.forEach((option, optionIndex) => {
-          this.addOption(criterionIndex);
-          const optionItem = criterionItem.optionContainer.getItem(optionIndex);
-          optionItem.label(option.label);
-          optionItem.explanation(option.explanation);
-          optionItem.points(option.points);
+    // Replace with new rubric data
+    rubricData.criteria.forEach((criterion, criterionIndex) => {
+      // Create a new criterion and update values
+      this.addCriterion();
+      const criterionItem = this.criteriaContainer.getItem(criterionIndex);
+      criterionItem.label(criterion.label);
+      criterionItem.prompt(criterion.prompt);
+      criterionItem.feedback(criterion.feedback);
 
-          // Update option in learner training
-          optionItem.updateHandler();
-        });
+      // Add Criterion options
+      criterion.options.forEach((option, optionIndex) => {
+        this.addOption(criterionIndex);
+        const optionItem = criterionItem.optionContainer.getItem(optionIndex);
+        optionItem.label(option.label);
+        optionItem.explanation(option.explanation);
+        optionItem.points(option.points);
 
-        // Update criterion in learner training
-        criterionItem.updateHandler();
+        // Update option in learner training
+        optionItem.updateHandler();
       });
 
-      // Notify that the rubric has been replaced - clears training examples
-      this.notifier.notificationFired('rubricReplaced', {});
+      // Update criterion in learner training
+      criterionItem.updateHandler();
     });
+
+    // Notify that the rubric has been replaced - clears training examples
+    this.notifier.notificationFired('rubricReplaced', {});
   }
 
   /**
