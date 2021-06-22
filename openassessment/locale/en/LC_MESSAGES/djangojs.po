@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-22 12:45-0400\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -534,6 +534,11 @@ msgid "Not Selected"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
@@ -639,8 +644,4 @@ msgstr ""
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr ""
-
-#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
-msgid "Problem cloning rubric"
 msgstr ""

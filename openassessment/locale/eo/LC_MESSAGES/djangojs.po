@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-22 12:45-0400\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -602,6 +602,11 @@ msgid "Not Selected"
 msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js
+msgid "Problem cloning rubric"
+msgstr "Prößlém çlönïng rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/xblock/static/dist/openassessment-studio.js
 #: openassessment/xblock/static/js/openassessment-studio.js
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
 msgid "Criterion Added"
@@ -757,7 +762,3 @@ msgid ""
 msgstr ""
 "Thïs prößlém häs älréädý ßéén réléäséd. Àný çhängés wïll äpplý önlý tö "
 "fütüré ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-
-#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js
-msgid "Problem cloning rubric"
-msgstr "Prößlém çlönïng rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
