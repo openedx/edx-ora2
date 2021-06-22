@@ -1,6 +1,7 @@
 import Container from './oa_container';
 import { RubricCriterion } from './oa_container_item';
 import { Fields } from './oa_edit_fields';
+import ValidationAlert from './oa_edit_validation_alert';
 
 /**
  Interface for editing rubric definitions.
@@ -19,6 +20,7 @@ import { Fields } from './oa_edit_fields';
  * */
 export class EditRubricView {
   constructor(element, notifier, server) {
+    this.alert = new ValidationAlert();
     this.element = element;
     this.notifier = notifier;
     this.server = server;
@@ -46,11 +48,11 @@ export class EditRubricView {
    */
   cloneRubric(rubricLocation) {
     this.server.cloneRubric(rubricLocation).done((rubricData) => {
+      this.alert.hide();
       this.setRubric(rubricData);
     }).fail((errorMsg) => {
-      // eslint-disable-next-line no-console
-      console.error(errorMsg);
-      // TODO - replace with user-facing messaging in final implementation
+      this.alert.setMessage(gettext('Problem cloning rubric'), errorMsg);
+      this.alert.show();
     });
   }
 
