@@ -61,12 +61,28 @@ describe("OpenAssessment.EditRubricView", function() {
         "feedback_default_text": "Feedback default text\n"
     }
 
+    // Stub server that returns dummy data or reports errors.
+    let server;
+    const validRubricLocation = 'valid-rubric-location';
+    const StubServer = function() {
+        this.cloneRubric = (rubricLocation) => {
+            return $.Deferred((defer) => {
+                if(rubricLocation === validRubricLocation) {
+                    defer.resolveWith(this, [newRubricData]);
+                } else {
+                    defer.rejectWith(this, ['error-msg'])
+                }
+            }).promise();
+        };
+    };
+
     var view = null;
     beforeEach(function() {
         loadFixtures('oa_edit.html');
         var el = $("#oa_rubric_editor_wrapper").get(0);
         notifier = new StubNotifier();
-        view = new EditRubricView(el, notifier);
+        server = new StubServer();
+        view = new EditRubricView(el, notifier, server);
     });
 
     it("reads a criteria definition from the editor", function() {
@@ -340,6 +356,35 @@ describe("OpenAssessment.EditRubricView", function() {
             expect(view.feedback_default_text()).toEqual('');
         });
     });
+
+    describe("cloneRubric", () => {
+        // stub setRubric
+        beforeEach(() => {
+            spyOn(view, 'setRubric').and.callFake(() => {});
+        });
+
+        it('replaces the rubric when the request is successful', () => {
+            // Given we try to clone a rubric
+            // When the server request completes successfully
+            view.cloneRubric(validRubricLocation);
+
+            // Then we call the setRubric function with returned data
+            expect(view.setRubric).toHaveBeenCalledWith(newRubricData);
+        });
+
+        it('alerts when the clone rubric request fails', () => {
+            // Given we try to clone a rubric
+            expect(view.alert.isVisible()).toBeFalsy();
+
+            // When the server request fails
+            view.cloneRubric('bad-rubric-location');
+
+            // Then we do not attempt to clone the rubric
+            expect(view.setRubric).not.toHaveBeenCalled();
+            // and we surface error alert to Studio
+            expect(view.alert.isVisible()).toBeTruthy();
+        });
+    })
 
     describe("setRubric", () => {
         it('updates feedback prompt and text', () => {
