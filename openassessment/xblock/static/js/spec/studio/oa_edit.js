@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { StudioView } from 'studio/oa_edit';
 
 /**
@@ -48,6 +49,7 @@ describe("OpenAssessment.StudioView", function() {
         title: "The most important of all questions.",
         prompts: [{"description": "How much do you like waffles?"}, {description : 'How much do you like waffles 2?'}],
         feedbackPrompt: "Feedback default prompt",
+        feedback_default_text: "Feedback default text",
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
         fileUploadType: null,
@@ -156,6 +158,7 @@ describe("OpenAssessment.StudioView", function() {
         expect(server.receivedData.title).toEqual(EXPECTED_SERVER_DATA.title);
         expect(server.receivedData.prompts).toEqual(EXPECTED_SERVER_DATA.prompts);
         expect(server.receivedData.feedbackPrompt).toEqual(EXPECTED_SERVER_DATA.feedbackPrompt);
+        expect(server.receivedData.feedback_default_text).toEqual(EXPECTED_SERVER_DATA.feedback_default_text);
         expect(server.receivedData.submissionStart).toEqual(EXPECTED_SERVER_DATA.submissionStart);
         expect(server.receivedData.submissionDue).toEqual(EXPECTED_SERVER_DATA.submissionDue);
         expect(server.receivedData.fileUploadType).toEqual(EXPECTED_SERVER_DATA.fileUploadType);
