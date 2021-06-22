@@ -1,5 +1,5 @@
 import Container from './oa_container';
-import { RubricCriterion, ItemUtilities } from './oa_container_item';
+import { RubricCriterion } from './oa_container_item';
 import { Fields } from './oa_edit_fields';
 
 /**
