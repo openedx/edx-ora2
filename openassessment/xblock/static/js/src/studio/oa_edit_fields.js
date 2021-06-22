@@ -3,16 +3,19 @@
  Utilities for reading / writing fields.
  * */
 export const Fields = {
+  // Wrapper for text/textarea select components
   stringField: (sel, value) => {
     if (value !== undefined) { sel.val(value); }
     return sel.val();
   },
 
+  // Wrapper for checkbox select components
   booleanField: (sel, value) => {
     if (value !== undefined) { sel.prop('checked', value); }
     return sel.prop('checked');
   },
 
+  // Wrapper for dropdown select components
   selectField: (sel, value) => {
     if (value !== undefined) { sel.val(value); }
     return sel.val();
