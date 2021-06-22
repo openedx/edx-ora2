@@ -24,6 +24,43 @@ describe("OpenAssessment.EditRubricView", function() {
         feedback_default_text: 'Feedback default text',
     };
 
+    const newRubricData = {
+        "criteria": [
+            {
+                "label": "𝓒𝓸𝓷𝓬𝓲𝓼𝓮",
+                "prompt": "How concise is it?",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "label": "ﻉซƈﻉɭɭﻉกՇ",
+                        "points": 3,
+                        "explanation": "Extremely concise",
+                        "name": "0",  // Note that name isn't actually set, but used for compare
+                        "order_num": 0
+                    },
+                    {
+                        "label": "Ġööḋ",
+                        "points": 2,
+                        "explanation": "Concise",
+                        "name": "1",
+                        "order_num": 1
+                    },
+                    {
+                        "label": "ק๏๏г",
+                        "points": 1,
+                        "explanation": "Wordy",
+                        "name": "2",
+                        "order_num": 2
+                    }
+                ],
+                "name": "0",
+                "order_num": 0
+            },
+        ],
+        "feedback_prompt": "Feedback instruction ...",
+        "feedback_default_text": "Feedback default text\n"
+    }
+
     var view = null;
     beforeEach(function() {
         loadFixtures('oa_edit.html');
@@ -302,5 +339,40 @@ describe("OpenAssessment.EditRubricView", function() {
             expect(view.feedbackPrompt()).toEqual('');
             expect(view.feedback_default_text()).toEqual('');
         });
-    })
+    });
+
+    describe("setRubric", () => {
+        it('updates feedback prompt and text', () => {
+            // Given existing feedback prompt and default text
+            expect(view.feedbackPrompt()).toEqual(defaultFeedbackFields['feedback_prompt']);
+            expect(view.feedback_default_text()).toEqual(defaultFeedbackFields['feedback_default_text'])
+
+            // When I clone data from another rubric
+            view.setRubric(newRubricData);
+
+            // Then it updates the feedback data
+            expect(view.feedbackPrompt()).toEqual(newRubricData['feedback_prompt']);
+            expect(view.feedback_default_text()).toEqual(newRubricData['feedback_default_text'])
+        });
+
+        it('updates criteria definitions', () => {
+            // When I clone data from another rubric
+            view.setRubric(newRubricData);
+
+            // Then it updates the criteria (and options)
+            expect(view.criteriaDefinition()).toEqual(newRubricData.criteria);
+        })
+
+        it('fires the \'rubricReplaced\' notification', () => {
+            // When I successfully clone a rubric
+            view.setRubric(newRubricData);
+
+            // Then I should raise the 'rubricReplaced' notification
+            // to alert student training examples to update
+            expect(notifier.notifications).toContain({
+                name: "rubricReplaced",
+                data: {},
+            });
+        });
+    });
 });
