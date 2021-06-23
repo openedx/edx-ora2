@@ -12,9 +12,7 @@ from openassessment.assessment.errors import SelfAssessmentInternalError, SelfAs
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
 from openassessment.assessment.serializers import (InvalidRubric, full_assessment_dict, rubric_from_dict,
                                                    serialize_assessments)
-
-# Assessments are tagged as "self-evaluation"
-SELF_TYPE = "SE"
+from openassessment.assessment.score_type_constants import SELF_TYPE
 
 logger = logging.getLogger("openassessment.assessment.api.self")  # pylint: disable=invalid-name
 
