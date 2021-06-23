@@ -59,6 +59,7 @@ export class StudioView {
       new Notifier([
         studentTrainingListener,
       ]),
+      this.server,
     );
 
     this.scheduleView = new EditScheduleView(

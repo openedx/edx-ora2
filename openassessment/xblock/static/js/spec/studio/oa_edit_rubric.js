@@ -18,12 +18,71 @@ describe("OpenAssessment.EditRubricView", function() {
         };
     };
 
+    // Default fields provided by the test template
+    const defaultFeedbackFields = {
+        feedback_prompt: 'Feedback default prompt',
+        feedback_default_text: 'Feedback default text',
+    };
+
+    const newRubricData = {
+        "criteria": [
+            {
+                "label": "𝓒𝓸𝓷𝓬𝓲𝓼𝓮",
+                "prompt": "How concise is it?",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "label": "ﻉซƈﻉɭɭﻉกՇ",
+                        "points": 3,
+                        "explanation": "Extremely concise",
+                        "name": "0",  // Note that name isn't actually set, but used for compare
+                        "order_num": 0
+                    },
+                    {
+                        "label": "Ġööḋ",
+                        "points": 2,
+                        "explanation": "Concise",
+                        "name": "1",
+                        "order_num": 1
+                    },
+                    {
+                        "label": "ק๏๏г",
+                        "points": 1,
+                        "explanation": "Wordy",
+                        "name": "2",
+                        "order_num": 2
+                    }
+                ],
+                "name": "0",
+                "order_num": 0
+            },
+        ],
+        "feedback_prompt": "Feedback instruction ...",
+        "feedback_default_text": "Feedback default text\n"
+    }
+
+    // Stub server that returns dummy data or reports errors.
+    let server;
+    const validRubricLocation = 'valid-rubric-location';
+    const StubServer = function() {
+        this.cloneRubric = (rubricLocation) => {
+            return $.Deferred((defer) => {
+                if(rubricLocation === validRubricLocation) {
+                    defer.resolveWith(this, [newRubricData]);
+                } else {
+                    defer.rejectWith(this, ['error-msg'])
+                }
+            }).promise();
+        };
+    };
+
     var view = null;
     beforeEach(function() {
         loadFixtures('oa_edit.html');
         var el = $("#oa_rubric_editor_wrapper").get(0);
         notifier = new StubNotifier();
-        view = new EditRubricView(el, notifier);
+        server = new StubServer();
+        view = new EditRubricView(el, notifier, server);
     });
 
     it("reads a criteria definition from the editor", function() {
@@ -268,5 +327,97 @@ describe("OpenAssessment.EditRubricView", function() {
         view.clearValidationErrors();
         expect(view.validationErrors()).toEqual([]);
 
+    });
+
+    describe("clearRubric", () => {
+        it('removes all rubric criteria', () => {
+            // Given some existing criteria
+            var criteria = view.criteriaDefinition();
+            expect(criteria.length).toEqual(3);
+
+            // When I call clearRubric
+            view.clearRubric();
+
+            // Then it removes all criteria
+            criteria = view.criteriaDefinition();
+            expect(criteria.length).toEqual(0);
+        });
+
+        it('clears the feedback prompt and default text', () => {
+            // Given existing feedback prompt and default text
+            expect(view.feedbackPrompt()).toEqual(defaultFeedbackFields['feedback_prompt']);
+            expect(view.feedback_default_text()).toEqual(defaultFeedbackFields['feedback_default_text'])
+
+            // When I clear the rubric
+            view.clearRubric()
+
+            // Then it clears feedback prompt/default text
+            expect(view.feedbackPrompt()).toEqual('');
+            expect(view.feedback_default_text()).toEqual('');
+        });
+    });
+
+    describe("cloneRubric", () => {
+        // stub setRubric
+        beforeEach(() => {
+            spyOn(view, 'setRubric').and.callFake(() => {});
+        });
+
+        it('replaces the rubric when the request is successful', () => {
+            // Given we try to clone a rubric
+            // When the server request completes successfully
+            view.cloneRubric(validRubricLocation);
+
+            // Then we call the setRubric function with returned data
+            expect(view.setRubric).toHaveBeenCalledWith(newRubricData);
+        });
+
+        it('alerts when the clone rubric request fails', () => {
+            // Given we try to clone a rubric
+            expect(view.alert.isVisible()).toBeFalsy();
+
+            // When the server request fails
+            view.cloneRubric('bad-rubric-location');
+
+            // Then we do not attempt to clone the rubric
+            expect(view.setRubric).not.toHaveBeenCalled();
+            // and we surface error alert to Studio
+            expect(view.alert.isVisible()).toBeTruthy();
+        });
+    })
+
+    describe("setRubric", () => {
+        it('updates feedback prompt and text', () => {
+            // Given existing feedback prompt and default text
+            expect(view.feedbackPrompt()).toEqual(defaultFeedbackFields['feedback_prompt']);
+            expect(view.feedback_default_text()).toEqual(defaultFeedbackFields['feedback_default_text'])
+
+            // When I clone data from another rubric
+            view.setRubric(newRubricData);
+
+            // Then it updates the feedback data
+            expect(view.feedbackPrompt()).toEqual(newRubricData['feedback_prompt']);
+            expect(view.feedback_default_text()).toEqual(newRubricData['feedback_default_text'])
+        });
+
+        it('updates criteria definitions', () => {
+            // When I clone data from another rubric
+            view.setRubric(newRubricData);
+
+            // Then it updates the criteria (and options)
+            expect(view.criteriaDefinition()).toEqual(newRubricData.criteria);
+        })
+
+        it('fires the \'rubricReplaced\' notification', () => {
+            // When I successfully clone a rubric
+            view.setRubric(newRubricData);
+
+            // Then I should raise the 'rubricReplaced' notification
+            // to alert student training examples to update
+            expect(notifier.notifications).toContain({
+                name: "rubricReplaced",
+                data: {},
+            });
+        });
     });
 });

@@ -446,6 +446,7 @@ export class RubricCriterion {
       containerItemClass: 'openassessment_criterion_option',
       notifier: this.notifier,
     });
+    this.feedbackSel = $('.openassessment_criterion_feedback', this.element);
   }
 
   /**
@@ -525,15 +526,15 @@ export class RubricCriterion {
   }
 
   /**
-     Get the feedback value for the criterion.
+     Get or set the feedback value for the criterion.
      This is one of: "disabled", "optional", or "required".
 
      Returns:
      string
 
      * */
-  feedback() {
-    return $('.openassessment_criterion_feedback', this.element).val();
+  feedback(feedback) {
+    return Fields.selectField(this.feedbackSel, feedback);
   }
 
   /**

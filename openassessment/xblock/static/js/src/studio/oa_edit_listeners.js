@@ -99,7 +99,7 @@ export class StudentTrainingListener {
       this.displayAlertMsg(
         gettext('Criterion Added'),
         // eslint-disable-next-line max-len
-        gettext('You have added a criterion. You will need to select an option for the criterion in the Learner Training step. To do this, click the Settings tab.'),
+        gettext('You have added a criterion. You will need to select an option for the criterion in the Learner Training step. To do this, click the Assessment Steps tab.'),
       );
     }
   }
@@ -275,6 +275,15 @@ export class StudentTrainingListener {
       .attr('data-criterion', data.criterionName);
     criterion.find('.openassessment_training_example_criterion_name_wrapper')
       .text(data.label);
+  }
+
+  /**
+   * Actions to take when a rubric is cloned/replaced. Currently this is:
+   *  - Clear training examples
+   */
+  rubricReplaced() {
+    const trainingExamples = $('#openassessment_training_example_list .openassessment_training_example', this.element);
+    trainingExamples.remove();
   }
 
   /**

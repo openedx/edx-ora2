@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   StudentTrainingListener,
   AssessmentToggleListener,
@@ -16,6 +17,13 @@ based on rubric changes.
 describe("OpenAssessment.StudentTrainingListener", function() {
 
     var listener = null;
+    let defaultTrainingSection = {
+        criterion_with_two_options: {
+            "": "Not Selected",
+            option_1: "Fair - 1 points",
+            option_2: "Good - 2 points"
+        }
+    };
 
     /**
     Check that all student training examples have the expected
@@ -367,6 +375,20 @@ describe("OpenAssessment.StudentTrainingListener", function() {
         // The alert should not be displayed.
         expect(listener.alert.isVisible()).toBe(false);
     });
+
+    it('removes training examples when a rubric is replaced', () => {
+        // Given student training examples (default from fixture)
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            defaultTrainingSection
+        );
+
+        // When I replace a rubric using the "clone rubrics" feature
+        listener.rubricReplaced({});
+
+        // Then I expect all training examples to be cleared
+        assertExampleLabels(listener.examplesCriteriaLabels(), {}, 0);
+    })
 });
 
 

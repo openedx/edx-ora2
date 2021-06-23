@@ -1,6 +1,7 @@
 import Container from './oa_container';
 import { RubricCriterion } from './oa_container_item';
 import { Fields } from './oa_edit_fields';
+import ValidationAlert from './oa_edit_validation_alert';
 
 /**
  Interface for editing rubric definitions.
@@ -18,8 +19,11 @@ import { Fields } from './oa_edit_fields';
 
  * */
 export class EditRubricView {
-  constructor(element, notifier) {
+  constructor(element, notifier, server) {
+    this.alert = new ValidationAlert();
     this.element = element;
+    this.notifier = notifier;
+    this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
 
     this.criteriaContainer = new Container(
@@ -33,6 +37,71 @@ export class EditRubricView {
       },
     );
     this.criteriaContainer.addEventListeners();
+  }
+
+  /**
+   * Overwrite ORA rubric from existing rubric at location {rubricLocation}
+   * @param {xblock-id} rubricLocation
+   */
+  cloneRubric(rubricLocation) {
+    this.server.cloneRubric(rubricLocation).done((rubricData) => {
+      this.alert.hide();
+      this.setRubric(rubricData);
+    }).fail((errorMsg) => {
+      this.alert.setMessage(gettext('Problem cloning rubric'), errorMsg);
+      this.alert.show();
+    });
+  }
+
+  setRubric(rubricData) {
+    // Clear existing rubric data
+    this.clearRubric();
+
+    // Replace feedback prompt and default text
+    this.feedbackPrompt(rubricData.feedback_prompt);
+    this.feedback_default_text(rubricData.feedback_default_text);
+
+    // Replace with new rubric data
+    rubricData.criteria.forEach((criterion, criterionIndex) => {
+      // Create a new criterion and update values
+      this.addCriterion();
+      const criterionItem = this.criteriaContainer.getItem(criterionIndex);
+      criterionItem.label(criterion.label);
+      criterionItem.prompt(criterion.prompt);
+      criterionItem.feedback(criterion.feedback);
+
+      // Add Criterion options
+      criterion.options.forEach((option, optionIndex) => {
+        this.addOption(criterionIndex);
+        const optionItem = criterionItem.optionContainer.getItem(optionIndex);
+        optionItem.label(option.label);
+        optionItem.explanation(option.explanation);
+        optionItem.points(option.points);
+
+        // Update option in learner training
+        optionItem.updateHandler();
+      });
+
+      // Update criterion in learner training
+      criterionItem.updateHandler();
+    });
+
+    // Notify that the rubric has been replaced - clears training examples
+    this.notifier.notificationFired('rubricReplaced', {});
+  }
+
+  /**
+   * Clear all rubric data in the model & UI
+   */
+  clearRubric() {
+    const rubricCriteria = this.getAllCriteria();
+
+    $.each(rubricCriteria, (_i, elem) => {
+      this.removeCriterion(elem);
+    });
+
+    this.feedbackPrompt('');
+    this.feedback_default_text('');
   }
 
   /**

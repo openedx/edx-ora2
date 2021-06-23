@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 16:36-0400\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -189,6 +189,12 @@ msgid "Error when looking up username"
 msgstr "Érrör whén löökïng üp üsérnämé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
+#: openassessment/xblock/static/dist/openassessment-studio.js
+#: openassessment/xblock/static/js/src/oa_server.js
+msgid "Failed to clone rubric"
+msgstr "Fäïléd tö çlöné rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Unit Name"
@@ -301,14 +307,12 @@ msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕ�
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "This response has not been saved."
 msgstr ""
 "Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
@@ -318,13 +322,11 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "Saving..."
 msgstr "Sävïng... Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "This response has been saved but not submitted."
 msgstr ""
 "Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
@@ -332,7 +334,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
 msgid "Error"
 msgstr "Érrör Ⱡ'σяєм ιρѕ#"
 
@@ -454,7 +455,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -550,7 +550,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js
 #: openassessment/xblock/static/js/openassessment-lms.js
-#: openassessment/xblock/static/js/src/lms/oa_base.js
 msgid "Unable to load"
 msgstr "Ûnäßlé tö löäd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
@@ -603,26 +602,31 @@ msgid "Not Selected"
 msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js
+msgid "Problem cloning rubric"
+msgstr "Prößlém çlönïng rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/xblock/static/dist/openassessment-studio.js
 #: openassessment/xblock/static/js/openassessment-studio.js
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
 msgid "Criterion Added"
 msgstr "Çrïtérïön Àddéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
-#: openassessment/xblock/static/js/openassessment-studio.js
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
 msgid ""
 "You have added a criterion. You will need to select an option for the "
-"criterion in the Learner Training step. To do this, click the Settings tab."
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
 msgstr ""
 "Ýöü hävé äddéd ä çrïtérïön. Ýöü wïll nééd tö séléçt än öptïön för thé "
-"çrïtérïön ïn thé Léärnér Träïnïng stép. Tö dö thïs, çlïçk thé Séttïngs täß. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
-"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
-" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂#"
+"çrïtérïön ïn thé Léärnér Träïnïng stép. Tö dö thïs, çlïçk thé Àsséssmént "
+"Stéps täß. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ"
+" єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ "
+"мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ "
+"єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє "
+"νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłι#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
 #: openassessment/xblock/static/js/openassessment-studio.js
@@ -736,6 +740,20 @@ msgstr ""
 "¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт α#"
+
+#: openassessment/xblock/static/js/openassessment-studio.js
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
+msgstr ""
+"Ýöü hävé äddéd ä çrïtérïön. Ýöü wïll nééd tö séléçt än öptïön för thé "
+"çrïtérïön ïn thé Léärnér Träïnïng stép. Tö dö thïs, çlïçk thé Séttïngs täß. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂#"
 
 #: openassessment/xblock/static/js/openassessment-studio.js
 msgid ""

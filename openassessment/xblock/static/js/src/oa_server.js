@@ -705,6 +705,30 @@ export class Server {
       });
     });
   }
+
+  /**
+   * Clone a rubric into ORA from an existing rubric
+   * @param {xblock-id} rubricLocation, xblock locator for ORA to clone rubric from
+   * @returns {promise} a JQuery Promise which will resolve with rubric data
+   */
+  cloneRubric(rubricLocation) {
+    const url = this.url('get_rubric');
+    const payload = { target_rubric_block_id: String(rubricLocation) };
+
+    return $.Deferred((defer) => {
+      $.ajax({
+        type: 'POST', url, data: JSON.stringify(payload), contentType: jsonContentType,
+      }).done(function (data) {
+        if (data.success) {
+          defer.resolveWith(this, [data.rubric]);
+        } else {
+          defer.rejectWith(this, [data.msg]);
+        }
+      }).fail(function () {
+        defer.rejectWith(this, [gettext('Failed to clone rubric')]);
+      });
+    });
+  }
 }
 
 export default Server;
