@@ -37,9 +37,6 @@ export class EditRubricView {
       },
     );
     this.criteriaContainer.addEventListeners();
-
-    // For dev use, expose to browser
-    window.__dev__ = this;
   }
 
   /**
