@@ -282,7 +282,7 @@ export class StudentTrainingListener {
    *  - Clear training examples
    */
   rubricReplaced() {
-    const trainingExamples = $('#openassessment_training_example_list .openassessment_training_example');
+    const trainingExamples = $('#openassessment_training_example_list .openassessment_training_example', this.element);
     trainingExamples.remove();
   }
 
