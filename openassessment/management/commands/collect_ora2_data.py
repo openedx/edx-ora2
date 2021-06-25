@@ -10,6 +10,7 @@ Generates the same format as the instructor dashboard downloads.
 
 import csv
 import os
+from contextlib import contextmanager
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -42,6 +43,14 @@ class Command(BaseCommand):
             help="Write CSV file to the given name"
         )
 
+    @contextmanager
+    def open_csv_file(self, options, file_name):
+        if options['output_dir']:
+            with open(os.path.join(options['output_dir'], file_name), 'wb') as csv_file:
+                yield csv_file
+        else:
+            yield self.stdout
+
     def handle(self, *args, **options):
         """
         Run the command.
@@ -56,18 +65,14 @@ class Command(BaseCommand):
         else:
             file_name = ("%s-ora2.csv" % course_id).replace("/", "-")
 
-        if options['output_dir']:
-            csv_file = open(os.path.join(options['output_dir'], file_name), 'wb')
-        else:
-            csv_file = self.stdout
+        with self.open_csv_file(options, file_name) as csv_file:
+            writer = csv.writer(csv_file, dialect='excel', quotechar='"', quoting=csv.QUOTE_ALL)
 
-        writer = csv.writer(csv_file, dialect='excel', quotechar='"', quoting=csv.QUOTE_ALL)
+            header, rows = OraAggregateData.collect_ora2_data(course_id)
 
-        header, rows = OraAggregateData.collect_ora2_data(course_id)
-
-        writer.writerow(header)
-        for row in rows:
-            writer.writerow(_encode_row(row))
+            writer.writerow(header)
+            for row in rows:
+                writer.writerow(_encode_row(row))
 
 
 def _encode_row(data_list):

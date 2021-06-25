@@ -50,6 +50,7 @@ class StudentTrainingWorkflow(models.Model):
         student_item = submission['student_item']
 
         # Create the workflow
+        workflow = None
         try:
             workflow, __ = cls.objects.get_or_create(
                 submission_uuid=submission_uuid,
@@ -57,12 +58,12 @@ class StudentTrainingWorkflow(models.Model):
                 item_id=student_item['item_id'],
                 course_id=student_item['course_id']
             )
-            return workflow
         # If we get an integrity error, it means we've violated a uniqueness constraint
         # (someone has created this object after we checked if it existed)
         # We can therefore assume that the object exists and do nothing.
         except IntegrityError:
             pass
+        return workflow
 
     @classmethod
     def get_workflow(cls, submission_uuid):

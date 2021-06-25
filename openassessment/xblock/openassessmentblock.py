@@ -627,7 +627,6 @@ class OpenAssessmentBlock(MessageMixin,
         Returns:
             (Fragment): The HTML Fragment for this XBlock.
         """
-        student_item = self.get_student_item_dict()
         peer_assessment_required = "peer-assessment" in self.assessment_steps
 
         context_dict = {
@@ -1292,7 +1291,7 @@ class OpenAssessmentBlock(MessageMixin,
             if user:
                 return user
             logger.exception(
-                "XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
+                "XBlock service could not find user for anonymous_user_id '%s'", anonymous_user_id
             )
         return None
 

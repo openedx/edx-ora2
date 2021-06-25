@@ -745,20 +745,16 @@ def get_submission_to_assess(submission_uuid, graded_by):
             _log_workflow(peer_submission_uuid, workflow)
             return submission_data
         except sub_api.SubmissionNotFoundError as ex:
-            error_message = (
-                "Could not find a submission with the uuid {} for student {} "
-                "in the peer workflow."
-            ).format(peer_submission_uuid, workflow.student_id)
-            logger.exception(error_message)
-            raise PeerAssessmentWorkflowError(error_message) from ex
+            error_message = "Could not find a submission with the uuid %s for student %s in the peer workflow."
+            error_meesage_args = (peer_submission_uuid, workflow.student_id)
+            logger.exception(error_message, error_meesage_args[0], error_meesage_args[1])
+            raise PeerAssessmentWorkflowError(error_message % error_meesage_args) from ex
     else:
         logger.info(
-            "No submission found for {} to assess ({}, {})"
-            .format(
-                workflow.student_id,
-                workflow.course_id,
-                workflow.item_id,
-            )
+            "No submission found for %s to assess (%s, %s)",
+            workflow.student_id,
+            workflow.course_id,
+            workflow.item_id
         )
         return None
 
@@ -927,17 +923,13 @@ def _log_assessment(assessment, scorer_workflow):
 
     """
     logger.info(
-        "Created peer-assessment {assessment_id} for submission "
-        "{submission_uuid}, course {course_id}, item {item_id} "
-        "with rubric {rubric_content_hash}; scored by {scorer}"
-        .format(
-            assessment_id=assessment.id,
-            submission_uuid=assessment.submission_uuid,
-            course_id=scorer_workflow.course_id,
-            item_id=scorer_workflow.item_id,
-            rubric_content_hash=assessment.rubric.content_hash,
-            scorer=scorer_workflow.student_id,
-        )
+        "Created peer-assessment %s for submission %s, course %s, item %s with rubric %s; scored by %s",
+        assessment.id,
+        assessment.submission_uuid,
+        scorer_workflow.course_id,
+        scorer_workflow.item_id,
+        assessment.rubric.content_hash,
+        scorer_workflow.student_id,
     )
 
 
@@ -951,13 +943,11 @@ def _log_workflow(submission_uuid, workflow):
             assessment.
     """
     logger.info(
-        "Retrieved submission {} ({}, {}) to be assessed by {}"
-        .format(
-            submission_uuid,
-            workflow.course_id,
-            workflow.item_id,
-            workflow.student_id,
-        )
+        "Retrieved submission %s (%s, %s) to be assessed by %s",
+        submission_uuid,
+        workflow.course_id,
+        workflow.item_id,
+        workflow.student_id,
     )
 
 

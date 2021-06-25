@@ -64,10 +64,9 @@ class PeerAssessmentMixin:
         uuid_server, uuid_client = self._get_server_and_client_submission_uuids(data)
         if uuid_server != uuid_client:
             logger.warning(
-                'Irrelevant assessment submission: expected "{uuid_server}", got "{uuid_client}"'.format(
-                    uuid_server=uuid_server,
-                    uuid_client=uuid_client,
-                )
+                'Irrelevant assessment submission: expected "%s", got "%s"',
+                uuid_server,
+                uuid_client,
             )
             return {
                 'success': False,
@@ -93,13 +92,15 @@ class PeerAssessmentMixin:
 
             except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
                 logger.warning(
-                    "Peer API error for submission UUID {}".format(self.submission_uuid),
+                    "Peer API error for submission UUID %s",
+                    self.submission_uuid,
                     exc_info=True
                 )
                 return {'success': False, 'msg': self._("Your peer assessment could not be submitted.")}
             except PeerAssessmentInternalError:
                 logger.exception(
-                    "Peer API internal error for submission UUID: {}".format(self.submission_uuid)
+                    "Peer API internal error for submission UUID: %s",
+                    self.submission_uuid
                 )
                 msg = self._("Your peer assessment could not be submitted.")
                 return {'success': False, 'msg': msg}
@@ -113,7 +114,8 @@ class PeerAssessmentMixin:
             except AssessmentWorkflowError:
                 logger.exception(
                     "Workflow error occurred when submitting peer assessment "
-                    "for submission {}".format(self.submission_uuid)
+                    "for submission %s",
+                    self.submission_uuid
                 )
                 msg = self._('Could not update workflow status.')
                 return {'success': False, 'msg': msg}

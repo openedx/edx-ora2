@@ -67,10 +67,11 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
 
     try:
         workflow = AssessmentWorkflow.start_workflow(submission_uuid, steps, on_init_params)
-        logger.info((
-            "Started assessment workflow for "
-            "submission UUID {uuid} with steps {steps}"
-        ).format(uuid=submission_uuid, steps=steps))
+        logger.info(
+            "Started assessment workflow for submission UUID %s with steps %s",
+            submission_uuid,
+            steps
+        )
         return AssessmentWorkflowSerializer(workflow).data
     except sub_api.SubmissionNotFoundError as ex:
         err_msg = sub_err_msg("submission not found")
@@ -270,15 +271,16 @@ def update_from_assessments(submission_uuid, assessment_requirements, override_s
 
     try:
         workflow.update_from_assessments(assessment_requirements, override_submitter_requirements)
-        logger.info((
-            "Updated workflow for submission UUID {uuid} "
-            "with requirements {reqs}"
-        ).format(uuid=submission_uuid, reqs=assessment_requirements))
+        logger.info(
+            "Updated workflow for submission UUID %s with requirements %s",
+            submission_uuid,
+            assessment_requirements
+        )
         return _serialized_with_details(workflow)
     except PeerAssessmentError as err:
-        err_msg = f"Could not update assessment workflow: {err}"
-        logger.exception(err_msg)
-        raise AssessmentWorkflowInternalError(err_msg) from err
+        err_msg = "Could not update assessment workflow: %s"
+        logger.exception(err_msg, err)
+        raise AssessmentWorkflowInternalError(err_msg % err) from err
 
 
 def get_status_counts(course_id, item_id, steps):

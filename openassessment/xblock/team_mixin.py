@@ -37,7 +37,7 @@ class TeamMixin:
         try:
             return self.runtime.service(self, 'teams')
         except NoSuchServiceError:
-            logger.error('{}: Teams service unavailable'.format(self.location))
+            logger.error('%s: Teams service unavailable', self.location)
             raise
 
     @cached_property
@@ -45,7 +45,7 @@ class TeamMixin:
         try:
             return self.runtime.service(self, 'teams_configuration')
         except NoSuchServiceError:
-            logger.error('{}: Teams Configuration service unavailable'.format(self.location))
+            logger.error('%s: Teams Configuration service unavailable', self.location)
             raise
 
     def get_team_for_anonymous_user(self, anonymous_user_id):
@@ -59,7 +59,7 @@ class TeamMixin:
         """
         user = self.get_real_user(anonymous_user_id)
         if not user:
-            logger.error('{}: User lookup for anonymous_user_id {} failed'.format(self.location, anonymous_user_id))
+            logger.error('%s: User lookup for anonymous_user_id %s failed', self.location, anonymous_user_id)
             raise ObjectDoesNotExist()
         team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
         return team

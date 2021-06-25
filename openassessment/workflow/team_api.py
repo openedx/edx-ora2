@@ -39,10 +39,10 @@ def create_workflow(team_submission_uuid):
     """
     try:
         team_workflow = TeamAssessmentWorkflow.start_workflow(team_submission_uuid)
-        logger.info((
-            "Started team assessment workflow for "
-            "team submission UUID {uuid}"
-        ).format(uuid=team_submission_uuid))
+        logger.info(
+            "Started team assessment workflow for team submission UUID %s",
+            team_submission_uuid
+        )
         return team_workflow
     except Exception as ex:
         err_msg = (
@@ -76,15 +76,14 @@ def update_from_assessments(team_submission_uuid, override_submitter_requirement
     # Update the workflow status based on the underlying assessments
     try:
         team_workflow.update_from_assessments(override_submitter_requirements)
-        logger.info((
-            "Updated workflow for team submission UUID {uuid} "
-        ).format(uuid=team_submission_uuid))
+        logger.info(
+            "Updated workflow for team submission UUID %s",
+            team_submission_uuid
+        )
     except Exception as exc:
-        err_msg = (
-            "Could not update team assessment workflow: {exc}"
-        ).format(exc=exc)
-        logger.exception(err_msg)
-        raise AssessmentWorkflowInternalError(err_msg) from exc
+        err_msg = "Could not update team assessment workflow: %s"
+        logger.exception(err_msg, exc)
+        raise AssessmentWorkflowInternalError(err_msg % exc) from exc
 
     # Return serialized workflow object
     return _serialized_with_details(team_workflow)

@@ -280,13 +280,7 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
             logger.exception(error_message)
             raise StaffAssessmentInternalError(error_message) from ex
     else:
-        logger.info(
-            "No team submission found for staff to assess ({}, {})"
-            .format(
-                course_id,
-                item_id,
-            )
-        )
+        logger.info("No team submission found for staff to assess (%s, %s)", course_id, item_id)
         return None
 
 

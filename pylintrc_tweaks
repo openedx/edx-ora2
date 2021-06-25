@@ -1,6 +1,6 @@
 # pylintrc tweaks for use with edx_lint.
 [MASTER]
-ignore+ = .git, .tox, migrations
+ignore+ = .git, .tox, migrations, acceptance
 load-plugins = edx_lint.pylint,pylint_django
 
 [MESSAGES CONTROL]

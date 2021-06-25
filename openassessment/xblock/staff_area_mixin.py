@@ -3,7 +3,6 @@ The Staff Area View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
 import copy
-import json
 import logging
 from functools import wraps
 from webob import Response
@@ -177,7 +176,7 @@ class StaffAreaMixin:
 
     @XBlock.handler
     @require_course_staff("STAFF_AREA")
-    def waiting_step_data(self, data, suffix=''):
+    def waiting_step_data(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Retrieves waiting step details and aggregates information required by the view.
 
@@ -210,6 +209,7 @@ class StaffAreaMixin:
             peer_step_config.get('must_be_graded_by'),
         )
         # Get external_id to username map
+        # pylint: disable=protected-access
         username_map = OraAggregateData._map_anonymized_ids_to_usernames(
             [item['student_id'] for item in waiting_student_list]
         )
@@ -402,20 +402,21 @@ class StaffAreaMixin:
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
             if self.should_use_user_state(context["staff_file_urls"]):
-                logger.info("Checking student module for upload info for user: {username} in block: {block}".format(
-                    username=student_username,
-                    block=str(self.location)
-                ))
+                logger.info(
+                    "Checking student module for upload info for user: %s in block: %s",
+                    student_username,
+                    str(self.location)
+                )
                 context['staff_file_urls'] = self.get_files_info_from_user_state(student_username)
 
                 # This particular check is for the cases affected by the incorrect filenum bug
                 # and gets all the upload URLs if feature enabled.
                 if self.should_get_all_files_urls(context['staff_file_urls']):
                     logger.info(
-                        "Retrieving all uploaded files by user:{username} in block:{block}".format(
-                            username=student_username,
-                            block=str(self.location)
-                        ))
+                        "Retrieving all uploaded files by user:%s in block:%s",
+                        student_username,
+                        str(self.location)
+                    )
                     context['staff_file_urls'] = self.get_all_upload_urls_for_user(student_username)
 
         if self.rubric_feedback_prompt is not None:

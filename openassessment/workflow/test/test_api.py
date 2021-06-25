@@ -494,12 +494,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         """
         Check that workflows for a given status are correctly retrieved.
         """
-        workflows = [
-            (
-                status,
-                self._create_workflow_with_status("user", "test/1/1", "peer-problem", status)
-            ) for status in ["peer", "waiting", "done"]
-        ]
+        for status in ["peer", "waiting", "done"]:
+            self._create_workflow_with_status("user", "test/1/1", "peer-problem", status)
 
         retrieved = workflow_api.get_workflows_for_status(
             "test/1/1",

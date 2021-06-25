@@ -301,10 +301,12 @@ class SubmissionMixin:
                 {"saved_response": self.saved_files_descriptions}
             )
         except FileUploadError as exc:
-            logger.exception("FileUploadError: file description for data {data} failed with error {error}".format(
-                data=data,
-                error=exc
-            ))
+            logger.exception(
+                "FileUploadError: file description for data %s failed with error %s",
+                data,
+                exc,
+                exc_info=True,
+            )
             return {'success': False, 'msg': self._("Files metadata could not be saved.")}
 
         return {'success': True, 'msg': ''}
@@ -486,7 +488,7 @@ class SubmissionMixin:
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
-            logger.exception("FileUploadError:Error retrieving upload URL for the data:{data}.".format(data=data))
+            logger.exception("FileUploadError:Error retrieving upload URL for the data: %s.", data)
             return {'success': False, 'msg': self._("Error retrieving upload URL.")}
 
     def is_supported_upload_type(self, file_ext, content_type):
@@ -542,13 +544,15 @@ class SubmissionMixin:
                     "openassessmentblock.remove_uploaded_file",
                     {"student_item_key": student_item_key}
                 )
-                logger.debug("Deleted file {student_item_key}".format(student_item_key=student_item_key))
+                logger.debug("Deleted file %s", student_item_key)
                 return {'success': True}
             except FileUploadError as exc:
-                logger.exception("FileUploadError: Error when deleting file {student_item_key} : {exc}".format(
-                    student_item_key=student_item_key,
-                    exc=exc
-                ))
+                logger.exception(
+                    "FileUploadError: Error when deleting file %s : %s",
+                    student_item_key,
+                    exc,
+                    exc_info=True
+                )
 
         return {'success': False}
 
@@ -590,10 +594,12 @@ class SubmissionMixin:
             if key:
                 url = file_upload_api.get_download_url(key)
         except FileUploadError as exc:
-            logger.exception("FileUploadError: Download url for file key {key} failed with error {error}".format(
-                key=key,
-                error=exc
-            ))
+            logger.exception(
+                "FileUploadError: Download url for file key %s failed with error %s",
+                key,
+                exc,
+                exc_info=True
+            )
 
         return url
 
@@ -670,11 +676,12 @@ class SubmissionMixin:
                     )
                 else:
                     # If file has been removed, the URL doesn't exist
-                    logger.info("URLWorkaround: no URL for description {desc} & key {key} for user:{user}".format(
-                        desc=description,
-                        user=username,
-                        key=file_key
-                    ))
+                    logger.info(
+                        "URLWorkaround: no URL for description %s & key %s for user:%s",
+                        description,
+                        username,
+                        file_key
+                    )
                     continue
         return files_info
 
@@ -705,11 +712,12 @@ class SubmissionMixin:
                 pass
 
             if download_url:
-                logger.info("Download URL exists for key {key} in block {block} for user {user}".format(
-                    key=file_key,
-                    user=username_or_email,
-                    block=str(self.location)
-                ))
+                logger.info(
+                    "Download URL exists for key %s in block %s for user %s",
+                    file_key,
+                    username_or_email,
+                    str(self.location)
+                )
                 file_uploads.append(
                     file_upload_api.FileDescriptor(
                         download_url=download_url,
@@ -812,13 +820,13 @@ class SubmissionMixin:
                     self.get_username(submission['student_id']) for submission in external_submissions
                 ])
         except ObjectDoesNotExist:
-            error_msg = '{}: User associated with anonymous_user_id {} can not be found.'
-            logger.error(error_msg.format(
+            logger.error(
+                '%s: User associated with anonymous_user_id %s can not be found.',
                 str(self.location),
                 self.get_student_item_dict()['student_id'],
-            ))
+            )
         except NoSuchServiceError:
-            logger.error('{}: Teams service is unavailable'.format(str(self.location)))
+            logger.error('%s: Teams service is unavailable', str(self.location))
 
     def get_allowed_file_types_or_preset(self):
         """

@@ -12,7 +12,6 @@ import json
 import os
 import logging
 import requests
-import copy
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -64,9 +63,10 @@ def _get_course_blocks(course_id):
         BlockStructureBlockData instance
     """
 
-    from lms.djangoapps.course_blocks.api import get_course_blocks
+    from lms.djangoapps.course_blocks.api import get_course_blocks  # pylint: disable=import-error
+    # pylint: disable=import-error
     from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
-    from xmodule.modulestore.django import modulestore
+    from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
 
     store = modulestore()
     course_usage_key = store.make_course_usage_key(course_id)
@@ -970,6 +970,7 @@ class OraDownloadData:
         path_info = {}
 
         def children(usage_key, condition=None):
+            # pylint: disable=filter-builtin-not-iterating
             filtered = filter(condition, blocks.get_xblock_field(usage_key, 'children') or [])
             for index, child in enumerate(filtered, 1):
                 yield index, blocks.get_xblock_field(child, 'display_name'), child
@@ -1005,8 +1006,11 @@ class OraDownloadData:
         - edX username, if external ID is absent.
         - Anonymized username, if `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT` feature is disabled.
         """
+        # pylint: disable=import-error
         from openedx.core.djangoapps.external_user_ids.models import ExternalId
 
+        # TODO: (AU-24) This seems like it should be used. Should this be in the filter?
+        # pylint: disable=unused-variable
         student_ids = [item[0]["student_id"] for item in all_submission_information]
 
         User = get_user_model()
@@ -1043,7 +1047,7 @@ class OraDownloadData:
         sub_section_name,
         unit_index,
         unit_name,
-        **kwargs,
+        **__,
     ):
         """
         Returns submissions directory name in format:
@@ -1182,12 +1186,18 @@ class OraDownloadData:
                     logger.warning(
                         'File for submission could not be downloaded for ORA submission archive.\n'
                         'Full detail:'
-                        '\n\tCourse Id: {course_id}'
-                        '\n\tBlock Id: {block_id}'
-                        '\n\tStudent Id: {student_id}'
-                        '\n\tKey: {key}'
-                        '\n\tName: {name}'
-                        '\n\tType: {type}'.format(**file_data)
+                        '\n\tCourse Id: %s'
+                        '\n\tBlock Id: %s'
+                        '\n\tStudent Id: %s'
+                        '\n\tKey: %s'
+                        '\n\tName: %s'
+                        '\n\tType: %s',
+                        file_data['course_id'],
+                        file_data['block_id'],
+                        file_data['student_id'],
+                        file_data['key'],
+                        file_data['name'],
+                        file_data['type'],
                     )
                 else:
                     file_found = True

@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, patch, Mock, PropertyMock
 from ddt import ddt, file_data
 import pytz
 
-from .base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.config_mixin import ConfigMixin
+from .base import XBlockHandlerTestCase, scenario
 
 
 def disable_rubric_reuse(func):

@@ -62,7 +62,7 @@ class ConfigMixin:
         Returns a ``WaffleSwitch`` object in WAFFLE_NAMESPACE
         with the given ``switch_name``.
         """
-        # pylint: disable=feature-toggle-needs-doc
+        # pylint: disable=toggle-missing-annotation
         return WaffleSwitch(f"{WAFFLE_NAMESPACE}.{switch_name}", module_name=__name__)
 
     @staticmethod
@@ -72,7 +72,7 @@ class ConfigMixin:
         with the given ``flag_name``.
         """
         CourseWaffleFlag = import_course_waffle_flag()  # pylint: disable=invalid-name
-        # pylint: disable=feature-toggle-needs-doc
+        # pylint: disable=toggle-missing-annotation
         return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name, module_name=__name__)
 
     @staticmethod
@@ -82,7 +82,7 @@ class ConfigMixin:
         with the given ``flag_name``.
         """
         WaffleFlag = import_waffle_flag()  # pylint: disable=invalid-name
-        # pylint: disable=feature-toggle-needs-doc
+        # pylint: disable=toggle-missing-annotation
         return WaffleFlag(f"{WAFFLE_NAMESPACE}.{flag_name}", module_name=__name__)
 
     @staticmethod
@@ -158,11 +158,12 @@ class ConfigMixin:
         """
         Return a boolean indicating the reuse of rubric feature is enabled or not.
         """
+        # pylint: disable=toggle-missing-target-removal-date
         # .. toggle_name: FEATURES['ENABLE_ORA_RUBRIC_REUSE']
         # .. toggle_implementation: WaffleFlag
         # .. toggle_default: False
         # .. toggle_description: Set to True to enable the reuse of rubric feature
-        # .. toggle_use_cases: monitored_rollout
+        # .. toggle_use_cases: temporary
         # .. toggle_creation_date: 2021-05-18
         # .. toggle_tickets:  https://openedx.atlassian.net/browse/EDUCATOR-5751
         return self.is_feature_enabled(RUBRIC_REUSE)

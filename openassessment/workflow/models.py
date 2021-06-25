@@ -355,9 +355,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
                 self.save()
-                logger.info((
-                    "Workflow for submission UUID {uuid} has updated score using {staff_type} assessment."
-                ).format(uuid=self.submission_uuid, staff_type=self.STAFF_STEP_NAME))
+                logger.info(
+                    "Workflow for submission UUID %s has updated score using %s assessment.",
+                    self.submission_uuid,
+                    self.STAFF_STEP_NAME
+                )
 
                 # Update the assessment_completed_at field for all steps
                 # All steps are considered "assessment complete", as the staff score will override all
@@ -433,9 +435,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if self.status != new_status:
             self.status = new_status
             self.save()
-            logger.info((
-                "Workflow for submission UUID {uuid} has updated status to {status}"
-            ).format(uuid=self.submission_uuid, status=new_status))
+            logger.info(
+                "Workflow for submission UUID %s has updated status to %s",
+                self.submission_uuid,
+                new_status
+            )
 
     def _get_steps(self):
         """
@@ -566,7 +570,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         try:
             score = self.get_score(assessment_requirements, step_for_name)
         except AssessmentError as exc:
-            logger.info("TNL-5799, exception in get_score during cancellation. {}".format(exc))
+            logger.info("TNL-5799, exception in get_score during cancellation. %s", exc)
             score = None
 
         # Set the points_earned to 0.
@@ -579,9 +583,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.status = self.STATUS.cancelled
             self.save()
             logger.info(
-                "Workflow for submission UUID {uuid} has updated status to {status}".format(
-                    uuid=self.submission_uuid, status=self.STATUS.cancelled
-                )
+                "Workflow for submission UUID %s has updated status to %s",
+                self.submission_uuid,
+                self.STATUS.cancelled
             )
 
     @classmethod
@@ -782,9 +786,10 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
                 # Set the team staff score using team submissions api, and log that fact
                 self._set_team_staff_score(new_score)
                 self.save()
-                logger.info((
-                    "Team Workflow for team submission UUID {uuid} has updated score using team staff assessment."
-                ).format(uuid=self.team_submission_uuid))
+                logger.info(
+                    "Team Workflow for team submission UUID %s has updated score using team staff assessment.",
+                    self.team_submission_uuid
+                )
                 common_now = now()
                 team_staff_step.assessment_completed_at = common_now
                 team_staff_step.save()

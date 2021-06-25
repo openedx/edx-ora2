@@ -21,9 +21,10 @@ class RubricReuseMixin:
                 qualifiers={'category': 'openassessment'},
             )
         else:
-            logger.info("_get_course_ora_blocks was called for {block_id} but no modulestore was available".format(
-                block_id=str(self.location)
-            ))
+            logger.info(
+                "_get_course_ora_blocks was called for %s but no modulestore was available",
+                str(self.location)
+            )
             return []
 
     def get_other_course_ora_blocks(self):
@@ -80,10 +81,11 @@ class RubricReuseMixin:
     def _get_rubric(self, target_ora_block_locator):
         target_block = self._get_ora_block(target_ora_block_locator)
         if target_block.category != 'openassessment':
-            logger.warn("Requested rubric from {block_id} which is {category} not openassessment".format(
-                block_id=target_ora_block_locator,
-                category=target_block.category
-            ))
+            logger.warning(
+                "Requested rubric from %s which is %s not openassessment",
+                target_ora_block_locator,
+                target_block.category
+            )
             raise TargetBlockNotORAException
         return {
             'criteria': target_block.rubric_criteria,
@@ -93,15 +95,16 @@ class RubricReuseMixin:
 
     def _get_ora_block(self, target_ora_block_locator):
         if not hasattr(self.runtime, 'modulestore'):
-            msg = "Unable to lookup {block_id} for rubric reuse because modulestore is not provided by the runtime"
-            logger.warn(msg.format(block_id=target_ora_block_locator))
+            logger.warning(
+                "Unable to lookup %s for rubric reuse because modulestore is not provided by the runtime",
+                target_ora_block_locator
+            )
             raise TargetORABlockNotFoundException
 
         try:
             return self.runtime.modulestore.get_item(target_ora_block_locator)
         except Exception as e:
-            msg = "Unable to lookup {block_id} for rubric reuse"
-            logger.warn(msg.format(block_id=target_ora_block_locator), exc_info=1)
+            logger.warning("Unable to lookup %s for rubric reuse", target_ora_block_locator, exc_info=1)
             raise TargetORABlockNotFoundException from e
 
 
