@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 16:36-0400\n"
-"PO-Revision-Date: 2021-06-15 22:24+0000\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"PO-Revision-Date: 2021-06-23 22:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -174,6 +174,12 @@ msgstr ""
 msgid "Error when looking up username"
 msgstr ""
 
+#: openassessment/xblock/static/dist/openassessment-lms.js:8
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/oa_server.js:728
+msgid "Failed to clone rubric"
+msgstr ""
+
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:57
@@ -285,13 +291,11 @@ msgstr "סטטוס תשובתך"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:424
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:429
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
@@ -299,19 +303,16 @@ msgstr "אם תעזוב עמוד זה ללא שמירת או שליחת תשוב
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:447
 msgid "Saving..."
 msgstr "שומר..."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא נשלחה."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:472
 msgid "Error"
 msgstr "שגיאה"
 
@@ -406,7 +407,6 @@ msgstr "שגיאה בעת ניסיון לקבל את מספר התשובות ה�
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:531
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -489,7 +489,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_base.js:343
 msgid "Unable to load"
 msgstr "לא ניתן לטעון"
 
@@ -542,18 +541,23 @@ msgid "Not Selected"
 msgstr "לא נבחר"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
 msgstr "קריטריון נוסף בהצלחה"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:102
 msgid ""
 "You have added a criterion. You will need to select an option for the "
-"criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr "הוספת קריטריון. תצטרך לבחור אפשרות עבור הקריטריון בשלב תרגול הלומד. על מנת לבצע זאת, לחץ על הכרטיסייה 'הגדרות'."
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
+msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -595,13 +599,13 @@ msgstr "מחקת קריטריון. הקריטריון הוסר מהתשובות 
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:383
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:392
 msgid "Warning"
 msgstr "אזהרה"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:384
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:393
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
@@ -621,13 +625,13 @@ msgstr "סוגי הקבצים הבאים אינם מורשים: "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:167
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
 msgid "Couldn't Save This Assignment"
 msgstr "לא ניתן לשמור את המטלה."
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:169
 msgid "Please correct the outlined fields."
 msgstr "אנא תקן את השדות המסומנים."
 
@@ -636,6 +640,12 @@ msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
 msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
+msgstr "הוספת קריטריון. תצטרך לבחור אפשרות עבור הקריטריון בשלב תרגול הלומד. על מנת לבצע זאת, לחץ על הכרטיסייה 'הגדרות'."
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 msgid ""

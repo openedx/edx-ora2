@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 16:36-0400\n"
-"PO-Revision-Date: 2021-06-15 22:24+0000\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"PO-Revision-Date: 2021-06-23 22:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgstr "Impossibile caricare questa sezione."
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:158
 msgid "The staff assessment form could not be loaded."
-msgstr ""
+msgstr "Impossibile caricare il modulo di valutazione dello staff. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -49,7 +49,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:180
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr ""
+msgstr "Impossibile caricare la visualizzazione delle risposte non valutate e sottoposte a checkout. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -124,7 +124,7 @@ msgstr "Non si è potuto recuperare l'url dell'upload."
 #: openassessment/xblock/static/js/src/oa_server.js:549
 #: openassessment/xblock/static/js/src/oa_server.js:568
 msgid "Server error."
-msgstr ""
+msgstr "Errore del server. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -148,7 +148,7 @@ msgstr "La consegna non ha potuto essere rimossa dal gruppo di classificazione."
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:670
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "Più team restituiti per il corso "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -156,7 +156,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:677
 msgid "Could not load teams information."
-msgstr ""
+msgstr "Impossibile caricare le informazioni sui team. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -164,7 +164,7 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:699
 msgid "User lookup failed"
-msgstr ""
+msgstr "Ricerca utente non riuscita "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -172,13 +172,19 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:704
 msgid "Error when looking up username"
+msgstr "Errore durante la ricerca del nome utente "
+
+#: openassessment/xblock/static/dist/openassessment-lms.js:8
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/oa_server.js:728
+msgid "Failed to clone rubric"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:57
 msgid "Unit Name"
-msgstr ""
+msgstr "Nome unità "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
@@ -196,21 +202,21 @@ msgstr "Valutazione"
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:66
 msgid "Assessments"
-msgstr ""
+msgstr "Valutazioni "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:73
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:74
 msgid "Total Responses"
-msgstr ""
+msgstr "Numero totale di risposte "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:81
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:82
 msgid "Training"
-msgstr ""
+msgstr "Formazione "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
@@ -224,14 +230,14 @@ msgstr "Peer"
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:97
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:98
 msgid "Self"
-msgstr ""
+msgstr "Autonomo "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:105
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:106
 msgid "Waiting"
-msgstr ""
+msgstr "In attesa "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
@@ -245,13 +251,13 @@ msgstr "Staff"
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:121
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:122
 msgid "Final Grade Received"
-msgstr ""
+msgstr "Voto finale ricevuto "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:153
 msgid "List of Open Assessments is unavailable"
-msgstr ""
+msgstr "L'elenco delle valutazioni aperte non è disponibile "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
@@ -264,18 +270,18 @@ msgstr "Un attimo, per favore..."
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:277
 msgid "Block view is unavailable"
-msgstr ""
+msgstr "Vista blocco non disponibile "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:289
 msgid "Back to Full List"
-msgstr ""
+msgstr "Torna all'elenco completo "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 msgid "Your file "
-msgstr ""
+msgstr "File personale "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -285,33 +291,28 @@ msgstr "Stato della Tua Risposta"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:424
 msgid "This response has not been saved."
 msgstr "Questa risposta non è stata salvata."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:429
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "Se si esce da questa pagina senza salvare o inoltrare la propria risposta, tutto il lavoro eseguito sulla risposta verrà perso. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:447
 msgid "Saving..."
 msgstr "Salvataggio in corso..."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
 msgid "This response has been saved but not submitted."
 msgstr "Questa risposta è stata salvata, ma non è stata inoltrata."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:472
 msgid "Error"
 msgstr "Errore"
 
@@ -327,7 +328,7 @@ msgstr "Stai per inviare la risposta per questo compito. Dopo aver inviato quest
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_response.js:574
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr ""
+msgstr "La dimensione del singolo file deve essere uguale o inferiore a {max_files_mb}MB. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -335,19 +336,19 @@ msgstr ""
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "Caricamento del file non riuscito: tipo di file non supportato. È possibile caricare solo i tipi di file supportati. In caso di domande, contattare il team del corso. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 msgid "Only "
-msgstr ""
+msgstr "Solo "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_response.js:671
 #: openassessment/xblock/static/js/src/lms/oa_response.js:677
 msgid "Describe "
-msgstr ""
+msgstr "Descrivi "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -359,7 +360,7 @@ msgstr "(campo obbligatorio)"
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_response.js:691
 msgid "Thumbnail view of "
-msgstr ""
+msgstr "Vista miniatura di "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -367,7 +368,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr ""
+msgstr "Si è sicuri di voler eliminare il seguente file? Non sarà possibile ripristinarlo.\nFile: "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -375,20 +376,20 @@ msgstr ""
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Se si esce da questa pagina senza inoltrare la propria auto-valutazione, tutto il lavoro effettuato verrà perso. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:142
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:247
 msgid "Unexpected server error."
-msgstr ""
+msgstr "Errore del server non previsto. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
 msgid "You must provide a learner name."
-msgstr ""
+msgstr "È necessario fornire il nome di uno studente. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -396,27 +397,26 @@ msgstr ""
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr ""
+msgstr "Questo voto verrà applicato a tutti i membri del team. Si desidera continuare? "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:298
 msgid "Error getting the number of ungraded responses"
-msgstr ""
+msgstr "Errore durante l'acquisizione del numero di risposte senza voto "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:531
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Se si esce d questa pagina senza inoltrare la valutazione dello staff, tutto il lavoro effettuato verrà perso. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 #: openassessment/xblock/static/js/src/lms/oa_training.js:130
 msgid "Feedback available for selection."
-msgstr ""
+msgstr "Feedback disponibile per la selezione. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -424,7 +424,7 @@ msgstr ""
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Se si esce da questa pagina senza inoltrare la valutazione del collega, tutto il lavoro effettuato verrà perso. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -459,7 +459,7 @@ msgstr ""
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
 msgid "Refresh"
-msgstr ""
+msgstr "Aggiorna"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
@@ -489,9 +489,8 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_base.js:343
 msgid "Unable to load"
-msgstr ""
+msgstr "Impossibile caricare "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -542,17 +541,22 @@ msgid "Not Selected"
 msgstr "Non Selezionato"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
 msgstr "Criterio aggiunto"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:102
 msgid ""
 "You have added a criterion. You will need to select an option for the "
-"criterion in the Learner Training step. To do this, click the Settings tab."
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -569,7 +573,7 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr ""
+msgstr "È stata eliminata un'opzione. Questa opzione è stata rimossa dal relativo criterio nelle risposte di esempio nella fase Addestramento studente. Potrebbe essere necessario selezionare una nuova opzione per il criterio. "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -577,7 +581,7 @@ msgstr ""
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr ""
+msgstr "Tutte le opzioni per questo criterio sono state eliminate. Il criterio è stato rimosso dalle risposte di esempio nella fase Addestramento studente. "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -591,17 +595,17 @@ msgstr "Criterio cancellato"
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr ""
+msgstr "È stato eliminato un criterio. Il criterio è stato rimosso dalle risposte di esempio nella fase Addestramento studente. "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:383
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:392
 msgid "Warning"
 msgstr "Allerta"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:384
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:393
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
@@ -611,7 +615,7 @@ msgstr "Le modifiche ai passaggi che non sono selezionati come parte del compito
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:91
 msgid "File types can not be empty."
-msgstr ""
+msgstr "I tipi di file non possono essere vuoti. "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -621,13 +625,13 @@ msgstr "I seguenti tipi di file non sono ammessi:"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:167
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
 msgid "Couldn't Save This Assignment"
 msgstr "Impossibile salvare questo compito"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:169
 msgid "Please correct the outlined fields."
 msgstr "Correggere i campi con la cornice."
 
@@ -636,6 +640,12 @@ msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
 msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
+msgstr "È stato aggiunto un criterio. Sarà necessario selezionare un'opzione per il criterio nella fase Formazione studente. Per effettuare questa operazione, fare clic sulla scheda Impostazioni. "
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 msgid ""

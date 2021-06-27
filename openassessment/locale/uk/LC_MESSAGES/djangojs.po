@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 16:36-0400\n"
-"PO-Revision-Date: 2021-06-15 22:24+0000\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"PO-Revision-Date: 2021-06-23 22:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/open-edx/edx-platform/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -180,6 +180,12 @@ msgstr ""
 msgid "Error when looking up username"
 msgstr ""
 
+#: openassessment/xblock/static/dist/openassessment-lms.js:8
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/oa_server.js:728
+msgid "Failed to clone rubric"
+msgstr ""
+
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:57
@@ -291,13 +297,11 @@ msgstr "Статус вашої відповіді"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:424
 msgid "This response has not been saved."
 msgstr "Ця відповідь не була збережена."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:429
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
@@ -305,19 +309,16 @@ msgstr "Якщо ви залишите цю сторінку без збереж
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:447
 msgid "Saving..."
 msgstr "Збереження ..."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
 msgid "This response has been saved but not submitted."
 msgstr "Ця відповідь була збережена, але не відправлена на перевірку."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:472
 msgid "Error"
 msgstr "Помилка"
 
@@ -412,7 +413,6 @@ msgstr "Помилка під час отримання кількості не 
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:531
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -495,7 +495,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_base.js:343
 msgid "Unable to load"
 msgstr "Неможливо завантажити"
 
@@ -548,18 +547,23 @@ msgid "Not Selected"
 msgstr "Не обрано"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
 msgstr "Критерій додано"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:102
 msgid ""
 "You have added a criterion. You will need to select an option for the "
-"criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr "Ви додали критерій. Ви маєте вибрати опцію для цього критерію на кроці Навчання слухача. Щоб це зробити, клікніть на вкладці Налаштування."
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
+msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -601,13 +605,13 @@ msgstr "Ви видалили критерій. Критерій було вил
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:383
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:392
 msgid "Warning"
 msgstr "Попередження"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:384
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:393
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
@@ -627,13 +631,13 @@ msgstr "Наступні типи файлів не дозволені: "
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:167
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
 msgid "Couldn't Save This Assignment"
 msgstr "Неможливо зберегти це завдання"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:169
 msgid "Please correct the outlined fields."
 msgstr "Відкоригуйте позначені поля"
 
@@ -642,6 +646,12 @@ msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
 msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
+msgstr "Ви додали критерій. Ви маєте вибрати опцію для цього критерію на кроці Навчання слухача. Щоб це зробити, клікніть на вкладці Налаштування."
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 msgid ""
