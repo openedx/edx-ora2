@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 16:36-0400\n"
-"PO-Revision-Date: 2021-06-15 22:24+0000\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"PO-Revision-Date: 2021-06-23 22:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/open-edx/edx-platform/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -176,6 +176,12 @@ msgstr ""
 msgid "Error when looking up username"
 msgstr ""
 
+#: openassessment/xblock/static/dist/openassessment-lms.js:8
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/oa_server.js:728
+msgid "Failed to clone rubric"
+msgstr ""
+
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:57
@@ -287,13 +293,11 @@ msgstr "Trạng Thái Trả Lời Của Bạn"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:424
 msgid "This response has not been saved."
 msgstr "Câu trả lời này chưa được lưu."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:429
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
@@ -301,19 +305,16 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:447
 msgid "Saving..."
 msgstr "Đang lưu..."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
 msgid "This response has been saved but not submitted."
 msgstr "Câu trả lời này đã được lưu nhưng chưa được gửi đi."
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:472
 msgid "Error"
 msgstr "Lỗi"
 
@@ -408,7 +409,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:531
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -491,7 +491,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_base.js:343
 msgid "Unable to load"
 msgstr ""
 
@@ -544,17 +543,22 @@ msgid "Not Selected"
 msgstr "Không Được Chọn"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:102
 msgid ""
 "You have added a criterion. You will need to select an option for the "
-"criterion in the Learner Training step. To do this, click the Settings tab."
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -597,13 +601,13 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:383
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:392
 msgid "Warning"
 msgstr "Cảnh báo"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:384
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:393
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
@@ -623,13 +627,13 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:167
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
 msgid "Couldn't Save This Assignment"
 msgstr "Không Thể Lưu Bài Tập Này"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:169
 msgid "Please correct the outlined fields."
 msgstr ""
 
@@ -637,6 +641,12 @@ msgstr ""
 msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1

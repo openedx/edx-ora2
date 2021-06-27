@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 16:36-0400\n"
-"PO-Revision-Date: 2021-06-15 22:24+0000\n"
+"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"PO-Revision-Date: 2021-06-23 22:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -178,6 +178,12 @@ msgstr ""
 msgid "Error when looking up username"
 msgstr ""
 
+#: openassessment/xblock/static/dist/openassessment-lms.js:8
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/oa_server.js:728
+msgid "Failed to clone rubric"
+msgstr ""
+
 #: openassessment/xblock/static/dist/openassessment-lms.js:314
 #: openassessment/xblock/static/js/openassessment-lms.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:57
@@ -289,13 +295,11 @@ msgstr "您的作答之狀態"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:424
 msgid "This response has not been saved."
 msgstr "作答尚未儲存。"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:429
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
@@ -303,19 +307,16 @@ msgstr "如果你沒有儲存或提交你的作答而離開這個頁面，你將
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:447
 msgid "Saving..."
 msgstr "儲存中"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
 msgid "This response has been saved but not submitted."
 msgstr "這一份作答已經儲存了，但仍未提交。"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:472
 msgid "Error"
 msgstr "錯誤"
 
@@ -410,7 +411,6 @@ msgstr "錯誤獲取不分級的回應數。"
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:531
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -493,7 +493,6 @@ msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.js:361
 #: openassessment/xblock/static/js/openassessment-lms.js:361
-#: openassessment/xblock/static/js/src/lms/oa_base.js:343
 msgid "Unable to load"
 msgstr "無法載入"
 
@@ -546,18 +545,23 @@ msgid "Not Selected"
 msgstr "未選取"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
 msgstr " 增加評分標準"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:102
 msgid ""
 "You have added a criterion. You will need to select an option for the "
-"criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr "您必須增加評分標準。您將會需要在評分練習步驟中選擇評分標準選項。請點選設定標識以完成此步驟。"
+"criterion in the Learner Training step. To do this, click the Assessment "
+"Steps tab."
+msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
@@ -599,13 +603,13 @@ msgstr "您已經刪除 一個標準。在評分練習中，該標準已經從�
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:383
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:392
 msgid "Warning"
 msgstr "警告"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:384
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:393
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
@@ -625,13 +629,13 @@ msgstr "下列檔案類型是不允許的："
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:167
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
 msgid "Couldn't Save This Assignment"
 msgstr "不能儲存這作業"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:169
 msgid "Please correct the outlined fields."
 msgstr "請更正系統顯示的欄位。"
 
@@ -640,6 +644,12 @@ msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
 msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
+msgstr "您必須增加評分標準。您將會需要在評分練習步驟中選擇評分標準選項。請點選設定標識以完成此步驟。"
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
 msgid ""
