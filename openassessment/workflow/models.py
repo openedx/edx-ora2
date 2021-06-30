@@ -731,9 +731,6 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         team_assessment_api = team_staff_step.api()
         team_assessment_api.on_init(team_submission_uuid)
 
-        team_workflow.status = TeamAssessmentWorkflow.STATUS.teams
-        team_workflow.save()
-
         return team_workflow
 
     @property

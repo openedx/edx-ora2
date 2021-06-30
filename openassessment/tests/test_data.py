@@ -912,8 +912,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'done': 0, 'cancelled': 0, 'teams': 0
         })
         self.assertEqual(data[team_item_id], {
-            'total': 2, 'training': 0, 'peer': 0, 'self': 0, 'staff': 0, 'waiting': 0,
-            'done': 0, 'cancelled': 0, 'teams': 2
+            'total': 2, 'training': 0, 'peer': 0, 'self': 0, 'staff': 0, 'waiting': 2,
+            'done': 0, 'cancelled': 0, 'teams': 0
         })
 
         data = OraAggregateData.collect_ora2_responses(COURSE_ID, ['staff', 'peer'])

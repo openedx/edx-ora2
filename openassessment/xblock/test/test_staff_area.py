@@ -759,7 +759,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
         self.assertEqual(total_submissions, 1)
         status_counts = self._parse_workflow_status_counts(status_counts)
-        self.assertEqual(status_counts['teams'], 1)
+        self.assertEqual(status_counts['waiting'], 1)
 
         # The staff area student context should not include a workflow cancellation
         _, context = xblock.get_student_info_path_and_context(MOCK_TEAM_MEMBER_STUDENT_IDS[0])
@@ -991,7 +991,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         status_counts, total_submissions = xblock.get_team_workflow_status_counts()
         self.assertEqual(total_submissions, 1)
         status_counts = self._parse_workflow_status_counts(status_counts)
-        self.assertEqual(status_counts['teams'], 1)
+        self.assertEqual(status_counts['waiting'], 1)
 
         # When I clear the team's state
         xblock.clear_student_state(
