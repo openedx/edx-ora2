@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==3.3.0
     # via -r requirements/base.in
-boto3==1.17.96
+boto3==1.17.105
     # via -r requirements/base.in
-botocore==1.20.96
+botocore==1.20.105
     # via
     #   boto3
     #   s3transfer
@@ -60,7 +60,7 @@ edx-django-utils==4.1.0
     #   edx-toggles
 edx-i18n-tools==0.5.3
     # via -r requirements/base.in
-edx-opaque-keys==2.2.1
+edx-opaque-keys==2.2.2
     # via -r requirements/base.in
 edx-submissions==3.2.4
     # via -r requirements/base.in
@@ -103,9 +103,9 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   xblock
-newrelic==6.4.1.158
+newrelic==6.4.3.160
     # via edx-django-utils
-packaging==20.9
+packaging==21.0
     # via bleach
 path.py==12.5.0
     # via
@@ -171,7 +171,7 @@ stevedore==3.3.0
     #   edx-opaque-keys
 text-unidecode==1.3
     # via python-slugify
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   botocore
     #   requests

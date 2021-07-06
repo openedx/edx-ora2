@@ -31,7 +31,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-packaging==20.9
+packaging==21.0
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -60,7 +60,7 @@ toml==0.10.2
     #   tox
 tox==3.23.1
     # via -r requirements/tox.txt
-urllib3==1.26.5
+urllib3==1.26.6
     # via requests
 virtualenv==20.4.7
     # via

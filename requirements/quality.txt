@@ -9,7 +9,7 @@ appdirs==1.4.4
     #   -r requirements/test.txt
     #   fs
     #   virtualenv
-astroid==2.5.6
+astroid==2.6.2
     # via
     #   pylint
     #   pylint-celery
@@ -32,7 +32,7 @@ aws-xray-sdk==2.8.0
     #   moto
 bleach==3.3.0
     # via -r requirements/test.txt
-boto3==1.17.96
+boto3==1.17.105
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -42,7 +42,7 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-botocore==1.20.96
+botocore==1.20.105
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -57,7 +57,7 @@ cffi==1.14.5
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.51.0
+cfn-lint==0.52.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -155,7 +155,7 @@ edx-i18n-tools==0.5.3
     # via -r requirements/test.txt
 edx-lint==5.0.0
     # via -r requirements/quality.in
-edx-opaque-keys==2.2.1
+edx-opaque-keys==2.2.2
     # via -r requirements/test.txt
 edx-submissions==3.2.4
     # via -r requirements/test.txt
@@ -163,7 +163,7 @@ edx-toggles==4.1.0
     # via -r requirements/test.txt
 factory-boy==3.2.0
     # via -r requirements/test.txt
-faker==8.8.1
+faker==8.9.1
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -200,7 +200,7 @@ idna==2.8
     #   -r requirements/test.txt
     #   moto
     #   requests
-isort==5.8.0
+isort==5.9.1
     # via pylint
 jinja2==3.0.1
     # via
@@ -277,11 +277,11 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==6.4.1.158
+newrelic==6.4.3.160
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-packaging==20.9
+packaging==21.0
     # via
     #   -r requirements/test.txt
     #   bleach
@@ -336,7 +336,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pylint==2.8.3
+pylint==2.9.3
     # via
     #   edx-lint
     #   pylint-celery
@@ -350,7 +350,7 @@ pyparsing==2.4.7
     # via
     #   -r requirements/test.txt
     #   packaging
-pyrsistent==0.17.3
+pyrsistent==0.18.0
     # via
     #   -r requirements/test.txt
     #   jsonschema
@@ -476,7 +476,7 @@ toml==0.10.2
     #   tox
 tox==3.23.1
     # via -r requirements/test.txt
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   -r requirements/test.txt
     #   botocore
