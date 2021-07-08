@@ -28,12 +28,6 @@ from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWor
 logger = logging.getLogger(__name__)
 
 
-def _log_5862(msg, *args, **kwargs):
-    """ Helper method for debugging EDUCATOR-5862"""
-    msg = '[EDUCATOR-5862]: ' + msg
-    logger.info(msg, *args, **kwargs)
-
-
 def _usernames_enabled():
     """
     Checks if toggle for deanonymized usernames in report enabled.
@@ -1178,7 +1172,7 @@ class OraDownloadData:
         logger.info("Beginning writing to ZIP file")
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                file_info_string = ( 
+                file_info_string = (
                     "Course Id: {course_id} | "
                     "Block Id: {block_id} | "
                     "Student Id: {student_id} | "
@@ -1236,16 +1230,30 @@ class OraDownloadData:
         """
         logger.info("[%s] collect_ora2_submission_files", course_id)
         all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
-        logger.info("[%s] Submission information loaded from submission API (len=%d)", course_id, len(all_submission_information))
+        logger.info(
+            "[%s] Submission information loaded from submission API (len=%d)",
+            course_id,
+            len(all_submission_information)
+        )
         all_ora_path_information = cls._map_ora_usage_keys_to_path_info(course_id)
         logger.info("[%s] Loaded ORA path info (len=%d)", course_id, len(all_ora_path_information))
         student_identifiers_map = cls._map_student_ids_to_path_ids(all_submission_information)
         logger.info("[%s] Loaded student identifiers (len=%d)", course_id, len(student_identifiers_map))
 
         for student, submission, _ in all_submission_information:
-            logger.info("[%s] Collecting files for %s, submission %s ", course_id, student['student_id'], submission.get('uuid'))
+            logger.info(
+                "[%s] Collecting files for %s, submission %s ",
+                course_id,
+                student['student_id'],
+                submission.get('uuid')
+            )
             raw_answer = submission.get('answer', dict())
-            logger.info("[%s] Parsing submission for %s, submission %s ", course_id, student['student_id'], submission.get('uuid'))
+            logger.info(
+                "[%s] Parsing submission for %s, submission %s ",
+                course_id,
+                student['student_id'],
+                submission.get('uuid')
+            )
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
             logger.info(
                 "[%s] Successfully parsed submission for %s, submission %s. (Text responses = %d, file uploads = %d)",
