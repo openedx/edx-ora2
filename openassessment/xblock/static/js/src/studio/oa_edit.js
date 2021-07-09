@@ -280,7 +280,24 @@ export class StudioView {
     const scheduleValid = this.scheduleView.validate();
     const rubricValid = this.rubricView.validate();
     const promptsValid = this.promptsView.validate();
+
+    // Add/remove validation warning icons from affected tabs
+    this.markTabAsInvalid('oa_settings_editor_wrapper', !settingsValid);
+    this.markTabAsInvalid('oa_assessment_steps_editor_wrapper', !assessmentsStepsValid);
+    this.markTabAsInvalid('oa_schedule_editor_wrapper', !scheduleValid);
+    this.markTabAsInvalid('oa_rubric_editor_wrapper', !rubricValid);
+    this.markTabAsInvalid('oa_prompt_editor_wrapper', !promptsValid);
+
     return settingsValid && assessmentsStepsValid && scheduleValid && rubricValid && promptsValid;
+  }
+
+  /**
+   * Given an aria controls target, add or remove validation warning styling.
+   *  value - true enables invalid styling, false removes invalid styling
+   * */
+  markTabAsInvalid(controlTarget, value = true) {
+    const tab = $(`[aria-controls='${controlTarget}']`, this.element);
+    tab.toggleClass('invalid', value);
   }
 
   /**
@@ -312,6 +329,13 @@ export class StudioView {
     this.scheduleView.clearValidationErrors();
     this.rubricView.clearValidationErrors();
     this.promptsView.clearValidationErrors();
+
+    // Remove validation indicators from tabs
+    this.markTabAsInvalid('oa_settings_editor_wrapper', false);
+    this.markTabAsInvalid('oa_assessment_steps_editor_wrapper', false);
+    this.markTabAsInvalid('oa_schedule_editor_wrapper', false);
+    this.markTabAsInvalid('oa_rubric_editor_wrapper', false);
+    this.markTabAsInvalid('oa_prompt_editor_wrapper', false);
   }
 }
 

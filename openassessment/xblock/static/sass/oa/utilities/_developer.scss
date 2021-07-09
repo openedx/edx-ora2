@@ -280,6 +280,16 @@
         border: 0;
         @include text-align(center);
 
+        /* For an invalid tab, drop a validation error icon in the button */
+        &.invalid {
+          a::before {
+            font-family: FontAwesome;
+            content: "\f071";
+            color: rgb(192, 172, 0);
+            padding-right: 8px;
+          }
+        }
+
         a {
           @include padding(8px, 0, 0, 0);
           width: 100%;
