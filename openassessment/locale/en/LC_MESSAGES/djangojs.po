@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"POT-Creation-Date: 2021-07-12 17:56-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -534,8 +534,23 @@ msgid "Not Selected"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:54
+#: openassessment/xblock/static/js/src/studio/oa_edit_prompts.js:35
+msgid "Prompt"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:43
+msgid "Rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:57
 msgid "Problem cloning rubric"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_schedule.js:31
+msgid "Schedule"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -605,27 +620,34 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_assessments_steps.js:21
+msgid "Assessment Steps"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:111
+msgid "Settings"
+msgstr ""
+
+#: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:91
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:90
 msgid "File types can not be empty."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
 #: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:101
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:100
 msgid "The following file types are not allowed: "
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:168
-msgid "Couldn't Save This Assignment"
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:172
+msgid "Save Unsuccessful"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
-#: openassessment/xblock/static/js/openassessment-studio.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:169
-msgid "Please correct the outlined fields."
+msgid "We've detected errors on the following tabs: "
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-studio.js:32
@@ -641,7 +663,19 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid "Couldn't Save This Assignment"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
+msgid "Please correct the outlined fields."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-studio.js:1
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
+msgstr ""
+
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:173
+msgid "ve detected errors on the following tabs: ${tabNames.join("
 msgstr ""
