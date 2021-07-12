@@ -21,7 +21,6 @@ Returns:
 * */
 export class EditSettingsView {
   constructor(element, assessmentViews, data) {
-    const self = this;
     this.settingsElement = element;
     this.assessmentViews = assessmentViews;
     this.data = data;
