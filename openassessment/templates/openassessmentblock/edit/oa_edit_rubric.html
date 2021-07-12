@@ -13,6 +13,9 @@
         <p class="openassessment_description">
             {% trans "Rubrics are made up of criteria, which usually contain one or more options. Each option has a point value. This template contains two sample criteria and their options. Replace the sample text with your own text. For more information, see the ORA documentation." %}
         </p>
+        {% if rubric_reuse_enabled %}
+            {% include "openassessmentblock/edit/oa_rubric_reuse.html" %}
+        {% endif %}
     </div>
 
     <ul id="openassessment_criterion_list" >

@@ -654,6 +654,94 @@
       display: block;
     }
 
+    // Rubric cloning section
+    #openassessment_rubric_clone {
+      @include rubric-reuse-jquery-ui;    
+      .ui-accordion-header {
+        padding: 5px;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 28px;
+
+        #rubric-reuse-collapse-icon::after {
+          @include float(right);
+          font-family: FontAwesome;
+          display: inline-block;
+          color: inherit;
+          padding: 0 5px;
+          content: "\f067";
+        }
+      }
+
+      .ui-accordion-header-active #rubric-reuse-collapse-icon::after {
+        content: "\f068";
+      }
+
+      .ui-accordion-header-icon {
+        display: none
+      }
+
+      .openassessment_rubric_clone_block{
+        padding: 8px 0px;
+        .no-select{
+          user-select: none
+        }
+      }
+
+      .ui-accordion-content {
+        overflow: visible;
+        
+        #openassessment_rubric_clone_form_container {
+          display: flex;
+
+          #openassessment_rubric_clone_input_container {
+            flex: 9;
+
+            #openassessment_rubric_clone_input {
+              padding: 6px;
+              width: 90%;
+              height: 40px;
+              vertical-align: middle;
+            }
+
+            .openassessment_clone_combobox {
+              position: relative;
+              display: inline-block;
+            }
+
+            .openassessment_clone_combobox_toggle {
+              vertical-align: middle;
+              font-family: FontAwesome;
+              margin-left: -1px;
+              padding: 6px;
+              height: 40px;
+
+              span {
+                padding: 0;
+              }
+            }
+          }
+          #openassessment_rubric_clone_button_container {
+            flex: 3;
+            
+            #openassessment_rubric_clone_button {
+              margin-top: 0;
+              float: left;
+            }
+          }
+        }
+
+        #openassessment_rubric_clone_alert {
+          background: #BBE6D7;
+          border: 1px solid #175B3C;
+          box-sizing: border-box;
+          width: 100%;
+          padding: 10px;
+          margin: 5px 0;
+        }
+      }
+    } 
+
     .openassessment_criterion {
 
       .openassessment_criterion_add_option {

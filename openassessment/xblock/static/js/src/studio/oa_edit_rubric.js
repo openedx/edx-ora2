@@ -2,7 +2,6 @@ import Container from './oa_container';
 import { RubricCriterion } from './oa_container_item';
 import { Fields } from './oa_edit_fields';
 import ValidationAlert from './oa_edit_validation_alert';
-
 /**
  Interface for editing rubric definitions.
 
@@ -25,7 +24,6 @@ export class EditRubricView {
     this.notifier = notifier;
     this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
-
     this.criteriaContainer = new Container(
       RubricCriterion, {
         containerElement: $('#openassessment_criterion_list', this.element).get(0),
@@ -37,6 +35,74 @@ export class EditRubricView {
       },
     );
     this.criteriaContainer.addEventListeners();
+    this.setupRubricReuse();
+  }
+
+  /**
+   * Sets up the UI for rubric cloning.
+   *
+   * Setup JQuery-UI Accordion dropdown panel, autocomplete input, autocomplete/combobox button.
+   * Load json representation of other course ORAs from rendered JSON
+   * Install click handler on the "Clone" button to submit request and display success banner.
+   */
+  setupRubricReuse() {
+    // If the section hasn't been rendered, rubric reuse isn't enabled, so return early
+    if ($('#openassessment_rubric_clone', this.element).size() === 0) {
+      return;
+    }
+    // Set up the accordion dropdown section
+    $('#openassessment_rubric_clone', this.element).accordion({
+      collapsible: true,
+      heightStyle: 'content',
+      icons: {
+        header: false,
+        activeHeader: false,
+      },
+    });
+    // Load the other_ora_data for the autocomplete
+    const otherOraData = $.parseJSON(
+      $('#openassessment_rubric_clone_other_ora_data', this.element).text(),
+    ).map((otherOra) => (otherOra.location));
+
+    // Setup the Autocomplete on the text input
+    this.rubricAutocomplete = $('#openassessment_rubric_clone_input', this.element).autocomplete({
+      delay: 0,
+      minLength: 0,
+      source: otherOraData,
+    });
+
+    // Setup the 'combobox' dropdown button. Based on https://jqueryui.com/autocomplete/#combobox
+    this.rubricReuseAutocompleteWasOpen = false;
+    $('.openassessment_clone_combobox_toggle', this.element)
+      .button()
+      .removeClass('ui-corner-all')
+      .addClass('custom-combobox-toggle ui-corner-right')
+      .on('mousedown', () => { this.handleRubricReuseComboboxButtonMousedown(); })
+      .on('click', () => { this.handleRubricReuseComboboxButtonClick(); });
+
+    // Setup click handler for the Clone button
+    $('#openassessment_rubric_clone_button', this.element)
+      .on('click', () => { this.handleRubricReuseCloneButtonClick(); });
+    this.rubricCloneAlert = $('#openassessment_rubric_clone_alert', this.element);
+  }
+
+  handleRubricReuseComboboxButtonMousedown() {
+    this.rubricReuseAutocompleteWasOpen = this.rubricAutocomplete.autocomplete('widget').is(':visible');
+  }
+
+  handleRubricReuseComboboxButtonClick() {
+    this.rubricAutocomplete.trigger('focus');
+    // Close if already visible
+    if (this.rubricReuseAutocompleteWasOpen) {
+      return;
+    }
+    // Pass empty string as value to search for, displaying all results
+    this.rubricAutocomplete.autocomplete('search', '');
+  }
+
+  handleRubricReuseCloneButtonClick() {
+    const blockId = $('#openassessment_rubric_clone_input', this.element).val();
+    this.cloneRubric(blockId);
   }
 
   /**
@@ -47,6 +113,7 @@ export class EditRubricView {
     this.server.cloneRubric(rubricLocation).done((rubricData) => {
       this.alert.hide();
       this.setRubric(rubricData);
+      this.displayRubricClonedMessage(rubricLocation);
     }).fail((errorMsg) => {
       this.alert.setMessage(gettext('Problem cloning rubric'), errorMsg);
       this.alert.show();
@@ -102,6 +169,32 @@ export class EditRubricView {
 
     this.feedbackPrompt('');
     this.feedback_default_text('');
+  }
+
+  /**
+  * Show the .openassessment_rubric_clone_alert message banner, fading it out if it already exists.
+  * args:
+  *   - block_id: The block which the rubric is being cloned
+  */
+  displayRubricClonedMessage(blockId) {
+    const view = this;
+    if (this.rubricCloneAlert.is(':visible')) {
+      this.rubricCloneAlert.fadeOut('fast', () => {
+        view.createNewRubricClonedAlert(blockId);
+      });
+    } else {
+      this.createNewRubricClonedAlert(blockId);
+    }
+  }
+
+  /**
+  * Helper method for displayRubricClonedMessage, sets text and displays the message banner
+  * args:
+  *   - blockId: The block which the rubric is being cloned
+  */
+  createNewRubricClonedAlert(blockId) {
+    $('#openassessment_rubric_clone_alert_block_id', this.rubricCloneAlert).text(blockId);
+    this.rubricCloneAlert.fadeIn('fast');
   }
 
   /**
