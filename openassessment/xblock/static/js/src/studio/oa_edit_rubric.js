@@ -39,6 +39,12 @@ export class EditRubricView {
     this.criteriaContainer.addEventListeners();
   }
 
+  // Expose tab name for error messaging
+  tabDisplayName = gettext('Rubric');
+
+  // Expose tab target to allow programatic linking to tab
+  tabTarget = 'oa_rubric_editor_wrapper';
+
   /**
    * Overwrite ORA rubric from existing rubric at location {rubricLocation}
    * @param {xblock-id} rubricLocation

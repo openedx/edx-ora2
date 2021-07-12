@@ -31,6 +31,12 @@ export class EditPromptsView {
     this.promptsContainer.addEventListeners();
   }
 
+  // Expose tab name for error messaging
+  tabDisplayName = gettext('Prompt');
+
+  // Expose tab target to allow programatic linking to tab
+  tabTarget = 'oa_prompt_editor_wrapper';
+
   /**
      Construct a list of prompts definitions from the editor UI.
 

@@ -108,6 +108,12 @@ export class EditSettingsView {
     this.onTeamsEnabledChange($('#openassessment_team_enabled_selector').val());
   }
 
+  // Expose tab name for error messaging
+  tabDisplayName = gettext('Settings');
+
+  // Expose tab target to allow programatic linking to tab
+  tabTarget = 'oa_settings_editor_wrapper';
+
   /**
    * When file upload type is changed, show the corresponding extensions that will be
    * allowed for upload

@@ -27,6 +27,12 @@ export class EditScheduleView {
     ).install();
   }
 
+  // Expose tab name for error messaging
+  tabDisplayName = gettext('Schedule');
+
+  // Expose tab target to allow programatic linking to tab
+  tabTarget = 'oa_schedule_editor_wrapper';
+
   /**
     Get or set the submission start date.
 

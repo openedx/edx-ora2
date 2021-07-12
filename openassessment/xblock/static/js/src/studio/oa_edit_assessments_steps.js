@@ -17,6 +17,12 @@ export class EditAssessmentsStepsView {
     this.initializeSortableAssessments();
   }
 
+  // Expose tab name for error messaging
+  tabDisplayName = gettext('Assessment Steps');
+
+  // Expose tab target to allow programatic linking to tab
+  tabTarget = 'oa_assessment_steps_editor_wrapper';
+
   /**
     Installs click listeners which initialize drag and drop functionality for assessment modules.
     * */
