@@ -161,12 +161,16 @@ export class StudioView {
     //
     // The `validate()` method calls `validate()` on any subviews,
     // so that each subview has the opportunity to validate
-    // its fields.
+    // its fields. It returns tabs which fail validation.
     this.clearValidationErrors();
-    if (!this.validate()) {
+    const tabsFailingValidation = this.validate();
+    this.markTabsWithValidationErrors(tabsFailingValidation);
+
+    if (tabsFailingValidation.length > 0) {
+      const tabNames = tabsFailingValidation.map(tab => tab.tabDisplayName);
       this.alert.setMessage(
-        gettext('Couldn\'t Save This Assignment'),
-        gettext('Please correct the outlined fields.'),
+        gettext('Save Unsuccessful'),
+        gettext(`We've detected errors on the following tabs: ${tabNames.join(', ')}`),
       ).show();
     } else {
       // At this point, we know that all fields are valid,
@@ -268,27 +272,36 @@ export class StudioView {
   }
 
   /**
-     Mark validation errors.
+     Perform validation on each view and determine views failing validation.
 
      Returns:
-     Boolean indicating whether the view is valid.
+     List of tabs failing validation or empty list
 
      * */
   validate() {
-    const settingsValid = this.settingsView.validate();
-    const assessmentsStepsValid = this.assessmentsStepsView.validate();
-    const scheduleValid = this.scheduleView.validate();
-    const rubricValid = this.rubricView.validate();
-    const promptsValid = this.promptsView.validate();
+    const tabsToValidate = [
+      this.promptsView,
+      this.rubricView,
+      this.scheduleView,
+      this.assessmentsStepsView,
+      this.settingsView,
+    ];
+    const tabsFailingValidation = [];
 
-    // Add/remove validation warning icons from affected tabs
-    this.markTabAsInvalid('oa_settings_editor_wrapper', !settingsValid);
-    this.markTabAsInvalid('oa_assessment_steps_editor_wrapper', !assessmentsStepsValid);
-    this.markTabAsInvalid('oa_schedule_editor_wrapper', !scheduleValid);
-    this.markTabAsInvalid('oa_rubric_editor_wrapper', !rubricValid);
-    this.markTabAsInvalid('oa_prompt_editor_wrapper', !promptsValid);
+    tabsToValidate.forEach((tab) => {
+      if (!tab.validate()) {
+        tabsFailingValidation.push(tab);
+      }
+    });
 
-    return settingsValid && assessmentsStepsValid && scheduleValid && rubricValid && promptsValid;
+    return tabsFailingValidation;
+  }
+
+  /** Given a list of tabs failing validation, mark a tab as invalid */
+  markTabsWithValidationErrors(tabsFailingValidation) {
+    tabsFailingValidation.forEach((tab) => {
+      this.markTabAsInvalid(tab.tabTarget);
+    });
   }
 
   /**
