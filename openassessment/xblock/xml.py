@@ -9,9 +9,9 @@ from uuid import uuid4 as uuid
 
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
+from lxml import etree
 import pytz
 
-import lxml.etree as etree
 from openassessment.xblock.data_conversion import update_assessments_format
 from openassessment.xblock.lms_mixin import GroupAccessDict
 

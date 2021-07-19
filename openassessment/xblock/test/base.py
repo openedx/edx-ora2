@@ -264,8 +264,7 @@ class XBlockHandlerTestCaseMixin:
             "parts": parts_list
         }
 
-        for key in kwargs:
-            event_data[key] = kwargs[key]
+        event_data.update(kwargs)
 
         self.assert_event_published(
             xblock, event_name, event_data

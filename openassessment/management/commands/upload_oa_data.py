@@ -96,12 +96,11 @@ class Command(BaseCommand):
         Returns:
             None
         """
-        output_streams = {
-            name: open(os.path.join(csv_dir, rel_path), 'w')
-            for name, rel_path in self.OUTPUT_CSV_PATHS.items()
-        }
-        csv_writer = CsvWriter(output_streams, self._progress_callback)
-        csv_writer.write_to_csv(course_id)
+        for name, rel_path in self.OUTPUT_CSV_PATHS.items():
+            with open(os.path.join(csv_dir, rel_path), 'w') as csv_file:
+                output_streams = { name: csv_file }
+                csv_writer = CsvWriter(output_streams, self._progress_callback)
+                csv_writer.write_to_csv(course_id)
 
     def _create_archive(self, dir_path):
         """

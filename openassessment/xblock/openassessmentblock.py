@@ -1207,7 +1207,6 @@ class OpenAssessmentBlock(MessageMixin,
 
         Returns:
             None
-
         """
         parts_list = []
         for part in assessment["parts"]:
@@ -1245,8 +1244,7 @@ class OpenAssessmentBlock(MessageMixin,
             "parts": parts_list
         }
 
-        for key in kwargs:
-            event_data[key] = kwargs[key]
+        event_data.update(kwargs)
 
         self.runtime.publish(
             self, event_name,

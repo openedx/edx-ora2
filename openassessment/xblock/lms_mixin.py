@@ -6,14 +6,14 @@ from xblock.fields import DateTime, Dict, Float, Scope, String
 
 class GroupAccessDict(Dict):
     """Special Dict class for serializing the group_access field"""
-    def from_json(self, access_dict):  # pylint: disable=arguments-differ
-        if access_dict is not None:
-            return {int(k): access_dict[k] for k in access_dict}
+    def from_json(self, value):
+        if value is not None:
+            return {int(k): value[k] for k in value}
         return None
 
-    def to_json(self, access_dict):  # pylint: disable=arguments-differ
-        if access_dict is not None:
-            return {str(k): access_dict[k] for k in access_dict}
+    def to_json(self, value):
+        if value is not None:
+            return {str(k): value[k] for k in value}
         return None
 
 
