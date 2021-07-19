@@ -98,7 +98,7 @@ class Command(BaseCommand):
         """
         for name, rel_path in self.OUTPUT_CSV_PATHS.items():
             with open(os.path.join(csv_dir, rel_path), 'w') as csv_file:
-                output_streams = { name: csv_file }
+                output_streams = {name: csv_file}
                 csv_writer = CsvWriter(output_streams, self._progress_callback)
                 csv_writer.write_to_csv(course_id)
 
