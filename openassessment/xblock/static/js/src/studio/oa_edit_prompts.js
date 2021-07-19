@@ -15,6 +15,8 @@ export class EditPromptsView {
   constructor(element, notifier) {
     this.element = element;
     this.editorElement = $(this.element).closest('#openassessment-editor');
+    this.tabElement = $('#oa_edit_prompt_tab');
+
     this.addRemoveEnabled = this.editorElement.attr('data-is-released') !== 'true';
 
     this.promptsContainer = new Container(
@@ -31,11 +33,9 @@ export class EditPromptsView {
     this.promptsContainer.addEventListeners();
   }
 
-  // Expose tab name for error messaging
-  tabDisplayName = gettext('Prompt');
-
-  // Expose tab target to allow programatic linking to tab
-  tabTarget = 'oa_prompt_editor_wrapper';
+  getTab() {
+    return this.tabElement;
+  }
 
   /**
      Construct a list of prompts definitions from the editor UI.

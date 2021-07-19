@@ -95,6 +95,15 @@ export class StudioView {
       $('#oa_basic_settings_editor', this.element).get(0), assessmentLookupDictionary, data,
     );
 
+    // list all views in tab order for easy iteration, e.g. validation
+    this.views = [
+      this.promptsView,
+      this.rubricView,
+      this.scheduleView,
+      this.assessmentsStepsView,
+      this.settingsView,
+    ];
+
     // Install the save and cancel buttons
     $('.openassessment_save_button', this.element).click($.proxy(this.save, this));
     $('.openassessment_cancel_button', this.element).click($.proxy(this.cancel, this));
@@ -163,11 +172,11 @@ export class StudioView {
     // so that each subview has the opportunity to validate
     // its fields. It returns tabs which fail validation.
     this.clearValidationErrors();
-    const tabsFailingValidation = this.validate();
-    this.markTabsWithValidationErrors(tabsFailingValidation);
+    const viewsFailingValidation = this.validate();
+    this.markTabsWithValidationErrors(viewsFailingValidation);
 
-    if (tabsFailingValidation.length > 0) {
-      const tabNames = tabsFailingValidation.map(tab => tab.tabDisplayName);
+    if (viewsFailingValidation.length > 0) {
+      const tabNames = viewsFailingValidation.map(view => view.getTab().text());
       this.alert.setMessage(
         gettext('Save Unsuccessful'),
         gettext(`We've detected errors on the following tabs: ${tabNames.join(', ')}`),
@@ -275,41 +284,34 @@ export class StudioView {
      Perform validation on each view and determine views failing validation.
 
      Returns:
-     List of tabs failing validation or empty list
+     List of views failing validation or empty list
 
      * */
   validate() {
-    const tabsToValidate = [
-      this.promptsView,
-      this.rubricView,
-      this.scheduleView,
-      this.assessmentsStepsView,
-      this.settingsView,
-    ];
-    const tabsFailingValidation = [];
+    const viewsFailingValidation = [];
 
-    tabsToValidate.forEach((tab) => {
-      if (!tab.validate()) {
-        tabsFailingValidation.push(tab);
+    this.views.forEach((view) => {
+      if (!view.validate()) {
+        viewsFailingValidation.push(view);
       }
     });
 
-    return tabsFailingValidation;
+    return viewsFailingValidation;
   }
 
-  /** Given a list of tabs failing validation, mark a tab as invalid */
-  markTabsWithValidationErrors(tabsFailingValidation) {
-    tabsFailingValidation.forEach((tab) => {
-      this.markTabAsInvalid(tab.tabTarget);
+  /** Given a list of views failing validation, mark their tabs as invalid */
+  markTabsWithValidationErrors(viewsFailingValidation) {
+    viewsFailingValidation.forEach((view) => {
+      const tab = view.getTab();
+      this.markTabAsInvalid(tab);
     });
   }
 
   /**
-   * Given an aria controls target, add or remove validation warning styling.
+   * Given a tab ID, add or remove validation warning styling.
    *  value - true enables invalid styling, false removes invalid styling
    * */
-  markTabAsInvalid(controlTarget, value = true) {
-    const tab = $(`[aria-controls='${controlTarget}']`, this.element);
+  markTabAsInvalid(tab, value = true) {
     tab.toggleClass('invalid', value);
   }
 
@@ -337,18 +339,10 @@ export class StudioView {
      Clear all validation errors from the UI.
      * */
   clearValidationErrors() {
-    this.settingsView.clearValidationErrors();
-    this.assessmentsStepsView.clearValidationErrors();
-    this.scheduleView.clearValidationErrors();
-    this.rubricView.clearValidationErrors();
-    this.promptsView.clearValidationErrors();
-
-    // Remove validation indicators from tabs
-    this.markTabAsInvalid('oa_settings_editor_wrapper', false);
-    this.markTabAsInvalid('oa_assessment_steps_editor_wrapper', false);
-    this.markTabAsInvalid('oa_schedule_editor_wrapper', false);
-    this.markTabAsInvalid('oa_rubric_editor_wrapper', false);
-    this.markTabAsInvalid('oa_prompt_editor_wrapper', false);
+    this.views.forEach((view) => {
+      view.clearValidationErrors();
+      this.markTabAsInvalid(view.getTab(), false);
+    });
   }
 }
 

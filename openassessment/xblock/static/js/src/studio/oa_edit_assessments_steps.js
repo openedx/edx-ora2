@@ -12,16 +12,15 @@ Returns:
 export class EditAssessmentsStepsView {
   constructor(element, assessmentViews) {
     this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
+    this.tabElement = $('#oa_edit_assessment_steps_tab');
     this.assessmentViews = assessmentViews;
 
     this.initializeSortableAssessments();
   }
 
-  // Expose tab name for error messaging
-  tabDisplayName = gettext('Assessment Steps');
-
-  // Expose tab target to allow programatic linking to tab
-  tabTarget = 'oa_assessment_steps_editor_wrapper';
+  getTab() {
+    return this.tabElement;
+  }
 
   /**
     Installs click listeners which initialize drag and drop functionality for assessment modules.

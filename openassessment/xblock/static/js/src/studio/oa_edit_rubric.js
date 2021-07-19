@@ -22,6 +22,8 @@ export class EditRubricView {
   constructor(element, notifier, server) {
     this.alert = new ValidationAlert();
     this.element = element;
+    this.tabElement = $('#oa_edit_rubric_tab');
+
     this.notifier = notifier;
     this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
@@ -39,11 +41,9 @@ export class EditRubricView {
     this.criteriaContainer.addEventListeners();
   }
 
-  // Expose tab name for error messaging
-  tabDisplayName = gettext('Rubric');
-
-  // Expose tab target to allow programatic linking to tab
-  tabTarget = 'oa_rubric_editor_wrapper';
+  getTab() {
+    return this.tabElement;
+  }
 
   /**
    * Overwrite ORA rubric from existing rubric at location {rubricLocation}

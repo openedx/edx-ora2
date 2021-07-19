@@ -12,6 +12,7 @@ Returns:
 export class EditScheduleView {
   constructor(element) {
     this.element = element;
+    this.tabElement = $('#oa_edit_schedule_tab');
 
     // Configure the date and time fields
     this.startDatetimeControl = new DatetimeControl(
@@ -27,11 +28,9 @@ export class EditScheduleView {
     ).install();
   }
 
-  // Expose tab name for error messaging
-  tabDisplayName = gettext('Schedule');
-
-  // Expose tab target to allow programatic linking to tab
-  tabTarget = 'oa_schedule_editor_wrapper';
+  getTab() {
+    return this.tabElement;
+  }
 
   /**
     Get or set the submission start date.

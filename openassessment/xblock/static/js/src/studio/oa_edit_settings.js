@@ -22,6 +22,7 @@ Returns:
 export class EditSettingsView {
   constructor(element, assessmentViews, data) {
     this.settingsElement = element;
+    this.tabElement = $('#oa_edit_settings_tab');
     this.assessmentViews = assessmentViews;
     this.data = data;
 
@@ -107,11 +108,9 @@ export class EditSettingsView {
     this.onTeamsEnabledChange($('#openassessment_team_enabled_selector').val());
   }
 
-  // Expose tab name for error messaging
-  tabDisplayName = gettext('Settings');
-
-  // Expose tab target to allow programatic linking to tab
-  tabTarget = 'oa_settings_editor_wrapper';
+  getTab() {
+    return this.tabElement;
+  }
 
   /**
    * When file upload type is changed, show the corresponding extensions that will be
