@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:56-0400\n"
+"POT-Creation-Date: 2021-07-19 13:20-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -602,24 +602,9 @@ msgid "Not Selected"
 msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_prompts.js
-msgid "Prompt"
-msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
-
-#: openassessment/xblock/static/dist/openassessment-studio.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js
-msgid "Rubric"
-msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
-
-#: openassessment/xblock/static/dist/openassessment-studio.js
 #: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js
 msgid "Problem cloning rubric"
 msgstr "Prößlém çlönïng rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
-
-#: openassessment/xblock/static/dist/openassessment-studio.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_schedule.js
-msgid "Schedule"
-msgstr "Sçhédülé Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
 #: openassessment/xblock/static/js/openassessment-studio.js
@@ -714,16 +699,6 @@ msgid ""
 msgstr ""
 "Çhängés tö stéps thät äré nöt séléçtéd äs pärt öf thé ässïgnmént wïll nöt ßé"
 " sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
-
-#: openassessment/xblock/static/dist/openassessment-studio.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_assessments_steps.js
-msgid "Assessment Steps"
-msgstr "Àsséssmént Stéps Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
-
-#: openassessment/xblock/static/dist/openassessment-studio.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js
-msgid "Settings"
-msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/xblock/static/dist/openassessment-studio.js
 #: openassessment/xblock/static/js/openassessment-studio.js
