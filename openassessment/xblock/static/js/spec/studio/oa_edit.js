@@ -281,8 +281,11 @@ describe("OpenAssessment.StudioView", function() {
     it("shows invalid tabs in the validation banner", function() {
         // Given some tabs with validation errors (rubric, and assessmentSteps)
         const invalidViews = [ view.rubricView, view.assessmentsStepsView];
+        const invalidViewNames = ['Rubric', 'Assessment steps'];
+
         const validViews = [view.promptsView, view.scheduleView, view.settingsView];
-    
+        const validViewNames = ['Prompt', 'Schedule', 'Settings'];
+
         invalidViews.forEach((invalidView) => {
             spyOn(invalidView, 'validate').and.returnValue(false);
         });
@@ -296,13 +299,13 @@ describe("OpenAssessment.StudioView", function() {
         const alertMessage = $('#openassessment_validation_alert .openassessment_alert_message');
 
         // Invalid tabs are listed in the validation alert message
-        invalidViews.forEach((invalidView) => {
-            expect(alertMessage.text()).toContain(invalidView.tabDisplayName)
+        invalidViewNames.forEach((viewName) => {
+            expect(alertMessage.text()).toContain(viewName)
         });
 
         // Valid tabs are *not* listed
-        validViews.forEach((validView) => {
-            expect(alertMessage.text()).not.toContain(validView.tabDisplayName)
+        validViewNames.forEach((viewName) => {
+            expect(alertMessage.text()).not.toContain(viewName)
         });
     });
 });
