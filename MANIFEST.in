@@ -2,6 +2,7 @@ include LICENSE
 include AUTHORS
 include README.rst
 include setup.cfg
+include openassessment/xblock/static/dist/manifest.json
 include openassessment/xblock/static/dist/*.js
 include openassessment/xblock/static/dist/*.css
 include openassessment/xblock/static/css/*.css
