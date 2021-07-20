@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-appdirs==1.4.4
+backports.entry-points-selectable==1.1.0
     # via virtualenv
 distlib==0.3.2
     # via virtualenv
@@ -12,8 +12,10 @@ filelock==3.0.12
     # via
     #   tox
     #   virtualenv
-packaging==20.9
+packaging==21.0
     # via tox
+platformdirs==2.0.2
+    # via virtualenv
 pluggy==0.13.1
     # via tox
 py==1.10.0
@@ -26,7 +28,7 @@ six==1.16.0
     #   virtualenv
 toml==0.10.2
     # via tox
-tox==3.23.1
+tox==3.24.0
     # via -r requirements/tox.in
-virtualenv==20.4.7
+virtualenv==20.6.0
     # via tox
