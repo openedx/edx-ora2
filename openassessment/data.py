@@ -1012,11 +1012,17 @@ class OraDownloadData:
         # TODO: (AU-24) This seems like it should be used. Should this be in the filter?
         # pylint: disable=unused-variable
         student_ids = [item[0]["student_id"] for item in all_submission_information]
-
+        if not student_ids:
+            return
+        course_id = all_submission_information[0][0]['course_id']
+        logger.info("[%s] Getting user model", course_id)
         User = get_user_model()
 
+        logger.info("[%s] Loading users", course_id)
         users = _use_read_replica(
-            User.objects.filter()
+            User.objects.filter(
+                anonymoususerid__anonymous_user_id__in=student_ids,
+            )
             .annotate(
                 student_id=F("anonymoususerid__anonymous_user_id"),
                 path_id=Coalesce(
@@ -1036,6 +1042,7 @@ class OraDownloadData:
             .values("student_id", "path_id")
         )
 
+        logger.info("[%s] Loaded %d users", course_id, users.count())
         return {user["student_id"]: user["path_id"] for user in users}
 
     @classmethod
