@@ -1012,11 +1012,17 @@ class OraDownloadData:
         # TODO: (AU-24) This seems like it should be used. Should this be in the filter?
         # pylint: disable=unused-variable
         student_ids = [item[0]["student_id"] for item in all_submission_information]
-
+        if not student_ids:
+            return {}
+        course_id = all_submission_information[0][0]['course_id']
+        logger.info("[%s] Getting user model", course_id)
         User = get_user_model()
 
+        logger.info("[%s] Loading users", course_id)
         users = _use_read_replica(
-            User.objects.filter()
+            User.objects.filter(
+                anonymoususerid__anonymous_user_id__in=student_ids,
+            )
             .annotate(
                 student_id=F("anonymoususerid__anonymous_user_id"),
                 path_id=Coalesce(
@@ -1036,6 +1042,7 @@ class OraDownloadData:
             .values("student_id", "path_id")
         )
 
+        logger.info("[%s] Loaded %d users", course_id, users.count())
         return {user["student_id"]: user["path_id"] for user in users}
 
     @classmethod
@@ -1134,6 +1141,7 @@ class OraDownloadData:
             original_filename
         )
 
+        logger.info("Successfully loaded submission filepath for %s", student_id)
         return os.path.join(directory_name, submission_filename)
 
     @classmethod
@@ -1168,8 +1176,26 @@ class OraDownloadData:
         csvwriter = csv.DictWriter(csv_output_buffer, cls.SUBMISSIONS_CSV_HEADER, extrasaction='ignore')
         csvwriter.writeheader()
 
+        logger.info("Beginning writing to ZIP file")
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
+                file_info_string = (
+                    "Course Id: {course_id} | "
+                    "Block Id: {block_id} | "
+                    "Student Id: {student_id} | "
+                    "Key: {file_key} | "
+                    "Name: {file_name} | "
+                    "Type: {file_type}"
+                ).format(
+                    course_id=file_data['course_id'],
+                    block_id=file_data['block_id'],
+                    student_id=file_data['student_id'],
+                    file_key=file_data['key'],
+                    file_name=file_data['name'],
+                    file_type=file_data['type'],
+                )
+
+                logger.info("Processing file %s", file_info_string)
                 key = file_data['key']
                 file_path = file_data['file_path']
                 try:
@@ -1184,22 +1210,11 @@ class OraDownloadData:
                     # TODO: (EDUCATOR-5777) should we create a {file_path}.error.txt
                     # to indicate the file error more clearly?
                     logger.warning(
-                        'File for submission could not be downloaded for ORA submission archive.\n'
-                        'Full detail:'
-                        '\n\tCourse Id: %s'
-                        '\n\tBlock Id: %s'
-                        '\n\tStudent Id: %s'
-                        '\n\tKey: %s'
-                        '\n\tName: %s'
-                        '\n\tType: %s',
-                        file_data['course_id'],
-                        file_data['block_id'],
-                        file_data['student_id'],
-                        file_data['key'],
-                        file_data['name'],
-                        file_data['type'],
+                        'File for submission could not be downloaded for ORA submission archive. %s',
+                        file_info_string
                     )
                 else:
+                    logger.info("File found. Writing to zip file. %s", file_info_string)
                     file_found = True
                     zip_file.writestr(file_path, file_content)
                 finally:
@@ -1211,7 +1226,7 @@ class OraDownloadData:
             )
 
         file.seek(0)
-
+        logger.info("Completed writing zip file.")
         return True
 
     @classmethod
@@ -1220,15 +1235,50 @@ class OraDownloadData:
         Generator, that yields dictionaries with information about submission
         attachment or answer text.
         """
-
+        logger.info("[%s] collect_ora2_submission_files", course_id)
         all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
+        logger.info(
+            "[%s] Submission information loaded from submission API (len=%d)",
+            course_id,
+            len(all_submission_information)
+        )
         all_ora_path_information = cls._map_ora_usage_keys_to_path_info(course_id)
+        logger.info("[%s] Loaded ORA path info (len=%d)", course_id, len(all_ora_path_information))
         student_identifiers_map = cls._map_student_ids_to_path_ids(all_submission_information)
+        logger.info("[%s] Loaded student identifiers (len=%d)", course_id, len(student_identifiers_map))
 
         for student, submission, _ in all_submission_information:
+            logger.info(
+                "[%s] Collecting files for %s, submission %s ",
+                course_id,
+                student['student_id'],
+                submission.get('uuid')
+            )
             raw_answer = submission.get('answer', dict())
+            logger.info(
+                "[%s] Parsing submission for %s, submission %s ",
+                course_id,
+                student['student_id'],
+                submission.get('uuid')
+            )
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
-            for uploaded_file in answer.get_file_uploads():
+            logger.info(
+                "[%s] Successfully parsed submission for %s, submission %s. (Text responses = %d, file uploads = %d)",
+                course_id,
+                student['student_id'],
+                submission.get('uuid'),
+                len(answer.get_text_responses()),
+                len(answer.get_file_uploads()),
+            )
+            for index, uploaded_file in enumerate(answer.get_file_uploads()):
+                logger.info(
+                    "[%s] %s, %s, file %d",
+                    course_id,
+                    student['student_id'],
+                    submission.get('uuid'),
+                    index,
+                )
+
                 yield {
                     'type': cls.ATTACHMENT,
                     'course_id': course_id,
@@ -1247,6 +1297,13 @@ class OraDownloadData:
 
             # collecting submission answer texts
             for index, text_response in enumerate(answer.get_text_responses()):
+                logger.info(
+                    "[%s] %s, %s, text prompt %d",
+                    course_id,
+                    student['student_id'],
+                    submission.get('uuid'),
+                    index,
+                )
                 file_name = f'prompt_{index}.txt'
 
                 yield {
