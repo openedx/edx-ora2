@@ -1,4 +1,5 @@
 import Rubric from './oa_rubric';
+import ConfirmationAlert from './oa_confirmation_alert';
 
 /**
  * Interface for staff area view.
@@ -156,12 +157,6 @@ export class StaffAreaView {
      * so we want to notify the grader.
      */
     confirmSubmitGradeForTeam() {
-      const msg = gettext(
-        'This grade will be applied to all members of the team. '
-            + 'Do you want to continue?',
-      );
-
-      return window.confirm(msg);
     }
 
     /**
@@ -222,7 +217,28 @@ export class StaffAreaView {
                 eventObject.preventDefault();
 
                 // team submissions get a warning prompt
-                if (teamSubmissionEnabled && !view.confirmSubmitGradeForTeam()) { return; }
+
+                if (teamSubmissionEnabled) {
+                  const msg = gettext(
+                    'This grade will be applied to all members of the team. '
+                        + 'Do you want to continue?',
+                  );
+                  console.log(view);
+                  console.log(view.confirmDialog);
+                  view.confirmDialog.confirm(
+                    gettext("Confirm Grade Team Submission"),
+                    msg,
+                    () => {
+                      view.submitStaffGrade(
+                        submissionID,
+                        rubric,
+                        $staffGradeTab,
+                        $(eventObject.currentTarget).hasClass('continue_grading--action')
+                    )},
+                    () => {}
+                  )
+                  return;
+                }
 
                 view.submitStaffGrade(submissionID, rubric, $staffGradeTab,
                   $(eventObject.currentTarget).hasClass('continue_grading--action'));
@@ -405,6 +421,7 @@ export class StaffAreaView {
           }
         },
       );
+      view.confirmDialog = new ConfirmationAlert($staffArea.find('.openassessment__staff-area-dialog-confirm'));
     }
 
     /**

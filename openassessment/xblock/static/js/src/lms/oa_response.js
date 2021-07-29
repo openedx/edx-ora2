@@ -1,5 +1,6 @@
 import DateTimeFactory from './oa_datefactory';
 import Rubric from './oa_rubric';
+import ConfirmationAlert from './oa_confirmation_alert';
 
 /**
  Interface for response (submission) view.
@@ -29,7 +30,6 @@ export class ResponseView {
     MAX_FILES_MB = 500;
 
     UNSAVED_WARNING_KEY = 'learner-response';
-
     constructor(element, server, fileUploader, responseEditorLoader, baseView, data) {
       this.element = element;
       this.server = server;
@@ -126,7 +126,7 @@ export class ResponseView {
         (eventObject) => {
           // Override default form submission
           eventObject.preventDefault();
-          view.submit();
+          view.handleSubmitClicked();
         },
       );
 
@@ -155,7 +155,10 @@ export class ResponseView {
       );
 
       // Install click handlers for delete file buttons.
-      sel.find('.delete__uploaded__file').click(this.handleDeleteFileClick());
+      sel.find('.delete__uploaded__file').click((eventObject) => {
+        eventObject.preventDefault();
+        view.handleDeleteFileClick(eventObject.target);
+      });
 
       // Install a click handler to close the text response warning
       sel.find('#team_text_response_warning_closebtn').click(
@@ -164,15 +167,7 @@ export class ResponseView {
           sel.find('#team_text_response_warning').remove();
         },
       );
-    }
-
-    handleDeleteFileClick() {
-      const view = this;
-      return function (eventObject) {
-        eventObject.preventDefault();
-        const filenum = $(eventObject.target).attr('filenum');
-        view.removeUploadedFile(filenum);
-      };
+      this.confirmationDialog = new ConfirmationAlert(sel.find('.step--response__dialog-confirm'));
     }
 
     /**
@@ -480,21 +475,32 @@ export class ResponseView {
     }
 
     /**
-     Send a response submission to the server and update the view.
+     Handler for the submit button
      * */
-    submit() {
+    handleSubmitClicked() {
       // Immediately disable the submit button to prevent multiple submission
       this.submitEnabled(false);
 
       // Block submit if a learner has files staged for upload
       if (this.hasPendingUploadFiles()) { return; }
 
-      // Learner can cancel submission, re-enables submit button
-      if (!this.confirmSubmission()) {
-        this.submitEnabled(true);
-        return;
-      }
+      const view = this;
+      const title = gettext("Confirm Submit Response");
+      // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
+      // eslint-disable-next-line max-len
+      const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
+      this.confirmationDialog.confirm(
+        title,
+        msg,
+        () => { view.submit(); },
+        () => { view.submitEnabled(true); }
+      );
+    }
 
+    /**
+     Send a response submission to the server and update the view.
+     * */
+    submit() {
       const submission = this.response();
       this.baseView.toggleActionError('response', null);
 
@@ -530,20 +536,6 @@ export class ResponseView {
       // Disable the "unsaved changes" warning if the user
       // tries to navigate to another page.
       baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
-    }
-
-    /**
-     Make the user confirm before submitting a response.
-
-     Returns:
-     * true if the user confirms the submission
-     * false if the user cancels the submission
-     * */
-    confirmSubmission() {
-      // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-      // eslint-disable-next-line max-len
-      const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
-      return window.confirm(msg);
     }
 
     /**
@@ -768,27 +760,42 @@ export class ResponseView {
    }
 
    /**
+    * Handler for file delete button 
+    */
+   handleDeleteFileClick(target) {
+    const view = this;
+    const filenum = $(target).attr('filenum');
+    this.confirmationDialog.confirm(
+      gettext('Confirm Delete Uploaded File'),
+      this.getConfirmRemoveUploadedFileMessage(filenum),
+      () => { view.removeUploadedFile(filenum); },
+      () => {}
+    );
+  }
+
+   /**
      Remove a previously uploaded file.
 
      */
    removeUploadedFile(filenum) {
-     if (this.confirmRemoveUploadedFile(filenum)) {
-       this.server.removeUploadedFile(filenum).done(() => {
-         const sel = $('.step--response', this.element);
-         const block = sel.find(`.submission__answer__file__block__${filenum}`);
-         block.html('');
-         block.prop('deleted', true);
-         this.checkSubmissionAbility();
-       }).fail((errMsg) => {
-         this.baseView.toggleActionError('delete', errMsg);
-       });
-     }
+      this.server.removeUploadedFile(filenum).done(() => {
+        const sel = $('.step--response', this.element);
+        const block = sel.find(`.submission__answer__file__block__${filenum}`);
+        block.html('');
+        block.prop('deleted', true);
+        this.checkSubmissionAbility();
+      }).fail((errMsg) => {
+        this.baseView.toggleActionError('delete', errMsg);
+      });
    }
 
-   confirmRemoveUploadedFile(filenum) {
+   /**
+   * Build the confirm delete message for a file
+   */
+   getConfirmRemoveUploadedFileMessage(filenum) {
      let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
      msg += this.getFileNameAndDescription(filenum);
-     return window.confirm(msg);
+     return msg
    }
 
    /**
@@ -947,7 +954,10 @@ export class ResponseView {
        button.text('Delete File');
        button.addClass('delete__uploaded__file');
        button.attr('filenum', filenum);
-       button.click(view.handleDeleteFileClick());
+       button.click((eventObject) => {
+        eventObject.preventDefault();
+        view.handleDeleteFileClick(eventObject.target);
+      });
        button.appendTo(fileBlock);
 
        return url;
