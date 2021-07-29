@@ -85,17 +85,6 @@ This is required if there were any JS changes:
 - from local directory (not in lms shell)
 - ``npm run build``
 
-Hot reload JS
-------------
-This is required if there were any JS changes:
-
-- from local directory (not in lms shell)
-- ``npm run start`` to start dev server
-  - If there is port conflict, change PORT in ``.env.development``
-- from devstack directory (not in lms shell)
-- ``make lms-restart studio-restart``
-  - **NOTE**: cms does not support hot reload at the moment
-
 Minifying css
 -----------------
 This is required if there were any scss changes:
@@ -119,15 +108,6 @@ Debugging with PDB
 The simplest way to debug ORA2 code is with PDB - Python's built in debugger. 
 One caveat: Since ORA2 has code that executes either in studio or lms context, one must be attached to the corret shell 
 in order for the breakpoints to be hit.
-
-Debugging JavaScript
-------------------
-For debugging JS in Devstack, first follow the instructions for "Hot Reload JS". This enables source maps and allows for placing breakpoints in source-mapped files from the browser dev tools.
-
-  - Locate code by browsing to ``webpack:///./openassessment/xblock/static/js/src/``. 
-    - **NOTE** The path should be within ``iframe`` for ``lms``.
-    - **TIP** Use ``CTRL + P`` or ``Command + P`` to find the file through chrome dev tools.
-  - breakpoints should toggle with hot-reloading.
 
 Other Resources
 ---------------

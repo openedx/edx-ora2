@@ -1,3 +1,6 @@
+process.env.BABEL_ENV = 'development';
+process.env.NODE_ENV = 'development';
+
 const { createConfig } = require('@edx/frontend-build');
 const { mergeWithRules } = require('webpack-merge');
 
@@ -7,11 +10,9 @@ const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PostCssAutoprefixerPlugin = require('autoprefixer');
 const CssNano = require('cssnano');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 // Get base config from edx-platform
-let config = createConfig('webpack-dev');
+let config = createConfig('webpack-prod');
 
 // Modify CSS processing rules (remove PostCssRtlPlugin)
 const modifiedCssRule = {
@@ -79,8 +80,6 @@ Object.assign(config, {
   },
   optimization: {},
   plugins: [
-    // Cleans the dist directory before each build
-    new CleanWebpackPlugin(),
     new Dotenv({
       path: path.resolve(process.cwd(), '.env'),
       systemvars: true,
@@ -91,17 +90,11 @@ Object.assign(config, {
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    new WebpackManifestPlugin({
-      seed: {
-        is_dev_server: process.env.WEBPACK_DEV_SERVER || false,
-        base_url: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/` : '/static/dist/',
-      },
-      writeToFileEmit: true,
-    }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 });
 
-config.resolve.modules = ['node_modules', path.resolve(__dirname, 'openassessment/xblock/static/js/src')];
+config.resolve.modules = ['node_modules'].concat(
+  path.resolve(__dirname, 'openassessment/xblock/static/js/src'),
+);
 
 module.exports = config;
