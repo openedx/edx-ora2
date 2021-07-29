@@ -82,6 +82,7 @@
 @import 'oa/elements/staff';                   // open assessment staff-centric UI
 @import 'oa/views/oa-base';                    // open assessment base view
 @import 'oa/views/oa-course-items-listing';    // open response assessment tab for instructor dashboard
+@import 'oa/elements/confirm';                 // rubric reuse jquery-ui theming mixin
 
 // openassessment: contextual
 @import 'oa/contexts/ie';                      // open assessment-specific Internet Explorer-specific styling
