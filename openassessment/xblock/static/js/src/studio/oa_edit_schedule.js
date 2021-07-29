@@ -10,9 +10,11 @@ Returns:
 
 * */
 export class EditScheduleView {
-  constructor(element) {
+  constructor(element, assessmentViews) {
     this.element = element;
     this.tabElement = $('#oa_edit_schedule_tab');
+
+    this.assessmentViews = assessmentViews;
 
     // Configure the date and time fields
     this.startDatetimeControl = new DatetimeControl(
@@ -76,6 +78,20 @@ export class EditScheduleView {
     isValid = (this.startDatetimeControl.validate() && isValid);
     isValid = (this.dueDatetimeControl.validate() && isValid);
 
+    // Validate assessment dates
+    const peerStep = this.assessmentViews.oa_peer_assessment_editor;
+    const selfStep = this.assessmentViews.oa_self_assessment_editor;
+
+    if (peerStep.isEnabled()) {
+      isValid = peerStep.startDatetimeControl.validate() && isValid;
+      isValid = peerStep.dueDatetimeControl.validate() && isValid;
+    }
+
+    if (selfStep.isEnabled()) {
+      isValid = selfStep.startDatetimeControl.validate() && isValid;
+      isValid = selfStep.dueDatetimeControl.validate() && isValid;
+    }
+
     return isValid;
   }
 
@@ -97,6 +113,23 @@ export class EditScheduleView {
       errors.push('Submission due is invalid');
     }
 
+    // Validate assessment step dates
+    const peerStep = this.assessmentViews.oa_peer_assessment_editor;
+    const selfStep = this.assessmentViews.oa_self_assessment_editor;
+
+    if (peerStep.startDatetimeControl.validationErrors().length > 0) {
+      errors.push('Peer assessment start is invalid');
+    }
+    if (peerStep.dueDatetimeControl.validationErrors().length > 0) {
+      errors.push('Peer assessment due is invalid');
+    }
+
+    if (selfStep.startDatetimeControl.validationErrors().length > 0) {
+      errors.push('Self assessment start is invalid');
+    }
+    if (selfStep.dueDatetimeControl.validationErrors().length > 0) {
+      errors.push('Self assessment due is invalid');
+    }
     return errors;
   }
 
@@ -106,6 +139,15 @@ export class EditScheduleView {
   clearValidationErrors() {
     this.startDatetimeControl.clearValidationErrors();
     this.dueDatetimeControl.clearValidationErrors();
+
+    const peerStep = this.assessmentViews.oa_peer_assessment_editor;
+    const selfStep = this.assessmentViews.oa_self_assessment_editor;
+
+    peerStep.startDatetimeControl.clearValidationErrors();
+    peerStep.dueDatetimeControl.clearValidationErrors();
+
+    selfStep.startDatetimeControl.clearValidationErrors();
+    selfStep.dueDatetimeControl.clearValidationErrors();
   }
 }
 

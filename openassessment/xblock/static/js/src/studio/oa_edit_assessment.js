@@ -38,7 +38,7 @@ export class EditPeerAssessmentView {
       { min: 0, max: 99 },
     );
 
-    // Configure the toggle checkbox to enable/disable this assessment
+    // Configure the toggle checkbox to enable/disable this assessment and show schedules
     new ToggleControl(
       $('#include_peer_assessment', this.element),
       [
@@ -209,11 +209,9 @@ export class EditPeerAssessmentView {
 
      * */
   validate() {
-    const startValid = this.startDatetimeControl.validate();
-    const dueValid = this.dueDatetimeControl.validate();
     const mustGradeValid = this.mustGradeField.validate();
     const mustBeGradedByValid = this.mustBeGradedByField.validate();
-    return startValid && dueValid && mustGradeValid && mustBeGradedByValid;
+    return mustGradeValid && mustBeGradedByValid;
   }
 
   /**
@@ -226,12 +224,6 @@ export class EditPeerAssessmentView {
      * */
   validationErrors() {
     const errors = [];
-    if (this.startDatetimeControl.validationErrors().length > 0) {
-      errors.push('Peer assessment start is invalid');
-    }
-    if (this.dueDatetimeControl.validationErrors().length > 0) {
-      errors.push('Peer assessment due is invalid');
-    }
     if (this.mustGradeField.validationErrors().length > 0) {
       errors.push('Peer assessment must grade is invalid');
     }
@@ -245,8 +237,6 @@ export class EditPeerAssessmentView {
      Clear all validation errors from the UI.
      * */
   clearValidationErrors() {
-    this.startDatetimeControl.clearValidationErrors();
-    this.dueDatetimeControl.clearValidationErrors();
     this.mustGradeField.clearValidationErrors();
     this.mustBeGradedByField.clearValidationErrors();
   }
@@ -380,16 +370,14 @@ export class EditSelfAssessmentView {
   }
 
   /**
-     Mark validation errors.
+     Mark validation errors. Always true for self assessment.
 
      Returns:
      Boolean indicating whether the view is valid.
 
      * */
   validate() {
-    const startValid = this.startDatetimeControl.validate();
-    const dueValid = this.dueDatetimeControl.validate();
-    return startValid && dueValid;
+    return true;
   }
 
   /**
@@ -401,22 +389,14 @@ export class EditSelfAssessmentView {
 
      * */
   validationErrors() {
-    const errors = [];
-    if (this.startDatetimeControl.validationErrors().length > 0) {
-      errors.push('Self assessment start is invalid');
-    }
-    if (this.dueDatetimeControl.validationErrors().length > 0) {
-      errors.push('Self assessment due is invalid');
-    }
-    return errors;
+    return [];
   }
 
   /**
      Clear all validation errors from the UI.
      * */
   clearValidationErrors() {
-    this.startDatetimeControl.clearValidationErrors();
-    this.dueDatetimeControl.clearValidationErrors();
+    // nothing to clear
   }
 }
 

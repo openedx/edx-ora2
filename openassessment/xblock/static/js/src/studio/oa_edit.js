@@ -62,10 +62,6 @@ export class StudioView {
       this.server,
     );
 
-    this.scheduleView = new EditScheduleView(
-      $('#oa_schedule_editor_wrapper', this.element).get(0),
-    );
-
     // Initialize the settings and assessments steps tab views
     const staffAssessmentView = new EditStaffAssessmentView(
       $('#oa_staff_assessment_editor', this.element).get(0),
@@ -93,6 +89,11 @@ export class StudioView {
 
     this.settingsView = new EditSettingsView(
       $('#oa_basic_settings_editor', this.element).get(0), assessmentLookupDictionary, data,
+    );
+
+    // Initialize the schedule tab
+    this.scheduleView = new EditScheduleView(
+      $('#oa_schedule_editor_wrapper', this.element).get(0), assessmentLookupDictionary,
     );
 
     // list all views in tab order for easy iteration, e.g. validation
