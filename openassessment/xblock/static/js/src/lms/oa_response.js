@@ -960,7 +960,10 @@ export class ResponseView {
        button.text('Delete File');
        button.addClass('delete__uploaded__file');
        button.attr('filenum', filenum);
-       button.click(view.handleDeleteFileClick());
+       button.click((eventObject) => {
+        eventObject.preventDefault();
+        view.handleDeleteFileClick(eventObject.target);
+      });
        button.appendTo(fileBlock);
 
        return url;
