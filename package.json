@@ -1,6 +1,6 @@
 {
   "name": "edx-ora2",
-  "version": "3.6.12",
+  "version": "3.6.11",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
     "@edx/frontend-build": "^5.6.0",
@@ -39,13 +39,10 @@
     "karma-webpack": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.14",
     "sinon": "^7.5.0",
-    "webpack": "^4.44.2",
-    "webpack-manifest-plugin": "^3.1.1"
+    "webpack": "^4.44.2"
   },
   "scripts": {
     "build": "fedx-scripts webpack -p",
-    "dev": "fedx-scripts webpack --config webpack.dev.config.js",
-    "start": "fedx-scripts webpack-dev-server --progress",
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage",
     "lint": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/",
     "lint-fix": "fedx-scripts eslint --ext .jsx,.js openassessment/xblock/static/js/src/ --fix"

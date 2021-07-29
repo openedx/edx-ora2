@@ -47,7 +47,6 @@ from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTemplatesMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
-from openassessment.xblock.load_static import LoadStatic
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -671,17 +670,17 @@ class OpenAssessmentBlock(MessageMixin,
 
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
-            css_url = LoadStatic.get_url("openassessment-rtl.css")
+            css_url = "static/dist/openassessment-rtl.css"
         else:
-            css_url = LoadStatic.get_url("openassessment-ltr.css")
+            css_url = "static/dist/openassessment-ltr.css"
 
         # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
         for css in additional_css:
-            fragment.add_css_url(css)
-        fragment.add_css_url(css_url)
+            fragment.add_css(load(css))
+        fragment.add_css(load(css_url))
 
         # minified additional_js should be already included in 'make javascript'
-        fragment.add_javascript_url(LoadStatic.get_url("openassessment-lms.js"))
+        fragment.add_javascript(load("static/dist/openassessment-lms.js"))
 
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,

@@ -7,6 +7,8 @@ import copy
 import logging
 from uuid import uuid4
 
+import pkg_resources
+
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy
 
@@ -24,7 +26,6 @@ from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
-from openassessment.xblock.load_static import LoadStatic
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -86,7 +87,9 @@ class StudioMixin:
         ).render(self.editor_context())
         fragment = Fragment(rendered_template)
 
-        fragment.add_javascript_url(LoadStatic.get_url('openassessment-studio.js'))
+        # TODO: switch to add_javascript_url once XBlock resources are loaded from the CDN
+        js_bytes = pkg_resources.resource_string(__name__, "static/dist/openassessment-studio.js")
+        fragment.add_javascript(js_bytes.decode('utf-8'))
 
         js_context_dict = {
             "ALLOWED_IMAGE_EXTENSIONS": self.ALLOWED_IMAGE_EXTENSIONS,

@@ -2,19 +2,17 @@
 
 from django.conf import settings
 
-from openassessment.xblock.load_static import LoadStatic
-
 
 external_editors = getattr(settings, 'ORA_AVAILABLE_EDITORS', {})
 
 default_editors = {
     'text': {
         'display_name': 'Simple Text Editor',
-        'js': [LoadStatic.get_url('openassessment-editor-textarea.js')],
+        'js': ['/xblock/resource/openassessment/static/js/openassessment-editor-textarea.js'],
     },
     'tinymce': {
         'display_name': 'WYSIWYG Editor',
-        'js': [LoadStatic.get_url('openassessment-editor-tinymce.js')],
+        'js': ['/xblock/resource/openassessment/static/js/openassessment-editor-tinymce.js'],
     },
 }
 
