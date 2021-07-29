@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-19 13:20-0400\n"
+"POT-Creation-Date: 2021-07-29 17:16-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1292
+#: openassessment/data.py:1349
 msgid "No description provided."
 msgstr ""
 
@@ -344,19 +344,19 @@ msgid "Feedback for This Criterion"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:52
+#: openassessment/xblock/studio_mixin.py:51
 msgid "None"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:51
+#: openassessment/xblock/studio_mixin.py:50
 msgid "Optional"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:93
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:49
 msgid "Required"
 msgstr ""
 
@@ -2500,31 +2500,31 @@ msgstr ""
 msgid "Your scores could not be checked."
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:212
-#: openassessment/xblock/studio_mixin.py:224
+#: openassessment/xblock/studio_mixin.py:209
+#: openassessment/xblock/studio_mixin.py:221
 msgid "Error updating XBlock configuration"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:229
+#: openassessment/xblock/studio_mixin.py:226
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:233
+#: openassessment/xblock/studio_mixin.py:230
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:236
+#: openassessment/xblock/studio_mixin.py:233
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:260
+#: openassessment/xblock/studio_mixin.py:257
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:291
+#: openassessment/xblock/studio_mixin.py:288
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 

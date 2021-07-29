@@ -1,6 +1,3 @@
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
-
 const { createConfig } = require('@edx/frontend-build');
 const { mergeWithRules } = require('webpack-merge');
 
@@ -10,6 +7,8 @@ const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PostCssAutoprefixerPlugin = require('autoprefixer');
 const CssNano = require('cssnano');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 // Get base config from edx-platform
 let config = createConfig('webpack-prod');
@@ -75,26 +74,29 @@ Object.assign(config, {
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
   },
-  output: {
-    path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
-  },
   optimization: {},
   plugins: [
+    // Cleans the dist directory before each build
+    ...process.env.npm_config_clean ? [new CleanWebpackPlugin()]: [],
     new Dotenv({
       path: path.resolve(process.cwd(), '.env'),
       systemvars: true,
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[name].[chunkhash].css',
     }),
     new webpack.ProvidePlugin({
-      Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid'))
+      Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
+    }),
+    new WebpackManifestPlugin({
+      seed: {
+        base_url: '/static/dist',
+      },
     }),
   ],
 });
 
-config.resolve.modules = ['node_modules'].concat(
-  path.resolve(__dirname, 'openassessment/xblock/static/js/src'),
-);
+config.resolve.modules = ['node_modules', path.resolve(__dirname, 'openassessment/xblock/static/js/src')];
+config.output.path = path.resolve(process.cwd(), 'openassessment/xblock/static/dist');
 
 module.exports = config;
