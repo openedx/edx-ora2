@@ -88,20 +88,6 @@ describe("OpenAssessment edit assessment views", function() {
             });
         });
 
-        it("validates the start date and time", function() {
-            testValidateDate(
-                view, view.startDatetimeControl,
-                "Peer assessment start is invalid"
-            );
-        });
-
-        it("validates the due date and time", function() {
-            testValidateDate(
-                view, view.dueDatetimeControl,
-                "Peer assessment due is invalid"
-            );
-        });
-
         it("validates the must grade field", function() {
             // Invalid value (not a number)
             view.mustGradeNum("123abc");
@@ -152,20 +138,6 @@ describe("OpenAssessment edit assessment views", function() {
                 start: "2014-01-01T00:00",
                 due: "2014-03-04T00:00"
             });
-        });
-
-        it("validates the start date and time", function() {
-            testValidateDate(
-                view, view.startDatetimeControl,
-                "Self assessment start is invalid"
-            );
-        });
-
-        it("validates the due date and time", function() {
-            testValidateDate(
-                view, view.dueDatetimeControl,
-                "Self assessment due is invalid"
-            );
         });
 
         it("shows an alert when disabled", function() { testAlertOnDisable(view); });
