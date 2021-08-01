@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"POT-Creation-Date: 2021-07-28 08:18-0400\n"
 "PO-Revision-Date: 2021-06-30 14:19+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
@@ -152,7 +152,7 @@ msgstr "Değerlendirmeye İlişkin Geri Bildirim"
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1282
+#: openassessment/data.py:1349
 msgid "No description provided."
 msgstr "Açıklama girilmemiş."
 
@@ -359,19 +359,19 @@ msgid "Feedback for This Criterion"
 msgstr "Bu Ölçüt için Dönüt"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:52
+#: openassessment/xblock/studio_mixin.py:51
 msgid "None"
 msgstr "Hiçbiri"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:51
+#: openassessment/xblock/studio_mixin.py:50
 msgid "Optional"
 msgstr "İsteğe Bağlı"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:93
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:49
 msgid "Required"
 msgstr "Gerekli"
 
@@ -1171,7 +1171,7 @@ msgstr "Ödevinizi gönderemiyoruz"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:157
+#: openassessment/xblock/staff_assessment_mixin.py:161
 msgid "Cancelled"
 msgstr "İptal Edildi"
 
@@ -1230,8 +1230,8 @@ msgstr "Tüm gönderilen kişi cevapları değerlendirildi. Daha çok öğrencin
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:150
-#: openassessment/xblock/staff_assessment_mixin.py:174
+#: openassessment/xblock/staff_assessment_mixin.py:154
+#: openassessment/xblock/staff_assessment_mixin.py:178
 msgid "Not Available"
 msgstr "Kullanılabilir değil"
 
@@ -1538,8 +1538,8 @@ msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an k
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:164
-#: openassessment/xblock/staff_assessment_mixin.py:187
+#: openassessment/xblock/staff_assessment_mixin.py:168
+#: openassessment/xblock/staff_assessment_mixin.py:191
 msgid "Complete"
 msgstr "Tamamlanmış"
 
@@ -2235,35 +2235,35 @@ msgstr ""
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:74
+#: openassessment/xblock/peer_assessment_mixin.py:73
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "Bu geri bildirim zaten gönderilmiş ya da gönderim iptal edilmiş."
 
 #: openassessment/xblock/peer_assessment_mixin.py:99
-#: openassessment/xblock/peer_assessment_mixin.py:104
+#: openassessment/xblock/peer_assessment_mixin.py:105
 msgid "Your peer assessment could not be submitted."
 msgstr "Eş-değerlendirmeniz gönderilemedi."
 
-#: openassessment/xblock/peer_assessment_mixin.py:118
+#: openassessment/xblock/peer_assessment_mixin.py:120
 #: openassessment/xblock/student_training_mixin.py:270
 msgid "Could not update workflow status."
 msgstr "İş akışı durumu güncellenemedi."
 
-#: openassessment/xblock/peer_assessment_mixin.py:126
+#: openassessment/xblock/peer_assessment_mixin.py:128
 msgid "Could not load peer assessment."
 msgstr "Eş değerlendirme yüklenemedi."
 
-#: openassessment/xblock/peer_assessment_mixin.py:213
+#: openassessment/xblock/peer_assessment_mixin.py:215
 msgid "Submit your assessment and review another response"
 msgstr "Değerlendirmenizi gönderin ve bir diğer cevabı inceleyin"
 
-#: openassessment/xblock/peer_assessment_mixin.py:217
+#: openassessment/xblock/peer_assessment_mixin.py:219
 msgid "Submit your assessment and move to next step"
 msgstr "Değerlendirmenizi gönderin ve sonraki adıma geçin"
 
-#: openassessment/xblock/peer_assessment_mixin.py:221
+#: openassessment/xblock/peer_assessment_mixin.py:223
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "Değerlendirmenizi gönderin ve #{response_number} numaralı cevaba geçin"
@@ -2299,15 +2299,15 @@ msgstr "Bu adımın son tarihi '{due}' sonraki adımın son tarihi '{prev}'den s
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "Başlangıç tarihi '{start}' son tarih '{due}'den sonra olamaz."
 
-#: openassessment/xblock/rubric_reuse_mixin.py:60
+#: openassessment/xblock/rubric_reuse_mixin.py:61
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:64
+#: openassessment/xblock/rubric_reuse_mixin.py:65
 msgid "Invalid block id."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:70
+#: openassessment/xblock/rubric_reuse_mixin.py:71
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
@@ -2317,28 +2317,28 @@ msgstr ""
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "Bireysel-değerlendirme yapmadan önce cevap göndermelisiniz."
 
-#: openassessment/xblock/self_assessment_mixin.py:164
-#: openassessment/xblock/self_assessment_mixin.py:171
+#: openassessment/xblock/self_assessment_mixin.py:165
+#: openassessment/xblock/self_assessment_mixin.py:173
 msgid "Your self assessment could not be submitted."
 msgstr "Kişisel değerlendirmeniz gönderilemedi."
 
-#: openassessment/xblock/staff_area_mixin.py:43
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "Eğitimi programlamak için izniniz yok"
 
-#: openassessment/xblock/staff_area_mixin.py:44
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "Görevleri yeniden planlamak için izniniz yok."
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "ORA görevli bilgilerine erişim için izniniz yok"
 
-#: openassessment/xblock/staff_area_mixin.py:71
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "ORA öğrenci bilgilerine erişim için izniniz yok."
 
-#: openassessment/xblock/staff_area_mixin.py:72
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "ORA görevli notlandırmalarına erişim için izniniz yok."
 
@@ -2382,26 +2382,26 @@ msgstr "Personel not bilgisini alırken hata oluştu."
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:662
+#: openassessment/xblock/staff_area_mixin.py:663
 msgid "Please enter valid reason to remove the submission."
 msgstr "Gönderimi kaldırmak için geçerli bir sebep girin."
 
-#: openassessment/xblock/staff_area_mixin.py:673
+#: openassessment/xblock/staff_area_mixin.py:674
 msgid "Submission not found"
 msgstr "Gönderim bulunamadı"
 
-#: openassessment/xblock/staff_area_mixin.py:684
+#: openassessment/xblock/staff_area_mixin.py:685
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:711
+#: openassessment/xblock/staff_area_mixin.py:712
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Öğrenci gönderisi kişi değerlendirme sayfasından kaldırıldı. Eğer siz öğrencinin denemesini sıfırlayıp tekrar cevap göndermesine izin vermezseniz öğrenci sıfır puan alacak."
 
-#: openassessment/xblock/staff_area_mixin.py:746
+#: openassessment/xblock/staff_area_mixin.py:747
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2412,31 +2412,31 @@ msgstr ""
 msgid "The submission ID of the submission being assessed was not found."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:75
-#: openassessment/xblock/staff_assessment_mixin.py:82
+#: openassessment/xblock/staff_assessment_mixin.py:76
+#: openassessment/xblock/staff_assessment_mixin.py:84
 msgid "Your staff assessment could not be submitted."
 msgstr "Personel değerlendirmeniz gönderilemedi."
 
-#: openassessment/xblock/staff_assessment_mixin.py:116
-#: openassessment/xblock/staff_assessment_mixin.py:123
+#: openassessment/xblock/staff_assessment_mixin.py:119
+#: openassessment/xblock/staff_assessment_mixin.py:127
 msgid "Your team assessment could not be submitted."
 msgstr "Takım değerlendirmeniz gönderilemedi."
 
-#: openassessment/xblock/staff_assessment_mixin.py:175
+#: openassessment/xblock/staff_assessment_mixin.py:179
 msgid "Waiting for a Staff Grade"
 msgstr "Personel Notu Bekleniyor"
 
-#: openassessment/xblock/staff_assessment_mixin.py:176
+#: openassessment/xblock/staff_assessment_mixin.py:180
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "Yanıtınızın bir akademik personel tarafından değerlendirip değerlendirmediğini görmek için daha sonra tekrar kontrol edin. Değerlendirmeniz tamamlandığında notunuzu alacaksınız."
 
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: openassessment/xblock/staff_assessment_mixin.py:193
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "Notunuzu Görmek için Aşağıdaki Adımları Tamamlamanız Gerekiyor"
 
-#: openassessment/xblock/staff_assessment_mixin.py:190
+#: openassessment/xblock/staff_assessment_mixin.py:194
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
@@ -2456,31 +2456,31 @@ msgstr "seçilmiş_seçenekler sözlük olmalıdır"
 msgid "Your scores could not be checked."
 msgstr "Sonuçlarınız kontrol edilemedi."
 
-#: openassessment/xblock/studio_mixin.py:212
-#: openassessment/xblock/studio_mixin.py:224
+#: openassessment/xblock/studio_mixin.py:209
+#: openassessment/xblock/studio_mixin.py:221
 msgid "Error updating XBlock configuration"
 msgstr "XBlock yapılandırması güncellenirken hata"
 
-#: openassessment/xblock/studio_mixin.py:229
+#: openassessment/xblock/studio_mixin.py:226
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:233
+#: openassessment/xblock/studio_mixin.py:230
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:236
+#: openassessment/xblock/studio_mixin.py:233
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:260
+#: openassessment/xblock/studio_mixin.py:257
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Doğrulama hatası: {error}"
 
-#: openassessment/xblock/studio_mixin.py:291
+#: openassessment/xblock/studio_mixin.py:288
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock başarıyla yüklendi."
 
@@ -2516,33 +2516,33 @@ msgstr "Bu cevap gönderilmedi."
 msgid "Files descriptions were not submitted."
 msgstr "Dosya açıklamaları gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:308
+#: openassessment/xblock/submission_mixin.py:310
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:454
+#: openassessment/xblock/submission_mixin.py:456
 msgid "There was an error uploading your file."
 msgstr "Dosyanızı yüklerken hata oluştu."
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:468
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:477
+#: openassessment/xblock/submission_mixin.py:479
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:490
+#: openassessment/xblock/submission_mixin.py:492
 msgid "Error retrieving upload URL."
 msgstr "URL yükleme alırken hata"
 
-#: openassessment/xblock/submission_mixin.py:759
+#: openassessment/xblock/submission_mixin.py:767
 msgid "This response has been saved but not submitted."
 msgstr "Bu cevap kaydedildi, ancak gönderilmedi."
 
-#: openassessment/xblock/submission_mixin.py:760
+#: openassessment/xblock/submission_mixin.py:768
 msgid "This response has not been saved."
 msgstr "Bu cevap kaydedilmedi."
 
