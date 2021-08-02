@@ -439,6 +439,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     latexEnabled: TRUE if latex rendering is enabled.
          *     leaderboardNum (int): The number of scores to show in the leaderboard.
          *     labels (string): A string with comma-separated values.
+         *     showPrivateTestCaseResultsEnabled (boolean): True if rendering private test case results is enabled.
          *
          * @returns {promise} A JQuery promise, which resolves with no arguments
          *     and fails with an error message.
@@ -462,6 +463,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 file_upload_type: options.fileUploadType,
                 white_listed_file_types: options.fileTypeWhiteList,
                 allow_latex: options.latexEnabled,
+                show_private_test_case_results: options.showPrivateTestCaseResultsEnabled,
                 leaderboard_show: options.leaderboardNum
             });
             return $.Deferred(function(defer) {

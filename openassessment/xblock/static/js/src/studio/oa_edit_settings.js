@@ -290,6 +290,23 @@ OpenAssessment.EditSettingsView.prototype = {
         }
         return sel.val() === '1';
     },
+
+    /**
+    Enable / disable rendering of private test case results.
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable rendering of private test case results.
+    Returns:
+        boolean
+    **/
+    showPrivateTestCaseResultsEnabled: function(isEnabled) {
+        var sel = $('#openassessment_show_private_test_case_results_editor', this.settingsElement);
+        if (isEnabled !== undefined) {
+            sel.val(Number(isEnabled));
+        }
+        return sel.val() === '1';
+    },
+
     /**
     Get or set the number of scores to show in the leaderboard.
     If set to 0, the leaderboard will not be shown.

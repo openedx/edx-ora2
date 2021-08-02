@@ -121,6 +121,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('prompts_type', default='text'): Any(All(utf8_validator, In(PROMPTS_TYPES)), None),
     Required('title'): utf8_validator,
     Required('labels'): All(utf8_validator, labels_validator),
+    Required('show_private_test_case_results'): bool,
     Required('feedback_prompt'): utf8_validator,
     Required('feedback_default_text'): utf8_validator,
     Required('submission_start'): Any(datetime_validator, None),

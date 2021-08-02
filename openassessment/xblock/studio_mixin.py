@@ -105,7 +105,8 @@ class StudioMixin(object):
             dict with keys
                 'rubric' (unicode), 'prompt' (unicode), 'title' (unicode),
                 'submission_start' (unicode),  'submission_due' (unicode),
-                'assessments' (dict), 'labels' (unicode)
+                'assessments' (dict), 'labels' (unicode),
+                'show_private_test_case_results' (boolean),
 
         """
         # In the authoring GUI, date and time fields should never be null.
@@ -153,6 +154,7 @@ class StudioMixin(object):
             'file_upload_type': self.file_upload_type,
             'white_listed_file_types': self.white_listed_file_types_string,
             'allow_latex': self.allow_latex,
+            'show_private_test_case_results': self.show_private_test_case_results,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
@@ -255,6 +257,7 @@ class StudioMixin(object):
             self.file_upload_type = None
             self.white_listed_file_types_string = None
         self.allow_latex = bool(data['allow_latex'])
+        self.show_private_test_case_results = bool(data['show_private_test_case_results'])
         self.leaderboard_show = data['leaderboard_show']
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}

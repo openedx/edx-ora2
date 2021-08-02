@@ -255,6 +255,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="List of strings relavent to the content."
     )
 
+    show_private_test_case_results = Boolean(
+        default=False,
+        scope=Scope.content,
+        help="Indicates whether or not to show private test case results (passed or failed only, does not show values)."
+    )
+
     @property
     def labels(self):
         return ",".join(self.label_list)
