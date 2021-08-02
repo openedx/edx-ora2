@@ -59,9 +59,9 @@ export class EditRubricView {
         activeHeader: false,
       },
     });
-    // Load the other_ora_data for the autocomplete
+    // Load the rubric reuse data for the autocomplete
     const otherOraData = $.parseJSON(
-      $('#openassessment_rubric_clone_other_ora_data', this.element).text(),
+      $('#openassessment_rubric_reuse_data', this.element).text(),
     ).map((otherOra) => (otherOra.location));
 
     // Setup the Autocomplete on the text input
