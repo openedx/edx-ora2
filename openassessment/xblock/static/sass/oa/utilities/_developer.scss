@@ -280,6 +280,16 @@
         border: 0;
         @include text-align(center);
 
+        /* For an invalid tab, drop a validation error icon in the button */
+        &.invalid {
+          a::before {
+            font-family: FontAwesome;
+            content: "\f071";
+            color: rgb(192, 172, 0);
+            padding-right: 8px;
+          }
+        }
+
         a {
           @include padding(8px, 0, 0, 0);
           width: 100%;
@@ -355,9 +365,10 @@
     .openassessment_alert_close {
       display: inline-block;
       position: absolute;
-      top: 0px;
+      top: 14px;
       @include right(0px);
       color: #e9e9e9;
+      font-size: 1.5em;
       @include text-align(center);
       margin: 5px 10px;
 

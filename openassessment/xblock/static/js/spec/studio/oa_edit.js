@@ -250,4 +250,62 @@ describe("OpenAssessment.StudioView", function() {
         expect(view.alert.isVisible()).toBe(false);
         expect(server.receivedData).not.toBe(null);
     });
+
+    it("marks invalid tabs as invalid", function() {
+        // Initially, tabs should be valid
+        expect(view.alert.isVisible()).toBe(false);
+
+        const views = [view.promptsView, view.rubricView, view.scheduleView, view.assessmentsStepsView, view.settingsView];
+        views.forEach((subView) => {
+            // Introduce validation errors for first save, clear for second save
+            spyOn(subView, 'validate').and.returnValues(false, true);
+        });
+
+        // Try to save the view
+        view.save();
+
+        // Since all views throw errors, expect the tabs to be marked as invalid
+        $(".oa_editor_tab", view.element).each(function(){
+            expect($(this).hasClass('invalid')).toBe(true);
+        });
+
+        // Magically fix errors (in spy) and save again
+        view.save();
+
+        // Expect that the validation errors were cleared
+        $(".oa_editor_tab", view.element).each(function(){
+            expect($(this).hasClass('invalid')).toBe(false);
+        });
+    });
+
+    it("shows invalid tabs in the validation banner", function() {
+        // Given some tabs with validation errors (rubric, and assessmentSteps)
+        const invalidViews = [ view.rubricView, view.assessmentsStepsView];
+        const invalidViewNames = ['Rubric', 'Assessment steps'];
+
+        const validViews = [view.promptsView, view.scheduleView, view.settingsView];
+        const validViewNames = ['Prompt', 'Schedule', 'Settings'];
+
+        invalidViews.forEach((invalidView) => {
+            spyOn(invalidView, 'validate').and.returnValue(false);
+        });
+        validViews.forEach((validView) => {
+            spyOn(validView, 'validate').and.returnValue(true);
+        });
+
+        // When I try to save the view
+        view.save();
+
+        const alertMessage = $('#openassessment_validation_alert .openassessment_alert_message');
+
+        // Invalid tabs are listed in the validation alert message
+        invalidViewNames.forEach((viewName) => {
+            expect(alertMessage.text()).toContain(viewName)
+        });
+
+        // Valid tabs are *not* listed
+        validViewNames.forEach((viewName) => {
+            expect(alertMessage.text()).not.toContain(viewName)
+        });
+    });
 });

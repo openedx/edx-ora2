@@ -21,8 +21,8 @@ Returns:
 * */
 export class EditSettingsView {
   constructor(element, assessmentViews, data) {
-    const self = this;
     this.settingsElement = element;
+    this.tabElement = $('#oa_edit_settings_tab');
     this.assessmentViews = assessmentViews;
     this.data = data;
 
@@ -106,6 +106,10 @@ export class EditSettingsView {
     );
 
     this.onTeamsEnabledChange($('#openassessment_team_enabled_selector').val());
+  }
+
+  getTab() {
+    return this.tabElement;
   }
 
   /**

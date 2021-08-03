@@ -21,6 +21,8 @@ export class EditRubricView {
   constructor(element, notifier, server) {
     this.alert = new ValidationAlert();
     this.element = element;
+    this.tabElement = $('#oa_edit_rubric_tab');
+
     this.notifier = notifier;
     this.server = server;
     this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
@@ -103,6 +105,10 @@ export class EditRubricView {
   handleRubricReuseCloneButtonClick() {
     const blockId = $('#openassessment_rubric_clone_input', this.element).val();
     this.cloneRubric(blockId);
+  }
+
+  getTab() {
+    return this.tabElement;
   }
 
   /**

@@ -15,6 +15,8 @@ export class EditPromptsView {
   constructor(element, notifier) {
     this.element = element;
     this.editorElement = $(this.element).closest('#openassessment-editor');
+    this.tabElement = $('#oa_edit_prompt_tab');
+
     this.addRemoveEnabled = this.editorElement.attr('data-is-released') !== 'true';
 
     this.promptsContainer = new Container(
@@ -29,6 +31,10 @@ export class EditPromptsView {
       },
     );
     this.promptsContainer.addEventListeners();
+  }
+
+  getTab() {
+    return this.tabElement;
   }
 
   /**

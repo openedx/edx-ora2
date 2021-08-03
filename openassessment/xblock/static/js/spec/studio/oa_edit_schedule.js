@@ -1,4 +1,9 @@
 import EditScheduleView from 'studio/oa_edit_schedule';
+import {
+  EditPeerAssessmentView,
+  EditSelfAssessmentView
+} from 'studio/oa_edit_assessment';
+
 
 /**
 Tests for the edit schedule view.
@@ -19,6 +24,24 @@ describe('OpenAssessment.EditScheduleView', function() {
     };
 
     var view = null;
+    var assessmentViews = null;
+
+    var setupAssessmentViews = function() {
+        const peerAssessmentElement = $("#oa_peer_assessment_editor").get(0);
+        const peerAssessmentView = new EditPeerAssessmentView(peerAssessmentElement);
+        peerAssessmentView.startDatetime("2014-01-01", "00:00");
+        peerAssessmentView.dueDatetime("2014-01-01", "00:00");
+
+        const selfAssessmentElement = $("#oa_self_assessment_editor").get(0);
+        const selfAssessmentView = new EditSelfAssessmentView(selfAssessmentElement);
+        selfAssessmentView.startDatetime("2014-01-01", "00:00");
+        selfAssessmentView.dueDatetime("2014-01-01", "00:00");
+
+        return {
+            oa_peer_assessment_editor: peerAssessmentView,
+            oa_self_assessment_editor: selfAssessmentView
+        }
+    };
 
     beforeEach(function() {
         // Load the DOM fixture
@@ -26,12 +49,12 @@ describe('OpenAssessment.EditScheduleView', function() {
 
         // Create the view
         var element = $('#oa_schedule_editor_wrapper', this.element).get(0);
-        view = new EditScheduleView(element);
+        assessmentViews = setupAssessmentViews();
+        view = new EditScheduleView(element, assessmentViews);
 
         view.submissionStart('2014-01-01', '00:00');
         view.submissionDue('2014-03-04', '00:00');
     });
-
 
     it('sets and loads the submission start/due dates', function() {
         view.submissionStart('2014-04-01', '12:34');
@@ -54,4 +77,34 @@ describe('OpenAssessment.EditScheduleView', function() {
             'Submission due is invalid'
         );
     });
+
+    describe('assessment step schedules', function() {
+        it("validates the peer start date and time", function() {
+            testValidateDate(
+                assessmentViews.oa_peer_assessment_editor.startDatetimeControl,
+                "Peer assessment start is invalid"
+            );
+        });
+    
+        it("validates the peer due date and time", function() {
+            testValidateDate(
+                assessmentViews.oa_peer_assessment_editor.dueDatetimeControl,
+                "Peer assessment due is invalid"
+            );
+        });
+
+        it("validates the self start date and time", function() {
+            testValidateDate(
+                assessmentViews.oa_self_assessment_editor.startDatetimeControl,
+                "Self assessment start is invalid"
+            );
+        });
+
+        it("validates the self due date and time", function() {
+            testValidateDate(
+                assessmentViews.oa_self_assessment_editor.dueDatetimeControl,
+                "Self assessment due is invalid"
+            );
+        });
+    })
 });

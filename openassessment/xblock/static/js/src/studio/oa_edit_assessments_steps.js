@@ -12,9 +12,14 @@ Returns:
 export class EditAssessmentsStepsView {
   constructor(element, assessmentViews) {
     this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
+    this.tabElement = $('#oa_edit_assessment_steps_tab');
     this.assessmentViews = assessmentViews;
 
     this.initializeSortableAssessments();
+  }
+
+  getTab() {
+    return this.tabElement;
   }
 
   /**
