@@ -361,6 +361,7 @@ describe("OpenAssessment.EditRubricView", function() {
         // stub setRubric
         beforeEach(() => {
             spyOn(view, 'setRubric').and.callFake(() => {});
+            spyOn(view, 'displayRubricClonedMessage').and.callFake(() => {});
         });
 
         it('replaces the rubric when the request is successful', () => {
@@ -370,6 +371,7 @@ describe("OpenAssessment.EditRubricView", function() {
 
             // Then we call the setRubric function with returned data
             expect(view.setRubric).toHaveBeenCalledWith(newRubricData);
+            expect(view.displayRubricClonedMessage).toHaveBeenCalledWith(validRubricLocation);
         });
 
         it('alerts when the clone rubric request fails', () => {
@@ -381,6 +383,7 @@ describe("OpenAssessment.EditRubricView", function() {
 
             // Then we do not attempt to clone the rubric
             expect(view.setRubric).not.toHaveBeenCalled();
+            expect(view.displayRubricClonedMessage).not.toHaveBeenCalled();
             // and we surface error alert to Studio
             expect(view.alert.isVisible()).toBeTruthy();
         });

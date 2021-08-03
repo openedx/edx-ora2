@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 08:18-0400\n"
+"POT-Creation-Date: 2021-08-02 11:28-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -806,6 +806,49 @@ msgstr "Vïéw / Àdd Sämplé Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html
 msgid "Add Sample Response"
 msgstr "Àdd Sämplé Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid "Clone Rubric"
+msgstr "Çlöné Rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only effect the rubric being modified, and will not "
+"modify not any rubric it was cloned from."
+msgstr ""
+"Tö çlöné ä rüßrïç fröm än éxïstïng püßlïshéd ör ünpüßlïshéd dräft, ýöü çän "
+"séärçh ßý thé Blöçk ÌD. Nöté thät çlönïng ïs öné-wäý, méänïng çhängés mädé "
+"äftér çlönïng wïll önlý éfféçt thé rüßrïç ßéïng mödïfïéd, änd wïll nöt "
+"mödïfý nöt äný rüßrïç ït wäs çlönéd fröm. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid "Block ID For this ORA:"
+msgstr "Blöçk ÌD För thïs ÖRÀ: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid "No other Open Response Assessments found in course"
+msgstr ""
+"Nö öthér Öpén Réspönsé Àsséssménts föünd ïn çöürsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid "Block ID"
+msgstr "Blöçk ÌD Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid "Clone"
+msgstr "Çlöné Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr ""
+"Rüßrïç Süççéssfüllý Çlönéd fröm Blöçk ÌD:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html
 msgid "Scored Response"
