@@ -4,17 +4,17 @@
 #
 #    make upgrade
 #
-appdirs==1.4.4
+backports.entry-points-selectable==1.1.0
     # via
     #   -r requirements/tox.txt
     #   virtualenv
 certifi==2021.5.30
     # via requests
-chardet==4.0.0
+charset-normalizer==2.0.4
     # via requests
 coverage==5.5
     # via coveralls
-coveralls==3.1.0
+coveralls==3.2.0
     # via -r requirements/travis.in
 distlib==0.3.2
     # via
@@ -31,10 +31,14 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-packaging==20.9
+packaging==21.0
     # via
     #   -r requirements/tox.txt
     #   tox
+platformdirs==2.2.0
+    # via
+    #   -r requirements/tox.txt
+    #   virtualenv
 pluggy==0.13.1
     # via
     #   -r requirements/tox.txt
@@ -47,7 +51,7 @@ pyparsing==2.4.7
     # via
     #   -r requirements/tox.txt
     #   packaging
-requests==2.25.1
+requests==2.26.0
     # via coveralls
 six==1.16.0
     # via
@@ -58,11 +62,11 @@ toml==0.10.2
     # via
     #   -r requirements/tox.txt
     #   tox
-tox==3.23.1
+tox==3.24.1
     # via -r requirements/tox.txt
-urllib3==1.26.5
+urllib3==1.26.6
     # via requests
-virtualenv==20.4.7
+virtualenv==20.7.0
     # via
     #   -r requirements/tox.txt
     #   tox
