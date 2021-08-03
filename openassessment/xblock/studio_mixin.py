@@ -4,7 +4,6 @@ Studio editing view for OpenAssessment XBlock.
 
 
 import copy
-import json
 import logging
 from uuid import uuid4
 
@@ -181,7 +180,7 @@ class StudioMixin:
             'selected_teamset_id': self.selected_teamset_id,
             'show_rubric_during_response': self.show_rubric_during_response,
             'rubric_reuse_enabled': self.is_rubric_reuse_enabled,
-            'rubric_reuse_data': json.dumps(rubric_reuse_data),
+            'rubric_reuse_data': rubric_reuse_data,
             'block_location': str(self.location),
         }
 
