@@ -32,9 +32,10 @@ class RubricReuseMixin:
         Returns a list of all ORA blocks in the course, excluding `self`, and any orphaned blocks.
         """
         blocks = self._get_course_ora_blocks()
+        self_location = self.location.for_branch(None)
 
         def not_orphan_or_self(block):
-            return block.parent is not None and block.location != self.location
+            return block.parent is not None and block.location.for_branch(None) != self_location
 
         return [block for block in blocks if not_orphan_or_self(block)]
 
@@ -50,7 +51,7 @@ class RubricReuseMixin:
         return [
             {
                 'display_name': block.display_name,
-                'location': block.location
+                'location': str(block.location.for_branch(None))
             } for block in other_blocks
         ]
 

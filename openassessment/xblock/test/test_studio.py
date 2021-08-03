@@ -157,6 +157,12 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_render_studio_with_rubric_reuse(self, xblock):
         self._mock_teamsets(xblock)
         with patch.object(xblock, 'get_other_ora_blocks_for_rubric_editor_context') as mock_get_rubrics:
+            mock_get_rubrics.return_value = [
+                {
+                    'location': f'test-location-{i}',
+                    'display_name': f'Display Name {i}',
+                } for i in range(10)
+            ]
             frag = self.runtime.render(xblock, 'studio_view')
             self.assertTrue(frag.body_html().find('openassessment-edit'))
             mock_get_rubrics.assert_called_once()
@@ -171,6 +177,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_include_leaderboard_in_editor(self, xblock):
+        xblock.location = Mock()
         self._mock_teamsets(xblock)
         xblock.leaderboard_show = 15
         self.assertEqual(xblock.editor_context()['leaderboard_show'], 15)
@@ -347,6 +354,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_editor_context_assigns_labels(self, xblock):
+        xblock.location = Mock()
         self._mock_teamsets(xblock)
         # Strip out any labels from criteria/options that may have been imported.
         for criterion in xblock.rubric_criteria:

@@ -4,6 +4,7 @@ Studio editing view for OpenAssessment XBlock.
 
 
 import copy
+import json
 import logging
 from uuid import uuid4
 
@@ -144,9 +145,9 @@ class StudioMixin:
         white_listed_file_types_string = ','.join(white_listed_file_types) if white_listed_file_types else ''
 
         # If rubric reuse is enabled, include information about the other ORAs in this course
-        other_openassessments_in_course = []
+        rubric_reuse_data = {}
         if self.is_rubric_reuse_enabled:
-            other_openassessments_in_course = self.get_other_ora_blocks_for_rubric_editor_context()
+            rubric_reuse_data = self.get_other_ora_blocks_for_rubric_editor_context()
 
         return {
             'prompts': self.prompts,
@@ -180,7 +181,8 @@ class StudioMixin:
             'selected_teamset_id': self.selected_teamset_id,
             'show_rubric_during_response': self.show_rubric_during_response,
             'rubric_reuse_enabled': self.is_rubric_reuse_enabled,
-            'other_openassessments_in_course': other_openassessments_in_course,
+            'rubric_reuse_data': json.dumps(rubric_reuse_data),
+            'block_location': str(self.location),
         }
 
     @XBlock.json_handler

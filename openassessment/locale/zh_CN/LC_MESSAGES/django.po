@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-22 13:00-0400\n"
+"POT-Creation-Date: 2021-07-28 08:18-0400\n"
 "PO-Revision-Date: 2021-06-02 18:27+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1282
+#: openassessment/data.py:1349
 msgid "No description provided."
 msgstr ""
 
@@ -377,19 +377,19 @@ msgid "Feedback for This Criterion"
 msgstr "此得分点的评语"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:52
+#: openassessment/xblock/studio_mixin.py:51
 msgid "None"
 msgstr "无"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:51
+#: openassessment/xblock/studio_mixin.py:50
 msgid "Optional"
 msgstr "可选的"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:93
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:49
 msgid "Required"
 msgstr "必要的"
 
@@ -1188,7 +1188,7 @@ msgstr "我们无法提交您的评判。"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:157
+#: openassessment/xblock/staff_assessment_mixin.py:161
 msgid "Cancelled"
 msgstr "已取消"
 
@@ -1247,8 +1247,8 @@ msgstr "所有同学提交的回复均被评分。稍后返回查看是否有更
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:150
-#: openassessment/xblock/staff_assessment_mixin.py:174
+#: openassessment/xblock/staff_assessment_mixin.py:154
+#: openassessment/xblock/staff_assessment_mixin.py:178
 msgid "Not Available"
 msgstr "操作条件不满足"
 
@@ -1555,8 +1555,8 @@ msgstr "截止日期已过，该步骤已关闭。您已无法提交回复或继
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:164
-#: openassessment/xblock/staff_assessment_mixin.py:187
+#: openassessment/xblock/staff_assessment_mixin.py:168
+#: openassessment/xblock/staff_assessment_mixin.py:191
 msgid "Complete"
 msgstr "已经完成"
 
@@ -2251,35 +2251,35 @@ msgstr ""
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "在进行同伴评分之前必须提交回复"
 
-#: openassessment/xblock/peer_assessment_mixin.py:74
+#: openassessment/xblock/peer_assessment_mixin.py:73
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "这个反馈已经提交，或者提交已被取消。"
 
 #: openassessment/xblock/peer_assessment_mixin.py:99
-#: openassessment/xblock/peer_assessment_mixin.py:104
+#: openassessment/xblock/peer_assessment_mixin.py:105
 msgid "Your peer assessment could not be submitted."
 msgstr "您的学生互评无法提交"
 
-#: openassessment/xblock/peer_assessment_mixin.py:118
+#: openassessment/xblock/peer_assessment_mixin.py:120
 #: openassessment/xblock/student_training_mixin.py:270
 msgid "Could not update workflow status."
 msgstr "无法更新工作流状态。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:126
+#: openassessment/xblock/peer_assessment_mixin.py:128
 msgid "Could not load peer assessment."
 msgstr "无法加载学生互评。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:213
+#: openassessment/xblock/peer_assessment_mixin.py:215
 msgid "Submit your assessment and review another response"
 msgstr "提交您的评分并查看另一个人的回复。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:217
+#: openassessment/xblock/peer_assessment_mixin.py:219
 msgid "Submit your assessment and move to next step"
 msgstr "提交您的评分并进行下一步"
 
-#: openassessment/xblock/peer_assessment_mixin.py:221
+#: openassessment/xblock/peer_assessment_mixin.py:223
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "提交您的评分并跳转到第{response_number}个回复"
@@ -2315,15 +2315,15 @@ msgstr "这一步的截止日期“{due}”不能晚于下一个步骤的截止�
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "起始日期“{start}”不能晚于到截止日期“{due}”"
 
-#: openassessment/xblock/rubric_reuse_mixin.py:60
+#: openassessment/xblock/rubric_reuse_mixin.py:61
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:64
+#: openassessment/xblock/rubric_reuse_mixin.py:65
 msgid "Invalid block id."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:70
+#: openassessment/xblock/rubric_reuse_mixin.py:71
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
@@ -2333,28 +2333,28 @@ msgstr ""
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "在进行自我评分之前您必须提交自己的答案"
 
-#: openassessment/xblock/self_assessment_mixin.py:164
-#: openassessment/xblock/self_assessment_mixin.py:171
+#: openassessment/xblock/self_assessment_mixin.py:165
+#: openassessment/xblock/self_assessment_mixin.py:173
 msgid "Your self assessment could not be submitted."
 msgstr "自我评分无法提交"
 
-#: openassessment/xblock/staff_area_mixin.py:43
+#: openassessment/xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "您没有权限来安排练习"
 
-#: openassessment/xblock/staff_area_mixin.py:44
+#: openassessment/xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "您没有权限来重新安排任务。"
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: openassessment/xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "您无权访问教员信息"
 
-#: openassessment/xblock/staff_area_mixin.py:71
+#: openassessment/xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "您无权访问学生信息。"
 
-#: openassessment/xblock/staff_area_mixin.py:72
+#: openassessment/xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "您无权访问教员评分"
 
@@ -2398,26 +2398,26 @@ msgstr "无法获取教员评分信息"
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "获得不合格和已检验的员工评分计数出现错误。"
 
-#: openassessment/xblock/staff_area_mixin.py:662
+#: openassessment/xblock/staff_area_mixin.py:663
 msgid "Please enter valid reason to remove the submission."
 msgstr "请输入合理的理由以移除该提交。"
 
-#: openassessment/xblock/staff_area_mixin.py:673
+#: openassessment/xblock/staff_area_mixin.py:674
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:684
+#: openassessment/xblock/staff_area_mixin.py:685
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:711
+#: openassessment/xblock/staff_area_mixin.py:712
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员提交已从同学评估中删除。除非您删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: openassessment/xblock/staff_area_mixin.py:746
+#: openassessment/xblock/staff_area_mixin.py:747
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2428,31 +2428,31 @@ msgstr ""
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "未找到正在评估的提交的提交 ID。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:75
-#: openassessment/xblock/staff_assessment_mixin.py:82
+#: openassessment/xblock/staff_assessment_mixin.py:76
+#: openassessment/xblock/staff_assessment_mixin.py:84
 msgid "Your staff assessment could not be submitted."
 msgstr "无法提交您的员工评估。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:116
-#: openassessment/xblock/staff_assessment_mixin.py:123
+#: openassessment/xblock/staff_assessment_mixin.py:119
+#: openassessment/xblock/staff_assessment_mixin.py:127
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:175
+#: openassessment/xblock/staff_assessment_mixin.py:179
 msgid "Waiting for a Staff Grade"
 msgstr "等待员工评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:176
+#: openassessment/xblock/staff_assessment_mixin.py:180
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "稍后返回检查，以查看课程工作人员是否已评估您的回复。您将在评估完成后获得您的评分。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: openassessment/xblock/staff_assessment_mixin.py:193
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "您必须完成上述步骤才可查看您的评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:190
+#: openassessment/xblock/staff_assessment_mixin.py:194
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
@@ -2472,31 +2472,31 @@ msgstr "选中的分值必须是一个字典"
 msgid "Your scores could not be checked."
 msgstr "无法查看您的得分。"
 
-#: openassessment/xblock/studio_mixin.py:212
-#: openassessment/xblock/studio_mixin.py:224
+#: openassessment/xblock/studio_mixin.py:209
+#: openassessment/xblock/studio_mixin.py:221
 msgid "Error updating XBlock configuration"
 msgstr "更新XBlock配置出错"
 
-#: openassessment/xblock/studio_mixin.py:229
+#: openassessment/xblock/studio_mixin.py:226
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:233
+#: openassessment/xblock/studio_mixin.py:230
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:236
+#: openassessment/xblock/studio_mixin.py:233
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:260
+#: openassessment/xblock/studio_mixin.py:257
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "验证错误: {error}"
 
-#: openassessment/xblock/studio_mixin.py:291
+#: openassessment/xblock/studio_mixin.py:288
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
@@ -2532,33 +2532,33 @@ msgstr "该答案提交不成功。"
 msgid "Files descriptions were not submitted."
 msgstr "文件描述未能提交。"
 
-#: openassessment/xblock/submission_mixin.py:308
+#: openassessment/xblock/submission_mixin.py:310
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:454
+#: openassessment/xblock/submission_mixin.py:456
 msgid "There was an error uploading your file."
 msgstr "您的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:468
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:477
+#: openassessment/xblock/submission_mixin.py:479
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:490
+#: openassessment/xblock/submission_mixin.py:492
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:759
+#: openassessment/xblock/submission_mixin.py:767
 msgid "This response has been saved but not submitted."
 msgstr "该答案已保存，但仍未提交。"
 
-#: openassessment/xblock/submission_mixin.py:760
+#: openassessment/xblock/submission_mixin.py:768
 msgid "This response has not been saved."
 msgstr "该答案还没有被保存。"
 

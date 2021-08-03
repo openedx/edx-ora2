@@ -10,6 +10,17 @@ from django.conf import settings
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
+def urljoin(*args):
+    """
+    Joining multiple url continuously. The default behavior from os.path.join
+    would completely reset the path if the second path start with '/'.
+    """
+    begining_slash = '/' if args[0].startswith('/') else ''
+    trailing_slash = '/' if args[-1].endswith('/') else ''
+    joined_path = '/'.join(map(lambda x: str(x).strip('/'), args))
+    return begining_slash + joined_path + trailing_slash
+
+
 class LoadStatic:
     """
     Helper class for loading generated file from webpack.
@@ -37,7 +48,7 @@ class LoadStatic:
         except IOError:
             logger.error('Cannot find static/dist/manifest.json')
         finally:
-            LoadStatic._base_url = root_url + base_url
+            LoadStatic._base_url = urljoin(root_url, base_url)
 
     @staticmethod
     def get_url(key):
@@ -46,5 +57,5 @@ class LoadStatic:
         """
         if not LoadStatic._is_loaded:
             LoadStatic.reload_manifest()
-        url = LoadStatic._manifest[key] if LoadStatic._is_loaded else key
-        return LoadStatic._base_url + url
+        url = LoadStatic._manifest[key] if key in LoadStatic._manifest else key
+        return urljoin(LoadStatic._base_url, url)
