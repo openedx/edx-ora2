@@ -466,7 +466,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # Check updated download URL
         download_url = self.backend.get_download_url(self.key)
         encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
-        self.assertEqual(f"submissions/{encoded_key}", download_url)
+        self.assertEqual(f"submissions/{encoded_key}", download_url.lstrip('/'))
 
     @ddt.data("noël.txt", "myfile.txt")
     def test_remove(self, key):
@@ -489,7 +489,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # File exists now
         download_url = self.backend.get_download_url(self.key)
         encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
-        self.assertEqual(f"submissions/{encoded_key}", download_url)
+        self.assertEqual(f"submissions/{encoded_key}", download_url.lstrip('/'))
 
         # Remove file returns True now, and removes the file
         self.assertTrue(self.backend.remove_file(self.key))

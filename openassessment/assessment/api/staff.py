@@ -226,7 +226,7 @@ def get_assessment_scores_by_criteria(submission_uuid):
         # same as the only score.
         return Assessment.get_median_score_dict(scores)
     except DatabaseError as ex:
-        error_message = "Error getting staff assessment scores for {}".format(submission_uuid)
+        error_message = f"Error getting staff assessment scores for {submission_uuid}"
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message) from ex
 

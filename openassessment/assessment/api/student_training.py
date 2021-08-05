@@ -378,7 +378,7 @@ def get_training_example(submission_uuid, rubric, examples):
         workflow = StudentTrainingWorkflow.get_workflow(submission_uuid=submission_uuid)
         if not workflow:
             raise StudentTrainingRequestError(
-                u"No learner training workflow found for submission {}".format(submission_uuid)
+                f"No learner training workflow found for submission {submission_uuid}"
             )
 
         # Get or create the training examples
@@ -454,7 +454,7 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
             item.mark_complete()
         return corrections
     except StudentTrainingWorkflow.DoesNotExist as ex:
-        msg = "Could not find learner training workflow for submission UUID {}".format(submission_uuid)
+        msg = f"Could not find learner training workflow for submission UUID {submission_uuid}"
         raise StudentTrainingRequestError(msg) from ex
     except DatabaseError as ex:
         msg = (
