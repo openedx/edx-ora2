@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-04 16:36-0400\n"
+"POT-Creation-Date: 2021-08-05 10:54-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -230,29 +230,24 @@ msgid "Status of Your Response"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:424
 msgid "This response has not been saved."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:429
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:447
 msgid "Saving..."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
 msgid "This response has been saved but not submitted."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_response.js:472
 msgid "Error"
 msgstr ""
 
@@ -333,7 +328,6 @@ msgid "Error getting the number of ungraded responses"
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:531
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -402,7 +396,6 @@ msgid "Error while fetching student data."
 msgstr ""
 
 #: openassessment/xblock/static/dist/openassessment-lms.de9dba5b5e7fb726a8ba.js:361
-#: openassessment/xblock/static/js/src/lms/oa_base.js:343
 msgid "Unable to load"
 msgstr ""
 
@@ -532,4 +525,8 @@ msgstr ""
 msgid ""
 "This ORA has already been released. Changes will only affect learners making "
 "new submissions. Existing submissions will not be modified by this change."
+msgstr ""
+
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:183
+msgid "ve detected errors on the following tabs: ${tabNames.join("
 msgstr ""
