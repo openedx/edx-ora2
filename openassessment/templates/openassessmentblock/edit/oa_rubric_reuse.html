@@ -4,7 +4,7 @@
     <h3>{% trans "Clone Rubric" %}<span id="rubric-reuse-collapse-icon"></span></h3>
     <div>
         {{ rubric_reuse_data|json_script:"openassessment_rubric_reuse_data" }}
-        <div class="openassessment_rubric_clone_block" id="openassessment_rubric_clone_description">{% trans "To clone a rubric from an existing published or unpublished draft, you can search by the Block ID. Note that cloning is one-way, meaning changes made after cloning will only effect the rubric being modified, and will not modify not any rubric it was cloned from." %}</div>
+        <div class="openassessment_rubric_clone_block" id="openassessment_rubric_clone_description">{% trans "To clone a rubric from an existing published or unpublished draft, you can search by the Block ID. Note that cloning is one-way, meaning changes made after cloning will only effect the rubric being modified, and will not modify any rubric it was cloned from." %}</div>
         <div class="openassessment_rubric_clone_block" id="openassessment_rubric_clone_block_id">
             <span class="no-select"><b>{% trans "Block ID For this ORA:" %}  </b></span>{{ block_location }}
         </div>
