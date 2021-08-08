@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 08:18-0400\n"
-"PO-Revision-Date: 2021-06-02 18:27+0000\n"
+"POT-Creation-Date: 2021-08-05 10:54-0400\n"
+"PO-Revision-Date: 2021-08-05 21:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/open-edx/edx-platform/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -541,29 +541,29 @@ msgid ""
 "information, see the ORA documentation."
 msgstr "ルーブリックは１つ以上の選択肢を含む評価基準で構成されます。各選択肢には点数を設定します。このテンプレートには2つの評価基準と選択肢を設定しておりますが、適宜編集してください。詳細はORAマニュアルをご参照ください。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
 msgstr "評価基準を入力"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
 msgstr "この解答へのフィードバック"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
 msgstr "フィードバックの説明"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:44
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
 msgstr "採点した解答へのフィードバックを記入するよう受講者に促してください。文章例は自由に編集してください。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
 msgstr "デフォルトフィードバック"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:50
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:53
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
@@ -655,6 +655,38 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
 msgstr "サンプル解答を入力"
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:4
+msgid "Clone Rubric"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:7
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only effect the rubric being modified, and will not "
+"modify any rubric it was cloned from."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
+msgid "Block ID For this ORA:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:19
+msgid "Block ID"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:21
+msgid "No other Open Response Assessments found in course"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:31
+msgid "Clone"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:37
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
@@ -2294,15 +2326,15 @@ msgstr "このステップの締切 '{due}' は次のステップの締切 '{pre
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "開始日 '{start}' は締切 '{due}' より前でなければいけません"
 
-#: openassessment/xblock/rubric_reuse_mixin.py:61
+#: openassessment/xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:65
+#: openassessment/xblock/rubric_reuse_mixin.py:66
 msgid "Invalid block id."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:71
+#: openassessment/xblock/rubric_reuse_mixin.py:72
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
@@ -2451,31 +2483,31 @@ msgstr "option_selectedはディクショナリでなければいけません"
 msgid "Your scores could not be checked."
 msgstr "あなたの得点は確認できませんでした。"
 
-#: openassessment/xblock/studio_mixin.py:209
-#: openassessment/xblock/studio_mixin.py:221
+#: openassessment/xblock/studio_mixin.py:210
+#: openassessment/xblock/studio_mixin.py:222
 msgid "Error updating XBlock configuration"
 msgstr "XBlock設定の更新エラー"
 
-#: openassessment/xblock/studio_mixin.py:226
+#: openassessment/xblock/studio_mixin.py:227
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:230
+#: openassessment/xblock/studio_mixin.py:231
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:233
+#: openassessment/xblock/studio_mixin.py:234
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:257
+#: openassessment/xblock/studio_mixin.py:258
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "認証エラー: {error}"
 
-#: openassessment/xblock/studio_mixin.py:288
+#: openassessment/xblock/studio_mixin.py:289
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlockの更新完了"
 

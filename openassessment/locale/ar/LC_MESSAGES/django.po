@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-28 08:18-0400\n"
-"PO-Revision-Date: 2021-06-02 18:27+0000\n"
+"POT-Creation-Date: 2021-08-05 10:54-0400\n"
+"PO-Revision-Date: 2021-08-05 21:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -548,29 +548,29 @@ msgid ""
 "information, see the ORA documentation."
 msgstr "يتكوّن سلّم التقييم من معايير تحتوي عادةً على خيار واحد أو أكثر، بحيث أنّ لكل خيار قيمة معيّنة من النقاط. ويحتوي هذا النموذج على معيارين نموذجين مع خياراتهما. استبدل نموذج النص بنصّك. وللحصول على المزيد من المعلومات، راجِع توثيق ORA."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
 msgstr "إضافة معيار "
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
 msgstr "آراء وملاحظات حول هذا الرد"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
 msgstr "تعليمات الآراء والملاحظات "
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:44
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
 msgstr "شجّع المتعلّمين على تقديم آرائهم وملاحظاتهم حول الردود التي صحّحوها. ويمكنك استبدال نموذج النصّ بنصّك. "
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
 msgstr "النص الافتراضي للآراء والملاحظات"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:50
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:53
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
@@ -662,6 +662,38 @@ msgstr "عرض/ إضافة عينة الردود"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
 msgstr "أضف ردًّا نموذجيًّا "
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:4
+msgid "Clone Rubric"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:7
+msgid ""
+"To clone a rubric from an existing published or unpublished draft, you can "
+"search by the Block ID. Note that cloning is one-way, meaning changes made "
+"after cloning will only effect the rubric being modified, and will not "
+"modify any rubric it was cloned from."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
+msgid "Block ID For this ORA:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:19
+msgid "Block ID"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:21
+msgid "No other Open Response Assessments found in course"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:31
+msgid "Clone"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:37
+msgid "Rubric Successfully Cloned from Block ID: "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
@@ -2311,15 +2343,15 @@ msgstr "لا يمكن لتاريخ استحقاق هذه الخطوة '{due}' أ
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "لا يمكن لتاريخ البدء '{start}' أن يأتي بعد تاريخ الاستحقاق '{due}'."
 
-#: openassessment/xblock/rubric_reuse_mixin.py:61
+#: openassessment/xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:65
+#: openassessment/xblock/rubric_reuse_mixin.py:66
 msgid "Invalid block id."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:71
+#: openassessment/xblock/rubric_reuse_mixin.py:72
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
@@ -2468,31 +2500,31 @@ msgstr "يجب أن تكون الخيارات المنتقاة options_selected 
 msgid "Your scores could not be checked."
 msgstr "عذرًا، لم يمكن التحقّق من درجاتك."
 
-#: openassessment/xblock/studio_mixin.py:209
-#: openassessment/xblock/studio_mixin.py:221
+#: openassessment/xblock/studio_mixin.py:210
+#: openassessment/xblock/studio_mixin.py:222
 msgid "Error updating XBlock configuration"
 msgstr "نأسف لحدوث خطأ في تحديث إعدادات إكس بلوك XBlock."
 
-#: openassessment/xblock/studio_mixin.py:226
+#: openassessment/xblock/studio_mixin.py:227
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:230
+#: openassessment/xblock/studio_mixin.py:231
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:233
+#: openassessment/xblock/studio_mixin.py:234
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:257
+#: openassessment/xblock/studio_mixin.py:258
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "خطأ في التحقّق: {error}"
 
-#: openassessment/xblock/studio_mixin.py:288
+#: openassessment/xblock/studio_mixin.py:289
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "نجح تحديث OpenAssessment XBlock."
 
