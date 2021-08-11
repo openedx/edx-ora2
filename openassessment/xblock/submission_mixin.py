@@ -865,6 +865,7 @@ class SubmissionMixin:
             "prompts_type": self.prompts_type,
             "enable_delete_files": False,
             "show_rubric_during_response": self.show_rubric_during_response,
+            "in_studio": self.in_studio,
         }
 
         if self.show_rubric_during_response:

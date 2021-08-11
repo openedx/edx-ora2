@@ -751,6 +751,18 @@ class OpenAssessmentBlock(MessageMixin,
         # student ID, so we can't rely on that)
         return self.scope_ids.user_id is None
 
+    @property
+    def in_studio(self):
+        """
+        Checks whether we are in Studio view
+
+        Returns:
+            bool
+        """
+        if hasattr(self, 'xmodule_runtime'):
+            return self.xmodule_runtime.get_real_user is None  # pylint: disable=no-member
+        return False
+
     def _create_ui_models(self):
         """Combine UI attributes and XBlock configuration into a UI model.
 
