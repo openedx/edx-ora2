@@ -1333,8 +1333,13 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         with patch('openassessment.data.OraDownloadData._map_student_ids_to_path_ids') as mock_map_student_ids:
             mock_map_student_ids.return_value = username_mapping_no_default_student
-            with self.assertRaises(KeyError):
-                list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
+            collected_ora_files_data = list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
+
+        expected_files = [
+            expected_file for expected_file in self.submission_files_data
+            if expected_file.get('student_id') != STUDENT_ID
+        ]
+        assert collected_ora_files_data == expected_files
 
     def test_create_zip_with_attachments(self):
         """

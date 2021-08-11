@@ -1248,6 +1248,12 @@ class OraDownloadData:
         logger.info("[%s] Loaded student identifiers (len=%d)", course_id, len(student_identifiers_map))
 
         for student, submission, _ in all_submission_information:
+            # If course staff creates a submission from the studio preview, they will create a submission for
+            # a student called `student` with no mapping to a real django User
+            if student['student_id'] not in student_identifiers_map:
+                logger.info("[%s] Student id %s has no mapping to a user and will be skipped")
+                continue
+
             logger.info(
                 "[%s] Collecting files for %s, submission %s ",
                 course_id,
