@@ -317,23 +317,25 @@
               </div>
             {% endif %}
 
-            <div class="step__actions">
-                <div class="message message--inline message--error message--error-server" tabindex="-1">
-                    <h5 class="message__title">{% trans "We could not submit your response" %}</h5>
-                    <div class="message__content"></div>
-                </div>
+            {% if has_real_user %}
+              <div class="step__actions">
+                  <div class="message message--inline message--error message--error-server" tabindex="-1">
+                      <h5 class="message__title">{% trans "We could not submit your response" %}</h5>
+                      <div class="message__content"></div>
+                  </div>
 
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
-                        <button type="submit" class="action action--submit step--response__submit"
-                                text_response="{{text_response}}"
-                                file_upload_response="{{file_upload_response}}"
-                                {{submit_enabled|yesno:",disabled" }}>
-                            {% trans "Submit your response and move to the next step" %}
-                        </button>
-                    </li>
-                </ul>
-            </div>
+                  <ul class="list list--actions">
+                      <li class="list--actions__item">
+                          <button type="submit" class="action action--submit step--response__submit"
+                                  text_response="{{text_response}}"
+                                  file_upload_response="{{file_upload_response}}"
+                                  {{submit_enabled|yesno:",disabled" }}>
+                              {% trans "Submit your response and move to the next step" %}
+                          </button>
+                      </li>
+                  </ul>
+              </div>
+            {% endif %}
         </div>
     </div>
     {% endblock %}

@@ -698,7 +698,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'show_rubric_during_response': False,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
@@ -728,7 +728,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'peer_incomplete': True,
                 'prompts_type': 'text',
                 'self_incomplete': True,
@@ -751,7 +751,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -790,7 +790,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': True,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -914,7 +914,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -953,7 +953,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -1109,7 +1109,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                     {'download_url': '', 'description': 'file-1', 'name': None, 'show_delete_button': True},
                     {'download_url': '', 'description': 'file-2', 'name': None, 'show_delete_button': True}
                 ],
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -1237,7 +1237,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -1287,7 +1287,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'peer_incomplete': True,
                 'prompts_type': 'text',
                 'self_incomplete': True,
@@ -1324,7 +1324,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'show_rubric_during_response': False,
                 'student_submission': submission,
@@ -1382,7 +1382,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': True,
                 'prompts_type': 'text',
                 'show_rubric_during_response': False,
                 'student_submission': student_submission,
@@ -1421,7 +1421,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'peer_incomplete': True,
                 'prompts_type': 'text',
                 'self_incomplete': True,
@@ -1447,7 +1447,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
@@ -1472,7 +1472,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'peer_incomplete': False,
                 'prompts_type': 'text',
                 'self_incomplete': True,
@@ -1508,7 +1508,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
@@ -1540,7 +1540,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'allow_latex': False,
                 'allow_multiple_files': True,
                 'enable_delete_files': False,
-                'in_studio': False,
+                'has_real_user': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'prompts_type': 'text',
@@ -1726,7 +1726,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'allow_latex': False,
                 'allow_multiple_files': True,
                 'enable_delete_files': True,
-                'in_studio': False,
+                'has_real_user': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'prompts_type': 'text',
@@ -1761,7 +1761,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [],
-                'in_studio': False,
+                'has_real_user': False,
                 'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(

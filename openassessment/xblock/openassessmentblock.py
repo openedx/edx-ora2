@@ -752,15 +752,15 @@ class OpenAssessmentBlock(MessageMixin,
         return self.scope_ids.user_id is None
 
     @property
-    def in_studio(self):
+    def has_real_user(self):
         """
-        Checks whether we are in Studio view
+        Checks whether the runtime is tied to a real user
 
         Returns:
             bool
         """
         if hasattr(self, 'xmodule_runtime'):
-            return self.xmodule_runtime.get_real_user is None  # pylint: disable=no-member
+            return self.xmodule_runtime.get_real_user is not None  # pylint: disable=no-member
         return False
 
     def _create_ui_models(self):
