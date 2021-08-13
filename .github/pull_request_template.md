@@ -12,7 +12,12 @@ JIRA: [JIRA-XXXX](https://openedx.atlassian.net/browse/JIRA-XXXX)
 
 - [ ] Reviewed the [release process](https://github.com/edx/edx-ora2/blob/master/.github/release_process.md)
 - [ ] Translations and JS/SASS compiled
+- [ ] Added a description of the change in the Unreleased section of the Changelog. Group changes by type - Added, Changed, Fixed, Removed, Deprecated, and Security
+
+Then, if this version is being immediately released:
+
 - [ ] Bumped version number in [setup.py](https://github.com/edx/edx-ora2/blob/a62e81a9b0d89223476967ec3c27f3557a850735/setup.py#L39) and [package.json](https://github.com/edx/edx-ora2/blob/a62e81a9b0d89223476967ec3c27f3557a850735/package.json#L3)
+- [ ] Moved all changes from the Unreleased section of the Changelog into a new section directly beneath Unreleased, with the new version number and the current date. Match the format of previous  
 
 **Testing Instructions**
 
