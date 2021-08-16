@@ -9,6 +9,7 @@ from unittest import mock
 
 from .base import XBlockHandlerTestCase, scenario
 
+
 class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
     """
     Group of tests to check ability to save files descriptions
