@@ -1272,20 +1272,13 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
-    @patch(
-        'openassessment.data.OraDownloadData._map_ora_usage_keys_to_path_info',
-        Mock(return_value={ITEM_ID: ITEM_PATH_INFO})
-    )
-    @patch(
-        'openassessment.data.OraDownloadData._map_student_ids_to_path_ids',
-        Mock(return_value=USERNAME_MAPPING)
-    )
-    def test_collect_ora2_submission_files(self):
+    def _override_default_answers(self):
         """
-        Test that `collect_ora2_submission_files` returns correct set of
-        submission texts and attachments for a given course.
+        _create_submission creates lightweight "dummy" submissons,
+        with an answer defined as the constant ANSWER in this file.
+        This method modifies the answer values for tests that actually
+        care about the values of the answers
         """
-
         submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
         submission.answer = self.answer
         submission.save()
@@ -1309,8 +1302,44 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
         scorer_submission.answer = {'parts': []}
         scorer_submission.save()
 
+    @patch(
+        'openassessment.data.OraDownloadData._map_ora_usage_keys_to_path_info',
+        Mock(return_value={ITEM_ID: ITEM_PATH_INFO})
+    )
+    @patch(
+        'openassessment.data.OraDownloadData._map_student_ids_to_path_ids',
+        Mock(return_value=USERNAME_MAPPING)
+    )
+    def test_collect_ora2_submission_files(self):
+        """
+        Test that `collect_ora2_submission_files` returns correct set of
+        submission texts and attachments for a given course.
+        """
+        self._override_default_answers()
         collected_ora_files_data = list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
         assert collected_ora_files_data == self.submission_files_data
+
+    @patch(
+        'openassessment.data.OraDownloadData._map_ora_usage_keys_to_path_info',
+        Mock(return_value={ITEM_ID: ITEM_PATH_INFO})
+    )
+    def test_collect_ora2_submission_files__no_user(self):
+        """
+        Test for behavior when a user isn't included in the username map
+        """
+        self._override_default_answers()
+        username_mapping_no_default_student = USERNAME_MAPPING.copy()
+        del username_mapping_no_default_student[STUDENT_ID]
+
+        with patch('openassessment.data.OraDownloadData._map_student_ids_to_path_ids') as mock_map_student_ids:
+            mock_map_student_ids.return_value = username_mapping_no_default_student
+            collected_ora_files_data = list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
+
+        expected_files = [
+            expected_file for expected_file in self.submission_files_data
+            if expected_file.get('student_id') != STUDENT_ID
+        ]
+        assert collected_ora_files_data == expected_files
 
     def test_create_zip_with_attachments(self):
         """
