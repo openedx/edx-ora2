@@ -1015,6 +1015,13 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         xblock.file_manager.append_uploads(*file_uploads)
 
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
+
         # delete file-2
         with patch('openassessment.fileupload.api.remove_file'):
             xblock.file_manager.delete_upload(1)
@@ -1202,6 +1209,13 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         ])
 
         mock_get_download_url.side_effect = ['file-1-url', 'file-5-url']
+
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
 
         # assert that there's an entry with the correct index in the rendered HTML
         # we should have an index for all files ever uploaded, even the deleted one
