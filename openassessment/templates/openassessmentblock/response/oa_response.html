@@ -201,123 +201,125 @@
                                 {% endif %}
                             </li>
                         {% endfor %}
-                        {% if team_name and previous_team_name %}
-                            <div id='team_user_has_previous_submission'>
-                                {% blocktrans %}
-                                    You are currently on Team {{team_name}}. Since you were on Team {{previous_team_name}}
-                                    when they submitted a response to this assignment, you are seeing Team {{previous_team_name}}’s
-                                    response and will receive the same grade for this assignment as your former teammates.
-                                    You will not be part of Team {{team_name}}’s submission for this assignment and will not
-                                    receive a grade for their submission.
-                                {% endblocktrans %}
-                            </div>
-                        {% endif %}
-                        {% if text_response %}
-                        <li class="field">
-                            <div class="response__submission__actions">
-                                <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <h5 class="message__title">{% trans "We could not save your progress" %}</h5>
-                                    <div class="message__content"></div>
+
+                        {% if has_real_user %}
+                          {% if team_name and previous_team_name %}
+                              <div id='team_user_has_previous_submission'>
+                                  {% blocktrans %}
+                                      You are currently on Team {{team_name}}. Since you were on Team {{previous_team_name}}
+                                      when they submitted a response to this assignment, you are seeing Team {{previous_team_name}}’s
+                                      response and will receive the same grade for this assignment as your former teammates.
+                                      You will not be part of Team {{team_name}}’s submission for this assignment and will not
+                                      receive a grade for their submission.
+                                  {% endblocktrans %}
+                              </div>
+                          {% endif %}
+                          {% if text_response %}
+                          <li class="field">
+                              <div class="response__submission__actions">
+                                  <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                      <h5 class="message__title">{% trans "We could not save your progress" %}</h5>
+                                      <div class="message__content"></div>
+                                  </div>
+
+                                  <ul class="list list--actions">
+                                      <li class="list--actions__item">
+                                          <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}" disabled>
+                                              {% trans "Save your progress" %}
+                                          </button>
+
+                                          <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
+                                              <span class="sr">{% trans "Your Submission Status" %}:</span>
+                                              {{ save_status }}
+                                          </div>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                          {% endif %}
+                          {% if file_upload_type %}
+                            <h5 class="submission__upload__files__title">
+                              {% trans "File Uploads " %}
+                              {% if file_upload_response == "required" %}
+                                {% trans "(Required)" %}
+                              {% elif file_upload_response == "optional" %}
+                                {% trans "(Optional)" %}
+                              {% endif %}
+                            </h5>
+                            {% if team_name %}
+                              {% blocktrans %}
+                                  Upload files and review files uploaded by you and your teammates below. Be sure to add
+                                  descriptions to your files to help your teammates identify them.
+                              {% endblocktrans %}
+                            {% endif %}
+                            <li class="field">
+                                <div class="upload__error">
+                                    <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                        <h5 class="message__title">{% trans "We could not upload files" %}</h5>
+                                        <div class="message__content"></div>
+                                    </div>
+                                </div>
+                                <div class="delete__error">
+                                    <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                        <h5 class="message__title">{% trans "We could not delete files" %}</h5>
+                                        <div class="message__content"></div>
+                                    </div>
                                 </div>
 
-                                <ul class="list list--actions">
-                                    <li class="list--actions__item">
-                                        <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}" disabled>
-                                            {% trans "Save your progress" %}
-                                        </button>
-
-                                        <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
-                                            <span class="sr">{% trans "Your Submission Status" %}:</span>
-                                            {{ save_status }}
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        {% endif %}
-                        {% if file_upload_type %}
-                          <h5 class="submission__upload__files__title">
-                            {% trans "File Uploads " %}
-                            {% if file_upload_response == "required" %}
-                              {% trans "(Required)" %}
-                            {% elif file_upload_response == "optional" %}
-                              {% trans "(Optional)" %}
-                            {% endif %}
-                          </h5>
-                          {% if team_name %}
-                            {% blocktrans %}
-                                Upload files and review files uploaded by you and your teammates below. Be sure to add
-                                descriptions to your files to help your teammates identify them.
-                            {% endblocktrans %}
+                                <label class="sr" for="submission_answer_upload_{{ xblock_id }}">
+                                  {% if allow_multiple_files %}
+                                      {% trans "Select one or more files to upload for this submission." %}
+                                  {% else %}
+                                      {% trans "Select a file to upload for this submission." %}
+                                  {% endif %}
+                                </label>
+                                <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %} accept="{{white_listed_file_types|join:", "}}">
+                                <span>
+                                  {% trans "Supported file types: " %}{{ white_listed_file_types|join:", "}}
+                                </span>
+                                <button type="submit" class="file__upload action action--upload" disabled>
+                                  {% if allow_multiple_files %}
+                                      {% trans "Upload files" %}
+                                  {% else %}
+                                      {% trans "Upload file" %}
+                                  {% endif %}
+                                </button>
+                                <div class="files__descriptions"></div>
+                            </li>
                           {% endif %}
                           <li class="field">
-                              <div class="upload__error">
-                                  <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                      <h5 class="message__title">{% trans "We could not upload files" %}</h5>
-                                      <div class="message__content"></div>
-                                  </div>
-                              </div>
-                              <div class="delete__error">
-                                  <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                      <h5 class="message__title">{% trans "We could not delete files" %}</h5>
-                                      <div class="message__content"></div>
-                                  </div>
-                              </div>
-
-                              <label class="sr" for="submission_answer_upload_{{ xblock_id }}">
-                                {% if allow_multiple_files %}
-                                    {% trans "Select one or more files to upload for this submission." %}
-                                {% else %}
-                                    {% trans "Select a file to upload for this submission." %}
-                                {% endif %}
-                              </label>
-                              <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %} accept="{{white_listed_file_types|join:", "}}">
-                              <span>
-                                {% trans "Supported file types: " %}{{ white_listed_file_types|join:", "}}
-                              </span>
-                              <button type="submit" class="file__upload action action--upload" disabled>
-                                {% if allow_multiple_files %}
-                                    {% trans "Upload files" %}
-                                {% else %}
-                                    {% trans "Upload file" %}
-                                {% endif %}
-                              </button>
-                              <div class="files__descriptions"></div>
+                          {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
                           </li>
-                        {% endif %}
-                        <li class="field">
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
-                        </li>
-                        <hr/>
-                        <li class="field">
-                        {% include "openassessmentblock/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response" xblock_id=xblock_id %}
-                        </li>
-                    </ol>
+                          <hr/>
+                          <li class="field">
+                          {% include "openassessmentblock/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response" xblock_id=xblock_id %}
+                          </li>
+                      </ol>
 
-                    {% if not team_name %}
-                        <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
-                    {% endif %}
-                </form>
-            </div>
-            {% if team_name %}
-              <div id='team_concurrency_notice'>
-                {% trans "This is a team submission." %}
-                {% if file_upload_type and text_response %}
-                    {% trans "One team member should submit a response with the team’s shared files and a text response on behalf of the entire team." %}
-                {% elif file_upload_type %}
-                    {% trans "One team member should submit a response with the team’s shared files on behalf of the entire team." %}
-                {% elif text_response %}
-                    {% trans "One team member should submit a text response on behalf of the entire team." %}
-                {% else %}
-                    {% trans "One team member should submit on behalf of the entire team."%}
-                {% endif %}
-                {% blocktrans %}
-                Learn more about team assignments here: (<a href="" >link</a>)
-                {% endblocktrans %}
+                      {% if not team_name %}
+                          <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
+                      {% endif %}
+                  </form>
               </div>
-            {% endif %}
+              {% if team_name %}
+                <div id='team_concurrency_notice'>
+                  {% trans "This is a team submission." %}
+                  {% if file_upload_type and text_response %}
+                      {% trans "One team member should submit a response with the team’s shared files and a text response on behalf of the entire team." %}
+                  {% elif file_upload_type %}
+                      {% trans "One team member should submit a response with the team’s shared files on behalf of the entire team." %}
+                  {% elif text_response %}
+                      {% trans "One team member should submit a text response on behalf of the entire team." %}
+                  {% else %}
+                      {% trans "One team member should submit on behalf of the entire team."%}
+                  {% endif %}
+                  {% blocktrans %}
+                  Learn more about team assignments here: (<a href="" >link</a>)
+                  {% endblocktrans %}
+                </div>
+              {% endif %}
 
-            <div class="step__actions">
+              <div class="step__actions">
                 <div class="message message--inline message--error message--error-server" tabindex="-1">
                     <h5 class="message__title">{% trans "We could not submit your response" %}</h5>
                     <div class="message__content"></div>
@@ -334,6 +336,7 @@
                     </li>
                 </ul>
             </div>
+          {% endif %}
         </div>
     </div>
     {% endblock %}

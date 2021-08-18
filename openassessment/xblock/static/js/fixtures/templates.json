@@ -89,6 +89,7 @@
             "text_response": "required",
             "file_upload_response": "optional",
             "file_upload_type": "pdf-and-image",
+            "has_real_user": true,
             "saved_response": {
                 "answer": {
                     "parts": [

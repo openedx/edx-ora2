@@ -33,6 +33,13 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         # We're not worried about looking up shared uploads in this test
         xblock.has_team = mock.Mock(return_value=False)
 
+        xblock.xmodule_runtime = mock.Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
+
         # Save the response
         descriptions = [{'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
                         {'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname2', 'fileSize': 2000}]
@@ -58,6 +65,13 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         """
         # We're not worried about looking up shared uploads in this test
         xblock.has_team = mock.Mock(return_value=False)
+
+        xblock.xmodule_runtime = mock.Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
 
         descriptions1 = [
             {'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},

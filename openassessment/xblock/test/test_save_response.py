@@ -18,6 +18,14 @@ class SaveResponseTest(XBlockHandlerTestCase):
     @scenario('data/save_scenario.xml', user_id="Daniels")
     def test_default_saved_response_blank(self, xblock):
         xblock.get_team_info = mock.Mock(return_value={})
+
+        xblock.xmodule_runtime = mock.Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
+
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('response has not been saved', resp.decode('utf-8'))
 
@@ -25,6 +33,13 @@ class SaveResponseTest(XBlockHandlerTestCase):
     @scenario('data/save_scenario.xml', user_id="Perleman")
     def test_save_response(self, xblock, data):
         xblock.get_team_info = mock.Mock(return_value={})
+
+        xblock.xmodule_runtime = mock.Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
 
         # Save the response
         submission = ["  ".join(data[0]), "  ".join(data[1])]

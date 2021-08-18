@@ -693,18 +693,19 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_unavailable.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
-                'allow_multiple_files': True,
-                'show_rubric_during_response': False,
-                'allow_latex': False,
-                'user_timezone': None,
-                'user_language': None,
+                'has_real_user': False,
                 'prompts_type': 'text',
-                'enable_delete_files': False,
+                'show_rubric_during_response': False,
+                'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
+                'text_response': 'required',
+                'text_response_editor': 'text',
+                'user_language': None,
+                'user_timezone': None,
             }
         )
 
@@ -722,20 +723,21 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'has_real_user': False,
+                'peer_incomplete': True,
+                'prompts_type': 'text',
+                'self_incomplete': True,
+                'show_rubric_during_response': False,
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
                 'text_response_editor': 'text',
-                'file_upload_response': None,
-                'file_upload_type': None,
-                'peer_incomplete': True,
-                'self_incomplete': True,
-                'show_rubric_during_response': False,
-                'allow_multiple_files': True,
-                'allow_latex': False,
-                'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
+                'user_timezone': None,
             }
         )
 
@@ -744,25 +746,26 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ("", "")
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
-                'submit_enabled': False,
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'allow_multiple_files': True,
                 'show_rubric_during_response': False,
-                'allow_latex': False,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'submit_enabled': False,
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
             }
         )
 
@@ -782,30 +785,31 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'allow_multiple_files': True,
-                'show_rubric_during_response': False,
+                'has_real_user': True,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ("", "")
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
+                'show_rubric_during_response': False,
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'team_id': mock_team['team_id'],
+                'team_members_with_external_submissions': '',
                 'team_name': mock_team['team_name'],
                 'team_url': mock_team['team_url'],
                 'team_usernames': mock_team['team_usernames'],
-                'team_members_with_external_submissions': '',
-                'allow_latex': False,
-                'user_timezone': None,
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
+                'user_timezone': None,
             }
         )
 
@@ -905,24 +909,25 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ("", "")
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
-                'submit_enabled': False,
-                'allow_multiple_files': True,
                 'show_rubric_during_response': False,
-                'allow_latex': False,
+                'submit_enabled': False,
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
             }
         )
 
@@ -943,25 +948,26 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ('A man must have a code', 'A man must have an umbrella too.')
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has been saved but not submitted.',
-                'submit_enabled': True,
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'allow_multiple_files': True,
                 'show_rubric_during_response': False,
-                'allow_latex': False,
-                'user_timezone': None,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'submit_enabled': True,
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
+                'user_timezone': None,
             }
         )
 
@@ -1008,6 +1014,13 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         ]
 
         xblock.file_manager.append_uploads(*file_uploads)
+
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
 
         # delete file-2
         with patch('openassessment.fileupload.api.remove_file'):
@@ -1094,29 +1107,30 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': None,
-                'text_response_editor': 'text',
+                'allow_latex': False,
                 'allow_multiple_files': True,
-                'show_rubric_during_response': False,
+                'enable_delete_files': True,
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
                     {'download_url': '', 'description': 'file-1', 'name': None, 'show_delete_button': True},
                     {'download_url': '', 'description': 'file-2', 'name': None, 'show_delete_button': True}
                 ],
-                'team_file_urls': [],
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ('A man must have a code', 'A man must have an umbrella too.')
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has been saved but not submitted.',
+                'show_rubric_during_response': False,
                 'submit_enabled': True,
-                'allow_latex': False,
-                'user_timezone': None,
+                'team_file_urls': [],
+                'text_response': None,
+                'text_response_editor': 'text',
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
+                'user_timezone': None,
                 'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png']
             }
         )
@@ -1196,6 +1210,13 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         mock_get_download_url.side_effect = ['file-1-url', 'file-5-url']
 
+        xblock.xmodule_runtime = Mock(
+            user_is_staff=False,
+            user_is_beta_tester=False,
+            course_id='test_course',
+            anonymous_student_id='Pmn'
+        )
+
         # assert that there's an entry with the correct index in the rendered HTML
         # we should have an index for all files ever uploaded, even the deleted one
         resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
@@ -1225,25 +1246,26 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ('An old format response.',)
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has been saved but not submitted.',
-                'submit_enabled': True,
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'allow_multiple_files': True,
                 'show_rubric_during_response': False,
-                'allow_latex': False,
-                'user_timezone': None,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'submit_enabled': True,
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
+                'user_timezone': None,
             }
         )
 
@@ -1274,21 +1296,22 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission': create_submission_dict(submission, xblock.prompts),
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'has_real_user': False,
                 'peer_incomplete': True,
+                'prompts_type': 'text',
                 'self_incomplete': True,
                 'show_rubric_during_response': False,
-                'allow_multiple_files': True,
-                'allow_latex': False,
-                'user_timezone': None,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
+                'user_timezone': None,
             }
         )
 
@@ -1310,15 +1333,20 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'allow_multiple_files': True,
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'show_rubric_during_response': False,
-                'allow_latex': False,
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'text_response': 'required',
+                'text_response_editor': 'text',
+                'user_language': None,
+                'user_timezone': None,
                 'workflow_cancellation': {
                     'comments': 'Inappropriate language',
                     'cancelled_at': xblock.get_workflow_cancellation_info(
@@ -1326,10 +1354,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                     'cancelled_by_id': 'Bob',
                     'cancelled_by': mock_staff
                 },
-                'user_timezone': None,
-                'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
             }
         )
 
@@ -1367,16 +1391,21 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
-                'file_upload_response': None,
-                'allow_multiple_files': True,
-                'show_rubric_during_response': False,
-                'file_upload_type': None,
                 'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'has_real_user': True,
+                'prompts_type': 'text',
+                'show_rubric_during_response': False,
+                'student_submission': student_submission,
                 # date listed in xml scenario.
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission': student_submission,
+                'text_response': 'required',
+                'text_response_editor': 'text',
+                'user_language': None,
+                'user_timezone': None,
                 'workflow_cancellation': {
                     'comments': comments,
                     'cancelled_at': xblock.get_team_workflow_cancellation_info(
@@ -1384,10 +1413,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                     'cancelled_by_id': staff_id,
                     'cancelled_by': mock_staff
                 },
-                'user_timezone': None,
-                'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
             }
         )
 
@@ -1405,23 +1430,24 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'has_real_user': False,
+                'peer_incomplete': True,
+                'prompts_type': 'text',
+                'self_incomplete': True,
+                'show_rubric_during_response': False,
                 'student_submission': {"answer": {"parts": [
                     {"prompt": {'description': 'One prompt.'}, "text": "An old format response."}
                 ]}},
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'text_response': 'required',
                 'text_response_editor': 'text',
-                'file_upload_response': None,
-                'file_upload_type': None,
-                'peer_incomplete': True,
-                'self_incomplete': True,
-                'show_rubric_during_response': False,
-                'allow_multiple_files': True,
-                'allow_latex': False,
-                'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
+                'user_timezone': None,
             }
         )
 
@@ -1430,18 +1456,19 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_closed.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
-                'allow_multiple_files': True,
-                'show_rubric_during_response': False,
-                'allow_latex': False,
-                'user_timezone': None,
-                'user_language': None,
+                'has_real_user': False,
                 'prompts_type': 'text',
-                'enable_delete_files': False,
+                'show_rubric_during_response': False,
+                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+                'text_response': 'required',
+                'text_response_editor': 'text',
+                'user_language': None,
+                'user_timezone': None,
             }
         )
 
@@ -1454,21 +1481,22 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
-                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
-                'student_submission': create_submission_dict(submission, xblock.prompts),
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
+                'has_real_user': False,
                 'peer_incomplete': False,
+                'prompts_type': 'text',
                 'self_incomplete': True,
                 'show_rubric_during_response': False,
-                'allow_multiple_files': True,
-                'allow_latex': False,
-                'user_timezone': None,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
+                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
+                'user_timezone': None,
             }
         )
 
@@ -1489,19 +1517,20 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_graded.html',
             {
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'has_real_user': False,
+                'prompts_type': 'text',
+                'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'text_response': 'required',
                 'text_response_editor': 'text',
-                'file_upload_response': None,
-                'file_upload_type': None,
-                'show_rubric_during_response': False,
-                'allow_multiple_files': True,
-                'allow_latex': False,
-                'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': False,
+                'user_timezone': None,
             }
         )
 
@@ -1522,19 +1551,20 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_graded.html',
             {
-                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
-                'student_submission': create_submission_dict(submission, xblock.prompts),
-                'text_response': 'required',
-                'text_response_editor': 'text',
+                'allow_latex': False,
+                'allow_multiple_files': True,
+                'enable_delete_files': False,
+                'has_real_user': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
-                'show_rubric_during_response': False,
-                'allow_multiple_files': True,
-                'allow_latex': False,
-                'user_timezone': None,
-                'user_language': None,
                 'prompts_type': 'text',
-                'enable_delete_files': False,
+                'show_rubric_during_response': False,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
+                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+                'text_response': 'required',
+                'text_response_editor': 'text',
+                'user_language': None,
+                'user_timezone': None,
             }
         )
 
@@ -1708,24 +1738,25 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                     )
                 }, xblock.prompts),
                 'allow_latex': False,
-                'team_id': MOCK_TEAM_ID,
-                'user_timezone': None,
-                'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
-                'file_upload_response': None,
                 'allow_multiple_files': True,
+                'enable_delete_files': True,
+                'has_real_user': True,
+                'file_upload_response': None,
+                'file_upload_type': None,
+                'prompts_type': 'text',
+                'save_status': 'This response has not been saved.',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'file_upload_type': None,
                 'submit_enabled': False,
-                'prompts_type': 'text',
-                'user_language': None,
-                'enable_delete_files': True,
-                'team_url': 'rebel_alliance.org',
-                'save_status': 'This response has not been saved.',
+                'team_id': MOCK_TEAM_ID,
                 'team_name': 'Red Squadron',
+                'team_members_with_external_submissions': '',
+                'team_url': 'rebel_alliance.org',
+                'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
                 'text_response': 'required',
                 'text_response_editor': 'text',
-                'team_members_with_external_submissions': ''
+                'user_language': None,
+                'user_timezone': None,
             }
         )
 
@@ -1738,27 +1769,28 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
-                'text_response': 'required',
-                'text_response_editor': 'text',
-                'file_upload_response': 'optional',
+                'allow_latex': False,
                 'allow_multiple_files': True,
-                'show_rubric_during_response': False,
+                'enable_delete_files': True,
+                'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [],
-                'team_file_urls': [],
-                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png'],
+                'has_real_user': False,
+                'prompts_type': 'text',
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
                         ("", "")
                     )
                 }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
+                'show_rubric_during_response': False,
                 'submit_enabled': False,
-                'allow_latex': False,
+                'team_file_urls': [],
+                'text_response': 'required',
+                'text_response_editor': 'text',
                 'user_timezone': None,
                 'user_language': None,
-                'prompts_type': 'text',
-                'enable_delete_files': True,
+                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png'],
             }
         )
 

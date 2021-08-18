@@ -856,15 +856,16 @@ class SubmissionMixin:
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
-            'user_timezone': user_preferences['user_timezone'],
+            'enable_delete_files': False,
+            'file_upload_response': self.file_upload_response,
+            'has_real_user': self.has_real_user,
+            'prompts_type': self.prompts_type,
+            'show_rubric_during_response': self.show_rubric_during_response,
+            'text_response': self.text_response,
+            'text_response_editor': self.text_response_editor,
             'user_language': user_preferences['user_language'],
-            "xblock_id": self.get_xblock_id(),
-            "text_response": self.text_response,
-            "text_response_editor": self.text_response_editor,
-            "file_upload_response": self.file_upload_response,
-            "prompts_type": self.prompts_type,
-            "enable_delete_files": False,
-            "show_rubric_during_response": self.show_rubric_during_response,
+            'user_timezone': user_preferences['user_timezone'],
+            'xblock_id': self.get_xblock_id(),
         }
 
         if self.show_rubric_during_response:
