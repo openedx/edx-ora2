@@ -31,7 +31,9 @@ from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.mobile import togglable_mobile_support
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
+from openassessment.xblock.resolve_dates import (
+    DateValidationError, DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
+)
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
@@ -1179,7 +1181,12 @@ class OpenAssessmentBlock(MessageMixin,
             is_published = self.runtime.modulestore.has_published_version(self)
         else:
             is_published = True
-        is_closed, reason, __, __ = self.is_closed(step=step)  # pylint: disable=redeclared-assigned-name
+        try:
+            is_closed, reason, __, __ = self.is_closed(step=step)  # pylint: disable=redeclared-assigned-name
+        except DateValidationError:
+            # Workaround so that studio_mixin workflow wil still work in the case that we have invalid dates
+            is_closed = False
+            reason = ''
         is_released = is_published and (not is_closed or reason == 'due')
         if self.start:
             is_released = is_released and dt.datetime.now(pytz.UTC) > parse_date_value(self.start, self._)
