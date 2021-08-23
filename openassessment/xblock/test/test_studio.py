@@ -420,3 +420,10 @@ class StudioViewTest(XBlockHandlerTestCase):
             Mock(name="teamset_name_a", teamset_id='teamset_id_a'),
             Mock(name="teamset_name_b", teamset_id='teamset_id_b'),
         ]
+
+    @scenario('data/invalid_dates_scenario.xml')
+    def test_invalid_dates_still_renders(self, xblock):
+        breakpoint()
+        self._mock_teamsets(xblock)
+        frag = self.runtime.render(xblock, 'studio_view')
+        self.assertTrue(frag.body_html().find('openassessment-edit'))
