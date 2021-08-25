@@ -15,6 +15,8 @@ describe("OpenAssessment.CourseItemsListingView", function() {
             return '/' + handler;
         }
     };
+    var data = {};
+
     window.XBlock = {
         initializeBlock: function(el){}
     };
@@ -24,7 +26,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
         section = $('.open-response-assessment-block');
         rootElement = section.parent();
-        return new CourseItemsListingView(runtime, rootElement);
+        return new CourseItemsListingView(runtime, rootElement, data);
     };
 
     var stubAjax = function(success, responseData) {
