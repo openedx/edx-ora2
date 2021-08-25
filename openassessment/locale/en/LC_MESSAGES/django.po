@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-26 14:53-0400\n"
+"POT-Creation-Date: 2021-09-01 14:15-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2517,31 +2517,31 @@ msgstr ""
 msgid "Your scores could not be checked."
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:210
-#: openassessment/xblock/studio_mixin.py:222
+#: openassessment/xblock/studio_mixin.py:226
+#: openassessment/xblock/studio_mixin.py:238
 msgid "Error updating XBlock configuration"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:227
+#: openassessment/xblock/studio_mixin.py:243
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:231
+#: openassessment/xblock/studio_mixin.py:247
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:234
+#: openassessment/xblock/studio_mixin.py:250
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:258
+#: openassessment/xblock/studio_mixin.py:274
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:289
+#: openassessment/xblock/studio_mixin.py:305
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 
