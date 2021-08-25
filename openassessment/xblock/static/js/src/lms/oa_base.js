@@ -437,7 +437,7 @@ export const OpenAssessmentBlock = (runtime, element, data) => {
 /* jshint unused:false */
 // eslint-disable-next-line no-unused-vars
 export const CourseOpenResponsesListingBlock = (runtime, element, data) => {
-  const view = new CourseItemsListingView(runtime, element, data);
+  const view = new CourseItemsListingView(runtime, element);
   view.refreshGrids();
 };
 

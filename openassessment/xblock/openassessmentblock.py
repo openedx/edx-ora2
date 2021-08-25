@@ -692,7 +692,6 @@ class OpenAssessmentBlock(MessageMixin,
             "TEAM_ASSIGNMENT": self.is_team_assignment(),
             "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
             "TEXT_RESPONSE_EDITOR": self.text_response_editor,
-            "ENHANCED_STAFF_GRADER": self.is_feature_enabled('enhanced_staff_grader')
         }
         # If there's any additional data to be passed down to JS
         # include it in the context dict
