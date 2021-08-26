@@ -218,6 +218,7 @@ describe("OpenAssessment.StudioView", function() {
                 expect($(this).hasClass('ui-state-active')).toBe(false);
             }
         });
+        expect(view.activeTab()).toBe(0);
     });
 
     it("validates fields before saving", function() {
@@ -251,6 +252,37 @@ describe("OpenAssessment.StudioView", function() {
         expect(server.receivedData).not.toBe(null);
     });
 
+    it("validates fields on tab change", function() {
+        // Initially, there should not be a validation alert, and we should be on tab 0
+        expect(view.alert.isVisible()).toBe(false);
+        expect(view.activeTab()).toBe(0);
+
+        // Introduce a validation error (date field does format invalid)
+        view.scheduleView.submissionStart("Not a valid date!", "00:00");
+
+        // Switch tabs
+        view.activeTab(1);
+
+        // Expect that an error is displayed and we have moved to the new tab
+        expect(server.receivedData).toBe(null);
+        expect(view.alert.isVisible()).toBe(true);
+        expect(view.activeTab()).toBe(1);
+
+        // Expect that individual fields were highlighted
+        expect(view.validationErrors()).toContain(
+            "Submission start is invalid"
+        );
+
+        // Fix the error and switch tabs again.
+        view.scheduleView.submissionStart("2014-04-01", "00:00");
+        view.activeTab(0);
+
+        // Expect that the validation errors were cleared and that we switched tabs again
+        expect(view.validationErrors()).toEqual([]);
+        expect(view.alert.isVisible()).toBe(false);
+        expect(view.activeTab()).toBe(0);
+    });
+
     it("marks invalid tabs as invalid", function() {
         // Initially, tabs should be valid
         expect(view.alert.isVisible()).toBe(false);
@@ -261,16 +293,16 @@ describe("OpenAssessment.StudioView", function() {
             spyOn(subView, 'validate').and.returnValues(false, true);
         });
 
-        // Try to save the view
-        view.save();
+        // run validation
+        view.runValidationAndDisplayErrors("Test Title");
 
         // Since all views throw errors, expect the tabs to be marked as invalid
         $(".oa_editor_tab", view.element).each(function(){
             expect($(this).find('.validation-warning').is(":visible")).toBe(true);
         });
 
-        // Magically fix errors (in spy) and save again
-        view.save();
+        // Magically fix errors (in spy) and validate again
+        view.runValidationAndDisplayErrors("Test Title");
 
         // Expect that the validation errors were cleared
         $(".oa_editor_tab", view.element).each(function(){
@@ -293,8 +325,8 @@ describe("OpenAssessment.StudioView", function() {
             spyOn(validView, 'validate').and.returnValue(true);
         });
 
-        // When I try to save the view
-        view.save();
+        // When validation is run
+        view.runValidationAndDisplayErrors("Test Title");
 
         const alertMessage = $('#openassessment_validation_alert .openassessment_alert_message');
 
