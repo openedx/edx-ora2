@@ -316,6 +316,7 @@ export class StudioView {
   markTabAsInvalid(tab, numErrors) {
     tab.toggleClass('invalid', true);
     $('.tab-error-count', tab).text(gettext(`has ${numErrors} error(s)`));
+    $('.validation-warning', tab).show();
   }
 
   /**
@@ -324,6 +325,7 @@ export class StudioView {
   clearTabValidation(tab) {
     tab.toggleClass('invalid', false);
     $('.tab-error-count', tab).text('');
+    $('.validation-warning', tab).hide();
   }
 
   /**
