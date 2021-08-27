@@ -5,6 +5,7 @@ from collections import namedtuple
 import datetime as dt
 from io import StringIO
 import json
+from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 import ddt
@@ -14,7 +15,7 @@ from freezegun import freeze_time
 from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import openassessmentblock
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -844,6 +845,18 @@ class TestDates(XBlockHandlerTestCase):
     def test_is_released_course_staff(self, xblock):
         # Simulate being course staff
         xblock.xmodule_runtime = Mock(user_is_staff=True)
+
+        # Published, should be released
+        self.assertTrue(xblock.is_released())
+
+        # Not published, should be not released
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
+        self.assertFalse(xblock.is_released())
+
+    @scenario('data/basic_scenario.xml')
+    def test_is_released_invalid_date(self, xblock):
+        xblock.is_closed = mock.MagicMock(side_effect=DateValidationError)
 
         # Published, should be released
         self.assertTrue(xblock.is_released())

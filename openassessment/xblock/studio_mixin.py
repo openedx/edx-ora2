@@ -20,7 +20,7 @@ from openassessment.xblock.data_conversion import (
     update_assessments_format
 )
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
-from openassessment.xblock.resolve_dates import resolve_dates
+from openassessment.xblock.resolve_dates import resolve_dates, parse_date_value, DateValidationError, InvalidDateFormat
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
@@ -110,16 +110,32 @@ class StudioMixin:
         # In the authoring GUI, date and time fields should never be null.
         # Therefore, we need to resolve all "default" dates to datetime objects
         # before displaying them in the editor.
-        __, __, date_ranges = resolve_dates(  # pylint: disable=redeclared-assigned-name
-            self.start, self.due,
-            [
-                (self.submission_start, self.submission_due)
+        try:
+            __, __, date_ranges = resolve_dates(  # pylint: disable=redeclared-assigned-name
+                self.start, self.due,
+                [
+                    (self.submission_start, self.submission_due)
+                ] + [
+                    (asmnt.get('start'), asmnt.get('due'))
+                    for asmnt in self.valid_assessments
+                ],
+                self._
+            )
+        except (DateValidationError, InvalidDateFormat):
+            # If the dates are somehow invalid, we still want users to be able to edit the ORA,
+            # so just present the dates as they are.
+            def _parse_date_safe(date):
+                try:
+                    return parse_date_value(date, self._)
+                except InvalidDateFormat:
+                    return ''
+
+            date_ranges = [
+                (_parse_date_safe(self.submission_start), _parse_date_safe(self.submission_due))
             ] + [
-                (asmnt.get('start'), asmnt.get('due'))
+                (_parse_date_safe(asmnt.get('start')), _parse_date_safe(asmnt.get('due')))
                 for asmnt in self.valid_assessments
-            ],
-            self._
-        )
+            ]
 
         submission_start, submission_due = date_ranges[0]
         assessments = self._assessments_editor_context(date_ranges[1:])

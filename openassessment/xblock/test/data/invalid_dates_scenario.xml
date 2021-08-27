@@ -1,0 +1,37 @@
+<openassessment submission_start="2020-01-01">
+    <title>Open Assessment Test</title>
+    <prompt>
+        Given the state of the world today, what do you think should be done to
+        combat poverty? Please answer in a short essay of 200-300 words.
+    </prompt>
+    <rubric>
+        <prompt>Read for conciseness. That's all, just conciseness.</prompt>
+        <criterion>
+            <name>Concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>Neal Stephenson (late)</name>
+                <explanation>Neal Stephenson explanation</explanation>
+            </option>
+            <option points="1">
+                <name>HP Lovecraft</name>
+                <explanation>HP Lovecraft explanation</explanation>
+            </option>
+            <option points="3">
+                <name>Robert Heinlein</name>
+                <explanation>Robert Heinlein explanation</explanation>
+            </option>
+            <option points="4">
+                <name>Neal Stephenson (early)</name>
+                <explanation>Neal Stephenson (early) explanation</explanation>
+            </option>
+            <option points="5">
+                <name>Earnest Hemingway</name>
+                <explanation>Earnest Hemingway</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="self-assessment" start="2016-01-01"/>
+    </assessments>
+</openassessment>
