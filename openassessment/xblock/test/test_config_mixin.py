@@ -14,7 +14,8 @@ from openassessment.xblock.config_mixin import (
     FEATURE_TOGGLES_BY_FLAG_NAME,
     TEAM_SUBMISSIONS,
     USER_STATE_UPLOAD_DATA,
-    RUBRIC_REUSE
+    RUBRIC_REUSE,
+    ENHANCED_STAFF_GRADER,
 )
 
 
@@ -122,6 +123,24 @@ class ConfigMixinTest(TestCase):
             waffle_flag_input,
             settings_input,
             'is_rubric_reuse_enabled',
+        )
+
+    @ddt.data(
+        *list(itertools.product([True, False, None], repeat=3))
+    )
+    @ddt.unpack
+    def test_enhanced_staff_grader_enabled(self, waffle_switch_input, waffle_flag_input, settings_input):
+        """
+        The enhanced staff grader feature is expected to be enabled only if:
+          1) The openresponseassessment.enhanced_staff_grader waffle flag is enabled
+          2) The settings.FEATURES['ENABLE_ENHANCED_STAFF_GRADER'] value is True
+        """
+        self._run_feature_toggle_test(
+            ENHANCED_STAFF_GRADER,
+            waffle_switch_input,
+            waffle_flag_input,
+            settings_input,
+            'is_enhanced_staff_grader_enabled',
         )
 
     def _run_feature_toggle_test(
