@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @task(base=LoggedTask, name="run_and_save_staff_test_cases")
-def run_and_save_staff_test_cases(block_id, sub_uuid, problem_name):
+def run_and_save_staff_test_cases(block_id, sub_uuid, problem_name, **kwargs):
     """
     Celery task for running staff test cases and updating the submission
     against a given uuid.

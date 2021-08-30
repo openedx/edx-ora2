@@ -11,6 +11,7 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.tasks import run_and_save_staff_test_cases
 from xblock.core import XBlock
+from student.models import user_by_anonymous_id
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from .job_sample_grader.utils import get_error_response, is_design_problem
@@ -133,7 +134,13 @@ class SubmissionMixin(object):
                 )
                 run_and_save_staff_test_cases.apply_async(args=[
                     str(self.scope_ids.usage_id), submission["uuid"], self.display_name
-                ])
+                ], kwargs={
+                    'course_id': student_item_dict.get('course_id'),
+                    'user_id': (
+                        user_by_anonymous_id(student_item_dict.get('student_id')).id
+                        or student_item_dict.get('student_id')
+                    )
+                })
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
