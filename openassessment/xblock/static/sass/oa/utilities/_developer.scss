@@ -283,7 +283,20 @@
         /* For an invalid tab, drop a validation error icon in the button */
         span.validation-warning {
           display: none;
-          padding-right: 8px;
+          padding-right: 4px;
+
+          svg {
+            width: 1em;
+            vertical-align: middle;
+            stroke: $edx-gray-d3;
+            fill: $warning-fill;
+            paint-order: stroke;
+
+            path:nth-child(2) {
+              stroke: $warning-fill;
+              fill: $edx-gray-d3;
+            }
+          }
         }
 
         a {
@@ -300,10 +313,6 @@
         a {
           color: $edx-gray-d3;
         }
-
-        span.validation-warning {
-          color: $warning-700;
-        }
       }
 
       /* Active tab styling */
@@ -312,10 +321,6 @@
         background: $edx-gray-d2 none;
         a {
           color: $white;
-        }
-
-        span.validation-warning {
-          color: $warning-200;
         }
       }
 
@@ -330,7 +335,7 @@
     @include border-top-left-radius(2px);
     @include border-top-right-radius(2px);
     background-color: $gray-800;
-    border-bottom: 3px solid $warning-200;
+    border-bottom: 3px solid $warning-fill;
     padding: 10px;
     position: absolute;
     z-index: 10;
@@ -338,19 +343,11 @@
 
     .openassessment_alert_icon{
       position: absolute;
-      top: 35%;
-      font-size: 200%;
       @include left(3%);
-    }
 
-    .openassessment_alert_icon:before{
-      font-family: FontAwesome;
-      content: "\f071";
-      display: inline-block;
-      color: $warning-200;
-      @include float(left);
-      height: 0;
-      width: 0;
+      svg {
+        width: 3em;
+      }
     }
 
     .openassessment_alert_header {
