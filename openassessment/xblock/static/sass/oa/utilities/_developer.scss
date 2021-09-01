@@ -281,12 +281,21 @@
         @include text-align(center);
 
         /* For an invalid tab, drop a validation error icon in the button */
-        &.invalid {
-          a::before {
-            font-family: FontAwesome;
-            content: "\f071";
-            color: rgb(192, 172, 0);
-            padding-right: 8px;
+        span.validation-warning {
+          display: none;
+          padding-right: 4px;
+
+          svg {
+            width: 1em;
+            vertical-align: middle;
+            stroke: $edx-gray-d3;
+            fill: $warning-fill;
+            paint-order: stroke;
+
+            path:nth-child(2) {
+              stroke: $warning-fill;
+              fill: $edx-gray-d3;
+            }
           }
         }
 
@@ -298,6 +307,7 @@
         }
       }
 
+      /* Inactive tab styling */
       .ui-state-default.oa_editor_tab{
         background: #e5e5e5 none;
         a {
@@ -305,6 +315,7 @@
         }
       }
 
+      /* Active tab styling */
       .ui-state-active.ui-state-default.oa_editor_tab:hover,
       .ui-state-active.oa_editor_tab {
         background: $edx-gray-d2 none;
@@ -323,8 +334,8 @@
     width: 100%;
     @include border-top-left-radius(2px);
     @include border-top-right-radius(2px);
-    background-color: #323232;
-    border-bottom: 3px solid rgb(192, 172, 0);
+    background-color: $gray-800;
+    border-bottom: 3px solid $warning-fill;
     padding: 10px;
     position: absolute;
     z-index: 10;
@@ -332,20 +343,13 @@
 
     .openassessment_alert_icon{
       position: absolute;
-      top: 35%;
-      font-size: 200%;
       @include left(3%);
+
+      svg {
+        width: 3em;
+      }
     }
 
-    .openassessment_alert_icon:before{
-      font-family: FontAwesome;
-      content: "\f071";
-      display: inline-block;
-      color: rgb(192, 172, 0);
-      @include float(left);
-      height: 0;
-      width: 0;
-    }
     .openassessment_alert_header {
       width: 85%;
       @include margin(0, 5%, 0, 10%);
@@ -357,7 +361,7 @@
 
       .openassessment_alert_message {
         font-size: 80%;
-        color: darkgray;
+        color: $light-700;
       }
     }
 
