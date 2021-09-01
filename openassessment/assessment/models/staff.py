@@ -44,6 +44,18 @@ class StaffWorkflow(models.Model):
         ordering = ["created_at", "id"]
         app_label = "assessment"
 
+    @classmethod
+    def get_workflow(cls, submission_uuid):
+        """
+        Get a StaffWorkflow for a submission_uuid.
+
+        Returns: StaffWorkflow or None if no workflow is found.
+        """
+        try:
+            return cls.objects.get(submission_uuid=submission_uuid)
+        except cls.DoesNotExist:
+            return None
+
     @property
     def is_cancelled(self):
         """
@@ -53,6 +65,59 @@ class StaffWorkflow(models.Model):
             True/False
         """
         return bool(self.cancelled_at)
+
+    @property
+    def is_locked(self):
+        """
+        Check if the workflow is currently locked for grading by staff.
+        A workflow is locked if someone started grading it recently (within the
+        configured TIME_LIMIT in the past).
+
+        Returns:
+            True/False
+        """
+        # If nobody has started grading this submission, it is not locked
+        if not self.grading_started_at:
+            return False
+
+        # If somebody started grading this but the lock time has passed, it is not locked
+        elif now() > self.grading_started_at + self.TIME_LIMIT:
+            return False
+
+        else:
+            return True
+
+    def claim_lock(self, scorer_id):
+        """
+        Claim a submission to start grading
+
+        Returns: True/False whether it was successful in claiming or not
+        """
+        # TODO - dtermine if we need logic to deal with competing locks
+
+        try:
+            self.scorer_id = scorer_id
+            self.grading_started_at = now()
+            self.save()
+        except Exception as exc:
+            logger.error(f'Failed to claim lock on submission {self.submission_uuid}: {exc}')
+            return False
+        return True
+
+    def clear_lock(self):
+        """
+        Clear a lock on a submission
+
+        Returns: True/False whether it was successful in clearing or not
+        """
+        try:
+            self.scorer_id = ""
+            self.grading_started_at = None
+            self.save()
+        except Exception as exc:
+            logger.error(f'Failed to clear lock on submission {self.submission_uuid}: {exc}')
+            return False
+        return True
 
     @property
     def identifying_uuid(self):
