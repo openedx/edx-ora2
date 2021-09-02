@@ -1,8 +1,8 @@
 """
 API endpoints for enhanced staff grader
 """
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.http.response import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -19,13 +19,8 @@ def locks_view(request, course_id, submission_uuid):
     Actions to interact with submission locks, blocking other staff from grading assignments while
     grading is in progress.
     """
-
-    # TODO - update staff permission check to limit by course
-    # course_key = CourseKey.from_string(course_id)
-    # request.user.has_perm("instructor.email", course_key)
-
-    # Requires staff permission
-    if not request.user.is_staff:
+    # Requires staff permission for the course
+    if not has_access(request.user, course_id):
         return HttpResponseForbidden()
 
     anonymous_id = get_anonymous_id(request.user.id, course_id)
@@ -89,3 +84,31 @@ def get_anonymous_id(user_id, course_id):
         )
     except (ObjectDoesNotExist, MultipleObjectsReturned):
         return None
+
+def has_access(user, course_id, access_level="staff"):
+    """
+    Determine whether the user has access to the given course.
+    i.e. whether they have "staff"-level access
+    """
+    if user.is_anonymous:
+        return False
+
+    access_roles = get_roles(user.id, course_id)
+
+    return access_level in access_roles
+
+
+def get_roles(user_id, course_id):
+    """
+    Get access roles for the user in context of the course
+    """
+    access_roles = _use_read_replica(
+        User.objects.filter(
+            courseaccessrole__user_id = user_id,
+            courseaccessrole__course_id = course_id
+        ).values(
+            "courseaccessrole__role"
+        )
+    )
+
+    return [role["courseaccessrole__role"] for role in access_roles]
