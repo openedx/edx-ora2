@@ -7,10 +7,9 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.http.response import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.views.decorators.http import require_http_methods
 
-
-from opaque_keys.edx.keys import CourseKey
 from openassessment.assessment.models.staff import StaffWorkflow
 from openassessment.data import _use_read_replica
+
 
 @login_required()
 @require_http_methods(["GET", "POST", "DELETE"])
@@ -35,36 +34,37 @@ def locks_view(request, course_id, submission_uuid):
     data = {}
     status = 200
 
-    # GET - get lock info
+    # GET - get lock info, already done implicitly
     if request.method == "GET":
-        data = get_lock_info(workflow)
+        data = response_payload(workflow)
 
     # POST - attempt to claim a lock
     elif request.method == "POST":
         got_lock = workflow.claim_lock(anonymous_id)
-        data = { "success": got_lock }
+        data = response_payload(workflow, success=got_lock)
+
         status = 200 if got_lock else 500
 
     # DELETE - clear a lock
     elif request.method == "DELETE":
         cleared_lock = workflow.clear_lock()
-        data = { "success": cleared_lock }
+        data = response_payload(workflow, success=cleared_lock)
+
         status = 200 if cleared_lock else 500
 
     return JsonResponse(data, status=status)
 
 
-def get_lock_info(workflow):
+def response_payload(workflow, success=True):
     """
-    Given a workflow, get data about if it's locked
-
-    Returns: Object
+    Create response payload with info about the workflow and operation success/failure
     """
     return {
         "submission_uuid": workflow.submission_uuid,
         "locked": workflow.is_locked,
         "owner": workflow.scorer_id,
         "timestamp": workflow.grading_started_at,
+        "success": success
     }
 
 def get_anonymous_id(user_id, course_id):
@@ -74,14 +74,15 @@ def get_anonymous_id(user_id, course_id):
     Returns: String or None
     """
     try:
-        return _use_read_replica(
+        user_anon_id = _use_read_replica(
             User.objects.filter(
                 anonymoususerid__user_id = user_id,
                 anonymoususerid__course_id = course_id
             ).values(
                 "anonymoususerid__anonymous_user_id"
-            ).get()["anonymoususerid__anonymous_user_id"]
-        )
+            )
+        ).get()
+        return user_anon_id["anonymoususerid__anonymous_user_id"]
     except (ObjectDoesNotExist, MultipleObjectsReturned):
         return None
 
