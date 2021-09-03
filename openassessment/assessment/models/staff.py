@@ -45,14 +45,18 @@ class StaffWorkflow(models.Model):
         app_label = "assessment"
 
     @classmethod
-    def get_workflow(cls, submission_uuid):
+    def get_workflow(cls, submission_uuid, course_id):
         """
-        Get a StaffWorkflow for a submission_uuid.
+        Get a StaffWorkflow for a submission_uuid/course.
+        Adding course to the query keeps us from leaking submissions across courses.
 
         Returns: StaffWorkflow or None if no workflow is found.
         """
         try:
-            return cls.objects.get(submission_uuid=submission_uuid)
+            return cls.objects.get(
+                submission_uuid=submission_uuid,
+                course_id=course_id
+            )
         except cls.DoesNotExist:
             return None
 

@@ -27,8 +27,8 @@ def locks_view(request, course_id, submission_uuid):
         return HttpResponseForbidden()
 
     # Get the workflow for this submission
-    workflow = StaffWorkflow.get_workflow(submission_uuid)
-    if not workflow or workflow.course_id != course_id:
+    workflow = StaffWorkflow.get_workflow(submission_uuid, course_id)
+    if not workflow:
         return HttpResponseNotFound()
 
     data = {}
