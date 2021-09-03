@@ -93,8 +93,8 @@ class StaffWorkflow(models.Model):
 
         Returns: True/False whether it was successful in claiming or not
         """
-        # TODO - dtermine if we need logic to deal with competing locks
-
+        if self.is_locked and self.scorer_id != scorer_id:
+            return False
         try:
             self.scorer_id = scorer_id
             self.grading_started_at = now()
