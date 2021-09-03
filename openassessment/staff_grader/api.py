@@ -1,10 +1,11 @@
 """
 API endpoints for enhanced staff grader
 """
+from openassessment.assessment.errors.staff import StaffAssessmentInternalError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
-from django.http.response import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
+from django.http.response import HttpResponseForbidden, HttpResponseNotFound, HttpResponseServerError, JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from openassessment.assessment.models.staff import StaffWorkflow
@@ -32,27 +33,26 @@ def locks_view(request, course_id, submission_uuid):
         return HttpResponseNotFound()
 
     data = {}
-    status = 200
 
-    # GET - get lock info, already done implicitly
-    if request.method == "GET":
-        data = response_payload(workflow)
+    try:
+        # GET - get lock info, already done implicitly
+        if request.method == "GET":
+            data = response_payload(workflow)
 
-    # POST - attempt to claim a lock
-    elif request.method == "POST":
-        got_lock = workflow.claim_lock(anonymous_id)
-        data = response_payload(workflow, success=got_lock)
+        # POST - attempt to claim a lock
+        elif request.method == "POST":
+            got_lock = workflow.claim_lock(anonymous_id)
+            data = response_payload(workflow, success=got_lock)
 
-        status = 200 if got_lock else 500
+        # DELETE - clear a lock
+        elif request.method == "DELETE":
+            cleared_lock = workflow.clear_lock(anonymous_id)
+            data = response_payload(workflow, success=cleared_lock)
 
-    # DELETE - clear a lock
-    elif request.method == "DELETE":
-        cleared_lock = workflow.clear_lock(anonymous_id)
-        data = response_payload(workflow, success=cleared_lock)
+    except StaffAssessmentInternalError as ex:
+        return HttpResponseServerError(ex)
 
-        status = 200 if cleared_lock else 500
-
-    return JsonResponse(data, status=status)
+    return JsonResponse(data)
 
 
 def response_payload(workflow, success=True):

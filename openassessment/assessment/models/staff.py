@@ -103,9 +103,10 @@ class StaffWorkflow(models.Model):
             self.scorer_id = scorer_id
             self.grading_started_at = now()
             self.save()
-        except Exception as exc:
-            logger.error(f'Failed to claim lock on submission {self.submission_uuid}: {exc}')
-            return False
+        except DatabaseError as ex:
+            error_message = (f'An internal error occurred trying to lock submission: {self.submission_uuid}')
+            logger.exception(error_message)
+            raise StaffAssessmentInternalError(error_message) from ex
         return True
 
     def clear_lock(self, scorer_id):
@@ -121,9 +122,10 @@ class StaffWorkflow(models.Model):
             self.scorer_id = ""
             self.grading_started_at = None
             self.save()
-        except Exception as exc:
-            logger.error(f'Failed to clear lock on submission {self.submission_uuid}: {exc}')
-            return False
+        except DatabaseError as ex:
+            error_message = (f'An internal error occurred trying to clear lock submission: {self.submission_uuid}')
+            logger.exception(error_message)
+            raise StaffAssessmentInternalError(error_message) from ex
         return True
 
     @property
