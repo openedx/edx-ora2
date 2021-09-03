@@ -104,12 +104,15 @@ class StaffWorkflow(models.Model):
             return False
         return True
 
-    def clear_lock(self):
+    def clear_lock(self, scorer_id):
         """
-        Clear a lock on a submission
+        Clear a lock on a submission.
+        Only the current lock holder can clear a lock while it is active.
 
         Returns: True/False whether it was successful in clearing or not
         """
+        if self.is_locked and self.scorer_id != scorer_id:
+            return False
         try:
             self.scorer_id = ""
             self.grading_started_at = None

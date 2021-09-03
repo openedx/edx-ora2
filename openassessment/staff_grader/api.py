@@ -47,7 +47,7 @@ def locks_view(request, course_id, submission_uuid):
 
     # DELETE - clear a lock
     elif request.method == "DELETE":
-        cleared_lock = workflow.clear_lock()
+        cleared_lock = workflow.clear_lock(anonymous_id)
         data = response_payload(workflow, success=cleared_lock)
 
         status = 200 if cleared_lock else 500
