@@ -67,6 +67,7 @@ def response_payload(workflow, success=True):
         "success": success
     }
 
+
 def get_anonymous_id(user_id, course_id):
     """
     Get an anonymous user ID for the user/course
@@ -76,8 +77,8 @@ def get_anonymous_id(user_id, course_id):
     try:
         user_anon_id = _use_read_replica(
             User.objects.filter(
-                anonymoususerid__user_id = user_id,
-                anonymoususerid__course_id = course_id
+                anonymoususerid__user_id=user_id,
+                anonymoususerid__course_id=course_id
             ).values(
                 "anonymoususerid__anonymous_user_id"
             )
@@ -85,6 +86,7 @@ def get_anonymous_id(user_id, course_id):
         return user_anon_id["anonymoususerid__anonymous_user_id"]
     except (ObjectDoesNotExist, MultipleObjectsReturned):
         return None
+
 
 def has_access(user, course_id, access_level="staff"):
     """
@@ -105,8 +107,8 @@ def get_roles(user_id, course_id):
     """
     access_roles = _use_read_replica(
         User.objects.filter(
-            courseaccessrole__user_id = user_id,
-            courseaccessrole__course_id = course_id
+            courseaccessrole__user_idc=user_id,
+            courseaccessrole__course_id=course_id
         ).values(
             "courseaccessrole__role"
         )
