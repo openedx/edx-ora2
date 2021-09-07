@@ -1,5 +1,5 @@
 export class CourseItemsListingView {
-  constructor(runtime, element) {
+  constructor(runtime, element, data) {
     const self = this;
     const $section = $(element);
     const block = $section.find('.open-response-assessment-block');
@@ -9,6 +9,7 @@ export class CourseItemsListingView {
     this.$section = $section;
     this.runtime = runtime;
     this.oraData = $.parseJSON($('#open-response-assessment-items').text());
+    this.data = data;
 
     if (!dataRendered) { // if rendered, we're returning after tabbing away
       $section.find('.open-response-assessment-content').hide();

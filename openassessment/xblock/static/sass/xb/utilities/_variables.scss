@@ -62,6 +62,15 @@ $blue-u1: desaturate($blue,15%);
 $blue-u2: desaturate($blue,30%);
 
 // --------------------
+// colors - paragon
+// --------------------
+$gray-800: #333333;
+
+$light-700: #D7D3D1;
+
+$warning-fill: #F0CC00;
+
+// --------------------
 // fonts
 // --------------------
 $f-serif: 'Poly', Cambria, Georgia, 'Times New Roman', Times, serif;
@@ -171,7 +180,7 @@ $color-confirm: $heading-color;
 $color-unavailable: $uxpl-gray-back;
 
 // --------------------
-// // application - colors: staff UI
+// application - colors: staff UI
 // --------------------
 $color-decorative-staff: $color-decorative-primary;
 $heading-staff-color: $white;

@@ -85,16 +85,16 @@ If any changes are made to the .html files, it is necessary to re-do the transla
 
 The above command will generate translations files which will have to be checked into git.
 
-Building JS
+Building Static Files
 ------------
-This is required if there were any JS changes:
+This is required if there were any JS/SCSS changes:
 
 - from local directory (not in lms shell)
 - ``npm run build``
 
-Hot reload JS
+Hot Reload Frontend Changes
 ------------
-This is required if there were any JS changes:
+This is required if there were any JS/SCSS changes:
 
 - from local directory (not in lms shell)
 - ``npm run start`` to start dev server
@@ -102,15 +102,6 @@ This is required if there were any JS changes:
 - from devstack directory (not in lms shell)
 - ``make lms-restart studio-restart``
   - **NOTE**: cms does not support hot reload at the moment
-
-Minifying CSS
------------------
-This is required if there were any SCSS changes:
-
-- be inside the shell
-- ``cd /edx/src/edx-ora2``
-- ``source edx-ora2/bin/activate``
-- ``make sass``
 
 Running Unit Tests
 ------------------

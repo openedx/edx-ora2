@@ -395,8 +395,10 @@ export class EditRubricView {
     if (!isValid) {
       this.criterionAddButton
         .addClass('openassessment_highlighted_field')
+        .attr('aria-invalid', true)
         .click(function () {
           $(this).removeClass('openassessment_highlighted_field');
+          $(this).removeAttr('aria-invalid');
         });
     }
 
@@ -435,6 +437,7 @@ export class EditRubricView {
      * */
   clearValidationErrors() {
     this.criterionAddButton.removeClass('openassessment_highlighted_field');
+    this.criterionAddButton.removeAttr('aria-invalid', true);
 
     $.each(this.getAllCriteria(), function () {
       this.clearValidationErrors();

@@ -177,7 +177,7 @@ export class StudioView {
     this.markTabsWithValidationErrors(viewsFailingValidation);
 
     if (viewsFailingValidation.length > 0) {
-      const tabNames = viewsFailingValidation.map(view => view.getTab().text());
+      const tabNames = viewsFailingValidation.map(view => view.getTab().find('a').text());
       this.alert.setMessage(
         gettext('Save Unsuccessful'),
         gettext(`We've detected errors on the following tabs: ${tabNames.join(', ')}`),
@@ -304,16 +304,26 @@ export class StudioView {
   markTabsWithValidationErrors(viewsFailingValidation) {
     viewsFailingValidation.forEach((view) => {
       const tab = view.getTab();
-      this.markTabAsInvalid(tab);
+      const numErrors = view.validationErrors().length;
+      this.markTabAsInvalid(tab, numErrors);
     });
   }
 
   /**
-   * Given a tab ID, add or remove validation warning styling.
-   *  value - true enables invalid styling, false removes invalid styling
+   * Given a tab, add invalid warning markup
+   *  numErrors - number of errors (only shown in screen reader help-text)
    * */
-  markTabAsInvalid(tab, value = true) {
-    tab.toggleClass('invalid', value);
+  markTabAsInvalid(tab, numErrors) {
+    $('.tab-error-count', tab).text(gettext(`has ${numErrors} error(s)`));
+    $('.validation-warning', tab).show();
+  }
+
+  /**
+   * Given a tab, remove invalid warning markup
+   * */
+  clearTabValidation(tab) {
+    $('.tab-error-count', tab).text('');
+    $('.validation-warning', tab).hide();
   }
 
   /**
@@ -342,7 +352,7 @@ export class StudioView {
   clearValidationErrors() {
     this.views.forEach((view) => {
       view.clearValidationErrors();
-      this.markTabAsInvalid(view.getTab(), false);
+      this.clearTabValidation(view.getTab());
     });
   }
 }
