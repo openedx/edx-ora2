@@ -3,13 +3,11 @@ API endpoints for enhanced staff grader
 """
 from openassessment.assessment.errors.staff import StaffAssessmentInternalError
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.http.response import HttpResponseForbidden, HttpResponseNotFound, HttpResponseServerError, JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from openassessment.assessment.models.staff import StaffWorkflow
-from openassessment.data import _use_read_replica
+from openassessment.staff_grader.utils import has_access, get_anonymous_id
 
 
 @login_required()
@@ -66,52 +64,3 @@ def response_payload(workflow, success=True):
         "timestamp": workflow.grading_started_at,
         "success": success
     }
-
-
-def get_anonymous_id(user_id, course_id):
-    """
-    Get an anonymous user ID for the user/course
-
-    Returns: String or None
-    """
-    try:
-        user_anon_id = _use_read_replica(
-            User.objects.filter(
-                anonymoususerid__user_id=user_id,
-                anonymoususerid__course_id=course_id
-            ).values(
-                "anonymoususerid__anonymous_user_id"
-            )
-        ).get()
-        return user_anon_id["anonymoususerid__anonymous_user_id"]
-    except (ObjectDoesNotExist, MultipleObjectsReturned):
-        return None
-
-
-def has_access(user, course_id, access_level="staff"):
-    """
-    Determine whether the user has access to the given course.
-    i.e. whether they have "staff"-level access
-    """
-    if user.is_anonymous:
-        return False
-
-    access_roles = get_roles(user.id, course_id)
-
-    return access_level in access_roles
-
-
-def get_roles(user_id, course_id):
-    """
-    Get access roles for the user in context of the course
-    """
-    access_roles = _use_read_replica(
-        User.objects.filter(
-            courseaccessrole__user_idc=user_id,
-            courseaccessrole__course_id=course_id
-        ).values(
-            "courseaccessrole__role"
-        )
-    )
-
-    return [role["courseaccessrole__role"] for role in access_roles]
