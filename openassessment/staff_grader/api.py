@@ -39,12 +39,12 @@ def locks_view(request, course_id, submission_uuid):
 
         # POST - attempt to claim a lock
         elif request.method == "POST":
-            got_lock = workflow.claim_lock(anonymous_id)
+            got_lock = workflow.claim_for_grading(anonymous_id)
             data = response_payload(workflow, success=got_lock)
 
         # DELETE - clear a lock
         elif request.method == "DELETE":
-            cleared_lock = workflow.clear_lock(anonymous_id)
+            cleared_lock = workflow.clear_claim_for_grading(anonymous_id)
             data = response_payload(workflow, success=cleared_lock)
 
     except StaffAssessmentInternalError as ex:
@@ -59,7 +59,7 @@ def response_payload(workflow, success=True):
     """
     return {
         "submission_uuid": workflow.submission_uuid,
-        "locked": workflow.is_locked,
+        "is_being_graded": workflow.is_being_graded,
         "owner": workflow.scorer_id,
         "timestamp": workflow.grading_started_at,
         "success": success

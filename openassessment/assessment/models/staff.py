@@ -71,11 +71,11 @@ class StaffWorkflow(models.Model):
         return bool(self.cancelled_at)
 
     @property
-    def is_locked(self):
+    def is_being_graded(self):
         """
-        Check if the workflow is currently locked for grading by staff.
-        A workflow is locked if someone started grading it recently (within the
-        configured TIME_LIMIT in the past).
+        Check if the submission for this workflow is actively being graded.
+        i.e. someone started grading it recently (within the configured TIME_LIMIT
+        in the past).
 
         Returns:
             True/False
@@ -91,39 +91,40 @@ class StaffWorkflow(models.Model):
         else:
             return True
 
-    def claim_lock(self, scorer_id):
+    def claim_for_grading(self, scorer_id):
         """
-        Claim a submission to start grading
+        Claim a submission to begin grading.
 
-        Returns: True/False whether it was successful in claiming or not
+        Returns:
+            True/False whether it was successful in claiming or not
         """
-        if self.is_locked and self.scorer_id != scorer_id:
+        if self.is_being_graded and self.scorer_id != scorer_id:
             return False
         try:
             self.scorer_id = scorer_id
             self.grading_started_at = now()
             self.save()
         except DatabaseError as ex:
-            error_message = (f'An internal error occurred trying to lock submission: {self.submission_uuid}')
+            error_message = (f'An internal error occurred trying to claim submission for grading: {self.submission_uuid}')
             logger.exception(error_message)
             raise StaffAssessmentInternalError(error_message) from ex
         return True
 
-    def clear_lock(self, scorer_id):
+    def clear_claim_for_grading(self, scorer_id):
         """
-        Clear a lock on a submission.
-        Only the current lock holder can clear a lock while it is active.
+        Clear a claim for grading a submission.
+        Only the current grader can clear a claim while it is active.
 
         Returns: True/False whether it was successful in clearing or not
         """
-        if self.is_locked and self.scorer_id != scorer_id:
+        if self.is_being_graded and self.scorer_id != scorer_id:
             return False
         try:
             self.scorer_id = ""
             self.grading_started_at = None
             self.save()
         except DatabaseError as ex:
-            error_message = (f'An internal error occurred trying to clear lock submission: {self.submission_uuid}')
+            error_message = (f'An internal error occurred trying to clear claim on submission: {self.submission_uuid}')
             logger.exception(error_message)
             raise StaffAssessmentInternalError(error_message) from ex
         return True
