@@ -47,7 +47,7 @@ class StaffWorkflow(models.Model):
     @classmethod
     def get_workflow(cls, submission_uuid, course_id):
         """
-        Get a StaffWorkflow for a submission_uuid/course.
+        Get the StaffWorkflow for a submission_uuid/course.
         Adding course to the query keeps us from leaking submissions across courses.
 
         Returns: StaffWorkflow or None if no workflow is found.
@@ -283,3 +283,19 @@ class TeamStaffWorkflow(StaffWorkflow):
         (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
         """
         return self.team_submission_uuid
+
+    @classmethod
+    def get_workflow(cls, team_submission_uuid, course_id):
+        """
+        Get a the TeamStaffWorkflow for a team_submission_uuid/course.
+        Adding course to the query keeps us from leaking submissions across courses.
+
+        Returns: TeamStaffWorkflow or None if no workflow is found.
+        """
+        try:
+            return cls.objects.get(
+                team_submission_uuid=team_submission_uuid,
+                course_id=course_id
+            )
+        except cls.DoesNotExist:
+            return None
