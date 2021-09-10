@@ -771,6 +771,42 @@ class StaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
         workflow = self.create_workflow()
         self.assertEqual(workflow.submission_uuid, workflow.identifying_uuid)
 
+    def test_get_workflow(self):
+        pass
+
+    def test_is_being_graded_in_progress(self):
+        # A workflow that's being graded is marked correctly
+        workflow = self._create_in_progress()
+        assert workflow.is_being_graded == True
+
+    def test_is_being_graded_not_in_progress(self):
+        # A workflow that's not being graded is marked correctly
+        workflow = self._create_ungraded()
+        assert workflow.is_being_graded == False
+
+    def test_claim_for_grading_uncontested(self):
+        # Claiming a workflow marks it as currently being graded
+        workflow = self._create_ungraded()
+        assert workflow.is_being_graded == False
+
+        assert workflow.claim_for_grading(self.scorer_1_id) == True
+        assert workflow.is_being_graded == True
+
+    def test_claim_for_grading_contested(self):
+        # Trying to claim an in-progress workflow fails
+        workflow = self._create_in_progress(scorer_id=self.scorer_1_id)
+        assert workflow.is_being_graded == True
+
+        assert workflow.claim_for_grading(self.scorer_2_id) == False
+
+    def test_clear_claim_for_grading(self):
+        # Clearing a grading claim marks a workflow as not being graded
+        workflow = self._create_in_progress(scorer_id=self.scorer_1_id)
+        assert workflow.is_being_graded == True
+
+        assert workflow.clear_claim_for_grading(self.scorer_1_id) == True
+        assert workflow.is_being_graded == False
+
 
 class TeamStaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
     """ Tests for the TeamStaffWorkflow model """
@@ -788,3 +824,6 @@ class TeamStaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest
         workflow = self.create_workflow()
         self.assertNotEqual(workflow.submission_uuid, workflow.identifying_uuid)
         self.assertEqual(workflow.team_submission_uuid, workflow.identifying_uuid)
+
+    def test_get_workflow(self):
+        pass
