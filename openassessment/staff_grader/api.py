@@ -66,6 +66,7 @@ class SubmissionLockSerializer(serializers.ModelSerializer):
             'submission_uuid',
             'is_being_graded',
             'grading_started_at',
+            'grading_completed_at',
             'scorer_id'
         ]
 

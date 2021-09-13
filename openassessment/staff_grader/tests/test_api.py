@@ -106,6 +106,7 @@ class TestSubmissionLockView(TestCase):
             'submission_uuid': self.test_submission_uuid,
             'is_being_graded': False,
             'grading_started_at': None,
+            'grading_completed_at': None,
             'scorer_id': '',
         }
 
@@ -133,6 +134,7 @@ class TestSubmissionLockView(TestCase):
             'submission_uuid': self.test_submission_uuid,
             'is_being_graded': True,
             'grading_started_at': self.test_timestamp,
+            'grading_completed_at': None,
             'scorer_id': self.staff_user_id,
         }
 
@@ -164,5 +166,6 @@ class TestSubmissionLockView(TestCase):
             'submission_uuid': self.test_submission_uuid,
             'is_being_graded': False,
             'grading_started_at': None,
+            'grading_completed_at': None,
             'scorer_id': '',
         }
