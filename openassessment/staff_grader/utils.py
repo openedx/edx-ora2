@@ -1,4 +1,10 @@
-from django.contrib.auth.models import User
+"""
+Utilities (largely reproduced from LMS) for supporting Enhanced Staff Grader (ESG)
+
+Note: ESG APIs operate outside of the context of a traditional XBlock so we don't have access to
+the runtime services we normally would. This requires we reproduce their functionalities here.
+"""
+from django.contrib.auth.models import User  #pylint: disable=imported-auth-user
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
 from openassessment.data import _use_read_replica

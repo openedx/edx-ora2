@@ -1,3 +1,6 @@
+"""
+URLS for Enhanced Staff Grader (ESG)
+"""
 from django.conf.urls import url
 
 from openassessment.staff_grader.api import locks_view
