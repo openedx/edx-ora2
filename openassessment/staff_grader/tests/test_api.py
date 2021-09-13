@@ -10,11 +10,12 @@ from freezegun import freeze_time
 from openassessment.staff_grader.api import locks_view
 from openassessment.tests.factories import StaffWorkflowFactory, UserFactory
 
+
 @freeze_time("1969-07-21 02:56:00", tz_offset=0)
 class TestSubmissionLockView(TestCase):
     """ Tests for interacting with submission grading/locking """
     test_submission_uuid = "definitely_a_uuid"
-    test_course_id =  "definitely_a_course_id"
+    test_course_id = "definitely_a_course_id"
     test_workflow = None
     test_timestamp = "1969-07-21T02:56:00Z"
 

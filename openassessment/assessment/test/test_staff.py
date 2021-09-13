@@ -777,35 +777,35 @@ class StaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):
     def test_is_being_graded_in_progress(self):
         # A workflow that's being graded is marked correctly
         workflow = self._create_in_progress()
-        assert workflow.is_being_graded == True
+        assert workflow.is_being_graded is True
 
     def test_is_being_graded_not_in_progress(self):
         # A workflow that's not being graded is marked correctly
         workflow = self._create_ungraded()
-        assert workflow.is_being_graded == False
+        assert workflow.is_being_graded is False
 
     def test_claim_for_grading_uncontested(self):
         # Claiming a workflow marks it as currently being graded
         workflow = self._create_ungraded()
-        assert workflow.is_being_graded == False
+        assert workflow.is_being_graded is False
 
-        assert workflow.claim_for_grading(self.scorer_1_id) == True
-        assert workflow.is_being_graded == True
+        assert workflow.claim_for_grading(self.scorer_1_id) is True
+        assert workflow.is_being_graded is True
 
     def test_claim_for_grading_contested(self):
         # Trying to claim an in-progress workflow fails
         workflow = self._create_in_progress(scorer_id=self.scorer_1_id)
-        assert workflow.is_being_graded == True
+        assert workflow.is_being_graded is True
 
-        assert workflow.claim_for_grading(self.scorer_2_id) == False
+        assert workflow.claim_for_grading(self.scorer_2_id) is False
 
     def test_clear_claim_for_grading(self):
         # Clearing a grading claim marks a workflow as not being graded
         workflow = self._create_in_progress(scorer_id=self.scorer_1_id)
-        assert workflow.is_being_graded == True
+        assert workflow.is_being_graded is True
 
-        assert workflow.clear_claim_for_grading(self.scorer_1_id) == True
-        assert workflow.is_being_graded == False
+        assert workflow.clear_claim_for_grading(self.scorer_1_id) is True
+        assert workflow.is_being_graded is False
 
 
 class TeamStaffWorkflowModelTest(BaseStaffWorkflowModelTestMixin, CacheResetTest):

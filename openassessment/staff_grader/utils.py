@@ -3,6 +3,7 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
 from openassessment.data import _use_read_replica
 
+
 def get_anonymous_id(user_id, course_id):
     """
     Get an anonymous user ID for the user/course

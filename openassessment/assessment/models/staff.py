@@ -105,7 +105,9 @@ class StaffWorkflow(models.Model):
             self.grading_started_at = now()
             self.save()
         except DatabaseError as ex:
-            error_message = (f'An internal error occurred trying to claim submission for grading: {self.submission_uuid}')
+            error_message = (
+                f'An internal error occurred trying to claim submission for grading: {self.submission_uuid}'
+            )
             logger.exception(error_message)
             raise StaffAssessmentInternalError(error_message) from ex
         return True
