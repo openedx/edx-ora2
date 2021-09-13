@@ -1,11 +1,11 @@
 """
 API endpoints for enhanced staff grader
 """
-from openassessment.assessment.errors.staff import StaffAssessmentInternalError
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseForbidden, HttpResponseNotFound, HttpResponseServerError, JsonResponse
 from django.views.decorators.http import require_http_methods
 
+from openassessment.assessment.errors.staff import StaffAssessmentInternalError
 from openassessment.assessment.models.staff import StaffWorkflow
 from openassessment.staff_grader.utils import has_access, get_anonymous_id
 
