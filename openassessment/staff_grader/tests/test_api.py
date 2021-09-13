@@ -1,10 +1,10 @@
+from datetime import datetime
 import json
 
 from unittest.mock import patch
 
 from django.http import HttpRequest
 from django.test import TestCase
-from django.utils.timezone import now
 from freezegun import freeze_time
 
 from openassessment.staff_grader.api import locks_view
@@ -17,7 +17,7 @@ class TestSubmissionLockView(TestCase):
     test_submission_uuid = "definitely_a_uuid"
     test_course_id = "definitely_a_course_id"
     test_workflow = None
-    test_timestamp = "1969-07-21T02:56:00Z"
+    test_timestamp = "1969-07-20T22:56:00-04:00"
 
     staff_user = None
     staff_user_id = 'staff'
@@ -105,9 +105,8 @@ class TestSubmissionLockView(TestCase):
         assert result_data == {
             'submission_uuid': self.test_submission_uuid,
             'is_being_graded': False,
-            'owner': '',
-            'timestamp': None,
-            'success': True
+            'grading_started_at': None,
+            'scorer_id': '',
         }
 
     @patch("openassessment.staff_grader.api.has_access")
@@ -133,9 +132,8 @@ class TestSubmissionLockView(TestCase):
         assert result_data == {
             'submission_uuid': self.test_submission_uuid,
             'is_being_graded': True,
-            'owner': self.staff_user_id,
-            'timestamp': self.test_timestamp,
-            'success': True
+            'grading_started_at': self.test_timestamp,
+            'scorer_id': self.staff_user_id,
         }
 
     @patch("openassessment.staff_grader.api.has_access")
@@ -146,7 +144,7 @@ class TestSubmissionLockView(TestCase):
         mock_get_anon_id.return_value = self.staff_user_id
 
         # ... trying to access an in-grading-progress submisison
-        self.test_workflow.grading_started_at = now()
+        self.test_workflow.grading_started_at = datetime.now()
         self.test_workflow.scorer_id = self.staff_user_id
         self.test_workflow.save()
 
@@ -165,7 +163,6 @@ class TestSubmissionLockView(TestCase):
         assert result_data == {
             'submission_uuid': self.test_submission_uuid,
             'is_being_graded': False,
-            'owner': '',
-            'timestamp': None,
-            'success': True
+            'grading_started_at': None,
+            'scorer_id': '',
         }
