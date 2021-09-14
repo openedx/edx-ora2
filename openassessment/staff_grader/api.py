@@ -2,7 +2,7 @@
 API endpoints for enhanced staff grader
 """
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponseForbidden, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+from django.http.response import HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseServerError, JsonResponse
 from django.views.decorators.http import require_http_methods
 from rest_framework import serializers
 
@@ -13,11 +13,25 @@ from openassessment.staff_grader.utils import has_access, get_anonymous_id
 
 @login_required()
 @require_http_methods(["GET", "POST", "DELETE"])
-def locks_view(request, course_id, submission_uuid):
+def locks_view(request):
     """
     Actions to interact with submission locks, blocking other staff from grading assignments while
     grading is in progress.
     """
+    # Unpack / validate request
+    submission_uuid = request.GET.get('submissionid')
+
+    if not submission_uuid:
+        return HttpResponseBadRequest("Request must contain a submissionid query param")
+
+    # Get the workflow for this submission
+    workflow = StaffWorkflow.get_workflow(submission_uuid)
+
+    if not workflow:
+        return HttpResponseNotFound()
+
+    course_id = workflow.course_id
+
     # Requires staff permission for the course
     if not has_access(request.user, course_id):
         return HttpResponseForbidden()

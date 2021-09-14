@@ -45,7 +45,7 @@ class StaffWorkflow(models.Model):
         app_label = "assessment"
 
     @classmethod
-    def get_workflow(cls, submission_uuid, course_id):
+    def get_workflow(cls, submission_uuid):
         """
         Get the StaffWorkflow for a submission_uuid/course.
         Adding course to the query keeps us from leaking submissions across courses.
@@ -53,10 +53,7 @@ class StaffWorkflow(models.Model):
         Returns: StaffWorkflow or None if no workflow is found.
         """
         try:
-            return cls.objects.get(
-                submission_uuid=submission_uuid,
-                course_id=course_id
-            )
+            return cls.objects.get(submission_uuid=submission_uuid)
         except cls.DoesNotExist:
             return None
 
@@ -287,7 +284,7 @@ class TeamStaffWorkflow(StaffWorkflow):
         return self.team_submission_uuid
 
     @classmethod
-    def get_workflow(cls, team_submission_uuid, course_id):  # pylint: disable=arguments-differ
+    def get_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ
         """
         Get a the TeamStaffWorkflow for a team_submission_uuid/course.
         Adding course to the query keeps us from leaking submissions across courses.
@@ -295,9 +292,6 @@ class TeamStaffWorkflow(StaffWorkflow):
         Returns: TeamStaffWorkflow or None if no workflow is found.
         """
         try:
-            return cls.objects.get(
-                team_submission_uuid=team_submission_uuid,
-                course_id=course_id
-            )
+            return cls.objects.get(team_submission_uuid=team_submission_uuid)
         except cls.DoesNotExist:
             return None

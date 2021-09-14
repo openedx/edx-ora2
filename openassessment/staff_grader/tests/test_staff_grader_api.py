@@ -52,12 +52,11 @@ class TestSubmissionLockView(TestCase):
 
         request = HttpRequest()
         request.method = "GET"
+        request.GET = {'submissionid': self.test_submission_uuid}
         request.user = self.non_staff_user
-        course_id = self.test_course_id
-        submission_uuid = self.test_submission_uuid
 
         # When I try to hit any endpoint
-        result = locks_view(request, course_id, submission_uuid)
+        result = locks_view(request)
 
         # Then I get an empty HTTP Forbidden response
         assert result.status_code == 403
@@ -73,11 +72,10 @@ class TestSubmissionLockView(TestCase):
         request = HttpRequest()
         request.method = "GET"
         request.user = self.staff_user
-        course_id = self.test_course_id
-        submission_uuid = 'not-a-real-submission'
+        request.GET = {'submissionid': 'not-a-real-submission'}
 
         # When I hit any of the endpoints
-        result = locks_view(request, course_id, submission_uuid)
+        result = locks_view(request)
 
         # Then I get a Not Found error
         assert result.status_code == 404
@@ -93,11 +91,10 @@ class TestSubmissionLockView(TestCase):
         request = HttpRequest()
         request.method = "GET"
         request.user = self.staff_user
-        course_id = self.test_course_id
-        submission_uuid = self.test_submission_uuid
+        request.GET = {'submissionid': self.test_submission_uuid}
 
         # When I GET submission lock info
-        result = locks_view(request, course_id, submission_uuid)
+        result = locks_view(request)
         result_data = json.loads(result.getvalue())
 
         # Then I successfully get workflow data back
@@ -121,11 +118,10 @@ class TestSubmissionLockView(TestCase):
         request = HttpRequest()
         request.method = "POST"
         request.user = self.staff_user
-        course_id = self.test_course_id
-        submission_uuid = self.test_submission_uuid
+        request.GET = {'submissionid': self.test_submission_uuid}
 
         # When I POST submission lock info
-        result = locks_view(request, course_id, submission_uuid)
+        result = locks_view(request)
         result_data = json.loads(result.getvalue())
 
         # Then I successfully claim access to a submission and it begins grading
@@ -153,11 +149,10 @@ class TestSubmissionLockView(TestCase):
         request = HttpRequest()
         request.method = "DELETE"
         request.user = self.staff_user
-        course_id = self.test_course_id
-        submission_uuid = self.test_submission_uuid
+        request.GET = {'submissionid': self.test_submission_uuid}
 
         # When I DELETE submission lock info
-        result = locks_view(request, course_id, submission_uuid)
+        result = locks_view(request)
         result_data = json.loads(result.getvalue())
 
         # Then I release my claim to it, it goes back into ungraded
