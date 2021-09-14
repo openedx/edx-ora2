@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from rest_framework import serializers
 
 from openassessment.assessment.errors.staff import StaffAssessmentInternalError
-from openassessment.assessment.models.staff import StaffWorkflow
+from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
 from openassessment.staff_grader.utils import has_access, get_anonymous_id
 
 
@@ -20,12 +20,18 @@ def locks_view(request):
     """
     # Unpack / validate request
     submission_uuid = request.GET.get('submissionid')
+    team_submission_uuid = request.GET.get('teamsubmissionid')
 
-    if not submission_uuid:
-        return HttpResponseBadRequest("Request must contain a submissionid query param")
+    if not (submission_uuid or team_submission_uuid):
+        return HttpResponseBadRequest("Request must contain either a submissionid or teamsubmissionid query param")
+    elif submission_uuid and team_submission_uuid:
+        return HttpResponseBadRequest("Request cannot contain both a submissionid and teamsubmissionid query param")
 
     # Get the workflow for this submission
-    workflow = StaffWorkflow.get_workflow(submission_uuid)
+    if team_submission_uuid:
+        workflow = TeamStaffWorkflow.get_workflow(team_submission_uuid)
+    else:
+        workflow = StaffWorkflow.get_workflow(submission_uuid)
 
     if not workflow:
         return HttpResponseNotFound()
@@ -39,11 +45,6 @@ def locks_view(request):
     anonymous_id = get_anonymous_id(request.user.id, course_id)
     if not anonymous_id:
         return HttpResponseForbidden()
-
-    # Get the workflow for this submission
-    workflow = StaffWorkflow.get_workflow(submission_uuid, course_id)
-    if not workflow:
-        return HttpResponseNotFound()
 
     try:
         # GET - get lock info, already done implicitly
@@ -66,7 +67,11 @@ def locks_view(request):
         return HttpResponseServerError(ex)
 
     # We return workflow info on success
-    serializer = SubmissionLockSerializer(workflow)
+    if team_submission_uuid:
+        serializer = TeamSubmissionLockSerializer(workflow)
+    else:
+        serializer = SubmissionLockSerializer(workflow)
+
     return JsonResponse(serializer.data)
 
 
@@ -84,3 +89,17 @@ class SubmissionLockSerializer(serializers.ModelSerializer):
             'scorer_id'
         ]
 
+
+class TeamSubmissionLockSerializer(serializers.ModelSerializer):
+    """
+    Create response payload with info about the workflow and operation success/failure
+    """
+    class Meta:
+        model = TeamStaffWorkflow
+        fields = [
+            'team_submission_uuid',
+            'is_being_graded',
+            'grading_started_at',
+            'grading_completed_at',
+            'scorer_id'
+        ]

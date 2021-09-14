@@ -8,13 +8,14 @@ from django.test import TestCase
 from freezegun import freeze_time
 
 from openassessment.staff_grader.api import locks_view
-from openassessment.tests.factories import StaffWorkflowFactory, UserFactory
+from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, UserFactory
 
 
 @freeze_time("1969-07-21 02:56:00", tz_offset=0)
 class TestSubmissionLockView(TestCase):
     """ Tests for interacting with submission grading/locking """
     test_submission_uuid = "definitely_a_uuid"
+    test_team_submission_uuid = "definitely_team_uuid"
     test_course_id = "definitely_a_course_id"
     test_workflow = None
     test_timestamp = "1969-07-20T22:56:00-04:00"
@@ -40,6 +41,11 @@ class TestSubmissionLockView(TestCase):
 
         self.test_workflow = StaffWorkflowFactory.create(
             submission_uuid=self.test_submission_uuid,
+            course_id=self.test_course_id
+        )
+
+        self.test_team_workflow = TeamStaffWorkflowFactory.create(
+            team_submission_uuid=self.test_team_submission_uuid,
             course_id=self.test_course_id
         )
 
@@ -80,6 +86,35 @@ class TestSubmissionLockView(TestCase):
         # Then I get a Not Found error
         assert result.status_code == 404
 
+    def test_missing_params(self):
+        # Given a badly formed request (missing submission/team submission IDs)
+        request = HttpRequest()
+        request.method = "GET"
+        request.user = self.staff_user
+        request.GET = {}
+
+        # When I hit any of the endpoints
+        result = locks_view(request)
+
+        # Then I get a bad request error
+        assert result.status_code == 400
+
+    def test_double_params(self):
+        # Given a badly formed request (both submission/team submission IDs)
+        request = HttpRequest()
+        request.method = "GET"
+        request.user = self.staff_user
+        request.GET = {
+            'submissionid': self.test_submission_uuid,
+            'teamsubmissionid': self.test_team_submission_uuid
+        }
+
+        # When I hit any of the endpoints
+        result = locks_view(request)
+
+        # Then I get a bad request error
+        assert result.status_code == 400
+
     @patch("openassessment.staff_grader.api.has_access")
     @patch("openassessment.staff_grader.api.get_anonymous_id")
     def test_get(self, mock_get_anon_id, mock_access):
@@ -101,6 +136,33 @@ class TestSubmissionLockView(TestCase):
         assert result.status_code == 200
         assert result_data == {
             'submission_uuid': self.test_submission_uuid,
+            'is_being_graded': False,
+            'grading_started_at': None,
+            'grading_completed_at': None,
+            'scorer_id': '',
+        }
+
+    @patch("openassessment.staff_grader.api.has_access")
+    @patch("openassessment.staff_grader.api.get_anonymous_id")
+    def test_get_team(self, mock_get_anon_id, mock_access):
+        # Given a user with valid access
+        mock_access.return_value = True
+        mock_get_anon_id.return_value = self.staff_user_id
+
+        # ... trying to access a valid team submission
+        request = HttpRequest()
+        request.method = "GET"
+        request.user = self.staff_user
+        request.GET = {'teamsubmissionid': self.test_team_submission_uuid}
+
+        # When I GET submission lock info
+        result = locks_view(request)
+        result_data = json.loads(result.getvalue())
+
+        # Then I successfully get workflow data back
+        assert result.status_code == 200
+        assert result_data == {
+            'team_submission_uuid': self.test_team_submission_uuid,
             'is_being_graded': False,
             'grading_started_at': None,
             'grading_completed_at': None,
