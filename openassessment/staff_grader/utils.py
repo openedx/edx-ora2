@@ -49,7 +49,7 @@ def get_roles(user_id, course_id):
     """
     access_roles = _use_read_replica(
         User.objects.filter(
-            courseaccessrole__user_idc=user_id,
+            courseaccessrole__user_id=user_id,
             courseaccessrole__course_id=course_id
         ).values(
             "courseaccessrole__role"
