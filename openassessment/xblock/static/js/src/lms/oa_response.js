@@ -280,11 +280,26 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Add the HTML to show how many test cases passed from the total number
     */
-    showResultSummary: function(correct, total){
-        var $summary = $("<p>");
+    showResultSummary: function(publicResults, privateResults){
+        var $summary = $("<div>");
         $summary.addClass('results_summary');
-        $summary.append("<strong>Test Cases Result: " + correct + "/" + total + "</strong></p>");
-        $("#test_cases_summary").html($summary);
+        $summary.append(
+            "<p><strong>Sample Test Cases Result: "
+            + publicResults.correct + "/"
+            + publicResults.total
+            + "</strong></p>"
+        );
+        if(privateResults) {
+            $summary.append(
+                "<p><strong>Hidden Test Cases Result: "
+                + privateResults.correct + "/"
+                + privateResults.total
+                + "</strong></p>"
+            );
+
+        }
+        $summary.append("</div>")
+        $("#test_cases_summary", this.element).html($summary);
     },
 
     /*
@@ -650,9 +665,18 @@ OpenAssessment.ResponseView.prototype = {
                 view.clearResultSummary();
             }
             else if(data.is_design_problem === undefined || !data.is_design_problem){
-                view.showResultSummary(data.correct, data.total_tests);
-                view.showTestCaseResult(data.output);
-                view.indicateCorrectness(data.correct === data.total_tests);
+                view.showResultSummary(
+                    {
+                        correct: data.public.correct,
+                        total: data.public.total_tests
+                    }, 
+                    data.private ? {
+                        correct: data.private.correct,
+                        total: data.private.total_tests
+                    } : null
+                );
+                view.showTestCaseResult(data.public.output);
+                view.indicateCorrectness(data.public.correct === data.public.total_tests);
             } else{
                 view.indicateExecutionSuccess();
                 view.showExecutionResults(data.output);

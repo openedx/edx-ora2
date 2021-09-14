@@ -222,8 +222,18 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
-            grade_output = self.grade_response(data, self.display_name)
-            grade_output.pop('run_type')
+            grade_output = self.grade_response(data, self.display_name, self.show_private_test_case_results)
+            
+            if self.show_private_test_case_results:
+                sample_output, staff_output = grade_output
+                sample_output.pop('run_type')
+                staff_output.pop('run_type')
+                staff_output.pop('output')
+                staff_output.pop('error')
+            else:
+                sample_output, staff_output = grade_output, None
+                sample_output.pop('run_type')
+            
             student_sub_data = data
             try:
                 self.saved_response = json.dumps(student_sub_data)
@@ -239,7 +249,13 @@ class SubmissionMixin(object):
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
-                return {'success': True, 'msg': u'', 'out': grade_output}
+                return {
+                    'success': True,
+                    'msg': u'',
+                    'out': {
+                        'public': sample_output,
+                        'private': staff_output,
+                    }}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 

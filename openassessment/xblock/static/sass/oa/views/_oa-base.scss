@@ -1199,7 +1199,6 @@
   }
 }
 
-
 .list_item{
     background:#f5f2f8;
 }
@@ -1272,4 +1271,14 @@ table.results_table thead tr p{
     font-weight: bold;
     height: auto;
     margin:0;
+}
+
+.results_summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.results_summary > p {
+  margin: 20px 0 !important;
 }
