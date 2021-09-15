@@ -35,11 +35,11 @@ packaging==21.0
     # via
     #   -r requirements/tox.txt
     #   tox
-platformdirs==2.2.0
+platformdirs==2.3.0
     # via
     #   -r requirements/tox.txt
     #   virtualenv
-pluggy==0.13.1
+pluggy==1.0.0
     # via
     #   -r requirements/tox.txt
     #   tox

@@ -594,6 +594,7 @@ export class RubricCriterion {
 
     if (!isValid) {
       this.promptSel.addClass('openassessment_highlighted_field');
+      this.promptSel.attr('aria-invalid', true);
     }
 
     // All options must be valid
@@ -633,6 +634,7 @@ export class RubricCriterion {
   clearValidationErrors() {
     // Clear criterion prompt errors
     this.promptSel.removeClass('openassessment_highlighted_field');
+    this.promptSel.removeAttr('aria-invalid');
 
     // Clear option errors
     $.each(this.optionContainer.getAllItems(), function () {
@@ -713,6 +715,7 @@ export class TrainingExample {
 
         if (!isOptionValid) {
           $(this).addClass('openassessment_highlighted_field');
+          $(this).attr('aria-invalid', true);
         }
       },
     );
@@ -750,7 +753,10 @@ export class TrainingExample {
      * */
   clearValidationErrors() {
     this.criteria.each(
-      function () { $(this).removeClass('openassessment_highlighted_field'); },
+      function () {
+        $(this).removeClass('openassessment_highlighted_field');
+        $(this).removeAttr('aria-invalid');
+      },
     );
   }
 }
