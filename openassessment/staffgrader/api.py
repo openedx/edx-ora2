@@ -8,6 +8,7 @@ from django.views.decorators.http import require_http_methods
 
 from openassessment.assessment.errors.staff import StaffAssessmentInternalError
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
+from openassessment.staffgrader.utils import has_access, get_anonymous_id
 from openassessment.staff_grader.utils import has_access, get_anonymous_id
 
 
