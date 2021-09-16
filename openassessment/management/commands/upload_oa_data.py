@@ -97,7 +97,7 @@ class Command(BaseCommand):
             None
         """
         output_streams = {
-            name: open(os.path.join(csv_dir, rel_path), 'w')
+            name: open(os.path.join(csv_dir, rel_path), 'w')  # pylint: disable=consider-using-with
             for name, rel_path in self.OUTPUT_CSV_PATHS.items()
         }
         csv_writer = CsvWriter(output_streams, self._progress_callback)

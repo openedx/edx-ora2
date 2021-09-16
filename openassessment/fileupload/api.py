@@ -615,7 +615,7 @@ class FileUploadManager:
         for _dict in dicts:
             for key in required_keys:
                 if key not in _dict:
-                    raise FileUploadError('Missing required key {} in {}'.format(key, _dict))
+                    raise FileUploadError(f'Missing required key {key} in {_dict}')
                 result[key].append(_dict[key])
 
         return tuple(result[key] for key in required_keys)

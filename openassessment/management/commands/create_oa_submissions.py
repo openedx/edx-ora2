@@ -127,7 +127,7 @@ class Command(BaseCommand):
                     submission_uuid, student_item['student_id'],
                     options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
                 )
-        print("%s assessments being completed for %s submissions" % (assessments_created, num_submissions))
+        print(f"{assessments_created} assessments being completed for {num_submissions} submissions")
 
     @property
     def student_items(self):

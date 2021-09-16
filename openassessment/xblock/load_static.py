@@ -45,7 +45,7 @@ class LoadStatic:
             json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")
             LoadStatic._manifest = json.loads(json_data)
             LoadStatic._is_loaded = True
-        except IOError:
+        except OSError:
             logger.error('Cannot find static/dist/manifest.json')
         finally:
             LoadStatic._base_url = urljoin(root_url, base_url)

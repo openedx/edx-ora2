@@ -615,7 +615,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             # Cancel the related step's workflow.
             workflow.cancel(assessment_requirements)
         except (cls.DoesNotExist, cls.MultipleObjectsReturned) as ex:
-            error_message = "Error finding workflow for submission UUID {}.".format(submission_uuid)
+            error_message = f"Error finding workflow for submission UUID {submission_uuid}."
             logger.exception(error_message)
             raise AssessmentWorkflowError(error_message) from ex
         except DatabaseError as ex:
@@ -648,7 +648,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         except cls.DoesNotExist:
             return None
         except DatabaseError as exc:
-            message = "Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
+            message = f"Error finding workflow for submission UUID {submission_uuid} due to error: {exc}."
             logger.exception(message)
             raise AssessmentWorkflowError(message) from exc
 
@@ -710,7 +710,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
         try:
             referrence_learner_submission_uuid = team_submission_dict['submission_uuids'][0]
         except IndexError as ex:
-            msg = 'No individual submission found for team submisison uuid {}'.format(team_submission_uuid)
+            msg = f'No individual submission found for team submisison uuid {team_submission_uuid}'
             logger.exception(msg)
             raise AssessmentWorkflowInternalError(msg) from ex
 
@@ -902,7 +902,7 @@ class AssessmentWorkflowStep(models.Model):
             elif self.name == TeamAssessmentWorkflow.TEAM_STAFF_STEP_NAME:
                 api_path = 'openassessment.assessment.api.teams'
             else:
-                raise AssessmentWorkflowInternalError('Staff step type {} has no associated api'.format(self.name))
+                raise AssessmentWorkflowInternalError(f'Staff step type {self.name} has no associated api')
         if api_path is not None:
             try:
                 return importlib.import_module(api_path)
@@ -978,7 +978,7 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
         workflow.update_from_assessments(None)
     except AssessmentWorkflow.DoesNotExist:
-        msg = "Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
+        msg = f"Could not retrieve workflow for submission with UUID {submission_uuid}"
         logger.exception(msg)
     except DatabaseError:
         msg = (

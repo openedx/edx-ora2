@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 Tests for the staff area.
 """
@@ -55,7 +54,7 @@ TEAMMATE_ITEM = dict(
 )
 
 ASSESSMENT_DICT = {
-    'overall_feedback': u"这是中国",
+    'overall_feedback': "这是中国",
     'options_selected': {
         "Concise": "Robert Heinlein",
         "Clear-headed": "Yogi Berra",
@@ -99,8 +98,8 @@ class UserStateService:
         Returns a default state regardless of any passed params.
         """
         return {
-            u'saved_files_descriptions': json.dumps(SAVED_FILES_DESCRIPTIONS),
-            u'saved_files_names': json.dumps(SAVED_FILES_NAMES)
+            'saved_files_descriptions': json.dumps(SAVED_FILES_DESCRIPTIONS),
+            'saved_files_names': json.dumps(SAVED_FILES_NAMES)
         }
 
 
@@ -206,7 +205,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # The container page should not contain a staff info section at all
         xblock_fragment = self.runtime.render(xblock, 'student_view')
-        self.assertNotIn(u'staff-info', xblock_fragment.body_html())
+        self.assertNotIn('staff-info', xblock_fragment.body_html())
 
     @scenario('data/staff_dates_scenario.xml', user_id='Bob')
     def test_staff_area_dates_table(self, xblock):
@@ -617,13 +616,13 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Commonly chosen options for assessments
         options_selected = {
-            u"𝓒𝓸𝓷𝓬𝓲𝓼𝓮": u"Ġööḋ",
-            u"Form": u"Poor",
+            "𝓒𝓸𝓷𝓬𝓲𝓼𝓮": "Ġööḋ",
+            "Form": "Poor",
         }
 
         criterion_feedback = {
-            u"𝓒𝓸𝓷𝓬𝓲𝓼𝓮": u"Dear diary: Lots of creativity from my dream journal last night at 2 AM,",
-            u"Form": u"Not as insightful as I had thought in the wee hours of the morning!"
+            "𝓒𝓸𝓷𝓬𝓲𝓼𝓮": "Dear diary: Lots of creativity from my dream journal last night at 2 AM,",
+            "Form": "Not as insightful as I had thought in the wee hours of the morning!"
         }
 
         overall_feedback = "I think I should tell more people about how important worms are for the ecosystem."
@@ -901,8 +900,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self._setup_xblock_and_create_submission(xblock)
 
         team_submission_enabled = 'data-team-submission="True"'
-        team_name_query = 'data-team-name="{}"'.format(MOCK_TEAM_NAME)
-        team_usernames_query = 'data-team-usernames="{}"'.format(MOCK_TEAM_MEMBER_USERNAMES_CONV)
+        team_name_query = f'data-team-name="{MOCK_TEAM_NAME}"'
+        team_usernames_query = f'data-team-usernames="{MOCK_TEAM_MEMBER_USERNAMES_CONV}"'
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertIn(team_submission_enabled, resp)
@@ -1604,7 +1603,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             (
                 'openassessment.xblock.staff_area_mixin',
                 'INFO',
-                u'Checking student module for upload info for user: {username} in block: {block}'.format(
+                'Checking student module for upload info for user: {username} in block: {block}'.format(
                     username=kwargs.get('username', 'Bob'),
                     block=kwargs.get('location')
                 )

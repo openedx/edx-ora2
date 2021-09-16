@@ -4,7 +4,7 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 from submissions.api import SubmissionRequestError, get_submissions
 from openassessment.assessment.api.peer import get_assessments
@@ -52,4 +52,4 @@ def get_evaluations_for_student_item(request, course_id, student_id, item_id):  
     except SubmissionRequestError:
         context["error"] = "The specified student item was not found."
 
-    return render_to_response('evaluations.html', context)
+    return render(request, 'evaluations.html', context)
