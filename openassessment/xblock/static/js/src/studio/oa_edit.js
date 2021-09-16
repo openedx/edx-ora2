@@ -128,7 +128,6 @@ export class StudioView {
   }
 
   /**
-   * 
    * @returns jquery object representing the tab element
    */
 
@@ -137,12 +136,12 @@ export class StudioView {
   }
 
   /**
-   * Get or set the active tab 
+   * Get or set the active tab
    */
-   activeTab(value) {
-    const tabElement = this.tabElement()
-    if (value !== undefined) { tabElement.tabs("option", "active", value); }
-    return tabElement.tabs("option", "active");
+  activeTab(value) {
+    const tabElement = this.tabElement();
+    if (value !== undefined) { tabElement.tabs('option', 'active', value); }
+    return tabElement.tabs('option', 'active');
   }
 
   /**
@@ -165,7 +164,7 @@ export class StudioView {
     this.tabElement().tabs({
       active: this.lastOpenEditingTab,
       beforeActivate: (event, ui) => {
-        this.runValidationAndDisplayErrors(tabChangeValidationErrorTitle)
+        this.runValidationAndDisplayErrors(tabChangeValidationErrorTitle);
       },
     });
   }
@@ -186,7 +185,7 @@ export class StudioView {
   save() {
     this.saveTabState();
     const saveValidationErrorTitle = 'Save Unsuccessful';
-    const valid = this.runValidationAndDisplayErrors(saveValidationErrorTitle)
+    const valid = this.runValidationAndDisplayErrors(saveValidationErrorTitle);
     if (valid) {
       // Check whether the problem has been released; if not,
       // warn the user and allow them to cancel.
@@ -362,19 +361,19 @@ export class StudioView {
   *  * Clear errors from any field marked as invalid.
   *  * Mark invalid fields in the UI.
   *  * If there are any validation errors, show an alert.
-  *  
+  *
   *  The `validate()` method calls `validate()` on any subviews,
   *  so that each subview has the opportunity to validate
   *  its fields. It returns tabs which fail validation.
-   * 
-   * @param {string} alertTitle The title for the alert, if it is shown. 
-   * @returns {boolean} False if there were errors, True otherwise
-   */
+  *
+  * @param {string} alertTitle The title for the alert, if it is shown.
+  * @returns {boolean} False if there were errors, True otherwise
+  */
   runValidationAndDisplayErrors(alertTitle) {
     this.clearValidationErrors();
     const viewsFailingValidation = this.validate();
     this.markTabsWithValidationErrors(viewsFailingValidation);
-  
+
     if (viewsFailingValidation.length > 0) {
       const tabNames = viewsFailingValidation.map(view => view.getTab().find('a').text());
       this.alert.setMessage(
@@ -382,12 +381,10 @@ export class StudioView {
         gettext(`We've detected errors on the following tabs: ${tabNames.join(', ')}`),
       ).show();
       return false;
-    } else {
-      // At this point, we know that all fields are valid,
-      // so we can dismiss the validation alert.
-      this.alert.hide();
-      return true;
-    }    
+    }
+    // At this point, we know that all fields are valid, so we can dismiss the validation alert.
+    this.alert.hide();
+    return true;
   }
 }
 
