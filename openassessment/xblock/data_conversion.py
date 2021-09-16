@@ -244,9 +244,25 @@ def make_django_template_key(key):
     return key.replace('-', '_')
 
 
+def _verify_assessment_data(_, data):
+    if not isinstance(data, dict):
+        return _('Assessment data must be a dictionary/object')
+
+    if 'options_selected' not in data:
+        return _('You must provide options selected in the assessment.')
+
+    if 'overall_feedback' not in data:
+        return _('You must provide overall feedback in the assessment.')
+
+    if 'criterion_feedback' not in data:
+        return _('You must provide feedback for criteria in the assessment.')
+
+    return None
+
+
 def verify_assessment_parameters(func):
     """
-    Verify that the wrapped function receives the given parameters.
+    Verify that the wrapped function receives the required parameters.
 
     Used for the staff_assess, self_assess, peer_assess functions and uses their data types.
 
@@ -259,14 +275,42 @@ def verify_assessment_parameters(func):
     def verify_and_call(instance, data, suffix):
         """ Inner Method. """
         # Validate the request
-        if 'options_selected' not in data:
-            return {'success': False, 'msg': instance._('You must provide options selected in the assessment.')}
+        msg = _verify_assessment_data(instance._, data)
+        if msg:
+            return {'success': False, 'msg': msg}
 
-        if 'overall_feedback' not in data:
-            return {'success': False, 'msg': instance._('You must provide overall feedback in the assessment.')}
+        return func(instance, data, suffix)
+    return verify_and_call
 
-        if 'criterion_feedback' not in data:
-            return {'success': False, 'msg': instance._('You must provide feedback for criteria in the assessment.')}
+
+def verify_multiple_assessment_parameters(func):
+    """
+    Verify that the wrapped function receives the required parameters.
+
+    Used for bulk_staff_assess.
+
+    Args:
+        func - the function to be modified
+
+    Returns:
+        the modified function
+    """
+    def verify_and_call(instance, data, suffix):
+        """ Inner Method. """
+        if not isinstance(data, list):
+            return {'success': False, 'msg': instance._('This view takes only a list as a parameter')}
+        errors = {}
+        for assessment_index, assessment in enumerate(data):
+            msg = _verify_assessment_data(instance._, assessment)
+            if msg:
+                errors[assessment_index] = msg
+
+        if errors:
+            return {
+                'success': False,
+                'msg': 'One or more of the submitted assessments is missing required fields',
+                'errors': errors,
+            }
 
         return func(instance, data, suffix)
     return verify_and_call

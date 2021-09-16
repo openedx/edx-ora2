@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-01 14:15-0400\n"
+"POT-Creation-Date: 2021-09-14 12:17-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2736,6 +2736,12 @@ msgstr ""
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/xblock/data_conversion.py
+msgid "Assessment data must be a dictionary/object"
+msgstr ""
+"Àsséssmént dätä müst ßé ä dïçtïönärý/ößjéçt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/data_conversion.py
 msgid "You must provide options selected in the assessment."
 msgstr ""
 "Ýöü müst prövïdé öptïöns séléçtéd ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
@@ -2752,6 +2758,12 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 "Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/data_conversion.py
+msgid "This view takes only a list as a parameter"
+msgstr ""
+"Thïs vïéw täkés önlý ä lïst äs ä pärämétér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
 #: openassessment/xblock/grade_mixin.py
 #: openassessment/xblock/leaderboard_mixin.py
@@ -3134,6 +3146,12 @@ msgid "Your staff assessment could not be submitted."
 msgstr ""
 "Ýöür stäff ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "There were one or more errors submitting the requested assessments"
+msgstr ""
+"Théré wéré öné ör möré érrörs süßmïttïng thé réqüéstéd ässéssménts Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: openassessment/xblock/staff_assessment_mixin.py
 #: openassessment/xblock/staff_assessment_mixin.py
