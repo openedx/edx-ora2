@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-01 14:15-0400\n"
-"PO-Revision-Date: 2021-09-01 15:24+0000\n"
+"POT-Creation-Date: 2021-09-14 12:17-0400\n"
+"PO-Revision-Date: 2021-09-16 21:23+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Mongolian (http://www.transifex.com/open-edx/edx-platform/language/mn/)\n"
 "MIME-Version: 1.0\n"
@@ -1179,7 +1179,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:161
+#: openassessment/xblock/staff_assessment_mixin.py:210
 msgid "Cancelled"
 msgstr ""
 
@@ -1238,8 +1238,8 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:154
-#: openassessment/xblock/staff_assessment_mixin.py:178
+#: openassessment/xblock/staff_assessment_mixin.py:203
+#: openassessment/xblock/staff_assessment_mixin.py:227
 msgid "Not Available"
 msgstr ""
 
@@ -1546,8 +1546,8 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:168
-#: openassessment/xblock/staff_assessment_mixin.py:191
+#: openassessment/xblock/staff_assessment_mixin.py:217
+#: openassessment/xblock/staff_assessment_mixin.py:240
 msgid "Complete"
 msgstr ""
 
@@ -2116,16 +2116,24 @@ msgstr ""
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:263
+#: openassessment/xblock/data_conversion.py:249
+msgid "Assessment data must be a dictionary/object"
+msgstr ""
+
+#: openassessment/xblock/data_conversion.py:252
 msgid "You must provide options selected in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:266
+#: openassessment/xblock/data_conversion.py:255
 msgid "You must provide overall feedback in the assessment."
 msgstr ""
 
-#: openassessment/xblock/data_conversion.py:269
+#: openassessment/xblock/data_conversion.py:258
 msgid "You must provide feedback for criteria in the assessment."
+msgstr ""
+
+#: openassessment/xblock/data_conversion.py:301
+msgid "This view takes only a list as a parameter"
 msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:76
@@ -2420,31 +2428,35 @@ msgstr ""
 msgid "The submission ID of the submission being assessed was not found."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:76
-#: openassessment/xblock/staff_assessment_mixin.py:84
+#: openassessment/xblock/staff_assessment_mixin.py:75
+#: openassessment/xblock/staff_assessment_mixin.py:83
 msgid "Your staff assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:119
-#: openassessment/xblock/staff_assessment_mixin.py:127
+#: openassessment/xblock/staff_assessment_mixin.py:132
+msgid "There were one or more errors submitting the requested assessments"
+msgstr ""
+
+#: openassessment/xblock/staff_assessment_mixin.py:168
+#: openassessment/xblock/staff_assessment_mixin.py:176
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:179
+#: openassessment/xblock/staff_assessment_mixin.py:228
 msgid "Waiting for a Staff Grade"
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:180
+#: openassessment/xblock/staff_assessment_mixin.py:229
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:193
+#: openassessment/xblock/staff_assessment_mixin.py:242
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:194
+#: openassessment/xblock/staff_assessment_mixin.py:243
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
