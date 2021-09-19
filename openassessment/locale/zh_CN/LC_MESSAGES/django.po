@@ -39,8 +39,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-01 14:15-0400\n"
-"PO-Revision-Date: 2021-09-01 15:24+0000\n"
+"POT-Creation-Date: 2021-09-14 12:17-0400\n"
+"PO-Revision-Date: 2021-09-16 21:23+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -1205,7 +1205,7 @@ msgstr "我们无法提交您的评判。"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:161
+#: openassessment/xblock/staff_assessment_mixin.py:210
 msgid "Cancelled"
 msgstr "已取消"
 
@@ -1264,8 +1264,8 @@ msgstr "所有同学提交的回复均被评分。稍后返回查看是否有更
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:154
-#: openassessment/xblock/staff_assessment_mixin.py:178
+#: openassessment/xblock/staff_assessment_mixin.py:203
+#: openassessment/xblock/staff_assessment_mixin.py:227
 msgid "Not Available"
 msgstr "操作条件不满足"
 
@@ -1572,8 +1572,8 @@ msgstr "截止日期已过，该步骤已关闭。您已无法提交回复或继
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:168
-#: openassessment/xblock/staff_assessment_mixin.py:191
+#: openassessment/xblock/staff_assessment_mixin.py:217
+#: openassessment/xblock/staff_assessment_mixin.py:240
 msgid "Complete"
 msgstr "已经完成"
 
@@ -2141,17 +2141,25 @@ msgstr "加载学员训练示例错误"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "不能加载此任务的学员训练步骤。"
 
-#: openassessment/xblock/data_conversion.py:263
+#: openassessment/xblock/data_conversion.py:249
+msgid "Assessment data must be a dictionary/object"
+msgstr ""
+
+#: openassessment/xblock/data_conversion.py:252
 msgid "You must provide options selected in the assessment."
 msgstr "您必须在评估中提供选择的选项。"
 
-#: openassessment/xblock/data_conversion.py:266
+#: openassessment/xblock/data_conversion.py:255
 msgid "You must provide overall feedback in the assessment."
 msgstr "您必须在评估中提供整体反馈。"
 
-#: openassessment/xblock/data_conversion.py:269
+#: openassessment/xblock/data_conversion.py:258
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "您必须在评估中提供对标准的反馈。"
+
+#: openassessment/xblock/data_conversion.py:301
+msgid "This view takes only a list as a parameter"
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:76
 #: openassessment/xblock/leaderboard_mixin.py:59
@@ -2445,31 +2453,35 @@ msgstr ""
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "未找到正在评估的提交的提交 ID。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:76
-#: openassessment/xblock/staff_assessment_mixin.py:84
+#: openassessment/xblock/staff_assessment_mixin.py:75
+#: openassessment/xblock/staff_assessment_mixin.py:83
 msgid "Your staff assessment could not be submitted."
 msgstr "无法提交您的员工评估。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:119
-#: openassessment/xblock/staff_assessment_mixin.py:127
+#: openassessment/xblock/staff_assessment_mixin.py:132
+msgid "There were one or more errors submitting the requested assessments"
+msgstr ""
+
+#: openassessment/xblock/staff_assessment_mixin.py:168
+#: openassessment/xblock/staff_assessment_mixin.py:176
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:179
+#: openassessment/xblock/staff_assessment_mixin.py:228
 msgid "Waiting for a Staff Grade"
 msgstr "等待员工评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:180
+#: openassessment/xblock/staff_assessment_mixin.py:229
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "稍后返回检查，以查看课程工作人员是否已评估您的回复。您将在评估完成后获得您的评分。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:193
+#: openassessment/xblock/staff_assessment_mixin.py:242
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "您必须完成上述步骤才可查看您的评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:194
+#: openassessment/xblock/staff_assessment_mixin.py:243
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
