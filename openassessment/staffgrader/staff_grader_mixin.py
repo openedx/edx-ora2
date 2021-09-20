@@ -9,6 +9,7 @@ from openassessment.staffgrader.models.submission_lock import SubmissionGradingL
 from openassessment.staffgrader.serializers.submission_lock import SubmissionLockSerializer
 from openassessment.xblock.staff_area_mixin import require_course_staff
 
+
 class StaffGraderMixin:
     """
     Actions to interact with submission locks, blocking other staff from grading assignments while
