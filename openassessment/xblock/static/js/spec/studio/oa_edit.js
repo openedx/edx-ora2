@@ -266,7 +266,7 @@ describe("OpenAssessment.StudioView", function() {
 
         // Since all views throw errors, expect the tabs to be marked as invalid
         $(".oa_editor_tab", view.element).each(function(){
-            expect($(this).hasClass('invalid')).toBe(true);
+            expect($(this).find('.validation-warning').is(":visible")).toBe(true);
         });
 
         // Magically fix errors (in spy) and save again
@@ -274,7 +274,7 @@ describe("OpenAssessment.StudioView", function() {
 
         // Expect that the validation errors were cleared
         $(".oa_editor_tab", view.element).each(function(){
-            expect($(this).hasClass('invalid')).toBe(false);
+            expect($(this).find('.validation-warning').is(":visible")).toBe(false);
         });
     });
 

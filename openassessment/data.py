@@ -528,7 +528,7 @@ class OraAggregateData:
                 option_label = part.option.label
                 option_points = part.option.points
 
-            criterion_col_label = _(u'Criterion {number}: {label}').format(number=number, label=part.criterion.label)
+            criterion_col_label = _('Criterion {number}: {label}').format(number=number, label=part.criterion.label)
             parts[criterion_col_label] = option_label or ''
             parts[_('Points {number}').format(number=number)] = option_points or 0
             parts[_('Median Score {number}').format(number=number)] = median_scores.get(part.criterion.name)
@@ -783,13 +783,13 @@ class OraAggregateData:
             ]
             rows.append(row)
 
-        steps_headers = list(chain.from_iterable((
+        steps_headers = list(chain.from_iterable(
             (
-                "is_{}_complete".format(step),
-                "is_{}_graded".format(step),
+                f"is_{step}_complete",
+                f"is_{step}_graded",
             )
             for step in steps
-        )))
+        ))
 
         header = [
             'block_name',

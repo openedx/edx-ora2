@@ -156,6 +156,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(models[1], UI_MODELS["grade"])
 
     @scenario('data/basic_scenario.xml')
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
+        PropertyMock(return_value=False)
+    )
     def test_ora_blocks_listing_view(self, xblock):
         """
         Test view for listing all courses OA blocks.
@@ -201,6 +205,30 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
         items = json.loads(scripts[0].text)
         self.assertEqual(items, defined_ora_items)
+
+    @scenario('data/basic_scenario.xml')
+    @ddt.data(False, True)
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
+        new_callable=PropertyMock
+    )
+    def test_ora_blocks_listing_view_include_esg_flag(self, xblock, esg_flag_input, mock_esg):
+        """
+        Test view for listing all courses OA blocks.
+        """
+        mock_esg.return_value = esg_flag_input
+        xblock_fragment = self.runtime.render(xblock, "ora_blocks_listing_view")
+        body_html = xblock_fragment.body_html()
+
+        self.assertIn("CourseOpenResponsesListingBlock", body_html)
+
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(body_html), parser)
+
+        xblock_arg_path = "//script[contains(@type, 'json/xblock-args')]"
+
+        xblock_args_el = tree.xpath(xblock_arg_path)
+        json.loads(xblock_args_el[0].text)['CONTEXT']['ENHANCED_STAFF_GRADER'] = esg_flag_input
 
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):

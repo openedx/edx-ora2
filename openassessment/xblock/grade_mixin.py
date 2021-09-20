@@ -626,7 +626,7 @@ class GradeMixin:
             if _assessment_type == "staff":
                 continue
 
-            if "{}-assessment".format(_assessment_type) in self.assessment_steps:
+            if f"{_assessment_type}-assessment" in self.assessment_steps:
                 return _assessment_type
 
         return None  # Just to make pylint happy
@@ -668,7 +668,7 @@ class GradeMixin:
                     "You have not yet received all necessary peer reviews to determine your final grade."
                 )
 
-        return "{} {}".format(first_sentence, second_sentence).strip()
+        return f"{first_sentence} {second_sentence}".strip()
 
     def generate_report_data(self, user_state_iterator, limit_responses=None):
         """

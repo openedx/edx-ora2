@@ -31,7 +31,7 @@ class OAExtrasTests(unittest.TestCase):
         if text:
             self.assertRegex(
                 rendered_template,
-                r'<a.*target="_blank".*>{link_text}</a>'.format(link_text=link_text),
+                fr'<a.*target="_blank".*>{link_text}</a>',
             )
 
     @ddt.data(
@@ -43,5 +43,5 @@ class OAExtrasTests(unittest.TestCase):
     @ddt.unpack
     def test_html_tags(self, text, tag):
         rendered_template = self.template.render(Context({'text': text}))
-        escaped_tag = "&lt;{tag}&gt;".format(tag=tag)
+        escaped_tag = f"&lt;{tag}&gt;"
         self.assertIn(escaped_tag, rendered_template)

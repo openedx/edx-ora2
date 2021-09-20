@@ -275,6 +275,9 @@ class PeerWorkflow(models.Model):
             )
         ).filter(
             graded_by_count__lt=must_be_graded_by
+        ).order_by(
+            'created_at',
+            'id'
         )
 
         return [

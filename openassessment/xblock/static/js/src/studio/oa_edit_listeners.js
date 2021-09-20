@@ -127,8 +127,10 @@ export class StudentTrainingListener {
       if ($(criterionOption).val() === data.name.toString()) {
         $(criterionOption).val('')
           .addClass('openassessment_highlighted_field')
+          .attr('aria-invalid', true)
           .click(() => {
             $(criterionOption).removeClass('openassessment_highlighted_field');
+            $(criterionOption).removeAttr('aria-invalid');
           });
         invalidated = true;
       }

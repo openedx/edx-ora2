@@ -586,7 +586,10 @@ class OpenAssessmentBlock(MessageMixin,
             context_dict,
             initialize_js_func='CourseOpenResponsesListingBlock',
             additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
-            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix]
+            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
+            additional_js_context={
+                "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled
+            }
         )
 
     def grade_available_responses_view(self, context=None):  # pylint: disable=unused-argument
@@ -1267,8 +1270,8 @@ class OpenAssessmentBlock(MessageMixin,
             "parts": parts_list
         }
 
-        for key in kwargs:
-            event_data[key] = kwargs[key]
+        for key, value in kwargs.items():
+            event_data[key] = value
 
         self.runtime.publish(
             self, event_name,
@@ -1370,7 +1373,7 @@ class OpenAssessmentBlock(MessageMixin,
         # otherwise self.prompt would have json embedded in the string.
         try:
             prompt = {
-                "prompt_{}".format(prompt_i): self._clean_data(prompt.get("description", ""))
+                f"prompt_{prompt_i}": self._clean_data(prompt.get("description", ""))
                 for prompt_i, prompt in enumerate(json.loads(self.prompt))
             }
         except ValueError:

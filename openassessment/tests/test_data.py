@@ -793,18 +793,18 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'peer',
             0,
             0,
-            u'',
-            u'',
+            '',
+            '',
             1,
             1,
-            u'',
-            u'',
+            '',
+            '',
             1,
             0,
             0,
             0,
-            u'',
-            u'',
+            '',
+            '',
         ])
 
         self.assertEqual(data[1], [
@@ -813,12 +813,12 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             'done',
             1,
             1,
-            u'',
-            u'',
+            '',
+            '',
             1,
             1,
-            u'',
-            u'',
+            '',
+            '',
             0,
             1,
             0,
@@ -954,8 +954,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         rubric = RubricFactory()
         criteria = [CriterionFactory(rubric=rubric,
                                      order_num=n + 1,
-                                     name='Criteria {}'.format(n),
-                                     label='label_{}'.format(n))
+                                     name=f'Criteria {n}',
+                                     label=f'label_{n}')
                     for n in range(2)]
 
         assessments = []
@@ -963,15 +963,15 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             criterion_options = [
                 CriterionOptionFactory(criterion=criterion,
                                        points=index,
-                                       name='Option {}'.format(n),
-                                       label='option_{}'.format(n))
+                                       name=f'Option {n}',
+                                       label=f'option_{n}')
                 for (n, criterion) in enumerate(criteria)
             ]
             assessment = TestOraAggregateData.build_criteria_and_assessment_parts(
                 feedback='feedback for {}'.format(STUDENT_ITEM['student_id']),
                 assessment_options={
                     'submission_uuid': submission_uuid,
-                    'scorer_id': 'test_scorer_{}'.format(index),
+                    'scorer_id': f'test_scorer_{index}',
                 },
                 criterion_options=criterion_options,
             )

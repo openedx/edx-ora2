@@ -460,31 +460,6 @@ msgstr "Àsséssmént stéps Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 msgid "Settings"
 msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
-msgid "Rubric Change Impacts Settings Section"
-msgstr ""
-"Rüßrïç Çhängé Ìmpäçts Séttïngs Séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
-msgid ""
-"A change that you made to this assessment's rubric has an impact on some "
-"examples laid out in the settings tab. For more information, go to the "
-"Settings section and fix the areas highlighted in red."
-msgstr ""
-"À çhängé thät ýöü mädé tö thïs ässéssmént's rüßrïç häs än ïmpäçt ön sömé "
-"éxämplés läïd öüt ïn thé séttïngs täß. För möré ïnförmätïön, gö tö thé "
-"Séttïngs séçtïön änd fïx thé äréäs hïghlïghtéd ïn réd. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
-"łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ "
-"єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ "
-"αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
-"ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υ#"
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html
-msgid "close alert"
-msgstr "çlösé älért Ⱡ'σяєм ιρѕυм ∂σłσя #"
-
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
 msgid "Option"
 msgstr "Öptïön Ⱡ'σяєм ιρѕυ#"
@@ -2761,6 +2736,12 @@ msgstr ""
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: openassessment/xblock/data_conversion.py
+msgid "Assessment data must be a dictionary/object"
+msgstr ""
+"Àsséssmént dätä müst ßé ä dïçtïönärý/ößjéçt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/data_conversion.py
 msgid "You must provide options selected in the assessment."
 msgstr ""
 "Ýöü müst prövïdé öptïöns séléçtéd ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
@@ -2777,6 +2758,12 @@ msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 "Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/data_conversion.py
+msgid "This view takes only a list as a parameter"
+msgstr ""
+"Thïs vïéw täkés önlý ä lïst äs ä pärämétér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
 #: openassessment/xblock/grade_mixin.py
 #: openassessment/xblock/leaderboard_mixin.py
@@ -3159,6 +3146,12 @@ msgid "Your staff assessment could not be submitted."
 msgstr ""
 "Ýöür stäff ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "There were one or more errors submitting the requested assessments"
+msgstr ""
+"Théré wéré öné ör möré érrörs süßmïttïng thé réqüéstéd ässéssménts Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: openassessment/xblock/staff_assessment_mixin.py
 #: openassessment/xblock/staff_assessment_mixin.py

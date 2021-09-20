@@ -17,12 +17,7 @@ env:
   - TOXENV=django22
   - TOXENV=django30
   - TOXENV=django31
-matrix:
-  allow_failures:
-    - python: 3.8
-      env: TOXENV=django30
-    - python: 3.8
-      env: TOXENV=django31
+  - TOXENV=django32
 before_install:
   - pip install -U pip
   - export AWS_CONFIG_FILE=/dev/null

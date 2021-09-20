@@ -86,6 +86,7 @@ export class IntField {
 
     if (!isValid) {
       this.input.addClass('openassessment_highlighted_field');
+      this.input.attr('aria-invalid', true);
     }
     return isValid;
   }
@@ -95,6 +96,7 @@ export class IntField {
      * */
   clearValidationErrors() {
     this.input.removeClass('openassessment_highlighted_field');
+    this.input.removeAttr('aria-invalid');
   }
 
   /**
@@ -255,6 +257,7 @@ export class DatetimeControl {
     }
     if (!isDateValid) {
       $(this.datePicker, this.element).addClass('openassessment_highlighted_field');
+      $(this.datePicker, this.element).attr('aria-invalid', true);
     }
 
     // time validation
@@ -262,6 +265,7 @@ export class DatetimeControl {
     const isTimeValid = (matches !== null);
     if (!isTimeValid) {
       $(this.timePicker, this.element).addClass('openassessment_highlighted_field');
+      $(this.timePicker, this.element).attr('aria-invalid', true);
     }
 
     return (isDateValid && isTimeValid);
@@ -273,6 +277,8 @@ export class DatetimeControl {
   clearValidationErrors() {
     $(this.datePicker, this.element).removeClass('openassessment_highlighted_field');
     $(this.timePicker, this.element).removeClass('openassessment_highlighted_field');
+    $(this.datePicker, this.element).removeAttr('aria-invalid');
+    $(this.timePicker, this.element).removeAttr('aria-invalid');
   }
 
   /**
@@ -403,6 +409,7 @@ export class InputControl {
 
     if (this.errors.length) {
       this.input.addClass('openassessment_highlighted_field');
+      this.input.attr('aria-invalid', true);
       this.input.parent().nextAll('.message-status').text(this.errors.join(';'));
       this.input.parent().nextAll('.message-status').removeClass('is--hidden');
     }
@@ -414,6 +421,7 @@ export class InputControl {
      * */
   clearValidationErrors() {
     this.input.removeClass('openassessment_highlighted_field');
+    this.input.removeAttr('aria-invalid');
     this.input.parent().nextAll('.message-status').addClass('is--hidden');
   }
 

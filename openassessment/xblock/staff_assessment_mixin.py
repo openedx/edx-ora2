@@ -18,7 +18,9 @@ from openassessment.workflow import (
     team_api as team_workflow_api
 )
 
-from .data_conversion import clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters
+from .data_conversion import (
+    clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters, verify_multiple_assessment_parameters
+)
 from .staff_area_mixin import require_course_staff
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -36,17 +38,14 @@ class StaffAssessmentMixin:
 
         return staff_api.get_latest_staff_assessment(submission_uuid) is not None
 
-    @XBlock.json_handler
-    @require_course_staff("STUDENT_INFO")
-    @verify_assessment_parameters
-    def staff_assess(self, data, suffix=''):  # pylint: disable=unused-argument
+    def do_staff_assessment(self, data):
         """
-        Create a staff assessment from a staff submission.
+        Creates a staff assessment with the given assessment info
+        publishes a openassessmentblock.staff_assess tracking event
+        updates the assessed submission's workflow
         """
         if 'submission_uuid' not in data:
-            return {
-                'success': False, 'msg': self._("The submission ID of the submission being assessed was not found.")
-            }
+            return False, self._("The submission ID of the submission being assessed was not found.")
         if self.is_team_assignment():
             return self._team_assess(data)
         else:
@@ -74,7 +73,7 @@ class StaffAssessmentMixin:
                     exc_info=True
                 )
                 msg = self._("Your staff assessment could not be submitted.")
-                return {'success': False, 'msg': msg}
+                return False, msg
             except StaffAssessmentInternalError:
                 logger.exception(
                     "An error occurred while submitting a staff assessment "
@@ -82,9 +81,59 @@ class StaffAssessmentMixin:
                     data['submission_uuid']
                 )
                 msg = self._("Your staff assessment could not be submitted.")
-                return {'success': False, 'msg': msg}
+                return False, msg
+        return True, ''
 
-            return {'success': True, 'msg': ""}
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_INFO")
+    @verify_assessment_parameters
+    def staff_assess(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Create a staff assessment from a staff submission.
+        """
+        success, err_msg = self.do_staff_assessment(data)
+        return {'success': success, 'msg': err_msg}
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_INFO")
+    @verify_multiple_assessment_parameters
+    def bulk_staff_assess(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Create a staff assessment from a multiple staff submissions.
+
+        params: list of dicts in the following format:
+        {
+            submission_uuid (str): The submission uuid for the submission being assessed,
+            options_selected (dict): Dictionary mapping criterion names to the option names the user selected
+                                     for that criterion.
+            criterion_feedback (dict): Dictionary mapping criterion names to the free-form text feedback given
+                                       for the criterion. Since criterion feedback is optional, some criteria may
+                                       not appear in the dictionary.
+            overall_feedback (str): Free-form text feedback on the submission overall.
+        }
+
+        returns a json dict:
+        {
+            success: (boolean) was the operation successful? were all assessments successfully created?
+            msg: (string) [optional] error message, if applicable
+            errors: (dict) [optional] mapping from index of an assessment in the input params -> an error message, if
+                                      there was an error submitting that assessment
+        }
+        """
+        errors = {}
+        for assessment_index, assessment in enumerate(data):
+            success, err_msg = self.do_staff_assessment(assessment)
+            if not success:
+                errors[assessment_index] = err_msg
+
+        if errors:
+            return {
+                'success': False,
+                'msg': self._("There were one or more errors submitting the requested assessments"),
+                'errors': errors
+            }
+        else:
+            return {'success': True, 'msg': ''}
 
     def _team_assess(self, data):
         """

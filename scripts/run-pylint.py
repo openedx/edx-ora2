@@ -9,7 +9,7 @@ If larger than the supplied threshold, emits a status of 1 indicating failure.
 import re
 import sys
 
-USAGE = u"{} VIOLATIONS_FILE VIOLATIONS_THRESHOLD"
+USAGE = "{} VIOLATIONS_FILE VIOLATIONS_THRESHOLD"
 
 
 def count_pylint_violations(report_file):
@@ -46,15 +46,15 @@ def main():
         with open(sys.argv[1]) as violations:
             num_violations = count_pylint_violations(violations)
             max_violations = sys.argv[2]
-            print("Found {} pylint violations, threshold is {}".format(num_violations, max_violations))
+            print(f"Found {num_violations} pylint violations, threshold is {max_violations}")
             if num_violations > int(max_violations):
                 violations.seek(0)
                 for line in violations:
                     print(line)
-                print("NUMBER OF PYLINT VIOLATIONS ({}) EXCEEDED THRESHOLD {}".format(num_violations, max_violations))
+                print(f"NUMBER OF PYLINT VIOLATIONS ({num_violations}) EXCEEDED THRESHOLD {max_violations}")
                 sys.exit(1)
-    except IOError as ex:
-        print(u"Could not open pylint violations file: {}".format(sys.argv[1]))
+    except OSError as ex:
+        print("Could not open pylint violations file: {}".format(sys.argv[1]))
         print(ex)
         sys.exit(1)
 

@@ -48,7 +48,8 @@ class BaseAssessmentPage(PageObject):  # pylint: disable=abstract-method
         def is_text_in_feedback():
             return text in self.get_sr_html()[0]
 
-        self.wait_for(is_text_in_feedback, 'Waiting for %s, in %s' % (text, self.q(css='.sr.reader-feedback').html[0]))
+        self.wait_for(is_text_in_feedback, 'Waiting for {}, in {}'.format(
+            text, self.q(css='.sr.reader-feedback').html[0]))
 
 
 class StudioPage(PageObject):
