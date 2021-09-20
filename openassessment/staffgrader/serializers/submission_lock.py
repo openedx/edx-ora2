@@ -1,36 +1,17 @@
 """
 Serializers for submission locks
 """
+from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from rest_framework import serializers
-
-from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
-
 
 class SubmissionLockSerializer(serializers.ModelSerializer):
     """
-    Create response payload with info about the workflow and operation success/failure
+    Serialized info about a submission lock
     """
     class Meta:
-        model = StaffWorkflow
+        model = SubmissionGradingLock
         fields = [
             'submission_uuid',
-            'is_being_graded',
-            'grading_started_at',
-            'grading_completed_at',
-            'scorer_id'
-        ]
-
-
-class TeamSubmissionLockSerializer(serializers.ModelSerializer):
-    """
-    Create response payload with info about the workflow and operation success/failure
-    """
-    class Meta:
-        model = TeamStaffWorkflow
-        fields = [
-            'team_submission_uuid',
-            'is_being_graded',
-            'grading_started_at',
-            'grading_completed_at',
-            'scorer_id'
+            'owner_id',
+            'created_at',
         ]
