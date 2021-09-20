@@ -6,6 +6,7 @@ from openassessment.staffgrader.models.submission_lock import SubmissionGradingL
 from django.test import TestCase
 from freezegun import freeze_time
 
+
 @freeze_time("1969-07-21 02:56:00", tz_offset=0)
 class TestSubmissionLockModel(TestCase):
     """ Tests for interacting with submission grading/locking """
@@ -46,7 +47,10 @@ class TestSubmissionLockModel(TestCase):
     def test_claim_submission_lock(self):
         # Can claim a lock on a submission without an existing lock
         assert SubmissionGradingLock.get_submission_lock(self.test_submission_uuid_without_lock) is None
-        new_lock = SubmissionGradingLock.claim_submission_lock(self.test_submission_uuid_without_lock, self.test_user_id_1)
+        new_lock = SubmissionGradingLock.claim_submission_lock(
+            self.test_submission_uuid_without_lock,
+            self.test_user_id_1
+        )
 
         assert new_lock is not None
         assert SubmissionGradingLock.get_submission_lock(self.test_submission_uuid_without_lock) == new_lock

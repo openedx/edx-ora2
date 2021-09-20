@@ -9,6 +9,7 @@ from xblock.exceptions import JsonHandlerError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers.submission_lock import SubmissionLockSerializer
 
+
 class StaffGraderMixin:
     """
     Actions to interact with submission locks, blocking other staff from grading assignments while
