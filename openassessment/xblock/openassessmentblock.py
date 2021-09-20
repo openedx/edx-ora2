@@ -21,6 +21,7 @@ from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
 from web_fragments.fragment import Fragment
 
+from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
@@ -122,6 +123,7 @@ class OpenAssessmentBlock(MessageMixin,
                           TeamMixin,
                           OpenAssessmentTemplatesMixin,
                           RubricReuseMixin,
+                          StaffGraderMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
