@@ -44,19 +44,6 @@ class StaffWorkflow(models.Model):
         ordering = ["created_at", "id"]
         app_label = "assessment"
 
-    @classmethod
-    def get_workflow(cls, submission_uuid):
-        """
-        Get the StaffWorkflow for a submission_uuid/course.
-        Adding course to the query keeps us from leaking submissions across courses.
-
-        Returns: StaffWorkflow or None if no workflow is found.
-        """
-        try:
-            return cls.objects.get(submission_uuid=submission_uuid)
-        except cls.DoesNotExist:
-            return None
-
     @property
     def is_cancelled(self):
         """
@@ -66,67 +53,6 @@ class StaffWorkflow(models.Model):
             True/False
         """
         return bool(self.cancelled_at)
-
-    @property
-    def is_being_graded(self):
-        """
-        Check if the submission for this workflow is actively being graded.
-        i.e. someone started grading it recently (within the configured TIME_LIMIT
-        in the past).
-
-        Returns:
-            True/False
-        """
-        # If nobody has started grading this submission, it is not locked
-        if not self.grading_started_at:
-            return False
-
-        # If somebody started grading this but the lock time has passed, it is not locked
-        elif now() > self.grading_started_at + self.TIME_LIMIT:
-            return False
-
-        else:
-            return True
-
-    def claim_for_grading(self, scorer_id):
-        """
-        Claim a submission to begin grading.
-
-        Returns:
-            True/False whether it was successful in claiming or not
-        """
-        if self.is_being_graded and self.scorer_id != scorer_id:
-            return False
-        try:
-            self.scorer_id = scorer_id
-            self.grading_started_at = now()
-            self.save()
-        except DatabaseError as ex:
-            error_message = (
-                f'An internal error occurred trying to claim submission for grading: {self.submission_uuid}'
-            )
-            logger.exception(error_message)
-            raise StaffAssessmentInternalError(error_message) from ex
-        return True
-
-    def clear_claim_for_grading(self, scorer_id):
-        """
-        Clear a claim for grading a submission.
-        Only the current grader can clear a claim while it is active.
-
-        Returns: True/False whether it was successful in clearing or not
-        """
-        if self.is_being_graded and self.scorer_id != scorer_id:
-            return False
-        try:
-            self.scorer_id = ""
-            self.grading_started_at = None
-            self.save()
-        except DatabaseError as ex:
-            error_message = (f'An internal error occurred trying to clear claim on submission: {self.submission_uuid}')
-            logger.exception(error_message)
-            raise StaffAssessmentInternalError(error_message) from ex
-        return True
 
     @property
     def identifying_uuid(self):
@@ -282,16 +208,3 @@ class TeamStaffWorkflow(StaffWorkflow):
         (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
         """
         return self.team_submission_uuid
-
-    @classmethod
-    def get_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ
-        """
-        Get a the TeamStaffWorkflow for a team_submission_uuid/course.
-        Adding course to the query keeps us from leaking submissions across courses.
-
-        Returns: TeamStaffWorkflow or None if no workflow is found.
-        """
-        try:
-            return cls.objects.get(team_submission_uuid=team_submission_uuid)
-        except cls.DoesNotExist:
-            return None
