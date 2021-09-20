@@ -4,6 +4,7 @@ Part of Enhanced Staff Grader (ESG).
 """
 from django.db import models
 from django.utils.timezone import now
+from django.utils.translation import ugettext as _
 
 from openassessment.assessment.models.staff import StaffWorkflow
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
@@ -52,10 +53,10 @@ class SubmissionGradingLock(models.Model):
 
         # If there's already an active lock, raise an error
         if current_lock and current_lock.is_active:
-            raise SubmissionLockContestedError(f"Submission already locked")
+            raise SubmissionLockContestedError(_("Submission already locked"))
 
         # Otherwise, create a new lock
-        new_lock, created = cls.objects.update_or_create(
+        new_lock, created = cls.objects.update_or_create(  # pylint: disable=unused-variable
             owner_id=user_id,
             created_at=now(),
             submission_uuid=submission_uuid,
@@ -77,6 +78,6 @@ class SubmissionGradingLock(models.Model):
 
         # Only the owner can clear the lock
         if current_lock.owner_id != user_id:
-            raise SubmissionLockContestedError(f"Unable to clear submission lock")
+            raise SubmissionLockContestedError(_("Unable to clear submission lock"))
 
         current_lock.delete()

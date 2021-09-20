@@ -1,14 +1,13 @@
 """
 API endpoints for enhanced staff grader
 """
-from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
-from openassessment.xblock.staff_area_mixin import require_course_staff
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 
+from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers.submission_lock import SubmissionLockSerializer
-
+from openassessment.xblock.staff_area_mixin import require_course_staff
 
 class StaffGraderMixin:
     """
@@ -44,7 +43,7 @@ class StaffGraderMixin:
             submission_lock = SubmissionGradingLock.claim_submission_lock(submission_uuid, anonymous_user_id)
             return SubmissionLockSerializer(submission_lock).data
         except SubmissionLockContestedError as err:
-            raise JsonHandlerError(403, str(err))
+            raise JsonHandlerError(403, str(err)) from err
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
@@ -59,4 +58,4 @@ class StaffGraderMixin:
             SubmissionGradingLock.clear_submission_lock(submission_uuid, anonymous_user_id)
             return {}
         except SubmissionLockContestedError as err:
-            raise JsonHandlerError(403, str(err))
+            raise JsonHandlerError(403, str(err)) from err
