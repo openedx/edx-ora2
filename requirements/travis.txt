@@ -10,7 +10,7 @@ backports.entry-points-selectable==1.1.0
     #   virtualenv
 certifi==2021.5.30
     # via requests
-charset-normalizer==2.0.4
+charset-normalizer==2.0.6
     # via requests
 coverage==5.5
     # via coveralls
@@ -62,11 +62,11 @@ toml==0.10.2
     # via
     #   -r requirements/tox.txt
     #   tox
-tox==3.24.3
+tox==3.24.4
     # via -r requirements/tox.txt
 urllib3==1.26.6
     # via requests
-virtualenv==20.7.2
+virtualenv==20.8.0
     # via
     #   -r requirements/tox.txt
     #   tox
