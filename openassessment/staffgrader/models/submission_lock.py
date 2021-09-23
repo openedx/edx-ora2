@@ -18,8 +18,9 @@ class SubmissionGradingLock(models.Model):
 
     # NOTE - submission_uuid can refer to either the team or individual submission
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
+    staff_workflow = models.ForeignKey(StaffWorkflow, null=True, on_delete=models.DO_NOTHING)
     owner_id = models.CharField(max_length=40, db_index=True)
-    created_at = models.DateTimeField(db_index=True)
+    created_at = models.DateTimeField(db_index=True, null=True)
 
     class Meta:
         app_label = "staffgrader"
