@@ -93,7 +93,7 @@ class StaffWorkflow(models.Model):
         return {'ungraded': ungraded, 'in-progress': in_progress, 'graded': graded}
 
     @classmethod
-    def get_submission_for_review(cls, course_id, item_id, scorer_id):
+    def get_submission_for_review(cls, course_id, item_id, scorer_id, filter_by_teams=False):
         """
         Find a submission for staff assessment. This function will find the next
         submission that requires assessment, excluding any submission that has been
@@ -101,8 +101,9 @@ class StaffWorkflow(models.Model):
 
         Args:
             course_id (str): The course that we would like to retrieve submissions for,
-            item_id (str): The student_item that we would like to retrieve submissions for.
+            item_id (str): The student_item (problem) that we would like to retrieve submissions for.
             scorer_id (str): The user id of the staff member scoring this submission
+            filter_by_teams(boolean): True will retrieve only submissions from same teams as the staff
 
         Returns:
             identifying_uuid (str): The identifying_uuid for the (team or individual) submission to review.
@@ -133,6 +134,13 @@ class StaffWorkflow(models.Model):
                     grading_completed_at=None,
                     cancelled_at=None,
                 )
+                # if filter_by_teams, keep only staff_workflows from students in the same teams as staff
+                # this is just pseudo code (relations have not been investigated)
+                if filter_by_teams:
+                    staff_teams = Teams.objects.filter(user_id=scorer_id)
+                    staff_workflows = staff_workflows.filter(
+                        submission__student__teams__intersect_with=staff_teams
+                    )
             if not staff_workflows:
                 return None
 

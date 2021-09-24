@@ -231,7 +231,7 @@ def get_assessment_scores_by_criteria(submission_uuid):
         raise StaffAssessmentInternalError(error_message) from ex
 
 
-def get_submission_to_assess(course_id, item_id, scorer_id):
+def get_submission_to_assess(course_id, item_id, scorer_id, filter_by_teams=False):
     """
     Get a submission for staff evaluation.
 
@@ -241,6 +241,7 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
         course_id (str): The course that we would like to fetch submissions from.
         item_id (str): The student_item (problem) that we would like to retrieve submissions for.
         scorer_id (str): The user id of the staff member scoring this submission
+        filter_by_teams(boolean): True will retrieve only submissions from same teams as the staff
 
     Returns:
         dict: A student submission for assessment. This contains a 'student_item',
@@ -262,7 +263,7 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
         }
 
     """
-    student_submission_uuid = StaffWorkflow.get_submission_for_review(course_id, item_id, scorer_id)
+    student_submission_uuid = StaffWorkflow.get_submission_for_review(course_id, item_id, scorer_id, filter_by_teams=False)
     if student_submission_uuid:
         try:
             submission_data = submissions_api.get_submission(student_submission_uuid)
