@@ -151,7 +151,7 @@ edx-i18n-tools==0.7.0
     # via -r requirements/test.txt
 edx-opaque-keys==2.2.2
     # via -r requirements/test.txt
-edx-submissions==3.3.2
+edx-submissions==3.4.0
     # via -r requirements/test.txt
 edx-toggles==4.2.0
     # via -r requirements/test.txt
