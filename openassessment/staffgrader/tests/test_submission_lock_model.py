@@ -13,6 +13,10 @@ class TestSubmissionLockModel(TestCase):
 
     existing_submission_lock = None
     locked_submission_uuid = "currently_locked"
+
+    expired_submission_lock = None
+    expired_locked_submission_uuid = "expired"
+
     unlocked_submission_uuid = "not_currently_locked"
 
     user_id = "foo"
@@ -25,16 +29,19 @@ class TestSubmissionLockModel(TestCase):
             created_at=datetime.now(tz=timezone.utc)
         )
 
+        self.expired_submission_lock = SubmissionGradingLock.objects.create(
+            submission_uuid=self.expired_locked_submission_uuid,
+            owner_id=self.user_id,
+            created_at=datetime.now(tz=timezone.utc) - (SubmissionGradingLock.TIMEOUT + timedelta(hours=1))
+        )
+
     def test_lock_active(self):
         # A lock created within the TIMEOUT is considered active
         assert self.existing_submission_lock.is_active is True
 
     def test_lock_inactive(self):
         # A lock created and left for more than TIMEOUT is considered inactive
-        self.existing_submission_lock.created_at = \
-            self.existing_submission_lock.created_at - (SubmissionGradingLock.TIMEOUT + timedelta(hours=1))
-        self.existing_submission_lock.save()
-        assert self.existing_submission_lock.is_active is False
+        assert self.expired_submission_lock.is_active is False
 
     def test_get_submission_lock(self):
         # Can get an existing submission lock by submission ID
@@ -60,6 +67,16 @@ class TestSubmissionLockModel(TestCase):
         assert SubmissionGradingLock.get_submission_lock(self.locked_submission_uuid) == self.existing_submission_lock
         with self.assertRaises(SubmissionLockContestedError):
             SubmissionGradingLock.claim_submission_lock(self.locked_submission_uuid, self.other_user_id)
+
+    def test_claim_submission_lock_stale(self):
+        # When a submission lock has become inactive (older than TIMEOUT), it can be claimed by a new user
+        new_lock = SubmissionGradingLock.claim_submission_lock(
+            self.expired_locked_submission_uuid,
+            self.other_user_id
+        )
+
+        assert new_lock is not None
+        assert SubmissionGradingLock.get_submission_lock(self.expired_locked_submission_uuid) == new_lock
 
     def test_clear_submission_lock(self):
         # clear_submission_lock removes the existing lock
