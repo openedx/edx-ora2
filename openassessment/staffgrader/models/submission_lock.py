@@ -55,8 +55,12 @@ class SubmissionGradingLock(models.Model):
         if current_lock and current_lock.is_active:
             raise SubmissionLockContestedError(_("Submission already locked"))
 
-        # Otherwise, create a new lock
-        new_lock, created = cls.objects.update_or_create(  # pylint: disable=unused-variable
+        # Otherwise, delete the lock. This is needed so we don't violate the unique submisison_uuid constraint
+        elif current_lock:
+            current_lock.delete()
+
+        # Create a new lock
+        new_lock = cls.objects.create(
             owner_id=user_id,
             created_at=now(),
             submission_uuid=submission_uuid,
