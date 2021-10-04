@@ -2,6 +2,7 @@
 Models for locking Submissions for exclusive grading.
 Part of Enhanced Staff Grader (ESG).
 """
+from datetime import datetime
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
@@ -19,7 +20,7 @@ class SubmissionGradingLock(models.Model):
     # NOTE - submission_uuid can refer to either the team or individual submission
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     owner_id = models.CharField(max_length=40, db_index=True)
-    created_at = models.DateTimeField(db_index=True)
+    created_at = models.DateTimeField(db_index=True, default=datetime.now())
 
     class Meta:
         app_label = "staffgrader"
@@ -62,7 +63,6 @@ class SubmissionGradingLock(models.Model):
         # Create a new lock
         new_lock = cls.objects.create(
             owner_id=user_id,
-            created_at=now(),
             submission_uuid=submission_uuid,
         )
 
