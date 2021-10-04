@@ -4,6 +4,8 @@ API endpoints for enhanced staff grader
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
+from functools import wraps
+
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions.api import get_student_ids_by_submission_uuid
@@ -17,6 +19,16 @@ from openassessment.staffgrader.serializers.submission_lock import SubmissionLoc
 from openassessment.xblock.staff_area_mixin import require_course_staff
 
 
+def require_submission_uuid(handler):
+    @wraps(handler)
+    def wrapped_handler(self, data, suffix=""):  # pylint: disable=unused-argument
+        submission_uuid = data.get('submission_id', None)
+        if not submission_uuid:
+            raise JsonHandlerError(400, "Body must contain a submission_id")
+        return handler(self, submission_uuid, data, suffix=suffix)
+    return wrapped_handler
+
+
 class StaffGraderMixin:
     """
     Actions to interact with submission locks, blocking other staff from grading assignments while
@@ -25,14 +37,9 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def check_submission_lock(self, data, suffix=""):  # pylint: disable=unused-argument
-        # Unpack / validate request
-        submission_uuid = data.get('submission_id', None)
-        if not submission_uuid:
-            raise JsonHandlerError(400, "Body must contain a submission_id")
-
+    @require_submission_uuid
+    def check_submission_lock(self, submission_uuid, data, suffix=""):  # pylint: disable=unused-argument
         submission_lock = SubmissionGradingLock.get_submission_lock(submission_uuid)
-
         if submission_lock:
             return SubmissionLockSerializer(submission_lock).data
         else:
@@ -40,13 +47,9 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def claim_submission_lock(self, data, suffix=''):  # pylint: disable=unused-argument
-        # Unpack / validate request
-        submission_uuid = data.get('submission_id', None)
-        if not submission_uuid:
-            raise JsonHandlerError(400, "Body must contain a submission_id")
+    @require_submission_uuid
+    def claim_submission_lock(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-
         try:
             submission_lock = SubmissionGradingLock.claim_submission_lock(submission_uuid, anonymous_user_id)
             return SubmissionLockSerializer(submission_lock).data
@@ -55,13 +58,9 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def delete_submission_lock(self, data, suffix=''):  # pylint: disable=unused-argument
-        # Unpack / validate request
-        submission_uuid = data.get('submission_id', None)
-        if not submission_uuid:
-            raise JsonHandlerError(400, "Body must contain a submission_id")
+    @require_submission_uuid
+    def delete_submission_lock(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-
         try:
             SubmissionGradingLock.clear_submission_lock(submission_uuid, anonymous_user_id)
             return {}
