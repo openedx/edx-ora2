@@ -14,7 +14,7 @@ attrs==21.2.0
     # via
     #   jsonschema
     #   pytest
-aws-sam-translator==1.38.0
+aws-sam-translator==1.39.0
     # via cfn-lint
 aws-xray-sdk==2.8.0
     # via moto
@@ -24,13 +24,13 @@ bleach==4.1.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.18.44
+boto3==1.18.54
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.21.44
+botocore==1.21.54
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -43,7 +43,7 @@ certifi==2021.5.30
     #   requests
 cffi==1.14.6
     # via cryptography
-cfn-lint==0.54.1
+cfn-lint==0.54.2
     # via moto
 charset-normalizer==2.0.6
     # via
@@ -57,11 +57,11 @@ code-annotations==1.2.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
-coverage==5.5
+coverage==6.0
     # via
     #   -r requirements/test.in
     #   pytest-cov
-cryptography==3.4.8
+cryptography==35.0.0
     # via
     #   moto
     #   sshpubkeys
@@ -73,7 +73,7 @@ decorator==5.1.0
     # via networkx
 defusedxml==0.7.1
     # via -r requirements/base.txt
-distlib==0.3.2
+distlib==0.3.3
     # via virtualenv
     # via
     #   -c requirements/constraints.txt
@@ -129,9 +129,9 @@ edx-toggles==4.2.0
     # via -r requirements/base.txt
 factory-boy==3.2.0
     # via -r requirements/test.in
-faker==8.13.2
+faker==8.16.0
     # via factory-boy
-filelock==3.0.12
+filelock==3.3.0
     # via
     #   tox
     #   virtualenv
@@ -160,7 +160,7 @@ idna==2.8
     #   -r requirements/base.txt
     #   moto
     #   requests
-jinja2==3.0.1
+jinja2==3.0.2
     # via
     #   -r requirements/base.txt
     #   code-annotations
@@ -221,7 +221,7 @@ networkx==2.4
     # via
     #   -c requirements/constraints.txt
     #   cfn-lint
-newrelic==6.10.0.165
+newrelic==7.0.0.166
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
@@ -242,7 +242,7 @@ pbr==5.6.0
     # via
     #   -r requirements/base.txt
     #   stevedore
-platformdirs==2.3.0
+platformdirs==2.4.0
     # via virtualenv
 pluggy==0.13.1
     # via
@@ -309,7 +309,7 @@ python-swiftclient==3.12.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-pytz==2021.1
+pytz==2021.3
     # via
     #   -r requirements/base.txt
     #   django
@@ -375,7 +375,7 @@ stevedore==3.4.0
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
-testfixtures==6.18.2
+testfixtures==6.18.3
     # via -r requirements/test.in
 text-unidecode==1.3
     # via
@@ -386,15 +386,15 @@ toml==0.10.2
     # via tox
 tox==3.24.4
     # via -r requirements/test.in
-urllib3==1.26.6
+urllib3==1.26.7
     # via
     #   -r requirements/base.txt
     #   botocore
     #   requests
     #   responses
-virtualenv==20.8.0
+virtualenv==20.8.1
     # via tox
-voluptuous==0.12.1
+voluptuous==0.12.2
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
