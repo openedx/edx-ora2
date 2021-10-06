@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2021-10-27 14:30-0400\n"
+=======
+"POT-Creation-Date: 2021-09-20 17:05-0400\n"
+>>>>>>> ad0a32c2 (Submission lock API (#1691))
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -159,6 +163,14 @@ msgstr "Réspönsé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 #: openassessment/data.py
 msgid "No description provided."
 msgstr "Nö désçrïptïön prövïdéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: openassessment/staffgrader/models/submission_lock.py
+msgid "Submission already locked"
+msgstr "Süßmïssïön älréädý löçkéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/staffgrader/models/submission_lock.py
+msgid "Unable to clear submission lock"
+msgstr "Ûnäßlé tö çléär süßmïssïön löçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Save"
