@@ -1,13 +1,17 @@
 """
 API endpoints for enhanced staff grader
 """
+from functools import wraps
+import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
 from functools import wraps
+import logging
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
+from submissions import api as sub_api
 from submissions.api import get_student_ids_by_submission_uuid
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
@@ -15,8 +19,14 @@ from openassessment.assessment.models.staff import StaffWorkflow
 from openassessment.data import map_anonymized_ids_to_usernames
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
-from openassessment.staffgrader.serializers.submission_lock import SubmissionLockSerializer
+from openassessment.staffgrader.serializers.submission_lock import (
+    SubmissionLockSerializer, SubmissionDetailFileSerilaizer, AssessmentSerializer
+)
 from openassessment.xblock.staff_area_mixin import require_course_staff
+from openassessment.data import OraSubmissionAnswerFactory, VersionNotFoundException
+
+
+log = logging.getLogger(__name__)
 
 
 def require_submission_uuid(handler):
@@ -225,3 +235,85 @@ class StaffGraderMixin:
             for assessment in assessments
         }
         return assessments_by_submission_uuid
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    @require_submission_uuid
+    def get_submission_and_assessment_info(self, submission_uuid, _, suffix=''):  # pylint: disable=unused-argument
+        # TODO: Checks for if the submission we're given actually has a Workflow
+        submission_info = self.get_submission_info(submission_uuid)
+        assessment_info = self.get_assessment_info(submission_uuid)
+        return {
+            'submission': submission_info,
+            'assessment': assessment_info,
+        }
+
+    def get_submission_info(self, submission_uuid):
+        """
+        Return a dict representation of a submission in the form
+        {
+            'text': <list of strings representing the raw response for each prompt>
+            'files': <list of:>
+                {
+                    'download_url': <file url>
+                    'description': <file description>
+                    'name': <file name>
+                }
+        }
+        """
+        try:
+            submission = sub_api.get_submission(submission_uuid)
+            answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(submission.get('answer'))
+        except sub_api.SubmissionError as err:
+            raise JsonHandlerError(404, str(err)) from err
+        except VersionNotFoundException as err:
+            raise JsonHandlerError(500, str(err)) from err
+
+        return {
+            'files': [
+                SubmissionDetailFileSerilaizer(file_data).data
+                for file_data in self.get_download_urls_from_submission(submission)
+            ],
+            'text': answer.get_text_responses()
+        }
+
+    def get_assessment_info(self, submission_uuid):
+        """
+        Returns a dict representation of a staff assessment in the form
+        {
+            'feedback': <submission-level feedback>
+            'points_earned': <earned points>
+            'points_possible': <maximum possible points>
+            'criteria': list of {
+                'name': <criterion name>
+                'option': <name of selected option> This may be blank.
+                          If so, there are no options defined for the given criterion and it is feedback-only
+                'feedback': <feedback for criterion>
+            }
+        }
+        """
+        student_item_dict = self.get_student_item_dict()
+        course_id = student_item_dict['course_id']
+        item_id = student_item_dict['item_id']
+        try:
+            workflow = StaffWorkflow.get_staff_workflow(course_id, item_id, submission_uuid)
+        except StaffWorkflow.DoesNotExist as ex:
+            msg = f"No gradeable submission found with uuid={submission_uuid} in course={course_id} item={item_id}"
+            raise JsonHandlerError(404, msg) from ex
+
+        if not workflow.assessment:
+            return {}
+
+        assessments = self.bulk_deep_fetch_assessments([workflow.assessment])
+        if len(assessments) != 1 or submission_uuid not in assessments:
+            log.error(
+                (
+                    "[%s] Error looking up assessments. Submission UUID = %s, "
+                    "Staff Workflow Id = %d, Staff Workflow Assessment = %s, Assessments = %s"
+                ),
+                item_id, submission_uuid, workflow.id, workflow.assessment, assessments
+            )
+            raise JsonHandlerError(500, "Error looking up assessments")
+
+        assessment = assessments[submission_uuid]
+        return AssessmentSerializer(assessment).data

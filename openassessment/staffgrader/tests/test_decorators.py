@@ -5,6 +5,7 @@ from uuid import uuid4
 from xblock.exceptions import JsonHandlerError
 from openassessment.staffgrader.staff_grader_mixin import require_submission_uuid
 
+
 class RequireSubmissionUUIDTest(TestCase):
     def setUp(self):
         self.mock_self = Mock()

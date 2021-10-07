@@ -6,7 +6,7 @@
         </prompt>
     </prompts>
     <rubric>
-        <criterion>
+        <criterion feedback='optional'>
             <name>Criterion 1</name>
             <prompt>Criterion 1</prompt>
             <option points="3">
@@ -22,7 +22,7 @@
                 <explanation>One</explanation>
             </option>
         </criterion>
-        <criterion>
+        <criterion feedback='optional'>
             <name>Criterion 2</name>
             <prompt>Criterion 2</prompt>
             <option points="3">
