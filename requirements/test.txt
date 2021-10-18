@@ -24,32 +24,32 @@ bleach==4.1.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.18.54
+boto3==1.18.63
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.21.54
+botocore==1.21.63
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
     #   boto3
     #   moto
     #   s3transfer
-certifi==2021.5.30
+certifi==2021.10.8
     # via
     #   -r requirements/base.txt
     #   requests
-cffi==1.14.6
+cffi==1.15.0
     # via cryptography
 cfn-lint==0.54.2
     # via moto
-charset-normalizer==2.0.6
+charset-normalizer==2.0.7
     # via
     #   -r requirements/base.txt
     #   requests
-click==8.0.1
+click==8.0.3
     # via
     #   -r requirements/base.txt
     #   code-annotations
@@ -57,7 +57,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
-coverage==6.0
+coverage==6.0.2
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -93,7 +93,7 @@ django-crum==0.7.9
     #   -r requirements/base.txt
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.1.1
+django-model-utils==4.2.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
@@ -109,7 +109,7 @@ django-waffle==2.2.1
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-docker==5.0.2
+docker==5.0.3
     # via moto
 ecdsa==0.17.0
     # via
@@ -119,19 +119,19 @@ edx-django-utils==4.4.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
-edx-i18n-tools==0.7.0
+edx-i18n-tools==0.8.1
     # via -r requirements/base.txt
 edx-opaque-keys==2.2.2
     # via -r requirements/base.txt
-edx-submissions==3.3.2
+edx-submissions==3.4.0
     # via -r requirements/base.txt
 edx-toggles==4.2.0
     # via -r requirements/base.txt
 factory-boy==3.2.0
     # via -r requirements/test.in
-faker==8.16.0
+faker==9.3.1
     # via factory-boy
-filelock==3.3.0
+filelock==3.3.1
     # via
     #   tox
     #   virtualenv
@@ -220,7 +220,7 @@ networkx==2.4
     # via
     #   -c requirements/constraints.txt
     #   cfn-lint
-newrelic==7.0.0.166
+newrelic==7.2.2.169
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
@@ -316,7 +316,7 @@ pytz==2021.3
     #   fs
     #   moto
     #   xblock
-pyyaml==5.4.1
+pyyaml==6.0
     # via
     #   -r requirements/base.txt
     #   cfn-lint
@@ -346,7 +346,6 @@ six==1.16.0
     #   bleach
     #   cfn-lint
     #   ecdsa
-    #   edx-i18n-tools
     #   freezegun
     #   fs
     #   fs-s3fs
@@ -368,7 +367,7 @@ sqlparse==0.4.2
     #   django
 sshpubkeys==3.3.1
     # via moto
-stevedore==3.4.0
+stevedore==3.5.0
     # via
     #   -r requirements/base.txt
     #   code-annotations
@@ -414,7 +413,7 @@ webob==1.8.7
     #   xblock
 websocket-client==1.2.1
     # via docker
-werkzeug==2.0.1
+werkzeug==2.0.2
     # via moto
 wrapt==1.11.2
     # via
@@ -422,7 +421,7 @@ wrapt==1.11.2
     #   aws-xray-sdk
 xblock==1.5.1
     # via -r requirements/base.txt
-xblock-sdk==0.3.0
+xblock-sdk==0.4.0
     # via -r requirements/test.in
 xmltodict==0.12.0
     # via moto
