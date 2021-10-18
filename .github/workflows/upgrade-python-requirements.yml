@@ -41,8 +41,10 @@ jobs:
         run: |
           git clone https://github.com/edx/testeng-ci.git
           cd $GITHUB_WORKSPACE/testeng-ci
+          git checkout origin/matthugs/set-output-of-created-PR-for-github-actions
           pip install -r requirements/base.txt
       - name: create pull request
+        id: createpullrequest
         env:
           GITHUB_TOKEN: ${{ secrets.REQUIREMENTS_BOT_GITHUB_TOKEN }}
           GITHUB_USER_EMAIL: ${{ secrets.REQUIREMENTS_BOT_GITHUB_EMAIL }}
@@ -54,27 +56,6 @@ jobs:
           --pr-body="Python requirements update.Please review the [changelogs](https://openedx.atlassian.net/wiki/spaces/TE/pages/1001521320/Python+Package+Changelogs) for the upgraded packages." \
           --user-reviewers="" --team-reviewers="masters-devs-gta" --delete-old-pull-requests
 
-      - name: Send failure notification
-        if: ${{ failure() }}
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: email-smtp.us-east-1.amazonaws.com
-          server_port: 465
-          username: ${{secrets.EDX_SMTP_USERNAME}}
-          password: ${{secrets.EDX_SMTP_PASSWORD}}
-          subject: Upgrade python requirements workflow failed in ${{github.repository}}
-          to: masters-requirements-update@edx.opsgenie.net
-          from: github-actions <github-actions@edx.org>
-          body: Upgrade python requirements workflow executed in ${{github.repository}}. For details see "github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}". Run failed.
-
-      - name: Send success notification
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: email-smtp.us-east-1.amazonaws.com
-          server_port: 465
-          username: ${{secrets.EDX_SMTP_USERNAME}}
-          password: ${{secrets.EDX_SMTP_PASSWORD}}
-          subject: Upgrade python requirements workflow executed successfully in ${{github.repository}}
-          to: masters-requirements-update@edx.opsgenie.net
-          from: github-actions <github-actions@edx.org>
-          body: Upgrade python requirements workflow executed in {{github.repository}}. For details see "github.com/${{ github.repository }}/pulls"
+      - name: see if output from previous attempt worked
+        run: |
+          echo "is this empty: ${{ steps.createpullrequest.outputs.generated_pr }}"
