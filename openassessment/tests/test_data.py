@@ -589,7 +589,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         return ITEM_ID + '_' + str(no_of_student)
 
     def test_collect_ora2_data(self):
-        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
+        with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
             map_mock.return_value = USERNAME_MAPPING
             headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 

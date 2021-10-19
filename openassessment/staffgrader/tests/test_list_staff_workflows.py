@@ -129,16 +129,16 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         ) as patched_map:
             yield patched_map
 
-    @contextmanager
-    def _mock_get_team_ids_by_team_submission_uuid(self):
-        """
-        Context manager that patches get_team_ids_by_team_submission_uuid.
-        TODO: It currently has no real return value and is only used to assert that the function was not called.
-        """
-        with patch(
-            'openassessment.staffgrader.staff_grader_mixin.get_team_ids_by_team_submission_uuid',
-        ) as patched_map:
-            yield patched_map
+    # @contextmanager
+    # def _mock_get_team_ids_by_team_submission_uuid(self):
+    #     """
+    #     Context manager that patches get_team_ids_by_team_submission_uuid.
+    #     TODO: It currently has no real return value and is only used to assert that the function was not called.
+    #     """
+    #     with patch(
+    #         'openassessment.staffgrader.staff_grader_mixin.get_team_ids_by_team_submission_uuid',
+    #     ) as patched_map:
+    #         yield patched_map
 
     @contextmanager
     def _mock_map_anonymized_ids_to_usernames(self):
@@ -556,17 +556,17 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
             ),
         ]
         with self._mock_get_student_ids_by_submission_uuid() as mock_get_student_ids:
-            with self._mock_get_team_ids_by_team_submission_uuid() as mock_get_team_ids:
-                with self._mock_map_anonymized_ids_to_usernames() as mock_map_ids:
-                    with patch.object(xblock, 'bulk_deep_fetch_assessments') as mock_bulk_fetch_assessments:
-                        mock_bulk_fetch_assessments.return_value = mock_assessments_map
-                        response = xblock.staff_workflows_to_api_format(mock_staff_workflows)
+            # with self._mock_get_team_ids_by_team_submission_uuid() as mock_get_team_ids:
+            with self._mock_map_anonymized_ids_to_usernames() as mock_map_ids:
+                with patch.object(xblock, 'bulk_deep_fetch_assessments') as mock_bulk_fetch_assessments:
+                    mock_bulk_fetch_assessments.return_value = mock_assessments_map
+                    response = xblock.staff_workflows_to_api_format(mock_staff_workflows)
 
         mock_get_student_ids.assert_called_once_with(
             self.course_id,
             self.submission_uuids
         )
-        mock_get_team_ids.assert_not_called()
+        # mock_get_team_ids.assert_not_called()
         # We only expect to look up the learner student_ids and the student_ids of the staff that assessed submissions.
         # The other two shouldn't be included.
         expected_anonymous_id_lookups = set(student.student_id for student in self.students)
