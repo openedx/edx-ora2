@@ -414,7 +414,7 @@ class OraAggregateData:
         return anonymous_id_to_username_mapping
 
     @classmethod
-    def _map_sudents_and_scorers_ids_to_usernames(cls, all_submission_information):
+    def _map_students_and_scorers_ids_to_usernames(cls, all_submission_information):
         """
         Args:
             all_submission_information - list of tuples with submission data,
@@ -607,7 +607,7 @@ class OraAggregateData:
         usernames_enabled = _usernames_enabled()
 
         usernames_map = (
-            cls._map_sudents_and_scorers_ids_to_usernames(all_submission_information)
+            cls._map_students_and_scorers_ids_to_usernames(all_submission_information)
             if usernames_enabled
             else {}
         )
