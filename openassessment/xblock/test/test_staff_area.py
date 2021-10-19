@@ -1154,7 +1154,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertFalse(context['is_team_assignment'])
         self.assertIsNone(context['team_name'])
 
-    @patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames')
+    @patch('openassessment.data.map_anonymized_ids_to_usernames')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_waiting_step_details_api(self, xblock, username_map_patch):
         """
@@ -1207,7 +1207,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             "bob_username"
         )
 
-    @patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames')
+    @patch('openassessment.data.map_anonymized_ids_to_usernames')
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_waiting_step_details_api_no_permission(self, xblock, username_map_patch):
         """

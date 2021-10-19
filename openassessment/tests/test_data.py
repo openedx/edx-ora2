@@ -756,7 +756,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
         submission.answer = answer
         submission.save()
-        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
+        with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
             map_mock.return_value = USERNAME_MAPPING
             _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
         self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])
@@ -1333,6 +1333,7 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         with patch('openassessment.data.OraDownloadData._map_student_ids_to_path_ids') as mock_map_student_ids:
             mock_map_student_ids.return_value = username_mapping_no_default_student
+            breakpoint()
             collected_ora_files_data = list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
 
         expected_files = [
