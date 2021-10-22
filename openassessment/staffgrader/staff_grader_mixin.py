@@ -101,22 +101,14 @@ class StaffGraderMixin:
             if workflow.scorer_id:
                 workflow_scorer_ids.add(workflow.scorer_id)
         course_id = self.get_student_item_dict()['course_id']
+        
         # Fetch user identifier mappings
-        # if not self.is_team_assignment():
+
         # When we look up usernames we want to include all connected learner student ids
         submission_uuids_to_student_id = get_student_ids_by_submission_uuid(
             course_id,
             submission_uuids,
         )
-        # else:
-        #     # Team assignments don't need individual username lookups but do look up team ids and
-        #     # then map team IDs to team names.
-        #     submission_uuids_to_student_id = dict()
-        #     submission_uuids_to_team_id = get_team_ids_by_team_submission_uuid(submission_uuids)
-        #     submission_uuids_to_team_name = {
-        #         submission_uuid: self.teams_service.get_team_by_team_id(team_id)
-        #         for submission_uuid, team_id in submission_uuids_to_team_id.items()
-        #     }
 
         # Do bulk lookup for all anonymous ids. This is used for team + individual for
         # looking up username of "scorer", and to provide "username" for individual
@@ -132,7 +124,7 @@ class StaffGraderMixin:
         response = {}
         for workflow in staff_workflows:
             workflow_dict = {
-                "submission_uuid": workflow.submission_uuid,
+                "submissionUuid": workflow.submission_uuid,
                 "dateSubmitted": str(workflow.created_at),
                 "dateGraded": str(workflow.grading_completed_at),
                 "gradingStatus": workflow.grading_status,
@@ -142,11 +134,8 @@ class StaffGraderMixin:
             if workflow.scorer_id:
                 workflow_dict["gradedBy"] = anonymous_ids_to_usernames[workflow.scorer_id]
             else:
-                workflow_dict['gradedBy'] = ''
+                workflow_dict['gradedBy'] = None
 
-            # if self.is_team_assignment():
-            #     # workflow_dict['team_name'] = submission_uuids_to_team_name[workflow.identifying_uuid]
-            # else:
             student_id = submission_uuids_to_student_id[workflow.identifying_uuid]
             workflow_dict['username'] = anonymous_ids_to_usernames[student_id]
 

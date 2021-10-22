@@ -129,17 +129,6 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         ) as patched_map:
             yield patched_map
 
-    # @contextmanager
-    # def _mock_get_team_ids_by_team_submission_uuid(self):
-    #     """
-    #     Context manager that patches get_team_ids_by_team_submission_uuid.
-    #     TODO: It currently has no real return value and is only used to assert that the function was not called.
-    #     """
-    #     with patch(
-    #         'openassessment.staffgrader.staff_grader_mixin.get_team_ids_by_team_submission_uuid',
-    #     ) as patched_map:
-    #         yield patched_map
-
     @contextmanager
     def _mock_map_anonymized_ids_to_usernames(self):
         """
@@ -216,10 +205,10 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
                 'points_earned': expected_score,
             }
         expected_val = {
-            'submission_uuid': student.submission['uuid'],
+            'submissionUuid': student.submission['uuid'],
             'dateSubmitted': str(SUBMITTED_DATE),
             'dateGraded': str(date_graded),
-            'gradedBy': graded_by.username if graded_by else '',
+            'gradedBy': graded_by.username if graded_by else None,
             'gradingStatus': 'ungraded' if not date_graded else 'graded',
             'lockStatus': lock_status,
             'username': student.username,
@@ -588,27 +577,27 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
                     'points_earned': 5,
                     'points_possible': 10
                 },
-                'submission_uuid': self.students[0].submission['uuid'],
+                'submissionUuid': self.students[0].submission['uuid'],
                 'username': self.students[0].username
             },
             self.students[1].submission['uuid']: {
                 'dateGraded': 'None',
                 'dateSubmitted': str(SUBMITTED_DATE),
-                'gradedBy': '',
+                'gradedBy': None,
                 'gradingStatus': 'ungraded',
                 'lockStatus': 'locked',
                 'score': {},
-                'submission_uuid': self.students[1].submission['uuid'],
+                'submissionUuid': self.students[1].submission['uuid'],
                 'username': self.students[1].username
             },
             self.students[2].submission['uuid']: {
                 'dateGraded': 'None',
                 'dateSubmitted': str(SUBMITTED_DATE),
-                'gradedBy': '',
+                'gradedBy': None,
                 'gradingStatus': 'ungraded',
                 'lockStatus': 'in-progress',
                 'score': {},
-                'submission_uuid': self.students[2].submission['uuid'],
+                'submissionUuid': self.students[2].submission['uuid'],
                 'username': self.students[2].username
             },
             self.students[3].submission['uuid']: {
@@ -621,7 +610,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
                     'points_earned': 6,
                     'points_possible': 10
                 },
-                'submission_uuid': self.students[3].submission['uuid'],
+                'submissionUuid': self.students[3].submission['uuid'],
                 'username': self.students[3].username
             },
         }
