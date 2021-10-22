@@ -4,9 +4,9 @@ API endpoints for enhanced staff grader
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
-from submissions.api import get_student_ids_by_submission_uuid
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
+from submissions.api import get_student_ids_by_submission_uuid
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow
@@ -101,7 +101,7 @@ class StaffGraderMixin:
             if workflow.scorer_id:
                 workflow_scorer_ids.add(workflow.scorer_id)
         course_id = self.get_student_item_dict()['course_id']
-        
+
         # Fetch user identifier mappings
 
         # When we look up usernames we want to include all connected learner student ids
