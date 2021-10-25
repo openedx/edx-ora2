@@ -1333,7 +1333,6 @@ class TestOraDownloadDataIntegration(TransactionCacheResetTest):
 
         with patch('openassessment.data.OraDownloadData._map_student_ids_to_path_ids') as mock_map_student_ids:
             mock_map_student_ids.return_value = username_mapping_no_default_student
-            breakpoint()
             collected_ora_files_data = list(OraDownloadData.collect_ora2_submission_files(COURSE_ID))
 
         expected_files = [
