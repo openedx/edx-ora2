@@ -269,7 +269,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
     to cleanly create AnonymousUserId test models.
     """
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     def test_no_grades_or_locks(self, xblock):
         """ Test for the result of calling the view for an ORA with no grades or locks"""
         self.set_staff_user(xblock)
@@ -282,7 +282,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.assertDictEqual(response, expected_response)
 
     @freeze_time(TEST_START_DATE)
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     def test_graded(self, xblock):
         """ Test for the result of calling the view for an ORA with some grades"""
         grading_config = [(0, 0, "Three"), (1, 1, "Two"), (2, 2, "One")]
@@ -301,7 +301,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.assertDictEqual(response, expected)
 
     @freeze_time(TEST_START_DATE)
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     def test_locked(self, xblock):
         """ Test for the result of calling the view for an ORA with some locked submissions"""
         lock_config = [(0, 2), (1, 1), (2, 0)]
@@ -319,7 +319,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
 
         self.assertDictEqual(response, expected)
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_not_staff(self, xblock):
         response = self.request(xblock, 'list_staff_workflows', '{}')
         self.assertIn(
@@ -380,7 +380,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         self.assertEqual(assessment.points_possible, POINTS_POSSIBLE)
         self.assertEqual(assessment.points_earned, expected_points_earned)
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     def test_bulk_deep_fetch_assessments(self, xblock):
         """
         Unit test for bulk_deep_fetch_assessments
@@ -427,7 +427,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
 
     @ddt.data((True, True), (True, False), (False, True), (False, False))
     @ddt.unpack
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     @freeze_time(TEST_START_DATE)
     def test_bulk_fetch_annotated_staff_workflows(self, xblock, set_up_grades, set_up_locks):
         """ Unit test for bulk_fetch_annotated_staff_workflows """
@@ -491,7 +491,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
             for i, (expected, actual) in enumerate(zip(expected_annotated_workflows, annotated_workflows)):
                 self.assert_annotated_staff_workflow_equal(expected, actual, i)
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     @freeze_time(TEST_START_DATE)
     def test_staff_workflows_to_api_format(self, xblock):
         """ Unit test for staff_workflows_to_api_format """

@@ -112,19 +112,19 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
 
 class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_submission_uuid(self, xblock):
         xblock.xmodule_runtime = Mock(user_is_staff=False)
         resp = self.request(xblock, None, json_format=False)
         self.assertIn('You do not have permission to access ORA staff grading.', resp.decode('UTF-8'))
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_access(self, xblock):
         xblock.xmodule_runtime = Mock(user_is_staff=False)
         resp = self.request(xblock, 'meaningless-value', json_format=False)
         self.assertIn('You do not have permission to access ORA staff grading.', resp.decode('UTF-8'))
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_handler(self, xblock):
         xblock.xmodule_runtime = MagicMock(user_is_staff=True)
         submission_uuid = str(uuid4())
@@ -151,7 +151,7 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
             result['files_sizes'] = [i * 1000 for i in range(2)]
         return result
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_handler_integration__no_assessment(self, xblock):
         student_id = 'TestUser111'
         submission, _ = self._create_student_and_submission(student_id, self._make_answer(student_id))
@@ -181,7 +181,7 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
             }
         )
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_handler_integration__assessment(self, xblock):
         student_id = 'TestUser22222'
         submission, _ = self._create_student_and_submission(student_id, self._make_answer(student_id, has_files=False))
@@ -247,7 +247,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
     def _mock_get_download_urls_from_submission(self, xblock, **kwargs):
         xblock.get_download_urls_from_submission = Mock(**kwargs)
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_submission_error(self, xblock):
         submission_uuid = Mock()
         err_msg = Mock()
@@ -259,7 +259,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
         self.assertEqual(error_context.exception.status_code, 404)
         self.assertEqual(error_context.exception.message, str(err_msg))
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_answer_version_unknown(self, xblock):
         submission_uuid = Mock()
         mock_submission = Mock()
@@ -274,7 +274,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
         self.assertEqual(error_context.exception.status_code, 500)
         self.assertEqual(error_context.exception.message, str(mock_exception))
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_submission_info(self, xblock):
         text_responses = [
             "This is my answer for <b>Prompt One</b>.",
@@ -353,7 +353,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
             )
         return assessment
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_staff_workflow(self, xblock):
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
@@ -368,7 +368,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
             f"No gradeable submission found with uuid={submission_uuid} in course={course_id} item={item_id}"
         )
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_assessment(self, xblock):
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
@@ -379,7 +379,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
             result = xblock.get_assessment_info(submission_uuid)
         self.assertEqual(result, {})
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_multiple_bulk_assessments(self, xblock):
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
@@ -393,12 +393,12 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
         self.assertEqual(error_context.exception.status_code, 500)
         self.assertEqual(error_context.exception.message, "Error looking up assessments")
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_bulk_assessments(self, xblock):
         submission_uuid = str(uuid4())
         self._test_bulk_deep_fetch_assessments_errors(xblock, submission_uuid, {})
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_multiple_bulk_assessments(self, xblock):
         submission_uuid = str(uuid4())
         self._test_bulk_deep_fetch_assessments_errors(
@@ -407,7 +407,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
             {submission_uuid: Mock(), Mock(): Mock()}
         )
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_submission_uuid_not_in_bulk_assessments(self, xblock):
         submission_uuid = str(uuid4())
         self._test_bulk_deep_fetch_assessments_errors(xblock, submission_uuid, {Mock: Mock()})
@@ -424,7 +424,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
         self.assertEqual(error_context.exception.status_code, 500)
         self.assertEqual(error_context.exception.message, "Error looking up assessments")
 
-    @scenario('data/list_staff_workflows_test_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_assessment_info(self, xblock):
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         assessment = self._create_full_assessment()
