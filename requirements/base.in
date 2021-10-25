@@ -20,7 +20,7 @@ boto3
 python-swiftclient
 defusedxml
 django-model-utils
-jsonfield2
+jsonfield
 lazy
 libsass
 loremipsum

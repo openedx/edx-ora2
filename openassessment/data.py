@@ -414,7 +414,7 @@ class OraAggregateData:
         return anonymous_id_to_username_mapping
 
     @classmethod
-    def _map_sudents_and_scorers_ids_to_usernames(cls, all_submission_information):
+    def _map_students_and_scorers_ids_to_usernames(cls, all_submission_information):
         """
         Args:
             all_submission_information - list of tuples with submission data,
@@ -607,7 +607,7 @@ class OraAggregateData:
         usernames_enabled = _usernames_enabled()
 
         usernames_map = (
-            cls._map_sudents_and_scorers_ids_to_usernames(all_submission_information)
+            cls._map_students_and_scorers_ids_to_usernames(all_submission_information)
             if usernames_enabled
             else {}
         )
@@ -964,14 +964,15 @@ class OraDownloadData:
         where key is a string representation of ORA's usage key, and value is a dictionary with
         all information needed to build the submission file path.
         """
-
         blocks = _get_course_blocks(course_id)
+        logger.info("[%s] _get_course_blocks returned %d blocks", course_id, len(blocks))
 
         path_info = {}
 
         def children(usage_key, condition=None):
             # pylint: disable=filter-builtin-not-iterating
-            filtered = filter(condition, blocks.get_xblock_field(usage_key, 'children') or [])
+            child_blocks = blocks.get_children(usage_key)
+            filtered = filter(condition, child_blocks)
             for index, child in enumerate(filtered, 1):
                 yield index, blocks.get_xblock_field(child, 'display_name'), child
 
@@ -982,7 +983,7 @@ class OraDownloadData:
             for sub_section_index, sub_section_name, sub_section in children(section):
                 for unit_index, unit_name, unit in children(sub_section):
                     for block_index, block_name, block in children(unit, only_ora_blocks):
-                        path_info[str(block)] = {
+                        ora_block_path_info = {
                             "section_index": section_index,
                             "section_name": section_name,
                             "sub_section_index": sub_section_index,
@@ -992,6 +993,8 @@ class OraDownloadData:
                             "ora_index": block_index,
                             "ora_name": block_name,
                         }
+                        logger.info("[%s] ORA block found: %s", course_id, str(ora_block_path_info))
+                        path_info[str(block)] = ora_block_path_info
 
         return path_info
 

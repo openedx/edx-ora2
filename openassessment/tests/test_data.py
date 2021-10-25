@@ -374,7 +374,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         self.assertEqual(mapping, USERNAME_MAPPING)
 
-    def test_map_sudents_and_scorers_ids_to_usernames(self):
+    def test_map_students_and_scorers_ids_to_usernames(self):
         test_submission_information = [
             (
                 dict(
@@ -400,7 +400,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         with patch("openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames") as map_mock:
             # pylint: disable=protected-access
-            OraAggregateData._map_sudents_and_scorers_ids_to_usernames(
+            OraAggregateData._map_students_and_scorers_ids_to_usernames(
                 test_submission_information
             )
             map_mock.assert_called_once_with([STUDENT_ID, SCORER_ID])
