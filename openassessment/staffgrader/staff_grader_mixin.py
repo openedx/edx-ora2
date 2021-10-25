@@ -6,9 +6,6 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
-from functools import wraps
-import logging
-
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions import api as sub_api
@@ -19,7 +16,7 @@ from openassessment.assessment.models.staff import StaffWorkflow
 from openassessment.data import map_anonymized_ids_to_usernames
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
-from openassessment.staffgrader.serializers.submission_lock import (
+from openassessment.staffgrader.serializers import (
     SubmissionLockSerializer, SubmissionDetailFileSerilaizer, AssessmentSerializer
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
