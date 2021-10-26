@@ -185,6 +185,13 @@ class StaffWorkflow(models.Model):
 
         return assessments_list
 
+    @classmethod
+    def get_staff_workflows_for_course(cls, course_id):
+        """
+        Retrieve all staff workflows for a certain course
+        """
+        return cls.objects.filter(course_id=course_id)
+
     def close_active_assessment(self, assessment, scorer_id):
         """
         Assign assessment to workflow, and mark the grading as complete.
