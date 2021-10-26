@@ -116,3 +116,25 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
         self.assertDictEqual(response, {
             "error": "Submission already locked"
         })
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_delete_submission_lock(self, xblock):
+        """ The lock owner can clear a submission lock if it exists """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+
+        request_data = {'submission_id': self.test_submission_uuid}
+        response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='json')
+
+        self.assertDictEqual(response, {})
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_delete_submission_lock_contested(self, xblock):
+        """ Users cannot clear a lock owned by another user """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
+
+        request_data = {'submission_id': self.test_submission_uuid}
+        response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='json')
+
+        self.assertDictEqual(response, {
+            "error": "Unable to clear submission lock"
+        })
