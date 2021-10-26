@@ -8,17 +8,17 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.18.54
+boto3==1.18.59
     # via -r requirements/base.in
-botocore==1.21.54
+botocore==1.21.59
     # via
     #   boto3
     #   s3transfer
-certifi==2021.5.30
+certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.6
+charset-normalizer==2.0.7
     # via requests
-click==8.0.1
+click==8.0.3
     # via code-annotations
 code-annotations==1.2.0
     # via edx-toggles
@@ -58,11 +58,11 @@ edx-django-utils==4.4.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
-edx-i18n-tools==0.7.0
+edx-i18n-tools==0.8.1
     # via -r requirements/base.in
 edx-opaque-keys==2.2.2
     # via -r requirements/base.in
-edx-submissions==3.3.2
+edx-submissions==3.4.0
     # via -r requirements/base.in
 edx-toggles==4.2.0
     # via -r requirements/base.in
@@ -154,7 +154,6 @@ s3transfer==0.5.0
 six==1.16.0
     # via
     #   bleach
-    #   edx-i18n-tools
     #   fs
     #   html5lib
     #   libsass

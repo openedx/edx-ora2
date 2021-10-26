@@ -39,20 +39,20 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.18.54
+boto3==1.18.59
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.21.54
+botocore==1.21.59
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
     #   boto3
     #   moto
     #   s3transfer
-certifi==2021.5.30
+certifi==2021.10.8
     # via
     #   -r requirements/test.txt
     #   requests
@@ -64,11 +64,11 @@ cfn-lint==0.54.2
     # via
     #   -r requirements/test.txt
     #   moto
-charset-normalizer==2.0.6
+charset-normalizer==2.0.7
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.0.1
+click==8.0.3
     # via
     #   -r requirements/test.txt
     #   click-log
@@ -81,7 +81,7 @@ code-annotations==1.2.0
     #   -r requirements/test.txt
     #   edx-lint
     #   edx-toggles
-coverage==6.0
+coverage==6.0.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -140,7 +140,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-docker==5.0.2
+docker==5.0.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -153,19 +153,19 @@ edx-django-utils==4.4.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
-edx-i18n-tools==0.7.0
+edx-i18n-tools==0.8.1
     # via -r requirements/test.txt
 edx-lint==5.2.0
     # via -r requirements/quality.in
 edx-opaque-keys==2.2.2
     # via -r requirements/test.txt
-edx-submissions==3.3.2
+edx-submissions==3.4.0
     # via -r requirements/test.txt
 edx-toggles==4.2.0
     # via -r requirements/test.txt
 factory-boy==3.2.0
     # via -r requirements/test.txt
-faker==8.16.0
+faker==9.3.1
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -326,7 +326,7 @@ pyasn1==0.4.8
     #   -r requirements/test.txt
     #   python-jose
     #   rsa
-pycodestyle==2.7.0
+pycodestyle==2.8.0
     # via -r requirements/quality.in
 pycparser==2.20
     # via
@@ -436,7 +436,6 @@ six==1.16.0
     #   bleach
     #   cfn-lint
     #   ecdsa
-    #   edx-i18n-tools
     #   edx-lint
     #   freezegun
     #   fs
@@ -516,7 +515,7 @@ websocket-client==1.2.1
     # via
     #   -r requirements/test.txt
     #   docker
-werkzeug==2.0.1
+werkzeug==2.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -528,7 +527,7 @@ wrapt==1.11.2
     #   aws-xray-sdk
 xblock==1.5.1
     # via -r requirements/test.txt
-xblock-sdk==0.3.0
+xblock-sdk==0.4.0
     # via -r requirements/test.txt
 xmltodict==0.12.0
     # via
