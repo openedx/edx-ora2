@@ -1,9 +1,10 @@
 """
 Tests for Staff Grader mixin
 """
-from datetime import datetime
 import json
 from unittest.mock import Mock
+
+from django.utils.timezone import now
 from freezegun import freeze_time
 
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
@@ -11,14 +12,15 @@ from openassessment.tests.factories import  UserFactory
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 
 
-@freeze_time("1969-07-21 02:56:00", tz_offset=0)
+@freeze_time("1969-07-20T22:56:00-04:00")
 class TestSubmissionLockMixin(XBlockHandlerTestCase):
     """ Tests for interacting with submission grading/locking """
-    test_submission_uuid = "definitely_a_uuid"
-    test_team_submission_uuid = "definitely_team_uuid"
-    test_course_id = "definitely_a_course_id"
-    test_workflow = None
-    test_timestamp = "1969-07-21T02:56:00-04:00"
+    test_submission_uuid = "locked_submission_uuid"
+    test_submission_uuid_unlocked = "unlocked_submission_uuid"
+
+    test_timestamp = "1969-07-20T22:56:00-04:00"
+
+    test_course_id = "course_id"
 
     staff_user = None
     staff_user_id = 'staff'
@@ -41,9 +43,8 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
 
         # Create a submission lock
         self.submission_lock = SubmissionGradingLock.objects.create(
-            submission_uuid=self.test_submission_uuid,
             owner_id=self.staff_user_id,
-            created_at=datetime.now()
+            submission_uuid=self.test_submission_uuid,
         )
 
         return super().setUp()
