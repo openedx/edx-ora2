@@ -1,6 +1,7 @@
 """
 Tests for Staff Grader mixin
 """
+from datetime import timedelta
 import json
 from unittest.mock import Mock
 
@@ -86,9 +87,28 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
         })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_reclaim_submission_lock(self, xblock):
+        """ A lock owner can re-claim a submission lock, updating the timestamp """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+
+        # Modify the original timestamp for testing
+        lock = SubmissionGradingLock.objects.get(submission_uuid=self.test_submission_uuid)
+        lock.created_at = lock.created_at - timedelta(hours=2)
+        lock.save()
+
+        request_data = {'submission_id': self.test_submission_uuid}
+        response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
+
+        self.assertDictEqual(response, {
+            "submission_uuid": self.test_submission_uuid,
+            "owner_id": self.staff_user_id,
+            "created_at": self.test_timestamp,
+        })
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
     def test_claim_submission_lock_contested(self, xblock):
         """ Trying to claim a lock on a submission with an active lock raises an error """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
         request_data = {'submission_id': self.test_submission_uuid}
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
