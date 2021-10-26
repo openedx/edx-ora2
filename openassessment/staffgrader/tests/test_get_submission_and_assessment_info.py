@@ -448,3 +448,38 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
         }
 
         self.assertDictEqual(assessment_info, expected_assessment_info)
+
+    @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob')
+    def test_get_assessment_info__feedback_only(self, xblock):
+        # Create an Assessment with multiple parts that are feedback-only
+        assessment = AssessmentFactory.create(feedback="Base Assessment Feedback")
+        assessment_rubric = assessment.rubric
+        for _ in range(3):
+            criterion = CriterionFactory(rubric=assessment_rubric)
+            AssessmentPartFactory.create(
+                assessment=assessment,
+                criterion=criterion,
+                feedback=f"Feedback for criterion {criterion.id}"
+            )
+
+        course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
+        submission_uuid = str(uuid4())
+        self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
+        self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: assessment})
+        with self._mock_get_staff_workflow():
+            assessment_info = xblock.get_assessment_info(submission_uuid)
+
+        expected_assessment_info = {
+            'feedback': "Base Assessment Feedback",
+            'points_earned': 0,
+            'points_possible': 0,
+            'criteria': [
+                OrderedDict({
+                    'name': part.criterion.name,
+                    'option': None,
+                    'feedback': f"Feedback for criterion {part.criterion.id}"
+                }) for part in assessment.parts.all()
+            ]
+        }
+
+        self.assertDictEqual(assessment_info, expected_assessment_info)

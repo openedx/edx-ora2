@@ -18,7 +18,7 @@ class SubmissionDetailFileSerilaizer(serializers.Serializer):
 
 class AssessmentPartSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='criterion.name')
-    option = serializers.CharField(source='option.name', default='')
+    option = serializers.CharField(source='option.name', default=None)
 
     class Meta:
         model = AssessmentPart
