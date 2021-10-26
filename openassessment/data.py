@@ -75,6 +75,29 @@ def _get_course_blocks(course_id):
     return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
 
 
+def map_anonymized_ids_to_usernames(anonymized_ids):
+    """
+    Args:
+        anonymized_ids - list of anonymized user ids.
+    Returns:
+        dictionary, that contains mapping between anonymized user ids and
+        actual usernames.
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+        .values("username", "anonymous_id")
+    )
+
+    anonymous_id_to_username_mapping = {
+        user["anonymous_id"]: user["username"] for user in users
+    }
+
+    return anonymous_id_to_username_mapping
+
+
 class CsvWriter:
     """
     Dump openassessment data to CSV files.
@@ -391,29 +414,6 @@ class OraAggregateData:
     """
 
     @classmethod
-    def _map_anonymized_ids_to_usernames(cls, anonymized_ids):
-        """
-        Args:
-            anonymized_ids - list of anonymized user ids.
-        Returns:
-            dictionary, that contains mapping between anonymized user ids and
-            actual usernames.
-        """
-        User = get_user_model()
-
-        users = _use_read_replica(
-            User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
-            .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
-            .values("username", "anonymous_id")
-        )
-
-        anonymous_id_to_username_mapping = {
-            user["anonymous_id"]: user["username"] for user in users
-        }
-
-        return anonymous_id_to_username_mapping
-
-    @classmethod
     def _map_students_and_scorers_ids_to_usernames(cls, all_submission_information):
         """
         Args:
@@ -438,7 +438,7 @@ class OraAggregateData:
             )
         )
 
-        return cls._map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
+        return map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
 
     @classmethod
     def _map_block_usage_keys_to_display_names(cls, course_id):

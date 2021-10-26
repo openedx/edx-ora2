@@ -34,6 +34,15 @@ class SubmissionGradingLock(models.Model):
         return now() < self.created_at + self.TIMEOUT
 
     @classmethod
+    def currently_active(cls):
+        """
+        Returns a SubmissionGradingLock queryset filtered to only entries that are currently
+        'active' (that were created less than SubmissionGradingLock.TIMEOUT ago)
+        """
+        timeout_threshold = now() - cls.TIMEOUT
+        return cls.objects.filter(created_at__gt=timeout_threshold)
+
+    @classmethod
     def get_submission_lock(cls, submission_uuid):
         """
         Get info about a submission grading lock

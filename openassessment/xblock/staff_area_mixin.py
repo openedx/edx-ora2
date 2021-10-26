@@ -190,7 +190,7 @@ class StaffAreaMixin:
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import staff as staff_api
         from openassessment.workflow.api import get_workflows_for_status
-        from openassessment.data import OraAggregateData
+        from openassessment.data import map_anonymized_ids_to_usernames
 
         # Retrieve all items in the `waiting` and `done` steps
         workflows_waiting = get_workflows_for_status(
@@ -209,8 +209,7 @@ class StaffAreaMixin:
             peer_step_config.get('must_be_graded_by'),
         )
         # Get external_id to username map
-        # pylint: disable=protected-access
-        username_map = OraAggregateData._map_anonymized_ids_to_usernames(
+        username_map = map_anonymized_ids_to_usernames(
             [item['student_id'] for item in waiting_student_list]
         )
 
