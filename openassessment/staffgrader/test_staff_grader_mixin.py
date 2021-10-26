@@ -70,3 +70,29 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
             "owner_id": self.staff_user_id,
             "created_at": self.test_timestamp,
         })
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_claim_submission_lock(self, xblock):
+        """ A submission lock can be claimed on a submission w/out an active lock """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+
+        request_data = {'submission_id': self.test_submission_uuid_unlocked}
+        response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
+
+        self.assertDictEqual(response, {
+            "submission_uuid": self.test_submission_uuid_unlocked,
+            "owner_id": self.staff_user_id,
+            "created_at": self.test_timestamp,
+        })
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_claim_submission_lock_contested(self, xblock):
+        """ Trying to claim a lock on a submission with an active lock raises an error """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+
+        request_data = {'submission_id': self.test_submission_uuid}
+        response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
+
+        self.assertDictEqual(response, {
+            "error": "Submission already locked"
+        })
