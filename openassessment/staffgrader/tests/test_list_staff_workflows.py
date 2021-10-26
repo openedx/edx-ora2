@@ -184,7 +184,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
          - date_graded: expected date the submission was graded [defaults to TEST_START_DATE if graded_by is non-null]
          - graded_by: expected user who created the assessment for the given submission
          - locked_by: expected owner of the current lock on the submission
-         - expected_score: dict with 'points_possible' and 'points_earned'
+         - expected_score: dict with 'pointsPossible' and 'pointsEarned'
         """
         requester = requester or self.course_staff[0]
 
@@ -201,8 +201,8 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         score = {}
         if expected_score:
             score = {
-                'points_possible': POINTS_POSSIBLE,
-                'points_earned': expected_score,
+                'pointsPossible': POINTS_POSSIBLE,
+                'pointsEarned': expected_score,
             }
         expected_val = {
             'submissionUuid': student.submission['uuid'],
@@ -574,8 +574,8 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
                 'gradingStatus': 'graded',
                 'lockStatus': 'unlocked',
                 'score': {
-                    'points_earned': 5,
-                    'points_possible': 10
+                    'pointsEarned': 5,
+                    'pointsPossible': 10
                 },
                 'submissionUuid': self.students[0].submission['uuid'],
                 'username': self.students[0].username
@@ -607,8 +607,8 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
                 'gradingStatus': 'graded',
                 'lockStatus': 'locked',
                 'score': {
-                    'points_earned': 6,
-                    'points_possible': 10
+                    'pointsEarned': 6,
+                    'pointsPossible': 10
                 },
                 'submissionUuid': self.students[3].submission['uuid'],
                 'username': self.students[3].username

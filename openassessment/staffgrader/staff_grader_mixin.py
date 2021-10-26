@@ -142,8 +142,8 @@ class StaffGraderMixin:
             assessment = assessments_by_submission_uuid.get(workflow.identifying_uuid)
             if assessment:
                 workflow_dict['score'] = {
-                    'points_earned': assessment.points_earned,
-                    'points_possible': assessment.points_possible,
+                    'pointsEarned': assessment.points_earned,
+                    'pointsPossible': assessment.points_possible,
                 }
             else:
                 workflow_dict['score'] = dict()
