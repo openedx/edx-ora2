@@ -31,13 +31,15 @@ class AssessmentSerializer(serializers.ModelSerializer):
     Serialized info about an assessment
     """
     criteria = AssessmentPartSerializer(source='parts', many=True, read_only=True)
+    pointsEarned = serializers.IntegerField(source='points_earned')
+    pointsPossible = serializers.IntegerField(source='points_possible')
 
     class Meta:
         model = Assessment
         fields = [
             'feedback',
-            'points_earned',
-            'points_possible',
+            'pointsEarned',
+            'pointsPossible',
             'criteria',
         ]
         read_only_fields = fields
