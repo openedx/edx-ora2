@@ -5,7 +5,6 @@ from datetime import timedelta
 import json
 from unittest.mock import Mock
 
-from django.utils.timezone import now
 from freezegun import freeze_time
 
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
