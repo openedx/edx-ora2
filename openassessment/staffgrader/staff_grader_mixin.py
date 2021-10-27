@@ -6,10 +6,12 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
+from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions import api as sub_api
-from submissions.api import get_student_ids_by_submission_uuid
+from submissions.api import get_student_ids_by_submission_uuid, get_submission
+from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow
@@ -26,14 +28,36 @@ from openassessment.data import OraSubmissionAnswerFactory, VersionNotFoundExcep
 log = logging.getLogger(__name__)
 
 
-def require_submission_uuid(handler):
-    @wraps(handler)
-    def wrapped_handler(self, data, suffix=""):  # pylint: disable=unused-argument
-        submission_uuid = data.get('submission_id', None)
-        if not submission_uuid:
-            raise JsonHandlerError(400, "Body must contain a submission_id")
-        return handler(self, submission_uuid, data, suffix=suffix)
-    return wrapped_handler
+def require_submission_uuid(validate=True):
+    """
+    Unpacks and passes submission_id from request to handler function.
+
+    params:
+    - validate: Whether or not to check submissions to see if this is a real submission UUID or not. Default True
+
+    Raises:
+    - 400 if the submission_id was not provided or was incorrectly formatted
+    - 404 if the submission_id wasn't found in submissions
+    - 500 for errors with submissions or general exceptions
+    """
+    def decorator(handler):
+        @wraps(handler)
+        def wrapped_handler(self, data, suffix=""):  # pylint: disable=unused-argument
+            submission_uuid = data.get('submission_id', None)
+            if not submission_uuid:
+                raise JsonHandlerError(400, "Body must contain a submission_id")
+            if validate:
+                try:
+                    get_submission(submission_uuid)
+                except SubmissionNotFoundError:
+                    raise JsonHandlerError(404, "Submission not found")
+                except SubmissionRequestError:
+                    raise JsonHandlerError(400, "Bad submission_uuid provided")
+                except (SubmissionInternalError, Exception):
+                    raise JsonHandlerError(500, "Internal error getting submission info")
+            return handler(self, submission_uuid, data, suffix=suffix)
+        return wrapped_handler
+    return decorator
 
 
 class StaffGraderMixin:
@@ -44,7 +68,7 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    @require_submission_uuid
+    @require_submission_uuid(validate=False)
     def check_submission_lock(self, submission_uuid, data, suffix=""):  # pylint: disable=unused-argument
         submission_lock = SubmissionGradingLock.get_submission_lock(submission_uuid)
         if submission_lock:
@@ -54,7 +78,7 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    @require_submission_uuid
+    @require_submission_uuid(validate=True)
     def claim_submission_lock(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
         try:
@@ -65,7 +89,7 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    @require_submission_uuid
+    @require_submission_uuid(validate=False)
     def delete_submission_lock(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
         try:

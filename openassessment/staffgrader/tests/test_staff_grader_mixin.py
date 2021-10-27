@@ -3,7 +3,7 @@ Tests for Staff Grader mixin
 """
 from datetime import timedelta
 import json
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from uuid import uuid4
 
 from freezegun import freeze_time
@@ -14,7 +14,7 @@ from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 
 
 @freeze_time("1969-07-20T22:56:00-04:00")
-class TestSubmissionLockMixin(XBlockHandlerTestCase):
+class TestStaffGraderMixin(XBlockHandlerTestCase):
     """ Tests for interacting with submission grading/locking """
     test_submission_uuid = str(uuid4())
     test_submission_uuid_unlocked = str(uuid4())
@@ -77,8 +77,9 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
             "created_at": self.test_timestamp,
         })
 
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_claim_submission_lock(self, xblock):
+    def test_claim_submission_lock(self, xblock, mock_get_submission):
         """ A submission lock can be claimed on a submission w/out an active lock """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
@@ -91,8 +92,9 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
             "created_at": self.test_timestamp,
         })
 
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_reclaim_submission_lock(self, xblock):
+    def test_reclaim_submission_lock(self, xblock, mock_get_submission):
         """ A lock owner can re-claim a submission lock, updating the timestamp """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
@@ -110,8 +112,9 @@ class TestSubmissionLockMixin(XBlockHandlerTestCase):
             "created_at": self.test_timestamp,
         })
 
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_claim_submission_lock_contested(self, xblock):
+    def test_claim_submission_lock_contested(self, xblock, mock_get_submission):
         """ Trying to claim a lock on a submission with an active lock raises an error """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
