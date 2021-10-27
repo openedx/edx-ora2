@@ -493,8 +493,8 @@ export class ResponseView {
       this.confirmationDialog.confirm(
         title,
         msg,
-        () => { view.submit(); },
-        () => { view.submitEnabled(true); },
+        () => view.submit(),
+        () => view.submitEnabled(true),
       );
     }
 
@@ -769,7 +769,7 @@ export class ResponseView {
      this.confirmationDialog.confirm(
        gettext('Confirm Delete Uploaded File'),
        this.getConfirmRemoveUploadedFileMessage(filenum),
-       () => { view.removeUploadedFile(filenum); },
+       () => view.removeUploadedFile(filenum),
        () => {},
      );
    }

@@ -749,15 +749,9 @@ describe('OpenAssessment.StaffAreaView', function() {
             verifyFocused($staffGradeButton[0]);
         });
 
-        const mockConfirmDialog = function(should_confirm) {
-            return function(_0, _1, confirm_callback, cancel_callback){
-                if(should_confirm){
-                    confirm_callback();
-                } else{
-                    cancel_callback();
-                }
-            }
-        }
+        const mockConfirmDialog = (shouldConfirm) => (_0, _1, confirmCallback, cancelCallback) => (
+            shouldConfirm ? confirmCallback() : cancelCallback()
+        );
 
         it('does not prompt submitter about submitting for individual assignments', function() {
             // Given an individual assignment
