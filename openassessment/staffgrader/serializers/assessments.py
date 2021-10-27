@@ -28,7 +28,7 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
 class AssessmentScoreSerializer(serializers.ModelSerializer):
     """
-    Serializer for pulling score info off the assessment and into a "score" dict 
+    Serializer for pulling score info off the assessment and into a "score" dict
     """
     pointsEarned = serializers.IntegerField(source='points_earned')
     pointsPossible = serializers.IntegerField(source='points_possible')
