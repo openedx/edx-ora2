@@ -207,8 +207,10 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
                 },
                 'assessment': {
                     'feedback': "Base Assessment Feedback",
-                    'pointsEarned': 5,
-                    'pointsPossible': 6,
+                    'score': {
+                        'pointsEarned': 5,
+                        'pointsPossible': 6,
+                    },
                     'criteria': [
                         {
                             'name': "Criterion 1",
@@ -436,8 +438,10 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
         expected_assessment_info = {
             'feedback': "Base Assessment Feedback",
-            'pointsEarned': 6,
-            'pointsPossible': 12,
+            'score': {
+                'pointsEarned': 6,
+                'pointsPossible': 12,
+            },
             'criteria': [
                 OrderedDict({
                     'name': part.criterion.name,
@@ -471,8 +475,10 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
         expected_assessment_info = {
             'feedback': "Base Assessment Feedback",
-            'pointsEarned': 0,
-            'pointsPossible': 0,
+            'score': {
+                'pointsEarned': 0,
+                'pointsPossible': 0,
+            },
             'criteria': [
                 OrderedDict({
                     'name': part.criterion.name,

@@ -26,20 +26,33 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-class AssessmentSerializer(serializers.ModelSerializer):
+class AssessmentScoreSerializer(serializers.ModelSerializer):
     """
-    Serialized info about an assessment
+    Serializer for pulling score info off the assessment and into a "score" dict 
     """
-    criteria = AssessmentPartSerializer(source='parts', many=True, read_only=True)
     pointsEarned = serializers.IntegerField(source='points_earned')
     pointsPossible = serializers.IntegerField(source='points_possible')
 
     class Meta:
         model = Assessment
         fields = [
-            'feedback',
             'pointsEarned',
             'pointsPossible',
+        ]
+
+
+class AssessmentSerializer(serializers.ModelSerializer):
+    """
+    Serialized info about an assessment
+    """
+    criteria = AssessmentPartSerializer(source='parts', many=True, read_only=True)
+    score = AssessmentScoreSerializer(source='*')
+
+    class Meta:
+        model = Assessment
+        fields = [
+            'feedback',
+            'score',
             'criteria',
         ]
         read_only_fields = fields
