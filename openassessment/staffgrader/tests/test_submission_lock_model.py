@@ -1,10 +1,11 @@
+from uuid import uuid4
 from datetime import datetime, timedelta, timezone
-from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
-
-from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 
 from django.test import TestCase
 from freezegun import freeze_time
+
+from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
+from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 
 
 @freeze_time("1969-07-21 02:56:00", tz_offset=0)
@@ -12,12 +13,12 @@ class TestSubmissionLockModel(TestCase):
     """ Tests for interacting with submission grading/locking """
 
     existing_submission_lock = None
-    locked_submission_uuid = "currently_locked"
+    locked_submission_uuid = str(uuid4())
 
     expired_submission_lock = None
-    expired_locked_submission_uuid = "expired"
+    expired_locked_submission_uuid = str(uuid4())
 
-    unlocked_submission_uuid = "not_currently_locked"
+    unlocked_submission_uuid = str(uuid4())
 
     user_id = "foo"
     other_user_id = "bar"
