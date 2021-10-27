@@ -195,9 +195,14 @@ describe("OpenAssessment.ResponseView", function() {
             // To instead simulate the user cancelling the submission,
             // set `stubConfirm` to false.
             setStubConfirm(true);
-            const fakeConfirm = function() { return stubConfirm; }
-            spyOn(view, 'confirmSubmission').and.callFake(fakeConfirm);
-            spyOn(view, 'confirmRemoveUploadedFile').and.callFake(fakeConfirm);
+            const fakeConfirm = function(_0, _1, confirmCallback, cancelCallback) {
+                if (stubConfirm) {
+                    confirmCallback();
+                } else {
+                    cancelCallback();
+                }
+            }
+            spyOn(view.confirmationDialog, 'confirm').and.callFake(fakeConfirm);
             spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
                 for (var i=0; i < this.filesDescriptions.length; i++) {
                     this.fileNames.push(this.files[i].name);
@@ -353,7 +358,7 @@ describe("OpenAssessment.ResponseView", function() {
     it("submits a response to the server", function() {
         spyOn(server, 'submit').and.callThrough();
         view.response(['Test response 1', 'Test response 2']);
-        view.submit();
+        view.handleSubmitClicked();
         expect(server.submit).toHaveBeenCalledWith(['Test response 1', 'Test response 2']);
     });
 
@@ -364,7 +369,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Start a submission
         view.response(['Test response 1', 'Test response 2']);
-        view.submit();
+        view.handleSubmitClicked();
 
         // Expect that the submission was not sent to the server
         expect(server.submit).not.toHaveBeenCalled();
@@ -378,7 +383,7 @@ describe("OpenAssessment.ResponseView", function() {
         });
 
         view.response(['Test response 1', 'Test response 2']);
-        view.submit();
+        view.handleSubmitClicked();
         expect(view.submitEnabled()).toBe(false);
     });
 
@@ -391,7 +396,7 @@ describe("OpenAssessment.ResponseView", function() {
         });
 
         view.response(['Test response 1', 'Test response 2']);
-        view.submit();
+        view.handleSubmitClicked();
 
         // Expect the submit button to have been re-enabled
         expect(view.submitEnabled()).toBe(true);
@@ -404,7 +409,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Start a submission
         view.response(['Test response 1', 'Test response 2']);
-        view.submit();
+        view.handleSubmitClicked();
 
         // Expect the submit button to be re-enabled
         expect(view.submitEnabled()).toBe(true);
@@ -421,7 +426,7 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(view.baseView, 'loadAssessmentModules');
 
         view.response(['Test response 1', 'Test response 2']);
-        view.submit();
+        view.handleSubmitClicked();
 
         // Expect the current and next step to have been reloaded
         expect(view.load).toHaveBeenCalled();
@@ -458,7 +463,7 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.baseView.unsavedWarningEnabled()).toBe(true);
 
         // Submit the response and expect the unsaved warning to be disabled
-        view.submit();
+        view.handleSubmitClicked();
         expect(view.baseView.unsavedWarningEnabled()).toBe(false);
     });
 
