@@ -151,15 +151,6 @@ export class StaffAreaView {
     }
 
     /**
-     * Prompt the grader when about to submit a grade for a team assignment.
-     *
-     * Team grades are assigned to each member of a team, which diverges from past behaior
-     * so we want to notify the grader.
-     */
-    confirmSubmitGradeForTeam() {
-    }
-
-    /**
      * Upon request, loads the staff grade/assessment section of the staff area.
      * This allows staff grading when staff assessment is a required step.
      *

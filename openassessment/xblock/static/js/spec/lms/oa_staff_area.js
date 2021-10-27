@@ -749,13 +749,23 @@ describe('OpenAssessment.StaffAreaView', function() {
             verifyFocused($staffGradeButton[0]);
         });
 
+        const mockConfirmDialog = function(should_confirm) {
+            return function(_0, _1, confirm_callback, cancel_callback){
+                if(should_confirm){
+                    confirm_callback();
+                } else{
+                    cancel_callback();
+                }
+            }
+        }
+
         it('does not prompt submitter about submitting for individual assignments', function() {
             // Given an individual assignment
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment;
             showInstructorAssessmentForm(staffArea);
 
-            var prompt = spyOn(staffArea, 'confirmSubmitGradeForTeam').and.callFake(function() {return false;});
+            var prompt = spyOn(staffArea.confirmDialog, 'confirm').and.callFake(mockConfirmDialog(false));
             var submit = spyOn(staffArea, 'submitStaffGrade').and.callThrough();
 
             // Fill in and click the button to submit and request another submission
@@ -776,7 +786,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             showInstructorAssessmentForm(staffArea);
 
             // Mock the user accepting the prompt
-            var prompt = spyOn(staffArea, 'confirmSubmitGradeForTeam').and.callFake(function() {return true;});
+            var prompt = spyOn(staffArea.confirmDialog, 'confirm').and.callFake(mockConfirmDialog(true));
             var submit = spyOn(staffArea, 'submitStaffGrade').and.callThrough();
 
             // Fill in and click the button to submit and request another submission
@@ -797,7 +807,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             showInstructorAssessmentForm(staffArea);
 
             // Mock the user cancelling the prompt
-            var prompt = spyOn(staffArea, 'confirmSubmitGradeForTeam').and.callFake(function() {return false;});
+            var prompt = spyOn(staffArea.confirmDialog, 'confirm').and.callFake(mockConfirmDialog(false));
             var submit = spyOn(staffArea, 'submitStaffGrade').and.callThrough();
 
             // Fill in and click the button to submit and request another submission
