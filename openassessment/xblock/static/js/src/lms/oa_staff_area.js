@@ -214,20 +214,19 @@ export class StaffAreaView {
                     'This grade will be applied to all members of the team. '
                         + 'Do you want to continue?',
                   );
-                  console.log(view);
-                  console.log(view.confirmDialog);
                   view.confirmDialog.confirm(
-                    gettext("Confirm Grade Team Submission"),
+                    gettext('Confirm Grade Team Submission'),
                     msg,
                     () => {
                       view.submitStaffGrade(
                         submissionID,
                         rubric,
                         $staffGradeTab,
-                        $(eventObject.currentTarget).hasClass('continue_grading--action')
-                    )},
-                    () => {}
-                  )
+                        $(eventObject.currentTarget).hasClass('continue_grading--action'),
+                      );
+                    },
+                    () => {},
+                  );
                   return;
                 }
 

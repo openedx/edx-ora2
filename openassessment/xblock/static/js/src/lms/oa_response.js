@@ -30,6 +30,7 @@ export class ResponseView {
     MAX_FILES_MB = 500;
 
     UNSAVED_WARNING_KEY = 'learner-response';
+
     constructor(element, server, fileUploader, responseEditorLoader, baseView, data) {
       this.element = element;
       this.server = server;
@@ -485,7 +486,7 @@ export class ResponseView {
       if (this.hasPendingUploadFiles()) { return; }
 
       const view = this;
-      const title = gettext("Confirm Submit Response");
+      const title = gettext('Confirm Submit Response');
       // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
       // eslint-disable-next-line max-len
       const msg = gettext('You\'re about to submit your response for this assignment. After you submit this response, you can\'t change it or submit a new response.');
@@ -493,7 +494,7 @@ export class ResponseView {
         title,
         msg,
         () => { view.submit(); },
-        () => { view.submitEnabled(true); }
+        () => { view.submitEnabled(true); },
       );
     }
 
@@ -760,33 +761,32 @@ export class ResponseView {
    }
 
    /**
-    * Handler for file delete button 
+    * Handler for file delete button
     */
    handleDeleteFileClick(target) {
-    const view = this;
-    const filenum = $(target).attr('filenum');
-    this.confirmationDialog.confirm(
-      gettext('Confirm Delete Uploaded File'),
-      this.getConfirmRemoveUploadedFileMessage(filenum),
-      () => { view.removeUploadedFile(filenum); },
-      () => {}
-    );
-  }
+     const view = this;
+     const filenum = $(target).attr('filenum');
+     this.confirmationDialog.confirm(
+       gettext('Confirm Delete Uploaded File'),
+       this.getConfirmRemoveUploadedFileMessage(filenum),
+       () => { view.removeUploadedFile(filenum); },
+       () => {},
+     );
+   }
 
    /**
      Remove a previously uploaded file.
-
      */
    removeUploadedFile(filenum) {
-      this.server.removeUploadedFile(filenum).done(() => {
-        const sel = $('.step--response', this.element);
-        const block = sel.find(`.submission__answer__file__block__${filenum}`);
-        block.html('');
-        block.prop('deleted', true);
-        this.checkSubmissionAbility();
-      }).fail((errMsg) => {
-        this.baseView.toggleActionError('delete', errMsg);
-      });
+     this.server.removeUploadedFile(filenum).done(() => {
+       const sel = $('.step--response', this.element);
+       const block = sel.find(`.submission__answer__file__block__${filenum}`);
+       block.html('');
+       block.prop('deleted', true);
+       this.checkSubmissionAbility();
+     }).fail((errMsg) => {
+       this.baseView.toggleActionError('delete', errMsg);
+     });
    }
 
    /**
@@ -795,7 +795,7 @@ export class ResponseView {
    getConfirmRemoveUploadedFileMessage(filenum) {
      let msg = gettext('Are you sure you want to delete the following file? It cannot be restored.\nFile: ');
      msg += this.getFileNameAndDescription(filenum);
-     return msg
+     return msg;
    }
 
    /**
@@ -955,9 +955,9 @@ export class ResponseView {
        button.addClass('delete__uploaded__file');
        button.attr('filenum', filenum);
        button.click((eventObject) => {
-        eventObject.preventDefault();
-        view.handleDeleteFileClick(eventObject.target);
-      });
+         eventObject.preventDefault();
+         view.handleDeleteFileClick(eventObject.target);
+       });
        button.appendTo(fileBlock);
 
        return url;
