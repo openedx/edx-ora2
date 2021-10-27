@@ -9,7 +9,7 @@ from django.utils.timezone import now
 from freezegun import freeze_time
 
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
-from openassessment.tests.factories import  UserFactory
+from openassessment.tests.factories import UserFactory
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 
 
