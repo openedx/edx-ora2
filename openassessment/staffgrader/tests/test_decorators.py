@@ -9,8 +9,7 @@ from openassessment.staffgrader.staff_grader_mixin import require_submission_uui
 
 
 class RequireSubmissionUUIDTest(TestCase):
-    submission_id = uuid4()
-    valid_data = { "submission_id": submission_id}
+    valid_data = {"submission_id": uuid4()}
 
     def setUp(self):
         self.mock_self = Mock()
