@@ -192,6 +192,14 @@ class StaffWorkflow(models.Model):
         """
         return cls.objects.filter(course_id=course_id)
 
+    @classmethod
+    def get_staff_workflow(cls, course_id, item_id, submission_uuid):
+        return cls.objects.get(
+            course_id=course_id,
+            item_id=item_id,
+            submission_uuid=submission_uuid
+        )
+
     def close_active_assessment(self, assessment, scorer_id):
         """
         Assign assessment to workflow, and mark the grading as complete.
