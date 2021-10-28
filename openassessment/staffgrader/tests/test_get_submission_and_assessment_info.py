@@ -1,3 +1,4 @@
+""" Tests for the get_submission_and_assessment_info endpoint """
 from contextlib import contextmanager
 from typing import OrderedDict
 from mock import patch, Mock, MagicMock
@@ -17,13 +18,15 @@ from openassessment.tests.factories import (
 
 
 class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
-
+    """ Base class for tests in this file with common setup and utility methods """
     def setUp(self):
         super().setUp()
+        # Lots of large dict comparisons in this file so display full diff
         self.maxDiff = None
 
     @contextmanager
     def _mock_get_url_by_file_key(self, xblock):
+        """ Mock the submission_mixin._get_url_by_file_key method since it relies on the backend. """
         fake_get_url = lambda file_key: f"www.file_url.com/{file_key}"
 
         with patch.object(xblock.__class__, '_get_url_by_file_key') as mocked_get:
@@ -32,11 +35,13 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
 
     @contextmanager
     def _mock_get_submission_info(self, xblock, **kwargs):
+        """ Context manager to mock get_submission_info """
         with patch.object(xblock, 'get_submission_info', **kwargs) as mocked_get:
             yield mocked_get
 
     @contextmanager
     def _mock_get_assessment_info(self, xblock, **kwargs):
+        """ Context manager to mock get_assessment_info """
         with patch.object(xblock, 'get_assessment_info', **kwargs) as mocked_get:
             yield mocked_get
 
@@ -51,6 +56,7 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
         xblock.get_student_item_dict = Mock(return_value=self._student_item_dict(staff_id))
 
     def request(self, xblock, submission_id, json_format=True):
+        """ Helper to candle calling the `get_submission_and_assessment_info` handler """
         if submission_id is None:
             payload = {}
         else:
@@ -64,11 +70,12 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
         )
 
     @staticmethod
-    def _student_item_dict(student):
+    def _student_item_dict(student_id):
+        """ Generate a student_item_dict given a student_id """
         return {
             'course_id': 'TestCourseId',
             'item_id': 'TestItemId',
-            'student_id': student,
+            'student_id': student_id,
             'item_type': 'openassessment'
         }
 
@@ -89,8 +96,8 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
         Helper method to submit a staff assessment
         Params:
             - xblock: (XBlock) xblock
-            - student: (TestUser) the student whose submission we're assessing
-            - grader: (TestUser) the course staff who is submitting the assessment
+            - student: (TestUser) the student_id whose submission we're assessing
+            - grader: (TestUser) the course staff student_id who is submitting the assessment
             - option: (String) The name of the first option chosen
             - option_2: [Optional] (String) The name of the second option.
                         If not specified, use the first option again.
@@ -111,21 +118,25 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
 
 
 class HandlerTests(GetSubmissionAndAssessmentInfoBase):
+    """ Tests for the overall xblock handler endpoint """
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_submission_uuid(self, xblock):
+        """ How does the endpoint behave when we don't give it a submission_uuid? """
         xblock.xmodule_runtime = Mock(user_is_staff=False)
         resp = self.request(xblock, None, json_format=False)
         self.assertIn('You do not have permission to access ORA staff grading.', resp.decode('UTF-8'))
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_access(self, xblock):
+        """ How does the endpoint behave when the requester doesn't have proper permissions? """
         xblock.xmodule_runtime = Mock(user_is_staff=False)
         resp = self.request(xblock, 'meaningless-value', json_format=False)
         self.assertIn('You do not have permission to access ORA staff grading.', resp.decode('UTF-8'))
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_handler(self, xblock):
+        """ Unit test for normal behavior of the handler endpoint """
         xblock.xmodule_runtime = MagicMock(user_is_staff=True)
         submission_uuid = str(uuid4())
 
@@ -143,6 +154,10 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
         )
 
     def _make_answer(self, student_id, has_files=True):
+        """
+        Helper method to generate a submission answer consisting of a single text response,
+        and, optionally, two file responses.
+        """
         result = {'parts': [{'text': f'This is the answer for learner {student_id}'}]}
         if has_files:
             result['file_keys'] = [f'key_{student_id}_{i}' for i in range(2)]
@@ -153,12 +168,15 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_handler_integration__no_assessment(self, xblock):
+        """ Test for full behavior of the endpoint when the requested assessment has no assessment """
         student_id = 'TestUser111'
         submission, _ = self._create_student_and_submission(student_id, self._make_answer(student_id))
 
         self.set_staff_user(xblock, 'Bob')
+        # All we want to mock is the request to the storage backend to generate a file URL
         with self._mock_get_url_by_file_key(xblock):
-            resp = self.request(xblock, submission['uuid'])
+            with self.assertNumQueries(1):
+                resp = self.request(xblock, submission['uuid'])
         self.assertDictEqual(
             resp,
             {
@@ -183,6 +201,7 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_handler_integration__assessment(self, xblock):
+        """ Test for full behavior of the endpoint when the requested assessment has an assessment """
         student_id = 'TestUser22222'
         submission, _ = self._create_student_and_submission(student_id, self._make_answer(student_id, has_files=False))
         self.submit_staff_assessment(
@@ -196,8 +215,10 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
         )
 
         self.set_staff_user(xblock, 'Bob')
+        # All we want to mock is the request to the storage backend to generate a file URL
         with self._mock_get_url_by_file_key(xblock):
-            resp = self.request(xblock, submission['uuid'])
+            with self.assertNumQueries(5):
+                resp = self.request(xblock, submission['uuid'])
         self.assertDictEqual(
             resp,
             {
@@ -229,9 +250,11 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
 
 class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
+    """ Tests for the get_submission_info method """
 
     @contextmanager
     def _mock_get_submission(self, **kwargs):
+        """ Context manager to mock the fetching of a submission """
         with patch(
             'openassessment.staffgrader.staff_grader_mixin.sub_api.get_submission',
             **kwargs
@@ -240,6 +263,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @contextmanager
     def _mock_parse_submission_raw_answer(self, **kwargs):
+        """ Context manager to mock the parsing of a raw answer into an nswer object """
         with patch(
             'openassessment.staffgrader.staff_grader_mixin.OraSubmissionAnswerFactory.parse_submission_raw_answer',
             **kwargs
@@ -247,10 +271,12 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
             yield mock_parse
 
     def _mock_get_download_urls_from_submission(self, xblock, **kwargs):
+        """ Helper method to mock the get_download_urls_from_submission method """
         xblock.get_download_urls_from_submission = Mock(**kwargs)
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_submission_error(self, xblock):
+        """ What happens when there's an exception when we attempt to look up the submission? """
         submission_uuid = Mock()
         err_msg = Mock()
 
@@ -263,6 +289,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_answer_version_unknown(self, xblock):
+        """ What happens when the raw answer we look up doesn't parse correctly? """
         submission_uuid = Mock()
         mock_submission = Mock()
         mock_exception = VersionNotFoundException(f"No version found!!!!11")
@@ -278,6 +305,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_submission_info(self, xblock):
+        """ Unit test for normal behavior of get_submission_info """
         text_responses = [
             "This is my answer for <b>Prompt One</b>.",
             "This is my answer for <i>Prompt Two</i>",
@@ -308,9 +336,57 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
             }
         )
 
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    def test_get_submission_info__integration(self, xblock):
+        """ Test of full behavior of get_submission_info """
+        student_id = 'test-student-id-1010101'
+        test_answer = {
+            'parts': [
+                {'text': "This is my answer for <b>Prompt One</b>."},
+                {'text': "This is my answer for <i>Prompt Two</i>"},
+                {'text': "This is my response for <a href='www.edx.org'>Prompt Three</a>"},
+            ],
+            'file_keys': ['key-1', 'key-2', 'key-3'],
+            'files_descriptions': ['description-1', 'description-2', 'description-3'],
+            'files_names': ['filename-1', 'filename-2', 'filename-3'],
+            'files_sizes': [200, 1500, 3000],
+        }
+        submission, new_student_item = self._create_student_and_submission(student_id, test_answer)
+
+        with self._mock_get_url_by_file_key(xblock):
+            submission_info = xblock.get_submission_info(submission['uuid'])
+
+        expected_submission_info = {
+            'text': [
+                "This is my answer for <b>Prompt One</b>.",
+                "This is my answer for <i>Prompt Two</i>",
+                "This is my response for <a href='www.edx.org'>Prompt Three</a>"
+            ],
+            'files': [
+                {
+                    'name': 'filename-1',
+                    'description': 'description-1',
+                    'download_url': 'www.file_url.com/key-1',
+                },
+                {
+                    'name': 'filename-2',
+                    'description': 'description-2',
+                    'download_url': 'www.file_url.com/key-2',
+                },
+                {
+                    'name': 'filename-3',
+                    'description': 'description-3',
+                    'download_url': 'www.file_url.com/key-3',
+                },
+            ]
+        }
+
+        self.assertDictEqual(submission_info, expected_submission_info)
+
 
 class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
     def _mock_get_student_item_dict(self, xblock, course_id, item_id, student_id):
+        """ Helper method to mock the lookup fo the student_item_dict """
         xblock.get_student_item_dict = Mock(
             return_value={
                 'course_id': course_id,
@@ -321,6 +397,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @contextmanager
     def _mock_get_staff_workflow(self, **kwargs):
+        """ Context manager for mocking the lookup of Staff Workflows """
         with patch(
             'openassessment.staffgrader.staff_grader_mixin.StaffWorkflow.get_staff_workflow',
             **kwargs
@@ -328,9 +405,11 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
             yield mock_get
 
     def _mock_get_download_urls_from_submission(self, xblock, **kwargs):
+        """ Helper method to mock getting uploaded file info from a submission"""
         xblock.get_download_urls_from_submission = Mock(**kwargs)
 
     def _mock_bulk_deep_fetch_assessments(self, xblock, **kwargs):
+        """ Helper method to mock the loading of assessment info """
         xblock.bulk_deep_fetch_assessments = Mock(**kwargs)
 
     def _create_full_assessment(self):
@@ -357,6 +436,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_staff_workflow(self, xblock):
+        """ What hppens when there's no Staff Workflow associated with a submission uuid? """
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
         submission_uuid = str(uuid4())
@@ -372,6 +452,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_assessment(self, xblock):
+        """ What happens when the submission uuid we provide has no associated Assessment? """
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
         submission_uuid = str(uuid4())
@@ -382,26 +463,14 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
         self.assertEqual(result, {})
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
-    def test_multiple_bulk_assessments(self, xblock):
-        course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
-        self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
-        submission_uuid = str(uuid4())
-        assessment_id = str(Mock())
-        mock_staff_workflow = Mock(assessment=assessment_id)
-        with self._mock_get_staff_workflow(return_value=mock_staff_workflow):
-            with self.assertRaises(JsonHandlerError) as error_context:
-                self._mock_bulk_deep_fetch_assessments(xblock, {submission_uuid: Mock(), str(uuid4()): Mock()})
-
-        self.assertEqual(error_context.exception.status_code, 500)
-        self.assertEqual(error_context.exception.message, "Error looking up assessments")
-
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_bulk_assessments(self, xblock):
+        """ What happens if `bulk_deep_fetch_assessments` returns no assessments? """
         submission_uuid = str(uuid4())
         self._test_bulk_deep_fetch_assessments_errors(xblock, submission_uuid, {})
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_multiple_bulk_assessments(self, xblock):
+        """ What happens if `bulk_deep_fetch_assessments` returns multiple assessments? """
         submission_uuid = str(uuid4())
         self._test_bulk_deep_fetch_assessments_errors(
             xblock,
@@ -411,10 +480,16 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_submission_uuid_not_in_bulk_assessments(self, xblock):
+        """
+        What happens if `bulk_deep_fetch_assessments` returns assessments that hve a different submission uuid?
+        Note: This should never happen and if it does, something's very wrong with our data. Tht said, this is an easy
+        test to add in.
+        """
         submission_uuid = str(uuid4())
         self._test_bulk_deep_fetch_assessments_errors(xblock, submission_uuid, {Mock: Mock()})
 
     def _test_bulk_deep_fetch_assessments_errors(self, xblock, submission_uuid, bulk_fetch_return_value):
+        """ Helper method for tests regarding errors loading assessments """
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         mock_staff_workflow = Mock(assessment=str(Mock()))
         self._mock_get_student_item_dict(xblock, course_id, item_id, student_id)
@@ -428,6 +503,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_assessment_info(self, xblock):
+        """ Unit test for basic get_assessment_info behavior """
         course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
         assessment = self._create_full_assessment()
         submission_uuid = str(uuid4())
@@ -435,7 +511,6 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
         self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: assessment})
         with self._mock_get_staff_workflow():
             assessment_info = xblock.get_assessment_info(submission_uuid)
-
         expected_assessment_info = {
             'feedback': "Base Assessment Feedback",
             'score': {
@@ -453,8 +528,61 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
 
         self.assertDictEqual(assessment_info, expected_assessment_info)
 
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    def test_get_assessment_info__integration(self, xblock):
+        """ Full DB test for get_assessment_info """
+        student_id = 'Bob'
+        overall_feedback = 'Overall Feedback HellOTheRe'
+        criterion_feedback = {'Criterion 1': "Test Crit1 Feedback"}
+        submission, student_item_dict = self._create_student_and_submission(student_id, {'parts': [{'text': 'answer'}]})
+        self.submit_staff_assessment(
+            xblock,
+            submission['uuid'],
+            'Staff-1',
+            'Three',
+            option_2="Two",
+            criterion_feedback=criterion_feedback,
+            overall_feedback=overall_feedback
+        )
+        self._mock_get_student_item_dict(
+            xblock,
+            student_item_dict['course_id'],
+            student_item_dict['item_id'],
+            student_id
+        )
+        with self.assertNumQueries(5):
+            # 1 - Workflow
+            # 2 - Assessment
+            # 3 - AssessmentPart
+            # 4 - Criterion
+            # 5 - Option
+            assessment_info = xblock.get_assessment_info(submission['uuid'])
+
+        expected_assessment_info = {
+            'feedback': overall_feedback,
+            'score': OrderedDict({
+                'pointsEarned': 5,
+                'pointsPossible': 6,
+            }),
+            'criteria': [
+                OrderedDict({
+                    'name': 'Criterion 1',
+                    'option': 'Three',
+                    'feedback': criterion_feedback['Criterion 1']
+                }),
+                OrderedDict({
+                    'name': 'Criterion 2',
+                    'option': 'Two',
+                    'feedback': ''
+                }),
+            ]
+        }
+
+        self.assertDictEqual(assessment_info, expected_assessment_info)
+
     @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob')
     def test_get_assessment_info__feedback_only(self, xblock):
+        """ Unit test for get_assessment_info for a feedback-only Criterion """
         # Create an Assessment with multiple parts that are feedback-only
         assessment = AssessmentFactory.create(feedback="Base Assessment Feedback")
         assessment_rubric = assessment.rubric
