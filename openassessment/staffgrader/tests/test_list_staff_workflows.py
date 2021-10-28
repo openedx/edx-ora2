@@ -331,9 +331,12 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
     def test_teams(self, xblock):
         self.set_staff_user(xblock)
         with patch.object(xblock, 'is_team_assignment', return_value=True):
-            response = self.request(xblock, 'list_staff_workflows', "{}", response_format='json')
+            response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 400)
         self.assertDictEqual(
-            response,
+            response_body,
             {"error": "Team Submissions not currently supported"}
         )
 

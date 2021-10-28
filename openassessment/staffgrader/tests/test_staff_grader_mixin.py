@@ -119,9 +119,11 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
         request_data = {'submission_id': self.test_submission_uuid}
-        response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
+        response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='response')
+        response_body = json.loads(response.body.decode('utf-8'))
 
-        self.assertDictEqual(response, {
+        self.assertEqual(response.status_code, 403)
+        self.assertDictEqual(response_body, {
             "error": "Submission already locked"
         })
 
@@ -141,8 +143,10 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
         request_data = {'submission_id': self.test_submission_uuid}
-        response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='json')
+        response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='response')
+        response_body = json.loads(response.body.decode('utf-8'))
 
-        self.assertDictEqual(response, {
+        self.assertEqual(response.status_code, 403)
+        self.assertDictEqual(response_body, {
             "error": "Unable to clear submission lock"
         })
