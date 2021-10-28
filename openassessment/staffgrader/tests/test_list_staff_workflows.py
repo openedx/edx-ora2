@@ -1,8 +1,8 @@
-""" Tests for the Staff Workflow Listing view in the staff_grader_mixin"""
+""" Tests for the Staff Workflow Listing view in the staff_grader_mixin """
 
 from collections import namedtuple
 from contextlib import contextmanager
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 import json
 import random
 
@@ -441,7 +441,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         self.set_staff_user(xblock)
 
         with self.assertNumQueries(1):
-            annotated_workflows = xblock._bulk_fetch_annotated_staff_workflows()
+            annotated_workflows = xblock._bulk_fetch_annotated_staff_workflows()  # pylint: disable=protected-access
             self.assertEqual(len(annotated_workflows), 4)
 
         # This is a bit verbose but I thought for a unit test it would be best to be explicit about test expectations

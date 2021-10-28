@@ -6,7 +6,6 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
-from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions import api as sub_api

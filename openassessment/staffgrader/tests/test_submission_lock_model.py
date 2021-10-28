@@ -1,3 +1,6 @@
+"""
+Tests for SubmissionLock model
+"""
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 
@@ -24,6 +27,7 @@ class TestSubmissionLockModel(TestCase):
     other_user_id = "bar"
 
     def setUp(self):
+        super().setUp()
         self.existing_submission_lock = SubmissionGradingLock.objects.create(
             submission_uuid=self.locked_submission_uuid,
             owner_id=self.user_id,

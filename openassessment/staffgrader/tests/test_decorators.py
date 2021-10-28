@@ -1,8 +1,11 @@
-from mock import Mock
-from uuid import uuid4
+"""
+Tests for decorators used in Staff Grading
+"""
 from unittest import TestCase
 from unittest.mock import patch
+from uuid import uuid4
 
+from mock import Mock
 from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError
 from xblock.exceptions import JsonHandlerError
 from openassessment.staffgrader.staff_grader_mixin import require_submission_uuid
@@ -12,6 +15,7 @@ class RequireSubmissionUUIDTest(TestCase):
     valid_data = {"submission_id": uuid4()}
 
     def setUp(self):
+        super().setUp()
         self.mock_self = Mock()
         self.mock_function = Mock()
         self.mock_suffix = Mock()
