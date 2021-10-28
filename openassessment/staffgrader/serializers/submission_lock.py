@@ -1,8 +1,8 @@
 """
 Serializers for submission locks
 """
-from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from rest_framework import serializers
+from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 
 
 class SubmissionLockSerializer(serializers.ModelSerializer):
