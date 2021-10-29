@@ -58,6 +58,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
     @classmethod
     @freeze_time(SUBMITTED_DATE)
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.course_id = STUDENT_ITEM['course_id']
         # Create four TestUser learners with submissions.
         cls.students = [

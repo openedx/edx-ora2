@@ -2,8 +2,6 @@
 Models for locking Submissions for exclusive grading.
 Part of Enhanced Staff Grader (ESG).
 """
-from uuid import uuid4
-
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _

@@ -47,12 +47,12 @@ def require_submission_uuid(validate=True):
             if validate:
                 try:
                     get_submission(submission_uuid)
-                except SubmissionNotFoundError:
-                    raise JsonHandlerError(404, "Submission not found")
-                except SubmissionRequestError:
-                    raise JsonHandlerError(400, "Bad submission_uuid provided")
-                except (SubmissionInternalError, Exception):
-                    raise JsonHandlerError(500, "Internal error getting submission info")
+                except SubmissionNotFoundError as exc:
+                    raise JsonHandlerError(404, "Submission not found") from exc
+                except SubmissionRequestError as exc:
+                    raise JsonHandlerError(400, "Bad submission_uuid provided") from exc
+                except (SubmissionInternalError, Exception) as exc:
+                    raise JsonHandlerError(500, "Internal error getting submission info") from exc
             return handler(self, submission_uuid, data, suffix=suffix)
         return wrapped_handler
     return decorator

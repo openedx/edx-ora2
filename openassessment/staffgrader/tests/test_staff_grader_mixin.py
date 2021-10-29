@@ -79,7 +79,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_claim_submission_lock(self, xblock, mock_get_submission):
+    def test_claim_submission_lock(self, xblock, _):
         """ A submission lock can be claimed on a submission w/out an active lock """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
@@ -94,7 +94,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_reclaim_submission_lock(self, xblock, mock_get_submission):
+    def test_reclaim_submission_lock(self, xblock, _):
         """ A lock owner can re-claim a submission lock, updating the timestamp """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
@@ -114,7 +114,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_claim_submission_lock_contested(self, xblock, mock_get_submission):
+    def test_claim_submission_lock_contested(self, xblock, _):
         """ Trying to claim a lock on a submission with an active lock raises an error """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
