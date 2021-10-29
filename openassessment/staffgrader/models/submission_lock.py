@@ -19,7 +19,7 @@ class SubmissionGradingLock(models.Model):
     TIMEOUT = StaffWorkflow.TIME_LIMIT
 
     # NOTE - submission_uuid can refer to either the team or individual submission
-    submission_uuid = models.UUIDField(unique=True, db_index=True)
+    submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     owner_id = models.CharField(max_length=40)
     created_at = models.DateTimeField(default=now)
 
