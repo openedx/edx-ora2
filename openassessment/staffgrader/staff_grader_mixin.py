@@ -8,9 +8,8 @@ from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from submissions import api as sub_api
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
-from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError
+from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow
@@ -258,7 +257,7 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    @require_submission_uuid
+    @require_submission_uuid(validate=True)
     def get_submission_and_assessment_info(self, submission_uuid, _, suffix=''):  # pylint: disable=unused-argument
         # TODO: Checks for if the submission we're given actually has a Workflow
         submission_info = self.get_submission_info(submission_uuid)
@@ -282,9 +281,9 @@ class StaffGraderMixin:
         }
         """
         try:
-            submission = sub_api.get_submission(submission_uuid)
+            submission = get_submission(submission_uuid)
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(submission.get('answer'))
-        except sub_api.SubmissionError as err:
+        except SubmissionError as err:
             raise JsonHandlerError(404, str(err)) from err
         except VersionNotFoundException as err:
             raise JsonHandlerError(500, str(err)) from err

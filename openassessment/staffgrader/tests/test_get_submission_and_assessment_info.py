@@ -40,6 +40,15 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
             yield mocked_get
 
     @contextmanager
+    def _mock_get_submission(self, **kwargs):
+        """ Context manager to mock the fetching of a submission """
+        with patch(
+            'openassessment.staffgrader.staff_grader_mixin.get_submission',
+            **kwargs
+        ) as mock_get:
+            yield mock_get
+
+    @contextmanager
     def _mock_get_assessment_info(self, xblock, **kwargs):
         """ Context manager to mock get_assessment_info """
         with patch.object(xblock, 'get_assessment_info', **kwargs) as mocked_get:
@@ -142,7 +151,10 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
         with self._mock_get_submission_info(xblock, return_value='getSubmissionInfoResult') as mocked_get_submission:
             with self._mock_get_assessment_info(xblock, return_value='getAssessmentResult') as mocked_get_assessment:
-                resp = self.request(xblock, submission_uuid)
+                # To mock the check in th validating decorator
+                with self._mock_get_submission(return_value=True):
+                    resp = self.request(xblock, submission_uuid)
+
         mocked_get_submission.assert_called_once_with(submission_uuid)
         mocked_get_assessment.assert_called_once_with(submission_uuid)
         self.assertDictEqual(
@@ -251,15 +263,6 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
 class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
     """ Tests for the get_submission_info method """
-
-    @contextmanager
-    def _mock_get_submission(self, **kwargs):
-        """ Context manager to mock the fetching of a submission """
-        with patch(
-            'openassessment.staffgrader.staff_grader_mixin.sub_api.get_submission',
-            **kwargs
-        ) as mock_get:
-            yield mock_get
 
     @contextmanager
     def _mock_parse_submission_raw_answer(self, **kwargs):
