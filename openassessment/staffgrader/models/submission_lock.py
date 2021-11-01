@@ -2,7 +2,6 @@
 Models for locking Submissions for exclusive grading.
 Part of Enhanced Staff Grader (ESG).
 """
-from datetime import datetime
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
@@ -19,8 +18,8 @@ class SubmissionGradingLock(models.Model):
 
     # NOTE - submission_uuid can refer to either the team or individual submission
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
-    owner_id = models.CharField(max_length=40, db_index=True)
-    created_at = models.DateTimeField(db_index=True, default=datetime.now())
+    owner_id = models.CharField(max_length=40)
+    created_at = models.DateTimeField(default=now)
 
     class Meta:
         app_label = "staffgrader"
@@ -62,10 +61,11 @@ class SubmissionGradingLock(models.Model):
         current_lock = cls.get_submission_lock(submission_uuid)
 
         # If there's already an active lock, raise an error
-        if current_lock and current_lock.is_active:
+        # Unless the lock owner is trying to reacquire a lock, which is allowed
+        if current_lock and current_lock.is_active and current_lock.owner_id != user_id:
             raise SubmissionLockContestedError(_("Submission already locked"))
 
-        # Otherwise, delete the lock. This is needed so we don't violate the unique submisison_uuid constraint
+        # Otherwise, delete the lock. This is needed so we don't violate the unique submission_uuid constraint
         if current_lock:
             current_lock.delete()
 
