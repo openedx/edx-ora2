@@ -14,3 +14,4 @@ recursive-include openassessment/xblock/static/js/src *.js
 recursive-include openassessment/templates *.html *.underscore
 recursive-include openassessment/locale *.po
 recursive-include openassessment/locale *.mo
+requirements/constraints.txt
