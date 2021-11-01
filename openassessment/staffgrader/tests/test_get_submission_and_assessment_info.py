@@ -1,19 +1,19 @@
 """ Tests for the get_submission_and_assessment_info endpoint """
 from contextlib import contextmanager
 from typing import OrderedDict
-from mock import patch, Mock, MagicMock
 from uuid import uuid4
 import json
-import random
+
+from mock import patch, Mock, MagicMock
+from submissions import api as sub_api
+from xblock.exceptions import JsonHandlerError
 
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.data import VersionNotFoundException
 from openassessment.assessment.models.staff import StaffWorkflow
 from openassessment.workflow import api as workflow_api
-from submissions import api as sub_api
-from xblock.exceptions import JsonHandlerError
 from openassessment.tests.factories import (
-    AssessmentFactory, AssessmentPartFactory, CriterionOptionFactory, CriterionFactory, StaffWorkflowFactory
+    AssessmentFactory, AssessmentPartFactory, CriterionOptionFactory, CriterionFactory
 )
 
 
@@ -40,6 +40,15 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
             yield mocked_get
 
     @contextmanager
+    def _mock_get_submission(self, **kwargs):
+        """ Context manager to mock the fetching of a submission """
+        with patch(
+            'openassessment.staffgrader.staff_grader_mixin.get_submission',
+            **kwargs
+        ) as mock_get:
+            yield mock_get
+
+    @contextmanager
     def _mock_get_assessment_info(self, xblock, **kwargs):
         """ Context manager to mock get_assessment_info """
         with patch.object(xblock, 'get_assessment_info', **kwargs) as mocked_get:
@@ -55,7 +64,7 @@ class GetSubmissionAndAssessmentInfoBase(XBlockHandlerTestCase):
         xblock.xmodule_runtime.anonymous_student_id = staff_id
         xblock.get_student_item_dict = Mock(return_value=self._student_item_dict(staff_id))
 
-    def request(self, xblock, submission_id, json_format=True):
+    def request(self, xblock, submission_id, json_format=True):  # pylint: disable=arguments-differ
         """ Helper to candle calling the `get_submission_and_assessment_info` handler """
         if submission_id is None:
             payload = {}
@@ -142,7 +151,10 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
 
         with self._mock_get_submission_info(xblock, return_value='getSubmissionInfoResult') as mocked_get_submission:
             with self._mock_get_assessment_info(xblock, return_value='getAssessmentResult') as mocked_get_assessment:
-                resp = self.request(xblock, submission_uuid)
+                # To mock the check in th validating decorator
+                with self._mock_get_submission(return_value=True):
+                    resp = self.request(xblock, submission_uuid)
+
         mocked_get_submission.assert_called_once_with(submission_uuid)
         mocked_get_assessment.assert_called_once_with(submission_uuid)
         self.assertDictEqual(
@@ -253,15 +265,6 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
     """ Tests for the get_submission_info method """
 
     @contextmanager
-    def _mock_get_submission(self, **kwargs):
-        """ Context manager to mock the fetching of a submission """
-        with patch(
-            'openassessment.staffgrader.staff_grader_mixin.sub_api.get_submission',
-            **kwargs
-        ) as mock_get:
-            yield mock_get
-
-    @contextmanager
     def _mock_parse_submission_raw_answer(self, **kwargs):
         """ Context manager to mock the parsing of a raw answer into an nswer object """
         with patch(
@@ -292,7 +295,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
         """ What happens when the raw answer we look up doesn't parse correctly? """
         submission_uuid = Mock()
         mock_submission = Mock()
-        mock_exception = VersionNotFoundException(f"No version found!!!!11")
+        mock_exception = VersionNotFoundException("No version found!!!!11")
         with self._mock_get_submission(return_value=mock_submission) as mock_get:
             with self._mock_parse_submission_raw_answer(side_effect=mock_exception) as mock_parse:
                 with self.assertRaises(JsonHandlerError) as error_context:
@@ -351,7 +354,7 @@ class GetSubmissionInfoTests(GetSubmissionAndAssessmentInfoBase):
             'files_names': ['filename-1', 'filename-2', 'filename-3'],
             'files_sizes': [200, 1500, 3000],
         }
-        submission, new_student_item = self._create_student_and_submission(student_id, test_answer)
+        submission, _ = self._create_student_and_submission(student_id, test_answer)
 
         with self._mock_get_url_by_file_key(xblock):
             submission_info = xblock.get_submission_info(submission['uuid'])

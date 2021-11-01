@@ -1,8 +1,8 @@
-""" Tests for the Staff Workflow Listing view in the staff_grader_mixin"""
+""" Tests for the Staff Workflow Listing view in the staff_grader_mixin """
 
 from collections import namedtuple
 from contextlib import contextmanager
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 import json
 import random
 
@@ -58,6 +58,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
     @classmethod
     @freeze_time(SUBMITTED_DATE)
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.course_id = STUDENT_ITEM['course_id']
         # Create four TestUser learners with submissions.
         cls.students = [
@@ -331,9 +332,12 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
     def test_teams(self, xblock):
         self.set_staff_user(xblock)
         with patch.object(xblock, 'is_team_assignment', return_value=True):
-            response = self.request(xblock, 'list_staff_workflows', "{}", response_format='json')
+            response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 400)
         self.assertDictEqual(
-            response,
+            response_body,
             {"error": "Team Submissions not currently supported"}
         )
 
@@ -441,7 +445,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         self.set_staff_user(xblock)
 
         with self.assertNumQueries(1):
-            annotated_workflows = xblock._bulk_fetch_annotated_staff_workflows()
+            annotated_workflows = xblock._bulk_fetch_annotated_staff_workflows()  # pylint: disable=protected-access
             self.assertEqual(len(annotated_workflows), 4)
 
         # This is a bit verbose but I thought for a unit test it would be best to be explicit about test expectations
