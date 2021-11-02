@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.18.59
+boto3==1.19.8
     # via -r requirements/base.in
-botocore==1.21.59
+botocore==1.22.8
     # via
     #   boto3
     #   s3transfer
@@ -40,7 +40,7 @@ django-crum==0.7.9
     # via
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.1.1
+django-model-utils==4.2.0
     # via
     #   -r requirements/base.in
     #   edx-submissions
@@ -102,9 +102,9 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   xblock
-newrelic==7.0.0.166
+newrelic==7.2.2.169
     # via edx-django-utils
-packaging==21.0
+packaging==21.2
     # via bleach
 path==13.1.0
     # via
@@ -119,7 +119,7 @@ polib==1.1.1
     # via edx-i18n-tools
 psutil==5.8.0
     # via edx-django-utils
-pymongo==3.12.0
+pymongo==3.12.1
     # via edx-opaque-keys
 pyparsing==2.4.7
     # via packaging
@@ -142,7 +142,7 @@ pytz==2021.3
     #   edx-submissions
     #   fs
     #   xblock
-pyyaml==5.4.1
+pyyaml==6.0
     # via
     #   code-annotations
     #   edx-i18n-tools
@@ -161,7 +161,7 @@ six==1.16.0
     #   python-swiftclient
 sqlparse==0.4.2
     # via django
-stevedore==3.4.0
+stevedore==3.5.0
     # via
     #   code-annotations
     #   edx-django-utils
