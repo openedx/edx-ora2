@@ -16,6 +16,7 @@
 # Françoise Docq, 2014
 # tgeorges225 <georges.tope@outlook.com>, 2014
 # Gérard Vidal <Gerard.Vidal@ens-lyon.fr>, 2014
+# iderr <ibrahim@derraz.fr>, 2021
 # INARES <contact@inares.org>, 2014
 # JulietteFUN, 2014
 # JulietteFUN, 2014
@@ -41,9 +42,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 12:17-0400\n"
-"PO-Revision-Date: 2021-10-07 18:08+0000\n"
-"Last-Translator: Abdessamad Derraz <derraz.abdessamad@gmail.com>\n"
+"POT-Creation-Date: 2021-10-27 14:30-0400\n"
+"PO-Revision-Date: 2021-10-28 11:41+0000\n"
+"Last-Translator: iderr <ibrahim@derraz.fr>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -172,7 +173,7 @@ msgstr "Rétroaction sur l'évaluation"
 msgid "Response Files"
 msgstr "Fichiers de réponses"
 
-#: openassessment/data.py:1360
+#: openassessment/data.py:1363
 msgid "No description provided."
 msgstr "Aucune description fournie."
 
@@ -672,9 +673,9 @@ msgstr "Cloner la grille d'évaluation"
 msgid ""
 "To clone a rubric from an existing published or unpublished draft, you can "
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
-"after cloning will only effect the rubric being modified, and will not "
+"after cloning will only affect the rubric being modified, and will not "
 "modify any rubric it was cloned from."
-msgstr "Pour cloner une grille à partir d'un brouillon publié ou non publié, vous pouvez effectuer une recherche par l'ID de bloc. Notez que le clonage est à sens unique, ce qui signifie que les modifications apportées après le clonage n'affecteront que la grille en cours de modification et ne modifieront aucune grille à partir de laquelle elle a été clonée."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"

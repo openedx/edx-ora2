@@ -27,6 +27,15 @@
 // Developer styles for Staff Section
 // --------------------
 
+
+.ora-confirmation-alert{
+  @include confirm-jquery-ui;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
 .wrapper--openassessment .wrapper--staff-area {
   width: 100%;
   overflow: auto;
