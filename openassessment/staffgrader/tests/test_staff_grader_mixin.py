@@ -62,12 +62,14 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         request_data = {'submission_id': self.test_submission_uuid_unlocked}
         response = self.request(xblock, 'check_submission_lock', json.dumps(request_data), response_format='json')
 
-        self.assertDictEqual(response, {})
+        self.assertDictEqual(response, {
+            "lock_status": "unlocked",
+        })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
     def test_check_submission_lock(self, xblock):
         """ A check for submission lock returns the matching submission lock """
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
         request_data = {'submission_id': self.test_submission_uuid}
         response = self.request(xblock, 'check_submission_lock', json.dumps(request_data), response_format='json')
 
@@ -75,6 +77,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "submission_uuid": self.test_submission_uuid,
             "owner_id": self.staff_user_id,
             "created_at": self.test_timestamp,
+            "lock_status": "in-progress",
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
@@ -90,6 +93,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "submission_uuid": self.test_submission_uuid_unlocked,
             "owner_id": self.staff_user_id,
             "created_at": self.test_timestamp,
+            "lock_status": "in-progress",
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
@@ -110,6 +114,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "submission_uuid": self.test_submission_uuid,
             "owner_id": self.staff_user_id,
             "created_at": self.test_timestamp,
+            "lock_status": "in-progress",
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
@@ -135,7 +140,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         request_data = {'submission_id': self.test_submission_uuid}
         response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='json')
 
-        self.assertDictEqual(response, {})
+        self.assertDictEqual(response, {
+            "lock_status": "unlocked"
+        })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
     def test_delete_submission_lock_contested(self, xblock):
