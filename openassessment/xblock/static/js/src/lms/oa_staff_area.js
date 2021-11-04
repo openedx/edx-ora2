@@ -1,4 +1,5 @@
 import Rubric from './oa_rubric';
+import ConfirmationAlert from './oa_confirmation_alert';
 
 /**
  * Interface for staff area view.
@@ -150,21 +151,6 @@ export class StaffAreaView {
     }
 
     /**
-     * Prompt the grader when about to submit a grade for a team assignment.
-     *
-     * Team grades are assigned to each member of a team, which diverges from past behaior
-     * so we want to notify the grader.
-     */
-    confirmSubmitGradeForTeam() {
-      const msg = gettext(
-        'This grade will be applied to all members of the team. '
-            + 'Do you want to continue?',
-      );
-
-      return window.confirm(msg);
-    }
-
-    /**
      * Upon request, loads the staff grade/assessment section of the staff area.
      * This allows staff grading when staff assessment is a required step.
      *
@@ -222,7 +208,27 @@ export class StaffAreaView {
                 eventObject.preventDefault();
 
                 // team submissions get a warning prompt
-                if (teamSubmissionEnabled && !view.confirmSubmitGradeForTeam()) { return; }
+
+                if (teamSubmissionEnabled) {
+                  const msg = gettext(
+                    'This grade will be applied to all members of the team. '
+                        + 'Do you want to continue?',
+                  );
+                  view.confirmDialog.confirm(
+                    gettext('Confirm Grade Team Submission'),
+                    msg,
+                    () => {
+                      view.submitStaffGrade(
+                        submissionID,
+                        rubric,
+                        $staffGradeTab,
+                        $(eventObject.currentTarget).hasClass('continue_grading--action'),
+                      );
+                    },
+                    () => {},
+                  );
+                  return;
+                }
 
                 view.submitStaffGrade(submissionID, rubric, $staffGradeTab,
                   $(eventObject.currentTarget).hasClass('continue_grading--action'));
@@ -405,6 +411,7 @@ export class StaffAreaView {
           }
         },
       );
+      view.confirmDialog = new ConfirmationAlert($staffArea.find('.openassessment__staff-area-dialog-confirm'));
     }
 
     /**
