@@ -1,7 +1,7 @@
 """
 Tests for serializers used in staff grading
 """
-from datetime import datetime, timedelta, timezone, tzinfo
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from freezegun import freeze_time
 
