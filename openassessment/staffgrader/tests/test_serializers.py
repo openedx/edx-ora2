@@ -63,7 +63,6 @@ class TestSubmissionLockSerializer(CacheResetTest):
 
         assert SubmissionLockSerializer(self.test_submission_lock, context=context).data == expected_output
 
-
     def test_serialize_locked_lock(self):
         """ Serializing a lock owned by another user returns a lock_status of 'locked' """
         context = {'user_id': self.test_user_id_2, 'submission_uuid': self.test_submission_id}
