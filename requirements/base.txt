@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.19.8
+boto3==1.19.10
     # via -r requirements/base.in
-botocore==1.22.8
+botocore==1.22.10
     # via
     #   boto3
     #   s3transfer
@@ -94,7 +94,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-lxml==4.6.3
+lxml==4.6.4
     # via
     #   -r requirements/base.in
     #   xblock
@@ -113,7 +113,7 @@ path==13.1.0
     #   path.py
 path.py==12.5.0
     # via -r requirements/base.in
-pbr==5.6.0
+pbr==5.7.0
     # via stevedore
 polib==1.1.1
     # via edx-i18n-tools
