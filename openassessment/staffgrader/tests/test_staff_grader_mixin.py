@@ -129,7 +129,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
 
         self.assertEqual(response.status_code, 403)
         self.assertDictEqual(response_body, {
-            "error": "Submission already locked"
+            "error": "ERR_LOCK_CONTESTED"
         })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
@@ -155,5 +155,5 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
 
         self.assertEqual(response.status_code, 403)
         self.assertDictEqual(response_body, {
-            "error": "Unable to clear submission lock"
+            "error": "ERR_LOCK_CONTESTED"
         })
