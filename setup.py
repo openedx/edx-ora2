@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-
+import os
+import re
 import os.path
 from io import open as open_as_of_py3
 
@@ -34,9 +35,24 @@ def load_requirements(*requirements_paths):
     return list(requirements)
 
 
+def get_version(*file_paths):
+    """
+    Extract the version string from the file at the given relative path fragments.
+    """
+    filename = os.path.join(os.path.dirname(__file__), *file_paths)
+    version_file = open(filename).read()
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
+
+VERSION = get_version("openassessment", "__init__.py")
+
+
 setup(
     name='ora2',
-    version='3.7.4',
+    version=VERSION,
     author='edX',
     author_email='oscm@edx.org',
     url='http://github.com/edx/edx-ora2',
