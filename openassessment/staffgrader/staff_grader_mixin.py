@@ -100,7 +100,7 @@ class StaffGraderMixin:
             submission_lock = SubmissionGradingLock.claim_submission_lock(submission_uuid, anonymous_user_id)
             return SubmissionLockSerializer(submission_lock, context=context).data
         except SubmissionLockContestedError as err:
-            raise JsonHandlerError(403, str(err)) from err
+            raise JsonHandlerError(403, err.error_code) from err
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
@@ -122,7 +122,7 @@ class StaffGraderMixin:
             SubmissionGradingLock.clear_submission_lock(submission_uuid, anonymous_user_id)
             return SubmissionLockSerializer({}, context=context).data
         except SubmissionLockContestedError as err:
-            raise JsonHandlerError(403, str(err)) from err
+            raise JsonHandlerError(403, err.error_code) from err
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")

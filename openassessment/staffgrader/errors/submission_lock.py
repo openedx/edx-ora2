@@ -9,5 +9,6 @@ class SubmissionLockContestedError(Exception):
     """
     error_code = 'ERR_LOCK_CONTESTED'
 
-    def __str__(self):
+    @property
+    def error_code(self):
         return self.error_code
