@@ -12,9 +12,11 @@ atomicwrites==1.4.0
     # via pytest
 attrs==21.2.0
     # via
+    #   jschema-to-python
     #   jsonschema
     #   pytest
-aws-sam-translator==1.39.0
+    #   sarif-om
+aws-sam-translator==1.40.0
     # via cfn-lint
 aws-xray-sdk==2.8.0
     # via moto
@@ -24,13 +26,13 @@ bleach==4.1.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.18.59
+boto3==1.19.10
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.21.59
+botocore==1.22.10
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -41,9 +43,9 @@ certifi==2021.10.8
     # via
     #   -r requirements/base.txt
     #   requests
-cffi==1.14.6
+cffi==1.15.0
     # via cryptography
-cfn-lint==0.54.2
+cfn-lint==0.55.0
     # via moto
 charset-normalizer==2.0.7
     # via
@@ -57,7 +59,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
-coverage==6.0.2
+coverage==6.1.1
     # via
     #   -r requirements/test.in
     #   pytest-cov
@@ -93,7 +95,7 @@ django-crum==0.7.9
     #   -r requirements/base.txt
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.1.1
+django-model-utils==4.2.0
     # via
     #   -r requirements/base.txt
     #   edx-submissions
@@ -127,11 +129,11 @@ edx-submissions==3.4.0
     # via -r requirements/base.txt
 edx-toggles==4.2.0
     # via -r requirements/base.txt
-factory-boy==3.2.0
+factory-boy==3.2.1
     # via -r requirements/test.in
-faker==9.3.1
+faker==9.8.0
     # via factory-boy
-filelock==3.3.0
+filelock==3.3.2
     # via
     #   tox
     #   virtualenv
@@ -170,6 +172,8 @@ jmespath==0.10.0
     #   -r requirements/base.txt
     #   boto3
     #   botocore
+jschema-to-python==1.2.3
+    # via cfn-lint
 jsondiff==1.1.2
     # via moto
 jsonfield==3.1.0
@@ -178,7 +182,9 @@ jsonfield==3.1.0
     #   edx-submissions
 jsonpatch==1.32
     # via cfn-lint
-jsonpointer==2.1
+jsonpickle==2.0.0
+    # via jschema-to-python
+jsonpointer==2.2
     # via jsonpatch
 jsonschema==3.2.0
     # via
@@ -194,7 +200,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-lxml==4.6.3
+lxml==4.6.4
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -220,11 +226,11 @@ networkx==2.4
     # via
     #   -c requirements/constraints.txt
     #   cfn-lint
-newrelic==7.0.0.166
+newrelic==7.2.2.169
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
-packaging==21.0
+packaging==21.2
     # via
     #   -r requirements/base.txt
     #   bleach
@@ -237,9 +243,11 @@ path==13.1.0
     #   path.py
 path.py==12.5.0
     # via -r requirements/base.txt
-pbr==5.6.0
+pbr==5.7.0
     # via
     #   -r requirements/base.txt
+    #   jschema-to-python
+    #   sarif-om
     #   stevedore
 platformdirs==2.4.0
     # via virtualenv
@@ -265,7 +273,7 @@ pyasn1==0.4.8
     #   rsa
 pycparser==2.20
     # via cffi
-pymongo==3.12.0
+pymongo==3.12.1
     # via
     #   -r requirements/base.txt
     #   edx-opaque-keys
@@ -316,7 +324,7 @@ pytz==2021.3
     #   fs
     #   moto
     #   xblock
-pyyaml==5.4.1
+pyyaml==6.0
     # via
     #   -r requirements/base.txt
     #   cfn-lint
@@ -331,7 +339,7 @@ requests==2.26.0
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.14.0
+responses==0.15.0
     # via moto
 rsa==4.7.2
     # via python-jose
@@ -339,6 +347,8 @@ s3transfer==0.5.0
     # via
     #   -r requirements/base.txt
     #   boto3
+sarif-om==1.0.4
+    # via cfn-lint
 six==1.16.0
     # via
     #   -r requirements/base.txt
@@ -367,7 +377,7 @@ sqlparse==0.4.2
     #   django
 sshpubkeys==3.3.1
     # via moto
-stevedore==3.4.0
+stevedore==3.5.0
     # via
     #   -r requirements/base.txt
     #   code-annotations
@@ -390,7 +400,7 @@ urllib3==1.26.7
     #   botocore
     #   requests
     #   responses
-virtualenv==20.8.1
+virtualenv==20.10.0
     # via tox
 voluptuous==0.12.2
     # via

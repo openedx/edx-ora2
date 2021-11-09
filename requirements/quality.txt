@@ -19,9 +19,11 @@ atomicwrites==1.4.0
 attrs==21.2.0
     # via
     #   -r requirements/test.txt
+    #   jschema-to-python
     #   jsonschema
     #   pytest
-aws-sam-translator==1.39.0
+    #   sarif-om
+aws-sam-translator==1.40.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -39,13 +41,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.18.59
+boto3==1.19.10
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.21.59
+botocore==1.22.10
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -56,11 +58,11 @@ certifi==2021.10.8
     # via
     #   -r requirements/test.txt
     #   requests
-cffi==1.14.6
+cffi==1.15.0
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.54.2
+cfn-lint==0.55.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -81,7 +83,7 @@ code-annotations==1.2.0
     #   -r requirements/test.txt
     #   edx-lint
     #   edx-toggles
-coverage==6.0.2
+coverage==6.1.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -123,7 +125,7 @@ django-crum==0.7.9
     #   -r requirements/test.txt
     #   edx-django-utils
     #   edx-toggles
-django-model-utils==4.1.1
+django-model-utils==4.2.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
@@ -155,7 +157,7 @@ edx-django-utils==4.4.0
     #   edx-toggles
 edx-i18n-tools==0.8.1
     # via -r requirements/test.txt
-edx-lint==5.2.0
+edx-lint==5.2.1
     # via -r requirements/quality.in
 edx-opaque-keys==2.2.2
     # via -r requirements/test.txt
@@ -163,13 +165,13 @@ edx-submissions==3.4.0
     # via -r requirements/test.txt
 edx-toggles==4.2.0
     # via -r requirements/test.txt
-factory-boy==3.2.0
+factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==9.3.1
+faker==9.8.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
-filelock==3.3.0
+filelock==3.3.2
     # via
     #   -r requirements/test.txt
     #   tox
@@ -202,7 +204,7 @@ idna==2.8
     #   -r requirements/test.txt
     #   moto
     #   requests
-isort==5.9.3
+isort==5.10.0
     # via pylint
 jinja2==3.0.2
     # via
@@ -214,6 +216,10 @@ jmespath==0.10.0
     #   -r requirements/test.txt
     #   boto3
     #   botocore
+jschema-to-python==1.2.3
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 jsondiff==1.1.2
     # via
     #   -r requirements/test.txt
@@ -226,7 +232,11 @@ jsonpatch==1.32
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-jsonpointer==2.1
+jsonpickle==2.0.0
+    # via
+    #   -r requirements/test.txt
+    #   jschema-to-python
+jsonpointer==2.2
     # via
     #   -r requirements/test.txt
     #   jsonpatch
@@ -249,7 +259,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-lxml==4.6.3
+lxml==4.6.4
     # via
     #   -r requirements/test.txt
     #   xblock
@@ -278,11 +288,11 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.0.0.166
+newrelic==7.2.2.169
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-packaging==21.0
+packaging==21.2
     # via
     #   -r requirements/test.txt
     #   bleach
@@ -295,9 +305,11 @@ path==13.1.0
     #   path.py
 path.py==12.5.0
     # via -r requirements/test.txt
-pbr==5.6.0
+pbr==5.7.0
     # via
     #   -r requirements/test.txt
+    #   jschema-to-python
+    #   sarif-om
     #   stevedore
 platformdirs==2.4.0
     # via
@@ -347,7 +359,7 @@ pylint-plugin-utils==0.6
     # via
     #   pylint-celery
     #   pylint-django
-pymongo==3.12.0
+pymongo==3.12.1
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
@@ -402,7 +414,7 @@ pytz==2021.3
     #   fs
     #   moto
     #   xblock
-pyyaml==5.4.1
+pyyaml==6.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -417,7 +429,7 @@ requests==2.26.0
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.14.0
+responses==0.15.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -429,6 +441,10 @@ s3transfer==0.5.0
     # via
     #   -r requirements/test.txt
     #   boto3
+sarif-om==1.0.4
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 six==1.16.0
     # via
     #   -r requirements/test.txt
@@ -460,7 +476,7 @@ sshpubkeys==3.3.1
     # via
     #   -r requirements/test.txt
     #   moto
-stevedore==3.4.0
+stevedore==3.5.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -486,7 +502,7 @@ urllib3==1.26.7
     #   botocore
     #   requests
     #   responses
-virtualenv==20.8.1
+virtualenv==20.10.0
     # via
     #   -r requirements/test.txt
     #   tox
