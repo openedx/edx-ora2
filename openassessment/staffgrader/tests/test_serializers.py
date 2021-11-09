@@ -36,7 +36,7 @@ class TestSubmissionLockSerializer(CacheResetTest):
 
     def test_empty(self):
         """ Serialization with an empty object returns lock_status of 'unlocked' """
-        context = {'user_id': self.test_user_id_1, 'submission_uuid': self.test_submission_id}
+        context = {'user_id': self.test_user_id_1}
         expected_output = {'lock_status': 'unlocked'}
         assert SubmissionLockSerializer({}, context=context).data == expected_output
 
@@ -47,13 +47,13 @@ class TestSubmissionLockSerializer(CacheResetTest):
         )
         self.test_submission_lock.save()
 
-        context = {'user_id': self.test_user_id_1, 'submission_uuid': self.test_submission_id}
+        context = {'user_id': self.test_user_id_1}
         output = SubmissionLockSerializer(self.test_submission_lock, context=context).data
         assert output['lock_status'] == 'unlocked'
 
     def test_serialize_in_progress_lock(self):
         """ Serializing a lock I own returns a lock_status of 'in-progress' """
-        context = {'user_id': self.test_user_id_1, 'submission_uuid': self.test_submission_id}
+        context = {'user_id': self.test_user_id_1}
         expected_output = {
             'submission_uuid': self.test_submission_id,
             'owner_id': self.test_user_id_1,
@@ -65,7 +65,7 @@ class TestSubmissionLockSerializer(CacheResetTest):
 
     def test_serialize_locked_lock(self):
         """ Serializing a lock owned by another user returns a lock_status of 'locked' """
-        context = {'user_id': self.test_user_id_2, 'submission_uuid': self.test_submission_id}
+        context = {'user_id': self.test_user_id_2}
         expected_output = {
             'submission_uuid': self.test_submission_id,
             'owner_id': self.test_user_id_1,
