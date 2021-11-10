@@ -68,33 +68,61 @@ class StaffGraderMixin:
     @require_course_staff("STUDENT_GRADE")
     @require_submission_uuid(validate=False)
     def check_submission_lock(self, submission_uuid, data, suffix=""):  # pylint: disable=unused-argument
-        submission_lock = SubmissionGradingLock.get_submission_lock(submission_uuid)
-        if submission_lock:
-            return SubmissionLockSerializer(submission_lock).data
-        else:
-            return {}
+        """
+        Get info about a submission lock. Does not verify that the ID is a valid submission.
+
+        Returns:
+        - Serialized submission lock info.
+        """
+        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+        context = {'user_id': anonymous_user_id}
+
+        submission_lock = SubmissionGradingLock.get_submission_lock(submission_uuid) or {}
+        return SubmissionLockSerializer(submission_lock, context=context).data
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
     @require_submission_uuid(validate=True)
     def claim_submission_lock(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Attempt to claim or reclaim a submission lock
+
+        Returns:
+        - Serialized submission lock info.
+
+        Raises:
+        - 403 in the case of a contested lock
+        """
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+        context = {'user_id': anonymous_user_id}
+
         try:
             submission_lock = SubmissionGradingLock.claim_submission_lock(submission_uuid, anonymous_user_id)
-            return SubmissionLockSerializer(submission_lock).data
+            return SubmissionLockSerializer(submission_lock, context=context).data
         except SubmissionLockContestedError as err:
-            raise JsonHandlerError(403, str(err)) from err
+            raise JsonHandlerError(403, err.get_error_code()) from err
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
     @require_submission_uuid(validate=False)
     def delete_submission_lock(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Attempt to clear a submission lock.
+
+        Returns:
+        - Serialized submission lock info (which in this case would just be {'lock_status': 'unlocked'})
+
+        Raises:
+        - 403 in the case of a contested lock
+        """
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+        context = {'user_id': anonymous_user_id}
+
         try:
             SubmissionGradingLock.clear_submission_lock(submission_uuid, anonymous_user_id)
-            return {}
+            return SubmissionLockSerializer({}, context=context).data
         except SubmissionLockContestedError as err:
-            raise JsonHandlerError(403, str(err)) from err
+            raise JsonHandlerError(403, err.get_error_code()) from err
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
