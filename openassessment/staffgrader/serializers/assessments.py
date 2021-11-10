@@ -19,10 +19,11 @@ class SubmissionDetailFileSerilaizer(serializers.Serializer):
 class AssessmentPartSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='criterion.name')
     option = serializers.CharField(source='option.name', default=None)
+    points = serializers.IntegerField(source='option.points', default=None)
 
     class Meta:
         model = AssessmentPart
-        fields = ['name', 'option', 'feedback']
+        fields = ['name', 'option', 'points', 'feedback']
         read_only_fields = fields
 
 
