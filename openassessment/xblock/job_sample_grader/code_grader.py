@@ -29,13 +29,13 @@ class CodeGraderMixin(object):
 
     def grade(self, response, add_staff_cases=False):
         """
-        Setting prerequiste and execute code. 
+        Setting prerequiste and execute code.
             * Submission code is added in directory
             * File name is auto generated unique string
             * For designed problem simply code executes but for other problems code executed with
                 test cases.
         Args:
-            response (dict): 
+            response (dict):
                 problem_name(str)
                 submission(str): code submitted by user
                 language(str): language in which code is written
@@ -369,18 +369,17 @@ class CodeGraderMixin(object):
 
     def run_test_cases(self, lang, code_file_name, lang_extension_file_path, input_file_argument,
                        expected_output_file, timeout=10, problem_name=''):
-        
         """
-        Execute given code file and compare output with expected 
+        Execute given code file and compare output with expected
         Args:
             lang(str): code language
             code_file_name(str): name of the code file
             lang_extension_file_path(str): complete path of the code file with proper lang extension
             input_file_argument(str): file name in which test case input is given
             expected_output_file: file name containing expected output of test case
-            timeout(int) 
+            timeout(int)
             problem_name(str)
-        output (test case output) 
+        output (test case output)
         """
         try:
             output = self.execute_code(lang, code_file_name, lang_extension_file_path, input_file_argument, timeout)
