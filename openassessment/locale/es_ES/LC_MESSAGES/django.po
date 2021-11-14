@@ -19,7 +19,7 @@
 # Raúl Aguilera Ortega <raguiler@db.uc3m.es>, 2014
 # Rocío Pérez Venero <perezvenero.rocio@gmail.com>, 2015
 # Rubén Torres <r.torres@usal.es>, 2015
-# Sarina Canelake <sarina@edx.org>, 2014
+# Sarina Canelake <sarina@tcril.org>, 2014
 # Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018
 msgid ""
 msgstr ""
