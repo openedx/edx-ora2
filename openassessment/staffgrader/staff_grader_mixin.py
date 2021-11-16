@@ -286,16 +286,7 @@ class StaffGraderMixin:
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
     @require_submission_uuid(validate=True)
-    def get_submission_and_assessment_info(self, submission_uuid, _, suffix=''):  # pylint: disable=unused-argument
-        # TODO: Checks for if the submission we're given actually has a Workflow
-        submission_info = self.get_submission_info(submission_uuid)
-        assessment_info = self.get_assessment_info(submission_uuid)
-        return {
-            'submission': submission_info,
-            'assessment': assessment_info,
-        }
-
-    def get_submission_info(self, submission_uuid):
+    def get_submission_info(self, submission_uuid, _, suffix=''):  # pylint: disable=unused-argument
         """
         Return a dict representation of a submission in the form
         {
@@ -324,7 +315,10 @@ class StaffGraderMixin:
             'text': answer.get_text_responses()
         }
 
-    def get_assessment_info(self, submission_uuid):
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    @require_submission_uuid(validate=True)
+    def get_assessment_info(self, submission_uuid, _, suffix=''):  # pylint: disable=unused-argument
         """
         Returns a dict representation of a staff assessment in the form
         {
