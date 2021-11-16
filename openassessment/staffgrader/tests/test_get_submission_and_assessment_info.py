@@ -248,11 +248,13 @@ class HandlerTests(GetSubmissionAndAssessmentInfoBase):
                         {
                             'name': "Criterion 1",
                             'option': "Three",
+                            'points': 3,
                             'feedback': "Feedback 1"
                         },
                         {
                             'name': "Criterion 2",
                             'option': "Two",
+                            'points': 2,
                             'feedback': ""
                         }
                     ]
@@ -524,6 +526,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
                 OrderedDict({
                     'name': part.criterion.name,
                     'option': part.option.name,
+                    'points': part.option.points,
                     'feedback': f"Feedback for criterion={part.criterion.id}"
                 }) for part in assessment.parts.all()
             ]
@@ -571,11 +574,13 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
                 OrderedDict({
                     'name': 'Criterion 1',
                     'option': 'Three',
+                    'points': 3,
                     'feedback': criterion_feedback['Criterion 1']
                 }),
                 OrderedDict({
                     'name': 'Criterion 2',
                     'option': 'Two',
+                    'points': 2,
                     'feedback': ''
                 }),
             ]
@@ -614,6 +619,7 @@ class GetAssessmentInfoTests(GetSubmissionAndAssessmentInfoBase):
                 OrderedDict({
                     'name': part.criterion.name,
                     'option': None,
+                    'points': None,
                     'feedback': f"Feedback for criterion {part.criterion.id}"
                 }) for part in assessment.parts.all()
             ]
