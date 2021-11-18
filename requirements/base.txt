@@ -8,9 +8,9 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.19.10
+boto3==1.20.8
     # via -r requirements/base.in
-botocore==1.22.10
+botocore==1.23.8
     # via
     #   boto3
     #   s3transfer
@@ -62,7 +62,7 @@ edx-i18n-tools==0.8.1
     # via -r requirements/base.in
 edx-opaque-keys==2.2.2
     # via -r requirements/base.in
-edx-submissions==3.4.0
+edx-submissions==3.4.1
     # via -r requirements/base.in
 edx-toggles==4.2.0
     # via -r requirements/base.in
@@ -76,7 +76,7 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-jinja2==3.0.2
+jinja2==3.0.3
     # via code-annotations
 jmespath==0.10.0
     # via
@@ -102,9 +102,9 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   xblock
-newrelic==7.2.2.169
+newrelic==7.2.4.171
     # via edx-django-utils
-packaging==21.2
+packaging==21.3
     # via bleach
 path==13.1.0
     # via
@@ -113,7 +113,7 @@ path==13.1.0
     #   path.py
 path.py==12.5.0
     # via -r requirements/base.in
-pbr==5.7.0
+pbr==5.8.0
     # via stevedore
 polib==1.1.1
     # via edx-i18n-tools
@@ -121,7 +121,7 @@ psutil==5.8.0
     # via edx-django-utils
 pymongo==3.12.1
     # via edx-opaque-keys
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
 python-dateutil==2.4.0
     # via

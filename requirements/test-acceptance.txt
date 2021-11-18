@@ -27,7 +27,7 @@ aws-xray-sdk==2.8.0
     # via
     #   -r requirements/test.txt
     #   moto
-backports.entry-points-selectable==1.1.0
+backports.entry-points-selectable==1.1.1
     # via
     #   -r requirements/test.txt
     #   virtualenv
@@ -39,13 +39,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.19.10
+boto3==1.20.8
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.22.10
+botocore==1.23.8
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -60,7 +60,7 @@ cffi==1.15.0
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.55.0
+cfn-lint==0.56.1
     # via
     #   -r requirements/test.txt
     #   moto
@@ -76,7 +76,7 @@ code-annotations==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
-coverage==6.1.1
+coverage==6.1.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -153,17 +153,17 @@ edx-i18n-tools==0.8.1
     # via -r requirements/test.txt
 edx-opaque-keys==2.2.2
     # via -r requirements/test.txt
-edx-submissions==3.4.0
+edx-submissions==3.4.1
     # via -r requirements/test.txt
 edx-toggles==4.2.0
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==9.8.0
+faker==9.8.2
     # via
     #   -r requirements/test.txt
     #   factory-boy
-filelock==3.3.2
+filelock==3.4.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -196,7 +196,7 @@ idna==2.8
     #   -r requirements/test.txt
     #   moto
     #   requests
-jinja2==3.0.2
+jinja2==3.0.3
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -263,7 +263,7 @@ mock==3.0.5
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   moto
-more-itertools==8.10.0
+more-itertools==8.11.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -276,11 +276,11 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.2.2.169
+newrelic==7.2.4.171
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-packaging==21.2
+packaging==21.3
     # via
     #   -r requirements/test.txt
     #   bleach
@@ -293,7 +293,7 @@ path==13.1.0
     #   path.py
 path.py==12.5.0
     # via -r requirements/test.txt
-pbr==5.7.0
+pbr==5.8.0
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
@@ -316,7 +316,7 @@ psutil==5.8.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-py==1.10.0
+py==1.11.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -326,17 +326,17 @@ pyasn1==0.4.8
     #   -r requirements/test.txt
     #   python-jose
     #   rsa
-pycparser==2.20
+pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pyinstrument==4.0.4
+pyinstrument==4.1.1
     # via -r requirements/test-acceptance.in
 pymongo==3.12.1
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via
     #   -r requirements/test.txt
     #   packaging
@@ -403,7 +403,7 @@ requests==2.26.0
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.15.0
+responses==0.16.0
     # via
     #   -r requirements/test.txt
     #   moto
