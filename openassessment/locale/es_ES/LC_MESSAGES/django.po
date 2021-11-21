@@ -19,15 +19,16 @@
 # Raúl Aguilera Ortega <raguiler@db.uc3m.es>, 2014
 # Rocío Pérez Venero <perezvenero.rocio@gmail.com>, 2015
 # Rubén Torres <r.torres@usal.es>, 2015
-# Sarina Canelake <sarina@edx.org>, 2014
+# Sarina Canelake <sarina@tcril.org>, 2014
 # Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018
+# UAMx <uamx.dev@gmail.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-27 14:30-0400\n"
-"PO-Revision-Date: 2021-10-27 21:24+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2021-11-17 15:17+0000\n"
+"Last-Translator: UAMx <uamx.dev@gmail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/open-edx/edx-platform/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +66,7 @@ msgstr "El ejemplo {example_number} tiene una opción extra para \"{criterion_na
 #: openassessment/assessment/api/student_training.py:239
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr "Falta una opción de \"{criterion_name}\" en el ejemplo {example_number}"
+msgstr "Al ejemplo {example_number} le falta una opción de \"{criterion_name}\" "
 
 #: openassessment/data.py:531
 #, python-brace-format

@@ -75,7 +75,7 @@
 # Richard Moch <richard.moch@gmail.com>, 2014-2016
 # SALHI Aissam <ais.salhy@gmail.com>, 2014
 # samuel <samuelecin@gmail.com>, 2014
-# Sarina Canelake <sarina@edx.org>, 2014
+# Sarina Canelake <sarina@tcril.org>, 2014
 # Sébastien Viallemonteil <sebastien.viallemonteil@educagri.fr>, 2015
 # Sébastien Vigneau <sebastien.vigneau@gmail.com>, 2015
 # Serge Bibauw <sbibauw@gmail.com>, 2016
