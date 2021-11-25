@@ -1131,7 +1131,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'text_response_editor': 'text',
                 'user_language': None,
                 'user_timezone': None,
-                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png']
+                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpeg', '.jfif', '.pjpeg', '.pjp', '.png']
             }
         )
 
@@ -1790,7 +1790,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'text_response_editor': 'text',
                 'user_timezone': None,
                 'user_language': None,
-                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpgeg', '.jfif', '.pjpeg', '.pjp', '.png'],
+                'white_listed_file_types': ['.pdf', '.gif', '.jpg', '.jpeg', '.jfif', '.pjpeg', '.pjp', '.png'],
             }
         )
 
