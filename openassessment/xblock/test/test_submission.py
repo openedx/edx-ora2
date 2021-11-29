@@ -551,12 +551,14 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
                     'download_url': 'download-url-1',
                     'description': 'desc-1',
                     'name': 'name-1',
+                    'size': 0,
                     'show_delete_button': False
                 },
                 {
                     'download_url': 'download-url-3',
                     'description': 'desc-3',
                     'name': 'name-3',
+                    'size': 0,
                     'show_delete_button': False
                 },
             ]
@@ -586,6 +588,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
                     'download_url': 'download-url-1',
                     'description': '',
                     'name': '',
+                    'size': 0,
                     'show_delete_button': False
                 }
             ]
@@ -1113,8 +1116,20 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
                 'file_urls': [
-                    {'download_url': '', 'description': 'file-1', 'name': None, 'show_delete_button': True},
-                    {'download_url': '', 'description': 'file-2', 'name': None, 'show_delete_button': True}
+                    {
+                        'download_url': '',
+                        'description': 'file-1',
+                        'name': None,
+                        'size': None,
+                        'show_delete_button': True
+                    },
+                    {
+                        'download_url': '',
+                        'description': 'file-2',
+                        'name': None,
+                        'size': None,
+                        'show_delete_button': True
+                    }
                 ],
                 'has_real_user': False,
                 'prompts_type': 'text',

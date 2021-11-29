@@ -500,6 +500,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     'download_url': 'http://www.example.com/image.jpeg',
                     'description': 'test_description',
                     'name': 'test_fileName',
+                    'size': 0,
                     'show_delete_button': False
                 }],
                 context['staff_file_urls']
@@ -561,6 +562,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     "download_url": image,
                     "description": "test_description%d" % i,
                     "name": "fname%d" % i,
+                    "size": 0,
                     "show_delete_button": False
                 } for i, image in enumerate(images)],
                 context['staff_file_urls']
@@ -1080,6 +1082,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                         'download_url': FILE_URL,
                         'description': SAVED_FILES_DESCRIPTIONS[count],
                         'name': SAVED_FILES_NAMES[count],
+                        'size': None,
                         'show_delete_button': False
                     }
                 )
@@ -1351,6 +1354,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'download_url': FILE_URL,
             'description': '',
             'name': '',
+            'size': None,
             'show_delete_button': False
         }] * xblock.MAX_FILES_COUNT
         self.assertEqual(staff_urls, expected_staff_urls)
@@ -1476,6 +1480,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     'download_url': 'http://www.example.com/image.jpeg',
                     'description': 'test_description',
                     'name': 'test_fileName',
+                    'size': 0,
                     'show_delete_button': False
                 }],
                 context['staff_file_urls']

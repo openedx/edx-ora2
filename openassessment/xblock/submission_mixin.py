@@ -630,6 +630,7 @@ class SubmissionMixin:
                         download_url=file_download_url,
                         description=file_upload.description,
                         name=file_upload.name,
+                        size=file_upload.size,
                         show_delete_button=False
                     )._asdict()
                 )
@@ -671,6 +672,7 @@ class SubmissionMixin:
                             download_url=download_url,
                             description=description,
                             name=file_name,
+                            size=None,
                             show_delete_button=False
                         )._asdict()
                     )
@@ -723,6 +725,7 @@ class SubmissionMixin:
                         download_url=download_url,
                         description='',
                         name='',
+                        size=None,
                         show_delete_button=False
                     )._asdict()
                 )
