@@ -6,8 +6,8 @@ from unittest.mock import patch
 from uuid import uuid4
 
 from mock import Mock
-from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError
 from xblock.exceptions import JsonHandlerError
+from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError
 from openassessment.staffgrader.staff_grader_mixin import require_submission_uuid
 
 

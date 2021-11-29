@@ -17,6 +17,11 @@ export class CourseItemsListingView {
       $section.find('.open-response-assessment-msg').show();
     }
 
+    const context = this.data.CONTEXT || {};
+
+    const esgEnabled = context.ENHANCED_STAFF_GRADER;
+    const esgUrl = context.ORA_GRADING_MICROFRONTEND_URL;
+
     const AssessmentCell = Backgrid.UriCell.extend({
       type: null,
       url: null,
@@ -28,9 +33,21 @@ export class CourseItemsListingView {
         const hasAssessmentType = this.model.get(this.type ? this.type : 'staff_assessment');
         let link = null;
         if (itemViewEnabled && (!this.type || (this.type && hasAssessmentType))) {
+          const displayValue = this.title || formattedValue;
+          if (esgEnabled) {
+            const id = this.model.get('id');
+            link = $('<a>', {
+              text: displayValue,
+              title: displayValue,
+              href: `${esgUrl}/${id}`,
+              class: 'staff-esg-link',
+            });
+            this.$el.append(link);
+            return this;
+          }
           link = $('<a>', {
-            text: formattedValue,
-            title: this.title || formattedValue,
+            text: displayValue,
+            title: displayValue,
           });
           this.$el.append(link);
           link.on('click', $.proxy(self, 'displayOraBlock', url));
@@ -126,6 +143,19 @@ export class CourseItemsListingView {
         editable: false,
       },
     ];
+
+    if (esgEnabled) {
+      this._columns.push({
+        name: 'response',
+        label: gettext('Response'),
+        label_summary: gettext('Response'),
+        cell: StaffCell.extend({
+          title: gettext('View and grade responses'),
+        }),
+        num: true,
+        editable: false,
+      });
+    }
   }
 
   /* eslint-disable-next-line consistent-return */
