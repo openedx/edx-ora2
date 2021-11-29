@@ -30,15 +30,15 @@ class StaffWorkflow(models.Model):
     # Amount of time before a lease on a submission expires
     TIME_LIMIT = timedelta(hours=8)
 
-    scorer_id = models.CharField(max_length=40, db_index=True)
+    scorer_id = models.CharField(max_length=40, db_index=True, blank=True)
     course_id = models.CharField(max_length=255, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
-    grading_completed_at = models.DateTimeField(null=True, db_index=True)
-    grading_started_at = models.DateTimeField(null=True, db_index=True)
-    cancelled_at = models.DateTimeField(null=True, db_index=True)
-    assessment = models.CharField(max_length=128, db_index=True, null=True)
+    grading_completed_at = models.DateTimeField(null=True, db_index=True, blank=True)
+    grading_started_at = models.DateTimeField(null=True, db_index=True, blank=True)
+    cancelled_at = models.DateTimeField(null=True, db_index=True, blank=True)
+    assessment = models.CharField(max_length=128, db_index=True, null=True, blank=True)
 
     class Meta:
         ordering = ["created_at", "id"]
