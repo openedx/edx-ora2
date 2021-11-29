@@ -78,8 +78,8 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
             "This is my response for <a href='www.edx.org'>Prompt Three</a>"
         ]
         file_responses = [
-            dict(download_url='A', description='B', name='C'),
-            dict(download_url='1', description='2', name='3'),
+            dict(download_url='A', description='B', name='C', size=100),
+            dict(download_url='1', description='2', name='3', size=300),
         ]
 
         submission_uuid = str(uuid4())
@@ -133,16 +133,19 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
                     'name': 'filename-1',
                     'description': 'description-1',
                     'download_url': 'www.file_url.com/key-1',
+                    'size': 200,
                 },
                 {
                     'name': 'filename-2',
                     'description': 'description-2',
                     'download_url': 'www.file_url.com/key-2',
+                    'size': 1500,
                 },
                 {
                     'name': 'filename-3',
                     'description': 'description-3',
                     'download_url': 'www.file_url.com/key-3',
+                    'size': 3000,
                 },
             ]
         }
