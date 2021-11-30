@@ -12,7 +12,7 @@ from openassessment.staffgrader.staff_grader_mixin import require_submission_uui
 
 
 class RequireSubmissionUUIDTest(TestCase):
-    valid_data = {"submission_id": uuid4()}
+    valid_data = {"submission_uuid": uuid4()}
 
     def setUp(self):
         super().setUp()
@@ -27,14 +27,14 @@ class RequireSubmissionUUIDTest(TestCase):
 
         self.mock_function.assert_not_called()
         self.assertEqual(error_context.exception.status_code, 400)
-        self.assertEqual(error_context.exception.message, 'Body must contain a submission_id')
+        self.assertEqual(error_context.exception.message, 'Body must contain a submission_uuid')
 
     def test_arguments_passed(self):
         self.wrapped_function = require_submission_uuid(validate=False)(self.mock_function)
 
         data = {str(i): str((i * 2) - 1) for i in range(10)}
         submission_uuid = uuid4()
-        data['submission_id'] = submission_uuid
+        data['submission_uuid'] = submission_uuid
 
         result = self.wrapped_function(self.mock_self, data, suffix=self.mock_suffix)
 
@@ -44,7 +44,7 @@ class RequireSubmissionUUIDTest(TestCase):
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     def test_validate_submission(self, mock_get_submission):  # pylint: disable=unused-argument
         mock_get_submission.return_value = {}
-        submission_uuid = self.valid_data['submission_id']
+        submission_uuid = self.valid_data['submission_uuid']
         result = self.wrapped_function(self.mock_self, self.valid_data, suffix=self.mock_suffix)
 
         self.assertEqual(result, self.mock_function.return_value)
@@ -67,7 +67,7 @@ class RequireSubmissionUUIDTest(TestCase):
         self.assertEqual(error_context.exception.message, 'Submission not found')
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
-    def test_validate_bad_submission_id(self, mock_get_submission):
+    def test_validate_bad_submission_uuid(self, mock_get_submission):
         mock_get_submission.side_effect = SubmissionRequestError
 
         with self.assertRaises(JsonHandlerError) as error_context:

@@ -28,22 +28,22 @@ log = logging.getLogger(__name__)
 
 def require_submission_uuid(validate=True):
     """
-    Unpacks and passes submission_id from request to handler function.
+    Unpacks and passes submission_uuid from request to handler function.
 
     params:
     - validate: Whether or not to check submissions to see if this is a real submission UUID or not. Default True
 
     Raises:
-    - 400 if the submission_id was not provided or was incorrectly formatted
-    - 404 if the submission_id wasn't found in submissions
+    - 400 if the submission_uuid was not provided or was incorrectly formatted
+    - 404 if the submission_uuid wasn't found in submissions
     - 500 for errors with submissions or general exceptions
     """
     def decorator(handler):
         @wraps(handler)
         def wrapped_handler(self, data, suffix=""):  # pylint: disable=unused-argument
-            submission_uuid = data.get('submission_id', None)
+            submission_uuid = data.get('submission_uuid', None)
             if not submission_uuid:
-                raise JsonHandlerError(400, "Body must contain a submission_id")
+                raise JsonHandlerError(400, "Body must contain a submission_uuid")
             if validate:
                 try:
                     get_submission(submission_uuid)
