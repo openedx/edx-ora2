@@ -235,6 +235,7 @@ class StaffGraderMixin:
         staff_workflows = StaffWorkflow.objects.filter(
             course_id=student_item_dict['course_id'],
             item_id=student_item_dict['item_id'],
+            cancelled_at=None,
         ).annotate(
             current_lock_user=Subquery(newest_lock.values('owner_id')),
         ).annotate(
