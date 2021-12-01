@@ -19,17 +19,17 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
     handler_name = 'get_assessment_info'
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
-    def test_no_submission_id(self, xblock):
-        """ How does the endpoint behave when we don't give it a submission_id? """
+    def test_no_submission_uuid(self, xblock):
+        """ How does the endpoint behave when we don't give it a submission_uuid? """
         self.set_staff_user(xblock, 'Bob')
         response = self.request(xblock, {})
-        self.assert_response(response, 400, {"error": "Body must contain a submission_id"})
+        self.assert_response(response, 400, {"error": "Body must contain a submission_uuid"})
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_access(self, xblock):
         """ How does the endpoint behave when the requester doesn't have proper permissions? """
         xblock.xmodule_runtime = Mock(user_is_staff=False)
-        response = self.request(xblock, {'submission_id': 'meaningless-value'})
+        response = self.request(xblock, {'submission_uuid': 'meaningless-value'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('You do not have permission to access ORA staff grading.', response.body.decode('UTF-8'))
 
@@ -80,7 +80,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         submission_uuid = str(uuid4())
         with self._mock_get_staff_workflow(side_effect=StaffWorkflow.DoesNotExist):
             with self._mock_get_submission():
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(
             response,
@@ -97,7 +97,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
 
         with self._mock_get_staff_workflow(return_value=mock_staff_workflow):
             with self._mock_get_submission():
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(response, 200, {})
 
@@ -134,7 +134,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         self._mock_bulk_deep_fetch_assessments(xblock, return_value=bulk_fetch_return_value)
         with self._mock_get_staff_workflow(return_value=mock_staff_workflow):
             with self._mock_get_submission():
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(response, 500, {'error': 'Error looking up assessments'})
 
@@ -147,7 +147,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: assessment})
         with self._mock_get_staff_workflow():
             with self._mock_get_submission():
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         expected_assessment_info = {
             'feedback': "Base Assessment Feedback",
@@ -190,7 +190,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
             # 3 - AssessmentPart
             # 4 - Criterion
             # 5 - Option
-            response = self.request(xblock, {'submission_id': submission['uuid']})
+            response = self.request(xblock, {'submission_uuid': submission['uuid']})
 
         expected_assessment_info = {
             'feedback': overall_feedback,
@@ -235,7 +235,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: assessment})
         with self._mock_get_staff_workflow():
             with self._mock_get_submission():
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         expected_assessment_info = {
             'feedback': "Base Assessment Feedback",

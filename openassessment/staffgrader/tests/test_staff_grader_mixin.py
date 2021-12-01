@@ -59,7 +59,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
     def test_check_submission_lock_none(self, xblock):
         """ A check for submission lock where there is no lock should return empty dict """
         xblock.xmodule_runtime = Mock(user_is_staff=True)
-        request_data = {'submission_id': self.test_submission_uuid_unlocked}
+        request_data = {'submission_uuid': self.test_submission_uuid_unlocked}
         response = self.request(xblock, 'check_submission_lock', json.dumps(request_data), response_format='json')
 
         self.assertDictEqual(response, {
@@ -70,7 +70,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
     def test_check_submission_lock(self, xblock):
         """ A check for submission lock returns the matching submission lock """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-        request_data = {'submission_id': self.test_submission_uuid}
+        request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'check_submission_lock', json.dumps(request_data), response_format='json')
 
         self.assertDictEqual(response, {
@@ -86,7 +86,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         """ A submission lock can be claimed on a submission w/out an active lock """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
-        request_data = {'submission_id': self.test_submission_uuid_unlocked}
+        request_data = {'submission_uuid': self.test_submission_uuid_unlocked}
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
 
         self.assertDictEqual(response, {
@@ -107,7 +107,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         lock.created_at = lock.created_at - timedelta(hours=2)
         lock.save()
 
-        request_data = {'submission_id': self.test_submission_uuid}
+        request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
 
         self.assertDictEqual(response, {
@@ -123,7 +123,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         """ Trying to claim a lock on a submission with an active lock raises an error """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
-        request_data = {'submission_id': self.test_submission_uuid}
+        request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='response')
         response_body = json.loads(response.body.decode('utf-8'))
 
@@ -137,7 +137,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         """ The lock owner can clear a submission lock if it exists """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
-        request_data = {'submission_id': self.test_submission_uuid}
+        request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='json')
 
         self.assertDictEqual(response, {
@@ -149,7 +149,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         """ Users cannot clear a lock owned by another user """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
 
-        request_data = {'submission_id': self.test_submission_uuid}
+        request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='response')
         response_body = json.loads(response.body.decode('utf-8'))
 
