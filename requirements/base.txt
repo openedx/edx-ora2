@@ -8,15 +8,15 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.20.8
+boto3==1.20.20
     # via -r requirements/base.in
-botocore==1.23.8
+botocore==1.23.20
     # via
     #   boto3
     #   s3transfer
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.7
+charset-normalizer==2.0.9
     # via requests
 click==8.0.3
     # via code-annotations
@@ -119,7 +119,7 @@ polib==1.1.1
     # via edx-i18n-tools
 psutil==5.8.0
     # via edx-django-utils
-pymongo==3.12.1
+pymongo==4.0
     # via edx-opaque-keys
 pyparsing==3.0.6
     # via packaging
@@ -131,7 +131,7 @@ python-dateutil==2.4.0
     #   xblock
 python-slugify==5.0.2
     # via code-annotations
-python-swiftclient==3.12.0
+python-swiftclient==3.13.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
