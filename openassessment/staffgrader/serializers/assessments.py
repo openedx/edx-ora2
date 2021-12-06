@@ -14,6 +14,7 @@ class SubmissionDetailFileSerilaizer(serializers.Serializer):
     download_url = serializers.URLField()
     description = serializers.CharField()
     name = serializers.CharField()
+    size = serializers.IntegerField()
 
 
 class AssessmentPartSerializer(serializers.ModelSerializer):

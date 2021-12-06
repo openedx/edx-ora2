@@ -94,6 +94,7 @@ class LeaderboardMixin:
                             download_url=file_download_url,
                             description=uploaded_file.description,
                             name=uploaded_file.name,
+                            size=uploaded_file.size,
                             show_delete_button=False
                         )._asdict()
                     )

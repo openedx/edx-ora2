@@ -614,9 +614,7 @@ class SubmissionMixin:
                 with related content
 
         Returns:
-            List with URLs to related content. If there is no content related to this
-            key, or if there is no key for the submission, returns an empty
-            list.
+            List of FileDescriptor dicts for each file associated with the submission
 
         """
         urls = []
@@ -630,6 +628,7 @@ class SubmissionMixin:
                         download_url=file_download_url,
                         description=file_upload.description,
                         name=file_upload.name,
+                        size=file_upload.size,
                         show_delete_button=False
                     )._asdict()
                 )
@@ -645,7 +644,7 @@ class SubmissionMixin:
         Arguments:
             username(str): user's name whose state is being check for files information.
         Returns:
-            List of files information tuple, if present, else empty list.
+            List of FileDescriptor dicts, if present, else empty list.
         """
 
         files_info = []
@@ -671,6 +670,7 @@ class SubmissionMixin:
                             download_url=download_url,
                             description=description,
                             name=file_name,
+                            size=None,
                             show_delete_button=False
                         )._asdict()
                     )
@@ -698,8 +698,7 @@ class SubmissionMixin:
         Arguments:
             username_or_email(str): username or email of the learner whose files' information is to be obtained.
         Returns:
-            List of 3-valued tuples, with first value being file URL and other two values as empty string.
-            The other 2 values have to be appended to work properly in the template.
+            List of FileDescriptor dicts
         """
         file_uploads = []
         student_item_dict = self.get_student_item_dict_from_username_or_email(username_or_email)
@@ -723,6 +722,7 @@ class SubmissionMixin:
                         download_url=download_url,
                         description='',
                         name='',
+                        size=None,
                         show_delete_button=False
                     )._asdict()
                 )
