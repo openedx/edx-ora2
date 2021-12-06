@@ -218,8 +218,8 @@ class FileUpload:
         return hash(self._to_dict())
 
 
-FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'show_delete_button'])
-TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'uploaded_by'])
+FileDescriptor = namedtuple('FileDescriptor', ['download_url', 'description', 'name', 'size', 'show_delete_button'])
+TeamFileDescriptor = namedtuple('TeamFileDescriptor', ['download_url', 'description', 'name', 'size', 'uploaded_by'])
 
 
 class FileUploadManager:
@@ -343,6 +343,7 @@ class FileUploadManager:
                 download_url=upload.download_url,
                 description=upload.description,
                 name=upload.name,
+                size=upload.size,
                 show_delete_button=show_delete_button,
             )._asdict())
 
@@ -358,6 +359,7 @@ class FileUploadManager:
                 download_url=upload.download_url,
                 description=upload.description,
                 name=upload.name,
+                size=upload.size,
                 uploaded_by=self.block.get_username(upload.student_id)
             )._asdict()
             for upload in self.get_team_uploads(team_id=team_id)

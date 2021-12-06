@@ -195,8 +195,20 @@ def test_file_descriptors_no_team(mock_block):
 
     actual_descriptors = file_manager.file_descriptors()
     expected_descriptors = [
-        {'download_url': '', 'name': 'File A', 'description': 'The first file', 'show_delete_button': True},
-        {'download_url': '', 'name': 'File B', 'description': 'The second file', 'show_delete_button': True},
+        {
+            'download_url': '',
+            'name': 'File A',
+            'size': 22,
+            'description': 'The first file',
+            'show_delete_button': True
+        },
+        {
+            'download_url': '',
+            'name': 'File B',
+            'size': 44,
+            'description': 'The second file',
+            'show_delete_button': True
+        },
     ]
 
     assert expected_descriptors == actual_descriptors
@@ -248,12 +260,14 @@ def test_file_descriptors_after_sharing_with_old_team(
             'download_url': None,
             'name': None,
             'description': None,
+            'size': 0,
             'show_delete_button': False,
         },
         {
             'download_url': mock_get_download_url.return_value,
             'name': 'File B',
             'description': 'The second file',
+            'size': 44,
             'show_delete_button': True,
         }
     ]
@@ -318,12 +332,14 @@ def test_team_files_metadata(mock_get_download_url, shared_file_upload_fixture, 
             'download_url': mock_get_download_url.return_value,
             'name': 'File Beta',
             'description': 'Another file',
+            'size': 0,
             'uploaded_by': 'some_username',
         },
         {
             'download_url': mock_get_download_url.return_value,
             'name': 'File Delta',
             'description': 'Yet another file',
+            'size': 0,
             'uploaded_by': 'some_username',
         }
     ]
