@@ -16,17 +16,17 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
     handler_name = 'get_submission_info'
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
-    def test_no_submission_id(self, xblock):
-        """ How does the endpoint behave when we don't give it a submission_id? """
+    def test_no_submission_uuid(self, xblock):
+        """ How does the endpoint behave when we don't give it a submission_uuid? """
         self.set_staff_user(xblock, 'Bob')
         response = self.request(xblock, {})
-        self.assert_response(response, 400, {"error": "Body must contain a submission_id"})
+        self.assert_response(response, 400, {"error": "Body must contain a submission_uuid"})
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_no_access(self, xblock):
         """ How does the endpoint behave when the requester doesn't have proper permissions? """
         xblock.xmodule_runtime = Mock(user_is_staff=False)
-        response = self.request(xblock, {'submission_id': 'meaningless-value'})
+        response = self.request(xblock, {'submission_uuid': 'meaningless-value'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('You do not have permission to access ORA staff grading.', response.body.decode('UTF-8'))
 
@@ -51,7 +51,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
 
         self.set_staff_user(xblock, 'Bob')
         with self._mock_get_submission(side_effect=sub_api.SubmissionError(err_msg)):
-            response = self.request(xblock, {'submission_id': submission_uuid})
+            response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(response, 500, {"error": "Internal error getting submission info"})
 
@@ -64,7 +64,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         self.set_staff_user(xblock, 'Bob')
         with self._mock_get_submission(return_value=mock_submission):
             with self._mock_parse_submission_raw_answer(side_effect=mock_exception):
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assertEqual(response.status_code, 500)
         self.assertIn(str(mock_exception), response.body.decode('UTF-8'))
@@ -90,7 +90,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         with self._mock_get_submission(return_value=mock_submission):
             with self._mock_parse_submission_raw_answer(return_value=mock_answer):
                 self._mock_get_download_urls_from_submission(xblock, return_value=file_responses)
-                response = self.request(xblock, {'submission_id': submission_uuid})
+                response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(
             response,
@@ -120,7 +120,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
 
         self.set_staff_user(xblock, 'Bob')
         with self._mock_get_url_by_file_key(xblock):
-            response = self.request(xblock, {'submission_id': submission['uuid']})
+            response = self.request(xblock, {'submission_uuid': submission['uuid']})
 
         expected_submission_info = {
             'text': [
