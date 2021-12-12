@@ -15,7 +15,7 @@
 # Manuela Silva <mmsrs@sky.com>, 2016
 # MS, 2016,2018
 # Rui Ribeiro <info@nau.edu.pt>, 2018-2019
-# Sarina Canelake <sarina@edx.org>, 2021
+# Sarina Canelake <sarina@tcril.org>, 2021
 # Waldo Luis Ribeiro, 2016
 # Waldo Luís Ribeiro, 2016
 msgid ""
