@@ -38,6 +38,8 @@
         box-shadow: none;
         outline: none;
         font-size: 14px;
+        padding-left: 0px;
+        text-align: left;
       }
 
       a {
@@ -80,10 +82,10 @@
       width: 80px;
     }
     .total {
-      width: 130px;
+      width: 140px;
     }
     .done {
-      width: 160px;
+      width: 170px;
     }
   }
 }
