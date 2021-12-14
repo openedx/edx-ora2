@@ -30,10 +30,12 @@ const modifiedCssRule = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [
-                PostCssAutoprefixerPlugin({ grid: true }),
-                CssNano(),
-              ],
+              postcssOptions: {
+                plugins: () => [
+                  PostCssAutoprefixerPlugin({ grid: true }),
+                  CssNano(),
+                ],
+              },
             },
           },
           'resolve-url-loader',
