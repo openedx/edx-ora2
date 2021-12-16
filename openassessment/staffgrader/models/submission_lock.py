@@ -62,7 +62,7 @@ class SubmissionGradingLock(models.Model):
         # If there's already an active lock, raise an error
         # Unless the lock owner is trying to reacquire a lock, which is allowed
         if current_lock and current_lock.is_active and current_lock.owner_id != user_id:
-            raise SubmissionLockContestedError
+            raise SubmissionLockContestedError(current_lock)
 
         # Otherwise, delete the lock. This is needed so we don't violate the unique submission_uuid constraint
         if current_lock:
@@ -90,6 +90,6 @@ class SubmissionGradingLock(models.Model):
 
         # Only the owner can clear the lock
         if current_lock.owner_id != user_id:
-            raise SubmissionLockContestedError
+            raise SubmissionLockContestedError(current_lock)
 
         current_lock.delete()
