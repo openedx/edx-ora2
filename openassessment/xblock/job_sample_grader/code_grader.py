@@ -16,13 +16,14 @@ logger = logging.getLogger(__name__)
 
 class CodeGraderMixin(object):
 
-    ALLOWED_LANGUAGES = ['python', 'java', 'c++']
+    ALLOWED_LANGUAGES = ['python', 'java', 'c++', 'nodejs']
 
     # the extensions of language-specific code files
     LANGUAGE_EXTENSION_MAP = {
         'python': 'py',
         'java': 'java',
-        'c++': 'cpp'
+        'c++': 'cpp',
+        'nodejs': 'js',
     }
     __SECRET_DATA_DIR__ = "/grader_data/"
     __TMP_DATA_DIR__ = "/tmp/"
@@ -46,7 +47,7 @@ class CodeGraderMixin(object):
         language = response.get('language')
 
         if not language or (language and language.lower() not in self.ALLOWED_LANGUAGES):
-            return self.response_with_error_v2("Language can only be Python, Java, or C++")
+            return self.response_with_error_v2("Language can only be Python, NodeJS, Java, or C++")
         else:
             language = self.LANGUAGE_EXTENSION_MAP[language.lower()]
 
@@ -243,6 +244,8 @@ class CodeGraderMixin(object):
             return self.run_java_code(code_file_name, timeout, input_file)
         elif lang == 'cpp':
             return self.run_cpp_code(lang_extension_file_path, timeout, input_file)
+        elif lang == 'js':
+            return self.run_nodejs_code(lang_extension_file_path, timeout, input_file)
         else:
             raise Exception
 
@@ -309,6 +312,22 @@ class CodeGraderMixin(object):
         execution_command = compiled_file_path
         if code_input_file:
             execution_command += " {}".format(code_input_file)
+        return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
+
+    def run_nodejs_code(self, code_file, timeout, code_input_file=None):
+        """
+        Wrapper to run nodejs code.
+        Args:
+            code_file(str): path to code file
+            timeout(int): time after which the code execution will be forced-kill.
+            code_input_file(str): Optional parameter, path to the input file that will be provided to code file.
+
+        Returns:
+            str output of the code execution
+        """
+        execution_command = 'node ' + code_file
+        if code_input_file:
+            execution_command += ' {}'.format(code_input_file)
         return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
 
     def update_java_code(self, source_code, code_file_name):

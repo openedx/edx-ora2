@@ -7,7 +7,8 @@ Grader ORA utils.
 CODE_LANGUAGES = {
     'Python': 'language-python',
     'Java': 'language-java',
-    'C++': 'language-cpp'
+    'C++': 'language-cpp',
+    'NodeJS': 'language-nodejs'
 }
 
 

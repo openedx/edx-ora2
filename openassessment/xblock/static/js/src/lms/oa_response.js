@@ -589,14 +589,17 @@ OpenAssessment.ResponseView.prototype = {
     Update the code editor mode based on the passed language
     **/
     updateEditorMode: function(language){
-      if(language == "Python"){
+      if (language == "Python"){
         this.codeEditor.setOption("mode", {name: "python", version: 3});
       }
-      else if(language == "Java"){
+      else if (language == "Java"){
         this.codeEditor.setOption("mode", "text/x-java");
       }
-      else if(language == "C++"){
+      else if (language == "C++"){
         this.codeEditor.setOption("mode", "text/x-c++src");
+      }
+      else if (language == "NodeJS"){
+        this.codeEditor.setOption("mode", "javascript");
       }
     },
 
@@ -669,7 +672,7 @@ OpenAssessment.ResponseView.prototype = {
                     {
                         correct: data.public.correct,
                         total: data.public.total_tests
-                    }, 
+                    },
                     data.private ? {
                         correct: data.private.correct,
                         total: data.private.total_tests
