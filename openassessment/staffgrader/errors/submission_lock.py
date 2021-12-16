@@ -13,4 +13,5 @@ class SubmissionLockContestedError(Exception):
         return self.error_code
 
     def __init__(self, current_lock):
+        super().__init__()
         self.current_lock = current_lock
