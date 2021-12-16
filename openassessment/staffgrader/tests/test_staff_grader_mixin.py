@@ -127,9 +127,15 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='response')
         response_body = json.loads(response.body.decode('utf-8'))
 
+        # Lock contest returns a 403 and lock info for reference
         self.assertEqual(response.status_code, 403)
         self.assertDictEqual(response_body, {
-            "error": "ERR_LOCK_CONTESTED"
+            "error": {
+                "submission_uuid": self.test_submission_uuid,
+                "owner_id": self.staff_user_id,
+                "created_at": self.test_timestamp,
+                "lock_status": "locked",
+            }
         })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
@@ -153,7 +159,13 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='response')
         response_body = json.loads(response.body.decode('utf-8'))
 
+        # Lock contest returns a 403 and lock info for reference
         self.assertEqual(response.status_code, 403)
         self.assertDictEqual(response_body, {
-            "error": "ERR_LOCK_CONTESTED"
+            "error": {
+                "submission_uuid": self.test_submission_uuid,
+                "owner_id": self.staff_user_id,
+                "created_at": self.test_timestamp,
+                "lock_status": "locked",
+            }
         })
