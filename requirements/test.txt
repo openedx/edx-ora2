@@ -200,7 +200,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-lxml==4.6.4
+lxml==4.6.5
     # via
     #   -r requirements/base.txt
     #   xblock
