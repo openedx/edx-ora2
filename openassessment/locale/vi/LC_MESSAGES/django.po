@@ -17,7 +17,7 @@
 # NGUYEN HOANG AN <neyugn2909@gmail.com>, 2014
 # Lam Nguyen <lamnguyen.cis@gmail.com>, 2020
 # Nguyen Nhat Quang <technicalmanager@gmail.com>, 2016
-# Sarina Canelake <sarina@edx.org>, 2014
+# Sarina Canelake <sarina@tcril.org>, 2014
 # Thi Thanh Nga Do <thanhnga.ftu2@gmail.com>, 2015
 # Theodora. Tôn Nữ Quý Thiện <thien.tonnu1001@gmail.com>, 2015
 # Trần Tử Thiêng <trantuthieng26256@gmail.com>, 2014
@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-27 14:30-0400\n"
+"POT-Creation-Date: 2021-12-16 13:33-0500\n"
 "PO-Revision-Date: 2021-10-27 21:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/open-edx/edx-platform/language/vi/)\n"
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1363
+#: openassessment/data.py:1317
 msgid "No description provided."
 msgstr ""
 
