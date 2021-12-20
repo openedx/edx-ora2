@@ -161,7 +161,7 @@ edx-lint==5.2.1
     # via -r requirements/quality.in
 edx-opaque-keys==2.2.2
     # via -r requirements/test.txt
-edx-submissions==3.4.3
+edx-submissions==3.4.4
     # via -r requirements/test.txt
 edx-toggles==4.2.0
     # via -r requirements/test.txt
