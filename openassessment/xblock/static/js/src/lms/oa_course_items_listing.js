@@ -20,7 +20,7 @@ export class CourseItemsListingView {
     const context = this.data.CONTEXT || {};
 
     const esgEnabled = context.ENHANCED_STAFF_GRADER;
-    const esgUrl = context.ORA_GRADING_MICROFRONTEND_URL;
+    const esgRootUrl = context.ORA_GRADING_MICROFRONTEND_URL;
 
     const AssessmentCell = Backgrid.UriCell.extend({
       type: null,
@@ -34,12 +34,12 @@ export class CourseItemsListingView {
         let link = null;
         if (itemViewEnabled && (!this.type || (this.type && hasAssessmentType))) {
           const displayValue = this.title || formattedValue;
-          if (esgEnabled) {
+          if (esgEnabled && esgRootUrl) {
             const id = this.model.get('id');
             link = $('<a>', {
               text: displayValue,
               title: displayValue,
-              href: `${esgUrl}/${id}`,
+              href: `${esgRootUrl}/${id}`,
               class: 'staff-esg-link',
             });
             this.$el.append(link);
