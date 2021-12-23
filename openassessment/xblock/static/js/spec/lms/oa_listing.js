@@ -318,6 +318,9 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 let item = items[0];
                 expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL);
             }
+
+            var responseCol = $('th.response');
+            expect(responseCol.length).toEqual(1);
         });
 
         it('is not enabled', () => {
@@ -326,6 +329,9 @@ describe("OpenAssessment.CourseItemsListingView", function() {
             var items = $('.staff-esg-link');
 
             expect(items.length).toEqual(0);
+
+            var responseCol = $('th.response');
+            expect(responseCol.length).toEqual(0);
         });
     });
 });
