@@ -7,6 +7,7 @@ from io import StringIO
 import json
 from unittest import mock
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
+from django.test.utils import override_settings
 
 import ddt
 import pytz
@@ -156,6 +157,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(models[1], UI_MODELS["grade"])
 
     @scenario('data/basic_scenario.xml')
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL='some_url'
+    )
     @patch(
         'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
         PropertyMock(return_value=False)
@@ -207,6 +211,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(items, defined_ora_items)
 
     @scenario('data/basic_scenario.xml')
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL='some_url'
+    )
     @ddt.data(False, True)
     @patch(
         'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
