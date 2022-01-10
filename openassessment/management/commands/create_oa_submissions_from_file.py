@@ -23,6 +23,7 @@ from openassessment.workflow import api as workflow_api
 from openassessment.xblock import submission_mixin
 from openassessment.xblock import data_conversion
 from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.staffgrader.models import SubmissionGradingLock
 
 SUPERUSER_USERNAME = 'edx'
 
@@ -205,9 +206,15 @@ class Command(BaseCommand):
                     submission = sub_api.create_submission(student_item, {'parts':[{'text': text_response}]})
                     workflow_api.create_workflow(submission['uuid'], ['staff'])
                     workflow_api.update_from_assessments(submission['uuid'], None)
-                    grade_data = submission_config['gradeData']
-                    if grade_data:
-                        breakpoint()
+                    
+                    if submission_config['lockOwner']:
+                        SubmissionGradingLock.claim_submission_lock(
+                            submission['uuid'],
+                            self.username_to_anonymous_user_id[submission_config['lockOwner']]
+                        )
+                    
+                    if submission_config['gradeData']:
+                        grade_data = submission_config['gradeData']
                         options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'])
                         block = self.display_name_to_block[ora_config['displayName']]
                         staff_api.create_assessment(
