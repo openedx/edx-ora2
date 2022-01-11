@@ -306,7 +306,11 @@ class Command(BaseCommand):
                 log.info("Created submission %s for user %s", submission['uuid'], submission_config['username'])
 
                 if submission_config['lockOwner']:
-                    log.info("Creating lock on submission %s owned by %s", submission['uuid'], submission_config['lockOwner'])
+                    log.info(
+                        "Creating lock on submission %s owned by %s",
+                        submission['uuid'],
+                        submission_config['lockOwner']
+                    )
                     SubmissionGradingLock.claim_submission_lock(
                         submission['uuid'],
                         self.username_to_anonymous_user_id[submission_config['lockOwner']]
@@ -314,7 +318,11 @@ class Command(BaseCommand):
 
                 if submission_config['gradeData']:
                     grade_data = submission_config['gradeData']
-                    log.info("Creating assessment from user %s for submission %s", grade_data['gradedBy'], submission['uuid'])
+                    log.info(
+                        "Creating assessment from user %s for submission %s",
+                        grade_data['gradedBy'],
+                        submission['uuid']
+                    )
                     options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'])
                     block = self.display_name_to_block[ora_config['displayName']]
                     staff_api.create_assessment(
