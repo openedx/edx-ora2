@@ -1,9 +1,9 @@
 """
 Management command to create submissions, assessments, and locks to make testing easier.
 """
-
+import logging
 import json
-from os.path import exists
+from os.path import exists, join
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
@@ -17,6 +17,8 @@ from openassessment.assessment.api import staff as staff_api
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_rubric_dict
 from openassessment.staffgrader.models import SubmissionGradingLock
+
+log = logging.getLogger('create_oa_submissions_from_file')
 
 SUPERUSER_USERNAME = 'edx'
 
@@ -134,16 +136,18 @@ class Command(BaseCommand):
         do up-front loading, and then do either init, reset, or submit.
         """
         self._check_args(options)
-
         course_id = options['course_id']
         submissions_config = self.read_config_file(options['submissions_config_file_path'])
+        if options['init']:
+            self.init_ora_test_data(course_id, submissions_config)
+
+        # We have to do the init first because otherwise the users won't exist, and we won't
+        # be able to look up their anonymous ids.
         self.load_anonymous_ids_and_block_locations(course_id, submissions_config)
 
         if options['reset']:
             self.reset_ora_test_data(course_id, submissions_config)
-        elif options['init']:
-            self.init_ora_test_data(course_id, submissions_config)
-        elif options['submit']:
+        elif options['submit'] or options['init']:
             self.submit_ora_test_data(course_id, submissions_config)
 
     def read_config_file(self, file_path):
@@ -151,7 +155,7 @@ class Command(BaseCommand):
         Check that the input file exits, and attempt to open and json parse the file.
         Returns the json parsed input file.
         """
-        file_path = '/edx/src/edx-ora2/' + file_path
+        file_path = join('/' 'edx', 'src', 'edx-ora2', file_path)
         if not exists(file_path):
             raise CommandError(f'File {file_path} not found.')
 
@@ -266,11 +270,11 @@ class Command(BaseCommand):
 
     def init_ora_test_data(self, course_id, submissions_config):
         """
-        Run the initialization. Create all users, enroll in the course, and then call the submit logic.
+        Run the initialization. Create all users and enroll in the course.
         """
         learners, course_staff = self.get_usernames(submissions_config)
 
-        print(f'Creating and enrolling {len(learners)} learners')
+        log.info('Creating and enrolling %d learners', len(learners))
         call_command(
             'create_test_users',
             *learners,
@@ -278,7 +282,7 @@ class Command(BaseCommand):
             ignore_user_already_exists=True
         )
 
-        print(f'Creating and enrolling {len(course_staff)} course staff')
+        log.info('Creating and enrolling %d course staff', len(course_staff))
         call_command(
             'create_test_users',
             *course_staff,
@@ -287,15 +291,15 @@ class Command(BaseCommand):
             ignore_user_already_exists=True
         )
 
-        self.submit_ora_test_data(course_id, submissions_config)
-
     def submit_ora_test_data(self, course_id, submissions_config):
         """
         Run the submit action. For each specified submission, create the submission, create an assessment if specified,
         and create a lock if specified.
         """
         for ora_config in submissions_config:
+            log.info('Creating test submissions for course %s', course_id)
             for submission_config in ora_config['submissions']:
+                log.info("Creating submission for user %s", submission_config['username'])
                 student_item = self.student_item(
                     submission_config['username'],
                     course_id,
@@ -306,8 +310,10 @@ class Command(BaseCommand):
                 submission = sub_api.create_submission(student_item, {'parts': [{'text': text_response}]})
                 workflow_api.create_workflow(submission['uuid'], ['staff'])
                 workflow_api.update_from_assessments(submission['uuid'], None)
+                log.info("Created submission %s for user %s", submission['uuid'], submission_config['username'])
 
                 if submission_config['lockOwner']:
+                    log.info("Creating lock on submission %s owned by %s", submission['uuid'], submission_config['lockOwner'])
                     SubmissionGradingLock.claim_submission_lock(
                         submission['uuid'],
                         self.username_to_anonymous_user_id[submission_config['lockOwner']]
@@ -315,6 +321,7 @@ class Command(BaseCommand):
 
                 if submission_config['gradeData']:
                     grade_data = submission_config['gradeData']
+                    log.info("Creating assessment from user %s for submission %s", grade_data['gradedBy'], submission['uuid'])
                     options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'])
                     block = self.display_name_to_block[ora_config['displayName']]
                     staff_api.create_assessment(
@@ -356,13 +363,11 @@ class Command(BaseCommand):
         """
         learner_usernames, _ = self.get_usernames(submissions_config)
         display_names = self.get_display_names(submissions_config)
-        print('Resetting ORA state for the following ORAs and users')
-        print('ORAs: ' + ' ,'.join(display_names))
-        print('Users: ' + ' ,'.join(learner_usernames))
 
         for display_name in display_names:
             block = self.display_name_to_block[display_name]
             for learner_username in learner_usernames:
+                log.info("Resetting learner state for user %s ORA '%s'", learner_username, display_name)
                 block.clear_student_state(
                     self.username_to_anonymous_user_id[learner_username],
                     str(course_id),
