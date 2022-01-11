@@ -45,7 +45,9 @@ EPILOG = """
 }
 
 The input file can be a single JSON object describing a single ORA or it can be a list of multiple objects
-describing multiple ORAs in one course
+describing multiple ORAs in one course. If you have multiple ORAs specified, they must have unique display
+names or the command won't know which is which. Also, any ORA display name must be unique *withon the course*.
+Display name is the only way we currently identify blocks in this command so there bust be uniqueness.
 """
 
 
@@ -102,17 +104,17 @@ class Command(BaseCommand):
         parser.add_argument(
             '--init',
             action='store_true',
-            help='Create and enroll users, create submissions, assessments, and locks'
+            help='Create and enroll users, create submissions, assessments, and locks.'
         )
         parser.add_argument(
             '--reset',
             action='store_true',
-            help='Clear all ORA submission state from the given course'
+            help='Clear all ORA submission state from the given course.'
         )
         parser.add_argument(
             '--submit',
             action='store_true',
-            help='Create submissions, assessments, and locks d'
+            help='Create submissions, assessments, and locks.'
         )
         parser.epilog = EPILOG
 
@@ -225,7 +227,7 @@ class Command(BaseCommand):
         for ora_config in submissions_config:
             display_name = ora_config['displayName']
             if display_name in display_names:
-                raise CommandError('Duplicate ORA display name found:' + display_name)
+                raise CommandError('Duplicate ORA display name found in configuration file:' + display_name)
             display_names.append(display_name)
         return display_names
 
@@ -246,7 +248,13 @@ class Command(BaseCommand):
         )
         display_name_to_block = {}
         for block in openassessment_blocks:
-            if block.parent is not None:
+            if block.parent is not None and block.display_name in display_names:
+                if block.display_name in display_name_to_block:
+                    raise CommandError((
+                        f"The ORA '{block.display_name}' is specified in the input file. "
+                        "The course contains more than one ORA with that display name. "
+                        f"First two found:  [{display_name_to_block[block.display_name]}, {block.location}]"
+                    ))
                 display_name_to_block[block.display_name] = block
 
         missing_display_names = set(display_names) - set(display_name_to_block.keys())
