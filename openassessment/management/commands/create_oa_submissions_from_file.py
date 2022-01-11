@@ -30,7 +30,7 @@ EPILOG = """
             "gradeData":{
                 "gradedBy": <Username of grader>,
                 "overallFeedback": <Overall feedback>,
-                "criteria": [ # Note: There must be a criterion for all criteria in the ORA rubric 
+                "criteria": [ # Note: There must be a criterion for all criteria in the ORA rubric
                     {
                         "name": <Criterion name>,
                         "selectedOption": <Name of selected option for this criterion>,
@@ -48,12 +48,14 @@ The input file can be a single JSON object describing a single ORA or it can be 
 describing multiple ORAs in one course
 """
 
+
 def generate_lorem_sentences(num_sentences=4):
     """
     Generate some number of sentences of lorem ipsum
     """
     sentences = [generate_lorem_sentence() for _ in range(num_sentences)]
     return " ".join(sentences)
+
 
 def generate_lorem_sentence():
     """
@@ -63,13 +65,14 @@ def generate_lorem_sentence():
     """
     result = []
     lorem_sentence = loremipsum.get_sentence().split()
-    for word in lorem_sentence:        
+    for word in lorem_sentence:
         if word[-1] != "'":
             end_trim_index = len(word) - 2
         else:
-            end_trim_index = len(word) -1
+            end_trim_index = len(word) - 1
         result.append(word[2:end_trim_index])
     return " ".join(result) + '.'
+
 
 class Command(BaseCommand):
     """
@@ -105,14 +108,14 @@ class Command(BaseCommand):
             '--reset',
             action='store_true',
             help='Clear all ORA submission state from the given course'
-        )        
+        )
         parser.add_argument(
             '--submit',
             action='store_true',
             help='Create submissions, assessments, and locks d'
         )
         parser.epilog = EPILOG
-        
+
     def _check_args(self, options):
         """
         Check that one and only one flag was set.
@@ -132,7 +135,7 @@ class Command(BaseCommand):
 
         course_id = options['course_id']
         submissions_config = self.read_config_file(options['submissions_config_file_path'])
-        self.load_anonymous_ids_and_block_locations(course_id, submissions_config)   
+        self.load_anonymous_ids_and_block_locations(course_id, submissions_config)
 
         if options['reset']:
             self.reset_ora_test_data(course_id, submissions_config)
@@ -144,13 +147,13 @@ class Command(BaseCommand):
     def read_config_file(self, file_path):
         """
         Check that the input file exits, and attempt to open and json parse the file.
-        Returns the json parsed input file. 
+        Returns the json parsed input file.
         """
         file_path = '/edx/src/edx-ora2/' + file_path
         if not exists(file_path):
             raise CommandError(f'File {file_path} not found.')
 
-        with open(file_path) as f:
+        with open(file_path, 'r') as f:
             try:
                 submissions_config = json.load(f)
                 if not isinstance(submissions_config, list):
@@ -172,8 +175,8 @@ class Command(BaseCommand):
 
     def get_usernames(self, submissions_config):
         """
-        Go through the submissions config and gather all usernames into two sets: 
-        -usernames of people who submitted (learners) 
+        Go through the submissions config and gather all usernames into two sets:
+        -usernames of people who submitted (learners)
         -usernames mentioned in the file as graders or lock owners (course staff)
         """
         learners = set()
@@ -185,7 +188,7 @@ class Command(BaseCommand):
                     course_staff.add(submission['gradeData']['gradedBy'])
                 if submission['lockOwner'] is not None:
                     course_staff.add(submission['lockOwner'])
-        
+
         return learners, course_staff
 
     def load_anonymous_user_ids(self, course_id, usernames):
@@ -195,23 +198,23 @@ class Command(BaseCommand):
         """
         try:
             from common.djangoapps.student.models import anonymous_id_for_user  # pylint: disable=import-error
-        except ModuleNotFoundError:
+        except ModuleNotFoundError as e:
             raise CommandError((
                 "Cannot import common.djangoapps.student.models.anonymous_id_for_user. "
                 "This management command must be run from the LMS shell."
-            ))
-        # Also include a superuser because when we reset we need to include a "reset by" anonymous id 
+            )) from e
+        # Also include a superuser because when we reset we need to include a "reset by" anonymous id
         usernames.add(SUPERUSER_USERNAME)
 
-        anonymous_user_ids = dict()
+        anonymous_user_ids = {}
         users = get_user_model().objects.filter(username__in=usernames).all()
         for user in users:
             anonymous_user_ids[user.username] = anonymous_id_for_user(user=user, course_id=course_id)
-        
+
         missing_usernames = set(usernames) - set(anonymous_user_ids.keys())
         if missing_usernames:
             raise CommandError("Unable to load anonymous id for user(s) " + ' '.join(missing_usernames))
-        
+
         self.username_to_anonymous_user_id = anonymous_user_ids
 
     def get_display_names(self, submissions_config):
@@ -233,15 +236,15 @@ class Command(BaseCommand):
         """
         try:
             from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
-        except ModuleNotFoundError:
+        except ModuleNotFoundError as e:
             raise CommandError((
                 "Cannot import xmodule.modulestore.django.modulestore. "
                 "This management command must be run from the LMS shell."
-            ))
+            )) from e
         openassessment_blocks = modulestore().get_items(
             course_id, qualifiers={'category': 'openassessment'}
         )
-        display_name_to_block = dict()
+        display_name_to_block = {}
         for block in openassessment_blocks:
             if block.parent is not None:
                 display_name_to_block[block.display_name] = block
@@ -256,7 +259,7 @@ class Command(BaseCommand):
     def init_ora_test_data(self, course_id, submissions_config):
         """
         Run the initialization. Create all users, enroll in the course, and then call the submit logic.
-        """        
+        """
         learners, course_staff = self.get_usernames(submissions_config)
 
         print(f'Creating and enrolling {len(learners)} learners')
@@ -266,7 +269,7 @@ class Command(BaseCommand):
             course=course_id,
             ignore_user_already_exists=True
         )
-        
+
         print(f'Creating and enrolling {len(course_staff)} course staff')
         call_command(
             'create_test_users',
@@ -275,7 +278,7 @@ class Command(BaseCommand):
             course_staff=True,
             ignore_user_already_exists=True
         )
-        
+
         self.submit_ora_test_data(course_id, submissions_config)
 
     def submit_ora_test_data(self, course_id, submissions_config):
@@ -285,36 +288,36 @@ class Command(BaseCommand):
         """
         for ora_config in submissions_config:
             for submission_config in ora_config['submissions']:
-                    student_item = self.student_item(
-                        submission_config['username'],
-                        course_id,
-                        ora_config['displayName']
+                student_item = self.student_item(
+                    submission_config['username'],
+                    course_id,
+                    ora_config['displayName']
+                )
+                # Submissions consist of username, a line break, and then some lorem
+                text_response = submission_config['username'] + '\n' + generate_lorem_sentences()
+                submission = sub_api.create_submission(student_item, {'parts': [{'text': text_response}]})
+                workflow_api.create_workflow(submission['uuid'], ['staff'])
+                workflow_api.update_from_assessments(submission['uuid'], None)
+
+                if submission_config['lockOwner']:
+                    SubmissionGradingLock.claim_submission_lock(
+                        submission['uuid'],
+                        self.username_to_anonymous_user_id[submission_config['lockOwner']]
                     )
-                    # Submissions consist of username, a line break, and then some lorem
-                    text_response = submission_config['username'] + '\n' + generate_lorem_sentences()
-                    submission = sub_api.create_submission(student_item, {'parts':[{'text': text_response}]})
-                    workflow_api.create_workflow(submission['uuid'], ['staff'])
+
+                if submission_config['gradeData']:
+                    grade_data = submission_config['gradeData']
+                    options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'])
+                    block = self.display_name_to_block[ora_config['displayName']]
+                    staff_api.create_assessment(
+                        submission['uuid'],
+                        self.username_to_anonymous_user_id[grade_data['gradedBy']],
+                        options_selected,
+                        criterion_feedback,
+                        grade_data['overallFeedback'],
+                        create_rubric_dict(block.prompts, block.rubric_criteria_with_labels)
+                    )
                     workflow_api.update_from_assessments(submission['uuid'], None)
-                    
-                    if submission_config['lockOwner']:
-                        SubmissionGradingLock.claim_submission_lock(
-                            submission['uuid'],
-                            self.username_to_anonymous_user_id[submission_config['lockOwner']]
-                        )
-                    
-                    if submission_config['gradeData']:
-                        grade_data = submission_config['gradeData']
-                        options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'])
-                        block = self.display_name_to_block[ora_config['displayName']]
-                        staff_api.create_assessment(
-                            submission['uuid'],
-                            self.username_to_anonymous_user_id[grade_data['gradedBy']],
-                            options_selected,
-                            criterion_feedback,
-                            grade_data['overallFeedback'],
-                            create_rubric_dict(block.prompts, block.rubric_criteria_with_labels)   
-                        )
-                        workflow_api.update_from_assessments(submission['uuid'], None)
 
     def student_item(self, username, course_id, ora_display_name):
         """Helper for creating student item dicts"""
@@ -324,7 +327,7 @@ class Command(BaseCommand):
             'item_id': str(self.display_name_to_block[ora_display_name].location),
             'item_type': 'openassessment'
         }
-    
+
     def api_format_criteria(self, criteria):
         """
         Our input file is specifying assessments as a list of objects that link one criterion with the selected
@@ -339,7 +342,6 @@ class Command(BaseCommand):
             criterion_feedback[criterion['name']] = criterion['feedback']
         return options_selected, criterion_feedback
 
-    
     def reset_ora_test_data(self, course_id, submissions_config):
         """
         Reset all mentioned submitters in all mentioned ORAs by calling clear_student_state
@@ -349,7 +351,7 @@ class Command(BaseCommand):
         print('Resetting ORA state for the following ORAs and users')
         print('ORAs: ' + ' ,'.join(display_names))
         print('Users: ' + ' ,'.join(learner_usernames))
-        
+
         for display_name in display_names:
             block = self.display_name_to_block[display_name]
             for learner_username in learner_usernames:
