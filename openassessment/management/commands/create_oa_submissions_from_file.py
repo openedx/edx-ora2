@@ -103,39 +103,29 @@ class Command(BaseCommand):
                 'view a description of the file format.'
             )
         )
-        parser.add_argument(
+        modes_group = parser.add_mutually_exclusive_group(required=True)
+        modes_group.add_argument(
             '--init',
             action='store_true',
             help='Create and enroll users, create submissions, assessments, and locks.'
         )
-        parser.add_argument(
+        modes_group.add_argument(
             '--reset',
             action='store_true',
             help='Clear all ORA submission state from the given course.'
         )
-        parser.add_argument(
+        modes_group.add_argument(
             '--submit',
             action='store_true',
             help='Create submissions, assessments, and locks.'
         )
         parser.epilog = EPILOG
 
-    def _check_args(self, options):
-        """
-        Check that one and only one flag was set.
-        """
-        active_flags = sum([1 if options[flag] else 0 for flag in ['init', 'reset', 'submit']])
-        if active_flags == 0:
-            raise CommandError("One of --init --reset --submit is required.")
-        if active_flags > 1:
-            raise CommandError("--init --reset --submit are mutually exclusive")
-
     def handle(self, *args, **options):
         """
         Run the command. Do additional arg checking, parse and load the input file,
         do up-front loading, and then do either init, reset, or submit.
         """
-        self._check_args(options)
         course_id = options['course_id']
         submissions_config = self.read_config_file(options['submissions_config_file_path'])
         if options['init']:
