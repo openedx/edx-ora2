@@ -1,11 +1,8 @@
 """
-Create dummy submissions and assessments for testing.
+Management command to create submissions, assessments, and locks to make testing easier.
 """
 
 import json
-import copy
-from re import sub
-from uuid import uuid4
 from os.path import exists
 
 from django.contrib.auth import get_user_model
@@ -16,44 +13,72 @@ from opaque_keys.edx.keys import CourseKey
 
 import loremipsum
 from submissions import api as sub_api
-from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import staff as staff_api
 from openassessment.workflow import api as workflow_api
-from openassessment.xblock import submission_mixin
-from openassessment.xblock import data_conversion
 from openassessment.xblock.data_conversion import create_rubric_dict
 from openassessment.staffgrader.models import SubmissionGradingLock
 
 SUPERUSER_USERNAME = 'edx'
 
 EPILOG = """
-The path to the file describing the format and structure of the submissions and assessments to generate. The path should be relative from the the ora2 src directory.'
+{
+    "displayName": <Display Name for the target ORA>,
+    "submissions": [
+        {
+            "username": <Username of submitter>,
+            "lockOwner": <Username of lock owner, or null for no lock>,
+            "gradeData":{
+                "gradedBy": <Username of grader>,
+                "overallFeedback": <Overall feedback>,
+                "criteria": [ # Note: There must be a criterion for all criteria in the ORA rubric 
+                    {
+                        "name": <Criterion name>,
+                        "selectedOption": <Name of selected option for this criterion>,
+                        "feedback": <feedback for criterion>,
+                    },
+                    ...
+                ]
+            }
+        },
+        ...
+    ]
+}
 
-Input files should be placed somewhere in WORKSPACE_ROOT/src/edx-ora2/ on local disk, which corresponds to
-/edx/src/edx-ora2 in the edx-platform docker container.
-
-Input files should be in the format:
-{format to come}
+The input file can be a single JSON object describing a single ORA or it can be a list of multiple objects
+describing multiple ORAs in one course
 """
 
-# def generate_lorem_sentences(num_sentences=1):
-    
-# def generate_lorem_sentence():
-#     result = []
-#     lorem_sentence = loremipsum.get_sentence().split()
-#     for word in lorem_sentence:
-#         result = 
+def generate_lorem_sentences(num_sentences=4):
+    """
+    Generate some number of sentences of lorem ipsum
+    """
+    sentences = [generate_lorem_sentence() for _ in range(num_sentences)]
+    return " ".join(sentences)
 
+def generate_lorem_sentence():
+    """
+    Generate a sentence of lorem ipsum. The loremipsum library is broken and returns things like
+    "B'lorem' b'ipsum' b'next' b'nextword'."
+    This just trims off the byte string markers that we're getting.
+    """
+    result = []
+    lorem_sentence = loremipsum.get_sentence().split()
+    for word in lorem_sentence:        
+        if word[-1] != "'":
+            end_trim_index = len(word) - 2
+        else:
+            end_trim_index = len(word) -1
+        result.append(word[2:end_trim_index])
+    return " ".join(result) + '.'
 
 class Command(BaseCommand):
     """
+    Management command to create submissions, assessments, and locks to make testing easier.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.username_to_anonymous_user_id = None
         self.display_name_to_block = None
-        self.display_name_to_rubric_dict = None
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -63,7 +88,13 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             'submissions_config_file_path',
-            help='Path to the config file relative to and within the ORA directory'
+            help=(
+                'The path to the file describing the format and structure of the submissions and assessments to '
+                'generate. The path should be relative from the the ora2 src directory. Input files should be placed '
+                'somewhere in WORKSPACE_ROOT/src/edx-ora2/ on local disk, which corresponds to /edx/src/edx-ora2 in '
+                'the edx-platform docker container. \n For file format, call this management command with --help to '
+                'view a description of the file format.'
+            )
         )
         parser.add_argument(
             '--init',
@@ -83,6 +114,9 @@ class Command(BaseCommand):
         parser.epilog = EPILOG
         
     def _check_args(self, options):
+        """
+        Check that one and only one flag was set.
+        """
         active_flags = sum([1 if options[flag] else 0 for flag in ['init', 'reset', 'submit']])
         if active_flags == 0:
             raise CommandError("One of --init --reset --submit is required.")
@@ -91,35 +125,27 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
+        Run the command. Do additional arg checking, parse and load the input file,
+        do up-front loading, and then do either init, reset, or submit.
         """
         self._check_args(options)
 
         course_id = options['course_id']
         submissions_config = self.read_config_file(options['submissions_config_file_path'])
         self.load_anonymous_ids_and_block_locations(course_id, submissions_config)   
+
         if options['reset']:
             self.reset_ora_test_data(course_id, submissions_config)
         elif options['init']:
             self.init_ora_test_data(course_id, submissions_config)
         elif options['submit']:
             self.submit_ora_test_data(course_id, submissions_config)
-        
-    def get_display_names(self, submissions_config):
-        display_names = []
-        for ora_config in submissions_config:
-            display_name = ora_config['displayName']
-            if display_name in display_names:
-                raise CommandError('Duplicate ORA display name found:' + display_name)
-            display_names.append(display_name)
-        return display_names
-
-    def load_anonymous_ids_and_block_locations(self, course_id, submissions_config):
-        learners, course_staff = self.get_usernames(submissions_config)
-        self.load_anonymous_user_ids(course_id, learners | course_staff)
-        ora_display_names = self.get_display_names(submissions_config)
-        self.load_modulestore_data(course_id, ora_display_names)
 
     def read_config_file(self, file_path):
+        """
+        Check that the input file exits, and attempt to open and json parse the file.
+        Returns the json parsed input file. 
+        """
         file_path = '/edx/src/edx-ora2/' + file_path
         if not exists(file_path):
             raise CommandError(f'File {file_path} not found.')
@@ -133,10 +159,25 @@ class Command(BaseCommand):
             except json.JSONDecodeError as e:
                 raise CommandError(f'Unable to parse file {file_path}: {e}') from e
 
-    def get_usernames(self, submissions_config):        
+    def load_anonymous_ids_and_block_locations(self, course_id, submissions_config):
+        """
+        Do all upfront database and modulestore lookups.
+        Look up anonymous user ids and grab ORA blocks from the modulestore.
+        """
+        learners, course_staff = self.get_usernames(submissions_config)
+        self.load_anonymous_user_ids(course_id, learners | course_staff)
+
+        ora_display_names = self.get_display_names(submissions_config)
+        self.load_ora_blocks(course_id, ora_display_names)
+
+    def get_usernames(self, submissions_config):
+        """
+        Go through the submissions config and gather all usernames into two sets: 
+        -usernames of people who submitted (learners) 
+        -usernames mentioned in the file as graders or lock owners (course staff)
+        """
         learners = set()
         course_staff = set()
-        
         for ora_config in submissions_config:
             for submission in ora_config['submissions']:
                 learners.add(submission['username'])
@@ -147,22 +188,22 @@ class Command(BaseCommand):
         
         return learners, course_staff
 
-    def init_ora_test_data(self, course_id, submissions_config):
-        print('Running the init.')
-        learners, course_staff = self.get_usernames(submissions_config)
-
-        print(f'Creating and enrolling {len(learners)} learners')
-        call_command('create_test_users', *learners, course=course_id, ignore_user_already_exists=True)
-        
-        print(f'Creating and enrolling {len(course_staff)} course staff')
-        call_command('create_test_users', *course_staff, course=course_id, course_staff=True, ignore_user_already_exists=True)
-        
-        self.submit_ora_test_data(course_id, submissions_config)
-
     def load_anonymous_user_ids(self, course_id, usernames):
-        from common.djangoapps.student.models import anonymous_id_for_user
-        anonymous_user_ids = dict()
+        """
+        Look up all Users with the given usernames, look up their anonymous user ids for the specified course, and
+        store a mapping from username to anonaymous id in self.username_to_anonymous_user_id
+        """
+        try:
+            from common.djangoapps.student.models import anonymous_id_for_user  # pylint: disable=import-error
+        except ModuleNotFoundError:
+            raise CommandError((
+                "Cannot import common.djangoapps.student.models.anonymous_id_for_user. "
+                "This management command must be run from the LMS shell."
+            ))
+        # Also include a superuser because when we reset we need to include a "reset by" anonymous id 
         usernames.add(SUPERUSER_USERNAME)
+
+        anonymous_user_ids = dict()
         users = get_user_model().objects.filter(username__in=usernames).all()
         for user in users:
             anonymous_user_ids[user.username] = anonymous_id_for_user(user=user, course_id=course_id)
@@ -172,29 +213,76 @@ class Command(BaseCommand):
             raise CommandError("Unable to load anonymous id for user(s) " + ' '.join(missing_usernames))
         
         self.username_to_anonymous_user_id = anonymous_user_ids
-    
-    def load_modulestore_data(self, course_id, display_names):
-        from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
+
+    def get_display_names(self, submissions_config):
+        """
+        Returns a list of all ORA display names mentioned in the submissions config
+        """
+        display_names = []
+        for ora_config in submissions_config:
+            display_name = ora_config['displayName']
+            if display_name in display_names:
+                raise CommandError('Duplicate ORA display name found:' + display_name)
+            display_names.append(display_name)
+        return display_names
+
+    def load_ora_blocks(self, course_id, display_names):
+        """
+        Look up openassessment blocks for the course from the modulestore, and save the ones that match the given
+        display names in a dict mapping from display name to block in self.display_name_to_block
+        """
+        try:
+            from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
+        except ModuleNotFoundError:
+            raise CommandError((
+                "Cannot import xmodule.modulestore.django.modulestore. "
+                "This management command must be run from the LMS shell."
+            ))
         openassessment_blocks = modulestore().get_items(
             course_id, qualifiers={'category': 'openassessment'}
         )
-        openassessment_blocks = [
-            block for block in openassessment_blocks if block.parent is not None
-        ]
-        display_name_to_block = {block.display_name: block for block in openassessment_blocks}
+        display_name_to_block = dict()
+        for block in openassessment_blocks:
+            if block.parent is not None:
+                display_name_to_block[block.display_name] = block
+
+        missing_display_names = set(display_names) - set(display_name_to_block.keys())
+        if missing_display_names:
+            raise CommandError(
+                f"The following Display Name(s) were not found in {str(course_id)} {' '.join(missing_display_names)}"
+            )
         self.display_name_to_block = display_name_to_block
-    
-    
-    def student_item(self, username, course_id, ora_display_name):
-        return {
-            'student_id': self.username_to_anonymous_user_id[username],
-            'course_id': str(course_id),
-            'item_id': str(self.display_name_to_block[ora_display_name].location),
-            'item_type': 'openassessment'
-        }
+
+    def init_ora_test_data(self, course_id, submissions_config):
+        """
+        Run the initialization. Create all users, enroll in the course, and then call the submit logic.
+        """        
+        learners, course_staff = self.get_usernames(submissions_config)
+
+        print(f'Creating and enrolling {len(learners)} learners')
+        call_command(
+            'create_test_users',
+            *learners,
+            course=course_id,
+            ignore_user_already_exists=True
+        )
         
+        print(f'Creating and enrolling {len(course_staff)} course staff')
+        call_command(
+            'create_test_users',
+            *course_staff,
+            course=course_id,
+            course_staff=True,
+            ignore_user_already_exists=True
+        )
+        
+        self.submit_ora_test_data(course_id, submissions_config)
+
     def submit_ora_test_data(self, course_id, submissions_config):
-        print('Running the submit.')
+        """
+        Run the submit action. For each specified submission, create the submission, create an assessment if specified,
+        and create a lock if specified.
+        """
         for ora_config in submissions_config:
             for submission_config in ora_config['submissions']:
                     student_item = self.student_item(
@@ -202,7 +290,8 @@ class Command(BaseCommand):
                         course_id,
                         ora_config['displayName']
                     )
-                    text_response = submission_config['username'] + '\n' + ' '.join(loremipsum.get_sentences(3))
+                    # Submissions consist of username, a line break, and then some lorem
+                    text_response = submission_config['username'] + '\n' + generate_lorem_sentences()
                     submission = sub_api.create_submission(student_item, {'parts':[{'text': text_response}]})
                     workflow_api.create_workflow(submission['uuid'], ['staff'])
                     workflow_api.update_from_assessments(submission['uuid'], None)
@@ -227,8 +316,22 @@ class Command(BaseCommand):
                         )
                         workflow_api.update_from_assessments(submission['uuid'], None)
 
+    def student_item(self, username, course_id, ora_display_name):
+        """Helper for creating student item dicts"""
+        return {
+            'student_id': self.username_to_anonymous_user_id[username],
+            'course_id': str(course_id),
+            'item_id': str(self.display_name_to_block[ora_display_name].location),
+            'item_type': 'openassessment'
+        }
     
     def api_format_criteria(self, criteria):
+        """
+        Our input file is specifying assessments as a list of objects that link one criterion with the selected
+        option name and any feedback for that criterion.
+        The API wants two dicts, one from criteria name to selected option name, and one from criteria name to
+        feedback for that criterion.
+        """
         options_selected = {}
         criterion_feedback = {}
         for criterion in criteria:
@@ -238,8 +341,9 @@ class Command(BaseCommand):
 
     
     def reset_ora_test_data(self, course_id, submissions_config):
-        from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
-        store = modulestore()
+        """
+        Reset all mentioned submitters in all mentioned ORAs by calling clear_student_state
+        """
         learner_usernames, _ = self.get_usernames(submissions_config)
         display_names = self.get_display_names(submissions_config)
         print('Resetting ORA state for the following ORAs and users')
