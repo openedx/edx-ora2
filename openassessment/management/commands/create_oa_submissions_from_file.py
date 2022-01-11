@@ -50,6 +50,9 @@ The input file can be a single JSON object describing a single ORA or it can be 
 describing multiple ORAs in one course. If you have multiple ORAs specified, they must have unique display
 names or the command won't know which is which. Also, any ORA display name must be unique *withon the course*.
 Display name is the only way we currently identify blocks in this command so there bust be uniqueness.
+
+Unfortunately due to how argparse works this will have no formatting on the command line, check this management
+command's source for a formatted version.
 """
 
 
