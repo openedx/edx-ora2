@@ -8,15 +8,15 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.20.8
+boto3==1.20.37
     # via -r requirements/base.in
-botocore==1.23.8
+botocore==1.23.37
     # via
     #   boto3
     #   s3transfer
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.7
+charset-normalizer==2.0.10
     # via requests
 click==8.0.3
     # via code-annotations
@@ -24,7 +24,7 @@ code-annotations==1.2.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==2.2.24
+django==2.2.26
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -46,7 +46,7 @@ django-model-utils==4.2.0
     #   edx-submissions
 django-simple-history==3.0.0
     # via -r requirements/base.in
-django-waffle==2.2.1
+django-waffle==2.3.0
     # via
     #   edx-django-utils
     #   edx-toggles
@@ -54,7 +54,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==4.4.0
+edx-django-utils==4.4.1
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -94,7 +94,7 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-lxml==4.6.5
+lxml==4.7.1
     # via
     #   -r requirements/base.in
     #   xblock
@@ -117,9 +117,9 @@ pbr==5.8.0
     # via stevedore
 polib==1.1.1
     # via edx-i18n-tools
-psutil==5.8.0
+psutil==5.9.0
     # via edx-django-utils
-pymongo==3.12.1
+pymongo==4.0.1
     # via edx-opaque-keys
 pyparsing==3.0.6
     # via packaging
@@ -131,7 +131,7 @@ python-dateutil==2.4.0
     #   xblock
 python-slugify==5.0.2
     # via code-annotations
-python-swiftclient==3.12.0
+python-swiftclient==3.13.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -147,7 +147,7 @@ pyyaml==6.0
     #   code-annotations
     #   edx-i18n-tools
     #   xblock
-requests==2.26.0
+requests==2.27.1
     # via python-swiftclient
 s3transfer==0.5.0
     # via boto3
@@ -168,7 +168,7 @@ stevedore==3.5.0
     #   edx-opaque-keys
 text-unidecode==1.3
     # via python-slugify
-urllib3==1.26.7
+urllib3==1.26.8
     # via
     #   botocore
     #   requests
@@ -176,7 +176,7 @@ voluptuous==0.12.2
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-web-fragments==1.1.0
+web-fragments==2.0.0
     # via xblock
 webencodings==0.5.1
     # via
