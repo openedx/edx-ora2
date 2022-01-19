@@ -279,7 +279,6 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         expected_response = {}
         for student in self.students:
             self.add_expected_response_dict(expected_response, student)
-
         self.assertDictEqual(response, expected_response)
 
     @freeze_time(TEST_START_DATE)
@@ -497,69 +496,29 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
 
     @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
     @freeze_time(TEST_START_DATE)
-    def test_staff_workflows_to_api_format(self, xblock):
-        """ Unit test for staff_workflows_to_api_format """
+    def test_get_list_workflows_serializer_context(self, xblock):
+        """ Unit test for _get_list_workflows_serializer_context """
         self.set_staff_user(xblock)
         # Set up the mock return_value for bulk_deep_fetch_assessments.
         # submissions 0 and 3 are the only ones assessed
-        mock_assessments_map = {
-            self.students[0].submission['uuid']: Mock(points_earned=5, points_possible=10),
-            self.students[3].submission['uuid']: Mock(points_earned=6, points_possible=10)
-        }
         mock_staff_workflows = [
-            MockAnnotatedStaffWorkflow(
-                submission_uuid=self.students[0].submission['uuid'],
-                identifying_uuid=self.students[0].submission['uuid'],
-                created_at=SUBMITTED_DATE,
-                grading_completed_at=TEST_START_DATE,
-                grading_status='graded',
-                lock_status='unlocked',
-                assessment='assessment-1',
-                scorer_id=self.course_staff[1].student_id,
-            ),
-            MockAnnotatedStaffWorkflow(
-                submission_uuid=self.students[1].submission['uuid'],
-                identifying_uuid=self.students[1].submission['uuid'],
-                created_at=SUBMITTED_DATE,
-                grading_completed_at=None,
-                grading_status='ungraded',
-                lock_status='locked',
-                assessment=None,
-                scorer_id='',
-            ),
-            MockAnnotatedStaffWorkflow(
-                submission_uuid=self.students[2].submission['uuid'],
-                identifying_uuid=self.students[2].submission['uuid'],
-                created_at=SUBMITTED_DATE,
-                grading_completed_at=None,
-                grading_status='ungraded',
-                lock_status='in-progress',
-                assessment=None,
-                scorer_id='',
-            ),
-            MockAnnotatedStaffWorkflow(
-                submission_uuid=self.students[3].submission['uuid'],
-                identifying_uuid=self.students[3].submission['uuid'],
-                created_at=SUBMITTED_DATE,
-                grading_completed_at=TEST_START_DATE + timedelta(days=4),
-                grading_status='graded',
-                lock_status='locked',
-                assessment='assessment-2',
-                scorer_id=self.course_staff[2].student_id,
-            ),
+            Mock(scorer_id=self.course_staff[1].student_id),
+            Mock(assessment=None, scorer_id=None),
+            Mock(assessment=None, scorer_id=None),
+            Mock(scorer_id=self.course_staff[2].student_id),
         ]
         with self._mock_get_student_ids_by_submission_uuid() as mock_get_student_ids:
             # with self._mock_get_team_ids_by_team_submission_uuid() as mock_get_team_ids:
             with self._mock_map_anonymized_ids_to_usernames() as mock_map_ids:
                 with patch.object(xblock, 'bulk_deep_fetch_assessments') as mock_bulk_fetch_assessments:
-                    mock_bulk_fetch_assessments.return_value = mock_assessments_map
-                    response = xblock.staff_workflows_to_api_format(mock_staff_workflows)
+                    # pylint: disable=protected-access
+                    context = xblock._get_list_workflows_serializer_context(mock_staff_workflows)
 
         mock_get_student_ids.assert_called_once_with(
             self.course_id,
-            self.submission_uuids
+            {workflow.identifying_uuid for workflow in mock_staff_workflows}
         )
-        # mock_get_team_ids.assert_not_called()
+
         # We only expect to look up the learner student_ids and the student_ids of the staff that assessed submissions.
         # The other two shouldn't be included.
         expected_anonymous_id_lookups = set(student.student_id for student in self.students)
@@ -567,56 +526,14 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
             {self.course_staff[1].student_id, self.course_staff[2].student_id}
         )
         mock_map_ids.assert_called_once_with(expected_anonymous_id_lookups)
-        mock_bulk_fetch_assessments.assert_called_once_with({'assessment-1', 'assessment-2'})
+        mock_bulk_fetch_assessments.assert_called_once_with(
+            {mock_staff_workflows[0].assessment, mock_staff_workflows[3].assessment}
+        )
 
-        # Again, verbose, but better to be explicit in unit test expectations.
-        expected_response = {
-            self.students[0].submission['uuid']: {
-                'dateGraded': str(TEST_START_DATE),
-                'dateSubmitted': str(SUBMITTED_DATE),
-                'gradedBy': self.course_staff[1].username,
-                'gradingStatus': 'graded',
-                'lockStatus': 'unlocked',
-                'score': {
-                    'pointsEarned': 5,
-                    'pointsPossible': 10
-                },
-                'submissionUuid': self.students[0].submission['uuid'],
-                'username': self.students[0].username
-            },
-            self.students[1].submission['uuid']: {
-                'dateGraded': 'None',
-                'dateSubmitted': str(SUBMITTED_DATE),
-                'gradedBy': None,
-                'gradingStatus': 'ungraded',
-                'lockStatus': 'locked',
-                'score': {},
-                'submissionUuid': self.students[1].submission['uuid'],
-                'username': self.students[1].username
-            },
-            self.students[2].submission['uuid']: {
-                'dateGraded': 'None',
-                'dateSubmitted': str(SUBMITTED_DATE),
-                'gradedBy': None,
-                'gradingStatus': 'ungraded',
-                'lockStatus': 'in-progress',
-                'score': {},
-                'submissionUuid': self.students[2].submission['uuid'],
-                'username': self.students[2].username
-            },
-            self.students[3].submission['uuid']: {
-                'dateGraded': str(TEST_START_DATE + timedelta(days=4)),
-                'dateSubmitted': str(SUBMITTED_DATE),
-                'gradedBy': self.course_staff[2].username,
-                'gradingStatus': 'graded',
-                'lockStatus': 'locked',
-                'score': {
-                    'pointsEarned': 6,
-                    'pointsPossible': 10
-                },
-                'submissionUuid': self.students[3].submission['uuid'],
-                'username': self.students[3].username
-            },
+        expected_context = {
+            'submission_uuid_to_student_id': mock_get_student_ids.return_value,
+            'anonymous_id_to_username': mock_map_ids.return_value,
+            'submission_uuid_to_assessment': mock_bulk_fetch_assessments.return_value,
         }
 
-        self.assertDictEqual(response, expected_response)
+        self.assertDictEqual(context, expected_context)
