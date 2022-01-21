@@ -81,7 +81,7 @@ class FileUploadManagerTests(TestCase):
         self.assertEqual(file_upload.description, expected_desc)
         self.assertEqual(file_upload.size, expected_size)
 
-    @override_settings(ORA2_FILEUPLOAD_BACKEND='django')
+    @override_settings(ORA2_FILEUPLOAD_BACKEND='django', LMS_ROOT_URL='http://foobar.example.com')
     def test_get_append_delete(self):
         files = self.manager.get_uploads()
         self.assertEqual(files, [])
@@ -119,7 +119,7 @@ class FileUploadManagerTests(TestCase):
             course_id=manager.block.course_id,
         ).all())
 
-    @override_settings(ORA2_FILEUPLOAD_BACKEND='django')
+    @override_settings(ORA2_FILEUPLOAD_BACKEND='django', LMS_ROOT_URL='http://foobar.example.com')
     def test_shared(self):
         files = self.team_manager.get_uploads()
         self.assertEqual(files, [])
@@ -170,6 +170,7 @@ class FileUploadManagerTests(TestCase):
     @override_settings(
         ORA2_FILEUPLOAD_BACKEND='django',
         MEDIA_ROOT='/tmp',
+        LMS_ROOT_URL='http://foobar.example.com',
     )
     def test_shared_file_descriptors_have_download_urls(self):
         self.team_manager.append_uploads(
