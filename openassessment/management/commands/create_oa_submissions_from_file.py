@@ -34,8 +34,8 @@ EPILOG = """
                 "overallFeedback": <Overall feedback>,
                 "criteria": [ # Note: There must be a criterion for all criteria in the ORA rubric
                     {
-                        "name": <Criterion name>,
-                        "selectedOption": <Name of selected option for this criterion>,
+                        "label": <Criterion label>,
+                        "selectedOption": <label of selected option for this criterion>,
                         "feedback": <feedback for criterion>,
                     },
                     ...
@@ -323,15 +323,16 @@ class Command(BaseCommand):
                         grade_data['gradedBy'],
                         submission['uuid']
                     )
-                    options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'])
                     block = self.display_name_to_block[ora_config['displayName']]
+                    rubric_dict = create_rubric_dict(block.prompts, block.rubric_criteria_with_labels)
+                    options_selected, criterion_feedback = self.api_format_criteria(grade_data['criteria'], rubric_dict)
                     staff_api.create_assessment(
                         submission['uuid'],
                         self.username_to_anonymous_user_id[grade_data['gradedBy']],
                         options_selected,
                         criterion_feedback,
                         grade_data['overallFeedback'],
-                        create_rubric_dict(block.prompts, block.rubric_criteria_with_labels)
+                        rubric_dict,
                     )
                     workflow_api.update_from_assessments(submission['uuid'], None)
 
@@ -344,7 +345,20 @@ class Command(BaseCommand):
             'item_type': 'openassessment'
         }
 
-    def api_format_criteria(self, criteria):
+    def lookup_criterion_and_option_name(self, criterion_label, option_label, rubric_dict):
+        """
+        The label that users see in Studio for criteria and options are the LABELs not the NAMEs.
+        The API expects names, and we have labels, so we need to look at the block's rubric definition to convert.
+        """
+        for criterion in rubric_dict['criteria']:
+            if criterion['label'] == criterion_label:
+                criterion_name = criterion['name']
+                for option in criterion['options']:
+                    if option['label'] == option_label:
+                        return criterion_name, option['name']
+        raise ValueError(f"Can't find criterion and option names for labels {criterion_label}, {option_label}")
+
+    def api_format_criteria(self, criteria, rubric_dict):
         """
         Our input file is specifying assessments as a list of objects that link one criterion with the selected
         option name and any feedback for that criterion.
@@ -354,8 +368,15 @@ class Command(BaseCommand):
         options_selected = {}
         criterion_feedback = {}
         for criterion in criteria:
-            options_selected[criterion['name']] = criterion['selectedOption']
-            criterion_feedback[criterion['name']] = criterion['feedback']
+            criterion_label = criterion['label']
+            option_label = criterion['selectedOption']
+            criterion_name, option_name = self.lookup_criterion_and_option_name(
+                criterion_label, option_label, rubric_dict
+            )
+            options_selected[criterion_name] = option_name
+            feedback = criterion.get('feedback')
+            if feedback is not None:
+                criterion_feedback[criterion_name] = feedback
         return options_selected, criterion_feedback
 
     def reset_ora_test_data(self, course_id, submissions_config):
