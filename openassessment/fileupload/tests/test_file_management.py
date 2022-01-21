@@ -1,5 +1,6 @@
 import json
 from unittest import mock
+from urllib.parse import urljoin
 
 from django.db import IntegrityError
 from django.test import TestCase
@@ -189,7 +190,8 @@ class FileUploadManagerTests(TestCase):
             actual_descriptors = other_users_file_manager.team_file_descriptors(team_id=self.team_id)
             self.assertEqual(2, len(actual_descriptors))
             for descriptor in actual_descriptors:
-                self.assertEqual(mock_default_storage.url.return_value, descriptor['download_url'])
+                expected_url = urljoin("http://foobar.example.com", mock_default_storage.url.return_value)
+                self.assertEqual(expected_url, descriptor['download_url'])
 
             actual_file_uploads = other_users_file_manager.get_team_uploads(team_id=self.team_id)
             self.assertEqual(2, len(actual_file_uploads))
