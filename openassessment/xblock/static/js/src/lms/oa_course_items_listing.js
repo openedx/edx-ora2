@@ -34,7 +34,7 @@ export class CourseItemsListingView {
         let link = null;
         if (itemViewEnabled && (!this.type || (this.type && hasAssessmentType))) {
           const displayValue = this.title || formattedValue;
-          if (esgEnabled && esgRootUrl) {
+          if (esgEnabled) {
             const id = this.model.get('id');
             link = $('<a>', {
               text: displayValue,
@@ -144,7 +144,7 @@ export class CourseItemsListingView {
       },
     ];
 
-    if (esgEnabled) {
+    if (itemViewEnabled && esgEnabled) {
       this._columns.push({
         name: 'response',
         label: gettext('Response'),
