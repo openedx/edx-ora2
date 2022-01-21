@@ -356,6 +356,8 @@ class Command(BaseCommand):
                 for option in criterion['options']:
                     if option['label'] == option_label:
                         return criterion_name, option['name']
+        else:
+            raise ValueError(f"Can't find criterion and option names for labels {criterion_label}, {option_label}")
 
     def api_format_criteria(self, criteria, rubric_dict):
         """
