@@ -266,7 +266,7 @@ def _parse_prompts_xml(root):
     prompts_el = root.find('prompts')
     if prompts_el is not None:
         for prompt in prompts_el.findall('prompt'):
-            prompt_dict = dict()
+            prompt_dict = {}
 
             # Prompt description
             prompt_description = prompt.find('description')
@@ -311,7 +311,7 @@ def _parse_options_xml(options_root):
     order_num = 0
 
     for option in options_root.findall('option'):
-        option_dict = dict()
+        option_dict = {}
 
         # Option order number (sequential)
         option_dict['order_num'] = order_num
@@ -373,7 +373,7 @@ def _parse_criteria_xml(criteria_root):
     order_num = 0
 
     for criterion in criteria_root.findall('criterion'):
-        criterion_dict = dict()
+        criterion_dict = {}
 
         # Criterion order number (sequential)
         criterion_dict['order_num'] = order_num
@@ -435,7 +435,7 @@ def parse_rubric_xml(rubric_root):
         UpdateFromXmlError: The XML definition is invalid or the XBlock could not be updated.
         InvalidRubricError: The rubric was not semantically valid.
     """
-    rubric_dict = dict()
+    rubric_dict = {}
 
     feedback_prompt_el = rubric_root.find('feedbackprompt')
     if feedback_prompt_el is not None:
@@ -471,10 +471,10 @@ def parse_examples_xml(examples):
     """
     examples_list = []
     for example_el in examples:
-        example_dict = dict()
+        example_dict = {}
 
         # Retrieve the answers from the training example
-        answers_list = list()
+        answers_list = []
         answer_elements = example_el.findall('answer')
         if len(answer_elements) != 1:
             raise UpdateFromXmlError('Each "example" element must contain exactly one "answer" element')
@@ -525,7 +525,7 @@ def parse_assessments_xml(assessments_root):
 
     for assessment in assessments_root.findall('assessment'):
 
-        assessment_dict = dict()
+        assessment_dict = {}
 
         # Assessment name
         if 'name' in assessment.attrib:

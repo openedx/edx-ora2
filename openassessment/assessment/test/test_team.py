@@ -42,7 +42,7 @@ class TestTeamApi(CacheResetTest):
         cls.default_assessment = (
             cls.staff_user_id,  # scorer_id
             OPTIONS_SELECTED_DICT["few"]["options"],  # options_selected
-            dict(),  # critereon_feedback
+            {},  # critereon_feedback
             '',  # overall_feedback
             RUBRIC  # rubric_dict
         )
@@ -280,7 +280,7 @@ class TestTeamApi(CacheResetTest):
         assessments = teams_api.create_assessment(
             team_submission_uuid,
             self.staff_user_id,
-            OPTIONS_SELECTED_DICT["few"]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT["few"]["options"], {}, "",
             RUBRIC
         )
         return assessments

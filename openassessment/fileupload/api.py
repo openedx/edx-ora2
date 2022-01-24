@@ -242,7 +242,7 @@ class FileUploadManager:
     """
     def __init__(self, openassessment_xblock):
         self.block = openassessment_xblock
-        self.shared_uploads_for_team_by_key_cache = dict()
+        self.shared_uploads_for_team_by_key_cache = {}
 
     @cached_property
     def student_item_dict(self):
@@ -398,7 +398,7 @@ class FileUploadManager:
         if hasattr(self, 'shared_uploads_for_student_by_key'):
             del self.shared_uploads_for_student_by_key
 
-        self.shared_uploads_for_team_by_key_cache = dict()
+        self.shared_uploads_for_team_by_key_cache = {}
 
     def append_uploads(self, *new_uploads):
         """

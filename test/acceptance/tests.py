@@ -1,7 +1,7 @@
 """
 UI-level acceptance tests for OpenAssessment.
 """
-# pylint: disable=arguments-differ, dangerous-default-value
+# pylint: disable=arguments-differ, arguments-renamed, dangerous-default-value
 
 
 from functools import wraps

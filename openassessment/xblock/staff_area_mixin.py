@@ -123,7 +123,7 @@ class StaffAreaMixin:
         context['prompts_type'] = self.prompts_type
 
         # Include release/due dates for each step in the problem
-        context['step_dates'] = list()
+        context['step_dates'] = []
         for step in ['submission'] + self.assessment_steps:
 
             # Get the dates as a student would see them

@@ -942,7 +942,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             self.q(css=self._bounded_selector(sel)).first.click()
         self.submit_assessment(continue_after)
 
-    def submit_assessment(self, continue_after=False):  # pylint: disable=arguments-differ
+    def submit_assessment(self, continue_after=False):  # pylint: disable=arguments-differ, arguments-renamed
         """
         Submit a staff assessment of the problem.
         """

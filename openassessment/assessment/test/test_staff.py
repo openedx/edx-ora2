@@ -45,14 +45,14 @@ class TestStaffAssessment(CacheResetTest):
         """
         bob_sub, bob = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer", problem_steps=['peer'])
         peer_api.get_submission_to_assess(bob_sub["uuid"], 1)
-        return peer_assess(bob_sub["uuid"], bob["student_id"], scores, dict(), "", RUBRIC, 1)
+        return peer_assess(bob_sub["uuid"], bob["student_id"], scores, {}, "", RUBRIC, 1)
 
     ASSESSMENT_TYPES_DDT = [
-        ('self', lambda sub, scorer_id, scores: self_assess(sub, scorer_id, scores, dict(), "", RUBRIC)),
+        ('self', lambda sub, scorer_id, scores: self_assess(sub, scorer_id, scores, {}, "", RUBRIC)),
         ('peer', lambda sub, scorer_id, scores: TestStaffAssessment._peer_assess(scores)),
         (
             'staff',
-            lambda sub, scorer_id, scores: staff_api.create_assessment(sub, scorer_id, scores, dict(), "", RUBRIC)
+            lambda sub, scorer_id, scores: staff_api.create_assessment(sub, scorer_id, scores, {}, "", RUBRIC)
         ),
     ]
 
@@ -82,7 +82,7 @@ class TestStaffAssessment(CacheResetTest):
         assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[key]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT[key]["options"], {}, "",
             RUBRIC,
         )
 
@@ -113,7 +113,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[key]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT[key]["options"], {}, "",
             RUBRIC,
         )
 
@@ -143,7 +143,7 @@ class TestStaffAssessment(CacheResetTest):
         self_assessment = self_assess(
             tim_sub["uuid"],
             tim["student_id"],
-            initial_assessment["options"], dict(), "",
+            initial_assessment["options"], {}, "",
             RUBRIC,
         )
 
@@ -156,7 +156,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[key]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT[key]["options"], {}, "",
             RUBRIC,
         )
 
@@ -195,7 +195,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT[staff_score]["options"], {}, "",
             RUBRIC,
         )
 
@@ -227,7 +227,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[staff_score]['options'], dict(), "",
+            OPTIONS_SELECTED_DICT[staff_score]['options'], {}, "",
             RUBRIC,
         )
 
@@ -269,13 +269,13 @@ class TestStaffAssessment(CacheResetTest):
         staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT[staff_score]["options"], {}, "",
             RUBRIC,
         )
         staff_api.create_assessment(
             bob_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT[staff_score]["options"], {}, "",
             RUBRIC,
         )
 
@@ -284,7 +284,7 @@ class TestStaffAssessment(CacheResetTest):
         peer_assess(
             bob_sub["uuid"],
             bob["student_id"],
-            OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT["most"]["options"], {}, "",
             RUBRIC,
             requirements["peer"]["must_be_graded_by"]
         )
@@ -309,7 +309,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT["none"]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT["none"]["options"], {}, "",
             RUBRIC,
         )
         workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
@@ -328,7 +328,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            OPTIONS_SELECTED_DICT["none"]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT["none"]["options"], {}, "",
             RUBRIC,
         )
 
@@ -356,7 +356,7 @@ class TestStaffAssessment(CacheResetTest):
             staff_api.create_assessment(
                 tim_sub["uuid"],
                 "Dumbledore",
-                OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
+                OPTIONS_SELECTED_DICT["most"]["options"], {}, "",
                 invalid_rubric,
             )
         self.assertEqual(str(context_manager.exception), "The rubric definition is not valid.")
@@ -382,7 +382,7 @@ class TestStaffAssessment(CacheResetTest):
             staff_api.create_assessment(
                 tim_sub["uuid"],
                 "Dumbledore",
-                dict_to_use, dict(), "",
+                dict_to_use, {}, "",
                 RUBRIC,
             )
         self.assertEqual(str(context_manager.exception), "Invalid options were selected in the rubric.")
@@ -423,7 +423,7 @@ class TestStaffAssessment(CacheResetTest):
             staff_api.create_assessment(
                 "000000",
                 "Dumbledore",
-                OPTIONS_SELECTED_DICT['most']['options'], dict(), "",
+                OPTIONS_SELECTED_DICT['most']['options'], {}, "",
                 RUBRIC,
             )
         self.assertEqual(
@@ -510,7 +510,7 @@ class TestStaffAssessment(CacheResetTest):
         staff_api.create_assessment(
             tim_to_grade["uuid"],
             tim['student_id'],
-            OPTIONS_SELECTED_DICT["all"]["options"], dict(), "",
+            OPTIONS_SELECTED_DICT["all"]["options"], {}, "",
             RUBRIC,
         )
         stats = staff_api.get_staff_grading_statistics(course_id, item_id)

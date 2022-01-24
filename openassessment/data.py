@@ -171,7 +171,7 @@ class CsvWriter:
         """
         self._write_csv_headers()
 
-        rubric_points_cache = dict()
+        rubric_points_cache = {}
         feedback_option_set = set()
         for submission_uuid in self._submission_uuids(course_id):
             self._write_submission_to_csv(submission_uuid)
@@ -1251,7 +1251,7 @@ class OraDownloadData:
                 )
                 continue
 
-            raw_answer = submission.get('answer', dict())
+            raw_answer = submission.get('answer', {})
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
             for index, uploaded_file in enumerate(answer.get_file_uploads()):
                 yield {
