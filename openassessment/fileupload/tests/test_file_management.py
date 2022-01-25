@@ -182,7 +182,9 @@ class FileUploadManagerTests(TestCase):
         other_users_block = MockBlock(number=2, team_id=self.team_id)
         other_users_block.student_id = MockBlock.STUDENT_ID + '317'
 
-        with mock.patch('openassessment.fileupload.backends.django_storage.Backend.get_download_url') as mock_get_download_url:
+        with mock.patch(
+            'openassessment.fileupload.backends.django_storage.Backend.get_download_url'
+        ) as mock_get_download_url:
             other_users_file_manager = FileUploadManager(other_users_block)
 
             actual_descriptors = other_users_file_manager.team_file_descriptors(team_id=self.team_id)
