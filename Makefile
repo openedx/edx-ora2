@@ -3,7 +3,7 @@
 		extract_translations compile_translations generate_dummy_translations validate_translations \
 		detect_changed_source_translations pull_translations push_translations check_translations_up_to_date \
 		quality test-python render-templates test-js test-js-debug test test-acceptance test-a11y test-sandbox \
-		install-osx-requirements
+		install-osx-requirements check_keywords
 
 .DEFAULT_GOAL := help
 
@@ -135,6 +135,9 @@ test-sandbox: test-acceptance test-a11y ## Run acceptance and accessibility test
 install-osx-requirements: ## Install OSX specific requirements using Homebrew
 	brew install gettext
 	brew link gettext --force
+
+check_keywords: ## Scan the Django models in all installed apps in this project for restricted field names
+	python manage.py check_reserved_keywords --override_file db_keyword_overrides.yml
 
 ##################
 #Devstack commands
