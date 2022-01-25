@@ -171,7 +171,6 @@ class FileUploadManagerTests(TestCase):
     @override_settings(
         ORA2_FILEUPLOAD_BACKEND='django',
         MEDIA_ROOT='/tmp',
-        LMS_ROOT_URL='http://foobar.example.com',
     )
     def test_shared_file_descriptors_have_download_urls(self):
         self.team_manager.append_uploads(
@@ -183,14 +182,13 @@ class FileUploadManagerTests(TestCase):
         other_users_block = MockBlock(number=2, team_id=self.team_id)
         other_users_block.student_id = MockBlock.STUDENT_ID + '317'
 
-        with mock.patch('openassessment.fileupload.backends.django_storage.default_storage') as mock_default_storage:
-            mock_default_storage.exists.return_value = True
+        with mock.patch('openassessment.fileupload.backends.django_storage.Backend.get_download_url') as mock_get_download_url:
             other_users_file_manager = FileUploadManager(other_users_block)
 
             actual_descriptors = other_users_file_manager.team_file_descriptors(team_id=self.team_id)
             self.assertEqual(2, len(actual_descriptors))
             for descriptor in actual_descriptors:
-                expected_url = urljoin("http://foobar.example.com", mock_default_storage.url.return_value)
+                expected_url = mock_get_download_url.return_value
                 self.assertEqual(expected_url, descriptor['download_url'])
 
             actual_file_uploads = other_users_file_manager.get_team_uploads(team_id=self.team_id)
