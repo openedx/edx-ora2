@@ -208,7 +208,7 @@ class XBlockHandlerTestCaseMixin:
             Content of the response (mixed).
         """
         # Create a fake request
-        request = webob.Request(dict())
+        request = webob.Request({})
         request.method = request_method
         request.body = content.encode('utf-8')
 

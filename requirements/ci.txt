@@ -4,25 +4,21 @@
 #
 #    make upgrade
 #
-backports.entry-points-selectable==1.1.1
-    # via
-    #   -r requirements/tox.txt
-    #   virtualenv
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.7
+charset-normalizer==2.0.10
     # via requests
-coverage==6.1.2
+coverage==6.2
     # via coveralls
 coveralls==3.3.1
     # via -r requirements/ci.in
-distlib==0.3.3
+distlib==0.3.4
     # via
     #   -r requirements/tox.txt
     #   virtualenv
 docopt==0.6.2
     # via coveralls
-filelock==3.4.0
+filelock==3.4.2
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -35,7 +31,7 @@ packaging==21.3
     # via
     #   -r requirements/tox.txt
     #   tox
-platformdirs==2.4.0
+platformdirs==2.4.1
     # via
     #   -r requirements/tox.txt
     #   virtualenv
@@ -51,7 +47,7 @@ pyparsing==3.0.6
     # via
     #   -r requirements/tox.txt
     #   packaging
-requests==2.26.0
+requests==2.27.1
     # via coveralls
 six==1.16.0
     # via
@@ -62,11 +58,11 @@ toml==0.10.2
     # via
     #   -r requirements/tox.txt
     #   tox
-tox==3.24.4
+tox==3.24.5
     # via -r requirements/tox.txt
-urllib3==1.26.7
+urllib3==1.26.8
     # via requests
-virtualenv==20.10.0
+virtualenv==20.13.0
     # via
     #   -r requirements/tox.txt
     #   tox

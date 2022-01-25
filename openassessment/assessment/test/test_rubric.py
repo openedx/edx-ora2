@@ -32,7 +32,7 @@ class RubricIndexTest(CacheResetTest):
             ) for num in range(self.NUM_CRITERIA)
         ]
 
-        self.options = dict()
+        self.options = {}
         for criterion in self.criteria:
             self.options[criterion.name] = [
                 CriterionOption.objects.create(

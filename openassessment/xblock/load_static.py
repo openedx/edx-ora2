@@ -26,7 +26,7 @@ class LoadStatic:
     Helper class for loading generated file from webpack.
     """
 
-    _manifest = dict()
+    _manifest = {}
     _base_url = ''
     _is_loaded = False
 

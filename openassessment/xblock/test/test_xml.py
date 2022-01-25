@@ -334,7 +334,7 @@ class TestSerializeContent(TestCase):
 
                 # Mutation #2: Empty dict
                 print(f"== Emptying dict {key}")
-                yield self._mutate_dict(input_dict, key, dict())
+                yield self._mutate_dict(input_dict, key, {})
 
                 # Mutation #3-5: value mutations
                 yield from self._value_mutations(input_dict, key)
@@ -346,7 +346,7 @@ class TestSerializeContent(TestCase):
             elif isinstance(val, list):
                 # Mutation #2: Empty list
                 print(f"== Emptying list {key}")
-                yield self._mutate_dict(input_dict, key, list())
+                yield self._mutate_dict(input_dict, key, [])
 
                 # Mutation #3-5: value mutations
                 yield from self._value_mutations(input_dict, key)
@@ -376,7 +376,7 @@ class TestSerializeContent(TestCase):
             list
         """
         print("== Emptying list")
-        yield list()
+        yield []
 
         # Mutation #3-5: value mutations
         yield from (None, "\u9731", 0)

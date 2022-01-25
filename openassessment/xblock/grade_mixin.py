@@ -203,7 +203,7 @@ class GradeMixin:
         from openassessment.assessment.api import peer as peer_api
 
         feedback_text = data.get('feedback_text', '')
-        feedback_options = data.get('feedback_options', list())
+        feedback_options = data.get('feedback_options', [])
 
         try:
             peer_api.set_assessment_feedback({
