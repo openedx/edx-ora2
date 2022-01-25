@@ -33,7 +33,7 @@ class Backend(BaseBackend):
             storage_path = default_storage.url(path)
 
             # Return a fully-qualified URL
-            lms_url = getattr(settings, 'LMS_ROOT_URL')
+            lms_url = settings.LMS_ROOT_URL
             return urljoin(lms_url, storage_path)
         return None
 
