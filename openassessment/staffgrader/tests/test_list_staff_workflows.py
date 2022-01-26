@@ -276,7 +276,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.set_staff_user(xblock)
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
-        expected_response = dict()
+        expected_response = {}
         for student in self.students:
             self.add_expected_response_dict(expected_response, student)
 
@@ -293,7 +293,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
 
-        expected = dict()
+        expected = {}
         self.add_expected_response_dict(expected, self.students[0], graded_by=self.course_staff[0], expected_score=6)
         self.add_expected_response_dict(expected, self.students[1], graded_by=self.course_staff[1], expected_score=4)
         self.add_expected_response_dict(expected, self.students[2], graded_by=self.course_staff[2], expected_score=2)
@@ -312,7 +312,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
 
-        expected = dict()
+        expected = {}
         self.add_expected_response_dict(expected, self.students[0], locked_by=self.course_staff[2])
         self.add_expected_response_dict(expected, self.students[1], locked_by=self.course_staff[1])
         self.add_expected_response_dict(expected, self.students[2], locked_by=self.course_staff[0])
