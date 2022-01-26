@@ -589,7 +589,7 @@ class OpenAssessmentBlock(MessageMixin,
             additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
             additional_js_context={
                 "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
-                "ORA_GRADING_MICROFRONTEND_URL": settings.ORA_GRADING_MICROFRONTEND_URL
+                "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
             }
         )
 
