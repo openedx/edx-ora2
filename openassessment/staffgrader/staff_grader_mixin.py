@@ -202,7 +202,7 @@ class StaffGraderMixin:
                     'pointsPossible': assessment.points_possible,
                 }
             else:
-                workflow_dict['score'] = dict()
+                workflow_dict['score'] = {}
 
             response[workflow.submission_uuid] = workflow_dict
 
