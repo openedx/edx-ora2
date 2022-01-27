@@ -40,7 +40,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT,
                 waiting_for_peer=True
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
 
@@ -55,7 +55,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
             submission = xblock.create_submission(student_item, self.SUBMISSION)
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -69,7 +69,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["peer"], resp.decode('utf-8'))
 
@@ -83,7 +83,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT,
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             if assessment_score_priority.index('self') < assessment_score_priority.index('peer'):
                 self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
@@ -101,7 +101,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -116,7 +116,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -131,7 +131,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -147,7 +147,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, [], [], None,
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
 
@@ -161,7 +161,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             student_item = xblock.get_student_item_dict()
 
             xblock.create_submission(student_item, self.SUBMISSION)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -175,7 +175,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, [], None
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(
                 'You have not yet received all necessary peer reviews to determine your final grade.',
@@ -193,7 +193,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None,
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             if assessment_score_priority.index('self') < assessment_score_priority.index('peer'):
                 self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
@@ -210,7 +210,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, [], SELF_ASSESSMENT,
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             if assessment_score_priority.index('self') < assessment_score_priority.index('peer'):
                 self.assertIn(self.second_sentences_options["self"], resp.decode('utf-8'))
@@ -228,7 +228,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, [], [], None
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -242,7 +242,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options['staff'], resp.decode('utf-8'))
 
@@ -256,7 +256,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -271,7 +271,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, self.PEERS, [], None, waiting_for_peer=True
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -286,7 +286,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -300,7 +300,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             self.create_submission_and_assessments(
                 xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT
             )
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
 
@@ -315,6 +315,6 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 xblock, self.SUBMISSION, self.PEERS, [], SELF_ASSESSMENT
             )
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
-            resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+            resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))

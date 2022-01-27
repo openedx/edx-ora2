@@ -63,7 +63,7 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
         )
 
     if on_init_params is None:
-        on_init_params = dict()
+        on_init_params = {}
 
     try:
         workflow = AssessmentWorkflow.start_workflow(submission_uuid, steps, on_init_params)

@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._history = list()
+        self._history = []
         self._submission_counter = 0
 
     @property

@@ -394,7 +394,9 @@ disable =
 	bad-option-value,
 	missing-function-docstring,
 	missing-class-docstring,
-	import-outside-toplevel
+	import-outside-toplevel,
+	consider-using-f-string,
+	unspecified-encoding,
 
 [REPORTS]
 output-format = text

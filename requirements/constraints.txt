@@ -38,6 +38,3 @@ path<13.2.0
 # path is defined in base.in so it compiles to the most recent version in base.txt, 
 #     and tox comes in in test.in 
 importlib-metadata<2
-
-# CI fails with newer versions - unpin once resolved
-pylint==2.8.3

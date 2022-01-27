@@ -29,6 +29,7 @@
 # francoisedocq, 2014
 # Françoise Docq, 2014
 # ec8fd933aa5d2ad0772d64892951aef0, 2015
+# Gabriel D'Amours <gabriel@opencraft.com>, 2021
 # Gérard Vidal <Gerard.Vidal@ens-lyon.fr>, 2014
 # Gilles Langevin <langevin.net@gmail.com>, 2013
 # Hélène Tindon <helene.tindon@gmail.com>, 2015
@@ -75,7 +76,7 @@
 # Richard Moch <richard.moch@gmail.com>, 2014-2016
 # SALHI Aissam <ais.salhy@gmail.com>, 2014
 # samuel <samuelecin@gmail.com>, 2014
-# Sarina Canelake <sarina@edx.org>, 2014
+# Sarina Canelake <sarina@tcril.org>, 2014
 # Sébastien Viallemonteil <sebastien.viallemonteil@educagri.fr>, 2015
 # Sébastien Vigneau <sebastien.vigneau@gmail.com>, 2015
 # Serge Bibauw <sbibauw@gmail.com>, 2016
@@ -96,9 +97,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-27 14:30-0400\n"
-"PO-Revision-Date: 2021-10-27 21:24+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-12-16 13:33-0500\n"
+"PO-Revision-Date: 2021-12-22 16:02+0000\n"
+"Last-Translator: Gabriel D'Amours <gabriel@opencraft.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -227,7 +228,7 @@ msgstr "Rétroaction sur l'évaluation"
 msgid "Response Files"
 msgstr "Fichiers de réponses"
 
-#: openassessment/data.py:1363
+#: openassessment/data.py:1317
 msgid "No description provided."
 msgstr "Aucune description fournie."
 
@@ -729,7 +730,7 @@ msgid ""
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
 "after cloning will only affect the rubric being modified, and will not "
 "modify any rubric it was cloned from."
-msgstr ""
+msgstr "Pour cloner une grille d'évaluation existante, publiée ou en mode brouillon, vous pouvez chercher avec le ID du Bloc. À noter que tout changement fait par la suite à la grille d'évaluation clonée affectera seulement le clone et n'affectera pas la grille d'évaluation originale."
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"

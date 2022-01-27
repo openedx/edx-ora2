@@ -872,7 +872,7 @@ def set_assessment_feedback(feedback_dict):
     """
     submission_uuid = feedback_dict.get('submission_uuid')
     feedback_text = feedback_dict.get('feedback_text')
-    selected_options = feedback_dict.get('options', list())
+    selected_options = feedback_dict.get('options', [])
 
     if feedback_text and len(feedback_text) > AssessmentFeedback.MAXSIZE:
         error_message = "Assessment feedback too large."

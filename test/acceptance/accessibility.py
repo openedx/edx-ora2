@@ -1,7 +1,7 @@
 """
 UI-level acceptance tests for OpenAssessment accessibility.
 """
-# pylint: disable=arguments-differ
+# pylint: disable=arguments-differ, arguments-renamed
 
 
 import os

@@ -276,7 +276,7 @@ class CsvWriterTest(TransactionCacheResetTest):
             dict: map of output names to StringIO objects.
 
         """
-        output_streams = dict()
+        output_streams = {}
 
         for output_name in names:
             output_buffer = StringIO()

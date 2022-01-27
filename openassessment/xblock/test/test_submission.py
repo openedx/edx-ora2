@@ -145,25 +145,25 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
-        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn("Incomplete", resp.decode('utf-8'))
 
     @scenario('data/line_breaks.xml')
     def test_prompt_line_breaks(self, xblock):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
-        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
         expected_prompt = "<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
     def test_prompt_html_to_text(self, xblock):
-        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
         expected_prompt = "<code><strong>Question 123</strong></code>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
         xblock.prompts_type = "text"
-        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
         expected_prompt = "&lt;code&gt;&lt;strong&gt;Question 123&lt;/strong&gt;&lt;/code&gt;"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
@@ -243,7 +243,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             anonymous_student_id='test_student',
         )
 
-        resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
+        resp = self.request(xblock, 'download_url', json.dumps({}), response_format='json')
 
         self.assertTrue(resp['success'])
         self.assertEqual(str(download_url), str(resp['url']))
@@ -363,7 +363,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/file_upload_scenario.xml')
     def test_download_url_non_existing_file(self, xblock):
         """ For non-existing file, a valid url will be returned, but it will 404 when followed. """
-        resp = self.request(xblock, 'download_url', json.dumps(dict()), response_format='json')
+        resp = self.request(xblock, 'download_url', json.dumps({}), response_format='json')
 
         self.assertTrue(resp['success'])
         self.assertEqual('', resp['url'])
@@ -1077,7 +1077,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         # assert that there's an entry with the correct index in the rendered HTML
         # we should have an index for all files ever uploaded, even the deleted one
-        resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_submission', json.dumps({})).decode('utf-8')
 
         self.assertIn('"submission__answer__file__block submission__answer__file__block__1"  deleted', resp)
         for index in range(len(file_uploads)):
@@ -1234,7 +1234,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         # assert that there's an entry with the correct index in the rendered HTML
         # we should have an index for all files ever uploaded, even the deleted one
-        resp = self.request(xblock, 'render_submission', json.dumps(dict())).decode('utf-8')
+        resp = self.request(xblock, 'render_submission', json.dumps({})).decode('utf-8')
 
         expected_strings = [
             '"submission__answer__file__block submission__answer__file__block__0"',
@@ -1586,7 +1586,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_integration(self, xblock):
         # Expect that the response step is open and displays the deadline
-        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('Enter your response to the prompt', resp.decode('utf-8'))
         self.assertIn('2999-05-06T00:00:00+00:00', resp.decode('utf-8'))
 
@@ -1597,7 +1597,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         )
 
         # Expect that the response step is "submitted"
-        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('your response has been submitted', resp.decode('utf-8').lower())
 
     @patch('openassessment.fileupload.api.can_delete_file', autospec=True)

@@ -45,7 +45,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
             self.submission_uuid,
             EXAMPLES[0]['options_selected']
         )
-        self.assertEqual(corrections, dict())
+        self.assertEqual(corrections, {})
         self._assert_workflow_status(self.submission_uuid, 1, 2)
 
         # Get another training example to assess
@@ -68,7 +68,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         corrections = training_api.assess_training_example(
             self.submission_uuid, EXAMPLES[1]['options_selected']
         )
-        self.assertEqual(corrections, dict())
+        self.assertEqual(corrections, {})
 
         # Now we should have completed both assessments
         self._assert_workflow_status(self.submission_uuid, 2, 2)
@@ -84,7 +84,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         )
 
         # Expect that we're still on the first step
-        self.assertEqual(corrections, dict())
+        self.assertEqual(corrections, {})
         self._assert_workflow_status(self.submission_uuid, 0, 2)
 
     def test_get_same_example(self):

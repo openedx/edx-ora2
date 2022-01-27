@@ -237,7 +237,7 @@ class StudentTrainingWorkflowItem(models.Model):
 
         """
         staff_selected = self.training_example.options_selected_dict
-        corrections = dict()
+        corrections = {}
 
         for criterion_name, option_name in staff_selected.items():
             missing_option = criterion_name not in options_selected

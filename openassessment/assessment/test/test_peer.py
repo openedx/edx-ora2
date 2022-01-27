@@ -177,7 +177,7 @@ class TestPeerApi(CacheResetTest):
             assessment = peer_api.create_assessment(
                 bob_sub["uuid"],
                 bob["student_id"],
-                ASSESSMENT_DICT['options_selected'], dict(), "",
+                ASSESSMENT_DICT['options_selected'], {}, "",
                 RUBRIC_DICT,
                 REQUIRED_GRADED_BY,
             )
@@ -308,7 +308,7 @@ class TestPeerApi(CacheResetTest):
             bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT_HUGE['options_selected'],
-            dict(),
+            {},
             ASSESSMENT_DICT_HUGE['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
@@ -891,7 +891,7 @@ class TestPeerApi(CacheResetTest):
         assessment = peer_api.create_assessment(
             bob_sub["uuid"],
             bob["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
+            ASSESSMENT_DICT['options_selected'], {}, "",
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )

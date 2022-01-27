@@ -278,7 +278,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
+            ASSESSMENT_DICT['options_selected'], {}, "",
             {'criteria': xblock.rubric_criteria},
             1,
         )
@@ -645,7 +645,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
-            options_selected, dict(), "",
+            options_selected, {}, "",
             {'criteria': xblock.rubric_criteria},
             1,
         )
