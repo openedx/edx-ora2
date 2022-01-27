@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-27 14:30-0400\n"
+"POT-Creation-Date: 2021-12-16 13:33-0500\n"
 "PO-Revision-Date: 2021-10-27 21:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Albanian (http://www.transifex.com/open-edx/edx-platform/language/sq/)\n"
@@ -140,7 +140,7 @@ msgstr ""
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1363
+#: openassessment/data.py:1317
 msgid "No description provided."
 msgstr ""
 
