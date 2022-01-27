@@ -2,7 +2,9 @@
 
 
 import os
+from urllib.parse import urljoin
 
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.urls import reverse
@@ -28,7 +30,11 @@ class Backend(BaseBackend):
         """
         path = self._get_file_path(key)
         if default_storage.exists(path):
-            return default_storage.url(path)
+            storage_path = default_storage.url(path)
+
+            # Return a fully-qualified URL
+            lms_url = getattr(settings, 'LMS_ROOT_URL', '')
+            return urljoin(lms_url, storage_path)
         return None
 
     def upload_file(self, key, content):

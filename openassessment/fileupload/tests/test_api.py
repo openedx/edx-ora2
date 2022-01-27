@@ -402,6 +402,7 @@ class TestSwiftBackend(TestCase):
     ORA2_FILEUPLOAD_BACKEND="django",
     DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage",
     FILE_UPLOAD_STORAGE_PREFIX="submissions",
+    LMS_ROOT_URL="http://foobar.example.com",
 )
 @ddt.ddt
 class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
@@ -426,6 +427,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
 
         self.key = "myfile.txt"
         self.content_type = "text/plain"
+        self.base_url = "http://foobar.example.com"
         self.tearDown()
 
     def tearDown(self):
@@ -466,7 +468,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # Check updated download URL
         download_url = self.backend.get_download_url(self.key)
         encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
-        self.assertEqual(f"submissions/{encoded_key}", download_url.lstrip('/'))
+        self.assertEqual(f"{self.base_url}/submissions/{encoded_key}", download_url.lstrip('/'))
 
     @ddt.data("noël.txt", "myfile.txt")
     def test_remove(self, key):
@@ -489,7 +491,7 @@ class TestFileUploadServiceWithDjangoStorageBackend(TestCase):
         # File exists now
         download_url = self.backend.get_download_url(self.key)
         encoded_key = urllib.parse.quote(self.key.encode('utf-8'))
-        self.assertEqual(f"submissions/{encoded_key}", download_url.lstrip('/'))
+        self.assertEqual(f"{self.base_url}/submissions/{encoded_key}", download_url.lstrip('/'))
 
         # Remove file returns True now, and removes the file
         self.assertTrue(self.backend.remove_file(self.key))

@@ -22,7 +22,7 @@ import openassessment.assessment.api.peer as peer_api
 from openassessment.data import (
     CsvWriter, OraAggregateData, OraDownloadData, SubmissionFileUpload, OraSubmissionAnswerFactory,
     VersionNotFoundException, ZippedListSubmissionAnswer, OraSubmissionAnswer, ZIPPED_LIST_SUBMISSION_VERSIONS,
-    TextOnlySubmissionAnswer, FileMissingException
+    TextOnlySubmissionAnswer, FileMissingException, map_anonymized_ids_to_usernames
 )
 from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.tests.factories import *  # pylint: disable=wildcard-import
@@ -362,7 +362,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
             ]
 
             # pylint: disable=protected-access
-            mapping = OraAggregateData._map_anonymized_ids_to_usernames(
+            mapping = map_anonymized_ids_to_usernames(
                 [
                     STUDENT_ID,
                     PRE_FILE_SIZE_STUDENT_ID,
@@ -398,7 +398,7 @@ class TestOraAggregateData(TransactionCacheResetTest):
             ),
         ]
 
-        with patch("openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames") as map_mock:
+        with patch("openassessment.data.map_anonymized_ids_to_usernames") as map_mock:
             # pylint: disable=protected-access
             OraAggregateData._map_students_and_scorers_ids_to_usernames(
                 test_submission_information
@@ -589,7 +589,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         return ITEM_ID + '_' + str(no_of_student)
 
     def test_collect_ora2_data(self):
-        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
+        with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
             map_mock.return_value = USERNAME_MAPPING
             headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
@@ -756,7 +756,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         submission = sub_api._get_submission_model(self.submission['uuid'])  # pylint: disable=protected-access
         submission.answer = answer
         submission.save()
-        with patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames') as map_mock:
+        with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
             map_mock.return_value = USERNAME_MAPPING
             _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
         self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])

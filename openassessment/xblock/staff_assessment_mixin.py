@@ -1,4 +1,4 @@
-"""""
+"""
 A mixin for staff grading.
 """
 

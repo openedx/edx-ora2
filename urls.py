@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.i18n import JavaScriptCatalog
@@ -28,11 +27,3 @@ urlpatterns = [
     # File upload to local filesystem
     url(r'^openassessment/storage', include(openassessment.fileupload.urls)),
 ]
-
-# We need to do explicit setup of the Django debug toolbar because autodiscovery
-# causes problems when you mix debug toolbar >= 1.0 + django < 1.7, and the
-# admin uses autodiscovery. See:
-# http://django-debug-toolbar.readthedocs.org/en/1.0/installation.html#explicit-setup
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns.append(url(r'^__debug__/', include(debug_toolbar.urls)))

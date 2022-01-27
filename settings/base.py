@@ -126,7 +126,7 @@ INSTALLED_APPS = (
     'openassessment.fileupload',
     'openassessment.workflow',
     'openassessment.assessment',
-
+    'openassessment.staffgrader',
 )
 
 # TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }

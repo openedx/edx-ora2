@@ -1,0 +1,46 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompts>
+        <prompt>
+            <description>I made this so I don't have to work with the unicode rubric in my tests.</description>
+        </prompt>
+    </prompts>
+    <rubric>
+        <criterion feedback='optional'>
+            <name>Criterion 1</name>
+            <prompt>Criterion 1</prompt>
+            <option points="3">
+                <name>Three</name>
+                <explanation>Three</explanation>
+            </option>
+            <option points="2">
+                <name>Two</name>
+                <explanation>Two</explanation>
+            </option>
+            <option points="1">
+                <name>One</name>
+                <explanation>One</explanation>
+            </option>
+        </criterion>
+        <criterion feedback='optional'>
+            <name>Criterion 2</name>
+            <prompt>Criterion 2</prompt>
+            <option points="3">
+                <name>Three</name>
+                <explanation>Three</explanation>
+            </option>
+            <option points="2">
+                <name>Two</name>
+                <explanation>Two</explanation>
+            </option>
+            <option points="1">
+                <name>One</name>
+                <explanation>One</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="self-assessment" />
+        <assessment name="staff-assessment" required="true"/>
+    </assessments>
+</openassessment>
