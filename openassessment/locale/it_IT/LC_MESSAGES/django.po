@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-16 13:33-0500\n"
+"POT-Creation-Date: 2022-01-27 15:46-0500\n"
 "PO-Revision-Date: 2021-10-27 21:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
@@ -2361,66 +2361,66 @@ msgstr "Non si dispone dell'autorizzazione per l'accesso alle informazioni sullo
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Non si dispone dell'autorizzazione per l'accesso alla valutazione dello staff ORA. "
 
-#: openassessment/xblock/staff_area_mixin.py:233
+#: openassessment/xblock/staff_area_mixin.py:232
 msgid "Pending"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:234
+#: openassessment/xblock/staff_area_mixin.py:233
 msgid "Complete/Overwritten"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:237
+#: openassessment/xblock/staff_area_mixin.py:236
 msgid "Not applicable"
 msgstr "Non applicabile"
 
-#: openassessment/xblock/staff_area_mixin.py:238
+#: openassessment/xblock/staff_area_mixin.py:237
 msgid "Not submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:239
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:306
+#: openassessment/xblock/staff_area_mixin.py:305
 msgid "Error getting learner information."
 msgstr "Errore durante l'acquisizione delle informazioni sullo studente. "
 
-#: openassessment/xblock/staff_area_mixin.py:349
+#: openassessment/xblock/staff_area_mixin.py:348
 msgid "Error loading the checked out learner response."
 msgstr "Errore durante il caricamento della risposta dello studente sottoposta a checkout. "
 
-#: openassessment/xblock/staff_area_mixin.py:350
+#: openassessment/xblock/staff_area_mixin.py:349
 msgid "No other learner responses are available for grading at this time."
 msgstr "Nessuna altra risposta dello studente disponibile per la valutazione in questo momento. "
 
-#: openassessment/xblock/staff_area_mixin.py:352
+#: openassessment/xblock/staff_area_mixin.py:351
 msgid "Error getting staff grade information."
 msgstr "Errore durante l'acquisizione delle informazioni sulla valutazione dello staff. "
 
-#: openassessment/xblock/staff_area_mixin.py:373
+#: openassessment/xblock/staff_area_mixin.py:372
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Errore durante l'acquisizione dei conteggi delle valutazioni dello staff senza valutazione e sottoposte a checkout. "
 
-#: openassessment/xblock/staff_area_mixin.py:663
+#: openassessment/xblock/staff_area_mixin.py:662
 msgid "Please enter valid reason to remove the submission."
 msgstr "Immettere un motivo valido per rimuovere l'inoltro. "
 
-#: openassessment/xblock/staff_area_mixin.py:674
+#: openassessment/xblock/staff_area_mixin.py:673
 msgid "Submission not found"
 msgstr "Inoltro non trovato "
 
-#: openassessment/xblock/staff_area_mixin.py:685
+#: openassessment/xblock/staff_area_mixin.py:684
 msgid "Submission for team assignment has no associated team submission"
 msgstr "L'inoltro per il compito del team non dispone di un inoltro del team associato "
 
-#: openassessment/xblock/staff_area_mixin.py:712
+#: openassessment/xblock/staff_area_mixin.py:711
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "L'inoltro dello studente è stato rimosso dalla valutazione dei colleghi. Lo studente riceve una valutazione uguale a zero a meno che lo stato dello studente per il problema non venga eliminato per consentire di inoltrare nuovamente una risposta. "
 
-#: openassessment/xblock/staff_area_mixin.py:747
+#: openassessment/xblock/staff_area_mixin.py:746
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
