@@ -9,6 +9,10 @@ loremipsum<2.0.0
 # has no attribute '_std_offset'" errors in production in edx-platform repo.
 python-dateutil==2.4.0
 
+# We currently pin dateutil above because edx-platform pins dateutil.
+# xblock-sdk 0.5.1 requires dateutil>2.4.0
+xblock-sdk==0.4.0
+
 python-swiftclient<4.0.0
 mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
 voluptuous<1.0.0
