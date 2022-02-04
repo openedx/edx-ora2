@@ -8,15 +8,15 @@ appdirs==1.4.4
     # via fs
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.20.37
+boto3==1.20.49
     # via -r requirements/base.in
-botocore==1.23.37
+botocore==1.23.49
     # via
     #   boto3
     #   s3transfer
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.10
+charset-normalizer==2.0.11
     # via requests
 click==8.0.3
     # via code-annotations
@@ -24,7 +24,7 @@ code-annotations==1.2.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==2.2.26
+django==2.2.27
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -54,17 +54,17 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==4.4.1
+edx-django-utils==4.5.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
 edx-i18n-tools==0.8.1
     # via -r requirements/base.in
-edx-opaque-keys==2.2.2
+edx-opaque-keys==2.3.0
     # via -r requirements/base.in
 edx-submissions==3.4.4
     # via -r requirements/base.in
-edx-toggles==4.2.0
+edx-toggles==4.3.1
     # via -r requirements/base.in
 fs==2.0.18
     # via
@@ -102,7 +102,7 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   xblock
-newrelic==7.2.4.171
+newrelic==7.4.0.172
     # via edx-django-utils
 packaging==21.3
     # via bleach
@@ -111,7 +111,7 @@ path==13.1.0
     #   -c requirements/constraints.txt
     #   edx-i18n-tools
     #   path.py
-path.py==12.5.0
+path-py==12.5.0
     # via -r requirements/base.in
 pbr==5.8.0
     # via stevedore
@@ -119,9 +119,9 @@ polib==1.1.1
     # via edx-i18n-tools
 psutil==5.9.0
     # via edx-django-utils
-pymongo==4.0.1
+pymongo==3.12.3
     # via edx-opaque-keys
-pyparsing==3.0.6
+pyparsing==3.0.7
     # via packaging
 python-dateutil==2.4.0
     # via
@@ -149,7 +149,7 @@ pyyaml==6.0
     #   xblock
 requests==2.27.1
     # via python-swiftclient
-s3transfer==0.5.0
+s3transfer==0.5.1
     # via boto3
 six==1.16.0
     # via
@@ -184,7 +184,7 @@ webencodings==0.5.1
     #   html5lib
 webob==1.8.7
     # via xblock
-xblock==1.5.1
+xblock==1.6.1
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
