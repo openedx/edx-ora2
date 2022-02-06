@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-16 13:33-0500\n"
+"POT-Creation-Date: 2022-02-02 10:10-0500\n"
 "PO-Revision-Date: 2021-12-01 12:04+0000\n"
 "Last-Translator: UAMx <uamx.dev@gmail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/open-edx/edx-platform/language/es_ES/)\n"
@@ -2372,66 +2372,66 @@ msgstr "No tienes permiso para acceder a la información de los estudiantes de l
 msgid "You do not have permission to access ORA staff grading."
 msgstr "No tienes permiso para acceder a las calificaciones por el equipo docente de la tarea de respuesta abierta."
 
-#: openassessment/xblock/staff_area_mixin.py:233
+#: openassessment/xblock/staff_area_mixin.py:232
 msgid "Pending"
 msgstr "Pendiente"
 
-#: openassessment/xblock/staff_area_mixin.py:234
+#: openassessment/xblock/staff_area_mixin.py:233
 msgid "Complete/Overwritten"
 msgstr "Completo/Sobrescrito"
 
-#: openassessment/xblock/staff_area_mixin.py:237
+#: openassessment/xblock/staff_area_mixin.py:236
 msgid "Not applicable"
 msgstr "No aplica"
 
-#: openassessment/xblock/staff_area_mixin.py:238
+#: openassessment/xblock/staff_area_mixin.py:237
 msgid "Not submitted"
 msgstr "No entregado"
 
-#: openassessment/xblock/staff_area_mixin.py:239
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Submitted"
 msgstr "Entregado"
 
-#: openassessment/xblock/staff_area_mixin.py:306
+#: openassessment/xblock/staff_area_mixin.py:305
 msgid "Error getting learner information."
 msgstr "Error al obtener la información del estudiante."
 
-#: openassessment/xblock/staff_area_mixin.py:349
+#: openassessment/xblock/staff_area_mixin.py:348
 msgid "Error loading the checked out learner response."
 msgstr "Error al cargar la respuesta revisada del estudiante."
 
-#: openassessment/xblock/staff_area_mixin.py:350
+#: openassessment/xblock/staff_area_mixin.py:349
 msgid "No other learner responses are available for grading at this time."
 msgstr "No hay más respuestas de estudiantes disponibles para calificar en este momento."
 
-#: openassessment/xblock/staff_area_mixin.py:352
+#: openassessment/xblock/staff_area_mixin.py:351
 msgid "Error getting staff grade information."
 msgstr "Error al obtener la información de calificación por el equipo docente."
 
-#: openassessment/xblock/staff_area_mixin.py:373
+#: openassessment/xblock/staff_area_mixin.py:372
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Error al obtener las calificaciones por el equipo docente, aquellos sin calificar y las revisiones."
 
-#: openassessment/xblock/staff_area_mixin.py:663
+#: openassessment/xblock/staff_area_mixin.py:662
 msgid "Please enter valid reason to remove the submission."
 msgstr "Por favor, indica un motivo válido para eliminar la entrega."
 
-#: openassessment/xblock/staff_area_mixin.py:674
+#: openassessment/xblock/staff_area_mixin.py:673
 msgid "Submission not found"
 msgstr "Entrega no encontrada"
 
-#: openassessment/xblock/staff_area_mixin.py:685
+#: openassessment/xblock/staff_area_mixin.py:684
 msgid "Submission for team assignment has no associated team submission"
 msgstr "La entrega para la tarea de grupo no cuenta con ningún equipo asociado"
 
-#: openassessment/xblock/staff_area_mixin.py:712
+#: openassessment/xblock/staff_area_mixin.py:711
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "La entrega del estudiante se ha eliminado de la evaluación por pares. El estudiante recibirá una calificación de cero a menos que elimines el estado de la tarea para permitirle reenviar una respuesta."
 
-#: openassessment/xblock/staff_area_mixin.py:747
+#: openassessment/xblock/staff_area_mixin.py:746
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
