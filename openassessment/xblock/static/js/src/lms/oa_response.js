@@ -657,12 +657,13 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            if(data.error){
+            var error = data?.public?.error ?? data?.private?.error
+            if(error){
                 if(data.is_design_problem !== undefined && data.is_design_problem){
-                    view.showExecutionError(data.error);
+                    view.showExecutionError(error);
                 }
                 else{
-                    view.showRunError(data.error);
+                    view.showRunError(error);
                 }
                 view.indicateError();
                 view.clearResultSummary();
