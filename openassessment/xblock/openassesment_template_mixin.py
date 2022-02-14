@@ -1,11 +1,12 @@
 """
     Open Assessment Template mixin helps out in generating different presets to display in studio.
 """
-from django.utils.translation import ugettext as _
 
-from openassessment.xblock.defaults import (PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES,
+from django.utils.translation import gettext as _
+
+from openassessment.xblock.defaults import (BLANK_ASSESSMENT_MODULES, PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES,
                                             SELF_TO_PEER_ASSESSMENT_MODULES, SELF_TO_STAFF_ASSESSMENT_MODULES,
-                                            STAFF_ASSESSMENT_MODULES, BLANK_ASSESSMENT_MODULES)
+                                            STAFF_ASSESSMENT_MODULES)
 
 
 class OpenAssessmentTemplatesMixin:

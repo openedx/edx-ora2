@@ -2,25 +2,26 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict, namedtuple, OrderedDict
+from collections import OrderedDict, defaultdict, namedtuple
+import csv
 from io import StringIO
+from itertools import chain
+import json
+import logging
+import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
-from itertools import chain
-import csv
-import json
-import os
-import logging
+
 import requests
+from submissions import api as sub_api
+from submissions.errors import SubmissionNotFoundError
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import CharField, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
-from submissions import api as sub_api
-from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
