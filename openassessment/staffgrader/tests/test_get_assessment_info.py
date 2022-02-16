@@ -42,6 +42,15 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         ) as mock_get:
             yield mock_get
 
+    @contextmanager
+    def _mock_get_team_staff_workflow(self, **kwargs):
+        """ Context manager for mocking the lookup of Team Staff Workflows """
+        with patch(
+            'openassessment.staffgrader.staff_grader_mixin.TeamStaffWorkflow.get_team_staff_workflow',
+            **kwargs
+        ) as mock_get:
+            yield mock_get
+
     def _mock_get_download_urls_from_submission(self, xblock, **kwargs):
         """ Helper method to mock getting uploaded file info from a submission"""
         xblock.get_download_urls_from_submission = Mock(**kwargs)
