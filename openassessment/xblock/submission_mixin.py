@@ -222,9 +222,10 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
-            grade_output = self.grade_response(data, self.display_name, self.show_private_test_case_results)
-            
-            if self.show_private_test_case_results:
+            show_staff_cases = self.show_private_test_case_results and not is_design_problem(self.display_name)
+            grade_output = self.grade_response(data, self.display_name, show_staff_cases)
+
+            if show_staff_cases:
                 sample_output, staff_output = grade_output
                 sample_output.pop('run_type')
                 staff_output.pop('run_type')
