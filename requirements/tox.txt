@@ -6,13 +6,13 @@
 #
 distlib==0.3.4
     # via virtualenv
-filelock==3.4.2
+filelock==3.6.0
     # via
     #   tox
     #   virtualenv
 packaging==21.3
     # via tox
-platformdirs==2.4.1
+platformdirs==2.5.0
     # via virtualenv
 pluggy==1.0.0
     # via tox
@@ -28,5 +28,5 @@ toml==0.10.2
     # via tox
 tox==3.24.5
     # via -r requirements/tox.in
-virtualenv==20.13.0
+virtualenv==20.13.1
     # via tox
