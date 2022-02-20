@@ -12,14 +12,14 @@
 # Raúl Aguilera Ortega <raguiler@db.uc3m.es>, 2014
 # Rubén Torres <r.torres@usal.es>, 2015
 # Silvia Gonzalez <silviagonzalez@magentaconsultoria.com>, 2020
-# UAMx <uamx.dev@gmail.com>, 2014,2021
+# UAMx <uamx.dev@gmail.com>, 2014,2021-2022
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-02 10:10-0500\n"
-"PO-Revision-Date: 2022-01-27 22:23+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2022-02-14 10:28+0000\n"
+"Last-Translator: UAMx <uamx.dev@gmail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/open-edx/edx-platform/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -192,11 +192,11 @@ msgstr "Nota final recibida"
 
 #: openassessment/xblock/static/dist/openassessment-lms.e709376445dd428b3459.js:314
 msgid "Response"
-msgstr ""
+msgstr "Respuesta"
 
 #: openassessment/xblock/static/dist/openassessment-lms.e709376445dd428b3459.js:314
 msgid "View and grade responses"
-msgstr ""
+msgstr "Ver y calificar respuestas"
 
 #: openassessment/xblock/static/dist/openassessment-lms.e709376445dd428b3459.js:314
 msgid "List of Open Assessments is unavailable"
