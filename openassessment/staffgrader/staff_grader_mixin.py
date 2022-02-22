@@ -357,8 +357,12 @@ class StaffGraderMixin:
         student_item_dict = self.get_student_item_dict()
         course_id = student_item_dict['course_id']
         item_id = student_item_dict['item_id']
+
         try:
-            workflow = StaffWorkflow.get_staff_workflow(course_id, item_id, submission_uuid)
+            if self.is_team_assignment():
+                workflow = TeamStaffWorkflow.get_team_staff_workflow(course_id, item_id, submission_uuid)
+            else:
+                workflow = StaffWorkflow.get_staff_workflow(course_id, item_id, submission_uuid)
         except StaffWorkflow.DoesNotExist as ex:
             msg = f"No gradeable submission found with uuid={submission_uuid} in course={course_id} item={item_id}"
             raise JsonHandlerError(404, msg) from ex
