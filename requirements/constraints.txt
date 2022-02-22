@@ -1,7 +1,7 @@
 # Version constraints for pip-installation.
 
 # Base dependencies
-Django<2.3                         # Stay on the latest LTS release of Django
+Django<4.0                      # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
 loremipsum<2.0.0
 
@@ -42,3 +42,4 @@ path<13.2.0
 # path is defined in base.in so it compiles to the most recent version in base.txt, 
 #     and tox comes in in test.in 
 importlib-metadata<2
+setuptools<60.0

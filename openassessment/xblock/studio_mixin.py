@@ -7,24 +7,22 @@ import copy
 import logging
 from uuid import uuid4
 
-from django.template.loader import get_template
-from django.utils.translation import ugettext_lazy
-
 from voluptuous import MultipleInvalid
-from xblock.fields import List, Scope
-from xblock.core import XBlock
 from web_fragments.fragment import Fragment
-from openassessment.xblock.data_conversion import (
-    create_rubric_dict,
-    make_django_template_key,
-    update_assessments_format
-)
+from xblock.core import XBlock
+from xblock.fields import List, Scope
+
+from django.template.loader import get_template
+from django.utils.translation import gettext_lazy
+
+from openassessment.xblock.data_conversion import (create_rubric_dict, make_django_template_key,
+                                                   update_assessments_format)
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
-from openassessment.xblock.resolve_dates import resolve_dates, parse_date_value, DateValidationError, InvalidDateFormat
-from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
-from openassessment.xblock.validation import validator
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.load_static import LoadStatic
+from openassessment.xblock.resolve_dates import DateValidationError, InvalidDateFormat, parse_date_value, resolve_dates
+from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
+from openassessment.xblock.validation import validator
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -46,9 +44,9 @@ class StudioMixin:
     ]
 
     NECESSITY_OPTIONS = {
-        "required": ugettext_lazy("Required"),
-        "optional": ugettext_lazy("Optional"),
-        "": ugettext_lazy("None")
+        "required": gettext_lazy("Required"),
+        "optional": gettext_lazy("Optional"),
+        "": gettext_lazy("None")
     }
 
     # Build editor options from AVAILABLE_EDITORS

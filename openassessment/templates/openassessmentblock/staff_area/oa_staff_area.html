@@ -88,10 +88,10 @@
                         </thead>
 
                         <tbody>
-                        {% for item in status_counts %}
+                        {% for key, value in status_counts.items %}
                             <tr>
-                                <td class="label">{{ item.status }}</td>
-                                <td class="value">{{ item.count }}</td>
+                                <td class="label">{{ key }}</td>
+                                <td class="value">{{ value }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
