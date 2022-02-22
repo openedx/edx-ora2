@@ -9,11 +9,11 @@ from django.db.models.fields import CharField
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
-from submissions.team_api import get_team_submission
+from submissions.team_api import get_team_ids_by_team_submission_uuid , get_team_submission
 from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
-from openassessment.assessment.models.staff import StaffWorkflow
+from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
 from openassessment.data import map_anonymized_ids_to_usernames
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
@@ -143,9 +143,6 @@ class StaffGraderMixin:
             submission_uuid:
         }
         """
-        if self.is_team_assignment():
-            raise JsonHandlerError(400, "Team Submissions not currently supported")
-
         # Fetch staff workflows, annotated with grading_status and lock_status
         staff_workflows = self._bulk_fetch_annotated_staff_workflows()
         # Lookup additional info like usernames and assessments
@@ -176,27 +173,48 @@ class StaffGraderMixin:
         course_id = self.get_student_item_dict()['course_id']
 
         # Fetch user identifier mappings
+        if self.is_team_assignment():
+            # Look up the team IDs for submissions so we can later map to team names
+            team_submission_uuid_to_team_id = get_team_ids_by_team_submission_uuid(submission_uuids)
 
-        # When we look up usernames we want to include all connected learner student ids
-        submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
-            course_id,
-            submission_uuids,
-        )
+            # Look up names for teams
+            topic_id = self.selected_teamset_id
+            team_id_to_team_name = self.teams_service.get_team_names(course_id, topic_id)
 
-        # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
-        # `gradedBy` and `username` fields
-        anonymous_id_to_username = map_anonymized_ids_to_usernames(
-            set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-        )
+            # Do bulk lookup for scorer anonymous ids (submitting team name is a separate lookup)
+            anonymous_id_to_username = map_anonymized_ids_to_usernames(set(workflow_scorer_ids))
 
+            context = {
+                'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
+                'team_id_to_team_name': team_id_to_team_name,
+            }
+        else:
+            # When we look up usernames we want to include all connected learner student ids
+            submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
+                course_id,
+                submission_uuids,
+            )
+
+            # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
+            # `gradedBy` and `username` fields
+            anonymous_id_to_username = map_anonymized_ids_to_usernames(
+                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
+            )
+
+            context = {
+                'submission_uuid_to_student_id': submission_uuid_to_student_id,
+            }
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models
         submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(assessment_ids)
-        return {
-            'submission_uuid_to_student_id': submission_uuid_to_student_id,
+
+        context.update({
             'anonymous_id_to_username': anonymous_id_to_username,
+            'is_team_assignment': self.is_team_assignment(),
             'submission_uuid_to_assessment': submission_uuid_to_assessment,
-        }
+        })
+
+        return context
 
     def _bulk_fetch_annotated_staff_workflows(self):
         """
@@ -216,13 +234,22 @@ class StaffGraderMixin:
         # Create an unevaluated QuerySet of "active" SubmissionLock objects that refer to the same submission as the
         # "current" workflow
         student_item_dict = self.get_student_item_dict()
+
+        # Return TeamStaffWorkflows for teams, StaffWorkflows for individual
+        if self.is_team_assignment():
+            workflow_type = TeamStaffWorkflow
+            identifying_uuid = 'team_submission_uuid'
+        else:
+            workflow_type = StaffWorkflow
+            identifying_uuid = 'submission_uuid'
+
         newest_lock = SubmissionGradingLock.currently_active().filter(
-            submission_uuid=OuterRef('submission_uuid')
+            submission_uuid=OuterRef(identifying_uuid)
         ).order_by(
             '-created_at'
         )
 
-        staff_workflows = StaffWorkflow.objects.filter(
+        staff_workflows = workflow_type.objects.filter(
             course_id=student_item_dict['course_id'],
             item_id=student_item_dict['item_id'],
             cancelled_at=None,
