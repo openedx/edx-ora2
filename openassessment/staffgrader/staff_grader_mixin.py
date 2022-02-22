@@ -9,6 +9,7 @@ from django.db.models.fields import CharField
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
+from submissions.team_api import get_team_submission
 from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
@@ -50,7 +51,10 @@ def require_submission_uuid(validate=True):
                 raise JsonHandlerError(400, "Body must contain a submission_uuid")
             if validate:
                 try:
-                    get_submission(submission_uuid)
+                    if self.is_team_assignment():
+                        get_team_submission(submission_uuid)
+                    else:
+                        get_submission(submission_uuid)
                 except SubmissionNotFoundError as exc:
                     raise JsonHandlerError(404, "Submission not found") from exc
                 except SubmissionRequestError as exc:
