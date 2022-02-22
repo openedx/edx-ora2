@@ -318,7 +318,10 @@ class StaffGraderMixin:
         }
         """
         try:
-            submission = get_submission(submission_uuid)
+            if self.is_team_assignment():
+                submission = get_team_submission(submission_uuid)
+            else:
+                submission = get_submission(submission_uuid)
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(submission.get('answer'))
         except SubmissionError as err:
             raise JsonHandlerError(404, str(err)) from err
