@@ -39,7 +39,7 @@ export const oaTinyMCE = (options) => {
   const initInstanceCallback = (ed) => {
     ed.setContent(rewriteStaticLinks(
       ed.getContent({ no_events: 1 }),
-      '/static/',
+      staticUrl,
       baseAssetUrl,
     ));
     return ed.focus();
