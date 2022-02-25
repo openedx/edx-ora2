@@ -1944,11 +1944,12 @@ class TestPeerApi(CacheResetTest):
         item_qs = PeerWorkflowItem.objects.filter(author__student_id=learner['student_id'])
         # Get the three PeerWorkflowItems in order. Student 1, 2, 3
         items = [item_qs.get(scorer__student_id=other_learner_submissions[i][1]['student_id']) for i in [0, 1, 2]]
-        # Even though flexible peer grading only includes the first score in the actual grade, the
-        # peer api incorrectly marks the second score as "scored" and includes it in API response.
-        assert items[0].scored and items[1].scored and not items[2].scored
+        # Flexible peer grading only includes the first score in the actual grade,
+        # so only the first item should be `scored`
+        assert items[0].scored and not items[1].scored and not items[2].scored
+        # Contributing assessments is still not reflecting "scored" but the points should match the workflow
         assert peer_score == {
-            "points_earned": 8,
+            "points_earned": 0,
             "points_possible": 14,
             "contributing_assessments": [item.assessment_id for item in items],
             "staff_id": None,
@@ -1958,7 +1959,7 @@ class TestPeerApi(CacheResetTest):
         assert workflow['score']['points_earned'] == 0
         assert workflow['score']['points_possible'] == 14
 
-        assert peer_score['points_earned'] != workflow['score']['points_earned']
+        assert peer_score['points_earned'] == workflow['score']['points_earned']
 
 
 class PeerWorkflowTest(CacheResetTest):
