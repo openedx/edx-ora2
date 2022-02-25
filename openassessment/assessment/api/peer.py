@@ -1029,3 +1029,11 @@ def get_waiting_step_details(
         submission_uuids,
         must_be_graded_by
     )
+
+def get_bulk_scored_assessments(submission_uuids):
+    """
+    Given a list of submission uuids, return a set of assessments that
+    are "scored", which is to say, included in the calculation of the final score,
+    as opposed to "extra" peer reviews.
+    """
+    return set(PeerWorkflowItem.get_bulk_scored_assessments(submission_uuids))

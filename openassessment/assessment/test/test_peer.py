@@ -241,6 +241,47 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(students_waiting[0]['graded_by'], 0)
         self.assertEqual(students_waiting[0]['graded'], 1)
 
+    def test_get_bulk_scored_assessments(self):
+        # Create three learners and submissions
+        submission_and_learner = [self._create_student_and_submission(f"Learner{i}", f"{i} answer") for i in [0, 1, 2]]
+
+        # Each learner assesses two peers, so everyone scores 2 and is scored by 2
+        for submission, learner in submission_and_learner:
+            for _ in range(2):   
+                peer_api.get_submission_to_assess(submission['uuid'], 1)
+                peer_api.create_assessment(
+                    submission["uuid"],
+                    learner["student_id"],
+                    ASSESSMENT_DICT['options_selected'],
+                    ASSESSMENT_DICT['criterion_feedback'],
+                    ASSESSMENT_DICT['overall_feedback'],
+                    RUBRIC_DICT,
+                    1,
+                )
+
+        # call get_score for all three to mark items as 'scored'. Everyone shoulfd have a score because
+        # they have at least one peer review and have done at least one review.
+        for submission, _ in submission_and_learner:
+            peer_score = peer_api.get_score(submission['uuid'], {'must_be_graded_by': 1, 'must_grade': 1})
+            assert peer_score is not None
+
+        # There should be three "scored" assessments
+        scored_assessment_ids = {
+            assessment.id for assessment in
+            peer_api.get_bulk_scored_assessments(
+                [submission['uuid'] for submission, _ in submission_and_learner]
+            )
+        }
+        assert len(scored_assessment_ids) == 3
+
+        # Each learner should have recieved one "scored" and one "unscored" peer assessment
+        for submission, _ in submission_and_learner:
+            workflow = PeerWorkflow.objects.prefetch_related('graded_by').get(submission_uuid=submission['uuid'])
+            unscored = workflow.graded_by.get(scored=False)
+            scored = workflow.graded_by.get(scored=True)
+            assert unscored.assessment_id not in scored_assessment_ids
+            assert scored.assessment_id in scored_assessment_ids
+
     def test_create_assessment_criterion_with_zero_options(self):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
