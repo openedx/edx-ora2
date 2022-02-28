@@ -582,7 +582,7 @@ class OraAggregateData:
 
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
         file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
-        for url, _description, _filename, _show_delete in file_downloads:
+        for url, _description, _filename, _size, _show_delete in file_downloads:
             if file_links:
                 file_links += sep
             file_links += urljoin(base_url, url)
