@@ -223,3 +223,11 @@ class TeamStaffWorkflow(StaffWorkflow):
         (submission_uuid for StaffWorkflow, team_submission_uuid for TeamStaffWorkflow)
         """
         return self.team_submission_uuid
+
+    @classmethod
+    def get_team_staff_workflow(cls, course_id, item_id, team_submission_uuid):
+        return cls.objects.get(
+            course_id=course_id,
+            item_id=item_id,
+            team_submission_uuid=team_submission_uuid
+        )
