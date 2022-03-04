@@ -49,6 +49,11 @@ class LeaderboardMixin:
         workflow = self.get_workflow_info()
         status = workflow.get('status')
 
+        if status == "done" and not self.leaderboard_show:
+            # Dummy <div> block if the preview is disabled. This is to avoid logging False-Positive
+            # exceptions in edx-submissions package
+            return self.render_error('---')
+
         # Render the grading section based on the status of the workflow
         try:
             if status == "done":
