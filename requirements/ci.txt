@@ -6,9 +6,9 @@
 #
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.10
+charset-normalizer==2.0.12
     # via requests
-coverage==6.2
+coverage==6.3.2
     # via coveralls
 coveralls==3.3.1
     # via -r requirements/ci.in
@@ -18,7 +18,7 @@ distlib==0.3.4
     #   virtualenv
 docopt==0.6.2
     # via coveralls
-filelock==3.4.2
+filelock==3.6.0
     # via
     #   -r requirements/tox.txt
     #   tox
@@ -31,7 +31,7 @@ packaging==21.3
     # via
     #   -r requirements/tox.txt
     #   tox
-platformdirs==2.4.1
+platformdirs==2.5.1
     # via
     #   -r requirements/tox.txt
     #   virtualenv
@@ -43,7 +43,7 @@ py==1.11.0
     # via
     #   -r requirements/tox.txt
     #   tox
-pyparsing==3.0.6
+pyparsing==3.0.7
     # via
     #   -r requirements/tox.txt
     #   packaging
@@ -62,7 +62,7 @@ tox==3.24.5
     # via -r requirements/tox.txt
 urllib3==1.26.8
     # via requests
-virtualenv==20.13.0
+virtualenv==20.13.2
     # via
     #   -r requirements/tox.txt
     #   tox

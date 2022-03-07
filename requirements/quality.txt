@@ -8,6 +8,10 @@ appdirs==1.4.4
     # via
     #   -r requirements/test.txt
     #   fs
+asgiref==3.5.0
+    # via
+    #   -r requirements/test.txt
+    #   django
 astroid==2.9.3
     # via
     #   pylint
@@ -37,13 +41,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.20.37
+boto3==1.21.12
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.23.37
+botocore==1.24.12
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -58,15 +62,15 @@ cffi==1.15.0
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.56.4
+cfn-lint==0.58.2
     # via
     #   -r requirements/test.txt
     #   moto
-charset-normalizer==2.0.10
+charset-normalizer==2.0.12
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.0.3
+click==8.0.4
     # via
     #   -r requirements/test.txt
     #   click-log
@@ -74,12 +78,12 @@ click==8.0.3
     #   edx-lint
 click-log==0.3.2
     # via edx-lint
-code-annotations==1.2.0
+code-annotations==1.3.0
     # via
     #   -r requirements/test.txt
     #   edx-lint
     #   edx-toggles
-coverage==6.2
+coverage==6.3.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -102,7 +106,7 @@ distlib==0.3.4
     # via
     #   -r requirements/test.txt
     #   virtualenv
-django==2.2.26
+django==3.2.12
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -125,7 +129,7 @@ django-model-utils==4.2.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-django-pyfs==3.1.0
+django-pyfs==3.2.0
     # via -r requirements/test.txt
 django-simple-history==3.0.0
     # via -r requirements/test.txt
@@ -147,27 +151,27 @@ ecdsa==0.17.0
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==4.4.1
+edx-django-utils==4.5.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
-edx-i18n-tools==0.8.1
+edx-i18n-tools==0.9.1
     # via -r requirements/test.txt
 edx-lint==5.2.1
     # via -r requirements/quality.in
-edx-opaque-keys==2.2.2
+edx-opaque-keys==2.3.0
     # via -r requirements/test.txt
-edx-submissions==3.4.4
+edx-submissions==3.5.1
     # via -r requirements/test.txt
-edx-toggles==4.2.0
+edx-toggles==4.3.1
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==11.3.0
+faker==13.3.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
-filelock==3.4.2
+filelock==3.6.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -255,11 +259,11 @@ loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-lxml==4.7.1
+lxml==4.8.0
     # via
     #   -r requirements/test.txt
     #   xblock
-markupsafe==2.0.1
+markupsafe==2.1.0
     # via
     #   -r requirements/test.txt
     #   jinja2
@@ -284,7 +288,7 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.2.4.171
+newrelic==7.6.0.173
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
@@ -298,16 +302,16 @@ path==13.1.0
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   edx-i18n-tools
-    #   path.py
-path.py==12.5.0
+    #   path-py
+path-py==12.5.0
     # via -r requirements/test.txt
-pbr==5.8.0
+pbr==5.8.1
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
     #   sarif-om
     #   stevedore
-platformdirs==2.4.1
+platformdirs==2.5.1
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -349,17 +353,17 @@ pylint==2.12.2
     #   pylint-plugin-utils
 pylint-celery==0.3
     # via edx-lint
-pylint-django==2.5.0
+pylint-django==2.5.2
     # via edx-lint
 pylint-plugin-utils==0.7
     # via
     #   pylint-celery
     #   pylint-django
-pymongo==4.0.1
+pymongo==3.12.3
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
-pyparsing==3.0.6
+pyparsing==3.0.7
     # via
     #   -r requirements/test.txt
     #   packaging
@@ -394,11 +398,11 @@ python-jose==3.3.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==5.0.2
+python-slugify==6.1.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
-python-swiftclient==3.13.0
+python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -425,7 +429,7 @@ requests==2.27.1
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.17.0
+responses==0.18.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -433,7 +437,7 @@ rsa==4.8
     # via
     #   -r requirements/test.txt
     #   python-jose
-s3transfer==0.5.0
+s3transfer==0.5.2
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -461,7 +465,6 @@ six==1.16.0
     #   pytest
     #   python-dateutil
     #   python-swiftclient
-    #   responses
     #   tox
     #   virtualenv
 sqlparse==0.4.2
@@ -478,12 +481,11 @@ stevedore==3.5.0
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
-testfixtures==6.18.3
+testfixtures==6.18.5
     # via -r requirements/test.txt
 text-unidecode==1.3
     # via
     #   -r requirements/test.txt
-    #   faker
     #   python-slugify
 toml==0.10.2
     # via
@@ -492,7 +494,7 @@ toml==0.10.2
     #   tox
 tox==3.24.5
     # via -r requirements/test.txt
-typing-extensions==4.0.1
+typing-extensions==4.1.1
     # via
     #   astroid
     #   pylint
@@ -502,7 +504,7 @@ urllib3==1.26.8
     #   botocore
     #   requests
     #   responses
-virtualenv==20.13.0
+virtualenv==20.13.2
     # via
     #   -r requirements/test.txt
     #   tox
@@ -527,11 +529,11 @@ webob==1.8.7
     # via
     #   -r requirements/test.txt
     #   xblock
-websocket-client==1.2.3
+websocket-client==1.3.1
     # via
     #   -r requirements/test.txt
     #   docker
-werkzeug==2.0.2
+werkzeug==2.0.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -541,10 +543,12 @@ wrapt==1.11.2
     #   -r requirements/test.txt
     #   astroid
     #   aws-xray-sdk
-xblock==1.5.1
+xblock==1.6.1
     # via -r requirements/test.txt
 xblock-sdk==0.4.0
-    # via -r requirements/test.txt
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 xmltodict==0.12.0
     # via
     #   -r requirements/test.txt

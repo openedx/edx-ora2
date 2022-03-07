@@ -1,13 +1,17 @@
 # Version constraints for pip-installation.
 
 # Base dependencies
-Django<2.3                         # Stay on the latest LTS release of Django
+Django<4.0                      # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
 loremipsum<2.0.0
 
 # Upgrading to 2.5.3 triggered "'tzlocal' object
 # has no attribute '_std_offset'" errors in production in edx-platform repo.
 python-dateutil==2.4.0
+
+# We currently pin dateutil above because edx-platform pins dateutil.
+# xblock-sdk 0.5.1 requires dateutil>2.4.0
+xblock-sdk==0.4.0
 
 python-swiftclient<4.0.0
 mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
@@ -38,3 +42,4 @@ path<13.2.0
 # path is defined in base.in so it compiles to the most recent version in base.txt, 
 #     and tox comes in in test.in 
 importlib-metadata<2
+setuptools<60.0

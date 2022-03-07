@@ -2,22 +2,25 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict, namedtuple, OrderedDict
+from collections import OrderedDict, defaultdict, namedtuple
+import csv
 from io import StringIO
+from itertools import chain
+import json
+import logging
+import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
-from itertools import chain
-import csv
-import json
-import os
-import logging
+
 import requests
+from submissions import api as sub_api
+from submissions.errors import SubmissionNotFoundError
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import CharField, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
@@ -585,7 +588,7 @@ class OraAggregateData:
 
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
         file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
-        for url, _description, _filename, _show_delete in file_downloads:
+        for url, _description, _filename, _size, _show_delete in file_downloads:
             if file_links:
                 file_links += sep
             file_links += urljoin(base_url, url)
