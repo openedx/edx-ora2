@@ -115,22 +115,6 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
     """
     Serialized info about an team item returned from the submission list endpoint
     """
-    class Meta:
-        model = StaffWorkflow
-        fields = [
-            'submissionUuid',
-            'dateSubmitted',
-            'dateGraded',
-            'gradingStatus',
-            'lockStatus',
-            'gradedBy',
-            'username',
-            'teamName',
-            'score'
-        ]
-        read_only_fields = fields
-
-    requires_context = True
 
     # Required context
     CONTEXT_ANON_ID_TO_USERNAME = 'anonymous_id_to_username'
@@ -153,21 +137,6 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
         missing_context = required_context - context_keys
         if missing_context:
             raise ValueError(f"Missing required context {' ,'.join(missing_context)}")
-
-    def __init__(self, *args, **kwargs):
-        self._verify_required_context(kwargs.get('context', {}))
-        super().__init__(*args, **kwargs)
-
-    submissionUuid = serializers.CharField(source='submission_uuid')
-    dateSubmitted = serializers.CharField(source='created_at')
-    dateGraded = serializers.CharField(source='grading_completed_at')
-    dateGraded = serializers.SerializerMethodField()
-    gradingStatus = serializers.CharField(source='grading_status')
-    lockStatus = serializers.CharField(source='lock_status')
-    gradedBy = serializers.SerializerMethodField()
-    username = serializers.SerializerMethodField()
-    teamName = serializers.SerializerMethodField()
-    score = serializers.SerializerMethodField()
 
     def _get_team_name_from_context(self, team_id):
         try:
