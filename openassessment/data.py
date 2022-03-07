@@ -9,7 +9,6 @@ from itertools import chain
 import json
 import logging
 import os
-import requests
 from urllib.parse import urljoin
 from zipfile import ZipFile
 
@@ -18,6 +17,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import CharField, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.utils.translation import gettext as _
+import requests
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
