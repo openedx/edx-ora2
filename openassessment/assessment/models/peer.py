@@ -556,7 +556,6 @@ class PeerWorkflowItem(models.Model):
         ).select_related('assessment')
         return [item.assessment for item in item_qs]
 
-
     class Meta:
         ordering = ["started_at", "id"]
         app_label = "assessment"

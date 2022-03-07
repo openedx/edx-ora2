@@ -247,7 +247,7 @@ class TestPeerApi(CacheResetTest):
 
         # Each learner assesses two peers, so everyone scores 2 and is scored by 2
         for submission, learner in submission_and_learner:
-            for _ in range(2):   
+            for _ in range(2):
                 peer_api.get_submission_to_assess(submission['uuid'], 1)
                 peer_api.create_assessment(
                     submission["uuid"],

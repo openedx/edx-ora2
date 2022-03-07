@@ -1030,6 +1030,7 @@ def get_waiting_step_details(
         must_be_graded_by
     )
 
+
 def get_bulk_scored_assessments(submission_uuids):
     """
     Given a list of submission uuids, return a set of assessments that
