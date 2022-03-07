@@ -335,21 +335,22 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
     def _assessment_cell(self, assessment, feedback=""):
         """ Build a string for the given assessment information. """
-        cell = "Assessment #{id}\n" \
-               "-- scored_at: {scored_at}\n" \
-               "-- type: {type}\n" \
-               "-- scorer_username: {scorer_username}\n" \
-               "-- scorer_id: {scorer_id}\n"\
-            .format(
-                id=assessment.id,
-                scored_at=assessment.scored_at,
-                type=assessment.score_type,
-                scorer_username=USERNAME_MAPPING[assessment.scorer_id],
-                scorer_id=assessment.scorer_id,
-            )
+        cell = [
+            f"Assessment #{assessment.id}",
+            f"-- scored_at: {assessment.scored_at}",
+            f"-- type: {assessment.score_type}",
+        ]
+        if assessment.score_type == peer_api.PEER_TYPE:
+            cell.append("-- used to calculate peer grade: False")
+
+        cell += [
+            f"-- scorer_username: {USERNAME_MAPPING[assessment.scorer_id]}",
+            f"-- scorer_id: {assessment.scorer_id}"
+        ]
         if feedback:
-            cell += f"-- overall_feedback: {feedback}\n"
-        return cell
+            cell.append(f"-- overall_feedback: {feedback}")
+
+        return "\n".join(cell) + "\n"
 
     def test_map_anonymized_ids_to_usernames(self):
         with patch('openassessment.data.get_user_model') as get_user_model_mock:
@@ -620,7 +621,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
             with patch('openassessment.data.peer_api.get_bulk_scored_assessments') as mock_get_scored_assessments:
                 map_mock.return_value = USERNAME_MAPPING
-                mock_get_scored_assessments.return_value = {self.assessment['id']}
+                mock_get_scored_assessments.return_value = {Mock(id=self.assessment['id'])}
                 headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
         self.assertEqual(headers, [

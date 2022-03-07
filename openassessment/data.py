@@ -9,12 +9,9 @@ from itertools import chain
 import json
 import logging
 import os
+import requests
 from urllib.parse import urljoin
 from zipfile import ZipFile
-
-import requests
-from submissions import api as sub_api
-from submissions.errors import SubmissionNotFoundError
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
