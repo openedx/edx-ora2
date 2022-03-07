@@ -21,6 +21,7 @@ from django.utils.translation import ugettext as _
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
@@ -466,7 +467,7 @@ class OraAggregateData:
         return block_display_name_map
 
     @classmethod
-    def _build_assessments_cell(cls, assessments, usernames_map):
+    def _build_assessments_cell(cls, assessments, usernames_map, scored_peer_assessment_ids=None):
         """
         Args:
             assessments (QuerySet) - assessments that we would like to collate into one column.
@@ -474,11 +475,14 @@ class OraAggregateData:
         Returns:
             string that should be included in the 'assessments' column for this set of assessments' row
         """
+        scored_peer_assessment_ids = scored_peer_assessment_ids or set()
         returned_string = ""
         for assessment in assessments:
             returned_string += f"Assessment #{assessment.id}\n"
             returned_string += f"-- scored_at: {assessment.scored_at}\n"
             returned_string += f"-- type: {assessment.score_type}\n"
+            if assessment.score_type == peer_api.PEER_TYPE:
+                returned_string += f'-- used to calculate peer grade: {assessment.id in scored_peer_assessment_ids}\n'
             if _usernames_enabled():
                 returned_string += "-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
             returned_string += f"-- scorer_id: {assessment.scorer_id}\n"
@@ -613,6 +617,11 @@ class OraAggregateData:
         )
         block_display_names_map = cls._map_block_usage_keys_to_display_names(course_id)
 
+        all_submission_uuids = [submission['uuid'] for _, submission, _ in all_submission_information]
+        all_scored_peer_assessment_ids = {
+            assessment.id for assessment in peer_api.get_bulk_scored_assessments(all_submission_uuids)
+        }
+
         rows = []
         for student_item, submission, score in all_submission_information:
             assessments = _use_read_replica(
@@ -622,7 +631,8 @@ class OraAggregateData:
                     submission_uuid=submission['uuid']
                 )
             )
-            assessments_cell = cls._build_assessments_cell(assessments, usernames_map)
+
+            assessments_cell = cls._build_assessments_cell(assessments, usernames_map, all_scored_peer_assessment_ids)
             assessments_parts_cell = cls._build_assessments_parts_cell(assessments)
             feedback_options_cell = cls._build_feedback_options_cell(assessments)
             feedback_cell = cls._build_feedback_cell(submission['uuid'])

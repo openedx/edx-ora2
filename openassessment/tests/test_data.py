@@ -425,6 +425,34 @@ class TestOraAggregateData(TransactionCacheResetTest):
 
         self.assertEqual(assessment_cell, a1_cell + a2_cell)
 
+    @ddt.data(True, False)
+    def test_build_assessments_cell__scored_peer_assessment(self, scored):
+        assessment1 = self.build_criteria_and_assessment_parts()
+        assessment2 = self.build_criteria_and_assessment_parts()
+        assert assessment1.score_type == peer_api.PEER_TYPE
+        assert assessment2.score_type == peer_api.PEER_TYPE
+
+        scored_peer_assessment_ids = {assessment1.id}
+        if scored:
+            scored_peer_assessment_ids.add(assessment2.id)
+
+        # pylint: disable=protected-access
+        assessment_cell = OraAggregateData._build_assessments_cell(
+            [assessment2],
+            USERNAME_MAPPING,
+            scored_peer_assessment_ids
+        )
+        assert f"used to calculate peer grade: {scored}" in assessment_cell
+
+    def test_build_assessments_cell__non_peer_assessment(self):
+        assessment = self.build_criteria_and_assessment_parts()
+        assessment.score_type = "XX"
+        assessment.save()
+
+        # pylint: disable=protected-access
+        assessment_cell = OraAggregateData._build_assessments_cell([assessment], USERNAME_MAPPING)
+        assert "used to calculate peer grade" not in assessment_cell
+
     def _assessment_part_cell(self, assessment_part, feedback=""):
         """ Build the string representing an assessment part. """
 
@@ -590,8 +618,10 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
 
     def test_collect_ora2_data(self):
         with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
-            map_mock.return_value = USERNAME_MAPPING
-            headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
+            with patch('openassessment.data.peer_api.get_bulk_scored_assessments') as mock_get_scored_assessments:
+                map_mock.return_value = USERNAME_MAPPING
+                mock_get_scored_assessments.return_value = {self.assessment['id']}
+                headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
         self.assertEqual(headers, [
             'Submission ID',
@@ -636,14 +666,14 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             STUDENT_ID,
             self.submission['submitted_at'],
             json.dumps(self.submission['answer']),
-            "Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
-                id=self.assessment['id'],
-                scored_at=self.assessment['scored_at'],
-            ) + "-- scorer_username: {scorer_username}\n".format(
-                scorer_username=USERNAME_MAPPING[self.assessment['scorer_id']]
-            ) + "-- scorer_id: {scorer_id}\n-- overall_feedback: {feedback}\n".format(
-                scorer_id=self.assessment['scorer_id'],
-                feedback=self.assessment['feedback']
+            (
+                f"Assessment #{self.assessment['id']}\n"
+                f"-- scored_at: {self.assessment['scored_at']}\n"
+                "-- type: PE\n"
+                "-- used to calculate peer grade: True\n"
+                f"-- scorer_username: {USERNAME_MAPPING[self.assessment['scorer_id']]}\n"
+                f"-- scorer_id: {self.assessment['scorer_id']}\n"
+                f"-- overall_feedback: {self.assessment['feedback']}\n"
             ),
             "Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
                 id=self.assessment['id'],
@@ -671,7 +701,8 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         """
 
         with patch.dict('django.conf.settings.FEATURES', {'ENABLE_ORA_USERNAMES_ON_DATA_EXPORT': False}):
-            headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
+            with patch('openassessment.data.peer_api.get_bulk_scored_assessments', return_value=set()):
+                headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
         self.assertEqual(headers, [
             'Submission ID',
@@ -713,12 +744,13 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             STUDENT_ID,
             self.submission['submitted_at'],
             json.dumps(self.submission['answer']),
-            "Assessment #{id}\n-- scored_at: {scored_at}\n-- type: PE\n".format(
-                id=self.assessment['id'],
-                scored_at=self.assessment['scored_at'],
-            ) + "-- scorer_id: {scorer_id}\n-- overall_feedback: {feedback}\n".format(
-                scorer_id=self.assessment['scorer_id'],
-                feedback=self.assessment['feedback']
+            (
+                f"Assessment #{self.assessment['id']}\n"
+                f"-- scored_at: {self.assessment['scored_at']}\n"
+                "-- type: PE\n"
+                "-- used to calculate peer grade: False\n"
+                f"-- scorer_id: {self.assessment['scorer_id']}\n"
+                f"-- overall_feedback: {self.assessment['feedback']}\n"
             ),
             "Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
                 id=self.assessment['id'],
@@ -757,8 +789,9 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         submission.answer = answer
         submission.save()
         with patch('openassessment.data.map_anonymized_ids_to_usernames') as map_mock:
-            map_mock.return_value = USERNAME_MAPPING
-            _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
+            with patch('openassessment.data.peer_api.get_bulk_scored_assessments', return_value=set()):
+                map_mock.return_value = USERNAME_MAPPING
+                _, rows = OraAggregateData.collect_ora2_data(COURSE_ID)
         self.assertEqual(json.dumps(answer, ensure_ascii=False), rows[1][7])
 
     def test_collect_ora2_summary(self):
