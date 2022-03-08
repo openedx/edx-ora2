@@ -6,6 +6,7 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
+from openassessment.staffgrader.serializers.submission_list import TeamSubmissionListSerializer
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
@@ -145,14 +146,16 @@ class StaffGraderMixin:
         """
         # Fetch staff workflows, annotated with grading_status and lock_status
         staff_workflows = self._bulk_fetch_annotated_staff_workflows()
-        # Lookup additional info like usernames and assessments
+
+        # Lookup additional info like usernames and assessments and determine serializer type
+        serializer = TeamSubmissionListSerializer if self.is_team_assignment() else SubmissionListSerializer
         serializer_context = self._get_list_workflows_serializer_context(staff_workflows)
 
         # Serialize workflows with the context, and return the dict of submissions
         result = {}
         for staff_workflow in staff_workflows:
             try:
-                serialized_workflow = SubmissionListSerializer(staff_workflow, context=serializer_context).data
+                serialized_workflow = serializer(staff_workflow, context=serializer_context).data
                 result[staff_workflow.identifying_uuid] = serialized_workflow
             except MissingContextException as e:
                 log.exception("Failed to serialize workflow %d: %s", staff_workflow.id, str(e), exc_info=True)
@@ -204,13 +207,13 @@ class StaffGraderMixin:
             context = {
                 'submission_uuid_to_student_id': submission_uuid_to_student_id,
             }
+
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models
         submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(assessment_ids)
 
         context.update({
             'anonymous_id_to_username': anonymous_id_to_username,
-            'is_team_assignment': self.is_team_assignment(),
             'submission_uuid_to_assessment': submission_uuid_to_assessment,
         })
 
