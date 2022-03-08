@@ -382,7 +382,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
         self.assertDictEqual(
             result,
             {
-                'submissionUuid': str(mock_workflow.submission_uuid),
+                'submissionUuid': str(mock_workflow.team_submission_uuid),
                 'dateSubmitted': str(mock_workflow.created_at),
                 'dateGraded': str(mock_workflow.grading_completed_at),
                 'gradingStatus': str(mock_workflow.grading_status),
@@ -470,7 +470,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
 
         expected_data = [
             OrderedDict({
-                'submissionUuid': str(workflows[0].submission_uuid),
+                'submissionUuid': str(workflows[0].team_submission_uuid),
                 'dateSubmitted': str(workflows[0].created_at),
                 'dateGraded': str(workflows[0].grading_completed_at),
                 'gradingStatus': str(workflows[0].grading_status),
@@ -484,7 +484,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                 },
             }),
             OrderedDict({
-                'submissionUuid': str(workflows[1].submission_uuid),
+                'submissionUuid': str(workflows[1].team_submission_uuid),
                 'dateSubmitted': str(workflows[1].created_at),
                 'dateGraded': str(workflows[1].grading_completed_at),
                 'gradingStatus': str(workflows[1].grading_status),
@@ -498,7 +498,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                 },
             }),
             OrderedDict({
-                'submissionUuid': str(workflows[2].submission_uuid),
+                'submissionUuid': str(workflows[2].team_submission_uuid),
                 'dateSubmitted': str(workflows[2].created_at),
                 'dateGraded': str(workflows[2].grading_completed_at),
                 'gradingStatus': str(workflows[2].grading_status),

@@ -116,6 +116,8 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
     Serialized info about an team item returned from the submission list endpoint
     """
 
+    submissionUuid = serializers.CharField(source='team_submission_uuid')
+
     # Required context
     CONTEXT_ANON_ID_TO_USERNAME = 'anonymous_id_to_username'
     CONTEXT_SUB_TO_ASSESSMENT = 'submission_uuid_to_assessment'
