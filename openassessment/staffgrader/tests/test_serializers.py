@@ -330,6 +330,7 @@ class TestSubmissionListSerializer(BaseSerializerTest):
 
         self.assertEqual(data, expected_data)
 
+
 @ddt.ddt
 class TestTeamSubmissionListSerializer(BaseSerializerTest):
     """Tests for serializing a list of team submissions"""

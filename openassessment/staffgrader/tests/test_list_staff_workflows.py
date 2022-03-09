@@ -14,7 +14,12 @@ from submissions import api as sub_api
 from openassessment.assessment.models.base import Assessment
 from openassessment.staffgrader.models import SubmissionGradingLock
 from openassessment.tests.factories import (
-    AssessmentFactory, AssessmentPartFactory, CriterionOptionFactory, CriterionFactory, StaffWorkflowFactory, TeamStaffWorkflowFactory
+    AssessmentFactory,
+    AssessmentPartFactory,
+    CriterionOptionFactory,
+    CriterionFactory,
+    StaffWorkflowFactory,
+    TeamStaffWorkflowFactory,
 )
 import openassessment.workflow.api as workflow_api
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
@@ -333,6 +338,7 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
             response.decode('utf-8')
         )
 
+
 @ddt.ddt
 class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
     """
@@ -403,8 +409,7 @@ class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_team_ids_by_team_submission_uuid')
     @scenario('data/team_submission.xml', user_id=STAFF_ID)
-    def test_teams(self, xblock, mock_get_team_ids_by_submission): # mock_fetch_workflows, mock_get_serializer_context,
-
+    def test_teams(self, xblock, mock_get_team_ids_by_submission):
         self.set_staff_user(xblock)
         mock_get_team_ids_by_submission.return_value = self.team_ids_by_submission_id
         # pylint: disable=unused-argument
