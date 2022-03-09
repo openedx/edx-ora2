@@ -419,7 +419,7 @@ class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
         self.set_team_assignment(xblock)
 
         mock_get_team_ids_by_submission.return_value = self.team_ids_by_submission_id
-        # pylint: disable=unused-argument
+        # pylint: disable=unused-argument, protected-access
         xblock.runtime._services['teams'] = Mock(get_team_names=lambda a, b: self.team_names_by_team_id)
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')

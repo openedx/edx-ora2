@@ -99,7 +99,7 @@ class SubmissionListSerializer(serializers.ModelSerializer):
             self._get_anonymous_id_from_context(workflow.identifying_uuid)
         )
 
-    def get_teamName(self, workflow):
+    def get_teamName(self, workflow):  # pylint: disable=unused-argument
         # For individual submissions, this is intentionally empty
         return None
 
@@ -154,7 +154,7 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
                 f"No submitter anonymous user id found for team submission uuid {team_submission_uuid}"
             ) from e
 
-    def get_username(self, workflow):
+    def get_username(self, workflow):  # pylint: disable=unused-argument
         # For team submissions, this is intentionally empty
         return None
 
