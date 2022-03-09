@@ -125,6 +125,11 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         xblock.xmodule_runtime.anonymous_student_id = staff_id
         xblock.get_student_item_dict = Mock(return_value=cls._student_item(staff_id))
 
+    @classmethod
+    def set_team_assignment(cls, xblock, is_team_assignment=True):
+        """Helper to turn on team assignments without a context manager"""
+        xblock.is_team_assignment = Mock(return_value=is_team_assignment)
+
     @contextmanager
     def _mock_get_student_ids_by_submission_uuid(self):
         """
@@ -411,14 +416,13 @@ class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
     @scenario('data/team_submission.xml', user_id=STAFF_ID)
     def test_teams(self, xblock, mock_get_team_ids_by_submission):
         self.set_staff_user(xblock)
+        self.set_team_assignment(xblock)
+
         mock_get_team_ids_by_submission.return_value = self.team_ids_by_submission_id
         # pylint: disable=unused-argument
         xblock.runtime._services['teams'] = Mock(get_team_names=lambda a, b: self.team_names_by_team_id)
-
-        with patch.object(xblock, 'is_team_assignment', return_value=True):
-            # with patch.object(xblock, 'teams_service.get_team_names', return_value=self.team_names_by_team_id):
-            with self._mock_map_anonymized_ids_to_usernames():
-                response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')
+        with self._mock_map_anonymized_ids_to_usernames():
+            response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')
 
         response_body = json.loads(response.body.decode('utf-8'))
 
