@@ -6,16 +6,15 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
-from openassessment.staffgrader.serializers.submission_list import TeamSubmissionListSerializer
+from submissions.api import get_student_ids_by_submission_uuid, get_submission
+from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
+from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_submission
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from submissions.api import get_student_ids_by_submission_uuid, get_submission
-from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_submission
-from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
-from openassessment.data import map_anonymized_ids_to_usernames
+from openassessment.data import map_anonymized_ids_to_usernames, OraSubmissionAnswerFactory, VersionNotFoundException
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -24,9 +23,9 @@ from openassessment.staffgrader.serializers import (
     SubmissionDetailFileSerilaizer,
     SubmissionListSerializer,
     SubmissionLockSerializer,
+    TeamSubmissionListSerializer,
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.data import OraSubmissionAnswerFactory, VersionNotFoundException
 
 
 log = logging.getLogger(__name__)

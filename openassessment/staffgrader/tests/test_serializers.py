@@ -3,7 +3,6 @@ Tests for serializers used in staff grading
 """
 from contextlib import contextmanager, ExitStack
 from datetime import datetime, timedelta, timezone
-import enum
 from typing import OrderedDict
 from uuid import uuid4
 
