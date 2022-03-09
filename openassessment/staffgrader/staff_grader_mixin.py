@@ -152,7 +152,9 @@ class StaffGraderMixin:
 
         # Lookup additional info like usernames and assessments and determine serializer type
         serializer = TeamSubmissionListSerializer if is_team_assignment else SubmissionListSerializer
-        serializer_context = self._get_list_workflows_serializer_context(staff_workflows, is_team_assignment=is_team_assignment)
+        serializer_context = self._get_list_workflows_serializer_context(
+            staff_workflows, is_team_assignment=is_team_assignment
+        )
 
         # Serialize workflows with the context, and return the dict of submissions
         result = {}
