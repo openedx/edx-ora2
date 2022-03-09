@@ -144,12 +144,15 @@ class StaffGraderMixin:
             submission_uuid:
         }
         """
+        # Calculate this once so we don't have to re-query each time
+        is_team_assignment = self.is_team_assignment()
+
         # Fetch staff workflows, annotated with grading_status and lock_status
-        staff_workflows = self._bulk_fetch_annotated_staff_workflows()
+        staff_workflows = self._bulk_fetch_annotated_staff_workflows(is_team_assignment=is_team_assignment)
 
         # Lookup additional info like usernames and assessments and determine serializer type
-        serializer = TeamSubmissionListSerializer if self.is_team_assignment() else SubmissionListSerializer
-        serializer_context = self._get_list_workflows_serializer_context(staff_workflows)
+        serializer = TeamSubmissionListSerializer if is_team_assignment else SubmissionListSerializer
+        serializer_context = self._get_list_workflows_serializer_context(staff_workflows, is_team_assignment=is_team_assignment)
 
         # Serialize workflows with the context, and return the dict of submissions
         result = {}
@@ -161,7 +164,7 @@ class StaffGraderMixin:
                 log.exception("Failed to serialize workflow %d: %s", staff_workflow.id, str(e), exc_info=True)
         return result
 
-    def _get_list_workflows_serializer_context(self, staff_workflows):
+    def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """
         Fetch additional required data and models to serialize the response
         """
@@ -176,7 +179,7 @@ class StaffGraderMixin:
         course_id = self.get_student_item_dict()['course_id']
 
         # Fetch user identifier mappings
-        if self.is_team_assignment():
+        if is_team_assignment:
             # Look up the team IDs for submissions so we can later map to team names
             team_submission_uuid_to_team_id = get_team_ids_by_team_submission_uuid(submission_uuids)
 
@@ -219,7 +222,7 @@ class StaffGraderMixin:
 
         return context
 
-    def _bulk_fetch_annotated_staff_workflows(self):
+    def _bulk_fetch_annotated_staff_workflows(self, is_team_assignment=False):
         """
         Returns: QuerySet of StaffWorkflows, filtered by the current course and item, with the following annotations:
          - current_lock_user: The "owner_id" of the most recent active (created less than TIME_LIMIT ago) lock
@@ -239,7 +242,7 @@ class StaffGraderMixin:
         student_item_dict = self.get_student_item_dict()
 
         # Return TeamStaffWorkflows for teams, StaffWorkflows for individual
-        if self.is_team_assignment():
+        if is_team_assignment:
             workflow_type = TeamStaffWorkflow
             identifying_uuid = 'team_submission_uuid'
         else:
