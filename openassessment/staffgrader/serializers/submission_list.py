@@ -45,7 +45,7 @@ class SubmissionListSerializer(serializers.ModelSerializer):
         """Verify that required individual or team context is present for serialization"""
         context_keys = set(context.keys())
 
-        # Required context for all submission types
+        # Required context for individual submissions
         required_context = set([
             self.CONTEXT_ANON_ID_TO_USERNAME,
             self.CONTEXT_SUB_TO_ASSESSMENT,
@@ -118,23 +118,25 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
 
     submissionUuid = serializers.CharField(source='team_submission_uuid')
 
-    # Required context
+    # Context keys
     CONTEXT_ANON_ID_TO_USERNAME = 'anonymous_id_to_username'
     CONTEXT_SUB_TO_ASSESSMENT = 'submission_uuid_to_assessment'
     CONTEXT_SUB_TO_TEAM_ID = 'team_submission_uuid_to_team_id'
     CONTEXT_TEAM_ID_TO_TEAM_NAME = 'team_id_to_team_name'
+
+    REQUIRED_CONTEXT_KEYS = [
+        CONTEXT_ANON_ID_TO_USERNAME,
+        CONTEXT_SUB_TO_ASSESSMENT,
+        CONTEXT_SUB_TO_TEAM_ID,
+        CONTEXT_TEAM_ID_TO_TEAM_NAME,
+    ]
 
     def _verify_required_context(self, context):
         """Verify that required team context is present for serialization"""
         context_keys = set(context.keys())
 
         # Required context for serialization
-        required_context = set([
-            self.CONTEXT_ANON_ID_TO_USERNAME,
-            self.CONTEXT_SUB_TO_ASSESSMENT,
-            self.CONTEXT_SUB_TO_TEAM_ID,
-            self.CONTEXT_TEAM_ID_TO_TEAM_NAME,
-        ])
+        required_context = set(self.REQUIRED_CONTEXT_KEYS)
 
         missing_context = required_context - context_keys
         if missing_context:

@@ -12,7 +12,7 @@ from freezegun import freeze_time
 from mock import Mock, patch
 
 from openassessment.staffgrader.serializers.submission_list import (
-    SubmissionListSerializer, SubmissionListScoreSerializer, TeamSubmissionListSerializer
+    MissingContextException, SubmissionListSerializer, SubmissionListScoreSerializer, TeamSubmissionListSerializer
 )
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers.submission_lock import SubmissionLockSerializer
@@ -334,6 +334,8 @@ class TestSubmissionListSerializer(BaseSerializerTest):
 class TestTeamSubmissionListSerializer(BaseSerializerTest):
     """Tests for serializing a list of team submissions"""
 
+    required_context_keys = TeamSubmissionListSerializer.REQUIRED_CONTEXT_KEYS
+
     @contextmanager
     def mock_get_gradedBy(self):
         with patch.object(TeamSubmissionListSerializer, 'get_gradedBy', return_value='get_gradedBy'):
@@ -373,6 +375,19 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
             if verify:
                 stack.enter_context(self.mock_verify_required_context())
             yield
+
+    @ddt.data(0,1,2,3)
+    def test_missing_context(self, key_to_remove):
+        """Test that missing context raises an exception"""
+        context = {key: {} for key in self.required_context_keys}
+        mock_workflow = Mock()
+
+        # Remove a required context item
+        context.pop(self.required_context_keys[key_to_remove])
+
+        # Assert that the serializer fails
+        with self.assertRaises(ValueError):
+            TeamSubmissionListSerializer(mock_workflow)
 
     def test_serializer(self):
         """Test connections between serializer fields and underlying functions"""
@@ -424,6 +439,14 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
             ).data
 
         self.assertEqual(result['teamName'], team_name)
+
+    def test_get_teamName_missing_context(self):
+        mock_workflow = Mock()
+        context={}
+
+        with self.mock_serializer_methods(username=True, gradedBy=True, score=True, verify=True):
+            with self.assertRaises(MissingContextException):
+                TeamSubmissionListSerializer(mock_workflow, context=context).data
 
     def test_integration(self):
         """Simple integration test to see that fields map correctly"""
