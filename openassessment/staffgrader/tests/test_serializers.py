@@ -446,7 +446,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
 
         with self.mock_serializer_methods(username=True, gradedBy=True, score=True, verify=True):
             with self.assertRaises(MissingContextException):
-                TeamSubmissionListSerializer(mock_workflow, context=context).data
+                _ = TeamSubmissionListSerializer(mock_workflow, context=context).data
 
     def test_integration(self):
         """Simple integration test to see that fields map correctly"""
