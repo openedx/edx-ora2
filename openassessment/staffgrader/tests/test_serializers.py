@@ -376,7 +376,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
                 stack.enter_context(self.mock_verify_required_context())
             yield
 
-    @ddt.data(0,1,2,3)
+    @ddt.data(0, 1, 2, 3)
     def test_missing_context(self, key_to_remove):
         """Test that missing context raises an exception"""
         context = {key: {} for key in self.required_context_keys}
@@ -442,7 +442,7 @@ class TestTeamSubmissionListSerializer(BaseSerializerTest):
 
     def test_get_teamName_missing_context(self):
         mock_workflow = Mock()
-        context={}
+        context = {}
 
         with self.mock_serializer_methods(username=True, gradedBy=True, score=True, verify=True):
             with self.assertRaises(MissingContextException):
