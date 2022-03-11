@@ -114,5 +114,5 @@ class StaffGraderMixinTestBase(XBlockHandlerTestCase):
             'submission_uuid': submission_uuid
         }
         self.set_staff_user(xblock, grader)
-        resp = super().request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
+        resp = super().request(xblock, 'submit_staff_assessment', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
