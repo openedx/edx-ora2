@@ -46,52 +46,100 @@ class StaffAssessmentMixin:
         """
         if 'submission_uuid' not in data:
             return False, self._("The submission ID of the submission being assessed was not found.")
-        if self.is_team_assignment():
-            return self._team_assess(data)
-        else:
-            try:
-                assessment = staff_api.create_assessment(
-                    data['submission_uuid'],
-                    self.get_student_item_dict()["student_id"],
-                    data['options_selected'],
-                    clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
-                    data['overall_feedback'],
-                    create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
-                )
-                assess_type = data.get('assess_type', 'regrade')
-                self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type=assess_type)
-                workflow_api.update_from_assessments(
-                    assessment["submission_uuid"],
-                    None,
-                    override_submitter_requirements=(assess_type == 'regrade')
-                )
-            except StaffAssessmentRequestError:
-                logger.warning(
-                    "An error occurred while submitting a staff assessment "
-                    "for the submission %s",
-                    data['submission_uuid'],
-                    exc_info=True
-                )
-                msg = self._("Your staff assessment could not be submitted.")
-                return False, msg
-            except StaffAssessmentInternalError:
-                logger.exception(
-                    "An error occurred while submitting a staff assessment "
-                    "for the submission %s",
-                    data['submission_uuid']
-                )
-                msg = self._("Your staff assessment could not be submitted.")
-                return False, msg
+        try:
+            assessment = staff_api.create_assessment(
+                data['submission_uuid'],
+                self.get_student_item_dict()["student_id"],
+                data['options_selected'],
+                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
+                data['overall_feedback'],
+                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
+            )
+            assess_type = data.get('assess_type', 'regrade')
+            self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type=assess_type)
+            workflow_api.update_from_assessments(
+                assessment["submission_uuid"],
+                None,
+                override_submitter_requirements=(assess_type == 'regrade')
+            )
+        except StaffAssessmentRequestError:
+            logger.warning(
+                "An error occurred while submitting a staff assessment "
+                "for the submission %s",
+                data['submission_uuid'],
+                exc_info=True
+            )
+            msg = self._("Your staff assessment could not be submitted.")
+            return False, msg
+        except StaffAssessmentInternalError:
+            logger.exception(
+                "An error occurred while submitting a staff assessment "
+                "for the submission %s",
+                data['submission_uuid']
+            )
+            msg = self._("Your staff assessment could not be submitted.")
+            return False, msg
         return True, ''
+
+    def do_team_staff_assessment(self, data, team_submission_uuid=None):
+        """
+        Teams version of do_staff_assessment.
+        Providing the team_submission_uuid removes lookup of team submission from individual submission_uuid.
+        """
+        if 'submission_uuid' not in data and team_submission_uuid is None:
+            return False, self._("The submission ID of the submission being assessed was not found.")
+        try:
+            if not team_submission_uuid:
+                team_submission = team_sub_api.get_team_submission_from_individual_submission(data['submission_uuid'])
+                team_submission_uuid = team_submission['team_submission_uuid']
+
+            assessment = teams_api.create_assessment(
+                team_submission_uuid,
+                self.get_student_item_dict()["student_id"],
+                data['options_selected'],
+                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
+                data['overall_feedback'],
+                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
+            )
+            assess_type = data.get('assess_type', 'regrade')
+            self.publish_assessment_event("openassessmentblock.staff_assess", assessment[0], type=assess_type)
+            team_workflow_api.update_from_assessments(
+                team_submission_uuid,
+                override_submitter_requirements=(assess_type == 'regrade')
+            )
+
+        except StaffAssessmentRequestError:
+            logger.warning(
+                "An error occurred while submitting a team assessment "
+                "for the submission %s",
+                data['submission_uuid'],
+                exc_info=True
+            )
+            msg = self._("Your team assessment could not be submitted.")
+            return {'success': False, 'msg': msg}
+        except StaffAssessmentInternalError:
+            logger.exception(
+                "An error occurred while submitting a team assessment "
+                "for the submission %s",
+                data['submission_uuid'],
+            )
+            msg = self._("Your team assessment could not be submitted.")
+            return {'success': False, 'msg': msg}
+
+        return {'success': True, 'msg': ""}
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO")
     @verify_assessment_parameters
     def staff_assess(self, data, suffix=''):  # pylint: disable=unused-argument
         """
-        Create a staff assessment from a staff submission.
+        Create a staff assessment from a team or individual submission.
         """
-        success, err_msg = self.do_staff_assessment(data)
+        if self.is_team_assignment():
+            success, err_msg = self.do_team_staff_assessment(data)
+        else:
+            success, err_msg = self.do_staff_assessment(data)
+
         return {'success': success, 'msg': err_msg}
 
     @XBlock.json_handler
@@ -134,49 +182,6 @@ class StaffAssessmentMixin:
             }
         else:
             return {'success': True, 'msg': ''}
-
-    def _team_assess(self, data):
-        """
-        Encapsulates the functionality around staff assessment for a team based assignment
-        """
-        try:
-            team_submission = team_sub_api.get_team_submission_from_individual_submission(data['submission_uuid'])
-            team_submission_uuid = team_submission['team_submission_uuid']
-
-            assessment = teams_api.create_assessment(
-                team_submission_uuid,
-                self.get_student_item_dict()["student_id"],
-                data['options_selected'],
-                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
-                data['overall_feedback'],
-                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
-            )
-            assess_type = data.get('assess_type', 'regrade')
-            self.publish_assessment_event("openassessmentblock.staff_assess", assessment[0], type=assess_type)
-            team_workflow_api.update_from_assessments(
-                team_submission_uuid,
-                override_submitter_requirements=(assess_type == 'regrade')
-            )
-
-        except StaffAssessmentRequestError:
-            logger.warning(
-                "An error occurred while submitting a team assessment "
-                "for the submission %s",
-                data['submission_uuid'],
-                exc_info=True
-            )
-            msg = self._("Your team assessment could not be submitted.")
-            return {'success': False, 'msg': msg}
-        except StaffAssessmentInternalError:
-            logger.exception(
-                "An error occurred while submitting a team assessment "
-                "for the submission %s",
-                data['submission_uuid'],
-            )
-            msg = self._("Your team assessment could not be submitted.")
-            return {'success': False, 'msg': msg}
-
-        return {'success': True, 'msg': ""}
 
     @XBlock.handler
     def render_staff_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
