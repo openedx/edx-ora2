@@ -598,6 +598,25 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         assessment = teams_api.get_latest_staff_assessment(submission['team_submission_uuid'])
         self._assert_team_assessment(assessment, submission, self.regrade_expected_answer)
 
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_assessment_error(self, xblock):
+        # Create a submission for the team
+        submission = self._setup_xblock_and_create_team_submission(xblock)
+        submission["uuid"] = str(submission["submission_uuids"][0])
+
+        with patch('openassessment.xblock.staff_assessment_mixin.teams_api') as mock_api:
+            # Simulate an error
+            mock_api.create_assessment.side_effect = teams_api.StaffAssessmentRequestError
+            resp = self.request(xblock, 'staff_assess', json.dumps(TEAM_GOOD_ASSESSMENT), response_format='json')
+            self.assertFalse(resp['success'])
+            self.assertIn('msg', resp)
+
+            #  Simulate a different error
+            mock_api.create_assessment.side_effect = teams_api.StaffAssessmentInternalError
+            resp = self.request(xblock, 'staff_assess', json.dumps(TEAM_GOOD_ASSESSMENT), response_format='json')
+            self.assertFalse(resp['success'])
+            self.assertIn('msg', resp)
+
     def _assert_team_assessment(self, assessment, submission, expected_answer):
         """
         Helper function to perform asserts
