@@ -411,7 +411,7 @@ class StaffGraderMixin:
             'assess_type': (string) one of ['regrade', full-grade']
         }
 
-        Returns: (note that I wanna change this) {
+        Returns: {
             'success': True/False - whether or not the grade submit succeeded
             'msg': String/Empty - error string, if failure occurred
         }
