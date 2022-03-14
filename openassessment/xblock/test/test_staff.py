@@ -171,7 +171,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.set_staff_access(xblock)
 
         # Create a submission for the student
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        xblock.create_submission(student_item, self.SUBMISSION)
 
         # Try to submit an assessment without providing a good submission UUID
         resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
