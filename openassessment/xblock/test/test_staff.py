@@ -164,6 +164,25 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
 class TestStaffAssessment(StaffAssessmentTestBase):
     """ Test Staff Assessment Workflow. """
 
+    @patch('openassessment.xblock.staff_assessment_mixin.staff_api.create_assessment')
+    @scenario('data/self_assessment_scenario.xml', user_id='Bob')
+    def test_staff_assess_handler_missing_id(self, xblock, mock_create_assessment):
+        student_item = xblock.get_student_item_dict()
+        self.set_staff_access(xblock)
+
+        # Create a submission for the student
+        xblock.create_submission(student_item, self.SUBMISSION)
+
+        # Try to submit an assessment without providing a good submission UUID
+        resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
+
+        # Expect that a staff-assessment was not created
+        mock_create_assessment.assert_not_called()
+        self.assertDictEqual(resp, {
+            'success': False,
+            'msg': "The submission ID of the submission being assessed was not found."
+        })
+
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_assess_handler(self, xblock):
         student_item = xblock.get_student_item_dict()
@@ -530,6 +549,24 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
             'parts2_option_name': 'Yogi Berra'
         }
 
+    @patch('openassessment.xblock.staff_assessment_mixin.teams_api.create_assessment')
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_staff_assess_handler_missing_id(self, xblock, mock_create_team_assessment):
+        self.set_staff_access(xblock)
+
+        # Create a team submission
+        self._setup_xblock_and_create_team_submission(xblock)
+
+        # Try to submit an assessment without providing a good submission UUID
+        resp = self.request(xblock, 'staff_assess', json.dumps(TEAM_GOOD_ASSESSMENT), response_format='json')
+
+        # Expect that a staff assessment was not created
+        mock_create_team_assessment.assert_not_called()
+        self.assertDictEqual(resp, {
+            'success': False,
+            'msg': "The submission ID of the submission being assessed was not found."
+        })
+
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_assess_handler(self, xblock):
 
@@ -560,6 +597,25 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         # get the assessment via API for asserts
         assessment = teams_api.get_latest_staff_assessment(submission['team_submission_uuid'])
         self._assert_team_assessment(assessment, submission, self.regrade_expected_answer)
+
+    @scenario('data/team_submission.xml', user_id='Bob')
+    def test_assessment_error(self, xblock):
+        # Create a submission for the team
+        submission = self._setup_xblock_and_create_team_submission(xblock)
+        submission["uuid"] = str(submission["submission_uuids"][0])
+
+        with patch('openassessment.xblock.staff_assessment_mixin.teams_api') as mock_api:
+            # Simulate an error
+            mock_api.create_assessment.side_effect = teams_api.StaffAssessmentRequestError
+            resp = self.request(xblock, 'staff_assess', json.dumps(TEAM_GOOD_ASSESSMENT), response_format='json')
+            self.assertFalse(resp['success'])
+            self.assertIn('msg', resp)
+
+            #  Simulate a different error
+            mock_api.create_assessment.side_effect = teams_api.StaffAssessmentInternalError
+            resp = self.request(xblock, 'staff_assess', json.dumps(TEAM_GOOD_ASSESSMENT), response_format='json')
+            self.assertFalse(resp['success'])
+            self.assertIn('msg', resp)
 
     def _assert_team_assessment(self, assessment, submission, expected_answer):
         """

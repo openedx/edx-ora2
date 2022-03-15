@@ -18,6 +18,7 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
     """ Tests for interacting with submission grading/locking """
     test_submission_uuid = str(uuid4())
     test_submission_uuid_unlocked = str(uuid4())
+    test_team_submission_uuid = str(uuid4())
 
     test_timestamp = "1969-07-20T22:56:00-04:00"
 
@@ -156,4 +157,40 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         self.assertEqual(response.status_code, 403)
         self.assertDictEqual(response_body, {
             "error": "ERR_LOCK_CONTESTED"
+        })
+
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_submit_staff_assessment(self, xblock, _):
+        """Simple connectivity and routing test for submit staff assessment"""
+        xblock.xmodule_runtime = Mock(user_is_staff=True)
+        xblock.is_team_assignment = Mock(return_value=False)
+        xblock.do_staff_assessment = Mock(return_value=(True, ''))
+
+        request_data = {'submission_uuid': self.test_submission_uuid, 'foo': 'bar'}
+        response = self.request(xblock, 'submit_staff_assessment', json.dumps(request_data), response_format='json')
+
+        xblock.do_staff_assessment.assert_called_once_with(request_data)
+        self.assertDictEqual(response, {
+            'success': True,
+            'msg': ''
+        })
+
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_team_submission')
+    @scenario('data/team_submission.xml', user_id="staff")
+    def test_submit_team_staff_assessment(self, xblock, _):
+        """Simple connectivity and routing test for submit team staff assessment"""
+        xblock.xmodule_runtime = Mock(user_is_staff=True)
+        xblock.is_team_assignment = Mock(return_value=True)
+        xblock.do_team_staff_assessment = Mock(return_value=(True, ''))
+
+        request_data = {'submission_uuid': self.test_team_submission_uuid, 'foo': 'bar'}
+        response = self.request(xblock, 'submit_staff_assessment', json.dumps(request_data), response_format='json')
+
+        xblock.do_team_staff_assessment.assert_called_once_with(
+            request_data, team_submission_uuid=self.test_team_submission_uuid
+        )
+        self.assertDictEqual(response, {
+            'success': True,
+            'msg': ''
         })

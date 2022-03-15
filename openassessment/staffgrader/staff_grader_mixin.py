@@ -390,3 +390,35 @@ class StaffGraderMixin:
 
         assessment = assessments[submission_uuid]
         return AssessmentSerializer(assessment).data
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    @require_submission_uuid(validate=True)
+    def submit_staff_assessment(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Staff grader-specific wrapper over staff assessments to better handle individual vs team assignments
+
+        data: { (grade data)
+            'options_selected': {
+                '<criterion_name_1>': <selected_option_name>,
+                '<criterion_name_2>': <selected_option_name>,
+            },
+            'criterion_feedback': {
+                '<criterion_name_1>': (string)
+            },
+            'overall_feedback': (string)
+            'submission_uuid': (string)
+            'assess_type': (string) one of ['regrade', full-grade']
+        }
+
+        Returns: {
+            'success': True/False - whether or not the grade submit succeeded
+            'msg': String/Empty - error string, if failure occurred
+        }
+        """
+        if self.is_team_assignment():
+            success, err_msg = self.do_team_staff_assessment(data, team_submission_uuid=submission_uuid)
+        else:
+            success, err_msg = self.do_staff_assessment(data)
+
+        return {'success': success, 'msg': err_msg}

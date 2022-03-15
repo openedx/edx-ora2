@@ -174,7 +174,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
             'submission_uuid': student.submission['uuid']
         }
         self.set_staff_user(xblock, user=grader)
-        resp = self.request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
+        resp = self.request(xblock, 'submit_staff_assessment', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
 
     def add_expected_response_dict(
