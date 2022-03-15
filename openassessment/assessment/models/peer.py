@@ -543,6 +543,19 @@ class PeerWorkflowItem(models.Model):
             ]
         )
 
+    @classmethod
+    def get_bulk_scored_assessments(cls, submission_uuids):
+        """
+        Do a bulk lookup of scored PeerWorkflowItems by submission uuid,
+        and return the list of "scored" assessments.
+        """
+        item_qs = cls.objects.filter(
+            submission_uuid__in=submission_uuids,
+            assessment__isnull=False,
+            scored=True,
+        ).select_related('assessment')
+        return [item.assessment for item in item_qs]
+
     class Meta:
         ordering = ["started_at", "id"]
         app_label = "assessment"

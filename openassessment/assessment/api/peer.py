@@ -232,7 +232,8 @@ def get_score(submission_uuid, peer_requirements):
     ).order_by('-assessment')
 
     # Check if enough peers have graded this submission
-    if items.count() < required_peer_grades(submission_uuid, peer_requirements):
+    num_required_peer_grades = required_peer_grades(submission_uuid, peer_requirements)
+    if items.count() < num_required_peer_grades:
         return None
 
     # Unfortunately, we cannot use update() after taking a slice,
@@ -243,9 +244,10 @@ def get_score(submission_uuid, peer_requirements):
     # which is not supported by some versions of MySQL.
     # Although this approach generates more database queries, the number is likely to
     # be relatively small (at least 1 and very likely less than 5).
-    for scored_item in items[:peer_requirements["must_be_graded_by"]]:
-        scored_item.scored = True
-        scored_item.save()
+    for scored_item in items[:num_required_peer_grades]:
+        if not scored_item.scored:
+            scored_item.scored = True
+            scored_item.save()
     assessments = [item.assessment for item in items]
 
     return {
@@ -1027,3 +1029,12 @@ def get_waiting_step_details(
         submission_uuids,
         must_be_graded_by
     )
+
+
+def get_bulk_scored_assessments(submission_uuids):
+    """
+    Given a list of submission uuids, return a set of assessments that
+    are "scored", which is to say, included in the calculation of the final score,
+    as opposed to "extra" peer reviews.
+    """
+    return set(PeerWorkflowItem.get_bulk_scored_assessments(submission_uuids))
