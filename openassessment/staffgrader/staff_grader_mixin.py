@@ -404,7 +404,7 @@ class StaffGraderMixin:
                 '<criterion_name_2>': <selected_option_name>,
             },
             'criterion_feedback': {
-                '<criterion_label_1>': (string)
+                '<criterion_name_1>': (string)
             },
             'overall_feedback': (string)
             'submission_uuid': (string)
