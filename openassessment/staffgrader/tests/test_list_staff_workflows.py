@@ -14,7 +14,12 @@ from submissions import api as sub_api
 from openassessment.assessment.models.base import Assessment
 from openassessment.staffgrader.models import SubmissionGradingLock
 from openassessment.tests.factories import (
-    AssessmentFactory, AssessmentPartFactory, CriterionOptionFactory, CriterionFactory, StaffWorkflowFactory
+    AssessmentFactory,
+    AssessmentPartFactory,
+    CriterionOptionFactory,
+    CriterionFactory,
+    StaffWorkflowFactory,
+    TeamStaffWorkflowFactory,
 )
 import openassessment.workflow.api as workflow_api
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
@@ -43,6 +48,7 @@ TEST_START_DATE = SUBMITTED_DATE + timedelta(days=2)
 POINTS_POSSIBLE = 6
 
 TestUser = namedtuple("TestUser", ['username', 'student_id', 'submission'])
+TestTeam = namedtuple("TestTeam", ['team_name', 'team_id', 'member_ids', 'team_submission'])
 MockAnnotatedStaffWorkflow = namedtuple("MockAnnotatedStaffWorkflow", EXPECTED_ANNOTATED_WORKFLOW_FIELDS)
 
 
@@ -119,6 +125,11 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         xblock.xmodule_runtime.anonymous_student_id = staff_id
         xblock.get_student_item_dict = Mock(return_value=cls._student_item(staff_id))
 
+    @classmethod
+    def set_team_assignment(cls, xblock, is_team_assignment=True):
+        """Helper to turn on team assignments without a context manager"""
+        xblock.is_team_assignment = Mock(return_value=is_team_assignment)
+
     @contextmanager
     def _mock_get_student_ids_by_submission_uuid(self):
         """
@@ -163,13 +174,14 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
             'submission_uuid': student.submission['uuid']
         }
         self.set_staff_user(xblock, user=grader)
-        resp = self.request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
+        resp = self.request(xblock, 'submit_staff_assessment', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
 
     def add_expected_response_dict(
         self,
         expected_response,
         student,
+        team=None,
         requester=None,
         date_graded=None,
         graded_by=None,
@@ -181,6 +193,7 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         Params:
          - expected_reponse: The dict to append to
          - student: The student whose submission we're interested in
+         - team: The team whose submission we're interested in (ONLY FOR TEAM ASSIGNMENTS)
          - requester: The user requesting the list (needed for "locked" vs "in-progress") [defaults to staff_0]
          - date_graded: expected date the submission was graded [defaults to TEST_START_DATE if graded_by is non-null]
          - graded_by: expected user who created the assessment for the given submission
@@ -206,17 +219,20 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
                 'pointsEarned': expected_score,
             }
         expected_val = {
-            'submissionUuid': student.submission['uuid'],
+            'submissionUuid': student.submission['uuid'] if not team else team.team_submission,
             'dateSubmitted': str(SUBMITTED_DATE),
             'dateGraded': str(date_graded),
             'gradedBy': graded_by.username if graded_by else None,
             'gradingStatus': 'ungraded' if not date_graded else 'graded',
             'lockStatus': lock_status,
-            'username': student.username,
+            'username': student.username if not team else None,
+            'teamName': team.team_name if team else None,
             'score': score,
         }
 
-        expected_response[student.submission['uuid']] = expected_val
+        expected_response[
+            student.submission['uuid'] if not team else team.team_submission
+        ] = expected_val
 
     def setup_completed_assessments(self, xblock, grading_config):
         """
@@ -327,18 +343,95 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
             response.decode('utf-8')
         )
 
+
+@ddt.ddt
+class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
+    """
+    A few tests on top of existing tests to exercise teams functionality
+    """
+
+    @classmethod
+    def _create_test_team(cls, identifier, team_member_ids, create_submission=True):
+        """Create a TestTeam, linking team members to a team ID, name, and possible team submission"""
+        course_id = STUDENT_ITEM['course_id']
+        item_id = STUDENT_ITEM['item_id']
+        team_id = f"team_{identifier}_id"
+
+        if create_submission:
+            workflow = TeamStaffWorkflowFactory.create(course_id=course_id, item_id=item_id)
+            team_submission = workflow.team_submission_uuid
+        else:
+            team_submission = None
+
+        return TestTeam(
+            team_name=f"team_{identifier}_name",
+            team_id=team_id,
+            member_ids=team_member_ids,
+            team_submission=team_submission
+        )
+
+    @classmethod
+    @freeze_time(SUBMITTED_DATE)
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.course_id = STUDENT_ITEM['course_id']
+        cls.item_id = STUDENT_ITEM['item_id']
+
+        # Create four TestUser learners *without* submissions
+        cls.students = [
+            cls._create_test_user(identifier, "learner", create_submission=False)
+            for identifier in range(4)
+        ]
+
+        # Create three TestUsers to represent course staff
+        cls.course_staff = [
+            cls._create_test_user(identifier, "staff", create_submission=False)
+            for identifier in range(3)
+        ]
+
+        # Create 2 teams with submissions, the first two students on 1 team, the second on another
+        cls.teams = [
+            cls._create_test_team(0, [student.student_id for student in cls.students[0:2]]),
+            cls._create_test_team(1, [student.student_id for student in cls.students[2:2]])
+        ]
+
+        # When we're mocking `get_team_ids_by_team_submission_uuid` and `get_team_names`,
+        # we'll need these two dicts, so just set them up now.
+        cls.team_ids_by_submission_id = {
+            team.team_submission: team.team_id
+            for team in cls.teams
+        }
+        cls.team_names_by_team_id = {
+            team.team_id: team.team_name
+            for team in cls.teams
+        }
+
+        # Team assignments still need anon ID to username mappings for scorers
+        cls.student_id_to_username_map = {
+            test_user.student_id: test_user.username
+            for test_user in cls.course_staff
+        }
+
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_team_ids_by_team_submission_uuid')
     @scenario('data/team_submission.xml', user_id=STAFF_ID)
-    def test_teams(self, xblock):
+    def test_teams(self, xblock, mock_get_team_ids_by_submission):
         self.set_staff_user(xblock)
-        with patch.object(xblock, 'is_team_assignment', return_value=True):
+        self.set_team_assignment(xblock)
+
+        mock_get_team_ids_by_submission.return_value = self.team_ids_by_submission_id
+        # pylint: disable=unused-argument, protected-access
+        xblock.runtime._services['teams'] = Mock(get_team_names=lambda a, b: self.team_names_by_team_id)
+        with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', "{}", response_format='response')
+
         response_body = json.loads(response.body.decode('utf-8'))
 
-        self.assertEqual(response.status_code, 400)
-        self.assertDictEqual(
-            response_body,
-            {"error": "Team Submissions not currently supported"}
-        )
+        self.assertEqual(response.status_code, 200)
+
+        expected_response = {}
+        for team in self.teams:
+            self.add_expected_response_dict(expected_response, None, team=team)
+        self.assertDictEqual(response_body, expected_response)
 
 
 @ddt.ddt

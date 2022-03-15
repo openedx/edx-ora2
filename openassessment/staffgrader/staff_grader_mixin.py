@@ -6,14 +6,15 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
-from xblock.core import XBlock
-from xblock.exceptions import JsonHandlerError
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
 from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
+from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_submission
+from xblock.core import XBlock
+from xblock.exceptions import JsonHandlerError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
-from openassessment.assessment.models.staff import StaffWorkflow
-from openassessment.data import map_anonymized_ids_to_usernames
+from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
+from openassessment.data import map_anonymized_ids_to_usernames, OraSubmissionAnswerFactory, VersionNotFoundException
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -22,9 +23,9 @@ from openassessment.staffgrader.serializers import (
     SubmissionDetailFileSerilaizer,
     SubmissionListSerializer,
     SubmissionLockSerializer,
+    TeamSubmissionListSerializer,
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.data import OraSubmissionAnswerFactory, VersionNotFoundException
 
 
 log = logging.getLogger(__name__)
@@ -50,7 +51,10 @@ def require_submission_uuid(validate=True):
                 raise JsonHandlerError(400, "Body must contain a submission_uuid")
             if validate:
                 try:
-                    get_submission(submission_uuid)
+                    if self.is_team_assignment():
+                        get_team_submission(submission_uuid)
+                    else:
+                        get_submission(submission_uuid)
                 except SubmissionNotFoundError as exc:
                     raise JsonHandlerError(404, "Submission not found") from exc
                 except SubmissionRequestError as exc:
@@ -139,25 +143,29 @@ class StaffGraderMixin:
             submission_uuid:
         }
         """
-        if self.is_team_assignment():
-            raise JsonHandlerError(400, "Team Submissions not currently supported")
+        # Calculate this once so we don't have to re-query each time
+        is_team_assignment = self.is_team_assignment()
 
         # Fetch staff workflows, annotated with grading_status and lock_status
-        staff_workflows = self._bulk_fetch_annotated_staff_workflows()
-        # Lookup additional info like usernames and assessments
-        serializer_context = self._get_list_workflows_serializer_context(staff_workflows)
+        staff_workflows = self._bulk_fetch_annotated_staff_workflows(is_team_assignment=is_team_assignment)
+
+        # Lookup additional info like usernames and assessments and determine serializer type
+        serializer = TeamSubmissionListSerializer if is_team_assignment else SubmissionListSerializer
+        serializer_context = self._get_list_workflows_serializer_context(
+            staff_workflows, is_team_assignment=is_team_assignment
+        )
 
         # Serialize workflows with the context, and return the dict of submissions
         result = {}
         for staff_workflow in staff_workflows:
             try:
-                serialized_workflow = SubmissionListSerializer(staff_workflow, context=serializer_context).data
+                serialized_workflow = serializer(staff_workflow, context=serializer_context).data
                 result[staff_workflow.identifying_uuid] = serialized_workflow
             except MissingContextException as e:
                 log.exception("Failed to serialize workflow %d: %s", staff_workflow.id, str(e), exc_info=True)
         return result
 
-    def _get_list_workflows_serializer_context(self, staff_workflows):
+    def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """
         Fetch additional required data and models to serialize the response
         """
@@ -172,29 +180,50 @@ class StaffGraderMixin:
         course_id = self.get_student_item_dict()['course_id']
 
         # Fetch user identifier mappings
+        if is_team_assignment:
+            # Look up the team IDs for submissions so we can later map to team names
+            team_submission_uuid_to_team_id = get_team_ids_by_team_submission_uuid(submission_uuids)
 
-        # When we look up usernames we want to include all connected learner student ids
-        submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
-            course_id,
-            submission_uuids,
-        )
+            # Look up names for teams
+            topic_id = self.selected_teamset_id
+            team_id_to_team_name = self.teams_service.get_team_names(course_id, topic_id)
 
-        # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
-        # `gradedBy` and `username` fields
-        anonymous_id_to_username = map_anonymized_ids_to_usernames(
-            set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-        )
+            # Do bulk lookup for scorer anonymous ids (submitting team name is a separate lookup)
+            anonymous_id_to_username = map_anonymized_ids_to_usernames(set(workflow_scorer_ids))
+
+            context = {
+                'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
+                'team_id_to_team_name': team_id_to_team_name,
+            }
+        else:
+            # When we look up usernames we want to include all connected learner student ids
+            submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
+                course_id,
+                submission_uuids,
+            )
+
+            # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
+            # `gradedBy` and `username` fields
+            anonymous_id_to_username = map_anonymized_ids_to_usernames(
+                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
+            )
+
+            context = {
+                'submission_uuid_to_student_id': submission_uuid_to_student_id,
+            }
 
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models
         submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(assessment_ids)
-        return {
-            'submission_uuid_to_student_id': submission_uuid_to_student_id,
+
+        context.update({
             'anonymous_id_to_username': anonymous_id_to_username,
             'submission_uuid_to_assessment': submission_uuid_to_assessment,
-        }
+        })
 
-    def _bulk_fetch_annotated_staff_workflows(self):
+        return context
+
+    def _bulk_fetch_annotated_staff_workflows(self, is_team_assignment=False):
         """
         Returns: QuerySet of StaffWorkflows, filtered by the current course and item, with the following annotations:
          - current_lock_user: The "owner_id" of the most recent active (created less than TIME_LIMIT ago) lock
@@ -212,13 +241,22 @@ class StaffGraderMixin:
         # Create an unevaluated QuerySet of "active" SubmissionLock objects that refer to the same submission as the
         # "current" workflow
         student_item_dict = self.get_student_item_dict()
+
+        # Return TeamStaffWorkflows for teams, StaffWorkflows for individual
+        if is_team_assignment:
+            workflow_type = TeamStaffWorkflow
+            identifying_uuid = 'team_submission_uuid'
+        else:
+            workflow_type = StaffWorkflow
+            identifying_uuid = 'submission_uuid'
+
         newest_lock = SubmissionGradingLock.currently_active().filter(
-            submission_uuid=OuterRef('submission_uuid')
+            submission_uuid=OuterRef(identifying_uuid)
         ).order_by(
             '-created_at'
         )
 
-        staff_workflows = StaffWorkflow.objects.filter(
+        staff_workflows = workflow_type.objects.filter(
             course_id=student_item_dict['course_id'],
             item_id=student_item_dict['item_id'],
             cancelled_at=None,
@@ -287,7 +325,10 @@ class StaffGraderMixin:
         }
         """
         try:
-            submission = get_submission(submission_uuid)
+            if self.is_team_assignment():
+                submission = get_team_submission(submission_uuid)
+            else:
+                submission = get_submission(submission_uuid)
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(submission.get('answer'))
         except SubmissionError as err:
             raise JsonHandlerError(404, str(err)) from err
@@ -323,8 +364,12 @@ class StaffGraderMixin:
         student_item_dict = self.get_student_item_dict()
         course_id = student_item_dict['course_id']
         item_id = student_item_dict['item_id']
+
         try:
-            workflow = StaffWorkflow.get_staff_workflow(course_id, item_id, submission_uuid)
+            if self.is_team_assignment():
+                workflow = TeamStaffWorkflow.get_team_staff_workflow(course_id, item_id, submission_uuid)
+            else:
+                workflow = StaffWorkflow.get_staff_workflow(course_id, item_id, submission_uuid)
         except StaffWorkflow.DoesNotExist as ex:
             msg = f"No gradeable submission found with uuid={submission_uuid} in course={course_id} item={item_id}"
             raise JsonHandlerError(404, msg) from ex
@@ -345,3 +390,35 @@ class StaffGraderMixin:
 
         assessment = assessments[submission_uuid]
         return AssessmentSerializer(assessment).data
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    @require_submission_uuid(validate=True)
+    def submit_staff_assessment(self, submission_uuid, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Staff grader-specific wrapper over staff assessments to better handle individual vs team assignments
+
+        data: { (grade data)
+            'options_selected': {
+                '<criterion_name_1>': <selected_option_name>,
+                '<criterion_name_2>': <selected_option_name>,
+            },
+            'criterion_feedback': {
+                '<criterion_name_1>': (string)
+            },
+            'overall_feedback': (string)
+            'submission_uuid': (string)
+            'assess_type': (string) one of ['regrade', full-grade']
+        }
+
+        Returns: {
+            'success': True/False - whether or not the grade submit succeeded
+            'msg': String/Empty - error string, if failure occurred
+        }
+        """
+        if self.is_team_assignment():
+            success, err_msg = self.do_team_staff_assessment(data, team_submission_uuid=submission_uuid)
+        else:
+            success, err_msg = self.do_staff_assessment(data)
+
+        return {'success': success, 'msg': err_msg}
