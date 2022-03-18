@@ -41,13 +41,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.21.12
+boto3==1.21.21
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.24.12
+botocore==1.24.21
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -62,7 +62,7 @@ cffi==1.15.0
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.58.2
+cfn-lint==0.58.3
     # via
     #   -r requirements/test.txt
     #   moto
@@ -76,7 +76,7 @@ click==8.0.4
     #   click-log
     #   code-annotations
     #   edx-lint
-click-log==0.3.2
+click-log==0.4.0
     # via edx-lint
 code-annotations==1.3.0
     # via
@@ -87,7 +87,7 @@ coverage==6.3.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==36.0.1
+cryptography==36.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -151,7 +151,7 @@ ecdsa==0.17.0
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==4.5.0
+edx-django-utils==4.6.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -167,7 +167,7 @@ edx-toggles==4.3.1
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==13.3.0
+faker==13.3.2
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -211,7 +211,7 @@ jinja2==3.0.3
     #   -r requirements/test.txt
     #   code-annotations
     #   moto
-jmespath==0.10.0
+jmespath==1.0.0
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -263,7 +263,7 @@ lxml==4.8.0
     # via
     #   -r requirements/test.txt
     #   xblock
-markupsafe==2.1.0
+markupsafe==2.1.1
     # via
     #   -r requirements/test.txt
     #   jinja2
@@ -429,7 +429,7 @@ requests==2.27.1
     #   moto
     #   python-swiftclient
     #   responses
-responses==0.18.0
+responses==0.20.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -498,13 +498,13 @@ typing-extensions==4.1.1
     # via
     #   astroid
     #   pylint
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   -r requirements/test.txt
     #   botocore
     #   requests
     #   responses
-virtualenv==20.13.2
+virtualenv==20.13.3
     # via
     #   -r requirements/test.txt
     #   tox
