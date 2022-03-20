@@ -33,9 +33,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-02 10:10-0500\n"
-"PO-Revision-Date: 2022-02-17 17:18+0000\n"
-"Last-Translator: Alfredo Guillem\n"
+"POT-Creation-Date: 2022-03-14 12:19-0400\n"
+"PO-Revision-Date: 2014-06-11 13:03+0000\n"
+"Last-Translator: Alfredo Guillem, 2022\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,128 +43,128 @@ msgstr ""
 "Language: es_419\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: openassessment/assessment/api/student_training.py:178
+#: openassessment/assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
 msgstr "No se pudo analizar la rúbrica serializada."
 
-#: openassessment/assessment/api/student_training.py:190
+#: openassessment/assessment/api/student_training.py:191
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
 msgstr "Si sus ejercicios incluyen un paso de entrenamiento del estudiante, la rúbrica debe tener al menos un criterio, y ese criterio al menos una opción."
 
-#: openassessment/assessment/api/student_training.py:202
+#: openassessment/assessment/api/student_training.py:203
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "El ejemplo {example_number} tiene un error de validación: {error}"
 
-#: openassessment/assessment/api/student_training.py:216
+#: openassessment/assessment/api/student_training.py:217
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "El ejemplo {example_number} tiene una opción inválida para \"{criterion_name}\": \"{option_name}\""
 
-#: openassessment/assessment/api/student_training.py:226
+#: openassessment/assessment/api/student_training.py:227
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "El ejemplo {example_number} tiene una opción extra para \"{criterion_name}\""
 
-#: openassessment/assessment/api/student_training.py:239
+#: openassessment/assessment/api/student_training.py:240
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "El ejemplo {example_number} es una opción faltante para \"{criterion_name}\""
 
-#: openassessment/data.py:531
+#: openassessment/data.py:532
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr "Criterio {number}: {label}"
 
-#: openassessment/data.py:533
+#: openassessment/data.py:534
 #, python-brace-format
 msgid "Points {number}"
 msgstr "Puntos {number}"
 
-#: openassessment/data.py:534
+#: openassessment/data.py:535
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr "Puntaje Medio {number}"
 
-#: openassessment/data.py:535
+#: openassessment/data.py:536
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr "Realimentación {number}"
 
-#: openassessment/data.py:862
+#: openassessment/data.py:863
 msgid "Item ID"
 msgstr "ID de elemento"
 
-#: openassessment/data.py:863
+#: openassessment/data.py:864
 msgid "Submission ID"
 msgstr "Entrega de Indentificación"
 
-#: openassessment/data.py:875
+#: openassessment/data.py:876
 msgid "Anonymized Student ID"
 msgstr "Indetificaciones Anonimas de Usuario"
 
-#: openassessment/data.py:906
+#: openassessment/data.py:907
 msgid "Assessment ID"
 msgstr "Identificación de la prueba"
 
-#: openassessment/data.py:907
+#: openassessment/data.py:908
 msgid "Assessment Scored Date"
 msgstr "Fecha de calificación de la prueba"
 
-#: openassessment/data.py:908
+#: openassessment/data.py:909
 msgid "Assessment Scored Time"
 msgstr "Prueba de Tiempo Calificado"
 
-#: openassessment/data.py:909
+#: openassessment/data.py:910
 msgid "Assessment Type"
 msgstr "Tipo de Prueba"
 
-#: openassessment/data.py:910
+#: openassessment/data.py:911
 msgid "Anonymous Scorer Id"
 msgstr "Identificación de Calificación Anonima"
 
-#: openassessment/data.py:912
+#: openassessment/data.py:913
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Retroalimentación General"
 
-#: openassessment/data.py:913
+#: openassessment/data.py:914
 msgid "Assessment Score Earned"
 msgstr "Puntaje de Prueba Obtenido"
 
-#: openassessment/data.py:914
+#: openassessment/data.py:915
 msgid "Assessment Scored At"
 msgstr "Prueba Calificada En "
 
-#: openassessment/data.py:915
+#: openassessment/data.py:916
 msgid "Date/Time Final Score Given"
 msgstr "Fecha/Tiempo de Entrega del Puntaje Final"
 
-#: openassessment/data.py:916
+#: openassessment/data.py:917
 msgid "Final Score Earned"
 msgstr "Calificación Final Obtenida"
 
-#: openassessment/data.py:917
+#: openassessment/data.py:918
 msgid "Final Score Possible"
 msgstr "Posible Calificación Final"
 
-#: openassessment/data.py:918
+#: openassessment/data.py:919
 msgid "Feedback Statements Selected"
 msgstr "Declaraciones de Retroalimentación Seleccionados"
 
-#: openassessment/data.py:919
+#: openassessment/data.py:920
 msgid "Feedback on Assessment"
 msgstr "Retroalimentación de la Prueba"
 
-#: openassessment/data.py:921
+#: openassessment/data.py:922
 msgid "Response Files"
 msgstr "Documentos de Respuesta"
 
-#: openassessment/data.py:1317
+#: openassessment/data.py:1318
 msgid "No description provided."
 msgstr "No se suministró descripción."
 
@@ -371,19 +371,19 @@ msgid "Feedback for This Criterion"
 msgstr "Retroalimentación para este criterio"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:51
+#: openassessment/xblock/studio_mixin.py:49
 msgid "None"
 msgstr "Ninguno"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:50
+#: openassessment/xblock/studio_mixin.py:48
 msgid "Optional"
 msgstr "Opcional"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:93
-#: openassessment/xblock/studio_mixin.py:49
+#: openassessment/xblock/studio_mixin.py:47
 msgid "Required"
 msgstr "Requerido"
 
@@ -1200,7 +1200,7 @@ msgstr "No pudimos subir su evaluación"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:210
+#: openassessment/xblock/staff_assessment_mixin.py:215
 msgid "Cancelled"
 msgstr "Cancelado"
 
@@ -1259,8 +1259,8 @@ msgstr "Se han calificado todas las respuestas enviadas por sus compañeros. Vue
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:203
-#: openassessment/xblock/staff_assessment_mixin.py:227
+#: openassessment/xblock/staff_assessment_mixin.py:208
+#: openassessment/xblock/staff_assessment_mixin.py:232
 msgid "Not Available"
 msgstr "No disponible"
 
@@ -1567,8 +1567,8 @@ msgstr "La fecha límite para este paso se ha vencido. El paso está cerrado. Ya
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:217
-#: openassessment/xblock/staff_assessment_mixin.py:240
+#: openassessment/xblock/staff_assessment_mixin.py:222
+#: openassessment/xblock/staff_assessment_mixin.py:245
 msgid "Complete"
 msgstr "Completo"
 
@@ -1666,7 +1666,7 @@ msgid ""
 msgstr "La fecha límite para este paso se ha vencido. El paso está cerrado. Ya no puede completar su auto-calificación ni seguir con esta tarea. Así mismo, recibirá una calificación de Incompleto."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:359
+#: openassessment/xblock/grade_mixin.py:361
 msgid "Staff Grade"
 msgstr "Calificación del Personal de soporte"
 
@@ -2157,114 +2157,114 @@ msgstr "Debe suministrar un comentario para los criterios de la evaluación."
 msgid "This view takes only a list as a parameter"
 msgstr "Esta vista solo toma una lista como parámetro"
 
-#: openassessment/xblock/grade_mixin.py:76
-#: openassessment/xblock/leaderboard_mixin.py:59
+#: openassessment/xblock/grade_mixin.py:77
+#: openassessment/xblock/leaderboard_mixin.py:61
 #: openassessment/xblock/self_assessment_mixin.py:42
 #: openassessment/xblock/student_training_mixin.py:56
 #: openassessment/xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "Ocurrió un error inesperado."
 
-#: openassessment/xblock/grade_mixin.py:173
+#: openassessment/xblock/grade_mixin.py:175
 msgid "Peer Assessment"
 msgstr "Evaluación por pares"
 
-#: openassessment/xblock/grade_mixin.py:175
+#: openassessment/xblock/grade_mixin.py:177
 msgid "Self Assessment"
 msgstr "Auto revisión"
 
-#: openassessment/xblock/grade_mixin.py:215
+#: openassessment/xblock/grade_mixin.py:217
 msgid "Assessment feedback could not be saved."
 msgstr "Los comentarios sobre la revisión no pudieron ser guardados."
 
-#: openassessment/xblock/grade_mixin.py:226
+#: openassessment/xblock/grade_mixin.py:228
 msgid "Feedback saved."
 msgstr "Comentarios guardados."
 
-#: openassessment/xblock/grade_mixin.py:360
-#: openassessment/xblock/grade_mixin.py:506
+#: openassessment/xblock/grade_mixin.py:362
+#: openassessment/xblock/grade_mixin.py:508
 msgid "Staff Comments"
 msgstr "Comentarios del equipo del curso"
 
-#: openassessment/xblock/grade_mixin.py:366
+#: openassessment/xblock/grade_mixin.py:368
 msgid "Peer Median Grade"
 msgstr "Calificación mediana de los pares"
 
-#: openassessment/xblock/grade_mixin.py:371
-#: openassessment/xblock/grade_mixin.py:513
+#: openassessment/xblock/grade_mixin.py:373
+#: openassessment/xblock/grade_mixin.py:515
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "Par {peer_index}"
 
-#: openassessment/xblock/grade_mixin.py:372
+#: openassessment/xblock/grade_mixin.py:374
 msgid "Peer Comments"
 msgstr "Comentarios de pares"
 
-#: openassessment/xblock/grade_mixin.py:382
+#: openassessment/xblock/grade_mixin.py:384
 msgid "Self Assessment Grade"
 msgstr "Auto calificación"
 
-#: openassessment/xblock/grade_mixin.py:382
+#: openassessment/xblock/grade_mixin.py:384
 msgid "Your Self Assessment"
 msgstr "Su auto evaluación"
 
-#: openassessment/xblock/grade_mixin.py:383
-#: openassessment/xblock/grade_mixin.py:525
+#: openassessment/xblock/grade_mixin.py:385
+#: openassessment/xblock/grade_mixin.py:527
 msgid "Your Comments"
 msgstr "Sus comentarios"
 
-#: openassessment/xblock/grade_mixin.py:479
+#: openassessment/xblock/grade_mixin.py:481
 msgid "Waiting for peer reviews"
 msgstr "Esperando por las revisiones de los pares"
 
-#: openassessment/xblock/grade_mixin.py:518
+#: openassessment/xblock/grade_mixin.py:520
 msgid "Peer"
 msgstr "Par"
 
-#: openassessment/xblock/grade_mixin.py:649
+#: openassessment/xblock/grade_mixin.py:651
 msgid "The grade for this problem is determined by your Staff Grade."
 msgstr "La calificación para este problema es determinado por su personal de calificaciones."
 
-#: openassessment/xblock/grade_mixin.py:651
+#: openassessment/xblock/grade_mixin.py:653
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
 msgstr "La calificación para este problema es determinada por la media de tus evaluaciones pares."
 
-#: openassessment/xblock/grade_mixin.py:654
+#: openassessment/xblock/grade_mixin.py:656
 msgid "The grade for this problem is determined by your Self Assessment."
 msgstr "La calificación para este problema está determinada por tu auto evaluación."
 
-#: openassessment/xblock/grade_mixin.py:660
+#: openassessment/xblock/grade_mixin.py:662
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
 msgstr "Has completado exitosamente este problema y obtenido una calificación total de  {earned_points}/{total_points}."
 
-#: openassessment/xblock/grade_mixin.py:668
+#: openassessment/xblock/grade_mixin.py:670
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
 msgstr "Aún no has recibido las revisiones pares necesarias para determinar tu calificación final."
 
-#: openassessment/xblock/openassesment_template_mixin.py:18
+#: openassessment/xblock/openassesment_template_mixin.py:19
 msgid "Peer Assessment Only"
 msgstr "Solo Evaluación Par"
 
-#: openassessment/xblock/openassesment_template_mixin.py:19
+#: openassessment/xblock/openassesment_template_mixin.py:20
 msgid "Self Assessment Only"
 msgstr "Solo Auto Evaluación "
 
-#: openassessment/xblock/openassesment_template_mixin.py:20
+#: openassessment/xblock/openassesment_template_mixin.py:21
 msgid "Staff Assessment Only"
 msgstr "Solo Evaluación del Personal"
 
-#: openassessment/xblock/openassesment_template_mixin.py:21
+#: openassessment/xblock/openassesment_template_mixin.py:22
 msgid "Self Assessment to Peer Assessment"
 msgstr "Auto Evaluación a Evaluación Par"
 
-#: openassessment/xblock/openassesment_template_mixin.py:22
+#: openassessment/xblock/openassesment_template_mixin.py:23
 msgid "Self Assessment to Staff Assessment"
 msgstr "Auto Evaluación a Evaluación del Personal"
 
@@ -2446,38 +2446,39 @@ msgid ""
 msgstr "La entrega del equipo ha sido eliminada de ser calificable. El equipo recibirá una nota de cero a menos que elimines una de las respuestas de los integrantes del equipo para el problema para permitirle al equipo enviar nuevamente una respuesta."
 
 #: openassessment/xblock/staff_assessment_mixin.py:48
+#: openassessment/xblock/staff_assessment_mixin.py:90
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "No se encontró el ID del envío que se está calificando."
 
-#: openassessment/xblock/staff_assessment_mixin.py:75
-#: openassessment/xblock/staff_assessment_mixin.py:83
+#: openassessment/xblock/staff_assessment_mixin.py:72
+#: openassessment/xblock/staff_assessment_mixin.py:80
 msgid "Your staff assessment could not be submitted."
 msgstr "Su comentario de miembro del equipo del curso no pudo ser enviado."
 
-#: openassessment/xblock/staff_assessment_mixin.py:132
-msgid "There were one or more errors submitting the requested assessments"
-msgstr "Había uno o más errores enviando las pruebas requeridas."
-
-#: openassessment/xblock/staff_assessment_mixin.py:168
-#: openassessment/xblock/staff_assessment_mixin.py:176
+#: openassessment/xblock/staff_assessment_mixin.py:118
+#: openassessment/xblock/staff_assessment_mixin.py:126
 msgid "Your team assessment could not be submitted."
 msgstr "Tu trabajo de equipo no pudo ser enviado."
 
-#: openassessment/xblock/staff_assessment_mixin.py:228
+#: openassessment/xblock/staff_assessment_mixin.py:180
+msgid "There were one or more errors submitting the requested assessments"
+msgstr "Había uno o más errores enviando las pruebas requeridas."
+
+#: openassessment/xblock/staff_assessment_mixin.py:233
 msgid "Waiting for a Staff Grade"
 msgstr "Esperando una calificación del equipo del curso"
 
-#: openassessment/xblock/staff_assessment_mixin.py:229
+#: openassessment/xblock/staff_assessment_mixin.py:234
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "Revise mas tarde para validar si un miembro del equipo del curso ha calificado su respuesta. Recibirá su nota una vez la evaluación haya sido completada."
 
-#: openassessment/xblock/staff_assessment_mixin.py:242
+#: openassessment/xblock/staff_assessment_mixin.py:247
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "Debe completar los pasos de arriba para ver su calificación"
 
-#: openassessment/xblock/staff_assessment_mixin.py:243
+#: openassessment/xblock/staff_assessment_mixin.py:248
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
@@ -2497,31 +2498,31 @@ msgstr "options_selected debe ser un diccionario"
 msgid "Your scores could not be checked."
 msgstr "Sus puntajes no pudieron ser validados"
 
-#: openassessment/xblock/studio_mixin.py:226
-#: openassessment/xblock/studio_mixin.py:238
+#: openassessment/xblock/studio_mixin.py:224
+#: openassessment/xblock/studio_mixin.py:236
 msgid "Error updating XBlock configuration"
 msgstr "Error al actualizar la configuración del XBlock"
 
-#: openassessment/xblock/studio_mixin.py:243
+#: openassessment/xblock/studio_mixin.py:241
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Error: Texto de Respuesta y Archivo de Respuesta Cargado no pueden ser ambos inhabilitados"
 
-#: openassessment/xblock/studio_mixin.py:247
+#: openassessment/xblock/studio_mixin.py:245
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Error: Cuando el Texto de Respuesta es inhabilitado, es requerido el Archivo de Respuesta Cargado"
 
-#: openassessment/xblock/studio_mixin.py:250
+#: openassessment/xblock/studio_mixin.py:248
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Error: Cuando el Archivo de Respuesta Cargado es inhabilitado, es requerido el Texto de Respuesta"
 
-#: openassessment/xblock/studio_mixin.py:274
+#: openassessment/xblock/studio_mixin.py:272
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Error de validación: {error}"
 
-#: openassessment/xblock/studio_mixin.py:305
+#: openassessment/xblock/studio_mixin.py:303
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Se actualizó correctamente el OpenAssessment XBlock"
 
