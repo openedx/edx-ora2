@@ -1,6 +1,6 @@
 import DateTimeFactory from './oa_datefactory';
-import Rubric from './oa_rubric';
 import ConfirmationAlert from './oa_confirmation_alert';
+import Prompts from './oa_prompts';
 
 /**
  Interface for response (submission) view.
@@ -70,6 +70,7 @@ export class ResponseView {
           // Load the HTML and install event handlers
           $(stepID, view.element).replaceWith(html);
           view.server.renderLatex($(stepID, view.element));
+          view.setupPromptDisplays()
           // First load response editor then apply other things
           view.loadResponseEditor().then((editorController) => {
             view.responseEditorController = editorController;
@@ -169,6 +170,14 @@ export class ResponseView {
         },
       );
       this.confirmationDialog = new ConfirmationAlert(sel.find('.step--response__dialog-confirm'));
+    }
+
+    /**
+     Set up prompts and attempt to resolve any unresolved Studio URLs
+     * */
+    setupPromptDisplays () {
+      this.prompts = new Prompts(this.element);
+      this.prompts.resolveStaticLinks();
     }
 
     /**
