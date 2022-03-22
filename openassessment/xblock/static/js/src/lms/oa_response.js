@@ -70,7 +70,7 @@ export class ResponseView {
           // Load the HTML and install event handlers
           $(stepID, view.element).replaceWith(html);
           view.server.renderLatex($(stepID, view.element));
-          view.setupPromptDisplays()
+          view.setupPromptDisplays();
           // First load response editor then apply other things
           view.loadResponseEditor().then((editorController) => {
             view.responseEditorController = editorController;
@@ -175,7 +175,7 @@ export class ResponseView {
     /**
      Set up prompts and attempt to resolve any unresolved Studio URLs
      * */
-    setupPromptDisplays () {
+    setupPromptDisplays() {
       this.prompts = new Prompts(this.element);
       this.prompts.resolveStaticLinks();
     }
