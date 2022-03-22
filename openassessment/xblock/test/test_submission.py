@@ -698,6 +698,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -728,6 +729,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -751,6 +753,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -781,8 +784,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.runtime._services['user_state'] = UserStateService()
         xblock.runtime._services['teams'] = MockTeamsService(True)
 
-        usage_id = xblock.scope_ids.usage_id
-        xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
         xblock.is_team_assignment = Mock(return_value=True)
         self._assert_path_and_context(
@@ -790,6 +791,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -914,6 +916,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -947,12 +950,14 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
         resp = self.request(xblock, 'save_submission', payload, response_format='json')
         self.assertTrue(resp['success'])
+        del xblock.location  # self.request() inserts dummy location
 
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1106,12 +1111,14 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
         resp = self.request(xblock, 'save_submission', payload, response_format='json')
         self.assertTrue(resp['success'])
+        del xblock.location  # self.request() inserts dummy location
 
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
@@ -1263,6 +1270,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1313,6 +1321,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1350,6 +1359,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1381,8 +1391,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.runtime._services['user_state'] = UserStateService()
         xblock.runtime._services['teams'] = MockTeamsService(True)
 
-        usage_id = xblock.scope_ids.usage_id
-        xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
         xblock.is_team_assignment = Mock(return_value=True)
         team_submission = xblock.create_team_submission(
@@ -1408,6 +1416,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1447,6 +1456,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1473,6 +1483,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1498,6 +1509,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1534,6 +1546,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'file_upload_response': None,
                 'file_upload_type': None,
@@ -1568,6 +1581,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': False,
                 'has_real_user': False,
                 'file_upload_response': None,
@@ -1754,6 +1768,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 }, xblock.prompts),
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'has_real_user': True,
                 'file_upload_response': None,
@@ -1786,6 +1801,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
+                'base_asset_url': None,
                 'enable_delete_files': True,
                 'file_upload_response': 'optional',
                 'file_upload_type': 'pdf-and-image',
