@@ -27,7 +27,7 @@ export const oaTinyMCE = (options) => {
 
   const dataHandler = (key, ...urls) => (data) => {
     if (data[key]) {
-      data[key] = rewriteStaticLinks(data[key], ...urls);
+      data[key] = window.rewriteStaticLinks(data[key], ...urls);
     }
   };
 
@@ -37,7 +37,7 @@ export const oaTinyMCE = (options) => {
   };
 
   const initInstanceCallback = (ed) => {
-    ed.setContent(rewriteStaticLinks(
+    ed.setContent(window.rewriteStaticLinks(
       ed.getContent({ no_events: 1 }),
       staticUrl,
       baseAssetUrl,

@@ -24,7 +24,7 @@ class Prompt {
   * into this prompt with their resolved web versions.
   */
   resolveStaticLinks(staticURL, baseAssetURL) {
-    const newContent = rewriteStaticLinks(
+    const newContent = window.rewriteStaticLinks(
       this.prompt(),
       staticURL,
       baseAssetURL,
