@@ -85,6 +85,9 @@ class Command(BaseCommand):
     """
     Management command to create submissions, assessments, and locks to make testing easier.
     """
+
+    CONFIG_FILE_LOCATION_BASE = join('/' 'edx', 'src', 'edx-ora2')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.username_to_anonymous_user_id = None
@@ -148,7 +151,7 @@ class Command(BaseCommand):
         Check that the input file exits, and attempt to open and json parse the file.
         Returns the json parsed input file.
         """
-        file_path = join('/' 'edx', 'src', 'edx-ora2', file_path)
+        file_path = join(self.CONFIG_FILE_LOCATION_BASE, file_path)
         if not exists(file_path):
             raise CommandError(f'File {file_path} not found.')
 
@@ -190,18 +193,22 @@ class Command(BaseCommand):
 
         return learners, course_staff
 
-    def load_anonymous_user_ids(self, course_id, usernames):
-        """
-        Look up all Users with the given usernames, look up their anonymous user ids for the specified course, and
-        store a mapping from username to anonaymous id in self.username_to_anonymous_user_id
-        """
+    def _import_anonymous_id_for_user(self):
         try:
             from common.djangoapps.student.models import anonymous_id_for_user  # pylint: disable=import-error
+            return anonymous_id_for_user
         except ModuleNotFoundError as e:
             raise CommandError((
                 "Cannot import common.djangoapps.student.models.anonymous_id_for_user. "
                 "This management command must be run from the LMS shell."
             )) from e
+
+    def load_anonymous_user_ids(self, course_id, usernames):
+        """
+        Look up all Users with the given usernames, look up their anonymous user ids for the specified course, and
+        store a mapping from username to anonaymous id in self.username_to_anonymous_user_id
+        """
+        anonymous_id_for_user = self._import_anonymous_id_for_user()
         # Also include a superuser because when we reset we need to include a "reset by" anonymous id
         usernames.add(SUPERUSER_USERNAME)
 
@@ -224,14 +231,13 @@ class Command(BaseCommand):
         for ora_config in submissions_config:
             display_name = ora_config['displayName']
             if display_name in display_names:
-                raise CommandError('Duplicate ORA display name found in configuration file:' + display_name)
+                raise CommandError('Duplicate ORA display name found in configuration file: ' + display_name)
             display_names.append(display_name)
         return display_names
 
-    def load_ora_blocks(self, course_id, display_names):
+    def _load_ora_blocks_from_modulestore(self, course_id):
         """
-        Look up openassessment blocks for the course from the modulestore, and save the ones that match the given
-        display names in a dict mapping from display name to block in self.display_name_to_block
+        Look up openassessment blocks for the course from the modulestore
         """
         try:
             from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
@@ -240,9 +246,16 @@ class Command(BaseCommand):
                 "Cannot import xmodule.modulestore.django.modulestore. "
                 "This management command must be run from the LMS shell."
             )) from e
-        openassessment_blocks = modulestore().get_items(
+        return modulestore().get_items(
             course_id, qualifiers={'category': 'openassessment'}
         )
+
+    def load_ora_blocks(self, course_id, display_names):
+        """
+        Look up openassessment blocks for the course from the modulestore, and save the ones that match the given
+        display names in a dict mapping from display name to block in self.display_name_to_block
+        """
+        openassessment_blocks = self._load_ora_blocks_from_modulestore(course_id)
         display_name_to_block = {}
         for block in openassessment_blocks:
             if block.parent is not None and block.display_name in display_names:
@@ -250,14 +263,14 @@ class Command(BaseCommand):
                     raise CommandError((
                         f"The ORA '{block.display_name}' is specified in the input file. "
                         "The course contains more than one ORA with that display name. "
-                        f"First two found:  [{display_name_to_block[block.display_name]}, {block.location}]"
+                        f"First two found:  [{display_name_to_block[block.display_name].location}, {block.location}]"
                     ))
                 display_name_to_block[block.display_name] = block
 
         missing_display_names = set(display_names) - set(display_name_to_block.keys())
         if missing_display_names:
             raise CommandError(
-                f"The following Display Name(s) were not found in {str(course_id)} {' '.join(missing_display_names)}"
+                f"The following Display Name(s) were not found in {str(course_id)} {', '.join(missing_display_names)}"
             )
         self.display_name_to_block = display_name_to_block
 
