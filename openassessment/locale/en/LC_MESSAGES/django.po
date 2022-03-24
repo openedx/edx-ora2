@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-14 12:19-0400\n"
+"POT-Creation-Date: 2022-03-24 07:59-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -49,96 +49,96 @@ msgstr ""
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 
-#: openassessment/data.py:532
+#: openassessment/data.py:535
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr ""
 
-#: openassessment/data.py:534
+#: openassessment/data.py:537
 #, python-brace-format
 msgid "Points {number}"
 msgstr ""
 
-#: openassessment/data.py:535
+#: openassessment/data.py:538
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr ""
 
-#: openassessment/data.py:536
+#: openassessment/data.py:539
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr ""
 
-#: openassessment/data.py:863
+#: openassessment/data.py:872
 msgid "Item ID"
 msgstr ""
 
-#: openassessment/data.py:864
+#: openassessment/data.py:873
 msgid "Submission ID"
 msgstr ""
 
-#: openassessment/data.py:876
+#: openassessment/data.py:885
 msgid "Anonymized Student ID"
 msgstr ""
 
-#: openassessment/data.py:907
+#: openassessment/data.py:916
 msgid "Assessment ID"
 msgstr ""
 
-#: openassessment/data.py:908
+#: openassessment/data.py:917
 msgid "Assessment Scored Date"
 msgstr ""
 
-#: openassessment/data.py:909
+#: openassessment/data.py:918
 msgid "Assessment Scored Time"
 msgstr ""
 
-#: openassessment/data.py:910
+#: openassessment/data.py:919
 msgid "Assessment Type"
 msgstr ""
 
-#: openassessment/data.py:911
+#: openassessment/data.py:920
 msgid "Anonymous Scorer Id"
 msgstr ""
 
-#: openassessment/data.py:913
+#: openassessment/data.py:922
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr ""
 
-#: openassessment/data.py:914
+#: openassessment/data.py:923
 msgid "Assessment Score Earned"
 msgstr ""
 
-#: openassessment/data.py:915
+#: openassessment/data.py:924
 msgid "Assessment Scored At"
 msgstr ""
 
-#: openassessment/data.py:916
+#: openassessment/data.py:925
 msgid "Date/Time Final Score Given"
 msgstr ""
 
-#: openassessment/data.py:917
+#: openassessment/data.py:926
 msgid "Final Score Earned"
 msgstr ""
 
-#: openassessment/data.py:918
+#: openassessment/data.py:927
 msgid "Final Score Possible"
 msgstr ""
 
-#: openassessment/data.py:919
+#: openassessment/data.py:928
 msgid "Feedback Statements Selected"
 msgstr ""
 
-#: openassessment/data.py:920
+#: openassessment/data.py:929
 msgid "Feedback on Assessment"
 msgstr ""
 
-#: openassessment/data.py:922
+#: openassessment/data.py:931
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1318
+#: openassessment/data.py:1327
 msgid "No description provided."
 msgstr ""
 
