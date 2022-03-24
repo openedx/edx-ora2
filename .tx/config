@@ -1,15 +1,15 @@
 [main]
 host = https://www.transifex.com
 
-[edx-platform.openassessment]
+[o:open-edx:p:edx-platform:r:openassessment]
 file_filter = conf/locale/<lang>/LC_MESSAGES/django.po
 source_file = conf/locale/en/LC_MESSAGES/django.po
 source_lang = en
-type = PO
+type        = PO
 
-[edx-platform.openassessment-js]
+[o:open-edx:p:edx-platform:r:openassessment-js]
 file_filter = conf/locale/<lang>/LC_MESSAGES/djangojs.po
 source_file = conf/locale/en/LC_MESSAGES/djangojs.po
 source_lang = en
-type = PO
+type        = PO
 
