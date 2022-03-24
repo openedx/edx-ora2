@@ -94,7 +94,7 @@ detect_changed_source_translations: ## check if translation files are up-to-date
 	i18n_tool changed
 
 pull_translations: ## pull translations from Transifex
-	cd ./openassessment/ && tx pull -af --mode reviewed --minimum-perc=1
+	cd ./openassessment/ && tx pull -a -f --mode reviewed --minimum-perc=1
 
 push_translations: ## push source translation files (.po) to Transifex
 	tx push -s
