@@ -96,7 +96,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', long_submission, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EANSWERLENGTH")
-        self.assertIsNot(resp[2], None)
+        self.assertEqual(resp[2], "Multiple submissions are not allowed.")
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_submission_multisubmit_failure(self, xblock):
