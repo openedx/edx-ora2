@@ -96,7 +96,12 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', long_submission, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EANSWERLENGTH")
-        self.assertEqual(resp[2], "Multiple submissions are not allowed.")
+        expected_message = (
+            "Response exceeds maximum allowed size. (100 KB) "
+            "Note: if you have a spellcheck or grammar check browser extension, "
+            "try disabling, reloading, and reentering your response before submitting."
+        )
+        self.assertEqual(resp[2], expected_message)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_submission_multisubmit_failure(self, xblock):
