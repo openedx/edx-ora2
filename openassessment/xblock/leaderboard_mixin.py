@@ -5,9 +5,10 @@ Leaderboard step in the OpenAssessment XBlock.
 
 import logging
 
-from django.utils.translation import ugettext as _
-
 from xblock.core import XBlock
+
+from django.utils.translation import gettext as _
+
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 from openassessment.data import OraSubmissionAnswerFactory
 from openassessment.fileupload import api as file_upload_api
@@ -44,6 +45,7 @@ class LeaderboardMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from submissions import api as sub_api
+
         # Retrieve the status of the workflow.  If no workflows have been
         # started this will be an empty dict, so status will be None.
         workflow = self.get_workflow_info()
@@ -94,6 +96,7 @@ class LeaderboardMixin:
                             download_url=file_download_url,
                             description=uploaded_file.description,
                             name=uploaded_file.name,
+                            size=uploaded_file.size,
                             show_delete_button=False
                         )._asdict()
                     )

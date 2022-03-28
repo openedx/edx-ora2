@@ -198,8 +198,9 @@ class XBlockHandlerTestCaseMixin:
         Keyword Arguments:
             request_method (str): The HTTP method of the request (defaults to POST)
             response_format (None or str): Expected format of the response string.
-                If `None`, return the raw response content; if 'json', parse the
-                response as JSON and return the result.
+                If `None`, return the raw response content.
+                If 'json', parse the response as JSON and return the result.
+                If 'response', return the entire response object (helpful for asserting response codes).
 
         Raises:
             NotImplementedError: Response format not supported.
@@ -208,7 +209,7 @@ class XBlockHandlerTestCaseMixin:
             Content of the response (mixed).
         """
         # Create a fake request
-        request = webob.Request(dict())
+        request = webob.Request({})
         request.method = request_method
         request.body = content.encode('utf-8')
 
@@ -223,6 +224,8 @@ class XBlockHandlerTestCaseMixin:
             return response.body
         elif response_format == 'json':
             return json.loads(response.body.decode('utf-8'))
+        elif response_format == 'response':
+            return response
         else:
             raise NotImplementedError(f"Response format '{response_format}' not supported")
 

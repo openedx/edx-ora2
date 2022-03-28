@@ -2,25 +2,26 @@
 Aggregate data for openassessment.
 """
 
-from collections import defaultdict, namedtuple, OrderedDict
+from collections import OrderedDict, defaultdict, namedtuple
+import csv
 from io import StringIO
+from itertools import chain
+import json
+import logging
+import os
 from urllib.parse import urljoin
 from zipfile import ZipFile
-from itertools import chain
-import csv
-import json
-import os
-import logging
-import requests
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import CharField, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
+import requests
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
@@ -73,6 +74,29 @@ def _get_course_blocks(course_id):
 
     # Passing an empty block structure transformer here to avoid user access checks
     return get_course_blocks(None, course_usage_key, BlockStructureTransformers())
+
+
+def map_anonymized_ids_to_usernames(anonymized_ids):
+    """
+    Args:
+        anonymized_ids - list of anonymized user ids.
+    Returns:
+        dictionary, that contains mapping between anonymized user ids and
+        actual usernames.
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+        .values("username", "anonymous_id")
+    )
+
+    anonymous_id_to_username_mapping = {
+        user["anonymous_id"]: user["username"] for user in users
+    }
+
+    return anonymous_id_to_username_mapping
 
 
 class CsvWriter:
@@ -171,7 +195,7 @@ class CsvWriter:
         """
         self._write_csv_headers()
 
-        rubric_points_cache = dict()
+        rubric_points_cache = {}
         feedback_option_set = set()
         for submission_uuid in self._submission_uuids(course_id):
             self._write_submission_to_csv(submission_uuid)
@@ -391,29 +415,6 @@ class OraAggregateData:
     """
 
     @classmethod
-    def _map_anonymized_ids_to_usernames(cls, anonymized_ids):
-        """
-        Args:
-            anonymized_ids - list of anonymized user ids.
-        Returns:
-            dictionary, that contains mapping between anonymized user ids and
-            actual usernames.
-        """
-        User = get_user_model()
-
-        users = _use_read_replica(
-            User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
-            .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
-            .values("username", "anonymous_id")
-        )
-
-        anonymous_id_to_username_mapping = {
-            user["anonymous_id"]: user["username"] for user in users
-        }
-
-        return anonymous_id_to_username_mapping
-
-    @classmethod
     def _map_students_and_scorers_ids_to_usernames(cls, all_submission_information):
         """
         Args:
@@ -438,7 +439,7 @@ class OraAggregateData:
             )
         )
 
-        return cls._map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
+        return map_anonymized_ids_to_usernames(student_ids + list(scorer_ids))
 
     @classmethod
     def _map_block_usage_keys_to_display_names(cls, course_id):
@@ -466,7 +467,7 @@ class OraAggregateData:
         return block_display_name_map
 
     @classmethod
-    def _build_assessments_cell(cls, assessments, usernames_map):
+    def _build_assessments_cell(cls, assessments, usernames_map, scored_peer_assessment_ids=None):
         """
         Args:
             assessments (QuerySet) - assessments that we would like to collate into one column.
@@ -474,11 +475,14 @@ class OraAggregateData:
         Returns:
             string that should be included in the 'assessments' column for this set of assessments' row
         """
+        scored_peer_assessment_ids = scored_peer_assessment_ids or set()
         returned_string = ""
         for assessment in assessments:
             returned_string += f"Assessment #{assessment.id}\n"
             returned_string += f"-- scored_at: {assessment.scored_at}\n"
             returned_string += f"-- type: {assessment.score_type}\n"
+            if assessment.score_type == peer_api.PEER_TYPE:
+                returned_string += f'-- used to calculate peer grade: {assessment.id in scored_peer_assessment_ids}\n'
             if _usernames_enabled():
                 returned_string += "-- scorer_username: {}\n".format(usernames_map.get(assessment.scorer_id, ''))
             returned_string += f"-- scorer_id: {assessment.scorer_id}\n"
@@ -581,7 +585,7 @@ class OraAggregateData:
 
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
         file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
-        for url, _description, _filename, _show_delete in file_downloads:
+        for url, _description, _filename, _size, _show_delete in file_downloads:
             if file_links:
                 file_links += sep
             file_links += urljoin(base_url, url)
@@ -613,6 +617,11 @@ class OraAggregateData:
         )
         block_display_names_map = cls._map_block_usage_keys_to_display_names(course_id)
 
+        all_submission_uuids = [submission['uuid'] for _, submission, _ in all_submission_information]
+        all_scored_peer_assessment_ids = {
+            assessment.id for assessment in peer_api.get_bulk_scored_assessments(all_submission_uuids)
+        }
+
         rows = []
         for student_item, submission, score in all_submission_information:
             assessments = _use_read_replica(
@@ -622,7 +631,8 @@ class OraAggregateData:
                     submission_uuid=submission['uuid']
                 )
             )
-            assessments_cell = cls._build_assessments_cell(assessments, usernames_map)
+
+            assessments_cell = cls._build_assessments_cell(assessments, usernames_map, all_scored_peer_assessment_ids)
             assessments_parts_cell = cls._build_assessments_parts_cell(assessments)
             feedback_options_cell = cls._build_feedback_options_cell(assessments)
             feedback_cell = cls._build_feedback_cell(submission['uuid'])
@@ -993,7 +1003,6 @@ class OraDownloadData:
                             "ora_index": block_index,
                             "ora_name": block_name,
                         }
-                        logger.info("[%s] ORA block found: %s", course_id, str(ora_block_path_info))
                         path_info[str(block)] = ora_block_path_info
 
         return path_info
@@ -1018,10 +1027,8 @@ class OraDownloadData:
         if not student_ids:
             return {}
         course_id = all_submission_information[0][0]['course_id']
-        logger.info("[%s] Getting user model", course_id)
         User = get_user_model()
 
-        logger.info("[%s] Loading users", course_id)
         users = _use_read_replica(
             User.objects.filter(
                 anonymoususerid__anonymous_user_id__in=student_ids,
@@ -1045,7 +1052,6 @@ class OraDownloadData:
             .values("student_id", "path_id")
         )
 
-        logger.info("[%s] Loaded %d users", course_id, users.count())
         return {user["student_id"]: user["path_id"] for user in users}
 
     @classmethod
@@ -1144,7 +1150,6 @@ class OraDownloadData:
             original_filename
         )
 
-        logger.info("Successfully loaded submission filepath for %s", student_id)
         return os.path.join(directory_name, submission_filename)
 
     @classmethod
@@ -1179,26 +1184,8 @@ class OraDownloadData:
         csvwriter = csv.DictWriter(csv_output_buffer, cls.SUBMISSIONS_CSV_HEADER, extrasaction='ignore')
         csvwriter.writeheader()
 
-        logger.info("Beginning writing to ZIP file")
         with ZipFile(file, 'w') as zip_file:
             for file_data in submission_files_data:
-                file_info_string = (
-                    "Course Id: {course_id} | "
-                    "Block Id: {block_id} | "
-                    "Student Id: {student_id} | "
-                    "Key: {file_key} | "
-                    "Name: {file_name} | "
-                    "Type: {file_type}"
-                ).format(
-                    course_id=file_data['course_id'],
-                    block_id=file_data['block_id'],
-                    student_id=file_data['student_id'],
-                    file_key=file_data['key'],
-                    file_name=file_data['name'],
-                    file_type=file_data['type'],
-                )
-
-                logger.info("Processing file %s", file_info_string)
                 key = file_data['key']
                 file_path = file_data['file_path']
                 try:
@@ -1212,12 +1199,26 @@ class OraDownloadData:
                     # added a header to csv file to indicate that the file was found or not.
                     # TODO: (EDUCATOR-5777) should we create a {file_path}.error.txt
                     # to indicate the file error more clearly?
+                    file_info_string = (
+                        "Course Id: {course_id} | "
+                        "Block Id: {block_id} | "
+                        "Student Id: {student_id} | "
+                        "Key: {file_key} | "
+                        "Name: {file_name} | "
+                        "Type: {file_type}"
+                    ).format(
+                        course_id=file_data['course_id'],
+                        block_id=file_data['block_id'],
+                        student_id=file_data['student_id'],
+                        file_key=file_data['key'],
+                        file_name=file_data['name'],
+                        file_type=file_data['type'],
+                    )
                     logger.warning(
                         'File for submission could not be downloaded for ORA submission archive. %s',
                         file_info_string
                     )
                 else:
-                    logger.info("File found. Writing to zip file. %s", file_info_string)
                     file_found = True
                     zip_file.writestr(file_path, file_content)
                 finally:
@@ -1229,7 +1230,6 @@ class OraDownloadData:
             )
 
         file.seek(0)
-        logger.info("Completed writing zip file.")
         return True
 
     @classmethod
@@ -1238,7 +1238,6 @@ class OraDownloadData:
         Generator, that yields dictionaries with information about submission
         attachment or answer text.
         """
-        logger.info("[%s] collect_ora2_submission_files", course_id)
         all_submission_information = list(sub_api.get_all_course_submission_information(course_id, 'openassessment'))
         logger.info(
             "[%s] Submission information loaded from submission API (len=%d)",
@@ -1262,37 +1261,9 @@ class OraDownloadData:
                 )
                 continue
 
-            logger.info(
-                "[%s] Collecting files for %s, submission %s ",
-                course_id,
-                student['student_id'],
-                submission.get('uuid')
-            )
-            raw_answer = submission.get('answer', dict())
-            logger.info(
-                "[%s] Parsing submission for %s, submission %s ",
-                course_id,
-                student['student_id'],
-                submission.get('uuid')
-            )
+            raw_answer = submission.get('answer', {})
             answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
-            logger.info(
-                "[%s] Successfully parsed submission for %s, submission %s. (Text responses = %d, file uploads = %d)",
-                course_id,
-                student['student_id'],
-                submission.get('uuid'),
-                len(answer.get_text_responses()),
-                len(answer.get_file_uploads()),
-            )
             for index, uploaded_file in enumerate(answer.get_file_uploads()):
-                logger.info(
-                    "[%s] %s, %s, file %d",
-                    course_id,
-                    student['student_id'],
-                    submission.get('uuid'),
-                    index,
-                )
-
                 yield {
                     'type': cls.ATTACHMENT,
                     'course_id': course_id,
@@ -1311,13 +1282,6 @@ class OraDownloadData:
 
             # collecting submission answer texts
             for index, text_response in enumerate(answer.get_text_responses()):
-                logger.info(
-                    "[%s] %s, %s, text prompt %d",
-                    course_id,
-                    student['student_id'],
-                    submission.get('uuid'),
-                    index,
-                )
                 file_name = f'prompt_{index}.txt'
 
                 yield {

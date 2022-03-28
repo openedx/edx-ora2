@@ -12,7 +12,7 @@ class TestLoadStatic(TestCase):
     default_base_url = '/static/dist/'
 
     def setUp(self):
-        LoadStatic._manifest = dict()   # pylint: disable=protected-access
+        LoadStatic._manifest = {}   # pylint: disable=protected-access
         LoadStatic._is_loaded = False   # pylint: disable=protected-access
         LoadStatic._base_url = ''   # pylint: disable=protected-access
         return super().setUp()

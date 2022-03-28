@@ -41,7 +41,7 @@ class Command(BaseCommand):
         self.self_assessment_required = kwargs.get('self_assessment_required', False)
         kwargs = {}
         super().__init__(*args, **kwargs)
-        self._student_items = list()
+        self._student_items = []
 
     def handle(self, *args, **options):
         """
@@ -166,8 +166,8 @@ class Command(BaseCommand):
             rubric (dict)
             options_selected (dict)
         """
-        rubric = {'criteria': list()}
-        options_selected = dict()
+        rubric = {'criteria': []}
+        options_selected = {}
         words = loremipsum.Generator().words
 
         for criteria_num in range(self.NUM_CRITERIA):
@@ -175,7 +175,7 @@ class Command(BaseCommand):
                 'name': words[criteria_num],
                 'prompt': "  ".join(loremipsum.get_sentences(2)),
                 'order_num': criteria_num,
-                'options': list()
+                'options': []
             }
 
             for option_num in range(self.NUM_OPTIONS):

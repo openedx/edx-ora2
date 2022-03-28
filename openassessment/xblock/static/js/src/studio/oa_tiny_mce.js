@@ -23,25 +23,23 @@ export const oaTinyMCE = (options) => {
 
   const getFonts = () => CUSTOM_FONTS + STANDARD_FONTS;
   const baseAssetUrl = options.base_asset_url;
+  const staticUrl = '/static/';
 
   const dataHandler = (key, ...urls) => (data) => {
-    if (data.src) {
-      /* jshint undef:false */
-      data.src = rewriteStaticLinks(data.src, ...urls);
+    if (data[key]) {
+      data[key] = rewriteStaticLinks(data[key], ...urls);
     }
   };
 
   const setupTinyMCE = (ed) => {
-    ed.on('SaveImage', dataHandler('src', baseAssetUrl, '/static'));
-    ed.on('EditImage', dataHandler('src', '/static', baseAssetUrl));
-    ed.on('SaveLink', dataHandler('html', baseAssetUrl, '/static'));
-    ed.on('EditLink', dataHandler('html', '/static', baseAssetUrl));
+    ed.on('SaveImage', dataHandler('src', staticUrl, baseAssetUrl));
+    ed.on('SaveLink', dataHandler('href', staticUrl, baseAssetUrl));
   };
 
   const initInstanceCallback = (ed) => {
     ed.setContent(rewriteStaticLinks(
       ed.getContent({ no_events: 1 }),
-      '/static/',
+      staticUrl,
       baseAssetUrl,
     ));
     return ed.focus();

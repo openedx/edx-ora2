@@ -278,7 +278,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
+            ASSESSMENT_DICT['options_selected'], {}, "",
             {'criteria': xblock.rubric_criteria},
             1,
         )
@@ -500,6 +500,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     'download_url': 'http://www.example.com/image.jpeg',
                     'description': 'test_description',
                     'name': 'test_fileName',
+                    'size': 0,
                     'show_delete_button': False
                 }],
                 context['staff_file_urls']
@@ -561,6 +562,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     "download_url": image,
                     "description": "test_description%d" % i,
                     "name": "fname%d" % i,
+                    "size": 0,
                     "show_delete_button": False
                 } for i, image in enumerate(images)],
                 context['staff_file_urls']
@@ -643,7 +645,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
-            options_selected, dict(), "",
+            options_selected, {}, "",
             {'criteria': xblock.rubric_criteria},
             1,
         )
@@ -1080,6 +1082,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                         'download_url': FILE_URL,
                         'description': SAVED_FILES_DESCRIPTIONS[count],
                         'name': SAVED_FILES_NAMES[count],
+                        'size': None,
                         'show_delete_button': False
                     }
                 )
@@ -1154,7 +1157,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertFalse(context['is_team_assignment'])
         self.assertIsNone(context['team_name'])
 
-    @patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames')
+    @patch('openassessment.data.map_anonymized_ids_to_usernames')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_waiting_step_details_api(self, xblock, username_map_patch):
         """
@@ -1207,7 +1210,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             "bob_username"
         )
 
-    @patch('openassessment.data.OraAggregateData._map_anonymized_ids_to_usernames')
+    @patch('openassessment.data.map_anonymized_ids_to_usernames')
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_waiting_step_details_api_no_permission(self, xblock, username_map_patch):
         """
@@ -1351,6 +1354,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'download_url': FILE_URL,
             'description': '',
             'name': '',
+            'size': None,
             'show_delete_button': False
         }] * xblock.MAX_FILES_COUNT
         self.assertEqual(staff_urls, expected_staff_urls)
@@ -1476,6 +1480,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     'download_url': 'http://www.example.com/image.jpeg',
                     'description': 'test_description',
                     'name': 'test_fileName',
+                    'size': 0,
                     'show_delete_button': False
                 }],
                 context['staff_file_urls']

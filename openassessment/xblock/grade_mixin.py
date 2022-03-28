@@ -5,10 +5,11 @@ Grade step in the OpenAssessment XBlock.
 
 import copy
 
-from django.utils.translation import ugettext as _
-
 from lazy import lazy
 from xblock.core import XBlock
+
+from django.utils.translation import gettext as _
+
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 
 from .data_conversion import create_submission_dict
@@ -88,10 +89,11 @@ class GradeMixin:
             tuple of context (dict), template_path (string)
         """
         # Import is placed here to avoid model import at project startup.
+        from submissions import api as sub_api
+
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
         from openassessment.assessment.api import staff as staff_api
-        from submissions import api as sub_api
 
         # Peer specific stuff...
         assessment_steps = self.assessment_steps
@@ -203,7 +205,7 @@ class GradeMixin:
         from openassessment.assessment.api import peer as peer_api
 
         feedback_text = data.get('feedback_text', '')
-        feedback_options = data.get('feedback_options', list())
+        feedback_options = data.get('feedback_options', [])
 
         try:
             peer_api.set_assessment_feedback({

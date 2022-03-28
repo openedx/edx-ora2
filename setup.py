@@ -4,8 +4,9 @@ import os
 import re
 import os.path
 from io import open as open_as_of_py3
+import os.path
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 README = open_as_of_py3(
     os.path.join(os.path.dirname(__file__), 'README.rst')
@@ -62,9 +63,6 @@ setup(
     long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-        'Framework :: Django :: 2.2',
-        'Framework :: Django :: 3.0',
-        'Framework :: Django :: 3.1',
         'Framework :: Django :: 3.2',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Affero General Public License v3',

@@ -704,7 +704,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
     @classmethod
     @transaction.atomic
-    def start_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ
+    def start_workflow(cls, team_submission_uuid):  # pylint: disable=arguments-differ, arguments-renamed
         """ Start a team workflow """
         team_submission_dict = sub_team_api.get_team_submission(team_submission_uuid)
         try:
@@ -761,7 +761,8 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
             raise AssessmentWorkflowInternalError(err_msg)
         return [step]
 
-    def update_from_assessments(self, override_submitter_requirements=False):  # pylint: disable=arguments-differ
+    def update_from_assessments(self, override_submitter_requirements=False):
+        # pylint: disable=arguments-differ, arguments-renamed
         """
         Update the workflow with potential new scores from assessments.
         """
