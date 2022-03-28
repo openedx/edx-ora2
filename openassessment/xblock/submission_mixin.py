@@ -853,6 +853,7 @@ class SubmissionMixin:
         workflow = self.get_team_workflow_info() if self.teams_enabled else self.get_workflow_info()
         problem_closed, reason, start_date, due_date = self.is_closed('submission')
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
+        course_id = self.location.course_key if hasattr(self, 'location') else None
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
@@ -866,6 +867,7 @@ class SubmissionMixin:
             'user_language': user_preferences['user_language'],
             'user_timezone': user_preferences['user_timezone'],
             'xblock_id': self.get_xblock_id(),
+            'base_asset_url': self._get_base_url_path_for_course_assets(course_id)
         }
 
         if self.show_rubric_during_response:
