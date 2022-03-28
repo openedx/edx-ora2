@@ -7,6 +7,8 @@ element (DOM element): The DOM element representing one specific prompt.
 class Prompt {
   constructor(element) {
     this.element = element;
+    this.prompt = this.prompt.bind(this);
+    this.resolveStaticLinks = this.resolveStaticLinks.bind(this);
   }
 
   /**
@@ -49,6 +51,7 @@ export class Prompts {
     }
     this.staticUrl = '/static/';
     this.baseAssetURL = sel.data('baseAssetUrl');
+    this.resolveStaticLinks = this.resolveStaticLinks.bind(this);
   }
 
   /**
