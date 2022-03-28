@@ -821,6 +821,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         Verify the staff assessment counts (ungraded and checked out)
         as shown in the staff grading tool when staff assessment is required.
         """
+        xblock.is_enhanced_staff_grader_enabled = False
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 0)
 
@@ -1291,6 +1292,65 @@ class TestCourseStaff(XBlockHandlerTestCase):
             set(expected_usernames)
         )
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
+        new_callable=PropertyMock
+    )
+    def test_staff_area_esg_on_staff_assessment_is_not_required(self, xblock, mock_esg_flag):
+        """
+        When staff_assessment_required is disabled, neither of esg flag
+        nor the url should be defined in the context.
+        """
+        mock_esg_flag.return_value = True
+        _, context = xblock.get_staff_path_and_context()
+
+        self._verify_staff_assessment_context(context, False, 0, 0)
+        mock_esg_flag.assert_not_called()
+        self.assertNotIn('is_enhanced_staff_grader_enabled', context)
+        self.assertNotIn('enhanced_staff_grader_url', context)
+
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL='ora_url'
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
+        new_callable=PropertyMock
+    )
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_area_esg_enabled(self, xblock, mock_esg_flag):
+        """
+        When esg flag is enabled, enhanced_staff_grader_url should be "ORA_GRADING_MICROFRONTEND_URL/xblock_id"
+        """
+        mock_esg_flag.return_value = True
+        _, context = xblock.get_staff_path_and_context()
+
+        self._verify_staff_assessment_context(context, True, 0, 0)
+        mock_esg_flag.assert_called()
+        self.assertEqual(context['enhanced_staff_grader_url'], '{esg_url}/{block_id}'.format(
+            esg_url='ora_url',
+            block_id=context['xblock_id']
+        ))
+
+    @override_settings(
+        ORA_GRADING_MICROFRONTEND_URL='ora_url'
+    )
+    @patch(
+        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
+        new_callable=PropertyMock
+    )
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_area_esg_disabled(self, xblock, mock_esg_flag):
+        """
+        When esg flag is disabled, enhanced_staff_grader_url should not be define.
+        """
+        mock_esg_flag.return_value = False
+        _, context = xblock.get_staff_path_and_context()
+
+        self._verify_staff_assessment_context(context, True, 0, 0)
+        mock_esg_flag.assert_called()
+        self.assertNotIn('enhanced_staff_grader_url', context)
+
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
     @scenario('data/file_upload_missing_scenario.xml', user_id='Bob')
@@ -1578,6 +1638,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         usage_id = xblock.scope_ids.usage_id
         xblock.location = usage_id
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
+        xblock.is_enhanced_staff_grader_enabled = False
         if xblock.teams_enabled:
             xblock.is_team_assignment = Mock(return_value=True)
             anonymous_user_ids_for_team = MOCK_TEAM_MEMBER_STUDENT_IDS
