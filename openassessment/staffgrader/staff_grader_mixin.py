@@ -147,7 +147,7 @@ class StaffGraderMixin:
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
         submission_uuids = data.get("submission_uuids")
 
-        if (not submission_uuids) or type(submission_uuids) is not list:
+        if (not submission_uuids) or isinstance(submission_uuids, list):
             raise JsonHandlerError(400, "Body must contain a submission_uuids list")
 
         try:
