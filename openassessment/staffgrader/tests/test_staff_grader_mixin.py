@@ -210,9 +210,16 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         request_data = {'submission_uuids': [self.test_submission_uuid, self.test_other_submission_uuid]}
         response = self.request(xblock, 'batch_delete_submission_lock', json.dumps(request_data), response_format='json')
 
-        self.assertDictEqual(response, {
-            "cleared_grading_locks": [self.test_submission_uuid]
-        })
+        # Response should be empty on success
+        self.assertIsNone(response)
+
+        # Assert our lock was cleared and other individual's lock was not
+        assert not SubmissionGradingLock.objects.filter(
+            submission_uuid=self.test_submission_uuid
+        ).exists()
+        assert SubmissionGradingLock.objects.filter(
+            submission_uuid=self.test_other_submission_uuid
+        ).exists()
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
     @scenario('data/basic_scenario.xml', user_id="staff")

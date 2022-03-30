@@ -138,9 +138,7 @@ class StaffGraderMixin:
         """
         Given a list of submission UUIDs, clear those that we currently have locks for.
 
-        Returns: {
-            'cleared_grading_locks': [uuid]
-        }
+        Returns: None, no errors is implicit success
 
         Raises:
         - 400 in the case of bad params/data
@@ -153,10 +151,7 @@ class StaffGraderMixin:
             raise JsonHandlerError(400, "Body must contain a submission_uuids list")
 
         try:
-            cleared_locks = SubmissionGradingLock.batch_clear_submission_locks(submission_uuids, anonymous_user_id)
-            return {
-                'cleared_grading_locks': [lock for lock in cleared_locks]
-            }
+            SubmissionGradingLock.batch_clear_submission_locks(submission_uuids, anonymous_user_id)
         except Exception as err:
             raise JsonHandlerError(500, str(err)) from err
 

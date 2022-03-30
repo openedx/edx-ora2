@@ -130,16 +130,12 @@ class TestSubmissionLockModel(TestCase):
         )
  
         submission_ids_to_clear = [str(submission) for submission in submission_ids[0:3]]
-        cleared_locks = SubmissionGradingLock.batch_clear_submission_locks(submission_ids_to_clear, self.user_id)
-
-        # Assert DB queries
+        SubmissionGradingLock.batch_clear_submission_locks(submission_ids_to_clear, self.user_id)
 
         # Assert that the requested and allowed locks got cleared and returned
-        for submisison_id in submission_ids_to_clear[0:2]:
-            assert SubmissionGradingLock.get_submission_lock(submisison_id) is None
-            assert submisison_id in cleared_locks
+        for submission_id in submission_ids_to_clear[0:2]:
+            assert SubmissionGradingLock.get_submission_lock(submission_id) is None
 
         # Assert that the remaining locks are untouched
-        for submisison_id in submission_ids_to_clear[2:4]:
-            assert SubmissionGradingLock.get_submission_lock(submisison_id) is not None
-            assert submisison_id not in cleared_locks
+        for submission_id in submission_ids_to_clear[2:4]:
+            assert SubmissionGradingLock.get_submission_lock(submission_id) is not None
