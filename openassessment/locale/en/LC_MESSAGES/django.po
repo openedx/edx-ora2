@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-24 07:59-0400\n"
+"POT-Creation-Date: 2022-03-29 15:35-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -2570,53 +2570,63 @@ msgstr ""
 msgid "Multiple submissions are not allowed."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:190
-msgid "Submission cannot be empty. Please refresh the page and try again."
+#: openassessment/xblock/submission_mixin.py:178
+msgid "Response exceeds maximum allowed size."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:180
+msgid ""
+"Note: if you have a spellcheck or grammar check browser extension, try "
+"disabling, reloading, and reentering your response before submitting."
 msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:200
+msgid "Submission cannot be empty. Please refresh the page and try again."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:210
 msgid "API returned unclassified exception."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:251
+#: openassessment/xblock/submission_mixin.py:261
 msgid "This response could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:255
+#: openassessment/xblock/submission_mixin.py:265
 msgid "This response was not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:271
+#: openassessment/xblock/submission_mixin.py:281
 msgid "Files descriptions were not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:310
+#: openassessment/xblock/submission_mixin.py:320
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:456
+#: openassessment/xblock/submission_mixin.py:466
 msgid "There was an error uploading your file."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:468
+#: openassessment/xblock/submission_mixin.py:478
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:479
+#: openassessment/xblock/submission_mixin.py:489
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:492
+#: openassessment/xblock/submission_mixin.py:502
 msgid "Error retrieving upload URL."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:767
+#: openassessment/xblock/submission_mixin.py:777
 msgid "This response has been saved but not submitted."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:768
+#: openassessment/xblock/submission_mixin.py:778
 msgid "This response has not been saved."
 msgstr ""
 

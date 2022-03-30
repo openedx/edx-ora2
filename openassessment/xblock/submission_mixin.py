@@ -170,7 +170,17 @@ class SubmissionMixin:
                     for answer_err in err.field_errors.get('answer', [])
                 )
                 if answer_too_long:
+                    logger.exception(
+                        f"Response exceeds maximum allowed size: {student_item_dict}"
+                    )
                     status_tag = 'EANSWERLENGTH'
+                    max_size = f"({int(api.Submission.MAXSIZE / 1024)} KB)"
+                    base_error = self._("Response exceeds maximum allowed size.")
+                    extra_info = self._(
+                        "Note: if you have a spellcheck or grammar check browser extension, "
+                        "try disabling, reloading, and reentering your response before submitting."
+                    )
+                    status_text = f"{base_error} {max_size} {extra_info}"
                 else:
                     msg = (
                         "The submissions API reported an invalid request error "
