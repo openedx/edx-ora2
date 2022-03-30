@@ -180,7 +180,12 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
         request_data = {}
-        response = self.request(xblock, 'batch_delete_submission_lock', json.dumps(request_data), response_format='response')
+        response = self.request(
+            xblock,
+            'batch_delete_submission_lock',
+            json.dumps(request_data),
+            response_format='response',
+        )
         response_body = json.loads(response.body.decode('utf-8'))
 
         self.assertEqual(response.status_code, 400)
@@ -194,7 +199,12 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
         request_data = {'submission_uuids': 'foo'}
-        response = self.request(xblock, 'batch_delete_submission_lock', json.dumps(request_data), response_format='response')
+        response = self.request(
+            xblock,
+            'batch_delete_submission_lock',
+            json.dumps(request_data),
+            response_format='response',
+        )
         response_body = json.loads(response.body.decode('utf-8'))
 
         self.assertEqual(response.status_code, 400)
@@ -208,7 +218,12 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
 
         request_data = {'submission_uuids': [self.test_submission_uuid, self.test_other_submission_uuid]}
-        response = self.request(xblock, 'batch_delete_submission_lock', json.dumps(request_data), response_format='json')
+        response = self.request(
+            xblock,
+            'batch_delete_submission_lock',
+            json.dumps(request_data),
+            response_format='json',
+        )
 
         # Response should be empty on success
         self.assertIsNone(response)
