@@ -171,7 +171,7 @@ class SubmissionMixin:
                 )
                 if answer_too_long:
                     logger.exception(
-                        f"Attempted to submit response for {student_item_dict} but the submission is too long"
+                        f"Response exceeds maximum allowed size: {student_item_dict}"
                     )
                     status_tag = 'EANSWERLENGTH'
                     max_size = f"({int(api.Submission.MAXSIZE / 1024)} KB)"
