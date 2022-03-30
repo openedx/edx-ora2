@@ -102,6 +102,5 @@ class SubmissionGradingLock(models.Model):
         Returns: None or raises DB error
         """
         return cls.objects.filter(
-            submission_uuid__in=submission_uuids,
-            owner_id=user_id
+            submission_uuid__in=submission_uuids, owner_id=user_id
         ).delete()

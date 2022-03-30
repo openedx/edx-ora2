@@ -145,13 +145,15 @@ class StaffGraderMixin:
         - 500 for generic errors
         """
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-        submission_uuids = data.get('submission_uuids')
+        submission_uuids = data.get("submission_uuids")
 
         if (not submission_uuids) or type(submission_uuids) is not list:
             raise JsonHandlerError(400, "Body must contain a submission_uuids list")
 
         try:
-            SubmissionGradingLock.batch_clear_submission_locks(submission_uuids, anonymous_user_id)
+            SubmissionGradingLock.batch_clear_submission_locks(
+                submission_uuids, anonymous_user_id
+            )
         except Exception as err:
             raise JsonHandlerError(500, str(err)) from err
 

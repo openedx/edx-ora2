@@ -97,7 +97,7 @@ class TestSubmissionLockModel(TestCase):
 
     def test_batch_clear_submission_lock(self):
         # batch_clear_submission_lock removes requested locks that the user owns
-        
+
         # Create a bunch of submisison IDs
         submission_ids = [uuid4() for _ in range(4)]
 
@@ -105,32 +105,36 @@ class TestSubmissionLockModel(TestCase):
         SubmissionGradingLock.objects.create(
             submission_uuid=submission_ids[0],
             owner_id=self.user_id,
-            created_at=datetime.now(tz=timezone.utc)
+            created_at=datetime.now(tz=timezone.utc),
         )
 
         # Create a second lock owned by user to be cleared
         SubmissionGradingLock.objects.create(
             submission_uuid=submission_ids[1],
             owner_id=self.user_id,
-            created_at=datetime.now(tz=timezone.utc)
+            created_at=datetime.now(tz=timezone.utc),
         )
 
         # Create lock owned by someone else to not be cleared
         SubmissionGradingLock.objects.create(
             submission_uuid=submission_ids[2],
             owner_id=self.other_user_id,
-            created_at=datetime.now(tz=timezone.utc)
+            created_at=datetime.now(tz=timezone.utc),
         )
 
         # Create lock owned by user to not be cleared
         SubmissionGradingLock.objects.create(
             submission_uuid=submission_ids[3],
             owner_id=self.user_id,
-            created_at=datetime.now(tz=timezone.utc)
+            created_at=datetime.now(tz=timezone.utc),
         )
- 
-        submission_ids_to_clear = [str(submission) for submission in submission_ids[0:3]]
-        SubmissionGradingLock.batch_clear_submission_locks(submission_ids_to_clear, self.user_id)
+
+        submission_ids_to_clear = [
+            str(submission) for submission in submission_ids[0:3]
+        ]
+        SubmissionGradingLock.batch_clear_submission_locks(
+            submission_ids_to_clear, self.user_id
+        )
 
         # Assert that the requested and allowed locks got cleared and returned
         for submission_id in submission_ids_to_clear[0:2]:
