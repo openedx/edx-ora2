@@ -93,3 +93,23 @@ class SubmissionGradingLock(models.Model):
             raise SubmissionLockContestedError
 
         current_lock.delete()
+
+    @classmethod
+    def batch_clear_submission_locks(cls, submission_uuids, user_id):
+        """
+        For a list of submission locks to try to clear, clear those that we own.
+
+        Returns: None or raises DB error
+        """
+        # Get a list of locks we own, filtered by the list we're requesting to clerar
+        locks_to_clear = cls.objects.filter(
+            submission_uuid__in=submission_uuids,
+            owner_id=user_id
+        )
+
+        # return a list of submission UUIDs that are actually getting cleared
+        cleared_submission_lock_ids = [lock.submission_uuid for lock in locks_to_clear]
+
+        locks_to_clear.delete()
+
+        return cleared_submission_lock_ids

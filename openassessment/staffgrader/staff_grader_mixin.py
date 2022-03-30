@@ -134,6 +134,34 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
+    def batch_delete_submission_lock(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Given a list of submission UUIDs, clear those that we currently have locks for.
+
+        Returns: {
+            'cleared_grading_locks': [uuid]
+        }
+
+        Raises:
+        - 400 in the case of bad params/data
+        - 500 for generic errors
+        """
+        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+        submission_uuids = data.get('submission_uuids')
+
+        if (not submission_uuids) or type(submission_uuids) is not list:
+            raise JsonHandlerError(400, "Body must contain a submission_uuids list")
+
+        try:
+            cleared_locks = SubmissionGradingLock.batch_clear_submission_locks(submission_uuids, anonymous_user_id)
+            return {
+                'cleared_grading_locks': [lock for lock in cleared_locks]
+            }
+        except Exception as err:
+            raise JsonHandlerError(500, str(err)) from err
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
     def list_staff_workflows(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Returns data for the base "list" view, showing a summary of all graded / gradable items in the given assignment
