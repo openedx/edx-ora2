@@ -213,6 +213,23 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_batch_delete_submission_locks_empty(self, xblock):
+        """ An empty list of submisison UUIDs is silly, but should pass """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+
+        request_data = {'submission_uuids': []}
+        response = self.request(
+            xblock,
+            'batch_delete_submission_lock',
+            json.dumps(request_data),
+            response_format='response',
+        )
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response_body)
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
     def test_batch_delete_submission_locks_bad_param(self, xblock):
         """ Batch delete fails if submission_uuids is not a list """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)

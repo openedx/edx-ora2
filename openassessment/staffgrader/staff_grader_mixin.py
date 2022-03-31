@@ -145,8 +145,7 @@ class StaffGraderMixin:
         - 500 for generic errors
         """
         submission_uuids = data.get("submission_uuids")
-
-        if (not submission_uuids) or not isinstance(submission_uuids, list):
+        if not isinstance(submission_uuids, list):
             raise JsonHandlerError(400, "Body must contain a submission_uuids list")
 
         anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
