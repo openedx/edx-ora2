@@ -132,9 +132,12 @@ class TestSubmissionLockModel(TestCase):
         submission_ids_to_clear = [
             str(submission) for submission in submission_ids[0:3]
         ]
-        SubmissionGradingLock.batch_clear_submission_locks(
+        count_cleared = SubmissionGradingLock.batch_clear_submission_locks(
             submission_ids_to_clear, self.user_id
         )
+
+        # API returns the number of records cleared
+        assert count_cleared == 2
 
         # Assert that the requested and allowed locks got cleared and returned
         for submission_id in submission_ids_to_clear[0:2]:

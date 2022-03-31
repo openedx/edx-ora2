@@ -101,6 +101,6 @@ class SubmissionGradingLock(models.Model):
 
         Returns: Number of submission locks cleared
         """
-        cls.objects.filter(
+        return cls.objects.filter(
             submission_uuid__in=submission_uuids, owner_id=user_id
         ).delete()[0]
