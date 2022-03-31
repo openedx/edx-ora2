@@ -175,6 +175,25 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_batch_delete_submission_locks_no_id(self, xblock):
+        """ If, somehow, the runtime fails to give us a user ID, break """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=None)
+
+        request_data = {'submission_uuids': ['foo']}
+        response = self.request(
+            xblock,
+            'batch_delete_submission_lock',
+            json.dumps(request_data),
+            response_format='response',
+        )
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 500)
+        self.assertDictEqual(response_body, {
+            "error": "Failed to get anonymous user ID",
+        })
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
     def test_batch_delete_submission_locks_no_param(self, xblock):
         """ Batch delete fails if submission_uuids not supplied """
         xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)

@@ -144,11 +144,14 @@ class StaffGraderMixin:
         - 400 in the case of bad params/data
         - 500 for generic errors
         """
-        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
         submission_uuids = data.get("submission_uuids")
 
         if (not submission_uuids) or not isinstance(submission_uuids, list):
             raise JsonHandlerError(400, "Body must contain a submission_uuids list")
+
+        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
+        if not anonymous_user_id:
+            raise JsonHandlerError(500, "Failed to get anonymous user ID")
 
         try:
             SubmissionGradingLock.batch_clear_submission_locks(
