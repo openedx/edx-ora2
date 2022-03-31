@@ -99,8 +99,8 @@ class SubmissionGradingLock(models.Model):
         """
         For a list of submission locks to try to clear, clear those that we own.
 
-        Returns: None or raises DB error
+        Returns: Number of submission locks cleared
         """
-        return cls.objects.filter(
+        cls.objects.filter(
             submission_uuid__in=submission_uuids, owner_id=user_id
-        ).delete()
+        ).delete()[0]
