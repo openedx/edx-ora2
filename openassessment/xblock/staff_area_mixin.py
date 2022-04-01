@@ -140,6 +140,13 @@ class StaffAreaMixin:
         staff_assessment_required = "staff-assessment" in self.assessment_steps
         context['staff_assessment_required'] = staff_assessment_required
         if staff_assessment_required:
+            if self.is_enhanced_staff_grader_enabled:
+                context['is_enhanced_staff_grader_enabled'] = self.is_enhanced_staff_grader_enabled
+                context['enhanced_staff_grader_url'] = '{esg_url}/{block_id}'.format(
+                    esg_url=getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', ''),
+                    block_id=str(self.get_xblock_id())
+                )
+
             context.update(
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
