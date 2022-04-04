@@ -94,3 +94,55 @@ class TestSubmissionLockModel(TestCase):
         assert SubmissionGradingLock.get_submission_lock(self.locked_submission_uuid) == self.existing_submission_lock
         with self.assertRaises(SubmissionLockContestedError):
             SubmissionGradingLock.clear_submission_lock(self.locked_submission_uuid, self.other_user_id)
+
+    def test_batch_clear_submission_lock(self):
+        # batch_clear_submission_lock removes requested locks that the user owns
+
+        # Create a bunch of submisison IDs
+        submission_ids = [uuid4() for _ in range(4)]
+
+        # Create lock owned by user to be cleared
+        SubmissionGradingLock.objects.create(
+            submission_uuid=submission_ids[0],
+            owner_id=self.user_id,
+            created_at=datetime.now(tz=timezone.utc),
+        )
+
+        # Create a second lock owned by user to be cleared
+        SubmissionGradingLock.objects.create(
+            submission_uuid=submission_ids[1],
+            owner_id=self.user_id,
+            created_at=datetime.now(tz=timezone.utc),
+        )
+
+        # Create lock owned by someone else to not be cleared
+        SubmissionGradingLock.objects.create(
+            submission_uuid=submission_ids[2],
+            owner_id=self.other_user_id,
+            created_at=datetime.now(tz=timezone.utc),
+        )
+
+        # Create lock owned by user to not be cleared
+        SubmissionGradingLock.objects.create(
+            submission_uuid=submission_ids[3],
+            owner_id=self.user_id,
+            created_at=datetime.now(tz=timezone.utc),
+        )
+
+        submission_ids_to_clear = [
+            str(submission) for submission in submission_ids[0:3]
+        ]
+        count_cleared = SubmissionGradingLock.batch_clear_submission_locks(
+            submission_ids_to_clear, self.user_id
+        )
+
+        # API returns the number of records cleared
+        assert count_cleared == 2
+
+        # Assert that the requested and allowed locks got cleared and returned
+        for submission_id in submission_ids_to_clear[0:2]:
+            assert SubmissionGradingLock.get_submission_lock(submission_id) is None
+
+        # Assert that the remaining locks are untouched
+        for submission_id in submission_ids_to_clear[2:4]:
+            assert SubmissionGradingLock.get_submission_lock(submission_id) is not None

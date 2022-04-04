@@ -122,7 +122,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="step__content">
+            <div class="step__content" data-base-asset-url="{{ base_asset_url }}">
                 <form class="response__submission">
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}

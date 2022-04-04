@@ -314,11 +314,16 @@ describe("OpenAssessment.CourseItemsListingView", function() {
             view.renderGrids(ora2responses);
 
             var items = $('.staff-esg-link');
+            var itemsCount = Object.keys(oraCourseItems).length;
+            // only 2 column should be esg-link. It is for staff and additional response column
+            expect(items.length / itemsCount).toEqual(2);
+
             for (let i = 0; i < items.length; i++) {
                 let item = items[0];
                 expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL);
             }
 
+            // additional response column
             var responseCol = $('th.response');
             expect(responseCol.length).toEqual(1);
         });
@@ -330,6 +335,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
             expect(items.length).toEqual(0);
 
+            // additional response column
             var responseCol = $('th.response');
             expect(responseCol.length).toEqual(0);
         });

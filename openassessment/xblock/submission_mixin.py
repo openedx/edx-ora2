@@ -170,7 +170,17 @@ class SubmissionMixin:
                     for answer_err in err.field_errors.get('answer', [])
                 )
                 if answer_too_long:
+                    logger.exception(
+                        f"Response exceeds maximum allowed size: {student_item_dict}"
+                    )
                     status_tag = 'EANSWERLENGTH'
+                    max_size = f"({int(api.Submission.MAXSIZE / 1024)} KB)"
+                    base_error = self._("Response exceeds maximum allowed size.")
+                    extra_info = self._(
+                        "Note: if you have a spellcheck or grammar check browser extension, "
+                        "try disabling, reloading, and reentering your response before submitting."
+                    )
+                    status_text = f"{base_error} {max_size} {extra_info}"
                 else:
                     msg = (
                         "The submissions API reported an invalid request error "
@@ -853,6 +863,7 @@ class SubmissionMixin:
         workflow = self.get_team_workflow_info() if self.teams_enabled else self.get_workflow_info()
         problem_closed, reason, start_date, due_date = self.is_closed('submission')
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
+        course_id = self.location.course_key if hasattr(self, 'location') else None
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
@@ -866,6 +877,7 @@ class SubmissionMixin:
             'user_language': user_preferences['user_language'],
             'user_timezone': user_preferences['user_timezone'],
             'xblock_id': self.get_xblock_id(),
+            'base_asset_url': self._get_base_url_path_for_course_assets(course_id)
         }
 
         if self.show_rubric_during_response:
