@@ -320,10 +320,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 var itemsCount = Object.keys(oraCourseItems).length;
                 expect(items.length / itemsCount).toEqual(2);
 
-                for (let i = 0; i < items.length; i++) {
-                    let item = items[0];
-                    expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL);
-                }
+                items.each((_, item) => expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL));
             });
 
             it('additional response column but no response column summary', () => {
