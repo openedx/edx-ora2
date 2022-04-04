@@ -60,9 +60,9 @@ toml==0.10.2
     #   tox
 tox==3.24.5
     # via -r requirements/tox.txt
-urllib3==1.26.8
+urllib3==1.26.9
     # via requests
-virtualenv==20.13.2
+virtualenv==20.14.0
     # via
     #   -r requirements/tox.txt
     #   tox

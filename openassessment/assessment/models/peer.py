@@ -324,7 +324,7 @@ class PeerWorkflow(models.Model):
         # Remove any open items which have a submission which has been completed.
         for item in valid_open_items:
             if (item.started_at < oldest_acceptable) or (item.submission_uuid in completed_sub_uuids):
-                valid_open_items.remove(item)
+                valid_open_items.remove(item)   # pylint: disable=modified-iterating-list
 
         return valid_open_items[0] if valid_open_items else None
 

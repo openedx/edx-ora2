@@ -216,8 +216,9 @@ class CsvWriter:
             )
             for assessment_feedback in feedback_query:
                 self._write_assessment_feedback_to_csv(assessment_feedback)
+                # pylint: disable=unnecessary-comprehension
                 feedback_option_set.update({
-                    option for option in assessment_feedback.options.all()  # pylint: disable=unnecessary-comprehension
+                    option for option in assessment_feedback.options.all()
                 })
 
             if self._progress_callback is not None:
@@ -1188,6 +1189,7 @@ class OraDownloadData:
             for file_data in submission_files_data:
                 key = file_data['key']
                 file_path = file_data['file_path']
+                file_found = False
                 try:
                     file_content = (
                         cls._download_file_by_key(key)
@@ -1195,7 +1197,6 @@ class OraDownloadData:
                         else file_data['content']
                     )
                 except FileMissingException:
-                    file_found = False
                     # added a header to csv file to indicate that the file was found or not.
                     # TODO: (EDUCATOR-5777) should we create a {file_path}.error.txt
                     # to indicate the file error more clearly?

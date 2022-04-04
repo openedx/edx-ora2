@@ -10,9 +10,9 @@ asgiref==3.5.0
     # via django
 bleach==4.1.0
     # via -r requirements/base.in
-boto3==1.21.12
+boto3==1.21.32
     # via -r requirements/base.in
-botocore==1.24.12
+botocore==1.24.32
     # via
     #   boto3
     #   s3transfer
@@ -20,7 +20,7 @@ certifi==2021.10.8
     # via requests
 charset-normalizer==2.0.12
     # via requests
-click==8.0.4
+click==8.1.2
     # via code-annotations
 code-annotations==1.3.0
     # via edx-toggles
@@ -48,7 +48,7 @@ django-model-utils==4.2.0
     #   edx-submissions
 django-simple-history==3.0.0
     # via -r requirements/base.in
-django-waffle==2.3.0
+django-waffle==2.4.1
     # via
     #   edx-django-utils
     #   edx-toggles
@@ -56,7 +56,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==4.5.0
+edx-django-utils==4.6.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -78,9 +78,9 @@ idna==2.8
     # via
     #   -c requirements/constraints.txt
     #   requests
-jinja2==3.0.3
+jinja2==3.1.1
     # via code-annotations
-jmespath==0.10.0
+jmespath==1.0.0
     # via
     #   boto3
     #   botocore
@@ -100,11 +100,11 @@ lxml==4.8.0
     # via
     #   -r requirements/base.in
     #   xblock
-markupsafe==2.1.0
+markupsafe==2.1.1
     # via
     #   jinja2
     #   xblock
-newrelic==7.6.0.173
+newrelic==7.8.0.174
     # via edx-django-utils
 packaging==21.3
     # via bleach
@@ -137,7 +137,7 @@ python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-pytz==2021.3
+pytz==2022.1
     # via
     #   -r requirements/base.in
     #   django
@@ -170,11 +170,11 @@ stevedore==3.5.0
     #   edx-opaque-keys
 text-unidecode==1.3
     # via python-slugify
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   botocore
     #   requests
-voluptuous==0.12.2
+voluptuous==0.13.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
