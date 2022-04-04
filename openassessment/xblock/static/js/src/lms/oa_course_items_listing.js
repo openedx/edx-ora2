@@ -247,7 +247,7 @@ export class CourseItemsListingView {
     $section.find('.open-response-assessment-summary').empty();
 
     $.each(this._columns, (index, v) => {
-      // if labe_summary is undefine, do not show it
+      // if label_summary is undefined, do not show it
       if (v.label_summary === undefined) { return; }
       summaryData.push({
         title: v.label_summary,
