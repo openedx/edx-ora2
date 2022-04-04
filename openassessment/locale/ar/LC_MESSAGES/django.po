@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-14 12:19-0400\n"
+"POT-Creation-Date: 2022-03-30 13:49-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: NELC Open edX Translation <openedx@elc.edu.sa>, 2020\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -67,96 +67,96 @@ msgstr "يوجد في المثال {example_number} خيار إضافي لـ \"{
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "ينقُصُ هذا المثال {example_number} خيارٌ لـ \"{criterion_name}\""
 
-#: openassessment/data.py:532
+#: openassessment/data.py:535
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr ""
 
-#: openassessment/data.py:534
+#: openassessment/data.py:537
 #, python-brace-format
 msgid "Points {number}"
 msgstr ""
 
-#: openassessment/data.py:535
+#: openassessment/data.py:538
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr ""
 
-#: openassessment/data.py:536
+#: openassessment/data.py:539
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr ""
 
-#: openassessment/data.py:863
+#: openassessment/data.py:872
 msgid "Item ID"
 msgstr ""
 
-#: openassessment/data.py:864
+#: openassessment/data.py:873
 msgid "Submission ID"
 msgstr ""
 
-#: openassessment/data.py:876
+#: openassessment/data.py:885
 msgid "Anonymized Student ID"
 msgstr ""
 
-#: openassessment/data.py:907
+#: openassessment/data.py:916
 msgid "Assessment ID"
 msgstr ""
 
-#: openassessment/data.py:908
+#: openassessment/data.py:917
 msgid "Assessment Scored Date"
 msgstr ""
 
-#: openassessment/data.py:909
+#: openassessment/data.py:918
 msgid "Assessment Scored Time"
 msgstr ""
 
-#: openassessment/data.py:910
+#: openassessment/data.py:919
 msgid "Assessment Type"
 msgstr ""
 
-#: openassessment/data.py:911
+#: openassessment/data.py:920
 msgid "Anonymous Scorer Id"
 msgstr ""
 
-#: openassessment/data.py:913
+#: openassessment/data.py:922
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "الآراء والملاحظات بالإجمال"
 
-#: openassessment/data.py:914
+#: openassessment/data.py:923
 msgid "Assessment Score Earned"
 msgstr ""
 
-#: openassessment/data.py:915
+#: openassessment/data.py:924
 msgid "Assessment Scored At"
 msgstr ""
 
-#: openassessment/data.py:916
+#: openassessment/data.py:925
 msgid "Date/Time Final Score Given"
 msgstr ""
 
-#: openassessment/data.py:917
+#: openassessment/data.py:926
 msgid "Final Score Earned"
 msgstr ""
 
-#: openassessment/data.py:918
+#: openassessment/data.py:927
 msgid "Final Score Possible"
 msgstr ""
 
-#: openassessment/data.py:919
+#: openassessment/data.py:928
 msgid "Feedback Statements Selected"
 msgstr ""
 
-#: openassessment/data.py:920
+#: openassessment/data.py:929
 msgid "Feedback on Assessment"
 msgstr ""
 
-#: openassessment/data.py:922
+#: openassessment/data.py:931
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1318
+#: openassessment/data.py:1327
 msgid "No description provided."
 msgstr "لم يتم تقديم أي وصف."
 
@@ -498,7 +498,7 @@ msgstr "وقت وتاريخ إتاحة تقييم الزملاء للمتعلم�
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:110
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:114
 msgid "Due Date"
 msgstr "تاريخ الاستحقاق"
 
@@ -897,8 +897,8 @@ msgid ""
 msgstr "لقد أتممت الخطوات المطلوبة منك لهذا الواجب إلا أنك مازالت بحاجة للحصول على بعض التقييمات حول الردود التي قدّمتها. ستُعرض لك جميع الآراء والملاحظات التي قُدّمت حول ردّك وستحصل على درجتك النهائية عند اكتمال التقييمات المطلوبة لردّك."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:144
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:18
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:148
 msgid "Grade Available Responses"
 msgstr "قيّم الردود المتوفرة"
 
@@ -1667,7 +1667,7 @@ msgid "Staff Grade"
 msgstr "تقييم طاقم المساق"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:8
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:30
 msgid "Manage Individual Learners"
 msgstr "إدارة المتعلّمين المنفردين"
 
@@ -1676,67 +1676,71 @@ msgid "Manage Team Responses"
 msgstr "إدارة ردود الفريق"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:62
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:66
 msgid "View Assignment Statistics"
 msgstr "عرض إحصائيات الواجب"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:16
+msgid "Enchanced Staff Grader"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:21
 msgid "View ORA in Studio"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:22
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:60
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:142
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:64
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:146
 msgid "Close"
 msgstr "إغلاق"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:28
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:32
 msgid "Manage Teams"
 msgstr "إدارة الفرق"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:41
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:45
 msgid "Enter an individual learner's username or email"
 msgstr "يُرجى إدخال اسم متعلّم مستقل أو عنوان بريده الإلكتروني "
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:43
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:47
 msgid "Enter a team member's username or edX email"
 msgstr "يُرجى إدخال اسم عضوية الفريق أو عنوان البريد الإلكتروني لـ edX"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
 msgid "Submit"
 msgstr "تقديم"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:69
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:73
 msgid "Response total"
 msgstr "مجموع الردود"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:75
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:79
 msgid "Location"
 msgstr "الموقع"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:81
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:85
 msgid "Learner Progress"
 msgstr "تقدّم المتعلّم"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:85
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:112
 msgid "Problem Step"
 msgstr "خطوة المسألة"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:86
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
 msgid "Active Learners in Step"
 msgstr "المتعلّمين النشطين في الخطوة"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:104
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
 msgid "Dates"
 msgstr "التواريخ"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:109
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
 msgid "Release Date"
 msgstr "تاريخ الإصدار"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:122
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:128
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:132
 msgid "N/A"
 msgstr "لا ينطبق"
 
@@ -2379,66 +2383,66 @@ msgstr "عذرًا، ليست لديك صلاحية الوصول إلى معلو
 msgid "You do not have permission to access ORA staff grading."
 msgstr "عذرًا، ليست لديك صلاحية الوصول إلى صفحة طاقم \"اسئلة الإجابات المفتوحة\" للمساق."
 
-#: openassessment/xblock/staff_area_mixin.py:232
+#: openassessment/xblock/staff_area_mixin.py:240
 msgid "Pending"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:233
+#: openassessment/xblock/staff_area_mixin.py:241
 msgid "Complete/Overwritten"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:236
+#: openassessment/xblock/staff_area_mixin.py:244
 msgid "Not applicable"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:237
+#: openassessment/xblock/staff_area_mixin.py:245
 msgid "Not submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:238
+#: openassessment/xblock/staff_area_mixin.py:246
 msgid "Submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:305
+#: openassessment/xblock/staff_area_mixin.py:313
 msgid "Error getting learner information."
 msgstr "حدث خطأ أثناء الحصول على معلومات المتعلّم"
 
-#: openassessment/xblock/staff_area_mixin.py:348
+#: openassessment/xblock/staff_area_mixin.py:356
 msgid "Error loading the checked out learner response."
 msgstr "حدث خطأ أثناء تحميل ردّ المتعلّم الذي جرت مراجعته."
 
-#: openassessment/xblock/staff_area_mixin.py:349
+#: openassessment/xblock/staff_area_mixin.py:357
 msgid "No other learner responses are available for grading at this time."
 msgstr "لا تتوفر ردود متعلّمين أخرى، مُتاحة للتصحيح في الوقت الحالي."
 
-#: openassessment/xblock/staff_area_mixin.py:351
+#: openassessment/xblock/staff_area_mixin.py:359
 msgid "Error getting staff grade information."
 msgstr "حدث خطأ في تلقّي معلومات درجات طاقم المساق."
 
-#: openassessment/xblock/staff_area_mixin.py:372
+#: openassessment/xblock/staff_area_mixin.py:380
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "حدث خطأ أثناء جلب أعداد الردود قيد التصحيح والردود غير المصحّحة بعد، ليتمكن طاقم المساق من المباشرة بعملية التصحيح."
 
-#: openassessment/xblock/staff_area_mixin.py:662
+#: openassessment/xblock/staff_area_mixin.py:670
 msgid "Please enter valid reason to remove the submission."
 msgstr "يُرجى إدخال سبب صالح لحذف التقديم."
 
-#: openassessment/xblock/staff_area_mixin.py:673
+#: openassessment/xblock/staff_area_mixin.py:681
 msgid "Submission not found"
 msgstr "تعذر إيجاد ملف التقديم"
 
-#: openassessment/xblock/staff_area_mixin.py:684
+#: openassessment/xblock/staff_area_mixin.py:692
 msgid "Submission for team assignment has no associated team submission"
 msgstr "لا يتضمن تقديم إجابة الفريق أي إجابة فريق مرتبطة"
 
-#: openassessment/xblock/staff_area_mixin.py:711
+#: openassessment/xblock/staff_area_mixin.py:719
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "حُذِفَ تقديم إجابة المتعلّم من قسم ’تقييم الزملاء‘. يحصل الطالب على درجة صفر ما لم يُمحى ’وضع المتعلّم‘ لهذه المشكلة وذلك ليُسمح له بإعادة تقديم ردّ الإجابة من جديد."
 
-#: openassessment/xblock/staff_area_mixin.py:746
+#: openassessment/xblock/staff_area_mixin.py:754
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
@@ -2538,53 +2542,63 @@ msgstr "لتقديم ردّ، يُرجى مراجعة هذا المكوِّن ف
 msgid "Multiple submissions are not allowed."
 msgstr "عذرًا، لا يُسمح بتقديمات متعدّدة. "
 
-#: openassessment/xblock/submission_mixin.py:190
-msgid "Submission cannot be empty. Please refresh the page and try again."
+#: openassessment/xblock/submission_mixin.py:178
+msgid "Response exceeds maximum allowed size."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:180
+msgid ""
+"Note: if you have a spellcheck or grammar check browser extension, try "
+"disabling, reloading, and reentering your response before submitting."
 msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:200
+msgid "Submission cannot be empty. Please refresh the page and try again."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:210
 msgid "API returned unclassified exception."
 msgstr "أعادت واجهة برمجة التطبيقات رسالة تفيد بحدوث استثناء غير مصنّف."
 
-#: openassessment/xblock/submission_mixin.py:251
+#: openassessment/xblock/submission_mixin.py:261
 msgid "This response could not be saved."
 msgstr "عذرًا، لم يمكن حفظ هذا الردّ."
 
-#: openassessment/xblock/submission_mixin.py:255
+#: openassessment/xblock/submission_mixin.py:265
 msgid "This response was not submitted."
 msgstr "عذرًا، لم يمكن تقديم هذا الرد."
 
-#: openassessment/xblock/submission_mixin.py:271
+#: openassessment/xblock/submission_mixin.py:281
 msgid "Files descriptions were not submitted."
 msgstr "تعذّر إرسال وصف الملفات."
 
-#: openassessment/xblock/submission_mixin.py:310
+#: openassessment/xblock/submission_mixin.py:320
 msgid "Files metadata could not be saved."
 msgstr "تعذر حفظ بيانات تعريف الملفات."
 
-#: openassessment/xblock/submission_mixin.py:456
+#: openassessment/xblock/submission_mixin.py:466
 msgid "There was an error uploading your file."
 msgstr "حدث خطأ أثناء تحميل ملفّك."
 
-#: openassessment/xblock/submission_mixin.py:468
+#: openassessment/xblock/submission_mixin.py:478
 msgid "Only a single file upload is allowed for this assessment."
 msgstr "يسمح برفع ملف واحد فقط لهذا التقييم"
 
-#: openassessment/xblock/submission_mixin.py:479
+#: openassessment/xblock/submission_mixin.py:489
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr "فشل تحميل الملف: صيغة الملف غير مدعومة. يمكن فقط تحميل الملف المدعومة. عند وجود أي استفسار يرجى الاتصال بفريق المساق."
 
-#: openassessment/xblock/submission_mixin.py:492
+#: openassessment/xblock/submission_mixin.py:502
 msgid "Error retrieving upload URL."
 msgstr "نأسف لحدوث خطأ في استرجاع رابط التحميل."
 
-#: openassessment/xblock/submission_mixin.py:767
+#: openassessment/xblock/submission_mixin.py:777
 msgid "This response has been saved but not submitted."
 msgstr "حُفِّظ هذا الردّ ولكن لم يُقدَّم بعد. "
 
-#: openassessment/xblock/submission_mixin.py:768
+#: openassessment/xblock/submission_mixin.py:778
 msgid "This response has not been saved."
 msgstr "لم يُحفَّظ هذا الردّ بعد."
 
