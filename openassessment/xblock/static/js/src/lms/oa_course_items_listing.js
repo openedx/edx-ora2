@@ -54,6 +54,32 @@ export class CourseItemsListingView {
       url: 'url_grade_available_responses',
     });
 
+    const esgEnabled = context.ENHANCED_STAFF_GRADER;
+    const esgRootUrl = context.ORA_GRADING_MICROFRONTEND_URL;
+
+    const ESGCell = Backgrid.UriCell.extend({
+      render() {
+        this.$el.empty();
+        const displayValue = this.title
+        const id = this.model.get('id');
+        const url = `${esgRootUrl}/${id}`;
+        var title;
+        if (esgEnabled) {
+          title = gettext('View and grade responses');
+        } else {
+          title = gettext('Demo the new Grading Experience');
+        }
+        const link = $('<a>', {
+          text: displayValue,
+          title: title,
+          href: url,
+          class: 'staff-esg-link',
+        });
+        this.$el.append(link);
+        return this;
+      },
+    });
+
     this._columns = [
       {
         name: 'parent_name',
@@ -115,7 +141,7 @@ export class CourseItemsListingView {
         name: 'staff',
         label: gettext('Staff'),
         label_summary: gettext('Staff'),
-        cell: StaffCell,
+        cell: esgEnabled ? ESGCell : StaffCell,
         num: true,
         editable: false,
       },
@@ -127,50 +153,14 @@ export class CourseItemsListingView {
         num: true,
         editable: false,
       },
-    ];
-
-    const esgEnabled = context.ENHANCED_STAFF_GRADER;
-    const esgRootUrl = context.ORA_GRADING_MICROFRONTEND_URL;
-
-    if (itemViewEnabled && esgEnabled) {
-      const ESGCell = Backgrid.UriCell.extend({
-        render() {
-          this.$el.empty();
-          const rawValue = this.model.get(this.column.get('name'));
-          const formattedValue = this.formatter.fromRaw(rawValue, this.model);
-          const displayValue = this.title || formattedValue;
-          const id = this.model.get('id');
-          const url = `${esgRootUrl}/${id}`;
-          const link = $('<a>', {
-            text: displayValue,
-            title: displayValue,
-            href: url,
-            class: 'staff-esg-link',
-          });
-          this.$el.append(link);
-          return this;
-        },
-      });
-
-      // change staff column to use ESG instead of legacy staff grader
-      this._columns.some(column => {
-        if (column.cell === StaffCell) {
-          column.cell = ESGCell;
-          return true;
-        }
-        return false;
-      });
-
-      this._columns.push({
+      {
         name: 'response',
-        label: gettext('Response'),
-        cell: ESGCell.extend({
-          title: gettext('View and grade responses'),
-        }),
-        num: true,
+        label: gettext('Staff Grader'),
+        cell: ESGCell,
+        num: false,
         editable: false,
-      });
-    }
+      },
+    ];
   }
 
   /* eslint-disable-next-line consistent-return */
