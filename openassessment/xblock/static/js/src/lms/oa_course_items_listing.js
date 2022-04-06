@@ -164,7 +164,6 @@ export class CourseItemsListingView {
       this._columns.push({
         name: 'response',
         label: gettext('Response'),
-        label_summary: gettext('Response'),
         cell: ESGCell.extend({
           title: gettext('View and grade responses'),
         }),
@@ -248,6 +247,8 @@ export class CourseItemsListingView {
     $section.find('.open-response-assessment-summary').empty();
 
     $.each(this._columns, (index, v) => {
+      // if label_summary is undefined, do not show it
+      if (v.label_summary === undefined) { return; }
       summaryData.push({
         title: v.label_summary,
         value: 0,

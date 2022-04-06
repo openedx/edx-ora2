@@ -298,7 +298,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
 
     describe('esg enchanced grade flag', function() {
-        it('is enabled', () => {
+        describe('is enabled', function() {
             var data = {
                 CONTEXT: {
                     ENHANCED_STAFF_GRADER: true,
@@ -306,29 +306,37 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 }
             };
 
-            view = createCourseItemsListingView('oa_listing_view.html', data);
-            // Add test data
-            view.oraData = testData;
-            expect(view.data).toEqual(data);
+            beforeEach(function() {
+                view = createCourseItemsListingView('oa_listing_view.html', data);
+                // Add test data
+                view.oraData = testData;
+            });
 
-            view.renderGrids(ora2responses);
+            it('data context get parse correctly', () => expect(view.data).toEqual(data));
 
-            var items = $('.staff-esg-link');
-            var itemsCount = Object.keys(oraCourseItems).length;
-            // only 2 column should be esg-link. It is for staff and additional response column
-            expect(items.length / itemsCount).toEqual(2);
+            it('only 2 column should be esg-link. It is for staff and additional response column.', () => {
+                view.renderGrids(ora2responses);
+                var items = $('.staff-esg-link');
+                var itemsCount = Object.keys(oraCourseItems).length;
+                expect(items.length / itemsCount).toEqual(2);
 
-            for (let i = 0; i < items.length; i++) {
-                let item = items[0];
-                expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL);
-            }
+                items.each((_, item) => expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL));
+            });
 
-            // additional response column
-            var responseCol = $('th.response');
-            expect(responseCol.length).toEqual(1);
+            it('additional response column but no response column summary', () => {
+                view.renderGrids(ora2responses);
+                
+                var responseCol = $('.open-response-assessment-main-table .response');
+                expect(responseCol.length).toEqual(1);
+
+                var responseSummary = $('.open-response-assessment-summary .response')
+                expect(responseSummary.length).toEqual(0);
+            });
         });
 
         it('is not enabled', () => {
+            view = createCourseItemsListingView('oa_listing_view.html');
+            view.oraData = testData;
             view.renderGrids(ora2responses);
 
             var items = $('.staff-esg-link');
@@ -336,7 +344,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
             expect(items.length).toEqual(0);
 
             // additional response column
-            var responseCol = $('th.response');
+            var responseCol = $('.open-response-assessment-main-table .response');
             expect(responseCol.length).toEqual(0);
         });
     });
