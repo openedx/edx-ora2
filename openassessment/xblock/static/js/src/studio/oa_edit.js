@@ -178,9 +178,10 @@ export class StudioView {
 
     if (viewsFailingValidation.length > 0) {
       const tabNames = viewsFailingValidation.map(view => view.getTab().find('a').text());
+      const tabNamesCommaSeparated = tabNames.join(', ');
       this.alert.setMessage(
         gettext('Save Unsuccessful'),
-        gettext(`We've detected errors on the following tabs: ${tabNames.join(', ')}`),
+        gettext("Errors detected on the following tabs: " + tabNamesCommaSeparated),
       ).show();
     } else {
       // At this point, we know that all fields are valid,
@@ -314,7 +315,7 @@ export class StudioView {
    *  numErrors - number of errors (only shown in screen reader help-text)
    * */
   markTabAsInvalid(tab, numErrors) {
-    $('.tab-error-count', tab).text(gettext(`has ${numErrors} error(s)`));
+    $('.tab-error-count', tab).text(gettext('error count: ') + numErrors);
     $('.validation-warning', tab).show();
   }
 
