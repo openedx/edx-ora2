@@ -50,7 +50,8 @@
 
     .ui-staff__button {
       @extend %btn-reset;
-
+      display: inline-block;
+      margin-top: $baseline-v/2;
       padding: ($baseline-v/4) ($baseline-v/2);
       font-size: 12px;
       border-radius: ($baseline-v/4);
@@ -71,6 +72,16 @@
         color: white;
         background-color: $action-primary-color;
       }
+    }
+
+    .button-enhanced-staff-grader-demo {
+      color: white;
+      background-color: $action-primary-color;
+
+      // &:hover {
+      //   color: $copy-color;
+      //   background-color: $shadow-l2; 
+      // }
     }
   }
 
