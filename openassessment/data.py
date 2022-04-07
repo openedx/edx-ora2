@@ -54,6 +54,7 @@ def _use_read_replica(queryset):
     )
 
 
+# pragma: no cover
 def _get_course_blocks(course_id):
     """
     Returns untransformed block structure for a given course key.
