@@ -336,7 +336,7 @@ export class ResponseView {
         if (file.size === 0) {
           this.baseView.toggleActionError(
             'upload',
-            gettext('Your file has been deleted or path has been changed: ') +  file.name,
+            gettext('Your file has been deleted or path has been changed: ') + file.name,
           );
           this.submitEnabled(true);
           return false;
@@ -598,7 +598,7 @@ export class ResponseView {
       }
 
       if (this.getSavedFileCount(false) + files.length > this.data.MAXIMUM_FILE_UPLOAD_COUNT) {
-        const msg =  + gettext('The maximum number files that can be saved is ') + this.data.MAXIMUM_FILE_UPLOAD_COUNT;
+        const msg = gettext('The maximum number files that can be saved is ') + this.data.MAXIMUM_FILE_UPLOAD_COUNT;
         this.baseView.toggleActionError(
           'upload',
           gettext(msg),
