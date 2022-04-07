@@ -181,7 +181,7 @@ export class StudioView {
       const tabNamesCommaSeparated = tabNames.join(', ');
       this.alert.setMessage(
         gettext('Save Unsuccessful'),
-        gettext("Errors detected on the following tabs: " + tabNamesCommaSeparated),
+        gettext('Errors detected on the following tabs: ') + tabNamesCommaSeparated,
       ).show();
     } else {
       // At this point, we know that all fields are valid,
