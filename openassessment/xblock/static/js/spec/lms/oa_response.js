@@ -692,7 +692,7 @@ describe("OpenAssessment.ResponseView", function() {
         }
         view.prepareUpload(files2, 'image', ['i1', 'i2']);
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith(
-            'upload', 'Only ' + view.data.MAXIMUM_FILE_UPLOAD_COUNT +' files can be saved.');
+            'upload', 'The maximum number files that can be saved is ' + view.data.MAXIMUM_FILE_UPLOAD_COUNT);
     });
 
     it("tests that file upload works after file delete", function() {
@@ -859,7 +859,8 @@ describe("OpenAssessment.ResponseView", function() {
 
          expect(view.hasAllUploadFiles()).toEqual(false);
          expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
-            "Your file " + file[0].name + " has been deleted or path has been changed.");
+            'Your file has been deleted or path has been changed: ' + file[0].name
+        );
      });
 
     it("prevents user from uploading or submitting responses when file descriptions are missing", function() {
