@@ -9,7 +9,7 @@
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",
     "edx-ui-toolkit": "^1.5.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.34",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
