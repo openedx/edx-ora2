@@ -21,8 +21,8 @@ import requests
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
-from openassessment.class_imports import import_block_structure_transformers, import_external_id
-from openassessment.function_imports import get_course_blocks, modulestore
+from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
+from openassessment.runtime_imports.functions import get_course_blocks, modulestore
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url

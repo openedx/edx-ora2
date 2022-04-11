@@ -5,7 +5,7 @@ Mixin for determining configuration and feature-toggle state relevant to an ORA 
 from django.conf import settings
 from django.utils.functional import cached_property
 from edx_toggles.toggles import WaffleSwitch
-from openassessment.class_imports import import_course_waffle_flag, import_waffle_flag
+from openassessment.runtime_imports.classes import import_course_waffle_flag, import_waffle_flag
 
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
