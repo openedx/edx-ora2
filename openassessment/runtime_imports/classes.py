@@ -1,4 +1,3 @@
-# pragma no cover
 # pylint: disable=import-error
 """
 A module for containing various inline runtime class imports
