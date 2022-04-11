@@ -14,6 +14,7 @@ from opaque_keys.edx.keys import CourseKey
 import loremipsum
 from submissions import api as sub_api
 from openassessment.assessment.api import staff as staff_api
+from openassessment.function_imports import anonymous_id_for_user, modulestore
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_rubric_dict
 from openassessment.staffgrader.models import SubmissionGradingLock
@@ -193,22 +194,11 @@ class Command(BaseCommand):
 
         return learners, course_staff
 
-    def _import_anonymous_id_for_user(self):
-        try:
-            from common.djangoapps.student.models import anonymous_id_for_user  # pylint: disable=import-error
-            return anonymous_id_for_user
-        except ModuleNotFoundError as e:
-            raise CommandError((
-                "Cannot import common.djangoapps.student.models.anonymous_id_for_user. "
-                "This management command must be run from the LMS shell."
-            )) from e
-
     def load_anonymous_user_ids(self, course_id, usernames):
         """
         Look up all Users with the given usernames, look up their anonymous user ids for the specified course, and
         store a mapping from username to anonaymous id in self.username_to_anonymous_user_id
         """
-        anonymous_id_for_user = self._import_anonymous_id_for_user()
         # Also include a superuser because when we reset we need to include a "reset by" anonymous id
         usernames.add(SUPERUSER_USERNAME)
 
@@ -240,15 +230,14 @@ class Command(BaseCommand):
         Look up openassessment blocks for the course from the modulestore
         """
         try:
-            from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
+            return modulestore().get_items(
+                course_id, qualifiers={'category': 'openassessment'}
+            )
         except ModuleNotFoundError as e:
             raise CommandError((
                 "Cannot import xmodule.modulestore.django.modulestore. "
                 "This management command must be run from the LMS shell."
             )) from e
-        return modulestore().get_items(
-            course_id, qualifiers={'category': 'openassessment'}
-        )
 
     def load_ora_blocks(self, course_id, display_names):
         """

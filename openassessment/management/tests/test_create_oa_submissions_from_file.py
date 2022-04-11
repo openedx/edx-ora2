@@ -210,7 +210,10 @@ class CreateSubmissionsFromFileTest(TestCase):
             UserFactory.create(username=username)
 
         expected_error = 'Unable to load anonymous id for user(s) user_not_found'
-        with patch.object(self.cmd, '_import_anonymous_id_for_user', return_value=mock_anonymous_id_for_user):
+        with patch(
+            'openassessment.management.commands.create_oa_submissions_from_file.anonymous_id_for_user',
+            return_value=mock_anonymous_id_for_user
+        ):
             with self.assertRaisesMessage(CommandError, expected_error):
                 self.cmd.load_anonymous_user_ids(COURSE_ID, {USERNAME_1, USERNAME_2, 'user_not_found'})
 
@@ -287,28 +290,28 @@ class CreateSubmissionsFromFileCallCommandTest(TestCase):
             'read_config_file',
             return_value=CONFIG_1
         )
-        import_anonymous_id_patcher = patch.object(
-            Command,
-            '_import_anonymous_id_for_user',
-            return_value=mock_anonymous_id_for_user
+        anonymous_id_for_user_patcher = patch(
+            'openassessment.management.commands.create_oa_submissions_from_file.anonymous_id_for_user',
+            side_effect=mock_anonymous_id_for_user
         )
-        load_ora_blocks_patcher = patch.object(
-            Command,
-            '_load_ora_blocks_from_modulestore',
-            return_value=[self.mock_block]
+        self.mock_store = Mock()
+        self.mock_store.get_items.return_value = [self.mock_block]
+        modulestore_patcher = patch(
+            'openassessment.management.commands.create_oa_submissions_from_file.modulestore',
+            return_value=self.mock_store
         )
         call_command_patcher = patch(
             'openassessment.management.commands.create_oa_submissions_from_file.call_command'
         )
         self.patchers = [
             read_config_patcher,
-            import_anonymous_id_patcher,
-            load_ora_blocks_patcher,
+            anonymous_id_for_user_patcher,
+            modulestore_patcher,
             call_command_patcher
         ]
         self.read_config_mock = read_config_patcher.start()
-        self.import_anonymous_id_mock = import_anonymous_id_patcher.start()
-        self.load_ora_blocks_mock = load_ora_blocks_patcher.start()
+        self.anonymous_id_for_user_mock = anonymous_id_for_user_patcher.start()
+        self.modulestore_mock = modulestore_patcher.start()
         self.call_command_mock = call_command_patcher.start()
 
     def tearDown(self):
