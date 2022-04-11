@@ -1019,7 +1019,6 @@ class OraDownloadData:
         student_ids = [item[0]["student_id"] for item in all_submission_information]
         if not student_ids:
             return {}
-        course_id = all_submission_information[0][0]['course_id']
         User = get_user_model()
         ExternalId = import_external_id()
 
