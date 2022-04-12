@@ -3070,6 +3070,8 @@ hr.divider,
   padding: 10px;
 }
 .wrapper--openassessment .wrapper--staff-area .wrapper--staff-toolbar .ui-staff__button {
+  display: inline-block;
+  margin-top: 10px;
   padding: 5px 10px;
   font-size: 12px;
   border-radius: 5px;
@@ -3087,6 +3089,13 @@ hr.divider,
 .wrapper--openassessment .wrapper--staff-area .wrapper--staff-toolbar .ui-staff__button:hover {
   color: white;
   background-color: #0075b4;
+}
+.wrapper--openassessment .wrapper--staff-area .wrapper--staff-toolbar .button-enhanced-staff-grader-demo {
+  color: white;
+  background-color: #0A3055;
+}
+.wrapper--openassessment .wrapper--staff-area .wrapper--staff-toolbar .button-enhanced-staff-grader-demo:hover {
+  background-color: #061d33;
 }
 .wrapper--openassessment .wrapper--staff-area .wrapper--ui-staff {
   margin-top: 0;
