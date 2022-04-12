@@ -21,6 +21,8 @@ import requests
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
+from openassessment.runtime_imports.functions import get_course_blocks, modulestore
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
@@ -63,12 +65,7 @@ def _get_course_blocks(course_id):  # pragma: no cover
     Returns:
         BlockStructureBlockData instance
     """
-
-    from lms.djangoapps.course_blocks.api import get_course_blocks  # pylint: disable=import-error
-    # pylint: disable=import-error
-    from openedx.core.djangoapps.content.block_structure.transformers import BlockStructureTransformers
-    from xmodule.modulestore.django import modulestore  # pylint: disable=import-error
-
+    BlockStructureTransformers = import_block_structure_transformers()
     store = modulestore()
     course_usage_key = store.make_course_usage_key(course_id)
 
@@ -1019,16 +1016,11 @@ class OraDownloadData:
         - edX username, if external ID is absent.
         - Anonymized username, if `ENABLE_ORA_USERNAMES_ON_DATA_EXPORT` feature is disabled.
         """
-        # pylint: disable=import-error
-        from openedx.core.djangoapps.external_user_ids.models import ExternalId
-
-        # TODO: (AU-24) This seems like it should be used. Should this be in the filter?
-        # pylint: disable=unused-variable
         student_ids = [item[0]["student_id"] for item in all_submission_information]
         if not student_ids:
             return {}
-        course_id = all_submission_information[0][0]['course_id']
         User = get_user_model()
+        ExternalId = import_external_id()
 
         users = _use_read_replica(
             User.objects.filter(

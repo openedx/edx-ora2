@@ -2,12 +2,10 @@
 Mixin for determining configuration and feature-toggle state relevant to an ORA block.
 """
 
-
-from edx_django_utils.monitoring import set_custom_attribute
-from edx_toggles.toggles import WaffleSwitch
-
 from django.conf import settings
 from django.utils.functional import cached_property
+from edx_toggles.toggles import WaffleSwitch
+from openassessment.runtime_imports.classes import import_course_waffle_flag, import_waffle_flag
 
 WAFFLE_NAMESPACE = 'openresponseassessment'
 
@@ -24,34 +22,6 @@ FEATURE_TOGGLES_BY_FLAG_NAME = {
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
     ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER'
 }
-
-
-def import_waffle_switch():
-    """
-    Helper method that imports WaffleSwitch from edx-platform at runtime.
-    WARNING: This method is now deprecated and should not be relied upon.
-    """
-    set_custom_attribute("deprecated_edx_ora2", "import_waffle_switch")
-    return WaffleSwitch
-
-
-def import_course_waffle_flag():
-    """
-    Helper method that imports CourseWaffleFlag from edx-platform at runtime.
-    https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/waffle_utils/__init__.py#L345
-    """
-    # pylint: disable=import-error
-    from openedx.core.djangoapps.waffle_utils import CourseWaffleFlag
-    return CourseWaffleFlag
-
-
-def import_waffle_flag():
-    """
-    Helper method that imports WaffleFlag from edx_toggles at runtime.
-    """
-    # pylint: disable=import-error
-    from edx_toggles.toggles import WaffleFlag
-    return WaffleFlag
 
 
 class ConfigMixin:
