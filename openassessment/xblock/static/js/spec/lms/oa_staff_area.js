@@ -353,18 +353,18 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         describe('shows the correct buttons for full grading', function() {
 
-            it('when ora staff grader is disabled', function() {
-                var view = createStaffArea({}, 'oa_staff_area_full_grading_esg_disabled.html'),
+            it('when ora staff grader is enabled', function() {
+                var view = createStaffArea({}, 'oa_staff_area_full_grading_esg_enabled.html'),
                 $buttons = $('.ui-staff__button', view.element);
                 expect($buttons.length).toBe(4);
                 expect($buttons).toHaveAttr('aria-expanded', 'false');
                 expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
                 expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
-                expect($($buttons[2]).text().trim()).toEqual('Grade Available Responses');
+                expect($($buttons[2]).text().trim()).toEqual('Enhanced Staff Grader');
                 expect($($buttons[3]).text().trim()).toEqual('View ORA in Studio');
             });
-            it('when ora staff grader is enabled', function() {
-                var view = createStaffArea({}, 'oa_staff_area_full_grading_esg_enabled.html'),
+            it('when ora staff grader is disabled', function() {
+                var view = createStaffArea({}, 'oa_staff_area_full_grading_esg_disabled.html'),
                 $buttons = $('.ui-staff__button', view.element);
                 expect($buttons.length).toBe(5);
                 expect($buttons).toHaveAttr('aria-expanded', 'false');
