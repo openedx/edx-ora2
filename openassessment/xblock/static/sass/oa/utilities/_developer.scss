@@ -75,8 +75,13 @@
     }
 
     .button-enhanced-staff-grader-demo {
+      $primary-500: #0A3055;
       color: white;
-      background-color: $action-primary-color;
+      background-color: $primary-500; // paragon primary-500
+
+      &:hover {
+        background-color: darken($primary-500, 7.5%);
+      }
     }
   }
 
