@@ -779,6 +779,76 @@
     {
         "template": "openassessmentblock/staff_area/oa_staff_area.html",
         "context": {
+            "is_enhanced_staff_grader_enabled": false,
+            "staff_assessment_required": true,
+            "staff_assessment_ungraded": 5,
+            "staff_assessment_in_progress": 2,
+            "status_counts": {
+                "self": 1,
+                "peer": 2,
+                "waiting": 3,
+                "done": 4
+            },
+            "num_submissions": 10,
+            "item_id": "test_item",
+            "step_dates": [
+                {
+                    "step": "submission",
+                    "start": "2014-01-01",
+                    "due": "N/A"
+                },
+                {
+                    "step": "peer",
+                    "start": "2014-02-02",
+                    "due": "N/A"
+                },
+                {
+                    "step": "self",
+                    "start": "2014-03-03",
+                    "due": "2015-04-05"
+                }
+            ]
+        },
+        "output": "oa_staff_area_full_grading_esg_disabled.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "context": {
+            "is_enhanced_staff_grader_enabled": true,
+            "staff_assessment_required": true,
+            "staff_assessment_ungraded": 5,
+            "staff_assessment_in_progress": 2,
+            "status_counts": {
+                "self": 1,
+                "peer": 2,
+                "waiting": 3,
+                "done": 4
+            },
+            "num_submissions": 10,
+            "item_id": "test_item",
+            "step_dates": [
+                {
+                    "step": "submission",
+                    "start": "2014-01-01",
+                    "due": "N/A"
+                },
+                {
+                    "step": "peer",
+                    "start": "2014-02-02",
+                    "due": "N/A"
+                },
+                {
+                    "step": "self",
+                    "start": "2014-03-03",
+                    "due": "2015-04-05"
+                }
+            ]
+        },
+        "output": "oa_staff_area_full_grading_esg_enabled.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "context": {
             "status_counts": {
                 "staff": 1,
                 "waiting": 3,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-07 16:35-0400\n"
+"POT-Creation-Date: 2022-04-12 17:12-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -479,7 +479,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:114
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:115
 msgid "Due Date"
 msgstr ""
 
@@ -878,7 +878,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:18
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:148
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:149
 msgid "Grade Available Responses"
 msgstr ""
 
@@ -1695,7 +1695,7 @@ msgid "Staff Grade"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:8
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:30
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:31
 msgid "Manage Individual Learners"
 msgstr ""
 
@@ -1704,71 +1704,75 @@ msgid "Manage Team Responses"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:66
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:67
 msgid "View Assignment Statistics"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:16
-msgid "Enchanced Staff Grader"
+msgid "Enhanced Staff Grader"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:21
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:19
+msgid "Demo the new Grading Experience"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:22
 msgid "View ORA in Studio"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:146
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:27
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:65
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:147
 msgid "Close"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:32
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:33
 msgid "Manage Teams"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:45
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:46
 msgid "Enter an individual learner's username or email"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:48
 msgid "Enter a team member's username or edX email"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:52
 msgid "Submit"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:73
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:74
 msgid "Response total"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:79
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:80
 msgid "Location"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:85
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:86
 msgid "Learner Progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:112
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
 msgid "Problem Step"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:91
 msgid "Active Learners in Step"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:109
 msgid "Dates"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:114
 msgid "Release Date"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:132
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:127
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:133
 msgid "N/A"
 msgstr ""
 
@@ -2415,66 +2419,66 @@ msgstr ""
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:239
+#: openassessment/xblock/staff_area_mixin.py:238
 msgid "Pending"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:239
 msgid "Complete/Overwritten"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:243
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Not applicable"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:243
 msgid "Not submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:245
+#: openassessment/xblock/staff_area_mixin.py:244
 msgid "Submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:312
+#: openassessment/xblock/staff_area_mixin.py:311
 msgid "Error getting learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:355
+#: openassessment/xblock/staff_area_mixin.py:354
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:356
+#: openassessment/xblock/staff_area_mixin.py:355
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:358
+#: openassessment/xblock/staff_area_mixin.py:357
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:379
+#: openassessment/xblock/staff_area_mixin.py:378
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:669
+#: openassessment/xblock/staff_area_mixin.py:668
 msgid "Please enter valid reason to remove the submission."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:680
+#: openassessment/xblock/staff_area_mixin.py:679
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:691
+#: openassessment/xblock/staff_area_mixin.py:690
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:718
+#: openassessment/xblock/staff_area_mixin.py:717
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:753
+#: openassessment/xblock/staff_area_mixin.py:752
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "

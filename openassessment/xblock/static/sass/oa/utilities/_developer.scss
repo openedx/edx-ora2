@@ -50,7 +50,8 @@
 
     .ui-staff__button {
       @extend %btn-reset;
-
+      display: inline-block;
+      margin-top: $baseline-v/2;
       padding: ($baseline-v/4) ($baseline-v/2);
       font-size: 12px;
       border-radius: ($baseline-v/4);
@@ -70,6 +71,16 @@
       &:hover {
         color: white;
         background-color: $action-primary-color;
+      }
+    }
+
+    .button-enhanced-staff-grader-demo {
+      $primary-500: #0A3055;
+      color: white;
+      background-color: $primary-500; // paragon primary-500
+
+      &:hover {
+        background-color: darken($primary-500, 7.5%);
       }
     }
   }
