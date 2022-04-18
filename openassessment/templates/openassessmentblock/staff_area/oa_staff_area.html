@@ -16,7 +16,10 @@
                 <a href="{{enhanced_staff_grader_url}}" class="ui-staff__button button-enhanced-staff-grader" aria-expanded="false">{% trans "Enhanced Staff Grader" %} <span class="icon fa fa-external-link" aria-hidden="true"></span></a>
             {% else %}
                 <button class="ui-staff__button button-staff-grading" aria-expanded="false" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
-                <a href="{{enhanced_staff_grader_url}}" class="ui-staff__button button-enhanced-staff-grader button-enhanced-staff-grader-demo" aria-expanded="false">{% trans "Demo the new Grading Experience" %} <span class="icon fa fa-external-link" aria-hidden="true"></span></a>
+                {% comment %} Remove if block in AU-617 {% endcomment %}
+                {% if not is_team_assignment %}
+                    <a href="{{enhanced_staff_grader_url}}" class="ui-staff__button button-enhanced-staff-grader button-enhanced-staff-grader-demo" aria-expanded="false">{% trans "Demo the new Grading Experience" %} <span class="icon fa fa-external-link" aria-hidden="true"></span></a>
+                {% endif %}
             {% endif %}
         {% endif %}
         <a href="{{studio_edit_url}}" class="ui-staff__button button-staff-studio" aria-expanded="false" data-panel="openassessment__staff-studio">{% trans "View ORA in Studio" %}</a>
