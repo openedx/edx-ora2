@@ -70,7 +70,7 @@ export class CourseItemsListingView {
         });
         // Remove this in AU-617
         const teamAssignment = this.model.get('team_assignment');
-        if(hasAssessmentType && !teamAssignment) {
+        if (hasAssessmentType && !teamAssignment) {
           this.$el.append(link);
         }
         return this;
@@ -87,8 +87,8 @@ export class CourseItemsListingView {
       type: 'staff_assessment',
       // Should be removed as a part of AU-617
       shouldShowLink() {
-        return this.model.get('team_assignment') || !esgEnabled
-      }
+        return this.model.get('team_assignment') || !esgEnabled;
+      },
     });
 
     this._columns = [
