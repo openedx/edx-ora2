@@ -319,19 +319,17 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 var staffItems = $('.open-response-assessment-main-table td.renderable.staff');
 
                 staffItems.each((_, item) => {
-                    expect(item.classList).toContain('string-cell');
-                    expect(item.classList).not.toContain('uri-cell');
                     expect(item.children.length).toEqual(0);
                 })
             });
 
             it('staff grader column should lead to ora-grading.', () => {
                 var esgItems = $('.staff-esg-link');
-                expect(esgItems.length).toEqual(testData.length);
+                expect(esgItems.length).toEqual(1);
 
                 esgItems.each((_, item) => {
-                    expect(item.innerHTML).toEqual("View and grade responses")
-                    expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL)
+                    expect(item.innerHTML).toEqual("View and grade responses");
+                    expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL);
                 });
             });
 
@@ -375,7 +373,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
             it('staff grader column should lead to demo of ora-grading', () => {
                 var esgItems = $('.staff-esg-link');
-                expect(esgItems.length).toEqual(testData.length);
+                expect(esgItems.length).toEqual(1);
 
                 esgItems.each((_, item) => {
                     expect(item.innerHTML).toEqual("Demo the new Grading Experience")
