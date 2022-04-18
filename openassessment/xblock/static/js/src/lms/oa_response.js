@@ -721,17 +721,18 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function(data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            if(data.error){
-                if(data.is_design_problem !== undefined && data.is_design_problem){
-                    view.showExecutionError(data.error);
+            var error = data?.public?.error ?? data?.private?.error
+            if(error){
+                if(data?.public?.is_design_problem){
+                    view.showExecutionError(error);
                 }
                 else{
-                    view.showRunError(data.error);
+                    view.showRunError(error);
                 }
                 view.indicateError();
                 view.clearResultSummary();
             }
-            else if(data.is_design_problem === undefined || !data.is_design_problem){
+            else if(!data?.public?.is_design_problem){
                 view.showResultSummary(
                     {
                         correct: data.public.correct,
@@ -746,8 +747,7 @@ OpenAssessment.ResponseView.prototype = {
                 view.indicateCorrectness(data.public.correct === data.public.total_tests);
             } else{
                 view.indicateExecutionSuccess();
-                view.showExecutionResults(data.output);
-
+                view.showExecutionResults(data.public.output);
             }
 
             // ... but update the UI based on what the user may have entered
