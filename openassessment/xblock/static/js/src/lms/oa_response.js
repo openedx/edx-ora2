@@ -585,7 +585,7 @@ OpenAssessment.ResponseView.prototype = {
     var language = this.getLanguage();
     this.updateEditorMode(language);
     this.handleResponseChanged();
-    let defaulCodes  =  {
+    var defaulCodes  =  {
            "Python":"import sys\n" +
                "\n" +
                "lines = open(sys.argv[1], 'r').readlines()\n" +
