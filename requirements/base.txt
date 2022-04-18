@@ -8,11 +8,11 @@ appdirs==1.4.4
     # via fs
 asgiref==3.5.0
     # via django
-bleach==4.1.0
+bleach==5.0.0
     # via -r requirements/base.in
-boto3==1.21.32
+boto3==1.21.42
     # via -r requirements/base.in
-botocore==1.24.32
+botocore==1.24.42
     # via
     #   boto3
     #   s3transfer
@@ -26,7 +26,7 @@ code-annotations==1.3.0
     # via edx-toggles
 defusedxml==0.7.1
     # via -r requirements/base.in
-django==3.2.12
+django==3.2.13
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -104,10 +104,8 @@ markupsafe==2.1.1
     # via
     #   jinja2
     #   xblock
-newrelic==7.8.0.174
+newrelic==7.10.0.175
     # via edx-django-utils
-packaging==21.3
-    # via bleach
 path==13.1.0
     # via
     #   -c requirements/constraints.txt
@@ -123,8 +121,6 @@ psutil==5.9.0
     # via edx-django-utils
 pymongo==3.12.3
     # via edx-opaque-keys
-pyparsing==3.0.7
-    # via packaging
 python-dateutil==2.4.0
     # via
     #   -c requirements/constraints.txt
@@ -174,7 +170,7 @@ urllib3==1.26.9
     # via
     #   botocore
     #   requests
-voluptuous==0.13.0
+voluptuous==0.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
