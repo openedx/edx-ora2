@@ -162,7 +162,8 @@ describe("OpenAssessment.CourseItemsListingView", function() {
         $.each(rows, function(i, val){
             td = [];
             $(val).find('td').each(function(j, item){
-                td.push($(item).html());
+                if (!item.classList.contains('staff_grader'))
+                    td.push($(item).html());
             });
             tds.push(td);
         });
@@ -280,8 +281,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
         view.renderGrids(ora2responses);
 
-        var items = $('.open-response-assessment-main-table tbody tr td a');
-        var link = items[2];
+        var link = $('.open-response-assessment-main-table td.renderable.staff>a')[0];
 
         stubAjax(true, {html: 'test_html'});
 
@@ -310,42 +310,76 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 view = createCourseItemsListingView('oa_listing_view.html', data);
                 // Add test data
                 view.oraData = testData;
+                view.renderGrids(ora2responses);
             });
 
             it('data context get parse correctly', () => expect(view.data).toEqual(data));
 
-            it('only 2 column should be esg-link. It is for staff and additional response column.', () => {
-                view.renderGrids(ora2responses);
-                var items = $('.staff-esg-link');
-                var itemsCount = Object.keys(oraCourseItems).length;
-                expect(items.length / itemsCount).toEqual(2);
+            it ('staff column will not clickable', () => {
+                var staffItems = $('.open-response-assessment-main-table td.renderable.staff');
 
-                items.each((_, item) => expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL));
+                staffItems.each((_, item) => {
+                    expect(item.children.length).toEqual(0);
+                })
             });
 
-            it('additional response column but no response column summary', () => {
-                view.renderGrids(ora2responses);
-                
-                var responseCol = $('.open-response-assessment-main-table .response');
-                expect(responseCol.length).toEqual(1);
+            it('staff grader column should lead to ora-grading.', () => {
+                var esgItems = $('.staff-esg-link');
+                expect(esgItems.length).toEqual(1);
 
-                var responseSummary = $('.open-response-assessment-summary .response')
-                expect(responseSummary.length).toEqual(0);
+                esgItems.each((_, item) => {
+                    expect(item.innerHTML).toEqual("View and grade responses");
+                    expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL);
+                });
+            });
+
+            it('no staff grader column summary', () => {
+                var staffGraderCol = $('.open-response-assessment-main-table th.staff_grader');
+                expect(staffGraderCol.length).toEqual(1);
+
+                var staffGraderSummary = $('.open-response-assessment-summary .staff_grader')
+                expect(staffGraderSummary.length).toEqual(0);
             });
         });
 
-        it('is not enabled', () => {
-            view = createCourseItemsListingView('oa_listing_view.html');
-            view.oraData = testData;
-            view.renderGrids(ora2responses);
+        describe('is not enabled', () => {
 
-            var items = $('.staff-esg-link');
+            var data = {
+                CONTEXT: {
+                    ENHANCED_STAFF_GRADER: false,
+                    ORA_GRADING_MICROFRONTEND_URL: 'demo_url'
+                }
+            };
 
-            expect(items.length).toEqual(0);
+            beforeEach(function() {
+                view = createCourseItemsListingView('oa_listing_view.html', data);
+                // Add test data
+                view.oraData = testData;
+                view.renderGrids(ora2responses);
+            });
 
-            // additional response column
-            var responseCol = $('.open-response-assessment-main-table .response');
-            expect(responseCol.length).toEqual(0);
+            it ('staff column will be clickable', () => {
+                var staffItems = $('.open-response-assessment-main-table td.renderable.staff');
+
+                staffItems.each((_, item) => {
+                    expect(item.classList).not.toContain('string-cell');
+                    expect(item.classList).toContain('uri-cell');
+                    if (item.children.length)
+                        expect($('a', item).length).toEqual(1);
+                    else
+                        expect(item.innerHTML).toEqual('0');
+                })
+            });
+
+            it('staff grader column should lead to demo of ora-grading', () => {
+                var esgItems = $('.staff-esg-link');
+                expect(esgItems.length).toEqual(1);
+
+                esgItems.each((_, item) => {
+                    expect(item.innerHTML).toEqual("Demo the new Grading Experience")
+                    expect(item.href).toContain(data.CONTEXT.ORA_GRADING_MICROFRONTEND_URL)
+                });
+            });
         });
     });
 });

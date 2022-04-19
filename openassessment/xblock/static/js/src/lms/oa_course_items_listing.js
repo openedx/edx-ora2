@@ -22,14 +22,20 @@ export class CourseItemsListingView {
     const AssessmentCell = Backgrid.UriCell.extend({
       type: null,
       url: null,
+      // Should be removed as a part of AU-617
+      shouldShowLink() {
+        return true;
+      },
       render() {
         this.$el.empty();
+        const name = this.column.get('name');
+        this.$el.addClass(name);
         const url = this.model.get(this.url ? this.url : 'url_base');
-        const rawValue = this.model.get(this.column.get('name'));
+        const rawValue = this.model.get(name);
         const formattedValue = this.formatter.fromRaw(rawValue, this.model);
         const hasAssessmentType = this.model.get(this.type ? this.type : 'staff_assessment');
         let link = null;
-        if (itemViewEnabled && (!this.type || (this.type && hasAssessmentType))) {
+        if (itemViewEnabled && (!this.type || (this.type && hasAssessmentType)) && this.shouldShowLink()) {
           link = $('<a>', {
             text: formattedValue,
             title: this.title || formattedValue,
@@ -44,14 +50,45 @@ export class CourseItemsListingView {
       },
     });
 
+    const esgEnabled = context.ENHANCED_STAFF_GRADER;
+    const esgRootUrl = context.ORA_GRADING_MICROFRONTEND_URL;
+
+    const ESGCell = Backgrid.UriCell.extend({
+      render() {
+        this.$el.empty();
+        const name = this.column.get('name');
+        this.$el.addClass(name);
+        const displayValue = esgEnabled ? gettext('View and grade responses') : gettext('Demo the new Grading Experience');
+        const id = this.model.get('id');
+        const url = `${esgRootUrl}/${id}`;
+        const hasAssessmentType = this.model.get('staff_assessment');
+        const link = $('<a>', {
+          text: displayValue,
+          title: displayValue,
+          href: url,
+          class: 'staff-esg-link',
+        });
+        // Remove this in AU-617
+        const teamAssignment = this.model.get('team_assignment');
+        if (hasAssessmentType && !teamAssignment) {
+          this.$el.append(link);
+        }
+        return this;
+      },
+    });
+
     const WaitingStepCell = AssessmentCell.extend({
       type: 'peer_assessment',
       url: 'url_waiting_step_details',
     });
 
     const StaffCell = AssessmentCell.extend({
-      type: 'staff_assessment',
       url: 'url_grade_available_responses',
+      type: 'staff_assessment',
+      // Should be removed as a part of AU-617
+      shouldShowLink() {
+        return this.model.get('team_assignment') || !esgEnabled;
+      },
     });
 
     this._columns = [
@@ -127,50 +164,14 @@ export class CourseItemsListingView {
         num: true,
         editable: false,
       },
-    ];
-
-    const esgEnabled = context.ENHANCED_STAFF_GRADER;
-    const esgRootUrl = context.ORA_GRADING_MICROFRONTEND_URL;
-
-    if (itemViewEnabled && esgEnabled) {
-      const ESGCell = Backgrid.UriCell.extend({
-        render() {
-          this.$el.empty();
-          const rawValue = this.model.get(this.column.get('name'));
-          const formattedValue = this.formatter.fromRaw(rawValue, this.model);
-          const displayValue = this.title || formattedValue;
-          const id = this.model.get('id');
-          const url = `${esgRootUrl}/${id}`;
-          const link = $('<a>', {
-            text: displayValue,
-            title: displayValue,
-            href: url,
-            class: 'staff-esg-link',
-          });
-          this.$el.append(link);
-          return this;
-        },
-      });
-
-      // change staff column to use ESG instead of legacy staff grader
-      this._columns.some(column => {
-        if (column.cell === StaffCell) {
-          column.cell = ESGCell;
-          return true;
-        }
-        return false;
-      });
-
-      this._columns.push({
-        name: 'response',
-        label: gettext('Response'),
-        cell: ESGCell.extend({
-          title: gettext('View and grade responses'),
-        }),
+      {
+        name: 'staff_grader',
+        label: gettext('Staff Grader'),
+        cell: ESGCell,
         num: true,
         editable: false,
-      });
-    }
+      },
+    ];
   }
 
   /* eslint-disable-next-line consistent-return */

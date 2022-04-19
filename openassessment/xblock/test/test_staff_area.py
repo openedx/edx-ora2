@@ -1313,43 +1313,27 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @override_settings(
         ORA_GRADING_MICROFRONTEND_URL='ora_url'
     )
+    @ddt.data(False, True)
     @patch(
         'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
         new_callable=PropertyMock
     )
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
-    def test_staff_area_esg_enabled(self, xblock, mock_esg_flag):
+    def test_staff_area_esg(self, xblock, is_esg_enabled, mock_esg_flag):
         """
-        When esg flag is enabled, enhanced_staff_grader_url should be "ORA_GRADING_MICROFRONTEND_URL/xblock_id"
+        If there is a staff step, enhanced_staff_grader_url should be
+        "ORA_GRADING_MICROFRONTEND_URL/xblock_id" whether or not ESG is enabled
         """
-        mock_esg_flag.return_value = True
+        mock_esg_flag.return_value = is_esg_enabled
         _, context = xblock.get_staff_path_and_context()
 
         self._verify_staff_assessment_context(context, True, 0, 0)
         mock_esg_flag.assert_called()
+        self.assertEqual(context['is_enhanced_staff_grader_enabled'], is_esg_enabled)
         self.assertEqual(context['enhanced_staff_grader_url'], '{esg_url}/{block_id}'.format(
             esg_url='ora_url',
             block_id=context['xblock_id']
         ))
-
-    @override_settings(
-        ORA_GRADING_MICROFRONTEND_URL='ora_url'
-    )
-    @patch(
-        'openassessment.xblock.config_mixin.ConfigMixin.is_enhanced_staff_grader_enabled',
-        new_callable=PropertyMock
-    )
-    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
-    def test_staff_area_esg_disabled(self, xblock, mock_esg_flag):
-        """
-        When esg flag is disabled, enhanced_staff_grader_url should not be define.
-        """
-        mock_esg_flag.return_value = False
-        _, context = xblock.get_staff_path_and_context()
-
-        self._verify_staff_assessment_context(context, True, 0, 0)
-        mock_esg_flag.assert_called()
-        self.assertNotIn('enhanced_staff_grader_url', context)
 
     @log_capture()
     @patch('openassessment.xblock.config_mixin.ConfigMixin.user_state_upload_data_enabled')
