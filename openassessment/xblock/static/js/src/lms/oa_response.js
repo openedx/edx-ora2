@@ -19,6 +19,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.baseView = baseView;
     this.savedResponse = [];
     this.textResponse = 'required';
+    this.showFileUplaodCode = false;
     this.fileUploadResponse = '';
     this.files = null;
     this.filesDescriptions = [];
@@ -109,6 +110,8 @@ OpenAssessment.ResponseView.prototype = {
 
         var submit = $('.step--response__submit', this.element);
         this.textResponse = $(submit).attr('text_response');
+        var editor_textarea = $('.response__submission .submission__answer__part__text__value', this.element);
+        this.showFileUplaodCode = $(editor_textarea).attr('show_file_read_code');
         this.fileUploadResponse = $(submit).attr('file_upload_response');
 
         // Install a click handler for submission
@@ -582,7 +585,68 @@ OpenAssessment.ResponseView.prototype = {
     var language = this.getLanguage();
     this.updateEditorMode(language);
     this.handleResponseChanged();
+    var defaulCodes  =  {
+           "Python":"import sys\n" +
+               "\n" +
+               "lines = open(sys.argv[1], 'r').readlines()\n" +
+               "\n" +
+               "# Write your code here.",
+           "NodeJS":"const fs = require('fs');\n" +
+               "\n" +
+               "const args = process.argv.slice(2);\n" +
+               "const fileName = args[0];\n" +
+               "\n" +
+               "const content = fs.readFileSync(fileName).toString();\n" +
+               "const lines = content.split('\\n');\n" +
+               "\n" +
+               "// Write your code here.",
+           "Java":"import java.io.File;\n" +
+               "import java.io.FileNotFoundException;\n" +
+               "import java.util.Scanner;\n" +
+               "\n" +
+               "\n" +
+               "public class Main {\n" +
+               "  public static void main(String[] args) {\n" +
+               "    try {\n" +
+               "      File inputFile = new File(args[0]);\n" +
+               "      Scanner inputReader = new Scanner(inputFile);\n" +
+               "      while (inputReader.hasNextLine()) {\n" +
+               "        String line = inputReader.nextLine();\n" +
+               "\n" +
+               "        // Write your code here.\n" +
+               "\n" +
+               "      }\n" +
+               "      inputReader.close();\n" +
+               "    } catch (FileNotFoundException e) {\n" +
+               "      System.out.println(\"An error occurred.\");\n" +
+               "      e.printStackTrace();\n" +
+               "    }\n" +
+               "  }\n" +
+               "}",
+           "C++":"#include <iostream>\n" +
+               "#include <fstream>\n" +
+               "\n" +
+               "using namespace std;\n" +
+               "\n" +
+               "\n" +
+               "int main(int argc, char *argv[]) {\n" +
+               "  ifstream inputFile(argv[1]);\n" +
+               "\n" +
+               "  string line = \"\";\n" +
+               "  do {\n" +
+               "    getline(inputFile, line);\n" +
+               "\n" +
+               "    // Write your code here.\n" +
+               "\n" +
+               "  } while(inputFile.good());\n" +
+               "\n" +
+               "  return 0;\n" +
+               "}"
+        }
 
+    if(this.showFileUplaodCode === 'True' && (this.codeEditor.getValue() === '' || Object.values(defaulCodes).includes(this.codeEditor.getValue()))){
+        this.codeEditor.setValue(defaulCodes[language]);
+    }
     },
 
     /**

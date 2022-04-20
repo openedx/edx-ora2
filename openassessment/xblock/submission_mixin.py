@@ -573,6 +573,7 @@ class SubmissionMixin(object):
             'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
+            "show_file_read_code": self.show_file_read_code,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
         }

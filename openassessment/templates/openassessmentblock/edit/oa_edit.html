@@ -81,6 +81,22 @@
                         {% trans "Indicates whether or not to show private test case results. This only shows if the case passed or failed, it does not show any values."%}
                     </p>
                 </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_show_file_read_code_editor" class="setting-label">
+                            {% trans "Show File Read Code"%}
+                        </label>
+                        <select id="openassessment_show_file_read_code_editor" class="input setting-input">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if show_file_read_code %} selected="true" {% endif %}>
+                                {% trans "True"%}
+                            </option>
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Indicates whether or not to show file read code."%}
+                    </p>
+                </li>
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label
