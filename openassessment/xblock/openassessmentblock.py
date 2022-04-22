@@ -261,6 +261,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="Indicates whether or not to show private test case results (passed or failed only, does not show values)."
     )
 
+    show_file_read_code = Boolean(
+        default=False,
+        scope=Scope.content,
+        help="Indicates whether or not to show file read code."
+    )
+
     @property
     def labels(self):
         return ",".join(self.label_list)

@@ -208,6 +208,7 @@ OpenAssessment.StudioView.prototype = {
             fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
             latexEnabled: view.settingsView.latexEnabled(),
             showPrivateTestCaseResultsEnabled: view.settingsView.showPrivateTestCaseResultsEnabled(),
+            showFileReadCodeEnabled: view.settingsView.showFileReadCodeEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder(),
         }).done(
