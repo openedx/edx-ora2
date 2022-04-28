@@ -450,22 +450,3 @@ class SubmitAssessmentsMixin:
         assessment['submission_uuid'] = submission['uuid']
         resp = self.request(xblock, 'staff_assess', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
-
-    def submit_bulk_staff_assessment(self, xblock, *submission_assessment_tuples):
-        """
-        Submits a staff assessment for the specified submission.
-
-        Args:
-            xblock: The XBlock being assessed.
-            submission_assessment_tuples: A list of tuples (submission, assessment) where
-                                          submission: The submission being assessed
-                                          assessment: The staff assessment
-        """
-        self.set_staff_access(xblock)
-        payload = []
-        for submission, assessment in submission_assessment_tuples:
-            assessment = copy.deepcopy(assessment)
-            assessment['submission_uuid'] = submission['uuid']
-            payload.append(assessment)
-        resp = self.request(xblock, 'bulk_staff_assess', json.dumps(payload), response_format='json')
-        self.assertTrue(resp['success'])
