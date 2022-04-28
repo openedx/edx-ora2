@@ -18,8 +18,8 @@ def import_course_waffle_flag():
     Helper method that imports CourseWaffleFlag from edx-platform at runtime.
     https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/waffle_utils/__init__.py#L345
     """
-    from openedx.core.djangoapps.waffle_utils import CourseWaffleFlag
-    return CourseWaffleFlag
+    from openedx.core.djangoapps.waffle_utils.__future__ import FutureCourseWaffleFlag
+    return FutureCourseWaffleFlag
 
 
 def import_external_id():

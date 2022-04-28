@@ -45,7 +45,7 @@ class ConfigMixin:
         """
         CourseWaffleFlag = import_course_waffle_flag()  # pylint: disable=invalid-name
         # pylint: disable=toggle-missing-annotation
-        return CourseWaffleFlag(WAFFLE_NAMESPACE, flag_name, module_name=__name__)
+        return CourseWaffleFlag(f"{WAFFLE_NAMESPACE}.{flag_name}", module_name=__name__)
 
     @staticmethod
     def _waffle_flag(flag_name):
