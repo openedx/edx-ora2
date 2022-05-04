@@ -8,11 +8,11 @@ appdirs==1.4.4
     # via
     #   -r requirements/test.txt
     #   fs
-asgiref==3.5.0
+asgiref==3.5.1
     # via
     #   -r requirements/test.txt
     #   django
-astroid==2.11.2
+astroid==2.11.4
     # via
     #   pylint
     #   pylint-celery
@@ -27,7 +27,7 @@ attrs==21.4.0
     #   jsonschema
     #   pytest
     #   sarif-om
-aws-sam-translator==1.44.0
+aws-sam-translator==1.45.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -35,19 +35,19 @@ aws-xray-sdk==2.9.0
     # via
     #   -r requirements/test.txt
     #   moto
-bleach==4.1.0
+bleach==5.0.0
     # via -r requirements/test.txt
 boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.21.32
+boto3==1.22.6
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.24.32
+botocore==1.25.6
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -62,7 +62,7 @@ cffi==1.15.0
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.58.4
+cfn-lint==0.59.1
     # via
     #   -r requirements/test.txt
     #   moto
@@ -70,7 +70,7 @@ charset-normalizer==2.0.12
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.1.2
+click==8.1.3
     # via
     #   -r requirements/test.txt
     #   click-log
@@ -87,7 +87,7 @@ coverage==6.3.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==36.0.2
+cryptography==37.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -108,7 +108,7 @@ distlib==0.3.4
     # via
     #   -r requirements/test.txt
     #   virtualenv
-django==3.2.12
+django==3.2.13
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -169,7 +169,7 @@ edx-toggles==4.3.1
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==13.3.4
+faker==13.7.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -208,7 +208,7 @@ idna==2.8
     #   requests
 isort==5.10.1
     # via pylint
-jinja2==3.1.1
+jinja2==3.1.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -238,7 +238,7 @@ jsonpickle==2.1.0
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
-jsonpointer==2.2
+jsonpointer==2.3
     # via
     #   -r requirements/test.txt
     #   jsonpatch
@@ -290,14 +290,13 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.8.0.174
+newrelic==7.10.0.175
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
 packaging==21.3
     # via
     #   -r requirements/test.txt
-    #   bleach
     #   tox
 path==13.1.0
     # via
@@ -313,7 +312,7 @@ pbr==5.8.1
     #   jschema-to-python
     #   sarif-om
     #   stevedore
-platformdirs==2.5.1
+platformdirs==2.5.2
     # via
     #   -r requirements/test.txt
     #   pylint
@@ -347,7 +346,7 @@ pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pylint==2.13.4
+pylint==2.13.8
     # via
     #   edx-lint
     #   pylint-celery
@@ -365,7 +364,7 @@ pymongo==3.12.3
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
-pyparsing==3.0.7
+pyparsing==3.0.8
     # via
     #   -r requirements/test.txt
     #   packaging
@@ -400,7 +399,7 @@ python-jose==3.3.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==6.1.1
+python-slugify==6.1.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -451,7 +450,6 @@ six==1.16.0
     # via
     #   -r requirements/test.txt
     #   bleach
-    #   cfn-lint
     #   ecdsa
     #   edx-lint
     #   freezegun
@@ -494,9 +492,9 @@ toml==0.10.2
     #   tox
 tomli==2.0.1
     # via pylint
-tox==3.24.5
+tox==3.25.0
     # via -r requirements/test.txt
-typing-extensions==4.1.1
+typing-extensions==4.2.0
     # via
     #   astroid
     #   pylint
@@ -506,11 +504,11 @@ urllib3==1.26.9
     #   botocore
     #   requests
     #   responses
-virtualenv==20.14.0
+virtualenv==20.14.1
     # via
     #   -r requirements/test.txt
     #   tox
-voluptuous==0.13.0
+voluptuous==0.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -535,7 +533,7 @@ websocket-client==1.3.2
     # via
     #   -r requirements/test.txt
     #   docker
-werkzeug==2.1.1
+werkzeug==2.1.2
     # via
     #   -r requirements/test.txt
     #   moto
