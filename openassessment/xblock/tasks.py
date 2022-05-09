@@ -85,8 +85,8 @@ def run_and_save_staff_test_cases(block_id, sub_uuid, problem_name, **kwargs):
         submission.answer.update({'staff_run': default_staff_run_error_response})
         submission.save()
 
-    CODING_TEST_CASES_EVALUATED.send({
-        'block_id': block_id,
-        'submission_uuid': sub_uuid,
-        'grade': grade_output,
-    })
+    CODING_TEST_CASES_EVALUATED.send(
+        sender=None,
+        block_id=block_id,
+        submission_uuid=sub_uuid,
+    )
