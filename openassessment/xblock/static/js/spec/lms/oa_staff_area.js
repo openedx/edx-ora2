@@ -360,7 +360,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                 expect($buttons).toHaveAttr('aria-expanded', 'false');
                 expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
                 expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
-                expect($($buttons[2]).text().trim()).toEqual('Enhanced Staff Grader');
+                expect($($buttons[2]).text().trim()).toEqual('Grade Available Responses');
                 expect($($buttons[3]).text().trim()).toEqual('View ORA in Studio');
             });
             it('when ora staff grader is disabled', function() {
