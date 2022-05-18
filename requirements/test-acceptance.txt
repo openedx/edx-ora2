@@ -8,7 +8,7 @@ appdirs==1.4.4
     # via
     #   -r requirements/test.txt
     #   fs
-asgiref==3.5.0
+asgiref==3.5.2
     # via
     #   -r requirements/test.txt
     #   django
@@ -23,7 +23,7 @@ attrs==21.4.0
     #   jsonschema
     #   pytest
     #   sarif-om
-aws-sam-translator==1.44.0
+aws-sam-translator==1.45.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -31,7 +31,7 @@ aws-xray-sdk==2.9.0
     # via
     #   -r requirements/test.txt
     #   moto
-bleach==4.1.0
+bleach==5.0.0
     # via -r requirements/test.txt
 bok-choy==1.1.1
     # via -r requirements/test-acceptance.in
@@ -39,13 +39,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.21.32
+boto3==1.23.2
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.24.32
+botocore==1.26.2
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -60,7 +60,8 @@ cffi==1.15.0
     # via
     #   -r requirements/test.txt
     #   cryptography
-cfn-lint==0.58.4
+    #   pynacl
+cfn-lint==0.60.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -68,19 +69,20 @@ charset-normalizer==2.0.12
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.1.2
+click==8.1.3
     # via
     #   -r requirements/test.txt
     #   code-annotations
+    #   edx-django-utils
 code-annotations==1.3.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
-coverage==6.3.2
+coverage==6.3.3
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==36.0.2
+cryptography==37.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -100,7 +102,7 @@ distlib==0.3.4
     # via
     #   -r requirements/test.txt
     #   virtualenv
-django==3.2.12
+django==3.2.13
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -125,7 +127,7 @@ django-model-utils==4.2.0
     #   edx-submissions
 django-pyfs==3.2.0
     # via -r requirements/test.txt
-django-simple-history==3.0.0
+django-simple-history==3.1.1
     # via -r requirements/test.txt
 django-waffle==2.4.1
     # via
@@ -145,7 +147,7 @@ ecdsa==0.17.0
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==4.6.0
+edx-django-utils==4.8.1
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -155,15 +157,15 @@ edx-opaque-keys==2.3.0
     # via -r requirements/test.txt
 edx-submissions==3.5.1
     # via -r requirements/test.txt
-edx-toggles==4.3.1
+edx-toggles==5.0.0
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==13.3.4
+faker==13.11.1
     # via
     #   -r requirements/test.txt
     #   factory-boy
-filelock==3.6.0
+filelock==3.7.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -196,7 +198,7 @@ idna==2.8
     #   -r requirements/test.txt
     #   moto
     #   requests
-jinja2==3.1.1
+jinja2==3.1.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -222,11 +224,11 @@ jsonpatch==1.32
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-jsonpickle==2.1.0
+jsonpickle==2.2.0
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
-jsonpointer==2.2
+jsonpointer==2.3
     # via
     #   -r requirements/test.txt
     #   jsonpatch
@@ -263,7 +265,7 @@ mock==3.0.5
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   moto
-more-itertools==8.12.0
+more-itertools==8.13.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -276,14 +278,13 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.8.0.174
+newrelic==7.10.0.175
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
 packaging==21.3
     # via
     #   -r requirements/test.txt
-    #   bleach
     #   tox
 path==13.1.0
     # via
@@ -293,13 +294,13 @@ path==13.1.0
     #   path-py
 path-py==12.5.0
     # via -r requirements/test.txt
-pbr==5.8.1
+pbr==5.9.0
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
     #   sarif-om
     #   stevedore
-platformdirs==2.5.1
+platformdirs==2.5.2
     # via
     #   -r requirements/test.txt
     #   virtualenv
@@ -336,7 +337,11 @@ pymongo==3.12.3
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
-pyparsing==3.0.7
+pynacl==1.5.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+pyparsing==3.0.9
     # via
     #   -r requirements/test.txt
     #   packaging
@@ -372,7 +377,7 @@ python-jose==3.3.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==6.1.1
+python-slugify==6.1.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -428,7 +433,6 @@ six==1.16.0
     #   -r requirements/test.txt
     #   bleach
     #   bok-choy
-    #   cfn-lint
     #   ecdsa
     #   freezegun
     #   fs
@@ -468,7 +472,7 @@ toml==0.10.2
     # via
     #   -r requirements/test.txt
     #   tox
-tox==3.24.5
+tox==3.25.0
     # via -r requirements/test.txt
 urllib3==1.26.9
     # via
@@ -477,11 +481,11 @@ urllib3==1.26.9
     #   requests
     #   responses
     #   selenium
-virtualenv==20.14.0
+virtualenv==20.14.1
     # via
     #   -r requirements/test.txt
     #   tox
-voluptuous==0.13.0
+voluptuous==0.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
@@ -506,7 +510,7 @@ websocket-client==1.3.2
     # via
     #   -r requirements/test.txt
     #   docker
-werkzeug==2.1.1
+werkzeug==2.1.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -521,7 +525,7 @@ xblock-sdk==0.4.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-xmltodict==0.12.0
+xmltodict==0.13.0
     # via
     #   -r requirements/test.txt
     #   moto
