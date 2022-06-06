@@ -84,19 +84,19 @@ extract_translations: ## creates the django-partial.po & django-partial.mo files
 	python manage.py makemessages -l en -v1 --ignore=".tox/*" --ignore="build/*" --ignore="docs/*" --ignore="edx-ora2/*" --ignore="logs/*" --ignore="node_modules/*" --ignore="performance/*" --ignore="requirements/*" --ignore="scripts/*" --ignore="settings/*" --ignore="storage/*" -d djangojs
 
 compile_translations: ## compiles the *.po & *.mo files
-	cd ./openassessment/ && i18n_tool generate -v && cd ..
+	i18n_tool generate -v && cd ..
 
 generate_dummy_translations: ## generate dummy translations
 	i18n_tool dummy
 
 validate_translations: ## Test translation files
-	cd ./openassessment/ && i18n_tool validate -v
+	i18n_tool validate -v
 
 detect_changed_source_translations: ## check if translation files are up-to-date
 	i18n_tool changed
 
 pull_translations: ## pull translations from Transifex
-	cd ./openassessment/ && tx pull -a -f --mode reviewed --minimum-perc=1
+	tx pull -a -f --mode reviewed --minimum-perc=1
 
 push_translations: ## push source translation files (.po) to Transifex
 	tx push -s
