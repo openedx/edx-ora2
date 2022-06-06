@@ -48,7 +48,10 @@ class LoadStatic:
         except OSError:
             logger.error('Cannot find static/dist/manifest.json')
         finally:
-            LoadStatic._base_url = urljoin(root_url, base_url)
+            if 'base_url' in LoadStatic._manifest:
+                LoadStatic._base_url = LoadStatic._manifest['base_url']
+            else:
+                LoadStatic._base_url = urljoin(root_url, base_url)
 
     @staticmethod
     def get_url(key):
@@ -59,3 +62,4 @@ class LoadStatic:
             LoadStatic.reload_manifest()
         url = LoadStatic._manifest[key] if key in LoadStatic._manifest else key
         return urljoin(LoadStatic._base_url, url)
+

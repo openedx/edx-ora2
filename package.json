@@ -3,6 +3,7 @@
   "version": "4.2.1",
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
+    "@edx/brand": "npm:@edx/brand-edx.org@^2.0.6",
     "@edx/frontend-build": "^6.1.1",
     "@edx/paragon": "^12.8.0",
     "backbone": "^1.2.3",

@@ -1,5 +1,6 @@
 const { createConfig } = require('@edx/frontend-build');
 const { mergeWithRules } = require('webpack-merge');
+const { readdirSync } = require('fs');
 
 const webpack = require('webpack');
 const path = require('path');
@@ -67,6 +68,13 @@ config = mergeWithRules({
   },
 })(config, modifiedCssRule);
 
+const containersPath = path.resolve(process.cwd(), 'openassessment/xblock/static/js/react/containers/');
+const containersEntries = readdirSync(containersPath).reduce((prev, cur) => ({
+  ...prev,
+  // removing the jsx extension
+  ['containers/' + cur.replace(/.jsx$/, '')]: path.resolve(containersPath, cur)
+}), {})
+
 Object.assign(config, {
   entry: {
     'openassessment-lms': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms_index.js'),
@@ -75,6 +83,8 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
+    'react_initializer': path.resolve(process.cwd(), 'openassessment/xblock/static/js/react/react_initializer.js'),
+    ...containersEntries
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
@@ -93,12 +103,12 @@ Object.assign(config, {
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    ...process.env.WEBPACK_DEV_SERVER ? [new WebpackManifestPlugin({
+    ...[new WebpackManifestPlugin({
       seed: {
-        base_url: `http://localhost:${config.devServer.port}/`
+        base_url: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/`: '/static/dist',
       },
       writeToFileEmit: true,
-    })]: [],
+    })],
     new webpack.HotModuleReplacementPlugin(),
   ],
 });

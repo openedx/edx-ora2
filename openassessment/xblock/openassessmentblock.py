@@ -572,26 +572,13 @@ class OpenAssessmentBlock(MessageMixin,
         """
         ora_items = context.get('ora_items', []) if context else []
         ora_item_view_enabled = context.get('ora_item_view_enabled', False) if context else False
-        context_dict = {
+        component_name = 'InstructorDashboard'
+        component_props = {
             "ora_items": json.dumps(ora_items),
             "ora_item_view_enabled": ora_item_view_enabled
         }
 
-        template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
-
-        min_postfix = '.min' if settings.DEBUG else ''
-
-        return self._create_fragment(
-            template,
-            context_dict,
-            initialize_js_func='CourseOpenResponsesListingBlock',
-            additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
-            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
-            additional_js_context={
-                "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
-                "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
-            }
-        )
+        return self._create_react_fragment(component_name, component_props)
 
     def grade_available_responses_view(self, context=None):  # pylint: disable=unused-argument
         """Grade Available Responses view.
@@ -709,6 +696,29 @@ class OpenAssessmentBlock(MessageMixin,
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
 
+    def _create_react_fragment(self,
+        component_name,
+        component_props
+    ):
+        """
+        Creates a fragment for display.
+
+        """
+        template = get_template('react_template.html')
+        fragment = Fragment(template.render())
+
+        fragment.add_javascript_url(LoadStatic.get_url("react_initializer.js"))
+
+        context_dict = {
+            'component_name': component_name,
+            'component_url': LoadStatic.get_url('containers/' + component_name + '.js'),
+            'props': component_props,
+        }
+
+
+        fragment.initialize_js('initialize_react', context_dict)
+        return fragment
+        
     @property
     def is_admin(self):
         """
