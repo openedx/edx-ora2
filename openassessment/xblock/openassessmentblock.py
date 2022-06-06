@@ -575,7 +575,9 @@ class OpenAssessmentBlock(MessageMixin,
         component_name = 'InstructorDashboard'
         component_props = {
             "ora_items": json.dumps(ora_items),
-            "ora_item_view_enabled": ora_item_view_enabled
+            "ora_item_view_enabled": ora_item_view_enabled,
+            "enhanced_staff_grader": self.is_enhanced_staff_grader_enabled,
+            "ora_grading_microfrontend_url": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
         }
 
         return self._create_react_fragment(component_name, component_props)
@@ -711,7 +713,7 @@ class OpenAssessmentBlock(MessageMixin,
 
         context_dict = {
             'component_name': component_name,
-            'component_url': LoadStatic.get_url('containers/' + component_name + '.js'),
+            # 'component_url': LoadStatic.get_url('containers/' + component_name + '.js'),
             'props': component_props,
         }
 

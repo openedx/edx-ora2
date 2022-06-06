@@ -5,7 +5,7 @@
   "dependencies": {
     "@edx/brand": "npm:@edx/brand-edx.org@^2.0.6",
     "@edx/frontend-build": "^6.1.1",
-    "@edx/paragon": "^12.8.0",
+    "@edx/paragon": "^19.25.1",
     "backbone": "^1.2.3",
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",

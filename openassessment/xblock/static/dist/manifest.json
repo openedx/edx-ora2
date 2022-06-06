@@ -1,14 +1,15 @@
 {
   "base_url": "/static/dist",
-  "containers/InstructorDashboard.js": "containers/InstructorDashboard.js",
   "openassessment-editor-textarea.js": "openassessment-editor-textarea.js",
   "openassessment-editor-tinymce.js": "openassessment-editor-tinymce.js",
+  "openassessment-lms.css": "openassessment-lms.css",
   "openassessment-lms.js": "openassessment-lms.js",
   "openassessment-ltr.css": "openassessment-ltr.css",
   "openassessment-ltr.js": "openassessment-ltr.js",
   "openassessment-rtl.css": "openassessment-rtl.css",
   "openassessment-rtl.js": "openassessment-rtl.js",
   "openassessment-studio.js": "openassessment-studio.js",
+  "react_initializer.css": "react_initializer.css",
   "react_initializer.js": "react_initializer.js",
   "default-avatar.svg": "95ec738c0b7faac5b5c9126794446bbd.svg"
 }

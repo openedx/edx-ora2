@@ -1,8 +1,12 @@
 /* eslint-disable no-new */
 import { ReactRenderer } from './ReactRenderer';
 
-window.ora = window.ora || {};
+import { InstructorDashboard } from './containers/InstructorDashboard';
 
+/**
+ * Plan for dynamic loading but these files have to share React, ReactDom from webpack config
+
+window.ora = window.ora || {};
 const loadScript = function (component_url, component_name) {
   return new Promise(function (resolve, reject) {
     if (window.ora[component_name]) resolve();
@@ -16,16 +20,28 @@ const loadScript = function (component_url, component_name) {
     }
   });
 };
+loadScript(component_url, component_name).then(() => {
+  // debugger
+  new ReactRenderer({
+      component: window.ora[component_name],
+      element: element,
+      props
+    });
+});
+
+ */
+
+const bucket = {
+  InstructorDashboard
+}
+
 
 window.initialize_react = function (runtime, element, data) {
-  const { component_url, component_name, props } = data;
+  const { component_name, props } = data;
 
-  loadScript(component_url, component_name).then(() => {
-    // debugger
-    new ReactRenderer({
-        component: window.ora[component_name],
-        element: element,
-        props
-      });
+  new ReactRenderer({
+    component: bucket[component_name],
+    element: element,
+    props,
   });
 };

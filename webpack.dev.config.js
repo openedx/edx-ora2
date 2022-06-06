@@ -68,12 +68,12 @@ config = mergeWithRules({
   },
 })(config, modifiedCssRule);
 
-const containersPath = path.resolve(process.cwd(), 'openassessment/xblock/static/js/react/containers/');
-const containersEntries = readdirSync(containersPath).reduce((prev, cur) => ({
-  ...prev,
-  // removing the jsx extension
-  ['containers/' + cur.replace(/.jsx$/, '')]: path.resolve(containersPath, cur)
-}), {})
+// const containersPath = path.resolve(process.cwd(), 'openassessment/xblock/static/js/react/containers/');
+// const containersEntries = readdirSync(containersPath).reduce((prev, cur) => ({
+//   ...prev,
+//   // removing the jsx extension
+//   ['containers/' + cur.replace(/.jsx$/, '')]: path.resolve(containersPath, cur)
+// }), {})
 
 Object.assign(config, {
   entry: {
@@ -84,7 +84,7 @@ Object.assign(config, {
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
     'react_initializer': path.resolve(process.cwd(), 'openassessment/xblock/static/js/react/react_initializer.js'),
-    ...containersEntries
+    // ...containersEntries
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
