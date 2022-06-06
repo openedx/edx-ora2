@@ -88,6 +88,8 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE = (
+    'edx_django_utils.monitoring.CookieMonitoringMiddleware',
+    'edx_django_utils.monitoring.DeploymentMonitoringMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
