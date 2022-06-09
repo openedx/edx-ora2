@@ -13,7 +13,9 @@ from workbench.runtime import WorkBenchUserService
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST, resolve_dates
 from openassessment.xblock.user_data import get_user_preferences
 
-STUB_I18N = lambda x: x
+
+def STUB_I18N(x):
+    return x
 
 
 @ddt.ddt

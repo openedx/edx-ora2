@@ -14,7 +14,9 @@ from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.validation import (validate_assessment_examples, validate_assessments, validate_dates,
                                               validate_rubric, validate_submission, validator)
 
-STUB_I18N = lambda x: x
+
+def STUB_I18N(x):
+    return x
 
 
 @ddt.ddt
@@ -139,6 +141,18 @@ class DateValidationTest(TestCase):
         }
         self.DATES[None] = None
 
+    def date(self, data, key):
+        """
+        Input data dict specifies the index for each date
+        """
+        return self.DATES[data[key]]
+
+    def date_range(self, data, start_key, due_key):
+        """
+        This function is a convenience to map these dates to (start, due) tuples
+        """
+        return (self.date(data, start_key), self.date(data, due_key))
+
     # There are a few test cases here that might seem incorrect:
     # * xblock_due_before_self_due
     # * xblock_start_equals_xblock_due
@@ -150,19 +164,12 @@ class DateValidationTest(TestCase):
     # See the docstring for `resolve_dates` for a more detailed justification.
     @ddt.file_data('data/valid_dates.json')
     def test_valid_dates(self, data):
-
-        # Input data dict specifies the index for each date
-        date = lambda key: self.DATES[data[key]]
-
-        # This lambda is a convenience to map these dates to (start, due) tuples
-        date_range = lambda start_key, due_key: (date(start_key), date(due_key))
-
         success, msg = validate_dates(
-            date('xblock_start'), date('xblock_due'),
+            self.date(data, 'xblock_start'), self.date(data, 'xblock_due'),
             [
-                date_range('submission_start', 'submission_due'),
-                date_range('peer_start', 'peer_due'),
-                date_range('self_start', 'self_due'),
+                self.date_range(data, 'submission_start', 'submission_due'),
+                self.date_range(data, 'peer_start', 'peer_due'),
+                self.date_range(data, 'self_start', 'self_due'),
             ],
             STUB_I18N
         )
@@ -172,18 +179,12 @@ class DateValidationTest(TestCase):
 
     @ddt.file_data('data/invalid_dates.json')
     def test_invalid_dates(self, data):
-        # Input data dict specifies the index for each date
-        date = lambda key: self.DATES[data[key]]
-
-        # This lambda is a convenience to map these dates to (start, due) tuples
-        date_range = lambda start_key, due_key: (date(start_key), date(due_key))
-
         success, msg = validate_dates(
-            date('xblock_start'), date('xblock_due'),
+            self.date(data, 'xblock_start'), self.date(data, 'xblock_due'),
             [
-                date_range('submission_start', 'submission_due'),
-                date_range('peer_start', 'peer_due'),
-                date_range('self_start', 'self_due'),
+                self.date_range(data, 'submission_start', 'submission_due'),
+                self.date_range(data, 'peer_start', 'peer_due'),
+                self.date_range(data, 'self_start', 'self_due'),
             ],
             STUB_I18N
         )

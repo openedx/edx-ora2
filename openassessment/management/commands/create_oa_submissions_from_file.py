@@ -87,7 +87,7 @@ class Command(BaseCommand):
     Management command to create submissions, assessments, and locks to make testing easier.
     """
 
-    CONFIG_FILE_LOCATION_BASE = join('/' 'edx', 'src', 'edx-ora2')
+    CONFIG_FILE_LOCATION_BASE = join('/', 'edx', 'src', 'edx-ora2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

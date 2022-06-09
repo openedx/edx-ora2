@@ -935,7 +935,9 @@ class AssessmentWorkflowStep(models.Model):
         else:
             step_reqs = assessment_requirements.get(self.name, {})
 
-        default_finished = lambda submission_uuid, step_reqs: True
+        def default_finished(*args):
+            return True
+
         submitter_finished = getattr(self.api(), 'submitter_is_finished', default_finished)
         assessment_finished = getattr(self.api(), 'assessment_is_finished', default_finished)
 

@@ -1746,16 +1746,16 @@ class TestPeerApi(CacheResetTest):
         # make workflow date equals to the submission_date.
         # We need this because we depend on workflow.created_at to determine
         # if the submission is min 7 days old
-        for i, _ in enumerate(user_submissions):
-            sub, _ = user_submissions[i]
+        for i, value in enumerate(user_submissions):
+            sub, _ = value
             workflow = PeerWorkflow.get_by_submission_uuid(sub['uuid'])
             workflow.created_at = submission_date
             workflow.save()
 
         # pylint: disable=inconsistent-return-statements
         def get_submission_index(target_submission):
-            for i, _ in enumerate(user_submissions):
-                submission, _ = user_submissions[i]
+            for i, value in enumerate(user_submissions):
+                submission, _ = value
                 if target_submission['uuid'] == submission['uuid']:
                     return i
 

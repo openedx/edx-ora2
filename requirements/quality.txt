@@ -161,7 +161,7 @@ edx-django-utils==5.0.0
     #   edx-toggles
 edx-i18n-tools==0.9.1
     # via -r requirements/test.txt
-edx-lint==5.2.2
+edx-lint==5.2.4
     # via -r requirements/quality.in
 edx-opaque-keys==2.3.0
     # via -r requirements/test.txt
