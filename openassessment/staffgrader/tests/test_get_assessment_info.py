@@ -111,12 +111,6 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         self.assert_response(response, 200, {})
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
-    def test_no_bulk_assessments(self, xblock):
-        """ What happens if `bulk_deep_fetch_assessments` returns no assessments? """
-        submission_uuid = str(uuid4())
-        self._test_bulk_deep_fetch_assessments_errors(xblock, submission_uuid, {})
-
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_multiple_bulk_assessments(self, xblock):
         """ What happens if `bulk_deep_fetch_assessments` returns multiple assessments? """
         submission_uuid = str(uuid4())

@@ -405,7 +405,7 @@ class StaffGraderMixin:
             return {}
 
         assessments = self.bulk_deep_fetch_assessments([workflow.assessment])
-        if len(assessments) != 1 or submission_uuid not in assessments:
+        if len(assessments) != 1:
             log.error(
                 (
                     "[%s] Error looking up assessments. Submission UUID = %s, "
@@ -415,7 +415,7 @@ class StaffGraderMixin:
             )
             raise JsonHandlerError(500, "Error looking up assessments")
 
-        assessment = assessments[submission_uuid]
+        _, assessment = assessments.popitem()
         return AssessmentSerializer(assessment).data
 
     @XBlock.json_handler
