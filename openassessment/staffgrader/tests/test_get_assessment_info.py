@@ -114,27 +114,9 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
     def test_multiple_bulk_assessments(self, xblock):
         """ What happens if `bulk_deep_fetch_assessments` returns multiple assessments? """
         submission_uuid = str(uuid4())
-        self._test_bulk_deep_fetch_assessments_errors(
-            xblock,
-            submission_uuid,
-            {submission_uuid: Mock(), Mock(): Mock()}
-        )
-
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
-    def test_submission_uuid_not_in_bulk_assessments(self, xblock):
-        """
-        What happens if `bulk_deep_fetch_assessments` returns assessments that hve a different submission uuid?
-        Note: This should never happen and if it does, something's very wrong with our data. Tht said, this is an easy
-        test to add in.
-        """
-        submission_uuid = str(uuid4())
-        self._test_bulk_deep_fetch_assessments_errors(xblock, submission_uuid, {Mock: Mock()})
-
-    def _test_bulk_deep_fetch_assessments_errors(self, xblock, submission_uuid, bulk_fetch_return_value):
-        """ Helper method for tests regarding errors loading assessments """
         mock_staff_workflow = Mock(assessment=str(Mock()))
         self.set_staff_user(xblock, 'Bob')
-        self._mock_bulk_deep_fetch_assessments(xblock, return_value=bulk_fetch_return_value)
+        self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: Mock(), Mock(): Mock()})
         with self._mock_get_staff_workflow(return_value=mock_staff_workflow):
             with self._mock_get_submission():
                 response = self.request(xblock, {'submission_uuid': submission_uuid})

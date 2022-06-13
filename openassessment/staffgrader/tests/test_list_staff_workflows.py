@@ -488,6 +488,13 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         # All submissions ids except for index 3 should be included in the response
         assessed_submission_uuids = self.submission_uuids.difference({self.students[3].submission['uuid']})
 
+        mock_staff_workflows = [
+            Mock(identifying_uuid=self.students[0].submission['uuid'], assessment=str(assessment_ids[0])),
+            Mock(identifying_uuid=self.students[1].submission['uuid'], assessment=str(assessment_ids[1])),
+            Mock(identifying_uuid=self.students[2].submission['uuid'], assessment=str(assessment_ids[2])),
+            Mock(identifying_uuid=self.students[3].submission['uuid'], assessment=None),
+        ]
+
         # There should be four queries:
         # - Assessments + Rubrics
         # - Assessment Parts
@@ -496,7 +503,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         # We're querying starting from Assessment and going backwards against ForeignKeys,
         #  so unfortunately this can't be avoided.
         with self.assertNumQueries(4):
-            assessments_by_submission_uuid = xblock.bulk_deep_fetch_assessments(assessment_ids)
+            assessments_by_submission_uuid = xblock.bulk_deep_fetch_assessments(mock_staff_workflows)
 
         # There should be the three Assessments, and they should be the ones we expect
         self.assertEqual(len(assessments_by_submission_uuid), 3)
@@ -619,9 +626,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
             {self.course_staff[1].student_id, self.course_staff[2].student_id}
         )
         mock_map_ids.assert_called_once_with(expected_anonymous_id_lookups)
-        mock_bulk_fetch_assessments.assert_called_once_with(
-            {mock_staff_workflows[0].assessment, mock_staff_workflows[3].assessment}
-        )
+        mock_bulk_fetch_assessments.assert_called_once_with(mock_staff_workflows)
 
         expected_context = {
             'submission_uuid_to_student_id': mock_get_student_ids.return_value,

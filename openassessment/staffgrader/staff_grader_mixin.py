@@ -196,12 +196,10 @@ class StaffGraderMixin:
         """
         Fetch additional required data and models to serialize the response
         """
-        # Pull out three sets from the workflows for use later
-        submission_uuids, workflow_scorer_ids, assessment_ids = set(), set(), set()
+        # Pull out sets from the workflows for use later
+        submission_uuids, workflow_scorer_ids = set(), set()
         for workflow in staff_workflows:
             submission_uuids.add(workflow.identifying_uuid)
-            if workflow.assessment:
-                assessment_ids.add(workflow.assessment)
             if workflow.scorer_id:
                 workflow_scorer_ids.add(workflow.scorer_id)
         course_id = self.get_student_item_dict()['course_id']
@@ -241,7 +239,7 @@ class StaffGraderMixin:
 
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models
-        submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(assessment_ids)
+        submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(staff_workflows)
 
         context.update({
             'anonymous_id_to_username': anonymous_id_to_username,
@@ -308,16 +306,23 @@ class StaffGraderMixin:
         )
         return staff_workflows
 
-    def bulk_deep_fetch_assessments(self, assessment_ids):
+    def bulk_deep_fetch_assessments(self, staff_workflows):
         """
-        Given a list of Assessment ids, fetch Assessments and prefetch
+        Given a list of StaffWorkflows, fetch related Assessments and prefetch
         linked Rubrics, AssessmentParts, Criteria, and Options.
 
-        returns: (dict) mapping submission uuids to the associated assessment.
+        returns: (dict) mapping identifying uuids to the associated assessment.
+        For individual submissions, the key will be the individual Submission uuid, and for
+        team submissions, the key will be the TeamSubmission uuid.
         If there is no assessment associated with a submission, it is not included in the dict.
         """
+        assessment_id_to_identifying_uuid = {}
+        for workflow in staff_workflows:
+            if workflow.assessment:
+                assessment_id_to_identifying_uuid[workflow.assessment] = workflow.identifying_uuid
+
         assessments = Assessment.objects.filter(
-            pk__in=assessment_ids
+            pk__in=assessment_id_to_identifying_uuid.keys()
         ).prefetch_related(
             Prefetch(
                 "parts",
@@ -329,11 +334,12 @@ class StaffGraderMixin:
         ).select_related(
             'rubric',
         ).order_by('-scored_at')
-        assessments_by_submission_uuid = {
-            assessment.submission_uuid: assessment
+        assessments_by_identifying_uuid = {
+            # This "cast" to str is required because StaffWorkflow.assessment is a CharField
+            assessment_id_to_identifying_uuid[str(assessment.id)]: assessment
             for assessment in assessments
         }
-        return assessments_by_submission_uuid
+        return assessments_by_identifying_uuid
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
@@ -404,7 +410,7 @@ class StaffGraderMixin:
         if not workflow.assessment:
             return {}
 
-        assessments = self.bulk_deep_fetch_assessments([workflow.assessment])
+        assessments = self.bulk_deep_fetch_assessments([workflow])
         if len(assessments) != 1:
             log.error(
                 (
