@@ -27,7 +27,8 @@ def _match_by_order(items, others):
         IndexError: A dictionary does no contain a 'order_num' key.
     """
     # Sort each dictionary by its "name" key, then zip them and return
-    key_func = lambda x: x['order_num']
+    def key_func(x):
+        return x['order_num']
     return list(zip(sorted(items, key=key_func), sorted(others, key=key_func)))
 
 

@@ -21,10 +21,8 @@ class StaffGraderMixinTestBase(XBlockHandlerTestCase):
     @contextmanager
     def _mock_get_url_by_file_key(self, xblock):
         """ Mock the submission_mixin._get_url_by_file_key method since it relies on the backend. """
-        fake_get_url = lambda file_key: f"www.file_url.com/{file_key}"
-
         with patch.object(xblock.__class__, '_get_url_by_file_key') as mocked_get:
-            mocked_get.side_effect = fake_get_url
+            mocked_get.side_effect = lambda file_key: f"www.file_url.com/{file_key}"
             yield mocked_get
 
     @contextmanager

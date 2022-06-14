@@ -6,11 +6,12 @@ import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.fields import CharField
+from xblock.core import XBlock
+from xblock.exceptions import JsonHandlerError
+
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
 from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
 from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_submission
-from xblock.core import XBlock
-from xblock.exceptions import JsonHandlerError
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
