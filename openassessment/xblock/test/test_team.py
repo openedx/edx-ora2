@@ -137,8 +137,7 @@ class TeamMixinTest(TestCase):
 
     def test_team_no_teams_service(self):
         block = MockBlock(has_teams_service=False)
-        with self.assertRaises(NoSuchServiceError):
-            _ = block.team
+        self.assertIsNone(block.team)
 
     def test_team_no_user(self):
         block = MockBlock(has_team=False)
