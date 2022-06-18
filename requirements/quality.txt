@@ -12,7 +12,7 @@ asgiref==3.5.2
     # via
     #   -r requirements/test.txt
     #   django
-astroid==2.11.5
+astroid==2.11.6
     # via
     #   pylint
     #   pylint-celery
@@ -41,20 +41,20 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.24.4
+boto3==1.24.12
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.27.4
+botocore==1.27.12
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
     #   boto3
     #   moto
     #   s3transfer
-certifi==2022.5.18.1
+certifi==2022.6.15
     # via
     #   -r requirements/test.txt
     #   requests
@@ -171,7 +171,7 @@ edx-toggles==5.0.0
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==13.12.1
+faker==13.13.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -215,7 +215,7 @@ jinja2==3.1.2
     #   -r requirements/test.txt
     #   code-annotations
     #   moto
-jmespath==1.0.0
+jmespath==1.0.1
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -292,7 +292,7 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.10.0.175
+newrelic==7.12.0.176
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
@@ -348,7 +348,7 @@ pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pylint==2.14.1
+pylint==2.14.3
     # via
     #   edx-lint
     #   pylint-celery
@@ -429,7 +429,7 @@ pyyaml==6.0
     #   edx-i18n-tools
     #   moto
     #   xblock
-requests==2.27.1
+requests==2.28.0
     # via
     #   -r requirements/test.txt
     #   docker
