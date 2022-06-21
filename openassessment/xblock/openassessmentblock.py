@@ -538,16 +538,14 @@ class OpenAssessmentBlock(MessageMixin,
             logger.exception('An error occurred while updating the workflow on page load.')
 
         ui_models = self._create_ui_models()
-        # All data we intend to pass to the front end.
-        context_dict = {
+        props = {
             "title": self.title,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
-        template = get_template("openassessmentblock/oa_base.html")
-        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+        return self._create_react_fragment('OABase', props, 'OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):
         """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
@@ -707,6 +705,57 @@ class OpenAssessmentBlock(MessageMixin,
             js_context_dict.update({"CONTEXT": additional_js_context})
 
         fragment.initialize_js(initialize_js_func, js_context_dict)
+        return fragment
+
+    def _create_react_fragment(
+        self,
+        component_name,
+        component_props,
+        prev_ora_function,
+    ):
+        """
+        Creates a fragment for display.
+
+        """
+        template = get_template('react_template.html')
+        fragment = Fragment(template.render())
+
+        # =======================================================
+        # This will be remove. Everything should be pass through props
+        # but most of jquery method is using this right now.
+        i18n_service = self.runtime.service(self, 'i18n')
+        if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
+            css_url = LoadStatic.get_url("openassessment-rtl.css")
+        else:
+            css_url = LoadStatic.get_url("openassessment-ltr.css")
+
+        prev_ora_support = {
+            # this is temporary
+            "prev_ora_function": prev_ora_function,
+            "data": {
+                "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
+                "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,
+                "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
+                "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
+                "MAXIMUM_FILE_UPLOAD_COUNT": self.MAX_FILES_COUNT,
+                "TEAM_ASSIGNMENT": self.is_team_assignment(),
+                "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
+                "TEXT_RESPONSE_EDITOR": self.text_response_editor,
+            },
+            "css_url": css_url,
+            "js_url": LoadStatic.get_url("openassessment-lms.js"),
+        }
+        # =======================================================
+
+        context_dict = {
+            'component_name': component_name,
+            'props': component_props,
+            'prev_ora_support': prev_ora_support
+        }
+
+        fragment.add_javascript_url(LoadStatic.get_url("InitializeReact.js"))
+
+        fragment.initialize_js('InitializeReact', context_dict)
         return fragment
 
     @property

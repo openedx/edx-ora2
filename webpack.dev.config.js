@@ -75,6 +75,7 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
+    'InitializeReact': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react/InitializeReact.js'),
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
@@ -93,12 +94,12 @@ Object.assign(config, {
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    ...process.env.WEBPACK_DEV_SERVER ? [new WebpackManifestPlugin({
+    new WebpackManifestPlugin({
       seed: {
-        base_url: `http://localhost:${config.devServer.port}/`
+        base_url: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/`: '/static/dist',
       },
       writeToFileEmit: true,
-    })]: [],
+    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 });
