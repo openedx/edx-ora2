@@ -237,15 +237,15 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_args_el = tree.xpath(xblock_arg_path)
         json.loads(xblock_args_el[0].text)['CONTEXT']['ENHANCED_STAFF_GRADER'] = esg_flag_input
 
-    @scenario('data/empty_prompt.xml')
-    def test_prompt_intentionally_empty(self, xblock):
-        # Verify that prompts intentionally left empty don't create DOM elements
-        xblock_fragment = self.runtime.render(xblock, "student_view")
-        body_html = xblock_fragment.body_html()
-        present_prompt_text = "you'll provide a response to the prompt"
-        missing_article = '<article class="submission__answer__part__prompt'
-        self.assertIn(present_prompt_text, body_html)
-        self.assertNotIn(missing_article, body_html)
+    # @scenario('data/empty_prompt.xml')
+    # def test_prompt_intentionally_empty(self, xblock):
+    #     # Verify that prompts intentionally left empty don't create DOM elements
+    #     xblock_fragment = self.runtime.render(xblock, "student_view")
+    #     body_html = xblock_fragment.body_html()
+    #     present_prompt_text = "you'll provide a response to the prompt"
+    #     missing_article = '<article class="submission__answer__part__prompt'
+    #     self.assertIn(present_prompt_text, body_html)
+    #     self.assertNotIn(missing_article, body_html)
 
     @scenario('data/basic_scenario.xml')
     def test_page_load_updates_workflow(self, xblock):
