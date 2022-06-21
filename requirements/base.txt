@@ -10,13 +10,13 @@ asgiref==3.5.2
     # via django
 bleach==5.0.0
     # via -r requirements/base.in
-boto3==1.24.4
+boto3==1.24.12
     # via -r requirements/base.in
-botocore==1.27.4
+botocore==1.27.12
     # via
     #   boto3
     #   s3transfer
-certifi==2022.5.18.1
+certifi==2022.6.15
     # via requests
 cffi==1.15.0
     # via pynacl
@@ -84,7 +84,7 @@ idna==2.8
     #   requests
 jinja2==3.1.2
     # via code-annotations
-jmespath==1.0.0
+jmespath==1.0.1
     # via
     #   boto3
     #   botocore
@@ -108,7 +108,7 @@ markupsafe==2.1.1
     # via
     #   jinja2
     #   xblock
-newrelic==7.10.0.175
+newrelic==7.12.0.176
     # via edx-django-utils
 path==13.1.0
     # via
@@ -153,7 +153,7 @@ pyyaml==6.0
     #   code-annotations
     #   edx-i18n-tools
     #   xblock
-requests==2.27.1
+requests==2.28.0
     # via python-swiftclient
 s3transfer==0.6.0
     # via boto3
