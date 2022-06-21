@@ -16,7 +16,7 @@
 # Françoise Docq, 2014
 # tgeorges225 <georges.tope@outlook.com>, 2014
 # Gérard Vidal <Gerard.Vidal@ens-lyon.fr>, 2014
-# iderr <ibrahim@derraz.fr>, 2021
+# iderr <ibrahim@derraz.fr>, 2021-2022
 # INARES <contact@inares.org>, 2014
 # Jorg722, 2022
 # JulietteFUN, 2014
@@ -43,15 +43,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-30 13:49-0400\n"
+"POT-Creation-Date: 2022-05-10 08:54-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Jorg722, 2022\n"
+"Last-Translator: iderr <ibrahim@derraz.fr>, 2021-2022\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: openassessment/assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
@@ -85,96 +85,96 @@ msgstr "L'exemple {example_number} contient une option supplémentaire pour \"{c
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "Il manque une option pour \"{criterion_name}\" dans l'exemple {example_number}"
 
-#: openassessment/data.py:535
+#: openassessment/data.py:533
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr "Critère {number}: {label}"
 
-#: openassessment/data.py:537
+#: openassessment/data.py:535
 #, python-brace-format
 msgid "Points {number}"
 msgstr "Points {number}"
 
-#: openassessment/data.py:538
+#: openassessment/data.py:536
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr "Score médian {number}"
 
-#: openassessment/data.py:539
+#: openassessment/data.py:537
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr "Rétroaction {number}"
 
-#: openassessment/data.py:872
+#: openassessment/data.py:870
 msgid "Item ID"
 msgstr "Identifiant de l'élément"
 
-#: openassessment/data.py:873
+#: openassessment/data.py:871
 msgid "Submission ID"
 msgstr "ID de soumission"
 
-#: openassessment/data.py:885
+#: openassessment/data.py:883
 msgid "Anonymized Student ID"
 msgstr "ID d'étudiant anonymisé"
 
-#: openassessment/data.py:916
+#: openassessment/data.py:914
 msgid "Assessment ID"
 msgstr "ID d'évaluation"
 
-#: openassessment/data.py:917
+#: openassessment/data.py:915
 msgid "Assessment Scored Date"
 msgstr "Date de notation de l'évaluation"
 
-#: openassessment/data.py:918
+#: openassessment/data.py:916
 msgid "Assessment Scored Time"
 msgstr "Temps de notation de l'évaluation"
 
-#: openassessment/data.py:919
+#: openassessment/data.py:917
 msgid "Assessment Type"
 msgstr "Type d'évaluation"
 
-#: openassessment/data.py:920
+#: openassessment/data.py:918
 msgid "Anonymous Scorer Id"
 msgstr "Identifiant d'évaluateur anonyme"
 
-#: openassessment/data.py:922
+#: openassessment/data.py:920
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Commentaire global"
 
-#: openassessment/data.py:923
+#: openassessment/data.py:921
 msgid "Assessment Score Earned"
 msgstr "Note d'évaluation obtenu"
 
-#: openassessment/data.py:924
+#: openassessment/data.py:922
 msgid "Assessment Scored At"
 msgstr "Évaluation notée à"
 
-#: openassessment/data.py:925
+#: openassessment/data.py:923
 msgid "Date/Time Final Score Given"
 msgstr "Date / heure de la note finale donnée"
 
-#: openassessment/data.py:926
+#: openassessment/data.py:924
 msgid "Final Score Earned"
 msgstr "Note finale obtenue"
 
-#: openassessment/data.py:927
+#: openassessment/data.py:925
 msgid "Final Score Possible"
 msgstr "Note finale possible"
 
-#: openassessment/data.py:928
+#: openassessment/data.py:926
 msgid "Feedback Statements Selected"
 msgstr "Énoncés de rétroaction sélectionnés"
 
-#: openassessment/data.py:929
+#: openassessment/data.py:927
 msgid "Feedback on Assessment"
 msgstr "Rétroaction sur l'évaluation"
 
-#: openassessment/data.py:931
+#: openassessment/data.py:929
 msgid "Response Files"
 msgstr "Fichiers de réponses"
 
-#: openassessment/data.py:1327
+#: openassessment/data.py:1320
 msgid "No description provided."
 msgstr "Aucune description fournie."
 
@@ -516,7 +516,7 @@ msgstr "La date et l'heure auxquelles les apprenants peuvent commencer à évalu
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:114
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:119
 msgid "Due Date"
 msgstr "Date d'échéance"
 
@@ -740,6 +740,7 @@ msgid_plural ""
 "                  "
 msgstr[0] "\n                      %(assessment_title)s - %(points)s point\n                  "
 msgstr[1] "\n                      %(assessment_title)s - %(points)s points\n                  "
+msgstr[2] "\n                      %(assessment_title)s - %(points)s points\n                  "
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -911,8 +912,9 @@ msgid ""
 msgstr "Vous avez complété vos étapes pour ce devoir, mais votre réponse doit encore être évaluée. Quand l'évaluation de votre réponse sera terminé, vous obtiendrez votre note finale et les retours de ceux qui ont évalué votre réponse."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:16
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:18
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:148
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:153
 msgid "Grade Available Responses"
 msgstr "Noter les réponses disponibles"
 
@@ -1210,7 +1212,7 @@ msgstr "Impossible d'envoyer votre évaluation"
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:215
+#: openassessment/xblock/staff_assessment_mixin.py:172
 msgid "Cancelled"
 msgstr "Annulée"
 
@@ -1269,8 +1271,8 @@ msgstr "Toutes les réponses envoyées par des pairs ont été évaluées. Reven
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:208
-#: openassessment/xblock/staff_assessment_mixin.py:232
+#: openassessment/xblock/staff_assessment_mixin.py:165
+#: openassessment/xblock/staff_assessment_mixin.py:189
 msgid "Not Available"
 msgstr "Indisponible"
 
@@ -1519,9 +1521,9 @@ msgstr "Un membre de l'équipe doit soumettre au nom de toute l'équipe."
 #: openassessment/templates/openassessmentblock/response/oa_response.html:316
 msgid ""
 "\n"
-"                  Learn more about team assignments here: (<a href=\"\" >link</a>)\n"
+"                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
-msgstr "\n                  En savoir plus sur les devoirs d'équipe ici : (<a href=\"\" >link</a>)\n                  "
+msgstr "\n                  En savoir plus sur les affectations d'équipe ici : (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n                  "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:324
 msgid "We could not submit your response"
@@ -1577,8 +1579,8 @@ msgstr "L'échéance de cette étape est passée. Cette étape est maintenant fe
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:222
-#: openassessment/xblock/staff_assessment_mixin.py:245
+#: openassessment/xblock/staff_assessment_mixin.py:179
+#: openassessment/xblock/staff_assessment_mixin.py:202
 msgid "Complete"
 msgstr "Terminé"
 
@@ -1681,7 +1683,7 @@ msgid "Staff Grade"
 msgstr "Note de l'équipe pédagogique"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:8
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:30
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:35
 msgid "Manage Individual Learners"
 msgstr "Gérer les apprenants"
 
@@ -1690,71 +1692,71 @@ msgid "Manage Team Responses"
 msgstr "Gérer les réponses de l'équipe"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:66
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:71
 msgid "View Assignment Statistics"
 msgstr "Voir les statistiques des devoirs"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:16
-msgid "Enchanced Staff Grader"
-msgstr ""
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:22
+msgid "Demo the new Grading Experience"
+msgstr "Démonstration de la nouvelle expérience de notation"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:21
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
 msgstr "Voir ORA dans Studio"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:146
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:31
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:69
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:151
 msgid "Close"
 msgstr "Fermer"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:32
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
 msgstr "Gérer les équipes"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:45
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:50
 msgid "Enter an individual learner's username or email"
 msgstr "Entrer le nom d'utilisateur ou l'email d'un apprenant"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:52
 msgid "Enter a team member's username or edX email"
 msgstr "Entrez un nom d'utilisateur de membre de l'équipe ou un email edX"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:56
 msgid "Submit"
 msgstr "Envoyer"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:73
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:78
 msgid "Response total"
 msgstr "Réponses total"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:79
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:84
 msgid "Location"
 msgstr "Localisation"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:85
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
 msgstr "Progression de l'apprenant"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:112
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:94
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:117
 msgid "Problem Step"
 msgstr "Étape du problème"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
 msgstr "Apprenants actifs dans cette étape"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
 msgid "Dates"
 msgstr "Dates"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:118
 msgid "Release Date"
 msgstr "Date de mise à disposition"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:126
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:132
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:131
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:137
 msgid "N/A"
 msgstr "N/A"
 
@@ -1936,6 +1938,7 @@ msgid_plural ""
 "                                    "
 msgstr[0] "\n%(assessment_label)s - %(points)s point"
 msgstr[1] "\n%(assessment_label)s - %(points)s points"
+msgstr[2] "\n%(assessment_label)s - %(points)s points"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
@@ -2151,25 +2154,17 @@ msgstr "Erreur lors du chargement des exemples d'entrainement des étudiants"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Impossible de récupérer les étapes d'entrainement de cette évaluation."
 
-#: openassessment/xblock/data_conversion.py:249
-msgid "Assessment data must be a dictionary/object"
-msgstr "Assessment data must be a dictionary/object"
-
-#: openassessment/xblock/data_conversion.py:252
+#: openassessment/xblock/data_conversion.py:263
 msgid "You must provide options selected in the assessment."
 msgstr "Vous devez fournir les options sélectionnées dans l'évaluation."
 
-#: openassessment/xblock/data_conversion.py:255
+#: openassessment/xblock/data_conversion.py:266
 msgid "You must provide overall feedback in the assessment."
 msgstr "Vous devez fournir un commentaire global dans l'évaluation."
 
-#: openassessment/xblock/data_conversion.py:258
+#: openassessment/xblock/data_conversion.py:269
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "Vous devez fournir un commentaire sur les critères dans l'évaluation."
-
-#: openassessment/xblock/data_conversion.py:301
-msgid "This view takes only a list as a parameter"
-msgstr "This view takes only a list as a parameter"
 
 #: openassessment/xblock/grade_mixin.py:77
 #: openassessment/xblock/leaderboard_mixin.py:61
@@ -2393,106 +2388,102 @@ msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations d
 msgid "You do not have permission to access ORA staff grading."
 msgstr "Vous n'avez pas les droits nécessaires pour accéder aux informations de notations réservées à l'équipe enseignante."
 
-#: openassessment/xblock/staff_area_mixin.py:240
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Pending"
 msgstr "En attente"
 
-#: openassessment/xblock/staff_area_mixin.py:241
+#: openassessment/xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
 msgstr "Complété/Écrasé"
 
-#: openassessment/xblock/staff_area_mixin.py:244
+#: openassessment/xblock/staff_area_mixin.py:246
 msgid "Not applicable"
 msgstr "Non-applicable"
 
-#: openassessment/xblock/staff_area_mixin.py:245
+#: openassessment/xblock/staff_area_mixin.py:247
 msgid "Not submitted"
 msgstr "Pas soumis"
 
-#: openassessment/xblock/staff_area_mixin.py:246
+#: openassessment/xblock/staff_area_mixin.py:248
 msgid "Submitted"
 msgstr "Soumis"
 
-#: openassessment/xblock/staff_area_mixin.py:313
+#: openassessment/xblock/staff_area_mixin.py:315
 msgid "Error getting learner information."
 msgstr "Erreur lors de l'obtention d'information sur l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:356
+#: openassessment/xblock/staff_area_mixin.py:358
 msgid "Error loading the checked out learner response."
 msgstr "Erreur lors du chargement de la réponse de l'apprenant."
 
-#: openassessment/xblock/staff_area_mixin.py:357
+#: openassessment/xblock/staff_area_mixin.py:359
 msgid "No other learner responses are available for grading at this time."
 msgstr "Aucune autre réponse d'apprenant disponible pour notation en ce moment."
 
-#: openassessment/xblock/staff_area_mixin.py:359
+#: openassessment/xblock/staff_area_mixin.py:361
 msgid "Error getting staff grade information."
 msgstr "Erreur lors de la récupération de la note de l'équipe pédagogique."
 
-#: openassessment/xblock/staff_area_mixin.py:380
+#: openassessment/xblock/staff_area_mixin.py:382
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Erreur lors de la récupération des notes attribuées par l'équipe pédagogique et leur compte."
 
-#: openassessment/xblock/staff_area_mixin.py:670
+#: openassessment/xblock/staff_area_mixin.py:672
 msgid "Please enter valid reason to remove the submission."
 msgstr "Veuillez saisir une raison valide pour supprimer la réponse."
 
-#: openassessment/xblock/staff_area_mixin.py:681
+#: openassessment/xblock/staff_area_mixin.py:683
 msgid "Submission not found"
 msgstr "Réponse non trouvée"
 
-#: openassessment/xblock/staff_area_mixin.py:692
+#: openassessment/xblock/staff_area_mixin.py:694
 msgid "Submission for team assignment has no associated team submission"
 msgstr "La réponse à l'évaluation d'équipe n'a pas de réponse d'équipe associée"
 
-#: openassessment/xblock/staff_area_mixin.py:719
+#: openassessment/xblock/staff_area_mixin.py:721
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "La réponse de l'étudiant a été supprimée de la notation par les pairs. L'étudiant obtient une note nulle à moins de réinitialiser l'état de l'exercice pour l'étudiant pour lui permettre de proposer un nouvelle réponse."
 
-#: openassessment/xblock/staff_area_mixin.py:754
+#: openassessment/xblock/staff_area_mixin.py:756
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr "La réponse de l'équipe a été retirée de la notation. L'équipe reçoit une note nulle sauf si vous supprimez un état de l'exercice du membre de l'équipe pour permettre à l'équipe de redonner une réponse."
 
-#: openassessment/xblock/staff_assessment_mixin.py:48
-#: openassessment/xblock/staff_assessment_mixin.py:90
+#: openassessment/xblock/staff_assessment_mixin.py:46
+#: openassessment/xblock/staff_assessment_mixin.py:88
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "L'identifiant de la soumission en cours d'évaluation n'a pas été trouvé."
 
-#: openassessment/xblock/staff_assessment_mixin.py:72
-#: openassessment/xblock/staff_assessment_mixin.py:80
+#: openassessment/xblock/staff_assessment_mixin.py:70
+#: openassessment/xblock/staff_assessment_mixin.py:78
 msgid "Your staff assessment could not be submitted."
 msgstr "Votre évaluation par l'équipe enseignante n'a pu être soumise."
 
-#: openassessment/xblock/staff_assessment_mixin.py:118
-#: openassessment/xblock/staff_assessment_mixin.py:126
+#: openassessment/xblock/staff_assessment_mixin.py:116
+#: openassessment/xblock/staff_assessment_mixin.py:124
 msgid "Your team assessment could not be submitted."
 msgstr "Votre évaluation par l'équipe n'a pas pu être soumise."
 
-#: openassessment/xblock/staff_assessment_mixin.py:180
-msgid "There were one or more errors submitting the requested assessments"
-msgstr "There were one or more errors submitting the requested assessments"
-
-#: openassessment/xblock/staff_assessment_mixin.py:233
+#: openassessment/xblock/staff_assessment_mixin.py:190
 msgid "Waiting for a Staff Grade"
 msgstr "En attente d'une note de l'équipe pédagogique"
 
-#: openassessment/xblock/staff_assessment_mixin.py:234
+#: openassessment/xblock/staff_assessment_mixin.py:191
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "Revenez plus tard pour voir si un membre de l'équipe pédagogique a évalué votre réponse. Vous recevrez une note après que l'évaluation soit complète."
 
-#: openassessment/xblock/staff_assessment_mixin.py:247
+#: openassessment/xblock/staff_assessment_mixin.py:204
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "Vous devez compléter les étapes au-dessus pour voir votre note"
 
-#: openassessment/xblock/staff_assessment_mixin.py:248
+#: openassessment/xblock/staff_assessment_mixin.py:205
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
@@ -2554,13 +2545,13 @@ msgstr "Les soumissions multiples ne sont pas autorisées."
 
 #: openassessment/xblock/submission_mixin.py:178
 msgid "Response exceeds maximum allowed size."
-msgstr ""
+msgstr "La réponse dépasse la taille maximale autorisée."
 
 #: openassessment/xblock/submission_mixin.py:180
 msgid ""
 "Note: if you have a spellcheck or grammar check browser extension, try "
 "disabling, reloading, and reentering your response before submitting."
-msgstr ""
+msgstr "Remarque : si vous disposez d'une extension de navigateur pour le correcteur orthographique ou grammatical, essayez de le désactiver, de le recharger et de ressaisir votre réponse avant de l'envoyer."
 
 #: openassessment/xblock/submission_mixin.py:200
 msgid "Submission cannot be empty. Please refresh the page and try again."
