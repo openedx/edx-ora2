@@ -51,9 +51,9 @@ class TeamMixin:
     def get_team_for_anonymous_user(self, anonymous_user_id):
         """
         For course_id associated with this ORA block, returns the provided user's
-        CourseTeam, or None if the user is not a member of a team in this course.
+        CourseTeam, or None if the user is not a member of a team in this course or
+        if the teams service is unavailable.
         Raises:
-            - NoSuchServiceError if the teams service is unavailable
             - ObjectDoesNotExist if the user associated with `anonymous_user_id`
                                     can not be found
         """
@@ -61,7 +61,11 @@ class TeamMixin:
         if not user:
             logger.error('%s: User lookup for anonymous_user_id %s failed', self.location, anonymous_user_id)
             raise ObjectDoesNotExist()
-        team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+        try:
+            team = self.teams_service.get_team(user, self.course_id, self.selected_teamset_id)
+        except NoSuchServiceError:
+            logger.debug("%s %s [AU-660]", self.location, anonymous_user_id)
+            return None
         return team
 
     @cached_property
@@ -70,7 +74,6 @@ class TeamMixin:
         For the user and course_id associated with this ORA block, returns the user's
         CourseTeam, or None if the user is not a member of a team in this course.
         Raises:
-            - NoSuchServiceError if the teams service is unavailable
             - ObjectDoesNotExist if the user associated with `anonymous_user_id`
                                     can not be found
         """
