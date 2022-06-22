@@ -12,6 +12,8 @@ from collections import OrderedDict
 
 import pkg_resources
 import pytz
+import waffle
+
 from six import text_type
 
 from django.conf import settings
@@ -969,6 +971,9 @@ class OpenAssessmentBlock(MessageMixin,
 
         # Check if we are in the open date range
         now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
+
+        if waffle.switch_is_active('DISABLE_CODING_QUESTION_DUE_DATE_CHECK'):
+            return False, None, open_range[0], open_range[1]
 
         if now < open_range[0]:
             return True, "start", open_range[0], open_range[1]
