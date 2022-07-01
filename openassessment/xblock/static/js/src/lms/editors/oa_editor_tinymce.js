@@ -4,15 +4,15 @@
 
 (function (define) {
   const dependencies = [];
-  const tinymceCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/skin.min.css';
+  const tinymceCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5/skin.min.css';
 
   // Create a flag to determine if we are in lms
   const isLMS = typeof window.LmsRuntime !== 'undefined';
 
   // Determine which css file should be loaded to style text in the editor
-  let contentCssFile = '/static/studio/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css';
+  let contentCssFile = '/static/studio/js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5/content.min.css';
   if (isLMS) {
-    contentCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/studio-tmce4/content.min.css';
+    contentCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5/content.min.css';
   }
 
   if (typeof window.tinymce === 'undefined') {
@@ -37,8 +37,8 @@
         let config = {
           menubar: false,
           statusbar: false,
-          theme: 'modern',
-          skin: 'studio-tmce4',
+          theme: 'silver',
+          skin: 'studio-tmce5',
           height: '300',
           schema: 'html5',
           plugins: 'code image link lists',
@@ -116,13 +116,7 @@
       /* eslint-disable-next-line consistent-return */
       response(texts) {
         if (typeof texts === 'undefined') {
-          return this.editorInstances.map(editor => {
-            const content = editor.getContent();
-            // Remove linebreaks from TinyMCE output
-            // This is a workaround for TinyMCE 4 only,
-            // 5.x does not have this bug.
-            return content.replace(/(\r\n|\n|\r)/gm, '');
-          });
+          return this.editorInstances.map(editor => editor.getContent());
         }
         this.editorInstances.forEach((editor, index) => {
           editor.setContent(texts[index]);
