@@ -4,26 +4,22 @@
 
 (function (define) {
   const dependencies = [];
-  const tinymceCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5/skin.min.css';
 
   // Create a flag to determine if we are in lms
   const isLMS = typeof window.LmsRuntime !== 'undefined';
 
   // Determine which css file should be loaded to style text in the editor
-  let contentCssFile = '/static/studio/js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5/content.min.css';
+  let baseUrl = '/static/studio/js/vendor/tinymce/js/tinymce/';
   if (isLMS) {
-    contentCssFile = '/static/js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5/content.min.css';
+    baseUrl = '/static/js/vendor/tinymce/js/tinymce/';
   }
+  // We need to specify content_css explicitly
+  const contentCssFile = `${baseUrl}skins/ui/studio-tmce5/content.min.css`;
 
   if (typeof window.tinymce === 'undefined') {
     // If tinymce is not available, we need to load it
     dependencies.push('tinymce');
     dependencies.push('jquery.tinymce');
-
-    // we also need to add css for tinymce
-    if (!$(`link[href='${tinymceCssFile}']`).length) {
-      $(`<link href="${tinymceCssFile}" type="text/css" rel="stylesheet" />`).appendTo('head');
-    }
   }
 
   define(dependencies, () => {
@@ -37,6 +33,7 @@
         let config = {
           menubar: false,
           statusbar: false,
+          base_url: baseUrl,
           theme: 'silver',
           skin: 'studio-tmce5',
           height: '300',
