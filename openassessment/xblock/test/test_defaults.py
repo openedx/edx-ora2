@@ -18,7 +18,6 @@ class DefaultAssessmentTests(TestCase):
         (defaults.STAFF_ASSESSMENT_MODULES, True),
         (defaults.SELF_TO_PEER_ASSESSMENT_MODULES, True),
         (defaults.SELF_TO_STAFF_ASSESSMENT_MODULES, True),
-        (defaults.BLANK_ASSESSMENT_MODULES, False)
     )
     @ddt.unpack
     def test_valid_default_assessments(self, assessments, expect_valid):
