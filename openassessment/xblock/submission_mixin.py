@@ -318,7 +318,13 @@ class SubmissionMixin:
                 exc_info=True,
             )
             return {'success': False, 'msg': self._("Files metadata could not be saved.")}
-
+        except Exception as exc:  # pylint: disable=broad-except
+            logger.exception(
+                "FileUploadError: unhandled exception for data %s. Error: %s",
+                data,
+                exc,
+                exc_info=True,
+            )
         return {'success': True, 'msg': ''}
 
     def create_team_submission(self, student_sub_data):
@@ -562,6 +568,13 @@ class SubmissionMixin:
                     student_item_key,
                     exc,
                     exc_info=True
+                )
+            except Exception as exc:  # pylint: disable=broad-except
+                logger.exception(
+                    "FileUploadError: unhandled exception for data %s. Error: %s",
+                    data,
+                    exc,
+                    exc_info=True,
                 )
 
         return {'success': False}
