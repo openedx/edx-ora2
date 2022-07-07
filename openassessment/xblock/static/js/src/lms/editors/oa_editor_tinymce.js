@@ -13,8 +13,6 @@
   if (isLMS) {
     baseUrl = '/static/js/vendor/tinymce/js/tinymce/';
   }
-  // We need to specify content_css explicitly
-  const contentCssFile = `${baseUrl}skins/ui/studio-tmce5/content.min.css`;
 
   if (typeof window.tinymce === 'undefined') {
     // If tinymce is not available, we need to load it
@@ -36,10 +34,10 @@
           base_url: baseUrl,
           theme: 'silver',
           skin: 'studio-tmce5',
+          content_css: 'studio-tmce5',
           height: '300',
           schema: 'html5',
           plugins: 'code image link lists',
-          content_css: contentCssFile,
           toolbar: 'formatselect | bold italic underline | link blockquote image | numlist bullist outdent indent | strikethrough | code | undo redo',
         };
 

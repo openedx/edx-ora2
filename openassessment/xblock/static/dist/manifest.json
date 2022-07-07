@@ -2,8 +2,8 @@
   "base_url": "/static/dist",
   "openassessment-editor-textarea.js": "/openassessment-editor-textarea.0babe8f5dfb2d462894a.js",
   "openassessment-editor-textarea.js.map": "/openassessment-editor-textarea.0babe8f5dfb2d462894a.js.map",
-  "openassessment-editor-tinymce.js": "/openassessment-editor-tinymce.b0af3cb6a81c4775e428.js",
-  "openassessment-editor-tinymce.js.map": "/openassessment-editor-tinymce.b0af3cb6a81c4775e428.js.map",
+  "openassessment-editor-tinymce.js": "/openassessment-editor-tinymce.3ee7fd171486c1f968b0.js",
+  "openassessment-editor-tinymce.js.map": "/openassessment-editor-tinymce.3ee7fd171486c1f968b0.js.map",
   "openassessment-lms.js": "/openassessment-lms.6b828991a16360c11b28.js",
   "openassessment-lms.js.map": "/openassessment-lms.6b828991a16360c11b28.js.map",
   "openassessment-ltr.css": "/openassessment-ltr.cbb22addba015566f38b.css",
@@ -14,7 +14,7 @@
   "openassessment-rtl.js": "/openassessment-rtl.42f8f6a5fc7e1c4c4fae.js",
   "openassessment-rtl.css.map": "/openassessment-rtl.42f8f6a5fc7e1c4c4fae.css.map",
   "openassessment-rtl.js.map": "/openassessment-rtl.42f8f6a5fc7e1c4c4fae.js.map",
-  "openassessment-studio.js": "/openassessment-studio.1f6a6136155d2280ca1d.js",
-  "openassessment-studio.js.map": "/openassessment-studio.1f6a6136155d2280ca1d.js.map",
+  "openassessment-studio.js": "/openassessment-studio.58b2ba83b5a5510a37d1.js",
+  "openassessment-studio.js.map": "/openassessment-studio.58b2ba83b5a5510a37d1.js.map",
   "default-avatar.svg": "/95ec738c0b7faac5b5c9126794446bbd.svg"
 }
