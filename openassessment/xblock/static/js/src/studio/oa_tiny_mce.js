@@ -48,6 +48,7 @@ export const oaTinyMCE = (options) => {
   return {
     height: '300',
     font_formats: getFonts(),
+    base_url: '/static/studio/js/vendor/tinymce/js/tinymce/',
     theme: 'silver',
     skin: 'studio-tmce5',
     content_css: 'studio-tmce5',
@@ -58,7 +59,7 @@ export const oaTinyMCE = (options) => {
       code: { inline: 'code' },
     },
     visual: false,
-    plugins: 'textcolor, link, image, media',
+    plugins: 'link, image, media',
     image_advtab: true,
     toolbar: 'formatselect | fontselect | bold italic underline forecolor | '
       + 'bullist numlist outdent indent blockquote | link unlink image media',
