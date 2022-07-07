@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy
 from openassessment.xblock.data_conversion import (create_rubric_dict, make_django_template_key,
                                                    update_assessments_format)
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
+from openassessment.xblock.enums import CodeExecutorOption
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.validation import validator
@@ -49,6 +50,12 @@ class StudioMixin(object):
         "required": ugettext_lazy("Required"),
         "optional": ugettext_lazy("Optional"),
         "": ugettext_lazy("None")
+    }
+    
+    CODE_EXECUTOR_OPTIONS = {
+        CodeExecutorOption.ServerShell.value: ugettext_lazy("Server's Shell"),
+        CodeExecutorOption.Epixbox.value: ugettext_lazy("Epixbox"),
+        CodeExecutorOption.CodeJail.value: ugettext_lazy("CodeJail"),
     }
 
     # Since the XBlock problem definition contains only assessment
@@ -105,7 +112,7 @@ class StudioMixin(object):
             dict with keys
                 'rubric' (unicode), 'prompt' (unicode), 'title' (unicode),
                 'submission_start' (unicode),  'submission_due' (unicode),
-                'assessments' (dict), 'labels' (unicode),
+                'assessments' (dict), 'labels' (unicode), 'executor' (unicode),
                 'show_private_test_case_results' (boolean),
                 'show_file_read_code' (boolean),
 
@@ -145,6 +152,8 @@ class StudioMixin(object):
             'submission_due': submission_due,
             'submission_start': submission_start,
             'labels': self.labels,
+            'executor': self.executor if self.executor else 'server_shell',
+            'code_executor_options': self.CODE_EXECUTOR_OPTIONS,
             'assessments': assessments,
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
@@ -252,6 +261,7 @@ class StudioMixin(object):
         self.text_response = data['text_response']
         self.file_upload_response = data['file_upload_response']
         self.labels = data['labels']
+        self.executor = data['executor']
         if data['file_upload_response']:
             self.file_upload_type = data['file_upload_type']
             self.white_listed_file_types_string = data['white_listed_file_types']

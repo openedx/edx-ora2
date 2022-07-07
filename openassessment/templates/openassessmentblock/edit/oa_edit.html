@@ -81,6 +81,19 @@
                         {% trans "Indicates whether or not to show private test case results. This only shows if the case passed or failed, it does not show any values."%}
                     </p>
                 </li>
+                <li id="openassessment_executor_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_executor" class="setting-label">{% trans "Code Executor"%}</label>
+                        <select id="openassessment_executor" class="input setting-input" name="executor">
+                            {% for option_key, option_name in code_executor_options.items %}
+                            <option value="{{ option_key }}" {% if option_key == executor %} selected="true" {% endif %}>{{ option_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Choose which code executor to use for this question." %}
+                    </p>
+                </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_show_file_read_code_editor" class="setting-label">
