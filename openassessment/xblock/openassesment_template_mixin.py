@@ -4,7 +4,7 @@
 
 from django.utils.translation import gettext as _
 
-from openassessment.xblock.defaults import (BLANK_ASSESSMENT_MODULES, PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES,
+from openassessment.xblock.defaults import (PEER_ASSESSMENT_MODULES, SELF_ASSESSMENT_MODULES,
                                             SELF_TO_PEER_ASSESSMENT_MODULES, SELF_TO_STAFF_ASSESSMENT_MODULES,
                                             STAFF_ASSESSMENT_MODULES)
 
@@ -29,7 +29,6 @@ class OpenAssessmentTemplatesMixin:
         "staff-assessment": STAFF_ASSESSMENT_MODULES,
         "self-to-peer": SELF_TO_PEER_ASSESSMENT_MODULES,
         "self-to-staff": SELF_TO_STAFF_ASSESSMENT_MODULES,
-        "blank-assessment": BLANK_ASSESSMENT_MODULES
     }
 
     @classmethod
@@ -43,6 +42,15 @@ class OpenAssessmentTemplatesMixin:
             template = cls._create_template_dict(template_id, display_name)
             templates.append(template)
         return templates
+
+    @classmethod
+    def filter_templates(cls, template, _):
+        """
+        Filters the list of templates for the template view. Filter out only peer-assessment, because peer-assessment
+        is the "default" template we use for ORA. Without this, it would display twice.
+        See get_component_templates in studio.
+        """
+        return template['template_id'] != 'peer-assessment'
 
     @classmethod
     def _create_template_dict(cls, template_id, display_name):
