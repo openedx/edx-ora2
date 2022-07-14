@@ -439,6 +439,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     latexEnabled: TRUE if latex rendering is enabled.
          *     leaderboardNum (int): The number of scores to show in the leaderboard.
          *     labels (string): A string with comma-separated values.
+         *     executor (string): A string.
          *     showPrivateTestCaseResultsEnabled (boolean): True if rendering private test case results is enabled.
          *
          * @returns {promise} A JQuery promise, which resolves with no arguments
@@ -453,6 +454,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 feedback_default_text: options.feedback_default_text,
                 title: options.title,
                 labels: options.labels,
+                executor: options.executor,
                 submission_start: options.submissionStart,
                 submission_due: options.submissionDue,
                 criteria: options.criteria,
