@@ -24,6 +24,10 @@
                 <name>ק๏๏г</name>
                 <explanation>Wordy</explanation>
             </option>
+            <option points="0">
+                <name>Very Bad</name>
+                <explanation>Horrible</explanation>
+            </option>
         </criterion>
         <criterion feedback="optional">
             <name>Form</name>

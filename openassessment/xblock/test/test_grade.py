@@ -208,6 +208,34 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.assertIsNone(criteria[0]['assessments'][1].get('points', None))
         self.assertIsNone(criteria[1]['assessments'][1].get('points', None))
 
+    @scenario('data/feedback_per_criterion.xml', user_id='Bernard')
+    def test_zero_point_criterion(self, xblock):
+        """ Test behavior when a learner's median score for a criterion is worth zero points"""
+        zero_point_criterion_peer_assessments = [
+            {
+                'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Very Bad', 'Form': 'Good'},
+                'criterion_feedback': {},
+                'overall_feedback': None,
+            },
+            {
+                'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'Very Bad', 'Form': 'Fair'},
+                'criterion_feedback': {},
+                'overall_feedback': None,
+            },
+        ]
+        self.create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, zero_point_criterion_peer_assessments, SELF_ASSESSMENT
+        )
+
+        # Get the grade details
+        _, context = xblock.render_grade_complete(xblock.get_workflow_info())
+        criteria = context['grade_details']['criteria']
+        # Verify that the median peer grades are correct
+        self.assertEqual(criteria[0]['assessments'][0]['option']['label'], 'Waiting for peer reviews')
+        self.assertEqual(criteria[1]['assessments'][0]['option']['label'], 'Fair / Good')
+        self.assertNotIn('points', criteria[0]['assessments'][0])
+        self.assertEqual(criteria[1]['assessments'][0]['points'], 3)
+
     @ddt.data(
         (STAFF_GOOD_ASSESSMENT, [4, 3]),
         (STAFF_BAD_ASSESSMENT, [1, 1]),
