@@ -422,7 +422,7 @@ class GradeMixin:
 
         median_scores = peer_api.get_assessment_median_scores(submission_uuid)
         median_score = median_scores.get(criterion['name'], None)
-        median_score = -1 if not median_score else median_score
+        median_score = -1 if median_score is None else median_score
 
         def median_options():
             """

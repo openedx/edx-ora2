@@ -231,9 +231,9 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         _, context = xblock.render_grade_complete(xblock.get_workflow_info())
         criteria = context['grade_details']['criteria']
         # Verify that the median peer grades are correct
-        self.assertEqual(criteria[0]['assessments'][0]['option']['label'], 'Waiting for peer reviews')
+        self.assertEqual(criteria[0]['assessments'][0]['option']['label'], 'Very Bad')
         self.assertEqual(criteria[1]['assessments'][0]['option']['label'], 'Fair / Good')
-        self.assertNotIn('points', criteria[0]['assessments'][0])
+        self.assertEqual(criteria[0]['assessments'][0]['points'], 0)
         self.assertEqual(criteria[1]['assessments'][0]['points'], 3)
 
     @ddt.data(
