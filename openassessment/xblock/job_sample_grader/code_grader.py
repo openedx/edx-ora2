@@ -87,7 +87,9 @@ class CodeGraderMixin(object):
         source_code = response['submission']
         executor_id = response.get('executor_id')
 
-        if executor_id is None:
+        if executor_id is None or executor_id not in [
+            e['value'] for e in self.get_code_grader_context()['available_code_executors']
+        ]:
             return self.response_with_error_v2('No language selected.')
 
         output = []

@@ -172,9 +172,16 @@
 
 <script>
 $(document).ready(function() {
-    var savedLanguage = "{{saved_response.executor_id}}";
-    if(savedLanguage !== ""){
-        $("#submission__answer__executor_id").val(savedLanguage).change();
+    var savedExecutor = "";
+
+    {% for executor in available_code_executors %}
+        {% if executor.value == saved_response.executor_id %}
+    savedExecutor = "{{saved_response.executor_id}}";
+        {% endif %}
+    {% endfor %}
+
+    if(savedExecutor !== ""){
+        $("#submission__answer__executor_id").val(savedExecutor).change();
     }
 });
 </script>
