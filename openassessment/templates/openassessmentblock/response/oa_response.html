@@ -54,7 +54,6 @@
                     <ol class="list list--fields response__submission__content">
 
                             <li class="submission__answer__part">
-
                                 {% if text_response %}
 
                                 <div class="field field--textarea submission__answer__part__text">
@@ -64,12 +63,17 @@
                                                     {% trans "Write Your Code Here" %}
                                         </span>
 
-                                         <select id="submission__answer__language" required>
+                                         <select id="submission__answer__executor_id" required>
                                             <option selected disabled hidden>Choose Language </option>
-                                            <option value="Python">Python</option>
-                                            <option value="NodeJS">Javascript (NodeJS)</option>
-                                            <option value="Java">Java</option>
-                                            <option value="C++">C++</option>
+                                            {% for executor in available_code_executors %}
+                                                <option
+                                                    value="{{ executor.value }}"
+                                                    {% if executor.value == user_language %} selected="true" {% endif %}
+                                                    data-executor-language="{{ executor.language }}"
+                                                >
+                                                    {{ executor.name }}
+                                                </option>
+                                            {% endfor %}
                                         </select>
 
                                     </div>
@@ -168,9 +172,9 @@
 
 <script>
 $(document).ready(function() {
-    var savedLanguage = "{{saved_response.language}}";
+    var savedLanguage = "{{saved_response.executor_id}}";
     if(savedLanguage !== ""){
-        $("#submission__answer__language").val(savedLanguage).change();
+        $("#submission__answer__executor_id").val(savedLanguage).change();
     }
 });
 </script>

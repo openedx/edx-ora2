@@ -55,7 +55,6 @@ class StudioMixin(object):
     CODE_EXECUTOR_OPTIONS = {
         CodeExecutorOption.ServerShell.value: ugettext_lazy("Server's Shell"),
         CodeExecutorOption.Epixbox.value: ugettext_lazy("Epicbox"),
-        CodeExecutorOption.CodeJail.value: ugettext_lazy("CodeJail"),
     }
 
     # Since the XBlock problem definition contains only assessment

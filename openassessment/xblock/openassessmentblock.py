@@ -278,7 +278,6 @@ class OpenAssessmentBlock(MessageMixin,
         values=[
             {"display_name": "Server's shell", "value": CodeExecutorOption.ServerShell.value},
             {"display_name": "Epicbox", "value": CodeExecutorOption.Epixbox.value},
-            {"display_name": "CodeJail", "value": CodeExecutorOption.CodeJail.value}
         ],
         scope=Scope.content,
     )

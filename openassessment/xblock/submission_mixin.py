@@ -569,6 +569,7 @@ class SubmissionMixin(object):
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
+            **self.get_code_grader_context(),
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),

@@ -103,7 +103,7 @@ OpenAssessment.ResponseView.prototype = {
         }
 
         // Adding on change handler for dropdown
-        sel.find('select#submission__answer__language').on('change', langChange);
+        sel.find('select#submission__answer__executor_id').on('change', langChange);
 
         var handlePrepareUpload = function(eventData) {view.prepareUpload(eventData.target.files, uploadType);};
         sel.find('input[type=file]').on('change', handlePrepareUpload);
@@ -346,10 +346,19 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /*
-    Get the currently selected language from the dropdown
+    Get the currently selected executor ID from the dropdown.
     */
+    getExecutorID: function(){
+        return $("select#submission__answer__executor_id", this.element).val();
+    },
+
+    /**
+     * Returns language name like 'python', 'javascript', etc. This is the langauge
+     * of the currently selected executor.
+     */
     getLanguage: function(){
-        return $("select#submission__answer__language", this.element).val();
+        var dropdown = $("select#submission__answer__executor_id", this.element);
+        return $('option[value="' + dropdown.val() + '"]', dropdown).attr("data-executor-language");
     },
 
     /**
@@ -541,7 +550,10 @@ OpenAssessment.ResponseView.prototype = {
         else{
             editorValue = null;
         }
-        return {"submission": editorValue, "language": this.getLanguage()};
+        return {
+            "submission": editorValue,
+            "executor_id": this.getExecutorID()
+        };
     },
 
     /**
@@ -579,19 +591,19 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
-    Handle if the language selection dropdown has been changed
+    Handle if the executor selection dropdown has been changed
     **/
     handleLanguageSelectionChanged: function(){
-    var language = this.getLanguage();
-    this.updateEditorMode(language);
-    this.handleResponseChanged();
-    var defaulCodes  =  {
-           "Python":"import sys\n" +
+        var language = this.getLanguage();
+        this.updateEditorMode(language);
+        this.handleResponseChanged();
+        var defaultCodes  =  {
+           "python":"import sys\n" +
                "\n" +
                "lines = open(sys.argv[1], 'r').readlines()\n" +
                "\n" +
                "# Write your code here.",
-           "NodeJS":"const fs = require('fs');\n" +
+           "javascript":"const fs = require('fs');\n" +
                "\n" +
                "const args = process.argv.slice(2);\n" +
                "const fileName = args[0];\n" +
@@ -600,7 +612,7 @@ OpenAssessment.ResponseView.prototype = {
                "const lines = content.split('\\n');\n" +
                "\n" +
                "// Write your code here.",
-           "Java":"import java.io.File;\n" +
+           "java":"import java.io.File;\n" +
                "import java.io.FileNotFoundException;\n" +
                "import java.util.Scanner;\n" +
                "\n" +
@@ -623,7 +635,7 @@ OpenAssessment.ResponseView.prototype = {
                "    }\n" +
                "  }\n" +
                "}",
-           "C++":"#include <iostream>\n" +
+           "cpp":"#include <iostream>\n" +
                "#include <fstream>\n" +
                "\n" +
                "using namespace std;\n" +
@@ -644,25 +656,25 @@ OpenAssessment.ResponseView.prototype = {
                "}"
         }
 
-    if(this.showFileUplaodCode === 'True' && (this.codeEditor.getValue() === '' || Object.values(defaulCodes).includes(this.codeEditor.getValue()))){
-        this.codeEditor.setValue(defaulCodes[language]);
-    }
+        if(this.showFileUplaodCode === 'True' && (this.codeEditor.getValue() === '' || Object.values(defaultCodes).includes(this.codeEditor.getValue()))){
+            this.codeEditor.setValue(defaultCodes[language]);
+        }
     },
 
     /**
     Update the code editor mode based on the passed language
     **/
     updateEditorMode: function(language){
-      if (language == "Python"){
+      if (language == "python"){
         this.codeEditor.setOption("mode", {name: "python", version: 3});
       }
-      else if (language == "Java"){
+      else if (language == "java"){
         this.codeEditor.setOption("mode", "text/x-java");
       }
-      else if (language == "C++"){
+      else if (language == "cpp"){
         this.codeEditor.setOption("mode", "text/x-c++src");
       }
-      else if (language == "NodeJS"){
+      else if (language == "javascript"){
         this.codeEditor.setOption("mode", "javascript");
       }
     },
@@ -702,8 +714,8 @@ OpenAssessment.ResponseView.prototype = {
         // we'll set this back to true in the error handler.
         this.errorOnLastSave = false;
 
-        // If no language from dropdown has been selected, show the error and stop the execution
-        if(this.getLanguage() === null){
+        // If no executor from dropdown has been selected, show the error and stop the execution
+        if(this.getExecutorID() === null){
             this.showRunError(gettext("Please select a language from the list"));
             return;
         }
@@ -773,8 +785,8 @@ OpenAssessment.ResponseView.prototype = {
      **/
     submit: function() {
 
-        // If no language is selected, don't do the submission
-        if(this.getLanguage() === null){
+        // If no executor is selected, don't do the submission
+        if(this.getExecutorID() === null){
             this.showRunError(gettext("Please select a language from the list"));
             return;
         }
