@@ -113,7 +113,7 @@ class StudioMixin(object):
                 'submission_start' (unicode),  'submission_due' (unicode),
                 'assessments' (dict), 'labels' (unicode), 'executor' (unicode),
                 'show_private_test_case_results' (boolean),
-                'show_file_read_code' (boolean),
+                'show_file_read_code' (boolean), 'is_code_input_from_file' (boolean)
 
         """
         # In the authoring GUI, date and time fields should never be null.
@@ -165,6 +165,7 @@ class StudioMixin(object):
             'allow_latex': self.allow_latex,
             'show_private_test_case_results': self.show_private_test_case_results,
             'show_file_read_code': self.show_file_read_code,
+            'is_code_input_from_file': self.is_code_input_from_file,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
@@ -270,6 +271,7 @@ class StudioMixin(object):
         self.allow_latex = bool(data['allow_latex'])
         self.show_private_test_case_results = bool(data['show_private_test_case_results'])
         self.show_file_read_code = bool(data['show_file_read_code'])
+        self.is_code_input_from_file = bool(data.get('is_code_input_from_file'))
         self.leaderboard_show = data['leaderboard_show']
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}

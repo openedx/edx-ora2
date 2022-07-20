@@ -63,12 +63,21 @@ class ServerShellCodeExecutorBase(ABC):
         shutil.rmtree(self.__TMP_DATA_DIR__ + self.code_file_name)
 
     def run_input(self, input: str) -> dict:
-        # Since this executor is deprecated, we no longer need to complete the implementation.
-        raise NotImplementedError()
+        return self.execute_code(
+            self.code_file_name,
+            self.code_file_path,
+            input_file=None,
+            stdin=input,
+            timeout=self.limits.get('cputime'),
+        )
 
     def run_input_from_file(self, name: str) -> dict:
         return self.execute_code(
-            self.code_file_name, self.code_file_path, name, self.limits.get('cputime')
+            self.code_file_name,
+            self.code_file_path,
+            input_file=name,
+            stdin=None,
+            timeout=self.limits.get('cputime'),
         )
 
     def run_as_subprocess(self, cmd, compiling=False, running_code=False, timeout=None):
@@ -108,7 +117,9 @@ class ServerShellCodeExecutorBase(ABC):
         return result
 
     @abstractmethod
-    def execute_code(self, code_file_name, code_file_path, input_file, timeout=10):
+    def execute_code(
+        self, code_file_name, code_file_path, input_file=None, stdin=None, timeout=10
+    ):
         pass
 
     def write_code_file(self, source_code, full_code_file_name):
@@ -139,10 +150,12 @@ class JavaServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecutor):
         super().__init__(source_code, files, limits, **kwargs)
         self.source_code = self.update_java_code(self.source_code, self.code_file_name)
 
-    def execute_code(self, code_file_name, code_file_path, input_file, timeout=10):
-        return self.run_java_code(code_file_name, timeout, input_file)
+    def execute_code(
+        self, code_file_name, code_file_path, input_file=None, stdin=None, timeout=10
+    ):
+        return self.run_java_code(code_file_name, timeout, input_file, stdin)
 
-    def run_java_code(self, code_file_name, timeout, code_input_file=None):
+    def run_java_code(self, code_file_name, timeout, code_input_file=None, stdin=None):
         filename_with_lang_extension = '{}{}/{}.{}'.format(
             self.__TMP_DATA_DIR__, code_file_name, code_file_name, 'java'
         )
@@ -159,6 +172,8 @@ class JavaServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecutor):
         )
         if code_input_file:
             execution_command += ' {}'.format(code_input_file)
+        if stdin:
+            execution_command = "echo '{}' | {}".format(stdin, execution_command)
         self.run_as_subprocess(compilation_command, compiling=True)
         return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
 
@@ -180,10 +195,12 @@ class CppServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecutor):
 
     SOURCE_FILE_PATH_TEMPLATE = '{path}.cpp'
 
-    def execute_code(self, code_file_name, code_file_path, input_file, timeout=10):
-        return self.run_cpp_code(code_file_path, timeout, input_file)
+    def execute_code(
+        self, code_file_name, code_file_path, input_file=None, stdin=None, timeout=10
+    ):
+        return self.run_cpp_code(code_file_path, timeout, input_file, stdin)
 
-    def run_cpp_code(self, code_file, timeout, code_input_file=None):
+    def run_cpp_code(self, code_file, timeout, code_input_file=None, stdin=None):
         """
         Wrapper to run C++ code.
         Args:
@@ -206,6 +223,8 @@ class CppServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecutor):
         execution_command = compiled_file_path
         if code_input_file:
             execution_command += ' {}'.format(code_input_file)
+        if stdin:
+            execution_command = "echo '{}' | {}".format(stdin, execution_command)
         return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
 
 
@@ -218,10 +237,12 @@ class PythonServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecutor):
 
     SOURCE_FILE_PATH_TEMPLATE = '{path}.py'
 
-    def execute_code(self, code_file_name, code_file_path, input_file, timeout=10):
-        return self.run_python_code(code_file_path, timeout, input_file)
+    def execute_code(
+        self, code_file_name, code_file_path, input_file=None, stdin=None, timeout=10
+    ):
+        return self.run_python_code(code_file_path, timeout, input_file, stdin)
 
-    def run_python_code(self, code_file, timeout, code_input_file=None):
+    def run_python_code(self, code_file, timeout, code_input_file=None, stdin=None):
         """
         Wrapper to run python code.
         Args:
@@ -235,6 +256,8 @@ class PythonServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecutor):
         execution_command = 'python3 ' + code_file
         if code_input_file:
             execution_command += ' {}'.format(code_input_file)
+        if stdin:
+            execution_command = "echo '{}' | {}".format(stdin, execution_command)
         return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)
 
 
@@ -251,10 +274,12 @@ class JavascriptServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecuto
 
     SOURCE_FILE_PATH_TEMPLATE = '{path}.js'
 
-    def execute_code(self, code_file_name, code_file_path, input_file, timeout=10):
-        return self.run_nodejs_code(code_file_path, timeout, input_file)
+    def execute_code(
+        self, code_file_name, code_file_path, input_file=None, stdin=None, timeout=10
+    ):
+        return self.run_nodejs_code(code_file_path, timeout, input_file, stdin)
 
-    def run_nodejs_code(self, code_file, timeout, code_input_file=None):
+    def run_nodejs_code(self, code_file, timeout, code_input_file=None, stdin=None):
         """
         Wrapper to run nodejs code.
         Args:
@@ -268,4 +293,6 @@ class JavascriptServerShellCodeExecutor(ServerShellCodeExecutorBase, CodeExecuto
         execution_command = 'node ' + code_file
         if code_input_file:
             execution_command += ' {}'.format(code_input_file)
+        if stdin:
+            execution_command = "echo '{}' | {}".format(stdin, execution_command)
         return self.run_as_subprocess(execution_command, running_code=True, timeout=timeout)

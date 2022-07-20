@@ -341,6 +341,22 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
+    Enable / disable input from file.
+
+    Args:
+        isEnabled(boolean, optional): if provided enable/disable input from file.
+    Returns:
+        boolean
+    **/
+    isCodeInputFromFileEnabled: function(isEnabled) {
+        var sel = $('#openassessment_is_code_input_from_file_editor', this.settingsElement);
+        if (isEnabled !== undefined) {
+            sel.val(Number(isEnabled));
+        }
+        return sel.val() === '1';
+    },
+
+    /**
     Get or set the number of scores to show in the leaderboard.
     If set to 0, the leaderboard will not be shown.
 

@@ -575,6 +575,7 @@ class SubmissionMixin(object):
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
             "show_file_read_code": self.show_file_read_code,
+            "is_code_input_from_file": self.is_code_input_from_file,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
         }

@@ -202,10 +202,15 @@ class CodeGraderMixin(object):
         )
         with code_executor:
             for case_file in test_case_files:
-                # TODO: We can run_input too. Which uses stdin.
-                execution_results = code_executor.run_input_from_file(
-                    get_file_path(case_file['input_file']['name']),
-                )
+                if self.is_code_input_from_file:
+                    execution_results = code_executor.run_input_from_file(
+                        get_file_path(case_file['input_file']['name']),
+                    )
+                else:
+                    execution_results = code_executor.run_input(
+                        input=case_file['input_file']['content'].decode('utf-8'),
+                    )
+
                 formatted_results = self._executor_output_to_response_format(execution_results)
                 run_output = self.compare_outputs(
                     formatted_results['output'],
@@ -243,13 +248,17 @@ class CodeGraderMixin(object):
             executor_id, source_code, files=[{'name': input_file_name, 'content': b''}]
         )
 
-        if self.executor == CodeExecutorOption.ServerShell.value:
+        if self.is_code_input_from_file and self.executor == CodeExecutorOption.ServerShell.value:
             input_file = TemporaryFile('r')
             input_file_name = input_file.name
 
         try:
             with code_executor:
-                execution_results = code_executor.run_input_from_file(input_file_name)
+                if self.is_code_input_from_file:
+                    execution_results = code_executor.run_input_from_file(input_file_name)
+                else:
+                    execution_results = code_executor.run_input('')
+
                 response = self._executor_output_to_response_format(execution_results)
                 output = {
                     **output,
