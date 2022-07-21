@@ -660,7 +660,7 @@ class SubmissionMixin(object):
             )
             context["student_submission"] = update_submission_old_format_answer(student_submission)
             context["design_problem"] = is_design_problem(self.display_name)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['executor_id'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(
@@ -673,7 +673,7 @@ class SubmissionMixin(object):
 
             context["design_problem"] = is_design_problem(self.display_name)
             context["student_submission"] = update_submission_old_format_answer(student_submission)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['executor_id'])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
