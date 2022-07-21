@@ -1,10 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { OABase } from './containers/OABase';
-
-const bucket = {
-  OABase,
-};
 
 class ReactRendererException extends Error {
   constructor(message) {
@@ -14,8 +9,8 @@ class ReactRendererException extends Error {
 }
 
 export class ReactRenderer {
-  constructor({ componentName, element, props = {} }) {
-    this.component = bucket[componentName];
+  constructor({ component, element, props = {} }) {
+    this.component = component;
     // make sure it is a html dom and not jquery dom
     this.element = element instanceof Element ? element : element.get(0);
     this.props = props;
