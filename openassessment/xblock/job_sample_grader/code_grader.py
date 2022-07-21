@@ -94,13 +94,20 @@ class CodeGraderMixin(object):
 
         output = []
         if is_design_problem(problem_name):
-            output.append(self.run_design_code(executor_id, source_code=source_code))
+            try:
+                output.append(self.run_design_code(executor_id, source_code=source_code))
+            except CodeCompilationError as ex:
+                output.extend(self.response_with_error_v2(ex.message))
         else:
-            sample_result = self.run_code('sample', executor_id, source_code, problem_name)
-            output.append(sample_result)
+            try:
+                output.append(self.run_code('sample', executor_id, source_code, problem_name))
+            except CodeCompilationError as ex:
+                output.extend(self.response_with_error_v2(ex.message))
             if add_staff_cases:
-                staff_result = self.run_code('sample', executor_id, source_code, problem_name)
-                output.append(staff_result)
+                try:
+                    output.append(self.run_code('sample', executor_id, source_code, problem_name))
+                except CodeCompilationError as ex:
+                    output.extend(self.response_with_error_v2(ex.message))
 
         return output
 
@@ -252,23 +259,20 @@ class CodeGraderMixin(object):
             input_file = TemporaryFile('r')
             input_file_name = input_file.name
 
-        try:
-            with code_executor:
-                if self.is_code_input_from_file:
-                    execution_results = code_executor.run_input_from_file(input_file_name)
-                else:
-                    execution_results = code_executor.run_input('')
+        with code_executor:
+            if self.is_code_input_from_file:
+                execution_results = code_executor.run_input_from_file(input_file_name)
+            else:
+                execution_results = code_executor.run_input('')
 
-                response = self._executor_output_to_response_format(execution_results)
-                output = {
-                    **output,
-                    **response,
-                }
-        except Exception as e:
-            output['error'] = self.process_execution_error([str(e)])
-        finally:
-            if self.executor == CodeExecutorOption.ServerShell.value:
-                input_file.close()
+            response = self._executor_output_to_response_format(execution_results)
+            output = {
+                **output,
+                **response,
+            }
+
+        if self.executor == CodeExecutorOption.ServerShell.value:
+            input_file.close()
 
         return output
 
@@ -346,10 +350,8 @@ class CodeGraderMixin(object):
         Grade the response with per file test case feature.
         """
         data.update({'problem_name': problem_name})
-        try:
-            output = self.grade(data, add_staff_cases=add_staff_output)
-        except CodeCompilationError as ex:
-            return self.response_with_error_v2(ex.message)[0]
+
+        output = self.grade(data, add_staff_cases=add_staff_output)
 
         sample_output = output[0]
         if add_staff_output:
