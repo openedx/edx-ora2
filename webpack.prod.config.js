@@ -9,6 +9,7 @@ const PostCssAutoprefixerPlugin = require('autoprefixer');
 const CssNano = require('cssnano');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { readdirSync } = require('fs');
 
 // Get base config from edx-platform
 let config = createConfig('webpack-prod');
@@ -67,6 +68,13 @@ config = mergeWithRules({
   },
 })(config, modifiedCssRule);
 
+const containersPath = path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react/containers/');
+const containersEntries = readdirSync(containersPath).reduce((prev, cur) => ({
+  ...prev,
+  // removing the jsx extension
+  ['containers/' + cur.replace(/.jsx$/, '')]: path.resolve(containersPath, cur)
+}), {});
+
 Object.assign(config, {
   entry: {
     'openassessment-lms': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms_index.js'),
@@ -76,7 +84,11 @@ Object.assign(config, {
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
     'InitializeReact': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react/InitializeReact.js'),
+    ...containersEntries,
   },
+  // mode: development for now because eval line in InitializeReact isn't working with this mechanic.
+  mode: 'development',
+  devtool: 'source-map',
   optimization: {},
   plugins: [
     // Cleans the dist directory before each build
@@ -93,6 +105,12 @@ Object.assign(config, {
     }),
     new WebpackManifestPlugin({}),
   ],
+  externals: {
+    // Use external version of React
+    "react": "React",
+    "react-dom": "ReactDOM"
+  },
+  target: 'web'
 });
 
 config.resolve.modules = ['node_modules', path.resolve(__dirname, 'openassessment/xblock/static/js/src')];

@@ -1,7 +1,14 @@
 /* eslint-disable no-new */
 import { camelCaseObject } from '@edx/frontend-platform';
 
-const loadUrls = ({ cssUrl, jsUrl }) => new Promise((resolve, reject) => {
+const loadJavascript = (url) => new Promise(resolve => {
+  const jsElement = document.createElement('script');
+  jsElement.onload = resolve;
+  jsElement.src = url;
+  document.head.append(jsElement);
+});
+
+const loadUrls = ({ cssUrl, jsUrl }) => new Promise((resolve) => {
   if (!window.OraReactRenderer) {
     const cssElement = document.createElement('link');
     cssElement.rel = 'stylesheet';
@@ -9,33 +16,42 @@ const loadUrls = ({ cssUrl, jsUrl }) => new Promise((resolve, reject) => {
     cssElement.href = cssUrl;
     document.head.append(cssElement);
 
-    const jsElement = document.createElement('script');
-    jsElement.onload = resolve;
-    jsElement.src = jsUrl;
-    document.head.append(jsElement);
+    loadJavascript(jsUrl).then(resolve);
   } else {
     resolve();
   }
 });
 
-const InitializeReact = function (runtime, element, data) {
-  // camelCaseObject is doing deep camel case
-  const { componentName, props, prevOraSupport } = camelCaseObject(data);
+const loadComponent = (url) => new Promise(resolve => {
+  $.ajax({
+    url,
+    dataType: 'script',
+    // eslint-disable-next-line no-eval
+    success: script => resolve(eval(script)),
+  });
+});
 
-  loadUrls(prevOraSupport).then(() => {
-    new window.OraReactRenderer({
-      componentName,
-      element,
-      props: {
-        ...camelCaseObject(props),
-        prevOra: {
-          runtime,
-          element,
-          // I do not want object in prev_ora_support to be camelCase
-          prevOraSupport: data.prev_ora_support,
-        },
+const InitializeReact = async (runtime, element, data) => {
+  // camelCaseObject is doing deep camel case
+  const {
+    componentName, componentUrl, props, prevOraSupport,
+  } = camelCaseObject(data);
+
+  await loadUrls(prevOraSupport);
+  const module = await loadComponent(componentUrl);
+
+  new window.OraReactRenderer({
+    component: module[componentName],
+    element,
+    props: {
+      ...camelCaseObject(props),
+      prevOra: {
+        runtime,
+        element,
+        // I do not want object in prev_ora_support to be camelCase
+        prevOraSupport: data.prev_ora_support,
       },
-    });
+    },
   });
 };
 

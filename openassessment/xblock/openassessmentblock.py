@@ -750,7 +750,9 @@ class OpenAssessmentBlock(MessageMixin,
         context_dict = {
             'component_name': component_name,
             'props': component_props,
-            'prev_ora_support': prev_ora_support
+            # see webpack settings
+            'component_url': LoadStatic.get_url('containers/' + component_name + '.js'),
+            'prev_ora_support': prev_ora_support,
         }
 
         fragment.add_javascript_url(LoadStatic.get_url("InitializeReact.js"))

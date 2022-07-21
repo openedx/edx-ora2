@@ -5,8 +5,8 @@
   "dependencies": {
     "@edx/brand": "npm:@edx/brand-edx.org@^2.0.6",
     "@edx/frontend-build": "^6.1.1",
-    "@edx/frontend-platform": "^2.3.0",
-    "@edx/paragon": "^19.25.1",
+    "@edx/frontend-platform": "^2.5.0",
+    "@edx/paragon": "^20.5.0",
     "backbone": "^1.2.3",
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",
@@ -14,10 +14,13 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "prop-types": "^15.7.2",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react-intl": "5.25",
     "requirejs": "^2.3.6",
     "underscore": "^1.13.2"
+  },
+  "peerDependencies": {
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
@@ -39,6 +42,8 @@
     "karma-spec-reporter": "^0.0.31",
     "karma-webpack": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.14",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "sinon": "^7.5.0",
     "webpack": "^4.46.0",
     "webpack-manifest-plugin": "^4.0.2"
