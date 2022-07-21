@@ -35,11 +35,11 @@ class LoadStatic:
         """
         Reload from manifest file
         """
-        root_url, base_url = '', '/static/dist/'
-        if hasattr(settings, 'LMS_ROOT_URL'):
-            root_url = settings.LMS_ROOT_URL
+        static_url, base_url = '', '/dist/'
+        if hasattr(settings, 'STATIC_URL'):
+            static_url = settings.STATIC_URL
         else:
-            logger.error('LMS_ROOT_URL is undefined')
+            logger.error('STATIC_URL is undefined')
 
         try:
             json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")
@@ -48,7 +48,7 @@ class LoadStatic:
         except OSError:
             logger.error('Cannot find static/dist/manifest.json')
         finally:
-            LoadStatic._base_url = urljoin(root_url, base_url)
+            LoadStatic._base_url = urljoin(static_url, base_url)
 
     @staticmethod
     def get_url(key):

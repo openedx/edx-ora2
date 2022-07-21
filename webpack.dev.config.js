@@ -95,9 +95,6 @@ Object.assign(config, {
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
     new WebpackManifestPlugin({
-      seed: {
-        base_url: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/`: '/static/dist',
-      },
       writeToFileEmit: true,
     }),
     new webpack.HotModuleReplacementPlugin(),
