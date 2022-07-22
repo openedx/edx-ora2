@@ -53,9 +53,7 @@ class CodeGraderMixin(object):
         )
     )
 
-    __SECRET_DATA_DIR__ = (
-        '/edx/src/edx-ora2-1/openassessment/xblock/job_sample_grader/secret_data/'
-    )
+    __SECRET_DATA_DIR__ = '/grader_data/'
     __TMP_DATA_DIR__ = '/tmp/'
 
     def get_code_grader_context(self):
@@ -90,7 +88,7 @@ class CodeGraderMixin(object):
         if executor_id is None or executor_id not in [
             e['value'] for e in self.get_code_grader_context()['available_code_executors']
         ]:
-            return self.response_with_error_v2('No language selected.')
+            return self.response_with_error_v2('No such language available.')
 
         output = []
         if is_design_problem(problem_name):
@@ -105,7 +103,7 @@ class CodeGraderMixin(object):
                 output.extend(self.response_with_error_v2(ex.message))
             if add_staff_cases:
                 try:
-                    output.append(self.run_code('sample', executor_id, source_code, problem_name))
+                    output.append(self.run_code('staff', executor_id, source_code, problem_name))
                 except CodeCompilationError as ex:
                     output.extend(self.response_with_error_v2(ex.message))
 
@@ -271,7 +269,7 @@ class CodeGraderMixin(object):
                 **response,
             }
 
-        if self.executor == CodeExecutorOption.ServerShell.value:
+        if self.is_code_input_from_file and self.executor == CodeExecutorOption.ServerShell.value:
             input_file.close()
 
         return output
