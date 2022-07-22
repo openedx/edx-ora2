@@ -10,13 +10,10 @@ from openassessment.xblock.code_executor.config import get_all_epicbox_profiles
 
 class Command(BaseCommand):
     """
-    Query aggregated open assessment data, write to .csv
+    Pull images for all code executors.
     """
 
     def handle(self, *args, **options):
-        """
-        Run the command.
-        """
         client = docker.from_env()
         images = set([profile.docker_image for profile in get_all_epicbox_profiles()])
 
