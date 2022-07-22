@@ -6,10 +6,10 @@ from .interface import CodeExecutor
 
 
 def _get_all_subclasses(cls):
-    """Use reflection to find all sub classes of class.
+    """
+    Use reflection to find all sub classes of class.
 
-    Returns:
-        Any: A class.
+    Returns: List of classes.
     """
     return list(
         set(cls.__subclasses__()).union(
@@ -23,6 +23,12 @@ def _get_all_subclasses(cls):
 
 
 def get_all_code_executor_configs() -> List[dict]:
+    """
+    Finds all subclasses of CodeExecutor and returns their config dicts.
+
+    Returns:
+        List[dict]: All CodeExecutor configs.
+    """
     all_config_ids = set()
     all_configs = []
 
@@ -43,5 +49,8 @@ def get_all_code_executor_configs() -> List[dict]:
 
 
 def get_all_epicbox_profiles() -> List[epicbox.Profile]:
+    """
+    Returns all profiles fetched from all the code executors' configs.
+    """
     configs = get_all_code_executor_configs()
     return [profile for config in configs for profile in config.get('profiles', [])]
