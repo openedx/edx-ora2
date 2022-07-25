@@ -38,7 +38,7 @@ OpenAssessment.ResponseView = function (element, server, fileUploader, baseView,
 OpenAssessment.ResponseView.prototype = {
 
     // Milliseconds between checks for whether we should autosave.
-    AUTO_SAVE_POLL_INTERVAL: 2000,
+    AUTO_SAVE_POLL_INTERVAL: 30000,
 
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
@@ -566,21 +566,12 @@ OpenAssessment.ResponseView.prototype = {
      and call this function synchronously.
      **/
     autoSave: function () {
-        var timeSinceLastChange = Date.now() - this.lastChangeTime;
-        console.log('timeSinceLastChange: ', timeSinceLastChange);
-
         // We only autosave if the following conditions are met:
         // (1) The response has changed.  We don't need to keep saving the same response.
-        // (2) Sufficient time has passed since the user last made a change to the response.
-        //      We don't want to save a response while the user is in the middle of typing.
-        // (3) No errors occurred on the last save.  We don't want to keep refreshing
+        // (2) No errors occurred on the last save.  We don't want to keep refreshing
         //      the error message in the UI.  (The user can still retry the save manually).
-        var responseChange = this.responseChanged();
-        console.log('responseChange: ', responseChange);
-        console.log('isTimeGreater: ', timeSinceLastChange > this.AUTO_SAVE_WAIT);
-        if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT && !this.errorOnLastSave) {
-            console.log('autosave done!');
-            this.save();
+        if (this.responseChanged() && !this.errorOnLastSave) {
+            this.autoSaveToServer();
         }
     },
 
@@ -700,6 +691,42 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
+     Save a response without executing and submitting it.
+     **/
+    autoSaveToServer: function () {
+        // If there were errors on previous calls to save, forget
+        // about them for now.  If an error occurs on *this* save,
+        // we'll set this back to true in the error handler.
+        this.errorOnLastSave = false;
+
+        // If no language from dropdown has been selected, show the error and stop the execution
+        if (this.getLanguage() === null) {
+            this.showRunError(gettext("Please select a language from the list"));
+            return;
+        }
+
+        // Update the save status and error notifications
+        this.saveStatus(gettext('Auto save in progress'));
+
+        // Disable the "unsaved changes" warning
+        this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
+
+        var view = this;
+        var savedResponse = this.response('save');
+        view.saveEnabled(false);
+        this.server.autoSave(savedResponse).done(function () {
+            // Remember which response we saved, once the server confirms that it's been saved...
+            view.savedResponse = savedResponse;
+            // Update the UI to show Auto Save is complete
+            view.saveStatus(gettext('This response has been auto saved but not submitted.'))
+            view.saveEnabled(true);
+        }).fail(function () {
+            view.saveEnabled(true);
+            view.saveStatus(gettext('Auto save failed'));
+        });
+    },
+
+    /**
      Save a response without submitting it.
      **/
     save: function () {
@@ -761,6 +788,7 @@ OpenAssessment.ResponseView.prototype = {
             view.checkSubmissionAbility();
 
             view.saveEnabled(true);
+            view.setAutoSaveEnabled(false);
             view.baseView.toggleActionError('save', null);
         }).fail(function (errMsg) {
             view.saveStatus(gettext('Error'));
