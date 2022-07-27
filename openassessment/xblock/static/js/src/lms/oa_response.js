@@ -12,7 +12,7 @@
  OpenAssessment.ResponseView
  **/
 
-OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, data) {
+OpenAssessment.ResponseView = function (element, server, fileUploader, baseView, data) {
     this.element = element;
     this.server = server;
     this.fileUploader = fileUploader;
@@ -38,7 +38,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
 OpenAssessment.ResponseView.prototype = {
 
     // Milliseconds between checks for whether we should autosave.
-    AUTO_SAVE_POLL_INTERVAL: 2000,
+    AUTO_SAVE_POLL_INTERVAL: 30000,
 
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
@@ -55,27 +55,27 @@ OpenAssessment.ResponseView.prototype = {
     /**
      Load the response (submission) view.
      **/
-    load: function(usageID) {
+    load: function (usageID) {
         var view = this;
         var stepID = '.step--response';
         var focusID = '[id=\'oa_response_' + usageID + '\']';
 
         view.isRendering = true;
         this.server.render('submission').done(
-            function(html) {
+            function (html) {
                 // Load the HTML and install event handlers
                 $(stepID, view.element).replaceWith(html);
                 view.server.renderLatex($(stepID, view.element));
                 // Editor should be setup before registering all the handlers
                 view.setupCodeEditor();
                 view.installHandlers();
-                view.setAutoSaveEnabled(false);
+                view.setAutoSaveEnabled(true);
                 view.isRendering = false;
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
                 view.dateFactory.apply();
             }
-        ).fail(function() {
+        ).fail(function () {
             view.baseView.showLoadError('response');
         });
     },
@@ -83,7 +83,7 @@ OpenAssessment.ResponseView.prototype = {
     /**
      Install event handlers for the view.
      **/
-    installHandlers: function() {
+    installHandlers: function () {
         var sel = $('.step--response', this.element);
         var view = this;
         var uploadType = '';
@@ -95,17 +95,17 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install change handler for textarea (to enable submission button)
         this.savedResponse = this.response('load');
-        var handleChange = function() {view.handleResponseChanged();};
-        var langChange = function(){view.handleLanguageSelectionChanged(); };
+        var handleChange = function () { view.handleResponseChanged(); };
+        var langChange = function () { view.handleLanguageSelectionChanged(); };
 
-        if(view.codeEditor != null) {
+        if (view.codeEditor != null) {
             view.codeEditor.on('change keyup drop paste', handleChange);
         }
 
         // Adding on change handler for dropdown
         sel.find('select#submission__answer__language').on('change', langChange);
 
-        var handlePrepareUpload = function(eventData) {view.prepareUpload(eventData.target.files, uploadType);};
+        var handlePrepareUpload = function (eventData) { view.prepareUpload(eventData.target.files, uploadType); };
         sel.find('input[type=file]').on('change', handlePrepareUpload);
 
         var submit = $('.step--response__submit', this.element);
@@ -116,7 +116,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install a click handler for submission
         sel.find('.step--response__submit').click(
-            function(eventObject) {
+            function (eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
                 view.submit();
@@ -125,7 +125,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install a click handler for the save button
         sel.find('.submission__save').click(
-            function(eventObject) {
+            function (eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
                 view.save();
@@ -137,7 +137,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install a click handler for the save button
         sel.find('.file__upload').click(
-            function(eventObject) {
+            function (eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
                 var previouslyUploadedFiles = sel.find('.submission__answer__file').length ? true : false;
@@ -160,52 +160,52 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Get text areas
      */
-    getPrompts: function(){
+    getPrompts: function () {
         return $('.response__submission .submission__answer__part__text__value', this.element);
     },
 
-    createTextArea: function(value){
+    createTextArea: function (value) {
         var $elem = $('<p></p>');
         $elem.text(value);
         $elem.addClass('output_text_area');
         return $elem;
     },
 
-    errorTextArea: function(value){
+    errorTextArea: function (value) {
         var $elem = $('<p></p>');
         $elem.text(value);
         $elem.addClass('output_error_text_area');
         return $elem;
     },
 
-    createOutputHeader: function(value){
-        return "<p class='output_text_area'>"+ value +"</p>"
+    createOutputHeader: function (value) {
+        return "<p class='output_text_area'>" + value + "</p>"
     },
 
     /*
      Setup code editor in place of textarea
     */
-    setupCodeEditor: function(){
-    var textArea = this.getPrompts()[0];
-    if(textArea != null){
-        this.codeEditor = window.CodeMirror.fromTextArea(textArea, {
-            lineNumbers: true,
-            showCursorWhenSelecting: true,
-            inputStyle: "contenteditable",
-            smartIndent: true,
-            indentWithTabs: true,
-            indentUnit: 4
+    setupCodeEditor: function () {
+        var textArea = this.getPrompts()[0];
+        if (textArea != null) {
+            this.codeEditor = window.CodeMirror.fromTextArea(textArea, {
+                lineNumbers: true,
+                showCursorWhenSelecting: true,
+                inputStyle: "contenteditable",
+                smartIndent: true,
+                indentWithTabs: true,
+                indentUnit: 4
             }
-        );
-        this.codeEditor.setSize(null, 600);
-        this.updateEditorMode(this.getLanguage());
-    }
+            );
+            this.codeEditor.setSize(null, 600);
+            this.updateEditorMode(this.getLanguage());
+        }
     },
 
     /*
     Renders which test number failed and which has passed
     */
-    showTestCaseResult: function(test_results){
+    showTestCaseResult: function (test_results) {
 
         var $table, $row, style;
         var header_keys = ["Test Input", "Your Output", "Expected Output"];
@@ -219,24 +219,24 @@ OpenAssessment.ResponseView.prototype = {
         $table.append('<thead>');
         $table.find('thead').append("<tr>");
         $row = $table.find("thead > tr:last");
-        for(var idx in header_keys){
+        for (var idx in header_keys) {
             $row.append("<th>");
             $row.find("th:last").append(this.createOutputHeader(header_keys[idx]));
         }
 
         // Setup Table body HTML and values
         $table.append('<tbody>');
-        for(var key in test_results){
+        for (var key in test_results) {
             $table.find('tbody').append("<tr>");
             $row = $table.find("tbody > tr:last");
 
-            style= "rgba(205, 0, 0, 0.3)";
-            if(test_results[key]['correct']==true){
-                style= "rgba(0, 205, 0, 0.3)";
+            style = "rgba(205, 0, 0, 0.3)";
+            if (test_results[key]['correct'] == true) {
+                style = "rgba(0, 205, 0, 0.3)";
             }
             $row.css('background', style);
 
-            for(var index in data_keys){
+            for (var index in data_keys) {
                 $row.append("<td>");
                 $row.find("td:last").append(this.createTextArea(test_results[key][data_keys[index]]));
             }
@@ -249,7 +249,7 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Render the code output for the design problems
     */
-    showExecutionResults: function(output){
+    showExecutionResults: function (output) {
         var $header, $content;
         $header = this.getExecutionResultHeader();
         $content = $('<p></p>')
@@ -262,7 +262,7 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Render the code execution errors for the design problems
     */
-    showExecutionError: function(error){
+    showExecutionError: function (error) {
         var $header, $content;
         $header = this.getExecutionResultHeader();
         $content = this.errorTextArea(error);
@@ -273,17 +273,17 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Create and return the header for design problem execution
     */
-    getExecutionResultHeader: function(){
-    var $header = $('<h2></h2>');
-    $header.text(gettext("Code Execution Result"));
-    $header.css('color', 'black');
-    return $header
+    getExecutionResultHeader: function () {
+        var $header = $('<h2></h2>');
+        $header.text(gettext("Code Execution Result"));
+        $header.css('color', 'black');
+        return $header
     },
 
     /*
     Add the HTML to show how many test cases passed from the total number
     */
-    showResultSummary: function(publicResults, privateResults){
+    showResultSummary: function (publicResults, privateResults) {
         var $summary = $("<div>");
         $summary.addClass('results_summary');
         $summary.append(
@@ -292,7 +292,7 @@ OpenAssessment.ResponseView.prototype = {
             + publicResults.total
             + "</strong></p>"
         );
-        if(privateResults) {
+        if (privateResults) {
             $summary.append(
                 "<p><strong>Hidden Test Cases Result: "
                 + privateResults.correct + "/"
@@ -308,47 +308,47 @@ OpenAssessment.ResponseView.prototype = {
     /*
     Clear the summary HTML
     */
-    clearResultSummary: function(){
+    clearResultSummary: function () {
         $("#test_cases_summary").html("");
     },
 
     /*
     Displays a textbox containing the code error
     */
-    showRunError: function(error){
+    showRunError: function (error) {
         $("#test_case_status_result", this.element).html(this.errorTextArea(error));
     },
 
     /*
     Show the response is either correct/incorrect based on the given value
     */
-    indicateCorrectness: function(correctness){
-        if(correctness==true){
-          this.saveStatus(gettext("Code output matches the expected output"));
+    indicateCorrectness: function (correctness) {
+        if (correctness == true) {
+            this.saveStatus(gettext("Code output matches the expected output"));
         }
-        else{
-          this.saveStatus(gettext("Code output does not match with the expected output"));
+        else {
+            this.saveStatus(gettext("Code output does not match with the expected output"));
         }
     },
 
     /*
     Code Execution error message
     */
-    indicateError: function(){
-          this.saveStatus(gettext("Execution Error"));
+    indicateError: function () {
+        this.saveStatus(gettext("Execution Error"));
     },
 
     /*
     Indicate successful code execution
     */
-    indicateExecutionSuccess: function(){
+    indicateExecutionSuccess: function () {
         this.saveStatus(gettext("Code Execution Successful"));
     },
 
     /*
     Get the currently selected language from the dropdown
     */
-    getLanguage: function(){
+    getLanguage: function () {
         return $("select#submission__answer__language", this.element).val();
     },
 
@@ -359,7 +359,7 @@ OpenAssessment.ResponseView.prototype = {
      enabled (boolean): If true, start polling for whether we need to autosave.
      Otherwise, stop polling.
      **/
-    setAutoSaveEnabled: function(enabled) {
+    setAutoSaveEnabled: function (enabled) {
         if (enabled) {
             if (this.autoSaveTimerId === null) {
                 this.autoSaveTimerId = setInterval(
@@ -383,14 +383,14 @@ OpenAssessment.ResponseView.prototype = {
      * after upload last file the submit button should be available to push)
      *
      */
-    checkSubmissionAbility: function(filesFiledIsNotBlank) {
+    checkSubmissionAbility: function (filesFiledIsNotBlank) {
         var currentResponse = this.response('save');
-        var textFieldsIsNotBlank = !(Object.keys(currentResponse).forEach(function(key) {
+        var textFieldsIsNotBlank = !(Object.keys(currentResponse).forEach(function (key) {
             return $.trim(currentResponse[key]) === '';
         }));
 
         filesFiledIsNotBlank = filesFiledIsNotBlank || false;
-        $('.submission__answer__file', this.element).each(function() {
+        $('.submission__answer__file', this.element).each(function () {
             if (($(this).prop('tagName') === 'IMG') && ($(this).attr('src') !== '')) {
                 filesFiledIsNotBlank = true;
             }
@@ -417,9 +417,9 @@ OpenAssessment.ResponseView.prototype = {
      * Check that "save" button could be enabled (or disabled)
      *
      */
-    checkSaveAbility: function() {
+    checkSaveAbility: function () {
         var currentResponse = this.response('save');
-        var textFieldsIsNotBlank = !(Object.keys(currentResponse).forEach(function(key) {
+        var textFieldsIsNotBlank = !(Object.keys(currentResponse).forEach(function (key) {
             return $.trim(currentResponse[key]) === '';
         }));
 
@@ -441,7 +441,7 @@ OpenAssessment.ResponseView.prototype = {
      >> view.submitEnabled();  // check whether the button is enabled
      >> true
      **/
-    submitEnabled: function(enabled) {
+    submitEnabled: function (enabled) {
         return this.baseView.buttonEnabled('.step--response__submit', enabled);
     },
 
@@ -463,7 +463,7 @@ OpenAssessment.ResponseView.prototype = {
      >> view.submitEnabled();  // check whether the button is enabled
      >> true
      **/
-    saveEnabled: function(enabled) {
+    saveEnabled: function (enabled) {
         return this.baseView.buttonEnabled('.submission__save', enabled);
     },
 
@@ -472,7 +472,7 @@ OpenAssessment.ResponseView.prototype = {
 
      Works exactly the same way as saveEnabled method.
      **/
-    previewEnabled: function(enabled) {
+    previewEnabled: function (enabled) {
         return this.baseView.buttonEnabled('.submission__preview', enabled);
     },
     /**
@@ -480,7 +480,7 @@ OpenAssessment.ResponseView.prototype = {
       Returns:
       boolean: if we have pending files or not.
      **/
-    hasPendingUploadFiles: function() {
+    hasPendingUploadFiles: function () {
         return this.files !== null && !this.filesUploaded;
     },
     /**
@@ -488,7 +488,7 @@ OpenAssessment.ResponseView.prototype = {
      Returns:
      boolean: if we have deleted/moved files or not.
      **/
-    hasAllUploadFiles: function() {
+    hasAllUploadFiles: function () {
         for (var i = 0; i < this.files.length; i++) {
             var file = this.files[i];
             if (file.size === 0) {
@@ -511,7 +511,7 @@ OpenAssessment.ResponseView.prototype = {
      Returns:
      string: The current status message.
      **/
-    saveStatus: function(msg) {
+    saveStatus: function (msg) {
         var sel = $('.save__submission__label', this.element);
         if (typeof msg === 'undefined') {
             return sel.text();
@@ -533,15 +533,15 @@ OpenAssessment.ResponseView.prototype = {
      Returns:
      array of strings: The current response texts.
      **/
-    response: function(action) {
+    response: function (action) {
         var editorValue;
-        if(this.codeEditor != null){
+        if (this.codeEditor != null) {
             editorValue = this.codeEditor.getValue();
         }
-        else{
+        else {
             editorValue = null;
         }
-        return {"submission": editorValue, "language": this.getLanguage()};
+        return { "submission": editorValue, "language": this.getLanguage() };
     },
 
     /**
@@ -549,12 +549,13 @@ OpenAssessment.ResponseView.prototype = {
 
      Returns: boolean
      **/
-    responseChanged: function() {
+    responseChanged: function () {
         var savedResponse = this.savedResponse;
         var currentResponse = this.response('save');
-        return Object.keys(currentResponse).forEach(function(key) {
-            return savedResponse[key] !== currentResponse[key];
-        });
+        var isResponseChanged = !Object.keys(currentResponse).every(
+            key => savedResponse.hasOwnProperty(key)
+                && savedResponse[key] === currentResponse[key]);
+        return isResponseChanged;
     },
 
     /**
@@ -564,129 +565,125 @@ OpenAssessment.ResponseView.prototype = {
      For testing purposes, it's useful to disable the timer
      and call this function synchronously.
      **/
-    autoSave: function() {
-        var timeSinceLastChange = Date.now() - this.lastChangeTime;
-
+    autoSave: function () {
         // We only autosave if the following conditions are met:
         // (1) The response has changed.  We don't need to keep saving the same response.
-        // (2) Sufficient time has passed since the user last made a change to the response.
-        //      We don't want to save a response while the user is in the middle of typing.
-        // (3) No errors occurred on the last save.  We don't want to keep refreshing
+        // (2) No errors occurred on the last save.  We don't want to keep refreshing
         //      the error message in the UI.  (The user can still retry the save manually).
-        if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT && !this.errorOnLastSave) {
-            this.save();
+        if (this.responseChanged() && !this.errorOnLastSave) {
+            this.autoSaveToServer();
         }
     },
 
     /**
     Handle if the language selection dropdown has been changed
     **/
-    handleLanguageSelectionChanged: function(){
-    var language = this.getLanguage();
-    this.updateEditorMode(language);
-    this.handleResponseChanged();
-    var defaulCodes  =  {
-           "Python":"import sys\n" +
-               "\n" +
-               "lines = open(sys.argv[1], 'r').readlines()\n" +
-               "\n" +
-               "# Write your code here.",
-           "NodeJS":"const fs = require('fs');\n" +
-               "\n" +
-               "const args = process.argv.slice(2);\n" +
-               "const fileName = args[0];\n" +
-               "\n" +
-               "const content = fs.readFileSync(fileName).toString();\n" +
-               "const lines = content.split('\\n');\n" +
-               "\n" +
-               "// Write your code here.",
-           "Java":"import java.io.File;\n" +
-               "import java.io.FileNotFoundException;\n" +
-               "import java.util.Scanner;\n" +
-               "\n" +
-               "\n" +
-               "public class Main {\n" +
-               "  public static void main(String[] args) {\n" +
-               "    try {\n" +
-               "      File inputFile = new File(args[0]);\n" +
-               "      Scanner inputReader = new Scanner(inputFile);\n" +
-               "      while (inputReader.hasNextLine()) {\n" +
-               "        String line = inputReader.nextLine();\n" +
-               "\n" +
-               "        // Write your code here.\n" +
-               "\n" +
-               "      }\n" +
-               "      inputReader.close();\n" +
-               "    } catch (FileNotFoundException e) {\n" +
-               "      System.out.println(\"An error occurred.\");\n" +
-               "      e.printStackTrace();\n" +
-               "    }\n" +
-               "  }\n" +
-               "}",
-           "C++":"#include <iostream>\n" +
-               "#include <fstream>\n" +
-               "\n" +
-               "using namespace std;\n" +
-               "\n" +
-               "\n" +
-               "int main(int argc, char *argv[]) {\n" +
-               "  ifstream inputFile(argv[1]);\n" +
-               "\n" +
-               "  string line = \"\";\n" +
-               "  do {\n" +
-               "    getline(inputFile, line);\n" +
-               "\n" +
-               "    // Write your code here.\n" +
-               "\n" +
-               "  } while(inputFile.good());\n" +
-               "\n" +
-               "  return 0;\n" +
-               "}"
+    handleLanguageSelectionChanged: function () {
+        var language = this.getLanguage();
+        this.updateEditorMode(language);
+        this.handleResponseChanged();
+        var defaulCodes = {
+            "Python": "import sys\n" +
+                "\n" +
+                "lines = open(sys.argv[1], 'r').readlines()\n" +
+                "\n" +
+                "# Write your code here.",
+            "NodeJS": "const fs = require('fs');\n" +
+                "\n" +
+                "const args = process.argv.slice(2);\n" +
+                "const fileName = args[0];\n" +
+                "\n" +
+                "const content = fs.readFileSync(fileName).toString();\n" +
+                "const lines = content.split('\\n');\n" +
+                "\n" +
+                "// Write your code here.",
+            "Java": "import java.io.File;\n" +
+                "import java.io.FileNotFoundException;\n" +
+                "import java.util.Scanner;\n" +
+                "\n" +
+                "\n" +
+                "public class Main {\n" +
+                "  public static void main(String[] args) {\n" +
+                "    try {\n" +
+                "      File inputFile = new File(args[0]);\n" +
+                "      Scanner inputReader = new Scanner(inputFile);\n" +
+                "      while (inputReader.hasNextLine()) {\n" +
+                "        String line = inputReader.nextLine();\n" +
+                "\n" +
+                "        // Write your code here.\n" +
+                "\n" +
+                "      }\n" +
+                "      inputReader.close();\n" +
+                "    } catch (FileNotFoundException e) {\n" +
+                "      System.out.println(\"An error occurred.\");\n" +
+                "      e.printStackTrace();\n" +
+                "    }\n" +
+                "  }\n" +
+                "}",
+            "C++": "#include <iostream>\n" +
+                "#include <fstream>\n" +
+                "\n" +
+                "using namespace std;\n" +
+                "\n" +
+                "\n" +
+                "int main(int argc, char *argv[]) {\n" +
+                "  ifstream inputFile(argv[1]);\n" +
+                "\n" +
+                "  string line = \"\";\n" +
+                "  do {\n" +
+                "    getline(inputFile, line);\n" +
+                "\n" +
+                "    // Write your code here.\n" +
+                "\n" +
+                "  } while(inputFile.good());\n" +
+                "\n" +
+                "  return 0;\n" +
+                "}"
         }
 
-    if(this.showFileUplaodCode === 'True' && (this.codeEditor.getValue() === '' || Object.values(defaulCodes).includes(this.codeEditor.getValue()))){
-        this.codeEditor.setValue(defaulCodes[language]);
-    }
+        if (this.showFileUplaodCode === 'True' && (this.codeEditor.getValue() === '' || Object.values(defaulCodes).includes(this.codeEditor.getValue()))) {
+            this.codeEditor.setValue(defaulCodes[language]);
+        }
     },
 
     /**
     Update the code editor mode based on the passed language
     **/
-    updateEditorMode: function(language){
-      if (language == "Python"){
-        this.codeEditor.setOption("mode", {name: "python", version: 3});
-      }
-      else if (language == "Java"){
-        this.codeEditor.setOption("mode", "text/x-java");
-      }
-      else if (language == "C++"){
-        this.codeEditor.setOption("mode", "text/x-c++src");
-      }
-      else if (language == "NodeJS"){
-        this.codeEditor.setOption("mode", "javascript");
-      }
+    updateEditorMode: function (language) {
+        if (language == "Python") {
+            this.codeEditor.setOption("mode", { name: "python", version: 3 });
+        }
+        else if (language == "Java") {
+            this.codeEditor.setOption("mode", "text/x-java");
+        }
+        else if (language == "C++") {
+            this.codeEditor.setOption("mode", "text/x-c++src");
+        }
+        else if (language == "NodeJS") {
+            this.codeEditor.setOption("mode", "javascript");
+        }
     },
 
     /**
      Enable/disable the submission and save buttons based on whether
      the user has entered a response.
      **/
-    handleResponseChanged: function() {
+    handleResponseChanged: function () {
         this.codeEditor.refresh();
         this.checkSubmissionAbility();
 
         // Update the save button, save status, and "unsaved changes" warning
         // only if the response has changed
 
-            var saveAbility = this.checkSaveAbility();
-            this.saveEnabled(saveAbility);
-            this.previewEnabled(saveAbility);
-            this.baseView.unsavedWarningEnabled(
-                true,
-                this.UNSAVED_WARNING_KEY,
-                // eslint-disable-next-line max-len
-                gettext('If you leave this page without saving or submitting your response, you will lose any work you have done on the response.')
-            );
+        var saveAbility = this.checkSaveAbility();
+        this.saveEnabled(saveAbility);
+        this.previewEnabled(saveAbility);
+        this.baseView.unsavedWarningEnabled(
+            true,
+            this.UNSAVED_WARNING_KEY,
+            // eslint-disable-next-line max-len
+            gettext('If you leave this page without saving or submitting your response, you will lose any work you have done on the response.')
+        );
 
 
         // Record the current time (used for autosave)
@@ -694,16 +691,52 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
-     Save a response without submitting it.
+     Save a response without executing and submitting it.
      **/
-    save: function() {
+    autoSaveToServer: function () {
         // If there were errors on previous calls to save, forget
         // about them for now.  If an error occurs on *this* save,
         // we'll set this back to true in the error handler.
         this.errorOnLastSave = false;
 
         // If no language from dropdown has been selected, show the error and stop the execution
-        if(this.getLanguage() === null){
+        if (this.getLanguage() === null) {
+            this.showRunError(gettext("Please select a language from the list"));
+            return;
+        }
+
+        // Update the save status and error notifications
+        this.saveStatus(gettext('Auto save in progress'));
+
+        // Disable the "unsaved changes" warning
+        this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
+
+        var view = this;
+        var savedResponse = this.response('save');
+        view.saveEnabled(false);
+        this.server.autoSave(savedResponse).done(function () {
+            // Remember which response we saved, once the server confirms that it's been saved...
+            view.savedResponse = savedResponse;
+            // Update the UI to show Auto Save is complete
+            view.saveStatus(gettext('This response has been auto saved but not submitted.'))
+            view.saveEnabled(true);
+        }).fail(function () {
+            view.saveEnabled(true);
+            view.saveStatus(gettext('Auto save failed'));
+        });
+    },
+
+    /**
+     Save a response without submitting it.
+     **/
+    save: function () {
+        // If there were errors on previous calls to save, forget
+        // about them for now.  If an error occurs on *this* save,
+        // we'll set this back to true in the error handler.
+        this.errorOnLastSave = false;
+
+        // If no language from dropdown has been selected, show the error and stop the execution
+        if (this.getLanguage() === null) {
             this.showRunError(gettext("Please select a language from the list"));
             return;
         }
@@ -718,21 +751,21 @@ OpenAssessment.ResponseView.prototype = {
         var view = this;
         var savedResponse = this.response('save');
         view.saveEnabled(false);
-        this.server.save(savedResponse).done(function(data) {
+        this.server.save(savedResponse).done(function (data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
             var error = data?.public?.error ?? data?.private?.error
-            if(error){
-                if(data?.public?.is_design_problem){
+            if (error) {
+                if (data?.public?.is_design_problem) {
                     view.showExecutionError(error);
                 }
-                else{
+                else {
                     view.showRunError(error);
                 }
                 view.indicateError();
                 view.clearResultSummary();
             }
-            else if(!data?.public?.is_design_problem){
+            else if (!data?.public?.is_design_problem) {
                 view.showResultSummary(
                     {
                         correct: data.public.correct,
@@ -745,7 +778,7 @@ OpenAssessment.ResponseView.prototype = {
                 );
                 view.showTestCaseResult(data.public.output);
                 view.indicateCorrectness(data.public.correct === data.public.total_tests);
-            } else{
+            } else {
                 view.indicateExecutionSuccess();
                 view.showExecutionResults(data.public.output);
             }
@@ -755,8 +788,9 @@ OpenAssessment.ResponseView.prototype = {
             view.checkSubmissionAbility();
 
             view.saveEnabled(true);
+            view.setAutoSaveEnabled(false);
             view.baseView.toggleActionError('save', null);
-        }).fail(function(errMsg) {
+        }).fail(function (errMsg) {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
 
@@ -771,10 +805,10 @@ OpenAssessment.ResponseView.prototype = {
     /**
      Send a response submission to the server and update the view.
      **/
-    submit: function() {
+    submit: function () {
 
         // If no language is selected, don't do the submission
-        if(this.getLanguage() === null){
+        if (this.getLanguage() === null) {
             this.showRunError(gettext("Please select a language from the list"));
             return;
         }
@@ -804,14 +838,14 @@ OpenAssessment.ResponseView.prototype = {
         }
 
         fileDefer
-            .pipe(function() {
+            .pipe(function () {
                 return view.confirmSubmission()
                     // On confirmation, send the submission to the server
                     // The callback returns a promise so we can attach
                     // additional callbacks after the confirmation.
                     // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
                     // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
-                    .pipe(function() {
+                    .pipe(function () {
                         var submission = view.response('submit');
                         baseView.toggleActionError('response', null);
 
@@ -825,13 +859,13 @@ OpenAssessment.ResponseView.prototype = {
             .done($.proxy(view.moveToNextStep, view))
 
             // Handle submission failure (either a server error or cancellation),
-            .fail(function(errCode, errMsg) {
+            .fail(function (errCode, errMsg) {
                 // If the error is "multiple submissions", then we should move to the next
                 // step.  Otherwise, the user will be stuck on the current step with no
                 // way to continue.
-                if (errCode === 'ENOMULTI') {view.moveToNextStep();} else {
+                if (errCode === 'ENOMULTI') { view.moveToNextStep(); } else {
                     // If there is an error message, display it
-                    if (errMsg) {baseView.toggleActionError('submit', errMsg);}
+                    if (errMsg) { baseView.toggleActionError('submit', errMsg); }
 
                     // Re-enable the submit button so the user can retry
                     view.submitEnabled(true);
@@ -842,7 +876,7 @@ OpenAssessment.ResponseView.prototype = {
     /**
      Transition the user to the next step in the workflow.
      **/
-    moveToNextStep: function() {
+    moveToNextStep: function () {
         var baseView = this.baseView;
         var usageID = baseView.getUsageID();
         var view = this;
@@ -865,14 +899,14 @@ OpenAssessment.ResponseView.prototype = {
      * resolved if the user confirms the submission
      * rejected if the user cancels the submission
      **/
-    confirmSubmission: function() {
+    confirmSubmission: function () {
         // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
         // eslint-disable-next-line max-len
         var msg = gettext('Are you sure you want to submit your response? After submitting the response, you cannot change or submit a new answer for this problem.');
         // TODO -- UI for confirmation dialog instead of JS confirm
         // eslint-disable-next-line new-cap
-        return $.Deferred(function(defer) {
-            if (confirm(msg)) {defer.resolve();} else {defer.reject();}
+        return $.Deferred(function (defer) {
+            if (confirm(msg)) { defer.resolve(); } else { defer.reject(); }
         });
     },
 
@@ -889,7 +923,7 @@ OpenAssessment.ResponseView.prototype = {
      file or custom.
 
      **/
-    prepareUpload: function(files, uploadType, descriptions) {
+    prepareUpload: function (files, uploadType, descriptions) {
         this.files = null;
         this.filesType = uploadType;
         this.filesUploaded = false;
@@ -964,7 +998,7 @@ OpenAssessment.ResponseView.prototype = {
 
      */
     /* jshint -W083 */
-    updateFilesDescriptionsFields: function(files, descriptions, uploadType) {
+    updateFilesDescriptionsFields: function (files, descriptions, uploadType) {
         var filesDescriptions = $(this.element).find('.files__descriptions').first();
         var mainDiv = null;
         var divLabel = null;
@@ -1005,7 +1039,7 @@ OpenAssessment.ResponseView.prototype = {
                     height: 80,
                     alt: gettext('Thumbnail view of ') + files[i].name,
                 });
-                img.onload = function() {
+                img.onload = function () {
                     window.URL.revokeObjectURL(this.src);
                 };
 
@@ -1029,11 +1063,11 @@ OpenAssessment.ResponseView.prototype = {
      and block/unblock "Upload" button
 
      */
-    checkFilesDescriptions: function() {
+    checkFilesDescriptions: function () {
         var isError = false;
         var filesDescriptions = [];
 
-        $(this.element).find('.file__description').each(function() {
+        $(this.element).find('.file__description').each(function () {
             var filesDescriptionVal = $.trim($(this).val());
             if (filesDescriptionVal) {
                 filesDescriptions.push(filesDescriptionVal);
@@ -1052,7 +1086,7 @@ OpenAssessment.ResponseView.prototype = {
      Clear field with files descriptions.
 
      */
-    removeFilesDescriptions: function() {
+    removeFilesDescriptions: function () {
         var filesDescriptions = $(this.element).find('.files__descriptions').first();
         $(filesDescriptions).hide().html('');
     },
@@ -1061,16 +1095,16 @@ OpenAssessment.ResponseView.prototype = {
      Remove previously uploaded files.
 
      */
-    removeUploadedFiles: function() {
+    removeUploadedFiles: function () {
         var view = this;
         var sel = $('.step--response', this.element);
 
         return this.server.removeUploadedFiles().done(
-            function() {
+            function () {
                 var sel = $('.step--response', view.element);
                 sel.find('.submission__answer__files').html('');
             }
-        ).fail(function(errMsg) {
+        ).fail(function (errMsg) {
             view.baseView.toggleActionError('upload', errMsg);
             sel.find('.file__upload').prop('disabled', false);
         });
@@ -1080,15 +1114,15 @@ OpenAssessment.ResponseView.prototype = {
      Sends request to server to save all file descriptions.
 
      */
-    saveFilesDescriptions: function() {
+    saveFilesDescriptions: function () {
         var view = this;
         var sel = $('.step--response', this.element);
 
         return this.server.saveFilesDescriptions(this.filesDescriptions).done(
-            function() {
+            function () {
                 view.removeFilesDescriptions();
             }
-        ).fail(function(errMsg) {
+        ).fail(function (errMsg) {
             view.baseView.toggleActionError('upload', errMsg);
             sel.find('.file__upload').prop('disabled', false);
         });
@@ -1098,7 +1132,7 @@ OpenAssessment.ResponseView.prototype = {
      Manages file uploads for submission attachments.
 
      **/
-    uploadFiles: function() {
+    uploadFiles: function () {
         var view = this;
         var promise = null;
         var fileCount = view.files.length;
@@ -1107,12 +1141,12 @@ OpenAssessment.ResponseView.prototype = {
         sel.find('.file__upload').prop('disabled', true);
 
         promise = view.removeUploadedFiles();
-        promise = promise.then(function() {
+        promise = promise.then(function () {
             return view.saveFilesDescriptions();
         });
 
-        $.each(view.files, function(index, file) {
-            promise = promise.then(function() {
+        $.each(view.files, function (index, file) {
+            promise = promise.then(function () {
                 return view.fileUpload(view, file.type, file.name, index, file, fileCount === (index + 1));
             });
         });
@@ -1125,9 +1159,9 @@ OpenAssessment.ResponseView.prototype = {
      to a designated location.
 
      **/
-    fileUpload: function(view, filetype, filename, filenum, file, finalUpload) {
+    fileUpload: function (view, filetype, filename, filenum, file, finalUpload) {
         var sel = $('.step--response', this.element);
-        var handleError = function(errMsg) {
+        var handleError = function (errMsg) {
             view.baseView.toggleActionError('upload', errMsg);
             sel.find('.file__upload').prop('disabled', false);
         };
@@ -1137,9 +1171,9 @@ OpenAssessment.ResponseView.prototype = {
         // URL. This request requires appropriate CORS configuration for AJAX
         // PUT requests on the server.
         return view.server.getUploadUrl(filetype, filename, filenum).done(
-            function(url) {
+            function (url) {
                 view.fileUploader.upload(url, file)
-                    .done(function() {
+                    .done(function () {
                         view.fileUrl(filenum);
                         view.baseView.toggleActionError('upload', null);
                         if (finalUpload) {
@@ -1157,10 +1191,10 @@ OpenAssessment.ResponseView.prototype = {
      Set the file URL, or retrieve it.
 
      **/
-    fileUrl: function(filenum) {
+    fileUrl: function (filenum) {
         var view = this;
         var sel = $('.step--response', this.element);
-        view.server.getDownloadUrl(filenum).done(function(url) {
+        view.server.getDownloadUrl(filenum).done(function (url) {
             var className = 'submission__answer__file__block__' + filenum;
             var file = null;
             var img = null;
