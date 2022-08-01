@@ -10,7 +10,8 @@ class CodeExecutor(ABC):
 
     @staticmethod
     def create_id(language: str, version: str) -> str:
-        """A utility function that combines language and version to form an id string.
+        """
+        A utility function that combines language and version to form an id string.
 
         Args:
             language (str): Programming language
@@ -24,7 +25,8 @@ class CodeExecutor(ABC):
     @classmethod
     @abstractmethod
     def get_config(cls) -> dict:
-        """Returns the config for this executor. The structure is as follows.
+        """
+        Returns the config for this executor. The structure is as follows.
         
             {
                 'id': 'id',
@@ -60,7 +62,8 @@ class CodeExecutor(ABC):
 
     @abstractmethod
     def run_input(self, input: str) -> dict:
-        """Run code with standard input `input`.
+        """
+        Run code with standard input `input`.
 
         Args:
             input (str): Input piped to stdin.
@@ -80,7 +83,8 @@ class CodeExecutor(ABC):
 
     @abstractmethod
     def run_input_from_file(self, name: str) -> dict:
-        """Run code with the file `name` passed as an argument.
+        """
+        Run code with the file `name` passed as an argument.
 
         Args:
             name (str): Name of the file. This is the same name provided in __init__ for files.
