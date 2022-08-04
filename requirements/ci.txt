@@ -53,16 +53,15 @@ six==1.16.0
     # via
     #   -r requirements/tox.txt
     #   tox
-    #   virtualenv
 toml==0.10.2
     # via
     #   -r requirements/tox.txt
     #   tox
 tox==3.25.1
     # via -r requirements/tox.txt
-urllib3==1.26.10
+urllib3==1.26.11
     # via requests
-virtualenv==20.15.1
+virtualenv==20.16.2
     # via
     #   -r requirements/tox.txt
     #   tox
