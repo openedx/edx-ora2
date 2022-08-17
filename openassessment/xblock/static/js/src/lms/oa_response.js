@@ -33,6 +33,7 @@ OpenAssessment.ResponseView = function (element, server, fileUploader, baseView,
     this.isRendering = false;
     this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
     this.codeEditor = null;
+    this.languageError = false;
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -320,6 +321,24 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /*
+    Displays a textbox containing the error when no language is selected
+    */
+    showLanguageError: function (error) {
+        this.languageError = true;
+        this.showRunError(error);
+    },
+
+    /*
+    Clear the no language error
+    */
+    clearLanguageError: function () {
+        if (this.languageError) {
+            $("#test_case_status_result", this.element).html("");
+            this.languageError = false;
+        }
+    },
+
+    /*
     Show the response is either correct/incorrect based on the given value
     */
     indicateCorrectness: function (correctness) {
@@ -581,6 +600,7 @@ OpenAssessment.ResponseView.prototype = {
     handleLanguageSelectionChanged: function () {
         var language = this.getLanguage();
         this.updateEditorMode(language);
+        this.clearLanguageError();
         this.handleResponseChanged();
         var defaulCodes = {
             "Python": "import sys\n" +
@@ -701,7 +721,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // If no language from dropdown has been selected, show the error and stop the execution
         if (this.getLanguage() === null) {
-            this.showRunError(gettext("Please select a language from the list"));
+            this.showLanguageError(gettext("Please select a language from the list"));
             return;
         }
 
@@ -737,7 +757,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // If no language from dropdown has been selected, show the error and stop the execution
         if (this.getLanguage() === null) {
-            this.showRunError(gettext("Please select a language from the list"));
+            this.showLanguageError(gettext("Please select a language from the list"));
             return;
         }
 
@@ -809,7 +829,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // If no language is selected, don't do the submission
         if (this.getLanguage() === null) {
-            this.showRunError(gettext("Please select a language from the list"));
+            this.showLanguageError(gettext("Please select a language from the list"));
             return;
         }
 
