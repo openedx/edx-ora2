@@ -199,6 +199,7 @@ OpenAssessment.StudioView.prototype = {
             criteria: view.rubricView.criteriaDefinition(),
             title: view.settingsView.displayName(),
             labels: view.settingsView.labels(),
+            executor: view.settingsView.executor(),
             submissionStart: view.settingsView.submissionStart(),
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
