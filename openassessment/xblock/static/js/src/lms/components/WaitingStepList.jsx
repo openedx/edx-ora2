@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { DataTable } from '@edx/paragon';
+import { Button, DataTable } from '@edx/paragon';
 
 const getReadableTime = (timestamp) => moment(timestamp).fromNow(true);
 
@@ -10,6 +10,10 @@ const WaitingStepList = ({ studentList, refreshData }) => {
     ...item,
     created_at: getReadableTime(item.created_at),
   }));
+
+  const RefreshAction = () => (
+    <Button onClick={() => refreshData()}>{gettext('Refresh')}</Button>
+  );
 
   return (
     <DataTable
@@ -42,13 +46,11 @@ const WaitingStepList = ({ studentList, refreshData }) => {
           accessor: 'workflow_status',
         },
       ]}
-      bulkActions={[
-        {
-          buttonText: gettext('Refresh'),
-          handleClick: () => refreshData(),
-        },
+      tableActions={[
+        <RefreshAction />,
       ]}
     >
+      <DataTable.TableControlBar />
       <DataTable.Table />
       <DataTable.TableFooter />
     </DataTable>
