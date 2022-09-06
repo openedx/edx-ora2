@@ -295,6 +295,9 @@ disable =
 	bad-option-value,
 	missing-function-docstring,
 	missing-class-docstring,
+	import-outside-toplevel,
+	missing-timeout,
+	c-extension-no-member,
 	import-outside-toplevel
 
 [REPORTS]
@@ -392,4 +395,4 @@ int-import-graph =
 [EXCEPTIONS]
 overgeneral-exceptions = Exception
 
-# 264f935e24872cd455906adedef981f1d5942bf3
+# c4f560dcfef99308b43ef0b71fbf71a32abee8ea
