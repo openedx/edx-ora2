@@ -12,7 +12,7 @@ asgiref==3.5.2
     # via
     #   -r requirements/test.txt
     #   django
-astroid==2.11.7
+astroid==2.12.5
     # via
     #   pylint
     #   pylint-celery
@@ -27,7 +27,7 @@ attrs==22.1.0
     #   jsonschema
     #   pytest
     #   sarif-om
-aws-sam-translator==1.48.0
+aws-sam-translator==1.50.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -41,13 +41,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.24.45
+boto3==1.24.66
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.27.45
+botocore==1.27.66
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -63,11 +63,11 @@ cffi==1.15.1
     #   -r requirements/test.txt
     #   cryptography
     #   pynacl
-cfn-lint==0.61.4
+cfn-lint==0.63.2
     # via
     #   -r requirements/test.txt
     #   moto
-charset-normalizer==2.1.0
+charset-normalizer==2.1.1
     # via
     #   -r requirements/test.txt
     #   requests
@@ -85,7 +85,7 @@ code-annotations==1.3.0
     #   -r requirements/test.txt
     #   edx-lint
     #   edx-toggles
-coverage==6.4.2
+coverage==6.4.4
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -106,7 +106,7 @@ defusedxml==0.7.1
     # via -r requirements/test.txt
 dill==0.3.5.1
     # via pylint
-distlib==0.3.5
+distlib==0.3.6
     # via
     #   -r requirements/test.txt
     #   virtualenv
@@ -137,7 +137,7 @@ django-pyfs==3.2.0
     # via -r requirements/test.txt
 django-simple-history==3.1.1
     # via -r requirements/test.txt
-django-waffle==2.6.0
+django-waffle==3.0.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
@@ -146,7 +146,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-docker==5.0.3
+docker==6.0.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -171,11 +171,11 @@ edx-toggles==5.0.0
     # via -r requirements/test.txt
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==13.15.1
+faker==14.2.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
-filelock==3.7.1
+filelock==3.8.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -276,7 +276,7 @@ mock==3.0.5
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   moto
-more-itertools==8.13.0
+more-itertools==8.14.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -289,13 +289,14 @@ networkx==2.4
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==7.16.0.178
+newrelic==8.0.0.179
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
 packaging==21.3
     # via
     #   -r requirements/test.txt
+    #   docker
     #   tox
 path==13.1.0
     # via
@@ -305,7 +306,7 @@ path==13.1.0
     #   path-py
 path-py==12.5.0
     # via -r requirements/test.txt
-pbr==5.9.0
+pbr==5.10.0
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
@@ -345,7 +346,7 @@ pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pylint==2.14.5
+pylint==2.15.0
     # via
     #   edx-lint
     #   pylint-celery
@@ -410,7 +411,7 @@ python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-pytz==2022.1
+pytz==2022.2.1
     # via
     #   -r requirements/test.txt
     #   django
@@ -494,7 +495,7 @@ toml==0.10.2
     #   tox
 tomli==2.0.1
     # via pylint
-tomlkit==0.11.1
+tomlkit==0.11.4
     # via pylint
 tox==3.25.1
     # via -r requirements/test.txt
@@ -502,13 +503,14 @@ typing-extensions==4.3.0
     # via
     #   astroid
     #   pylint
-urllib3==1.26.11
+urllib3==1.26.12
     # via
     #   -r requirements/test.txt
     #   botocore
+    #   docker
     #   requests
     #   responses
-virtualenv==20.16.2
+virtualenv==20.16.4
     # via
     #   -r requirements/test.txt
     #   tox
@@ -533,11 +535,11 @@ webob==1.8.7
     # via
     #   -r requirements/test.txt
     #   xblock
-websocket-client==1.3.3
+websocket-client==1.4.0
     # via
     #   -r requirements/test.txt
     #   docker
-werkzeug==2.2.1
+werkzeug==2.2.2
     # via
     #   -r requirements/test.txt
     #   moto

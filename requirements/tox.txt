@@ -4,9 +4,9 @@
 #
 #    make upgrade
 #
-distlib==0.3.5
+distlib==0.3.6
     # via virtualenv
-filelock==3.7.1
+filelock==3.8.0
     # via
     #   tox
     #   virtualenv
@@ -26,5 +26,5 @@ toml==0.10.2
     # via tox
 tox==3.25.1
     # via -r requirements/tox.in
-virtualenv==20.16.2
+virtualenv==20.16.4
     # via tox
