@@ -96,7 +96,7 @@ detect_changed_source_translations: ## check if translation files are up-to-date
 	i18n_tool changed
 
 pull_translations: ## pull translations from Transifex
-	cd ./openassessment/ && tx pull -a -f --mode reviewed --minimum-perc=1
+	cd ./openassessment/ && ../tx pull -a -f --mode reviewed --minimum-perc=1
 
 push_translations: ## push source translation files (.po) to Transifex
 	tx push -s
@@ -145,3 +145,11 @@ install-osx-requirements: ## Install OSX specific requirements using Homebrew
 install-local-ora: ## installs your local ORA2 code into the LMS and Studio python virtualenvs
 	docker exec -t edx.devstack.lms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
 	docker exec -t edx.devstack.studio bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
+
+install_transifex_client: ## Install the Transifex client
+	# Instaling client will skip CHANGELOG and LICENSE files from git changes
+	# so remind the user to commit the change first before installing client.
+	git diff -s --exit-code HEAD || { echo "Please commit changes first."; exit 1; }
+	curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
+	git checkout -- LICENSE ## overwritten by Transifex installer
+	rm README.md ## pulled by Transifex installer
