@@ -13,7 +13,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
      * @param {element} element - The DOM element representing this XBlock.
      * @constructor
      */
-    OpenAssessment.Server = function(runtime, element) {
+    OpenAssessment.Server = function (runtime, element) {
         this.runtime = runtime;
         this.element = element;
     };
@@ -29,7 +29,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @param {string} handler The name of the XBlock handler.
          * @returns {*} The URL for the handler.
          */
-        url: function(handler) {
+        url: function (handler) {
             return this.runtime.handlerUrl(this.element, handler);
         },
 
@@ -40,17 +40,17 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {*} A JQuery promise, which resolves with the HTML of the rendered XBlock
          *     and fails with an error message.
          */
-        render: function(component) {
+        render: function (component) {
             var view = this;
             var url = this.url('render_' + component);
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html"
-                }).done(function(data) {
+                }).done(function (data) {
                     defer.resolveWith(view, [data]);
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(view, [gettext('This section could not be loaded.')]);
                 });
             }).promise();
@@ -61,8 +61,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *
          * @param {element} element - The element to modify.
          */
-        renderLatex: function(element) {
-            element.filter(".allow--latex").each(function() {
+        renderLatex: function (element) {
+            element.filter(".allow--latex").each(function () {
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
             });
         },
@@ -74,19 +74,19 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered peer
          *     assessment section or fails with an error message.
          */
-        renderContinuedPeer: function() {
+        renderContinuedPeer: function () {
             var view = this;
             var url = this.url('render_peer_assessment');
 
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html",
-                    data: {continue_grading: true}
-                }).done(function(data) {
+                    data: { continue_grading: true }
+                }).done(function (data) {
                     defer.resolveWith(view, [data]);
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(view, [gettext('This section could not be loaded.')]);
                 });
             }).promise();
@@ -100,17 +100,17 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
          *     fails with an error message.
          */
-        studentInfo: function(studentUsername, options) {
+        studentInfo: function (studentUsername, options) {
             var url = this.url('render_student_info');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html",
-                    data: _.extend({student_username: studentUsername}, options)
-                }).done(function(data) {
+                    data: _.extend({ student_username: studentUsername }, options)
+                }).done(function (data) {
                     defer.resolveWith(this, [data]);
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('This section could not be loaded.')]);
                 });
             }).promise();
@@ -122,16 +122,16 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
          *     fails with an error message.
          */
-        staffGradeForm: function() {
+        staffGradeForm: function () {
             var url = this.url('render_staff_grade_form');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html"
-                }).done(function(data) {
+                }).done(function (data) {
                     defer.resolveWith(this, [data]);
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('The staff assessment form could not be loaded.')]);
                 });
             }).promise();
@@ -143,16 +143,16 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
          *     fails with an error message.
          */
-        staffGradeCounts: function() {
+        staffGradeCounts: function () {
             var url = this.url('render_staff_grade_counts');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html"
-                }).done(function(data) {
+                }).done(function (data) {
                     defer.resolveWith(this, [data]);
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(
                         this, [gettext('The display of ungraded and checked out responses could not be loaded.')]
                     );
@@ -168,15 +168,15 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * and attempt number if the call was successful and fails with a status code
          * and error message otherwise.
          */
-        submit: function(submission) {
+        submit: function (submission) {
             var url = this.url('submit');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST",
                     url: url,
                     data: JSON.stringify(submission),
                     contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     var success = data[0];
                     if (success) {
                         var studentId = data[1];
@@ -188,8 +188,43 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                         var errorMsg = data[2];
                         defer.rejectWith(this, [errorNum, errorMsg]);
                     }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, ["AJAX", gettext("This response could not be submitted.")]);
+                });
+            }).promise();
+        },
+
+        /**
+         * Save a response without executing and submitting it.
+         *
+         * @param {string} submission The text of the student's response.
+         * @returns {promise} A JQuery promise, which resolves with no arguments on success and
+         *      fails with an error message.
+         */
+        autoSave: function (submission) {
+            var url = this.url('auto_save_submission');
+            return $.Deferred(function (defer) {
+                prevRequest = $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(submission),
+                    contentType: jsonContentType,
+                    beforeSend: function () {
+                        if (prevRequest != null) {
+                            prevRequest.abort("Previous auto save aborted");
+                        }
+                    },
+                }).done(function (data) {
+                    prevRequest = null;
+                    if (data.success) { defer.resolve(data.msg); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function (data) {
+                    errorMessage = "This response could not be saved.";
+                    if (data.statusText) {
+                        errorMessage = data.statusText;
+                    }
+                    prevRequest = null;
+                    defer.rejectWith(this, [gettext(errorMessage)]);
                 });
             }).promise();
         },
@@ -201,26 +236,26 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with no arguments on success and
          *      fails with an error message.
          */
-        save: function(submission) {
+        save: function (submission) {
             var url = this.url('save_submission');
-            return $.Deferred(function(defer) {
-                 prevRequest = $.ajax({
+            return $.Deferred(function (defer) {
+                prevRequest = $.ajax({
                     type: "POST",
                     url: url,
                     data: JSON.stringify(submission),
                     contentType: jsonContentType,
-                    beforeSend: function(){
-                    if(prevRequest != null){
-                        prevRequest.abort("Previous code run aborted");
-                    }
+                    beforeSend: function () {
+                        if (prevRequest != null) {
+                            prevRequest.abort("Previous code run aborted");
+                        }
                     },
-                }).done(function(data) {
+                }).done(function (data) {
                     prevRequest = null;
                     if (data.success) { defer.resolve(data.out); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function(data) {
+                }).fail(function (data) {
                     errorMessage = "This response could not be saved.";
-                    if(data.statusText){
+                    if (data.statusText) {
                         errorMessage = data.statusText;
                     }
                     prevRequest = null;
@@ -237,19 +272,19 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with no args if successful and
          *     fails with an error message otherwise.
          */
-        submitFeedbackOnAssessment: function(text, options) {
+        submitFeedbackOnAssessment: function (text, options) {
             var url = this.url('submit_feedback');
             var payload = JSON.stringify({
                 'feedback_text': text,
                 'feedback_options': options
             });
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: payload, contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) { defer.resolve(); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('This feedback could not be submitted.')]);
                 });
             }).promise();
@@ -263,19 +298,19 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        submitAssessment: function(assessmentType, payload) {
+        submitAssessment: function (assessmentType, payload) {
             var url = this.url(assessmentType);
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: JSON.stringify(payload), contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) {
                         defer.resolve();
                     }
                     else {
                         defer.rejectWith(this, [data.msg]);
                     }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
                 });
             }).promise();
@@ -293,7 +328,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        peerAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID) {
+        peerAssess: function (optionsSelected, criterionFeedback, overallFeedback, submissionID) {
             return this.submitAssessment("peer_assess", {
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
@@ -313,7 +348,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        selfAssess: function(optionsSelected, criterionFeedback, overallFeedback) {
+        selfAssess: function (optionsSelected, criterionFeedback, overallFeedback) {
             return this.submitAssessment("self_assess", {
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
@@ -334,7 +369,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        staffAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID, assessType) {
+        staffAssess: function (optionsSelected, criterionFeedback, overallFeedback, submissionID, assessType) {
             return this.submitAssessment("staff_assess", {
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
@@ -352,22 +387,22 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with a list of corrections if successful,
          *     and which fails with an error message otherwise.
          */
-        trainingAssess: function(optionsSelected) {
+        trainingAssess: function (optionsSelected) {
             var url = this.url('training_assess');
             var payload = JSON.stringify({
                 options_selected: optionsSelected
             });
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: payload, contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.corrections]);
                     }
                     else {
                         defer.rejectWith(this, [data.msg]);
                     }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
                 });
             });
@@ -379,19 +414,19 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with a
          * message indicating the results of the scheduling request.
          */
-        scheduleTraining: function() {
+        scheduleTraining: function () {
             var url = this.url('schedule_training');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: "\"\"", contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.msg]);
                     }
                     else {
                         defer.rejectWith(this, [data.msg]);
                     }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
                 });
             });
@@ -403,19 +438,19 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} a JQuery Promise which will resolve with a message indicating
          *     success or failure of the scheduling.
          */
-        rescheduleUnfinishedTasks: function() {
+        rescheduleUnfinishedTasks: function () {
             var url = this.url('reschedule_unfinished_tasks');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: "\"\"", contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.msg]);
                     }
                     else {
                         defer.rejectWith(this, [data.msg]);
                     }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
                 });
             });
@@ -439,12 +474,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     latexEnabled: TRUE if latex rendering is enabled.
          *     leaderboardNum (int): The number of scores to show in the leaderboard.
          *     labels (string): A string with comma-separated values.
+         *     executor (string): A string.
          *     showPrivateTestCaseResultsEnabled (boolean): True if rendering private test case results is enabled.
          *
          * @returns {promise} A JQuery promise, which resolves with no arguments
          *     and fails with an error message.
          */
-        updateEditorContext: function(options) {
+        updateEditorContext: function (options) {
             var url = this.url('update_editor_context');
             var payload = JSON.stringify({
                 prompts: options.prompts,
@@ -453,6 +489,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 feedback_default_text: options.feedback_default_text,
                 title: options.title,
                 labels: options.labels,
+                executor: options.executor,
                 submission_start: options.submissionStart,
                 submission_due: options.submissionDue,
                 criteria: options.criteria,
@@ -467,13 +504,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 show_file_read_code: options.showFileReadCodeEnabled,
                 leaderboard_show: options.leaderboardNum
             });
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: payload, contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) { defer.resolve(); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('This problem could not be saved.')]);
                 });
             }).promise();
@@ -486,16 +523,16 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     whether the XBlock has been released.  On failure, the promise provides
          *     an error message.
          */
-        checkReleased: function() {
+        checkReleased: function () {
             var url = this.url('check_released');
             var payload = "\"\"";
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: payload, contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) { defer.resolveWith(this, [data.is_released]); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext("The server could not be contacted.")]);
                 });
             }).promise();
@@ -511,18 +548,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * specified service used for uploading files on success, or with an error message
          * upon failure.
          */
-        getUploadUrl: function(contentType, filename, filenum) {
+        getUploadUrl: function (contentType, filename, filenum) {
             var url = this.url('upload_url');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({contentType: contentType, filename: filename, filenum: filenum}),
+                    data: JSON.stringify({ contentType: contentType, filename: filename, filenum: filenum }),
                     contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) { defer.resolve(data.url); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('Could not retrieve upload url.')]);
                 });
             }).promise();
@@ -531,18 +568,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Sends request to server to remove all uploaded files.
          */
-        removeUploadedFiles: function() {
+        removeUploadedFiles: function () {
             var url = this.url('remove_all_uploaded_files');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST",
                     url: url,
                     data: JSON.stringify({}),
                     contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) { defer.resolve(); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('Server error.')]);
                 });
             }).promise();
@@ -551,18 +588,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Sends request to server to save descriptions for each uploaded file.
          */
-        saveFilesDescriptions: function(descriptions) {
+        saveFilesDescriptions: function (descriptions) {
             var url = this.url('save_files_descriptions');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({descriptions: descriptions}),
+                    data: JSON.stringify({ descriptions: descriptions }),
                     contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) { defer.resolve(); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('Server error.')]);
                 });
             }).promise();
@@ -575,15 +612,15 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with a temporary download URL for
          * retrieving documents from s3 on success, or with an error message upon failure.
          */
-        getDownloadUrl: function(filenum) {
+        getDownloadUrl: function (filenum) {
             var url = this.url('download_url');
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
-                    type: "POST", url: url, data: JSON.stringify({filenum: filenum}), contentType: jsonContentType
-                }).done(function(data) {
+                    type: "POST", url: url, data: JSON.stringify({ filenum: filenum }), contentType: jsonContentType
+                }).done(function (data) {
                     if (data.success) { defer.resolve(data.url); }
                     else { defer.rejectWith(this, [data.msg]); }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('Could not retrieve download url.')]);
                 });
             }).promise();
@@ -596,20 +633,20 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @param {object} comments - The reason for canceling the submission.
          * @returns {*}
          */
-        cancelSubmission: function(submissionID, comments) {
+        cancelSubmission: function (submissionID, comments) {
             var url = this.url('cancel_submission');
             var payload = JSON.stringify({
                 submission_uuid: submissionID,
                 comments: comments
             });
-            return $.Deferred(function(defer) {
+            return $.Deferred(function (defer) {
                 $.ajax({
                     type: "POST", url: url, data: payload, contentType: jsonContentType
-                }).done(function(data) {
+                }).done(function (data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.msg]);
                     }
-                }).fail(function() {
+                }).fail(function () {
                     defer.rejectWith(this, [gettext('The submission could not be removed from the grading pool.')]);
                 });
             }).promise();
@@ -621,7 +658,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @param {object} eventName - the name of the event
          * @param {object} eventData - additional context data for the event
          */
-        publishEvent: function(eventName, eventData) {
+        publishEvent: function (eventName, eventData) {
             eventData.event_name = eventName;
             var url = this.url('publish_event');
             var payload = JSON.stringify(eventData);

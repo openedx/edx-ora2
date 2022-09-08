@@ -206,6 +206,45 @@ class SubmissionMixin(object):
                 data['submission'].append('')
 
     @XBlock.json_handler
+    def auto_save_submission(self, data, suffix=''):
+        """
+        Save the current student's response submission without executing the code.
+        If the student already has a response saved, this will overwrite it.
+
+        Args:
+            data (dict): Data should have a single key 'submission' that contains
+                the text of the student's response. Optionally, the data could
+                have a 'file_urls' key that is the path to an associated file for
+                this submission.
+            suffix (str): Not used.
+
+        Returns:
+            dict: Contains a bool 'success' and unicode string 'msg'.
+        """
+        if 'submission' in data:
+            student_sub_data = data
+            try:
+                self.saved_response = json.dumps(student_sub_data)
+                self.has_saved = True
+
+                # Emit analytics event...
+                self.runtime.publish(
+                    self,
+                    "openassessmentblock.save_submission",
+                    {"saved_response": self.saved_response}
+                )
+
+            except:
+                return {'success': False, 'msg': self._(u"This response could not be saved.")}
+            else:
+                return {
+                    'success': True,
+                    'msg': u'Auto Save Successful',
+                }
+        else:
+            return {'success': False, 'msg': self._(u"This response could not be saved.")}
+
+    @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Save the current student's response submission.
@@ -234,7 +273,7 @@ class SubmissionMixin(object):
             else:
                 sample_output, staff_output = grade_output, None
                 sample_output.pop('run_type')
-            
+
             student_sub_data = data
             try:
                 self.saved_response = json.dumps(student_sub_data)
