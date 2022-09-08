@@ -12,6 +12,8 @@ from collections import OrderedDict
 
 import pkg_resources
 import pytz
+import waffle
+
 from six import text_type
 
 from django.conf import settings
@@ -22,6 +24,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.enums import CodeExecutorOption
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.job_sample_grader.code_grader import CodeGraderMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
@@ -38,6 +41,7 @@ from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+
 from webob import Response
 from xblock.core import XBlock
 from xblock.fields import Boolean, Integer, List, Scope, String
@@ -265,6 +269,18 @@ class OpenAssessmentBlock(MessageMixin,
         default=False,
         scope=Scope.content,
         help="Indicates whether or not to show file read code."
+    )
+    
+    executor = String(
+        display_name="Executor",
+        help="Determines which code executor to use.",
+        default=CodeExecutorOption.ServerShell.value,
+        values=[
+            {"display_name": "Server's shell", "value": CodeExecutorOption.ServerShell.value},
+            {"display_name": "Epicbox", "value": CodeExecutorOption.Epixbox.value},
+            {"display_name": "CodeJail", "value": CodeExecutorOption.CodeJail.value}
+        ],
+        scope=Scope.content,
     )
 
     @property
@@ -764,6 +780,7 @@ class OpenAssessmentBlock(MessageMixin,
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']
         block.labels = config.get('labels')
+        block.executor = config.get('executor')
 
         return block
 
@@ -969,6 +986,9 @@ class OpenAssessmentBlock(MessageMixin,
 
         # Check if we are in the open date range
         now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
+
+        if waffle.switch_is_active('DISABLE_CODING_QUESTION_DUE_DATE_CHECK'):
+            return False, None, open_range[0], open_range[1]
 
         if now < open_range[0]:
             return True, "start", open_range[0], open_range[1]

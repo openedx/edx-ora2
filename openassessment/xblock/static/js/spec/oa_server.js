@@ -301,7 +301,8 @@ describe("OpenAssessment.Server", function() {
             fileUploadType: "image",
             fileTypeWhiteList: ['pdf', 'doc'],
             latexEnabled: true,
-            leaderboardNum: 15
+            leaderboardNum: 15,
+            executor: "server_shell"
         });
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
@@ -318,7 +319,8 @@ describe("OpenAssessment.Server", function() {
                 file_upload_type: "image",
                 white_listed_file_types: ['pdf', 'doc'],
                 allow_latex: true,
-                leaderboard_show: 15
+                leaderboard_show: 15,
+                executor: "server_shell",
             }),
             contentType : jsonContentType
         });

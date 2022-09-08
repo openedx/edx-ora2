@@ -211,6 +211,23 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
+     Get or set code executor.
+
+    Args:
+        value (string, optional): If provided, set executor.
+
+    Returns:
+        string a valid option.
+     */
+    executor: function(value) {
+        var sel = $('#openassessment_executor', this.settingsElement);
+        if (value !== undefined) {
+            sel.val(value);
+        }
+        return sel.val();
+    },
+
+    /**
      Get or set file upload necessity.
 
     Args:
