@@ -270,15 +270,20 @@ class OpenAssessmentBlock(MessageMixin,
         scope=Scope.content,
         help="Indicates whether or not to show file read code."
     )
-    
+
+    is_code_input_from_file = Boolean(
+        default=True,
+        scope=Scope.content,
+        help="Indicates whether or not the input to the code should be through a file.",
+    )
+
     executor = String(
         display_name="Executor",
         help="Determines which code executor to use.",
         default=CodeExecutorOption.ServerShell.value,
         values=[
             {"display_name": "Server's shell", "value": CodeExecutorOption.ServerShell.value},
-            {"display_name": "Epicbox", "value": CodeExecutorOption.Epixbox.value},
-            {"display_name": "CodeJail", "value": CodeExecutorOption.CodeJail.value}
+            {"display_name": "Epicbox", "value": CodeExecutorOption.Epicbox.value},
         ],
         scope=Scope.content,
     )

@@ -47,10 +47,10 @@ def run_and_save_staff_test_cases(block_id, sub_uuid, problem_name, **kwargs):
     default_staff_run_error_response = get_error_response('staff', 'Missing Staff Submission')
     answer = submission.answer
     code_submission = answer['submission']
-    code_language = answer['language']
+    executor_id = answer['executor_id']
     grader_data = {
         'submission': code_submission,
-        'language': code_language
+        'executor_id': executor_id
     }
     try:
         ora_block = modulestore().get_item(UsageKey.from_string(block_id))

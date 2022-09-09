@@ -128,6 +128,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('executor', default=CodeExecutorOption.ServerShell.value): All(utf8_validator, In(CODE_EXECUTOR_OPTIONS)),
     Required('show_private_test_case_results'): bool,
     Required('show_file_read_code'): bool,
+    Required('is_code_input_from_file'): bool,
     Required('feedback_prompt'): utf8_validator,
     Required('feedback_default_text'): utf8_validator,
     Required('submission_start'): Any(datetime_validator, None),

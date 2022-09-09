@@ -276,7 +276,7 @@ class StaffAreaMixin(object):
                 staff_run = get_error_response('staff', 'Staff test case result is not available.')
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
-            context['code_language'] = get_code_language(submission['answer']['language'])
+            context['code_language'] = get_code_language(submission['answer']['executor_id'])
             context['staff_view'] = True
 
             # Percentage information is not added for design problems

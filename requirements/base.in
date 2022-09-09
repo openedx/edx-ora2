@@ -15,6 +15,7 @@ edx-celeryutils
 
 # Third Party Requirements
 bleach
+epicbox
 html5lib
 boto
 python-swiftclient

@@ -608,11 +608,13 @@ class SubmissionMixin(object):
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
+            **self.get_code_grader_context(),
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
             "show_file_read_code": self.show_file_read_code,
+            "is_code_input_from_file": self.is_code_input_from_file,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
         }
@@ -697,7 +699,7 @@ class SubmissionMixin(object):
             )
             context["student_submission"] = update_submission_old_format_answer(student_submission)
             context["design_problem"] = is_design_problem(self.display_name)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['executor_id'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(
@@ -710,7 +712,7 @@ class SubmissionMixin(object):
 
             context["design_problem"] = is_design_problem(self.display_name)
             context["student_submission"] = update_submission_old_format_answer(student_submission)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['executor_id'])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

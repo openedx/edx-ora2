@@ -502,6 +502,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 allow_latex: options.latexEnabled,
                 show_private_test_case_results: options.showPrivateTestCaseResultsEnabled,
                 show_file_read_code: options.showFileReadCodeEnabled,
+                is_code_input_from_file: options.isCodeInputFromFileEnabled,
                 leaderboard_show: options.leaderboardNum
             });
             return $.Deferred(function (defer) {
