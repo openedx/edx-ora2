@@ -14,7 +14,7 @@ Before Merging a pull request:
 When a PR is ready to release, do the following to publish a new version of ORA:
 
 - [ ] Merge to `master`
-- [ ] Create a [release tag on GitHub](https://github.com/edx/edx-ora2/releases) matching version number in setup.py/package.json
+- [ ] Create a [release tag on GitHub](https://github.com/openedx/edx-ora2/releases) matching version number in setup.py/package.json
 - [ ] Grab a coffee while our automated process submits the build to PyPi
 - [ ] Confirm new version appears in [PyPi: ora2](https://pypi.org/project/ora2)
 
@@ -22,13 +22,13 @@ When a PR is ready to release, do the following to publish a new version of ORA:
 
 For non time-critical changes:
 
-- [x] Dependencies in [edx-platform](https://github.com/edx/edx-platform) are routinely updated every few days as part of a dependency update job
+- [x] Dependencies in [edx-platform](https://github.com/openedx/edx-platform) are routinely updated every few days as part of a dependency update job
 - [ ] Communicate/coordinate updated feature flags/configuration changes to stakeholders
 - [ ] After the next update task run, monitor the updated functionality in sandboxes/production
 
 To expedite the release process:
 
-- [ ] Create a new PR in [edx-platform](https://github.com/edx/edx-platform), changing ORA version in requirements files: `requirements/edx/{github.in,base.txt,development.txt,testing.txt}`
+- [ ] Create a new PR in [edx-platform](https://github.com/openedx/edx-platform), changing ORA version in requirements files: `requirements/edx/{github.in,base.txt,development.txt,testing.txt}`
 - [ ] Communicate/coordinate updated feature flags/configuration changes to stakeholders
-- [ ] Follow the testing/release process for [edx-platform](https://github.com/edx/edx-platform)
+- [ ] Follow the testing/release process for [edx-platform](https://github.com/openedx/edx-platform)
 - [ ] After merging, monitor the updated functionality in sandboxes/production

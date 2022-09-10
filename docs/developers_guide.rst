@@ -7,9 +7,9 @@ Where is the code
 -----------------
 ORA is broken into two separate repositories:
 
-- `edx-ora2 <https://github.com/edx/edx-ora2>`_
+- `edx-ora2 <https://github.com/openedx/edx-ora2>`_
 
-- `edx-submissions <https://github.com/edx/edx-submissions>`_
+- `edx-submissions <https://github.com/openedx/edx-submissions>`_
 
 Using ORA with docker devstack
 ------------------------------

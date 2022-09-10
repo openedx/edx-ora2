@@ -56,7 +56,7 @@ setup(
     version=VERSION,
     author='edX',
     author_email='oscm@edx.org',
-    url='http://github.com/edx/edx-ora2',
+    url='http://github.com/openedx/edx-ora2',
     description='edx-ora2',
     license='AGPL',
     long_description=README,

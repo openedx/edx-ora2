@@ -16,7 +16,7 @@ def count_pylint_violations(report_file):
     """
     Parses a pylint report line-by-line, and determins the number of pylint violations.
 
-    Taken from https://github.com/edx/edx-platform/blob/master/pavelib/quality.py.
+    Taken from https://github.com/openedx/edx-platform/blob/master/pavelib/quality.py.
     """
     num_violations = 0
     # An example string:
