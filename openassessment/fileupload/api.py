@@ -545,7 +545,7 @@ class FileUploadManager:
     def _descriptionless_uploads(self):
         """
         This is the old behavior, required for a corner case and should be eventually removed.
-        https://github.com/edx/edx-ora2/pull/1275 closed a loophole that allowed files
+        https://github.com/openedx/edx-ora2/pull/1275 closed a loophole that allowed files
         to be uploaded without descriptions. In that case, an ORA block's saved_file_descriptions would be
         an empty list, but a key corresponding to their student item information would exist (and thus,
         so would a valid download URL).

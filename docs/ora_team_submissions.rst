@@ -6,7 +6,7 @@ ORA2 Team Submissions
 Workflows
 ---------
 
-There’s an AssessmentWorkflow model that has a workflow app label, which means that the table name is prefixed with `workflow_` and not `assessment_` like everything else (I’m sure it’s to help resolve a name collision).  `See for reference: <https://github.com/edx/edx-ora2/blob/001a6804e605426fdc43d4b5d83a38051c756c8d/openassessment/workflow/models.py#L108>`_.  In fact, each of the AssessmentWorkflow, AssessmentWorkflowStep, and AssessmentWorkflowCancellation models live under the workflow app label.
+There’s an AssessmentWorkflow model that has a workflow app label, which means that the table name is prefixed with `workflow_` and not `assessment_` like everything else (I’m sure it’s to help resolve a name collision).  `See for reference: <https://github.com/openedx/edx-ora2/blob/001a6804e605426fdc43d4b5d83a38051c756c8d/openassessment/workflow/models.py#L108>`_.  In fact, each of the AssessmentWorkflow, AssessmentWorkflowStep, and AssessmentWorkflowCancellation models live under the workflow app label.
 
 - The ``SubmissionMixin.create_submission()`` method calls the ``workflow_api.create_workflow()`` method  (it stops at ``WorkflowMixin.create_workflow()`` along the way).  This is the entry point to workflow management in ORA.
 
@@ -22,7 +22,7 @@ Staff Workflows
 
 These should be the only workflow type that we care about for team submissions.
 
-`Python API for managing StaffWorkflow data: <https://github.com/edx/edx-ora2/blob/master/openassessment/assessment/api/staff.py>`_:
+`Python API for managing StaffWorkflow data: <https://github.com/openedx/edx-ora2/blob/master/openassessment/assessment/api/staff.py>`_:
 
 - **on_init(submission_uuid)**
 
@@ -56,7 +56,7 @@ New Models, sublcass StaffWorkflow
 
 - We’ll actually also need a new, team-centric version of the ``workflow.AssessmentWorkflow`` model, so that we can pass a ``team_submission_uuid`` to the ``start_workflow()`` method.  It will follow the same flow of logic of creating a workflow record and associated steps.
 
-  - ``AssessmentWorkflow.start_workflow()`` calls the ``on_init()`` function of each `assessment type’s API, e.g. <https://github.com/edx/edx-ora2/blob/master/openassessment/assessment/api/staff.py#L59>`_ In fact, pretty much all of the functions provided by assessment API’s require a ``submission_uuid`` parameter.  So we’ll likely want some new API like ``assessment.api.team`` that provides the same functionality, but takes a ``team_submission_uuid`` as the first parameter.
+  - ``AssessmentWorkflow.start_workflow()`` calls the ``on_init()`` function of each `assessment type’s API, e.g. <https://github.com/openedx/edx-ora2/blob/master/openassessment/assessment/api/staff.py#L59>`_ In fact, pretty much all of the functions provided by assessment API’s require a ``submission_uuid`` parameter.  So we’ll likely want some new API like ``assessment.api.team`` that provides the same functionality, but takes a ``team_submission_uuid`` as the first parameter.
 
 No new team-based AssessmentWorkflowStep model.  All that the steps care about are their types and the corresponding workflow instance.  
 

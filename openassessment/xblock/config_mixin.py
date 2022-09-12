@@ -122,7 +122,7 @@ class ConfigMixin:
         #     in mobile apps.
         # .. toggle_use_cases: open_edx
         # .. toggle_creation_date: 2020-10-14
-        # .. toggle_tickets: https://github.com/edx/edx-ora2/pull/1445
+        # .. toggle_tickets: https://github.com/openedx/edx-ora2/pull/1445
         return settings.FEATURES.get('ENABLE_ORA_MOBILE_SUPPORT', False)
 
     @cached_property
