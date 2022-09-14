@@ -1,10 +1,10 @@
 {
   "name": "edx-ora2",
-  "version": "4.4.7",
+  "version": "4.5.0",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
     "@edx/frontend-build": "^6.1.1",
-    "@edx/paragon": "^12.8.0",
+    "@edx/paragon": "^20.9.2",
     "backbone": "^1.2.3",
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",
