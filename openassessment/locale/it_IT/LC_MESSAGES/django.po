@@ -2,7 +2,7 @@
 # edX translation file
 # Copyright (C) 2018 edX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-#
+# 
 # Translators:
 # danicabliznakinja <dmbliznakinje@yahoo.co.uk>, 2014
 # Domenico Casanica <domenico.casanica@sistinf.it>, 2021
@@ -1408,7 +1408,7 @@ msgid ""
 "                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
 "                                      receive a grade for their submission.\n"
 "                                  "
-msgstr "\n                                      Attualmente sei nel Team %(team_name)s. Poiché eri nel Team %(previous_team_name)s quando hanno inviato una risposta a questo compito, stai vedendo la risposta del Team %(previous_team_name)s e riceverai lo stesso voto per questo compito dei tuoi ex compagni di squadra. Non farai parte dell&#39;invio del Team %(team_name)s per questo compito e non riceverai un voto per il suo invio."
+msgstr "Attualmente sei nel Team %(team_name)s. Poiché eri nel Team %(previous_team_name)s quando hanno inviato una risposta a questo compito, stai vedendo la risposta del Team %(previous_team_name)s e riceverai lo stesso voto per questo compito dei tuoi ex compagni di squadra. Non farai parte dell&#39;invio del Team %(team_name)s per questo compito e non riceverai un voto per il suo invio."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:221
 msgid "We could not save your progress"
@@ -1432,7 +1432,7 @@ msgid ""
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
 "                                  descriptions to your files to help your teammates identify them.\n"
 "                              "
-msgstr "\n                                  Carica file e rivedi i file caricati da te e dai tuoi compagni di squadra di seguito. Assicurati di aggiungere descrizioni ai tuoi file per aiutare i tuoi compagni di squadra a identificarli."
+msgstr "Carica file e rivedi i file caricati da te e dai tuoi compagni di squadra di seguito. Assicurati di aggiungere descrizioni ai tuoi file per aiutare i tuoi compagni di squadra a identificarli."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:258
 msgid "We could not upload files"
@@ -1496,7 +1496,7 @@ msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
-msgstr "\n                  Scopri di più sugli incarichi di squadra qui: ( <a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a> )"
+msgstr "Scopri di più sugli incarichi di squadra qui: ( <a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a> )"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:324
 msgid "We could not submit your response"
