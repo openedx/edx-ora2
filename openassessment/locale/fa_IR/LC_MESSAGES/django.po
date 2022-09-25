@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 08:54-0400\n"
+"POT-Creation-Date: 2022-09-18 14:36-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Somaye Joolaee, 2022\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
@@ -171,17 +171,17 @@ msgstr "نام برای نمایش"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr ""
+msgstr "نام نمایشی این مولفه"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr ""
+msgstr "پاسخ متنی"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr ""
+msgstr "مشخص کنید که آیا یادگیرندگان باید پاسخی مبتنی بر متن به درخواست این مساله ارائه دهند یا خیر."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
@@ -195,17 +195,17 @@ msgstr "انتخاب کنید که یادگیرندگان از کدام ویرا
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
-msgstr ""
+msgstr "پاسخ بارگذاری پرونده"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr ""
+msgstr "مشخص کنید که آیا یادگیرندگان قادر به بارگذاری پرونده به‌عنوان بخشی از پاسخ خود هستند یا خیر."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
-msgstr ""
+msgstr "مجوزدادن به چندین پرونده"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:52
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:93
@@ -228,19 +228,19 @@ msgid ""
 "Specify whether learners can upload more than one file. This has no effect "
 "if File Uploads Response is set to None. This is automatically set to True "
 "for Team Assignments. "
-msgstr ""
+msgstr "مشخص کنید که آیا یادگیرندگان می‌توانند بیش از یک پرونده بارگذاری کنند یا خیر. اگر «پاسخ بارگذاری پرونده» روی «هیچ‌کدام» تنظیم شده باشد، تاثیری نخواهد داشت. این مورد به‌طور خودکار روی «درست» برای تکالیف تیم تنظیم می شود."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
-msgstr ""
+msgstr "انواع پرونده‌های بارگذاری‌شده"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
-msgstr ""
+msgstr "پی دی اف یا پرونده‌های تصویر"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
-msgstr ""
+msgstr "پرونده‌های تصویری"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
@@ -249,7 +249,7 @@ msgstr "انواع پرونده‌های سفارشی"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:66
 msgid ""
 "Specify whether learners can submit files along with their text responses."
-msgstr ""
+msgstr "مشخص کنید که آیا یادگیرندگان می‌توانند پرونده‌ها را همراه با پاسخ‌های متنی خود ارسال کنند یا خیر."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
 msgid "File Types"
@@ -265,7 +265,7 @@ msgstr "پسوندهای پرونده‌ای را که با کاما از هم �
 msgid ""
 "To add more file extensions, select Custom File Types and enter the full "
 "list of acceptable file extensions to be included."
-msgstr ""
+msgstr "برای افزودن پسوندهای پرونده بیشتر، «انواع پرونده سفارشی» را انتخاب کنید و فهرست کامل پسوندهای فایل قابل قبول را وارد کنید."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
@@ -283,7 +283,7 @@ msgstr "پاسخ‌های برتر"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
-msgstr ""
+msgstr "(غیرفعال‌شده)"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
@@ -294,7 +294,7 @@ msgstr "تعداد پاسخ‌ها با امتیازات برتر را برای 
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
-msgstr ""
+msgstr "وقتی «تیم‌ها فعال شده‌اند» روی گزینه درست تنظیم شود، «برترین پاسخ‌ها» غیرفعال می‌شود."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:129
 msgid "Teams Enabled"
@@ -306,7 +306,7 @@ msgstr "مشخص کنید که آیا ارسال تیم برای این پاسخ
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:141
 msgid "Select Team-Set"
-msgstr ""
+msgstr "مجموعه تیمی را انتخاب کنید"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
@@ -393,7 +393,7 @@ msgstr "برنامه زمان‌بندی"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:29
 msgid "Assessment steps"
-msgstr ""
+msgstr "گام‌های ارزیابی"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:36
 msgid "Settings"
@@ -424,18 +424,18 @@ msgid ""
 "Peer Assessment allows students to provide feedback to other students and "
 "also receive feedback from others in their final grade. Often, though not "
 "always, this step is preceded by Self Assessment or Learner Training steps."
-msgstr ""
+msgstr "ارزیابی همتا به یادگیرندگان امکان می‌دهد تا بازخورد خود را به سایر یادگیرندگان ارائه دهند و همچنین در نمره پایانی خود از دیگران بازخورد دریافت کنند. اغلب، هرچند نه همیشه، این مرحله پیش از مراحل خودارزیابی یا آموزش یادگیرنده است."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:18
 msgid ""
 "Configuration: For this step to be configured you must specify the number of"
 " peer reviews a student will be assessed with, and the number of peer a "
 "student must grade. Additional options can be specified."
-msgstr ""
+msgstr "پیکربندی: برای پیکربندی این مرحله، باید تعداد بررسی‌های همتا را مشخص کنید که یادگیرنده با آن‌ها ارزیابی می‌شود، و تعداد همتاهایی که یک فرد باید نمره دهد. گزینه‌های اضافی را می‌توان مشخص کرد."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:23
 msgid "View Options & Configuration"
-msgstr ""
+msgstr "مشاهده گزینه‌ها و پیکربندی"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
@@ -445,7 +445,7 @@ msgstr "نمره‌گذاری ضروری است"
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 1 to 99."
-msgstr ""
+msgstr "تعداد ارزیابی‌های همتا را مشخص کنید که هر یادگیرنده باید انجام دهد. اعداد معتبر از 1 تا 99 هستند."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
@@ -455,7 +455,7 @@ msgstr "نمره‌گذاری به‌دست"
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 1 to 99."
-msgstr ""
+msgstr "تعداد یادگیرندگانی را مشخص کنید که هر پاسخ باید توسط آنها ارزیابی شود. اعداد معتبر از 1 تا 99 هستند."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
@@ -469,7 +469,7 @@ msgstr "هنگامی که فعال می‌شود، یادگیرندگانی که
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
-msgstr ""
+msgstr "مهلت‌های ارزیابی همتایان"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:10
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:10
@@ -483,7 +483,7 @@ msgstr "زمان شروع"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
-msgstr ""
+msgstr "تاریخ و زمانی که یادگیرندگان می‌توانند ارزیابی پاسخ‌های همتایان را آغاز کنند."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
@@ -498,7 +498,7 @@ msgstr "زمان مقرر"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
-msgstr ""
+msgstr "تاریخ و زمانی که تمام ارزیابی‌های همتا باید کامل شود."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
@@ -552,7 +552,7 @@ msgstr "متن بازخورد را وارد کنید که یادگیرنده پ�
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:5
 msgid "Course Deadlines"
-msgstr ""
+msgstr "مهلت‌های دوره آموزشی"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:13
 msgid "Response Start Date"
@@ -590,15 +590,15 @@ msgstr "قسمت خودارزیابی از یادگیرندگان می‌خوا�
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:5
 msgid "Self Assessment Deadlines"
-msgstr ""
+msgstr "مهلت‌های خودارزیابی"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing their responses."
-msgstr ""
+msgstr "تاریخ و زمانی که یادگیرندگان می‌توانند ارزیابی پاسخ‌های خود را آغاز کنند."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:48
 msgid "The date and time when all self assessments must be complete."
-msgstr ""
+msgstr "تاریخ و زمانی که تمام ارزیابی‌های خود باید کامل شوند."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
@@ -608,7 +608,7 @@ msgstr "مرحله: ارزیابی کارکنان"
 msgid ""
 "Staff Assessment gates sets the final grade for students if enabled with "
 "other steps, though it can also be used as a standalone step."
-msgstr ""
+msgstr "دروازه‌های ارزیابی کارکنان، نمره نهایی را برای یادگیرندگان تعیین می‌کند، اگر با مراحل دیگر فعال باشد، اگرچه می‌توان از آن به‌عنوان یک مرحله مستقل نیز استفاده کرد."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
@@ -627,11 +627,11 @@ msgid ""
 "more graded sample responses. Learners must then match this instructor score"
 " to advance and are provided feedback when their score doesn't match the "
 "sample response."
-msgstr ""
+msgstr "پیکربندی: برای اینکه این مرحله به‌طور کامل پیکربندی شود، باید یک یا چند پاسخ نمونه بارم‌بندی‌شده ارائه دهید. سپس یادگیرندگان برای پیشرفت باید این امتیاز مربی را مطابقت دهند و زمانی که نمره آن‌ها با پاسخ نمونه مطابقت ندارد بازخورد دریافت کنند."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:22
 msgid "View / Add Sample Responses"
-msgstr ""
+msgstr "مشاهده / افزودن نمونه پاسخ‌ها"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
@@ -651,11 +651,11 @@ msgstr "برای شبیه‌سازی یک راهنمای امتیازدهی از
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"
-msgstr ""
+msgstr "شناسه بلاک برای این ORA:"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:19
 msgid "Block ID"
-msgstr ""
+msgstr "شناسه بلاک"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:21
 msgid "No other Open Response Assessments found in course"
@@ -663,7 +663,7 @@ msgstr "هیچ ارزیابی پاسخ-باز دیگری در دوره آموز�
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:31
 msgid "Clone"
-msgstr ""
+msgstr "کلون"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:37
 msgid "Rubric Successfully Cloned from Block ID: "
@@ -697,7 +697,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n%(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s%(grade)s%(end_tag)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
@@ -709,8 +709,8 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\n%(assessment_title)s - %(points)s نمره"
+msgstr[1] "\n%(assessment_title)s - %(points)s نمره"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -744,7 +744,7 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr ""
+msgstr "\n%(points_earned)s از کل %(points_possible)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
 #: openassessment/templates/openassessmentblock/response/oa_response.html:29
@@ -779,7 +779,7 @@ msgstr "ارزیابی پاسخ شما"
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "وضعیت"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
@@ -796,7 +796,7 @@ msgstr "نظرات بیشتر درباره پاسخ شما"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "ارائه بازخورد درباره ارزیابی همتایان"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
@@ -818,7 +818,7 @@ msgstr "هر بازخوردی در اینجا ارائه دهید، کارکنا
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "عبارات زیر را انتخاب کنید به‌طوری که بهترین منعکس‌کننده تجربه شما از ارزیابی همتایان باشد."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
@@ -892,11 +892,11 @@ msgstr "پاسخ‌های در دسترس نمره "
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr ""
+msgstr "نمره پاسخ‌های موجود در دسترس نیست. این مورد برای ارزیابی کارکنان پیکربندی نشده است."
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr ""
+msgstr "لطفا منتظر بمانید"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
@@ -917,7 +917,7 @@ msgstr "%(num_points)s امتیاز"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr ""
+msgstr "پاسخ همتای شما به درخواست بالا"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
@@ -930,56 +930,56 @@ msgid ""
 "Your team’s submission has been cancelled. Your team will receive a grade of"
 " zero unless course staff resets your assessment to allow the team to "
 "resubmit a response."
-msgstr ""
+msgstr "ارسال تیم شما لغو شده است. تیم شما نمره صفر دریافت خواهد کرد مگر اینکه کارکنان دوره ارزیابی شما را مجددا تنظیم کنند تا به تیم اجازه ارسال مجدد پاسخ داده شود."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:10
 msgid ""
 "Your submission has been cancelled. You will receive a grade of zero unless "
 "course staff resets your assessment to allow you to resubmit a response."
-msgstr ""
+msgstr "ارسال شما لغو شده است. شما نمره صفر دریافت خواهید کرد مگر اینکه کارکنان دوره آموزشی، ارزیابی شما را مجددا تنظیم کنند تا به شما اجازه ارسال مجدد پاسخ را بدهد."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:8
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "این کار هنوز در دسترس نیست. پس از بازشدن این بخش، دوباره بررسی کرده و تکلیف را تکمیل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr ""
+msgstr "این تکلیف بسته شده است. یک یا چند مهلت، برای انجام این تکلیف، گذشته است. برای این تکلیف، نمره ناقص دریافت خواهید کرد."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr ""
+msgstr "شما این تکلیف را انجام داده‌اید. نمره نهایی شما زمانی در دسترس خواهد بود که ارزیابی پاسخ شما کامل شود."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "شما این تکلیف را انجام داده‌اید. نمره و جزئیات ارزیابی خود را مرور کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "این تکلیف در حال انجام است. آموزش یادگیرندگان به‌زودی تعطیل خواهد شد. برای ادامه، مرحله آموزش یادگیرنده را کامل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "این تکلیف در حال انجام است. برای ادامه، مرحله آموزش یادگیرنده را کامل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "این تکلیف در حال انجام است. بعداً وقتی دوره ارزیابی شروع شد، دوباره بررسی کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
@@ -987,7 +987,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n%(start_strong)sاین تکلیف در حال انجام است. مرحله خودارزیابی به‌زودی بسته می‌شود.%(end_strong)s هنوز باید مرحله%(start_link)s ارزیابی%(end_link)sرا تکمیل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
@@ -995,7 +995,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n این تکلیف در حال انجام است. هنوز باید مرحله %(start_link)sخود ارزیابی%(end_link)s را تکمیل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -1003,7 +1003,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n این تکلیف در حال انجام است.%(start_strong)sمرحله ارزیابی همتا به‌زودی بسته می‌شود.%(end_strong)sهمه پاسخ‌های ارسالی همتا ارزیابی شده‌اند. بعداً دوباره بررسی کنید تا ببینید آیا یادگیرندگان بیشتری پاسخ‌هایی را ارسال کرده‌اند یا خیر. هنوز باید مرحله ارزیابی%(start_link)s%(end_link)sرا کامل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -1011,7 +1011,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n این تکلیف در حال انجام است. همه پاسخ های ارسالی همتایان ارزیابی شده است. بعداً دوباره بررسی کنید تا ببینید آیا یادگیرندگان بیشتری، پاسخ‌های خود را ارسال کرده‌اند یا خیر. هنوز باید مرحله%(start_link)sارزیابی همتا%(end_link)s را کامل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -1019,7 +1019,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n این تکلیف در حال انجام است. %(start_strong)sمرحله ارزیابی همتا به‌زودی بسته می‌شود.%(end_strong)sهنوز باید مرحله %(start_link)s ارزیابی%(end_link)s را تکمیل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
@@ -1027,11 +1027,11 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n این تکلیف در حال انجام است. هنوز باید مرحله%(start_link)sارزیابی همتا%(end_link)sرا کامل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:4
 msgid "Team membership is required to view this assignment"
-msgstr ""
+msgstr "عضویت تیم برای مشاهده این تکلیف الزامی است"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:7
 #, python-format
@@ -1041,7 +1041,7 @@ msgid ""
 "            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
 "            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
 "            "
-msgstr ""
+msgstr "\nاین یک تکلیف تیمی برای مجموعه تیمی \"%(teamset_name)s\" است.\n شما در حال حاضر در تیمی در مجموعه تیمی \"%(teamset_name)ss\" نیستید، \nبرای دسترسی به این تکلیف تیم باید در تیمی در مجموعه تیم \"%(teamset_name)s\" باشید...."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -1049,7 +1049,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n ارسال تکالیف به‌زودی بسته خواهد شد. برای دریافت نمره، ابتدا به درخواست پاسخ دهید، سپس مراحل زیر قسمت %(start_tag)sپاسخ شما %(end_tag)s را کامل کنید."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -1057,7 +1057,7 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr ""
+msgstr "\n این تکلیف چندین مرحله دارد. در مرحله اول،  به درخواست پاسخ می‌دهید. سایر مراحل در زیرقسمت %(start_tag)s پاسخ شما%(end_tag)s ظاهر می‌شود."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
@@ -1072,7 +1072,7 @@ msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "این تکلیف چندین مرحله دارد. در مرحله اول، پاسخی به درخواست ارائه می‌دهید. سایر مراحل در زیر قسمت «پاسخ شما» ظاهر می‌شود."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
@@ -1084,7 +1084,7 @@ msgstr "پیش‌نمایش در لاتکس"
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "برای پیش‌نمایش مطالب ارسالی خود در LaTeX کلیک کنید."
 
 #: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
 msgid "Preview Response"
@@ -1096,16 +1096,16 @@ msgstr "نظرات"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr ""
+msgstr "سوال این بخش"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
 msgid "Files that were uploaded by your teammates:"
-msgstr ""
+msgstr "پرونده‌هایی که توسط هم‌تیمی‌های شما بارگذاری شده‌اند:"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
-msgstr ""
+msgstr "مشاهده پرونده‌های مرتبط با این ارسال:"
 
 #: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:31
 msgid "Uploaded by"
@@ -1113,14 +1113,14 @@ msgstr "بارگذاری شده توسط"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
-msgstr ""
+msgstr "پرونده‌هایی که توسط شما بارگذاری شده‌اند:"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr ""
+msgstr "احتیاط: این پرونده‌ها توسط یک یادگیرنده دوره آموزشی دیگر بارگذاری شده‌اند و توسط مدیر وبگاه، غربالگری، اثبات، بررسی یا تایید نشده‌اند. اگر به پرونده‌ها دسترسی دارید، این کار را با مسئولیت خود انجام می‌دهید.)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:26
 msgid "Assess Peers"
@@ -1135,7 +1135,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -1146,7 +1146,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
@@ -1154,7 +1154,7 @@ msgid ""
 "\n"
 "                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                "
-msgstr ""
+msgstr "\nدر حال پیشرفت (%(review_number)s از %(num_must_grade)s)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:65
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:45
@@ -1168,7 +1168,7 @@ msgstr "پاسخ‌های یکی از همکاران خود را بخوانید 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:38
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:63
 msgid "Associated Files"
-msgstr ""
+msgstr "پرونده‌های مرتبط"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:91
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
@@ -1199,7 +1199,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "تاریخ سررسید این مرحله به پایان رسیده است. این مرحله اکنون بسته می‌شود. دیگر امکان تکمیل ارزیابی‌های همتا را ندارید یا به این تکلیف ادامه می‌دهید و نمره ناقص دریافت خواهید کرد."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
@@ -1235,7 +1235,7 @@ msgstr "\nکامل (%(num_graded)s)"
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr ""
+msgstr "همه پاسخ‌های ارسالی همتایان ارزیابی شده است. بعداً دوباره بررسی کنید تا ببینید آیا یادگیرندگان بیشتری پاسخ‌های خود را ارسال کرده‌اند یا خیر."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
@@ -1252,7 +1252,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\nدر حال پیشرفت (%(review_number)s از %(num_must_grade)s)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:37
 msgid ""
@@ -1260,7 +1260,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "همه پاسخ‌های همتایان موجود ارزیابی شده است. بعداً دوباره بررسی کنید تا ببینید آیا یادگیرندگان بیشتری پاسخ‌های خود را ارسال کرده‌اند یا خیر. بعد از اینکه تمام مراحل این مساله را کامل کردید و همتایانتان پاسخ شما را ارزیابی کردند، نمره خود را دریافت خواهید کرد."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:27
 msgid "Your Team's Response"
@@ -1275,7 +1275,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1286,7 +1286,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:54
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
@@ -1295,37 +1295,37 @@ msgstr "درحال پیشرفت"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:66
 msgid "Enter your team's response to the prompt."
-msgstr ""
+msgstr "پاسخ تیم خود به این درخواست را وارد کنید."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:68
 msgid ""
 "\n"
 "                        You can save your progress and return to complete your team's response at any time before the due date\n"
 "                      "
-msgstr ""
+msgstr "\nمی‌توانید پیشرفت خود را ذخیره کنید و در هر زمانی پیش از موعد مقرر، برای تکمیل پاسخ تیم خود بازگردید."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:81
 msgid ""
 "\n"
 "                        You can save your progress and return to complete your team's response at any time.\n"
 "                      "
-msgstr ""
+msgstr "\nشما می‌توانید پیشرفت خود را ذخیره کنید و در هر زمان برای تکمیل پاسخ تیم خود بازگردید."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:86
 msgid ""
 "After you submit a response on behalf of your team, it cannot be edited"
-msgstr ""
+msgstr "پس از ارسال پاسخ از طرف تیم خود، امکان ویرایش آن نیست"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:89
 msgid "Enter your response to the prompt."
-msgstr ""
+msgstr "پاسخ خود را به درخواست وارد کنید."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:91
 msgid ""
 "\n"
 "                        You can save your progress and return to complete your response at any time before the due date\n"
 "                      "
-msgstr ""
+msgstr "\nشما می‌توانید پیشرفت خود را ذخیره کرده و در هر زمانی قبل از موعد مقرر، برای تکمیل پاسخ خود بازگردید"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid ""
@@ -1342,15 +1342,15 @@ msgstr "این تکلیف بر چه اساس نمره‌گذاری خواهد ش
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:130
 msgid "The prompt for this section"
-msgstr ""
+msgstr "درخواست این بخش"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:144
 msgid "You are on team "
-msgstr ""
+msgstr "شما در تیم هستید"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:146
 msgid "Team Members: "
-msgstr ""
+msgstr "اعضای تیم:"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:151
 #, python-format
@@ -1360,20 +1360,20 @@ msgid ""
 "                                              have/has already submitted a response to this assignment with another team,\n"
 "                                              and will not be a part of your team's submission or assignment grade.\n"
 "                                          "
-msgstr ""
+msgstr "\n%(team_members_with_external_submissions)s\nقبلاً پاسخی به این تکلیف\n از سوی تیم دیگری ارسال کرده‌اند، \nو بخشی از امتیاز\n ارسال یا تکلیف تیم شما محسوب نخواهد شد."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:167
 msgid "Team Response "
-msgstr ""
+msgstr "پاسخ تیم"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:169
 msgid "Your Response "
-msgstr ""
+msgstr "پاسخ شما"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:173
 #: openassessment/templates/openassessmentblock/response/oa_response.html:244
 msgid "(Required)"
-msgstr ""
+msgstr "(الزامی)"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:175
 #: openassessment/templates/openassessmentblock/response/oa_response.html:246
@@ -1389,11 +1389,11 @@ msgid ""
 "                                              please coordinate with them to decide on the final response the designated team\n"
 "                                              member should submit.\n"
 "                                          "
-msgstr ""
+msgstr "\nتیم‌ها باید یک عضو تیم را برای ارسال پاسخ، از طرف\n کل تیم تعیین کنند.همه اعضای تیم می‌توانند\n از این فضا برای کار بر روی پیش‌نویس پاسخ‌ها\nبهره ببرند، اما شما امکان مشاهده \nپیش‌نویس‌های \nهم‌تیمی‌های خود را در این فضا ندارید، بنابراین \nلطفاً برای تصمیم‌گیری درباره پاسخ نهایی که عضو تعیین‌شده\n باید ارسال کند، با آن‌ها هماهنگ کنید. ."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:194
 msgid "Enter your response to the prompt above."
-msgstr ""
+msgstr "پاسخ خود را به درخواست بالا وارد کنید."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:208
 #, python-format
@@ -1421,7 +1421,7 @@ msgstr "وضعیت ارسال "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:242
 msgid "File Uploads "
-msgstr ""
+msgstr "پرونده بارگذاری‌می‌شود"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:250
 msgid ""
@@ -1433,7 +1433,7 @@ msgstr "\n                                   پرونده‌ها را بارگذ
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:258
 msgid "We could not upload files"
-msgstr ""
+msgstr "ما نتوانستیم پرونده‌ها را بارگذاری کنیم"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:264
 msgid "We could not delete files"
@@ -1441,7 +1441,7 @@ msgstr "قادر به حذف این پرونده‌ها نیستیم"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:271
 msgid "Select one or more files to upload for this submission."
-msgstr ""
+msgstr "یک یا چند پرونده را برای بارگذاری در این ارسال انتخاب کنید."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:273
 msgid "Select a file to upload for this submission."
@@ -1449,11 +1449,11 @@ msgstr "پرونده‌ای برای بارگذاری این ارسال برگز
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:278
 msgid "Supported file types: "
-msgstr ""
+msgstr "انواع پرونده‌های پشتیبانی‌شده:"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:282
 msgid "Upload files"
-msgstr ""
+msgstr "بارگذاری پرونده‌ها"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:284
 msgid "Upload file"
@@ -1465,28 +1465,28 @@ msgstr " تا زمانی که پاسخ خود را ارسال نکرده‌ای�
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:306
 msgid "This is a team submission."
-msgstr ""
+msgstr "این ارسال مربوط به یک تیم است."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:308
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
-msgstr ""
+msgstr "یکی از اعضای تیم باید پاسخی با پرونده‌های به‌اشتراک‌گذاشته شده تیم و  پاسخ متنی از طرف کل تیم، ارسال کند."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:310
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
-msgstr ""
+msgstr "یکی از اعضای تیم باید از طرف کل تیم پاسخی را با پرونده‌های مشترک تیم ارسال کند."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:312
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
-msgstr ""
+msgstr "یک عضو تیم باید یک پاسخ متنی از طرف کل تیم ارسال کند."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:314
 msgid "One team member should submit on behalf of the entire team."
-msgstr ""
+msgstr "یک عضو تیم باید به نمایندگی از کل تیم، مسوولیت ارسال  را برعهده بگیرد."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:316
 msgid ""
@@ -1505,7 +1505,7 @@ msgstr "پاسخ خود را ارسال کنید و به مرحله بعد بر�
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "ارسال شما لغو شد."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:37
 #, python-format
@@ -1521,7 +1521,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\n ارسال شما در %(removed_datetime)s لغو شد"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:48
 #, python-format
@@ -1543,7 +1543,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr ""
+msgstr "تاریخ سررسید این مرحله به پایان رسیده است. این مرحله اکنون بسته می‌شود. دیگر امکان ارسال پاسخ را ندارید یا به این مساله ادامه دهید و نمره ناقص دریافت خواهید کرد. اگر آن را ذخیره کرده‌اید اما پاسخی ارسال نکرده‌اید، پاسخ در سوابق دوره آموزشی ظاهر می‌شود."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:20
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
@@ -1558,18 +1558,18 @@ msgstr "کامل"
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
-msgstr ""
+msgstr "پاسخ شما"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr ""
+msgstr "پرونده‌های بارگذاری‌شده شما"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:32
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr ""
+msgstr "پاسخ شما ارسال شد. پس از تکمیل تمام مراحل و ارزیابی کامل پاسخ شما، نمره خود را دریافت خواهید کرد."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:34
 #, python-format
@@ -1608,7 +1608,7 @@ msgid ""
 "                            a response to this assignment with another team. Please contact course staff to discuss your\n"
 "                            options for this assignment.\n"
 "                        "
-msgstr ""
+msgstr "\nشما به تیم %(team_name)s پس از ارسال پاسخی برای این تکلیف \nپیوستید و برای پاسخ آنها نمره‌\n دریافت نخواهید کرد. \nهمچنین قبلاً پاسخی به این تکلیف با تیم دیگری ارسال نکرده‌اید.\n لطفاً با کارکنان دوره آموزشی تماس بگیرید تا درباره گزینه‌های خود برای این تکلیف صحبت کنید."
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
@@ -1623,7 +1623,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1634,7 +1634,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:78
 msgid "Submit your assessment"
@@ -1645,7 +1645,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "تاریخ سررسید این مرحله به پایان رسیده است. این مرحله اکنون بسته می‌شود. شما دیگر  امکان تکمیل خود ارزیابی را ندارید یا به این تکلیف ادامه می‌دهید و نمره ناقص دریافت خواهید کرد."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:361
@@ -1659,7 +1659,7 @@ msgstr "مدیریت یادگیرندگان"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:10
 msgid "Manage Team Responses"
-msgstr ""
+msgstr "مدیریت پاسخ‌های تیم"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:71
@@ -1672,7 +1672,7 @@ msgstr "نمایش تجربه نمره‌دهی جدید "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
-msgstr ""
+msgstr "مشاهده ORA  در هنرکده"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:31
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:69
@@ -1682,7 +1682,7 @@ msgstr "بستن"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
-msgstr ""
+msgstr "مدیریت تیم‌ها"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:50
 msgid "Enter an individual learner's username or email"
@@ -1690,7 +1690,7 @@ msgstr "نام‌کاربری یادگیرنده یا نشانی رایانام�
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:52
 msgid "Enter a team member's username or edX email"
-msgstr ""
+msgstr "نام کاربری یا نشانی اینترنتی ادکس، یکی از اعضای تیم را وارد کنید"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:56
 msgid "Submit"
@@ -1748,7 +1748,7 @@ msgid ""
 "\n"
 "                                        Response for: %(team_name)s with %(team_usernames)s\n"
 "                                    "
-msgstr ""
+msgstr "\nپاسخ برای: %(team_name)s با %(team_usernames)s"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
@@ -1766,13 +1766,13 @@ msgstr "پاسخ یادگیرنده"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
 msgid "The teams's response to the prompt above"
-msgstr ""
+msgstr "پاسخ تیم‌ها به درخواست بالا"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:32
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
-msgstr ""
+msgstr "پاسخ یادگیرنده به درخواست بالا"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
@@ -1801,12 +1801,12 @@ msgstr "با استفاده از راهنمای امتیازدهی، نمره ا
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 msgid "Team Response"
-msgstr ""
+msgstr "پاسخ تیم"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
 msgid "The team's response to the prompt above"
-msgstr ""
+msgstr "پاسخ تیم به درخواست بالا"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:11
 #, python-format
@@ -1814,7 +1814,7 @@ msgid ""
 "\n"
 "                    Viewing learner: %(learner)s\n"
 "                "
-msgstr ""
+msgstr "\nمشاهده یادگیرنده: %(learner)s"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:15
 #, python-format
@@ -1822,7 +1822,7 @@ msgid ""
 "\n"
 "                    Viewing team: %(team)s\n"
 "                "
-msgstr ""
+msgstr "\nمشاهده تیم: %(team)s"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
@@ -1830,7 +1830,7 @@ msgstr "پاسخ یادگیرنده"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
 msgid "Team's Response"
-msgstr ""
+msgstr "پاسخ تیم"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
@@ -1874,7 +1874,7 @@ msgstr "ارزیابی کارکنان از این یادگیرنده"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
 msgid "Staff Assessment for this Team"
-msgstr ""
+msgstr "ارزیابی کارکنان برای این تیم"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
@@ -1882,7 +1882,7 @@ msgstr "نمره نهایی یادگیرنده"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
-msgstr ""
+msgstr "نمره نهایی تیم"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
@@ -1929,7 +1929,7 @@ msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
 " allow the team to resubmit a response."
-msgstr ""
+msgstr "ارسالی تیم از نمره‌دهی حذف شده است. تیم، نمره صفر دریافت می‌کند، مگر اینکه وضعیت یکی از اعضای تیم را برای این مساله حذف کنید تا به تیم اجازه ارسال دوباره پاسخ را بدهید."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
@@ -1945,24 +1945,24 @@ msgstr "ارسال رد نمره ارزیابی"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
 msgid "Submit Team Grade Override"
-msgstr ""
+msgstr "ارسال نادیده‌انگاری نمره تیم "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
 msgid "Unable to perform grade override"
-msgstr ""
+msgstr "لغو نمره انجام نشد"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:207
 msgid ""
 "Grades are frozen. Grades are automatically frozen 30 days after the course "
 "end date."
-msgstr ""
+msgstr "نمره‌ها ثابت شده است. آن‌ها به‌طور خودکار 30 روز پس از تاریخ پایان دوره آموزشی ثابت می‌شوند."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid ""
 "This submission has been cancelled and cannot recieve a grade. Refer to "
 "documentation for how to delete the learner’s state for this problem to "
 "allow them to resubmit."
-msgstr ""
+msgstr "این ارسال لغو شده است و نمی‌تواند نمره دریافت کند. برای نحوه حذف وضعیت یادگیرنده برای این مشکل، به مستندات مراجعه کنید تا به آن‌ها اجازه ارسال داده شود."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:230
 msgid "Remove Submission From Peer Grading"
@@ -1970,7 +1970,7 @@ msgstr "حذف ارسال از نمره همتا"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:232
 msgid "Remove Team Submission from Grading"
-msgstr ""
+msgstr "حذف ارسال تیم از نمره‌بندی "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:242
 msgid "Caution: This Action Cannot Be Undone"
@@ -1986,7 +1986,7 @@ msgstr "حذف ارسال یادگیرنده قابل بازگرد نیست و �
 msgid ""
 "Removing a team's submission cannot be undone and should be done with "
 "caution."
-msgstr ""
+msgstr "حذف ارسال تیم، قابل لغو نیست و باید با احتیاط انجام شود."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:252
 msgid "Comments:"
@@ -2034,7 +2034,7 @@ msgid ""
 "\n"
 "                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                  "
-msgstr ""
+msgstr "\nدر حال پیشرفت (%(current_progress_num)s از %(training_available_num)s)"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -2045,7 +2045,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -2056,7 +2056,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr ""
+msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:58
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:66
@@ -2081,7 +2081,7 @@ msgstr "ارزیابی شما با ارزیابی مربی متفاوت است. 
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:76
 msgid "The response to the prompt above:"
-msgstr ""
+msgstr "پاسخ به درخواست بالا:"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
@@ -2113,7 +2113,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
-msgstr ""
+msgstr "تاریخ سررسید این مرحله به پایان رسیده است. این مرحله اکنون بسته می‌شود. دیگر امکان ادامه تکلیف را ندارید و نمره ناقص دریافت خواهید کرد."
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
@@ -2201,30 +2201,30 @@ msgstr "همکار"
 
 #: openassessment/xblock/grade_mixin.py:651
 msgid "The grade for this problem is determined by your Staff Grade."
-msgstr ""
+msgstr "نمره این مساله با نمره کارکنان شما تعیین می‌شود."
 
 #: openassessment/xblock/grade_mixin.py:653
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
-msgstr ""
+msgstr "نمره این مساله با میانگین نمره ارزیابی همتایان شما تعیین می‌شود."
 
 #: openassessment/xblock/grade_mixin.py:656
 msgid "The grade for this problem is determined by your Self Assessment."
-msgstr ""
+msgstr "نمره این مساله توسط خودسنجی شما تعیین می‌شود."
 
 #: openassessment/xblock/grade_mixin.py:662
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
-msgstr ""
+msgstr "شما این مساله را با موفقیت تکمیل کرده و {earned_points}/{total_points} دریافت کردید."
 
 #: openassessment/xblock/grade_mixin.py:670
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
-msgstr ""
+msgstr "شما هنوز تمام بررسی‌های لازم برای تعیین نمره نهایی خود را دریافت نکرده‌اید."
 
 #: openassessment/xblock/openassesment_template_mixin.py:19
 msgid "Peer Assessment Only"
@@ -2232,19 +2232,19 @@ msgstr "فقط ارزیابی همتا"
 
 #: openassessment/xblock/openassesment_template_mixin.py:20
 msgid "Self Assessment Only"
-msgstr ""
+msgstr "فقط خودسنجی"
 
 #: openassessment/xblock/openassesment_template_mixin.py:21
 msgid "Staff Assessment Only"
-msgstr ""
+msgstr "فقط خودسنجی"
 
 #: openassessment/xblock/openassesment_template_mixin.py:22
 msgid "Self Assessment to Peer Assessment"
-msgstr ""
+msgstr "خودسنجی به ارزیابی همتا"
 
 #: openassessment/xblock/openassesment_template_mixin.py:23
 msgid "Self Assessment to Staff Assessment"
-msgstr ""
+msgstr "خودسنجی به ارزیابی کارکنان"
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
@@ -2403,11 +2403,11 @@ msgstr "دلیلی معتبر برای حذف این تایید بنویسید."
 
 #: openassessment/xblock/staff_area_mixin.py:683
 msgid "Submission not found"
-msgstr ""
+msgstr "ارسالی یافت نشد"
 
 #: openassessment/xblock/staff_area_mixin.py:694
 msgid "Submission for team assignment has no associated team submission"
-msgstr ""
+msgstr "ارسال، برای تکلیف تیم هیچ ارسال تیمی مرتبطی ندارد"
 
 #: openassessment/xblock/staff_area_mixin.py:721
 msgid ""
@@ -2421,7 +2421,7 @@ msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
-msgstr ""
+msgstr "ارسالی تیم از نمره‌بندی حذف شده‌است. تیم، نمره صفر دریافت می‌کند مگر اینکه وضعیت یکی از اعضای تیم را برای مشکل حذف کنید تا به تیم اجازه ارسال مجدد پاسخ داده شود."
 
 #: openassessment/xblock/staff_assessment_mixin.py:46
 #: openassessment/xblock/staff_assessment_mixin.py:88
@@ -2436,7 +2436,7 @@ msgstr "امکان ارسال ارزیابی کارکنان شما نیست."
 #: openassessment/xblock/staff_assessment_mixin.py:116
 #: openassessment/xblock/staff_assessment_mixin.py:124
 msgid "Your team assessment could not be submitted."
-msgstr ""
+msgstr "ارزیابی تیم شما ارسال نشد."
 
 #: openassessment/xblock/staff_assessment_mixin.py:190
 msgid "Waiting for a Staff Grade"
@@ -2479,17 +2479,17 @@ msgstr "خطا هنگام روزآمدسازی پیکربندی XBlock"
 
 #: openassessment/xblock/studio_mixin.py:241
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr ""
+msgstr "خطا: پاسخ متن و پاسخ بارگذاری پرونده، هر دو نمی‌توانند غیرفعال باشند"
 
 #: openassessment/xblock/studio_mixin.py:245
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
-msgstr ""
+msgstr "خطا: وقتی پاسخ متن غیرفعال است، پاسخ بارگذاری پرونده باید الزامی باشد"
 
 #: openassessment/xblock/studio_mixin.py:248
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
-msgstr ""
+msgstr "خطا: وقتی پاسخ بارگذاری پرونده غیرفعال است، پاسخ متنی باید الزامی باشد"
 
 #: openassessment/xblock/studio_mixin.py:272
 #, python-brace-format
@@ -2524,7 +2524,7 @@ msgstr "توجه: اگر در مرورگر خود نرم‌افزار بررسی
 
 #: openassessment/xblock/submission_mixin.py:200
 msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr ""
+msgstr "ارسال نمی‌تواند خالی باشد. لطفا صفحه را مجددا بارگذاری کرده و دوباره تلاش کنید."
 
 #: openassessment/xblock/submission_mixin.py:210
 msgid "API returned unclassified exception."
@@ -2540,124 +2540,124 @@ msgstr "این پاسخ ارسال نشد."
 
 #: openassessment/xblock/submission_mixin.py:281
 msgid "Files descriptions were not submitted."
-msgstr ""
+msgstr "توضیحات پرونده‌ها ارسال نشد."
 
 #: openassessment/xblock/submission_mixin.py:320
 msgid "Files metadata could not be saved."
 msgstr "ابرداده‌های پرونده‌ها را نمی‌توان ذخیره کرد."
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:472
 msgid "There was an error uploading your file."
 msgstr "خطایی در بارگذاری پرونده مورد نظر شما رخ داد."
 
-#: openassessment/xblock/submission_mixin.py:478
+#: openassessment/xblock/submission_mixin.py:484
 msgid "Only a single file upload is allowed for this assessment."
-msgstr ""
+msgstr "فقط بارگذاری یک پرونده برای این ارزیابی مجاز است."
 
-#: openassessment/xblock/submission_mixin.py:489
+#: openassessment/xblock/submission_mixin.py:495
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
-msgstr ""
+msgstr "بارگذاری پرونده انجام نشد: نوع پرونده پشتیبانی نمی‌شود. فقط انواع پرونده‌های پشتیبانی شده قابل بارگذاری هستند. اگر سوالی دارید، لطفاً با تیم دوره آموزشی تماس بگیرید."
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:508
 msgid "Error retrieving upload URL."
 msgstr "خطا در بازیابی بارگذاری نشانی اینترنتی"
 
-#: openassessment/xblock/submission_mixin.py:777
+#: openassessment/xblock/submission_mixin.py:790
 msgid "This response has been saved but not submitted."
 msgstr "پاسخ ذخیره شده ولی ارسال نشده است."
 
-#: openassessment/xblock/submission_mixin.py:778
+#: openassessment/xblock/submission_mixin.py:791
 msgid "This response has not been saved."
 msgstr "این پاسخ ذخیره نشد"
 
-#: openassessment/xblock/validation.py:117
+#: openassessment/xblock/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "این مسئله باید شامل حداقل یک ارزیابی باشد."
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "ترتیب ارزیابی انتخابی شما معتبر نیست."
 
-#: openassessment/xblock/validation.py:131
+#: openassessment/xblock/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "در ارزیابی همتایان، مقدار «نمره» باید عددی صحیح و مثبت باید باشد."
 
-#: openassessment/xblock/validation.py:134
+#: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "در ارزیابی همتایان، مقدار \"نمره‌دهی به‌دست\" باید عددی صحیح ومثبت باشد."
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "در ارزیابی همتایان، مقدار \"نمره‌\" باید بیشتر یا مساوی با مقدار \"نمره‌دهی به دست\" باشد."
 
-#: openassessment/xblock/validation.py:147
+#: openassessment/xblock/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "شما باید حداقل یک نمونه پاسخ برای آموزش یادگیرنده ارائه دهید."
 
-#: openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "هر پاسخ نمونه برای آموزش یادگیرنده باید منحصربه‌فرد باشد."
 
-#: openassessment/xblock/validation.py:157
+#: openassessment/xblock/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "اگر ارزیابی کارکنان تنها مرحله باشد، مقدار \"الزامی\" باید روی گزینه «درست» تنظیم شود."
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "پس از انتشار مسئله، تعداد ارزیابی‌ها قابل تغییر نیست."
 
-#: openassessment/xblock/validation.py:166
+#: openassessment/xblock/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "پس از انتشار مسئله، نوع ارزیابی قابل تغییر نیست."
 
-#: openassessment/xblock/validation.py:189
+#: openassessment/xblock/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "این تعریف از راهنمای امتیازدهی معتبر نیست."
 
-#: openassessment/xblock/validation.py:195
+#: openassessment/xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "مواردی که در '{criterion}' نام‌(های) تکراری دارند: {duplicates}"
 
-#: openassessment/xblock/validation.py:203
+#: openassessment/xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "معیارهایی بدون گزینه نیاز به بازخورد کتبی دارد."
 
-#: openassessment/xblock/validation.py:212
+#: openassessment/xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "پس از رفع مشکل امکان درخواست یا حذف نیست."
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "پس از انتشار مسئله، تعداد معیارها قابل تغییر نیست."
 
-#: openassessment/xblock/validation.py:229
+#: openassessment/xblock/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "نام معیارها را نمی‌توان پس از رفع مشکل تغییر داد"
 
-#: openassessment/xblock/validation.py:234
+#: openassessment/xblock/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "پس از انتشار مسئله، تعداد موارد قابل تغییر نیست."
 
-#: openassessment/xblock/validation.py:239
+#: openassessment/xblock/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "پس از انتشار مسئله، مقادیر امتیازات قابل تغییر نیست."
 
-#: openassessment/xblock/validation.py:290
+#: openassessment/xblock/validation.py:291
 msgid "Learner training must have at least one training example."
-msgstr ""
+msgstr "آموزش یادگیرنده باید حداقل یک نمونه آموزشی داشته باشد."
 
-#: openassessment/xblock/validation.py:355
+#: openassessment/xblock/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "جدول امتیازات معتبر نیست."
 
-#: openassessment/xblock/validation.py:378
+#: openassessment/xblock/validation.py:379
 msgid "The submission format is invalid."
 msgstr "قالب ارسال معتبر نیست."

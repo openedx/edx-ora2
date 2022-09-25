@@ -2,13 +2,15 @@
 # edX translation file
 # Copyright (C) 2018 edX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-#
+# 
 # Translators:
+# Diana Huang <dkh@edx.org>, 2022
 # danicabliznakinja <dmbliznakinje@yahoo.co.uk>, 2014
 # Domenico Casanica <domenico.casanica@sistinf.it>, 2021
 # Ilaria Botti <ilabotti@gmail.com>, 2022
 # irmavep <katiatolone@yahoo.it>, 2014
 # Mauri Macera, 2021
+# Ned Batchelder <ned@edx.org>, 2022
 # Nicola Moretto <nicolamoretto88@gmail.com>, 2014
 # Nicola Cois <nicolacois@hotmail.com>, 2014
 # Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2021
@@ -16,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 08:54-0400\n"
+"POT-Creation-Date: 2022-09-25 14:41-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Ilaria Botti <ilabotti@gmail.com>, 2022\n"
+"Last-Translator: Diana Huang <dkh@edx.org>, 2022\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1408,7 +1410,7 @@ msgid ""
 "                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
 "                                      receive a grade for their submission.\n"
 "                                  "
-msgstr "\n                                      Attualmente sei nel Team %(team_name)s. Poiché eri nel Team %(previous_team_name)s quando hanno inviato una risposta a questo compito, stai vedendo la risposta del Team %(previous_team_name)s e riceverai lo stesso voto per questo compito dei tuoi ex compagni di squadra. Non farai parte dell&#39;invio del Team %(team_name)s per questo compito e non riceverai un voto per il suo invio."
+msgstr "\nAttualmente sei nel Team %(team_name)s. Poiché eri nel Team %(previous_team_name)s \nquando hanno inviato una risposta a questo compito, stai vedendo la risposta del Team %(previous_team_name)s\n e riceverai lo stesso voto per questo compito dei tuoi ex compagni di squadra. \nNon farai parte dell&#39;invio del Team %(team_name)s per questo compito e non riceverai\n un voto per il suo invio."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:221
 msgid "We could not save your progress"
@@ -1432,7 +1434,7 @@ msgid ""
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
 "                                  descriptions to your files to help your teammates identify them.\n"
 "                              "
-msgstr "\n                                  Carica file e rivedi i file caricati da te e dai tuoi compagni di squadra di seguito. Assicurati di aggiungere descrizioni ai tuoi file per aiutare i tuoi compagni di squadra a identificarli."
+msgstr "\nCarica file e rivedi i file caricati da te e dai tuoi compagni di squadra di seguito. Assicurati di aggiungere descrizioni ai tuoi file per aiutare i tuoi compagni di squadra a identificarli."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:258
 msgid "We could not upload files"
@@ -1496,7 +1498,7 @@ msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
-msgstr "\n                  Scopri di più sugli incarichi di squadra qui: ( <a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a> )"
+msgstr "\nScopri di più sugli incarichi di squadra qui: ( <a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a> )"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:324
 msgid "We could not submit your response"
@@ -2550,118 +2552,118 @@ msgstr "Descrizioni dei file non inoltrate. "
 msgid "Files metadata could not be saved."
 msgstr "Impossibile salvare i metadati dei file. "
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:472
 msgid "There was an error uploading your file."
 msgstr "C'è stato un errore nel caricamento del tuo file."
 
-#: openassessment/xblock/submission_mixin.py:478
+#: openassessment/xblock/submission_mixin.py:484
 msgid "Only a single file upload is allowed for this assessment."
 msgstr "Per questa valutazione è consentito solo un singolo caricamento file. "
 
-#: openassessment/xblock/submission_mixin.py:489
+#: openassessment/xblock/submission_mixin.py:495
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr "Caricamento file non riuscito: tipo di file non supportato. È possibile caricare solo i tipi di file supportati. In caso di domande, rivolgersi al team del corso. "
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:508
 msgid "Error retrieving upload URL."
 msgstr "Errore durante il richiamo dell'URL di caricamento. "
 
-#: openassessment/xblock/submission_mixin.py:777
+#: openassessment/xblock/submission_mixin.py:790
 msgid "This response has been saved but not submitted."
 msgstr "Questa risposta è stata salvata, ma non è stata sottoposta."
 
-#: openassessment/xblock/submission_mixin.py:778
+#: openassessment/xblock/submission_mixin.py:791
 msgid "This response has not been saved."
 msgstr "Questa risposta non è stata salvata."
 
-#: openassessment/xblock/validation.py:117
+#: openassessment/xblock/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "Questo problema deve includere almeno una valutazione. "
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "L'ordine della valutazione selezionato non è valido. "
 
-#: openassessment/xblock/validation.py:131
+#: openassessment/xblock/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Nella valutazione dei colleghi, il valore \"Deve valutare\" deve essere un intero positivo. "
 
-#: openassessment/xblock/validation.py:134
+#: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Nella valutazione dei colleghi, il valore \"Valutato da\" deve essere un intero positivo. "
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Nella valutazione dei colleghi, il valore \"Deve valutare\" deve essere maggiore o uguale al valore \"Valutato da\". "
 
-#: openassessment/xblock/validation.py:147
+#: openassessment/xblock/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "È necessario fornire almeno una risposta di esempio per l'addestramento dello studente. "
 
-#: openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "Ciascuna risposta di esempio per l'addestramento dello studente deve essere univoca. "
 
-#: openassessment/xblock/validation.py:157
+#: openassessment/xblock/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "Il valore \"required\" deve essere true se la valutazione dello staff è l'unico passo. "
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Il numero di valutazioni non può essere modficato in seguito alla pubblicazione del problema"
 
-#: openassessment/xblock/validation.py:166
+#: openassessment/xblock/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Il tipo di valutazione non può essere modficata in seguito alla pubblicazione del problema"
 
-#: openassessment/xblock/validation.py:189
+#: openassessment/xblock/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "Questa definizione di criteri di valutazione non è valida. "
 
-#: openassessment/xblock/validation.py:195
+#: openassessment/xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "Le opzioni in '{criterion}' hanno un nome (nomi) duplicato: {duplicates}"
 
-#: openassessment/xblock/validation.py:203
+#: openassessment/xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "I criteri senza opzioni devono richiedere il feedback scritto. "
 
-#: openassessment/xblock/validation.py:212
+#: openassessment/xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "I prompt non possono essere creati o eliminati dopo il rilascio di un problema. "
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Il numero di criteri non può essere modificato dopo il rilascio di un problema. "
 
-#: openassessment/xblock/validation.py:229
+#: openassessment/xblock/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "I nomi dei criteri non possono essere modificati dopo il rilascio di un problema "
 
-#: openassessment/xblock/validation.py:234
+#: openassessment/xblock/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Il numero di opzioni non può essere modificato dopo il rilascio di un problema. "
 
-#: openassessment/xblock/validation.py:239
+#: openassessment/xblock/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "I valori di punti non possono essere modificati dopo il rilascio di un problema. "
 
-#: openassessment/xblock/validation.py:290
+#: openassessment/xblock/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "L'addestramento dello studente deve avere almeno un esempio di addestramento. "
 
-#: openassessment/xblock/validation.py:355
+#: openassessment/xblock/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "Il numero di tabellone non è valido. "
 
-#: openassessment/xblock/validation.py:378
+#: openassessment/xblock/validation.py:379
 msgid "The submission format is invalid."
 msgstr "Il formato dell'inoltro non è valido. "
