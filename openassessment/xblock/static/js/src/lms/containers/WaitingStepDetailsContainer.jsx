@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { IntlProvider } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
   Alert, Container, Row, Spinner,
@@ -39,38 +40,42 @@ const WaitingStepDetailsContainer = ({ waitingStepDataUrl, onMount }) => {
   }, []);
 
   return (
-    <div className="paragon-styles">
-      <div className="mt-3 mb-1">
-        {/* Displayed when loading */}
-        {loading && (
-          <Container className="my-3">
-            <Row className="justify-content-md-center">
-              <Spinner animation="border" variant="primary" />
-            </Row>
-          </Container>
-        )}
-
-        {/* Displayed after waiting step details are retrieved */}
-        {!loading && !error && (
-          <WaitingStepContent
-            waitingStepDetails={waitingStepDetails}
-            refreshData={updateData}
-          />
-        )}
-
-        {/* Displayed if there's any issue with the request */}
-        {error
-          && (
-          <Alert variant="danger">
-            {gettext('Error while fetching student data.')}
-          </Alert>
+    // Using en locale for now until we have translations. This is a temporary solution
+    // for paragon version 20+. https://github.com/openedx/paragon/releases/tag/v20.0.0
+    <IntlProvider locale="en">
+      <div className="paragon-styles">
+        <div className="mt-3 mb-1">
+          {/* Displayed when loading */}
+          {loading && (
+            <Container className="my-3">
+              <Row className="justify-content-md-center">
+                <Spinner animation="border" variant="primary" />
+              </Row>
+            </Container>
           )}
 
-        <div className="waiting-details-staff-area mt-n4">
-          <div className="openassessment__staff-area" />
+          {/* Displayed after waiting step details are retrieved */}
+          {!loading && !error && (
+            <WaitingStepContent
+              waitingStepDetails={waitingStepDetails}
+              refreshData={updateData}
+            />
+          )}
+
+          {/* Displayed if there's any issue with the request */}
+          {error
+            && (
+            <Alert variant="danger">
+              {gettext('Error while fetching student data.')}
+            </Alert>
+            )}
+
+          <div className="waiting-details-staff-area mt-n4">
+            <div className="openassessment__staff-area" />
+          </div>
         </div>
       </div>
-    </div>
+    </IntlProvider>
   );
 };
 
