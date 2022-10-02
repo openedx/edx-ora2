@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 08:54-0400\n"
+"POT-Creation-Date: 2022-10-02 14:41-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>, 2019,2021\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
@@ -2556,118 +2556,118 @@ msgstr ""
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:472
 msgid "There was an error uploading your file."
 msgstr "אירעה שגיאה בעת העלאת הקובץ שלך."
 
-#: openassessment/xblock/submission_mixin.py:478
+#: openassessment/xblock/submission_mixin.py:484
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:489
+#: openassessment/xblock/submission_mixin.py:495
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:508
 msgid "Error retrieving upload URL."
 msgstr "שגיאה באחזור כתובת URL להעלאה."
 
-#: openassessment/xblock/submission_mixin.py:777
+#: openassessment/xblock/submission_mixin.py:790
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא הוגשה."
 
-#: openassessment/xblock/submission_mixin.py:778
+#: openassessment/xblock/submission_mixin.py:791
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 
-#: openassessment/xblock/validation.py:117
+#: openassessment/xblock/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "בעיה זו צריכה לכלול לפחות הערכה אחת."
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "פקודת ההערכה שבחרת אינה תקפה."
 
-#: openassessment/xblock/validation.py:131
+#: openassessment/xblock/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "בהערכת עמיתים, ערך ה\"חובה לדרג\" חייב להיות מספר שלם חיובי."
 
-#: openassessment/xblock/validation.py:134
+#: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "בהערכת עמיתים, ערך \"דורג בידי\" חייב להיות מספר שלם חיובי."
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "בהערכת עמיתים, ערך שדה \"חובה לדרג\" חייב להיות גדול או שווה לערך \"דורג בידי\". "
 
-#: openassessment/xblock/validation.py:147
+#: openassessment/xblock/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "עליך לספק לפחות דוגמה אחת לתשובה עבור תרגול הלומד."
 
-#: openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "כל דוגמה לתשובה עבור תרגול הלומד חייבת להיות ייחודית."
 
-#: openassessment/xblock/validation.py:157
+#: openassessment/xblock/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "ערך ה\"דרוש\" חייב להיות נכון אם הערכת הצוות היא השלב היחיד."
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "לא ניתן לשנות את מספר ההערכות לאחר פרסום הבעיה. "
 
-#: openassessment/xblock/validation.py:166
+#: openassessment/xblock/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "לא ניתן לשנות את סוג ההערכה לאחר פרסום הבעיה."
 
-#: openassessment/xblock/validation.py:189
+#: openassessment/xblock/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "הגדרת כותרת זו אינה תקפה."
 
-#: openassessment/xblock/validation.py:195
+#: openassessment/xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "ב-'{criterion}' ישנן כפילויות בשמ(ות) האפשרויות : {duplicates}"
 
-#: openassessment/xblock/validation.py:203
+#: openassessment/xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "קריטריונים ללא אפשרויות מחייבים משוב כתוב. "
 
-#: openassessment/xblock/validation.py:212
+#: openassessment/xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "לא ניתן ליצור או למחוק הנחיות לאחר שהופצה בעיה."
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "לא ניתן לשנות את מספר הקריטריונים לאחר פרסום הבעיה. "
 
-#: openassessment/xblock/validation.py:229
+#: openassessment/xblock/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "לא ניתן לשנות את שם הקריטריונים לאחר פרסום הבעיה."
 
-#: openassessment/xblock/validation.py:234
+#: openassessment/xblock/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "לא ניתן לשנות את מספר האפשרויות לאחר פרסום הבעיה. "
 
-#: openassessment/xblock/validation.py:239
+#: openassessment/xblock/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "לא ניתן לשנות את ערך הנקודות לאחר פרסום הבעיה. "
 
-#: openassessment/xblock/validation.py:290
+#: openassessment/xblock/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "לתרגול הלומד חייבת להיות לפחות דוגמת תרגול אחת"
 
-#: openassessment/xblock/validation.py:355
+#: openassessment/xblock/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "מספר לוח התוצאות אינו חוקי."
 
-#: openassessment/xblock/validation.py:378
+#: openassessment/xblock/validation.py:379
 msgid "The submission format is invalid."
 msgstr "פורמט ההגשה אינו חוקי"
