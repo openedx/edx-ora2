@@ -14,7 +14,7 @@ from xblock.core import XBlock
 from student.models import user_by_anonymous_id
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from .job_sample_grader.utils import get_error_response, is_design_problem
+from .job_sample_grader.utils import is_design_problem
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .utils import get_code_language
@@ -60,6 +60,85 @@ class SubmissionMixin(object):
         'htm', 'html',
     ]
 
+    def submit_code_response(self, data: dict, student_item_dict: dict):
+        """
+        Create submission for the coding question.
+
+        Args:
+            data (dict): A dictionary with the following shape (example):
+                {
+                    'executor_id': 'server_shell-python:3.5.2',
+                    'problem_name': 'Sample Coding Question 1',
+                    'submission': "print('asd')"
+                }
+            student_item_dict (dict): A student info dict, with the following shape (example):
+                {
+                    'course_id': 'course-v1:litmustest+litmustest.LT629.1+1',
+                    'item_id': 'block-v1:litmustest+litmustest.LT629.1+1+type@openassessment+block@c6855e4faae44ad7af2431489e3d3573',
+                    'item_type': 'openassessment',
+                    'student_id': 'ebf6f228c823c9138cd1cf1ff3504680'
+                }
+        Returns:
+            dict: A submission info dict, with the following shape (example):
+                {
+                    'answer': {
+                        'executor_id': 'server_shell-python:3.5.2',
+                        'problem_name': 'Sample Coding Question 1',
+                        'sample_run': {
+                            'correct': 0,
+                            'error': None,
+                            'incorrect': 2,
+                            'output': OrderedDict([(1,
+                                                    {'actual_output': 'asd',
+                                                        'correct': False,
+                                                        'expected_output': 'NO',
+                                                        'test_input': '1'}),
+                                                    (2,
+                                                    {'actual_output': 'asd',
+                                                        'correct': False,
+                                                        'expected_output': 'YES',
+                                                        'test_input': '2'})]),
+                            'run_type': 'sample',
+                            'total_tests': 2},
+                            'submission': "print('asd')"},
+                    'attempt_number': 1,
+                    'created_at': datetime.datetime(2022, 10, 7, 10, 45, 57, 491023, tzinfo=<UTC>),
+                    'student_item': 2,
+                    'submitted_at': datetime.datetime(2022, 10, 7, 10, 45, 57, 490999, tzinfo=<UTC>),
+                    'team_submission_uuid': None,
+                    'uuid': '432249dd-6431-4fa3-a8e2-ab2ba34c8c40'
+                }
+        """
+        grade_output = self.grade_response(data, self.display_name, add_staff_output=False)
+
+        student_sub_data = {
+            **data,
+            'sample_run': grade_output,
+        }
+
+        try:
+            saved_files_descriptions = json.loads(self.saved_files_descriptions)
+        except ValueError:
+            saved_files_descriptions = None
+
+        submission = self.create_submission(
+            student_item_dict,
+            student_sub_data,
+            saved_files_descriptions
+        )
+
+        run_and_save_staff_test_cases.apply_async(args=[
+            str(self.scope_ids.usage_id), submission["uuid"], self.display_name
+        ], kwargs={
+            'course_id': student_item_dict.get('course_id'),
+            'user_id': (
+                user_by_anonymous_id(student_item_dict.get('student_id')).id
+                or student_item_dict.get('student_id')
+            )
+        })
+
+        return submission
+
     @XBlock.json_handler
     def submit(self, data, suffix=''):  # pylint: disable=unused-argument
         """Place the submission text into Openassessment system
@@ -89,25 +168,6 @@ class SubmissionMixin(object):
                 self._(u'"submission" required to submit answer.')
             )
 
-        status = False
-        grade_output = self.grade_response(data, self.display_name, add_staff_output=False)
-
-        # Check if sample and staff grade output is present
-        # If not, add a default error response
-        try:
-            sample_run = grade_output
-        except KeyError:
-            sample_run = get_error_response("sample", "Submission Missing")
-
-        # Add sample and staff run to submission
-        data.update({
-            'sample_run': sample_run
-        })
-
-        student_sub_data = data
-
-        student_item_dict = self.get_student_item_dict()
-
         # Short-circuit if no user is defined (as in Studio Preview mode)
         # Since students can't submit, they will never be able to progress in the workflow
         if self.in_studio_preview:
@@ -117,30 +177,15 @@ class SubmissionMixin(object):
                 self._(u'To submit a response, view this component in Preview or Live mode.')
             )
 
-        workflow = self.get_workflow_info()
-
+        status = False
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
         status_text = self._(u'Multiple submissions are not allowed.')
+
+        workflow = self.get_workflow_info()
         if not workflow:
+            student_item_dict = self.get_student_item_dict()
             try:
-                try:
-                    saved_files_descriptions = json.loads(self.saved_files_descriptions)
-                except ValueError:
-                    saved_files_descriptions = None
-                submission = self.create_submission(
-                    student_item_dict,
-                    student_sub_data,
-                    saved_files_descriptions
-                )
-                run_and_save_staff_test_cases.apply_async(args=[
-                    str(self.scope_ids.usage_id), submission["uuid"], self.display_name
-                ], kwargs={
-                    'course_id': student_item_dict.get('course_id'),
-                    'user_id': (
-                        user_by_anonymous_id(student_item_dict.get('student_id')).id
-                        or student_item_dict.get('student_id')
-                    )
-                })
+                submission = self.submit_code_response(data, student_item_dict)
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
