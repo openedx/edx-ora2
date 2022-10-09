@@ -12,6 +12,7 @@
 # e2f_ar r3 <e2f_ar_r3@outlook.com>, 2017
 # e2f_ar t3 <e2f_ar_t3@outlook.com>, 2016
 # Euvo <eyad.star@hotmail.com>, 2014
+# Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2022
 # may <may@qordoba.com>, 2014-2015
 # Nabeel El-Dughailib <nabeel@qordoba.com>, 2014-2015
 # NELC Open edX Translation <openedx@elc.edu.sa>, 2020
@@ -25,9 +26,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 08:54-0400\n"
+"POT-Creation-Date: 2022-09-25 14:41-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: NELC Open edX Translation <openedx@elc.edu.sa>, 2020\n"
+"Last-Translator: Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2022\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1508,7 +1509,7 @@ msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
-msgstr ""
+msgstr "\n                  تعرف على المزيد حول واجبات الفريق هنا: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">رابط</a>)\n                  "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:324
 msgid "We could not submit your response"
@@ -2565,118 +2566,118 @@ msgstr "تعذّر إرسال وصف الملفات."
 msgid "Files metadata could not be saved."
 msgstr "تعذر حفظ بيانات تعريف الملفات."
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:472
 msgid "There was an error uploading your file."
 msgstr "حدث خطأ أثناء تحميل ملفّك."
 
-#: openassessment/xblock/submission_mixin.py:478
+#: openassessment/xblock/submission_mixin.py:484
 msgid "Only a single file upload is allowed for this assessment."
 msgstr "يسمح برفع ملف واحد فقط لهذا التقييم"
 
-#: openassessment/xblock/submission_mixin.py:489
+#: openassessment/xblock/submission_mixin.py:495
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr "فشل تحميل الملف: صيغة الملف غير مدعومة. يمكن فقط تحميل الملف المدعومة. عند وجود أي استفسار يرجى الاتصال بفريق المساق."
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:508
 msgid "Error retrieving upload URL."
 msgstr "نأسف لحدوث خطأ في استرجاع رابط التحميل."
 
-#: openassessment/xblock/submission_mixin.py:777
+#: openassessment/xblock/submission_mixin.py:790
 msgid "This response has been saved but not submitted."
 msgstr "حُفِّظ هذا الردّ ولكن لم يُقدَّم بعد. "
 
-#: openassessment/xblock/submission_mixin.py:778
+#: openassessment/xblock/submission_mixin.py:791
 msgid "This response has not been saved."
 msgstr "لم يُحفَّظ هذا الردّ بعد."
 
-#: openassessment/xblock/validation.py:117
+#: openassessment/xblock/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "يجب أن تتضمّن هذه المسألة تقييمًا واحدًا على الأقلّ."
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "ترتيب التقييم الذي اخترته غير صحيح."
 
-#: openassessment/xblock/validation.py:131
+#: openassessment/xblock/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "في تقييم الزملاء، يجب أن تكون قيمة \"يجب اللتقييم\" عددًا صحيحًا موجبًا."
 
-#: openassessment/xblock/validation.py:134
+#: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "في تقييم الزملاء، يجب أن تكون قيمة \"مقيَّم من قِبل\" عددًا صحيحًا موجبًا."
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "في تقييم الزملاء، يجب أن تكون قيمة \"يجب التقييم\" عددًا أكبر من قيمة \"مقيَّم من قِبل\" أو مساويًا لها."
 
-#: openassessment/xblock/validation.py:147
+#: openassessment/xblock/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "يجب أن تحدّد ردًّا واحدًا على الأقل كمثال لتدريب المتعلّم."
 
-#: openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "يجب أن يكون كل ردّ، معتمد كمثال لتدريب المتعلّمين، فريدًا من نوعه."
 
-#: openassessment/xblock/validation.py:157
+#: openassessment/xblock/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "يجب أن تكون القيمة ’مطلوبة‘ صحيحة في حال كان تقييم طاقم المساق مؤلفًا من خطوة واحدة فقط."
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "لا يمكن تغيير عدد التقييمات بعد أن تكون المسألة قد أُصدرت."
 
-#: openassessment/xblock/validation.py:166
+#: openassessment/xblock/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "لا يمكن تغيير نوع التقييم بعد أن تكون المسألة قد أُصدرت."
 
-#: openassessment/xblock/validation.py:189
+#: openassessment/xblock/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "تعريف سلّم التقييم هذا غير صالح."
 
-#: openassessment/xblock/validation.py:195
+#: openassessment/xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "تحتوي الخيارات في المعيار ’{criterion}‘ على اسم (أسماء) مزدوج: {duplicates}"
 
-#: openassessment/xblock/validation.py:203
+#: openassessment/xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "يجب على المعايير التي لا تتضمّن خيارات أن تتطلّب آراء وملاحظات خطّية."
 
-#: openassessment/xblock/validation.py:212
+#: openassessment/xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "لا يمكن خلق علامة استعداد أو حذفها بعد أن تكون المسألة قد نُشِرَت."
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "لا يمكن تغيير عدد المعايير بعد أن تكون المسألة قد أُصدرت."
 
-#: openassessment/xblock/validation.py:229
+#: openassessment/xblock/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "لا يمكن تغيير أسماء المعايير بعد أن تكون المسألة قد أُصدرت."
 
-#: openassessment/xblock/validation.py:234
+#: openassessment/xblock/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "لا يمكن تغيير عدد الخيارات بعد أن تكون المسألة قد أُصدرت."
 
-#: openassessment/xblock/validation.py:239
+#: openassessment/xblock/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "لا يمكن تغيير قيم الدرجة بعد أن تكون المسألة قد أُصدرت."
 
-#: openassessment/xblock/validation.py:290
+#: openassessment/xblock/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "يجب أن يكون للمتعلم مثالًا تدريبيًا واحدًا على الأقل."
 
-#: openassessment/xblock/validation.py:355
+#: openassessment/xblock/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "عدد المتصدّرين غير صالح."
 
-#: openassessment/xblock/validation.py:378
+#: openassessment/xblock/validation.py:379
 msgid "The submission format is invalid."
 msgstr "صيغة التقديم غير صالحة."

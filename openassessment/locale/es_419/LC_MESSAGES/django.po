@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 08:54-0400\n"
+"POT-Creation-Date: 2022-10-02 14:41-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Jesica Greco, 2022\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
@@ -2568,118 +2568,118 @@ msgstr "No se enviaron descripciones de archivos."
 msgid "Files metadata could not be saved."
 msgstr "Los meta datos de los archivos no se pudieron guardar."
 
-#: openassessment/xblock/submission_mixin.py:466
+#: openassessment/xblock/submission_mixin.py:472
 msgid "There was an error uploading your file."
 msgstr "Hubo un error al cargar su archivo."
 
-#: openassessment/xblock/submission_mixin.py:478
+#: openassessment/xblock/submission_mixin.py:484
 msgid "Only a single file upload is allowed for this assessment."
 msgstr "Solo se permite subir un archivo para esta prueba."
 
-#: openassessment/xblock/submission_mixin.py:489
+#: openassessment/xblock/submission_mixin.py:495
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr "Error al cargar el archivo: tipo de archivo no admitido. Solo se pueden cargar los tipos de archivo admitidos. Si tiene alguna pregunta, comuníquese con el equipo del curso."
 
-#: openassessment/xblock/submission_mixin.py:502
+#: openassessment/xblock/submission_mixin.py:508
 msgid "Error retrieving upload URL."
 msgstr "Error al recuperar la URL subida."
 
-#: openassessment/xblock/submission_mixin.py:777
+#: openassessment/xblock/submission_mixin.py:790
 msgid "This response has been saved but not submitted."
 msgstr "La respuesta ha sido guardada, pero no enviada."
 
-#: openassessment/xblock/submission_mixin.py:778
+#: openassessment/xblock/submission_mixin.py:791
 msgid "This response has not been saved."
 msgstr "Esta respuesta no ha sido guardada."
 
-#: openassessment/xblock/validation.py:117
+#: openassessment/xblock/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "Este problema debe incluir por lo menos una valoración"
 
-#: openassessment/xblock/validation.py:121
+#: openassessment/xblock/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "El orden de revisión que seleccionó es inválido."
 
-#: openassessment/xblock/validation.py:131
+#: openassessment/xblock/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "En las revisiones por pares, el valor de \"Revisiones requeridas\"  debe ser un entero positivo."
 
-#: openassessment/xblock/validation.py:134
+#: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "En la calificación por pares, el valor de \"Calificado por\" debe ser un número entero positivo."
 
-#: openassessment/xblock/validation.py:138
+#: openassessment/xblock/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "En la calificación por pares, el valor de \"Revisiones requeridas\" debe ser mayor o igual al valor de \"debe ser calificado por\"."
 
-#: openassessment/xblock/validation.py:147
+#: openassessment/xblock/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "Debe proporcionar al menos una respuesta de ejemplo para el entrenamiento de los estudiantes."
 
-#: openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "Cada respuesta de ejemplo para el entrenamiento de los estudiantes debe ser único."
 
-#: openassessment/xblock/validation.py:157
+#: openassessment/xblock/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "El valor \"requerido\" debe estar en true si la calificación de miembros del equipo del curso es el único paso."
 
-#: openassessment/xblock/validation.py:161
+#: openassessment/xblock/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "El número de valoraciones no puede ser cambiado luego de que el problema haya sido liberado."
 
-#: openassessment/xblock/validation.py:166
+#: openassessment/xblock/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "El tipo de evaluación no se puede cambiar después de que el problema ha sido liberado."
 
-#: openassessment/xblock/validation.py:189
+#: openassessment/xblock/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "La definición de esta rúbrica no es válida"
 
-#: openassessment/xblock/validation.py:195
+#: openassessment/xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "Las opciones en '{criterion}' tiene el nombre(s):  duplicado {duplicates}"
 
-#: openassessment/xblock/validation.py:203
+#: openassessment/xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "Criterios sin opciones deben requerir retroalimentación escrita."
 
-#: openassessment/xblock/validation.py:212
+#: openassessment/xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Las preguntas o planteamientos del ejercicio no se pueden crear o borrar luego de que un problema ha sido liberado."
 
-#: openassessment/xblock/validation.py:216
+#: openassessment/xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "El número de criterios no puede ser cambiado después de que un problema ha sido liberado."
 
-#: openassessment/xblock/validation.py:229
+#: openassessment/xblock/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Los nombres de los criterios no pueden cambiarse después de que un problema ha sido liberado."
 
-#: openassessment/xblock/validation.py:234
+#: openassessment/xblock/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "El número de opciones no puede ser cambiado después de que un problema ha sido liberado."
 
-#: openassessment/xblock/validation.py:239
+#: openassessment/xblock/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Los valores de puntaje no puede ser cambiados después de que un problema ha sido liberado."
 
-#: openassessment/xblock/validation.py:290
+#: openassessment/xblock/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "El entrenamiento del estudiante debe tener al menos un ejemplo."
 
-#: openassessment/xblock/validation.py:355
+#: openassessment/xblock/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "El número ingresado para el tablero de estudiantes destacados es inválido."
 
-#: openassessment/xblock/validation.py:378
+#: openassessment/xblock/validation.py:379
 msgid "The submission format is invalid."
 msgstr "El formato del envío es inválido"
