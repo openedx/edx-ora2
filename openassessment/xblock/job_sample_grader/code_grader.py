@@ -1,8 +1,9 @@
 import glob
 import logging
 import os
+import json
 
-from tempfile import TemporaryFile
+from tempfile import NamedTemporaryFile, TemporaryFile
 
 from collections import OrderedDict
 from openassessment.xblock.code_executor.exceptions import CodeCompilationError
@@ -17,6 +18,7 @@ from openassessment.xblock.job_sample_grader.utils import (
     truncate_error_output,
 )
 
+from litmustest_djangoapps.core.models import AssessmentQuestionXblockMapping
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +55,8 @@ class CodeGraderMixin(object):
         )
     )
 
-    __SECRET_DATA_DIR__ = '/grader_data/'
+    # __SECRET_DATA_DIR__ = '/grader_data/'
+    __SECRET_DATA_DIR__ = "/edx/src/edx-ora2-1/openassessment/xblock/job_sample_grader/grader_data/"
     __TMP_DATA_DIR__ = '/tmp/'
 
     def get_code_grader_context(self):
@@ -152,38 +155,80 @@ class CodeGraderMixin(object):
                     'error': None,
                 }
         """
-        test_case_paths = glob.glob(
-            '{}{}/{}/*'.format(self.__SECRET_DATA_DIR__, problem_name, run_type)
-        )
-
-        # Sort the test cases based on the test number
-        if test_case_paths:
-            test_case_paths = sorted(
-                test_case_paths, key=lambda test_case: int(test_case.split('/')[-1])
-            )
+        xblock_id = self.get_xblock_id()
+        usage_key = xblock_id.split('@')[-1]
 
         test_case_files = []
-        for case in test_case_paths:
-            case_number = int(case.split('/')[-1])
-            input_file = '{}/input.in'.format(case)
-            expected_output_file = '{}/output.out'.format(case)
+        question_mapping = AssessmentQuestionXblockMapping.objects.filter(usage_key=usage_key).first()
 
-            # TODO: We can read cases from db here.
-            with open(input_file, 'rb') as file:
-                input_content = file.read()
+        if question_mapping:
+            question = question_mapping.question
 
-            test_case_files.append(
-                {
-                    'case_number': case_number,
-                    'input_file': {
-                        # Keeping the file names the same as host.
-                        # This will allow us to use the same names for epicbox and server_shell.
-                        'name': input_file,
-                        'content': input_content,
-                    },
-                    'expected_output_file': {'name': expected_output_file},
-                }
+            try:
+                test_cases = json.loads(question.metadata)[run_type]
+            except:
+                test_cases = question.metadata[run_type]
+
+            for case_number in test_cases:
+                case = test_cases[case_number]
+                input_file = NamedTemporaryFile(
+                    mode="w+",
+                    dir=self.__SECRET_DATA_DIR__,
+                    delete=False
+                )
+                input_file.write(case['input'])
+                input_file.seek(0, 0)
+
+                expected_output_file = NamedTemporaryFile(
+                    mode="w+",
+                    dir=self.__SECRET_DATA_DIR__,
+                    delete=False
+                )
+                expected_output_file.write(case['output'])
+                expected_output_file.seek(0, 0)
+
+                test_case_files.append(
+                    {
+                        'case_number': case_number,
+                        'input_file': {
+                            'name': input_file.name,
+                            'content': case['input'],
+                        },
+                        'expected_output_file': {'name': expected_output_file.name},
+                    }
+                )
+        else:
+            test_case_paths = glob.glob(
+                '{}{}/{}/*'.format(self.__SECRET_DATA_DIR__, problem_name, run_type)
             )
+
+            # Sort the test cases based on the test number
+            if test_case_paths:
+                test_case_paths = sorted(
+                    test_case_paths, key=lambda test_case: int(test_case.split('/')[-1])
+                )
+
+            for case in test_case_paths:
+                case_number = int(case.split('/')[-1])
+                input_file = '{}/input.in'.format(case)
+                expected_output_file = '{}/output.out'.format(case)
+
+                # TODO: We can read cases from db here.
+                with open(input_file, 'rb') as file:
+                    input_content = file.read()
+
+                test_case_files.append(
+                    {
+                        'case_number': case_number,
+                        'input_file': {
+                            # Keeping the file names the same as host.
+                            # This will allow us to use the same names for epicbox and server_shell.
+                            'name': input_file,
+                            'content': input_content.decode('utf-8'),
+                        },
+                        'expected_output_file': {'name': expected_output_file},
+                    }
+                )
 
         code_executor = CodeExecutorFactory.get_code_executor(
             executor_id,
@@ -192,7 +237,7 @@ class CodeGraderMixin(object):
         )
         output = {
             'run_type': run_type,
-            'total_tests': len(test_case_paths),
+            'total_tests': len(test_case_files),
             'correct': 0,
             'incorrect': 0,
             'output': OrderedDict(),
@@ -213,10 +258,11 @@ class CodeGraderMixin(object):
                     )
                 else:
                     execution_results = code_executor.run_input(
-                        input=case_file['input_file']['content'].decode('utf-8'),
+                        input=case_file['input_file']['content'],
                     )
 
                 formatted_results = self._executor_output_to_response_format(execution_results)
+
                 run_output = self.compare_outputs(
                     formatted_results['output'],
                     case_file['expected_output_file']['name'],
@@ -230,7 +276,7 @@ class CodeGraderMixin(object):
 
                 expected_output = run_output['tests'][0][1]
                 actual_output = run_output['tests'][0][2]
-                test_input = case_file['input_file']['content'].decode('utf-8')
+                test_input = case_file['input_file']['content']
                 case_number = case_file['case_number']
                 output['output'][case_number] = {
                     'test_input': test_input,
@@ -303,7 +349,6 @@ class CodeGraderMixin(object):
             expected_output_file(str): file name containing expected output of test case
             problem_name(str)
         """
-
         if not is_design_problem(problem_name):
             expected_output = open(expected_output_file, 'r').read().rstrip()
             actual_output = actual_output.rstrip()
