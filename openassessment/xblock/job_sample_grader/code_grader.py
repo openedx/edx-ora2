@@ -55,8 +55,8 @@ class CodeGraderMixin(object):
         )
     )
 
-    # __SECRET_DATA_DIR__ = '/grader_data/'
-    __SECRET_DATA_DIR__ = "/edx/src/edx-ora2-1/openassessment/xblock/job_sample_grader/grader_data/"
+    __SECRET_DATA_DIR__ = '/grader_data/'
+    # __SECRET_DATA_DIR__ = "/edx/src/edx-ora2-1/openassessment/xblock/job_sample_grader/grader_data/"
     __TMP_DATA_DIR__ = '/tmp/'
 
     def get_code_grader_context(self):
@@ -192,7 +192,7 @@ class CodeGraderMixin(object):
                         'case_number': case_number,
                         'input_file': {
                             'name': input_file.name,
-                            'content': case['input'],
+                            'content': bytes(case['input'], 'utf-8'),
                         },
                         'expected_output_file': {'name': expected_output_file.name},
                     }
@@ -224,7 +224,7 @@ class CodeGraderMixin(object):
                             # Keeping the file names the same as host.
                             # This will allow us to use the same names for epicbox and server_shell.
                             'name': input_file,
-                            'content': input_content.decode('utf-8'),
+                            'content': input_content,
                         },
                         'expected_output_file': {'name': expected_output_file},
                     }
@@ -258,7 +258,7 @@ class CodeGraderMixin(object):
                     )
                 else:
                     execution_results = code_executor.run_input(
-                        input=case_file['input_file']['content'],
+                        input=case_file['input_file']['content'].decode('utf-8'),
                     )
 
                 formatted_results = self._executor_output_to_response_format(execution_results)
@@ -276,7 +276,7 @@ class CodeGraderMixin(object):
 
                 expected_output = run_output['tests'][0][1]
                 actual_output = run_output['tests'][0][2]
-                test_input = case_file['input_file']['content']
+                test_input = case_file['input_file']['content'].decode('utf-8')
                 case_number = case_file['case_number']
                 output['output'][case_number] = {
                     'test_input': test_input,
