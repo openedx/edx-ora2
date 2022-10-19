@@ -56,7 +56,6 @@ class CodeGraderMixin(object):
     )
 
     __SECRET_DATA_DIR__ = '/grader_data/'
-    # __SECRET_DATA_DIR__ = "/edx/src/edx-ora2-1/openassessment/xblock/job_sample_grader/grader_data/"
     __TMP_DATA_DIR__ = '/tmp/'
 
     def get_code_grader_context(self):
