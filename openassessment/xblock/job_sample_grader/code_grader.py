@@ -162,6 +162,7 @@ class CodeGraderMixin(object):
         question_mapping = AssessmentQuestionXblockMapping.objects.filter(usage_key=usage_key).first()
 
         if question_mapping:
+            # Read test cases from DB
             question = question_mapping.question
 
             try:
@@ -213,7 +214,6 @@ class CodeGraderMixin(object):
                 input_file = '{}/input.in'.format(case)
                 expected_output_file = '{}/output.out'.format(case)
 
-                # TODO: We can read cases from db here.
                 with open(input_file, 'rb') as file:
                     input_content = file.read()
 
@@ -262,7 +262,6 @@ class CodeGraderMixin(object):
                     )
 
                 formatted_results = self._executor_output_to_response_format(execution_results)
-
                 run_output = self.compare_outputs(
                     formatted_results['output'],
                     case_file['expected_output_file']['name'],
@@ -284,6 +283,14 @@ class CodeGraderMixin(object):
                     'expected_output': expected_output,
                     'correct': run_output['correct'],
                 }
+
+                input_file_name = case_file['input_file']['name']
+                output_file_name = case_file['expected_output_file']['name']
+
+                if question_mapping and os.path.isfile(input_file_name):
+                    os.remove(input_file_name)
+                if question_mapping and os.path.isfile(output_file_name):
+                    os.remove(output_file_name)
 
         return output
 
