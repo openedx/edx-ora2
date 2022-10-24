@@ -165,9 +165,9 @@ class CodeGraderMixin(object):
             question = question_mapping.question
 
             try:
-                test_cases = json.loads(question.metadata)[run_type]
+                test_cases = json.loads(question.metadata).get(run_type, {})
             except:
-                test_cases = question.metadata[run_type]
+                test_cases = question.metadata.get(run_type, {})
 
             for case_number in test_cases:
                 case = test_cases[case_number]
