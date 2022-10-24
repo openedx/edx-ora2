@@ -169,7 +169,7 @@ class CodeGraderMixin(object):
             except:
                 test_cases = question.metadata.get(run_type, {})
 
-            for case_number in test_cases:
+            for case_number in sorted(test_cases.keys()):
                 case = test_cases[case_number]
                 input_file = NamedTemporaryFile(
                     mode="w+",
