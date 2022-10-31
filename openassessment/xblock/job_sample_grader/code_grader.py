@@ -134,6 +134,88 @@ class CodeGraderMixin(object):
 
         return response
 
+    def read_test_cases_from_db(self, question, run_type):
+        """
+        Reads test cases from question model's metadata field
+        """
+        try:
+            test_cases = json.loads(question.metadata).get(run_type, {})
+        except:
+            test_cases = question.metadata.get(run_type, {})
+
+        test_case_files = []
+
+        for case_number in sorted(test_cases.keys()):
+            case = test_cases[case_number]
+            input_file = NamedTemporaryFile(
+                mode="w+",
+                dir=self.__SECRET_DATA_DIR__,
+                delete=False
+            )
+            input_file.write(case['input'])
+            input_file.seek(0, 0)
+
+            expected_output_file = NamedTemporaryFile(
+                mode="w+",
+                dir=self.__SECRET_DATA_DIR__,
+                delete=False
+            )
+            expected_output_file.write(case['output'])
+            expected_output_file.seek(0, 0)
+
+            test_case_files.append(
+                {
+                    'case_number': case_number,
+                    'input_file': {
+                        'name': input_file.name,
+                        'content': bytes(case['input'], 'utf-8'),
+                    },
+                    'expected_output_file': {'name': expected_output_file.name},
+                }
+            )
+
+        return test_case_files
+
+    def read_test_cases_from_file(self, problem_name, run_type):
+        """
+        Reads test cases from grader_data file
+        """
+        test_case_paths = glob.glob(
+            '{}{}/{}/*'.format(self.__SECRET_DATA_DIR__, problem_name, run_type)
+        )
+
+        # Sort the test cases based on the test number
+        if test_case_paths:
+            test_case_paths = sorted(
+                test_case_paths, key=lambda test_case: int(test_case.split('/')[-1])
+            )
+
+        test_case_files = []
+
+        for case in test_case_paths:
+            case_number = int(case.split('/')[-1])
+            input_file = '{}/input.in'.format(case)
+            expected_output_file = '{}/output.out'.format(case)
+
+            with open(input_file, 'rb') as file:
+                input_content = file.read()
+
+            test_case_files.append(
+                {
+                    'case_number': case_number,
+                    'input_file': {
+                        # Keeping the file names the same as host.
+                        # This will allow us to use the same names
+                        # for epicbox and server_shell.
+                        'name': input_file,
+                        'content': input_content,
+                    },
+                    'expected_output_file': {'name': expected_output_file},
+                }
+            )
+
+        return test_case_files
+
     def run_code(self, run_type, executor_id, source_code, problem_name):
         """Run code for all test cases.
 
@@ -161,73 +243,10 @@ class CodeGraderMixin(object):
         question_mapping = AssessmentQuestionXblockMapping.objects.filter(usage_key=usage_key).first()
 
         if question_mapping:
-            # Read test cases from DB
             question = question_mapping.question
-
-            try:
-                test_cases = json.loads(question.metadata).get(run_type, {})
-            except:
-                test_cases = question.metadata.get(run_type, {})
-
-            for case_number in sorted(test_cases.keys()):
-                case = test_cases[case_number]
-                input_file = NamedTemporaryFile(
-                    mode="w+",
-                    dir=self.__SECRET_DATA_DIR__,
-                    delete=False
-                )
-                input_file.write(case['input'])
-                input_file.seek(0, 0)
-
-                expected_output_file = NamedTemporaryFile(
-                    mode="w+",
-                    dir=self.__SECRET_DATA_DIR__,
-                    delete=False
-                )
-                expected_output_file.write(case['output'])
-                expected_output_file.seek(0, 0)
-
-                test_case_files.append(
-                    {
-                        'case_number': case_number,
-                        'input_file': {
-                            'name': input_file.name,
-                            'content': bytes(case['input'], 'utf-8'),
-                        },
-                        'expected_output_file': {'name': expected_output_file.name},
-                    }
-                )
+            test_case_files = self.read_test_cases_from_db(question, run_type)
         else:
-            test_case_paths = glob.glob(
-                '{}{}/{}/*'.format(self.__SECRET_DATA_DIR__, problem_name, run_type)
-            )
-
-            # Sort the test cases based on the test number
-            if test_case_paths:
-                test_case_paths = sorted(
-                    test_case_paths, key=lambda test_case: int(test_case.split('/')[-1])
-                )
-
-            for case in test_case_paths:
-                case_number = int(case.split('/')[-1])
-                input_file = '{}/input.in'.format(case)
-                expected_output_file = '{}/output.out'.format(case)
-
-                with open(input_file, 'rb') as file:
-                    input_content = file.read()
-
-                test_case_files.append(
-                    {
-                        'case_number': case_number,
-                        'input_file': {
-                            # Keeping the file names the same as host.
-                            # This will allow us to use the same names for epicbox and server_shell.
-                            'name': input_file,
-                            'content': input_content,
-                        },
-                        'expected_output_file': {'name': expected_output_file},
-                    }
-                )
+            test_case_files = self.read_test_cases_from_file(problem_name, run_type)
 
         code_executor = CodeExecutorFactory.get_code_executor(
             executor_id,
