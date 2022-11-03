@@ -85,7 +85,7 @@ OpenAssessment.ResponseView.prototype = {
 
                 if(hasExecutedCodeBefore) {
                     view.saveStatus(
-                        getetxt('Fetching last code execution results...')
+                        gettext('Fetching last code execution results...')
                     );
                     view.saveEnabled(false);
                     view.pollCodeExecutionStatus();
