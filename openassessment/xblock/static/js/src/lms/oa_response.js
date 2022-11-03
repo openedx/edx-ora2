@@ -53,6 +53,8 @@ OpenAssessment.ResponseView.prototype = {
 
     UNSAVED_WARNING_KEY: 'learner-response',
 
+    CODE_EXECUTION_RESULTS_POLL_INTERVAL: 5000, // ms
+
     /**
      Load the response (submission) view.
      **/
@@ -70,11 +72,24 @@ OpenAssessment.ResponseView.prototype = {
                 // Editor should be setup before registering all the handlers
                 view.setupCodeEditor();
                 view.installHandlers();
-                view.setAutoSaveEnabled(true);
                 view.isRendering = false;
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
                 view.dateFactory.apply();
+
+                const hasExecutedCodeBefore = $(
+                    `.step__content`, view.element
+                ).data('has-executed-code-before')?.toLowerCase() === 'true';
+
+                view.setAutoSaveEnabled(!hasExecutedCodeBefore);
+
+                if(hasExecutedCodeBefore) {
+                    view.saveStatus(
+                        getetxt('Fetching last code execution results...')
+                    );
+                    view.saveEnabled(false);
+                    view.pollCodeExecutionStatus();
+                }
             }
         ).fail(function () {
             view.baseView.showLoadError('response');
@@ -759,6 +774,83 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
+     * Presents code execution results on the UI.
+     * 
+     * @param data Code execution results object.
+     */
+    showCodeExecutionResults: function(data) {
+        const view = this;
+        const output =  data?.output
+        var error = output?.public?.error ?? output?.private?.error;
+        if (error) {
+            if (output?.public?.is_design_problem) {
+                view.showExecutionError(error);
+            }
+            else {
+                view.showRunError(error);
+            }
+            view.indicateError();
+            view.clearResultSummary();
+        }
+        else if (output?.public != null && !output?.public?.is_design_problem) {
+            view.showResultSummary(
+                {
+                    correct: output.public.correct,
+                    total: output.public.total_tests
+                },
+                output.private !== null ? {
+                    correct: output.private.correct,
+                    total: output.private.total_tests
+                } : null
+            );
+            view.showTestCaseResult(output.public.output);
+            view.indicateCorrectness(output.public.correct === output.public.total_tests);
+        } else if (output?.public != null) {
+            view.indicateExecutionSuccess();
+            view.showExecutionResults(output.public?.output);
+        } else {
+            view.saveStatus(gettext('No results found.'));
+        }
+    },
+
+    /**
+     * Fetch code execution results from the server. Repeat this as long
+     * as the returned `execution_state` is "running".
+     * 
+     * Stops polling when `execution_state` is "success".
+     */
+    pollCodeExecutionStatus: function () {
+        const view = this;
+        this.server.fetchCodeExecutionResults().done((data) => {
+            if(data?.execution_state === 'running') {
+                view.saveStatus(gettext('Code execution in progress'))
+                setTimeout(
+                    this.pollCodeExecutionStatus.bind(view),
+                    this.CODE_EXECUTION_RESULTS_POLL_INTERVAL
+                );
+            }
+            else if(data?.execution_state === 'success') {
+                this.showCodeExecutionResults(data);
+                view.checkSubmissionAbility();
+                view.saveEnabled(true);
+                view.baseView.toggleActionError('save', null);
+            } else {
+                view.checkSubmissionAbility();
+                view.saveEnabled(true);
+                view.saveStatus(gettext('Error'));
+                view.baseView.toggleActionError(
+                    'save', 'Failed to execute code. Please try again.'
+                );
+            }
+        }).fail((message) => {
+            view.saveStatus(gettext('Error'));
+            view.baseView.toggleActionError('save', message);
+            view.errorOnLastSave = true;
+            view.saveEnabled(false);
+        })
+    },
+
+    /**
      Save a response without submitting it.
      **/
     save: function () {
@@ -786,40 +878,10 @@ OpenAssessment.ResponseView.prototype = {
         this.server.save(savedResponse).done(function (data) {
             // Remember which response we saved, once the server confirms that it's been saved...
             view.savedResponse = savedResponse;
-            var error = data?.public?.error ?? data?.private?.error
-            if (error) {
-                if (data?.public?.is_design_problem) {
-                    view.showExecutionError(error);
-                }
-                else {
-                    view.showRunError(error);
-                }
-                view.indicateError();
-                view.clearResultSummary();
-            }
-            else if (!data?.public?.is_design_problem) {
-                view.showResultSummary(
-                    {
-                        correct: data.public.correct,
-                        total: data.public.total_tests
-                    },
-                    data.private ? {
-                        correct: data.private.correct,
-                        total: data.private.total_tests
-                    } : null
-                );
-                view.showTestCaseResult(data.public.output);
-                view.indicateCorrectness(data.public.correct === data.public.total_tests);
-            } else {
-                view.indicateExecutionSuccess();
-                view.showExecutionResults(data.public.output);
-            }
 
-            // ... but update the UI based on what the user may have entered
-            // since hitting the save button.
-            view.checkSubmissionAbility();
+            // Start result polling
+            view.pollCodeExecutionStatus();
 
-            view.saveEnabled(true);
             view.setAutoSaveEnabled(false);
             view.baseView.toggleActionError('save', null);
         }).fail(function (errMsg) {
