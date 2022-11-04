@@ -451,8 +451,8 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if os.environ.get('SERVICE_VARIANT', '').lower() == 'cms':
-            # CMS lacks a student entity and not StudentModule state
-            # is saved. Async code execution requires that state as
+            # CMS lacks a student entity and no StudentModule state
+            # is saved. Async code execution requires this state as
             # an intermediate space.
             return {
                 'success': False,
@@ -538,7 +538,7 @@ class SubmissionMixin(object):
                     },
                     "message": "",
                     "success": true,
-                    "execution_state": "success" // Can be 'none', 'success', 'failure'
+                    "execution_state": "success" // Can be 'success', 'failure', 'running'
                 }
         """
         execution_state = 'none'
