@@ -44,7 +44,7 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
 from webob import Response
 from xblock.core import XBlock
-from xblock.fields import Boolean, Integer, List, Scope, String
+from xblock.fields import Boolean, Integer, List, Scope, String, DateTime
 from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)
@@ -286,6 +286,24 @@ class OpenAssessmentBlock(MessageMixin,
             {"display_name": "Epicbox", "value": CodeExecutorOption.Epicbox.value},
         ],
         scope=Scope.content,
+    )
+
+    code_execution_task_id = String(
+        default=None,
+        scope=Scope.user_state,
+        help="Task ID for current executing code."
+    )
+
+    last_code_excution_attempt_date_time = DateTime(
+        default=None,
+        scope=Scope.user_state,
+        help="Time when last code execution was run"
+    )
+
+    code_execution_results = String(
+        default=None,
+        scope=Scope.user_state,
+        help="Results of code execution"
     )
 
     @property
