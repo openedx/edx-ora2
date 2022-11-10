@@ -279,9 +279,9 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
-"Specify the number of top scoring responses to display. Valid numbers are 0 "
-"to 99. If the number is 0, the Top Responses section does not appear to "
-"learners."
+"Specify the number of top scoring responses to display after the learner has "
+"submitted a response. Valid numbers are 0 to 99. If the number is 0, the Top "
+"Responses section does not appear to learners."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
