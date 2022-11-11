@@ -1,0 +1,31 @@
+# Core requirements for using this application
+-c constraints.txt
+
+# edX Internal Requirements
+edx-i18n-tools
+edx-submissions
+djangorestframework
+Xblock
+celery
+
+django
+django-simple-history
+django-celery
+edx-celeryutils
+
+# Third Party Requirements
+bleach
+html5lib
+boto
+python-swiftclient
+defusedxml
+django-model-utils
+jsonfield2
+lazy
+libsass
+loremipsum
+lxml
+path.py
+python-dateutil
+pytz
+voluptuous

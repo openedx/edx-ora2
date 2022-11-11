@@ -7,9 +7,13 @@ import datetime as dt
 import json
 import logging
 import os
+import re
+from collections import OrderedDict
 
 import pkg_resources
 import pytz
+import waffle
+
 from six import text_type
 
 from django.conf import settings
@@ -20,7 +24,9 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.enums import CodeExecutorOption
 from openassessment.xblock.grade_mixin import GradeMixin
+from openassessment.xblock.job_sample_grader.code_grader import CodeGraderMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
@@ -35,10 +41,11 @@ from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+
 from webob import Response
 from xblock.core import XBlock
 from xblock.fields import Boolean, Integer, List, Scope, String
-from xblock.fragment import Fragment
+from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)
 
@@ -110,6 +117,7 @@ class OpenAssessmentBlock(MessageMixin,
                           StudentTrainingMixin,
                           LmsCompatibilityMixin,
                           CourseItemsListingMixin,
+                          CodeGraderMixin,
                           XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
@@ -244,6 +252,58 @@ class OpenAssessmentBlock(MessageMixin,
         scope=Scope.user_state,
         help="Indicates whether or not there are peers to grade."
     )
+
+    label_list = List(
+        default = DEFAULT_LABEL_LIST,
+        scope = Scope.content,
+        help="List of strings relavent to the content."
+    )
+
+    show_private_test_case_results = Boolean(
+        default=False,
+        scope=Scope.content,
+        help="Indicates whether or not to show private test case results (passed or failed only, does not show values)."
+    )
+
+    show_file_read_code = Boolean(
+        default=False,
+        scope=Scope.content,
+        help="Indicates whether or not to show file read code."
+    )
+    
+    executor = String(
+        display_name="Executor",
+        help="Determines which code executor to use.",
+        default=CodeExecutorOption.ServerShell.value,
+        values=[
+            {"display_name": "Server's shell", "value": CodeExecutorOption.ServerShell.value},
+            {"display_name": "Epicbox", "value": CodeExecutorOption.Epixbox.value},
+            {"display_name": "CodeJail", "value": CodeExecutorOption.CodeJail.value}
+        ],
+        scope=Scope.content,
+    )
+
+    @property
+    def labels(self):
+        return ",".join(self.label_list)
+
+    @labels.setter
+    def labels(self, value):
+        """
+        Removes duplicates and characters that are not allowed, 
+        and stores label list.
+        """
+        if value is None or value.strip() == "":
+            self.label_list = []
+        else:
+            # Exclude characters that are not in allowed set of characters.
+            labels_str = re.sub(r"((?![a-z ,]).)+", "", value.lower())
+
+            label_list = [label.strip() 
+                            for label in labels_str.split(",") 
+                            if label.strip() != ""]
+            # Remove duplicates and store.
+            self.label_list = list(OrderedDict.fromkeys(label_list))
 
     @property
     def course_id(self):
@@ -619,7 +679,10 @@ class OpenAssessmentBlock(MessageMixin,
         if self.leaderboard_show > 0:
             ui_models.append(UI_MODELS["leaderboard"])
 
-        return ui_models
+        if self.is_course_staff:
+            return ui_models
+        else:
+            return [ui_models[0]]
 
     @staticmethod
     def workbench_scenarios():
@@ -716,6 +779,8 @@ class OpenAssessmentBlock(MessageMixin,
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
         block.group_access = config['group_access']
+        block.labels = config.get('labels')
+        block.executor = config.get('executor')
 
         return block
 
@@ -922,6 +987,9 @@ class OpenAssessmentBlock(MessageMixin,
         # Check if we are in the open date range
         now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
 
+        if waffle.switch_is_active('DISABLE_CODING_QUESTION_DUE_DATE_CHECK'):
+            return False, None, open_range[0], open_range[1]
+
         if now < open_range[0]:
             return True, "start", open_range[0], open_range[1]
         elif now >= open_range[1]:
@@ -1124,3 +1192,18 @@ class OpenAssessmentBlock(MessageMixin,
         Returns the xblock id
         """
         return text_type(self.scope_ids.usage_id)
+
+    def get_test_cases_count(self):
+        """
+        Returns a dict containing the count of staff & sample test cases.
+
+        Returns(dict):
+                * keys: value
+                    * staff: Staff test cases count
+                    * sample: sample or public test cases count
+            If the test cases details are not found, both keys will have None as the value
+        """
+        return {
+            'sample': self.get_test_case_count(self.display_name, 'sample'),
+            'staff': self.get_test_case_count(self.display_name, 'staff')
+        }

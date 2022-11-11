@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from django.conf import settings
 import django.core.cache
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.encoding import smart_text
 
 from .. import exceptions

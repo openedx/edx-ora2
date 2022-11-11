@@ -73,3 +73,5 @@ test/selenium/screenshots/*
 logs/*.log*
 
 edx-ora2/
+
+openassessment/xblock/job_sample_grader/secret_data

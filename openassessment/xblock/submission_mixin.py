@@ -9,12 +9,15 @@ from six.moves import range
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.tasks import run_and_save_staff_test_cases
 from xblock.core import XBlock
+from student.models import user_by_anonymous_id
 
-from .data_conversion import create_submission_dict, prepare_submission_for_serialization
+from openassessment.xblock.data_conversion import update_submission_old_format_answer
+from .job_sample_grader.utils import get_error_response, is_design_problem
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-from .validation import validate_submission
+from .utils import get_code_language
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +40,11 @@ class SubmissionMixin(object):
     ALLOWED_FILE_MIME_TYPES = ['application/pdf'] + ALLOWED_IMAGE_MIME_TYPES
 
     MAX_FILES_COUNT = 20
+
+    STAFF_EXPECTED = 'staff_expected'
+    STAFF_OUTPUT = 'staff_out'
+    SAMPLE_EXPECTED = 'sample_expected'
+    SAMPLE_OUTPUT = 'sample_out'
 
     # taken from http://www.howtogeek.com/137270/50-file-extensions-that-are-potentially-dangerous-on-windows/
     # and http://pcsupport.about.com/od/tipstricks/a/execfileext.htm
@@ -82,14 +90,21 @@ class SubmissionMixin(object):
             )
 
         status = False
-        student_sub_data = data['submission']
-        success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-        if not success:
-            return (
-                False,
-                'EBADARGS',
-                msg
-            )
+        grade_output = self.grade_response(data, self.display_name, add_staff_output=False)
+
+        # Check if sample and staff grade output is present
+        # If not, add a default error response
+        try:
+            sample_run = grade_output
+        except KeyError:
+            sample_run = get_error_response("sample", "Submission Missing")
+
+        # Add sample and staff run to submission
+        data.update({
+            'sample_run': sample_run
+        })
+
+        student_sub_data = data
 
         student_item_dict = self.get_student_item_dict()
 
@@ -117,6 +132,15 @@ class SubmissionMixin(object):
                     student_sub_data,
                     saved_files_descriptions
                 )
+                run_and_save_staff_test_cases.apply_async(args=[
+                    str(self.scope_ids.usage_id), submission["uuid"], self.display_name
+                ], kwargs={
+                    'course_id': student_item_dict.get('course_id'),
+                    'user_id': (
+                        user_by_anonymous_id(student_item_dict.get('student_id')).id
+                        or student_item_dict.get('student_id')
+                    )
+                })
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -156,6 +180,70 @@ class SubmissionMixin(object):
 
         return status, status_tag, status_text
 
+    def add_output_to_submission(self, data, grade_output, sub_type='sample'):
+        """
+        Add the result of the code output to the submission.
+
+        Arguments:
+            data(dict): Contains the submission data(code in our case)
+            grade_output(dict): result of the grader
+            sub_type(str): str that tells which output is to be added.
+                There are two submission output:
+                 1. Sample/Public(default param)
+                 2. Staff/Private
+        Return:
+            None
+        """
+        keys_to_add = [self.SAMPLE_OUTPUT, self.SAMPLE_EXPECTED]
+        if sub_type == 'staff':
+            keys_to_add = [self.STAFF_OUTPUT, self.STAFF_EXPECTED]
+        for each in keys_to_add:
+            try:
+                data['submission'].append(grade_output[each])
+            except KeyError:
+                # If the keys aren't found, which happens if the code submission has faced
+                # some errors, then add an empty string
+                data['submission'].append('')
+
+    @XBlock.json_handler
+    def auto_save_submission(self, data, suffix=''):
+        """
+        Save the current student's response submission without executing the code.
+        If the student already has a response saved, this will overwrite it.
+
+        Args:
+            data (dict): Data should have a single key 'submission' that contains
+                the text of the student's response. Optionally, the data could
+                have a 'file_urls' key that is the path to an associated file for
+                this submission.
+            suffix (str): Not used.
+
+        Returns:
+            dict: Contains a bool 'success' and unicode string 'msg'.
+        """
+        if 'submission' in data:
+            student_sub_data = data
+            try:
+                self.saved_response = json.dumps(student_sub_data)
+                self.has_saved = True
+
+                # Emit analytics event...
+                self.runtime.publish(
+                    self,
+                    "openassessmentblock.save_submission",
+                    {"saved_response": self.saved_response}
+                )
+
+            except:
+                return {'success': False, 'msg': self._(u"This response could not be saved.")}
+            else:
+                return {
+                    'success': True,
+                    'msg': u'Auto Save Successful',
+                }
+        else:
+            return {'success': False, 'msg': self._(u"This response could not be saved.")}
+
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
@@ -173,14 +261,22 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
-            student_sub_data = data['submission']
-            success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-            if not success:
-                return {'success': False, 'msg': msg}
+            show_staff_cases = self.show_private_test_case_results and not is_design_problem(self.display_name)
+            grade_output = self.grade_response(data, self.display_name, show_staff_cases)
+
+            if show_staff_cases:
+                sample_output, staff_output = grade_output
+                sample_output.pop('run_type')
+                staff_output.pop('run_type')
+                staff_output.pop('output')
+                staff_output.pop('error')
+            else:
+                sample_output, staff_output = grade_output, None
+                sample_output.pop('run_type')
+
+            student_sub_data = data
             try:
-                self.saved_response = json.dumps(
-                    prepare_submission_for_serialization(student_sub_data)
-                )
+                self.saved_response = json.dumps(student_sub_data)
                 self.has_saved = True
 
                 # Emit analytics event...
@@ -189,10 +285,17 @@ class SubmissionMixin(object):
                     "openassessmentblock.save_submission",
                     {"saved_response": self.saved_response}
                 )
+
             except:
                 return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
-                return {'success': True, 'msg': u''}
+                return {
+                    'success': True,
+                    'msg': u'',
+                    'out': {
+                        'public': sample_output,
+                        'private': staff_output,
+                    }}
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
@@ -236,7 +339,7 @@ class SubmissionMixin(object):
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
         files_descriptions = files_descriptions if files_descriptions else []
-        student_sub_dict = prepare_submission_for_serialization(student_sub_data)
+        student_sub_dict = student_sub_data
 
         if self.file_upload_type:
             student_sub_dict['file_keys'] = []
@@ -260,7 +363,7 @@ class SubmissionMixin(object):
                         "descriptions {files_descriptions}".format(
                             student_item_dict=student_item_dict,
                             student_sub_data=student_sub_data,
-                            files_descriptions=files_descriptions 
+                            files_descriptions=files_descriptions
                         )
                     )
                 if key_to_save:
@@ -509,6 +612,7 @@ class SubmissionMixin(object):
             'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
+            "show_file_read_code": self.show_file_read_code,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
         }
@@ -568,7 +672,7 @@ class SubmissionMixin(object):
                     },
                 }
 
-            context['saved_response'] = create_submission_dict(saved_response, self.prompts)
+            context['saved_response'] = saved_response['answer']
             context['save_status'] = self.save_status
 
             submit_enabled = True
@@ -591,7 +695,9 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+            context["student_submission"] = update_submission_old_format_answer(student_submission)
+            context["design_problem"] = is_design_problem(self.display_name)
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(
@@ -601,7 +707,11 @@ class SubmissionMixin(object):
             self_in_workflow = "self" in workflow["status_details"]
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
-            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+
+            context["design_problem"] = is_design_problem(self.display_name)
+            context["student_submission"] = update_submission_old_format_answer(student_submission)
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
         return path, context

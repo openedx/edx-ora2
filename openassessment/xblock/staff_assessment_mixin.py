@@ -86,8 +86,14 @@ class StaffAssessmentMixin(object):
             data (dict):
         """
         path, context_dict = self.staff_path_and_context()
-
-        return self.render_assessment(path, context_dict)
+        if self.is_course_staff:
+            return self.render_assessment(path, context_dict)
+        else:
+            return self.render_assessment(path, {
+            'status_value': self._('Not Available'),
+            'button_active': 'disabled=disabled aria-expanded=false',
+            'step_classes': 'is--unavailable',
+        })
 
     def staff_path_and_context(self):
         """

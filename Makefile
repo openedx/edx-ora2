@@ -101,3 +101,20 @@ test-sandbox: test-acceptance test-a11y
 install-osx-requirements:
 	brew install gettext
 	brew link gettext --force
+
+upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
+upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
+	pip install -qr requirements/pip-tools.txt
+	pip-compile --upgrade -o requirements/pip-tools.txt requirements/pip-tools.in
+	pip-compile --upgrade -o requirements/base.txt requirements/base.in
+	pip-compile --upgrade -o requirements/test.txt requirements/test.in
+	pip-compile --upgrade -o requirements/quality.txt requirements/quality.in
+	# Delete django pin from test requirements to avoid tox version collision
+	sed -i.tmp '/^[d|D]jango==/d' requirements/test.txt
+	sed -i.tmp '/^djangorestframework==/d' requirements/test.txt
+	# Delete extra metadata that causes build to fail
+	sed -i.tmp '/^--index-url/d' requirements/*.txt
+	sed -i.tmp '/^--extra-index-url/d' requirements/*.txt
+	sed -i.tmp '/^--trusted-host/d' requirements/*.txt
+	# Delete temporary files
+	rm requirements/*.txt.tmp

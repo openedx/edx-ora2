@@ -1,0 +1,7 @@
+# Requirements for code quality checks
+-c constraints.txt
+
+-r test.txt                         # Testing dependencies to allow pylint to check imports
+
+edx-lint
+pycodestyle

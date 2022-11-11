@@ -21,7 +21,7 @@ class TrainingExample(models.Model):
     # The answer (JSON-serialized)
     raw_answer = models.TextField(blank=True)
 
-    rubric = models.ForeignKey(Rubric)
+    rubric = models.ForeignKey(Rubric, on_delete=models.CASCADE)
 
     # Use a m2m to avoid changing the criterion option
     options_selected = models.ManyToManyField(CriterionOption)
@@ -137,7 +137,7 @@ class TrainingExample(models.Model):
             'options_selected': options_selected,
             'rubric': rubric.id
         })
-        return sha1(contents).hexdigest()
+        return sha1(contents.encode('utf-8')).hexdigest()
 
     @classmethod
     def cache_key(cls, answer, options_selected, rubric):

@@ -241,12 +241,12 @@ OpenAssessment.BaseView.prototype = {
      * performed by the user.
      */
     loadAssessmentModules: function(usageID) {
-        this.trainingView.load(usageID);
-        this.peerView.load(usageID);
+     //   this.trainingView.load(usageID);
+       // this.peerView.load(usageID);
         this.staffView.load(usageID);
-        this.selfView.load(usageID);
+        //this.selfView.load(usageID);
         this.gradeView.load(usageID);
-        this.leaderboardView.load(usageID);
+        //this.leaderboardView.load(usageID);
 
         /**
         this.messageView.load() is intentionally omitted.

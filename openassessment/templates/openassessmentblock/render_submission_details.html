@@ -1,0 +1,34 @@
+{% spaceless %}
+{% load i18n %}
+{% load oa_extras %}
+
+<div>
+    <h2>{{header_content}}</h2>
+    {% if response.error %}
+        <p class="output_error_text_area"> {{response.error|escape|linebreaksbr}}</p>
+    {% else %}
+        <p class="results_summary"><strong>Test Cases Result: {{response.correct}} / {{response.total_tests}}</strong></p>
+
+    <table class="results_table">
+        <thead>
+        <tr>
+            <th><p class="output_text_area">Test Input</p></th>
+            <th><p class="output_text_area">{{student_output_header}}</p></th>
+            <th><p class="output_text_area">{{expected_output_header}}</p></th>
+        </tr>
+        </thead>
+
+        <tbody>
+            {% for key, value in response.output.items %}
+                <tr style="background: {%if value.correct%}rgba(0, 205, 0, 0.3){%else%}rgba(205, 0, 0, 0.3){%endif%}" >
+                    <td style="width:33%; word-break:break-word;"><p  class="output_text_area" > {{value.test_input|escape|linebreaksbr}}</p></td>
+                    <td style="width:33%;"><p  class="output_text_area" > {{value.actual_output|escape|linebreaksbr}}</p></td>
+                    <td style="width:33%;"><p  class="output_text_area" >{{value.expected_output|escape|linebreaksbr}}</p></td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {%  endif %}
+</div>
+{% endspaceless %}

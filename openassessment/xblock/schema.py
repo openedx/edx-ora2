@@ -5,10 +5,12 @@ Schema for validating and sanitizing data received from the JavaScript client.
 from __future__ import absolute_import
 
 import dateutil
-from pytz import utc
 import six
+import re
 
+from pytz import utc
 from voluptuous import All, Any, In, Invalid, Range, Required, Schema
+from openassessment.xblock.enums import CodeExecutorOption
 
 
 def utf8_validator(value):
@@ -26,10 +28,9 @@ def utf8_validator(value):
 
     """
     try:
-        if isinstance(value, str):
+        if isinstance(value, bytes):
             return value.decode('utf-8')
-        else:
-            return six.text_type(value)
+        return str(value)
     except (ValueError, TypeError):
         raise Invalid(u"Could not load unicode from value \"{val}\"".format(val=value))
 
@@ -60,6 +61,31 @@ def datetime_validator(value):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 
 
+def labels_validator(value):
+    """
+    Validate and sanitize labels string.
+
+    Args:
+        value: The value to validate.
+    
+    Returns:
+        unicode: The validated value.
+
+    Raises:
+        Invalid
+    """
+    if value is None or value.strip() == "":
+        return ""
+    else:
+        match = re.search(r"((?![a-z ,]).)+", value)
+        if bool(match):
+            raise Invalid(u"Labels contains character that is not allowed: {} ".format(
+                match.group()
+            ))
+
+    return value
+
+
 PROMPTS_TYPES = [
     u'text',
     u'html',
@@ -86,6 +112,9 @@ VALID_UPLOAD_FILE_TYPES = [
     u'custom'
 ]
 
+CODE_EXECUTOR_OPTIONS = CodeExecutorOption.values()
+
+
 # Schema definition for an update from the Studio JavaScript editor.
 EDITOR_UPDATE_SCHEMA = Schema({
     Required('prompts'): [
@@ -95,6 +124,10 @@ EDITOR_UPDATE_SCHEMA = Schema({
     ],
     Required('prompts_type', default='text'): Any(All(utf8_validator, In(PROMPTS_TYPES)), None),
     Required('title'): utf8_validator,
+    Required('labels'): All(utf8_validator, labels_validator),
+    Required('executor', default=CodeExecutorOption.ServerShell.value): All(utf8_validator, In(CODE_EXECUTOR_OPTIONS)),
+    Required('show_private_test_case_results'): bool,
+    Required('show_file_read_code'): bool,
     Required('feedback_prompt'): utf8_validator,
     Required('feedback_default_text'): utf8_validator,
     Required('submission_start'): Any(datetime_validator, None),

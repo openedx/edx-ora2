@@ -10,10 +10,11 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict
+from openassessment.xblock.data_conversion import update_submission_old_format_answer
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.utils import get_code_language, get_percentage
+from openassessment.xblock.job_sample_grader.utils import is_design_problem, get_error_response
 from xblock.core import XBlock
-
 from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)
@@ -260,17 +261,29 @@ class StaffAreaMixin(object):
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))  # localize for staff user
 
         context = {
-            'submission': create_submission_dict(submission, self.prompts) if submission else None,
+            'submission': update_submission_old_format_answer(submission) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "prompts_type": self.prompts_type,
+            "design_problem": is_design_problem(self.display_name)
         }
-
         if submission:
+            sample_run = submission['answer']['sample_run']
+            staff_run = submission['answer'].get('staff_run')
+            if not staff_run:
+                staff_run = get_error_response('staff', 'Staff test case result is not available.')
             context["file_upload_type"] = self.file_upload_type
             context["staff_file_urls"] = self.get_download_urls_from_submission(submission)
+            context['code_language'] = get_code_language(submission['answer']['language'])
+            context['staff_view'] = True
+
+            # Percentage information is not added for design problems
+            if not sample_run.get('is_design_problem'):
+                context['result_percentage'] = get_percentage(sample_run, staff_run)
+                context['total_tests'] = sample_run['total_tests'] + staff_run['total_tests']
+                context['tests_passed'] = sample_run['correct'] + staff_run['correct']
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
@@ -279,6 +292,7 @@ class StaffAreaMixin(object):
             context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
         context['xblock_id'] = self.get_xblock_id()
+
         return context
 
     def get_student_info_path_and_context(self, student_username):
@@ -391,7 +405,7 @@ class StaffAreaMixin(object):
             'score': workflow.get('score'),
             'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,
-            'are_grades_frozen': grade_utils.are_grades_frozen()
+            'are_grades_frozen': False
         })
 
         if peer_assessments or self_assessment or staff_assessment:

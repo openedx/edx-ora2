@@ -1,0 +1,13 @@
+{% spaceless %}
+{% load i18n %}
+{% load oa_extras %}
+
+<div>
+    <h2 style="text-align:left; color:black;">{{header_content}}</h2>
+    {% if response.error %}
+        <p class="output_error_text_area"> {{response.error|escape|linebreaksbr}}</p>
+    {% else %}
+      <p class="execution_output">{{response.output|escape|linebreaksbr}}</p>
+    {% endif %}
+</div>
+{% endspaceless %}

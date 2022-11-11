@@ -8,6 +8,8 @@ import json
 
 import six
 
+from openassessment.xblock.job_sample_grader.utils import get_error_response
+
 
 def convert_training_examples_list_to_dict(examples_list):
     """
@@ -189,7 +191,17 @@ def prepare_submission_for_serialization(submission_data):
     }
 
 
-def create_submission_dict(submission, prompts):
+def prepare_submission_for_serialization_v2(submission_data):
+    """
+    Convert the list to indexed dict for saving submission.
+    """
+    sub_dict = {}
+    for index, value in enumerate(submission_data):
+        sub_dict[index] = value
+    return sub_dict
+
+
+def create_submission_dict(submission, prompts, staff_view=False):
     """
     1. Convert from legacy format.
     2. Add prompts to submission['answer']['parts'] to simplify iteration in the template.
@@ -197,19 +209,77 @@ def create_submission_dict(submission, prompts):
     Args:
         submission (dict): Submission dictionary.
         prompts (list of dict): The prompts from the problem definition.
+        staff_view: If staff is viewing submission, then add the staff test cases output
 
     Returns:
         dict
     """
+
     parts = [{'prompt': prompt, 'text': ''} for prompt in prompts]
+    if staff_view:
+        parts.append({'prompt': {'description': "Staff Test Cases Output"}, 'text': ''})
+        parts.append({'prompt': {'description': "Staff Test Cases Expected"}, 'text': ''})
 
     if 'text' in submission['answer']:
         parts[0]['text'] = submission['answer'].pop('text')
     else:
         for index, part in enumerate(submission['answer'].pop('parts')):
-            parts[index]['text'] = part['text']
+            try:
+                parts[index]['text'] = part['text']
+            except IndexError:
+                # To avoid showing the staff output to learner when they have submitted their submission
 
+                # This error is raised as staff output is saved without any prompt and when trying to change
+                # the submission format, it tries to add the staff output but since no prompt is set
+                # at that index, it raises IndexError
+                continue
     submission['answer']['parts'] = parts
+
+    return submission
+
+
+def create_submission_dict_v2(submission, prompts, staff_view=False):
+    if not staff_view:
+        # Delete staff info from the submission dict if not required
+        try:
+            del submission['answer']['2']
+        except Exception:
+            pass
+    submission['answer']['parts'] = [submission['answer']['0'], submission['answer']['1']]
+    if staff_view:
+        try:
+            submission['answer']['parts'].append(submission['answer']['2'])
+        except KeyError:
+            submission['answer']['parts'].append(
+                get_error_response('staff', "Missing Staff Submission")
+                )
+
+    return submission
+
+
+def update_submission_old_format_answer(submission):
+    """
+    Update the submission answer from indexed-key format to new format, the format that uses
+    semantically correct keys
+    """
+    answer = submission['answer']
+
+    if '0' in answer and '1' in answer:
+        new_answer = {'submission': answer['0'], 'sample_run': answer['1']}
+
+        try:
+            new_answer.update({'staff_run': answer['2']})
+        except KeyError:
+            new_answer.update({
+                'staff_run': get_error_response('staff', "Missing Staff Submission")
+                })
+
+        try:
+            new_answer.update({'language': answer['0'].split('\n')[0]})
+        except Exception:
+            new_answer.update({'language': None})
+
+        submission['answer'] = new_answer
 
     return submission
 

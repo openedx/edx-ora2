@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('comments', models.TextField(max_length=10000)),
                 ('cancelled_by_id', models.CharField(max_length=40, db_index=True)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now, db_index=True)),
-                ('workflow', models.ForeignKey(related_name='cancellations', to='workflow.AssessmentWorkflow')),
+                ('workflow', models.ForeignKey(related_name='cancellations', to='workflow.AssessmentWorkflow', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['created_at', 'id'],
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('submitter_completed_at', models.DateTimeField(default=None, null=True)),
                 ('assessment_completed_at', models.DateTimeField(default=None, null=True)),
                 ('order_num', models.PositiveIntegerField()),
-                ('workflow', models.ForeignKey(related_name='steps', to='workflow.AssessmentWorkflow')),
+                ('workflow', models.ForeignKey(related_name='steps', to='workflow.AssessmentWorkflow', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['workflow', 'order_num'],

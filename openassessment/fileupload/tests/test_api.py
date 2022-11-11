@@ -16,7 +16,7 @@ import six.moves.urllib.request
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.test import TestCase
 from django.test.utils import override_settings
 

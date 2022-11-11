@@ -709,6 +709,10 @@ def serialize_content_to_xml(oa_block, root):
     # Set text response
     if oa_block.text_response:
         root.set('text_response', six.text_type(oa_block.text_response))
+        
+    # Set executor
+    if oa_block.executor:
+        root.set('executor', six.text_type(oa_block.executor))
 
     # Set file upload response
     if oa_block.file_upload_response:
@@ -856,6 +860,10 @@ def parse_from_xml(root):
     text_response = None
     if 'text_response' in root.attrib:
         text_response = six.text_type(root.attrib['text_response'])
+    
+    executor = None
+    if 'executor' in root.attrib:
+        text_response = six.text_type(root.attrib['executor'])
 
     file_upload_response = None
     if 'file_upload_response' in root.attrib:
@@ -934,7 +942,8 @@ def parse_from_xml(root):
         'white_listed_file_types': white_listed_file_types,
         'allow_latex': allow_latex,
         'group_access': group_access,
-        'leaderboard_show': leaderboard_show
+        'leaderboard_show': leaderboard_show,
+        'executor': executor,
     }
 
 

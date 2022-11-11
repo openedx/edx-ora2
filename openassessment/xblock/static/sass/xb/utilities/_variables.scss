@@ -132,7 +132,7 @@ $color-unfocused: $gray-l2;
 $color-focused: $blue-u2;
 
 // application - colors: actions
-$action-primary-color: $uxpl-primary-base;
+$action-primary-color: rgb(72, 74, 111);
 $action-primary-color-focus: $uxpl-primary-dark;
 $action-primary-color-active: $uxpl-primary-base;
 $action-primary-color-disabled: rgb(180,179,179);
@@ -175,3 +175,14 @@ $color-unavailable: $uxpl-gray-back;
 $color-decorative-staff: $color-decorative-primary;
 $heading-staff-color: $white;
 $staff-bg: $gray-d1;
+
+// --------------------
+// // LitmusTest Overrides
+// --------------------
+
+$error-background: rgba(242,128,155,0.2);
+$text-size: 18px;
+$medium-text-size: 26px;
+$text-area-height: 200px;
+
+$text-color-secondary: rgb(72, 74, 111);

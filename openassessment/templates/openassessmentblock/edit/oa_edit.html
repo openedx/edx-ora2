@@ -46,6 +46,73 @@
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label
+                            for="openassessment_labels_editor"
+                            class="setting-label">
+                            {% trans "Labels" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_labels_editor"
+                            value="{{ labels }}"
+                        >
+                    </div>
+                    <p class="setting-help">
+                        {% trans "A comma-separated list of label strings that can be used to categorize a problem. For example, oop, problem solving, dsa, etc." %}
+                        <br /> {% trans "Rules:" %}
+                        <br /> - {% trans "Only lower case alphabets [a-z]." %}
+                        <br /> - {% trans "Special character &lt;space&gt; is allowed." %}
+                        <br /> - {% trans "Use \",\" to separate labels." %}
+                    </p>
+                </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_show_private_test_case_results_editor" class="setting-label">
+                            {% trans "Show Private Test Case Results"%}
+                        </label>
+                        <select id="openassessment_show_private_test_case_results_editor" class="input setting-input">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if show_private_test_case_results %} selected="true" {% endif %}>
+                                {% trans "True"%}
+                            </option>
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Indicates whether or not to show private test case results. This only shows if the case passed or failed, it does not show any values."%}
+                    </p>
+                </li>
+                <li id="openassessment_executor_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_executor" class="setting-label">{% trans "Code Executor"%}</label>
+                        <select id="openassessment_executor" class="input setting-input" name="executor">
+                            {% for option_key, option_name in code_executor_options.items %}
+                            <option value="{{ option_key }}" {% if option_key == executor %} selected="true" {% endif %}>{{ option_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Choose which code executor to use for this question." %}
+                    </p>
+                </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_show_file_read_code_editor" class="setting-label">
+                            {% trans "Show File Read Code"%}
+                        </label>
+                        <select id="openassessment_show_file_read_code_editor" class="input setting-input">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if show_file_read_code %} selected="true" {% endif %}>
+                                {% trans "True"%}
+                            </option>
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Indicates whether or not to show file read code."%}
+                    </p>
+                </li>
+                <li class="openassessment_date_editor field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label
                             for="openassessment_submission_start_date"
                             class="setting-label">
                             {% trans "Response Start Date" %}
