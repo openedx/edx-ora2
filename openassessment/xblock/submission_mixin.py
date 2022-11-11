@@ -2,19 +2,30 @@ from __future__ import absolute_import
 
 import json
 import logging
-
+import os
+import simplejson 
 import six
+import webob
+
+from datetime import timedelta
+from typing import Union
 from six.moves import range
+
+from celery.result import states as celert_task_states
+from celery.result import AsyncResult
+from django.utils import timezone
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.tasks import run_and_save_staff_test_cases
+from openassessment.xblock.tasks import run_and_save_staff_test_cases, run_and_save_test_cases_output
 from xblock.core import XBlock
+
+from lms.djangoapps.courseware.models import StudentModule
 from student.models import user_by_anonymous_id
 
 from openassessment.xblock.data_conversion import update_submission_old_format_answer
-from .job_sample_grader.utils import get_error_response, is_design_problem
+from .job_sample_grader.utils import is_design_problem
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .utils import get_code_language
@@ -60,6 +71,99 @@ class SubmissionMixin(object):
         'htm', 'html',
     ]
 
+    def get_user_id_from_student_dict(self, student_item_dict: dict) -> Union[int, None]:
+        """
+        Given a `student_item_dict` return the user id of the related user.
+
+        Args:
+            student_item_dict (dict): dict as returned by `self.get_student_item_dict`.
+
+        Returns:
+            Union[int, None]: Anonymous user id or user id (whatever is assosiated with this block).
+        """
+        anonymous_student_id = None
+        anonymous_student = user_by_anonymous_id(student_item_dict.get('student_id'))
+        if anonymous_student is not None:
+            anonymous_student_id = anonymous_student.id
+
+        return anonymous_student_id or student_item_dict.get('student_id')
+
+    def submit_code_response(self, data: dict, student_item_dict: dict):
+        """
+        Create submission for the coding question.
+
+        Args:
+            data (dict): A dictionary with the following shape (example):
+                {
+                    'executor_id': 'server_shell-python:3.5.2',
+                    'problem_name': 'Sample Coding Question 1',
+                    'submission': "print('asd')"
+                }
+            student_item_dict (dict): A student info dict, with the following shape (example):
+                {
+                    'course_id': 'course-v1:litmustest+litmustest.LT629.1+1',
+                    'item_id': 'block-v1:litmustest+litmustest.LT629.1+1+type@openassessment+block@c6855e4faae44ad7af2431489e3d3573',
+                    'item_type': 'openassessment',
+                    'student_id': 'ebf6f228c823c9138cd1cf1ff3504680'
+                }
+        Returns:
+            dict: A submission info dict, with the following shape (example):
+                {
+                    'answer': {
+                        'executor_id': 'server_shell-python:3.5.2',
+                        'problem_name': 'Sample Coding Question 1',
+                        'sample_run': {
+                            'correct': 0,
+                            'error': None,
+                            'incorrect': 2,
+                            'output': OrderedDict([(1,
+                                                    {'actual_output': 'asd',
+                                                        'correct': False,
+                                                        'expected_output': 'NO',
+                                                        'test_input': '1'}),
+                                                    (2,
+                                                    {'actual_output': 'asd',
+                                                        'correct': False,
+                                                        'expected_output': 'YES',
+                                                        'test_input': '2'})]),
+                            'run_type': 'sample',
+                            'total_tests': 2},
+                            'submission': "print('asd')"},
+                    'attempt_number': 1,
+                    'created_at': datetime.datetime(2022, 10, 7, 10, 45, 57, 491023, tzinfo=<UTC>),
+                    'student_item': 2,
+                    'submitted_at': datetime.datetime(2022, 10, 7, 10, 45, 57, 490999, tzinfo=<UTC>),
+                    'team_submission_uuid': None,
+                    'uuid': '432249dd-6431-4fa3-a8e2-ab2ba34c8c40'
+                }
+        """
+        grade_output = self.grade_response(data, self.display_name, add_staff_output=False)
+
+        student_sub_data = {
+            **data,
+            'sample_run': grade_output,
+        }
+
+        try:
+            saved_files_descriptions = json.loads(self.saved_files_descriptions)
+        except ValueError:
+            saved_files_descriptions = None
+
+        submission = self.create_submission(
+            student_item_dict,
+            student_sub_data,
+            saved_files_descriptions
+        )
+
+        run_and_save_staff_test_cases.apply_async(args=[
+            str(self.scope_ids.usage_id), submission["uuid"], self.display_name
+        ], kwargs={
+            'course_id': student_item_dict.get('course_id'),
+            'user_id': self.get_user_id_from_student_dict(student_item_dict)
+        })
+
+        return submission
+
     @XBlock.json_handler
     def submit(self, data, suffix=''):  # pylint: disable=unused-argument
         """Place the submission text into Openassessment system
@@ -89,25 +193,6 @@ class SubmissionMixin(object):
                 self._(u'"submission" required to submit answer.')
             )
 
-        status = False
-        grade_output = self.grade_response(data, self.display_name, add_staff_output=False)
-
-        # Check if sample and staff grade output is present
-        # If not, add a default error response
-        try:
-            sample_run = grade_output
-        except KeyError:
-            sample_run = get_error_response("sample", "Submission Missing")
-
-        # Add sample and staff run to submission
-        data.update({
-            'sample_run': sample_run
-        })
-
-        student_sub_data = data
-
-        student_item_dict = self.get_student_item_dict()
-
         # Short-circuit if no user is defined (as in Studio Preview mode)
         # Since students can't submit, they will never be able to progress in the workflow
         if self.in_studio_preview:
@@ -117,30 +202,15 @@ class SubmissionMixin(object):
                 self._(u'To submit a response, view this component in Preview or Live mode.')
             )
 
-        workflow = self.get_workflow_info()
-
+        status = False
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
         status_text = self._(u'Multiple submissions are not allowed.')
+
+        workflow = self.get_workflow_info()
         if not workflow:
+            student_item_dict = self.get_student_item_dict()
             try:
-                try:
-                    saved_files_descriptions = json.loads(self.saved_files_descriptions)
-                except ValueError:
-                    saved_files_descriptions = None
-                submission = self.create_submission(
-                    student_item_dict,
-                    student_sub_data,
-                    saved_files_descriptions
-                )
-                run_and_save_staff_test_cases.apply_async(args=[
-                    str(self.scope_ids.usage_id), submission["uuid"], self.display_name
-                ], kwargs={
-                    'course_id': student_item_dict.get('course_id'),
-                    'user_id': (
-                        user_by_anonymous_id(student_item_dict.get('student_id')).id
-                        or student_item_dict.get('student_id')
-                    )
-                })
+                submission = self.submit_code_response(data, student_item_dict)
             except api.SubmissionRequestError as err:
 
                 # Handle the case of an answer that's too long as a special case,
@@ -244,10 +314,130 @@ class SubmissionMixin(object):
         else:
             return {'success': False, 'msg': self._(u"This response could not be saved.")}
 
+    def get_module_state_object(self, user_id: int) -> Union[StudentModule, None]:
+        """
+        Returns StudentModule object of this block for user `user_id`.
+
+        Args:
+            user_id (int): User id.
+
+        Returns:
+            Union[StudentModule, None]: StudentModule object for `user_id`.
+        """
+        module_state = StudentModule.objects.filter(
+            module_state_key=str(self.scope_ids.usage_id),
+            student=user_id,
+            module_type='openassessment',
+        ).first()
+
+        return module_state
+
+    def get_code_execution_results(self, user_id: int) -> dict:
+        """
+        Returns the code execution results by fetching it from
+        StudentModule state. Results are parsed into a dict.
+
+        Args:
+            user_id (int): User id.
+
+        Returns:
+            dict: Results dict. Either an empty dict or a dict with the
+                following format:
+                {
+                    "output": {
+                        "private": null,
+                        "public": {
+                            "output": {
+                                "1": {
+                                    "test_input": "2",
+                                    "expected_output": "YES",
+                                    "correct": false,
+                                    "actual_output": "Time limit exceeded."
+                                },
+                            },
+                            "incorrect": 2,
+                            "error": None,
+                            "total_tests": 2,
+                            "correct": 0
+                        }
+                    },
+                    "message": "",
+                    "success": True,
+                }
+        """
+        state = simplejson.loads(self.get_module_state_object(user_id).state)
+        results = state.get('code_execution_results', '{}') or '{}'
+        return simplejson.loads(results)
+
+    def set_code_execution_results(self, results: dict, user_id: int):
+        """
+        Adds results to the StudentModule state.
+
+        Args:
+            results (dict): A dict of results. See `get_code_execution_results` for format details.
+            user_id (int): User id.
+        """
+        module_state_object = self.get_module_state_object(user_id)
+        module_state = simplejson.loads(module_state_object.state)
+        module_state['code_execution_results'] = simplejson.dumps(results)
+        module_state_object.state = simplejson.dumps(module_state)
+        module_state_object.save()
+
+    def is_code_execution_in_progress(self) -> bool:
+        """
+        Whether or not current task `self.code_execution_task_id` is in a "running" state.
+
+        Returns:
+            bool: True if code is being executed.
+        """
+        current_code_execution_task_state = self.get_current_code_execution_task_state()
+        # celert_task_states.PENDING is an "unknown" state. Celery returns PENDING state for tasks
+        # that don't even exist. So we need to handle them appropriately.
+        if (
+            current_code_execution_task_state not in celert_task_states.READY_STATES
+            and current_code_execution_task_state != celert_task_states.PENDING
+            or
+            # A precausion against failed task registerations. If a request stays "PENDING" for 10 minutes,
+            # we'll assume it's lost.
+            # TODO: Remove this condition if we do not experience any such loses.
+            current_code_execution_task_state == celert_task_states.PENDING
+            and self.last_code_excution_attempt_date_time is not None
+            and self.last_code_excution_attempt_date_time > (timezone.now() - timedelta(minutes=10))
+        ):
+            return True
+
+        return False
+
+    def get_current_code_execution_task_state(self) -> str:
+        """
+        Returns the celery task state of `self.code_execution_task_id` if exists.
+        Defaults to SUCCESS.
+
+        Returns:
+            str: A celery task state.
+        """
+        current_code_execution_task_state = celert_task_states.SUCCESS
+
+        if bool(self.code_execution_task_id):
+            current_code_execution_task_state = AsyncResult(self.code_execution_task_id).state
+
+        return current_code_execution_task_state
+
+    def revoke_existing_task(self):
+        """
+        Revokes `self.code_execution_task_id` if it exists.
+        """
+        if bool(self.code_execution_task_id):
+            task_result = AsyncResult(self.code_execution_task_id)
+            if task_result.state not in celert_task_states.READY_STATES:
+                task_result.revoke()
+        self.code_execution_task_id = None
+        self.save()
+
     @XBlock.json_handler
     def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """
-        Save the current student's response submission.
+        Save the current student's response submission and start code execution.
         If the student already has a response saved, this will overwrite it.
 
         Args:
@@ -260,44 +450,142 @@ class SubmissionMixin(object):
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
-        if 'submission' in data:
-            show_staff_cases = self.show_private_test_case_results and not is_design_problem(self.display_name)
-            grade_output = self.grade_response(data, self.display_name, show_staff_cases)
+        if os.environ.get('SERVICE_VARIANT', '').lower() == 'cms':
+            # CMS lacks a student entity and no StudentModule state
+            # is saved. Async code execution requires this state as
+            # an intermediate space.
+            return {
+                'success': False,
+                'msg': self._(u'Code execution only works on lms.'),
+            }
 
-            if show_staff_cases:
-                sample_output, staff_output = grade_output
-                sample_output.pop('run_type')
-                staff_output.pop('run_type')
-                staff_output.pop('output')
-                staff_output.pop('error')
-            else:
-                sample_output, staff_output = grade_output, None
-                sample_output.pop('run_type')
+        if 'submission' not in data:
+            return {
+                'success': False,
+                'msg': self._(u'This response was not submitted.')
+            }
 
-            student_sub_data = data
-            try:
-                self.saved_response = json.dumps(student_sub_data)
-                self.has_saved = True
+        if self.is_code_execution_in_progress():
+            return {
+                'success': False,
+                'msg': self._(u'An existing code execution task is already running.')
+            }
 
-                # Emit analytics event...
-                self.runtime.publish(
-                    self,
-                    "openassessmentblock.save_submission",
-                    {"saved_response": self.saved_response}
-                )
+        # Ensure no task is running. We do not want to run multiple code execution tasks
+        # at once.
+        self.revoke_existing_task()
 
-            except:
-                return {'success': False, 'msg': self._(u"This response could not be saved.")}
-            else:
-                return {
-                    'success': True,
-                    'msg': u'',
-                    'out': {
-                        'public': sample_output,
-                        'private': staff_output,
-                    }}
+        show_staff_cases = self.show_private_test_case_results and not is_design_problem(self.display_name)
+
+        self.saved_response = json.dumps(data)
+        self.has_saved = True
+        self.last_code_excution_attempt_date_time = timezone.now()
+        self.code_execution_results = ''
+
+        student_item_dict = self.get_student_item_dict()
+        student_user_id = self.get_user_id_from_student_dict(student_item_dict)
+
+        self.code_execution_task_id = run_and_save_test_cases_output.apply_async(
+            kwargs={
+                'block_id': str(self.scope_ids.usage_id),
+                'user_id': student_user_id,
+                'saved_response': data,
+                'add_staff_cases': show_staff_cases,
+            }).task_id
+
+        self.save()
+
+        # Emit analytics event...
+        self.runtime.publish(
+            self,
+            "openassessmentblock.save_submission",
+            {"saved_response": self.saved_response}
+        )
+
+        return {
+            'success': True,
+            'msg': u'Execution task started.',
+        }
+
+    @XBlock.handler
+    def fetch_code_execution_results(self, request, suffix=''):  # pylint: disable=unused-argument
+        """
+        Returns code execution results.
+
+        Args:
+            request (Any): Not used.
+            suffix (Any): Not used. Defaults to ''.
+
+        Returns:
+            Response: A JSON response of shape (example):
+                {
+                    "output": {
+                        "private": null,
+                        "public": {
+                            "output": {
+                                "1": {
+                                    "test_input": "2",
+                                    "expected_output": "YES",
+                                    "correct": false,
+                                    "actual_output": "Time limit exceeded."
+                                },
+                            },
+                            "incorrect": 2,
+                            "error": null,
+                            "total_tests": 2,
+                            "correct": 0
+                        }
+                    },
+                    "message": "",
+                    "success": true,
+                    "execution_state": "success" // Can be 'success', 'failure', 'running'
+                }
+        """
+        execution_state = 'none'
+        execution_results = {}
+        show_staff_cases = self.show_private_test_case_results and not is_design_problem(self.display_name)
+
+        if self.is_code_execution_in_progress():
+            execution_state = 'running'
+        elif self.get_current_code_execution_task_state() != celert_task_states.SUCCESS:
+            execution_state = 'failure'
         else:
-            return {'success': False, 'msg': self._(u"This response was not submitted.")}
+            execution_state = 'success'
+
+        sample_output = {}
+        staff_output = None
+        execution_results = {}
+
+        student_item_dict = self.get_student_item_dict()
+        student_user_id = self.get_user_id_from_student_dict(student_item_dict)
+        execution_results = self.get_code_execution_results(student_user_id)
+
+        sample_output = execution_results.get('output', {}).get('sample')
+        staff_output = execution_results.get('output', {}).get('staff')
+
+        # Clean response. There are some values we don't want the user to see
+        # on the frontend.
+        if sample_output is not None:
+            sample_output.pop('run_type', None)
+        if staff_output is not None:
+            staff_output.pop('run_type', None)
+            if not show_staff_cases:
+                staff_output.pop('output', None)
+                staff_output.pop('error', None)
+
+        return webob.Response(
+            body=simplejson.dumps({
+                'execution_state': execution_state,
+                'success': execution_results.get('success', False),
+                'message': execution_results.get('message', ''),
+                'output': {
+                    'public': sample_output,
+                    'private': staff_output,
+                },
+            }),
+            content_type='application/json',
+            charset='utf8'
+        )
 
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -608,11 +896,13 @@ class SubmissionMixin(object):
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
+            **self.get_code_grader_context(),
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),
             "text_response": self.text_response,
             "show_file_read_code": self.show_file_read_code,
+            "is_code_input_from_file": self.is_code_input_from_file,
             "file_upload_response": self.file_upload_response,
             "prompts_type": self.prompts_type,
         }
@@ -674,6 +964,7 @@ class SubmissionMixin(object):
 
             context['saved_response'] = saved_response['answer']
             context['save_status'] = self.save_status
+            context['has_executed_code_before'] = self.last_code_excution_attempt_date_time != None
 
             submit_enabled = True
             if self.text_response == 'required' and not self.saved_response:
@@ -697,7 +988,7 @@ class SubmissionMixin(object):
             )
             context["student_submission"] = update_submission_old_format_answer(student_submission)
             context["design_problem"] = is_design_problem(self.display_name)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['executor_id'])
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(
@@ -710,7 +1001,7 @@ class SubmissionMixin(object):
 
             context["design_problem"] = is_design_problem(self.display_name)
             context["student_submission"] = update_submission_old_format_answer(student_submission)
-            context['code_language'] = get_code_language(context["student_submission"]['answer']['language'])
+            context['code_language'] = get_code_language(context["student_submission"]['answer']['executor_id'])
 
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

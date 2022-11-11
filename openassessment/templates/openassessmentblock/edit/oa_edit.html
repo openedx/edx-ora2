@@ -110,6 +110,22 @@
                         {% trans "Indicates whether or not to show file read code."%}
                     </p>
                 </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_is_code_input_from_file_editor" class="setting-label">
+                            {% trans "Is code input from file?"%}
+                        </label>
+                        <select id="openassessment_is_code_input_from_file_editor" class="input setting-input">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if is_code_input_from_file %} selected="true" {% endif %}>
+                                {% trans "True"%}
+                            </option>
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Indicates whether or not input to the code is from a file. The file is passed as the first command line argument. When False, input is piped through stdin."%}
+                    </p>
+                </li>
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label

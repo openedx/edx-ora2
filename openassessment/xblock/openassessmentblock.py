@@ -44,7 +44,7 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
 from webob import Response
 from xblock.core import XBlock
-from xblock.fields import Boolean, Integer, List, Scope, String
+from xblock.fields import Boolean, Integer, List, Scope, String, DateTime
 from web_fragments.fragment import Fragment
 
 logger = logging.getLogger(__name__)
@@ -270,17 +270,40 @@ class OpenAssessmentBlock(MessageMixin,
         scope=Scope.content,
         help="Indicates whether or not to show file read code."
     )
-    
+
+    is_code_input_from_file = Boolean(
+        default=True,
+        scope=Scope.content,
+        help="Indicates whether or not the input to the code should be through a file.",
+    )
+
     executor = String(
         display_name="Executor",
         help="Determines which code executor to use.",
         default=CodeExecutorOption.ServerShell.value,
         values=[
             {"display_name": "Server's shell", "value": CodeExecutorOption.ServerShell.value},
-            {"display_name": "Epicbox", "value": CodeExecutorOption.Epixbox.value},
-            {"display_name": "CodeJail", "value": CodeExecutorOption.CodeJail.value}
+            {"display_name": "Epicbox", "value": CodeExecutorOption.Epicbox.value},
         ],
         scope=Scope.content,
+    )
+
+    code_execution_task_id = String(
+        default=None,
+        scope=Scope.user_state,
+        help="Task ID for current executing code."
+    )
+
+    last_code_excution_attempt_date_time = DateTime(
+        default=None,
+        scope=Scope.user_state,
+        help="Time when last code execution was run"
+    )
+
+    code_execution_results = String(
+        default=None,
+        scope=Scope.user_state,
+        help="Results of code execution"
     )
 
     @property

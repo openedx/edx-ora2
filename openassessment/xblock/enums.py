@@ -3,8 +3,7 @@ from enum import Enum
 
 class CodeExecutorOption(Enum):
     ServerShell = 'server_shell'
-    Epixbox = 'epicbox'
-    CodeJail = 'codejail'
+    Epicbox = 'epicbox'
 
     @classmethod
     def values(cls):
