@@ -141,7 +141,7 @@ class GradeMixin(object):
             'score': score,
             'feedback_text': feedback_text,
             'has_submitted_feedback': has_submitted_feedback,
-            'code_language': get_code_language(context["student_submission"]['answer']['language']),
+            'code_language': get_code_language(context["student_submission"]['answer']['executor_id']),
             'design_problem': is_design_problem(self.display_name),
             'peer_assessments': peer_assessments,
             'grade_details': self.grade_details(
