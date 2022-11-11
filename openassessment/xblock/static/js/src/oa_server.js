@@ -230,6 +230,29 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
+         * Fetches results of the last code executed on the sever.
+         * 
+         * @returns {promise} A JQuery promise, which resolves with results object on success
+         *      and fails with an error message.
+         */
+         fetchCodeExecutionResults: function () {
+            var url = this.url('fetch_code_execution_results');
+            return $.Deferred(function (defer) {
+                $.ajax({
+                    url: url,
+                }).done(function (data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function (data) {
+                    errorMessage = "Failed to retrieve results.";
+                    if (data.statusText) {
+                        errorMessage = data.statusText;
+                    }
+                    defer.rejectWith(this, [gettext(errorMessage)]);
+                });
+            }).promise();
+        },
+
+        /**
          * Save a response without submitting it.
          *
          * @param {string} submission The text of the student's response.
@@ -502,6 +525,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 allow_latex: options.latexEnabled,
                 show_private_test_case_results: options.showPrivateTestCaseResultsEnabled,
                 show_file_read_code: options.showFileReadCodeEnabled,
+                is_code_input_from_file: options.isCodeInputFromFileEnabled,
                 leaderboard_show: options.leaderboardNum
             });
             return $.Deferred(function (defer) {

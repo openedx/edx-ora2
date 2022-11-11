@@ -19,6 +19,8 @@ django-model-utils==4.0.0  # via -r requirements/base.in, edx-celeryutils, edx-s
 django-simple-history==2.11.0  # via -r requirements/base.in
 django==2.2.15            # via -c requirements/constraints.txt, -r requirements/base.in, django-celery, django-model-utils, edx-celeryutils, edx-i18n-tools, edx-submissions, jsonfield2
 djangorestframework==3.9.4  # via -r requirements/base.in, edx-submissions
+docker==4.4.4
+epicbox==1.1.0
 edx-celeryutils==0.5.1    # via -r requirements/base.in
 edx-i18n-tools==0.5.3     # via -r requirements/base.in
 edx-submissions==3.2.0    # via -r requirements/base.in
@@ -43,10 +45,12 @@ python-swiftclient==3.10.0  # via -c requirements/constraints.txt, -r requiremen
 pytz==2020.1              # via -r requirements/base.in, celery, django, edx-submissions, fs, xblock
 pyyaml==5.3.1             # via edx-i18n-tools, xblock
 requests==2.24.0          # via python-swiftclient
+structlog==19.2.0
 six==1.15.0               # via bleach, django-simple-history, edx-i18n-tools, fs, html5lib, libsass, packaging, python-dateutil, python-swiftclient, xblock
 sqlparse==0.3.1           # via django
 urllib3==1.25.10          # via requests
 voluptuous==0.11.7        # via -c requirements/constraints.txt, -r requirements/base.in
+websocket-client==0.59.0
 web-fragments==0.3.2      # via xblock
 webencodings==0.5.1       # via bleach, html5lib
 webob==1.8.6              # via xblock

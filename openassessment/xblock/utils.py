@@ -1,23 +1,26 @@
 """
 Grader ORA utils.
 """
+from openassessment.xblock.code_executor.factory import CODE_EXECUTOR_CONFIG_ID_MAP
 
 
 # Map language name to be used in template code class
 CODE_LANGUAGES = {
-    'Python': 'language-python',
-    'Java': 'language-java',
-    'C++': 'language-cpp',
-    'NodeJS': 'language-nodejs'
+    'python': 'language-python',
+    'java': 'language-java',
+    'cpp': 'language-cpp',
+    'javascript': 'language-nodejs'
 }
 
 
-def get_code_language(language):
+def get_code_language(executor_id: str = ''):
     """
     Create the prism js language tag for the given language.
     """
-    language = ''.join([character for character in language if character.isalpha() or character == '+'])
     try:
+        language = CODE_EXECUTOR_CONFIG_ID_MAP[executor_id].get(
+            'language', executor_id.split(':')[0]
+        )
         return CODE_LANGUAGES[language]
     except KeyError:
         return ""
