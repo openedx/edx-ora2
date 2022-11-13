@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Adem Özgür <admozgur@gmail.com>, 2015
-# Ali Işıngör <ali@artistanbul.io>, 2018-2021
+# Ali Işıngör <ali@artistanbul.io>, 2018-2022
 # ali selek <aliselek01@gmail.com>, 2015
 # Ayhan Aksoy <aksoyayhan1@gmail.com>, 2015
 # Emrah Emirtekin <eemirtekin@gmail.com>, 2015
@@ -21,9 +21,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-02 14:41-0400\n"
+"POT-Creation-Date: 2022-11-13 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018-2021\n"
+"Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018-2022\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -294,10 +294,10 @@ msgstr "(Devre dışı)"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
-"Specify the number of top scoring responses to display. Valid numbers are 0 "
-"to 99. If the number is 0, the Top Responses section does not appear to "
-"learners."
-msgstr "Görüntülemek için üst puanlama yanıtlarının sayısını belirtiniz. Geçerli sayılar 0'dan 99'a kadar. Eğer sayı 0 ise, En İyi Yanıtlar bölümü öğrencilere görünmez."
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."

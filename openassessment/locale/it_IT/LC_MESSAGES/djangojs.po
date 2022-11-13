@@ -7,7 +7,7 @@
 # anna.ghetti <anna.ghetti@student.unife.it>, 2014
 # danicabliznakinja <dmbliznakinje@yahoo.co.uk>, 2014
 # Domenico Casanica <domenico.casanica@sistinf.it>, 2021
-# Mauri Macera, 2021
+# 20bdf6b5822f7ccbe16f09a657dbe357_e29decb, 2021
 # Pietro Lombardo <pietrolombardo1979@gmail.com>, 2015
 # Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2021
 # Tiziana Longeri <tiziana.longeri@polimi.it>, 2015

@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-02 14:41-0400\n"
+"POT-Creation-Date: 2022-11-13 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Виктор, 2022\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
@@ -300,10 +300,10 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
-"Specify the number of top scoring responses to display. Valid numbers are 0 "
-"to 99. If the number is 0, the Top Responses section does not appear to "
-"learners."
-msgstr "Укажите, сколько отображать лучших ответов.  Можно использовать числа от 0 до 99.  Если введён 0, раздел лучших ответов не отображается для слушателей."
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."

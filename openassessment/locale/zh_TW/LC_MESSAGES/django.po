@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-02 14:41-0400\n"
+"POT-Creation-Date: 2022-11-13 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: 黃蕙君 <huanghc@mail.fcu.edu.tw>, 2020\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
@@ -302,10 +302,10 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
-"Specify the number of top scoring responses to display. Valid numbers are 0 "
-"to 99. If the number is 0, the Top Responses section does not appear to "
-"learners."
-msgstr "指定被觀摩的優良作業的數量。此值必須介於 0-99 之間。例如，填 10 的話表示同儕互評後大家可以觀摩最高的 10 份作答。"
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-02 14:41-0400\n"
+"POT-Creation-Date: 2022-11-13 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Lasha Kokilashvili, 2018\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
@@ -285,10 +285,10 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
-"Specify the number of top scoring responses to display. Valid numbers are 0 "
-"to 99. If the number is 0, the Top Responses section does not appear to "
-"learners."
-msgstr "მიუთითეთ რამდენი ყველაზე მაღალი შეფასების პასუხი გამოჩნდეს. მართებული მნიშვნელობაა 0-დან 99-მდე. თუ მითითებულია 0, მსმენელებთან საუკეთესო პასუხები არ გამოჩნდება."
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."

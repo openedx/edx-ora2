@@ -9,7 +9,7 @@
 # Domenico Casanica <domenico.casanica@sistinf.it>, 2021
 # Ilaria Botti <ilabotti@gmail.com>, 2022
 # irmavep <katiatolone@yahoo.it>, 2014
-# Mauri Macera, 2021
+# 20bdf6b5822f7ccbe16f09a657dbe357_e29decb, 2021
 # Ned Batchelder <ned@edx.org>, 2022
 # Nicola Moretto <nicolamoretto88@gmail.com>, 2014
 # Nicola Cois <nicolacois@hotmail.com>, 2014
@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-02 14:41-0400\n"
+"POT-Creation-Date: 2022-11-13 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Diana Huang <dkh@edx.org>, 2022\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
@@ -291,10 +291,10 @@ msgstr "(disattivato)"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
-"Specify the number of top scoring responses to display. Valid numbers are 0 "
-"to 99. If the number is 0, the Top Responses section does not appear to "
-"learners."
-msgstr "Specificare il numero di risposte con miglior punteggio da visualizzare. I numeri validi sono compresi tra 0 e 99. Se il numero è 0, la sezione Migliori risposte non viene visualizzata dagli studenti. "
+"Specify the number of top scoring responses to display after the learner has"
+" submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
+"Top Responses section does not appear to learners."
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
