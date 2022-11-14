@@ -560,8 +560,9 @@ class SubmissionMixin(object):
         student_user_id = self.get_user_id_from_student_dict(student_item_dict)
         execution_results = self.get_code_execution_results(student_user_id) or {}
 
-        sample_output = execution_results.get('output', {}).get('sample')
-        staff_output = execution_results.get('output', {}).get('staff')
+        output = execution_results.get('output', {}) or {}
+        sample_output = output.get('sample')
+        staff_output = output.get('staff')
 
         # Clean response. There are some values we don't want the user to see
         # on the frontend.
