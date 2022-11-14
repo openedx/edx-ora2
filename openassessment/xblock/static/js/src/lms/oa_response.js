@@ -846,7 +846,7 @@ OpenAssessment.ResponseView.prototype = {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', message);
             view.errorOnLastSave = true;
-            view.saveEnabled(false);
+            view.saveEnabled(true);
         })
     },
 

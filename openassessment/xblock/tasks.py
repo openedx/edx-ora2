@@ -53,15 +53,17 @@ def run_and_save_test_cases_output(
             ora_block.display_name,
             add_staff_cases,
         )
-    except:
+    except Exception as ex:
         logger.exception(
-            'Could not grade response for user {} and block {}'.format(
-                user_id, block_id
-            )
+            'Could not grade response for user {} and block {}. {}'.format(
+                user_id, block_id, str(ex)
+            ),
+            exc_info=ex
         )
         code_execution_results = {
             'success': False,
             'message': 'Error grading the response.',
+            'error': str(ex),
             'output': None,
         }
     else:
