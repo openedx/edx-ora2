@@ -401,8 +401,8 @@ class SubmissionMixin(object):
             # we'll assume it's lost.
             # TODO: Remove this condition if we do not experience any such loses.
             current_code_execution_task_state == celert_task_states.PENDING
-            and self.last_code_excution_attempt_date_time is not None
-            and self.last_code_excution_attempt_date_time > (timezone.now() - timedelta(minutes=10))
+            and self.last_code_execution_attempt_date_time is not None
+            and self.last_code_execution_attempt_date_time > (timezone.now() - timedelta(minutes=10))
         ):
             return True
 
@@ -479,7 +479,7 @@ class SubmissionMixin(object):
 
         self.saved_response = json.dumps(data)
         self.has_saved = True
-        self.last_code_excution_attempt_date_time = timezone.now()
+        self.last_code_execution_attempt_date_time = timezone.now()
         self.code_execution_results = ''
 
         student_item_dict = self.get_student_item_dict()
@@ -558,10 +558,11 @@ class SubmissionMixin(object):
 
         student_item_dict = self.get_student_item_dict()
         student_user_id = self.get_user_id_from_student_dict(student_item_dict)
-        execution_results = self.get_code_execution_results(student_user_id)
+        execution_results = self.get_code_execution_results(student_user_id) or {}
 
-        sample_output = execution_results.get('output', {}).get('sample')
-        staff_output = execution_results.get('output', {}).get('staff')
+        output = execution_results.get('output', {}) or {}
+        sample_output = output.get('sample')
+        staff_output = output.get('staff')
 
         # Clean response. There are some values we don't want the user to see
         # on the frontend.
@@ -964,7 +965,7 @@ class SubmissionMixin(object):
 
             context['saved_response'] = saved_response['answer']
             context['save_status'] = self.save_status
-            context['has_executed_code_before'] = self.last_code_excution_attempt_date_time != None
+            context['has_executed_code_before'] = self.last_code_execution_attempt_date_time != None
 
             submit_enabled = True
             if self.text_response == 'required' and not self.saved_response:
