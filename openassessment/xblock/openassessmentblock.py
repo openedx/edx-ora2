@@ -294,7 +294,7 @@ class OpenAssessmentBlock(MessageMixin,
         help="Task ID for current executing code."
     )
 
-    last_code_excution_attempt_date_time = DateTime(
+    last_code_execution_attempt_date_time = DateTime(
         default=None,
         scope=Scope.user_state,
         help="Time when last code execution was run"
