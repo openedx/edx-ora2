@@ -3,6 +3,8 @@ import logging
 import os
 import json
 
+from uuid import uuid4
+
 from tempfile import NamedTemporaryFile, TemporaryFile
 
 from collections import OrderedDict
@@ -145,23 +147,42 @@ class CodeGraderMixin(object):
 
         test_case_files = []
 
+        temporary_directory = os.path.join(self.__TMP_DATA_DIR__, self.__SECRET_DATA_DIR__.lstrip(os.sep))
+        os.makedirs(temporary_directory, exist_ok=True)
+
         for case_number in sorted(test_cases.keys()):
             case = test_cases[case_number]
-            input_file = NamedTemporaryFile(
-                mode="w+",
-                dir=self.__SECRET_DATA_DIR__,
-                delete=False
-            )
-            input_file.write(case['input'])
-            input_file.seek(0, 0)
+            test_case_tmp_file_name_prefix = str(uuid4());
+            try:
+                input_file = NamedTemporaryFile(
+                    mode='w+',
+                    prefix=test_case_tmp_file_name_prefix,
+                    suffix='.in',
+                    dir=temporary_directory,
+                    delete=False
+                )
+                input_file.write(case['input'])
+                input_file.close()
 
-            expected_output_file = NamedTemporaryFile(
-                mode="w+",
-                dir=self.__SECRET_DATA_DIR__,
-                delete=False
-            )
-            expected_output_file.write(case['output'])
-            expected_output_file.seek(0, 0)
+                expected_output_file = NamedTemporaryFile(
+                    mode='w+',
+                    prefix=test_case_tmp_file_name_prefix,
+                    suffix='.out',
+                    dir=temporary_directory,
+                    delete=False
+                )
+                expected_output_file.write(case['output'])
+                expected_output_file.close()
+            except PermissionError as error:
+                logger.error(
+                    'The OS user "{}" does not have the permission to create temporary file under "{}". Error: {}'
+                    .format(
+                        os.getlogin(),
+                        temporary_directory,
+                        error
+                    )
+                )
+                raise error
 
             test_case_files.append(
                 {
