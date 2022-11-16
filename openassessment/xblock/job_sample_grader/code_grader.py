@@ -175,7 +175,8 @@ class CodeGraderMixin(object):
                 expected_output_file.close()
             except PermissionError as error:
                 logger.error(
-                    'The OS user "{}" does not have the permission to create temporary file under "{}". Error: {}'.format(
+                    'The OS user "{}" does not have the permission to create temporary file under "{}". Error: {}'
+                    .format(
                         os.getlogin(),
                         temporary_directory,
                         error
