@@ -257,8 +257,7 @@ class CodeGraderMixin(object):
                     'error': None,
                 }
         """
-        xblock_id = self.get_xblock_id()
-        usage_key = xblock_id.split('@')[-1]
+        usage_key = self.get_xblock_id()
 
         test_case_files = []
         question_mapping = AssessmentQuestionXblockMapping.objects.filter(usage_key=usage_key).first()
