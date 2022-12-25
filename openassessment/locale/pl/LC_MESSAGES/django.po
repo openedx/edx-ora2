@@ -12,6 +12,7 @@
 # dwegiel <dwegiel@gmail.com>, 2015
 # Maciej Kolankowski <maciej@eduprojekt.org>, 2017
 # Jakub Kopczyk <kuba5566@gmail.com>, 2014-2015
+# Klara Sielicka-Baryłka, 2022
 # Magdalena Dulęba <magdalena.duleba@e-science.pl>, 2021-2022
 # Marcin Miłek, 2022
 # Martyna Bogusz <piotr.boguszewicz@bluesoft.com>, 2020
@@ -23,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-13 13:36-0500\n"
+"POT-Creation-Date: 2022-12-18 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Magdalena Dulęba <magdalena.duleba@e-science.pl>, 2021-2022\n"
+"Last-Translator: Klara Sielicka-Baryłka, 2022\n"
 "Language-Team: Polish (http://www.transifex.com/open-edx/edx-platform/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
