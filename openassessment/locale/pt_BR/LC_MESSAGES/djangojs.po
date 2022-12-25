@@ -12,7 +12,7 @@
 # Leonardo Lehnemann <lehneman@gmail.com>, 2014
 # Leonardo Lehnemann <lehneman@gmail.com>, 2014
 # Matheus Gomes Correia, 2017
-# Matheus Gomes Correia, 2017
+# Matheus Gomes, 2017
 # Monica Farias <monifar.tp@gmail.com>, 2015-2016
 # Paulo Romano <pauloromanocarvalho@gmail.com>, 2017
 # rafap228 <rafap228@hotmail.com>, 2014

@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-13 13:36-0500\n"
+"POT-Creation-Date: 2022-12-25 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018-2022\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
@@ -313,7 +313,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:141
 msgid "Select Team-Set"
-msgstr ""
+msgstr "Takım Yapılandırması Seçin"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
@@ -646,7 +646,7 @@ msgstr "Örnek Cevap Ekle"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
-msgstr ""
+msgstr "Dereceli Puanlama Anahtarını Klonla"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:7
 msgid ""
@@ -670,7 +670,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:31
 msgid "Clone"
-msgstr ""
+msgstr "Klonla"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:37
 msgid "Rubric Successfully Cloned from Block ID: "
@@ -907,7 +907,7 @@ msgstr "Lütfen bekleyin"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
-msgstr ""
+msgstr "Adım Ayrıntıları Bekleniyor"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
 msgid ""
@@ -1675,7 +1675,7 @@ msgstr "Görev İstatistiklerini Görüntüle"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "Yeni Notlandırma Deneyimi demosu"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
@@ -1821,7 +1821,7 @@ msgid ""
 "\n"
 "                    Viewing learner: %(learner)s\n"
 "                "
-msgstr ""
+msgstr "\n                    Öğrenci görüntüleniyor: %(learner)s\n                "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:15
 #, python-format
@@ -1829,7 +1829,7 @@ msgid ""
 "\n"
 "                    Viewing team: %(team)s\n"
 "                "
-msgstr ""
+msgstr "\n                    Takım görüntüleniyor: %(team)s\n                "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
@@ -1837,7 +1837,7 @@ msgstr "Öğrenci Yanıtı"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
 msgid "Team's Response"
-msgstr ""
+msgstr "Takımın Yanıtı"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
@@ -1881,7 +1881,7 @@ msgstr "Bu Öğrenci için Personel Değerlendirmesi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
 msgid "Staff Assessment for this Team"
-msgstr ""
+msgstr "Bu Takım için Personel Değerlendirmesi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
@@ -1889,7 +1889,7 @@ msgstr "Öğrencinin Final Notu"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
-msgstr ""
+msgstr "Takımın Final Notu"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
@@ -2179,7 +2179,7 @@ msgstr "Akran Ortalama Notu"
 #: openassessment/xblock/grade_mixin.py:515
 #, python-brace-format
 msgid "Peer {peer_index}"
-msgstr ""
+msgstr "Akran {peer_index}"
 
 #: openassessment/xblock/grade_mixin.py:374
 msgid "Peer Comments"
@@ -2235,7 +2235,7 @@ msgstr ""
 
 #: openassessment/xblock/openassesment_template_mixin.py:19
 msgid "Peer Assessment Only"
-msgstr ""
+msgstr "Sadece Akran Değerlendirmesi"
 
 #: openassessment/xblock/openassesment_template_mixin.py:20
 msgid "Self Assessment Only"
