@@ -9,7 +9,7 @@
 # Antonio Huete Jimenez <tuxillo@quantumachine.net>, 2014
 # david ruiz <daruc20@gmail.com>, 2015
 # 553ef580f211e7503b24183c03db80c7_7f96349 <be2acf385bbc9ff2de23ae311676199d_206225>, 2014
-# Jesica Greco, 2022
+# Jesica Greco, 2022-2023
 # Juan Rodríguez de Vera Mouliaá <jrodriguez@um.es>, 2016
 # juditseb <juditseb@hotmail.com>, 2014
 # Mariangeles Fernandez <mariangelesfm@gmail.com>, 2015
@@ -27,9 +27,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-25 13:36-0500\n"
+"POT-Creation-Date: 2023-01-08 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Jesica Greco, 2022\n"
+"Last-Translator: Jesica Greco, 2022-2023\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/open-edx/edx-platform/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -303,7 +303,7 @@ msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr ""
+msgstr "Especifique el número de respuestas con la puntuación más alta que se mostrarán después de que el alumno haya enviado una respuesta. Los números válidos son del 0 al 99. Si el número es 0, la sección Respuestas principales no se muestra a los alumnos."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
