@@ -3,14 +3,14 @@ Holds utility functions related to code_grader module.
 """
 
 
-OOP_PROBLEM_NAMES = ["design-problem-1", "design-problem-2", "design-problem-3"]
 
 
 def is_design_problem(problem_name):
     """
     Temporary helper method to check if a coding problem is a design problem.
     """
-    return problem_name in OOP_PROBLEM_NAMES
+    problem_name_in_lower = problem_name.lower()
+    return problem_name_in_lower.endswith('design problem')
 
 
 def get_error_response(run_type, error):
