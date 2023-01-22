@@ -10,8 +10,8 @@
 # Alexander L. <alexander.lohberg@ufo-style.de>, 2014,2017
 # Christian Layr <Christian.Layr@unisg.ch>, 2014
 # Donna Kl <donna@polarstern-education.com>, 2019
-# dsichau <dsichau@gmail.com>, 2014
-# dsichau <dsichau@gmail.com>, 2014
+# 850202ae045d1b25b0dce6cdcdc97834_55af96c <acd60e4afd4599eba252d836f88f846e_214201>, 2014
+# 850202ae045d1b25b0dce6cdcdc97834_55af96c <acd60e4afd4599eba252d836f88f846e_214201>, 2014
 # Ettore Atalan <atalanttore@googlemail.com>, 2014,2016
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
 # mc <marc.mannsfeld@phil.hhu.de>, 2015-2016
@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-25 13:36-0500\n"
+"POT-Creation-Date: 2023-01-15 13:36-0500\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018-2021\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
