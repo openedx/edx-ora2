@@ -14,9 +14,7 @@ python-dateutil==2.4.0
 xblock-sdk==0.4.0
 
 python-swiftclient<4.0.0
-mock<4.0.0                         # mock version 4.0.0 drops support for python 3.5
 voluptuous<1.0.0
-zipp==1.0.0                        # zipp 2.0.0 requires Python >= 3.6
 
 # Test dependencies
 ddt==1.0.0                          # Test failures at versions > 1.0.0
