@@ -5,7 +5,6 @@
 
 coverage                            # Repeat a test case with multiple data inputs
 ddt
-django-pyfs
 factory_boy                         # Fixture factories for test setup
 freezegun                           # Mock the datetime module to manipulate date functions
 mock                                # Stub out specific code during test runs
@@ -17,4 +16,3 @@ testfixtures                        # Provides a LogCapture utility to be used b
 tox
 more-itertools
 xblock-sdk
-
