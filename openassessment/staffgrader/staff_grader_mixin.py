@@ -416,7 +416,7 @@ class StaffGraderMixin:
             log.error(
                 (
                     "[%s] Error looking up assessments. Submission UUID = %s, "
-                    "Staff Workflow Id = %d, Staff Workflow Assessment = %s, Assessments = %s"
+                    "Staff Workflow Id = %s, Staff Workflow Assessment = %s, Assessments = %s"
                 ),
                 item_id, submission_uuid, workflow.id, workflow.assessment, assessments
             )

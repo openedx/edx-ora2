@@ -1355,7 +1355,7 @@ class OpenAssessmentBlock(MessageMixin,
         return str(self.scope_ids.usage_id)
 
     def _clean_data(self, data):
-        cleaner = Cleaner(tags=[], strip=True)
+        cleaner = Cleaner(tags=set(), strip=True)
         cleaned_text = " ".join(re.split(r"\s+", cleaner.clean(data), flags=re.UNICODE)).strip()
         return cleaned_text
 
