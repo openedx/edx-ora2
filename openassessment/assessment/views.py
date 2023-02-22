@@ -32,12 +32,12 @@ def get_evaluations_for_student_item(request, course_id, student_id, item_id):  
             student item.
 
     """
-    student_item_dict = dict(
+    student_item_dict = dict(  # lint-amnesty, pylint: disable=use-dict-literal
         course_id=course_id,
         student_id=student_id,
         item_id=item_id,
     )
-    context = dict(**student_item_dict)
+    context = dict(**student_item_dict)  # lint-amnesty, pylint: disable=use-dict-literal
     try:
         submissions = get_submissions(student_item_dict)
         evaluations = []
