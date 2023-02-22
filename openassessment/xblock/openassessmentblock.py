@@ -492,7 +492,7 @@ class OpenAssessmentBlock(MessageMixin,
             else:
                 student_id = str(self.scope_ids.user_id)
 
-        student_item_dict = dict(
+        student_item_dict = dict(  # lint-amnesty, pylint: disable=use-dict-literal
             student_id=student_id,
             item_id=item_id,
             course_id=course_id,

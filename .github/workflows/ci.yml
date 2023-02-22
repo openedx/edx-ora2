@@ -15,6 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         python-version: ['3.8']
+        node-version: [16]
         toxenv: [quality, js, django32]
 
     steps:
@@ -35,6 +36,11 @@ jobs:
 
     - name: Install GNU gettext
       run: sudo apt-get install gettext
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
 
     - name: Run Tests
       env:

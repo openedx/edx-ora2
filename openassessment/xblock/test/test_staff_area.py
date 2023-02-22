@@ -39,14 +39,14 @@ FILE_URL = 'www.fileurl.com'
 SAVED_FILES_DESCRIPTIONS = ['file1', 'file2']
 SAVED_FILES_NAMES = ['file1.txt', 'file2.txt']
 
-STUDENT_ITEM = dict(
+STUDENT_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
     student_id="Bob",
     course_id="test_course",
     item_id="item_one",
     item_type="openassessment",
 )
 
-TEAMMATE_ITEM = dict(
+TEAMMATE_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
     student_id=MOCK_TEAM_MEMBER_STUDENT_IDS[0],
     course_id="test_course",
     item_id="item_one",

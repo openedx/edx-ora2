@@ -25,7 +25,7 @@ from openassessment.workflow.models import AssessmentWorkflow
 from openassessment.test_utils import CacheResetTest
 from openassessment.workflow import api as workflow_api
 
-STUDENT_ITEM = dict(
+STUDENT_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
     student_id="Tim",
     course_id="Demo_Course",
     item_id="item_one",

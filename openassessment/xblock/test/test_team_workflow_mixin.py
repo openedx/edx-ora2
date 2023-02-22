@@ -10,7 +10,7 @@ from submissions.errors import TeamSubmissionNotFoundError
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 
 
-STUDENT_ITEM_DICT = dict(
+STUDENT_ITEM_DICT = dict(  # lint-amnesty, pylint: disable=use-dict-literal
     student_id='student_id_1',
     item_id='item1',
     course_id='course1',
