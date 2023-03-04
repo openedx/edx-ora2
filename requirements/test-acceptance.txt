@@ -20,7 +20,7 @@ attrs==22.2.0
     #   outcome
     #   pytest
     #   sarif-om
-aws-sam-translator==1.59.0
+aws-sam-translator==1.60.1
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -36,12 +36,12 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.26.74
+boto3==1.26.84
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   moto
-botocore==1.29.74
+botocore==1.29.84
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -61,7 +61,7 @@ cffi==1.15.1
     #   -r requirements/test.txt
     #   cryptography
     #   pynacl
-cfn-lint==0.73.2
+cfn-lint==0.74.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -86,11 +86,11 @@ colorama==0.4.6
     # via
     #   -r requirements/test.txt
     #   tox
-coverage[toml]==7.1.0
+coverage[toml]==7.2.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==39.0.1
+cryptography==39.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -170,7 +170,7 @@ exceptiongroup==1.1.0
     #   pytest
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==17.0.0
+faker==17.6.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -271,7 +271,7 @@ mock==5.0.1
     # via
     #   -r requirements/test.txt
     #   moto
-more-itertools==9.0.0
+more-itertools==9.1.0
     # via -r requirements/test.txt
 moto==1.3.14
     # via
@@ -311,7 +311,7 @@ pkgutil-resolve-name==1.3.10
     # via
     #   -r requirements/test.txt
     #   jsonschema
-platformdirs==3.0.0
+platformdirs==3.1.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -321,7 +321,7 @@ pluggy==1.0.0
     #   -r requirements/test.txt
     #   pytest
     #   tox
-polib==1.1.1
+polib==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
@@ -338,10 +338,6 @@ pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pydantic==1.10.5
-    # via
-    #   -r requirements/test.txt
-    #   aws-sam-translator
 pyinstrument==4.4.0
     # via -r requirements/test-acceptance.in
 pymongo==3.13.0
@@ -360,7 +356,7 @@ pyrsistent==0.19.3
     # via
     #   -r requirements/test.txt
     #   jsonschema
-pytest==7.2.1
+pytest==7.2.2
     # via
     #   -r requirements/test-acceptance.in
     #   -r requirements/test.txt
@@ -383,7 +379,7 @@ python-jose==3.3.0
     # via
     #   -r requirements/test.txt
     #   moto
-python-slugify==8.0.0
+python-slugify==8.0.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -478,9 +474,9 @@ tomli==2.0.1
     #   pyproject-api
     #   pytest
     #   tox
-tox==4.4.5
+tox==4.4.6
     # via -r requirements/test.txt
-types-toml==0.10.8.4
+types-toml==0.10.8.5
     # via
     #   -r requirements/test.txt
     #   responses
@@ -488,7 +484,6 @@ typing-extensions==4.4.0
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
-    #   pydantic
 urllib3==1.26.14
     # via
     #   -r requirements/test.txt
@@ -497,7 +492,7 @@ urllib3==1.26.14
     #   requests
     #   responses
     #   selenium
-virtualenv==20.19.0
+virtualenv==20.20.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -541,7 +536,7 @@ xmltodict==0.13.0
     # via
     #   -r requirements/test.txt
     #   moto
-zipp==3.14.0
+zipp==3.15.0
     # via
     #   -r requirements/test.txt
     #   importlib-resources
