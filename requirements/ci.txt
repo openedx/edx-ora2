@@ -59,6 +59,10 @@ pyproject-api==1.5.1
     #   tox
 requests==2.28.2
     # via coveralls
+toml==0.10.2
+    # via
+    #   -r requirements/test.txt
+    #   responses
 tomli==2.0.1
     # via
     #   -r requirements/tox.txt
