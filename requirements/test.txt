@@ -18,20 +18,20 @@ attrs==22.2.0
     #   jsonschema
     #   pytest
     #   sarif-om
-aws-sam-translator==1.62.0
+aws-sam-translator==1.63.0
     # via cfn-lint
-aws-xray-sdk==2.11.0
+aws-xray-sdk==2.12.0
     # via moto
 bleach==6.0.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.26.94
+boto3==1.26.105
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   moto
-botocore==1.29.94
+botocore==1.29.105
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -49,7 +49,7 @@ cffi==1.15.1
     #   -r requirements/base.txt
     #   cryptography
     #   pynacl
-cfn-lint==0.75.0
+cfn-lint==0.76.2
     # via moto
 chardet==5.1.0
     # via tox
@@ -72,7 +72,7 @@ coverage[toml]==7.2.2
     # via
     #   -r requirements/test.in
     #   pytest-cov
-cryptography==39.0.2
+cryptography==40.0.1
     # via
     #   moto
     #   sshpubkeys
@@ -139,9 +139,9 @@ exceptiongroup==1.1.1
     # via pytest
 factory-boy==3.2.1
     # via -r requirements/test.in
-faker==17.6.0
+faker==18.3.2
     # via factory-boy
-filelock==3.10.0
+filelock==3.10.7
     # via
     #   tox
     #   virtualenv
@@ -224,11 +224,13 @@ moto==1.3.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
+mpmath==1.3.0
+    # via sympy
 networkx==2.4
     # via
     #   -c requirements/constraints.txt
     #   cfn-lint
-newrelic==8.7.0
+newrelic==8.8.0
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
@@ -254,7 +256,7 @@ pbr==5.11.1
     #   stevedore
 pkgutil-resolve-name==1.3.10
     # via jsonschema
-platformdirs==3.1.1
+platformdirs==3.2.0
     # via
     #   tox
     #   virtualenv
@@ -278,7 +280,7 @@ pycparser==2.21
     # via
     #   -r requirements/base.txt
     #   cffi
-pydantic==1.10.6
+pydantic==1.10.7
     # via aws-sam-translator
 pymongo==3.13.0
     # via
@@ -320,7 +322,7 @@ python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-pytz==2022.7.1
+pytz==2023.3
     # via
     #   -r requirements/base.txt
     #   django
@@ -378,25 +380,23 @@ stevedore==5.0.0
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
+sympy==1.11.1
+    # via cfn-lint
 testfixtures==7.1.0
     # via -r requirements/test.in
 text-unidecode==1.3
     # via
     #   -r requirements/base.txt
     #   python-slugify
-toml==0.10.2
-    # via
-    #   -r requirements/test.txt
-    #   responses
 tomli==2.0.1
     # via
     #   coverage
     #   pyproject-api
     #   pytest
     #   tox
-tox==4.4.7
+tox==4.4.8
     # via -r requirements/test.in
-types-pyyaml==6.0.12.8
+types-pyyaml==6.0.12.9
     # via responses
 typing-extensions==4.5.0
     # via

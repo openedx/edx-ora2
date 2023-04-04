@@ -10,9 +10,9 @@ asgiref==3.6.0
     # via django
 bleach==6.0.0
     # via -r requirements/base.in
-boto3==1.26.94
+boto3==1.26.105
     # via -r requirements/base.in
-botocore==1.29.94
+botocore==1.29.105
     # via
     #   boto3
     #   s3transfer
@@ -108,7 +108,7 @@ markupsafe==2.1.2
     # via
     #   jinja2
     #   xblock
-newrelic==8.7.0
+newrelic==8.8.0
     # via edx-django-utils
 path==13.1.0
     # via
@@ -141,7 +141,7 @@ python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-pytz==2022.7.1
+pytz==2023.3
     # via
     #   -r requirements/base.in
     #   django

@@ -14,10 +14,6 @@ pip-tools==6.12.3
     # via -r requirements/pip-tools.in
 pyproject-hooks==1.0.0
     # via build
-toml==0.10.2
-    # via
-    #   -r requirements/test.txt
-    #   responses
 tomli==2.0.1
     # via build
 wheel==0.40.0
