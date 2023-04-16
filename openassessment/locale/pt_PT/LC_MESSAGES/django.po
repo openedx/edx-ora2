@@ -8,7 +8,7 @@
 # Cátia Lopes <catia.lopes@bridgelk.com>, 2018-2019
 # Developer QUEO <developer@queo.pt>, 2017
 # Filipa Macieira <filipa.macieira@fccn.pt>, 2021
-# Ivo Branco <ivo.branco@fccn.pt>, 2021
+# Ivo Branco <ivo.branco@fccn.pt>, 2021,2023
 # 8b7f539cfdb680c92813b22b241ff5ad_86793ec, 2016
 # Manuela Silva <mmsrs@sky.com>, 2016,2018
 # Manuela Silva <mmsrs@sky.com>, 2018
@@ -23,10 +23,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-26 13:36-0500\n"
+"POT-Creation-Date: 2023-04-16 14:36-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Nika Shahidian, 2022\n"
-"Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
+"Last-Translator: Ivo Branco <ivo.branco@fccn.pt>, 2021,2023\n"
+"Language-Team: Portuguese (Portugal) (http://app.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -299,7 +299,7 @@ msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr ""
+msgstr "Especificar o número de respostas de pontuação máxima a exibir após o estudante ter submetido uma resposta. Os números válidos são de 0 a 99. Se o número for 0, a secção de respostas de topo não aparece aos estudantes."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
@@ -648,7 +648,7 @@ msgstr "Adicionar resposta de exemplo"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
-msgstr ""
+msgstr "Replicar Rubrica"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:7
 msgid ""
@@ -656,27 +656,27 @@ msgid ""
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
 "after cloning will only affect the rubric being modified, and will not "
 "modify any rubric it was cloned from."
-msgstr ""
+msgstr "Para replicar uma rubrica de um rascunho existente, quer tenha sido publicado ou não, pode pesquisar pelo Bloco ID. Note que a replicação é unidireccional, o que significa que as alterações feitas após a replicação apenas irão afetar a rubrica que está a ser modificada, e não irão modificar a rubrica a partir da qual foi replicada."
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"
-msgstr ""
+msgstr "Bloco ID Para este ORA - Open Response Assessment:"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:19
 msgid "Block ID"
-msgstr ""
+msgstr "Bloco ID"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:21
 msgid "No other Open Response Assessments found in course"
-msgstr ""
+msgstr "Nenhumas outras Avaliações de Resposta Aberta encontradas no curso"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:31
 msgid "Clone"
-msgstr ""
+msgstr "Réplica"
 
 #: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:37
 msgid "Rubric Successfully Cloned from Block ID: "
-msgstr ""
+msgstr "Rubrica Replicada com Sucesso a partir do Bloco ID: "
 
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
@@ -910,13 +910,13 @@ msgstr "Por favor aguarde"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
-msgstr ""
+msgstr "Detalhes da Etapa de Espera"
 
 #: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
 msgid ""
 "Waiting Step details view is unavailable. This item is not configured for "
 "peer assessments."
-msgstr ""
+msgstr "A visualização dos detalhes da Etapa de Espera não está disponível. Este item não está configurado para avaliação por pares. "
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
@@ -1415,7 +1415,7 @@ msgid ""
 "                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
 "                                      receive a grade for their submission.\n"
 "                                  "
-msgstr ""
+msgstr "\n                                      Neste momento está na Equipa %(team_name)s. Visto que esteve na Equipa %(previous_team_name)s\n                                      quando submeteram uma resposta a esta tarefa, está a ver a resposta da Equipa %(previous_team_name)s\n                                      e irá receber a mesma classificação dos seus colegas anteriores.\n                                      Não irá fazer parte da submissão da Equipa %(team_name)spara esta tarefa e não irá\n                                      receber uma classificação para a submissão deles.\n                                  "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:221
 msgid "We could not save your progress"
@@ -1439,7 +1439,7 @@ msgid ""
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
 "                                  descriptions to your files to help your teammates identify them.\n"
 "                              "
-msgstr ""
+msgstr "\n                                  Carregue ficheiros e reveja ficheiros carregados por si e pela sua equipa abaixo. Não se esqueça de acrescentar\n                                  descrições aos seus ficheiros para ajudar os seus colegas a identificá-los.\n                              "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:258
 msgid "We could not upload files"
@@ -1503,7 +1503,7 @@ msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
-msgstr ""
+msgstr "\n                  Saiba mais sobre as tarefas da equipa aqui: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n                  "
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:324
 msgid "We could not submit your response"
@@ -1678,11 +1678,11 @@ msgstr "Visualizar Estatísticas da Tarefa"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "Demonstração da nova experiência de classificação"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
-msgstr ""
+msgstr "Ver ORA - Open Response Assessment no Studio"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:31
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:69
@@ -2327,17 +2327,17 @@ msgstr "A data de início '{start}' não pode ser posterior à data limite '{due
 
 #: openassessment/xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
-msgstr ""
+msgstr "Deve especificar um bloco id a partir do qual copiar uma rubrica."
 
 #: openassessment/xblock/rubric_reuse_mixin.py:66
 msgid "Invalid block id."
-msgstr ""
+msgstr "Bloco id inválido."
 
 #: openassessment/xblock/rubric_reuse_mixin.py:72
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
-msgstr ""
+msgstr "Nenhuma Avaliação de Resposta Aberta encontrada em {course_id} com bloco id {block_id}"
 
 #: openassessment/xblock/self_assessment_mixin.py:142
 msgid "You must submit a response before you can perform a self-assessment."
@@ -2370,23 +2370,23 @@ msgstr "Sem permissão para aceder à classificação da equipa de ORA."
 
 #: openassessment/xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr ""
+msgstr "Pendente"
 
 #: openassessment/xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
-msgstr ""
+msgstr "Completo/Substituído"
 
 #: openassessment/xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "Não aplicável"
 
 #: openassessment/xblock/staff_area_mixin.py:247
 msgid "Not submitted"
-msgstr ""
+msgstr "Não submetido"
 
 #: openassessment/xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr ""
+msgstr "Submetido"
 
 #: openassessment/xblock/staff_area_mixin.py:315
 msgid "Error getting learner information."
@@ -2525,13 +2525,13 @@ msgstr "Várias submissões não são permitidas."
 
 #: openassessment/xblock/submission_mixin.py:178
 msgid "Response exceeds maximum allowed size."
-msgstr ""
+msgstr "A resposta excede o tamanho máximo permitido."
 
 #: openassessment/xblock/submission_mixin.py:180
 msgid ""
 "Note: if you have a spellcheck or grammar check browser extension, try "
 "disabling, reloading, and reentering your response before submitting."
-msgstr ""
+msgstr "Nota: se tiver uma verificação ortográfica ou uma extensão de verificação gramatical do navegador, tente desactivar, recarregar, e reentrar a sua resposta antes de submeter."
 
 #: openassessment/xblock/submission_mixin.py:200
 msgid "Submission cannot be empty. Please refresh the page and try again."
