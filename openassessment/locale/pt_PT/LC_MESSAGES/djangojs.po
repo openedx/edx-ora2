@@ -9,6 +9,7 @@
 # Cátia Lopes <catia.lopes@bridgelk.com>, 2018
 # Filipa Macieira <filipa.macieira@fccn.pt>, 2021
 # Filipe Boleto <fboleto@gmail.com>, 2015
+# Ivo Branco <ivo.branco@fccn.pt>, 2023
 # Luis Manuel Moreno <luis.moreno@edunext.co>, 2019
 # Manuela Silva <mmsrs@sky.com>, 2016,2018
 # Manuela Silva <mmsrs@sky.com>, 2018
@@ -26,8 +27,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-13 04:00-0400\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
-"Last-Translator: Nika Shahidian, 2022\n"
-"Language-Team: Portuguese (Portugal) (http://www.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
+"Last-Translator: Ivo Branco <ivo.branco@fccn.pt>, 2023\n"
+"Language-Team: Portuguese (Portugal) (http://app.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,17 +152,17 @@ msgstr "Erro ao procurar o nome de utilizador"
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:728
 msgid "Failed to clone rubric"
-msgstr ""
+msgstr "Falha na clonagem da rubrica"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "View and grade responses"
-msgstr ""
+msgstr "Ver e classificar as respostas"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "Demonstração da nova experiência de classificação"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:97
@@ -228,7 +229,7 @@ msgstr "Nota Final Recebida"
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:169
 msgid "Staff Grader"
-msgstr ""
+msgstr "Graduador de Pessoal"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:314
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:200
@@ -254,17 +255,17 @@ msgstr "Voltar à lista completa"
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:339
 msgid "Your file has been deleted or path has been changed: "
-msgstr ""
+msgstr "O seu ficheiro foi eliminado ou o caminho foi alterado: "
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:366
@@ -301,7 +302,7 @@ msgstr "Erro"
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:498
 msgid "Confirm Submit Response"
-msgstr ""
+msgstr "Confirmar Submissão da Resposta"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:501
@@ -325,7 +326,7 @@ msgstr "Falha no carregamento do ficheiro: tipo de ficheiro não suportado. Apen
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:601
 msgid "The maximum number files that can be saved is "
-msgstr ""
+msgstr "O número máximo de ficheiros que podem ser guardados é "
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:673
@@ -346,7 +347,7 @@ msgstr "Visualização em miniatura de "
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:779
 msgid "Confirm Delete Uploaded File"
-msgstr ""
+msgstr "Confirmar exclusão do arquivo enviado"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_response.js:805
@@ -383,7 +384,7 @@ msgstr "Esta nota será aplicada a todos os membros da equipa. Quer continuar?"
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:218
 msgid "Confirm Grade Team Submission"
-msgstr ""
+msgstr "Confirme o envio da equipe de notas"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:369
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:304
@@ -411,53 +412,53 @@ msgstr "Caso saia desta página sem submeter o seu teste, irá perder todo o tra
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Refresh"
-msgstr ""
+msgstr "Atualizar"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Username"
-msgstr ""
+msgstr "Nome de utilizador"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Peers Assessed"
-msgstr ""
+msgstr "Colegas avaliados"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Peer Responses Received"
-msgstr ""
+msgstr "Respostas de Colegas Recebidas"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Time Spent On Current Step"
-msgstr ""
+msgstr "Tempo Gasto Na Etapa Atual"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Staff assessment"
-msgstr ""
+msgstr "Avaliação da equipa"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Grade Status"
-msgstr ""
+msgstr "Estado da Classificação"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
-msgstr ""
+msgstr "O problema \"{name}\" está configurado para exigir um mínimo de {min_grades} avaliações de colegas, e pede para rever {min_graded} colegas."
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
-msgstr ""
+msgstr "Existem atualmente {stuck_learners} estudantes no estado de espera, o que significa que ainda não cumpriram todos os requisitos para a Avaliação por Colegas. "
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr ""
+msgstr "No entanto, {overwritten_count} destes estudantes já receberam uma classificação através da ferramenta de substituição de classificações da equipa."
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Error while fetching student data."
-msgstr ""
+msgstr "Erro ao ir buscar dados de estudantes."
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 #: openassessment/xblock/static/js/src/lms/oa_base.js:343
@@ -507,7 +508,7 @@ msgstr "Não Selecionado"
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit_rubric.js:124
 msgid "Problem cloning rubric"
-msgstr ""
+msgstr "Rúbrica de clonagem de problemas"
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:100
@@ -520,7 +521,7 @@ msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Assessment "
 "Steps tab."
-msgstr ""
+msgstr "Adicionou um critério. Terá de selecionar uma opção para o critério na etapa de Formação do Estudante. Para o fazer, clique no separador Passos de Avaliação."
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:150
@@ -580,20 +581,20 @@ msgstr "Os seguintes tipos de ficheiro não são permitidos: "
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:183
 msgid "Save Unsuccessful"
-msgstr ""
+msgstr "Sem Sucesso ao Guardar"
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:184
 msgid "Errors detected on the following tabs: "
-msgstr ""
+msgstr "Erros detetados nos seguintes separadores: "
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
-msgstr ""
+msgstr "Esta Questão de Resposta Aberta já foi divulgada. As alterações apenas irão afetar os alunos que fizerem novas submissões. As submissões existentes não serão modificadas por esta alteração."
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:318
 msgid "error count: "
-msgstr ""
+msgstr "contagem de erros: "
