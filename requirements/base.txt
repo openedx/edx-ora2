@@ -10,9 +10,9 @@ asgiref==3.6.0
     # via django
 bleach==6.0.0
     # via -r requirements/base.in
-boto3==1.26.94
+boto3==1.26.115
     # via -r requirements/base.in
-botocore==1.29.94
+botocore==1.29.115
     # via
     #   boto3
     #   s3transfer
@@ -60,7 +60,7 @@ djangorestframework==3.12.4
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==5.3.0
+edx-django-utils==5.4.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -108,7 +108,7 @@ markupsafe==2.1.2
     # via
     #   jinja2
     #   xblock
-newrelic==8.7.0
+newrelic==8.8.0
     # via edx-django-utils
 path==13.1.0
     # via
@@ -121,7 +121,7 @@ pbr==5.11.1
     # via stevedore
 polib==1.2.0
     # via edx-i18n-tools
-psutil==5.9.4
+psutil==5.9.5
     # via edx-django-utils
 pycparser==2.21
     # via cffi
@@ -141,7 +141,7 @@ python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-pytz==2022.7.1
+pytz==2023.3
     # via
     #   -r requirements/base.in
     #   django
@@ -164,7 +164,7 @@ six==1.16.0
     #   html5lib
     #   python-dateutil
     #   python-swiftclient
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via django
 stevedore==5.0.0
     # via

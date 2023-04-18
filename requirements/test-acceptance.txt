@@ -12,19 +12,17 @@ asgiref==3.6.0
     # via
     #   -r requirements/test.txt
     #   django
-attrs==22.2.0
+attrs==23.1.0
     # via
     #   -r requirements/test.txt
     #   jschema-to-python
     #   jsonschema
-    #   outcome
-    #   pytest
     #   sarif-om
-aws-sam-translator==1.62.0
+aws-sam-translator==1.64.0
     # via
     #   -r requirements/test.txt
     #   cfn-lint
-aws-xray-sdk==2.11.0
+aws-xray-sdk==2.12.0
     # via
     #   -r requirements/test.txt
     #   moto
@@ -36,12 +34,12 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.26.94
+boto3==1.26.115
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   moto
-botocore==1.29.94
+botocore==1.29.115
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -61,7 +59,7 @@ cffi==1.15.1
     #   -r requirements/test.txt
     #   cryptography
     #   pynacl
-cfn-lint==0.75.0
+cfn-lint==0.77.1
     # via
     #   -r requirements/test.txt
     #   moto
@@ -86,11 +84,11 @@ colorama==0.4.6
     # via
     #   -r requirements/test.txt
     #   tox
-coverage[toml]==7.2.2
+coverage[toml]==7.2.3
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==39.0.2
+cryptography==40.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -152,7 +150,7 @@ ecdsa==0.18.0
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==5.3.0
+edx-django-utils==5.4.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -170,11 +168,11 @@ exceptiongroup==1.1.1
     #   pytest
 factory-boy==3.2.1
     # via -r requirements/test.txt
-faker==17.6.0
+faker==18.4.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
-filelock==3.10.0
+filelock==3.11.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -267,7 +265,7 @@ markupsafe==2.1.2
     #   jinja2
     #   werkzeug
     #   xblock
-mock==5.0.1
+mock==5.0.2
     # via
     #   -r requirements/test.txt
     #   moto
@@ -277,16 +275,20 @@ moto==1.3.14
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
+mpmath==1.3.0
+    # via
+    #   -r requirements/test.txt
+    #   sympy
 networkx==2.4
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   cfn-lint
-newrelic==8.7.0
+newrelic==8.8.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-packaging==23.0
+packaging==23.1
     # via
     #   -r requirements/test.txt
     #   docker
@@ -311,7 +313,7 @@ pkgutil-resolve-name==1.3.10
     # via
     #   -r requirements/test.txt
     #   jsonschema
-platformdirs==3.1.1
+platformdirs==3.2.0
     # via
     #   -r requirements/test.txt
     #   tox
@@ -325,7 +327,7 @@ polib==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
-psutil==5.9.4
+psutil==5.9.5
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
@@ -338,7 +340,7 @@ pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
-pydantic==1.10.6
+pydantic==1.10.7
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
@@ -360,7 +362,7 @@ pyrsistent==0.19.3
     # via
     #   -r requirements/test.txt
     #   jsonschema
-pytest==7.2.2
+pytest==7.3.1
     # via
     #   -r requirements/test-acceptance.in
     #   -r requirements/test.txt
@@ -391,7 +393,7 @@ python-swiftclient==3.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-pytz==2022.7.1
+pytz==2023.3
     # via
     #   -r requirements/test.txt
     #   django
@@ -408,6 +410,10 @@ pyyaml==6.0
     #   moto
     #   responses
     #   xblock
+regex==2023.3.23
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 requests==2.28.2
     # via
     #   -r requirements/test.txt
@@ -448,7 +454,7 @@ six==1.16.0
     #   moto
     #   python-dateutil
     #   python-swiftclient
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via
     #   -r requirements/test.txt
     #   django
@@ -462,16 +468,16 @@ stevedore==5.0.0
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
+sympy==1.11.1
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 testfixtures==7.1.0
     # via -r requirements/test.txt
 text-unidecode==1.3
     # via
     #   -r requirements/test.txt
     #   python-slugify
-toml==0.10.2
-    # via
-    #   -r requirements/test.txt
-    #   responses
 tomli==2.0.1
     # via
     #   -r requirements/test.txt
@@ -479,9 +485,9 @@ tomli==2.0.1
     #   pyproject-api
     #   pytest
     #   tox
-tox==4.4.7
+tox==4.4.12
     # via -r requirements/test.txt
-types-pyyaml==6.0.12.8
+types-pyyaml==6.0.12.9
     # via
     #   -r requirements/test.txt
     #   responses
