@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-09 14:36-0400\n"
+"POT-Creation-Date: 2023-04-30 14:36-0400\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2022\n"
 "Language-Team: Arabic (http://app.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -139,15 +139,15 @@ msgstr ""
 
 #: openassessment/data.py:924
 msgid "Final Score Earned"
-msgstr ""
+msgstr "النتيجة النهائية المكتسبة"
 
 #: openassessment/data.py:925
 msgid "Final Score Possible"
-msgstr ""
+msgstr "النتيجة النهائية ممكنة"
 
 #: openassessment/data.py:926
 msgid "Feedback Statements Selected"
-msgstr ""
+msgstr "تم تحديد بيانات الملاحظات"
 
 #: openassessment/data.py:927
 msgid "Feedback on Assessment"
@@ -197,7 +197,7 @@ msgstr "حدد ما إذا كان يجب على المتعلمين إدراج إ
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
-msgstr ""
+msgstr "محرر الاستجابة"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:33
 msgid ""
