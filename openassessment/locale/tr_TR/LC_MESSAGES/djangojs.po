@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Adem Özgür <admozgur@gmail.com>, 2015
-# Ali Işıngör <ali@artistanbul.io>, 2018,2020-2022
+# Ali Işıngör <ali@artistanbul.io>, 2018,2020-2023
 # ali selek <aliselek01@gmail.com>, 2015
 # Emrah Emirtekin <eemirtekin@gmail.com>, 2015
 # Hakan Şenel <hgsenel@gmail.com>, 2017
@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-13 04:00-0400\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
-"Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018,2020-2022\n"
+"Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018,2020-2023\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,7 +120,7 @@ msgstr "Yükleme not havuzundan kaldırılamadı."
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:670
 msgid "Multiple teams returned for course"
-msgstr ""
+msgstr "Ders için birden fazla takım geri döndü"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:1
@@ -132,13 +132,13 @@ msgstr "Takım bilgileri yüklenemedi."
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:699
 msgid "User lookup failed"
-msgstr ""
+msgstr "Kullanıcı ararken hata"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:704
 msgid "Error when looking up username"
-msgstr ""
+msgstr "Kullanıcı adı ararken hata"
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:8
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:1
@@ -434,19 +434,19 @@ msgstr "Not Durumu"
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
-msgstr ""
+msgstr "\"{name}\" problemi, en az {min_grades} akran notu gerektirecek şekilde yapılandırıldı ve {min_graded} akran incelemesi istiyor."
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
-msgstr ""
+msgstr "Şu anda bekleme durumunda olan {stuck_learners} öğrenci var, bir başka deyişle Akran Değerlendirmesi için henüz tüm gereksinimleri karşılamamışlar."
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr ""
+msgstr "Ancak bu öğrencilerin {overwriting_count} kadarı, personel notu geçersiz kılma aracı aracılığıyla zaten bir not aldı."
 
 #: openassessment/xblock/static/dist/openassessment-lms.f2ce054f8f6e20175a0f.js:375
 msgid "Error while fetching student data."
@@ -578,15 +578,15 @@ msgstr "Kaydetme Başarısız"
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:184
 msgid "Errors detected on the following tabs: "
-msgstr ""
+msgstr "Aşağıdaki sekmelerde algılanan hatalar: "
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
-msgstr ""
+msgstr "Bu ORA zaten yayınlandı. Değişiklikler yalnızca yeni gönderim yapan öğrencileri etkileyecektir. Mevcut gönderimler bu değişiklikle değiştirilmeyecektir."
 
 #: openassessment/xblock/static/dist/openassessment-studio.1ffb8619386559df14f9.js:32
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:318
 msgid "error count: "
-msgstr ""
+msgstr "hata sayısı: "
