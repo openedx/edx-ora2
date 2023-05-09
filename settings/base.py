@@ -143,7 +143,7 @@ CACHES = {
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "locale")]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "openassessment", "conf", "locale")]
 
 FEATURES = {
     # Set to True to enable team-based ORA submissions.
