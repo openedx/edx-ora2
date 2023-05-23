@@ -74,33 +74,33 @@ ITEM_PATH_INFO = {
     "ora_name": ITEM_DISPLAY_NAME,
 }
 
-STUDENT_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-    student_id=STUDENT_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+STUDENT_ITEM = {
+    "student_id": STUDENT_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
-PRE_FILE_SIZE_STUDENT_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-    student_id=PRE_FILE_SIZE_STUDENT_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+PRE_FILE_SIZE_STUDENT_ITEM = {
+    "student_id": PRE_FILE_SIZE_STUDENT_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
-PRE_FILE_NAME_STUDENT_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-    student_id=PRE_FILE_NAME_STUDENT_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+PRE_FILE_NAME_STUDENT_ITEM = {
+    "student_id": PRE_FILE_NAME_STUDENT_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
-SCORER_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-    student_id=SCORER_ID,
-    course_id=COURSE_ID,
-    item_id=ITEM_ID,
-    item_type="openassessment"
-)
+SCORER_ITEM = {
+    "student_id": SCORER_ID,
+    "course_id": COURSE_ID,
+    "item_id": ITEM_ID,
+    "item_type": "openassessment"
+}
 
 ITEM_DISPLAY_NAMES_MAPPING = {
     SCORER_ITEM['item_id']: ITEM_DISPLAY_NAME,
@@ -327,11 +327,11 @@ class TestOraAggregateData(TransactionCacheResetTest):
                 criterion_options.append(CriterionOptionFactory(criterion=criterion))
 
         assessment_options = assessment_options or {'scorer_id': TEST_SCORER_ID}
-        assessment_data = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            rubric=rubric,
-            feedback=feedback,
+        assessment_data = {
+            "rubric": rubric,
+            "feedback": feedback,
             **assessment_options
-        )
+        }
         assessment = AssessmentFactory(**assessment_data)
         for criterion, option in zip(criteria, criterion_options):
             AssessmentPartFactory(assessment=assessment, criterion=criterion, option=option, feedback=feedback)
@@ -382,22 +382,22 @@ class TestOraAggregateData(TransactionCacheResetTest):
     def test_map_students_and_scorers_ids_to_usernames(self):
         test_submission_information = [
             (
-                dict(  # lint-amnesty, pylint: disable=use-dict-literal
-                    student_id=STUDENT_ID,
-                    course_id=COURSE_ID,
-                    item_id="some_id",
-                    item_type="openassessment",
-                ),
+                {
+                    "student_id": STUDENT_ID,
+                    "course_id": COURSE_ID,
+                    "item_id": "some_id",
+                    "item_type": "openassessment",
+                },
                 sub_api.create_submission(STUDENT_ITEM, ANSWER),
                 (),
             ),
             (
-                dict(  # lint-amnesty, pylint: disable=use-dict-literal
-                    student_id=SCORER_ID,
-                    course_id=COURSE_ID,
-                    item_id="some_id",
-                    item_type="openassessment",
-                ),
+                {
+                    "student_id": SCORER_ID,
+                    "course_id": COURSE_ID,
+                    "item_id": "some_id",
+                    "item_type": "openassessment",
+                },
                 sub_api.create_submission(SCORER_ITEM, ANSWER),
                 (),
             ),
@@ -881,37 +881,37 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         student_model_1 = UserFactory.create()
         student_model_2 = UserFactory.create()
 
-        self._create_submission(dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            student_id=STUDENT_ID,
-            course_id=COURSE_ID,
-            item_id=item_id2,
-            item_type="openassessment"
-        ), ['self'])
-        self._create_submission(dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            student_id=student_id2,
-            course_id=COURSE_ID,
-            item_id=item_id2,
-            item_type="openassessment"
-        ), STEPS)
+        self._create_submission({
+            "student_id": STUDENT_ID,
+            "course_id": COURSE_ID,
+            "item_id": item_id2,
+            "item_type": "openassessment"
+        }, ['self'])
+        self._create_submission({
+            "student_id": student_id2,
+            "course_id": COURSE_ID,
+            "item_id": item_id2,
+            "item_type": "openassessment"
+        }, STEPS)
 
-        self._create_submission(dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            student_id=STUDENT_ID,
-            course_id=COURSE_ID,
-            item_id=item_id3,
-            item_type="openassessment"
-        ), ['self'])
-        self._create_submission(dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            student_id=student_id2,
-            course_id=COURSE_ID,
-            item_id=item_id3,
-            item_type="openassessment"
-        ), ['self'])
-        self._create_submission(dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            student_id=student_id3,
-            course_id=COURSE_ID,
-            item_id=item_id3,
-            item_type="openassessment"
-        ), STEPS)
+        self._create_submission({
+            "student_id": STUDENT_ID,
+            "course_id": COURSE_ID,
+            "item_id": item_id3,
+            "item_type": "openassessment"
+        }, ['self'])
+        self._create_submission({
+            "student_id": student_id2,
+            "course_id": COURSE_ID,
+            "item_id": item_id3,
+            "item_type": "openassessment"
+        }, ['self'])
+        self._create_submission({
+            "student_id": student_id3,
+            "course_id": COURSE_ID,
+            "item_id": item_id3,
+            "item_type": "openassessment"
+        }, STEPS)
 
         self._create_team_submission(
             COURSE_ID,

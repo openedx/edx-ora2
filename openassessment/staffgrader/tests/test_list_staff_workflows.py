@@ -35,13 +35,15 @@ EXPECTED_ANNOTATED_WORKFLOW_FIELDS = [
     'assessment',
     'scorer_id'
 ]
-STUDENT_ITEM = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-    student_id="",
-    course_id="course-v1:testCourse+t5+2021T2",
-    item_id="TestStaffWorkflowListView",
-    item_type="openassessment",
-)
-ANSWER = dict(parts=['test_answer'])  # lint-amnesty, pylint: disable=use-dict-literal
+STUDENT_ITEM ={
+    "student_id": "",
+    "course_id": "course-v1:testCourse+t5+2021T2",
+    "item_id": "TestStaffWorkflowListView",
+    "item_type": "openassessment",
+}
+ANSWER = {
+    "parts": ['test_answer']
+}
 STAFF_ID = "TestStaffUser"
 SUBMITTED_DATE = datetime(2020, 3, 2, 12, 35, tzinfo=timezone.utc)
 TEST_START_DATE = SUBMITTED_DATE + timedelta(days=2)
