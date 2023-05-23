@@ -35,7 +35,7 @@ EXPECTED_ANNOTATED_WORKFLOW_FIELDS = [
     'assessment',
     'scorer_id'
 ]
-STUDENT_ITEM ={
+STUDENT_ITEM = {
     "student_id": "",
     "course_id": "course-v1:testCourse+t5+2021T2",
     "item_id": "TestStaffWorkflowListView",
