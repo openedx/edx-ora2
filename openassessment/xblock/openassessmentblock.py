@@ -492,12 +492,12 @@ class OpenAssessmentBlock(MessageMixin,
             else:
                 student_id = str(self.scope_ids.user_id)
 
-        student_item_dict = dict(  # lint-amnesty, pylint: disable=use-dict-literal
-            student_id=student_id,
-            item_id=item_id,
-            course_id=course_id,
-            item_type='openassessment'
-        )
+        student_item_dict = {
+            "student_id": student_id,
+            "item_id": item_id,
+            "course_id": course_id,
+            "item_type": 'openassessment'
+        }
         return student_item_dict
 
     def add_javascript_files(self, fragment, item):

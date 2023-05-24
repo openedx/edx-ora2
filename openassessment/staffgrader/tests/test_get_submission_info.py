@@ -78,12 +78,12 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
             "This is my response for <a href='www.edx.org'>Prompt Three</a>"
         ]
         file_responses = [
-            dict(  # lint-amnesty, pylint: disable=use-dict-literal
-                download_url='A', description='B', name='C', size=100
-            ),
-            dict(  # lint-amnesty, pylint: disable=use-dict-literal
-                download_url='1', description='2', name='3', size=300
-            ),
+            {
+                "download_url": 'A', "description": 'B', "name": 'C', "size": 100
+            },
+            {
+                "download_url": '1', "description": '2', "name": '3', "size": 300
+            },
         ]
 
         submission_uuid = str(uuid4())
