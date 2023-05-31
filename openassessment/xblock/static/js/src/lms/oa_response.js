@@ -944,6 +944,10 @@ export class ResponseView {
          img.attr('aria-labelledby', ariaLabelledBy);
          img.attr('src', url);
 
+         // manually trigger resize once the image is loaded
+         // because MutationObserver doesn't trigger the resize for the image
+         img.on('load', () => window.dispatchEvent(new Event('resize')));
+
          div2 = $('<div/>');
          div2.html(img);
          div2.appendTo(fileBlock);
