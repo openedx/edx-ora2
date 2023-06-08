@@ -1440,7 +1440,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
             is_admin,
             anonymous_user_id,
             user_is_beta=False,
-            days_early_for_beta=0
     ):
         """
         Internal helper to define a mock runtime.
@@ -1452,7 +1451,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
             user_is_staff=is_staff,
             user_is_admin=is_admin,
             user_is_beta=user_is_beta,
-            days_early_for_beta=days_early_for_beta,
             service=lambda self, service: Mock(
                 get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
             )
