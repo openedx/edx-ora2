@@ -12,7 +12,7 @@ JIRA: [JIRA-XXXX](https://openedx.atlassian.net/browse/JIRA-XXXX)
 
 - [ ] Reviewed the [release process](https://github.com/openedx/edx-ora2/blob/master/.github/release_process.md)
 - [ ] Translations and JS/SASS compiled
-- [ ] Bumped version number in [setup.py](https://github.com/openedx/edx-ora2/blob/a62e81a9b0d89223476967ec3c27f3557a850735/setup.py#L39) and [package.json](https://github.com/openedx/edx-ora2/blob/a62e81a9b0d89223476967ec3c27f3557a850735/package.json#L3)
+- [ ] Bumped version number in [openassessment/\_\_init\_\_.py](https://github.com/openedx/edx-ora2/blob/master/openassessment/__init__.py#L4) and [package.json](https://github.com/openedx/edx-ora2/blob/master/package.json#L3)
 
 **Testing Instructions**
 
