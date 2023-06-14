@@ -313,10 +313,10 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         """
         Helper function to set up start date early for beta testers
         """
+        xblock.days_early_for_beta = days_early
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
             anonymous_student_id='test_student',
-            days_early_for_beta=days_early,
             user_is_staff=False,
             user_is_beta_tester=True
         )
@@ -375,7 +375,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set start dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             self._set_up_days_early_for_beta(xblock, 5)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
+            self.assertEqual(xblock.days_early_for_beta, 5)
 
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body.decode('utf-8'))
@@ -392,7 +392,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             xblock.due = dt.datetime(2014, 5, 1)
             self._set_up_days_early_for_beta(xblock, 5)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
+            self.assertEqual(xblock.days_early_for_beta, 5)
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body.decode('utf-8'))
 
@@ -449,7 +449,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set start dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             self._set_up_days_early_for_beta(xblock, None)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
+            self.assertEqual(xblock.days_early_for_beta, None)
 
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body.decode('utf-8'))
@@ -465,7 +465,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Set due dates
             xblock = self._set_up_end_date(dt.datetime(2014, 5, 1))
             self._set_up_days_early_for_beta(xblock, None)
-            self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
+            self.assertEqual(xblock.days_early_for_beta, None)
 
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body.decode('utf-8'))

@@ -1339,12 +1339,10 @@ class OpenAssessmentBlock(MessageMixin,
         """
         Returns the start date for a Beta tester.
         """
-        if hasattr(self, "xmodule_runtime"):
-            days_early_for_beta = getattr(self.xmodule_runtime, 'days_early_for_beta', 0)  # pylint: disable=no-member
-            if days_early_for_beta is not None:
-                delta = dt.timedelta(days_early_for_beta)
-                effective = start - delta
-                return effective
+        if days_early_for_beta := getattr(self, 'days_early_for_beta', None):
+            delta = dt.timedelta(days_early_for_beta)
+            effective = start - delta
+            return effective
 
         return start
 

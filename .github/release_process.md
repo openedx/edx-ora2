@@ -7,14 +7,14 @@ Before Merging a pull request:
 - [ ] Get a green Travis build for this PR
 - [ ] Address PR comments
 - [ ] Get approving review from code owner
-- [ ] Bump version number in [setup.py](../setup.py) and [package.json](../package.json) following [semantic versioning](https://semver.org/) conventions
+- [ ] Bump version number in [openassessment/\_\_init\_\_.py](../openassessment/__init__.py) and [package.json](../package.json) following [semantic versioning](https://semver.org/) conventions
 
 ## Publish to PyPi
 
 When a PR is ready to release, do the following to publish a new version of ORA:
 
 - [ ] Merge to `master`
-- [ ] Create a [release tag on GitHub](https://github.com/openedx/edx-ora2/releases) matching version number in setup.py/package.json
+- [ ] Create a [release tag on GitHub](https://github.com/openedx/edx-ora2/releases) matching version number in `openassessment/__init__.py`/`package.json`
 - [ ] Grab a coffee while our automated process submits the build to PyPi
 - [ ] Confirm new version appears in [PyPi: ora2](https://pypi.org/project/ora2)
 
