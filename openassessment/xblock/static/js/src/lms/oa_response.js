@@ -426,7 +426,7 @@ export class ResponseView {
         const saveAbility = this.checkSaveAbility();
         this.saveEnabled(saveAbility);
         this.previewEnabled(saveAbility);
-        this.saveStatus(gettext('This response has not been saved.'));
+        this.saveStatus(gettext('Autosaving draft...'));
         this.baseView.unsavedWarningEnabled(
           true,
           this.UNSAVED_WARNING_KEY,
@@ -449,7 +449,7 @@ export class ResponseView {
       this.errorOnLastSave = false;
 
       // Update the save status and error notifications
-      this.saveStatus(gettext('Saving...'));
+      this.saveStatus(gettext('Autosaving draft...'));
       this.baseView.toggleActionError('save', null);
 
       // Disable the "unsaved changes" warning
@@ -469,7 +469,7 @@ export class ResponseView {
         const currentResponseEqualsSaved = currentResponse.every((element, index) => element === savedResponse[index]);
         if (currentResponseEqualsSaved) {
           view.saveEnabled(false);
-          const msg = gettext('This response has been saved but not submitted.');
+          const msg = gettext('Draft saved!');
           view.saveStatus(msg);
           view.baseView.srReadTexts([msg]);
         }
