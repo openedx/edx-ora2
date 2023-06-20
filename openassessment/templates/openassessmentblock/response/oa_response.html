@@ -66,7 +66,7 @@
                     {% trans "Enter your team's response to the prompt." %}
                     {% if submission_due %}
                       {% blocktrans %}
-                        You can save your progress and return to complete your team's response at any time before the due date
+                        Your work will save automatically and you can return to complete your team's response at any time before the due date
                       {% endblocktrans %}
                       (<span class="step__deadline">
                         <span id="oa_step_deadline_response"
@@ -79,17 +79,17 @@
                       </span>).
                     {% else %}
                       {% blocktrans %}
-                        You can save your progress and return to complete your team's response at any time.
+                        Your work will save automatically and you can return to complete your team's response at any time.
                       {% endblocktrans %}
                     {% endif %}
                     <strong class="emphasis">
-                      {% trans "After you submit a response on behalf of your team, it cannot be edited" %}
-                    </strong>.
+                      {% trans "After you submit a response on behalf of your team, it cannot be edited." %}
+                    </strong>
                   {% else %}
                     {% trans "Enter your response to the prompt." %}
                     {% if submission_due %}
                       {% blocktrans %}
-                        You can save your progress and return to complete your response at any time before the due date
+                        Your work will save automatically and you can return to complete your response at any time before the due date
                       {% endblocktrans %}
                       (<span class="step__deadline">
                           <span id="oa_step_deadline_response"
@@ -101,7 +101,7 @@
                           </span>
                       </span>).
                     {% else %}
-                      {% trans "You can save your progress and return to complete your response at any time." %}
+                      {% trans "Your work will save automatically and you can return to complete your response at any time." %}
                     {% endif %}
                     <strong class="emphasis">{% trans "After you submit your response, you cannot edit it" %}</strong>.
                   {% endif %}
