@@ -21,7 +21,7 @@ export class ResponseView {
 
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
-    AUTO_SAVE_WAIT = 30000;
+    AUTO_SAVE_WAIT = 2000;
 
     // Maximum size (500 * 2^20 bytes, approx. 500MB) of a single uploaded file.
     MAX_FILE_SIZE = 500 * (1024 ** 2);
