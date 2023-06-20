@@ -3,10 +3,10 @@ Helper class for loading generated file from webpack.
 """
 import json
 import logging
+from urllib.parse import urlparse
 
 from pkg_resources import resource_string
 from django.conf import settings
-from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
