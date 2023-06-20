@@ -420,9 +420,7 @@ export class ResponseView {
       // (1) The response has changed.  We don't need to keep saving the same response.
       // (2) Sufficient time has passed since the user last made a change to the response.
       //      We don't want to save a response while the user is in the middle of typing.
-      // (3) No errors occurred on the last save.  We don't want to keep refreshing
-      //      the error message in the UI.  (The user can still retry the save manually).
-      if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT && !this.errorOnLastSave) {
+      if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT) {
         this.save();
       }
     }
@@ -440,7 +438,11 @@ export class ResponseView {
         const saveAbility = this.checkSaveAbility();
         this.saveEnabled(saveAbility);
         this.previewEnabled(saveAbility);
-        this.saveStatus(gettext('Saving draft'), this.ICON_SAVING);
+
+        // If there was an error, preserve error status
+        if (!this.errorOnLastSave) {
+          this.saveStatus(gettext('Saving draft'), this.ICON_SAVING);
+        }
 
         this.baseView.unsavedWarningEnabled(
           true,
@@ -458,20 +460,18 @@ export class ResponseView {
      Save a response without submitting it.
      * */
     save() {
-      // If there were errors on previous calls to save, forget
-      // about them for now.  If an error occurs on *this* save,
-      // we'll set this back to true in the error handler.
-      this.errorOnLastSave = false;
-
       // Update the save status and error notifications
-      this.saveStatus(gettext('Saving draft...'), this.ICON_SAVING);
-      this.baseView.toggleActionError('save', null);
+      // ... unless there was an error, this helps avoid unnecessary UI refreshes.
+      if (!this.errorOnLastSave) {
+        this.saveStatus(gettext('Saving draft...'), this.ICON_SAVING);
+      }
 
       // Disable the "unsaved changes" warning
       this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
 
       const view = this;
       const savedResponse = this.response();
+
       this.server.save(savedResponse).done(() => {
         // Remember which response we saved, once the server confirms that it's been saved...
         view.savedResponse = savedResponse;
@@ -487,10 +487,19 @@ export class ResponseView {
           const msg = gettext('Draft saved!');
           view.saveStatus(msg, this.ICON_SAVED);
           view.baseView.srReadTexts([msg]);
+
+          // Disable error
+          this.baseView.toggleActionError('save', null);
+          view.errorOnLastSave = false;
         }
       }).fail((errMsg) => {
-        view.saveStatus(gettext('Error'));
-        view.baseView.toggleActionError('save', errMsg);
+        // Debounce error banner, this won't capture new errors, but will keep
+        // us from defocusing text area, allowing user to continue to edit their
+        // response.
+        if (!view.errorOnLastSave) {
+          view.saveStatus(gettext('Error'), this.ICON_ERROR);
+          view.baseView.toggleActionError('save', errMsg);
+        }
 
         // Remember that an error occurred
         // so we can disable autosave
