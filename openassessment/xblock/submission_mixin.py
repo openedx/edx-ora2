@@ -787,8 +787,8 @@ class SubmissionMixin:
         Returns:
             unicode
         """
-        return self._('This response has been saved but not submitted.') if self.has_saved else self._(
-            'This response has not been saved.')
+        return self._('Draft saved!') if self.has_saved else self._(
+            'Response not started.')
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):  # pylint: disable=unused-argument
