@@ -258,11 +258,11 @@ class SubmissionMixin:
                     {"saved_response": self.saved_response}
                 )
             except Exception:  # pylint: disable=broad-except
-                return {'success': False, 'msg': self._("This response could not be saved.")}
+                return {'success': False, 'msg': self._("Please contact support staff.")}
             else:
                 return {'success': True, 'msg': ''}
         else:
-            return {'success': False, 'msg': self._("This response was not submitted.")}
+            return {'success': False, 'msg': self._("Submission data missing. Please contact support staff.")}
 
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
