@@ -31,6 +31,12 @@ export class ResponseView {
 
     UNSAVED_WARNING_KEY = 'learner-response';
 
+    ICON_SAVED = 'fa-check-circle-o';
+
+    ICON_SAVING = 'fa-refresh';
+
+    ICON_ERROR = 'fa-exclamation-circle';
+
     constructor(element, server, fileUploader, responseEditorLoader, baseView, data) {
       this.element = element;
       this.server = server;
@@ -351,20 +357,28 @@ export class ResponseView {
 
      Args:
      msg (string): If specified, the message to display.
+     iconClass (str): If specified, icon to display with save status.
 
      Returns:
      string: The current status message.
      * */
-    /* eslint-disable-next-line consistent-return */
-    saveStatus(msg) {
-      const sel = $('.save__submission__label', this.element);
+    saveStatus(msg, iconClass) {
+      // Create save status text
+      const saveStatusSel = $('.save__submission__label', this.element);
       if (typeof msg === 'undefined') {
-        return sel.text();
+        return saveStatusSel.text();
       }
-      // Setting the HTML will overwrite the screen reader tag,
-      // so prepend it to the message.
-      const label = gettext('Status of Your Response');
-      sel.html(`<span class="sr">${_.escape(label)}:</span>\n${msg}`);
+      saveStatusSel.text(_.escape(msg));
+
+      // Update save status icon, if provided
+      const iconSel = $('.save__submission__icon', this.element);
+      let iconClasses = 'save__submission__icon icon fa ';
+      if (typeof msg === 'string') {
+        iconClasses += _.escape(iconClass);
+      }
+      iconSel.attr('class', iconClasses);
+
+      return saveStatusSel.text();
     }
 
     /**
@@ -426,7 +440,8 @@ export class ResponseView {
         const saveAbility = this.checkSaveAbility();
         this.saveEnabled(saveAbility);
         this.previewEnabled(saveAbility);
-        this.saveStatus(gettext('Autosaving draft...'));
+        this.saveStatus(gettext('Saving draft'), this.ICON_SAVING);
+
         this.baseView.unsavedWarningEnabled(
           true,
           this.UNSAVED_WARNING_KEY,
@@ -449,7 +464,7 @@ export class ResponseView {
       this.errorOnLastSave = false;
 
       // Update the save status and error notifications
-      this.saveStatus(gettext('Autosaving draft...'));
+      this.saveStatus(gettext('Saving draft...'), this.ICON_SAVING);
       this.baseView.toggleActionError('save', null);
 
       // Disable the "unsaved changes" warning
@@ -470,7 +485,7 @@ export class ResponseView {
         if (currentResponseEqualsSaved) {
           view.saveEnabled(false);
           const msg = gettext('Draft saved!');
-          view.saveStatus(msg);
+          view.saveStatus(msg, this.ICON_SAVED);
           view.baseView.srReadTexts([msg]);
         }
       }).fail((errMsg) => {

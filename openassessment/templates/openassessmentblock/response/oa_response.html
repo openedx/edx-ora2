@@ -227,10 +227,10 @@
                                           <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}" disabled>
                                               {% trans "Save your progress" %}
                                           </button>
-
-                                          <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
-                                              <span class="sr">{% trans "Your Submission Status" %}:</span>
-                                              {{ save_status }}
+                                          <div id="response__save_status__{{ xblock_id }}" class="response__submission__label">
+                                              <span class="save__submission__icon icon fa fa-check-circle-o" aria-hidden="true"></span>
+                                              <span class="sr">{% trans "Status of Your Response" %}:</span>
+                                              <span class="save__submission__label">{{ save_status }}</span>
                                           </div>
                                       </li>
                                   </ul>
