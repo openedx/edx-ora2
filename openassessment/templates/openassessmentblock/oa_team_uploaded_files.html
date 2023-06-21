@@ -4,6 +4,7 @@
 {% if file_upload_type %}
   <div class="{{ class_prefix }}__display__file {% if not team_file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
         {% if team_file_urls %}
+        <hr/>
         <h5 class="submission__answer__part__text__title">
           {% trans "Files that were uploaded by your teammates:" %}
         </h5>
