@@ -47,6 +47,23 @@ class TestLoadStatic(TestCase):
         key_url = 'some_url.js'
         self.assertEqual(LoadStatic.get_url(key_url),
                          urljoin(self.default_base_url, key_url))
+        
+    def test_get_url_absolute_base_url(self):
+        # Given my base_url is an absolute URL and is overridden (as in hot-reload
+        # local dev setup)
+        key_url = 'some_url.js'
+        absolute_base_url = 'foo://bar'
+        loaded_key_url = '/some_url.hashchunk.js'
+
+        # When I get a static URL
+        with patch('json.loads') as jsondata:
+            jsondata.return_value = {
+                'base_url': absolute_base_url,
+                'some_url.js': loaded_key_url,
+            }
+            # Then I use the base URL instead of default LMS URL
+            self.assertEqual(LoadStatic.get_url(key_url), urljoin(
+                absolute_base_url, loaded_key_url))
 
     @patch('pkg_resources.resource_string')
     def test_get_url_file_not_found(self, resource_string):
@@ -85,3 +102,4 @@ class TestLoadStatic(TestCase):
             }
             self.assertEqual(LoadStatic.get_url(key_url), urljoin(
                 'localhost/', self.default_base_url, 'some_url.hashchunk.js'))
+
