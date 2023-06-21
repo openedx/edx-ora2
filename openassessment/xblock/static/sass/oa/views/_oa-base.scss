@@ -581,15 +581,13 @@
 
     // response form
     .response__submission {
-      padding: ($baseline-v/2) ($baseline-h/4) $baseline-v ($baseline-h/4);
+      padding: ($baseline-v/2) ($baseline-h/4);
       background: $color-decorative-quaternary;
       border-radius: ($baseline-v/10);
     }
 
     .response__submission__content {
       @extend %action-items;
-
-      margin-bottom: $baseline-v;
 
       label {
         @extend %text-sr;
@@ -616,6 +614,10 @@
           min-height: ($baseline-v*4);
           width: 70%;
         }
+      }
+
+      .submission__team__answer__display__file {
+        margin-bottom: ($baseline-v/2);
       }
 
       .tip {
