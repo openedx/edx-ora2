@@ -3,6 +3,7 @@ Helper class for loading generated file from webpack.
 """
 import json
 import logging
+from urllib.parse import urlparse
 
 from pkg_resources import resource_string
 from django.conf import settings
@@ -36,6 +37,8 @@ class LoadStatic:
         Reload from manifest file
         """
         root_url, base_url = '', '/static/dist/'
+        base_url_override = ''
+
         if hasattr(settings, 'LMS_ROOT_URL'):
             root_url = settings.LMS_ROOT_URL
         else:
@@ -44,11 +47,15 @@ class LoadStatic:
         try:
             json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")
             LoadStatic._manifest = json.loads(json_data)
+            base_url_override = LoadStatic._manifest.get('base_url', None)
             LoadStatic._is_loaded = True
         except OSError:
             logger.error('Cannot find static/dist/manifest.json')
         finally:
-            LoadStatic._base_url = urljoin(root_url, base_url)
+            if base_url_override and urlparse(base_url_override).scheme:
+                LoadStatic._base_url = base_url_override
+            else:
+                LoadStatic._base_url = urljoin(root_url, base_url)
 
     @staticmethod
     def get_url(key):
