@@ -850,7 +850,7 @@
 
 
   // --------------------
-  // UI: submitted repsonse
+  // UI: submitted response
   // --------------------
   .submission__answer__display__title {
     @extend %t-heading;
@@ -1108,7 +1108,7 @@
     @include margin-left(($baseline-h/4));
   }
 
-  .submission__feeedback__content {
+  .submission__feedback__content {
     @extend %ui-subsection-content;
     margin-bottom: $baseline-v;
   }
