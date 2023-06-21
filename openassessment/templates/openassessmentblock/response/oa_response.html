@@ -233,6 +233,9 @@
                               </div>
                           </li>
                           {% endif %}
+                          {% if text_response and file_upload_type %}
+                            <hr/>
+                          {% endif %}
                           {% if file_upload_type %}
                             <h5 class="submission__upload__files__title">
                               {% trans "File Uploads " %}
