@@ -47,7 +47,7 @@ class TestLoadStatic(TestCase):
         key_url = 'some_url.js'
         self.assertEqual(LoadStatic.get_url(key_url),
                          urljoin(self.default_base_url, key_url))
-        
+
     def test_get_url_absolute_base_url(self):
         # Given my base_url is an absolute URL and is overridden (as in hot-reload
         # local dev setup)
@@ -102,4 +102,3 @@ class TestLoadStatic(TestCase):
             }
             self.assertEqual(LoadStatic.get_url(key_url), urljoin(
                 'localhost/', self.default_base_url, 'some_url.hashchunk.js'))
-
