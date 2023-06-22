@@ -278,28 +278,6 @@ export class ResponseView {
     }
 
     /**
-     Enable/disable the save button.
-     Check whether the save button is enabled.
-
-     Also enables/disables a beforeunload handler to warn
-     users about navigating away from the page with unsaved changes.
-
-     Args:
-     enabled (bool): If specified, set the state of the button.
-
-     Returns:
-     bool: Whether the button is enabled.
-
-     Examples:
-     >> view.saveEnabled(true);  // enable the button
-     >> view.saveEnabled();  // check whether the button is enabled
-     >> true
-     * */
-    saveEnabled(enabled) {
-      return this.baseView.buttonEnabled('.submission__save', enabled);
-    }
-
-    /**
      * Enable/disable the upload button or check whether the upload button is enabled
      *
      * @param {boolean]} enabled - optional param to enable/disable button
@@ -315,9 +293,19 @@ export class ResponseView {
 
     /**
      Enable/disable the preview button.
+     Check whether the preview button is enabled.
 
-     Works exactly the same way as saveEnabled method.
-     * */
+     Args:
+     enabled (bool): If specified, set the state of the button.
+
+     Returns:
+     bool: Whether the button is enabled.
+
+     Examples:
+     >> view.previewEnabled(true);  // enable the button
+     >> view.previewEnabled();  // check whether the button is enabled
+     >> true
+    */
     previewEnabled(enabled) {
       return this.baseView.buttonEnabled('.submission__preview', enabled);
     }
@@ -436,7 +424,6 @@ export class ResponseView {
       // only if the response has changed
       if (this.responseChanged()) {
         const saveAbility = this.checkSaveAbility();
-        this.saveEnabled(saveAbility);
         this.previewEnabled(saveAbility);
 
         // If there was an error, preserve error status
@@ -483,7 +470,6 @@ export class ResponseView {
         const currentResponse = view.response();
         const currentResponseEqualsSaved = currentResponse.every((element, index) => element === savedResponse[index]);
         if (currentResponseEqualsSaved) {
-          view.saveEnabled(false);
           const msg = gettext('Draft saved!');
           view.saveStatus(msg, this.ICON_SAVED);
           view.baseView.srReadTexts([msg]);
