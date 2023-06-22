@@ -425,7 +425,7 @@ describe("OpenAssessment.Server", function() {
         stubAjax(false, null);
         var receivedMsg = null;
         server.save("Test").fail(function(errorMsg) { receivedMsg = errorMsg; });
-        expect(receivedMsg).toContain('This response could not be saved');
+        expect(receivedMsg).toContain('Please check your internet connection');
     });
 
     it("informs the caller of an AJAX error when sending a self assessment", function() {
