@@ -159,7 +159,10 @@
     color: $copy-color;
     display: inline-block;
     vertical-align: middle;
-    @include margin-left(($baseline-h/4));
+
+    .save__submission__label {
+      @include margin-left(($baseline-h/4));
+    }
 
     .list--actions {
       @include text-align(left);

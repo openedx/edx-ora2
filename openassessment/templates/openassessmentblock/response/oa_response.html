@@ -66,7 +66,7 @@
                     {% trans "Enter your team's response to the prompt." %}
                     {% if submission_due %}
                       {% blocktrans %}
-                        You can save your progress and return to complete your team's response at any time before the due date
+                        Your work will save automatically and you can return to complete your team's response at any time before the due date
                       {% endblocktrans %}
                       (<span class="step__deadline">
                         <span id="oa_step_deadline_response"
@@ -79,17 +79,17 @@
                       </span>).
                     {% else %}
                       {% blocktrans %}
-                        You can save your progress and return to complete your team's response at any time.
+                        Your work will save automatically and you can return to complete your team's response at any time.
                       {% endblocktrans %}
                     {% endif %}
                     <strong class="emphasis">
-                      {% trans "After you submit a response on behalf of your team, it cannot be edited" %}
-                    </strong>.
+                      {% trans "After you submit a response on behalf of your team, it cannot be edited." %}
+                    </strong>
                   {% else %}
                     {% trans "Enter your response to the prompt." %}
                     {% if submission_due %}
                       {% blocktrans %}
-                        You can save your progress and return to complete your response at any time before the due date
+                        Your work will save automatically and you can return to complete your response at any time before the due date
                       {% endblocktrans %}
                       (<span class="step__deadline">
                           <span id="oa_step_deadline_response"
@@ -101,7 +101,7 @@
                           </span>
                       </span>).
                     {% else %}
-                      {% trans "You can save your progress and return to complete your response at any time." %}
+                      {% trans "Your work will save automatically and you can return to complete your response at any time." %}
                     {% endif %}
                     <strong class="emphasis">{% trans "After you submit your response, you cannot edit it" %}</strong>.
                   {% endif %}
@@ -190,7 +190,6 @@
                                         class="submission__answer__part__text__value"
                                         data-preview="submission__{{ forloop.counter }}"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
-                                        aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the prompt above." %}"
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
@@ -224,18 +223,18 @@
 
                                   <ul class="list list--actions">
                                       <li class="list--actions__item">
-                                          <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}" disabled>
-                                              {% trans "Save your progress" %}
-                                          </button>
-
-                                          <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
-                                              <span class="sr">{% trans "Your Submission Status" %}:</span>
-                                              {{ save_status }}
+                                          <div id="response__save_status__{{ xblock_id }}" class="response__submission__label">
+                                              <span class="save__submission__icon icon fa fa-circle-o" aria-hidden="true"></span>
+                                              <span class="sr">{% trans "Status of Your Response" %}:</span>
+                                              <span class="save__submission__label">{{ save_status }}</span>
                                           </div>
                                       </li>
                                   </ul>
                               </div>
                           </li>
+                          {% endif %}
+                          {% if text_response and file_upload_type %}
+                            <hr/>
                           {% endif %}
                           {% if file_upload_type %}
                             <h5 class="submission__upload__files__title">
@@ -273,10 +272,10 @@
                                       {% trans "Select a file to upload for this submission." %}
                                   {% endif %}
                                 </label>
-                                <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %} accept="{{white_listed_file_types|join:", "}}">
-                                <span>
+                                <div>
                                   {% trans "Supported file types: " %}{{ white_listed_file_types|join:", "}}
-                                </span>
+                                </div>
+                                <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %} accept="{{white_listed_file_types|join:", "}}">
                                 <button type="submit" class="file__upload action action--upload" disabled>
                                   {% if allow_multiple_files %}
                                       {% trans "Upload files" %}
@@ -290,15 +289,10 @@
                           <li class="field">
                           {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
                           </li>
-                          <hr/>
                           <li class="field">
-                          {% include "openassessmentblock/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response" xblock_id=xblock_id %}
+                            {% include "openassessmentblock/oa_team_uploaded_files.html" with file_upload_type=file_upload_type team_file_urls=team_file_urls class_prefix="submission__team__answer" including_template="response" xblock_id=xblock_id %}
                           </li>
                       </ol>
-
-                      {% if not team_name %}
-                          <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
-                      {% endif %}
                   </form>
               </div>
               {% if team_name %}

@@ -98,6 +98,7 @@
       // Remove button styling
       font-size: 12px;
       -webkit-appearance: none;
+      appearance: none;
       background-image: none;
       text-shadow: none;
       box-shadow: none;
@@ -1201,7 +1202,7 @@
   }
 
   .file--upload {
-    margin: $baseline-v ($baseline-v/2);
+    margin: $baseline-v ($baseline-v/2) $baseline-v 0;
   }
 
   .delete__uploaded__file {

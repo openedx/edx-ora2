@@ -21,7 +21,7 @@ export class ResponseView {
 
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
-    AUTO_SAVE_WAIT = 30000;
+    AUTO_SAVE_WAIT = 2000;
 
     // Maximum size (500 * 2^20 bytes, approx. 500MB) of a single uploaded file.
     MAX_FILE_SIZE = 500 * (1024 ** 2);
@@ -30,6 +30,12 @@ export class ResponseView {
     MAX_FILES_MB = 500;
 
     UNSAVED_WARNING_KEY = 'learner-response';
+
+    ICON_SAVED = 'fa-check-circle-o';
+
+    ICON_SAVING = 'fa-refresh';
+
+    ICON_ERROR = 'fa-exclamation-circle';
 
     constructor(element, server, fileUploader, responseEditorLoader, baseView, data) {
       this.element = element;
@@ -272,28 +278,6 @@ export class ResponseView {
     }
 
     /**
-     Enable/disable the save button.
-     Check whether the save button is enabled.
-
-     Also enables/disables a beforeunload handler to warn
-     users about navigating away from the page with unsaved changes.
-
-     Args:
-     enabled (bool): If specified, set the state of the button.
-
-     Returns:
-     bool: Whether the button is enabled.
-
-     Examples:
-     >> view.saveEnabled(true);  // enable the button
-     >> view.saveEnabled();  // check whether the button is enabled
-     >> true
-     * */
-    saveEnabled(enabled) {
-      return this.baseView.buttonEnabled('.submission__save', enabled);
-    }
-
-    /**
      * Enable/disable the upload button or check whether the upload button is enabled
      *
      * @param {boolean]} enabled - optional param to enable/disable button
@@ -309,9 +293,19 @@ export class ResponseView {
 
     /**
      Enable/disable the preview button.
+     Check whether the preview button is enabled.
 
-     Works exactly the same way as saveEnabled method.
-     * */
+     Args:
+     enabled (bool): If specified, set the state of the button.
+
+     Returns:
+     bool: Whether the button is enabled.
+
+     Examples:
+     >> view.previewEnabled(true);  // enable the button
+     >> view.previewEnabled();  // check whether the button is enabled
+     >> true
+    */
     previewEnabled(enabled) {
       return this.baseView.buttonEnabled('.submission__preview', enabled);
     }
@@ -351,20 +345,28 @@ export class ResponseView {
 
      Args:
      msg (string): If specified, the message to display.
+     iconClass (str): If specified, icon to display with save status.
 
      Returns:
      string: The current status message.
      * */
-    /* eslint-disable-next-line consistent-return */
-    saveStatus(msg) {
-      const sel = $('.save__submission__label', this.element);
+    saveStatus(msg, iconClass) {
+      // Create save status text
+      const saveStatusSel = $('.save__submission__label', this.element);
       if (typeof msg === 'undefined') {
-        return sel.text();
+        return saveStatusSel.text();
       }
-      // Setting the HTML will overwrite the screen reader tag,
-      // so prepend it to the message.
-      const label = gettext('Status of Your Response');
-      sel.html(`<span class="sr">${_.escape(label)}:</span>\n${msg}`);
+      saveStatusSel.text(_.escape(msg));
+
+      // Update save status icon, if provided
+      const iconSel = $('.save__submission__icon', this.element);
+      let iconClasses = 'save__submission__icon icon fa ';
+      if (typeof msg === 'string') {
+        iconClasses += _.escape(iconClass);
+      }
+      iconSel.attr('class', iconClasses);
+
+      return saveStatusSel.text();
     }
 
     /**
@@ -406,9 +408,7 @@ export class ResponseView {
       // (1) The response has changed.  We don't need to keep saving the same response.
       // (2) Sufficient time has passed since the user last made a change to the response.
       //      We don't want to save a response while the user is in the middle of typing.
-      // (3) No errors occurred on the last save.  We don't want to keep refreshing
-      //      the error message in the UI.  (The user can still retry the save manually).
-      if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT && !this.errorOnLastSave) {
+      if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT) {
         this.save();
       }
     }
@@ -424,9 +424,13 @@ export class ResponseView {
       // only if the response has changed
       if (this.responseChanged()) {
         const saveAbility = this.checkSaveAbility();
-        this.saveEnabled(saveAbility);
         this.previewEnabled(saveAbility);
-        this.saveStatus(gettext('This response has not been saved.'));
+
+        // If there was an error, preserve error status
+        if (!this.errorOnLastSave) {
+          this.saveStatus(gettext('Saving draft'), this.ICON_SAVING);
+        }
+
         this.baseView.unsavedWarningEnabled(
           true,
           this.UNSAVED_WARNING_KEY,
@@ -443,20 +447,18 @@ export class ResponseView {
      Save a response without submitting it.
      * */
     save() {
-      // If there were errors on previous calls to save, forget
-      // about them for now.  If an error occurs on *this* save,
-      // we'll set this back to true in the error handler.
-      this.errorOnLastSave = false;
-
       // Update the save status and error notifications
-      this.saveStatus(gettext('Saving...'));
-      this.baseView.toggleActionError('save', null);
+      // ... unless there was an error, this helps avoid unnecessary UI refreshes.
+      if (!this.errorOnLastSave) {
+        this.saveStatus(gettext('Saving draft...'), this.ICON_SAVING);
+      }
 
       // Disable the "unsaved changes" warning
       this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
 
       const view = this;
       const savedResponse = this.response();
+
       this.server.save(savedResponse).done(() => {
         // Remember which response we saved, once the server confirms that it's been saved...
         view.savedResponse = savedResponse;
@@ -468,14 +470,22 @@ export class ResponseView {
         const currentResponse = view.response();
         const currentResponseEqualsSaved = currentResponse.every((element, index) => element === savedResponse[index]);
         if (currentResponseEqualsSaved) {
-          view.saveEnabled(false);
-          const msg = gettext('This response has been saved but not submitted.');
-          view.saveStatus(msg);
+          const msg = gettext('Draft saved!');
+          view.saveStatus(msg, this.ICON_SAVED);
           view.baseView.srReadTexts([msg]);
+
+          // Disable error
+          this.baseView.toggleActionError('save', null);
+          view.errorOnLastSave = false;
         }
       }).fail((errMsg) => {
-        view.saveStatus(gettext('Error'));
-        view.baseView.toggleActionError('save', errMsg);
+        // Debounce error banner, this won't capture new errors, but will keep
+        // us from defocusing text area, allowing user to continue to edit their
+        // response.
+        if (!view.errorOnLastSave) {
+          view.saveStatus(gettext('Error'), this.ICON_ERROR);
+          view.baseView.toggleActionError('save', errMsg);
+        }
 
         // Remember that an error occurred
         // so we can disable autosave

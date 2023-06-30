@@ -234,35 +234,31 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.response()[1]).toBe('Test response 2');
     });
 
-    it("updates submit/save buttons and save status when response text changes", function() {
-        // Response is blank --> save/submit buttons disabled
+    it("updates submit button and save status when response text changes", function() {
+        // Response is blank --> submit button disabled
         view.response(['', '']);
         view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(false);
-        expect(view.saveEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('This response has not been saved.');
+        expect(view.saveStatus()).toContain('This response has not been saved');
 
         // Response is whitespace --> save/submit buttons disabled
         view.response(['               \n      \n      ', ' ']);
         view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(false);
-        expect(view.saveEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('This response has not been saved.');
+        expect(view.saveStatus()).toContain('This response has not been saved');
 
         // Response is not blank --> submit button enabled
         view.response(['Test response 1', ' ']);
         view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(true);
-        expect(view.saveEnabled()).toBe(true);
-        expect(view.saveStatus()).toContain('This response has not been saved.');
+        expect(view.saveStatus()).toContain('Saving draft');
     });
 
-    it("updates submit/save buttons when response text is optional but file upload is required", function() {
+    it("updates submit button when response text is optional but file upload is required", function() {
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
 
         expect(view.submitEnabled()).toBe(false);
-        expect(view.saveEnabled()).toBe(false);
 
         var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
         view.prepareUpload(files, 'pdf-and-image', ['test description']);
@@ -270,27 +266,6 @@ describe("OpenAssessment.ResponseView", function() {
         view.checkSubmissionAbility(true);
 
         expect(view.submitEnabled()).toBe(true);
-    });
-
-    it("updates save buttons when response text is optional and input is empty", function() {
-        view.textResponse = 'optional';
-        view.fileUploadResponse = 'required';
-
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.saveEnabled()).toBe(false);
-
-        view.response(['Test response 1', ' ']);
-        view.handleResponseChanged();
-
-        expect(view.saveEnabled()).toBe(true);
-        view.save();
-
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.saveEnabled()).toBe(false);
-
-        view.response(['', '']);
-        view.handleResponseChanged();
-        expect(view.saveEnabled()).toBe(true);
     });
 
     it("doesn't allow to push submit button if response text and file upload are both optional and input fields are empty ", function() {
@@ -310,42 +285,41 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.submitEnabled()).toBe(true);
     });
 
-    it("updates submit/save buttons and save status when the user saves a response", function() {
-        // Response is blank --> save/submit button is disabled
+    it("updates submit button and save state when the user enters a response", function() {
+        // Response is blank --> submit button is disabled
         view.response('');
         view.save();
         expect(view.submitEnabled()).toBe(false);
-        expect(view.saveEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('saved but not submitted');
+        expect(view.saveStatus()).toContain('Draft saved!');
 
-        // Response is not blank --> submit button enabled
+        // Response is not blank --> submit button enabled, saving enabled
         view.response(['Test response 1', 'Test response 2']);
+        view.handleResponseChanged();
+        expect(view.saveStatus()).toContain('Saving draft');
+
+        // Response is saved
         view.save();
         expect(view.submitEnabled()).toBe(true);
-        expect(view.saveEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('saved but not submitted');
+        expect(view.saveStatus()).toContain('Draft saved!');
     });
 
     it("shows unsaved draft only when response text has changed", function() {
         // Save the initial response
         view.response(['Test response 1', 'Test response 2']);
         view.save();
-        expect(view.saveEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('saved but not submitted');
+        expect(view.saveStatus()).toContain('Draft saved!');
 
         // Keep the text the same, but trigger an update
         // Should still be saved
         view.response(['Test response 1', 'Test response 2']);
         view.handleResponseChanged();
-        expect(view.saveEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('saved but not submitted');
+        expect(view.saveStatus()).toContain('Draft saved!');
 
         // Change the text
         // This should cause it to change to unsaved draft
         view.response(['Test response 1', 'Test response 3']);
         view.handleResponseChanged();
-        expect(view.saveEnabled()).toBe(true);
-        expect(view.saveStatus()).toContain('This response has not been saved.');
+        expect(view.saveStatus()).toContain('Saving draft');
     });
 
     it("sends the saved submission to the server", function() {
@@ -481,7 +455,7 @@ describe("OpenAssessment.ResponseView", function() {
             view.AUTO_SAVE_WAIT = -1;
 
             // Check that the problem is initially unsaved
-            expect(view.saveStatus()).toContain('not been saved');
+            expect(view.saveStatus()).toContain('This response has not been saved.');
 
             // Change the response
             view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
@@ -493,7 +467,7 @@ describe("OpenAssessment.ResponseView", function() {
             view.autoSave();
 
             // Expect that the problem has been saved
-            expect(view.saveStatus()).toContain('saved but not submitted');
+            expect(view.saveStatus()).toContain('Draft saved!');
 
             // Expect that the unsaved warning is disabled
             expect(view.baseView.unsavedWarningEnabled()).toBe(false);
@@ -512,7 +486,7 @@ describe("OpenAssessment.ResponseView", function() {
             expect(view.autoSave.calls.count() > 0).toBeTruthy();
         });
 
-        it("stops autosaving after a save error", function() {
+        it("attempts to re-save after a save error", function() {
             // Disable the autosave delay after changing/saving a response
             view.AUTO_SAVE_WAIT = -1;
 
@@ -534,9 +508,8 @@ describe("OpenAssessment.ResponseView", function() {
             // that for testing purposes).
             view.autoSave();
 
-            // The server save should have been called just once
-            // (autosave didn't call it).
-            expect(server.save.calls.count()).toEqual(1);
+            // The server save should still be called both times
+            expect(server.save.calls.count()).toEqual(2);
         });
 
         it("waits after user changes a response to autosave", function() {
@@ -551,7 +524,7 @@ describe("OpenAssessment.ResponseView", function() {
             view.autoSave();
 
             // Expect that the problem is still unsaved
-            expect(view.saveStatus()).toContain('not been saved');
+            expect(view.saveStatus()).toContain('Saving draft');
         });
 
         it("does not autosave if a user hasn't changed the response", function() {
@@ -563,7 +536,7 @@ describe("OpenAssessment.ResponseView", function() {
             view.autoSave();
 
             // Since we haven't made any changes, the response should still be unsaved.
-            expect(view.saveStatus()).toContain('not been saved');
+            expect(view.saveStatus()).toContain('This response has not been saved');
         });
 
     });
@@ -833,8 +806,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
         // Expect the unsaved warning to be enabled and save progress button is enabled.
-        expect(view.saveEnabled()).toBe(true);
-        expect(view.saveStatus()).toContain('This response has not been saved.');
+        expect(view.saveStatus()).toContain('Saving draft');
 
         // Assume user has selected no files (cancelled the file select pop-up) the event will
         // trigger with no files selected. Expect Submit response button is disabled.

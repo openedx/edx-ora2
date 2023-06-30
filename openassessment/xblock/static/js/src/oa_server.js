@@ -234,7 +234,7 @@ export class Server {
       }).done(function (data) {
         if (data.success) { defer.resolve(); } else { defer.rejectWith(this, [data.msg]); }
       }).fail(function () {
-        defer.rejectWith(this, [gettext('This response could not be saved.')]);
+        defer.rejectWith(this, [gettext('Please check your internet connection.')]);
       });
     }).promise();
   }

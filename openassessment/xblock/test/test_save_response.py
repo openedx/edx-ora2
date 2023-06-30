@@ -27,7 +27,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
         )
 
         resp = self.request(xblock, 'render_submission', json.dumps({}))
-        self.assertIn('response has not been saved', resp.decode('utf-8'))
+        self.assertIn('Response not started.', resp.decode('utf-8'))
 
     @ddt.file_data('data/save_responses.json')
     @scenario('data/save_scenario.xml', user_id="Perleman")
@@ -52,7 +52,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn(submission[0], resp.decode('utf-8'))
         self.assertIn(submission[1], resp.decode('utf-8'))
-        self.assertIn('saved but not submitted', resp.decode('utf-8').lower())
+        self.assertIn('draft saved!', resp.decode('utf-8').lower())
 
     @scenario('data/save_scenario.xml', user_id="Valchek")
     def test_overwrite_saved_response(self, xblock):
@@ -79,4 +79,4 @@ class SaveResponseTest(XBlockHandlerTestCase):
 
         resp = self.request(xblock, 'save_submission', json.dumps({}), response_format="json")
         self.assertFalse(resp['success'])
-        self.assertIn('not submitted', resp['msg'])
+        self.assertIn('Submission data missing. Please contact support staff.', resp['msg'])

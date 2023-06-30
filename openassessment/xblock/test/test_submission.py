@@ -769,7 +769,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ("", "")
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has not been saved.',
+                'save_status': 'Response not started.',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'submit_enabled': False,
@@ -807,7 +807,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ("", "")
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has not been saved.',
+                'save_status': 'Response not started.',
                 'show_rubric_during_response': False,
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
@@ -932,7 +932,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ("", "")
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has not been saved.',
+                'save_status': 'Response not started.',
                 'show_rubric_during_response': False,
                 'submit_enabled': False,
                 'text_response': 'required',
@@ -973,7 +973,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ('A man must have a code', 'A man must have an umbrella too.')
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has been saved but not submitted.',
+                'save_status': 'Draft saved!',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'submit_enabled': True,
@@ -1150,7 +1150,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ('A man must have a code', 'A man must have an umbrella too.')
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has been saved but not submitted.',
+                'save_status': 'Draft saved!',
                 'show_rubric_during_response': False,
                 'submit_enabled': True,
                 'team_file_urls': [],
@@ -1286,7 +1286,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ('An old format response.',)
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has been saved but not submitted.',
+                'save_status': 'Draft saved!',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'submit_enabled': True,
@@ -1779,7 +1779,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                 'file_upload_response': None,
                 'file_upload_type': None,
                 'prompts_type': 'text',
-                'save_status': 'This response has not been saved.',
+                'save_status': 'Response not started.',
                 'show_rubric_during_response': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'submit_enabled': False,
@@ -1818,7 +1818,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
                         ("", "")
                     )
                 }, xblock.prompts),
-                'save_status': 'This response has not been saved.',
+                'save_status': 'Response not started.',
                 'show_rubric_during_response': False,
                 'submit_enabled': False,
                 'team_file_urls': [],
