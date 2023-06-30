@@ -19,6 +19,7 @@ from openassessment.assessment.api.peer import create_assessment as peer_assess
 from openassessment.assessment.api.self import create_assessment as self_assess
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, StaffWorkflow, TeamStaffWorkflow
+from openassessment.assessment.test.test_peer import COURSE_SETTINGS
 from openassessment.test_utils import CacheResetTest
 from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, AssessmentFactory
 from openassessment.workflow import api as workflow_api
@@ -32,6 +33,7 @@ class TestStaffAssessment(CacheResetTest):
     Tests for staff assessments made as overrides, when none is required to exist.
     """
 
+    COURSE_SETTINGS = {}
     STEP_REQUIREMENTS = {}
     STEP_REQUIREMENTS_WITH_STAFF = {'required': True}
 
@@ -56,17 +58,17 @@ class TestStaffAssessment(CacheResetTest):
         ),
     ]
 
-    def _verify_done_state(self, uuid, requirements, expect_done=True):
+    def _verify_done_state(self, uuid, requirements, course_settings, expect_done=True):
         """
         Asserts that a submision and workflow are (or aren't) set to status "done".
         A False value for expect_done will confirm an assessment/workflow are NOT done.
         """
-        workflow = workflow_api.get_workflow_for_submission(uuid, requirements)
+        workflow = workflow_api.get_workflow_for_submission(uuid, requirements, course_settings)
         if expect_done:
-            self.assertTrue(staff_api.assessment_is_finished(uuid, requirements))
+            self.assertTrue(staff_api.assessment_is_finished(uuid, requirements, course_settings))
             self.assertEqual(workflow["status"], "done")
         else:
-            self.assertFalse(staff_api.assessment_is_finished(uuid, requirements))
+            self.assertFalse(staff_api.assessment_is_finished(uuid, requirements, course_settings))
             self.assertNotEqual(workflow["status"], "done")
 
     @data(*ASSESSMENT_SCORES_DDT)
@@ -91,7 +93,7 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(assessment["points_possible"], RUBRIC_POSSIBLE_POINTS)
 
         # Ensure submission and workflow are marked as finished
-        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS, self.COURSE_SETTINGS)
 
     @data(*ASSESSMENT_SCORES_DDT)
     def test_create_assessment_required(self, key):
@@ -103,7 +105,7 @@ class TestStaffAssessment(CacheResetTest):
         tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer", problem_steps=['staff'])
 
         # Verify that we're still waiting on a staff assessment
-        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF, expect_done=False)
+        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF, self.COURSE_SETTINGS, expect_done=False)
 
         # Verify that a StaffWorkflow step has been created and is not complete
         workflow = StaffWorkflow.objects.get(submission_uuid=tim_sub['uuid'])
@@ -119,7 +121,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify assesment made, score updated, and no longer waiting
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
-        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF)
+        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF, self.COURSE_SETTINGS)
         # Verify that a StaffWorkflow step has been marked as complete
         workflow.refresh_from_db()
         self.assertIsNotNone(workflow.grading_completed_at)
@@ -149,7 +151,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(self_assessment["points_earned"], initial_assessment["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS, self.COURSE_SETTINGS)
         self.assertEqual(workflow["score"]["points_earned"], initial_assessment["expected_points"])
 
         # Now override with a staff assessment
@@ -162,7 +164,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS, self.COURSE_SETTINGS)
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
 
     @data(*ASSESSMENT_TYPES_DDT)
@@ -187,7 +189,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(assessment["points_earned"], initial_assessment["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements, self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], initial_assessment["expected_points"])
 
         staff_score = "few"
@@ -201,7 +203,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements, self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
 
     @data(*ASSESSMENT_TYPES_DDT)
@@ -233,7 +235,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements, self.STEP_REQUIREMENTS)
         # It's impossible to fake self requirements being complete, so we can't get the score for the self after_type
         if after_type != 'self':
             self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
@@ -245,7 +247,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score (workflow should report previous value)
         self.assertEqual(assessment["points_earned"], unscored_assessment["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements, self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
 
     def test_provisionally_done(self):
@@ -290,12 +292,12 @@ class TestStaffAssessment(CacheResetTest):
         )
 
         # Verify that Bob's submission is marked done and returns the proper score
-        bob_workflow = workflow_api.get_workflow_for_submission(bob_sub["uuid"], requirements)
+        bob_workflow = workflow_api.get_workflow_for_submission(bob_sub["uuid"], requirements, self.STEP_REQUIREMENTS)
         self.assertEqual(bob_workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
         self.assertEqual(bob_workflow["status"], "done")
 
         # Verify that Tim's submission is not marked done, and he cannot get his score
-        tim_workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
+        tim_workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements, self.STEP_REQUIREMENTS)
         self.assertEqual(tim_workflow["score"], None)
         self.assertNotEqual(tim_workflow["status"], "done")
 
@@ -312,9 +314,9 @@ class TestStaffAssessment(CacheResetTest):
             OPTIONS_SELECTED_DICT["none"]["options"], {}, "",
             RUBRIC,
         )
-        workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
+        workflow_api.get_workflow_for_submission(tim_sub["uuid"], {}, {})
         with mock.patch('openassessment.workflow.models.sub_api.reset_score') as mock_reset:
-            workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
+            workflow_api.get_workflow_for_submission(tim_sub["uuid"], {}, {})
             self.assertFalse(mock_reset.called)
 
     def test_retrieve_bulk_workflow_status(self):
@@ -484,7 +486,7 @@ class TestStaffAssessment(CacheResetTest):
 
     def test_cancel_staff_workflow(self):
         tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
-        workflow_api.cancel_workflow(tim_sub['uuid'], "Test Cancel", "Bob", {})
+        workflow_api.cancel_workflow(tim_sub['uuid'], "Test Cancel", "Bob", {}, {})
         workflow = StaffWorkflow.objects.get(submission_uuid=tim_sub['uuid'])
         self.assertTrue(workflow.is_cancelled)
 
@@ -526,7 +528,7 @@ class TestStaffAssessment(CacheResetTest):
         stats = staff_api.get_staff_grading_statistics(course_id, item_id)
         self.assertEqual(stats, {'graded': 1, 'ungraded': 2, 'in-progress': 0})
 
-        workflow_api.cancel_workflow(bob_to_grade['uuid'], "Test Cancel", bob['student_id'], {})
+        workflow_api.cancel_workflow(bob_to_grade['uuid'], "Test Cancel", bob['student_id'], {}, {})
         stats = staff_api.get_staff_grading_statistics(course_id, item_id)
         self.assertEqual(stats, {'graded': 1, 'ungraded': 1, 'in-progress': 0})
 

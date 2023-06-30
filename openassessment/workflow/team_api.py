@@ -67,6 +67,9 @@ def update_from_assessments(team_submission_uuid, override_submitter_requirement
         are only assessible by staff (where requirements like "must_grade" and
         "must_be_graded_by" are not supported).
 
+        We also don't need an analogous `course_settings` parameter because there are
+        currently no course settings that impact staff grading.
+
         Raises:
             AssessmentWorkflowInternalError on error
         """
@@ -75,7 +78,7 @@ def update_from_assessments(team_submission_uuid, override_submitter_requirement
 
     # Update the workflow status based on the underlying assessments
     try:
-        team_workflow.update_from_assessments(override_submitter_requirements)
+        team_workflow.update_from_assessments(override_submitter_requirements, {})
         logger.info(
             "Updated workflow for team submission UUID %s",
             team_submission_uuid

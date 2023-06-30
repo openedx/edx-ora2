@@ -67,7 +67,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertEqual(workflow["status"], first_step)
 
         workflow_from_get = workflow_api.get_workflow_for_submission(
-            submission["uuid"], data["requirements"]
+            submission["uuid"], data["requirements"], {},
         )
         del workflow_from_get['status_details']
 
@@ -109,6 +109,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             },
             "self": {}
         }
+        
+        course_settings = {}
 
         # We'll cheat to create the workflow with the new 'special' status,
         # otherwise the creation logic will not allow unknown an unknown status
@@ -124,7 +126,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         AssessmentWorkflow.STEPS = real_steps
 
         workflow_api.get_workflow_for_submission(
-            submission["uuid"], requirements
+            submission["uuid"], requirements, course_settings
         )
 
         peer_workflows = list(PeerWorkflow.objects.filter(submission_uuid=submission["uuid"]))
@@ -133,14 +135,14 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         with patch('openassessment.assessment.api.peer.submitter_is_finished') as mock_peer_submit:
             mock_peer_submit.return_value = True
             workflow = workflow_api.get_workflow_for_submission(
-                submission["uuid"], requirements
+                submission["uuid"], requirements, course_settings
             )
         self.assertEqual("self", workflow['status'])
 
         with patch('openassessment.assessment.api.self.submitter_is_finished') as mock_self_submit:
             mock_self_submit.return_value = True
             workflow = workflow_api.get_workflow_for_submission(
-                submission["uuid"], requirements
+                submission["uuid"], requirements, course_settings
             )
 
         self.assertEqual("waiting", workflow['status'])
@@ -158,6 +160,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                 "must_be_graded_by": 3
             }
         }
+        course_settings = {}
         workflow_keys = set(workflow.keys())
         self.assertEqual(
             workflow_keys,
@@ -172,14 +175,14 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertFalse(peer_workflows)
 
         workflow_from_get = workflow_api.get_workflow_for_submission(
-            submission["uuid"], requirements
+            submission["uuid"], requirements, course_settings
         )
 
         del workflow_from_get['status_details']
         self.assertEqual(workflow, workflow_from_get)
 
         requirements["training"]["num_required"] = 0
-        workflow = workflow_api.update_from_assessments(submission["uuid"], requirements)
+        workflow = workflow_api.update_from_assessments(submission["uuid"], requirements, course_settings)
 
         # New step is Peer, and a Workflow has been created.
         self.assertEqual(workflow["status"], "peer")
@@ -216,6 +219,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         with raises(workflow_api.AssessmentWorkflowInternalError):
             mock_create.side_effect = DatabaseError("Kaboom!")
             submission = sub_api.create_submission(ITEM_1, ANSWER_2)
+            breakpoint()
             workflow_api.create_workflow(submission["uuid"], ["peer", "self"])
 
     @patch('openassessment.assessment.api.staff.get_score')
@@ -249,6 +253,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                         "must_be_graded_by": 3
                     }
                 },
+                {},
                 override_submitter_requirements=True
             )
 
@@ -258,14 +263,14 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         with raises(workflow_api.AssessmentWorkflowInternalError):
             mock_create.side_effect = Exception("Kaboom!")
             submission = sub_api.create_submission(ITEM_1, ANSWER_2)
-            workflow_api.update_from_assessments(submission["uuid"], data["steps"])
+            workflow_api.update_from_assessments(submission["uuid"], data["steps"], {})
 
     @ddt.file_data('data/assessments.json')
     def test_get_assessment_workflow_expected_errors(self, data):
         with self.assertRaises(workflow_api.AssessmentWorkflowNotFoundError):
-            workflow_api.get_workflow_for_submission("0000000000000", data["requirements"])
+            workflow_api.get_workflow_for_submission("0000000000000", data["requirements"], {})
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
-            workflow_api.get_workflow_for_submission(123, data["requirements"])
+            workflow_api.get_workflow_for_submission(123, data["requirements"], {})
 
     @patch('submissions.models.Submission.objects.get')
     @ddt.file_data('data/assessments.json')
@@ -274,7 +279,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             mock_get.side_effect = Exception("Kaboom!")
             submission = sub_api.create_submission(ITEM_1, "We talk TV!")
             workflow = workflow_api.create_workflow(submission["uuid"], data["steps"])
-            workflow_api.get_workflow_for_submission(workflow["uuid"], {})
+            workflow_api.get_workflow_for_submission(workflow["uuid"], {}, {})
 
     def test_preexisting_workflow(self):
         """
@@ -298,7 +303,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         )
 
         # This call will throw exceptions if the workflow is in an invalid state
-        workflow_api.update_from_assessments(submission["uuid"], {})
+        workflow_api.update_from_assessments(submission["uuid"], {}, {})
 
     def test_get_status_counts(self):
         # Initially, the counts should all be zero
@@ -394,6 +399,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                 "must_be_graded_by": 1
             }
         }
+        course_settings = {}
 
         # Check the workflow is not cancelled.
         self.assertFalse(workflow_api.is_workflow_cancelled(submission["uuid"]))
@@ -409,7 +415,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             submission_uuid=submission["uuid"],
             comments="Inappropriate language",
             cancelled_by_id=ITEM_2['student_id'],
-            assessment_requirements=requirements
+            assessment_requirements=requirements,
+            course_settings=course_settings,
         )
 
         # Check workflow is cancelled.
@@ -434,6 +441,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                 "must_be_graded_by": 1
             }
         }
+        course_settings = {}
 
         # Check if workflow is cancelled.
         self.assertFalse(workflow_api.is_workflow_cancelled(submission["uuid"]))
@@ -445,7 +453,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                 submission_uuid="1234567098789",
                 comments="Inappropriate language",
                 cancelled_by_id=ITEM_2['student_id'],
-                assessment_requirements=requirements
+                assessment_requirements=requirements,
+                course_settings=course_settings,
             )
 
         # Status for workflow should not be cancelled.
@@ -463,6 +472,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
                 "must_be_graded_by": 1
             }
         }
+        course_settings = {}
 
         # Check the workflow is not cancelled.
         self.assertFalse(workflow_api.is_workflow_cancelled(submission["uuid"]))
@@ -481,7 +491,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             submission_uuid=submission["uuid"],
             comments="Inappropriate language",
             cancelled_by_id=ITEM_2['student_id'],
-            assessment_requirements=requirements
+            assessment_requirements=requirements,
+            course_settings=course_settings,
         )
 
         # Check workflow is cancelled.

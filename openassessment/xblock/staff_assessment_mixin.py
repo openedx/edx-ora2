@@ -58,6 +58,7 @@ class StaffAssessmentMixin:
             workflow_api.update_from_assessments(
                 assessment["submission_uuid"],
                 None,
+                {},
                 override_submitter_requirements=(assess_type == 'regrade')
             )
         except StaffAssessmentRequestError:

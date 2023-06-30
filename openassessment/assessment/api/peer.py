@@ -27,7 +27,17 @@ FLEXIBLE_PEER_GRADING_REQUIRED_SUBMISSION_AGE_IN_DAYS = 7
 FLEXIBLE_PEER_GRADING_GRADED_BY_PERCENTAGE = 30
 
 
-def required_peer_grades(submission_uuid, peer_requirements):
+def flexible_peer_grading_enabled(peer_requirements, course_settings):
+    """
+    Is flexible peer grading turned on? Either at the course override
+    level or the block level?
+    """
+    if course_settings.get('force_on_flexible_peer_openassessments'):
+        return True
+    return peer_requirements.get("enable_flexible_grading")
+
+
+def required_peer_grades(submission_uuid, peer_requirements, course_settings):
     """
     Given a submission id, finds how many peer assessment required.
 
@@ -45,7 +55,7 @@ def required_peer_grades(submission_uuid, peer_requirements):
 
     must_grade = peer_requirements["must_be_graded_by"]
 
-    if peer_requirements.get("enable_flexible_grading"):
+    if flexible_peer_grading_enabled(peer_requirements, course_settings):
 
         # find how many days elapsed since subimitted
         days_elapsed = (timezone.now().date() - submission['submitted_at'].date()).days
@@ -125,7 +135,7 @@ def get_graded_by_count(submission_uuid):
     return scored_items.count()
 
 
-def assessment_is_finished(submission_uuid, peer_requirements):
+def assessment_is_finished(submission_uuid, peer_requirements, course_settings):
     """
     Check whether the submitter has received enough assessments
     to get a score.
@@ -151,7 +161,7 @@ def assessment_is_finished(submission_uuid, peer_requirements):
     if count is None:
         return False
 
-    return count >= required_peer_grades(submission_uuid, peer_requirements)
+    return count >= required_peer_grades(submission_uuid, peer_requirements, course_settings)
 
 
 def on_start(submission_uuid):
@@ -196,7 +206,7 @@ def on_start(submission_uuid):
         raise PeerAssessmentInternalError(error_message) from ex
 
 
-def get_score(submission_uuid, peer_requirements):
+def get_score(submission_uuid, peer_requirements, course_settings):
     """
     Retrieve a score for a submission if requirements have been satisfied.
 
@@ -205,6 +215,7 @@ def get_score(submission_uuid, peer_requirements):
         requirements (dict): Dictionary with the key "must_be_graded_by"
             indicating the required number of assessments the student
             must receive to get a score.
+        course_settings (dict): Dictionary with course-level settings
 
     Returns:
         A dictionary with the points earned, points possible, and
@@ -232,7 +243,7 @@ def get_score(submission_uuid, peer_requirements):
     ).order_by('-assessment')
 
     # Check if enough peers have graded this submission
-    num_required_peer_grades = required_peer_grades(submission_uuid, peer_requirements)
+    num_required_peer_grades = required_peer_grades(submission_uuid, peer_requirements, course_settings)
     if items.count() < num_required_peer_grades:
         return None
 

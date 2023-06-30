@@ -526,7 +526,11 @@ class StaffAreaMixin:
             peer_assessments = peer_api.get_assessments(submission_uuid)
             submitted_assessments = peer_api.get_submitted_assessments(submission_uuid)
             if grade_exists:
-                peer_api.get_score(submission_uuid, self.workflow_requirements()["peer"])
+                peer_api.get_score(
+                    submission_uuid,
+                    self.workflow_requirements()["peer"],
+                    self.get_course_workflow_settings()
+                )
                 peer_assessments_grade_context = [
                     self._assessment_grade_context(peer_assessment)
                     for peer_assessment in peer_assessments
