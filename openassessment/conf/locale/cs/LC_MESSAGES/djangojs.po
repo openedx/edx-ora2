@@ -4,32 +4,24 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Abdelghani Gadiri <wh.gnu.linux@gmail.com>, 2014
-# 7a89e761fc15f91cc2a9e7bcff1a9c10, 2019
-# Ahmed Jazzar <ahmed.mojaz@gmail.com>, 2015
-# e2f_ar r3 <e2f_ar_r3@outlook.com>, 2017
-# Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2021
-# may <may@qordoba.com>, 2014-2015
-# Nabeel El-Dughailib <nabeel@qordoba.com>, 2014-2015
-# NELC Open edX Translation <openedx@elc.edu.sa>, 2020
-# Roaa Nader <roaanader002005@gmail.com>, 2021
-# Sahbi BG <sahbi.g@gmail.com>, 2017
-# sahel gheriani <sahel2002@hotmail.com>, 2017
-# shefaa abu jabel <shefaa.aj@gmail.com>, 2017
-# Soha Assali <soha+transifex@qordoba.com>, 2015-2016
+# Aleš Fiala <f.ales1@seznam.cz>, 2022-2023
+# Jan Chromý <jan.chromy@gmail.com>, 2017
+# Jiří Šedý <jsedy7@gmail.com>, 2015
+# Jiří Podhorecký, 2022
+# Tomáš Batelka <tomas.batelka@email.cz>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-02 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
-"Last-Translator: Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2021\n"
-"Language-Team: Arabic (http://app.transifex.com/open-edx/edx-platform/language/ar/)\n"
+"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2022-2023\n"
+"Language-Team: Czech (http://app.transifex.com/open-edx/edx-platform/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -38,7 +30,7 @@ msgstr ""
 #: xblock/static/js/src/oa_server.js:77 xblock/static/js/src/oa_server.js:113
 #: xblock/static/js/src/oa_server.js:137
 msgid "This section could not be loaded."
-msgstr "لم نستطع تحميل هذا القسم."
+msgstr "Tento oddíl nebylo možné načíst."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -46,7 +38,7 @@ msgstr "لم نستطع تحميل هذا القسم."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:158
 msgid "The staff assessment form could not be loaded."
-msgstr "تعذّر تحميل نموذج تقييم طاقم الفريق."
+msgstr "Nebylo možné načíst formulář pro hodnocení učitelů."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -54,7 +46,7 @@ msgstr "تعذّر تحميل نموذج تقييم طاقم الفريق."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:180
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr "تعذّر تحميل عرض الردود التي لم يجري اختبارها أو تقييمها."
+msgstr "Zobrazení nehodnocených a odhlášených odpovědí se nepodařilo načíst."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -62,7 +54,7 @@ msgstr "تعذّر تحميل عرض الردود التي لم يجري اخت�
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:214
 msgid "This response could not be submitted."
-msgstr "تعذّر تقديم هذا الرد."
+msgstr "Vaši odpověď se nepodařilo odeslat."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:1
@@ -76,7 +68,7 @@ msgstr ""
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:262
 msgid "This feedback could not be submitted."
-msgstr "تعذّر تقديم هذه الآراء والملاحظات."
+msgstr "Vaši zpětnou vazbu se nepodařilo odeslat."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -85,7 +77,7 @@ msgstr "تعذّر تقديم هذه الآراء والملاحظات."
 #: xblock/static/js/src/oa_server.js:287 xblock/static/js/src/oa_server.js:378
 #: xblock/static/js/src/oa_server.js:401
 msgid "This assessment could not be submitted."
-msgstr "تعذّر تقديم هذا التقييم."
+msgstr "Vaše hodnocení se nepodařilo odeslat."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -93,7 +85,7 @@ msgstr "تعذّر تقديم هذا التقييم."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:424
 msgid "One or more rescheduling tasks failed."
-msgstr "لم تنجح عملية واحدة أو أكثر من عمليات إعادة جدولة المهامّ."
+msgstr "Jedna nebo více změn termínů selhaly."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -101,7 +93,7 @@ msgstr "لم تنجح عملية واحدة أو أكثر من عمليات إع
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:483
 msgid "This problem could not be saved."
-msgstr "تعذّر حفظ هذه المسألة."
+msgstr "Tato úloha nemůže být uložena."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -109,7 +101,7 @@ msgstr "تعذّر حفظ هذه المسألة."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:504
 msgid "The server could not be contacted."
-msgstr "تعذّر الاتصال بالمخدّم."
+msgstr "Spojení se serverem se nezdařilo."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -117,7 +109,7 @@ msgstr "تعذّر الاتصال بالمخدّم."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:530
 msgid "Could not retrieve upload url."
-msgstr "تعذّر استرجاع رابط التحميل."
+msgstr "Nelze získat url pro nahrávání."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -125,7 +117,7 @@ msgstr "تعذّر استرجاع رابط التحميل."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:549 xblock/static/js/src/oa_server.js:568
 msgid "Server error."
-msgstr "خطأ في الخادم"
+msgstr "Chyba serveru."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -133,7 +125,7 @@ msgstr "خطأ في الخادم"
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:588
 msgid "Could not retrieve download url."
-msgstr "تعذّر استرجاع رابط التنزيل."
+msgstr "Nelze získat url pro stahování."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -141,7 +133,7 @@ msgstr "تعذّر استرجاع رابط التنزيل."
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:614
 msgid "The submission could not be removed from the grading pool."
-msgstr "تعذّرت إزالة التقديم من مجموعة التقييم."
+msgstr "Příspěvek se nepodařilo odebrat z fondu hodnocení."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -149,7 +141,7 @@ msgstr "تعذّرت إزالة التقديم من مجموعة التقييم.
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:670
 msgid "Multiple teams returned for course"
-msgstr "عودة عدة فرق للمساق"
+msgstr "Několik týmů se vrátilo do kurzu"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -157,7 +149,7 @@ msgstr "عودة عدة فرق للمساق"
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:677
 msgid "Could not load teams information."
-msgstr "لا يمكن تحميل معلومات الفرق"
+msgstr "Nepodařilo se načíst informace o týmech."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -165,7 +157,7 @@ msgstr "لا يمكن تحميل معلومات الفرق"
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:699
 msgid "User lookup failed"
-msgstr "فشل عملية العثور على المستخدم"
+msgstr "Hledání uživatele selhalo"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -173,7 +165,7 @@ msgstr "فشل عملية العثور على المستخدم"
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:704
 msgid "Error when looking up username"
-msgstr "خطأ في العثور على اسم المستخدم"
+msgstr "Hledání uživatelského jména selhalo"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:8
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
@@ -181,117 +173,117 @@ msgstr "خطأ في العثور على اسم المستخدم"
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 #: xblock/static/js/src/oa_server.js:728
 msgid "Failed to clone rubric"
-msgstr ""
+msgstr "Klonování rubriky se nezdařilo"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 #: xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "View and grade responses"
-msgstr ""
+msgstr "Zobrazit a ohodnotit odpovědi"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 #: xblock/static/js/src/lms/oa_course_items_listing.js:61
 msgid "Demo the new Grading Experience"
-msgstr ""
+msgstr "Předveďte nové hodnocení"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Unit Name"
-msgstr "اسم الوحدة"
+msgstr "Název jednotky"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Units"
-msgstr "الوحدات"
+msgstr "Jednotky"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Assessment"
-msgstr "تقييم"
+msgstr "Hodnocení"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Assessments"
-msgstr "التقييمات"
+msgstr "Hodnocení"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Total Responses"
-msgstr "إجمالي الردود"
+msgstr "Celkový počet odpovědí"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Training"
-msgstr "التدريب"
+msgstr "Trénink"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Peer"
-msgstr "زميل"
+msgstr "Spolužáci"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Self"
-msgstr "مُقيَّم ذاتيًّا"
+msgstr "Vlastní"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Waiting"
-msgstr "بالإنتظار"
+msgstr "Čekání"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Staff"
-msgstr "الطاقم"
+msgstr "Učitelé"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Final Grade Received"
-msgstr "الدرجة النهائية المستحقة"
+msgstr "Přijato závěrečné hodnocení"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Staff Grader"
-msgstr ""
+msgstr "Učitelský srovnávač"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "List of Open Assessments is unavailable"
-msgstr "قائمة التقييمات المفتوحة غير متاحة"
+msgstr "Seznam otevřených hodnocení není k dispozici"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Please wait"
-msgstr "يرجى الانتظار"
+msgstr "Čekejte prosím"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Block view is unavailable"
-msgstr "عرض \"الحِزَم\" غير متوفر"
+msgstr "Zobrazení bloků není k dispozici"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:314
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:314
 msgid "Back to Full List"
-msgstr "العودة إلى القائمة الكاملة"
+msgstr "Zpět na celý seznam"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:5
 msgid "Confirm"
-msgstr ""
+msgstr "Potvrdit"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_confirmation_alert.js:7
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:333
 msgid "Your file has been deleted or path has been changed: "
-msgstr ""
+msgstr "Váš soubor byl smazán nebo byla změněna cesta:"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/js/src/lms/oa_response.js:431
@@ -304,7 +296,7 @@ msgstr ""
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr "ستفقد أي تغيير كنت قد أجريته على الردّ إذا تركت هذه الصفحة دون حفظ أو تقديم ردّك."
+msgstr "Pokud opustíte tuto stránku bez uložení nebo odeslání odpovědi, ztratíte všechnu práci, kterou jste na odpovědi vykonali."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/js/src/lms/oa_response.js:453
@@ -320,13 +312,13 @@ msgstr ""
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:486
 msgid "Error"
-msgstr "حدث خطأ"
+msgstr "Chyba"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:508
 msgid "Confirm Submit Response"
-msgstr ""
+msgstr "Potvrďte odeslání odpovědi"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
@@ -334,13 +326,13 @@ msgstr ""
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr "إنّت على وشك تقديم إجابتك عن هذا الواحب. لن تتمكّن، بعد تقديم إجابتك، من تعديلها أو تقديم إجابة جديدة."
+msgstr "Chystáte se odeslat svou odpověď na tento úkol. Po odeslání této odpovědi ji nelze změnit ani odeslat novou odpověď."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:586
 msgid "Individual file size must be {max_files_mb}MB or less."
-msgstr "حجم كل ملف يجب أن يكون {max_files_mb}أو أقل."
+msgstr "Jednotlivé soubory musí mít velikost {max_files_mb}MB nebo méně."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
@@ -348,38 +340,38 @@ msgstr "حجم كل ملف يجب أن يكون {max_files_mb}أو أقل."
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
 " be uploaded. If you have questions, please reach out to the course team."
-msgstr "فشل تحميل الملف: صيغة الملف غير مدعومة. يمكن فقط تحميل الملف المدعومة. عند وجود أي استفسار يرجى الاتصال بفريق المساق."
+msgstr "Nahrání souboru se nezdařilo: nepodporovaný typ souboru. Nahrát lze pouze podporované typy souborů. Máte-li dotazy, obraťte se na tým kurzu."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:611
 msgid "The maximum number files that can be saved is "
-msgstr ""
+msgstr "Maximální počet souborů, které lze uložit, je"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:683
 #: xblock/static/js/src/lms/oa_response.js:689
 msgid "Describe "
-msgstr "صف"
+msgstr "Popsat"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:683
 msgid "(required):"
-msgstr "(مطلوب):"
+msgstr "(vyžadované):"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:703
 msgid "Thumbnail view of "
-msgstr "صورة مصغرة لـ"
+msgstr "Náhled "
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_response.js:789
 msgid "Confirm Delete Uploaded File"
-msgstr ""
+msgstr "Potvrďte smazání nahraného souboru"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
@@ -387,7 +379,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
 "File: "
-msgstr "هل أنت واثق من رغبتك في حذف الملف التالي؟ لايمكن استعادته بعد الحذف.\nالملف:"
+msgstr "Jste si opravdu jisti, že chcete odstranit následující soubor? Soubor nemůže být obnoven.\nSoubor: "
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
@@ -395,20 +387,20 @@ msgstr "هل أنت واثق من رغبتك في حذف الملف التالي
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr "ستفقد أي تغيير كنت قد أجريته إذا تركت هذه الصفحة دون تقديم تقييمك الذاتي."
+msgstr "Pokud opustíte tuto stránku bez odeslání svého sebehodnocení, ztratíte všechnu práci."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_staff_area.js:143
 #: xblock/static/js/src/lms/oa_staff_area.js:253
 msgid "Unexpected server error."
-msgstr "حدث خطأ غير متوقّع."
+msgstr "Nečekaná chyba serveru."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_staff_area.js:147
 msgid "You must provide a learner name."
-msgstr "يجب إدخال اسم المتعلّم."
+msgstr "Musíte poskytnout jméno studenta."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
@@ -416,32 +408,32 @@ msgstr "يجب إدخال اسم المتعلّم."
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
 "continue?"
-msgstr "سيتم اعتماد هذه الدرجة لجميع أعضاء الفريق. هل ترغب بالاستمرار؟"
+msgstr "Tato známka bude aplikována na všechny členy týmu. Chcete pokračovat?"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_staff_area.js:218
 msgid "Confirm Grade Team Submission"
-msgstr ""
+msgstr "Potvrďte odevzdání týmového hodnocení"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_staff_area.js:304
 msgid "Error getting the number of ungraded responses"
-msgstr "حدث خطأ أثناء محاولة الحصول على عدد الردود غير المُقيّمة."
+msgstr "Vyskytla se chyba pri získávání počtu neklasifikovaných odpovědí"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr "ستفقد أي تغيير كنت قد أجريته إذا تركت هذه الصفحة دون تقديم تقييمك لطاقم المساق."
+msgstr "Pokud opustíte tuto stránku bez odeslání svého hodnocení učitelů, ztratíte všechnu práci."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 #: xblock/static/js/src/lms/oa_training.js:130
 msgid "Feedback available for selection."
-msgstr "ردود الفعل متاحة للاختيار."
+msgstr "Zpětná vazba k dispozici pro výběr."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:369
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
@@ -449,154 +441,154 @@ msgstr "ردود الفعل متاحة للاختيار."
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr "ستفقد أي تغيير كنت قد أجريته إذا تركت هذه الصفحة دون تقديم تقييمك لردود الزملاء."
+msgstr "Pokud opustíte tuto stránku bez odeslání svého vzájemného hodnocení, ztratíte všechnu práci."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Refresh"
-msgstr "اعد التحميل"
+msgstr "Obnovit"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Username"
-msgstr "اسم المستخدم"
+msgstr "Uživatelské jméno"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Peers Assessed"
-msgstr ""
+msgstr "Hodnoceno spolužáky"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Peer Responses Received"
-msgstr ""
+msgstr "Přijaté odpovědi spolužáků"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Time Spent On Current Step"
-msgstr "الوقت المنقضي في الخطوة الحالية"
+msgstr "Čas strávený na aktuálním kroku"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Staff assessment"
-msgstr "تقييم الطاقم"
+msgstr "Hodnocení učitelů"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Grade Status"
-msgstr "حالة الدرجة"
+msgstr "Stav klasifikace"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
-msgstr ""
+msgstr "Problém „{name}“ je nakonfigurován tak, aby vyžadoval minimálně {min_grades} rovnocenné hodnocení a požadoval kontrolu {min_graded} spolužáků."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
-msgstr "يوجد حاليًا  {stuck_learners} متعلمون في حالة الانتظار ، مما يعني أنهم لم يستوفوا بعد جميع متطلبات لتقييم الأقران."
+msgstr "V současné době je ve stavu čekání {stuck_learners} studentů, což znamená, že ještě nesplnili všechny požadavky na Vzájemné hodnocení."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr "ومع ذلك ، فقد تلقى {overwritten_count} من هؤلاء الطلاب درجة من خلال أداة تجاوز درجة فريق العمل بالفعل."
+msgstr "{overwritten_count} z těchto studentů však již obdrželi známku prostřednictvím nástroje pro přepis hodnocení učitelů."
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Error while fetching student data."
-msgstr "خطأ أثناء إحضار بيانات الطالب."
+msgstr "Vyskytla se chyba při získávání dat studenta"
 
 #: xblock/static/dist/openassessment-lms.967dad15c001a5dc6a5e.js:375
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:375
 msgid "Unable to load"
-msgstr "تعذّر إجراء التحميل."
+msgstr "Nelze načíst"
 
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:8
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:1
 msgid "This response could not be saved."
-msgstr "تعذّر حفظ هذا الرد!"
+msgstr "Vaši odpověď se nepodařilo uložit."
 
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 msgid "Status of Your Response"
-msgstr "حالة ردّك."
+msgstr "Stav vaší odpovědi"
 
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 msgid "This response has not been saved."
-msgstr "لم يُحفّظ هذا الردّ بعد."
+msgstr "Tato odpověď nebyla uložena."
 
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 msgid "Saving..."
-msgstr "جاري الحفظ..."
+msgstr "Ukládání..."
 
 #: xblock/static/dist/openassessment-lms.e009f195cfd3e23b44e3.js:369
 msgid "This response has been saved but not submitted."
-msgstr "حُفِّظ هذا الردّ ولكن لم يُقدّم بعد. "
+msgstr "Tato odpověď byla uložena, ale nebyla odeslána."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Paragraph"
-msgstr "فقرة"
+msgstr "Odstavec"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Preformatted"
-msgstr "مُنسَّق مسبقاً"
+msgstr "Předem naformátováno"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 3"
-msgstr "العنوان الرئيسي 3"
+msgstr "Nadpis 3"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 4"
-msgstr "العنوان الرئيسي 4"
+msgstr "Nadpis 4"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 5"
-msgstr "العنوان الرئيسي 5"
+msgstr "Nadpis 5"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_tiny_mce.js:66
 msgid "Heading 6"
-msgstr "العنوان الرئيسي 6"
+msgstr "Nadpis 6"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:43
 msgid "Unnamed Option"
-msgstr "خيار غير مسمّى "
+msgstr "Nepojmenovaná možnost"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_container_item.js:53
 msgid "Not Selected"
-msgstr "لم يجرِ تحديده"
+msgstr "Nevybraný"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_rubric.js:124
 msgid "Problem cloning rubric"
-msgstr ""
+msgstr "Rubrika Problém klonování"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:100
 msgid "Criterion Added"
-msgstr "أُضيفت معايير جديدة."
+msgstr "Kritérium přidáno"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
@@ -605,14 +597,14 @@ msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Assessment "
 "Steps tab."
-msgstr ""
+msgstr "Přidali jste kritérium. Budete muset vybrat možnost pro kritérium v kroku Školení žáka. Chcete-li to provést, klepněte na kartu Kroky hodnocení."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:150
 #: xblock/static/js/src/studio/oa_edit_listeners.js:186
 msgid "Option Deleted"
-msgstr "جرى حذف الخيار."
+msgstr "Možnost odebrána"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
@@ -621,7 +613,7 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr "لقد حذفت خيارًا. جرت إزالة ذلك الخيار من معيار تقييم الردود النموذجية في خطوة ’تدريب المتعلّمين‘. قد يتوجّب عليك اختيار خيار جديد لمعيار التقيّيم."
+msgstr "Smazali jste možnost. Tato možnost byla odstraněna z kritéria ve vzorových odpovědích v kroku Školení žáka. Možná budete muset vybrat novou možnost pro kritérium."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
@@ -629,13 +621,13 @@ msgstr "لقد حذفت خيارًا. جرت إزالة ذلك الخيار من
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr "لقد حذفتَ جميع خيارات هذا المعيار، وقد أُزيل هذا المعيار من الردود النموذجية في خطوة ’تدريب المتعلّمين‘."
+msgstr "Smazali jste všechny možnosti pro toto kritérium. Kritérium bylo odstraněno z ukázkových odpovědí v kroku Školení žáka."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:214
 msgid "Criterion Deleted"
-msgstr "جرى حذف المعيار."
+msgstr "Kritérium smazáno"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
@@ -643,13 +635,13 @@ msgstr "جرى حذف المعيار."
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr "لقد حذفتَ معيارًا، وقد أُزيل هذا المعيار من الردود النموذجية في خطوة ’تدريب المتعلّمين‘."
+msgstr "Smazali jste kritérium. Kritérium bylo odstraněno z příkladů odpovědí v kroku Školení žáka."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_listeners.js:394
 msgid "Warning"
-msgstr "تحذير"
+msgstr "Varování"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
@@ -657,41 +649,41 @@ msgstr "تحذير"
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr "لن تُحفّظ التغييرات التي تجريها على خطوات لم يجري تحديدها كجزء من الواجب. "
+msgstr "Změny kroků, které nejsou vybrány jako součást přiřazení, nebudou uloženy."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:91
 msgid "File types can not be empty."
-msgstr "لا يمكن ترك أنواع الملفّات دون تحديد."
+msgstr "Typ souboru nemůže být prázdný"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit_settings.js:101
 msgid "The following file types are not allowed: "
-msgstr "يُمنع استخدام أنواع الملفّات التالية:"
+msgstr "Následující typy souborů nejsou povolené: "
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit.js:183
 msgid "Save Unsuccessful"
-msgstr "حفظ غير ناجح"
+msgstr "Ukládání se nezdařilo"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit.js:184
 msgid "Errors detected on the following tabs: "
-msgstr ""
+msgstr "Chyby zjištěné na následujících kartách:"
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 msgid ""
 "This ORA has already been released. Changes will only affect learners making"
 " new submissions. Existing submissions will not be modified by this change."
-msgstr ""
+msgstr "Tato ORA již byla vydána. Změny ovlivní pouze studenty, kteří přidávají nové příspěvky. Stávající příspěvky nebudou touto změnou upraveny."
 
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:25
 #: xblock/static/dist/openassessment-studio.1ef78b4390a9cfa2e9b1.js:25
 #: xblock/static/js/src/studio/oa_edit.js:318
 msgid "error count: "
-msgstr ""
+msgstr "počet chyb:"
