@@ -262,8 +262,6 @@ lazy==1.5
     # via -r requirements/test.txt
 lazy-object-proxy==1.9.0
     # via astroid
-libsass==0.22.0
-    # via -r requirements/test.txt
 loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
