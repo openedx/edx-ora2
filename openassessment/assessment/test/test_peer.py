@@ -2039,6 +2039,21 @@ class TestPeerApi(CacheResetTest):
 
         assert peer_score['points_earned'] == workflow['score']['points_earned']
 
+    @unpack
+    @data(
+        (True, True, True),
+        (True, False, True),
+        (False, True, True),
+        (False, False, False)
+    )
+    def test_flexible_peer_grading_enabled(self, block_setting, course_override, expected_flexible):
+        """ Test for the behavior for flexible_peer_grading_enabled """
+        result = peer_api.flexible_peer_grading_enabled(
+            {"enable_flexible_grading": block_setting},
+            {"force_on_flexible_peer_openassessments": course_override}
+        )
+        assert result == expected_flexible
+
 
 class PeerWorkflowTest(CacheResetTest):
     """

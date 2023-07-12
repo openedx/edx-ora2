@@ -313,6 +313,8 @@ class OpenAssessmentBlock(MessageMixin,
 
     @cached_property
     def course(self):
+        if not hasattr(self.runtime, "modulestore"):
+            return None
         return self.runtime.modulestore.get_course(self.scope_ids.usage_id.context_key)
 
     @property

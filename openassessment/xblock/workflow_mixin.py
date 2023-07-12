@@ -99,7 +99,7 @@ class WorkflowMixin:
         """
         course_settings = {}
         peer_assessment_module = self.get_assessment_module('peer-assessment')
-        if peer_assessment_module and peer_assessment_module.get("enable_flexible_grading", False):
+        if peer_assessment_module and self.course is not None:
             course_settings['force_on_flexible_peer_openassessments'] = \
                 self.course.force_on_flexible_peer_openassessments
 
