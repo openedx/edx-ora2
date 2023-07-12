@@ -87,15 +87,15 @@ class WorkflowMixin:
             }
 
         return requirements
-    
+
     def get_course_workflow_settings(self):
         """
         Retrieve any course-level information that may be needed for workflow updates
-        
+
         Returns:
         {
             'force_on_flexible_peer_openassessments': (bool) the value of the field of the same name on the course
-        } 
+        }
         """
         course_settings = {}
         peer_assessment_module = self.get_assessment_module('peer-assessment')
@@ -103,8 +103,8 @@ class WorkflowMixin:
             course_settings['force_on_flexible_peer_openassessments'] = \
                 self.course.force_on_flexible_peer_openassessments
 
-        return course_settings                
-        
+        return course_settings
+
     def update_workflow_status(self, submission_uuid=None):
         """
         Update the status of a workflow.  For example, change the status
@@ -157,7 +157,9 @@ class WorkflowMixin:
         if submission_uuid is None:
             return {}
         return workflow_api.get_workflow_for_submission(
-            submission_uuid, self.workflow_requirements()
+            submission_uuid,
+            self.workflow_requirements(),
+            self.get_course_workflow_settings()
         )
 
     def get_submission_uuid(self):

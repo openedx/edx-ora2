@@ -1880,7 +1880,12 @@ class TestPeerApi(CacheResetTest):
             RUBRIC_DICT,
             step_requirements['peer']['must_be_graded_by']
         )
-        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting', step_requirements, COURSE_SETTINGS)
+        self._assert_assessment_workflow_status(
+            target_learner_sub['uuid'],
+            'waiting',
+            step_requirements,
+            COURSE_SETTINGS
+        )
 
         # Call get_submission_to_assess once more so that target_learner has an open incomplete peer assessment
         peer_api.get_submission_to_assess(target_learner_sub['uuid'], target_learner['student_id'])
@@ -1905,7 +1910,12 @@ class TestPeerApi(CacheResetTest):
         )
 
         # The target learner is still in waiting and has five items but only one peer grade
-        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting', step_requirements, COURSE_SETTINGS)
+        self._assert_assessment_workflow_status(
+            target_learner_sub['uuid'],
+            'waiting',
+            step_requirements,
+            COURSE_SETTINGS
+        )
         self.assertEqual(PeerWorkflow.get_by_submission_uuid(target_learner_sub['uuid']).graded_by.count(), 5)
         self.assertEqual(peer_api.get_graded_by_count(target_learner_sub['uuid']), 1)
 

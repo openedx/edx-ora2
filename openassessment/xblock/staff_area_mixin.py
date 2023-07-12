@@ -710,6 +710,7 @@ class StaffAreaMixin:
         from openassessment.workflow import api as workflow_api
         try:
             assessment_requirements = self.workflow_requirements()
+            course_settings = self.get_course_workflow_settings()
             if requesting_user_id is None:
                 # The student_id is actually the bound user, which is the staff user in this context.
                 requesting_user_id = self.get_student_item_dict()["student_id"]
@@ -717,7 +718,8 @@ class StaffAreaMixin:
             workflow_api.cancel_workflow(
                 submission_uuid=submission_uuid, comments=comments,
                 cancelled_by_id=requesting_user_id,
-                assessment_requirements=assessment_requirements
+                assessment_requirements=assessment_requirements,
+                course_settings=course_settings,
             )
             return {
                 "success": True,

@@ -424,7 +424,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
             submission_uuid=submission["uuid"],
             comments="Inappropriate language",
             cancelled_by_id=bob_item['student_id'],
-            assessment_requirements=requirements
+            assessment_requirements=requirements,
+            course_settings={},
         )
 
         path, context = xblock.get_student_info_path_and_context("Bob")
@@ -456,7 +457,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
             submission_uuid=submission['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=bob_item['student_id'],
-            assessment_requirements=requirements
+            assessment_requirements=requirements,
+            course_settings={},
         )
 
         xblock.submission_uuid = submission["uuid"]
@@ -1561,7 +1563,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 submission_uuid=submission["uuid"],
                 comments="Inappropriate language",
                 cancelled_by_id=bob_item['student_id'],
-                assessment_requirements={}
+                assessment_requirements={},
+                course_settings={},
             )
         if grades_frozen:
             mock_are_grades_frozen = Mock(return_value=True)

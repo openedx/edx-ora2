@@ -1356,7 +1356,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         workflow_api.cancel_workflow(
             submission_uuid=submission['uuid'], comments='Inappropriate language',
             cancelled_by_id='Bob',
-            assessment_requirements=xblock.workflow_requirements()
+            assessment_requirements=xblock.workflow_requirements(),
+            course_settings={},
         )
 
         self._assert_path_and_context(

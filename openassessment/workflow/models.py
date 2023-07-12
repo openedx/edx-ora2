@@ -145,7 +145,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             Assessment-module specific errors
         """
         submission_dict = sub_api.get_submission_and_student(submission_uuid)
-        breakpoint()
         staff_auto_added = False
         if 'staff' not in step_names:
             staff_auto_added = True
@@ -348,6 +347,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         new_staff_score = self.get_score(
             assessment_requirements,
+            course_settings,
             {self.STAFF_STEP_NAME: step_for_name.get(self.STAFF_STEP_NAME, None)}
         )
         if new_staff_score:
@@ -786,7 +786,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
         team_staff_step = self._team_staff_step
         team_staff_api = team_staff_step.api()
-        new_score = team_staff_api.get_score(self.team_submission_uuid, self.REQUIREMENTS)
+        new_score = team_staff_api.get_score(self.team_submission_uuid, self.REQUIREMENTS, {})
         if new_score:
             # new_score is just the most recent team score, it may already be recorded in sub_api
             old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
@@ -809,7 +809,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
             if override_submitter_requirements:
                 team_staff_step.submitter_completed_at = common_now
-            team_staff_step.update(self.team_submission_uuid, self.REQUIREMENTS)
+            team_staff_step.update(self.team_submission_uuid, self.REQUIREMENTS, {})
             self.status = self.STATUS.done
             self.save()
 

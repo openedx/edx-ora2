@@ -219,7 +219,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertEqual(assessment_by_crit['𝓒𝓸𝓷𝓬𝓲𝓼𝓮'], 3)
         self.assertEqual(assessment_by_crit['Form'], 2)
 
-        score = staff_api.get_score(submission["uuid"], None)
+        score = staff_api.get_score(submission["uuid"], None, {})
         self.assertEqual(assessment['points_earned'], score['points_earned'])
         self.assertEqual(assessment['points_possible'], score['points_possible'])
 
@@ -401,7 +401,7 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         self.assertEqual(parts[1]['option']['name'], expected_answer['parts1_option_name'])
         self.assertEqual(parts[2]['option']['name'], expected_answer['parts2_option_name'])
 
-        score = teams_api.get_score(submission['team_submission_uuid'], {})
+        score = teams_api.get_score(submission['team_submission_uuid'], {}, {})
         self.assertEqual(assessment['points_earned'], score['points_earned'])
         self.assertEqual(assessment['points_possible'], score['points_possible'])
 

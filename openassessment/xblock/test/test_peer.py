@@ -167,7 +167,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             submission_uuid=submission['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=another_student['student_id'],
-            assessment_requirements=requirements
+            assessment_requirements=requirements,
+            course_settings={}
         )
 
         # Submit an assessment and expect a failure

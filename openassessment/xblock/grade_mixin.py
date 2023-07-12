@@ -108,7 +108,7 @@ class GradeMixin:
         if "peer-assessment" in assessment_steps:
             peer_api.get_score(
                 submission_uuid,
-                self.self.workflow_requirements()["peer"],
+                self.workflow_requirements()["peer"],
                 self.get_course_workflow_settings()
             )
             feedback = peer_api.get_assessment_feedback(submission_uuid)

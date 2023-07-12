@@ -78,7 +78,7 @@ def update_from_assessments(team_submission_uuid, override_submitter_requirement
 
     # Update the workflow status based on the underlying assessments
     try:
-        team_workflow.update_from_assessments(override_submitter_requirements, {})
+        team_workflow.update_from_assessments(override_submitter_requirements)
         logger.info(
             "Updated workflow for team submission UUID %s",
             team_submission_uuid
@@ -190,7 +190,8 @@ def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
             submission_uuid,
             comments,
             cancelled_by_id,
-            TeamAssessmentWorkflow.REQUIREMENTS
+            TeamAssessmentWorkflow.REQUIREMENTS,
+            {}
         )
     except Exception as exc:
         err_msg = (

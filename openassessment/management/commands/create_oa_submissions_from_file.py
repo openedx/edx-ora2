@@ -304,7 +304,7 @@ class Command(BaseCommand):
                 text_response = submission_config['username'] + '\n' + generate_lorem_sentences()
                 submission = sub_api.create_submission(student_item, {'parts': [{'text': text_response}]})
                 workflow_api.create_workflow(submission['uuid'], ['staff'])
-                workflow_api.update_from_assessments(submission['uuid'], None)
+                workflow_api.update_from_assessments(submission['uuid'], None, {})
                 log.info("Created submission %s for user %s", submission['uuid'], submission_config['username'])
 
                 if submission_config['lockOwner']:
@@ -336,7 +336,7 @@ class Command(BaseCommand):
                         grade_data['overallFeedback'],
                         rubric_dict,
                     )
-                    workflow_api.update_from_assessments(submission['uuid'], None)
+                    workflow_api.update_from_assessments(submission['uuid'], None, {})
 
     def student_item(self, username, course_id, ora_display_name):
         """Helper for creating student item dicts"""

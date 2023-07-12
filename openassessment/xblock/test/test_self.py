@@ -86,7 +86,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             expected_reqs = {
                 "peer": {"must_grade": 5, "must_be_graded_by": 3, "enable_flexible_grading": False}
             }
-            mock_api.update_from_assessments.assert_called_once_with(submission['uuid'], expected_reqs)
+            mock_api.update_from_assessments.assert_called_once_with(submission['uuid'], expected_reqs, {})
 
     @scenario('data/feedback_only_criterion_self.xml', user_id='Bob')
     def test_self_assess_feedback_only_criterion(self, xblock):

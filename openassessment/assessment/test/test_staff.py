@@ -19,7 +19,6 @@ from openassessment.assessment.api.peer import create_assessment as peer_assess
 from openassessment.assessment.api.self import create_assessment as self_assess
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, StaffWorkflow, TeamStaffWorkflow
-from openassessment.assessment.test.test_peer import COURSE_SETTINGS
 from openassessment.test_utils import CacheResetTest
 from openassessment.tests.factories import StaffWorkflowFactory, TeamStaffWorkflowFactory, AssessmentFactory
 from openassessment.workflow import api as workflow_api
@@ -105,7 +104,12 @@ class TestStaffAssessment(CacheResetTest):
         tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer", problem_steps=['staff'])
 
         # Verify that we're still waiting on a staff assessment
-        self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF, self.COURSE_SETTINGS, expect_done=False)
+        self._verify_done_state(
+            tim_sub["uuid"],
+            self.STEP_REQUIREMENTS_WITH_STAFF,
+            self.COURSE_SETTINGS,
+            expect_done=False
+        )
 
         # Verify that a StaffWorkflow step has been created and is not complete
         workflow = StaffWorkflow.objects.get(submission_uuid=tim_sub['uuid'])
@@ -151,7 +155,11 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(self_assessment["points_earned"], initial_assessment["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS, self.COURSE_SETTINGS)
+        workflow = workflow_api.get_workflow_for_submission(
+            tim_sub["uuid"],
+            self.STEP_REQUIREMENTS,
+            self.COURSE_SETTINGS
+        )
         self.assertEqual(workflow["score"]["points_earned"], initial_assessment["expected_points"])
 
         # Now override with a staff assessment
@@ -164,7 +172,11 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS, self.COURSE_SETTINGS)
+        workflow = workflow_api.get_workflow_for_submission(
+            tim_sub["uuid"],
+            self.STEP_REQUIREMENTS,
+            self.COURSE_SETTINGS
+        )
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
 
     @data(*ASSESSMENT_TYPES_DDT)

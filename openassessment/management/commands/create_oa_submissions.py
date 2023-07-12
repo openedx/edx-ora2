@@ -154,7 +154,7 @@ class Command(BaseCommand):
         submission = sub_api.create_submission(student_item, answer)
         workflow_api.create_workflow(submission['uuid'], STEPS)
         workflow_api.update_from_assessments(
-            submission['uuid'], {'peer': {'must_grade': 1, 'must_be_graded_by': 1}}
+            submission['uuid'], {'peer': {'must_grade': 1, 'must_be_graded_by': 1}}, {}
         )
         return submission['uuid']
 
