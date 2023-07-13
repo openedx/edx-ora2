@@ -12,12 +12,12 @@ class TestGetCourseWorkflowSettings(XBlockHandlerTestCase):
     """
     Tests for get_course_workflow_settings
     """
-    
+
     @scenario('data/basic_scenario.xml')
     def test_no_course(self, xblock):
         """ If we can't load the course, we should be returning an empty dict """
         xblock.course = None
-        assert xblock.get_course_workflow_settings() == {}    
+        assert xblock.get_course_workflow_settings() == {}
 
     @scenario("data/staff_grade_scenario.xml")
     def test_flex__no_peer_step(self, xblock):
