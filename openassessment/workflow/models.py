@@ -145,7 +145,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             Assessment-module specific errors
         """
         submission_dict = sub_api.get_submission_and_student(submission_uuid)
-
         staff_auto_added = False
         if 'staff' not in step_names:
             staff_auto_added = True
@@ -203,7 +202,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # Update the workflow (in case some of the assessment modules are automatically complete)
         # We do NOT pass in requirements, on the assumption that any assessment module
         # that accepts requirements would NOT automatically complete.
-        workflow.update_from_assessments(None)
+        workflow.update_from_assessments(None, {})
 
         # Return the newly created workflow
         return workflow
@@ -247,7 +246,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 status_dict[step.name]['graded_by_count'] = graded_by_count
         return status_dict
 
-    def get_score(self, assessment_requirements, step_for_name):
+    def get_score(self, assessment_requirements, course_settings, step_for_name):
         """Iterate through the assessment APIs in priority order
          and return the first reported score.
 
@@ -279,7 +278,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                         step_requirements = None
                     else:
                         step_requirements = assessment_requirements.get(assessment_step_name, {})
-                    score = get_score_func(self.identifying_uuid, step_requirements)
+                    score = get_score_func(self.identifying_uuid, step_requirements, course_settings)
                     if not score and assessment_step.is_staff_step():
                         if step_requirements and step_requirements.get('required', False):
                             break  # A staff score was not found, and one is required. Return None
@@ -288,7 +287,12 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         return score
 
-    def update_from_assessments(self, assessment_requirements, override_submitter_requirements=False):
+    def update_from_assessments(
+        self,
+        assessment_requirements,
+        course_settings,
+        override_submitter_requirements=False
+    ):
         """Query assessment APIs and change our status if appropriate.
 
         If the status is done, we do nothing. Once something is done, we never
@@ -327,6 +331,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 can refer to this to decide whether the requirements have been
                 met.  Note that the requirements could change if the author
                 updates the problem definition.
+            course_settings (dict): Any course-level settings that may impact the
+                workflow update process.
             override_submitter_requirements (bool): If True, the presence of a new
                 staff score will cause all of the submitter's requirements to be
                 fulfilled, moving the workflow to DONE and exposing their grade.
@@ -341,6 +347,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         new_staff_score = self.get_score(
             assessment_requirements,
+            course_settings,
             {self.STAFF_STEP_NAME: step_for_name.get(self.STAFF_STEP_NAME, None)}
         )
         if new_staff_score:
@@ -375,7 +382,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         # Go through each step and update its status.
         for step in steps:
-            step.update(self.submission_uuid, assessment_requirements)
+            step.update(self.submission_uuid, assessment_requirements, course_settings)
 
         possible_statuses = []
         skipped_statuses = []
@@ -420,10 +427,16 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if new_step is not None:
             new_step.start(self.submission_uuid)
 
+        # If the submitter is beginning the next assessment, notify the
+        # appropriate assessment API.
+        new_step = step_for_name.get(new_status)
+        if new_step is not None:
+            new_step.start(self.submission_uuid)
+
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
         if new_status == self.STATUS.waiting and all(step.assessment_completed_at for step in steps):
-            score = self.get_score(assessment_requirements, step_for_name)
+            score = self.get_score(assessment_requirements, course_settings, step_for_name)
             # If we found a score, then we're done
             if score is not None:
                 # Only set the score if it's not a staff score, in which case it will have already been set above
@@ -542,7 +555,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     return True
         return False
 
-    def cancel(self, assessment_requirements):
+    def cancel(self, assessment_requirements, course_settings):
         """
         Cancel workflow for all steps.
 
@@ -568,7 +581,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 on_cancel_func(self.identifying_uuid)
 
         try:
-            score = self.get_score(assessment_requirements, step_for_name)
+            score = self.get_score(assessment_requirements, course_settings, step_for_name)
         except AssessmentError as exc:
             logger.info("TNL-5799, exception in get_score during cancellation. %s", exc)
             score = None
@@ -589,7 +602,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             )
 
     @classmethod
-    def cancel_workflow(cls, submission_uuid, comments, cancelled_by_id, assessment_requirements):
+    def cancel_workflow(cls, submission_uuid, comments, cancelled_by_id, assessment_requirements, course_settings):
         """
         Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
 
@@ -608,12 +621,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             `must_be_graded_by` to ensure that everyone will get scored.
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
+            course_settings (dict): Dictionary that contains course-level settings that
+            impact workflow steps
         """
         try:
             workflow = cls.objects.get(submission_uuid=submission_uuid)
             AssessmentWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
             # Cancel the related step's workflow.
-            workflow.cancel(assessment_requirements)
+            workflow.cancel(assessment_requirements, course_settings)
         except (cls.DoesNotExist, cls.MultipleObjectsReturned) as ex:
             error_message = f"Error finding workflow for submission UUID {submission_uuid}."
             logger.exception(error_message)
@@ -771,7 +786,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
         team_staff_step = self._team_staff_step
         team_staff_api = team_staff_step.api()
-        new_score = team_staff_api.get_score(self.team_submission_uuid, self.REQUIREMENTS)
+        new_score = team_staff_api.get_score(self.team_submission_uuid, self.REQUIREMENTS, {})
         if new_score:
             # new_score is just the most recent team score, it may already be recorded in sub_api
             old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
@@ -794,7 +809,7 @@ class TeamAssessmentWorkflow(AssessmentWorkflow):
 
             if override_submitter_requirements:
                 team_staff_step.submitter_completed_at = common_now
-            team_staff_step.update(self.team_submission_uuid, self.REQUIREMENTS)
+            team_staff_step.update(self.team_submission_uuid, self.REQUIREMENTS, {})
             self.status = self.STATUS.done
             self.save()
 
@@ -920,7 +935,7 @@ class AssessmentWorkflowStep(models.Model):
             logger.warning(msg)
             return None
 
-    def update(self, submission_uuid, assessment_requirements):
+    def update(self, submission_uuid, assessment_requirements, course_settings):
         """
         Updates the AssessmentWorkflowStep models with the requirements
         specified from the Workflow API.
@@ -947,7 +962,7 @@ class AssessmentWorkflowStep(models.Model):
             step_changed = True
 
         # Has the step received a score?
-        if not self.is_assessment_complete() and assessment_finished(submission_uuid, step_reqs):
+        if not self.is_assessment_complete() and assessment_finished(submission_uuid, step_reqs, course_settings):
             self.assessment_completed_at = now()
             step_changed = True
 
@@ -979,7 +994,7 @@ def update_workflow_async(sender, **kwargs):  # pylint: disable=unused-argument
 
     try:
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
-        workflow.update_from_assessments(None)
+        workflow.update_from_assessments(None, {})
     except AssessmentWorkflow.DoesNotExist:
         msg = f"Could not retrieve workflow for submission with UUID {submission_uuid}"
         logger.exception(msg)

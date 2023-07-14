@@ -264,7 +264,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             expected_reqs = {
                 "peer": {"must_grade": 5, "must_be_graded_by": 3, "enable_flexible_grading": False}
             }
-            mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs)
+            mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs, {})
 
     @scenario('data/basic_scenario.xml')
     def test_student_view_workflow_error(self, xblock):

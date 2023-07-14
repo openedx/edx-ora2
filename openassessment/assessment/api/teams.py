@@ -35,7 +35,7 @@ def submitter_is_finished(team_submission_uuid, team_requirements):  # pylint: d
     return True
 
 
-def assessment_is_finished(team_submission_uuid, staff_requirements):
+def assessment_is_finished(team_submission_uuid, staff_requirements, _):
     """
     Determine if the staff assessment step of the given team submission is completed.
     This checks to see if staff have completed the assessment.
@@ -126,7 +126,7 @@ def on_cancel(team_submission_uuid):
         raise StaffAssessmentInternalError(error_message) from ex
 
 
-def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unused-argument
+def get_score(team_submission_uuid, staff_requirements, course_settings):  # pylint: disable=unused-argument
     """
     Generate a score based on a completed assessment for the given team submission.
     If no assessment has been completed for this submission, this will return
@@ -135,6 +135,7 @@ def get_score(team_submission_uuid, staff_requirements):  # pylint: disable=unus
     Args:
         team_submission_uuid (str): The UUID for the submission to get a score for.
         staff_requirements (dict): Not used.
+        course_settings (dict): Not used.
 
     Returns:
         A dictionary with the points earned, points possible,

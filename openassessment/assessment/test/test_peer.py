@@ -159,6 +159,12 @@ STEP_REQUIREMENTS = {
     }
 }
 
+COURSE_SETTINGS = {}
+
+COURSE_SETTINGS_FLEXIBLE_ON = {
+    'force_on_flexible_peer_openassessments': True
+}
+
 
 @ddt
 class TestPeerApi(CacheResetTest):
@@ -262,7 +268,11 @@ class TestPeerApi(CacheResetTest):
         # call get_score for all three to mark items as 'scored'. Everyone shoulfd have a score because
         # they have at least one peer review and have done at least one review.
         for submission, _ in submission_and_learner:
-            peer_score = peer_api.get_score(submission['uuid'], {'must_be_graded_by': 1, 'must_grade': 1})
+            peer_score = peer_api.get_score(
+                submission['uuid'],
+                {'must_be_graded_by': 1, 'must_grade': 1},
+                COURSE_SETTINGS
+            )
             assert peer_score is not None
 
         # There should be three "scored" assessments
@@ -527,7 +537,9 @@ class TestPeerApi(CacheResetTest):
             }
         }
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -611,7 +623,9 @@ class TestPeerApi(CacheResetTest):
             }
         }
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -638,7 +652,9 @@ class TestPeerApi(CacheResetTest):
 
         # Tim should have no score.
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -665,7 +681,9 @@ class TestPeerApi(CacheResetTest):
 
         # Tim should not have a score since he did not grade peers..
         score = workflow_api.get_workflow_for_submission(
-            tim_sub["uuid"], requirements
+            tim_sub["uuid"],
+            requirements,
+            COURSE_SETTINGS,
         )["score"]
         self.assertIsNone(score)
 
@@ -970,8 +988,11 @@ class TestPeerApi(CacheResetTest):
         # Cancel the Xander's submission.
         PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
         workflow_api.cancel_workflow(
-            submission_uuid=xander_answer["uuid"], comments='Cancellation reason', cancelled_by_id=_['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            submission_uuid=xander_answer["uuid"],
+            comments='Cancellation reason',
+            cancelled_by_id=_['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
@@ -1002,7 +1023,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=xander_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
@@ -1037,7 +1059,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=buffy_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub["uuid"])
@@ -1081,7 +1104,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=xander_answer['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
@@ -1139,7 +1163,8 @@ class TestPeerApi(CacheResetTest):
             {
                 'must_grade': 1,
                 'must_be_graded_by': 1
-            }
+            },
+            COURSE_SETTINGS
         )
         feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
         self.assertIsNone(feedback)
@@ -1486,7 +1511,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=xander_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=buffy['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
 
         # Check to see if Buffy is able to review Xander's submission.
@@ -1580,7 +1606,8 @@ class TestPeerApi(CacheResetTest):
             submission_uuid=buffy_sub['uuid'],
             comments="Inappropriate language",
             cancelled_by_id=xander['student_id'],
-            assessment_requirements=STEP_REQUIREMENTS
+            assessment_requirements=STEP_REQUIREMENTS,
+            course_settings=COURSE_SETTINGS,
         )
         self.assertTrue(peer_api.is_workflow_cancelled(submission_uuid=buffy_sub['uuid']))
 
@@ -1633,7 +1660,7 @@ class TestPeerApi(CacheResetTest):
         # enough assessments.
         # Part of the bug was that this would call `get_score()` which
         # implicitly marked peer workflow items as scored.
-        peer_api.assessment_is_finished(bob_sub['uuid'], requirements)
+        peer_api.assessment_is_finished(bob_sub['uuid'], requirements, COURSE_SETTINGS)
 
         # Sue creates a submission
         sue_sub, sue = self._create_student_and_submission('Sue', 'Sue submission')
@@ -1664,7 +1691,7 @@ class TestPeerApi(CacheResetTest):
 
         # This used to create a second assessment,
         # which was the bug.
-        score = peer_api.get_score(bob_sub['uuid'], requirements)
+        score = peer_api.get_score(bob_sub['uuid'], requirements, COURSE_SETTINGS)
 
         # Verify that only the first assessment was used to generate the score
         self.assertEqual(score['points_earned'], 14)
@@ -1776,7 +1803,7 @@ class TestPeerApi(CacheResetTest):
                 required_graded_by
             )
         # check grade of 1st submission.
-        score = peer_api.get_score(user_submissions[0][0]['uuid'], requirements)
+        score = peer_api.get_score(user_submissions[0][0]['uuid'], requirements, COURSE_SETTINGS)
 
         if is_graded:
             assert score is not None
@@ -1803,8 +1830,8 @@ class TestPeerApi(CacheResetTest):
         # The learner has not been graded by anyone, but flexible grading rounds the required 3 to .9 and casts to 0
         # The must_grade = 0 is technically disallowed by validation rules but these api calls don't care
         requirements = {'must_grade': 0, 'must_be_graded_by': 3, 'enable_flexible_grading': True}
-        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], requirements))
-        self.assertIsNone(peer_api.get_score(submission['uuid'], requirements))
+        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], requirements, COURSE_SETTINGS))
+        self.assertIsNone(peer_api.get_score(submission['uuid'], requirements, COURSE_SETTINGS))
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None, steps=None):
@@ -1816,8 +1843,8 @@ class TestPeerApi(CacheResetTest):
         workflow_api.create_workflow(submission["uuid"], steps or STEPS)
         return submission, new_student_item
 
-    def _assert_assessment_workflow_status(self, uuid, expected_status, step_requirements):
-        workflow = workflow_api.get_workflow_for_submission(uuid, step_requirements)
+    def _assert_assessment_workflow_status(self, uuid, expected_status, step_requirements, course_settings):
+        workflow = workflow_api.get_workflow_for_submission(uuid, step_requirements, course_settings)
         self.assertEqual(workflow['status'], expected_status)
 
     def test_get_waiting_step_details__peer_item_created_not_assessed(self):
@@ -1853,7 +1880,12 @@ class TestPeerApi(CacheResetTest):
             RUBRIC_DICT,
             step_requirements['peer']['must_be_graded_by']
         )
-        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting', step_requirements)
+        self._assert_assessment_workflow_status(
+            target_learner_sub['uuid'],
+            'waiting',
+            step_requirements,
+            COURSE_SETTINGS
+        )
 
         # Call get_submission_to_assess once more so that target_learner has an open incomplete peer assessment
         peer_api.get_submission_to_assess(target_learner_sub['uuid'], target_learner['student_id'])
@@ -1878,7 +1910,12 @@ class TestPeerApi(CacheResetTest):
         )
 
         # The target learner is still in waiting and has five items but only one peer grade
-        self._assert_assessment_workflow_status(target_learner_sub['uuid'], 'waiting', step_requirements)
+        self._assert_assessment_workflow_status(
+            target_learner_sub['uuid'],
+            'waiting',
+            step_requirements,
+            COURSE_SETTINGS
+        )
         self.assertEqual(PeerWorkflow.get_by_submission_uuid(target_learner_sub['uuid']).graded_by.count(), 5)
         self.assertEqual(peer_api.get_graded_by_count(target_learner_sub['uuid']), 1)
 
@@ -1923,8 +1960,8 @@ class TestPeerApi(CacheResetTest):
         workflow.save()
 
         # It doesn't yet have a score but only requires one peer grade
-        assert peer_api.get_score(submission['uuid'], peer_requirements) is None
-        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], peer_requirements))
+        assert peer_api.get_score(submission['uuid'], peer_requirements, COURSE_SETTINGS) is None
+        self.assertEqual(1, peer_api.required_peer_grades(submission['uuid'], peer_requirements, COURSE_SETTINGS))
 
         # The target learner assesses a peer, so they have completed their requirements.
         peer_api.get_submission_to_assess(submission['uuid'], learner['student_id'])
@@ -1961,12 +1998,12 @@ class TestPeerApi(CacheResetTest):
         # One learner reviews the target learner. The target learner has now recieved enough reviews
         # and recieves a grade (0)
         peer_assess_until_we_assess_target_submission(0, ASSESSMENT_DICT_FAIL)
-        workflow = workflow_api.update_from_assessments(submission['uuid'], assessment_requirements)
+        workflow = workflow_api.update_from_assessments(submission['uuid'], assessment_requirements, COURSE_SETTINGS)
         assert workflow['status'] == 'done'
         assert workflow['score']['points_earned'] == 0
         assert workflow['score']['points_possible'] == 14
 
-        peer_score = peer_api.get_score(submission['uuid'], peer_requirements)
+        peer_score = peer_api.get_score(submission['uuid'], peer_requirements, COURSE_SETTINGS)
         assessment_1 = Assessment.objects.get(submission_uuid=submission['uuid'])
         assert assessment_1.peerworkflowitem_set.first().scored
         assert peer_score == {
@@ -1980,8 +2017,8 @@ class TestPeerApi(CacheResetTest):
         peer_assess_until_we_assess_target_submission(1, ASSESSMENT_DICT_PASS)
         peer_assess_until_we_assess_target_submission(2, ASSESSMENT_DICT_PASS)
 
-        peer_score = peer_api.get_score(submission['uuid'], peer_requirements)
-        workflow = workflow_api.update_from_assessments(submission['uuid'], assessment_requirements)
+        peer_score = peer_api.get_score(submission['uuid'], peer_requirements, COURSE_SETTINGS)
+        workflow = workflow_api.update_from_assessments(submission['uuid'], assessment_requirements, COURSE_SETTINGS)
         item_qs = PeerWorkflowItem.objects.filter(author__student_id=learner['student_id'])
         # Get the three PeerWorkflowItems in order. Student 1, 2, 3
         items = [item_qs.get(scorer__student_id=other_learner_submissions[i][1]['student_id']) for i in [0, 1, 2]]
@@ -2001,6 +2038,21 @@ class TestPeerApi(CacheResetTest):
         assert workflow['score']['points_possible'] == 14
 
         assert peer_score['points_earned'] == workflow['score']['points_earned']
+
+    @unpack
+    @data(
+        (True, True, True),
+        (True, False, True),
+        (False, True, True),
+        (False, False, False)
+    )
+    def test_flexible_peer_grading_enabled(self, block_setting, course_override, expected_flexible):
+        """ Test for the behavior for flexible_peer_grading_enabled """
+        result = peer_api.flexible_peer_grading_enabled(
+            {"enable_flexible_grading": block_setting},
+            {"force_on_flexible_peer_openassessments": course_override}
+        )
+        assert result == expected_flexible
 
 
 class PeerWorkflowTest(CacheResetTest):

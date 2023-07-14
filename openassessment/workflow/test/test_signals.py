@@ -54,7 +54,7 @@ class UpdateWorkflowSignalTest(CacheResetTest):
             assessment_complete_signal.send(sender=None, submission_uuid=self.submission_uuid)
 
             # Verify that the workflow model update was called
-            mock_update.assert_called_once_with(None)
+            mock_update.assert_called_once_with(None, {})
 
     @ddt.data(DatabaseError, IOError)
     @mock.patch('openassessment.workflow.models.AssessmentWorkflow.objects.get')

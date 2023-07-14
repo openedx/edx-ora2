@@ -241,7 +241,7 @@ class CreateSubmissionsFromFileTest(TestCase):
         # User 1 should have a submission, their workflow should be 'done', they should have a staff grade
         # and they should be locked.
         user_1_submission = sub_api.get_submissions(student_item(USERNAME_1, self.mock_block.location))[0]
-        user_1_workflow = workflow_api.get_workflow_for_submission(user_1_submission['uuid'], None)
+        user_1_workflow = workflow_api.get_workflow_for_submission(user_1_submission['uuid'], None, {})
         assert user_1_workflow['status'] == 'done'
         user_1_assessment = staff_api.get_latest_staff_assessment(user_1_submission['uuid'])
         assert user_1_assessment['points_earned'] == 1
@@ -253,7 +253,7 @@ class CreateSubmissionsFromFileTest(TestCase):
         # User 2 should have a submission, their workflow should be 'waiting', they should not have a
         # staff grade and they should not be locked
         user_2_submission = sub_api.get_submissions(student_item(USERNAME_2, self.mock_block.location))[0]
-        user_2_workflow = workflow_api.get_workflow_for_submission(user_2_submission['uuid'], None)
+        user_2_workflow = workflow_api.get_workflow_for_submission(user_2_submission['uuid'], None, {})
         assert user_2_workflow['status'] == 'waiting'
         user_2_assessment = staff_api.get_latest_staff_assessment(user_2_submission['uuid'])
         assert user_2_assessment is None
@@ -341,7 +341,7 @@ class CreateSubmissionsFromFileCallCommandTest(TestCase):
 
     def assert_submission_created(self, user, expected_graded_by, expected_locked_by):
         submission = sub_api.get_submissions(student_item(user, self.mock_block.location))[0]
-        workflow = workflow_api.get_workflow_for_submission(submission['uuid'], None)
+        workflow = workflow_api.get_workflow_for_submission(submission['uuid'], None, {})
         assessment = staff_api.get_latest_staff_assessment(submission['uuid'])
         lock = SubmissionGradingLock.get_submission_lock(submission['uuid'])
 

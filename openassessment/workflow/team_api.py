@@ -67,6 +67,9 @@ def update_from_assessments(team_submission_uuid, override_submitter_requirement
         are only assessible by staff (where requirements like "must_grade" and
         "must_be_graded_by" are not supported).
 
+        We also don't need an analogous `course_settings` parameter because there are
+        currently no course settings that impact staff grading.
+
         Raises:
             AssessmentWorkflowInternalError on error
         """
@@ -187,7 +190,8 @@ def cancel_workflow(team_submission_uuid, comments, cancelled_by_id):
             submission_uuid,
             comments,
             cancelled_by_id,
-            TeamAssessmentWorkflow.REQUIREMENTS
+            TeamAssessmentWorkflow.REQUIREMENTS,
+            {}
         )
     except Exception as exc:
         err_msg = (

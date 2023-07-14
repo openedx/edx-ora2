@@ -162,6 +162,10 @@ STEP_REQUIREMENTS = {
     }
 }
 
+COURSE_SETTINGS = {
+    "force_on_flexible_peer_openassessments": False
+}
+
 
 @ddt.ddt
 class CsvWriterTest(TransactionCacheResetTest):
@@ -557,7 +561,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         self.assertEqual(self.assessment['parts'][0]['criterion']['label'], "criterion_1")
 
         sub_api.set_score(self.submission['uuid'], self.earned_points, self.possible_points)
-        peer_api.get_score(self.submission['uuid'], STEP_REQUIREMENTS['peer'])
+        peer_api.get_score(self.submission['uuid'], STEP_REQUIREMENTS['peer'], COURSE_SETTINGS)
         self._create_assessment_feedback(self.submission['uuid'])
 
     def _create_submission(self, student_item_dict, steps=None):
@@ -606,7 +610,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         feedback_dict = FEEDBACK_OPTIONS.copy()
         feedback_dict['submission_uuid'] = submission_uuid
         peer_api.set_assessment_feedback(feedback_dict)
-        workflow_api.update_from_assessments(submission_uuid, STEP_REQUIREMENTS)
+        workflow_api.update_from_assessments(submission_uuid, STEP_REQUIREMENTS, COURSE_SETTINGS)
         self.score = sub_api.get_score(STUDENT_ITEM)
 
     def _other_student(self, no_of_student):
@@ -1016,7 +1020,7 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             assessments.append(assessment)
 
         sub_api.set_score(submission_uuid, 9, 10)
-        peer_api.get_score(submission_uuid, {'must_be_graded_by': 1, 'must_grade': 0})
+        peer_api.get_score(submission_uuid, {'must_be_graded_by': 1, 'must_grade': 0}, {})
         self._create_assessment_feedback(submission_uuid)
 
         # Generate the assessment report

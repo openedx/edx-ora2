@@ -100,7 +100,7 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
         raise AssessmentWorkflowInternalError(err_msg) from ex
 
 
-def get_workflow_for_submission(submission_uuid, assessment_requirements):
+def get_workflow_for_submission(submission_uuid, assessment_requirements, course_settings):
     """Returns Assessment Workflow information
 
     This will implicitly call `update_from_assessments()` to make sure we
@@ -175,10 +175,15 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
         }
 
     """
-    return update_from_assessments(submission_uuid, assessment_requirements)
+    return update_from_assessments(submission_uuid, assessment_requirements, course_settings)
 
 
-def update_from_assessments(submission_uuid, assessment_requirements, override_submitter_requirements=False):
+def update_from_assessments(
+    submission_uuid,
+    assessment_requirements,
+    course_settings,
+    override_submitter_requirements=False
+):
     """
     Update our workflow status based on the status of the underlying assessments.
 
@@ -270,11 +275,16 @@ def update_from_assessments(submission_uuid, assessment_requirements, override_s
     workflow = _get_workflow_model(submission_uuid)
 
     try:
-        workflow.update_from_assessments(assessment_requirements, override_submitter_requirements)
+        workflow.update_from_assessments(
+            assessment_requirements,
+            course_settings,
+            override_submitter_requirements
+        )
         logger.info(
-            "Updated workflow for submission UUID %s with requirements %s",
+            "Updated workflow for submission UUID %s with requirements %s and course setttings %s",
             submission_uuid,
-            assessment_requirements
+            assessment_requirements,
+            course_settings
         )
         return _serialized_with_details(workflow)
     except PeerAssessmentError as err:
@@ -384,7 +394,7 @@ def _serialized_with_details(workflow):
     return data_dict
 
 
-def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requirements):
+def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requirements, course_settings):
     """
     Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
 
@@ -403,8 +413,15 @@ def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requi
             `must_be_graded_by` to ensure that everyone will get scored.
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
+        course_settings (dict): Dictionary that contains course-level settings that
+                                impact workflow steps
     """
-    AssessmentWorkflow.cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requirements)
+    AssessmentWorkflow.cancel_workflow(
+        submission_uuid,
+        comments, cancelled_by_id,
+        assessment_requirements,
+        course_settings
+    )
 
 
 def get_assessment_workflow_cancellation(submission_uuid):

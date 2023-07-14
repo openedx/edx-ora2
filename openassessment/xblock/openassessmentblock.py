@@ -2,6 +2,7 @@
 
 import copy
 import datetime as dt
+from functools import cached_property
 import json
 import logging
 import os
@@ -309,6 +310,12 @@ class OpenAssessmentBlock(MessageMixin,
     @property
     def course_id(self):
         return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+
+    @cached_property
+    def course(self):
+        if not hasattr(self.runtime, "modulestore"):
+            return None
+        return self.runtime.modulestore.get_course(self.scope_ids.usage_id.context_key)
 
     @property
     def text_response(self):

@@ -106,7 +106,11 @@ class GradeMixin:
         has_submitted_feedback = False
 
         if "peer-assessment" in assessment_steps:
-            peer_api.get_score(submission_uuid, self.workflow_requirements()["peer"])
+            peer_api.get_score(
+                submission_uuid,
+                self.workflow_requirements()["peer"],
+                self.get_course_workflow_settings()
+            )
             feedback = peer_api.get_assessment_feedback(submission_uuid)
             peer_assessments = [
                 self._assessment_grade_context(peer_assessment)
