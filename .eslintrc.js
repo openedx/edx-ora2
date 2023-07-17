@@ -14,6 +14,9 @@ config.rules["func-names"] = "off";
 config.rules["max-classes-per-file"] = "off";
 config.rules["prefer-destructuring"] = "off";
 config.rules["no-prototype-builtins"] = "off";
+config.rules["template-curly-spacing"] = "off";
+config.rules["indent"] = "off";
+config.rules["react/prop-types"] = "off";
 
 config.globals["gettext"] = "readonly";
 config.globals["ngettext"] = "readonly";

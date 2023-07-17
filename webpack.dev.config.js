@@ -10,6 +10,36 @@ const CssNano = require('cssnano');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const fs = require('fs');
+
+function getEntries(dir) {
+  const entries = {};
+
+  const traverseDirectory = (currentDir) => {
+    const files = fs.readdirSync(currentDir);
+
+    files.forEach(file => {
+      const filePath = path.join(currentDir, file);
+      const stat = fs.statSync(filePath);
+
+      if (stat.isDirectory()) {
+        traverseDirectory(filePath);
+      } else if (path.extname(filePath) === '.jsx') {
+        let filePathEntry = filePath.replace('.jsx', '');
+        if ( filePathEntry.endsWith('index') ) {
+          filePathEntry = filePathEntry.replace('/index', '');
+        }
+        const relativePath = path.relative('openassessment/xblock/static/js/src/react/', filePathEntry);
+        entries[relativePath] = path.resolve(process.cwd(), filePath);
+      }
+    });
+  };
+
+  traverseDirectory(dir);
+
+  return entries;
+}
+
 // Get base config from edx-platform
 let config = createConfig('webpack-dev');
 
@@ -75,9 +105,14 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
+    ...getEntries('openassessment/xblock/static/js/src/react/'),
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
+    jsonpFunction: "o3iv79tz90732goag",
+    chunkFilename: '[id].js',
+    filename: '[name].js',
+    publicPath: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/`: '',
   },
   optimization: {},
   plugins: [
@@ -93,12 +128,12 @@ Object.assign(config, {
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    ...process.env.WEBPACK_DEV_SERVER ? [new WebpackManifestPlugin({
-      seed: {
-        base_url: `http://localhost:${config.devServer.port}/`
-      },
+    new WebpackManifestPlugin({
       writeToFileEmit: true,
-    })]: [],
+      seed: {
+        is_dev_server: process.env.WEBPACK_DEV_SERVER,
+      },
+    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 });

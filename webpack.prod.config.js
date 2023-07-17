@@ -13,6 +13,36 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // Get base config from edx-platform
 let config = createConfig('webpack-prod');
 
+const fs = require('fs');
+
+function getEntries(dir) {
+  const entries = {};
+
+  const traverseDirectory = (currentDir) => {
+    const files = fs.readdirSync(currentDir);
+
+    files.forEach(file => {
+      const filePath = path.join(currentDir, file);
+      const stat = fs.statSync(filePath);
+
+      if (stat.isDirectory()) {
+        traverseDirectory(filePath);
+      } else if (path.extname(filePath) === '.jsx') {
+        let filePathEntry = filePath.replace('.jsx', '');
+        if ( filePathEntry.endsWith('index') ) {
+          filePathEntry = filePathEntry.replace('/index', '');
+        }
+        const relativePath = path.relative('openassessment/xblock/static/js/src/react/', filePathEntry);
+        entries[relativePath] = path.resolve(process.cwd(), filePath);
+      }
+    });
+  };
+
+  traverseDirectory(dir);
+
+  return entries;
+}
+
 // Modify CSS processing rules (remove PostCssRtlPlugin)
 const modifiedCssRule = {
   module: {
@@ -75,6 +105,15 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
+    ...getEntries('openassessment/xblock/static/js/src/react/'),
+  },
+  output: {
+    path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
+    chunkFilename: '[id].js',
+    filename: '[name].[hash].js',
+    // this is require for the known bug with webpack 4 and lazy loading
+    // https://github.com/webpack/webpack/issues/9766
+    jsonpFunction: "o3iv79tz90732goag",
   },
   optimization: {},
   plugins: [
@@ -85,20 +124,15 @@ Object.assign(config, {
       systemvars: true,
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[chunkhash].css',
+      filename: '[name].[hash].css',
     }),
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    new WebpackManifestPlugin({
-      seed: {
-        base_url: '/static/dist',
-      },
-    }),
+    new WebpackManifestPlugin(),
   ],
 });
 
 config.resolve.modules = ['node_modules', path.resolve(__dirname, 'openassessment/xblock/static/js/src')];
-config.output.path = path.resolve(process.cwd(), 'openassessment/xblock/static/dist');
 
 module.exports = config;

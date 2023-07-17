@@ -584,16 +584,24 @@ class OpenAssessmentBlock(MessageMixin,
             "ora_item_view_enabled": ora_item_view_enabled
         }
 
-        template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
+        # template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
 
-        min_postfix = '.min' if settings.DEBUG else ''
+        # min_postfix = '.min' if settings.DEBUG else ''
 
-        return self._create_fragment(
-            template,
+        # return self._create_fragment(
+        #     template,
+        #     context_dict,
+        #     initialize_js_func='CourseOpenResponsesListingBlock',
+        #     additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
+        #     additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
+        #     additional_js_context={
+        #         "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
+        #         "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
+        #     }
+        # )
+        return self._render_react_page(
+            'instructor_dashboard/oa_listing',
             context_dict,
-            initialize_js_func='CourseOpenResponsesListingBlock',
-            additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
-            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
             additional_js_context={
                 "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
                 "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
@@ -663,6 +671,56 @@ class OpenAssessmentBlock(MessageMixin,
             initialize_js_func='WaitingStepDetailsBlock',
             additional_js_context=context_dict,
         )
+
+    def _render_react_page(self, page_name, props, on_mount_func=None, additional_js_context=None):
+        template = get_template("openassessmentblock/react_template.html")
+        fragment = Fragment(template.render())
+
+        # if additional_css is None:
+        #     additional_css = []
+        # if additional_js is None:
+        #     additional_js = []
+
+        i18n_service = self.runtime.service(self, 'i18n')
+        if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
+            css_url = LoadStatic.get_url("openassessment-rtl.css")
+        else:
+            css_url = LoadStatic.get_url("openassessment-ltr.css")
+
+        # # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+        # # for css in additional_css:
+        # #     fragment.add_css_url(css)
+        fragment.add_css_url(css_url)
+        fragment.add_javascript_url(LoadStatic.get_url("openassessment-lms.js"))
+        fragment.add_css_url(LoadStatic.get_url("react_base.css"))
+
+        # minified additional_js should be already included in 'make javascript'
+        fragment.add_javascript_url(LoadStatic.get_url("react_base.js"))
+
+        js_context_dict = {
+            "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
+            "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,
+            "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
+            "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
+            "MAXIMUM_FILE_UPLOAD_COUNT": self.MAX_FILES_COUNT,
+            "TEAM_ASSIGNMENT": self.is_team_assignment(),
+            "AVAILABLE_EDITORS": AVAILABLE_EDITORS,
+            "TEXT_RESPONSE_EDITOR": self.text_response_editor,
+            "PROPS": props,
+            "PAGE_NAME": page_name,
+            "ON_MOUNT_FUNC": on_mount_func,
+            "IS_DEV_SERVER": LoadStatic.get_is_dev_server(),
+            "DISABLE_DEFAULT_CSS": True,
+        }
+
+        # If there's any additional data to be passed down to JS
+        # include it in the context dict
+        if additional_js_context:
+            js_context_dict.update({"CONTEXT": additional_js_context})
+
+        initialize_js_func='RenderReact'
+        fragment.initialize_js(initialize_js_func, js_context_dict)
+        return fragment
 
     def _create_fragment(
         self,
