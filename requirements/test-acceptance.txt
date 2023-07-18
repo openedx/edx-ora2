@@ -251,8 +251,6 @@ lazy==1.5
     # via
     #   -r requirements/test.txt
     #   bok-choy
-libsass==0.22.0
-    # via -r requirements/test.txt
 loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
