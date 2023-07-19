@@ -162,6 +162,8 @@ class StudioMixin:
         if self.is_rubric_reuse_enabled:
             rubric_reuse_data = self.get_other_ora_blocks_for_rubric_editor_context()
 
+        course_settings = self.get_course_workflow_settings()
+
         return {
             'prompts': self.prompts,
             'prompts_type': self.prompts_type,
@@ -196,6 +198,9 @@ class StudioMixin:
             'rubric_reuse_enabled': self.is_rubric_reuse_enabled,
             'rubric_reuse_data': rubric_reuse_data,
             'block_location': str(self.location),
+            'force_on_flexible_peer_openassessments': course_settings.get(
+                'force_on_flexible_peer_openassessments', False
+            )
         }
 
     @XBlock.json_handler

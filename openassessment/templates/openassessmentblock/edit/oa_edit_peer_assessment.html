@@ -41,12 +41,18 @@
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="peer_assessment_enable_flexible_grading" class="setting-label">{% trans "Enable Flexible Peer Grade Averaging" %}</label>
-                        <select id="peer_assessment_enable_flexible_grading" class="input setting-input">
+                        <select id="peer_assessment_enable_flexible_grading" class="input setting-input" {% if force_on_flexible_peer_openassessments %} disabled {% endif %}>
                             <option value="0">{% trans "False" %}</option>
                             <option value="1" {% if assessments.peer_assessment.enable_flexible_grading %}selected="true"{% endif %}>{% trans "True" %}</option>
                         </select>
                     </div>
                     <p class="setting-help">{% trans "When enabled, learners who have received at least 30% of the required \"Graded By\" peer reviews and who have waited longer than 7 days for a peer review will be assigned a peer review grade using available peer reviews." %}</p>
+                    {% if force_on_flexible_peer_openassessments %}
+                        <p class="setting-help warning-banner">
+                            <span class="icon fa fa-exclamation-circle" area-hidden="false"></span>
+                            {% trans "This feature is being enabled by the course-level setting. It can be found under the Open Response Assessment Settings card on the Pages & Resources studio page." %}
+                        </p>
+                    {% endif %}
                 </li>
             </ul>
         </div>

@@ -1,6 +1,6 @@
 {
   "name": "edx-ora2",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
     "@edx/frontend-build": "^6.1.1",

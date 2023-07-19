@@ -1369,13 +1369,13 @@ hr.divider,
   padding-bottom: 10px;
 }
 
-.step--student-training .student-training__display__response p, .openassessment .submission__feedback__actions p, .openassessment .submission__feeedback__content p, .openassessment .submission__peer-evaluations__questions p, .openassessment .submission__answer__display__content p, .openassessment .self-assessment__display__image p,
+.step--student-training .student-training__display__response p, .openassessment .submission__feedback__actions p, .openassessment .submission__feedback__content p, .openassessment .submission__peer-evaluations__questions p, .openassessment .submission__answer__display__content p, .openassessment .self-assessment__display__image p,
 .openassessment .peer-assessment__display__image p,
 .openassessment .staff-assessment__display__image p,
 .openassessment .submission__answer__display__image p, .openassessment .step--self-assessment .self-assessment__display__response p, .openassessment .step--peer-assessment .peer-assessment__display__response p, .openassessment .staff-assessment__display__response p {
   margin-bottom: 20px;
 }
-.step--student-training .student-training__display__response p:last-child, .openassessment .submission__feedback__actions p:last-child, .openassessment .submission__feeedback__content p:last-child, .openassessment .submission__peer-evaluations__questions p:last-child, .openassessment .submission__answer__display__content p:last-child, .openassessment .self-assessment__display__image p:last-child,
+.step--student-training .student-training__display__response p:last-child, .openassessment .submission__feedback__actions p:last-child, .openassessment .submission__feedback__content p:last-child, .openassessment .submission__peer-evaluations__questions p:last-child, .openassessment .submission__answer__display__content p:last-child, .openassessment .self-assessment__display__image p:last-child,
 .openassessment .peer-assessment__display__image p:last-child,
 .openassessment .staff-assessment__display__image p:last-child,
 .openassessment .submission__answer__display__image p:last-child, .openassessment .step--self-assessment .self-assessment__display__response p:last-child, .openassessment .step--peer-assessment .peer-assessment__display__response p:last-child, .openassessment .staff-assessment__display__response p:last-child {
@@ -1397,6 +1397,8 @@ hr.divider,
   color: #414141;
   display: inline-block;
   vertical-align: middle;
+}
+.openassessment .step--self-assessment .self-assessment__assessment .response__submission__label .save__submission__label, .openassessment .step--peer-assessment .peer-assessment__assessment .response__submission__label .save__submission__label, .openassessment .step--response .response__submission__actions .response__submission__label .save__submission__label, .openassessment .step--response .response__submission__content .response__submission__label .save__submission__label {
   margin-right: 10px;
 }
 .openassessment .step--self-assessment .self-assessment__assessment .response__submission__label .list--actions, .openassessment .step--peer-assessment .peer-assessment__assessment .response__submission__label .list--actions, .openassessment .step--response .response__submission__actions .response__submission__label .list--actions, .openassessment .step--response .response__submission__content .response__submission__label .list--actions {
@@ -1913,15 +1915,18 @@ hr.divider,
   margin-top: 10px;
 }
 
-#oa_basic_settings_editor .warning-banner {
+#oa_basic_settings_editor .warning-banner,
+#oa_peer_assessment_editor .warning-banner {
   background: #fffaed;
   border: 1px solid #ffd875;
   padding: 0.75rem 1.25rem;
 }
-#oa_basic_settings_editor .warning-banner.is--hidden {
+#oa_basic_settings_editor .warning-banner.is--hidden,
+#oa_peer_assessment_editor .warning-banner.is--hidden {
   display: none;
 }
-#oa_basic_settings_editor .warning-banner span.icon.fa-exclamation-circle {
+#oa_basic_settings_editor .warning-banner span.icon.fa-exclamation-circle,
+#oa_peer_assessment_editor .warning-banner span.icon.fa-exclamation-circle {
   font-size: 1.5rem;
   color: #ffd875;
 }
@@ -2363,12 +2368,9 @@ hr.divider,
   margin-right: 10px;
 }
 .openassessment .step--response .response__submission {
-  padding: 10px 10px 20px 10px;
+  padding: 10px 10px;
   background: #f5f6f7;
   border-radius: 2px;
-}
-.openassessment .step--response .response__submission__content {
-  margin-bottom: 20px;
 }
 .openassessment .step--response .response__submission__content .files__descriptions {
   display: none;
@@ -2382,6 +2384,9 @@ hr.divider,
 .openassessment .step--response .response__submission__content .submission__file__description textarea {
   min-height: 80px;
   width: 70%;
+}
+.openassessment .step--response .response__submission__content .submission__team__answer__display__file {
+  margin-bottom: 10px;
 }
 .openassessment .step--response .response__submission__content .tip {
   padding: 5px 10px;
@@ -2727,7 +2732,7 @@ hr.divider,
 .openassessment .submission__feedback__title__copy {
   margin-right: 10px;
 }
-.openassessment .submission__feeedback__content {
+.openassessment .submission__feedback__content {
   margin-bottom: 20px;
 }
 .openassessment .submission__feedback__instructions {
@@ -3108,6 +3113,7 @@ hr.divider,
   background-color: #2c2f36;
   font-size: 12px;
   -webkit-appearance: none;
+  appearance: none;
   background-image: none;
   text-shadow: none;
   box-shadow: none;
@@ -4210,7 +4216,7 @@ hr.divider,
   box-shadow: none;
 }
 .step--response .file--upload {
-  margin: 20px 10px;
+  margin: 20px 10px 20px 0;
 }
 .step--response .delete__uploaded__file {
   text-align: center;
