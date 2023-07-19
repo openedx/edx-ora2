@@ -94,8 +94,6 @@ jsonfield==3.1.0
     #   edx-submissions
 lazy==1.5
     # via -r requirements/base.in
-libsass==0.22.0
-    # via -r requirements/base.in
 loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt

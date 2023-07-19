@@ -22,7 +22,6 @@ defusedxml
 django-model-utils
 jsonfield
 lazy
-libsass
 loremipsum
 lxml
 path.py

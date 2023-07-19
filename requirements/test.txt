@@ -198,8 +198,6 @@ junit-xml==1.9
     # via cfn-lint
 lazy==1.5
     # via -r requirements/base.txt
-libsass==0.22.0
-    # via -r requirements/base.txt
 loremipsum==1.0.5
     # via
     #   -c requirements/constraints.txt
