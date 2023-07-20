@@ -101,7 +101,7 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
-    'react_base': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react_base.js'),
+    'react_base': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react_base.jsx'),
     ...getEntries('openassessment/xblock/static/js/src/react/'),
   },
   output: {

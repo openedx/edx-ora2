@@ -704,7 +704,7 @@ class OpenAssessmentBlock(MessageMixin,
             "IS_DEV_SERVER": LoadStatic.get_is_dev_server(),
         }
 
-        initialize_js_func='render_react'
+        initialize_js_func='RenderReact'
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
         # # minified additional_js should be already included in 'make javascript'
@@ -712,7 +712,7 @@ class OpenAssessmentBlock(MessageMixin,
 
         # context_dict["page_name"] = page_name
 
-        # fragment.initialize_js("render_react", context_dict)
+        # fragment.initialize_js("RenderReact", context_dict)
         # return fragment
         # context_dict.update({
         #     "page_name": page_name,
@@ -720,7 +720,7 @@ class OpenAssessmentBlock(MessageMixin,
         # })
 
         
-        # return self._create_fragment(template, context_dict, initialize_js_func='render_react')
+        # return self._create_fragment(template, context_dict, initialize_js_func='RenderReact')
 
     def _create_fragment(
         self,
