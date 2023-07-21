@@ -702,6 +702,7 @@ class OpenAssessmentBlock(MessageMixin,
             "PAGE_NAME": page_name,
             "ON_MOUNT_FUNC": on_mount_func,
             "IS_DEV_SERVER": LoadStatic.get_is_dev_server(),
+            "DISABLE_DEFAULT_CSS": True,
         }
 
         initialize_js_func='RenderReact'
