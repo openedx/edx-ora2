@@ -585,20 +585,24 @@ class OpenAssessmentBlock(MessageMixin,
             "ora_item_view_enabled": ora_item_view_enabled
         }
 
-        template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
+        # template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
 
-        min_postfix = '.min' if settings.DEBUG else ''
+        # min_postfix = '.min' if settings.DEBUG else ''
 
-        return self._create_fragment(
-            template,
+        # return self._create_fragment(
+        #     template,
+        #     context_dict,
+        #     initialize_js_func='CourseOpenResponsesListingBlock',
+        #     additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
+        #     additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
+        #     additional_js_context={
+        #         "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
+        #         "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
+        #     }
+        # )
+        return self._render_react_page(
+            'instructor_dashboard/oa_listing',
             context_dict,
-            initialize_js_func='CourseOpenResponsesListingBlock',
-            additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
-            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix],
-            additional_js_context={
-                "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
-                "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
-            }
         )
 
     def grade_available_responses_view(self, context=None):  # pylint: disable=unused-argument

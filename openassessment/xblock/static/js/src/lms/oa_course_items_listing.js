@@ -184,6 +184,8 @@ export class CourseItemsListingView {
     const dataUrl = this.runtime.handlerUrl($section, 'get_ora2_responses');
     const dataRendered = parseInt(block.data('rendered'), 10);
 
+    debugger
+
     if (!dataRendered || force) {
       // eslint-disable-next-line new-cap
       return $.Deferred(

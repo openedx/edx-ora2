@@ -15,6 +15,375 @@ html {
   box-sizing: inherit;
 }
 
+.wrapper--xblock {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  /* HTML5 display definitions
+     ========================================================================== */
+  /**
+   * Correct `block` display not defined in IE 8/9.
+   */
+  /**
+   * 1. Correct `inline-block` display not defined in IE 8/9.
+   * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+   */
+  /**
+   * Prevent modern browsers from displaying `audio` without controls.
+   * Remove excess height in iOS 5 devices.
+   */
+  /**
+   * Address `[hidden]` styling not present in IE 8/9.
+   * Hide the `template` element in IE, Safari, and Firefox < 22.
+   */
+  /* Links
+     ========================================================================== */
+  /**
+   * Remove the gray background color from active links in IE 10.
+   */
+  /* Text-level semantics
+     ========================================================================== */
+  /**
+   * Address styling not present in IE 8/9, Safari 5, and Chrome.
+   */
+  /**
+   * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
+   */
+  /**
+   * Address styling not present in Safari 5 and Chrome.
+   */
+  /**
+   * Address variable `h1` font-size and margin within `section` and `article`
+   * contexts in Firefox 4+, Safari 5, and Chrome.
+   */
+  /**
+   * Address styling not present in IE 8/9.
+   */
+  /**
+   * Address inconsistent and variable font size in all browsers.
+   */
+  /**
+   * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+   */
+  /* Embedded content
+     ========================================================================== */
+  /**
+   * Remove border when inside `a` element in IE 8/9.
+   */
+  /**
+   * Correct overflow displayed oddly in IE 9.
+   */
+  /* Grouping content
+     ========================================================================== */
+  /**
+   * Address margin not present in IE 8/9 and Safari 5.
+   */
+  /**
+   * Address differences between Firefox and other browsers.
+   */
+  /**
+   * Contain overflow in all browsers.
+   */
+  /**
+   * Address odd `em`-unit font size rendering in all browsers.
+   */
+  /* Forms
+     ========================================================================== */
+  /**
+   * Known limitation: by default, Chrome and Safari on OS X allow very limited
+   * styling of `select`, unless a `border` property is set.
+   */
+  /**
+   * 1. Correct color not being inherited.
+   *    Known issue: affects color of disabled elements.
+   * 2. Correct font properties not being inherited.
+   * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
+   */
+  /**
+   * Address `overflow` set to `hidden` in IE 8/9/10.
+   */
+  /**
+   * Address inconsistent `text-transform` inheritance for `button` and `select`.
+   * All other form control elements do not inherit `text-transform` values.
+   * Correct `button` style inheritance in Firefox, IE 8+, and Opera
+   * Correct `select` style inheritance in Firefox.
+   */
+  /**
+   * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+   *    and `video` controls.
+   * 2. Correct inability to style clickable `input` types in iOS.
+   * 3. Improve usability and consistency of cursor style between image-type
+   *    `input` and others.
+   */
+  /**
+   * Re-set default cursor for disabled elements.
+   */
+  /**
+   * Set opacity on buttons to 50% (which matches LMS styling).
+   */
+  /**
+   * Remove inner padding and border in Firefox 4+.
+   */
+  /**
+   * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+   * the UA stylesheet.
+   */
+  /**
+   * It's recommended that you don't attempt to style these elements.
+   * Firefox's implementation doesn't respect box-sizing, padding, or width.
+   *
+   * 1. Address box sizing set to `content-box` in IE 8/9/10.
+   * 2. Remove excess padding in IE 8/9/10.
+   */
+  /**
+   * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+   * `font-size` values of the `input`, it causes the cursor style of the
+   * decrement button to change from `default` to `text`.
+   */
+  /**
+   * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+   * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+   *    (include `-moz` to future-proof).
+   */
+  /**
+   * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+   * Safari (but not Chrome) clips the cancel button when the search input has
+   * padding (and `textfield` appearance).
+   */
+  /**
+   * Define consistent border, margin, and padding.
+   */
+  /**
+   * 1. Correct `color` not being inherited in IE 8/9.
+   * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+   */
+  /**
+   * Remove default vertical scrollbar in IE 8/9.
+   */
+  /**
+   * Don't inherit the `font-weight` (applied by a rule above).
+   * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+   */
+  /* Tables
+     ========================================================================== */
+  /**
+   * Remove most spacing between table cells.
+   */
+}
+.wrapper--xblock article,
+.wrapper--xblock aside,
+.wrapper--xblock details,
+.wrapper--xblock figcaption,
+.wrapper--xblock figure,
+.wrapper--xblock footer,
+.wrapper--xblock header,
+.wrapper--xblock hgroup,
+.wrapper--xblock main,
+.wrapper--xblock nav,
+.wrapper--xblock section,
+.wrapper--xblock summary {
+  display: block;
+}
+.wrapper--xblock audio,
+.wrapper--xblock canvas,
+.wrapper--xblock progress,
+.wrapper--xblock video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */
+}
+.wrapper--xblock audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+.wrapper--xblock [hidden],
+.wrapper--xblock template {
+  display: none;
+}
+.wrapper--xblock a {
+  background: transparent;
+}
+.wrapper--xblock abbr[title] {
+  border-bottom: 1px dotted;
+}
+.wrapper--xblock b,
+.wrapper--xblock strong {
+  font-weight: bold;
+}
+.wrapper--xblock dfn {
+  font-style: italic;
+}
+.wrapper--xblock h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+.wrapper--xblock mark {
+  background: #ff0;
+  color: #000;
+}
+.wrapper--xblock small {
+  font-size: 80%;
+}
+.wrapper--xblock sub,
+.wrapper--xblock sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.wrapper--xblock sup {
+  top: -0.5em;
+}
+.wrapper--xblock sub {
+  bottom: -0.25em;
+}
+.wrapper--xblock img {
+  border: 0;
+}
+.wrapper--xblock svg:not(:root) {
+  overflow: hidden;
+}
+.wrapper--xblock figure {
+  margin: 1em 40px;
+}
+.wrapper--xblock hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+.wrapper--xblock pre {
+  overflow: auto;
+}
+.wrapper--xblock code,
+.wrapper--xblock kbd,
+.wrapper--xblock pre,
+.wrapper--xblock samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+.wrapper--xblock button,
+.wrapper--xblock input,
+.wrapper--xblock optgroup,
+.wrapper--xblock select,
+.wrapper--xblock textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */
+}
+.wrapper--xblock button {
+  overflow: visible;
+}
+.wrapper--xblock button,
+.wrapper--xblock select {
+  text-transform: none;
+}
+.wrapper--xblock button,
+.wrapper--xblock html input[type=button],
+.wrapper--xblock input[type=reset],
+.wrapper--xblock input[type=submit] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+.wrapper--xblock button[disabled],
+.wrapper--xblock html input[disabled] {
+  cursor: default;
+}
+.wrapper--xblock button[disabled] {
+  opacity: 0.5;
+}
+.wrapper--xblock button::-moz-focus-inner,
+.wrapper--xblock input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.wrapper--xblock input {
+  line-height: normal;
+}
+.wrapper--xblock input[type=checkbox],
+.wrapper--xblock input[type=radio] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+.wrapper--xblock input[type=number]::-webkit-inner-spin-button,
+.wrapper--xblock input[type=number]::-webkit-outer-spin-button {
+  height: auto;
+}
+.wrapper--xblock input[type=search] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box;
+}
+.wrapper--xblock input[type=search]::-webkit-search-cancel-button,
+.wrapper--xblock input[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.wrapper--xblock fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em 0.625em;
+}
+.wrapper--xblock legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+.wrapper--xblock textarea {
+  overflow: auto;
+}
+.wrapper--xblock optgroup {
+  font-weight: bold;
+}
+.wrapper--xblock table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.wrapper--xblock td,
+.wrapper--xblock th {
+  padding: 0;
+}
+.wrapper--xblock * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.wrapper--xblock div, .wrapper--xblock span, .wrapper--xblock applet, .wrapper--xblock object, .wrapper--xblock iframe,
+.wrapper--xblock h1, .wrapper--xblock h2, .wrapper--xblock h3, .wrapper--xblock h4, .wrapper--xblock h5, .wrapper--xblock h6, .wrapper--xblock p, .wrapper--xblock blockquote, .wrapper--xblock pre,
+.wrapper--xblock a, .wrapper--xblock abbr, .wrapper--xblock acronym, .wrapper--xblock address, .wrapper--xblock big, .wrapper--xblock cite, .wrapper--xblock code,
+.wrapper--xblock del, .wrapper--xblock dfn, .wrapper--xblock em, .wrapper--xblock img, .wrapper--xblock ins, .wrapper--xblock kbd, .wrapper--xblock q, .wrapper--xblock s, .wrapper--xblock samp,
+.wrapper--xblock small, .wrapper--xblock strike, .wrapper--xblock strong, .wrapper--xblock sub, .wrapper--xblock sup, .wrapper--xblock tt, .wrapper--xblock var,
+.wrapper--xblock b, .wrapper--xblock u, .wrapper--xblock i, .wrapper--xblock center,
+.wrapper--xblock dl, .wrapper--xblock dt, .wrapper--xblock dd, .wrapper--xblock ol, .wrapper--xblock ul, .wrapper--xblock li,
+.wrapper--xblock fieldset, .wrapper--xblock form, .wrapper--xblock label, .wrapper--xblock legend,
+.wrapper--xblock table, .wrapper--xblock caption, .wrapper--xblock tbody, .wrapper--xblock tfoot, .wrapper--xblock thead, .wrapper--xblock tr, .wrapper--xblock th, .wrapper--xblock td,
+.wrapper--xblock article, .wrapper--xblock aside, .wrapper--xblock canvas, .wrapper--xblock details, .wrapper--xblock figcaption, .wrapper--xblock figure,
+.wrapper--xblock footer, .wrapper--xblock header, .wrapper--xblock hgroup, .wrapper--xblock menu, .wrapper--xblock nav, .wrapper--xblock section, .wrapper--xblock summary,
+.wrapper--xblock time, .wrapper--xblock mark, .wrapper--xblock audio, .wrapper--xblock video {
+  margin: 0;
+  vertical-align: baseline;
+  border: 0;
+  padding: 0;
+  font-weight: 400;
+}
+.wrapper--xblock abbr[title] {
+  border-bottom: none;
+  text-decoration: none;
+  cursor: help;
+}
 .openassessment .answer--feedback .feedback:last-child, .openassessment .submission__peer-evaluations__questions .question__answers:last-child, .openassessment .submission__peer-evaluations__questions .question:last-child, .openassessment .submission__answer__part__prompt__copy > :last-child, .openassessment .openassessment__steps__step .step__content__section:last-child, .openassessment .ui-staff__content__section:last-child, .step--response .step__rubric .question__answers .answer:last-child, .step--student-training .student-training__assessment .question__answers .answer:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:last-child, .openassessment .staff-assessment__assessment .question__answers .answer:last-child, .step--response .step__rubric .question__answers .answer--feedback:last-child, .step--student-training .student-training__assessment .question__answers .answer--feedback:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:last-child, .openassessment .staff-assessment__assessment .question__answers .answer--feedback:last-child, .step--response .step__rubric .assessment__rubric__question:last-child, .step--student-training .student-training__assessment .assessment__rubric__question:last-child, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:last-child, .openassessment .staff-assessment__assessment .assessment__rubric__question:last-child, .wrapper--xblock .message .message__content p:last-child, .wrapper--xblock .field--radio .option:last-child, .wrapper--xblock .field--checkbox .option:last-child, .list--actions:last-child,
 .list--docs:last-child,
 .list--steps:last-child,
@@ -149,7 +518,7 @@ hr.divider,
 .openassessment .submission__answer__part__tip__title, .openassessment .submission__answer__part__text__title, .openassessment .staff-assessment__display__header .staff-assessment__display__title, .openassessment .ui-staff__subtitle, .openassessment .ui-staff__title, .step--response .step__rubric .assessment__rubric__question .question__title__copy, .step--student-training .student-training__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .staff-assessment__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .message .message__title, .openassessment .step--grade .step__title .grade__value__title, .openassessment .openassessment__steps__step .step__title .step__label, .openassessment .ui-staff .staff__grade__control .staff__grade__title .staff__grade__show-form, .wrapper--xblock .is--transitioning .transition__status .copy, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .field-group__label, .wrapper--xblock .field--textarea .label, .wrapper--xblock .field--textarea label, .wrapper--xblock input[type=text],
 .wrapper--xblock input[type=email],
 .wrapper--xblock input[type=password],
-.wrapper--xblock textarea, .step--response .delete__uploaded__file, .step--response .action--upload, .openassessment .action--submit, .openassessment .step--self-assessment .self-assessment__assessment .action--save, .openassessment .step--peer-assessment .peer-assessment__assessment .action--save, .openassessment .step--response .response__submission__actions .action--save, .openassessment .step--response .response__submission__content .action--save, .openassessment .list--actions .action--submit, .openassessment .openassessment_student_info_form .action--submit-username {
+.wrapper--xblock textarea, .step--response .delete__uploaded__file, .step--response .action--upload, .openassessment .action--submit, .openassessment .step--self-assessment .self-assessment__assessment .action--save, .openassessment .step--peer-assessment .peer-assessment__assessment .action--save, .openassessment .step--response .response__submission__actions .action--save, .openassessment .step--response .response__submission__content .action--save, .openassessment .list--actions .action--submit, .openassessment .openassessment_student_info_form .action--submit-username, .wrapper--xblock strong, .wrapper--xblock .emphasis {
   font-weight: 600;
 }
 
