@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-30 14:36-0400\n"
+"POT-Creation-Date: 2023-07-23 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: 亚峰 乔 <qiao_yafeng@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -49,140 +49,140 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: openassessment/assessment/api/student_training.py:179
+#: assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
 msgstr "不能解析串化评分标准"
 
-#: openassessment/assessment/api/student_training.py:191
+#: assessment/api/student_training.py:191
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
 msgstr "如果您的作业包含学生评分训练步骤，则评分标准必须至少包含一个得分点，并且该得分点必须至少含一个分值选项。"
 
-#: openassessment/assessment/api/student_training.py:203
+#: assessment/api/student_training.py:203
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "样例答案{example_number} 出现验证错误: {error}"
 
-#: openassessment/assessment/api/student_training.py:217
+#: assessment/api/student_training.py:217
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "样例答案 {example_number}的“{criterion_name}”得分点中存在无效的分值选项：“{option_name}”"
 
-#: openassessment/assessment/api/student_training.py:227
+#: assessment/api/student_training.py:227
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "样例答案 {example_number}的“{criterion_name}”得分点存在额外的分值选项"
 
-#: openassessment/assessment/api/student_training.py:240
+#: assessment/api/student_training.py:240
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "样例答案{example_number} 的“{criterion_name}”得分点缺少分值选项"
 
-#: openassessment/data.py:533
+#: data.py:533
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr ""
 
-#: openassessment/data.py:535
+#: data.py:535
 #, python-brace-format
 msgid "Points {number}"
 msgstr ""
 
-#: openassessment/data.py:536
+#: data.py:536
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr ""
 
-#: openassessment/data.py:537
+#: data.py:537
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr ""
 
-#: openassessment/data.py:870
+#: data.py:870
 msgid "Item ID"
 msgstr ""
 
-#: openassessment/data.py:871
+#: data.py:871
 msgid "Submission ID"
 msgstr ""
 
-#: openassessment/data.py:883
+#: data.py:883
 msgid "Anonymized Student ID"
 msgstr ""
 
-#: openassessment/data.py:914
+#: data.py:914
 msgid "Assessment ID"
 msgstr ""
 
-#: openassessment/data.py:915
+#: data.py:915
 msgid "Assessment Scored Date"
 msgstr ""
 
-#: openassessment/data.py:916
+#: data.py:916
 msgid "Assessment Scored Time"
 msgstr ""
 
-#: openassessment/data.py:917
+#: data.py:917
 msgid "Assessment Type"
 msgstr ""
 
-#: openassessment/data.py:918
+#: data.py:918
 msgid "Anonymous Scorer Id"
 msgstr ""
 
-#: openassessment/data.py:920
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
+#: data.py:920
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "整体评语"
 
-#: openassessment/data.py:921
+#: data.py:921
 msgid "Assessment Score Earned"
 msgstr ""
 
-#: openassessment/data.py:922
+#: data.py:922
 msgid "Assessment Scored At"
 msgstr ""
 
-#: openassessment/data.py:923
+#: data.py:923
 msgid "Date/Time Final Score Given"
 msgstr ""
 
-#: openassessment/data.py:924
+#: data.py:924
 msgid "Final Score Earned"
 msgstr ""
 
-#: openassessment/data.py:925
+#: data.py:925
 msgid "Final Score Possible"
 msgstr ""
 
-#: openassessment/data.py:926
+#: data.py:926
 msgid "Feedback Statements Selected"
 msgstr ""
 
-#: openassessment/data.py:927
+#: data.py:927
 msgid "Feedback on Assessment"
 msgstr ""
 
-#: openassessment/data.py:929
+#: data.py:929
 msgid "Response Files"
 msgstr ""
 
-#: openassessment/data.py:1320
+#: data.py:1320
 msgid "No description provided."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
+#: templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
 msgstr "保存"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:32
+#: templates/openassessmentblock/edit/oa_edit.html:32
 msgid "Cancel"
 msgstr "取消"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_assessment_steps.html:6
+#: templates/openassessmentblock/edit/oa_edit_assessment_steps.html:6
 msgid ""
 "Open Response Assessments allow you to configure single or multiple steps in"
 " a rubric based open response assessment sequence. The steps available below"
@@ -190,356 +190,363 @@ msgid ""
 "needs."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:5
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
 msgstr "显示名称"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:8
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
 msgstr "组件显示的名称。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:12
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
 msgstr "文本答案"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:20
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
 msgstr "指定学员是否必须对该问题提示作出基于文本的解答"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:33
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:33
 msgid ""
 "Select which editor learners will use to include a text based response to "
 "this problem's prompt."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
 msgstr "文件上传解答"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:46
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
 msgstr "指定学员是否可以在解答中上传文件"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:50
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:52
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:93
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:131
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:157
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:52
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:93
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:131
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:157
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
 msgid "False"
 msgstr "否"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:53
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:94
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:132
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:158
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:46
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:53
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:94
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:132
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:158
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:46
 msgid "True"
 msgstr "是"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:56
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:56
 msgid ""
 "Specify whether learners can upload more than one file. This has no effect "
 "if File Uploads Response is set to None. This is automatically set to True "
 "for Team Assignments. "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
 msgstr "上传文件的类型"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:60
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
 msgstr "PDF或图像文件"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:61
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
 msgstr "图像文件"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:62
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
 msgstr "自定义文件类型"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:66
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:66
 msgid ""
 "Specify whether learners can submit files along with their text responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
 msgid "File Types"
 msgstr "文件类型"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:79
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr "输入您希望学员可以上传的文件类型的扩展名，使用逗号隔开。例如：pdf、doc、docx。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
 msgid ""
 "To add more file extensions, select Custom File Types and enter the full "
 "list of acceptable file extensions to be included."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
 msgstr "允许LaTeX响应"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:97
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr "详细说明学员是否可以写入 LaTeX 格式的字符串"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:102
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:102
+#: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
+#: templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
 msgstr "最佳答复"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:129
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:129
 msgid "Teams Enabled"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:136
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:136
 msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:141
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:141
 msgid "Select Team-Set"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:162
+#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:162
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
 "response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:6
+#: templates/openassessmentblock/staff_area/oa_student_info.html:122
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
 msgstr "得分点"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
 msgstr "作业发布以后不能删除评分标准。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:9
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:10
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:10
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:9
+#: templates/openassessmentblock/edit/oa_edit_option.html:7
+#: templates/openassessmentblock/edit/oa_edit_prompt.html:10
+#: templates/openassessmentblock/edit/oa_training_example.html:10
 msgid "Remove"
 msgstr "删除"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:17
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
 msgstr "得分点名称"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:29
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
 msgstr "得分点显示全称"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:44
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:44
 msgid "Add Option"
 msgstr "增加分值选项"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:52
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
 msgstr "此得分点的评语"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: openassessment/xblock/studio_mixin.py:49
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:54
+#: xblock/studio_mixin.py:49
 msgid "None"
 msgstr "无"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/xblock/studio_mixin.py:48
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:55
+#: xblock/studio_mixin.py:48
 msgid "Optional"
 msgstr "可选的"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
-#: openassessment/templates/openassessmentblock/oa_rubric.html:13
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:93
-#: openassessment/xblock/studio_mixin.py:47
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:56
+#: templates/openassessmentblock/oa_rubric.html:13
+#: templates/openassessmentblock/student_training/student_training.html:93
+#: xblock/studio_mixin.py:47
 msgid "Required"
 msgstr "必要的"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:61
+#: templates/openassessmentblock/edit/oa_edit_criterion.html:61
 msgid ""
 "Select one of the options above. This describes whether or not the reviewer "
 "will have to provide criterion feedback."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:3
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:3
 msgid "Open Response Assessment"
 msgstr "开放式答题评分"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:8
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:7
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:8
+#: templates/openassessmentblock/edit/oa_edit_prompt.html:7
 msgid "Prompt"
 msgstr "提示"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:15
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:15
 msgid "Rubric"
 msgstr "评分标准"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:22
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:29
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:29
 msgid "Assessment steps"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_header_and_validation.html:36
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:36
 msgid "Settings"
 msgstr "设置"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
+#: templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
 msgstr "分值选项"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:16
+#: templates/openassessmentblock/edit/oa_edit_option.html:16
 msgid "Option Name"
 msgstr "分值选项名称"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:29
+#: templates/openassessmentblock/edit/oa_edit_option.html:29
 msgid "Option Points"
 msgstr "分值选项的分数"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:42
+#: templates/openassessmentblock/edit/oa_edit_option.html:42
 msgid "Option Explanation"
 msgstr "分值选项详解"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:10
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
 msgstr "步骤：学生互评"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:15
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:15
 msgid ""
 "Peer Assessment allows students to provide feedback to other students and "
 "also receive feedback from others in their final grade. Often, though not "
 "always, this step is preceded by Self Assessment or Learner Training steps."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:18
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:18
 msgid ""
 "Configuration: For this step to be configured you must specify the number of"
 " peer reviews a student will be assessed with, and the number of peer a "
 "student must grade. Additional options can be specified."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:23
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:23
 msgid "View Options & Configuration"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
 msgstr "必须评分"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 1 to 99."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
 msgstr "评分人数"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 1 to 99."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:49
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:49
 #, python-format
 msgid ""
 "When enabled, learners who have received at least 30%% of the required \\"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:5
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
+msgid ""
+"This feature is being enabled by the course-level setting. It can be found "
+"under the Open Response Assessment Settings card on the Pages & Resources "
+"studio page."
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:10
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:10
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:10
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:10
 msgid "Start Date"
 msgstr "开始日期"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:19
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:19
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:19
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
 msgstr "开始时间"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:27
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:119
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:119
 msgid "Due Date"
 msgstr "截止日期"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:40
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:40
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:40
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
 msgstr "截止时间"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
+#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
+#: templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
 msgstr "您无法在作业已经公开之后删除提示。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
+#: templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
 msgstr "提示。您可以将示例的文字替换为您的内容。需要了解更多内容，请参阅ORA文档。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
+#: templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
 msgstr "添加提示"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:14
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:14
 msgid ""
 "Rubrics are made up of criteria, which usually contain one or more options. "
 "Each option has a point value. This template contains two sample criteria "
@@ -547,106 +554,106 @@ msgid ""
 "information, see the ORA documentation."
 msgstr "评分标准由得分点构成，而每个得分点又包含若干分值选项，每个分值选项都有一个具体得分值。该模板包含两个示例得分点和它们的选项。请用自己的文本替换例子文本。欲了解更多信息，请参阅ORA文档。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:29
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
 msgstr "添加得分点"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:35
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
 msgstr " 此答案的评语"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:40
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
 msgstr "评语要求"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:44
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:44
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
 msgstr "鼓励学员提供关于他们已经评分回复的反馈。您可以使用自己的文本替换示例文本。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:49
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
 msgstr "默认反馈内容"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:53
+#: templates/openassessmentblock/edit/oa_edit_rubric.html:53
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
 msgstr "输入反馈文本，学员将在输入他们自己的反馈之前看到该反馈文本。使用此文本向学员展示优秀的同学评估示例。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:5
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:5
 msgid "Course Deadlines"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:13
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
 msgid "Response Start Date"
 msgstr "解答开始日期"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:26
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:26
 msgid "Response Start Time"
 msgstr "解答开始时间"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "The date and time when learners can begin submitting responses."
 msgstr "学生可以开始提交答案的日期及时间。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:43
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:43
 msgid "Response Due Date"
 msgstr "解答截止日期"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
 msgid "Response Due Time"
 msgstr "解答截止时间"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "The date and time when learners can no longer submit responses."
 msgstr "学生不能继续提交答案的日期及时间。"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:8
+#: templates/openassessmentblock/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
 msgstr "步骤：自我评分"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:12
+#: templates/openassessmentblock/edit/oa_edit_self_assessment.html:12
 msgid ""
 "Self Assessment asks learners to grade their own submissions against the "
 "rubric."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:5
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:5
 msgid "Self Assessment Deadlines"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:27
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing their responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:48
+#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:48
 msgid "The date and time when all self assessments must be complete."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
+#: templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
 msgstr "步骤：工作人员评分"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
+#: templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
 msgid ""
 "Staff Assessment gates sets the final grade for students if enabled with "
 "other steps, though it can also be used as a standalone step."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
+#: templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
 msgstr "步骤：学生训练"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:14
+#: templates/openassessmentblock/edit/oa_edit_student_training.html:14
 msgid ""
 "Learner Training is used to help students practice grading a simulated peer "
 "submission in order to train them on the rubric and ensure learner's "
 "understand the rubric for either Self or Peer Assessment steps."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:17
+#: templates/openassessmentblock/edit/oa_edit_student_training.html:17
 msgid ""
 "Configuration: For this step to be fully configured you must provide one or "
 "more graded sample responses. Learners must then match this instructor score"
@@ -654,19 +661,19 @@ msgid ""
 "sample response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:22
+#: templates/openassessmentblock/edit/oa_edit_student_training.html:22
 msgid "View / Add Sample Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:32
+#: templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
 msgstr "添加样本答案"
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:4
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:7
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:7
 msgid ""
 "To clone a rubric from an existing published or unpublished draft, you can "
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
@@ -674,49 +681,49 @@ msgid ""
 "modify any rubric it was cloned from."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:9
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:19
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:19
 msgid "Block ID"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:21
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:21
 msgid "No other Open Response Assessments found in course"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:31
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:31
 msgid "Clone"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_rubric_reuse.html:37
+#: templates/openassessmentblock/edit/oa_rubric_reuse.html:37
 msgid "Rubric Successfully Cloned from Block ID: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:7
+#: templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
 msgstr "已评分的答案"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:16
+#: templates/openassessmentblock/edit/oa_training_example.html:16
 msgid "Response Score"
 msgstr "答案得分"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:27
+#: templates/openassessmentblock/edit/oa_training_example.html:27
 msgid "Response"
 msgstr "答案"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:10
+#: templates/openassessmentblock/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
 msgstr "未选中"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
-#: openassessment/templates/openassessmentblock/oa_rubric.html:43
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:128
+#: templates/openassessmentblock/edit/oa_training_example_criterion.html:15
+#: templates/openassessmentblock/oa_rubric.html:43
+#: templates/openassessmentblock/student_training/student_training.html:128
 msgid "points"
 msgstr "分"
 
-#: openassessment/templates/openassessmentblock/grade/oa_assessment_feedback.html:8
+#: templates/openassessmentblock/grade/oa_assessment_feedback.html:8
 #, python-format
 msgid ""
 "\n"
@@ -724,7 +731,7 @@ msgid ""
 "              "
 msgstr "\n %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s"
 
-#: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:7
+#: templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
 msgid ""
 "\n"
@@ -736,21 +743,21 @@ msgid_plural ""
 "                  "
 msgstr[0] "\n %(assessment_title)s - %(points)s 分"
 
-#: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
+#: templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
 msgstr "关于%(name)s的更多信息"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:14
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:15
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:26
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:14
-#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:14
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:14
+#: templates/openassessmentblock/grade/oa_grade_cancelled.html:14
+#: templates/openassessmentblock/grade/oa_grade_complete.html:15
+#: templates/openassessmentblock/grade/oa_grade_complete.html:26
+#: templates/openassessmentblock/grade/oa_grade_incomplete.html:14
+#: templates/openassessmentblock/grade/oa_grade_not_started.html:14
+#: templates/openassessmentblock/grade/oa_grade_waiting.html:14
 msgid "Your Grade"
 msgstr "您的成绩"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:19
+#: templates/openassessmentblock/grade/oa_grade_cancelled.html:19
 #, python-format
 msgid ""
 "\n"
@@ -758,11 +765,11 @@ msgid ""
 "                                    "
 msgstr "\n %(points_earned)s（满分 %(points_possible)s）"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:38
+#: templates/openassessmentblock/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
 msgstr "您提交的答案已被取消。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:19
+#: templates/openassessmentblock/grade/oa_grade_complete.html:19
 #, python-format
 msgid ""
 "\n"
@@ -770,134 +777,134 @@ msgid ""
 "                                        "
 msgstr "\n %(points_earned)s（满分 %(points_possible)s）"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:38
-#: openassessment/templates/openassessmentblock/response/oa_response.html:29
+#: templates/openassessmentblock/grade/oa_grade_complete.html:38
+#: templates/openassessmentblock/response/oa_response.html:29
 msgid "Your Response"
 msgstr "您的答案"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
+#: templates/openassessmentblock/grade/oa_grade_complete.html:41
 msgid "Your Upload"
 msgstr "您的上传"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:46
+#: templates/openassessmentblock/grade/oa_grade_complete.html:46
 msgid "Assessments of Your Response"
 msgstr "对您答案的评分结果"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:132
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:28
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:28
-#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:4
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:4
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:4
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:33
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:30
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:40
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:34
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:34
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:31
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:29
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
-#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:25
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
+#: templates/openassessmentblock/grade/oa_grade_complete.html:50
+#: templates/openassessmentblock/grade/oa_grade_complete.html:132
+#: templates/openassessmentblock/grade/oa_grade_incomplete.html:28
+#: templates/openassessmentblock/grade/oa_grade_waiting.html:28
+#: templates/openassessmentblock/message/oa_message_cancelled.html:4
+#: templates/openassessmentblock/message/oa_message_closed.html:4
+#: templates/openassessmentblock/message/oa_message_complete.html:4
+#: templates/openassessmentblock/message/oa_message_incomplete.html:4
+#: templates/openassessmentblock/peer/oa_peer_closed.html:33
+#: templates/openassessmentblock/peer/oa_peer_complete.html:30
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:40
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:34
+#: templates/openassessmentblock/peer/oa_peer_waiting.html:34
+#: templates/openassessmentblock/response/oa_response_cancelled.html:31
+#: templates/openassessmentblock/response/oa_response_closed.html:29
+#: templates/openassessmentblock/response/oa_response_submitted.html:30
+#: templates/openassessmentblock/response/oa_response_team_already_submitted.html:25
+#: templates/openassessmentblock/self/oa_self_closed.html:30
+#: templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
 msgstr "状态"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:65
+#: templates/openassessmentblock/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
 msgstr "总分"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:70
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
+#: templates/openassessmentblock/grade/oa_grade_complete.html:70
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
 msgid "Points"
 msgstr "分"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:96
+#: templates/openassessmentblock/grade/oa_grade_complete.html:96
 msgid "Additional comments on your response"
 msgstr "对您答案的附加评语"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:117
+#: templates/openassessmentblock/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
 msgstr "提供互评反馈"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:126
+#: templates/openassessmentblock/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
 msgstr "提交评语"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
+#: templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr "您的评语已经被提交。课程老师将会在他们检查课程记录时看到这条评语。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:140
+#: templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr "课程老师可以查看您发表于此的所有评语。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:146
+#: templates/openassessmentblock/grade/oa_grade_complete.html:146
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
 msgstr "请选出最能反映您互评体验的表述。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:155
+#: templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
 msgstr "这些评判很有价值。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:164
+#: templates/openassessmentblock/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
 msgstr "这些评判没有价值。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:173
+#: templates/openassessmentblock/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr "有些同学的评判我无法苟同。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:182
+#: templates/openassessmentblock/grade/oa_grade_complete.html:182
 msgid "Some comments I received were inappropriate."
 msgstr "我认为有些评语并不恰当。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
+#: templates/openassessmentblock/grade/oa_grade_complete.html:187
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr "提供您对从同学那里获得的评分或评论的反馈。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
+#: templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
 msgstr "我感觉我收到的反馈……"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:200
+#: templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
 msgstr "我们无法提交您的反馈意见"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:206
+#: templates/openassessmentblock/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
 msgstr "提交关于同学评估的反馈"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:16
+#: templates/openassessmentblock/grade/oa_grade_incomplete.html:16
 msgid "Not Completed"
 msgstr "尚未完成"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:33
+#: templates/openassessmentblock/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
 msgstr "您还没有完成该问题的所有步骤。"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:16
+#: templates/openassessmentblock/grade/oa_grade_not_started.html:16
 msgid "Not Started"
 msgstr "尚未开始"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:27
+#: templates/openassessmentblock/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
 msgstr "您还没有开始完成这个问题"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:16
+#: templates/openassessmentblock/grade/oa_grade_waiting.html:16
 msgid "Waiting for Assessments"
 msgstr "等待评判"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:33
+#: templates/openassessmentblock/grade/oa_grade_waiting.html:33
 msgid ""
 "You have completed your steps in the assignment, but some assessments still "
 "need to be done on your response. When the assessments of your response are "
@@ -905,107 +912,107 @@ msgid ""
 "and you will receive your final grade."
 msgstr "您已完成您在该任务中的步骤，但是某些评估仍然需要在您的回复下完成。当您的回复评估完成后，您将看到评估您的回复的每个人的反馈，而且您将获得您的最终评分。"
 
-#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:16
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:18
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:153
+#: templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:16
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:18
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:153
 msgid "Grade Available Responses"
 msgstr "对提供的回复评分"
 
-#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
+#: templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
 msgstr "无法进行可评分解答。该项没有设置教师评分。"
 
-#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
+#: templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
 msgstr "请稍候"
 
-#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
+#: templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
+#: templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
 msgid ""
 "Waiting Step details view is unavailable. This item is not configured for "
 "peer assessments."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
+#: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
 msgstr "%(num_points)s分"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
+#: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:74
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
 msgstr "同学对上述题目的回复"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
+#: templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
 msgstr "当完成该作业的所有步骤后，您可以看到高分答案榜。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:8
+#: templates/openassessmentblock/message/oa_message_cancelled.html:8
 msgid ""
 "Your team’s submission has been cancelled. Your team will receive a grade of"
 " zero unless course staff resets your assessment to allow the team to "
 "resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_cancelled.html:10
+#: templates/openassessmentblock/message/oa_message_cancelled.html:10
 msgid ""
 "Your submission has been cancelled. You will receive a grade of zero unless "
 "course staff resets your assessment to allow you to resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:8
+#: templates/openassessmentblock/message/oa_message_closed.html:8
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
 msgstr "该任务尚未开放，请待此部分开放后再来完成作业。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
+#: templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
 msgstr "该作业已关闭。该作业的一个或多个截止日期已过。您将得到“未完成”的评分。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
+#: templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
 msgstr "您已经完成该作业。其他人对您的回复评分之后您将可以看到自己的实际得分。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
+#: templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
 msgstr "您已经完成该作业。浏览得分和评分细节。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
+#: templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
 msgstr "该作业正在进行中。学员训练即将关闭，请尽快完成学员训练步骤以便继续下一个环节。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
+#: templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
 msgstr "该作业正在进行中。请尽快完成学员训练步骤以便继续下一个环节。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
+#: templates/openassessmentblock/message/oa_message_incomplete.html:15
+#: templates/openassessmentblock/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
 msgstr "该作业正在进行中。请在评分期开始后再返回进行评分。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:20
+#: templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1013,7 +1020,7 @@ msgid ""
 "                                "
 msgstr "\n %(start_strong)s 该作业正在进行中，自我评分即将关闭。%(end_strong)s 您还需要完成  %(start_link)s自我评分%(end_link)s 步骤。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:24
+#: templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
 msgid ""
 "\n"
@@ -1021,7 +1028,7 @@ msgid ""
 "                                "
 msgstr "\n 该作业正在进行中，您还需要完成 %(start_link)s自我评分%(end_link)s 步骤。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
+#: templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
 msgid ""
 "\n"
@@ -1029,7 +1036,7 @@ msgid ""
 "                                "
 msgstr "\n该作业正在进行中。%(start_strong)s互评步骤即将关闭。%(end_strong)s 所有同学提交的回复已被评分。稍后返回查看是否有更多学员提交回复。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
+#: templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
 msgid ""
 "\n"
@@ -1037,7 +1044,7 @@ msgid ""
 "                                "
 msgstr "\n该作业正在进行中。所有同学提交的回复已被评分。稍后返回查看是否有更多学员提交回复。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
+#: templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
 msgid ""
 "\n"
@@ -1045,7 +1052,7 @@ msgid ""
 "                                "
 msgstr "\n该作业正在进行中。%(start_strong)s互评步骤即将关闭。%(end_strong)s 您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
 
-#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:50
+#: templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
 msgid ""
 "\n"
@@ -1053,11 +1060,11 @@ msgid ""
 "                                "
 msgstr "\n该作业正在进行中。您还需要继续完成%(start_link)s互评%(end_link)s步骤。 "
 
-#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:4
+#: templates/openassessmentblock/message/oa_message_no_team.html:4
 msgid "Team membership is required to view this assignment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_no_team.html:7
+#: templates/openassessmentblock/message/oa_message_no_team.html:7
 #, python-format
 msgid ""
 "\n"
@@ -1067,7 +1074,7 @@ msgid ""
 "            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
+#: templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
 msgid ""
 "\n"
@@ -1075,7 +1082,7 @@ msgid ""
 "                "
 msgstr "\n作业提交即将关闭。为获得分数，请先对题目作答，然后完成 %(start_tag)s 您的回复%(end_tag)s区域下方的步骤。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
+#: templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
 msgid ""
 "\n"
@@ -1083,77 +1090,77 @@ msgid ""
 "                "
 msgstr "\n该作业包含若干步骤。第一步，针对题目作答。其余步骤将显示在 %(start_tag)s 您的回复%(end_tag)s区域下方。"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
+#: templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
 msgstr "没有指示"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:6
+#: templates/openassessmentblock/message/oa_message_unavailable.html:6
 msgid "The instructions for this step could not be loaded."
 msgstr "此步骤的指示无法加载"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:15
+#: templates/openassessmentblock/oa_base.html:15
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
 msgstr "该作业包含若干步骤。第一步，针对题目作答。其余步骤将显示在“您的回复”区域下方。"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:36
+#: templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
 msgstr "正在加载"
 
-#: openassessment/templates/openassessmentblock/oa_latex_preview.html:7
+#: templates/openassessmentblock/oa_latex_preview.html:7
 msgid "Preview in LaTeX"
 msgstr "在 LaTeX 中预览"
 
-#: openassessment/templates/openassessmentblock/oa_latex_preview.html:10
+#: templates/openassessmentblock/oa_latex_preview.html:10
 msgid "Click to preview your submission in LaTeX."
 msgstr "点击以在LaTeX中预览您的提交。"
 
-#: openassessment/templates/openassessmentblock/oa_latex_preview.html:15
+#: templates/openassessmentblock/oa_latex_preview.html:15
 msgid "Preview Response"
 msgstr "预览回复"
 
-#: openassessment/templates/openassessmentblock/oa_rubric.html:53
+#: templates/openassessmentblock/oa_rubric.html:53
 msgid "Comments"
 msgstr "评语"
 
-#: openassessment/templates/openassessmentblock/oa_submission_answer.html:8
+#: templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
 msgstr "该节的问题"
 
-#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:8
+#: templates/openassessmentblock/oa_team_uploaded_files.html:9
 msgid "Files that were uploaded by your teammates:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:27
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:34
+#: templates/openassessmentblock/oa_team_uploaded_files.html:28
+#: templates/openassessmentblock/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
 msgstr "查看此提交的关联文件"
 
-#: openassessment/templates/openassessmentblock/oa_team_uploaded_files.html:31
+#: templates/openassessmentblock/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
+#: templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:48
+#: templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
 msgstr "注意：这些文件是由其他学员上传的，站点管理人员并未核实、审查、批准、浏览或认可。访问这些文件的风险由您个人承担。）"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:26
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:26
 msgid "Assess Peers"
 msgstr "为同学评分"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
 #. 5 days and 45 minutes)"
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:34
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:34
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1164,7 +1171,7 @@ msgstr "\n              <span id=\"oa_step_deadline_peer\" class=\"date ora-date
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
 #. and 45 minutes)"
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:41
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:41
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1172,7 +1179,7 @@ msgid ""
 "            "
 msgstr "\n<span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
 msgid ""
 "\n"
@@ -1180,37 +1187,37 @@ msgid ""
 "                "
 msgstr "\n进行中（已完成%(review_number)s，共须完成%(num_must_grade)s）"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:65
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:45
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:65
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:45
 msgid "Read and assess the following response from one of your peers."
 msgstr "阅读以下同学的答案，并对其打分。"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:77
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:38
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:63
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:77
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
+#: templates/openassessmentblock/self/oa_self_assessment.html:60
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:45
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:38
+#: templates/openassessmentblock/staff_area/oa_student_info.html:63
 msgid "Associated Files"
 msgstr "关联的文件"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:91
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:71
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:50
+#: templates/openassessmentblock/peer/oa_peer_assessment.html:91
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
+#: templates/openassessmentblock/self/oa_self_assessment.html:71
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:50
 msgid "We could not submit your assessment"
 msgstr "我们无法提交您的评判。"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html:19
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:21
-#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:21
-#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:172
+#: templates/openassessmentblock/peer/oa_peer_cancelled.html:19
+#: templates/openassessmentblock/response/oa_response_cancelled.html:21
+#: templates/openassessmentblock/self/oa_self_cancelled.html:21
+#: templates/openassessmentblock/student_training/student_training_cancelled.html:18
+#: xblock/staff_assessment_mixin.py:173
 msgid "Cancelled"
 msgstr "已取消"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:20
+#: templates/openassessmentblock/peer/oa_peer_closed.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1218,36 +1225,36 @@ msgid ""
 "        "
 msgstr "\n尚未完成评分：(%(num_graded)s名同学，需要评分：%(num_must_grade)s)名同学"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:35
+#: templates/openassessmentblock/peer/oa_peer_closed.html:35
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
 msgstr "截止日期已过，该步骤已关闭。您已无法完成互评或继续进行该作业，且您的评分将被定为“未完成”。"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
+#: templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
 msgstr "已经完成"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:31
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:41
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:36
+#: templates/openassessmentblock/peer/oa_peer_complete.html:31
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:41
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:36
 msgid ""
 "You have successfully completed all of the required peer assessments for "
 "this assignment. You may assess additional peer responses if you want to. "
 "Completing additional assessments will not affect your final grade."
 msgstr "您已经成功完成了该作业所要求的学生互评数量。如果您愿意的话，您可以继续其他同学的答案进行评分，多做的评分不会影响您的最终成绩。"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:36
+#: templates/openassessmentblock/peer/oa_peer_complete.html:36
 msgid "We could not retrieve additional submissions for assessment"
 msgstr "已经没有多余的作业提交以供评分"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:43
+#: templates/openassessmentblock/peer/oa_peer_complete.html:43
 msgid "Continue Assessing Peers"
 msgstr "继续对其他同学的答案进行评分"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:26
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:20
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:26
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1255,22 +1262,21 @@ msgid ""
 "      "
 msgstr "\n完成(%(num_graded)s)"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:38
+#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:38
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
 msgstr "所有同学提交的回复均被评分。稍后返回查看是否有更多学员提交回复。"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
-#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
-#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:17
-#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: openassessment/xblock/staff_assessment_mixin.py:165
-#: openassessment/xblock/staff_assessment_mixin.py:189
+#: templates/openassessmentblock/peer/oa_peer_unavailable.html:16
+#: templates/openassessmentblock/response/oa_response_unavailable.html:17
+#: templates/openassessmentblock/self/oa_self_unavailable.html:17
+#: templates/openassessmentblock/student_training/student_training_unavailable.html:16
+#: xblock/staff_assessment_mixin.py:166 xblock/staff_assessment_mixin.py:190
 msgid "Not Available"
 msgstr "操作条件不满足"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:20
+#: templates/openassessmentblock/peer/oa_peer_waiting.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1278,7 +1284,7 @@ msgid ""
 "        "
 msgstr "\n进行中（已完成%(review_number)s，共须完成%(num_must_grade)s）"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:37
+#: templates/openassessmentblock/peer/oa_peer_waiting.html:37
 msgid ""
 "All available peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses. You will receive your grade after "
@@ -1286,14 +1292,14 @@ msgid ""
 " your response."
 msgstr "所有同学提交的回复均已被评分。稍后返回查看是否有更多学员提交回复。您将在完成此问题的所有步骤，且同学已对回复进行评分后获得分数。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:27
+#: templates/openassessmentblock/response/oa_response.html:27
 msgid "Your Team's Response"
 msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/response/oa_response.html:39
+#: templates/openassessmentblock/response/oa_response.html:39
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1304,7 +1310,7 @@ msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" dat
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/response/oa_response.html:46
+#: templates/openassessmentblock/response/oa_response.html:46
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1312,71 +1318,72 @@ msgid ""
 "            "
 msgstr "\n<span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:54
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:46
+#: templates/openassessmentblock/response/oa_response.html:54
+#: templates/openassessmentblock/self/oa_self_assessment.html:46
 msgid "In Progress"
 msgstr "正在进行中"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:66
+#: templates/openassessmentblock/response/oa_response.html:66
 msgid "Enter your team's response to the prompt."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:68
+#: templates/openassessmentblock/response/oa_response.html:68
 msgid ""
 "\n"
-"                        You can save your progress and return to complete your team's response at any time before the due date\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
 "                      "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:81
+#: templates/openassessmentblock/response/oa_response.html:81
 msgid ""
 "\n"
-"                        You can save your progress and return to complete your team's response at any time.\n"
+"                        Your work will save automatically and you can return to complete your team's response at any time.\n"
 "                      "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:86
+#: templates/openassessmentblock/response/oa_response.html:86
 msgid ""
-"After you submit a response on behalf of your team, it cannot be edited"
+"After you submit a response on behalf of your team, it cannot be edited."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:89
+#: templates/openassessmentblock/response/oa_response.html:89
 msgid "Enter your response to the prompt."
 msgstr "请输入您对该题目的回复"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:91
+#: templates/openassessmentblock/response/oa_response.html:91
 msgid ""
 "\n"
-"                        You can save your progress and return to complete your response at any time before the due date\n"
+"                        Your work will save automatically and you can return to complete your response at any time before the due date\n"
 "                      "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:104
+#: templates/openassessmentblock/response/oa_response.html:104
 msgid ""
-"You can save your progress and return to complete your response at any time."
-msgstr "您可以中途保存您的答案，随时回来修改并提交答案。"
+"Your work will save automatically and you can return to complete your "
+"response at any time."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:106
+#: templates/openassessmentblock/response/oa_response.html:106
 msgid "After you submit your response, you cannot edit it"
 msgstr "答案一旦提交，您将无法再修改。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:116
+#: templates/openassessmentblock/response/oa_response.html:116
 msgid "What will this assignment be graded on?"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:130
+#: templates/openassessmentblock/response/oa_response.html:130
 msgid "The prompt for this section"
 msgstr "题目要求"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:144
+#: templates/openassessmentblock/response/oa_response.html:144
 msgid "You are on team "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:146
+#: templates/openassessmentblock/response/oa_response.html:146
 msgid "Team Members: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:151
+#: templates/openassessmentblock/response/oa_response.html:151
 #, python-format
 msgid ""
 "\n"
@@ -1386,25 +1393,25 @@ msgid ""
 "                                          "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:167
+#: templates/openassessmentblock/response/oa_response.html:167
 msgid "Team Response "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:169
+#: templates/openassessmentblock/response/oa_response.html:169
 msgid "Your Response "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:173
-#: openassessment/templates/openassessmentblock/response/oa_response.html:244
+#: templates/openassessmentblock/response/oa_response.html:173
+#: templates/openassessmentblock/response/oa_response.html:243
 msgid "(Required)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:175
-#: openassessment/templates/openassessmentblock/response/oa_response.html:246
+#: templates/openassessmentblock/response/oa_response.html:175
+#: templates/openassessmentblock/response/oa_response.html:245
 msgid "(Optional)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:179
+#: templates/openassessmentblock/response/oa_response.html:179
 msgid ""
 "\n"
 "                                              Teams should designate one team member to submit a response on behalf of the\n"
@@ -1415,11 +1422,11 @@ msgid ""
 "                                          "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:194
+#: templates/openassessmentblock/response/oa_response.html:193
 msgid "Enter your response to the prompt above."
 msgstr "请输入您对上述题目的回复"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:208
+#: templates/openassessmentblock/response/oa_response.html:207
 #, python-format
 msgid ""
 "\n"
@@ -1431,23 +1438,19 @@ msgid ""
 "                                  "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:221
+#: templates/openassessmentblock/response/oa_response.html:220
 msgid "We could not save your progress"
 msgstr "我们无法保存您的进度。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:228
-msgid "Save your progress"
-msgstr "保存您的进度"
+#: templates/openassessmentblock/response/oa_response.html:228
+msgid "Status of Your Response"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:232
-msgid "Your Submission Status"
-msgstr "您的提交状态"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:242
+#: templates/openassessmentblock/response/oa_response.html:241
 msgid "File Uploads "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:250
+#: templates/openassessmentblock/response/oa_response.html:249
 msgid ""
 "\n"
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
@@ -1455,83 +1458,79 @@ msgid ""
 "                              "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:258
+#: templates/openassessmentblock/response/oa_response.html:257
 msgid "We could not upload files"
 msgstr "无法上传文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:264
+#: templates/openassessmentblock/response/oa_response.html:263
 msgid "We could not delete files"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:271
+#: templates/openassessmentblock/response/oa_response.html:270
 msgid "Select one or more files to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:273
+#: templates/openassessmentblock/response/oa_response.html:272
 msgid "Select a file to upload for this submission."
 msgstr "选择一个要为此提交上传的文件。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:278
+#: templates/openassessmentblock/response/oa_response.html:276
 msgid "Supported file types: "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:282
+#: templates/openassessmentblock/response/oa_response.html:281
 msgid "Upload files"
 msgstr "上传文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:284
+#: templates/openassessmentblock/response/oa_response.html:283
 msgid "Upload file"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:300
-msgid "You may continue to work on your response until you submit it."
-msgstr "在提交之前，您可以继续对答案进行修改。"
-
-#: openassessment/templates/openassessmentblock/response/oa_response.html:306
+#: templates/openassessmentblock/response/oa_response.html:300
 msgid "This is a team submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:308
+#: templates/openassessmentblock/response/oa_response.html:302
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:310
+#: templates/openassessmentblock/response/oa_response.html:304
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:312
+#: templates/openassessmentblock/response/oa_response.html:306
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:314
+#: templates/openassessmentblock/response/oa_response.html:308
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:316
+#: templates/openassessmentblock/response/oa_response.html:310
 msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:324
+#: templates/openassessmentblock/response/oa_response.html:318
 msgid "We could not submit your response"
 msgstr "我们无法提交您的答案"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:334
+#: templates/openassessmentblock/response/oa_response.html:328
 msgid "Submit your response and move to the next step"
 msgstr "提交您的答案并进行下一步"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:34
+#: templates/openassessmentblock/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
 msgstr "您的提交被取消。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:37
+#: templates/openassessmentblock/response/oa_response_cancelled.html:37
 #, python-format
 msgid ""
 "\n"
@@ -1539,7 +1538,7 @@ msgid ""
 "                            "
 msgstr "\n                                您的提交已由 %(removed_by_username)s 在 %(removed_datetime)s\n 时取消"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:41
+#: templates/openassessmentblock/response/oa_response_cancelled.html:41
 #, python-format
 msgid ""
 "\n"
@@ -1547,7 +1546,7 @@ msgid ""
 "                            "
 msgstr "\n您的提交于%(removed_datetime)s被取消"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:48
+#: templates/openassessmentblock/response/oa_response_cancelled.html:48
 #, python-format
 msgid ""
 "\n"
@@ -1555,13 +1554,13 @@ msgid ""
 "                        "
 msgstr "\n评论：%(comments)s"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:19
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:20
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:17
+#: templates/openassessmentblock/response/oa_response_closed.html:19
+#: templates/openassessmentblock/self/oa_self_closed.html:20
+#: templates/openassessmentblock/student_training/student_training_closed.html:17
 msgid "Incomplete"
 msgstr "未完成"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:32
+#: templates/openassessmentblock/response/oa_response_closed.html:32
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer submit a response or continue with this problem, and you will receive"
@@ -1569,33 +1568,32 @@ msgid ""
 "response appears in the course records."
 msgstr "截止日期已过，该步骤已关闭。您已无法提交回复或继续此问题，且您的评分将被定为“未完成”。如果您已保存但尚未提交，回复会显示在课程记录中。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:20
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:20
-#: openassessment/templates/openassessmentblock/self/oa_self_complete.html:18
-#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:179
-#: openassessment/xblock/staff_assessment_mixin.py:202
+#: templates/openassessmentblock/response/oa_response_graded.html:20
+#: templates/openassessmentblock/response/oa_response_submitted.html:20
+#: templates/openassessmentblock/self/oa_self_complete.html:18
+#: templates/openassessmentblock/student_training/student_training_complete.html:17
+#: xblock/staff_assessment_mixin.py:180 xblock/staff_assessment_mixin.py:203
 msgid "Complete"
 msgstr "已经完成"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:30
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:57
+#: templates/openassessmentblock/response/oa_response_graded.html:30
+#: templates/openassessmentblock/response/oa_response_submitted.html:51
+#: templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
 msgstr "您的回复"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:54
+#: templates/openassessmentblock/response/oa_response_graded.html:33
+#: templates/openassessmentblock/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
 msgstr "您已上传的文件"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:32
+#: templates/openassessmentblock/response/oa_response_submitted.html:32
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
 msgstr "您的回复已经提交。您将在完成所有步骤且回复被所有指定的同学评分后获得分数。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:34
+#: templates/openassessmentblock/response/oa_response_submitted.html:34
 #, python-format
 msgid ""
 "\n"
@@ -1603,7 +1601,7 @@ msgid ""
 "                    "
 msgstr "\n                        您仍然需要完成%(peer_start_tag)s同学评估%(end_tag)s和%(self_start_tag)s自我评估%(end_tag)s步骤。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:38
+#: templates/openassessmentblock/response/oa_response_submitted.html:38
 #, python-format
 msgid ""
 "\n"
@@ -1611,7 +1609,7 @@ msgid ""
 "                    "
 msgstr "\n                        您仍然需要完成%(start_tag)s同学评估%(end_tag)s步骤。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:42
+#: templates/openassessmentblock/response/oa_response_submitted.html:42
 #, python-format
 msgid ""
 "\n"
@@ -1619,11 +1617,11 @@ msgid ""
 "                    "
 msgstr "\n                        您仍然需要完成%(start_tag)s自我评估%(end_tag)s步骤。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
+#: templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
 msgid "Error"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
+#: templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
 #, python-format
 msgid ""
 "\n"
@@ -1634,14 +1632,14 @@ msgid ""
 "                        "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:23
+#: templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
 msgstr "自我评分"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:31
+#: templates/openassessmentblock/self/oa_self_assessment.html:31
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1652,7 +1650,7 @@ msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-da
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:38
+#: templates/openassessmentblock/self/oa_self_assessment.html:38
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1660,113 +1658,113 @@ msgid ""
 "           "
 msgstr "\n<span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:78
+#: templates/openassessmentblock/self/oa_self_assessment.html:78
 msgid "Submit your assessment"
 msgstr "提交您的评估"
 
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:32
+#: templates/openassessmentblock/self/oa_self_closed.html:32
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
 msgstr "截止日期已过，该步骤已关闭。您无法完成自我评分或继续进行该作业，且您的评分将被定为“未完成”。"
 
-#: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
-#: openassessment/xblock/grade_mixin.py:361
+#: templates/openassessmentblock/staff/oa_staff_grade.html:13
+#: xblock/grade_mixin.py:365
 msgid "Staff Grade"
 msgstr "员工评分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:8
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:35
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:8
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:35
 msgid "Manage Individual Learners"
 msgstr "管理个别学员"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:10
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:10
 msgid "Manage Team Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:13
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:71
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:13
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:71
 msgid "View Assignment Statistics"
 msgstr "查看任务统计数据"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:22
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:31
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:69
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:151
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:31
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:69
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:151
 msgid "Close"
 msgstr "关闭"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:37
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:50
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:50
 msgid "Enter an individual learner's username or email"
 msgstr "输入学生个人的用户名或邮箱"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:52
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:52
 msgid "Enter a team member's username or edX email"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:56
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:56
 msgid "Submit"
 msgstr "提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:78
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:78
 msgid "Response total"
 msgstr "答案总数"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:84
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:84
 msgid "Location"
 msgstr "位置"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:90
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
 msgstr "学员进度"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:94
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:117
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:94
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:117
 msgid "Problem Step"
 msgstr "问题步骤"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:95
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
 msgstr "步骤中的激活学员"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:113
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:113
 msgid "Dates"
 msgstr "日期"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:118
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:118
 msgid "Release Date"
 msgstr "公开日期"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:131
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:137
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:131
+#: templates/openassessmentblock/staff_area/oa_staff_area.html:137
 msgid "N/A"
 msgstr "不适用"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners.html:7
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
 msgstr "工作人员评分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:14
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:14
 msgid "Give this team a grade using the problem's rubric."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
 msgstr "使用问题的评分标准给此学员一个评分。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:26
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:26
 #, python-format
 msgid ""
 "\n"
@@ -1774,8 +1772,8 @@ msgid ""
 "                                    "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
 #, python-format
 msgid ""
 "\n"
@@ -1783,31 +1781,31 @@ msgid ""
 "                                    "
 msgstr "\n                                    回复：%(student_username)s"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 msgid "Learner Response"
 msgstr "学员回复"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
 msgid "The teams's response to the prompt above"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:32
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:32
+#: templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
 msgstr "学员对上述题目的回复"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
 msgstr "提交评估"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
 msgstr "提交评估并继续评分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html:6
+#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html:6
 #, python-format
 msgid ""
 "\n"
@@ -1815,24 +1813,24 @@ msgid ""
 "            "
 msgstr "\n                %(ungraded)s可用且%(in_progress)s已检验"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:7
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
 msgstr "使用问题的评价量规覆盖学员的当前评分。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:9
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:9
 msgid "Override this team's current grade using the problem's rubric."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 msgid "Team Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
+#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
+#: templates/openassessmentblock/staff_area/oa_student_info.html:59
 msgid "The team's response to the prompt above"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:11
+#: templates/openassessmentblock/staff_area/oa_student_info.html:11
 #, python-format
 msgid ""
 "\n"
@@ -1840,7 +1838,7 @@ msgid ""
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:15
+#: templates/openassessmentblock/staff_area/oa_student_info.html:15
 #, python-format
 msgid ""
 "\n"
@@ -1848,15 +1846,15 @@ msgid ""
 "                "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:28
+#: templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
 msgstr "学生回复"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
+#: templates/openassessmentblock/staff_area/oa_student_info.html:30
 msgid "Team's Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
+#: templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
 msgid ""
 "\n"
@@ -1864,7 +1862,7 @@ msgid ""
 "                        "
 msgstr "\n                            学员提交已由 %(removed_by_username)s 在 %(removed_datetime)s\n 撤销"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:43
+#: templates/openassessmentblock/staff_area/oa_student_info.html:43
 #, python-format
 msgid ""
 "\n"
@@ -1872,7 +1870,7 @@ msgid ""
 "                        "
 msgstr "\n                            学员提交已在 %(removed_datetime)s\n 撤销"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:50
+#: templates/openassessmentblock/staff_area/oa_student_info.html:50
 #, python-format
 msgid ""
 "\n"
@@ -1880,35 +1878,35 @@ msgid ""
 "                    "
 msgstr "\n评论：%(comments)s"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:71
+#: templates/openassessmentblock/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
 msgstr "此学员的同学评估"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:76
+#: templates/openassessmentblock/staff_area/oa_student_info.html:76
 msgid "Peer Assessments Completed by This Learner"
 msgstr "由此学员完成的同学评估"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:81
+#: templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Self Assessment"
 msgstr "学生自评"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:87
+#: templates/openassessmentblock/staff_area/oa_student_info.html:87
 msgid "Staff Assessment for This Learner"
 msgstr "此学员的员工评估"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
+#: templates/openassessmentblock/staff_area/oa_student_info.html:89
 msgid "Staff Assessment for this Team"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
+#: templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
 msgstr "学员的最终评分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
+#: templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:112
+#: templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
 msgid ""
 "\n"
@@ -1916,11 +1914,11 @@ msgid ""
 "                        "
 msgstr "\n                           最终评分：%(points_earned)s（总分 %(points_possible)s\n）"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:119
+#: templates/openassessmentblock/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
 msgstr "最终评分详情"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:139
+#: templates/openassessmentblock/staff_area/oa_student_info.html:139
 #, python-format
 msgid ""
 "\n"
@@ -1932,98 +1930,98 @@ msgid_plural ""
 "                                    "
 msgstr[0] "\n                                        %(assessment_label)s - %(points)s 分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:154
+#: templates/openassessmentblock/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
 msgstr "反馈已记录"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:165
+#: templates/openassessmentblock/staff_area/oa_student_info.html:165
 msgid "The submission is waiting for assessments."
 msgstr "提交正在等待评估。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:170
+#: templates/openassessmentblock/staff_area/oa_student_info.html:170
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员的提交已从同学评估中撤销。除非您删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
+#: templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
 " allow the team to resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:177
+#: templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
 msgstr "此问题尚未开始。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:181
+#: templates/openassessmentblock/staff_area/oa_student_info.html:181
 msgid "The problem has not been completed."
 msgstr "此问题尚未完成。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:193
+#: templates/openassessmentblock/staff_area/oa_student_info.html:193
 msgid "Submit Assessment Grade Override"
 msgstr "提交评估评分覆盖"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: templates/openassessmentblock/staff_area/oa_student_info.html:195
 msgid "Submit Team Grade Override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: templates/openassessmentblock/staff_area/oa_student_info.html:204
 msgid "Unable to perform grade override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:207
+#: templates/openassessmentblock/staff_area/oa_student_info.html:207
 msgid ""
 "Grades are frozen. Grades are automatically frozen 30 days after the course "
 "end date."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
+#: templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid ""
 "This submission has been cancelled and cannot recieve a grade. Refer to "
 "documentation for how to delete the learner’s state for this problem to "
 "allow them to resubmit."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:230
+#: templates/openassessmentblock/staff_area/oa_student_info.html:230
 msgid "Remove Submission From Peer Grading"
 msgstr "删除同学评分的提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:232
+#: templates/openassessmentblock/staff_area/oa_student_info.html:232
 msgid "Remove Team Submission from Grading"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:242
+#: templates/openassessmentblock/staff_area/oa_student_info.html:242
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "注意：此操作不可撤销"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:244
+#: templates/openassessmentblock/staff_area/oa_student_info.html:244
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "删除学员提交的操作不可撤销，所以应谨慎操作。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:246
+#: templates/openassessmentblock/staff_area/oa_student_info.html:246
 msgid ""
 "Removing a team's submission cannot be undone and should be done with "
 "caution."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:252
+#: templates/openassessmentblock/staff_area/oa_student_info.html:252
 msgid "Comments:"
 msgstr "评论："
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:261
+#: templates/openassessmentblock/staff_area/oa_student_info.html:261
 msgid "Remove submission"
 msgstr "移除提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:276
+#: templates/openassessmentblock/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
 msgstr "未找到针对此学员的回复。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:16
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:16
 #, python-format
 msgid ""
 "\n"
@@ -2031,27 +2029,27 @@ msgid ""
 "                        "
 msgstr "\n                            评估 %(assessment_num)s："
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
 msgid "Assessment Details"
 msgstr "评估细节"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
 msgstr "选中的分值项"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
 msgstr "评语"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:29
+#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
 msgstr "满分"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:18
+#: templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
 msgstr "学习如何评分"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:27
+#: templates/openassessmentblock/student_training/student_training.html:27
 #, python-format
 msgid ""
 "\n"
@@ -2062,7 +2060,7 @@ msgstr "\n进行中（正进行%(current_progress_num)s，可训练%(training_av
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:38
+#: templates/openassessmentblock/student_training/student_training.html:38
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -2073,7 +2071,7 @@ msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetim
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:45
+#: templates/openassessmentblock/student_training/student_training.html:45
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -2081,12 +2079,12 @@ msgid ""
 "            "
 msgstr "\n<span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:58
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:66
+#: templates/openassessmentblock/student_training/student_training.html:58
+#: templates/openassessmentblock/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
 msgstr "正在学习如何评分"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:61
+#: templates/openassessmentblock/student_training/student_training.html:61
 msgid ""
 "Before you begin to assess your peers' responses, you'll learn how to "
 "complete peer assessments by reviewing responses that instructors have "
@@ -2095,592 +2093,579 @@ msgid ""
 "same options, you'll review the response and try again."
 msgstr "在开始为其他同学的答案评分之前，您需要通过参考导师的评分来学习如何对您同学的答案进行评分。如果您的评分和导师的一致，您可进行下一步。否则，您需要继续学习如何进行评分。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:69
+#: templates/openassessmentblock/student_training/student_training.html:69
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
 msgstr "您的评分与导师的评分存在差异。重新检查答案，弄明白导师为什么给出了不同的评分，然后尝试重新评分。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:76
+#: templates/openassessmentblock/student_training/student_training.html:76
 msgid "The response to the prompt above:"
 msgstr "针对上述题目的回复："
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:98
+#: templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
 msgstr "选择的分值相同"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:101
+#: templates/openassessmentblock/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
 msgstr "您选择的分值和导师所选择的分值一致。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:105
+#: templates/openassessmentblock/student_training/student_training.html:105
 msgid "Selected Options Differ"
 msgstr "选择的分值不同"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:108
+#: templates/openassessmentblock/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr "您选择的分值和导师所选择的分值不一致。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:144
+#: templates/openassessmentblock/student_training/student_training.html:144
 msgid "We could not check your assessment"
 msgstr "我们无法校验您的评分。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:151
+#: templates/openassessmentblock/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
 msgstr "比较您和导师选择的分值"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:29
+#: templates/openassessmentblock/student_training/student_training_closed.html:29
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
 msgstr "截止日期已过，该步骤已关闭。您无法继续完成该作业，且您的评分将被定为“未完成”。"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training_error.html:18
+#: templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
 msgstr "加载学员训练示例错误"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training_error.html:21
+#: templates/openassessmentblock/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "不能加载此任务的学员训练步骤。"
 
-#: openassessment/xblock/data_conversion.py:263
+#: xblock/data_conversion.py:263
 msgid "You must provide options selected in the assessment."
 msgstr "您必须在评估中提供选择的选项。"
 
-#: openassessment/xblock/data_conversion.py:266
+#: xblock/data_conversion.py:266
 msgid "You must provide overall feedback in the assessment."
 msgstr "您必须在评估中提供整体反馈。"
 
-#: openassessment/xblock/data_conversion.py:269
+#: xblock/data_conversion.py:269
 msgid "You must provide feedback for criteria in the assessment."
 msgstr "您必须在评估中提供对标准的反馈。"
 
-#: openassessment/xblock/grade_mixin.py:77
-#: openassessment/xblock/leaderboard_mixin.py:61
-#: openassessment/xblock/self_assessment_mixin.py:42
-#: openassessment/xblock/student_training_mixin.py:56
-#: openassessment/xblock/student_training_mixin.py:264
+#: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
+#: xblock/self_assessment_mixin.py:42 xblock/student_training_mixin.py:56
+#: xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "发生了意外错误。"
 
-#: openassessment/xblock/grade_mixin.py:175
+#: xblock/grade_mixin.py:179
 msgid "Peer Assessment"
 msgstr "学生互评"
 
-#: openassessment/xblock/grade_mixin.py:177
+#: xblock/grade_mixin.py:181
 msgid "Self Assessment"
 msgstr "自我评分"
 
-#: openassessment/xblock/grade_mixin.py:217
+#: xblock/grade_mixin.py:221
 msgid "Assessment feedback could not be saved."
 msgstr "评判评语无法保存。"
 
-#: openassessment/xblock/grade_mixin.py:228
+#: xblock/grade_mixin.py:232
 msgid "Feedback saved."
 msgstr "评语已保存。"
 
-#: openassessment/xblock/grade_mixin.py:362
-#: openassessment/xblock/grade_mixin.py:508
+#: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
 msgid "Staff Comments"
 msgstr "员工评论"
 
-#: openassessment/xblock/grade_mixin.py:368
+#: xblock/grade_mixin.py:372
 msgid "Peer Median Grade"
 msgstr "同伴平均分数"
 
-#: openassessment/xblock/grade_mixin.py:373
-#: openassessment/xblock/grade_mixin.py:515
+#: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
 #, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "同学{peer_index}"
 
-#: openassessment/xblock/grade_mixin.py:374
+#: xblock/grade_mixin.py:378
 msgid "Peer Comments"
 msgstr "同学评论"
 
-#: openassessment/xblock/grade_mixin.py:384
+#: xblock/grade_mixin.py:388
 msgid "Self Assessment Grade"
 msgstr "自我评分分数"
 
-#: openassessment/xblock/grade_mixin.py:384
+#: xblock/grade_mixin.py:388
 msgid "Your Self Assessment"
 msgstr "自我评分结果"
 
-#: openassessment/xblock/grade_mixin.py:385
-#: openassessment/xblock/grade_mixin.py:527
+#: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
 msgid "Your Comments"
 msgstr "您的评论"
 
-#: openassessment/xblock/grade_mixin.py:481
+#: xblock/grade_mixin.py:485
 msgid "Waiting for peer reviews"
 msgstr "等待同学评语"
 
-#: openassessment/xblock/grade_mixin.py:520
+#: xblock/grade_mixin.py:524
 msgid "Peer"
 msgstr "同学"
 
-#: openassessment/xblock/grade_mixin.py:651
+#: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:653
+#: xblock/grade_mixin.py:657
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:656
+#: xblock/grade_mixin.py:660
 msgid "The grade for this problem is determined by your Self Assessment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:662
+#: xblock/grade_mixin.py:666
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:670
+#: xblock/grade_mixin.py:674
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
 msgstr ""
 
-#: openassessment/xblock/openassesment_template_mixin.py:19
+#: xblock/openassesment_template_mixin.py:19
 msgid "Peer Assessment Only"
 msgstr ""
 
-#: openassessment/xblock/openassesment_template_mixin.py:20
+#: xblock/openassesment_template_mixin.py:20
 msgid "Self Assessment Only"
 msgstr ""
 
-#: openassessment/xblock/openassesment_template_mixin.py:21
+#: xblock/openassesment_template_mixin.py:21
 msgid "Staff Assessment Only"
 msgstr ""
 
-#: openassessment/xblock/openassesment_template_mixin.py:22
+#: xblock/openassesment_template_mixin.py:22
 msgid "Self Assessment to Peer Assessment"
 msgstr ""
 
-#: openassessment/xblock/openassesment_template_mixin.py:23
+#: xblock/openassesment_template_mixin.py:23
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:61
+#: xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "在进行同伴评分之前必须提交回复"
 
-#: openassessment/xblock/peer_assessment_mixin.py:73
+#: xblock/peer_assessment_mixin.py:73
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "这个反馈已经提交，或者提交已被取消。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:99
-#: openassessment/xblock/peer_assessment_mixin.py:105
+#: xblock/peer_assessment_mixin.py:99 xblock/peer_assessment_mixin.py:105
 msgid "Your peer assessment could not be submitted."
 msgstr "您的学生互评无法提交"
 
-#: openassessment/xblock/peer_assessment_mixin.py:120
-#: openassessment/xblock/student_training_mixin.py:270
+#: xblock/peer_assessment_mixin.py:120 xblock/student_training_mixin.py:270
 msgid "Could not update workflow status."
 msgstr "无法更新工作流状态。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:128
+#: xblock/peer_assessment_mixin.py:128
 msgid "Could not load peer assessment."
 msgstr "无法加载学生互评。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:215
+#: xblock/peer_assessment_mixin.py:215
 msgid "Submit your assessment and review another response"
 msgstr "提交您的评分并查看另一个人的回复。"
 
-#: openassessment/xblock/peer_assessment_mixin.py:219
+#: xblock/peer_assessment_mixin.py:219
 msgid "Submit your assessment and move to next step"
 msgstr "提交您的评分并进行下一步"
 
-#: openassessment/xblock/peer_assessment_mixin.py:223
+#: xblock/peer_assessment_mixin.py:223
 #, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "提交您的评分并跳转到第{response_number}个回复"
 
-#: openassessment/xblock/resolve_dates.py:52
+#: xblock/resolve_dates.py:52
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "“{date}”是一个无效的日期格式，请确保日期的格式为“YYYY-MM-DDTHH:MM:SS”。"
 
-#: openassessment/xblock/resolve_dates.py:57
+#: xblock/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
 msgstr "“{date}”必须是日期字符串或日期时间"
 
-#: openassessment/xblock/resolve_dates.py:210
+#: xblock/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "这一步的开始日期“{start}”不能早于上一步骤的开始日期“{prev}”。"
 
-#: openassessment/xblock/resolve_dates.py:218
+#: xblock/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "这一步的截止日期“{due}”不能晚于下一个步骤的截止日期“{prev}”。"
 
-#: openassessment/xblock/resolve_dates.py:234
+#: xblock/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "起始日期“{start}”不能晚于到截止日期“{due}”"
 
-#: openassessment/xblock/rubric_reuse_mixin.py:62
+#: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:66
+#: xblock/rubric_reuse_mixin.py:66
 msgid "Invalid block id."
 msgstr ""
 
-#: openassessment/xblock/rubric_reuse_mixin.py:72
+#: xblock/rubric_reuse_mixin.py:72
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
 msgstr ""
 
-#: openassessment/xblock/self_assessment_mixin.py:142
+#: xblock/self_assessment_mixin.py:142
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "在进行自我评分之前您必须提交自己的答案"
 
-#: openassessment/xblock/self_assessment_mixin.py:165
-#: openassessment/xblock/self_assessment_mixin.py:173
+#: xblock/self_assessment_mixin.py:165 xblock/self_assessment_mixin.py:173
 msgid "Your self assessment could not be submitted."
 msgstr "自我评分无法提交"
 
-#: openassessment/xblock/staff_area_mixin.py:42
+#: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
 msgstr "您没有权限来安排练习"
 
-#: openassessment/xblock/staff_area_mixin.py:43
+#: xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
 msgstr "您没有权限来重新安排任务。"
 
-#: openassessment/xblock/staff_area_mixin.py:69
+#: xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
 msgstr "您无权访问教员信息"
 
-#: openassessment/xblock/staff_area_mixin.py:70
+#: xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
 msgstr "您无权访问学生信息。"
 
-#: openassessment/xblock/staff_area_mixin.py:71
+#: xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
 msgstr "您无权访问教员评分"
 
-#: openassessment/xblock/staff_area_mixin.py:242
+#: xblock/staff_area_mixin.py:242
 msgid "Pending"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:243
+#: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:246
+#: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:247
+#: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:248
+#: xblock/staff_area_mixin.py:248
 msgid "Submitted"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:315
+#: xblock/staff_area_mixin.py:315
 msgid "Error getting learner information."
 msgstr "无法获取学生列表"
 
-#: openassessment/xblock/staff_area_mixin.py:358
+#: xblock/staff_area_mixin.py:358
 msgid "Error loading the checked out learner response."
 msgstr "无法加载已读学生回复"
 
-#: openassessment/xblock/staff_area_mixin.py:359
+#: xblock/staff_area_mixin.py:359
 msgid "No other learner responses are available for grading at this time."
 msgstr "目前没有可用的学生回复"
 
-#: openassessment/xblock/staff_area_mixin.py:361
+#: xblock/staff_area_mixin.py:361
 msgid "Error getting staff grade information."
 msgstr "无法获取教员评分信息"
 
-#: openassessment/xblock/staff_area_mixin.py:382
+#: xblock/staff_area_mixin.py:382
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "获得不合格和已检验的员工评分计数出现错误。"
 
-#: openassessment/xblock/staff_area_mixin.py:672
+#: xblock/staff_area_mixin.py:676
 msgid "Please enter valid reason to remove the submission."
 msgstr "请输入合理的理由以移除该提交。"
 
-#: openassessment/xblock/staff_area_mixin.py:683
+#: xblock/staff_area_mixin.py:687
 msgid "Submission not found"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:694
+#: xblock/staff_area_mixin.py:698
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:721
+#: xblock/staff_area_mixin.py:727
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员提交已从同学评估中删除。除非您删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: openassessment/xblock/staff_area_mixin.py:756
+#: xblock/staff_area_mixin.py:762
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:46
-#: openassessment/xblock/staff_assessment_mixin.py:88
+#: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
 msgid "The submission ID of the submission being assessed was not found."
 msgstr "未找到正在评估的提交的提交 ID。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:70
-#: openassessment/xblock/staff_assessment_mixin.py:78
+#: xblock/staff_assessment_mixin.py:71 xblock/staff_assessment_mixin.py:79
 msgid "Your staff assessment could not be submitted."
 msgstr "无法提交您的员工评估。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:116
-#: openassessment/xblock/staff_assessment_mixin.py:124
+#: xblock/staff_assessment_mixin.py:117 xblock/staff_assessment_mixin.py:125
 msgid "Your team assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:190
+#: xblock/staff_assessment_mixin.py:191
 msgid "Waiting for a Staff Grade"
 msgstr "等待员工评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:191
+#: xblock/staff_assessment_mixin.py:192
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr "稍后返回检查，以查看课程工作人员是否已评估您的回复。您将在评估完成后获得您的评分。"
 
-#: openassessment/xblock/staff_assessment_mixin.py:204
+#: xblock/staff_assessment_mixin.py:205
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr "您必须完成上述步骤才可查看您的评分"
 
-#: openassessment/xblock/staff_assessment_mixin.py:205
+#: xblock/staff_assessment_mixin.py:206
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "
 "problem."
 msgstr "虽然课程工作人员已评估了您的回复，但是只有在您已完成此问题的全部所需步骤后，您才能获得评分。"
 
-#: openassessment/xblock/student_training_mixin.py:227
+#: xblock/student_training_mixin.py:227
 msgid "Missing options_selected key in request"
 msgstr "请求中缺少可选选项"
 
-#: openassessment/xblock/student_training_mixin.py:229
+#: xblock/student_training_mixin.py:229
 msgid "options_selected must be a dictionary"
 msgstr "选中的分值必须是一个字典"
 
-#: openassessment/xblock/student_training_mixin.py:254
-#: openassessment/xblock/student_training_mixin.py:259
+#: xblock/student_training_mixin.py:254 xblock/student_training_mixin.py:259
 msgid "Your scores could not be checked."
 msgstr "无法查看您的得分。"
 
-#: openassessment/xblock/studio_mixin.py:224
-#: openassessment/xblock/studio_mixin.py:236
+#: xblock/studio_mixin.py:229 xblock/studio_mixin.py:241
 msgid "Error updating XBlock configuration"
 msgstr "更新XBlock配置出错"
 
-#: openassessment/xblock/studio_mixin.py:241
+#: xblock/studio_mixin.py:246
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:245
+#: xblock/studio_mixin.py:250
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:248
+#: xblock/studio_mixin.py:253
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: openassessment/xblock/studio_mixin.py:272
+#: xblock/studio_mixin.py:277
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "验证错误: {error}"
 
-#: openassessment/xblock/studio_mixin.py:303
+#: xblock/studio_mixin.py:308
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: openassessment/xblock/submission_mixin.py:118
+#: xblock/submission_mixin.py:118
 msgid "\"submission\" required to submit answer."
 msgstr "要交答案，必须有“submission\"。"
 
-#: openassessment/xblock/submission_mixin.py:139
+#: xblock/submission_mixin.py:139
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr "要提交答案，请在预览或实时模式查看该组件。"
 
-#: openassessment/xblock/submission_mixin.py:145
+#: xblock/submission_mixin.py:145
 msgid "Multiple submissions are not allowed."
 msgstr "不允许批量提交。"
 
-#: openassessment/xblock/submission_mixin.py:178
+#: xblock/submission_mixin.py:178
 msgid "Response exceeds maximum allowed size."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:180
+#: xblock/submission_mixin.py:180
 msgid ""
 "Note: if you have a spellcheck or grammar check browser extension, try "
 "disabling, reloading, and reentering your response before submitting."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:200
+#: xblock/submission_mixin.py:200
 msgid "Submission cannot be empty. Please refresh the page and try again."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:210
+#: xblock/submission_mixin.py:210
 msgid "API returned unclassified exception."
 msgstr "API返回的未分类的异常"
 
-#: openassessment/xblock/submission_mixin.py:261
-msgid "This response could not be saved."
-msgstr "该答案无法保存。"
+#: xblock/submission_mixin.py:261
+msgid "Please contact support staff."
+msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:265
-msgid "This response was not submitted."
-msgstr "该答案提交不成功。"
+#: xblock/submission_mixin.py:265
+msgid "Submission data missing. Please contact support staff."
+msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:281
+#: xblock/submission_mixin.py:281
 msgid "Files descriptions were not submitted."
 msgstr "文件描述未能提交。"
 
-#: openassessment/xblock/submission_mixin.py:320
+#: xblock/submission_mixin.py:320
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:472
+#: xblock/submission_mixin.py:472
 msgid "There was an error uploading your file."
 msgstr "您的文件上传出现一个错误。"
 
-#: openassessment/xblock/submission_mixin.py:484
+#: xblock/submission_mixin.py:484
 msgid "Only a single file upload is allowed for this assessment."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:495
+#: xblock/submission_mixin.py:495
 msgid ""
 "File upload failed: unsupported file type.Only the supported file types can "
 "be uploaded.If you have questions, please reach out to the course team."
 msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:508
+#: xblock/submission_mixin.py:508
 msgid "Error retrieving upload URL."
 msgstr "上传URL不正确。"
 
-#: openassessment/xblock/submission_mixin.py:790
-msgid "This response has been saved but not submitted."
-msgstr "该答案已保存，但仍未提交。"
+#: xblock/submission_mixin.py:790
+msgid "Draft saved!"
+msgstr ""
 
-#: openassessment/xblock/submission_mixin.py:791
-msgid "This response has not been saved."
-msgstr "该答案还没有被保存。"
+#: xblock/submission_mixin.py:791
+msgid "Response not started."
+msgstr ""
 
-#: openassessment/xblock/validation.py:118
+#: xblock/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "该题目至少应包括一项评估。"
 
-#: openassessment/xblock/validation.py:122
+#: xblock/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "您选择的评分次序无效。"
 
-#: openassessment/xblock/validation.py:132
+#: xblock/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "在学生互评中，“须评”值必须为正整数。"
 
-#: openassessment/xblock/validation.py:135
+#: xblock/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "在学生互评中，“被评”的值必须为正整数。"
 
-#: openassessment/xblock/validation.py:139
+#: xblock/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "在学生互评中，“须评”的值必须大于或等于“被评”的值。"
 
-#: openassessment/xblock/validation.py:148
+#: xblock/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "您必须为学员训练提供至少一个示例回复。"
 
-#: openassessment/xblock/validation.py:151
+#: xblock/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "学员训练的每一个示例回复必须独一无二。"
 
-#: openassessment/xblock/validation.py:158
+#: xblock/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "如果员工评估是唯一步骤，则\"要求\"值必须为真值。"
 
-#: openassessment/xblock/validation.py:162
+#: xblock/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "题目公开之后，不能再修改评分次数。"
 
-#: openassessment/xblock/validation.py:167
+#: xblock/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "题目公开之后，不能再修改评分类型。"
 
-#: openassessment/xblock/validation.py:190
+#: xblock/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "这个评分标准的定义无效。"
 
-#: openassessment/xblock/validation.py:196
+#: xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "得分点“{criterion}”中存在重复分值(名称)：{duplicates}"
 
-#: openassessment/xblock/validation.py:204
+#: xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "没有分值的得分点必须要求填写评语。"
 
-#: openassessment/xblock/validation.py:213
+#: xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "无法在一道题目已经公开之后创建或删除提示。"
 
-#: openassessment/xblock/validation.py:217
+#: xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "题目公开后，得分点的数量不能被修改。"
 
-#: openassessment/xblock/validation.py:230
+#: xblock/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "题目公开后，得分点的名称不能被修改。"
 
-#: openassessment/xblock/validation.py:235
+#: xblock/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "题目公开后，分值的数目不能被修改。"
 
-#: openassessment/xblock/validation.py:240
+#: xblock/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "题目公开后，各评分点的分值不能再改变了。"
 
-#: openassessment/xblock/validation.py:291
+#: xblock/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "学员训练至少须有一个训练示例。"
 
-#: openassessment/xblock/validation.py:356
+#: xblock/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "排行榜号码是无效的。"
 
-#: openassessment/xblock/validation.py:379
+#: xblock/validation.py:379
 msgid "The submission format is invalid."
 msgstr "提交的格式不正确"
