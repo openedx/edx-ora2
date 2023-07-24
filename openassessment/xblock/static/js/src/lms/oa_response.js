@@ -278,20 +278,6 @@ export class ResponseView {
     }
 
     /**
-     * Enable/disable the upload button or check whether the upload button is enabled
-     *
-     * @param {boolean]} enabled - optional param to enable/disable button
-     * @returns {boolean} whether the upload button is enabled or not
-     *
-     * @example
-     *     view.uploadEnabled(true);  // enable the upload button
-     *     view.uploadEnabled();      // check whether the upload button is enabled
-     */
-    uploadEnabled(enabled) {
-      return this.baseView.buttonEnabled('.file__upload', enabled);
-    }
-
-    /**
      Enable/disable the preview button.
      Check whether the preview button is enabled.
 
@@ -325,7 +311,21 @@ export class ResponseView {
      boolean: if we have deleted/moved files or not.
      * */
     hasAllUploadFiles() {
-      for (let i = 0; i < this.files.length; i++) {
+      if ( !this.files ) {
+        this.baseView.toggleActionError(
+          'upload',
+          gettext('No files selected for upload.'),
+        );
+        return false;
+      }
+      if ( !this.collectFilesDescriptions() ) {
+        this.baseView.toggleActionError(
+          'upload', 
+          gettext('Please provide a description for each file you are uploading.'),
+        );
+        return false;
+      }
+      for (let i = 0; i < this.files?.length; i++) {
         const file = this.files[i];
         if (file.size === 0) {
           this.baseView.toggleActionError(
@@ -623,10 +623,6 @@ export class ResponseView {
         }
         this.updateFilesDescriptionsFields(files, descriptions, uploadType);
       }
-
-      if (this.files === null) {
-        $(this.element).find('.file__upload').prop('disabled', true);
-      }
     }
 
    isUploadSupported = (file, uploadType) => {
@@ -718,9 +714,6 @@ export class ResponseView {
        textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
      }
 
-     // We can upload if descriptions exist
-     this.uploadEnabled(descriptionsExists);
-
      // Submissions should be disabled when missing descriptions
      this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
    }
@@ -745,8 +738,6 @@ export class ResponseView {
          isError = true;
        }
      });
-
-     this.uploadEnabled(!isError);
 
      if (!isError) {
        this.filesDescriptions = filesDescriptions;
@@ -852,7 +843,6 @@ export class ResponseView {
        },
      ).fail((errMsg) => {
        view.baseView.toggleActionError('upload', errMsg);
-       sel.find('.file__upload').prop('disabled', false);
      });
    }
 
@@ -864,8 +854,6 @@ export class ResponseView {
      let promise = null;
      const fileCount = view.files.length;
      const sel = $('.step--response', this.element);
-
-     sel.find('.file__upload').prop('disabled', true);
 
      promise = view.saveFilesDescriptions();
 
@@ -892,7 +880,6 @@ export class ResponseView {
      const sel = $('.step--response', this.element);
      const handleError = function (errMsg) {
        view.baseView.toggleActionError('upload', errMsg);
-       sel.find('button.file__upload').prop('disabled', false);
        sel.find('input.file--upload').val(null);
      };
 
