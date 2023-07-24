@@ -86,7 +86,6 @@ export class ResponseView {
             view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
             view.announceStatus = false;
             view.dateFactory.apply();
-            view.checkSubmissionAbility();
           });
         },
       ).fail(() => {
@@ -207,45 +206,52 @@ export class ResponseView {
     }
 
     /**
-     * Check that "submit" button could be enabled (or disabled)
-     *
-     * Args:
-     * filesFiledIsNotBlank (boolean): used to avoid race conditions situations
-     * (if files were successfully uploaded and are not displayed yet but
-     * after upload last file the submit button should be available to push)
-     *
+     * Check if submission is valid before submitting
+     * Returns: boolean
      */
-    checkSubmissionAbility(filesFiledIsNotBlank) {
-      const textFieldsIsNotBlank = !this.response().every((element) => $.trim(element) === '');
-
-      filesFiledIsNotBlank = filesFiledIsNotBlank || false;
-      $('.submission__answer__file', this.element).each(function () {
-        if (($(this).prop('tagName') === 'IMG') && ($(this).attr('src') !== '')) {
-          filesFiledIsNotBlank = true;
+    isValidForSubmit() {
+      if (this.textResponse === 'required') {
+        const textFieldsIsNotBlank = !this.response().every(
+          (element) => $.trim(element) === ''
+        );
+        if (!textFieldsIsNotBlank) {
+          this.baseView.toggleActionError(
+            'submit',
+            gettext('Please provide a response.')
+          );
+          return false;
         }
-        if (($(this).prop('tagName') === 'A') && ($(this).attr('href') !== '')) {
-          filesFiledIsNotBlank = true;
-        }
-      });
-      let readyToSubmit = true;
-
-      if ((this.textResponse === 'required') && !textFieldsIsNotBlank) {
-        readyToSubmit = false;
       }
-      if ((this.fileUploadResponse === 'required') && !filesFiledIsNotBlank) {
-        readyToSubmit = false;
-      }
-      if ((this.textResponse === 'optional') && (this.fileUploadResponse === 'optional')
-            && !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
-        readyToSubmit = false;
+      if (this.fileUploadResponse === 'required') {
+        let filesFiledIsNotBlank = false;
+        $('.submission__answer__file', this.element).each(function () {
+          if (
+            ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '') ||
+            ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
+          ) {
+            filesFiledIsNotBlank = true;
+          }
+        });
+        if ( !filesFiledIsNotBlank ) {
+          this.baseView.toggleActionError(
+            'submit',
+            gettext('Please upload a file.')
+          );
+          return false;
+        };
       }
       if (this.hasPendingUploadFiles()) {
         this.collectFilesDescriptions();
-        readyToSubmit = false;
+        this.baseView.toggleActionError(
+          'submit',
+          gettext(
+            'There is still file upload in progress. Please wait until it is finished.'
+          )
+        );
+        return false;
       }
 
-      // if new files are to be uploaded, confirm that they have descriptions
-      this.submitEnabled(readyToSubmit);
+      return true;
     }
 
     /**
@@ -332,7 +338,6 @@ export class ResponseView {
             'upload',
             gettext('Your file has been deleted or path has been changed: ') + file.name,
           );
-          this.submitEnabled(true);
           return false;
         }
       }
@@ -418,8 +423,6 @@ export class ResponseView {
      the user has entered a response.
      * */
     handleResponseChanged() {
-      this.checkSubmissionAbility();
-
       // Update the save button, save status, and "unsaved changes" warning
       // only if the response has changed
       if (this.responseChanged()) {
@@ -463,10 +466,6 @@ export class ResponseView {
         // Remember which response we saved, once the server confirms that it's been saved...
         view.savedResponse = savedResponse;
 
-        // ... but update the UI based on what the user may have entered
-        // since hitting the save button.
-        view.checkSubmissionAbility();
-
         const currentResponse = view.response();
         const currentResponseEqualsSaved = currentResponse.every((element, index) => element === savedResponse[index]);
         if (currentResponseEqualsSaved) {
@@ -498,11 +497,10 @@ export class ResponseView {
      Handler for the submit button
      * */
     handleSubmitClicked() {
+      if (!this.isValidForSubmit()) { return; }
+
       // Immediately disable the submit button to prevent multiple submission
       this.submitEnabled(false);
-
-      // Block submit if a learner has files staged for upload
-      if (this.hasPendingUploadFiles()) { return; }
 
       const view = this;
       const title = gettext('Confirm Submit Response');
@@ -711,11 +709,7 @@ export class ResponseView {
        divTextarea.appendTo(mainDiv);
 
        mainDiv.appendTo(filesDescriptions);
-       textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
      }
-
-     // Submissions should be disabled when missing descriptions
-     this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
    }
 
    /**
@@ -793,7 +787,6 @@ export class ResponseView {
        const block = sel.find(`.submission__answer__file__block__${filenum}`);
        block.html('');
        block.prop('deleted', true);
-       this.checkSubmissionAbility();
      }).fail((errMsg) => {
        this.baseView.toggleActionError('delete', errMsg);
      });
@@ -896,7 +889,6 @@ export class ResponseView {
              if (finalUpload) {
                sel.find('input[type=file]').val('');
                view.filesUploaded = true;
-               view.checkSubmissionAbility(true);
              }
            }).fail(handleError);
        },

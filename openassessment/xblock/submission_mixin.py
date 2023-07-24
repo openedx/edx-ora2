@@ -960,16 +960,6 @@ class SubmissionMixin:
             context['save_status'] = self.save_status
             context['enable_delete_files'] = True
 
-            submit_enabled = True
-            if self.text_response == 'required' and not self.saved_response:
-                submit_enabled = False
-            if self.file_upload_response == 'required' and not file_urls:
-                submit_enabled = False
-            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
-                    and not self.saved_response and not file_urls:
-                submit_enabled = False
-            context['submit_enabled'] = submit_enabled
-
             if self.teams_enabled:
                 self.get_team_submission_context(context)
                 if self.does_team_have_submission(context['team_id']):

@@ -2,8 +2,7 @@
 {% load i18n %}
 {% if allow_latex %}
     <{{ elem }} class="list--actions__item">
-        <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ id }}" data-input="{{ preview_name }}"
-            {{submit_enabled|yesno:",disabled" }}>
+        <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ id }}" data-input="{{ preview_name }}">
             {% trans "Preview in LaTeX"%}
         </button>
         <div id="response__preview_explanation__{{ id }}" class="response__submission__label">

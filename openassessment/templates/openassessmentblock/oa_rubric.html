@@ -62,7 +62,7 @@
                                         {% if criterion.feedback == 'required' %}required{% endif %}
                                         >
                                     </textarea>
-                                    {% include "openassessmentblock/oa_latex_preview.html" with id="criteria__"|add:rubric_type|add:criterion.order_num elem="div" preview_name="criteria__"|add:criterion.name submit_enabled=True %}
+                                    {% include "openassessmentblock/oa_latex_preview.html" with id="criteria__"|add:rubric_type|add:criterion.order_num elem="div" preview_name="criteria__" %}
                                 </div>
                             </div>
                         {% endif %}
@@ -86,7 +86,7 @@
                         maxlength="10000"
                     >
                     </textarea>
-                    {% include "openassessmentblock/oa_latex_preview.html" with id="feedback__"|add:rubric_type elem="div" preview_name="feedback" submit_enabled=True %}
+                    {% include "openassessmentblock/oa_latex_preview.html" with id="feedback__"|add:rubric_type elem="div" preview_name="feedback" %}
                 </div>
             </li>
         {% endif %}
