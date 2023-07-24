@@ -212,12 +212,12 @@ export class ResponseView {
     isValidForSubmit() {
       if (this.textResponse === 'required') {
         const textFieldsIsNotBlank = !this.response().every(
-          (element) => $.trim(element) === ''
+          (element) => $.trim(element) === '',
         );
         if (!textFieldsIsNotBlank) {
           this.baseView.toggleActionError(
             'submit',
-            gettext('Please provide a response.')
+            gettext('Please provide a response.'),
           );
           return false;
         }
@@ -226,27 +226,27 @@ export class ResponseView {
         let filesFiledIsNotBlank = false;
         $('.submission__answer__file', this.element).each(function () {
           if (
-            ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '') ||
-            ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
+            ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '')
+            || ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
           ) {
             filesFiledIsNotBlank = true;
           }
         });
-        if ( !filesFiledIsNotBlank ) {
+        if (!filesFiledIsNotBlank) {
           this.baseView.toggleActionError(
             'submit',
-            gettext('Please upload a file.')
+            gettext('Please upload a file.'),
           );
           return false;
-        };
+        }
       }
       if (this.hasPendingUploadFiles()) {
         this.collectFilesDescriptions();
         this.baseView.toggleActionError(
           'submit',
           gettext(
-            'There is still file upload in progress. Please wait until it is finished.'
-          )
+            'There is still file upload in progress. Please wait until it is finished.',
+          ),
         );
         return false;
       }
@@ -317,16 +317,16 @@ export class ResponseView {
      boolean: if we have deleted/moved files or not.
      * */
     hasAllUploadFiles() {
-      if ( !this.files ) {
+      if (!this.files) {
         this.baseView.toggleActionError(
           'upload',
           gettext('No files selected for upload.'),
         );
         return false;
       }
-      if ( !this.collectFilesDescriptions() ) {
+      if (!this.collectFilesDescriptions()) {
         this.baseView.toggleActionError(
-          'upload', 
+          'upload',
           gettext('Please provide a description for each file you are uploading.'),
         );
         return false;

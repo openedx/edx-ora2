@@ -922,8 +922,6 @@ class SubmissionMixin:
         context['allow_multiple_files'] = self.allow_multiple_files
         context['allow_latex'] = self.allow_latex
 
-        file_urls = None
-
         if self.file_upload_type:
             context['file_urls'] = self.file_manager.file_descriptors(
                 team_id=team_id_for_current_submission, include_deleted=True
