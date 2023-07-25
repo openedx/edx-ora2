@@ -413,7 +413,7 @@ msgstr "Şu anda bekleme durumunda olan {stuck_learners} öğrenci var, bir baş
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr "Ancak bu öğrencilerin {overwriting_count} kadarı, personel notu geçersiz kılma aracı aracılığıyla zaten bir not aldı."
+msgstr "Ancak bu öğrencilerin {overwritten_count} kadarı, personel notu geçersiz kılma aracı aracılığıyla zaten bir not aldı."
 
 #: xblock/static/dist/openassessment-lms.070b37d817f5965d8b09.js:375
 msgid "Error while fetching student data."
