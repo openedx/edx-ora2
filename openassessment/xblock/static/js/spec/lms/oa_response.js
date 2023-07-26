@@ -234,73 +234,60 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.response()[1]).toBe('Test response 2');
     });
 
-    it("updates submit button and save status when response text changes", function() {
-        // Response is blank --> submit button disabled
-        view.response(['', '']);
-        view.handleResponseChanged();
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('This response has not been saved');
+    describe('is valid for submission', function() {
+        it('response require text', function() {
+            // response is blank
+            view.response(['', '']);
+            view.handleResponseChanged();
+            expect(view.submitEnabled()).toBe(true);
+            expect(view.isValidForSubmit()).toBe(false);
+            expect(view.saveStatus()).toContain('This response has not been saved');
 
-        // Response is whitespace --> save/submit buttons disabled
-        view.response(['               \n      \n      ', ' ']);
-        view.handleResponseChanged();
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('This response has not been saved');
+            // response is whitespace
+            view.response(['               \n      \n      ', ' ']);
+            view.handleResponseChanged();
+            expect(view.submitEnabled()).toBe(true);
+            expect(view.isValidForSubmit()).toBe(false);
+            expect(view.saveStatus()).toContain('This response has not been saved');
 
-        // Response is not blank --> submit button enabled
-        view.response(['Test response 1', ' ']);
-        view.handleResponseChanged();
-        expect(view.submitEnabled()).toBe(true);
-        expect(view.saveStatus()).toContain('Saving draft');
-    });
+            // response is not blank
+            view.response(['Test response 1', ' ']);
+            view.handleResponseChanged();
+            expect(view.submitEnabled()).toBe(true);
+            expect(view.isValidForSubmit()).toBe(true);
+            expect(view.saveStatus()).toContain('Saving draft');
+        });
 
-    it("updates submit button when response text is optional but file upload is required", function() {
-        view.textResponse = 'optional';
-        view.fileUploadResponse = 'required';
+        it('response require file upload', function() {
+            view.textResponse = 'optional';
+            view.fileUploadResponse = 'required';
 
-        expect(view.submitEnabled()).toBe(false);
+            expect(view.submitEnabled()).toBe(true);
+            expect(view.isValidForSubmit()).toBe(false);
 
-        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
-        view.prepareUpload(files, 'pdf-and-image', ['test description']);
-        view.uploadFiles();
-        view.checkSubmissionAbility(true);
+            var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+            view.prepareUpload(files, 'pdf-and-image', ['test description']);
+            view.uploadFiles();
 
-        expect(view.submitEnabled()).toBe(true);
-    });
+            expect(view.submitEnabled()).toBe(true);
+            expect(view.isValidForSubmit()).toBe(true);
+        });
 
-    it("doesn't allow to push submit button if response text and file upload are both optional and input fields are empty ", function() {
-        view.textResponse = 'optional';
-        view.fileUploadResponse = 'optional';
-
-        view.response(['', '']);
-        view.handleResponseChanged();
-
-        expect(view.submitEnabled()).toBe(false);
-
-        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
-        view.prepareUpload(files, 'pdf-and-image', ['test description']);
-        view.uploadFiles();
-        view.checkSubmissionAbility(true);
-
-        expect(view.submitEnabled()).toBe(true);
-    });
-
-    it("updates submit button and save state when the user enters a response", function() {
-        // Response is blank --> submit button is disabled
-        view.response('');
-        view.save();
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.saveStatus()).toContain('Draft saved!');
-
-        // Response is not blank --> submit button enabled, saving enabled
-        view.response(['Test response 1', 'Test response 2']);
-        view.handleResponseChanged();
-        expect(view.saveStatus()).toContain('Saving draft');
-
-        // Response is saved
-        view.save();
-        expect(view.submitEnabled()).toBe(true);
-        expect(view.saveStatus()).toContain('Draft saved!');
+        it('it is invalid if text and file are both optional and empty', function() {
+            view.textResponse = 'optional';
+            view.fileUploadResponse = 'optional';
+    
+            view.response(['', '']);
+            view.handleResponseChanged();
+    
+            expect(view.isValidForSubmit()).toBe(false);
+    
+            var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+            view.prepareUpload(files, 'pdf-and-image', ['test description']);
+            view.uploadFiles();
+    
+            expect(view.isValidForSubmit()).toBe(true);
+        });
     });
 
     it("shows unsaved draft only when response text has changed", function() {
@@ -627,19 +614,17 @@ describe("OpenAssessment.ResponseView", function() {
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
 
-        expect(view.submitEnabled()).toBe(false);
-
         // Upload files
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
                      {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
-        view.checkSubmissionAbility(true);
+        expect(view.isValidForSubmit()).toBe(true);
         expect(view.submitEnabled()).toBe(true);
         expect(view.files.length).toEqual(2);
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
-        view.checkSubmissionAbility(true);
+        expect(view.isValidForSubmit()).toBe(true);
         expect(view.files.length).toEqual(2);
     });
 
@@ -648,7 +633,6 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(view, 'getSavedFileCount').and.returnValue(20);
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
-        expect(view.submitEnabled()).toBe(false);
         var files = [];
         for(var i=0; i<20;i++) {
             files.push({type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''});
@@ -656,7 +640,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         view.prepareUpload(files, 'image', ['i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',
         'i1', 'i2','i1', 'i2','i1', 'i2','i1', 'i2',]);
-        view.checkSubmissionAbility(true);
+        expect(view.isValidForSubmit()).toBe(false);
         expect(view.submitEnabled()).toBe(true);
         expect(view.getSavedFileCount()).toEqual(20);
         var files2 = [];
@@ -669,31 +653,31 @@ describe("OpenAssessment.ResponseView", function() {
     });
 
     it("tests that file upload works after file delete", function() {
-        view.textResponse = 'optional';
-        view.fileUploadResponse = 'required';
+      view.textResponse = 'optional';
+      view.fileUploadResponse = 'required';
 
-        expect(view.submitEnabled()).toBe(false);
-
-        // Upload files
-        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
-                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
-        view.prepareUpload(files, 'image', ['i1', 'i2']);
-        view.uploadFiles()
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
-        // Delete the first file
-        view.removeUploadedFile(0);
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
-        var fileNameAfterDelete = 'picture3.jpg';
-        files = [{type: 'image/jpeg', size: 1024, name: fileNameAfterDelete, data: ''}];
-        view.prepareUpload(files, 'image', ['i3']);
-        view.uploadFiles();
-        view.checkSubmissionAbility(true);
-        // Ensure that view.fileNames and view.fileDescriptions only contain data about the newest set
-        // of files uploaded files.
-        expect(view.fileNames).toEqual(['picture3.jpg']);
-        expect(view.filesDescriptions).toEqual(['i3']);
+      // Upload files
+      var files = [
+        { type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: '' },
+        { type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: '' },
+      ];
+      view.prepareUpload(files, 'image', ['i1', 'i2']);
+      view.uploadFiles();
+      expect(view.isValidForSubmit()).toBe(true);
+      // Delete the first file
+      view.removeUploadedFile(0);
+      expect(view.isValidForSubmit()).toBe(true);
+      var fileNameAfterDelete = 'picture3.jpg';
+      files = [
+        { type: 'image/jpeg', size: 1024, name: fileNameAfterDelete, data: '' },
+      ];
+      view.prepareUpload(files, 'image', ['i3']);
+      view.uploadFiles();
+      expect(view.isValidForSubmit()).toBe(true);
+      // Ensure that view.fileNames and view.fileDescriptions only contain data about the newest set
+      // of files uploaded files.
+      expect(view.fileNames).toEqual(['picture3.jpg']);
+      expect(view.filesDescriptions).toEqual(['i3']);
     });
 
     it("uploads a PDF using a one-time URL", function() {
@@ -740,52 +724,38 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload', 'ERROR');
     });
 
-    it("disables the upload button if any file description is not set", function() {
-        function getFileUploadField() {
-            return $(view.element).find('.file__upload').first();
-        }
-        function expectFileUploadButton(disabled) {
-            view.collectFilesDescriptions();
-            expect(getFileUploadField().is(':disabled')).toEqual(disabled);
-        }
-
+    it("collectFilesDescriptions return false if any file description is not set", function() {
         spyOn(view, 'updateFilesDescriptionsFields').and.callThrough();
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
                      {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
         view.prepareUpload(files, 'image');
 
-        expect(getFileUploadField().is(':disabled')).toEqual(true);
         expect(view.updateFilesDescriptionsFields).toHaveBeenCalledWith(files, undefined, 'image');
         var firstDescriptionField1 = $(view.element).find('.file__description__0').first();
         var firstDescriptionField2 = $(view.element).find('.file__description__1').first();
 
         // Only set the first description field and the second field remain empty.
-        // and check that upload button is disabled
         $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('');
-        expectFileUploadButton(true);
+        expect(view.collectFilesDescriptions()).toEqual(false);
 
         // Set the second description field to be only spaces (given first description has value).
-        // and check that upload button is disabled
         $(firstDescriptionField2).val('  ');
-        expectFileUploadButton(true)
+        expect(view.collectFilesDescriptions()).toEqual(false);
 
         // Set the both description fields to contain only spaces.
-        // and check that upload button is disabled
         $(firstDescriptionField1).val(' ');
         $(firstDescriptionField2).val(' ');
-        expectFileUploadButton(true)
+        expect(view.collectFilesDescriptions()).toEqual(false);
 
         // set the both description field to contain non empty values.
-        // and check that upload button is enabled
         $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('test2');
-        expectFileUploadButton(false)
+        expect(view.collectFilesDescriptions()).toEqual(true);
 
         // remove value in the first upload field
-        // and check that upload button is disabled
         $(firstDescriptionField1).val('');
-        expectFileUploadButton(true)
+        expect(view.collectFilesDescriptions()).toEqual(false);
     });
 
     it("removes description fields after files upload", function() {
@@ -812,12 +782,11 @@ describe("OpenAssessment.ResponseView", function() {
         // trigger with no files selected. Expect Submit response button is disabled.
         view.prepareUpload([], 'image', []);
 
-        expect(view.submitEnabled()).toBe(false);
+        expect(view.isValidForSubmit()).toBe(false);
 
         // Expect there are no pending upload files & file upload button is disabled.
         expect(view.hasPendingUploadFiles()).toEqual(false);
         expect(view.files).toEqual(null);
-        expect($(view.element).find('.file__upload').first().is(':disabled')).toEqual(true);
     });
 
      it("prevents user from uploading files when file is moved or deleted", function() {
@@ -839,89 +808,77 @@ describe("OpenAssessment.ResponseView", function() {
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
 
-        // initially, user can't submit because file is missing
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.uploadEnabled()).toBe(false);
-
         // user selects some files to upload
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
                      {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
         view.prepareUpload(files, 'image');
 
-        // user selected some files to upload but missing descriptions causes submit to be disabled
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.uploadEnabled()).toBe(false);
+        // user selected some files to upload but missing descriptions should be invalid for submit
+        expect(view.hasAllUploadFiles()).toBe(false);
+        expect(view.isValidForSubmit()).toBe(false);
 
         var firstDescriptionField1 = $(view.element).find('.file__description__0').first();
         var firstDescriptionField2 = $(view.element).find('.file__description__1').first();
         $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('');
 
-        // adding some, but not all, descriptions causes submit to be disabled
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(false);
-        expect(view.uploadEnabled()).toBe(false);
+        // adding some, but not all, descriptions should still be invalid for submit
+        expect(view.hasAllUploadFiles()).toBe(false);
+        expect(view.isValidForSubmit()).toBe(false);
 
         $(firstDescriptionField1).val('test1');
         $(firstDescriptionField2).val('test2');
 
-        // user finishes adding descriptions which enables the upload button
-        view.checkSubmissionAbility(true);
-        expect(view.uploadEnabled()).toBe(true);
+        view.filesUploaded = false;
+        // user finishes adding descriptions but upload still pending
+        expect(view.hasAllUploadFiles()).toBe(true);
+        expect(view.isValidForSubmit()).toBe(false);
 
-        // the submit button remains disabled until files are uploaded
-        expect(view.submitEnabled()).toBe(false);
+        // after upload completed should be valid for submit
+        view.uploadFiles();
+
+        expect(view.isValidForSubmit()).toBe(true);
     });
 
     it("deleting all uploaded files prevents user from submitting", function() {
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
 
-        expect(view.submitEnabled()).toBe(false);
-
         // Upload files
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
                      {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
         view.prepareUpload(files, 'image', ['i1', 'i2']);
         view.uploadFiles()
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
+        expect(view.isValidForSubmit()).toBe(true);
 
         // Delete the first file
         view.removeUploadedFile(0);
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
+        expect(view.isValidForSubmit()).toBe(true);
 
         // Delete the remaining file
         view.removeUploadedFile(1);
-        expect(view.submitEnabled()).toBe(false);
+        expect(view.isValidForSubmit()).toBe(false);
     });
 
     it("doesn't delete file if user clicks no", function() {
         view.textResponse = 'optional';
         view.fileUploadResponse = 'required';
 
-        expect(view.submitEnabled()).toBe(false);
-
         // Upload file
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''}];
         view.prepareUpload(files, 'image', ['i1']);
         view.uploadFiles()
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
+        expect(view.isValidForSubmit()).toBe(true);
 
         // "Click" the delete button twice, cancelling both times.
         // The file should not be deleted either time.
         setStubConfirm(false);
 
         view.removeUploadedFile(0);
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
+        expect(view.isValidForSubmit()).toBe(false);
 
         view.removeUploadedFile(0);
-        view.checkSubmissionAbility(true);
-        expect(view.submitEnabled()).toBe(true);
+        expect(view.isValidForSubmit()).toBe(false);
     });
 
     it("displays an error if there is an error deleting a file", function() {

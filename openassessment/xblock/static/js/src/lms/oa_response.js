@@ -210,36 +210,41 @@ export class ResponseView {
      * Returns: boolean
      */
     isValidForSubmit() {
-      if (this.textResponse === 'required') {
-        const textFieldsIsNotBlank = !this.response().every(
-          (element) => $.trim(element) === '',
+      const textFieldsIsNotBlank = !this.response().every(
+        (element) => $.trim(element) === '',
+      );
+      let filesFiledIsNotBlank = false;
+      $('.submission__answer__file', this.element).each(function () {
+        if (
+          ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '')
+          || ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
+        ) {
+          filesFiledIsNotBlank = true;
+        }
+      });
+      if (this.textResponse === 'required' && !textFieldsIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Please provide a response.'),
         );
-        if (!textFieldsIsNotBlank) {
-          this.baseView.toggleActionError(
-            'submit',
-            gettext('Please provide a response.'),
-          );
-          return false;
-        }
+        return false;
       }
-      if (this.fileUploadResponse === 'required') {
-        let filesFiledIsNotBlank = false;
-        $('.submission__answer__file', this.element).each(function () {
-          if (
-            ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '')
-            || ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
-          ) {
-            filesFiledIsNotBlank = true;
-          }
-        });
-        if (!filesFiledIsNotBlank) {
-          this.baseView.toggleActionError(
-            'submit',
-            gettext('Please upload a file.'),
-          );
-          return false;
-        }
+      if (this.fileUploadResponse === 'required' && !filesFiledIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Please upload a file.'),
+        );
+        return false;
       }
+      if ((this.textResponse === 'optional') && (this.fileUploadResponse === 'optional')
+            && !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Cannot submit empty response even everything is optional.'),
+        );
+        return false;
+      }
+
       if (this.hasPendingUploadFiles()) {
         this.collectFilesDescriptions();
         this.baseView.toggleActionError(
