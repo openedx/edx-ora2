@@ -26,6 +26,7 @@ from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
+from openassessment.xblock.data_layer.data_layer_mixin import DataLayerMixin
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
@@ -106,26 +107,29 @@ def load(path):
 @XBlock.needs("user_state")
 @XBlock.needs("teams")
 @XBlock.needs("teams_configuration")
-class OpenAssessmentBlock(MessageMixin,
-                          SubmissionMixin,
-                          PeerAssessmentMixin,
-                          SelfAssessmentMixin,
-                          StaffAssessmentMixin,
-                          StudioMixin,
-                          GradeMixin,
-                          LeaderboardMixin,
-                          StaffAreaMixin,
-                          WorkflowMixin,
-                          TeamWorkflowMixin,
-                          StudentTrainingMixin,
-                          LmsCompatibilityMixin,
-                          CourseItemsListingMixin,
-                          ConfigMixin,
-                          TeamMixin,
-                          OpenAssessmentTemplatesMixin,
-                          RubricReuseMixin,
-                          StaffGraderMixin,
-                          XBlock):
+class OpenAssessmentBlock(
+        MessageMixin,
+        SubmissionMixin,
+        PeerAssessmentMixin,
+        SelfAssessmentMixin,
+        StaffAssessmentMixin,
+        StudioMixin,
+        GradeMixin,
+        LeaderboardMixin,
+        StaffAreaMixin,
+        WorkflowMixin,
+        TeamWorkflowMixin,
+        StudentTrainingMixin,
+        LmsCompatibilityMixin,
+        CourseItemsListingMixin,
+        ConfigMixin,
+        TeamMixin,
+        OpenAssessmentTemplatesMixin,
+        RubricReuseMixin,
+        StaffGraderMixin,
+        DataLayerMixin,
+        XBlock
+    ):
     """Displays a prompt and provides an area where students can compose a response."""
 
     VALID_ASSESSMENT_TYPES = [
