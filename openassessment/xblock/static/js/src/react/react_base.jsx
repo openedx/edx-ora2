@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 
 import { IntlProvider } from 'react-intl';
 
-import Loading from './react/components/loading';
+import Loading from './components/loading';
 
-import * as OA_BASE from './lms/oa_base';
+import * as OA_BASE from '../lms/oa_base';
 
-import '../../sass/react.scss';
+import '../../../sass/react.scss';
 
 export function RenderReact(runtime, element, data) {
   const reactElement = element.lastElementChild;
@@ -26,7 +26,7 @@ export function RenderReact(runtime, element, data) {
       //     TypeError: Cannot read property 'range' of null with using template strings here.
       // Ref: https://github.com/babel/babel-eslint/issues/530
       // eslint-disable-next-line
-      return await import(`./react/${PAGE_NAME}`);
+      return await import(`./pages/${PAGE_NAME}`);
     } catch (error) {
       console.error(error);
       return null;

@@ -553,9 +553,8 @@ class OpenAssessmentBlock(MessageMixin,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
-        # template = get_template("openassessmentblock/oa_base.html")
-        # return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
-        return self._render_react_page('oa_base', context_dict, on_mount_func='OpenAssessmentBlock')
+        template = get_template("openassessmentblock/oa_base.html")
+        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):
         """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
@@ -678,16 +677,16 @@ class OpenAssessmentBlock(MessageMixin,
         # if additional_js is None:
         #     additional_js = []
 
-        i18n_service = self.runtime.service(self, 'i18n')
-        if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
-            css_url = LoadStatic.get_url("openassessment-rtl.css")
-        else:
-            css_url = LoadStatic.get_url("openassessment-ltr.css")
+        # i18n_service = self.runtime.service(self, 'i18n')
+        # if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
+        #     css_url = LoadStatic.get_url("openassessment-rtl.css")
+        # else:
+        #     css_url = LoadStatic.get_url("openassessment-ltr.css")
 
-        # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
-        # for css in additional_css:
-        #     fragment.add_css_url(css)
-        fragment.add_css_url(css_url)
+        # # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+        # # for css in additional_css:
+        # #     fragment.add_css_url(css)
+        # fragment.add_css_url(css_url)
         fragment.add_css_url(LoadStatic.get_url("react_base.css"))
 
         # minified additional_js should be already included in 'make javascript'
