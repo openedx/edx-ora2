@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { IntlProvider } from 'react-intl';
+import OraProvider from './ora_provider';
 
 import Loading from './components/loading';
 
@@ -12,8 +13,8 @@ import '../../../sass/react.scss';
 export function RenderReact(runtime, element, data) {
   const reactElement = element.lastElementChild;
   const {
- PAGE_NAME, ON_MOUNT_FUNC, IS_DEV_SERVER, PROPS,
-} = data;
+    PAGE_NAME, ON_MOUNT_FUNC, IS_DEV_SERVER, PROPS,
+  } = data;
 
   // this is necessary for webpack-dev-server to work
   // eslint-disable-next-line
@@ -35,9 +36,11 @@ export function RenderReact(runtime, element, data) {
 
   ReactDOM.render(
     <React.Suspense fallback={<Loading />}>
-      <IntlProvider locale="en">
-        <Page {...PROPS} onMount={() => ON_MOUNT_FUNC && OA_BASE[ON_MOUNT_FUNC](runtime, element, data)} />
-      </IntlProvider>
+      <OraProvider runtime={runtime} element={element} data={data}>
+        <IntlProvider locale="en">
+          <Page {...PROPS} onMount={() => ON_MOUNT_FUNC && OA_BASE[ON_MOUNT_FUNC](runtime, element, data)} />
+        </IntlProvider>
+      </OraProvider>
     </React.Suspense>,
     reactElement,
   );

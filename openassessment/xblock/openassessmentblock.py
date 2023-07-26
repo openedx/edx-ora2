@@ -602,6 +602,10 @@ class OpenAssessmentBlock(MessageMixin,
         return self._render_react_page(
             'instructor_dashboard/oa_listing',
             context_dict,
+            additional_js_context={
+                "ENHANCED_STAFF_GRADER": self.is_enhanced_staff_grader_enabled,
+                "ORA_GRADING_MICROFRONTEND_URL": getattr(settings, 'ORA_GRADING_MICROFRONTEND_URL', '')
+            }
         )
 
     def grade_available_responses_view(self, context=None):  # pylint: disable=unused-argument
@@ -668,7 +672,7 @@ class OpenAssessmentBlock(MessageMixin,
             additional_js_context=context_dict,
         )
 
-    def _render_react_page(self, page_name, props, on_mount_func=None):
+    def _render_react_page(self, page_name, props, on_mount_func=None, additional_js_context=None):
         template = get_template("openassessmentblock/react_template.html")
         fragment = Fragment(template.render())
 
@@ -708,23 +712,14 @@ class OpenAssessmentBlock(MessageMixin,
             "DISABLE_DEFAULT_CSS": True,
         }
 
+        # If there's any additional data to be passed down to JS
+        # include it in the context dict
+        if additional_js_context:
+            js_context_dict.update({"CONTEXT": additional_js_context})
+
         initialize_js_func='RenderReact'
         fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
-        # # minified additional_js should be already included in 'make javascript'
-        # fragment.add_javascript_url(LoadStatic.get_url("react_base.js"))
-
-        # context_dict["page_name"] = page_name
-
-        # fragment.initialize_js("RenderReact", context_dict)
-        # return fragment
-        # context_dict.update({
-        #     "page_name": page_name,
-        #     "on_mount_func": on_mount_func
-        # })
-
-        
-        # return self._create_fragment(template, context_dict, initialize_js_func='RenderReact')
 
     def _create_fragment(
         self,
