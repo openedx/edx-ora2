@@ -4,11 +4,13 @@ from rest_framework.serializers import (
     Serializer,
     CharField,
     ListField,
-    SerializerMethodField
+    SerializerMethodField,
 )
+
 
 class CharListField(ListField):
     child = CharField()
+
 
 class TextResponseConfigSerializer(Serializer):
     enabled = SerializerMethodField()
@@ -20,7 +22,8 @@ class TextResponseConfigSerializer(Serializer):
         return block.text_response is not None
 
     def get_required(self, block):
-        return block.text_response == 'required'
+        return block.text_response == "required"
+
 
 class FileResponseConfigSerializer(Serializer):
     enabled = SerializerMethodField()
@@ -34,12 +37,13 @@ class FileResponseConfigSerializer(Serializer):
         return block.file_upload_response is not None
 
     def get_required(self, block):
-        return block.file_upload_response == 'required'
+        return block.file_upload_response == "required"
 
     def get_file_upload_limit(self, block):
         if not block.allow_multiple_files:
             return 1
         return block.MAX_FILES_COUNT
+
 
 class TeamsConfigSerializer(Serializer):
     enabled = BooleanField(source="is_team_assignment")
@@ -49,14 +53,16 @@ class TeamsConfigSerializer(Serializer):
         if block.teamset_config is not None:
             return block.teamset_config.name
 
+
 class SubmissionConfigSerializer(Serializer):
     start = DateTimeField(source="submission_start")
     due = DateTimeField(source="submission_due")
 
-    text_response_config = TextResponseConfigSerializer(source='*')
-    file_response_config = FileResponseConfigSerializer(source='*')
+    text_response_config = TextResponseConfigSerializer(source="*")
+    file_response_config = FileResponseConfigSerializer(source="*")
 
     teams_config = TeamsConfigSerializer(source="*")
+
 
 class OraBlockInfoSerializer(Serializer):
     """

@@ -5,8 +5,8 @@ from xblock.core import XBlock
 
 from openassessment.xblock.data_layer.serializers import OraBlockInfoSerializer
 
-class DataLayerMixin:
 
+class DataLayerMixin:
     @XBlock.json_handler
     def get_block_info(self, data, suffix=""):
         context = {}
