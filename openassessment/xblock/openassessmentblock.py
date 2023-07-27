@@ -681,16 +681,17 @@ class OpenAssessmentBlock(MessageMixin,
         # if additional_js is None:
         #     additional_js = []
 
-        # i18n_service = self.runtime.service(self, 'i18n')
-        # if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
-        #     css_url = LoadStatic.get_url("openassessment-rtl.css")
-        # else:
-        #     css_url = LoadStatic.get_url("openassessment-ltr.css")
+        i18n_service = self.runtime.service(self, 'i18n')
+        if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
+            css_url = LoadStatic.get_url("openassessment-rtl.css")
+        else:
+            css_url = LoadStatic.get_url("openassessment-ltr.css")
 
         # # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
         # # for css in additional_css:
         # #     fragment.add_css_url(css)
-        # fragment.add_css_url(css_url)
+        fragment.add_css_url(css_url)
+        fragment.add_javascript_url(LoadStatic.get_url("openassessment-lms.js"))
         fragment.add_css_url(LoadStatic.get_url("react_base.css"))
 
         # minified additional_js should be already included in 'make javascript'

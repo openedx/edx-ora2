@@ -28,7 +28,11 @@ function getEntries(dir) {
       if (stat.isDirectory()) {
         traverseDirectory(filePath);
       } else if (path.extname(filePath) === '.jsx') {
-        const relativePath = path.parse(path.relative(dir, filePath)).name;
+        let filePathEntry = filePath.replace('.jsx', '');
+        if ( filePathEntry.endsWith('index') ) {
+          filePathEntry = filePathEntry.replace('/index', '');
+        }
+        const relativePath = path.relative('openassessment/xblock/static/js/src/react/', filePathEntry);
         entries[relativePath] = path.resolve(process.cwd(), filePath);
       }
     });
