@@ -90,4 +90,4 @@ private.py
 # pyenv
 .python-version
 
-!openassessment/xblock/static/dist/
+openassessment/xblock/static/dist/

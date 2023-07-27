@@ -1,0 +1,44 @@
+name: Release
+
+on: 
+  push:
+    branches: 
+      - master
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install node packages
+        run: npm ci
+
+      - name: Build js
+        run: npm run build      
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Build python package
+        run: python setup.py sdist bdist_wheel
+
+      - name: Install GNU gettext
+        run: sudo apt-get install gettext
+      
+      - name: update translations
+        run: make pull_translations
+
+      - name: Release
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+        run: npx semantic-release

@@ -1,0 +1,21 @@
+{
+  "branches": ["master"],
+  "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+          "semantic-release-pypi",
+          {
+              "repoUrl": "https://test.pypi.org/legacy/"
+          }
+      ],
+      "@semantic-release/github",
+      [
+          "@semantic-release/git",
+          {
+              "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+              "assets": ["CHANGELOG.md", "openassessment/__init__.py", "package.json", "package-lock.json"]
+          }
+      ]
+  ]
+}
