@@ -21,6 +21,8 @@ from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
 from web_fragments.fragment import Fragment
 
+from openedx_filters.learning.filters import ORAStudentViewRenderStarted
+
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
@@ -540,14 +542,34 @@ class OpenAssessmentBlock(MessageMixin,
         ui_models = self._create_ui_models()
         # All data we intend to pass to the front end.
         context_dict = {
+            "block": self,
             "title": self.title,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
-        template = get_template("openassessmentblock/oa_base.html")
-        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+        template_name = "openassessmentblock/oa_base.html"
+        try:
+            # .. filter_implemented_name: ORAStudentViewRenderStarted
+            # .. filter_type: org.openedx.learning.ora.student_view.render.started.v1
+            context_dict, template_name = ORAStudentViewRenderStarted.run_filter(
+                context_dict,
+                template_name,
+            )
+        except ORAStudentViewRenderStarted.RenderInvalidTemplate as exc:
+            context_dict, template_name = (exc.template_context, exc.template)
+        except ORAStudentViewRenderStarted.RenderCustomFragment as exc:
+            fragment = exc.fragment
+        else:
+            template = get_template(template_name)
+            fragment = self._create_fragment(
+                template,
+                context_dict,
+                initialize_js_func='OpenAssessmentBlock',
+            )
+
+        return fragment
 
     def ora_blocks_listing_view(self, context=None):
         """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
