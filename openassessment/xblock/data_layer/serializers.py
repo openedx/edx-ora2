@@ -1,6 +1,7 @@
 from rest_framework.serializers import (
     BooleanField,
     DateTimeField,
+    IntegerField,
     Serializer,
     CharField,
     ListField,
@@ -64,6 +65,113 @@ class SubmissionConfigSerializer(Serializer):
     teams_config = TeamsConfigSerializer(source="*")
 
 
+class RubricFeedbackConfigSerializer(Serializer):
+    description = CharField(source="rubric_feedback_prompt")  # is this this field?
+    default_text = CharField(source="rubric_feedback_default_text")
+
+
+class RubricCriterionOptionSerializer(Serializer):
+    name = CharField()
+    label = CharField()
+    points = IntegerField()
+    description = CharField(source="explanation")
+
+
+class RubricCriterionSerializer(Serializer):
+    name = CharField(source="label")
+    description = CharField(source="prompt")
+    feedback_enabled = SerializerMethodField()
+    feedback_required = SerializerMethodField()
+    options = RubricCriterionOptionSerializer(many=True)
+
+    @staticmethod
+    def _feedback(criterion):
+        return criterion.get("feedback", "disabled")
+
+    def get_feedback_enabled(self, criterion):
+        return self._feedback(criterion) != "disabled"
+
+    def get_feedback_required(self, criterion):
+        return self._feedback(criterion) == "required"
+
+
+class RubricConfigSerializer(Serializer):
+    show_during_response = BooleanField(source="show_rubric_during_response")
+    feedback_config = RubricFeedbackConfigSerializer(source="*")
+    criteria = RubricCriterionSerializer(
+        many=True, source="rubric_criteria_with_labels"
+    )
+
+
+class RequiredMixin(Serializer):
+    required = BooleanField(default=True)
+
+
+class StartEndMixin(Serializer):
+    start = DateTimeField()
+    due = DateTimeField()
+
+
+class TrainingSettingsSerializer(RequiredMixin, Serializer):
+    pass
+
+
+class PeerSettingsSerializer(RequiredMixin, StartEndMixin, Serializer):
+    min_number_to_grade = IntegerField(source="must_grade")
+    min_number_to_be_graded_by = IntegerField(source="must_be_graded_by")
+    flexible_grading = BooleanField(source="enable_flexible_grading")
+
+
+class SelfSettingsSerializer(RequiredMixin, Serializer):
+    pass
+
+
+class StaffSettingsSerializer(RequiredMixin, Serializer):
+    pass
+
+
+class AssessmentStepsSettingsSerializer(Serializer):
+    training_step = SerializerMethodField(label="training")
+    peer_step = SerializerMethodField(label="peer")
+    self_step = SerializerMethodField(label="self")
+    staff_step = SerializerMethodField(label="staff")
+
+    def _get_step(self, instance, step_name):
+        """Get the assessment step config for a given step_name"""
+        for step in instance.rubric_assessments:
+            if step["name"] == step_name:
+                return step
+        return None
+
+    def get_training_step(self, instance):
+        """Get the training step configuration"""
+        training_step = self._get_step(instance, "student-training")
+        return TrainingSettingsSerializer(training_step).data or {}
+
+    def get_peer_step(self, instance):
+        """Get the peer step configuration"""
+        peer_step = self._get_step(instance, "peer-assessment")
+        return PeerSettingsSerializer(peer_step).data or {}
+
+    def get_self_step(self, instance):
+        """Get the self step configuration"""
+        self_step = self._get_step(instance, "self-assessment")
+        return SelfSettingsSerializer(self_step).data or {}
+
+    def get_staff_step(self, instance):
+        """Get the staff step configuration"""
+        staff_step = self._get_step(instance, "staff-assessment")
+        return StaffSettingsSerializer(staff_step).data or {}
+
+
+class AssessmentStepsSerializer(Serializer):
+    order = SerializerMethodField()
+    settings = AssessmentStepsSettingsSerializer(source="*")
+
+    def get_order(self, block):
+        return [step["name"] for step in block.rubric_assessments]
+
+
 class OraBlockInfoSerializer(Serializer):
     """
     Main serializer for statically-defined ORA Block information
@@ -74,6 +182,8 @@ class OraBlockInfoSerializer(Serializer):
     base_asset_url = SerializerMethodField(source="*")
 
     submission_config = SubmissionConfigSerializer(source="*")
+    assessment_steps = AssessmentStepsSerializer(source="*")
+    rubric_config = RubricConfigSerializer(source="*")
 
     def get_base_asset_url(self, block):
         return block._get_base_url_path_for_course_assets(block.course.id)
