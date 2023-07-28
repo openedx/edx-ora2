@@ -73,10 +73,8 @@ edx-submissions==3.6.0
     # via -r requirements/base.in
 edx-toggles==5.1.0
     # via -r requirements/base.in
-fs==2.0.18
-    # via
-    #   -c requirements/constraints.txt
-    #   xblock
+fs==2.4.16
+    # via xblock
 html5lib==1.1
     # via -r requirements/base.in
 idna==2.8
@@ -145,7 +143,6 @@ pytz==2023.3
     #   django
     #   djangorestframework
     #   edx-submissions
-    #   fs
     #   xblock
 pyyaml==6.0.1
     # via
