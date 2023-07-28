@@ -1,5 +1,8 @@
 # Version constraints for pip-installation.
 
+# Common constraints for edx repos
+-c common_constraints.txt
+
 # Base dependencies
 Django<4.0                      # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
