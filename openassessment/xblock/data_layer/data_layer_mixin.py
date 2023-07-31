@@ -1,5 +1,7 @@
 """
-XBlock 
+Data layer for ORA
+
+XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
 from xblock.core import XBlock
 
