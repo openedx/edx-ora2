@@ -171,12 +171,14 @@ class AssessmentStepsSerializer(Serializer):
     def get_order(self, block):
         return [step["name"] for step in block.rubric_assessments]
 
+
 class LeaderboardConfigSerializer(Serializer):
     enabled = SerializerMethodField()
     number_to_show = IntegerField(source="leaderboard_show")
 
     def get_enabled(self, block):
         return block.leaderboard_show > 0
+
 
 class OraBlockInfoSerializer(Serializer):
     """
