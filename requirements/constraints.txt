@@ -1,7 +1,6 @@
 # Version constraints for pip-installation.
 
 # Base dependencies
-Django<4.0                      # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
 loremipsum<2.0.0
 
