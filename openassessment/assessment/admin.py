@@ -16,6 +16,7 @@ from openassessment.assessment.models import (
 from openassessment.assessment.serializers import RubricSerializer
 
 
+@admin.register(Rubric)
 class RubricAdmin(admin.ModelAdmin):
     """
     Django admin model for Rubrics.
@@ -55,6 +56,7 @@ class PeerWorkflowItemInline(admin.StackedInline):
     extra = 0
 
 
+@admin.register(PeerWorkflow)
 class PeerWorkflowAdmin(admin.ModelAdmin):
     """
     Django admin model for PeerWorkflows.
@@ -69,6 +71,7 @@ class PeerWorkflowAdmin(admin.ModelAdmin):
     inlines = (PeerWorkflowItemInline,)
 
 
+@admin.register(Assessment)
 class AssessmentAdmin(admin.ModelAdmin):
     """
     Django admin model for Assessments.
@@ -88,6 +91,10 @@ class AssessmentAdmin(admin.ModelAdmin):
     )
     exclude = ('rubric', 'submission_uuid')
 
+    @admin.display(
+        description='Rubric',
+        ordering='rubric__content_hash',
+    )
     def rubric_link(self, assessment_obj):
         """
         Returns the rubric link for this assessment.
@@ -98,8 +105,6 @@ class AssessmentAdmin(admin.ModelAdmin):
         )
         return format_html(
             '<a href="{}">{}</a>', url, assessment_obj.rubric.content_hash)
-    rubric_link.admin_order_field = 'rubric__content_hash'
-    rubric_link.short_description = 'Rubric'
 
     def parts_summary(self, assessment_obj):
         """
@@ -116,6 +121,7 @@ class AssessmentAdmin(admin.ModelAdmin):
         ) for part in assessment_obj.parts.all()))
 
 
+@admin.register(AssessmentFeedback)
 class AssessmentFeedbackAdmin(admin.ModelAdmin):
     """
     Django admin model for AssessmentFeedbacks.
@@ -137,6 +143,7 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
         ))
 
 
+@admin.register(SharedFileUpload)
 class SharedFileUploadAdmin(admin.ModelAdmin):
     """
     Django admin model for SharedFileUploads.
@@ -151,6 +158,7 @@ class SharedFileUploadAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(StaffWorkflow)
 class StaffWorkflowAdmin(admin.ModelAdmin):
     """
     Django admin model for StaffWorkflows
@@ -158,17 +166,9 @@ class StaffWorkflowAdmin(admin.ModelAdmin):
     list_display = ('id', 'submission_uuid', 'course_id', 'item_id', 'grading_completed_at')
 
 
+@admin.register(TeamStaffWorkflow)
 class TeamStaffWorkflowAdmin(admin.ModelAdmin):
     """
     Django admin model for TeamStaffWorkflows
     """
     list_display = ('id', 'team_submission_uuid', 'course_id', 'item_id', 'grading_completed_at')
-
-
-admin.site.register(Rubric, RubricAdmin)
-admin.site.register(PeerWorkflow, PeerWorkflowAdmin)
-admin.site.register(Assessment, AssessmentAdmin)
-admin.site.register(AssessmentFeedback, AssessmentFeedbackAdmin)
-admin.site.register(SharedFileUpload, SharedFileUploadAdmin)
-admin.site.register(StaffWorkflow, StaffWorkflowAdmin)
-admin.site.register(TeamStaffWorkflow, TeamStaffWorkflowAdmin)
