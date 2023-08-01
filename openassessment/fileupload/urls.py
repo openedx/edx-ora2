@@ -9,10 +9,10 @@ urlpatterns = [
         'django/<path:key>/',
         views_django_storage.django_storage,
         name='openassessment-django-storage'
-        ),
+    ),
     path(
         '<path:key>/',
         views_filesystem.filesystem_storage,
         name='openassessment-filesystem-storage'
-        ),
+    ),
 ]
