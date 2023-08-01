@@ -119,7 +119,7 @@ class TrainingSettingsSerializer(RequiredMixin, Serializer):
 class PeerSettingsSerializer(RequiredMixin, StartEndMixin, Serializer):
     min_number_to_grade = IntegerField(source="must_grade")
     min_number_to_be_graded_by = IntegerField(source="must_be_graded_by")
-    flexible_grading = BooleanField(source="enable_flexible_grading")
+    flexible_grading = BooleanField(source="enable_flexible_grading", required=False)
 
 
 class SelfSettingsSerializer(RequiredMixin, Serializer):
