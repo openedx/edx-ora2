@@ -311,6 +311,12 @@ class OpenAssessmentBlock(
         help="Should the rubric be visible to learners in the response section?"
     )
 
+    no_dates = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Indicates whether or not the ora due dates are enabled."
+    )
+
     @property
     def course_id(self):
         return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
@@ -1131,6 +1137,10 @@ class OpenAssessmentBlock(
         if course_staff:
             return False, None, DISTANT_PAST, DISTANT_FUTURE
 
+        if self.no_dates:
+            course = self.get_course()
+            open_range = (course.start, course.end)
+
         if self.is_beta_tester:
             beta_start = self._adjust_start_date_for_beta_testers(open_range[0])
             open_range = (beta_start, open_range[1])
@@ -1405,3 +1415,11 @@ class OpenAssessmentBlock(
         xblock_body["content_type"] = "ORA"
 
         return xblock_body
+
+    def get_course(self):
+        """
+        get course block
+        """
+        if hasattr(self, 'runtime'):
+            return self.runtime.modulestore.get_course(self.location.course_key)  # pylint: disable=no-member
+        return None
