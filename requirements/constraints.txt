@@ -6,7 +6,7 @@ loremipsum<2.0.0
 
 # Upgrading to 2.5.3 triggered "'tzlocal' object
 # has no attribute '_std_offset'" errors in production in edx-platform repo.
-python-dateutil==2.4.0
+python-dateutil==2.8.0
 
 # We currently pin dateutil above because edx-platform pins dateutil.
 # xblock-sdk 0.5.1 requires dateutil>2.4.0

@@ -8,7 +8,7 @@ appdirs==1.4.4
     # via
     #   -r requirements/base.txt
     #   fs
-arrow==0.15.8
+arrow==1.2.3
     # via cookiecutter
 asgiref==3.7.2
     # via
@@ -323,7 +323,7 @@ pytest-cov==4.1.0
     # via -r requirements/test.in
 pytest-django==4.5.2
     # via -r requirements/test.in
-python-dateutil==2.4.0
+python-dateutil==2.8.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
