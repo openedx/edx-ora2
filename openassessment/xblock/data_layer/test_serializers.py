@@ -268,7 +268,7 @@ class TestAssessmentStepsSerializer(XBlockHandlerTestCase):
     def test_order(self, xblock):
         # Given a basic setup
         expected_order = ["peer-assessment", "self-assessment"]
-        expected_step_keys = {"trainingStep", "peerStep", "selfStep", "staffStep"}
+        expected_step_keys = {"training", "peer", "self", "staff"}
 
         # When I ask for assessment step config
         steps_config = AssessmentStepsSerializer(xblock).data
@@ -282,6 +282,8 @@ class TestAssessmentStepsSerializer(XBlockHandlerTestCase):
 class TestPeerSettingsSerializer(XBlockHandlerTestCase):
     """Tests for PeerSettingsSerializer"""
 
+    step_config_key = "peer"
+
     @scenario("data/basic_scenario.xml")
     def test_peer_settings(self, xblock):
         # Given a basic setup
@@ -289,7 +291,9 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         expected_grade_by = 3
 
         # When I ask for peer step config
-        peer_config = AssessmentStepsSerializer(xblock).data["settings"]["peerStep"]
+        peer_config = AssessmentStepsSerializer(xblock).data["settings"][
+            self.step_config_key
+        ]
 
         # Then I get the right config
         self.assertEqual(peer_config["minNumberToGrade"], expected_must_grade)
@@ -302,7 +306,9 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         expected_due = "2015-04-01T00:00:00"
 
         # When I ask for peer step config
-        peer_config = AssessmentStepsSerializer(xblock).data["settings"]["peerStep"]
+        peer_config = AssessmentStepsSerializer(xblock).data["settings"][
+            self.step_config_key
+        ]
 
         # Then I get the right dates
         self.assertEqual(peer_config["start"], expected_start)
@@ -313,7 +319,9 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         # Given a peer step with flex grading
 
         # When I ask for peer step config
-        peer_config = AssessmentStepsSerializer(xblock).data["settings"]["peerStep"]
+        peer_config = AssessmentStepsSerializer(xblock).data["settings"][
+            self.step_config_key
+        ]
 
         # Then I get the right steps and ordering
         self.assertTrue(peer_config["flexibleGrading"])
@@ -324,7 +332,7 @@ class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
     Test for TrainingSettingsSerializer
     """
 
-    step_config_key = "trainingStep"
+    step_config_key = "training"
 
     @scenario("data/student_training.xml")
     def test_enabled(self, xblock):
@@ -354,7 +362,7 @@ class TestSelfSettingsSerializer(XBlockHandlerTestCase):
     Test for SelfSettingsSerializer
     """
 
-    step_config_key = "selfStep"
+    step_config_key = "self"
 
     @scenario("data/self_assessment_scenario.xml")
     def test_enabled(self, xblock):
@@ -384,7 +392,7 @@ class TestStaffSettingsSerializer(XBlockHandlerTestCase):
     Test for StaffSettingsSerializer
     """
 
-    step_config_key = "staffStep"
+    step_config_key = "staff"
 
     @scenario("data/staff_grade_scenario.xml")
     def test_enabled(self, xblock):

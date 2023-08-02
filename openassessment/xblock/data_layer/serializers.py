@@ -133,10 +133,11 @@ class StaffSettingsSerializer(RequiredMixin, Serializer):
 
 
 class AssessmentStepsSettingsSerializer(Serializer):
-    trainingStep = SerializerMethodField()
-    peerStep = SerializerMethodField()
-    selfStep = SerializerMethodField()
-    staffStep = SerializerMethodField()
+    training = SerializerMethodField()
+    peer = SerializerMethodField()
+    # Workaround to allow reserved keyword in serializer key
+    vars()["self"] = SerializerMethodField()
+    staff = SerializerMethodField()
 
     def _get_step(self, instance, step_name):
         """Get the assessment step config for a given step_name"""
@@ -145,22 +146,22 @@ class AssessmentStepsSettingsSerializer(Serializer):
                 return step
         return None
 
-    def get_trainingStep(self, instance):
+    def get_training(self, instance):
         """Get the training step configuration"""
         training_step = self._get_step(instance, "student-training")
         return TrainingSettingsSerializer(training_step).data or {}
 
-    def get_peerStep(self, instance):
+    def get_peer(self, instance):
         """Get the peer step configuration"""
         peer_step = self._get_step(instance, "peer-assessment")
         return PeerSettingsSerializer(peer_step).data or {}
 
-    def get_selfStep(self, instance):
+    def get_self(self, instance):
         """Get the self step configuration"""
         self_step = self._get_step(instance, "self-assessment")
         return SelfSettingsSerializer(self_step).data or {}
 
-    def get_staffStep(self, instance):
+    def get_staff(self, instance):
         """Get the staff step configuration"""
         staff_step = self._get_step(instance, "staff-assessment")
         return StaffSettingsSerializer(staff_step).data or {}
