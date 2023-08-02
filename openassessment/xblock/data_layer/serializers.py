@@ -13,22 +13,28 @@ class CharListField(ListField):
     child = CharField()
 
 
+class IsRequiredField(BooleanField):
+    """
+    Utility for checking if a field is "required" to reduce repeated code.
+    """
+
+    def to_representation(self, value):
+        return value == "required"
+
+
 class TextResponseConfigSerializer(Serializer):
     enabled = SerializerMethodField()
-    required = SerializerMethodField()
+    required = IsRequiredField(source="text_response")
     editorType = CharField(source="text_response_editor")
     allowLatexPreview = BooleanField(source="allow_latex")
 
     def get_enabled(self, block):
         return block.text_response is not None
 
-    def get_required(self, block):
-        return block.text_response == "required"
-
 
 class FileResponseConfigSerializer(Serializer):
     enabled = SerializerMethodField()
-    required = SerializerMethodField()
+    required = IsRequiredField(source="file_upload_response")
     fileUploadLimit = SerializerMethodField()
     allowedExtensions = CharListField(source="get_allowed_file_types_or_preset")
     blockedExtensions = CharListField(source="FILE_EXT_BLACK_LIST")
@@ -36,9 +42,6 @@ class FileResponseConfigSerializer(Serializer):
 
     def get_enabled(self, block):
         return block.file_upload_response is not None
-
-    def get_required(self, block):
-        return block.file_upload_response == "required"
 
     def get_fileUploadLimit(self, block):
         if not block.allow_multiple_files:
@@ -81,18 +84,17 @@ class RubricCriterionSerializer(Serializer):
     name = CharField(source="label")
     description = CharField(source="prompt")
     feedbackEnabled = SerializerMethodField()
-    feedbackRequired = SerializerMethodField()
+    feedbackRequired = IsRequiredField(source="feedback")
     options = RubricCriterionOptionSerializer(many=True)
 
     @staticmethod
     def _feedback(criterion):
+        # Feedback is disabled as a default
         return criterion.get("feedback", "disabled")
 
     def get_feedbackEnabled(self, criterion):
+        # Feedback can be specified as optional or required
         return self._feedback(criterion) != "disabled"
-
-    def get_feedbackRequired(self, criterion):
-        return self._feedback(criterion) == "required"
 
 
 class RubricConfigSerializer(Serializer):
