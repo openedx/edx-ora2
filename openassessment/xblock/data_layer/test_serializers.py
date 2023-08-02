@@ -2,20 +2,142 @@
 Tests for data layer of ORA XBlock
 """
 
-import ddt
-import pytest
+from unittest.mock import MagicMock
 
-from openassessment.xblock.defaults import (
-    DEFAULT_RUBRIC_FEEDBACK_PROMPT,
-    DEFAULT_RUBRIC_FEEDBACK_TEXT,
-)
+import ddt
+
 
 from openassessment.xblock.data_layer.serializers import (
     AssessmentStepsSerializer,
     LeaderboardConfigSerializer,
     RubricConfigSerializer,
+    SubmissionConfigSerializer,
 )
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+from openassessment.xblock.test.test_team import (
+    MockTeamsConfigurationService,
+    MockTeamsService,
+)
+
+
+class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
+    """
+    Test for SubmissionConfigSerializer
+    """
+
+    def _enable_team_ora(self, xblock):
+        """Utility function for mocking team dependencies on the passed xblock"""
+        xblock.is_team_assignment = MagicMock(return_value=True)
+
+        xblock.teamset_config = MagicMock()
+        xblock.teamset_config.name = xblock.selected_teamset_id
+
+    @scenario("data/submission_open.xml")
+    def test_dates(self, xblock):
+        # Given an individual (non-teams) ORA
+        xblock.teamset_config = MagicMock(return_value=None)
+
+        # When I ask for the submission config
+        submission_config = SubmissionConfigSerializer(xblock).data
+
+        # Then I get the expected values
+        expected_start = xblock.submission_start
+        expected_due = xblock.submission_due
+        self.assertEqual(submission_config["start"], expected_start)
+        self.assertEqual(submission_config["due"], expected_due)
+
+    @scenario("data/basic_scenario.xml")
+    def test_dates_missing(self, xblock):
+        # Given an individual (non-teams) ORA
+        xblock.teamset_config = MagicMock(return_value=None)
+
+        # When I ask for submission config
+        submission_config = SubmissionConfigSerializer(xblock).data
+
+        # Then I get the expected values
+        self.assertIsNone(submission_config["start"])
+        self.assertIsNone(submission_config["due"])
+
+    @scenario("data/basic_scenario.xml")
+    def test_text_response_config(self, xblock):
+        # Given an individual (non-teams) ORA with a text response
+        xblock.teamset_config = MagicMock(return_value=None)
+
+        # When I ask for text response config
+        submission_config = SubmissionConfigSerializer(xblock).data
+        text_response_config = submission_config["text_response_config"]
+
+        # Then I get the expected values
+        self.assertTrue(text_response_config["enabled"])
+        self.assertTrue(text_response_config["required"])
+        self.assertEqual(text_response_config["editor_type"], "text")
+        self.assertFalse(text_response_config["allow_latex_preview"])
+
+    @scenario("data/basic_scenario.xml")
+    def test_html_response_config(self, xblock):
+        # Given an individual (non-teams) ORA with an html response
+        xblock.teamset_config = MagicMock(return_value=None)
+        xblock.text_response_editor = "html"
+
+        # When I ask for text response config
+        submission_config = SubmissionConfigSerializer(xblock).data
+        text_response_config = submission_config["text_response_config"]
+
+        # Then I get the expected values
+        self.assertEqual(text_response_config["editor_type"], "html")
+
+    @scenario("data/basic_scenario.xml")
+    def test_latex_preview(self, xblock):
+        # Given an individual (non-teams) ORA
+        xblock.teamset_config = MagicMock(return_value=None)
+        # ... with latex preview enabled
+        xblock.allow_latex = True
+
+        # When I ask for text response config
+        submission_config = SubmissionConfigSerializer(xblock).data
+        text_response_config = submission_config["text_response_config"]
+
+        # Then I get the expected values
+        self.assertTrue(text_response_config["allow_latex_preview"])
+
+    @scenario("data/file_upload_scenario.xml")
+    def test_file_response_config(self, xblock):
+        # Given an individual (non-teams) ORA with file upload enabled
+        xblock.teamset_config = MagicMock(return_value=None)
+
+        # When I ask for file upload config
+        submission_config = SubmissionConfigSerializer(xblock).data
+        file_response_config = submission_config["file_response_config"]
+
+        # Then I get the expected values
+        self.assertTrue(file_response_config["enabled"])
+        self.assertEqual(
+            file_response_config["file_upload_limit"], xblock.MAX_FILES_COUNT
+        )
+        self.assertEqual(
+            file_response_config["allowed_file_type_description"],
+            xblock.file_upload_type,
+        )
+        self.assertEqual(
+            file_response_config["allowed_extensions"],
+            xblock.get_allowed_file_types_or_preset(),
+        )
+        self.assertEqual(
+            file_response_config["blocked_extensions"], xblock.FILE_EXT_BLACK_LIST
+        )
+
+    @scenario("data/team_submission.xml")
+    def test_team_ora_config(self, xblock):
+        # Given a team ORA
+        self._enable_team_ora(xblock)
+
+        # When I ask for teams config
+        submission_config = SubmissionConfigSerializer(xblock).data
+        teams_config = submission_config["teams_config"]
+
+        # Then I get the expected values
+        self.assertTrue(teams_config["enabled"])
+        self.assertEqual(teams_config["teamset_name"], xblock.selected_teamset_id)
 
 
 @ddt.ddt
