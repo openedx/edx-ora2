@@ -2,11 +2,108 @@
 Tests for data layer of ORA XBlock
 """
 
+import ddt
+import pytest
+
+from openassessment.xblock.defaults import (
+    DEFAULT_RUBRIC_FEEDBACK_PROMPT,
+    DEFAULT_RUBRIC_FEEDBACK_TEXT,
+)
+
 from openassessment.xblock.data_layer.serializers import (
     AssessmentStepsSerializer,
     LeaderboardConfigSerializer,
+    RubricConfigSerializer,
 )
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+
+
+@ddt.ddt
+class TestRubricConfigSerializer(XBlockHandlerTestCase):
+    """
+    Test for RubricConfigSerializer
+    """
+
+    @ddt.data(True, False)
+    @scenario("data/basic_scenario.xml")
+    def test_show_during_response(self, xblock, mock_show_rubric):
+        # Given a basic setup where I do/not have rubric shown during response
+        xblock.show_rubric_during_response = mock_show_rubric
+
+        # When I ask for rubric config
+        rubric_config = RubricConfigSerializer(xblock).data
+
+        # Then I get the right values
+        self.assertEqual(rubric_config["show_during_response"], mock_show_rubric)
+
+    @scenario("data/feedback_only_criterion_staff.xml")
+    def test_overall_feedback(self, xblock):
+        # Given an ORA block with one criterion
+
+        # When I ask for rubric config
+        rubric_config = RubricConfigSerializer(xblock).data
+
+        # Then I get the expected defaults
+        criteria = rubric_config["criteria"]
+        criterion = criteria[0]
+        self.assertEqual(len(criteria), 1)
+        self.assertEqual(criterion["name"], "vocabulary")
+        self.assertEqual(
+            criterion["description"],
+            "This criterion accepts only written feedback, so it has no options",
+        )
+
+        # ... In this example, feedback is required
+        self.assertTrue(criterion["feedback_enabled"])
+        self.assertTrue(criterion["feedback_required"])
+
+    @scenario("data/feedback_only_criterion_staff.xml")
+    def test_criterion(self, xblock):
+        # Given an ORA block with one criterion
+
+        # When I ask for rubric config
+        rubric_config = RubricConfigSerializer(xblock).data
+
+        # Then I get the expected defaults
+        criteria = rubric_config["criteria"]
+        criterion = criteria[0]
+        self.assertEqual(len(criteria), 1)
+        self.assertEqual(criterion["name"], "vocabulary")
+        self.assertEqual(
+            criterion["description"],
+            "This criterion accepts only written feedback, so it has no options",
+        )
+
+        # ... In this example, feedback is required
+        self.assertTrue(criterion["feedback_enabled"])
+        self.assertTrue(criterion["feedback_required"])
+
+    @scenario("data/basic_scenario.xml")
+    def test_criteria(self, xblock):
+        # Given an ORA block with multiple criteria
+        expected_criteria = xblock.rubric_criteria
+
+        # When I ask for rubric config
+        rubric_config = RubricConfigSerializer(xblock).data
+
+        # Then I get the expected number of criteria
+        criteria = rubric_config["criteria"]
+        self.assertEqual(len(criteria), len(expected_criteria))
+
+    @scenario("data/basic_scenario.xml")
+    def test_feedback_config(self, xblock):
+        # Given an ORA block with feedback
+        xblock.rubric_feedback_prompt = "foo"
+        xblock.rubric_feedback_default_text = "bar"
+
+        # When I ask for rubric config
+        feedback_config = RubricConfigSerializer(xblock).data["feedback_config"]
+
+        # Then I get the expected defaults
+        self.assertEqual(feedback_config["description"], xblock.rubric_feedback_prompt)
+        self.assertEqual(
+            feedback_config["default_text"], xblock.rubric_feedback_default_text
+        )
 
 
 class TestAssessmentStepsSerializer(XBlockHandlerTestCase):
