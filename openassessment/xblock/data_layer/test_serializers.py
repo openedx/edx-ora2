@@ -200,6 +200,37 @@ class TestRubricConfigSerializer(XBlockHandlerTestCase):
         self.assertTrue(criterion["feedbackEnabled"])
         self.assertTrue(criterion["feedbackRequired"])
 
+    @scenario("data/feedback_only_criterion_self.xml")
+    def test_criterion_disabled_required(self, xblock):
+        # Given an ORA block with two criterion
+
+        # When I ask for rubric config
+        rubric_config = RubricConfigSerializer(xblock).data
+
+        # Then I get the expected defaults
+        criteria = rubric_config["criteria"]
+
+        # .. the first criterion has feedback disabled
+        self.assertFalse(criteria[0]["feedbackEnabled"])
+        self.assertFalse(criteria[0]["feedbackRequired"])
+
+        # .. the first criterion has feedback required
+        self.assertTrue(criteria[1]["feedbackEnabled"])
+        self.assertTrue(criteria[1]["feedbackRequired"])
+
+    @scenario("data/file_upload_missing_scenario.xml")
+    def test_criterion_optional(self, xblock):
+        # Given an ORA block with one criterion, feedback optional
+
+        # When I ask for rubric config
+        rubric_config = RubricConfigSerializer(xblock).data
+
+        # Then I get the feedback enabled / required values
+        criteria = rubric_config["criteria"]
+        criterion = criteria[0]
+        self.assertTrue(criterion["feedbackEnabled"])
+        self.assertFalse(criterion["feedbackRequired"])
+
     @scenario("data/basic_scenario.xml")
     def test_criteria(self, xblock):
         # Given an ORA block with multiple criteria
