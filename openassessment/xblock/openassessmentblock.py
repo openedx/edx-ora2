@@ -108,28 +108,28 @@ def load(path):
 @XBlock.needs("teams")
 @XBlock.needs("teams_configuration")
 class OpenAssessmentBlock(
-        MessageMixin,
-        SubmissionMixin,
-        PeerAssessmentMixin,
-        SelfAssessmentMixin,
-        StaffAssessmentMixin,
-        StudioMixin,
-        GradeMixin,
-        LeaderboardMixin,
-        StaffAreaMixin,
-        WorkflowMixin,
-        TeamWorkflowMixin,
-        StudentTrainingMixin,
-        LmsCompatibilityMixin,
-        CourseItemsListingMixin,
-        ConfigMixin,
-        TeamMixin,
-        OpenAssessmentTemplatesMixin,
-        RubricReuseMixin,
-        StaffGraderMixin,
-        DataLayerMixin,
-        XBlock
-    ):
+    MessageMixin,
+    SubmissionMixin,
+    PeerAssessmentMixin,
+    SelfAssessmentMixin,
+    StaffAssessmentMixin,
+    StudioMixin,
+    GradeMixin,
+    LeaderboardMixin,
+    StaffAreaMixin,
+    WorkflowMixin,
+    TeamWorkflowMixin,
+    StudentTrainingMixin,
+    LmsCompatibilityMixin,
+    CourseItemsListingMixin,
+    ConfigMixin,
+    TeamMixin,
+    OpenAssessmentTemplatesMixin,
+    RubricReuseMixin,
+    StaffGraderMixin,
+    DataLayerMixin,
+    XBlock,
+):
     """Displays a prompt and provides an area where students can compose a response."""
 
     VALID_ASSESSMENT_TYPES = [
