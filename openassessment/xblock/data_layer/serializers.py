@@ -114,57 +114,59 @@ class StartEndMixin(Serializer):
     due = DateTimeField()
 
 
-class TrainingSettingsSerializer(RequiredMixin, Serializer):
-    pass
-
-
 class PeerSettingsSerializer(RequiredMixin, StartEndMixin, Serializer):
     minNumberToGrade = IntegerField(source="must_grade")
     minNumberToBeGradedBy = IntegerField(source="must_be_graded_by")
     flexibleGrading = BooleanField(source="enable_flexible_grading", required=False)
 
 
-class SelfSettingsSerializer(RequiredMixin, Serializer):
-    pass
 
+class AssessmentStepSettingsSerializer(RequiredMixin, Serializer):
+    """
+    Generic Assessments step, where we just need to know if the step is
+    required given the ora.rubric_assessments soruce.
+    """
+    required = BooleanField(default=True)
 
-class StaffSettingsSerializer(RequiredMixin, Serializer):
-    pass
-
-
-class AssessmentStepsSettingsSerializer(Serializer):
-    training = SerializerMethodField()
-    peer = SerializerMethodField()
-    # Workaround to allow reserved keyword in serializer key
-    vars()["self"] = SerializerMethodField()
-    staff = SerializerMethodField()
-
-    def _get_step(self, instance, step_name):
+    def _get_step(self, rubric_assessments, step_name):
         """Get the assessment step config for a given step_name"""
-        for step in instance.rubric_assessments:
+        for step in rubric_assessments:
             if step["name"] == step_name:
                 return step
         return None
 
-    def get_training(self, instance):
-        """Get the training step configuration"""
-        training_step = self._get_step(instance, "student-training")
-        return TrainingSettingsSerializer(training_step).data or {}
+    def __init__(self, *args, **kwargs):
+        self.step_name = kwargs.pop("step_name")
+        return super().__init__(*args, **kwargs)
 
-    def get_peer(self, instance):
-        """Get the peer step configuration"""
-        peer_step = self._get_step(instance, "peer-assessment")
-        return PeerSettingsSerializer(peer_step).data or {}
+    def to_representation(self, rubric_assessments):
+        assessment_step = self._get_step(rubric_assessments, self.step_name)
 
-    def get_self(self, instance):
-        """Get the self step configuration"""
-        self_step = self._get_step(instance, "self-assessment")
-        return SelfSettingsSerializer(self_step).data or {}
+        # Special handling for the peer step which includes extra fields
+        if assessment_step and self.step_name == "peer-assessment":
+            return PeerSettingsSerializer(assessment_step).data
 
-    def get_staff(self, instance):
-        """Get the staff step configuration"""
-        staff_step = self._get_step(instance, "staff-assessment")
-        return StaffSettingsSerializer(staff_step).data or {}
+        # If we didn't find a step, it is not required
+        if assessment_step is None:
+            assessment_step = {"required": False}
+
+        return super().to_representation(assessment_step)
+
+
+class AssessmentStepsSettingsSerializer(Serializer):
+    training = AssessmentStepSettingsSerializer(
+        step_name="student-training", source="rubric_assessments"
+    )
+    peer = AssessmentStepSettingsSerializer(
+        step_name="peer-assessment", source="rubric_assessments"
+    )
+    # Workaround to allow reserved keyword in serializer key
+    vars()["self"] = AssessmentStepSettingsSerializer(
+        step_name="self-assessment", source="rubric_assessments"
+    )
+    staff = AssessmentStepSettingsSerializer(
+        step_name="staff-assessment", source="rubric_assessments"
+    )
 
 
 class AssessmentStepsSerializer(Serializer):
