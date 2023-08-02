@@ -15,7 +15,7 @@ import ddt
 from freezegun import freeze_time
 
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from submissions import api as sub_api, team_api as team_sub_api
 import openassessment.assessment.api.peer as peer_api
@@ -535,6 +535,26 @@ class TestOraAggregateData(TransactionCacheResetTest):
         feedback_cell = OraAggregateData._build_feedback_cell(assessment2.submission_uuid)
 
         self.assertEqual(feedback_cell, "")
+
+    @override_settings(LMS_ROOT_URL="https://example.com")
+    @patch('openassessment.xblock.openassessmentblock.OpenAssessmentBlock.get_download_urls_from_submission')
+    def test_build_response_file_links(self, mock_method):
+        """
+        Test _build_response_file_links method.
+
+        Ensures that the method returns the expected file links based on the given submission.
+        """
+        expected_result = "https://example.com/file1.pdf\nhttps://example.com/file2.png\nhttps://example.com/file3.jpeg"
+        file_downloads = [
+            {'download_url': '/file1.pdf'},
+            {'download_url': '/file2.png'},
+            {'download_url': '/file3.jpeg'},
+        ]
+        mock_method.return_value = file_downloads
+        # pylint: disable=protected-access
+        result = OraAggregateData._build_response_file_links('test submission')
+
+        self.assertEqual(result, expected_result)
 
 
 @ddt.ddt

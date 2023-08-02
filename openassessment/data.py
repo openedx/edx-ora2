@@ -578,16 +578,12 @@ class OraAggregateData:
             string that contains newline-separated URLs to each of the files uploaded for this submission.
         """
         file_links = ''
-        sep = "\n"
         base_url = getattr(settings, 'LMS_ROOT_URL', '')
 
         from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
         file_downloads = OpenAssessmentBlock.get_download_urls_from_submission(submission)
-        for url, _description, _filename, _size, _show_delete in file_downloads:
-            if file_links:
-                file_links += sep
-            file_links += urljoin(base_url, url)
-        return file_links
+        file_links = [urljoin(base_url, file_download.get('download_url')) for file_download in file_downloads]
+        return "\n".join(file_links)
 
     @classmethod
     def collect_ora2_data(cls, course_id):
