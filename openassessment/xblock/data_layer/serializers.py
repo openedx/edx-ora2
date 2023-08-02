@@ -105,27 +105,24 @@ class RubricConfigSerializer(Serializer):
     )
 
 
-class RequiredMixin(Serializer):
+class PeerSettingsSerializer(Serializer):
     required = BooleanField(default=True)
 
-
-class StartEndMixin(Serializer):
     start = DateTimeField()
     due = DateTimeField()
 
-
-class PeerSettingsSerializer(RequiredMixin, StartEndMixin, Serializer):
     minNumberToGrade = IntegerField(source="must_grade")
     minNumberToBeGradedBy = IntegerField(source="must_be_graded_by")
+
     flexibleGrading = BooleanField(source="enable_flexible_grading", required=False)
 
 
-
-class AssessmentStepSettingsSerializer(RequiredMixin, Serializer):
+class AssessmentStepSettingsSerializer(Serializer):
     """
     Generic Assessments step, where we just need to know if the step is
     required given the ora.rubric_assessments soruce.
     """
+
     required = BooleanField(default=True)
 
     def _get_step(self, rubric_assessments, step_name):
