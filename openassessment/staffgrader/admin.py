@@ -21,5 +21,3 @@ class SubmissionGradingLockAdmin(admin.ModelAdmin):
     )
     def is_active(self, lock):
         return lock.is_active
-
-

@@ -42,5 +42,3 @@ class TeamAssessmentWorkflowAdmin(admin.ModelAdmin):
     search_fields = ('team_submission_uuid', 'submission_uuid', 'course_id', 'item_id')
 
     inlines = (AssessmentWorkflowStepInline,)
-
-

@@ -172,5 +172,3 @@ class TeamStaffWorkflowAdmin(admin.ModelAdmin):
     Django admin model for TeamStaffWorkflows
     """
     list_display = ('id', 'team_submission_uuid', 'course_id', 'item_id', 'grading_completed_at')
-
-
