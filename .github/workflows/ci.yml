@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-20.04]
         python-version: ['3.8']
         node-version: [16]
-        toxenv: [quality, js, django32]
+        toxenv: [quality, js, django32, django42]
 
     steps:
     - uses: actions/checkout@v2
