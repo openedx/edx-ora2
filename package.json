@@ -5,6 +5,7 @@
   "dependencies": {
     "@edx/frontend-build": "^6.1.1",
     "@edx/paragon": "^20.9.2",
+    "axios": "^1.4.0",
     "backbone": "^1.2.3",
     "backgrid": "~0.3.8",
     "dotenv-webpack": "^7.0.3",
