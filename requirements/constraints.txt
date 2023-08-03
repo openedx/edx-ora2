@@ -3,3 +3,5 @@
 # Common constraints for edx repos
 -c common_constraints.txt
 
+# this needs a separate fix. greater version breaking tests. https://github.com/datadriventests/ddt/issues/38
+ddt==1.0.0

@@ -81,8 +81,10 @@ cryptography==41.0.3
     # via
     #   -r requirements/test.txt
     #   moto
-ddt==1.6.0
-    # via -r requirements/test.txt
+ddt==1.0.0
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 defusedxml==0.7.1
     # via -r requirements/test.txt
 dill==0.3.7
