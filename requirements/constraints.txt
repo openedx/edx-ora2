@@ -27,3 +27,6 @@ path<13.2.0
 #     and tox comes in in test.in
 importlib-metadata<2
 setuptools<60.0
+
+# adding django constraint
+django==3.2.20
