@@ -12,6 +12,7 @@ class AssessmentWorkflowStepInline(admin.StackedInline):
     extra = 0
 
 
+@admin.register(AssessmentWorkflow)
 class AssessmentWorkflowAdmin(admin.ModelAdmin):
     """Admin for the user's overall workflow through open assessment.
 
@@ -28,6 +29,7 @@ class AssessmentWorkflowAdmin(admin.ModelAdmin):
     inlines = (AssessmentWorkflowStepInline,)
 
 
+@admin.register(TeamAssessmentWorkflow)
 class TeamAssessmentWorkflowAdmin(admin.ModelAdmin):
     """
     Admin for TeamAssessmentWorkflows.
@@ -42,5 +44,3 @@ class TeamAssessmentWorkflowAdmin(admin.ModelAdmin):
     inlines = (AssessmentWorkflowStepInline,)
 
 
-admin.site.register(AssessmentWorkflow, AssessmentWorkflowAdmin)
-admin.site.register(TeamAssessmentWorkflow, TeamAssessmentWorkflowAdmin)
