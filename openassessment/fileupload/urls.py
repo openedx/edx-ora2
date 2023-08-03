@@ -1,3 +1,4 @@
+""" fileupload Urls. """
 from django.urls import re_path
 
 from openassessment.fileupload import views_django_storage, views_filesystem
