@@ -8,30 +8,41 @@ appdirs==1.4.4
     # via
     #   -r requirements/test.txt
     #   fs
-arrow==1.2.3
-    # via
-    #   -r requirements/test.txt
-    #   cookiecutter
 asgiref==3.7.2
     # via
     #   -r requirements/test.txt
     #   django
-binaryornot==0.4.4
+attrs==23.1.0
     # via
     #   -r requirements/test.txt
-    #   cookiecutter
+    #   jschema-to-python
+    #   jsonschema
+    #   sarif-om
+aws-sam-translator==1.72.0
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
+aws-xray-sdk==2.12.0
+    # via
+    #   -r requirements/test.txt
+    #   moto
 bleach==6.0.0
     # via -r requirements/test.txt
 bok-choy==2.0.2
     # via -r requirements/test-acceptance.in
+boto==2.49.0
+    # via
+    #   -r requirements/test.txt
+    #   moto
 boto3==1.28.18
     # via
     #   -r requirements/test.txt
-    #   fs-s3fs
+    #   aws-sam-translator
     #   moto
 botocore==1.31.18
     # via
     #   -r requirements/test.txt
+    #   aws-xray-sdk
     #   boto3
     #   moto
     #   s3transfer
@@ -44,10 +55,10 @@ cffi==1.15.1
     #   -r requirements/test.txt
     #   cryptography
     #   pynacl
-chardet==5.2.0
+cfn-lint==0.79.6
     # via
     #   -r requirements/test.txt
-    #   binaryornot
+    #   moto
 charset-normalizer==3.2.0
     # via
     #   -r requirements/test.txt
@@ -56,16 +67,11 @@ click==8.1.6
     # via
     #   -r requirements/test.txt
     #   code-annotations
-    #   cookiecutter
     #   edx-django-utils
 code-annotations==1.5.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
-cookiecutter==2.2.3
-    # via
-    #   -r requirements/test.txt
-    #   xblock-sdk
 coverage[toml]==7.2.7
     # via
     #   -r requirements/test.txt
@@ -74,11 +80,16 @@ cryptography==41.0.3
     # via
     #   -r requirements/test.txt
     #   moto
+    #   sshpubkeys
 ddt==1.0.0
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test-acceptance.in
     #   -r requirements/test.txt
+decorator==5.1.1
+    # via
+    #   -r requirements/test.txt
+    #   networkx
 defusedxml==0.7.1
     # via -r requirements/test.txt
 distlib==0.3.7
@@ -88,6 +99,7 @@ distlib==0.3.7
 django==3.2.20
     # via
     #   -c requirements/common_constraints.txt
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   django-crum
     #   django-model-utils
@@ -121,6 +133,15 @@ djangorestframework==3.14.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
+docker==6.1.3
+    # via
+    #   -r requirements/test.txt
+    #   moto
+ecdsa==0.18.0
+    # via
+    #   -r requirements/test.txt
+    #   python-jose
+    #   sshpubkeys
 edx-django-utils==5.6.0
     # via
     #   -r requirements/test.txt
@@ -148,23 +169,27 @@ filelock==3.12.2
     #   -r requirements/test.txt
     #   tox
     #   virtualenv
-freezegun==1.2.2
-    # via -r requirements/test.txt
-fs==2.4.16
+freezegun==0.3.14
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-    #   fs-s3fs
+fs==2.0.18
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
     #   xblock
-fs-s3fs==1.1.1
-    # via
-    #   -r requirements/test.txt
-    #   xblock-sdk
 html5lib==1.1
     # via -r requirements/test.txt
-idna==3.4
+idna==2.8
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
+    #   moto
+    #   requests
+importlib-resources==6.0.0
     # via
     #   -r requirements/test.txt
-    #   requests
+    #   jsonschema
 iniconfig==2.0.0
     # via
     #   -r requirements/test.txt
@@ -173,28 +198,57 @@ jinja2==3.1.2
     # via
     #   -r requirements/test.txt
     #   code-annotations
-    #   cookiecutter
     #   moto
 jmespath==1.0.1
     # via
     #   -r requirements/test.txt
     #   boto3
     #   botocore
+jschema-to-python==1.2.3
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
+jsondiff==1.1.2
+    # via
+    #   -r requirements/test.txt
+    #   moto
 jsonfield==3.1.0
     # via
     #   -r requirements/test.txt
     #   edx-submissions
+jsonpatch==1.33
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
+jsonpickle==3.0.1
+    # via
+    #   -r requirements/test.txt
+    #   jschema-to-python
+jsonpointer==2.4
+    # via
+    #   -r requirements/test.txt
+    #   jsonpatch
+jsonschema==4.17.3
+    # via
+    #   -r requirements/test.txt
+    #   aws-sam-translator
+    #   cfn-lint
+junit-xml==1.9
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 lazy==1.5
     # via
     #   -r requirements/test.txt
     #   bok-choy
 loremipsum==1.0.5
-    # via -r requirements/test.txt
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 lxml==4.9.3
     # via
     #   -r requirements/test.txt
     #   xblock
-    #   xblock-sdk
 markupsafe==2.1.3
     # via
     #   -r requirements/test.txt
@@ -202,11 +256,24 @@ markupsafe==2.1.3
     #   werkzeug
     #   xblock
 mock==5.1.0
-    # via -r requirements/test.txt
+    # via
+    #   -r requirements/test.txt
+    #   moto
 more-itertools==10.0.0
     # via -r requirements/test.txt
-moto==4.1.14
-    # via -r requirements/test.txt
+moto==1.3.14
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
+mpmath==1.3.0
+    # via
+    #   -r requirements/test.txt
+    #   sympy
+networkx==2.4
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
+    #   cfn-lint
 newrelic==8.9.0
     # via
     #   -r requirements/test.txt
@@ -214,10 +281,12 @@ newrelic==8.9.0
 packaging==23.1
     # via
     #   -r requirements/test.txt
+    #   docker
     #   pytest
     #   tox
-path==16.7.1
+path==13.1.0
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   edx-i18n-tools
     #   path-py
@@ -226,7 +295,13 @@ path-py==12.5.0
 pbr==5.11.1
     # via
     #   -r requirements/test.txt
+    #   jschema-to-python
+    #   sarif-om
     #   stevedore
+pkgutil-resolve-name==1.3.10
+    # via
+    #   -r requirements/test.txt
+    #   jsonschema
 platformdirs==3.10.0
     # via
     #   -r requirements/test.txt
@@ -248,10 +323,19 @@ py==1.11.0
     # via
     #   -r requirements/test.txt
     #   tox
+pyasn1==0.5.0
+    # via
+    #   -r requirements/test.txt
+    #   python-jose
+    #   rsa
 pycparser==2.21
     # via
     #   -r requirements/test.txt
     #   cffi
+pydantic==1.10.12
+    # via
+    #   -r requirements/test.txt
+    #   aws-sam-translator
 pyinstrument==4.5.1
     # via -r requirements/test-acceptance.in
 pymongo==3.13.0
@@ -262,10 +346,10 @@ pynacl==1.5.0
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-pypng==0.20220715.0
+pyrsistent==0.19.3
     # via
     #   -r requirements/test.txt
-    #   xblock-sdk
+    #   jsonschema
 pytest==7.4.0
     # via
     #   -r requirements/test-acceptance.in
@@ -276,80 +360,107 @@ pytest-cov==4.1.0
     # via -r requirements/test.txt
 pytest-django==4.5.2
     # via -r requirements/test.txt
-python-dateutil==2.8.2
+python-dateutil==2.4.0
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-    #   arrow
     #   botocore
     #   faker
     #   freezegun
     #   moto
     #   xblock
+python-jose==3.3.0
+    # via
+    #   -r requirements/test.txt
+    #   moto
 python-slugify==8.0.1
     # via
     #   -r requirements/test.txt
     #   code-annotations
-    #   cookiecutter
-python-swiftclient==4.3.0
-    # via -r requirements/test.txt
+python-swiftclient==3.13.1
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 pytz==2023.3
     # via
     #   -r requirements/test.txt
     #   django
     #   djangorestframework
     #   edx-submissions
+    #   fs
+    #   moto
     #   xblock
 pyyaml==6.0.1
     # via
     #   -r requirements/test.txt
+    #   cfn-lint
     #   code-annotations
-    #   cookiecutter
     #   edx-i18n-tools
+    #   moto
     #   responses
     #   xblock
+regex==2023.6.3
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 requests==2.31.0
     # via
     #   -r requirements/test.txt
-    #   cookiecutter
+    #   docker
     #   moto
     #   python-swiftclient
     #   responses
-    #   xblock-sdk
 responses==0.23.3
     # via
     #   -r requirements/test.txt
     #   moto
+rsa==4.9
+    # via
+    #   -r requirements/test.txt
+    #   python-jose
 s3transfer==0.6.1
     # via
     #   -r requirements/test.txt
     #   boto3
+sarif-om==1.0.4
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 selenium==3.141.0
     # via
     #   -r requirements/test-acceptance.in
     #   bok-choy
-simplejson==3.19.1
-    # via
-    #   -r requirements/test.txt
-    #   xblock-sdk
 six==1.16.0
     # via
     #   -r requirements/test.txt
     #   bleach
+    #   ecdsa
+    #   freezegun
     #   fs
-    #   fs-s3fs
     #   html5lib
+    #   junit-xml
+    #   moto
     #   python-dateutil
+    #   python-swiftclient
     #   tox
 sqlparse==0.4.4
     # via
     #   -r requirements/test.txt
     #   django
+sshpubkeys==3.3.1
+    # via
+    #   -r requirements/test.txt
+    #   moto
 stevedore==5.1.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
     #   edx-django-utils
     #   edx-opaque-keys
+sympy==1.12
+    # via
+    #   -r requirements/test.txt
+    #   cfn-lint
 testfixtures==7.1.0
     # via -r requirements/test.txt
 text-unidecode==1.3
@@ -374,11 +485,14 @@ typing-extensions==4.7.1
     # via
     #   -r requirements/test.txt
     #   asgiref
+    #   aws-sam-translator
     #   faker
+    #   pydantic
 urllib3==1.26.16
     # via
     #   -r requirements/test.txt
     #   botocore
+    #   docker
     #   requests
     #   responses
     #   selenium
@@ -387,12 +501,13 @@ virtualenv==20.24.2
     #   -r requirements/test.txt
     #   tox
 voluptuous==0.13.1
-    # via -r requirements/test.txt
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 web-fragments==2.0.0
     # via
     #   -r requirements/test.txt
     #   xblock
-    #   xblock-sdk
 webencodings==0.5.1
     # via
     #   -r requirements/test.txt
@@ -402,21 +517,33 @@ webob==1.8.7
     # via
     #   -r requirements/test.txt
     #   xblock
-    #   xblock-sdk
+websocket-client==1.6.1
+    # via
+    #   -r requirements/test.txt
+    #   docker
 werkzeug==2.3.6
     # via
     #   -r requirements/test.txt
     #   moto
-xblock==1.6.2
+wrapt==1.11.2
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-    #   xblock-sdk
-xblock-sdk==0.7.0
+    #   aws-xray-sdk
+xblock==1.6.2
     # via -r requirements/test.txt
+xblock-sdk==0.4.0
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 xmltodict==0.13.0
     # via
     #   -r requirements/test.txt
     #   moto
+zipp==3.16.2
+    # via
+    #   -r requirements/test.txt
+    #   importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
