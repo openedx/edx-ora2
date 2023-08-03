@@ -4,10 +4,22 @@
 #
 #    make upgrade
 #
+cachetools==5.3.1
+    # via
+    #   -r requirements/tox.txt
+    #   tox
 certifi==2023.7.22
     # via requests
+chardet==5.2.0
+    # via
+    #   -r requirements/tox.txt
+    #   tox
 charset-normalizer==3.2.0
     # via requests
+colorama==0.4.6
+    # via
+    #   -r requirements/tox.txt
+    #   tox
 coverage==6.5.0
     # via coveralls
 coveralls==3.3.1
@@ -30,33 +42,30 @@ idna==2.8
 packaging==23.1
     # via
     #   -r requirements/tox.txt
+    #   pyproject-api
     #   tox
 platformdirs==3.10.0
     # via
     #   -r requirements/tox.txt
+    #   tox
     #   virtualenv
 pluggy==1.2.0
     # via
     #   -r requirements/tox.txt
     #   tox
-py==1.11.0
+pyproject-api==1.5.3
     # via
     #   -r requirements/tox.txt
     #   tox
 requests==2.31.0
     # via coveralls
-six==1.16.0
-    # via
-    #   -r requirements/tox.txt
-    #   tox
 tomli==2.0.1
     # via
     #   -r requirements/tox.txt
+    #   pyproject-api
     #   tox
-tox==3.28.0
-    # via
-    #   -c requirements/common_constraints.txt
-    #   -r requirements/tox.txt
+tox==4.6.4
+    # via -r requirements/tox.txt
 urllib3==2.0.4
     # via requests
 virtualenv==20.24.2

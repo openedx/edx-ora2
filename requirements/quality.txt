@@ -57,6 +57,10 @@ botocore==1.31.18
     #   boto3
     #   moto
     #   s3transfer
+cachetools==5.3.1
+    # via
+    #   -r requirements/test.txt
+    #   tox
 certifi==2023.7.22
     # via
     #   -r requirements/test.txt
@@ -74,6 +78,7 @@ chardet==5.2.0
     # via
     #   -r requirements/test.txt
     #   binaryornot
+    #   tox
 charset-normalizer==3.2.0
     # via
     #   -r requirements/test.txt
@@ -93,6 +98,10 @@ code-annotations==1.5.0
     #   -r requirements/test.txt
     #   edx-lint
     #   edx-toggles
+colorama==0.4.6
+    # via
+    #   -r requirements/test.txt
+    #   tox
 cookiecutter==2.2.3
     # via
     #   -r requirements/test.txt
@@ -124,7 +133,6 @@ distlib==0.3.7
     #   virtualenv
 django==3.2.20
     # via
-    #   -c requirements/common_constraints.txt
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   django-crum
@@ -146,10 +154,8 @@ django-model-utils==4.3.1
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-django-simple-history==3.0.0
-    # via
-    #   -c requirements/common_constraints.txt
-    #   -r requirements/test.txt
+django-simple-history==3.3.0
+    # via -r requirements/test.txt
 django-waffle==4.0.0
     # via
     #   -r requirements/test.txt
@@ -322,6 +328,7 @@ packaging==23.1
     # via
     #   -r requirements/test.txt
     #   docker
+    #   pyproject-api
     #   pytest
     #   tox
 path==13.1.0
@@ -346,6 +353,7 @@ platformdirs==3.10.0
     # via
     #   -r requirements/test.txt
     #   pylint
+    #   tox
     #   virtualenv
 pluggy==1.2.0
     # via
@@ -360,10 +368,6 @@ psutil==5.9.5
     # via
     #   -r requirements/test.txt
     #   edx-django-utils
-py==1.11.0
-    # via
-    #   -r requirements/test.txt
-    #   tox
 pyasn1==0.5.0
     # via
     #   -r requirements/test.txt
@@ -405,6 +409,10 @@ pypng==0.20220715.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
+pyproject-api==1.5.3
+    # via
+    #   -r requirements/test.txt
+    #   tox
 pyrsistent==0.19.3
     # via
     #   -r requirements/test.txt
@@ -506,7 +514,6 @@ six==1.16.0
     #   moto
     #   python-dateutil
     #   python-swiftclient
-    #   tox
 sqlparse==0.4.4
     # via
     #   -r requirements/test.txt
@@ -536,14 +543,13 @@ tomli==2.0.1
     #   -r requirements/test.txt
     #   coverage
     #   pylint
+    #   pyproject-api
     #   pytest
     #   tox
 tomlkit==0.12.1
     # via pylint
-tox==3.28.0
-    # via
-    #   -c requirements/common_constraints.txt
-    #   -r requirements/test.txt
+tox==4.6.4
+    # via -r requirements/test.txt
 types-pyyaml==6.0.12.11
     # via
     #   -r requirements/test.txt
