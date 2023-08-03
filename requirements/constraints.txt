@@ -1,8 +1,15 @@
 # Version constraints for pip-installation.
 
+# Common constraints for edx repos
+-c common_constraints.txt
+
+# Version constraints for pip-installation.
+
 # Base dependencies
+Django<4.0                      # Stay on the latest LTS release of Django
 fs<=2.0.18                         # Constrained by edx-platform
 loremipsum<2.0.0
+
 
 python-swiftclient<4.0.0
 voluptuous<1.0.0
@@ -27,6 +34,3 @@ path<13.2.0
 #     and tox comes in in test.in
 importlib-metadata<2
 setuptools<60.0
-
-# adding django constraint
-django==3.2.20

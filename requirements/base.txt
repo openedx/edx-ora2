@@ -32,6 +32,7 @@ defusedxml==0.7.1
     # via -r requirements/base.in
 django==3.2.20
     # via
+    #   -c requirements/common_constraints.txt
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django-crum
@@ -51,8 +52,10 @@ django-model-utils==4.3.1
     # via
     #   -r requirements/base.in
     #   edx-submissions
-django-simple-history==3.3.0
-    # via -r requirements/base.in
+django-simple-history==3.0.0
+    # via
+    #   -c requirements/common_constraints.txt
+    #   -r requirements/base.in
 django-waffle==4.0.0
     # via
     #   edx-django-utils
@@ -182,7 +185,7 @@ voluptuous==0.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-web-fragments==2.1.0
+web-fragments==2.0.0
     # via xblock
 webencodings==0.5.1
     # via
