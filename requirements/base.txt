@@ -185,7 +185,7 @@ voluptuous==0.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-web-fragments==2.0.0
+web-fragments==2.1.0
     # via xblock
 webencodings==0.5.1
     # via

@@ -441,7 +441,7 @@ voluptuous==0.13.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
-web-fragments==2.0.0
+web-fragments==2.1.0
     # via
     #   -r requirements/base.txt
     #   xblock
