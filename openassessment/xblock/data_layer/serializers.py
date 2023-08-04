@@ -38,7 +38,7 @@ class FileResponseConfigSerializer(Serializer):
     fileUploadLimit = SerializerMethodField()
     allowedExtensions = CharListField(source="get_allowed_file_types_or_preset")
     blockedExtensions = CharListField(source="FILE_EXT_BLACK_LIST")
-    allowedFileTypeDescription = CharField(source="file_upload_type")
+    fileTypeDescription = CharField(source="file_upload_type")
 
     def get_enabled(self, block):
         return block.file_upload_response is not None
@@ -59,8 +59,8 @@ class TeamsConfigSerializer(Serializer):
 
 
 class SubmissionConfigSerializer(Serializer):
-    start = DateTimeField(source="submission_start")
-    due = DateTimeField(source="submission_due")
+    startDatetime = DateTimeField(source="submission_start")
+    endDatetime = DateTimeField(source="submission_due")
 
     textResponseConfig = TextResponseConfigSerializer(source="*")
     fileResponseConfig = FileResponseConfigSerializer(source="*")
@@ -105,16 +105,25 @@ class RubricConfigSerializer(Serializer):
     )
 
 
+class SelfSettingsSerializer(Serializer):
+    required = BooleanField(default=True)
+
+    startTime = DateTimeField(source="start")
+    endTime = DateTimeField(source="due")
+
+
 class PeerSettingsSerializer(Serializer):
     required = BooleanField(default=True)
 
-    start = DateTimeField()
-    due = DateTimeField()
+    startTime = DateTimeField(source="start")
+    endTime = DateTimeField(source="due")
 
     minNumberToGrade = IntegerField(source="must_grade")
     minNumberToBeGradedBy = IntegerField(source="must_be_graded_by")
 
-    flexibleGrading = BooleanField(source="enable_flexible_grading", required=False)
+    enableFlexibleGrading = BooleanField(
+        source="enable_flexible_grading", required=False
+    )
 
 
 class AssessmentStepSettingsSerializer(Serializer):
@@ -142,6 +151,8 @@ class AssessmentStepSettingsSerializer(Serializer):
         # Special handling for the peer step which includes extra fields
         if assessment_step and self.step_name == "peer-assessment":
             return PeerSettingsSerializer(assessment_step).data
+        elif assessment_step and self.step_name == "self-assessment":
+            return SelfSettingsSerializer(assessment_step).data
 
         # If we didn't find a step, it is not required
         if assessment_step is None:
@@ -176,7 +187,7 @@ class AssessmentStepsSerializer(Serializer):
 
 class LeaderboardConfigSerializer(Serializer):
     enabled = SerializerMethodField()
-    numberToShow = IntegerField(source="leaderboard_show")
+    numberOfEntries = IntegerField(source="leaderboard_show")
 
     def get_enabled(self, block):
         return block.leaderboard_show > 0
@@ -194,7 +205,7 @@ class OraBlockInfoSerializer(Serializer):
     submissionConfig = SubmissionConfigSerializer(source="*")
     assessmentSteps = AssessmentStepsSerializer(source="*")
     rubricConfig = RubricConfigSerializer(source="*")
-    leaderboard = LeaderboardConfigSerializer(source="*")
+    leaderboardConfig = LeaderboardConfigSerializer(source="*")
 
     def get_baseAssetUrl(self, block):
         return block._get_base_url_path_for_course_assets(block.course.id)

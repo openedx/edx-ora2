@@ -43,8 +43,8 @@ class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
         # Then I get the expected values
         expected_start = xblock.submission_start
         expected_due = xblock.submission_due
-        self.assertEqual(submission_config["start"], expected_start)
-        self.assertEqual(submission_config["due"], expected_due)
+        self.assertEqual(submission_config["startDatetime"], expected_start)
+        self.assertEqual(submission_config["endDatetime"], expected_due)
 
     @scenario("data/basic_scenario.xml")
     def test_dates_missing(self, xblock):
@@ -55,8 +55,8 @@ class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
         submission_config = SubmissionConfigSerializer(xblock).data
 
         # Then I get the expected values
-        self.assertIsNone(submission_config["start"])
-        self.assertIsNone(submission_config["due"])
+        self.assertIsNone(submission_config["startDatetime"])
+        self.assertIsNone(submission_config["endDatetime"])
 
     @scenario("data/basic_scenario.xml")
     def test_text_response_config(self, xblock):
@@ -115,7 +115,7 @@ class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
             file_response_config["fileUploadLimit"], xblock.MAX_FILES_COUNT
         )
         self.assertEqual(
-            file_response_config["allowedFileTypeDescription"],
+            file_response_config["fileTypeDescription"],
             xblock.file_upload_type,
         )
         self.assertEqual(
@@ -311,8 +311,8 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         ]
 
         # Then I get the right dates
-        self.assertEqual(peer_config["start"], expected_start)
-        self.assertEqual(peer_config["due"], expected_due)
+        self.assertEqual(peer_config["startTime"], expected_start)
+        self.assertEqual(peer_config["endTime"], expected_due)
 
     @scenario("data/peer_assessment_flex_grading_scenario.xml")
     def test_flex_grading(self, xblock):
@@ -324,7 +324,7 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         ]
 
         # Then I get the right steps and ordering
-        self.assertTrue(peer_config["flexibleGrading"])
+        self.assertTrue(peer_config["enableFlexibleGrading"])
 
 
 class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
@@ -432,7 +432,7 @@ class TestLeaderboardConfigSerializer(XBlockHandlerTestCase):
 
         # Then I get the expected config
         self.assertTrue(leaderboard_config["enabled"])
-        self.assertEqual(leaderboard_config["numberToShow"], number_to_show)
+        self.assertEqual(leaderboard_config["numberOfEntries"], number_to_show)
 
     @scenario("data/basic_scenario.xml")
     def test_no_leaderboard(self, xblock):
@@ -442,4 +442,4 @@ class TestLeaderboardConfigSerializer(XBlockHandlerTestCase):
 
         # Then I get the expected config
         self.assertFalse(leaderboard_config["enabled"])
-        self.assertEqual(leaderboard_config["numberToShow"], 0)
+        self.assertEqual(leaderboard_config["numberOfEntries"], 0)
