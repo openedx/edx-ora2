@@ -9,6 +9,7 @@ from itertools import chain
 import json
 import logging
 import os
+import time
 from urllib.parse import urljoin
 from zipfile import ZipFile
 
@@ -18,15 +19,21 @@ from django.db.models import CharField, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.utils.translation import gettext as _
 import requests
+from openassessment.runtime_imports.functions import modulestore
+from opaque_keys.edx.keys import UsageKey
+
+from django.utils import timezone
+import datetime
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
 from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
 from openassessment.runtime_imports.functions import get_course_blocks, modulestore
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
+from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart, PeerWorkflow
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
+from openassessment.workflow import api
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +101,219 @@ def map_anonymized_ids_to_usernames(anonymized_ids):
     }
 
     return anonymous_id_to_username_mapping
+
+class OraWorkflowUpdate:
+
+    """
+    Provides functionality to batch update ORA workflows for different scopes
+    """
+    def update_workflow_for_submission(self, submission_uuid, assessment_requirements, course_override):
+        """
+        Wrapper for `workflow.api.update_from_assessments(submission_uuid, assessment_requirements, course_override)`
+        """
+        start = time.time()
+        workflow = api.update_from_assessments(submission_uuid, assessment_requirements, course_override)
+        end = time.time()
+        logger.info("Update_workflow_for_submission completed successfully; submission_uuid=%s assessment_requirements=%s course_setttings=%s processing_time=%s",
+                    submission_uuid,
+                    assessment_requirements,
+                    course_override,
+                    str(end-start))
+        return workflow
+
+    def update_workflows_for_ora_block(self, item_id):
+        """
+        Updates ORA workflows created for the given ORA Block
+
+        Args:
+        item_id (str): Identifier for the ORA Block
+            e.g. 'block-v1:edX+DemoX+Demo_Course+type@openassessment+block@1676f4b05f0642249ff724e7c07d869e'
+        """
+        try:
+            start = time.time()
+
+            peer_workflows = self.get_blocked_peer_workflows_for_ora_block(item_id)
+            assessment_requirements_dict = self.get_assessment_requirements(peer_workflows)
+            self.update_workflows(assessment_requirements_dict)
+
+            end = time.time()
+            logger.info(
+                "Batch workflow update for ORA block submissions completed successfully; item_id=%s ;  processing_time=%s",
+                item_id,
+                str(end - start))
+
+        except Exception as e:
+            logger.error(
+                "Batch workflow update. Error occurred while updating workflows for ORA block submissions. item_id=%s  Error:%s",
+                item_id,
+                str(e))
+
+    def update_workflows_for_course(self, course_id):
+        """
+        Updates ORA workflows created for the given course
+
+        Args:
+            course_id (str): Course identifier
+        """
+        try:
+            start = time.time()
+
+            peer_workflows = self.get_blocked_peer_workflows_for_course(course_id)
+            assessment_requirements_dict = self.get_assessment_requirements(peer_workflows)
+            self.update_workflows(assessment_requirements_dict)
+
+            end = time.time()
+            logger.info(
+                "Batch workflow update for course submissions completed successfully; course_id=%s ;  processing_time=%s",
+                course_id,
+                str(end - start))
+
+        except Exception as e:
+            logger.error(
+                "Batch workflow update. Error occurred while updating workflows for all blocked submissions. course_id=%s Error:%s",
+                course_id,
+                str(e))
+
+    def update_workflows_for_all_blocked_submissions(self):
+        """
+        Updates ORA workflows for submissions meeting following filtering criteria:
+         - Flexible Peer Grading ON
+         - ungraded submissions that are >7 days old
+        """
+        try:
+            start = time.time()
+
+            peer_workflows = self.get_blocked_peer_workflows()
+            assessment_requirements_dict = self.get_assessment_requirements(peer_workflows)
+            self.update_workflows(assessment_requirements_dict)
+
+            end = time.time()
+            logger.info(
+                "Batch workflow update for all blocked submissions completed successfully; processing_time=%s",
+                str(end - start))
+
+        except Exception as e:
+            logger.error(
+                "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  Error:%s", str(e))
+
+
+    def update_workflows(self,assessment_requirements_dict):
+        """
+        Updates ORA workflows for the provided submission uuids provides in dictionary
+
+        Args:
+            assessment_requirements_dict (dict): Dictionary:   <submission_uuid>:<assessment_requirements>
+        """
+        for submission_uuid, assessment_requirements in assessment_requirements_dict.items():
+            try:
+                #TODO: add course settings
+                self.update_workflow_for_submission(submission_uuid, assessment_requirements, None)
+            except Exception as e:
+                logger.warning(
+                    "Batch workflow update. Error occurred while updating workflow for submission_uuid=%s assessment_requirements=%s   Error:%s",
+                    submission_uuid,assessment_requirements, str(e))
+
+    def is_flexible_peer_grading_on(self, openassessmentblock):
+        """
+        Is flexible peer grading set "ON" for provided ORA block
+
+        Args:
+            openassessmentblock (OpenAssessmentBlock): ORA block
+
+        Returns:
+            bool: True if given ORA is configured with flexible peer grading set "ON"
+        """
+        for rubric_assessment in openassessmentblock.rubric_assessments:
+            if rubric_assessment['name'] == 'peer-assessment' and rubric_assessment['enable_flexible_grading']:
+                return True
+        return False
+
+    def get_blocked_peer_workflows(self):
+        """
+        Retrieve ORA peer workflows not completed for >7 days
+
+        Returns:
+            list (PeerWorkflow): list of workfows not completed for > 7 days
+        """
+
+        peer_workflows = PeerWorkflow.objects.filter(
+            created_at__lte=(timezone.now() - datetime.timedelta(days=7))
+        ).exclude(
+            completed_at__isnull=True
+        )
+        return peer_workflows
+
+    def get_blocked_peer_workflows_for_course(self,course_id):
+        """
+        Retrieve ORA peer workflows not completed for >7 days for a given course
+
+        Args:
+            course_id (str): course identifier
+
+        Returns:
+            list (PeerWorkflow): list of workfows not completed for > 7 days
+        """
+        peer_workflows = PeerWorkflow.objects.filter(
+            created_at__lte=(timezone.now() - datetime.timedelta(days=7)),
+            course_id__exact=course_id
+        ).exclude(
+            completed_at__isnull=True
+        )
+        return peer_workflows
+
+
+    def get_blocked_peer_workflows_for_ora_block(self,item_id):
+        """
+        Retrieve ORA peer workflows not completed for >7 days for a given ORA block id
+
+        Args:
+            item_id (str): Identifier of the ORA Block
+                e.g. 'block-v1:edX+DemoX+Demo_Course+type@openassessment+block@1676f4b05f0642249ff724e7c07d869e'
+
+        Returns:
+            list (PeerWorkflow): list of workfows not completed for > 7 days
+        """
+
+
+        peer_workflows = PeerWorkflow.objects.filter(
+            created_at__lte=(timezone.now() - datetime.timedelta(days=7)),
+            item_id__exact=item_id
+        ).exclude(
+            completed_at__isnull=True
+        )
+        return peer_workflows
+
+    def get_assessment_requirements(self, peer_workflows):
+        """
+        Gathers assessment requirements for provided peer workflows.
+        TODO: add logic to retrieve course overrides
+
+        Args:
+            list: list of `PeerWorkflow` objects
+
+        Returns:
+            assessment_requirements_dict (dict): Dictionary:  <submission_uuid>:<assessment_requirements>
+        """
+        # dictionary <submission_uuid>:<workflow_requirements>
+        workflow_requirements = {}
+
+        # dictionary <submission_uuid>:<course_overrides>
+        course_overrides = {}
+
+        store = modulestore()
+
+        for peer_workflow in peer_workflows:
+            try:
+                block_key = UsageKey.from_string(peer_workflow.item_id)
+                openassessmentblock = store.get_item(block_key)
+
+                if self.is_flexible_peer_grading_on(openassessmentblock):
+                    workflow_requirements[peer_workflow.submission_uuid] = openassessmentblock.workflow_requirements()
+            except Exception as e:
+                logger.warning("Batch workflow update. Error occurred while retrieving workflow requirements for open assessment: %s   Error:%s",
+                               peer_workflow.item_id, str(e))
+
+        return workflow_requirements
 
 
 class CsvWriter:
