@@ -1,0 +1,49 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty?</description>
+        </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
+    </prompts>
+    <rubric>
+        <criterion>
+            <name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>
+            <prompt>How concise is it?</prompt>
+            <option points="3">
+                <name>ﻉซƈﻉɭɭﻉกՇ</name>
+                <explanation>Extremely concise</explanation>
+            </option>
+            <option points="2">
+                <name>Ġööḋ</name>
+                <explanation>Concise</explanation>
+            </option>
+            <option points="1">
+                <name>ק๏๏г</name>
+                <explanation>Wordy</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Form</name>
+            <prompt>How well-formed is it?</prompt>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good</explanation>
+            </option>
+            <option points="2">
+                <name>Fair</name>
+                <explanation>Fair</explanation>
+            </option>
+            <option points="1">
+                <name>Poor</name>
+                <explanation>Poor</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" enable_flexible_grading="true"/>
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>
