@@ -311,10 +311,10 @@ class OpenAssessmentBlock(
         help="Should the rubric be visible to learners in the response section?"
     )
 
-    no_dates = Boolean(
-        default=False,
+    date_config_type = String(
+        default="manual",
         scope=Scope.settings,
-        help="Indicates whether or not the ora due dates are enabled."
+        help="The type of date configuration. Possible values are 'manual', 'subsection', and 'course_end'."
     )
 
     @property
@@ -1137,9 +1137,12 @@ class OpenAssessmentBlock(
         if course_staff:
             return False, None, DISTANT_PAST, DISTANT_FUTURE
 
-        if self.no_dates:
+        if self.date_config_type == 'course_end':
             course = self.get_course()
-            open_range = (course.start, course.end)
+            if course.start and course.end:
+                open_range = (course.start, course.end)
+        elif self.date_config_type == 'subsection' and self.start and self.due:
+            open_range = (self.start, self.due)
 
         if self.is_beta_tester:
             beta_start = self._adjust_start_date_for_beta_testers(open_range[0])

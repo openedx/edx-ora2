@@ -1007,11 +1007,11 @@ class TestDates(XBlockHandlerTestCase):
         )
 
     @scenario('data/basic_scenario.xml')
-    def test_no_dates_field_due_date(self, xblock):
+    def test_date_config_type_course_end(self, xblock):
         """
-        if there is no_dates field is set to true, the due date will be course due date
+        Test that the date config type field set to course end date
         """
-        xblock.no_dates = True
+        xblock.date_config_type = 'course_end'
         xblock.runtime.modulestore = MagicMock()
         xblock.location = Mock()
         xblock.location.course_key = 'course-v1:edX+DemoX+Demo_Course'
@@ -1035,6 +1035,31 @@ class TestDates(XBlockHandlerTestCase):
             dt.datetime(2016, 4, 1, 1, 1, 1, 2).replace(tzinfo=pytz.utc),
             "abitrary", True, 'due',
             mock_course.start, mock_course.end
+        )
+
+    @scenario('data/basic_scenario.xml')
+    def test_date_config_type_section(self, xblock):
+        """
+        Test that the date config type field set to section
+        """
+        xblock.date_config_type = 'section'
+        xblock.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
+        xblock.due = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
+
+        # The problem should always be not be close if now is before section start date
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "abitrary", False, None,
+            xblock.start, xblock.due
+        )
+
+        # The problem should be closed if now is after section due date
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 4, 1, 1, 1, 1, 2).replace(tzinfo=pytz.utc),
+            "abitrary", True, 'due',
+            xblock.start, xblock.due
         )
 
     def assert_is_closed(
