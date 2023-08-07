@@ -79,14 +79,14 @@ If any changes are made to the .html files, it is necessary to re-do the transla
 The above command will generate translations files which will have to be checked into git.
 
 Building Static Files
-------------
+---------------------
 This is required if there were any JS/SCSS changes:
 
 - from local directory (not in lms shell)
 - ``npm run build``
 
 Hot Reload Frontend Changes
-------------
+---------------------------
 This is required if there were any JS/SCSS changes:
 
 - from local directory (not in lms shell)
@@ -112,7 +112,7 @@ One caveat: Since ORA2 has code that executes either in studio or lms context, o
 in order for the breakpoints to be hit.
 
 Debugging JavaScript
-------------------
+--------------------
 For debugging JS in Devstack, first follow the instructions for "Hot Reload JS". This enables source maps and allows for placing breakpoints in source-mapped files from the browser dev tools.
 
   - Locate code by browsing to ``webpack:///./openassessment/xblock/static/js/src/``. 
