@@ -29,13 +29,13 @@ bleach==6.0.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.28.21
+boto3==1.28.22
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.31.21
+botocore==1.31.22
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -367,7 +367,7 @@ pyyaml==6.0.1
     #   moto
     #   responses
     #   xblock
-regex==2023.6.3
+regex==2023.8.8
     # via cfn-lint
 requests==2.31.0
     # via
@@ -431,7 +431,7 @@ tomli==2.0.1
     #   pyproject-api
     #   pytest
     #   tox
-tox==4.6.4
+tox==4.7.0
     # via -r requirements/test.in
 types-pyyaml==6.0.12.11
     # via responses

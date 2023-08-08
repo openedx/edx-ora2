@@ -44,13 +44,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.28.21
+boto3==1.28.22
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.31.21
+botocore==1.31.22
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -397,8 +397,9 @@ pygments==2.16.1
     # via
     #   -r requirements/test.txt
     #   rich
-pylint==2.17.5
+pylint==2.17.4
     # via
+    #   -c requirements/constraints.txt
     #   edx-lint
     #   pylint-celery
     #   pylint-django
@@ -481,7 +482,7 @@ pyyaml==6.0.1
     #   moto
     #   responses
     #   xblock
-regex==2023.6.3
+regex==2023.8.8
     # via
     #   -r requirements/test.txt
     #   cfn-lint
@@ -566,7 +567,7 @@ tomli==2.0.1
     #   tox
 tomlkit==0.12.1
     # via pylint
-tox==4.6.4
+tox==4.7.0
     # via -r requirements/test.txt
 types-pyyaml==6.0.12.11
     # via
