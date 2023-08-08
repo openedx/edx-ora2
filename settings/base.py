@@ -169,3 +169,6 @@ FEATURES = {
     # See: https://openedx.atlassian.net/browse/EDUCATOR-5751
     'ENABLE_ORA_RUBRIC_REUSE': False
 }
+
+# disable indexing on history_date
+SIMPLE_HISTORY_DATE_INDEX = False
