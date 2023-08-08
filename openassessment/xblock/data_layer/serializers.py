@@ -143,7 +143,7 @@ class AssessmentStepSettingsSerializer(Serializer):
 
     def __init__(self, *args, **kwargs):
         self.step_name = kwargs.pop("step_name")
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def to_representation(self, rubric_assessments):
         assessment_step = self._get_step(rubric_assessments, self.step_name)
