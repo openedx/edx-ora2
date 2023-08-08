@@ -29,21 +29,19 @@ bleach==6.0.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.28.18
+boto3==1.28.21
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.31.18
+botocore==1.31.21
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
     #   boto3
     #   moto
     #   s3transfer
-cachetools==5.3.1
-    # via tox
 certifi==2023.7.22
     # via
     #   -r requirements/base.txt
@@ -56,9 +54,7 @@ cffi==1.15.1
 cfn-lint==0.79.6
     # via moto
 chardet==5.2.0
-    # via
-    #   binaryornot
-    #   tox
+    # via binaryornot
 charset-normalizer==3.2.0
     # via
     #   -r requirements/base.txt
@@ -73,9 +69,7 @@ code-annotations==1.5.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
-colorama==0.4.6
-    # via tox
-cookiecutter==2.2.3
+cookiecutter==2.3.0
     # via xblock-sdk
 coverage[toml]==7.2.7
     # via
@@ -96,6 +90,7 @@ defusedxml==0.7.1
 distlib==0.3.7
     # via virtualenv
     # via
+    #   -c requirements/common_constraints.txt
     #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   django-crum
@@ -117,8 +112,10 @@ django-model-utils==4.3.1
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-django-simple-history==3.3.0
-    # via -r requirements/base.txt
+django-simple-history==3.1.1
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.txt
 django-waffle==4.0.0
     # via
     #   -r requirements/base.txt
@@ -133,7 +130,7 @@ ecdsa==0.18.0
     # via
     #   python-jose
     #   sshpubkeys
-edx-django-utils==5.6.0
+edx-django-utils==5.7.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -149,7 +146,7 @@ exceptiongroup==1.1.2
     # via pytest
 factory-boy==3.3.0
     # via -r requirements/test.in
-faker==19.2.0
+faker==19.3.0
     # via factory-boy
 filelock==3.12.2
     # via
@@ -177,7 +174,7 @@ idna==2.8
     #   -r requirements/base.txt
     #   moto
     #   requests
-importlib-resources==6.0.0
+importlib-resources==6.0.1
     # via jsonschema
 iniconfig==2.0.0
     # via pytest
@@ -223,17 +220,21 @@ lxml==4.9.3
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==2.1.3
     # via
     #   -r requirements/base.txt
     #   jinja2
     #   werkzeug
     #   xblock
+mdurl==0.1.2
+    # via markdown-it-py
 mock==5.1.0
     # via
     #   -r requirements/test.in
     #   moto
-more-itertools==10.0.0
+more-itertools==10.1.0
     # via -r requirements/test.in
 moto==1.3.14
     # via
@@ -252,7 +253,6 @@ newrelic==8.9.0
 packaging==23.1
     # via
     #   docker
-    #   pyproject-api
     #   pytest
     #   tox
 path==13.1.0
@@ -272,9 +272,7 @@ pbr==5.11.1
 pkgutil-resolve-name==1.3.10
     # via jsonschema
 platformdirs==3.10.0
-    # via
-    #   tox
-    #   virtualenv
+    # via virtualenv
 pluggy==1.2.0
     # via
     #   pytest
@@ -287,6 +285,8 @@ psutil==5.9.5
     # via
     #   -r requirements/base.txt
     #   edx-django-utils
+py==1.11.0
+    # via tox
 pyasn1==0.5.0
     # via
     #   python-jose
@@ -297,6 +297,8 @@ pycparser==2.21
     #   cffi
 pydantic==1.10.12
     # via aws-sam-translator
+pygments==2.16.1
+    # via rich
 pymongo==3.13.0
     # via
     #   -r requirements/base.txt
@@ -307,8 +309,6 @@ pynacl==1.5.0
     #   edx-django-utils
 pypng==0.20220715.0
     # via xblock-sdk
-pyproject-api==1.5.3
-    # via tox
 pyrsistent==0.19.3
     # via jsonschema
 pytest==7.4.0
@@ -372,6 +372,8 @@ requests==2.31.0
     #   xblock-sdk
 responses==0.23.3
     # via moto
+rich==13.5.2
+    # via cookiecutter
 rsa==4.9
     # via python-jose
 s3transfer==0.6.1
@@ -395,6 +397,7 @@ six==1.16.0
     #   moto
     #   python-dateutil
     #   python-swiftclient
+    #   tox
 sqlparse==0.4.4
     # via
     #   -r requirements/base.txt
@@ -418,11 +421,12 @@ text-unidecode==1.3
 tomli==2.0.1
     # via
     #   coverage
-    #   pyproject-api
     #   pytest
     #   tox
-tox==4.6.4
-    # via -r requirements/test.in
+tox==3.28.0
+    # via
+    #   -c requirements/common_constraints.txt
+    #   -r requirements/test.in
 types-pyyaml==6.0.12.11
     # via responses
 typing-extensions==4.7.1
@@ -432,6 +436,7 @@ typing-extensions==4.7.1
     #   aws-sam-translator
     #   faker
     #   pydantic
+    #   rich
 urllib3==1.26.16
     # via
     #   -r requirements/base.txt
@@ -468,7 +473,7 @@ wrapt==1.11.2
     # via
     #   -c requirements/constraints.txt
     #   aws-xray-sdk
-xblock==1.6.2
+xblock==1.7.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk
