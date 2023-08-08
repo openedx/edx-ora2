@@ -141,7 +141,7 @@ edx-django-utils==5.7.0
     #   edx-toggles
 edx-i18n-tools==1.1.0
     # via -r requirements/base.txt
-edx-opaque-keys==2.3.0
+edx-opaque-keys==2.4.0
     # via -r requirements/base.txt
 edx-submissions==3.6.0
     # via -r requirements/base.txt
