@@ -29,13 +29,13 @@ bleach==6.0.0
     # via -r requirements/base.txt
 boto==2.49.0
     # via moto
-boto3==1.28.18
+boto3==1.28.21
     # via
     #   -r requirements/base.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.31.18
+botocore==1.31.21
     # via
     #   -r requirements/base.txt
     #   aws-xray-sdk
@@ -75,7 +75,7 @@ code-annotations==1.5.0
     #   edx-toggles
 colorama==0.4.6
     # via tox
-cookiecutter==2.2.3
+cookiecutter==2.3.0
     # via xblock-sdk
 coverage[toml]==7.2.7
     # via
@@ -117,8 +117,10 @@ django-model-utils==4.3.1
     # via
     #   -r requirements/base.txt
     #   edx-submissions
-django-simple-history==3.3.0
-    # via -r requirements/base.txt
+django-simple-history==3.1.1
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.txt
 django-waffle==4.0.0
     # via
     #   -r requirements/base.txt
@@ -133,7 +135,7 @@ ecdsa==0.18.0
     # via
     #   python-jose
     #   sshpubkeys
-edx-django-utils==5.6.0
+edx-django-utils==5.7.0
     # via
     #   -r requirements/base.txt
     #   edx-toggles
@@ -149,7 +151,7 @@ exceptiongroup==1.1.2
     # via pytest
 factory-boy==3.3.0
     # via -r requirements/test.in
-faker==19.2.0
+faker==19.3.0
     # via factory-boy
 filelock==3.12.2
     # via
@@ -177,7 +179,7 @@ idna==2.8
     #   -r requirements/base.txt
     #   moto
     #   requests
-importlib-resources==6.0.0
+importlib-resources==6.0.1
     # via jsonschema
 iniconfig==2.0.0
     # via pytest
@@ -223,17 +225,21 @@ lxml==4.9.3
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==2.1.3
     # via
     #   -r requirements/base.txt
     #   jinja2
     #   werkzeug
     #   xblock
+mdurl==0.1.2
+    # via markdown-it-py
 mock==5.1.0
     # via
     #   -r requirements/test.in
     #   moto
-more-itertools==10.0.0
+more-itertools==10.1.0
     # via -r requirements/test.in
 moto==1.3.14
     # via
@@ -297,6 +303,8 @@ pycparser==2.21
     #   cffi
 pydantic==1.10.12
     # via aws-sam-translator
+pygments==2.16.1
+    # via rich
 pymongo==3.13.0
     # via
     #   -r requirements/base.txt
@@ -372,6 +380,8 @@ requests==2.31.0
     #   xblock-sdk
 responses==0.23.3
     # via moto
+rich==13.5.2
+    # via cookiecutter
 rsa==4.9
     # via python-jose
 s3transfer==0.6.1
@@ -432,6 +442,7 @@ typing-extensions==4.7.1
     #   aws-sam-translator
     #   faker
     #   pydantic
+    #   rich
 urllib3==1.26.16
     # via
     #   -r requirements/base.txt
@@ -468,7 +479,7 @@ wrapt==1.11.2
     # via
     #   -c requirements/constraints.txt
     #   aws-xray-sdk
-xblock==1.6.2
+xblock==1.7.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk

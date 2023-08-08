@@ -10,9 +10,9 @@ asgiref==3.7.2
     # via django
 bleach==6.0.0
     # via -r requirements/base.in
-boto3==1.28.18
+boto3==1.28.21
     # via -r requirements/base.in
-botocore==1.31.18
+botocore==1.31.21
     # via
     #   boto3
     #   s3transfer
@@ -51,8 +51,10 @@ django-model-utils==4.3.1
     # via
     #   -r requirements/base.in
     #   edx-submissions
-django-simple-history==3.3.0
-    # via -r requirements/base.in
+django-simple-history==3.1.1
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/base.in
 django-waffle==4.0.0
     # via
     #   edx-django-utils
@@ -61,7 +63,7 @@ djangorestframework==3.14.0
     # via
     #   -r requirements/base.in
     #   edx-submissions
-edx-django-utils==5.6.0
+edx-django-utils==5.7.0
     # via
     #   -r requirements/base.in
     #   edx-toggles
@@ -73,8 +75,10 @@ edx-submissions==3.6.0
     # via -r requirements/base.in
 edx-toggles==5.1.0
     # via -r requirements/base.in
-fs==2.4.16
-    # via xblock
+fs==2.0.18
+    # via
+    #   -c requirements/constraints.txt
+    #   xblock
 html5lib==1.1
     # via -r requirements/base.in
 idna==2.8
@@ -143,6 +147,7 @@ pytz==2023.3
     #   django
     #   djangorestframework
     #   edx-submissions
+    #   fs
     #   xblock
 pyyaml==6.0.1
     # via
@@ -187,7 +192,7 @@ webencodings==0.5.1
     #   html5lib
 webob==1.8.7
     # via xblock
-xblock==1.6.2
+xblock==1.7.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:

@@ -44,13 +44,13 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   moto
-boto3==1.28.18
+boto3==1.28.21
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
     #   fs-s3fs
     #   moto
-botocore==1.31.18
+botocore==1.31.21
     # via
     #   -r requirements/test.txt
     #   aws-xray-sdk
@@ -102,7 +102,7 @@ colorama==0.4.6
     # via
     #   -r requirements/test.txt
     #   tox
-cookiecutter==2.2.3
+cookiecutter==2.3.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
@@ -154,8 +154,10 @@ django-model-utils==4.3.1
     # via
     #   -r requirements/test.txt
     #   edx-submissions
-django-simple-history==3.3.0
-    # via -r requirements/test.txt
+django-simple-history==3.1.1
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.txt
 django-waffle==4.0.0
     # via
     #   -r requirements/test.txt
@@ -174,7 +176,7 @@ ecdsa==0.18.0
     #   -r requirements/test.txt
     #   python-jose
     #   sshpubkeys
-edx-django-utils==5.6.0
+edx-django-utils==5.7.0
     # via
     #   -r requirements/test.txt
     #   edx-toggles
@@ -194,7 +196,7 @@ exceptiongroup==1.1.2
     #   pytest
 factory-boy==3.3.0
     # via -r requirements/test.txt
-faker==19.2.0
+faker==19.3.0
     # via
     #   -r requirements/test.txt
     #   factory-boy
@@ -226,7 +228,7 @@ idna==2.8
     #   -r requirements/test.txt
     #   moto
     #   requests
-importlib-resources==6.0.0
+importlib-resources==6.0.1
     # via
     #   -r requirements/test.txt
     #   jsonschema
@@ -293,6 +295,10 @@ lxml==4.9.3
     #   -r requirements/test.txt
     #   xblock
     #   xblock-sdk
+markdown-it-py==3.0.0
+    # via
+    #   -r requirements/test.txt
+    #   rich
 markupsafe==2.1.3
     # via
     #   -r requirements/test.txt
@@ -301,11 +307,15 @@ markupsafe==2.1.3
     #   xblock
 mccabe==0.7.0
     # via pylint
+mdurl==0.1.2
+    # via
+    #   -r requirements/test.txt
+    #   markdown-it-py
 mock==5.1.0
     # via
     #   -r requirements/test.txt
     #   moto
-more-itertools==10.0.0
+more-itertools==10.1.0
     # via -r requirements/test.txt
 moto==1.3.14
     # via
@@ -383,6 +393,10 @@ pydantic==1.10.12
     # via
     #   -r requirements/test.txt
     #   aws-sam-translator
+pygments==2.16.1
+    # via
+    #   -r requirements/test.txt
+    #   rich
 pylint==2.17.5
     # via
     #   edx-lint
@@ -484,6 +498,10 @@ responses==0.23.3
     # via
     #   -r requirements/test.txt
     #   moto
+rich==13.5.2
+    # via
+    #   -r requirements/test.txt
+    #   cookiecutter
 rsa==4.9
     # via
     #   -r requirements/test.txt
@@ -563,6 +581,7 @@ typing-extensions==4.7.1
     #   faker
     #   pydantic
     #   pylint
+    #   rich
 urllib3==1.26.16
     # via
     #   -r requirements/test.txt
@@ -607,7 +626,7 @@ wrapt==1.11.2
     #   -r requirements/test.txt
     #   astroid
     #   aws-xray-sdk
-xblock==1.6.2
+xblock==1.7.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
