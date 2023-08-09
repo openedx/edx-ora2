@@ -1,3 +1,10 @@
+"""
+Serializers for ORA's BFF.
+
+These are the response shapes that power the MFE implementation of the ORA UI.
+"""
+# pylint: disable=abstract-method
+
 from rest_framework.serializers import (
     BooleanField,
     DateTimeField,
@@ -56,6 +63,7 @@ class TeamsConfigSerializer(Serializer):
     def get_teamsetName(self, block):
         if block.teamset_config is not None:
             return block.teamset_config.name
+        return None
 
 
 class SubmissionConfigSerializer(Serializer):
@@ -129,7 +137,7 @@ class PeerSettingsSerializer(Serializer):
 class AssessmentStepSettingsSerializer(Serializer):
     """
     Generic Assessments step, where we just need to know if the step is
-    required given the ora.rubric_assessments soruce.
+    required given the ora.rubric_assessments source.
     """
 
     required = BooleanField(default=True)
@@ -143,10 +151,10 @@ class AssessmentStepSettingsSerializer(Serializer):
 
     def __init__(self, *args, **kwargs):
         self.step_name = kwargs.pop("step_name")
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-    def to_representation(self, rubric_assessments):
-        assessment_step = self._get_step(rubric_assessments, self.step_name)
+    def to_representation(self, instance):
+        assessment_step = self._get_step(instance, self.step_name)
 
         # Special handling for the peer step which includes extra fields
         if assessment_step and self.step_name == "peer-assessment":
@@ -208,7 +216,10 @@ class OraBlockInfoSerializer(Serializer):
     leaderboardConfig = LeaderboardConfigSerializer(source="*")
 
     def get_baseAssetUrl(self, block):
-        return block._get_base_url_path_for_course_assets(block.course.id)
+        # pylint: disable=protected-access
+        return block._get_base_url_path_for_course_assets(
+            block.course.id
+        )
 
     def get_prompts(self, block):
         return [prompt["description"] for prompt in block.prompts]
