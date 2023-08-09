@@ -151,7 +151,7 @@ class AssessmentStepSettingsSerializer(Serializer):
 
     def __init__(self, *args, **kwargs):
         self.step_name = kwargs.pop("step_name")
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def to_representation(self, instance):
         assessment_step = self._get_step(instance, self.step_name)
@@ -216,9 +216,10 @@ class OraBlockInfoSerializer(Serializer):
     leaderboardConfig = LeaderboardConfigSerializer(source="*")
 
     def get_baseAssetUrl(self, block):
+        # pylint: disable=protected-access
         return block._get_base_url_path_for_course_assets(
             block.course.id
-        )  # pylint: disable=protected-access
+        )
 
     def get_prompts(self, block):
         return [prompt["description"] for prompt in block.prompts]
