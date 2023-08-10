@@ -3,6 +3,7 @@ Public interface for the Assessment Workflow.
 
 """
 import logging
+import time
 
 from django.db import DatabaseError
 
@@ -272,6 +273,7 @@ def update_from_assessments(
         }
 
     """
+    start = time.time()
     workflow = _get_workflow_model(submission_uuid)
 
     try:
@@ -280,13 +282,17 @@ def update_from_assessments(
             course_settings,
             override_submitter_requirements
         )
+        serialized_workflow = _serialized_with_details(workflow)
+        end = time.time()
+
         logger.info(
-            "Updated workflow for submission UUID %s with requirements %s and course setttings %s",
+            "Updated workflow for submission UUID %s with requirements %s and course setttings %s ; processing_time=%s",
             submission_uuid,
             assessment_requirements,
-            course_settings
+            course_settings,
+            str(end - start)
         )
-        return _serialized_with_details(workflow)
+        return serialized_workflow
     except PeerAssessmentError as err:
         err_msg = "Could not update assessment workflow: %s"
         logger.exception(err_msg, err)
