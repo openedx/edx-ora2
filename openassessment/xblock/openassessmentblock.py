@@ -1106,7 +1106,12 @@ class OpenAssessmentBlock(
             datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
 
         """
-        submission_range = (self.submission_start, self.submission_due)
+        if self.due is not None \
+           and self.submission_due is not None \
+           and parse_date_value(self.due, self._) > parse_date_value(self.submission_due, self._):
+            submission_range = (self.submission_start, self.due)
+        else:
+            submission_range = (self.submission_start, self.submission_due)
         assessment_ranges = [
             (asmnt.get('start'), asmnt.get('due'))
             for asmnt in self.valid_assessments
