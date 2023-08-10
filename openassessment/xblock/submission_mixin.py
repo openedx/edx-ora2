@@ -922,8 +922,6 @@ class SubmissionMixin:
         context['allow_multiple_files'] = self.allow_multiple_files
         context['allow_latex'] = self.allow_latex
 
-        file_urls = None
-
         if self.file_upload_type:
             context['file_urls'] = self.file_manager.file_descriptors(
                 team_id=team_id_for_current_submission, include_deleted=True
@@ -959,16 +957,6 @@ class SubmissionMixin:
             context['saved_response'] = create_submission_dict(saved_response, self.prompts)
             context['save_status'] = self.save_status
             context['enable_delete_files'] = True
-
-            submit_enabled = True
-            if self.text_response == 'required' and not self.saved_response:
-                submit_enabled = False
-            if self.file_upload_response == 'required' and not file_urls:
-                submit_enabled = False
-            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
-                    and not self.saved_response and not file_urls:
-                submit_enabled = False
-            context['submit_enabled'] = submit_enabled
 
             if self.teams_enabled:
                 self.get_team_submission_context(context)

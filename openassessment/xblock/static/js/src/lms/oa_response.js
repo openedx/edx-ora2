@@ -86,7 +86,6 @@ export class ResponseView {
             view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
             view.announceStatus = false;
             view.dateFactory.apply();
-            view.checkSubmissionAbility();
           });
         },
       ).fail(() => {
@@ -207,45 +206,57 @@ export class ResponseView {
     }
 
     /**
-     * Check that "submit" button could be enabled (or disabled)
-     *
-     * Args:
-     * filesFiledIsNotBlank (boolean): used to avoid race conditions situations
-     * (if files were successfully uploaded and are not displayed yet but
-     * after upload last file the submit button should be available to push)
-     *
+     * Check if submission is valid before submitting
+     * Returns: boolean
      */
-    checkSubmissionAbility(filesFiledIsNotBlank) {
-      const textFieldsIsNotBlank = !this.response().every((element) => $.trim(element) === '');
-
-      filesFiledIsNotBlank = filesFiledIsNotBlank || false;
+    isValidForSubmit() {
+      const textFieldsIsNotBlank = !this.response().every(
+        (element) => $.trim(element) === '',
+      );
+      let filesFiledIsNotBlank = false;
       $('.submission__answer__file', this.element).each(function () {
-        if (($(this).prop('tagName') === 'IMG') && ($(this).attr('src') !== '')) {
-          filesFiledIsNotBlank = true;
-        }
-        if (($(this).prop('tagName') === 'A') && ($(this).attr('href') !== '')) {
+        if (
+          ($(this).prop('tagName') === 'IMG' && $(this).attr('src') !== '')
+          || ($(this).prop('tagName') === 'A' && $(this).attr('href') !== '')
+        ) {
           filesFiledIsNotBlank = true;
         }
       });
-      let readyToSubmit = true;
-
-      if ((this.textResponse === 'required') && !textFieldsIsNotBlank) {
-        readyToSubmit = false;
+      if (this.textResponse === 'required' && !textFieldsIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Please provide a response.'),
+        );
+        return false;
       }
-      if ((this.fileUploadResponse === 'required') && !filesFiledIsNotBlank) {
-        readyToSubmit = false;
+      if (this.fileUploadResponse === 'required' && !filesFiledIsNotBlank) {
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Please upload a file.'),
+        );
+        return false;
       }
       if ((this.textResponse === 'optional') && (this.fileUploadResponse === 'optional')
             && !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
-        readyToSubmit = false;
-      }
-      if (this.hasPendingUploadFiles()) {
-        this.collectFilesDescriptions();
-        readyToSubmit = false;
+        this.baseView.toggleActionError(
+          'submit',
+          gettext('Cannot submit empty response even everything is optional.'),
+        );
+        return false;
       }
 
-      // if new files are to be uploaded, confirm that they have descriptions
-      this.submitEnabled(readyToSubmit);
+      if (this.hasPendingUploadFiles()) {
+        this.collectFilesDescriptions();
+        this.baseView.toggleActionError(
+          'submit',
+          gettext(
+            'There is still file upload in progress. Please wait until it is finished.',
+          ),
+        );
+        return false;
+      }
+
+      return true;
     }
 
     /**
@@ -275,20 +286,6 @@ export class ResponseView {
      * */
     submitEnabled(enabled) {
       return this.baseView.buttonEnabled('.step--response__submit', enabled);
-    }
-
-    /**
-     * Enable/disable the upload button or check whether the upload button is enabled
-     *
-     * @param {boolean]} enabled - optional param to enable/disable button
-     * @returns {boolean} whether the upload button is enabled or not
-     *
-     * @example
-     *     view.uploadEnabled(true);  // enable the upload button
-     *     view.uploadEnabled();      // check whether the upload button is enabled
-     */
-    uploadEnabled(enabled) {
-      return this.baseView.buttonEnabled('.file__upload', enabled);
     }
 
     /**
@@ -325,14 +322,27 @@ export class ResponseView {
      boolean: if we have deleted/moved files or not.
      * */
     hasAllUploadFiles() {
-      for (let i = 0; i < this.files.length; i++) {
+      if (!this.files) {
+        this.baseView.toggleActionError(
+          'upload',
+          gettext('No files selected for upload.'),
+        );
+        return false;
+      }
+      if (!this.collectFilesDescriptions()) {
+        this.baseView.toggleActionError(
+          'upload',
+          gettext('Please provide a description for each file you are uploading.'),
+        );
+        return false;
+      }
+      for (let i = 0; i < this.files?.length; i++) {
         const file = this.files[i];
         if (file.size === 0) {
           this.baseView.toggleActionError(
             'upload',
             gettext('Your file has been deleted or path has been changed: ') + file.name,
           );
-          this.submitEnabled(true);
           return false;
         }
       }
@@ -418,8 +428,6 @@ export class ResponseView {
      the user has entered a response.
      * */
     handleResponseChanged() {
-      this.checkSubmissionAbility();
-
       // Update the save button, save status, and "unsaved changes" warning
       // only if the response has changed
       if (this.responseChanged()) {
@@ -463,10 +471,6 @@ export class ResponseView {
         // Remember which response we saved, once the server confirms that it's been saved...
         view.savedResponse = savedResponse;
 
-        // ... but update the UI based on what the user may have entered
-        // since hitting the save button.
-        view.checkSubmissionAbility();
-
         const currentResponse = view.response();
         const currentResponseEqualsSaved = currentResponse.every((element, index) => element === savedResponse[index]);
         if (currentResponseEqualsSaved) {
@@ -498,11 +502,10 @@ export class ResponseView {
      Handler for the submit button
      * */
     handleSubmitClicked() {
+      if (!this.isValidForSubmit()) { return; }
+
       // Immediately disable the submit button to prevent multiple submission
       this.submitEnabled(false);
-
-      // Block submit if a learner has files staged for upload
-      if (this.hasPendingUploadFiles()) { return; }
 
       const view = this;
       const title = gettext('Confirm Submit Response');
@@ -623,10 +626,6 @@ export class ResponseView {
         }
         this.updateFilesDescriptionsFields(files, descriptions, uploadType);
       }
-
-      if (this.files === null) {
-        $(this.element).find('.file__upload').prop('disabled', true);
-      }
     }
 
    isUploadSupported = (file, uploadType) => {
@@ -715,14 +714,7 @@ export class ResponseView {
        divTextarea.appendTo(mainDiv);
 
        mainDiv.appendTo(filesDescriptions);
-       textarea.on('change keyup drop paste', $.proxy(this, 'checkSubmissionAbility'));
      }
-
-     // We can upload if descriptions exist
-     this.uploadEnabled(descriptionsExists);
-
-     // Submissions should be disabled when missing descriptions
-     this.submitEnabled(descriptionsExists && this.checkSubmissionAbility());
    }
 
    /**
@@ -745,8 +737,6 @@ export class ResponseView {
          isError = true;
        }
      });
-
-     this.uploadEnabled(!isError);
 
      if (!isError) {
        this.filesDescriptions = filesDescriptions;
@@ -802,7 +792,6 @@ export class ResponseView {
        const block = sel.find(`.submission__answer__file__block__${filenum}`);
        block.html('');
        block.prop('deleted', true);
-       this.checkSubmissionAbility();
      }).fail((errMsg) => {
        this.baseView.toggleActionError('delete', errMsg);
      });
@@ -852,7 +841,6 @@ export class ResponseView {
        },
      ).fail((errMsg) => {
        view.baseView.toggleActionError('upload', errMsg);
-       sel.find('.file__upload').prop('disabled', false);
      });
    }
 
@@ -864,8 +852,6 @@ export class ResponseView {
      let promise = null;
      const fileCount = view.files.length;
      const sel = $('.step--response', this.element);
-
-     sel.find('.file__upload').prop('disabled', true);
 
      promise = view.saveFilesDescriptions();
 
@@ -892,7 +878,6 @@ export class ResponseView {
      const sel = $('.step--response', this.element);
      const handleError = function (errMsg) {
        view.baseView.toggleActionError('upload', errMsg);
-       sel.find('button.file__upload').prop('disabled', false);
        sel.find('input.file--upload').val(null);
      };
 
@@ -909,7 +894,6 @@ export class ResponseView {
              if (finalUpload) {
                sel.find('input[type=file]').val('');
                view.filesUploaded = true;
-               view.checkSubmissionAbility(true);
              }
            }).fail(handleError);
        },
