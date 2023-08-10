@@ -1110,12 +1110,19 @@ class OpenAssessmentBlock(
            and self.submission_due is not None \
            and parse_date_value(self.due, self._) > parse_date_value(self.submission_due, self._):
             submission_range = (self.submission_start, self.due)
+            assessment_ranges = []
+            for asmnt in self.valid_assessments:
+                asmnt_due = asmnt.get('due')
+                if asmnt_due is None or parse_date_value(self.due, self._) < parse_date_value(asmnt_due, self._):
+                    assessment_ranges.append((asmnt.get('start'), asmnt_due))
+                else:
+                    assessment_ranges.append((asmnt.get('start'), self.due))                
         else:
             submission_range = (self.submission_start, self.submission_due)
-        assessment_ranges = [
-            (asmnt.get('start'), asmnt.get('due'))
-            for asmnt in self.valid_assessments
-        ]
+            assessment_ranges = [
+                (asmnt.get('start'), asmnt.get('due'))
+                for asmnt in self.valid_assessments
+            ]
 
         # Resolve unspecified dates and date strings to datetimes
         start, due, date_ranges = resolve_dates(
