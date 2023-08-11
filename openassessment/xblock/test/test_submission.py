@@ -150,6 +150,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
 
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn("Incomplete", resp.decode('utf-8'))
 
@@ -157,12 +158,14 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
     def test_prompt_line_breaks(self, xblock):
         # Verify that prompts with multiple lines retain line breaks
         # (backward compatibility in case if prompt_type == 'text')
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         expected_prompt = "<p><br>Line 1</p><p>Line 2</p><p>Line 3<br></p>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
 
     @scenario('data/prompt_html.xml')
     def test_prompt_html_to_text(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         expected_prompt = "<code><strong>Question 123</strong></code>"
         self.assertIn(expected_prompt, resp.decode('utf-8'))
@@ -948,6 +951,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         xblock.file_manager.append_uploads(*file_uploads)
 
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
+
         # Save a response
         payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
         resp = self.request(xblock, 'save_submission', payload, response_format='json')
@@ -1030,6 +1035,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             course_id='test_course',
             anonymous_student_id='Pmn'
         )
+
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
 
         # delete file-2
         with patch('openassessment.fileupload.api.remove_file'):
@@ -1197,6 +1204,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         Test that we render files owned by Valchek and
         their teammates when files are shared with a team.
         """
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         xblock.file_manager.get_uploads = Mock(return_value=[
             api.FileUpload(
                 description='file 1 description',
@@ -1600,6 +1608,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_integration(self, xblock):
         # Expect that the response step is open and displays the deadline
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
+
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('Enter your response to the prompt', resp.decode('utf-8'))
         self.assertIn('2999-05-06T00:00:00+00:00', resp.decode('utf-8'))

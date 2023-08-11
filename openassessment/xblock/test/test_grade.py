@@ -5,6 +5,7 @@ Tests for grade handlers in Open Assessment XBlock.
 
 import copy
 import json
+from unittest.mock import Mock
 
 import ddt
 
@@ -22,6 +23,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_render_grade(self, xblock):
         # Submit, assess, and render the grade view
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         self.create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT
         )
@@ -56,6 +58,8 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @scenario('data/grade_scenario_self_only.xml', user_id='Greggs')
     def test_render_grade_self_only(self, xblock):
         # Submit, assess, and render the grade view
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
+
         self.create_submission_and_assessments(
             xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT,
             waiting_for_peer=True
@@ -402,6 +406,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         """
         Check assessment completition status is shown correctly on assessment page.
         """
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         self.create_submission_and_assessments(
             xblock, self.SUBMISSION, peers, [PEER_ASSESSMENTS[0]] if peers else [], self_assessment
         )

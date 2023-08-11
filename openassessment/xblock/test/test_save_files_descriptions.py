@@ -33,6 +33,8 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         # We're not worried about looking up shared uploads in this test
         xblock.has_team = mock.Mock(return_value=False)
 
+        xblock.is_due_date_extension_enabled = mock.Mock(return_value=True)
+
         xblock.xmodule_runtime = mock.Mock(
             user_is_staff=False,
             user_is_beta_tester=False,
@@ -65,6 +67,8 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         """
         # We're not worried about looking up shared uploads in this test
         xblock.has_team = mock.Mock(return_value=False)
+
+        xblock.is_due_date_extension_enabled = mock.Mock(return_value=True)
 
         xblock.xmodule_runtime = mock.Mock(
             user_is_staff=False,

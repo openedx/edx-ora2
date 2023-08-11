@@ -167,5 +167,5 @@ class ConfigMixin:
         # .. toggle_description: Set to True to enable the due date extension feature
         # .. toggle_use_cases: circuit_breaker
         # .. toggle_creation_date: 2023-08-11
-        # .. toggle_tickets: 
+        # .. toggle_tickets:
         return self.is_feature_enabled(DUE_DATE_EXTENSION)

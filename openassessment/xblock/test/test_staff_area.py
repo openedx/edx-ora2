@@ -127,6 +127,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_staff_area(self, xblock):
         # If we're not course staff, we shouldn't see the staff area
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, False, False, "Bob"
         )
@@ -140,6 +141,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_view_in_studio_button(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, False, False, "Bob"
         )
@@ -210,6 +212,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/staff_dates_scenario.xml', user_id='Bob')
     def test_staff_area_dates_table(self, xblock):
         # Simulate that we are course staff
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
+
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
@@ -232,6 +236,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_dates_distant_past_and_future(self, xblock):
         # Simulate that we are course staff
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
+
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
@@ -1116,6 +1122,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_area_has_team_info(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         # Given that we are course staff, managing a team assignment
         self._setup_xblock_and_create_submission(xblock)
 
@@ -1140,6 +1147,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_has_team_info_individual(self, xblock):
         # Given that we are course staff, managing an individual assignment
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         self._setup_xblock_and_create_submission(xblock)
 
         # When I get the staff context

@@ -38,6 +38,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_fragment = self.runtime.render(xblock, "student_view")
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
+
         # Validate Submission Rendering.
         submission_response = xblock.render_submission({})
         self.assertIsNotNone(submission_response)
@@ -292,6 +294,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self.load_scenario('data/dates_scenario.xml')
+            xblock.is_due_date_extension_enabled = Mock(return_value=True)
             xblock_fragment = self.runtime.render(xblock, "student_view")
             self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 

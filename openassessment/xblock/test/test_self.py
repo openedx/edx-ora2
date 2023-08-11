@@ -435,6 +435,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict(), ("Test submission 1", "Test submission 2")
         )
 
+        xblock.is_due_date_extension_enabled = mock.Mock(return_value=True)
+
         xblock.get_workflow_info = mock.Mock(return_value={
             'status': 'self', 'submission_uuid': submission['uuid']
         })

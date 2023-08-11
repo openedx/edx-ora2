@@ -19,6 +19,8 @@ class SaveResponseTest(XBlockHandlerTestCase):
     def test_default_saved_response_blank(self, xblock):
         xblock.get_team_info = mock.Mock(return_value={})
 
+        xblock.is_due_date_extension_enabled = mock.Mock(return_value=True)
+
         xblock.xmodule_runtime = mock.Mock(
             user_is_staff=False,
             user_is_beta_tester=False,
@@ -33,6 +35,8 @@ class SaveResponseTest(XBlockHandlerTestCase):
     @scenario('data/save_scenario.xml', user_id="Perleman")
     def test_save_response(self, xblock, data):
         xblock.get_team_info = mock.Mock(return_value={})
+
+        xblock.is_due_date_extension_enabled = mock.Mock(return_value=True)
 
         xblock.xmodule_runtime = mock.Mock(
             user_is_staff=False,

@@ -199,6 +199,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/feedback_only_criterion_student_training.xml', user_id='Bob')
     def test_feedback_only_criterion(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         self.request(xblock, 'render_student_training', json.dumps({}))
 
@@ -264,6 +265,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
                 'Grammar': 'Poor'
             }
         }
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         resp = self.request(xblock, 'training_assess', json.dumps(selected_data))
         self.assertIn("Your scores could not be checked", resp.decode('utf-8'))
 
@@ -315,11 +317,13 @@ class StudentTrainingRenderTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     def test_no_submission(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         resp = self.request(xblock, 'render_student_training', json.dumps({}))
         self.assertIn("Not Available", resp.decode('utf-8'))
 
     @scenario('data/student_training.xml')
     def test_studio_preview(self, xblock):
+        xblock.is_due_date_extension_enabled = Mock(return_value=True)
         resp = self.request(xblock, 'render_student_training', json.dumps({}))
         self.assertIn("Not Available", resp.decode('utf-8'))
 
