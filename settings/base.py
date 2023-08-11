@@ -167,7 +167,10 @@ FEATURES = {
 
     # Set to True to enable copying/reusing rubric data
     # See: https://openedx.atlassian.net/browse/EDUCATOR-5751
-    'ENABLE_ORA_RUBRIC_REUSE': False
+    'ENABLE_ORA_RUBRIC_REUSE': False,
+
+    # Set to True to enable individual due date extension for ORA
+    'ENABLE_ORA_DUE_DATE_EXTENSION': False,
 }
 
 # disable indexing on history_date

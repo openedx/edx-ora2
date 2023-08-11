@@ -14,13 +14,15 @@ TEAM_SUBMISSIONS = 'team_submissions'
 USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 RUBRIC_REUSE = 'rubric_reuse'
 ENHANCED_STAFF_GRADER = 'enhanced_staff_grader'
+DUE_DATE_EXTENSION = 'due_date_extension'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
-    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER'
+    ENHANCED_STAFF_GRADER: 'ENABLE_ENHANCED_STAFF_GRADER',
+    DUE_DATE_EXTENSION: 'ENABLE_ORA_DUE_DATE_EXTENSION',
 }
 
 
@@ -153,3 +155,17 @@ class ConfigMixin:
         # .. toggle_creation_date: 2021-08-29
         # .. toggle_tickets: https://openedx.atlassian.net/browse/AU-50
         return self.is_feature_enabled(ENHANCED_STAFF_GRADER)
+
+    @cached_property
+    def is_due_date_extension_enabled(self):
+        """
+        Return a boolean indicating the due date extension feature is enabled or not.
+        """
+        # .. toggle_name: FEATURES['ENABLE_ORA_DUE_DATE_EXTENSION']
+        # .. toggle_implementation: WaffleFlag
+        # .. toggle_default: False
+        # .. toggle_description: Set to True to enable the due date extension feature
+        # .. toggle_use_cases: circuit_breaker
+        # .. toggle_creation_date: 2023-08-11
+        # .. toggle_tickets: 
+        return self.is_feature_enabled(DUE_DATE_EXTENSION)
