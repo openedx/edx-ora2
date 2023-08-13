@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 18:36+0000\n"
+"POT-Creation-Date: 2023-08-13 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ivo Branco <ivo.branco@fccn.pt>, 2021,2023\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/open-edx/edx-platform/language/pt_PT/)\n"
@@ -85,76 +85,76 @@ msgstr "Pontuação Média {number}"
 msgid "Feedback {number}"
 msgstr "Comentário {number}"
 
-#: data.py:870
+#: data.py:866
 msgid "Item ID"
 msgstr "Item ID"
 
-#: data.py:871
+#: data.py:867
 msgid "Submission ID"
 msgstr "ID Submissão"
 
-#: data.py:883
+#: data.py:879
 msgid "Anonymized Student ID"
 msgstr "ID de Estudante Anónimo"
 
-#: data.py:914
+#: data.py:910
 msgid "Assessment ID"
 msgstr "ID de Avaliação"
 
-#: data.py:915
+#: data.py:911
 msgid "Assessment Scored Date"
 msgstr "Data da Avaliação"
 
-#: data.py:916
+#: data.py:912
 msgid "Assessment Scored Time"
 msgstr "Avaliação do Tempo de Pontuação"
 
-#: data.py:917
+#: data.py:913
 msgid "Assessment Type"
 msgstr "Tipo de Avaliação"
 
-#: data.py:918
+#: data.py:914
 msgid "Anonymous Scorer Id"
 msgstr "Id de Pontuação Anónimo"
 
-#: data.py:920
+#: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Comentário global"
 
-#: data.py:921
+#: data.py:917
 msgid "Assessment Score Earned"
 msgstr "Pontuação de Avaliação Obtida"
 
-#: data.py:922
+#: data.py:918
 msgid "Assessment Scored At"
 msgstr "Avaliação Classificada em"
 
-#: data.py:923
+#: data.py:919
 msgid "Date/Time Final Score Given"
 msgstr "Data/Hora Pontuação Final Atribuída"
 
-#: data.py:924
+#: data.py:920
 msgid "Final Score Earned"
 msgstr "Pontuação de Avaliação Obtida"
 
-#: data.py:925
+#: data.py:921
 msgid "Final Score Possible"
 msgstr "Pontuação Final Possível"
 
-#: data.py:926
+#: data.py:922
 msgid "Feedback Statements Selected"
 msgstr "Declarações de Feedback Seleccionadas"
 
-#: data.py:927
+#: data.py:923
 msgid "Feedback on Assessment"
 msgstr "Feedback Sobre a Avaliação"
 
-#: data.py:929
+#: data.py:925
 msgid "Response Files"
 msgstr "Ficheiros de Resposta"
 
-#: data.py:1320
+#: data.py:1316
 msgid "No description provided."
 msgstr "Nenhuma descrição fornecida."
 
@@ -1095,15 +1095,15 @@ msgstr "Esta tarefa contém várias etapas. Na primeira etapa, deverá dar uma r
 msgid "Loading"
 msgstr "Carregando"
 
-#: templates/openassessmentblock/oa_latex_preview.html:7
+#: templates/openassessmentblock/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
 msgstr "Pré-visualização em LaTeX"
 
-#: templates/openassessmentblock/oa_latex_preview.html:10
+#: templates/openassessmentblock/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
 msgstr "Clique para visualizar o seu envio em LaTeX."
 
-#: templates/openassessmentblock/oa_latex_preview.html:15
+#: templates/openassessmentblock/oa_latex_preview.html:14
 msgid "Preview Response"
 msgstr "Pré-visualizar a Resposta"
 

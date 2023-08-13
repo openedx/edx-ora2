@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 18:36+0000\n"
+"POT-Creation-Date: 2023-08-13 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Diana Huang <dkh@edx.org>, 2022\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/open-edx/edx-platform/language/it_IT/)\n"
@@ -80,76 +80,76 @@ msgstr "Punteggio medio {number}"
 msgid "Feedback {number}"
 msgstr "Feedback {number}"
 
-#: data.py:870
+#: data.py:866
 msgid "Item ID"
 msgstr "ID elemento "
 
-#: data.py:871
+#: data.py:867
 msgid "Submission ID"
 msgstr "ID inoltro "
 
-#: data.py:883
+#: data.py:879
 msgid "Anonymized Student ID"
 msgstr "ID studente anonimo "
 
-#: data.py:914
+#: data.py:910
 msgid "Assessment ID"
 msgstr "ID valutazione "
 
-#: data.py:915
+#: data.py:911
 msgid "Assessment Scored Date"
 msgstr "Data di assegnazione punteggio alla valutazione "
 
-#: data.py:916
+#: data.py:912
 msgid "Assessment Scored Time"
 msgstr "Ora di assegnazione punteggio alla valutazione "
 
-#: data.py:917
+#: data.py:913
 msgid "Assessment Type"
 msgstr "Tipo di valutazione "
 
-#: data.py:918
+#: data.py:914
 msgid "Anonymous Scorer Id"
 msgstr "ID responsabile punteggio anonimo "
 
-#: data.py:920
+#: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Feedback complessivo "
 
-#: data.py:921
+#: data.py:917
 msgid "Assessment Score Earned"
 msgstr "Punteggio di valutazione acquisito "
 
-#: data.py:922
+#: data.py:918
 msgid "Assessment Scored At"
 msgstr "Punteggio valutazione assegnato a "
 
-#: data.py:923
+#: data.py:919
 msgid "Date/Time Final Score Given"
 msgstr "Data/ora assegnazione punteggio finale fornito "
 
-#: data.py:924
+#: data.py:920
 msgid "Final Score Earned"
 msgstr "Punteggio finale acquisito "
 
-#: data.py:925
+#: data.py:921
 msgid "Final Score Possible"
 msgstr "Punteggio finale possibile "
 
-#: data.py:926
+#: data.py:922
 msgid "Feedback Statements Selected"
 msgstr "Dichiarazioni di feedback selezionate "
 
-#: data.py:927
+#: data.py:923
 msgid "Feedback on Assessment"
 msgstr "Feedback sulla valutazione "
 
-#: data.py:929
+#: data.py:925
 msgid "Response Files"
 msgstr "File di risposta "
 
-#: data.py:1320
+#: data.py:1316
 msgid "No description provided."
 msgstr "Descrizione non disponibile"
 
@@ -1090,15 +1090,15 @@ msgstr "L'esercizio prevede diverse fasi. Nella prima fase devi fornire una risp
 msgid "Loading"
 msgstr "Caricamento"
 
-#: templates/openassessmentblock/oa_latex_preview.html:7
+#: templates/openassessmentblock/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
 msgstr "Anteprima in LaTeX"
 
-#: templates/openassessmentblock/oa_latex_preview.html:10
+#: templates/openassessmentblock/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
 msgstr "Fare clic per visualizzare l'inoltro in LaTeX."
 
-#: templates/openassessmentblock/oa_latex_preview.html:15
+#: templates/openassessmentblock/oa_latex_preview.html:14
 msgid "Preview Response"
 msgstr "Anteprima risposta "
 
