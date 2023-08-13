@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 18:36+0000\n"
+"POT-Creation-Date: 2023-08-13 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018-2023\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
@@ -83,76 +83,76 @@ msgstr "Medyan Not {number}"
 msgid "Feedback {number}"
 msgstr "{number} Geribildirim"
 
-#: data.py:870
+#: data.py:866
 msgid "Item ID"
 msgstr "Öğe Kimliği"
 
-#: data.py:871
+#: data.py:867
 msgid "Submission ID"
 msgstr "Gönderim Kimliği"
 
-#: data.py:883
+#: data.py:879
 msgid "Anonymized Student ID"
 msgstr "Anonimleştirilmiş Öğrenci Kimliği"
 
-#: data.py:914
+#: data.py:910
 msgid "Assessment ID"
 msgstr "Değerlendirme Kimliği"
 
-#: data.py:915
+#: data.py:911
 msgid "Assessment Scored Date"
 msgstr "Değerlendirme Puan Tarihi"
 
-#: data.py:916
+#: data.py:912
 msgid "Assessment Scored Time"
 msgstr "Değerlendirme Puan Zamanı"
 
-#: data.py:917
+#: data.py:913
 msgid "Assessment Type"
 msgstr "Değerlendirme Türü"
 
-#: data.py:918
+#: data.py:914
 msgid "Anonymous Scorer Id"
 msgstr "Anonim Puanlayıcı Kimliği"
 
-#: data.py:920
+#: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Genel Geri Bildirim"
 
-#: data.py:921
+#: data.py:917
 msgid "Assessment Score Earned"
 msgstr "Kazanılan Değerlendirme Puanı"
 
-#: data.py:922
+#: data.py:918
 msgid "Assessment Scored At"
 msgstr "Puanlanan Değerlendirme"
 
-#: data.py:923
+#: data.py:919
 msgid "Date/Time Final Score Given"
 msgstr "Final Notu Verilme Tarihi/Zamanı"
 
-#: data.py:924
+#: data.py:920
 msgid "Final Score Earned"
 msgstr "Alınan Final Notu"
 
-#: data.py:925
+#: data.py:921
 msgid "Final Score Possible"
 msgstr "Alınabilir Final Notu"
 
-#: data.py:926
+#: data.py:922
 msgid "Feedback Statements Selected"
 msgstr "Geri Bildirim İfadeleri Seçildi"
 
-#: data.py:927
+#: data.py:923
 msgid "Feedback on Assessment"
 msgstr "Değerlendirmeye İlişkin Geri Bildirim"
 
-#: data.py:929
+#: data.py:925
 msgid "Response Files"
 msgstr "Yanıt Dosyaları "
 
-#: data.py:1320
+#: data.py:1316
 msgid "No description provided."
 msgstr "Açıklama girilmemiş."
 
@@ -1092,15 +1092,15 @@ msgstr "Bu ödev birkaç adıma sahip. İlk adımda, soruya cevap vereceğiz. Di
 msgid "Loading"
 msgstr "Yüklüyor..."
 
-#: templates/openassessmentblock/oa_latex_preview.html:7
+#: templates/openassessmentblock/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
 msgstr "Latex'de Önizleme"
 
-#: templates/openassessmentblock/oa_latex_preview.html:10
+#: templates/openassessmentblock/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
 msgstr "Yüklemenizin LaTeX'teki önizlemesine tıklayınız."
 
-#: templates/openassessmentblock/oa_latex_preview.html:15
+#: templates/openassessmentblock/oa_latex_preview.html:14
 msgid "Preview Response"
 msgstr "Cevabı önizle"
 
