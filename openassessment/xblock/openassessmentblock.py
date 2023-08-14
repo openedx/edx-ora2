@@ -312,7 +312,7 @@ class OpenAssessmentBlock(
     )
 
     date_config_type = String(
-        default="manual",
+        default=DATE_CONFIG_MANUAL,
         scope=Scope.settings,
         help="The type of date configuration. Possible values are 'manual', 'subsection', and 'course_end'."
     )
@@ -1137,11 +1137,11 @@ class OpenAssessmentBlock(
         if course_staff:
             return False, None, DISTANT_PAST, DISTANT_FUTURE
 
-        if self.date_config_type == 'course_end':
-            course = self.get_course()
+        if self.date_config_type == DATE_CONFIG_COURSE_END:
+            course = self.course
             if course.start and course.end:
                 open_range = (course.start, course.end)
-        elif self.date_config_type == 'subsection' and self.start and self.due:
+        elif self.date_config_type == DATE_CONFIG_SUBSECTION and self.due:
             open_range = (self.start, self.due)
 
         if self.is_beta_tester:
@@ -1418,11 +1418,3 @@ class OpenAssessmentBlock(
         xblock_body["content_type"] = "ORA"
 
         return xblock_body
-
-    def get_course(self):
-        """
-        get course block
-        """
-        if hasattr(self, 'runtime'):
-            return self.runtime.modulestore.get_course(self.location.course_key)  # pylint: disable=no-member
-        return None
