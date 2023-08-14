@@ -22,6 +22,7 @@ from .data_conversion import (
     clean_criterion_feedback, create_rubric_dict, verify_assessment_parameters,
 )
 from .staff_area_mixin import require_course_staff
+from .api.assessments.staff_assessment import StaffAssessmentAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -45,14 +46,7 @@ class StaffAssessmentMixin:
         if 'submission_uuid' not in data:
             return False, self._("The submission ID of the submission being assessed was not found.")
         try:
-            assessment = staff_api.create_assessment(
-                data['submission_uuid'],
-                self.get_student_item_dict()["student_id"],
-                data['options_selected'],
-                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
-                data['overall_feedback'],
-                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
-            )
+            assessment = StaffAssessmentAPI(self).create_assessment(data)
             assess_type = data.get('assess_type', 'regrade')
             self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type=assess_type)
             workflow_api.update_from_assessments(
@@ -88,18 +82,7 @@ class StaffAssessmentMixin:
         if 'submission_uuid' not in data and team_submission_uuid is None:
             return False, self._("The submission ID of the submission being assessed was not found.")
         try:
-            if not team_submission_uuid:
-                team_submission = team_sub_api.get_team_submission_from_individual_submission(data['submission_uuid'])
-                team_submission_uuid = team_submission['team_submission_uuid']
-
-            assessment = teams_api.create_assessment(
-                team_submission_uuid,
-                self.get_student_item_dict()["student_id"],
-                data['options_selected'],
-                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
-                data['overall_feedback'],
-                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
-            )
+            assessment, team_submission_uuid = StaffAssessmentAPI(self).create_team_assessment(data)
             assess_type = data.get('assess_type', 'regrade')
             self.publish_assessment_event("openassessmentblock.staff_assess", assessment[0], type=assess_type)
             team_workflow_api.update_from_assessments(
