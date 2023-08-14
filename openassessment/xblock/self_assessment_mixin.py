@@ -13,6 +13,7 @@ from .data_conversion import (clean_criterion_feedback, create_rubric_dict, crea
                               verify_assessment_parameters)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
+from .api.assessments.self_assessment import SelfAssessmentAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -56,10 +57,10 @@ class SelfAssessmentMixin:
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
         # Import is placed here to avoid model import at project startup.
-        from submissions import api as submission_api
+        from .api.assessments.self_assessment import SelfAssessmentAPI
+        step_data = SelfAssessmentAPI(self)
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
-        problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context = {
@@ -74,36 +75,29 @@ class SelfAssessmentMixin:
         # We display the due date whether the problem is open or closed.
         # If no date is set, it defaults to the distant future, in which
         # case we don't display the date.
-        if due_date < DISTANT_FUTURE:
-            context['self_due'] = due_date
+        if step_data.is_due:
+            context['self_due'] = step_data.due_date
 
         # If we haven't submitted yet, `workflow` will be an empty dict,
         # and `workflow_status` will be None.
-        workflow = self.get_workflow_info()
-        workflow_status = workflow.get('status')
-        self_complete = workflow.get('status_details', {}).get('self', {}).get('complete', False)
-        if workflow_status == 'cancelled':
+        if step_data.is_cancelled:
             path = 'openassessmentblock/self/oa_self_cancelled.html'
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
-
-        elif self_complete:
+        elif step_data.is_self_complete:
             path = 'openassessmentblock/self/oa_self_complete.html'
-        elif workflow_status == 'self' or problem_closed:
-            assessment = self_api.get_assessment(workflow.get("submission_uuid"))
-
-            if assessment is not None:
+        elif step_data.is_complete
+            if step_data.assessment is not None:
                 path = 'openassessmentblock/self/oa_self_complete.html'
-            elif problem_closed:
-                if reason == 'start':
+            elif step_data.problem_closed:
+                if step_data.is_not_available_yet:
                     context["self_start"] = start_date
                     path = 'openassessmentblock/self/oa_self_unavailable.html'
-                elif reason == 'due':
+                elif step_data.is_past_due:
                     path = 'openassessmentblock/self/oa_self_closed.html'
             else:
-                submission = submission_api.get_submission(self.submission_uuid)
                 context["rubric_criteria"] = self.rubric_criteria_with_labels
-                context["self_submission"] = create_submission_dict(submission, self.prompts)
+                context["self_submission"] = step_data.submission_dict
                 if self.rubric_feedback_prompt is not None:
                     context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
 
@@ -112,7 +106,7 @@ class SelfAssessmentMixin:
 
                 # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
                 context["file_upload_type"] = self.file_upload_type
-                context['self_file_urls'] = self.get_download_urls_from_submission(submission)
+                context['self_file_urls'] = step_data.file_urls
 
                 path = 'openassessmentblock/self/oa_self_assessment.html'
         else:
@@ -143,14 +137,7 @@ class SelfAssessmentMixin:
             }
 
         try:
-            assessment = self_api.create_assessment(
-                self.submission_uuid,
-                self.get_student_item_dict()['student_id'],
-                data['options_selected'],
-                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
-                data['overall_feedback'],
-                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
-            )
+            assessment = SelfAssessmentApi(self).create_assessment(data)
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)
 
             # After we've created the self-assessment, we need to update the workflow.

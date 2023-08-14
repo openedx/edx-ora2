@@ -67,7 +67,7 @@ class StudentTrainingMixin:
                 `context` is a dict.
 
         """
-        training_api = StudentTrainingAPI(self)
+        step_data = StudentTrainingAPI(self)
 
         # Retrieve the status of the workflow.
         # If no submissions have been created yet, the status will be None.
@@ -84,7 +84,7 @@ class StudentTrainingMixin:
         context['user_timezone'] = user_preferences['user_timezone']
         context['user_language'] = user_preferences['user_language']
 
-        if not training_api.has_workflow:
+        if not step_data.has_workflow:
             return template, context
 
         # If the student has completed the training step, then show that the step is complete.
@@ -92,42 +92,42 @@ class StudentTrainingMixin:
         # shows as complete.
         # We're assuming here that the training step always precedes the other assessment steps
         # (peer/self) -- we may need to make this more flexible later.
-        if training_api.is_cancelled:
+        if step_data.is_cancelled:
             template = 'openassessmentblock/student_training/student_training_cancelled.html'
-        elif training_api.is_complete:
+        elif step_data.is_complete:
             template = 'openassessmentblock/student_training/student_training_complete.html'
 
         # If the problem is closed, then do not allow students to access the training step
-        elif training_api.is_not_available_yet:
-            context['training_start'] = training_api.start_date
+        elif step_data.is_not_available_yet:
+            context['training_start'] = step_data.start_date
             template = 'openassessmentblock/student_training/student_training_unavailable.html'
-        elif training_api.is_past_due:
-            context['training_due'] = training_api.due_date
+        elif step_data.is_past_due:
+            context['training_due'] = step_data.due_date
             template = 'openassessmentblock/student_training/student_training_closed.html'
 
         # If we're on the training step, show the student an example
         # We do this last so we can avoid querying the student training API if possible.
         else:
-            if not training_api.training_module:
+            if not step_data.training_module:
                 return template, context
 
-            if training_api.is_due:
-                context['training_due'] = training_api.due_date
+            if step_data.is_due:
+                context['training_due'] = step_data.due_date
 
             # Report progress in the student training workflow (completed X out of Y)
-            context['training_num_available'] = training_api.num_available
-            context['training_num_completed'] = training_api.num_completed
+            context['training_num_available'] = step_data.num_available
+            context['training_num_completed'] = step_data.num_completed
             context['training_num_current'] = context['training_num_completed'] + 1
 
             # Retrieve the example essay for the student to submit
             # This will contain the essay text, the rubric, and the options the instructor selected.
-            example_context = training_api.example_context
+            example_context = step_data.example_context
             if example_context.error_message:
                 logger.error(example_context.error_message)
                 template = "openassessmentblock/student_training/student_training_error.html"
             else:
                 context['training_essay'] = example_context.essay_context
-                context['training_rubric'] = training_api.example_rubric 
+                context['training_rubric'] = step_data.example_rubric 
                 template = 'openassessmentblock/student_training/student_training.html'
 
         return template, context
