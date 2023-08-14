@@ -37,7 +37,7 @@ class StaffAssessmentAPI:
             clean_criterion_feedback(self.block.rubric_criteria, data['criterion_feedback']),
             data['overall_feedback'],
             self.rubric_dict
-        )
+        ), team_submission['team_submission_uuid']
 
     def create_assessment(self, data):
         return staff_api(
