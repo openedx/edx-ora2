@@ -15,12 +15,20 @@ class SelfAssessmentAPI:
         self._workflow = WorkflowAPI(block);
 
     @property
-    def problem_closed(self):
-        return self._is_closed.problem_closed
+    def is_self_complete(self):
+        return self._workflow.is_self_complete
 
     @property
-    def closed_reason(self):
-        return self._is_closed.reason
+    def is_cancelled(self):
+        return self._workflow.is_cancelled
+    
+    @property
+    def is_complete(self):
+        return self._workflow.is_self or self._is_closed.problem_closed
+
+    @property
+    def problem_closed(self):
+        return self._is_closed.problem_closed
 
     @property
     def due_date(self):
@@ -32,7 +40,15 @@ class SelfAssessmentAPI:
 
     @property
     def is_due(self):
-        return self.is_closed.due_date < DISTANT_FUTURE
+        return self._is_closed.is_due
+
+    @property
+    def is_past_due(self):
+        return self._is_closed.is_past_due
+
+    @property
+    def is_not_available_yet(self):
+        return self._is_closed.is_not_available_yet
 
     @property
     def assessment(self):
