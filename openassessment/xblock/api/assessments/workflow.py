@@ -7,7 +7,11 @@ class WorkflowAPI:
 
     @property
     def has_workflow(self):
-        return bool(workflow)
+        return bool(self.workflow)
+
+    @property
+    def has_status(self):
+        return bool(self.status)
 
     @property
     def is_self_complete(self):

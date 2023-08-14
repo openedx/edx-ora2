@@ -15,6 +15,18 @@ class StudentTrainingAPI:
         self._workflow = WorkflowAPI(block);
 
     @property
+    def is_cancelled(self):
+        return self._workflow.is_cancelled
+
+    @property
+    def is_complete(self):
+        state = self._workflow
+        return state.has_status and not (state.is_cancelled or state.is_training)
+
+    def has_workflow(self):
+        return self._workflow.has_status
+
+    @property
     def problem_closed(self):
         return self._is_closed.problem_closed
 
@@ -37,34 +49,6 @@ class StudentTrainingAPI:
     @property
     def is_not_available_yet(self):
         return self._is_closed.is_not_available_yet
-
-    def _parse_answer_dict(self, answer):
-        parts = answer.get('parts', [])
-        if parts and isinstance(parts[0], dict) and isinstance(parts[0].get('text'), str):
-            return create_submission_dict({'answer': answer}, self.block.prompts)
-
-    def _parse_answer_list(self, answer):
-        if answer and isinstance(answer[0], str):
-            return self._parse_snwer_string(answer[0])
-        elif not answer:
-            return self._parse_answer_string('')
-        return None
-
-    def _parse_answer_string(self, answer):
-        return create_submission_dict({'answer': {'parts': [{'text': answer}]}, self.prompts)
-
-    def _parse_example(self, example):
-        if not example:
-            return null
-        answer = example['answer']
-        submission_dict = None
-        if isinstance(answer, str):
-            submission_dict = self._parse_answer_string(answer)
-        elif isinstance(answer, dict):
-            submission_dict = self._parse_answer_dict(answer)
-        elif isinstance(answer, list):
-            submission_dict = self._parse_answer_list(answer)
-        return submission_dict
 
     @property
     def training_module(self):
@@ -102,3 +86,50 @@ class StudentTrainingAPI:
     def example_rubric(self):
         rubric = self.example['rubric']
         return {'criteria': rubric['criteria'], 'points_possible': rubric['points_possible']}
+
+    def _parse_answer_dict(self, answer):
+        """
+        Helper to parse answer as a fully-qualified dict.
+        """
+        parts = answer.get('parts', [])
+        if parts and isinstance(parts[0], dict):
+            if isinstance(parts[0].get('text'), str):
+                return create_submission_dict({'answer': answer}, self.block.prompts)
+        return None
+
+    def _parse_answer_list(self, answer):
+        """
+        Helper to parse answer as a list of strings.
+        """
+        if answer and isinstance(answer[0], str):
+            return self._parse_answer_string(answer[0])
+        elif not answer:
+            return self._parse_answer_string("")
+        return None
+
+    def _parse_answer_string(self, answer):
+        """
+        Helper to parse answer as a plain string
+        """
+        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.block.prompts)
+
+    def _parse_example(self, example):
+        """
+        EDUCATOR-1263: examples are serialized in a myriad of different ways, we need to be robust to all of them.
+
+        Types of serialized example['answer'] we handle here:
+        -fully specified: {'answer': {'parts': [{'text': <response_string>}]}}
+        -list of string: {'answer': [<response_string>]}
+        -just a string: {'answer': <response_string>}
+        """
+        if not example:
+            return null
+        answer = example['answer']
+        submission_dict = None
+        if isinstance(answer, str):
+            submission_dict = self._parse_answer_string(answer)
+        elif isinstance(answer, dict):
+            submission_dict = self._parse_answer_dict(answer)
+        elif isinstance(answer, list):
+            submission_dict = self._parse_answer_list(answer)
+        return submission_dict
