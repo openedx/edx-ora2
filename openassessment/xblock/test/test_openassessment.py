@@ -15,7 +15,7 @@ import pytz
 from freezegun import freeze_time
 from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock import openassessmentblock
+from openassessment.xblock import defaults, openassessmentblock
 from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 
 from .base import XBlockHandlerTestCase, scenario
@@ -1011,15 +1011,12 @@ class TestDates(XBlockHandlerTestCase):
         """
         Test that the date config type field set to course end date
         """
-        xblock.date_config_type = 'course_end'
-        xblock.runtime.modulestore = MagicMock()
-        xblock.location = Mock()
-        xblock.location.course_key = 'course-v1:edX+DemoX+Demo_Course'
+        xblock.date_config_type = defaults.DATE_CONFIG_COURSE_END
 
         mock_course = Mock()
         mock_course.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
         mock_course.end = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
-        xblock.runtime.modulestore.get_course.return_value = mock_course
+        xblock.course = mock_course
 
         # The problem should always be not be close if now is before course start date
         self.assert_is_closed(
@@ -1038,11 +1035,11 @@ class TestDates(XBlockHandlerTestCase):
         )
 
     @scenario('data/basic_scenario.xml')
-    def test_date_config_type_section(self, xblock):
+    def test_date_config_type_subsection(self, xblock):
         """
         Test that the date config type field set to section
         """
-        xblock.date_config_type = 'section'
+        xblock.date_config_type = defaults.DATE_CONFIG_SUBSECTION
         xblock.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
         xblock.due = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
 
