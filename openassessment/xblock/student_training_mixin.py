@@ -11,6 +11,7 @@ from openassessment.xblock.data_conversion import convert_training_examples_list
 
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
+from .api.assessment.student_training import StudentTrainingApi
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -57,62 +58,6 @@ class StudentTrainingMixin:
         else:
             return self.render_assessment(path, context)
 
-    def _parse_answer_dict(self, answer):
-        """
-        Helper to parse answer as a fully-qualified dict.
-        """
-        parts = answer.get('parts', [])
-        if parts and isinstance(parts[0], dict):
-            if isinstance(parts[0].get('text'), str):
-                return create_submission_dict({'answer': answer}, self.prompts)
-        return None
-
-    def _parse_answer_list(self, answer):
-        """
-        Helper to parse answer as a list of strings.
-        """
-        if answer and isinstance(answer[0], str):
-            return self._parse_answer_string(answer[0])
-        elif not answer:
-            return self._parse_answer_string("")
-        return None
-
-    def _parse_answer_string(self, answer):
-        """
-        Helper to parse answer as a plain string
-        """
-        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.prompts)
-
-    def _parse_example(self, example):
-        """
-        EDUCATOR-1263: examples are serialized in a myriad of different ways, we need to be robust to all of them.
-
-        Types of serialized example['answer'] we handle here:
-        -fully specified: {'answer': {'parts': [{'text': <response_string>}]}}
-        -list of string: {'answer': [<response_string>]}
-        -just a string: {'answer': <response_string>}
-        """
-        if not example:
-            return (
-                {},
-                "No training example was returned from the API for student with Submission UUID {}".format(
-                    self.submission_uuid
-                )
-            )
-        answer = example['answer']
-        submission_dict = None
-        if isinstance(answer, str):
-            submission_dict = self._parse_answer_string(answer)
-        elif isinstance(answer, dict):
-            submission_dict = self._parse_answer_dict(answer)
-        elif isinstance(answer, list):
-            submission_dict = self._parse_answer_list(answer)
-
-        return (submission_dict, "") or (
-            {},
-            f"Improperly formatted example, cannot render student training. Example: {example}"
-        )
-
     def training_path_and_context(self):
         """
         Return the template path and context used to render the student training step.
@@ -122,10 +67,11 @@ class StudentTrainingMixin:
                 `context` is a dict.
 
         """
+        training_api = StudentTrainingAPI(self)
+
         # Retrieve the status of the workflow.
         # If no submissions have been created yet, the status will be None.
-        workflow_status = self.get_workflow_info().get('status')
-        problem_closed, reason, start_date, due_date = self.is_closed(step="student-training")
+
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context = {"xblock_id": self.get_xblock_id()}
@@ -138,7 +84,7 @@ class StudentTrainingMixin:
         context['user_timezone'] = user_preferences['user_timezone']
         context['user_language'] = user_preferences['user_language']
 
-        if not workflow_status:
+        if not training_api.has_workflow:
             return template, context
 
         # If the student has completed the training step, then show that the step is complete.
@@ -146,56 +92,42 @@ class StudentTrainingMixin:
         # shows as complete.
         # We're assuming here that the training step always precedes the other assessment steps
         # (peer/self) -- we may need to make this more flexible later.
-        if workflow_status == 'cancelled':
+        if training_api.is_cancelled:
             template = 'openassessmentblock/student_training/student_training_cancelled.html'
-        elif workflow_status and workflow_status != "training":
+        elif training_api.is_complete:
             template = 'openassessmentblock/student_training/student_training_complete.html'
 
         # If the problem is closed, then do not allow students to access the training step
-        elif problem_closed and reason == 'start':
-            context['training_start'] = start_date
+        elif training_api.is_not_available_yet:
+            context['training_start'] = training_api.start_date
             template = 'openassessmentblock/student_training/student_training_unavailable.html'
-        elif problem_closed and reason == 'due':
-            context['training_due'] = due_date
+        elif training_api.is_past_due:
+            context['training_due'] = training_api.due_date
             template = 'openassessmentblock/student_training/student_training_closed.html'
 
         # If we're on the training step, show the student an example
         # We do this last so we can avoid querying the student training API if possible.
         else:
-            training_module = self.get_assessment_module('student-training')
-            if not training_module:
+            if not training_api.training_module:
                 return template, context
 
-            if due_date < DISTANT_FUTURE:
-                context['training_due'] = due_date
+            if training_api.is_due:
+                context['training_due'] = training_api.due_date
 
             # Report progress in the student training workflow (completed X out of Y)
-            context['training_num_available'] = len(training_module["examples"])
-            context['training_num_completed'] = student_training.get_num_completed(self.submission_uuid)
+            context['training_num_available'] = training_api.num_available
+            context['training_num_completed'] = training_api.num_completed
             context['training_num_current'] = context['training_num_completed'] + 1
 
             # Retrieve the example essay for the student to submit
             # This will contain the essay text, the rubric, and the options the instructor selected.
-            examples = convert_training_examples_list_to_dict(training_module["examples"])
-            example = student_training.get_training_example(
-                self.submission_uuid,
-                {
-                    'prompt': self.prompt,
-                    'criteria': self.rubric_criteria_with_labels
-                },
-                examples
-            )
-
-            training_essay_context, error_message = self._parse_example(example)
-            if error_message:
-                logger.error(error_message)
+            example_context = training_api.example_context
+            if example_context.error_message:
+                logger.error(example_context.error_message)
                 template = "openassessmentblock/student_training/student_training_error.html"
             else:
-                context['training_essay'] = training_essay_context
-                context['training_rubric'] = {
-                    'criteria': example['rubric']['criteria'],
-                    'points_possible': example['rubric']['points_possible']
-                }
+                context['training_essay'] = example_context.essay_context
+                context['training_rubric'] = training_api.example_rubric 
                 template = 'openassessmentblock/student_training/student_training.html'
 
         return template, context
