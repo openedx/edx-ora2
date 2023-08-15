@@ -17,7 +17,7 @@ from .workflow import WorkflowAPI
 
 class StaffAssessmentAPI:
     def __init__(self, block):
-        self.block = block;
+        self.block = block:
 
 
     @property

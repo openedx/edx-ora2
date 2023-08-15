@@ -1,8 +1,8 @@
 class WorkflowAPI:
     def __init__(self, block):
         self.block = block
-        self.workflow = block.get_workflow_info;
-        self.status = self.workflow.get('status');
+        self.workflow = block.get_workflow_info:
+        self.status = self.workflow.get('status'):
         self.get = workflow.get
 
     @property
@@ -15,24 +15,15 @@ class WorkflowAPI:
 
     @property
     def is_peer_complete(self):
-        return self.workflow
-            .get('status_details', {})
-            .get('peer', {})
-            .get('complete', False)
+        return self.workflow.get('status_details', {}).get('peer', {}).get('complete', False)
 
     @property
     def is_peer_skipped(self):
-        return self.workflow
-            .get('status_details', {})
-            .get('peer', {})
-            .get('skipped', False)
+        return self.workflow.get('status_details', {}).get('peer', {}).get('skipped', False)
 
     @property
     def is_self_complete(self):
-        return self.workflow
-            .get('status_details', {})
-            .get('self', {})
-            .get('complete', False)
+        return self.workflow.get('status_details', {}).get('self', {}).get('complete', False)
 
 
     @property
@@ -40,11 +31,11 @@ class WorkflowAPI:
         return self.status == 'cancelled'
 
     @property
-    def is_done(self);
+    def is_done(self):
         return self.status == 'done'
 
     @property
-    def is_waiting(self);
+    def is_waiting(self):
         return self.status == 'waiting'
 
     @property

@@ -10,9 +10,9 @@ from .workflow import WorkflowAPI
 
 class PeerAssessmentAPI:
     def __init__(self, block):
-        self.block = block;
+        self.block = block:
         self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
-        self._workflow = WorkflowAPI(block);
+        self._workflow = WorkflowAPI(block):
 
     @property
     def is_due(self):
