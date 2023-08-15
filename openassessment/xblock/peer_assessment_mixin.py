@@ -12,7 +12,7 @@ from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerA
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
-from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
+from .data_conversion import (clean_criterion_feedback, create_rubric_dict,
                               verify_assessment_parameters)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
@@ -55,7 +55,8 @@ class PeerAssessmentMixin:
 
         """
         # Import is placed here to avoid model import at project startup.
-        from openassessment.assessment.api import peer as peer_api
+        from .api.assessment.PeerAssessment import PeerAssessmentAPI
+        step_data = PeerAssessmentAPI(self)
         if self.submission_uuid is None:
             return {
                 'success': False, 'msg': self._('You must submit a response before you can perform a peer assessment.')
@@ -73,19 +74,10 @@ class PeerAssessmentMixin:
                 'msg': self._('This feedback has already been submitted or the submission has been cancelled.'),
             }
 
-        assessment_ui_model = self.get_assessment_module('peer-assessment')
-        if assessment_ui_model:
+        if step_data.assessment_ui_model:
             try:
                 # Create the assessment
-                assessment = peer_api.create_assessment(
-                    self.submission_uuid,
-                    self.get_student_item_dict()["student_id"],
-                    data['options_selected'],
-                    clean_criterion_feedback(self.rubric_criteria_with_labels, data['criterion_feedback']),
-                    data['overall_feedback'],
-                    create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
-                    assessment_ui_model['must_be_graded_by']
-                )
+                assessment = step_data.create_assessment(data)
 
                 # Emit analytics event...
                 self.publish_assessment_event("openassessmentblock.peer_assess", assessment)
@@ -165,10 +157,12 @@ class PeerAssessmentMixin:
 
         """
         # Import is placed here to avoid model import at project startup.
-        from openassessment.assessment.api import peer as peer_api
+        from .api.assessments.peer_assessment import PeerAssessmentAPI
+        step_data = PeerAssessmentAPI(self)
+
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
+
         finished = False
-        problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context_dict = {
@@ -190,23 +184,18 @@ class PeerAssessmentMixin:
         # We display the due date whether the problem is open or closed.
         # If no date is set, it defaults to the distant future, in which
         # case we don't display the date.
-        if due_date < DISTANT_FUTURE:
-            context_dict['peer_due'] = due_date
+        if step_data.is_due:
+            context_dict['peer_due'] = step_data.due_date
 
         workflow = self.get_workflow_info()
-        workflow_status = workflow.get('status')
-        peer_complete = workflow.get('status_details', {}).get('peer', {}).get('complete', False)
-        peer_skipped = workflow.get('status_details', {}).get('peer', {}).get('skipped', False)
-        continue_grading = continue_grading and peer_complete
+        continue_grading = continue_grading and step_data.is_complete
 
-        student_item = self.get_student_item_dict()
-        assessment = self.get_assessment_module('peer-assessment')
+        assessment = step_data.assessment
+
         if assessment:
             context_dict["must_grade"] = assessment["must_grade"]
-            finished, count = peer_api.has_finished_required_evaluating(
-                self.submission_uuid,
-                assessment["must_grade"]
-            )
+
+            finished, count = step_data.has_finished
             context_dict["graded"] = count
             context_dict["review_num"] = count + 1
 
@@ -223,41 +212,41 @@ class PeerAssessmentMixin:
                     "Submit your assessment and move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
-        if workflow_status == "cancelled":
+        if step_data.is_cancelled:
             path = 'openassessmentblock/peer/oa_peer_cancelled.html'
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.
-        elif (workflow.get('status') == 'done' or finished) and not continue_grading:
+        elif (step_data.is_done or finished) and not continue_grading:
             path = "openassessmentblock/peer/oa_peer_complete.html"
 
         # Allow continued grading even if the problem due date has passed
-        elif continue_grading and student_item:
-            peer_sub = self.get_peer_submission(student_item, assessment)
+        elif continue_grading and step_data.student_item:
+            peer_sub = self.get_peer_submission()
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
-                context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
+                context_dict["peer_submission"] = step_data.get_submission_dict(peer_sub)
 
                 # Determine if file upload is supported for this XBlock.
-                context_dict["file_upload_type"] = self.file_upload_type
-                context_dict["peer_file_urls"] = self.get_download_urls_from_submission(peer_sub)
+                context_dict["file_upload_type"] = step_data.file_upload_type
+                context_dict["peer_file_urls"] = step_data.get_download_urls(peer_sub)
             else:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
-        elif reason == 'due' and problem_closed:
+        elif step_data.is_past_due:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
-        elif reason == 'start' and problem_closed:
-            context_dict["peer_start"] = start_date
+        elif step_data.is_not_available_yet:
+            context_dict["peer_start"] = step_data.start_date
             path = 'openassessmentblock/peer/oa_peer_unavailable.html'
-        elif workflow.get("status") == "peer" or peer_skipped:
-            peer_sub = self.get_peer_submission(student_item, assessment)
+        elif step_data.is_peer or step_data.is_skipped:
+            peer_sub = self.get_peer_submission()
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
-                context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
+                context_dict["peer_submission"] = step_data.get_submission_dict(peer_sub)
                 # Determine if file upload is supported for this XBlock.
-                context_dict["file_upload_type"] = self.file_upload_type
-                context_dict["peer_file_urls"] = self.get_download_urls_from_submission(peer_sub)
+                context_dict["file_upload_type"] = step_data.file_upload_type
+                context_dict["peer_file_urls"] = step_data.get_download_urls(peer_sub)
                 # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
                 self.no_peers = False
             else:
@@ -267,7 +256,7 @@ class PeerAssessmentMixin:
 
         return path, context_dict
 
-    def get_peer_submission(self, student_item_dict, assessment):
+    def get_peer_submission(self, step_data):
         """
         Retrieve a submission to peer-assess.
 
@@ -279,25 +268,13 @@ class PeerAssessmentMixin:
             dict: The serialized submission model.
 
         """
-        # Import is placed here to avoid model import at project startup.
-        from openassessment.assessment.api import peer as peer_api
         peer_submission = False
         try:
-            peer_submission = peer_api.get_submission_to_assess(
-                self.submission_uuid,
-                assessment["must_be_graded_by"]
-            )
+            peer_submission = step_data.get_peer_submission()
             self.runtime.publish(
                 self,
                 "openassessmentblock.get_peer_submission",
-                {
-                    "requesting_student_id": student_item_dict["student_id"],
-                    "course_id": student_item_dict["course_id"],
-                    "item_id": student_item_dict["item_id"],
-                    "submission_returned_uuid": (
-                        peer_submission["uuid"] if peer_submission else None
-                    )
-                }
+                step_data.format_submission_for_publish(peer_submission),
             )
         except PeerAssessmentWorkflowError as err:
             logger.exception(err)

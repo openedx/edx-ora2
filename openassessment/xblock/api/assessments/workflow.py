@@ -14,11 +14,26 @@ class WorkflowAPI:
         return bool(self.status)
 
     @property
+    def is_peer_complete(self):
+        return self.workflow
+            .get('status_details', {})
+            .get('peer', {})
+            .get('complete', False)
+
+    @property
+    def is_peer_skipped(self):
+        return self.workflow
+            .get('status_details', {})
+            .get('peer', {})
+            .get('skipped', False)
+
+    @property
     def is_self_complete(self):
         return self.workflow
             .get('status_details', {})
             .get('self', {})
             .get('complete', False)
+
 
     @property
     def is_cancelled(self):
@@ -40,3 +55,7 @@ class WorkflowAPI:
     def is_training(self):
         return self.status == 'training'
 
+
+    @property
+    def is_peer(self):
+        return self.status == 'peer'
