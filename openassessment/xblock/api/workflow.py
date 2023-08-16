@@ -66,6 +66,7 @@ class WorkflowAPI:
     def status(self):
         return self.workflow.get("status")
 
+
     def get_workflow_status_counts(self):
         return self._raw_block.get_workflow_status_counts()
 
@@ -83,3 +84,19 @@ class WorkflowAPI:
 
     def get_workflow_info(self, submission_uuid=None):
         return self._raw_block.get_workflow_info(submission_uuid)
+
+
+    def create_team_workflow(self, submission_uuid):
+        self._raw_block.create_team_workflow(submission_uuid)
+
+    def get_team_workflow_info(self, team_submission_uuid=None):
+        return self._raw_block.get_team_workflow_info(team_submission_uuid)
+
+    def get_team_submission_uuid(self):
+        return self._raw_block.get_team_submission_uuid()
+
+    def get_team_workflow_status_counts(self):
+        return self._raw_block.get_team_workflow_status_counts()
+
+    def get_team_workflow_cancellation_info(self, team_submission_uuid):
+        return self._raw_block.get_team_workflow_cancellation_info
