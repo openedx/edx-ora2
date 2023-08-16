@@ -1,6 +1,11 @@
+from .team import TeamAPI
+from .workflow import WorkflowAPI
+
 class BlockAPI:
     def __init__(self, block):
         self._block = block
+        self.team = TeamAPI(block)
+        self.workflow = WorkflowAPI(block)
 
     @property
     def course_id(self):

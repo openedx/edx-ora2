@@ -10,11 +10,16 @@ from ..workflow import WorkflowAPI
 from ..block import BlockAPI
 
 class PeerAssessmentAPI:
-    def __init__(self, block):
-        self._raw_block
-        self._block = BlockAPI(block)
+    def __init__(self, block, continue_grading):
+        self._block = block
+        self._continue_grading = continue_grading
+        self._block_api = BlockAPI(block)
         self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
         self._workflow = WorkflowAPI(block):
+
+    @property
+    def continue_grading(self):
+        return self._continue_grading and self.is_complete
 
     @property
     def is_due(self):
@@ -39,7 +44,7 @@ class PeerAssessmentAPI:
     @property
     def has_finished(self):
         finished, count = peer_api.has_finished_required_evaluating(
-            self.block.submission_uuid,
+            self._block_api.submission_uuid,
             self.assessment["must_grade"]
         )
         return finished, count
@@ -54,7 +59,7 @@ class PeerAssessmentAPI:
 
     @property
     def file_upload_type(self):
-        return self._block.file_upload_type
+        return self._block_api.file_upload_type
 
     @property
     def is_past_due(self):
@@ -69,9 +74,9 @@ class PeerAssessmentAPI:
         return self._workflow.is_peer
 
     def format_submission_for_publish(self, submission):
-        student_item_dict = self._block.student_item_dict
+        student_item_dict = self._block_api.student_item_dict
         peer_submission = peer_api.get_submission_to_assess(
-            self._block.submission_uuid,
+            self._block_api.submission_uuid,
             self.assessment["must_be_graded_by"]
         )
         return {
@@ -82,30 +87,30 @@ class PeerAssessmentAPI:
         }
 
     def get_submission_dict(self, peer_sub):
-        return create_submission_dict(peer_sub, self._block.prompts)
+        return create_submission_dict(peer_sub, self._block_api.prompts)
 
     def get_download_urls(self, peer_sub):
-        return self._raw_block.get_download_urls_from_submission(peer_sub)
+        return self._block.get_download_urls_from_submission(peer_sub)
 
     def get_peer_submission(self):
         return peer_api.get_submission_to_assess(
-            self._block.submission_uuid,
+            self._block_api.submission_uuid,
             self.assessment["must_be_graded_by"]
         )
 
     @property
     def assessment_ui_model(self):
-        return self.block.get_assessment_module("peer-assessment")
+        return self._block_api.get_assessment_module("peer-assessment")
 
     def create_assessment(self, data):
         return peer_api.create_assessment(
-            self._block.submission_uuid,
-            self._block.student_item_dict["student_id"],
+            self._block_api.submission_uuid,
+            self._block_api.student_item_dict["student_id"],
             data["options_selected"],
             clean_criterion_feedback(
-                self._block.rubric_criteria_with_labels,
+                self._block_api.rubric_criteria_with_labels,
                 data["criterion_feedback"]
             ),
-            create_rubric_dict(self._block.prompts, self._block.rubric_criteria_with_labels),
+            create_rubric_dict(self._block_api.prompts, self._block_api.rubric_criteria_with_labels),
             self.assessment_ui_model["must_be_graded_by"]
         )

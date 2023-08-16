@@ -15,6 +15,31 @@ class WorkflowMixin:
     """
     Handle OpenAssessment XBlock requests to the Workflow API.
     """
+    # Dictionary mapping assessment names (e.g. peer-assessment)
+    # to the corresponding workflow step names.
+    ASSESSMENT_STEP_NAMES = {
+        "self-assessment": "self",
+        "peer-assessment": "peer",
+        "student-training": "training",
+        "staff-assessment": "staff"
+    }
+
+    def _create_step_list(self):
+        """
+        Return a list of valid workflow step names.
+        This translates between the assessment types (loaded from the problem definition)
+        and the step types (used by the Workflow API).
+        At some point, we should probably refactor to make these two names consistent.
+
+        Returns:
+            list
+
+        """
+        return [
+            self.ASSESSMENT_STEP_NAMES.get(ra['name'])
+            for ra in self.valid_assessments
+            if ra['name'] in self.ASSESSMENT_STEP_NAMES
+        ]
 
     @XBlock.json_handler
     def handle_workflow_info(self, data, suffix=''):    # pylint:disable=W0613
@@ -31,7 +56,7 @@ class WorkflowMixin:
             dict
 
         """
-        return WorkflowAPI(self).get_workflow_info()
+        return self.get_workflow_info()
 
     def create_workflow(self, submission_uuid):
         """
