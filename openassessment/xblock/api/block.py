@@ -101,6 +101,10 @@ class BlockAPI:
     def prompts(self):
         return self._block.prompts
 
+    @property
+    def prompt(self):
+        return self._block.prompts
+
     @prompts.setter
     def prompts(self, value):
         self._block.prompts = value

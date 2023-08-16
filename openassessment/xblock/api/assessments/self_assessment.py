@@ -1,20 +1,22 @@
 from openassessment.assessment.api import self as self_api
 from submissions import api as submission_api
 
-from ..data_conversion import (
+from openassessment.xblock.data_conversion import (
+    clean_criterion_feedback,
+    create_rubric_dict,
     create_submission_dict
 )
-from ..resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.api.workflow import WorkflowAPI
+from openassessment.xblock.api.block import BlockAPI
 from .problem_closed import ProblemClosedAPI
-from ..workflow import WorkflowAPI
-from ..block import BlockAPI
 
 class SelfAssessmentAPI:
     def __init__(self, block):
-        self._raw_block = block:
+        self._raw_block = block
         self._block = BlockAPI(block)
         self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
-        self._workflow = WorkflowAPI(block):
+        self._workflow = WorkflowAPI(block)
 
     @property
     def is_self_complete(self):
@@ -23,7 +25,6 @@ class SelfAssessmentAPI:
     @property
     def is_cancelled(self):
         return self._workflow.is_cancelled
-    
     @property
     def is_complete(self):
         return self._workflow.is_self or self._is_closed.problem_closed
@@ -54,7 +55,7 @@ class SelfAssessmentAPI:
 
     @property
     def assessment(self):
-        return self_api.get_assessment(workflow.get('submission_uuid'))
+        return self_api.get_assessment(self._workflow.workflow.get('submission_uuid'))
 
     @property
     def submission(self):

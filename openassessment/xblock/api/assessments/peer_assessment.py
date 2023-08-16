@@ -1,13 +1,14 @@
 from openassessment.assessment.api import peer as peer_api
 from submissions import api as submission_api
-
-from ..data_conversion import (
+from openassessment.data_conversion import (
+    clean_criterion_feedback,
+    create_rubric_dict,
     create_submission_dict
 )
-from ..resolve_dates import DISTANT_FUTURE
+from openassessment.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.api.workflow import WorkflowAPI
+from openassessment.xblock.api.block import BlockAPI
 from .problem_closed import ProblemClosedAPI
-from ..workflow import WorkflowAPI
-from ..block import BlockAPI
 
 class PeerAssessmentAPI:
     def __init__(self, block, continue_grading):
@@ -15,11 +16,11 @@ class PeerAssessmentAPI:
         self._continue_grading = continue_grading
         self._block_api = BlockAPI(block)
         self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
-        self._workflow = WorkflowAPI(block):
+        self._workflow = WorkflowAPI(block)
 
     @property
     def continue_grading(self):
-        return self._continue_grading and self.is_complete
+        return self._continue_grading and self._workflow.is_peer_complete
 
     @property
     def is_due(self):
@@ -31,15 +32,11 @@ class PeerAssessmentAPI:
 
     @property
     def assessment(self):
-        return peer_api.get_assessment(workflow.get('submission_uuid'))
+        return peer_api.get_assessment(self._workflow.workflow.get('submission_uuid'))
 
     @property
     def is_skipped(self):
         return self._workflow.is_peer_skipped
-
-    @propety
-    def is_complete(self):
-        return self._workflow.is_peer_complete
 
     @property
     def has_finished(self):
@@ -70,10 +67,10 @@ class PeerAssessmentAPI:
         return self._is_closed.is_not_available_yet
 
     @property
-    def is_peer
+    def is_peer(self):
         return self._workflow.is_peer
 
-    def format_submission_for_publish(self, submission):
+    def format_submission_for_publish(self):
         student_item_dict = self._block_api.student_item_dict
         peer_submission = peer_api.get_submission_to_assess(
             self._block_api.submission_uuid,
@@ -83,7 +80,7 @@ class PeerAssessmentAPI:
             "requesting_student_id": student_item_dict["student_id"],
             "course_id": student_item_dict["course_id"],
             "item_id": student_item_dict["item_id"],
-            "submission_returned_uuid": submission["uuid"] if submission else None,
+            "submission_returned_uuid": peer_submission["uuid"] if peer_submission else None,
         }
 
     def get_submission_dict(self, peer_sub):

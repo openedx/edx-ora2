@@ -1,32 +1,30 @@
-from openassessment.assessment.api import self as self_api
-from submissions import api as submission_api
+from openassessment.assessment.api import student_training
 
-from ..data_conversion import (
+from openassessment.xblock.data_conversion import (
+    convert_training_examples_list_to_dict,
     create_submission_dict
 )
-from ..resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.api.block import BlockAPI
 from .problem_closed import ProblemClosedAPI
-from ..workflow import WorkflowAPI
-from ..block import BlockAPI
 
 class StudentTrainingAPI:
     def __init__(self, block):
         self._raw_block = block
         self._block = BlockAPI(block)
         self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
-        self._workflow = WorkflowAPI(block):
 
     @property
     def is_cancelled(self):
-        return self._workflow.is_cancelled
+        return self._block.workflow.is_cancelled
 
     @property
     def is_complete(self):
-        state = self._workflow
+        state = self._block.workflow
         return state.has_status and not (state.is_cancelled or state.is_training)
 
     def has_workflow(self):
-        return self._workflow.has_status
+        return self._block.workflow.has_status
 
     @property
     def problem_closed(self):
@@ -62,17 +60,17 @@ class StudentTrainingAPI:
 
     @property
     def num_completed(self):
-        return self.student_training.get_num_completed(self._block.submission_uuid)
+        return student_training.get_num_completed(self._block.submission_uuid)
 
     @property
     def examples(self):
         return convert_training_examples_list_to_dict(self.training_module['examples'])
-        
+
     @property
     def example(self):
-        return self.student_training.get_training_example(
+        return student_training.get_training_example(
             self._block.submission_uuid,
-            {'prompt': self.prompt, 'criteria': self._block.rubric_criteria_with_labels},
+            {'prompt': self._block.prompt, 'criteria': self._block.rubric_criteria_with_labels},
             self.examples
         )
 
@@ -125,7 +123,7 @@ class StudentTrainingAPI:
         -just a string: {'answer': <response_string>}
         """
         if not example:
-            return null
+            return None
         answer = example['answer']
         submission_dict = None
         if isinstance(answer, str):
