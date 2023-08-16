@@ -6,11 +6,13 @@ from ..data_conversion import (
 )
 from ..resolve_dates import DISTANT_FUTURE
 from .problem_closed import ProblemClosedAPI
-from .workflow import WorkflowAPI
+from ..workflow import WorkflowAPI
+from ..block import BlockAPI
 
 class StudentTrainingAPI:
     def __init__(self, block):
-        self.block = block:
+        self._raw_block = block
+        self._block = BlockAPI(block)
         self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
         self._workflow = WorkflowAPI(block):
 
@@ -52,7 +54,7 @@ class StudentTrainingAPI:
 
     @property
     def training_module(self):
-        return self.block.get_assessment_module('student_training')
+        return self._block.get_assessment_module('student_training')
 
     @property
     def num_available(self):
@@ -60,7 +62,7 @@ class StudentTrainingAPI:
 
     @property
     def num_completed(self):
-        return self.student_training.get_num_completed(self.block.submission_uuid)
+        return self.student_training.get_num_completed(self._block.submission_uuid)
 
     @property
     def examples(self):
@@ -69,8 +71,8 @@ class StudentTrainingAPI:
     @property
     def example(self):
         return self.student_training.get_training_example(
-            self.block.submission_uuid,
-            {'prompt': self.prompt, 'criteria': self.block.rubric_criteria_with_labels},
+            self._block.submission_uuid,
+            {'prompt': self.prompt, 'criteria': self._block.rubric_criteria_with_labels},
             self.examples
         )
 
@@ -94,7 +96,7 @@ class StudentTrainingAPI:
         parts = answer.get('parts', [])
         if parts and isinstance(parts[0], dict):
             if isinstance(parts[0].get('text'), str):
-                return create_submission_dict({'answer': answer}, self.block.prompts)
+                return create_submission_dict({'answer': answer}, self._block.prompts)
         return None
 
     def _parse_answer_list(self, answer):
@@ -111,7 +113,7 @@ class StudentTrainingAPI:
         """
         Helper to parse answer as a plain string
         """
-        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.block.prompts)
+        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self._block.prompts)
 
     def _parse_example(self, example):
         """
