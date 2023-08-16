@@ -19,7 +19,8 @@ from ..data import OraSubmissionAnswerFactory
 from .data_conversion import (
     create_submission_dict,
     list_to_conversational_format,
-    prepare_submission_for_serialization
+    prepare_submission_for_serialization,
+    update_saved_response_format
 )
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
@@ -812,7 +813,7 @@ class SubmissionMixin:
         path, context = self.submission_path_and_context()
         return self.render_assessment(path, context_dict=context)
 
-    def get_team_submission_context(self, context):
+    def get_team_submission_context(self):
         """
         Populate the passed context object with team info, including a set of students on
         the team with submissions to the current item from another team, under the key
@@ -825,10 +826,11 @@ class SubmissionMixin:
         """
 
         from submissions import team_api
+        team_info = {}
+
         try:
             team_info = self.get_team_info()
             if team_info:
-                context.update(team_info)
                 if self.is_course_staff:
                     return
                 student_item_dict = self.get_student_item_dict()
@@ -839,7 +841,7 @@ class SubmissionMixin:
                     self.get_anonymous_user_ids_for_team()
                 )
 
-                context["team_members_with_external_submissions"] = list_to_conversational_format([
+                team_info["team_members_with_external_submissions"] = list_to_conversational_format([
                     self.get_username(submission['student_id']) for submission in external_submissions
                 ])
         except ObjectDoesNotExist:
@@ -850,6 +852,8 @@ class SubmissionMixin:
             )
         except NoSuchServiceError:
             logger.error('%s: Teams service is unavailable', str(self.location))
+
+        return team_info
 
     def get_allowed_file_types_or_preset(self):
         """
@@ -873,38 +877,63 @@ class SubmissionMixin:
             and `context` (dict) is the template context.
 
         """
+        # Update workflow to determine status
+        # Will be empty if user has not submitted
         workflow = self.get_team_workflow_info() if self.teams_enabled else self.get_workflow_info()
-        problem_closed, reason, start_date, due_date = self.is_closed('submission')
-        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
-        course_id = self.location.course_key if hasattr(self, 'location') else None
-
-        path = 'openassessmentblock/response/oa_response.html'
-        context = {
-            'enable_delete_files': False,
-            'file_upload_response': self.file_upload_response,
-            'has_real_user': self.has_real_user,
-            'prompts_type': self.prompts_type,
-            'show_rubric_during_response': self.show_rubric_during_response,
-            'text_response': self.text_response,
-            'text_response_editor': self.text_response_editor,
-            'user_language': user_preferences['user_language'],
-            'user_timezone': user_preferences['user_timezone'],
-            'xblock_id': self.get_xblock_id(),
-            'base_asset_url': self._get_base_url_path_for_course_assets(course_id)
-        }
-
-        if self.show_rubric_during_response:
-            context['rubric_criteria'] = copy.deepcopy(self.rubric_criteria_with_labels)
+        workflow_context = {}
 
         # Due dates can default to the distant future, in which case
         # there's effectively no due date.
         # If we don't add the date to the context, the template won't display it.
+        access_context = {}
+        problem_closed, reason, start_date, due_date = self.is_closed('submission')
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
             context["date_config_type"] = self.date_config_type
 
-        # For team assignments, if a user submitted with a past team, that gets precidence.
-        # So we first see if they have a submission and load context from that.
+        path = 'openassessmentblock/response/oa_response.html'
+
+        # Get ORA Metadata
+        course_id = self.location.course_key if hasattr(self, 'location') else None
+        block_metadata = {
+            'xblock_id': self.get_xblock_id(),
+            'base_asset_url': self._get_base_url_path_for_course_assets(course_id)
+        }
+
+        # Get response config
+        response_config = {
+            'prompts_type': self.prompts_type,
+
+            # Response
+            'text_response': self.text_response,
+            'text_response_editor': self.text_response_editor,
+            'show_rubric_during_response': self.show_rubric_during_response,
+            'allow_latex': self.allow_latex,
+
+            # File upload
+            'enable_delete_files': False,
+            'file_upload_response': self.file_upload_response,
+            'file_upload_type': self.file_upload_type,
+            'allow_multiple_files': self.allow_multiple_files
+        }
+
+        if self.file_upload_type:
+            response_config['white_listed_file_types'] = ['.' + ext for ext in self.get_allowed_file_types_or_preset()]
+
+        if self.show_rubric_during_response:
+            response_config['rubric_criteria'] = copy.deepcopy(self.rubric_criteria_with_labels)
+
+        # Get user info / preferences
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
+        user_config = {
+            'has_real_user': self.has_real_user,
+            'user_language': user_preferences['user_language'],
+            'user_timezone': user_preferences['user_timezone'],
+        }
+
+        # Get the Team ID for the current submission, if it is a team assignment
+        # Note: that it is possible for teams to change after a submission.
+        # If a user submitted with a past team, that gets precedence.
         # Otherwise, we fall back to the current team.
         team_id_for_current_submission = None
         if self.is_team_assignment():
@@ -914,83 +943,106 @@ class SubmissionMixin:
                 team_submission = get_team_submission(workflow['team_submission_uuid'])
                 team_id_for_current_submission = team_submission['team_id']
 
-            # If it's a team assignment, the user hasn't submitted and is not on a team, the assignment is unavailable.
-            if team_id_for_current_submission is None:
-                path = 'openassessmentblock/response/oa_response_unavailable.html'
-                return path, context
+        # Below here we determine submission status and template
+        submission_context = {}
 
-        context['file_upload_type'] = self.file_upload_type
-        context['allow_multiple_files'] = self.allow_multiple_files
-        context['allow_latex'] = self.allow_latex
-
+        # Get files for user / team
+        file_urls = None
         if self.file_upload_type:
-            context['file_urls'] = self.file_manager.file_descriptors(
+            submission_context['file_urls'] = self.file_manager.file_descriptors(
                 team_id=team_id_for_current_submission, include_deleted=True
             )
-            context['team_file_urls'] = self.file_manager.team_file_descriptors(
+            submission_context['team_file_urls'] = self.file_manager.team_file_descriptors(
                 team_id=team_id_for_current_submission
             )
-            context['white_listed_file_types'] = ['.' + ext for ext in self.get_allowed_file_types_or_preset()]
 
+        # Response is unavailable (not yet open or past due date)
         if not workflow and problem_closed:
             if reason == 'due':
                 path = 'openassessmentblock/response/oa_response_closed.html'
             elif reason == 'start':
-                context['submission_start'] = start_date
+                access_context['submission_start'] = start_date
                 path = 'openassessmentblock/response/oa_response_unavailable.html'
+
+        # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
+        elif self.is_team_assignment() and team_id_for_current_submission is None:
+            path = 'openassessmentblock/response/oa_response_unavailable.html'
+
+        # Response not yet submitted: Get the saved response
         elif not workflow:
-            # For backwards compatibility. Initially, problems had only one prompt
-            # and a string answer. We convert it to the appropriate dict.
-            no_workflow_path = "openassessmentblock/response/oa_response.html"
+            path = "openassessmentblock/response/oa_response.html"
 
-            try:
-                json.loads(self.saved_response)
-                saved_response = {
-                    'answer': json.loads(self.saved_response),
-                }
-            except ValueError:
-                saved_response = {
-                    'answer': {
-                        'text': self.saved_response,
-                    },
-                }
-
-            context['saved_response'] = create_submission_dict(saved_response, self.prompts)
-            context['save_status'] = self.save_status
-            context['enable_delete_files'] = True
-
+            # Load the user/team saved response
+            saved_response = update_saved_response_format(self.saved_response)
+            submission_context['saved_response'] = create_submission_dict(saved_response, self.prompts)
+    
             if self.teams_enabled:
-                self.get_team_submission_context(context)
+                submission_context.update(self.get_team_submission_context())
                 if self.does_team_have_submission(context['team_id']):
-                    no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
+                    path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
 
-            path = no_workflow_path
+            # Determine UI states
+            submission_context['save_status'] = self.save_status
+            submission_context['enable_delete_files'] = True
+            submit_enabled = True
+            if self.text_response == 'required' and not self.saved_response:
+                submit_enabled = False
+            if self.file_upload_response == 'required' and not file_urls:
+                submit_enabled = False
+            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
+                    and not self.saved_response and not file_urls:
+                submit_enabled = False
+            submission_context['submit_enabled'] = submit_enabled
+
+        # Cancelled: Instructor has cancelled this response
         elif workflow["status"] == "cancelled":
-            if self.teams_enabled:
-                context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
-                    workflow["team_submission_uuid"])
-            else:
-                context["workflow_cancellation"] = self.get_workflow_cancellation_info(
-                    self.submission_uuid)
-            context["student_submission"] = self.get_user_submission(
+            path = 'openassessmentblock/response/oa_response_cancelled.html'
+
+            # Load user/team submission
+            submission_context["student_submission"] = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            path = 'openassessmentblock/response/oa_response_cancelled.html'
+
+            # Get cancellation information
+            if self.teams_enabled:
+                workflow_context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
+                    workflow["team_submission_uuid"])
+            else:
+                workflow_context["workflow_cancellation"] = self.get_workflow_cancellation_info(
+                    self.submission_uuid)
+
+        # Done: Submitted and received final grade
         elif workflow["status"] == "done":
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+            submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_graded.html'
+
+        # Submitted and waiting for a grade
         else:
+            path = 'openassessmentblock/response/oa_response_submitted.html'
+
+            # Load user/team submission
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
+            submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+
+            # Get workflow context
             peer_in_workflow = "peer" in workflow["status_details"]
             self_in_workflow = "self" in workflow["status_details"]
-            context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
-            context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
-            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-            path = 'openassessmentblock/response/oa_response_submitted.html'
+            workflow_context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
+            workflow_context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
+
+        # Assemble context
+        context = {
+            **block_metadata,
+            **response_config,
+            **user_config,
+            **workflow_context,
+            **access_context,
+            **submission_context
+        }
 
         return path, context
