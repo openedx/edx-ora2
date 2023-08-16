@@ -1,5 +1,5 @@
 from openassessment.assessment.api import (
-    staff as staff_api
+    staff as staff_api,
     teams as teams_api
 )
 from openassessment.workflow import (
@@ -8,18 +8,19 @@ from openassessment.workflow import (
 )
 from submissions import team_api as team_sub_api
 
-from ..data_conversion import (
-    create_submission_dict
+from openassessment.xblock.data_conversion import (
+    clean_criterion_feedback,
+    create_submission_dict,
+    create_rubric_dict
 )
-from ..resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.api.block import BlockAPI
 from .problem_closed import ProblemClosedAPI
-from .workflow import WorkflowAPI
 
 class StaffAssessmentAPI:
     def __init__(self, block):
         self._raw_block = block
         self._block = BlockAPI(block)
-
 
     @property
     def student_id(self):
@@ -32,7 +33,7 @@ class StaffAssessmentAPI:
     def create_team_assessment(self, data):
         team_submission = team_sub_api.get_team_submission_from_individual(data['submission_uuid'])
         return teams_api.create_assessment(
-            team_submission['team_submission_uuid']
+            team_submission['team_submission_uuid'],
             self.student_id,
             data['options_selected'],
             clean_criterion_feedback(self._block.rubric_criteria, data['criterion_feedback']),
