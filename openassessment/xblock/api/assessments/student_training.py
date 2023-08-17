@@ -11,7 +11,7 @@ class StudentTrainingAPI:
     def __init__(self, block):
         self._raw_block = block
         self._block = BlockAPI(block)
-        self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
+        self._is_closed = ProblemClosedAPI(block, step="self-assessment")
 
     @property
     def is_cancelled(self):

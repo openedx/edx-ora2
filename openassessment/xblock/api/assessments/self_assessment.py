@@ -13,9 +13,9 @@ from .problem_closed import ProblemClosedAPI
 
 class SelfAssessmentAPI:
     def __init__(self, block):
-        self._raw_block = block
-        self._block = BlockAPI(block)
-        self._is_closed = ProblemClosedAPI(block.is_closed(step="self-assessment"))
+        self._block = block
+        self._block_api = BlockAPI(block)
+        self._is_closed = ProblemClosedAPI(block, step="self-assessment")
         self._workflow = WorkflowAPI(block)
 
     @property
@@ -64,18 +64,18 @@ class SelfAssessmentAPI:
 
     @property
     def submission_dict(self):
-        return create_submission_dict(self.submission, self._block.prompts)
+        return create_submission_dict(self.submission, self._block_api.prompts)
 
     @property
     def file_urls(self):
-        return self._raw_block.get_download_urls_from_submission(self.submission)
+        return self._block.get_download_urls_from_submission(self.submission)
 
     def create_assessment(self, data):
         return self_api.create_assessment(
             self._block.submission_uuid,
-            self._block.student_item_dict['student_id'],
+            self._block_api.student_item_dict['student_id'],
             data['options_selected'],
-            clean_criterion_feedback(self._block.rubric_criteria, data['criterion_feedback']),
+            clean_criterion_feedback(self._block_api.rubric_criteria, data['criterion_feedback']),
             data['overall_feedback'],
-            create_rubric_dict(self._block.prompts, self._block.rubric_criteria_with_labels)
+            create_rubric_dict(self._block_api.prompts, self._block.rubric_criteria_with_labels)
         )
