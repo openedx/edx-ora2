@@ -1,9 +1,9 @@
-from copy import copy
+from copy import deepcopy
 
 from submissions.team_api import get_team_submission
 
-from openassessment.api.problem_closed import ProblemClosedAPI
-from openassessment.api.workflow import WorkflowAPI
+from openassessment.xblock.api.assessments.problem_closed import ProblemClosedAPI
+from openassessment.xblock.api.workflow import WorkflowAPI
 from openassessment.xblock.data_conversion import update_saved_response_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 
@@ -28,7 +28,9 @@ class SubmissionApi:
     @property
     def cancellation_info(self):
         if self.block.teams_enabled:
-            return self.block.get_team_workflow_cancellation_info(self.team_submission_uuid)
+            return self.block.get_team_workflow_cancellation_info(
+                self.team_submission_uuid
+            )
         else:
             return self.get_workflow_cancellation_info(self.submission_uuid)
 
@@ -48,11 +50,11 @@ class SubmissionApi:
 
     @property
     def problem_is_inaccessible(self):
-        return self.problem_closed_info["problem_closed"]
+        return self.problem_closed_info.problem_closed
 
     @property
     def problem_inaccessible_reason(self):
-        return self.problem_closed_info["reason"]
+        return self.problem_closed_info.reason
 
     @property
     def problem_is_past_due(self):
@@ -69,7 +71,7 @@ class SubmissionApi:
     @property
     def due_date(self):
         """A problem due in the "distant future" has, in effect no due date"""
-        due_date = self.problem_closed_info["due_date"]
+        due_date = self.problem_closed_info.due_date
         if due_date < DISTANT_FUTURE:
             return due_date
 
@@ -110,7 +112,9 @@ class SubmissionApi:
             file_urls = self.block.file_manager.file_descriptors(
                 team_id=self.team_id, include_deleted=True
             )
-            team_file_urls = self.block.file_manager.team_file_descriptors(team_id=self.team_id)
+            team_file_urls = self.block.file_manager.team_file_descriptors(
+                team_id=self.team_id
+            )
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
 
     @property
@@ -171,11 +175,11 @@ class SubmissionApi:
 
         if self.block.file_upload_type:
             response_config["white_listed_file_types"] = [
-                "." + ext for ext in self.get_allowed_file_types_or_preset()
+                "." + ext for ext in self.block.get_allowed_file_types_or_preset()
             ]
 
         if self.block.show_rubric_during_response:
-            response_config["rubric_criteria"] = copy.deepcopy(
+            response_config["rubric_criteria"] = deepcopy(
                 self.block.rubric_criteria_with_labels
             )
 
