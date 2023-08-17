@@ -5,13 +5,13 @@ from openassessment.data_conversion import (
     create_rubric_dict,
     create_submission_dict
 )
-from openassessment.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.api.workflow import WorkflowAPI
 from openassessment.xblock.api.block import BlockAPI
 from .problem_closed import ProblemClosedAPI
 
 class PeerAssessmentAPI:
-    def __init__(self, block, continue_grading):
+    def __init__(self, block, continue_grading = False):
         self._block = block
         self._continue_grading = continue_grading
         self._block_api = BlockAPI(block)
@@ -52,7 +52,10 @@ class PeerAssessmentAPI:
 
     @property
     def is_complete(self):
-        return self._workflow.is_done
+        finished = False
+        if self.assessment:
+            finished = self.has_finished[0]
+        return self._workflow.is_done and finished
 
     @property
     def file_upload_type(self):
@@ -69,6 +72,10 @@ class PeerAssessmentAPI:
     @property
     def is_peer(self):
         return self._workflow.is_peer
+
+    @property
+    def student_item(self):
+        return self._block_api.student_item_dict
 
     def format_submission_for_publish(self):
         student_item_dict = self._block_api.student_item_dict

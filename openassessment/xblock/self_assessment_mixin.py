@@ -13,7 +13,6 @@ from .data_conversion import (clean_criterion_feedback, create_rubric_dict, crea
                               verify_assessment_parameters)
 from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
-from .api.assessments.self_assessment import SelfAssessmentAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -29,6 +28,13 @@ class SelfAssessmentMixin:
     the SelfAssessmentMixin call into the OpenAssessmentBlock functions and
     will not work outside of OpenAssessmentBlock.
     """
+    SELF_TEMPLATE_PATHS = {
+        "unavailable": "openassessmentblock/self/oa_self_unavailable.html",
+        "cancelled": "openassessmentblock/self/oa_self_cancelled.html",
+        "complete": "openassessmentblock/self/oa_self_complete.html",
+        "closed": "openassessmentblock/self/oa_self_closed.html",
+        "assessment": "openassessmentblock/self/oa_self_assessment.html",
+    }
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):  # pylint: disable=unused-argument
@@ -43,6 +49,42 @@ class SelfAssessmentMixin:
             return self.render_error(self._("An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
+
+    def self_context(self, step_data, with_sub=False):
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
+        context = {
+            'allow_multiple_files': self.allow_multiple_files,
+            'allow_latex': self.allow_latex,
+            'prompts_type': self.prompts_type,
+            "xblock_id": self.get_xblock_id(),
+            'user_timezone': user_preferences['user_timezone'],
+            'user_language': user_preferences['user_language']
+        }
+
+        # We display the due date whether the problem is open or closed.
+        # If no date is set, it defaults to the distant future, in which
+        # case we don't display the date.
+        if step_data.is_due:
+            context['self_due'] = step_data.due_date
+
+        if step_data.is_not_available_yet:
+            context["stelf_start"] = step_data.start_date
+
+        if with_sub:
+            context["rubric_criteria"] = self.rubric_criteria_with_labels
+            context["self_submission"] = step_data.submission_dict
+            if self.rubric_feedback_prompt is not None:
+                context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+
+            if self.rubric_feedback_default_text is not None:
+                context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
+
+            # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
+            context["file_upload_type"] = self.file_upload_type
+            context['self_file_urls'] = step_data.file_urls
+
+    def _self_path_and_context(self, key, step_data, with_sub=False):
+        return self.SELF_TEMPLATE_PATHS[key], self.self_context(step_data, with_sub)
 
     def self_path_and_context(self):
         """
@@ -60,60 +102,24 @@ class SelfAssessmentMixin:
         from .api.assessments.self_assessment import SelfAssessmentAPI
         step_data = SelfAssessmentAPI(self)
 
-        path = 'openassessmentblock/self/oa_self_unavailable.html'
-        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
-
-        context = {
-            'allow_multiple_files': self.allow_multiple_files,
-            'allow_latex': self.allow_latex,
-            'prompts_type': self.prompts_type,
-            "xblock_id": self.get_xblock_id(),
-            'user_timezone': user_preferences['user_timezone'],
-            'user_language': user_preferences['user_language']
-        }
-
-        # We display the due date whether the problem is open or closed.
-        # If no date is set, it defaults to the distant future, in which
-        # case we don't display the date.
-        if step_data.is_due:
-            context['self_due'] = step_data.due_date
-
-        # If we haven't submitted yet, `workflow` will be an empty dict,
-        # and `workflow_status` will be None.
         if step_data.is_cancelled:
-            path = 'openassessmentblock/self/oa_self_cancelled.html'
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
+            return self._self_path_and_context("cancelled", step_data)
         elif step_data.is_self_complete:
-            path = 'openassessmentblock/self/oa_self_complete.html'
-        elif step_data.is_complete
+            return self._self_path_and_context("complete", step_data)
+        elif step_data.is_self_active or step_data.problem_closed:
             if step_data.assessment is not None:
-                path = 'openassessmentblock/self/oa_self_complete.html'
+                return self._self_path_and_context("complete", step_data)
             elif step_data.problem_closed:
                 if step_data.is_not_available_yet:
-                    context["self_start"] = start_date
-                    path = 'openassessmentblock/self/oa_self_unavailable.html'
+                    return self._self_path_and_context("unavailable", step_data)
                 elif step_data.is_past_due:
-                    path = 'openassessmentblock/self/oa_self_closed.html'
+                    return self._self_path_and_context("closed", step_data)
             else:
-                context["rubric_criteria"] = self.rubric_criteria_with_labels
-                context["self_submission"] = step_data.submission_dict
-                if self.rubric_feedback_prompt is not None:
-                    context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+                return self._self_path_and_context("assessment", step_data, with_sub=True)
+        return self._self_path_and_context("unavailable", step_data, with_sub=True)
 
-                if self.rubric_feedback_default_text is not None:
-                    context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
-
-                # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
-                context["file_upload_type"] = self.file_upload_type
-                context['self_file_urls'] = step_data.file_urls
-
-                path = 'openassessmentblock/self/oa_self_assessment.html'
-        else:
-            # No submission yet or in peer assessment
-            path = 'openassessmentblock/self/oa_self_unavailable.html'
-
-        return path, context
 
     @XBlock.json_handler
     @verify_assessment_parameters
@@ -129,7 +135,8 @@ class SelfAssessmentMixin:
             Dict with keys "success" (bool) indicating success/failure
             and "msg" (unicode) containing additional information if an error occurs.
         """
-
+        # Import is placed here to avoid model import at project startup.
+        from .api.assessments.self_assessment import SelfAssessmentAPI
         if self.submission_uuid is None:
             return {
                 'success': False,
@@ -137,7 +144,7 @@ class SelfAssessmentMixin:
             }
 
         try:
-            assessment = SelfAssessmentApi(self).create_assessment(data)
+            assessment = SelfAssessmentAPI(self).create_assessment(data)
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)
 
             # After we've created the self-assessment, we need to update the workflow.

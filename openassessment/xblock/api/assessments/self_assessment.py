@@ -25,9 +25,10 @@ class SelfAssessmentAPI:
     @property
     def is_cancelled(self):
         return self._workflow.is_cancelled
+
     @property
-    def is_complete(self):
-        return self._workflow.is_self or self._is_closed.problem_closed
+    def is_self_active(self):
+        return self._workflow.is_self
 
     @property
     def problem_closed(self):
