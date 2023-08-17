@@ -1007,15 +1007,26 @@
 
     .openassessment_date_config_radio_wrapper {      
       display: flex;
-      gap: 3em;
+      gap: 1em;
       border-bottom: 1px solid #e5e5e5;
+      padding: 10px 0;
 
       .wrapper-comp-setting {
         min-width: unset;
         display: flex;
         align-items: center;
-        input {
-          min-width: 40px;
+        input[type="radio"] {
+          height: 20px;
+        }
+        
+        input:disabled+label {
+          color: $edx-gray-l2;
+          font-weight: normal;
+        }
+
+        .setting-label {
+          width: auto;
+          font-weight: normal;
         }
       }
     }

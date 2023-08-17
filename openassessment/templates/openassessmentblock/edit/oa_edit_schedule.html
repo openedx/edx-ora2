@@ -9,17 +9,17 @@
             <h3 class="date_config_radio_header">{% trans "Select a deadline configuration option" %}</h3>
             <br/>
             <div class="openassessment_date_config_radio_wrapper">
-                <div class="wrapper-comp-setting" title="{% trans 'Configure deadlines manually' %}">
+                <div class="wrapper-comp-setting" >
                     <input id="manual_date_config_type" name="date_config_type" type="radio" value="manual" {% if date_config_type == 'manual' %} checked="true" {% endif %}>
-                    <label class="setting-label" for="manual_date_config_type">{% trans "Manual" %}</label>
+                    <label class="setting-label" for="manual_date_config_type">{% trans "Configure deadlines manually" %}</label>
                 </div>
-                <div class="wrapper-comp-setting" title="{% trans 'Match deadlines to the subsection due date' %}">
+                <div class="wrapper-comp-setting">
                     <input id="subsection_date_config_type" name="date_config_type" type="radio" value="subsection" {% if date_config_type == 'subsection' %} checked="true" {% endif %} {% if not subsection_end_date %} disabled {% endif %}>
-                    <label class="setting-label" for="subsection_date_config_type">{% trans "Subsection" %}</label>
+                    <label class="setting-label" for="subsection_date_config_type">{% trans "Match deadlines to the subsection due date" %}</label>
                 </div>
-                <div class="wrapper-comp-setting" title="{% trans 'Match deadlines to the course end date' %}">
+                <div class="wrapper-comp-setting">
                     <input id="course_end_date_config_type" name="date_config_type" type="radio" value="course_end" {% if date_config_type == 'course_end' %} checked="true" {% endif %} {% if not course_end_date %} disabled {% endif %}>
-                    <label class="setting-label" for="course_end_date_config_type">{% trans "Course End" %}</label>
+                    <label class="setting-label" for="course_end_date_config_type">{% trans "Match deadlines to the course end date" %}</label>
                 </div>
             </div>
         </div>
