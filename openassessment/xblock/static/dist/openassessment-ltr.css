@@ -4065,6 +4065,7 @@ hr.divider,
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper {
   display: flex;
   gap: 3em;
+  border-bottom: 1px solid #e5e5e5;
 }
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting {
   min-width: unset;

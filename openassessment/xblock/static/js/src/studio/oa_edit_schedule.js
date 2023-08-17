@@ -39,9 +39,9 @@ export class EditScheduleView {
       (value) => {
         configSettingsList.each((_, el) => {
           if (el.id !== `${value}_schedule_settings_list`) {
-            el.addClass('is--hidden');
+            $(el).addClass('is--hidden');
           } else {
-            el.removeClass('is--hidden');
+            $(el).removeClass('is--hidden');
           }
         });
         this.selectedDateConfigType = value;
