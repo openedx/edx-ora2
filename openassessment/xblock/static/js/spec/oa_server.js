@@ -125,6 +125,7 @@ describe("OpenAssessment.Server", function() {
     var TITLE = 'This is the title.';
     var SUBMISSION_START = '2012-10-09T00:00:00';
     var SUBMISSION_DUE = '2015-10-10T00:00:00';
+    var DATE_CONFIG_TYPE = "manual"
 
     beforeEach(function() {
         // Create the server
@@ -320,6 +321,7 @@ describe("OpenAssessment.Server", function() {
             title: TITLE,
             submissionStart: SUBMISSION_START,
             submissionDue: SUBMISSION_DUE,
+            dateConfigType: DATE_CONFIG_TYPE,
             criteria: CRITERIA,
             assessments: ASSESSMENTS,
             editorAssessmentsOrder: EDITOR_ASSESSMENTS_ORDER,
@@ -338,6 +340,7 @@ describe("OpenAssessment.Server", function() {
                 title: TITLE,
                 submission_start: SUBMISSION_START,
                 submission_due: SUBMISSION_DUE,
+                date_config_type: DATE_CONFIG_TYPE,
                 criteria: CRITERIA,
                 assessments: ASSESSMENTS,
                 editor_assessments_order: EDITOR_ASSESSMENTS_ORDER,

@@ -27,7 +27,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "no_prompt": {
@@ -82,7 +83,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "no_feedback_prompt": {
@@ -136,7 +138,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "no_submission_due": {
@@ -191,7 +194,8 @@
             }
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "invalid_dates": {
@@ -248,6 +252,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2015-02-10T09:46",
+        "date_config_type": "manual",
         "expected_error": "the start date '2015-02-10 09:46:00+00:00' cannot be later than the due date '2012-02-27 09:46:00+00:00'"
     },
 
@@ -305,6 +310,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": null,
+        "date_config_type": "manual",
         "expected_error": "cannot be later"
     },
 
@@ -354,7 +360,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "feedback_missing": {
@@ -402,7 +409,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "criterion_not_a_dict": {
@@ -477,7 +485,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "options_not_a_list": {
@@ -511,7 +520,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "option_not_a_dictionary": {
@@ -554,7 +564,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "option_missing_keys": {
@@ -602,7 +613,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "option_points_must_be_int": {
@@ -649,6 +661,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null,
+        "date_config_type": "manual",
         "expected_error": "error updating xblock configuration"
     },
 
@@ -695,6 +708,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null,
+        "date_config_type": "manual",
         "expected_error": "error updating xblock configuration"
     },
 
@@ -743,7 +757,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
-        "submission_start": null
+        "submission_start": null,
+        "date_config_type": "manual"
     },
 
     "student_training_example_missing_answer": {
@@ -777,6 +792,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -838,6 +854,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -897,6 +914,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -959,6 +977,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -1021,6 +1040,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -1077,6 +1097,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -1140,6 +1161,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -1195,6 +1217,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -1251,6 +1274,7 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "date_config_type": "manual",
         "title": "My new title.",
         "text_response": "required",
         "file_upload_response": null,
@@ -1332,7 +1356,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "no_option_name": {
@@ -1387,7 +1412,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "criteria_names_not_unique": {
@@ -1464,7 +1490,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "option_names_not_unique": {
@@ -1521,7 +1548,8 @@
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     },
 
     "text_response_none_and_file_upload_response_none": {
@@ -1578,6 +1606,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
+        "date_config_type": "manual",
         "expected_error": "error: text response and file upload response cannot both be disabled"
     },
 
@@ -1635,6 +1664,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
+        "date_config_type": "manual",
         "expected_error": "error: when text response is disabled, file upload response must be required"
     },
 
@@ -1692,6 +1722,7 @@
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2012-02-10T09:46",
+        "date_config_type": "manual",
         "expected_error": "error: when file upload response is disabled, text response must be required"
     },
 
@@ -1749,6 +1780,7 @@
             }
         ],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46"
+        "submission_start": "2014-02-10T09:46",
+        "date_config_type": "manual"
     }
 }
