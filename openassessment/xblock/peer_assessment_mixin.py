@@ -5,7 +5,6 @@ The Peer Assessment Mixin for all Peer Functionality.
 
 import logging
 
-from collections import namedtuple
 from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
@@ -13,9 +12,7 @@ from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerA
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
-from .data_conversion import (clean_criterion_feedback, create_rubric_dict,
-                              verify_assessment_parameters)
-from .resolve_dates import DISTANT_FUTURE
+from .data_conversion import (verify_assessment_parameters)
 from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -66,17 +63,17 @@ class PeerAssessmentMixin:
 
         """
         # Import is placed here to avoid model import at project startup.
-        from .api.assessment.PeerAssessment import PeerAssessmentAPI
+        from .api.assessments.peer_assessment import PeerAssessmentAPI
         step_data = PeerAssessmentAPI(self)
         if self.submission_uuid is None:
             return {
                 "success": False, "msg": self._("You must submit a response before you can perform a peer assessment.")
             }
 
-        uuid_server, uuid_client = self._get_server_and_client_submission_uuids(data)
+        uuid_server, uuid_client = self._get_server_and_client_submission_uuids(step_data, data)
         if uuid_server != uuid_client:
             logger.warning(
-                "Irrelevant assessment submission: expected "%s", got "%s"",
+                "Irrelevant assessment submission: expected '%s', got '%s'",
                 uuid_server,
                 uuid_client,
             )
@@ -156,18 +153,9 @@ class PeerAssessmentMixin:
 
         return self.render_assessment(path, context_dict)
 
-    def submission_context(self, peer_sub, step_data):
-        return {
-            context_dict["peer_submission"] = step_data.get_submission_dict(peer_sub)
-            # Determine if file upload is supported for this XBlock.
-            context_dict["file_upload_type"] = step_data.file_upload_type
-            context_dict["peer_file_urls"] = step_data.get_download_urls(peer_sub)
-        }
-
     def peer_context(self, step_data, peer_sub=None):
-        finished = False
         user_preferences = get_user_preferences(self.runtime.service(self, "user"))
-        context_dict {
+        context_dict = {
             "rubric_criteria": self.rubric_criteria_with_labels,
             "allow_multiple_files": self.allow_multiple_files,
             "allow_latex": self.allow_latex,
@@ -194,11 +182,11 @@ class PeerAssessmentMixin:
         if assessment:
             context_dict["must_grade"] = assessment["must_grade"]
 
-            finished, count = step_data.has_finished
+            count = step_data.has_finished[1]
             context_dict["graded"] = count
             context_dict["review_num"] = count + 1
 
-            if continue_grading:
+            if step_data.continue_grading:
                 context_dict["submit_button_text"] = self._(
                     "Submit your assessment and review another response"
                 )
@@ -215,7 +203,12 @@ class PeerAssessmentMixin:
             context_dict["peer_start"] = step_data.start_date
 
         if (peer_sub):
-            context_dict.update(self.submission_context(self, peer_sub, step_data))
+            context_dict.update({
+                "peer_submission": step_data.get_submission_dict(peer_sub),
+                # Determine if file upload is supported for this XBlock.
+                "file_upload_type": step_data.file_upload_type,
+                "peer_file_urls": step_data.get_download_urls(peer_sub),
+            })
 
         return context_dict
 
@@ -244,12 +237,12 @@ class PeerAssessmentMixin:
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.
-        elif (step_data.is_done or finished) and not step_data.continue_grading:
+        elif (step_data.is_complete) and not step_data.continue_grading:
             return self._peer_path_and_context("complete", step_data)
 
         # Allow continued grading even if the problem due date has passed
         elif step_data.continue_grading and step_data.student_item:
-            peer_sub = self.get_peer_submission()
+            peer_sub = self.get_peer_submission(step_data)
             if peer_sub:
                 return self._peer_path_and_context("turbo_mode", step_data, peer_sub)
             else:
@@ -259,10 +252,14 @@ class PeerAssessmentMixin:
         elif step_data.is_not_available_yet:
             return self._peer_path_and_context("unavailable", step_data)
         elif step_data.is_peer or step_data.is_skipped:
-            peer_sub = self.get_peer_submission()
+            peer_sub = self.get_peer_submission(step_data)
             if peer_sub:
+                # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
+                self.no_peers = False
                 return self._peer_path_and_context("assessment", step_data, peer_sub)
             else:
+                # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
+                self.no_peers = True
                 return self._peer_path_and_context("waiting", step_data)
 
         return self._peer_path_and_context("unavailable", step_data)
@@ -292,7 +289,7 @@ class PeerAssessmentMixin:
 
         return peer_submission
 
-    def _get_server_and_client_submission_uuids(self, data={}):  # pylint: disable=dangerous-default-value
+    def _get_server_and_client_submission_uuids(self, step_data, data={}):  # pylint: disable=dangerous-default-value
         """
         Retrieve the server and client submission_uuids
 
@@ -306,9 +303,7 @@ class PeerAssessmentMixin:
         Returns:
             tuple: (uuid_server, uuid_client)
         """
-        student_item = self.get_student_item_dict()
-        assessment = self.get_assessment_module("peer-assessment")
-        submission = self.get_peer_submission(student_item, assessment) or {}
+        submission = self.get_peer_submission(step_data) or {}
         uuid_server = submission.get("uuid", None)
         uuid_client = data.get("submission_uuid", None)
         return uuid_server, uuid_client
