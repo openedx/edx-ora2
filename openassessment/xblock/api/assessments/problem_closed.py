@@ -1,8 +1,6 @@
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 
-
 class ProblemClosedAPI:
-
     def __init__(self, block, step=None):
         self.block = block
         (
