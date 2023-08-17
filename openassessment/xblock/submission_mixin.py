@@ -1,5 +1,4 @@
 """ A Mixin for Response submissions. """
-import copy
 import json
 import logging
 import os
@@ -9,8 +8,7 @@ from django.utils.functional import cached_property
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 
-from submissions.team_api import get_team_submission
-from openassessment.api.submission import SubmissionApi
+from openassessment.xblock.api.submission import SubmissionApi
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
@@ -21,9 +19,7 @@ from .data_conversion import (
     create_submission_dict,
     list_to_conversational_format,
     prepare_submission_for_serialization,
-    update_saved_response_format
 )
-from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 from .validation import validate_submission
 
