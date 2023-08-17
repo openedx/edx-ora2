@@ -459,6 +459,7 @@ export class Server {
       title: options.title,
       submission_start: options.submissionStart,
       submission_due: options.submissionDue,
+      date_config_type: options.dateConfigType,
       criteria: options.criteria,
       assessments: options.assessments,
       editor_assessments_order: options.editorAssessmentsOrder,

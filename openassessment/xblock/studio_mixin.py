@@ -200,7 +200,10 @@ class StudioMixin:
             'block_location': str(self.location),
             'force_on_flexible_peer_openassessments': course_settings.get(
                 'force_on_flexible_peer_openassessments', False
-            )
+            ),
+            'date_config_type': self.date_config_type,
+            'subsection_end_date': self.due,
+            'course_end_date': None if not self.course else self.course.end,
         }
 
     @XBlock.json_handler
@@ -304,6 +307,7 @@ class StudioMixin:
         self.teams_enabled = bool(data.get('teams_enabled', False))
         self.selected_teamset_id = data.get('selected_teamset_id', '')
         self.show_rubric_during_response = data.get('show_rubric_during_response', False)
+        self.date_config_type = data['date_config_type']
 
         return {'success': True, 'msg': self._('Successfully updated OpenAssessment XBlock')}
 
