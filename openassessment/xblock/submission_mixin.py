@@ -10,6 +10,7 @@ from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 
 from submissions.team_api import get_team_submission
+from openassessment.api.submission import SubmissionApi
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
@@ -867,6 +868,22 @@ class SubmissionMixin:
             return self.ALLOWED_FILE_EXTENSIONS
         return None
 
+    def _is_submit_button_enabled(self, has_saved_response, has_uploaded_files):
+            """
+            Helper function to condense the logic for when to enable the submit
+            button for a response.
+            """
+            submit_enabled = True
+            if self.text_response == 'required' and not has_saved_response:
+                submit_enabled = False
+            if self.file_upload_response == 'required' and not has_uploaded_files:
+                submit_enabled = False
+            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
+                    and not has_saved_response and not has_uploaded_files:
+                submit_enabled = False
+
+            return submit_enabled
+
     def submission_path_and_context(self):
         """
         Determine the template path and context to use when
@@ -877,19 +894,8 @@ class SubmissionMixin:
             and `context` (dict) is the template context.
 
         """
-        # Update workflow to determine status
-        # Will be empty if user has not submitted
-        workflow = self.get_team_workflow_info() if self.teams_enabled else self.get_workflow_info()
-        workflow_context = {}
-
-        # Due dates can default to the distant future, in which case
-        # there's effectively no due date.
-        # If we don't add the date to the context, the template won't display it.
-        access_context = {}
-        problem_closed, reason, start_date, due_date = self.is_closed('submission')
-        if due_date < DISTANT_FUTURE:
-            context["submission_due"] = due_date
-            context["date_config_type"] = self.date_config_type
+        # Fetch submission and supporting info
+        submission_info = SubmissionApi(self)
 
         path = 'openassessmentblock/response/oa_response.html'
 
@@ -901,27 +907,7 @@ class SubmissionMixin:
         }
 
         # Get response config
-        response_config = {
-            'prompts_type': self.prompts_type,
-
-            # Response
-            'text_response': self.text_response,
-            'text_response_editor': self.text_response_editor,
-            'show_rubric_during_response': self.show_rubric_during_response,
-            'allow_latex': self.allow_latex,
-
-            # File upload
-            'enable_delete_files': False,
-            'file_upload_response': self.file_upload_response,
-            'file_upload_type': self.file_upload_type,
-            'allow_multiple_files': self.allow_multiple_files
-        }
-
-        if self.file_upload_type:
-            response_config['white_listed_file_types'] = ['.' + ext for ext in self.get_allowed_file_types_or_preset()]
-
-        if self.show_rubric_during_response:
-            response_config['rubric_criteria'] = copy.deepcopy(self.rubric_criteria_with_labels)
+        response_config = submission_info.response_config
 
         # Get user info / preferences
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
@@ -935,105 +921,77 @@ class SubmissionMixin:
         # Note: that it is possible for teams to change after a submission.
         # If a user submitted with a past team, that gets precedence.
         # Otherwise, we fall back to the current team.
-        team_id_for_current_submission = None
-        if self.is_team_assignment():
-            if not workflow:
-                team_id_for_current_submission = self.get_team_info().get('team_id', None)
-            else:
-                team_submission = get_team_submission(workflow['team_submission_uuid'])
-                team_id_for_current_submission = team_submission['team_id']
+        team_id_for_current_submission = submission_info.team_id
 
         # Below here we determine submission status and template
-        submission_context = {}
+        file_urls = submission_info.uploaded_files
+        submission_context = { **file_urls }
+        team_submission_context = {}
 
-        # Get files for user / team
-        file_urls = None
-        if self.file_upload_type:
-            submission_context['file_urls'] = self.file_manager.file_descriptors(
-                team_id=team_id_for_current_submission, include_deleted=True
-            )
-            submission_context['team_file_urls'] = self.file_manager.team_file_descriptors(
-                team_id=team_id_for_current_submission
-            )
+        # Get access information (whether problem is closed) and reasons
+        workflow_context = {
+            "submission_due": submission_info.due_date
+        }
 
         # Response is unavailable (not yet open or past due date)
-        if not workflow and problem_closed:
-            if reason == 'due':
+        if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
+            if submission_info.problem_is_past_due:
                 path = 'openassessmentblock/response/oa_response_closed.html'
-            elif reason == 'start':
-                access_context['submission_start'] = start_date
+            elif submission_info.problem_is_not_available_yet:
+                workflow_context['submission_start'] = submission_info.start_date
                 path = 'openassessmentblock/response/oa_response_unavailable.html'
 
         # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
-        elif self.is_team_assignment() and team_id_for_current_submission is None:
+        elif submission_info.is_team_assignment and team_id_for_current_submission is None:
             path = 'openassessmentblock/response/oa_response_unavailable.html'
 
         # Response not yet submitted: Get the saved response
-        elif not workflow:
+        elif not submission_info.has_submitted:
             path = "openassessmentblock/response/oa_response.html"
 
             # Load the user/team saved response
-            saved_response = update_saved_response_format(self.saved_response)
+            saved_response = submission_info.saved_response
             submission_context['saved_response'] = create_submission_dict(saved_response, self.prompts)
-    
+
             if self.teams_enabled:
-                submission_context.update(self.get_team_submission_context())
-                if self.does_team_have_submission(context['team_id']):
+                team_submission_context = submission_info.team_submission_context
+        
+                if submission_info.team_previously_submitted_without_student:
                     path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
 
             # Determine UI states
             submission_context['save_status'] = self.save_status
             submission_context['enable_delete_files'] = True
-            submit_enabled = True
-            if self.text_response == 'required' and not self.saved_response:
-                submit_enabled = False
-            if self.file_upload_response == 'required' and not file_urls:
-                submit_enabled = False
-            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
-                    and not self.saved_response and not file_urls:
-                submit_enabled = False
-            submission_context['submit_enabled'] = submit_enabled
+            submission_context['submit_enabled'] = self._is_submit_button_enabled(saved_response, file_urls)
 
         # Cancelled: Instructor has cancelled this response
-        elif workflow["status"] == "cancelled":
+        elif submission_info.has_been_cancelled:
             path = 'openassessmentblock/response/oa_response_cancelled.html'
 
             # Load user/team submission
-            submission_context["student_submission"] = self.get_user_submission(
-                workflow["submission_uuid"]
-            )
+            submission_context["student_submission"] = submission_info.student_submission
 
             # Get cancellation information
-            if self.teams_enabled:
-                workflow_context["workflow_cancellation"] = self.get_team_workflow_cancellation_info(
-                    workflow["team_submission_uuid"])
-            else:
-                workflow_context["workflow_cancellation"] = self.get_workflow_cancellation_info(
-                    self.submission_uuid)
+            workflow_context["workflow_cancellation"] = submission_info.cancellation_info
 
         # Done: Submitted and received final grade
-        elif workflow["status"] == "done":
-            student_submission = self.get_user_submission(
-                workflow["submission_uuid"]
-            )
-            submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+        elif submission_info.has_received_final_grade:
             path = 'openassessmentblock/response/oa_response_graded.html'
+
+            student_submission = submission_info.student_submission
+            submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
 
         # Submitted and waiting for a grade
         else:
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
             # Load user/team submission
-            student_submission = self.get_user_submission(
-                workflow["submission_uuid"]
-            )
+            student_submission = submission_info.student_submission
             submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
 
             # Get workflow context
-            peer_in_workflow = "peer" in workflow["status_details"]
-            self_in_workflow = "self" in workflow["status_details"]
-            workflow_context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
-            workflow_context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
+            workflow_context["peer_incomplete"] = submission_info.peer_step_incomplete
+            workflow_context["self_incomplete"] = submission_info.self_step_incomplete
 
         # Assemble context
         context = {
@@ -1041,8 +999,8 @@ class SubmissionMixin:
             **response_config,
             **user_config,
             **workflow_context,
-            **access_context,
-            **submission_context
+            **submission_context,
+            **team_submission_context,
         }
 
         return path, context
