@@ -4062,6 +4062,18 @@ hr.divider,
   font-size: 19px;
   margin: 15px 30px 10px 0;
 }
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper {
+  display: flex;
+  gap: 3em;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting {
+  min-width: unset;
+  display: flex;
+  align-items: center;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting input {
+  min-width: 40px;
+}
 #openassessment-editor #oa_schedule_editor_wrapper li:nth-child(2) {
   border-bottom: 1px solid #e5e5e5;
 }
