@@ -11,13 +11,14 @@ from rest_framework.serializers import (
     IntegerField,
     Serializer,
     CharField,
-    ListField,
     SerializerMethodField,
 )
-
-
-class CharListField(ListField):
-    child = CharField()
+from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import (
+    TeamInfoSerializer,
+    SubmissionSerializer,
+    InProgressResponseSerializer,
+)
+from openassessment.xblock.ui_mixins.mfe.serializers.util import CharListField
 
 
 class IsRequiredField(BooleanField):
@@ -221,3 +222,20 @@ class OraBlockInfoSerializer(Serializer):
 
     def get_prompts(self, block):
         return [prompt["description"] for prompt in block.prompts]
+
+
+class GetBlockLearnerSubmissionDataSerializer(Serializer):
+    """
+    Main serializer for learner submission status / info
+    """
+    hasSubmitted = BooleanField(source="workflow.has_submitted")
+    hasCancelled = BooleanField(source="workflow.has_cancelled", default=False)
+    hasRecievedGrade = BooleanField(source="workflow.has_recieved_grade", default=False)
+    teamInfo = TeamInfoSerializer(source="team_info")
+    response = SerializerMethodField(source="*")
+
+    def get_response(self, data):
+        # The source data is different if we have an in-progress response vs a submitted response
+        if data['workflow']['has_submitted']:
+            return SubmissionSerializer(data['response']).data
+        return InProgressResponseSerializer(data).data

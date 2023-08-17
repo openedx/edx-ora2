@@ -39,9 +39,11 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         ) as mock_parse:
             yield mock_parse
 
-    def _mock_get_download_urls_from_submission(self, xblock, **kwargs):
+    @contextmanager
+    def _mock_get_download_urls(self, **kwargs):
         """ Helper method to mock the get_download_urls_from_submission method """
-        xblock.get_download_urls_from_submission = Mock(**kwargs)
+        with patch("openassessment.data.get_download_url", **kwargs) as mock_get_download_url:
+            yield mock_get_download_url
 
     @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
     def test_get_submission_error(self, xblock):
@@ -77,6 +79,14 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
             "This is my answer for <i>Prompt Two</i>",
             "This is my response for <a href='www.edx.org'>Prompt Three</a>"
         ]
+        file_uploads = [
+            {
+                "url": 'A', "description": 'B', "name": 'C', "size": 100
+            },
+            {
+                "url": '1', "description": '2', "name": '3', "size": 300
+            },
+        ]
         file_responses = [
             {
                 "download_url": 'A', "description": 'B', "name": 'C', "size": 100
@@ -90,11 +100,12 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         mock_submission = Mock()
         mock_answer = Mock()
         mock_answer.get_text_responses.return_value = text_responses
+        mock_answer.get_file_uploads.return_value = file_uploads
         self.set_staff_user(xblock, 'Bob')
         with self._mock_get_submission(return_value=mock_submission):
             with self._mock_parse_submission_raw_answer(return_value=mock_answer):
-                self._mock_get_download_urls_from_submission(xblock, return_value=file_responses)
-                response = self.request(xblock, {'submission_uuid': submission_uuid})
+                with self._mock_get_download_urls():
+                    response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(
             response,
@@ -123,7 +134,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         submission, _ = self._create_student_and_submission(student_id, test_answer)
 
         self.set_staff_user(xblock, 'Bob')
-        with self._mock_get_url_by_file_key(xblock):
+        with self._mock_get_download_url():
             response = self.request(xblock, {'submission_uuid': submission['uuid']})
 
         expected_submission_info = {
