@@ -90,6 +90,26 @@ def list_to_conversational_format(str_list):
         return ' and '.join(str_list)
     return '{}, and {}'.format(', '.join(str_list[:-1]), str_list[-1])
 
+def update_saved_response_format(saved_response):
+    """
+    For backwards compatibility. Initially, problems had only one prompt and a
+    string answer. This converts it to the appropriate shape.
+    """
+
+    updated_response_format = {}
+
+    try:
+        updated_response_format = {
+            'answer': json.loads(saved_response),
+        }
+    except ValueError:
+        updated_response_format = {
+            'answer': {
+                'text': saved_response,
+            },
+        }
+
+    return updated_response_format
 
 def update_assessments_format(assessments):
     """
