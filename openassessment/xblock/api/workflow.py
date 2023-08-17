@@ -63,7 +63,6 @@ class WorkflowAPI:
     def status(self):
         return self.workflow.get("status")
 
-
     def get_workflow_status_counts(self):
         return self._raw_block.get_workflow_status_counts()
 
