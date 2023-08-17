@@ -3,12 +3,11 @@ Handle OpenAssessment XBlock requests to the Workflow API.
 """
 
 from xblock.core import XBlock
-from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
 
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
 
-from .api.workflow import WorkflowAPI
+from openassessment.xblock.api.workflow import WorkflowAPI
 
 
 class WorkflowMixin:
@@ -162,7 +161,7 @@ class WorkflowMixin:
         Raises:
             AssessmentWorkflowError
         """
-        return WorkflowApi(self).get_workflow_info(submission_uuid)
+        return WorkflowAPI(self).get_workflow_info(submission_uuid)
 
     def get_submission_uuid(self):
         """ Submission UUIDs can be in multiple spots based on the submission type,
@@ -176,7 +175,7 @@ class WorkflowMixin:
                 (string) Submission ID if found
                 (None) None if not found
         """
-        return WorkflowApi(self).get_submission_uuid
+        return WorkflowAPI(self).get_submission_uuid
 
     def get_workflow_status_counts(self):
         """

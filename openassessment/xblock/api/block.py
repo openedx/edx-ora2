@@ -1,10 +1,10 @@
-from .team import TeamAPI
-from .workflow import WorkflowAPI
+from openassessment.xblock.api.team import TeamMixinAPI
+from openassessment.xblock.api.workflow import WorkflowAPI
 
 class BlockAPI:
     def __init__(self, block):
         self._block = block
-        self.team = TeamAPI(block)
+        self.team = TeamMixinAPI(block)
         self.workflow = WorkflowAPI(block)
 
     @property

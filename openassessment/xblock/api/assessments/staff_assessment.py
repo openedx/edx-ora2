@@ -2,20 +2,13 @@ from openassessment.assessment.api import (
     staff as staff_api,
     teams as teams_api
 )
-from openassessment.workflow import (
-    api as workflow_api,
-    team_api as team_workflow_api
-)
 from submissions import team_api as team_sub_api
 
 from openassessment.xblock.data_conversion import (
     clean_criterion_feedback,
-    create_submission_dict,
     create_rubric_dict
 )
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.api.block import BlockAPI
-from .problem_closed import ProblemClosedAPI
 
 class StaffAssessmentAPI:
     def __init__(self, block):
