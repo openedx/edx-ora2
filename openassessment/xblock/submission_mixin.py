@@ -962,9 +962,11 @@ class SubmissionMixin:
         }
 
         # Below here we determine submission status and template
-        file_urls = submission_info.uploaded_files
-        submission_context = { **file_urls }
+        submission_context = {}
         team_submission_context = {}
+        file_urls = submission_info.uploaded_files
+        if file_urls:
+            submission_context.update(file_urls)
 
         # Get access information (whether problem is closed) and reasons
         workflow_context = {
