@@ -7,13 +7,12 @@ from xblock.core import XBlock
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.models import AssessmentWorkflowCancellation
 
-from openassessment.xblock.api.workflow import WorkflowAPI
-
 
 class WorkflowMixin:
     """
     Handle OpenAssessment XBlock requests to the Workflow API.
     """
+
     # Dictionary mapping assessment names (e.g. peer-assessment)
     # to the corresponding workflow step names.
     ASSESSMENT_STEP_NAMES = {
@@ -22,23 +21,6 @@ class WorkflowMixin:
         "student-training": "training",
         "staff-assessment": "staff"
     }
-
-    def _create_step_list(self):
-        """
-        Return a list of valid workflow step names.
-        This translates between the assessment types (loaded from the problem definition)
-        and the step types (used by the Workflow API).
-        At some point, we should probably refactor to make these two names consistent.
-
-        Returns:
-            list
-
-        """
-        return [
-            self.ASSESSMENT_STEP_NAMES.get(ra['name'])
-            for ra in self.valid_assessments
-            if ra['name'] in self.ASSESSMENT_STEP_NAMES
-        ]
 
     @XBlock.json_handler
     def handle_workflow_info(self, data, suffix=''):    # pylint:disable=W0613
@@ -161,7 +143,23 @@ class WorkflowMixin:
         Raises:
             AssessmentWorkflowError
         """
-        return WorkflowAPI(self).get_workflow_info(submission_uuid)
+        if self.is_team_assignment():
+            if submission_uuid:
+                team_submission_uuid = self.get_team_submission_uuid_from_individual_submission_uuid(submission_uuid)
+            else:
+                team_submission_uuid = None
+            return self.get_team_workflow_info(team_submission_uuid)
+
+        if submission_uuid is None:
+            submission_uuid = self.get_submission_uuid()
+
+        if submission_uuid is None:
+            return {}
+        return workflow_api.get_workflow_for_submission(
+            submission_uuid,
+            self.workflow_requirements(),
+            self.get_course_workflow_settings()
+        )
 
     def get_submission_uuid(self):
         """ Submission UUIDs can be in multiple spots based on the submission type,
@@ -175,7 +173,18 @@ class WorkflowMixin:
                 (string) Submission ID if found
                 (None) None if not found
         """
-        return WorkflowAPI(self).get_submission_uuid
+        if self.submission_uuid is not None:
+            return self.submission_uuid
+        elif self.is_team_assignment():
+            try:
+                # Query for submissions by the student item
+                student_item = self.get_student_item_dict()
+                submission_list = get_submissions(student_item)
+                if submission_list and submission_list[0]["uuid"] is not None:
+                    return submission_list[0]["uuid"]
+            except (SubmissionInternalError, SubmissionNotFoundError):
+                return None
+        return None
 
     def get_workflow_status_counts(self):
         """
@@ -206,6 +215,23 @@ class WorkflowMixin:
         )
         num_submissions = sum(item['count'] for item in status_counts)
         return status_counts, num_submissions
+
+    def _create_step_list(self):
+        """
+        Return a list of valid workflow step names.
+        This translates between the assessment types (loaded from the problem definition)
+        and the step types (used by the Workflow API).
+        At some point, we should probably refactor to make these two names consistent.
+
+        Returns:
+            list
+
+        """
+        return [
+            self.ASSESSMENT_STEP_NAMES.get(ra['name'])
+            for ra in self.valid_assessments
+            if ra['name'] in self.ASSESSMENT_STEP_NAMES
+        ]
 
     def get_workflow_cancellation_info(self, submission_uuid):
         """
