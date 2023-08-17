@@ -807,7 +807,11 @@ class SubmissionMixin:
         Submitted and graded
 
         """
-        path, context = self.submission_path_and_context()
+        submission_info = SubmissionApi(self)
+
+        context = self.submission_context(submission_info)
+        path = self.submission_path(submission_info)
+
         return self.render_assessment(path, context_dict=context)
 
     def get_team_submission_context(self):
@@ -880,21 +884,65 @@ class SubmissionMixin:
 
             return submit_enabled
 
-    def submission_path_and_context(self):
+    def submission_path(self, submission_info):
         """
-        Determine the template path and context to use when
-        rendering the response (submission) step.
+        Given info about the submission, return the appropriate template path
 
         Returns:
-            tuple of `(path, context)`, where `path` (str) is the path to the template,
-            and `context` (dict) is the template context.
-
+        - path (String) to the template
         """
-        # Fetch submission and supporting info
-        submission_info = SubmissionApi(self)
 
-        path = 'openassessmentblock/response/oa_response.html'
+        # Template Paths
+        template_dir = 'openassessmentblock/response'
+        submission_template_paths = {
+            'default': 'oa_response',
+            'closed': 'oa_response_closed',
+            'unavailable': 'oa_response_unavailable',
+            'team_already_submitted': 'oa_response_team_already_submitted',
+            'cancelled': 'oa_response_cancelled',
+            'graded': 'oa_response_graded',
+            'submitted': 'oa_response_submitted'
+        }
 
+        path = submission_template_paths['default']
+
+        # Response is unavailable (not yet open or past due date)
+        if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
+            if submission_info.problem_is_past_due:
+                path = submission_template_paths['closed']
+            elif submission_info.problem_is_not_available_yet:
+                path = submission_template_paths['unavailable']
+
+        # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
+        elif submission_info.is_team_assignment and submission_info.team_id is None:
+            path = submission_template_paths['unavailable']
+
+        # Response not yet submitted
+        elif not submission_info.has_submitted:
+            if self.teams_enabled and submission_info.team_previously_submitted_without_student:
+                path = submission_template_paths['team_already_submitted']
+
+        # Cancelled: Instructor has cancelled this response
+        elif submission_info.has_been_cancelled:
+            path = submission_template_paths['cancelled']
+
+        # Done: Submitted and received final grade
+        elif submission_info.has_received_final_grade:
+            path = submission_template_paths['graded']
+
+        # Submitted and waiting for a grade
+        else:
+            path = submission_template_paths['submitted']
+
+        return f'{template_dir}/{path}.html'
+
+    def submission_context(self, submission_info):
+        """
+        Determine the context needed when rendering the response (submission) step.
+
+        Returns:
+        * Context (dict) - Context used for rendering the submission
+        """
         # Get ORA Metadata
         course_id = self.location.course_key if hasattr(self, 'location') else None
         block_metadata = {
@@ -913,12 +961,6 @@ class SubmissionMixin:
             'user_timezone': user_preferences['user_timezone'],
         }
 
-        # Get the Team ID for the current submission, if it is a team assignment
-        # Note: that it is possible for teams to change after a submission.
-        # If a user submitted with a past team, that gets precedence.
-        # Otherwise, we fall back to the current team.
-        team_id_for_current_submission = submission_info.team_id
-
         # Below here we determine submission status and template
         file_urls = submission_info.uploaded_files
         submission_context = { **file_urls }
@@ -931,29 +973,17 @@ class SubmissionMixin:
 
         # Response is unavailable (not yet open or past due date)
         if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
-            if submission_info.problem_is_past_due:
-                path = 'openassessmentblock/response/oa_response_closed.html'
-            elif submission_info.problem_is_not_available_yet:
+            if submission_info.problem_is_not_available_yet:
                 workflow_context['submission_start'] = submission_info.start_date
-                path = 'openassessmentblock/response/oa_response_unavailable.html'
-
-        # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
-        elif submission_info.is_team_assignment and team_id_for_current_submission is None:
-            path = 'openassessmentblock/response/oa_response_unavailable.html'
 
         # Response not yet submitted: Get the saved response
         elif not submission_info.has_submitted:
-            path = "openassessmentblock/response/oa_response.html"
-
             # Load the user/team saved response
             saved_response = submission_info.saved_response
             submission_context['saved_response'] = create_submission_dict(saved_response, self.prompts)
 
             if self.teams_enabled:
                 team_submission_context = submission_info.team_submission_context
-        
-                if submission_info.team_previously_submitted_without_student:
-                    path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
 
             # Determine UI states
             submission_context['save_status'] = self.save_status
@@ -962,7 +992,6 @@ class SubmissionMixin:
 
         # Cancelled: Instructor has cancelled this response
         elif submission_info.has_been_cancelled:
-            path = 'openassessmentblock/response/oa_response_cancelled.html'
 
             # Load user/team submission
             submission_context["student_submission"] = submission_info.student_submission
@@ -972,14 +1001,11 @@ class SubmissionMixin:
 
         # Done: Submitted and received final grade
         elif submission_info.has_received_final_grade:
-            path = 'openassessmentblock/response/oa_response_graded.html'
-
             student_submission = submission_info.student_submission
             submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
 
         # Submitted and waiting for a grade
         else:
-            path = 'openassessmentblock/response/oa_response_submitted.html'
 
             # Load user/team submission
             student_submission = submission_info.student_submission
@@ -999,4 +1025,4 @@ class SubmissionMixin:
             **team_submission_context,
         }
 
-        return path, context
+        return context
