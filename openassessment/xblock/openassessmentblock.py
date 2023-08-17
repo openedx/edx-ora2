@@ -311,6 +311,12 @@ class OpenAssessmentBlock(
         help="Should the rubric be visible to learners in the response section?"
     )
 
+    date_config_type = String(
+        default=DATE_CONFIG_MANUAL,
+        scope=Scope.settings,
+        help="The type of date configuration. Possible values are 'manual', 'subsection', and 'course_end'."
+    )
+
     @property
     def course_id(self):
         return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
@@ -1130,6 +1136,13 @@ class OpenAssessmentBlock(
             course_staff = self.is_course_staff
         if course_staff:
             return False, None, DISTANT_PAST, DISTANT_FUTURE
+
+        if self.date_config_type == DATE_CONFIG_COURSE_END:
+            course = self.course
+            if course.start and course.end:
+                open_range = (course.start, course.end)
+        elif self.date_config_type == DATE_CONFIG_SUBSECTION and self.due:
+            open_range = (self.start, self.due)
 
         if self.is_beta_tester:
             beta_start = self._adjust_start_date_for_beta_testers(open_range[0])
