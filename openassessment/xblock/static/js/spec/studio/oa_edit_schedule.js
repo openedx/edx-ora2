@@ -69,11 +69,11 @@ describe('OpenAssessment.EditScheduleView', function() {
         expect(view.dateConfigType()).toEqual(expectedValue);
 
         // if subsection_end_date is not defined, disable subsection option
-        const subsectionEl = $('input[name="date_config_type"][type="radio"][value="subsection"]', element);
+        const subsectionEl = $('input[name="date_config_type"][type="radio"][value="subsection"]', this.element);
         expect(subsectionEl.prop('disabled')).toBe(true);
 
         // if course_end_date is not defined, disable course end option
-        const courseEndEl = $('input[name="date_config_type"][type="radio"][value="course_end"]', element);
+        const courseEndEl = $('input[name="date_config_type"][type="radio"][value="course_end"]', this.element);
         expect(courseEndEl.prop('disabled')).toBe(true);
     });
 
