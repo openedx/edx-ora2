@@ -14,10 +14,6 @@ from openassessment.xblock.data_layer.serializers import (
     SubmissionConfigSerializer,
 )
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
-from openassessment.xblock.test.test_team import (
-    MockTeamsConfigurationService,
-    MockTeamsService,
-)
 
 
 class TestSubmissionConfigSerializer(XBlockHandlerTestCase):
@@ -275,7 +271,7 @@ class TestAssessmentStepsSerializer(XBlockHandlerTestCase):
 
         # Then I get the right ordering and step keys
         self.assertListEqual(steps_config["order"], expected_order)
-        steps = {step for step in steps_config["settings"].keys()}
+        steps = set(steps_config["settings"].keys())
         self.assertSetEqual(steps, expected_step_keys)
 
 

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 18:36+0000\n"
+"POT-Creation-Date: 2023-08-13 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Somaye Joolaee, 2022\n"
 "Language-Team: Persian (Iran) (http://app.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
@@ -76,76 +76,76 @@ msgstr "میانگین امتیاز {number}"
 msgid "Feedback {number}"
 msgstr "بازخورد {number}"
 
-#: data.py:870
+#: data.py:866
 msgid "Item ID"
 msgstr "شناسه مورد"
 
-#: data.py:871
+#: data.py:867
 msgid "Submission ID"
 msgstr "شناسه ارسال"
 
-#: data.py:883
+#: data.py:879
 msgid "Anonymized Student ID"
 msgstr "شناسه یادگیرنده بی‌نام"
 
-#: data.py:914
+#: data.py:910
 msgid "Assessment ID"
 msgstr "شناسه ارزیابی"
 
-#: data.py:915
+#: data.py:911
 msgid "Assessment Scored Date"
 msgstr "تاریخ امتیازدهی ارزیابی"
 
-#: data.py:916
+#: data.py:912
 msgid "Assessment Scored Time"
 msgstr "زمان امتیازدهی ارزیابی"
 
-#: data.py:917
+#: data.py:913
 msgid "Assessment Type"
 msgstr "نوع ارزیابی"
 
-#: data.py:918
+#: data.py:914
 msgid "Anonymous Scorer Id"
 msgstr "شناسه امتیازدهنده بی‌نام"
 
-#: data.py:920
+#: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "بازخورد کلی"
 
-#: data.py:921
+#: data.py:917
 msgid "Assessment Score Earned"
 msgstr "امتیاز ارزیابی کسب‌شده"
 
-#: data.py:922
+#: data.py:918
 msgid "Assessment Scored At"
 msgstr "ارزیابی با امتیاز"
 
-#: data.py:923
+#: data.py:919
 msgid "Date/Time Final Score Given"
 msgstr "تاریخ/زمان امتیاز نهایی داده شده‌است"
 
-#: data.py:924
+#: data.py:920
 msgid "Final Score Earned"
 msgstr "امتیاز نهایی کسب‌شده"
 
-#: data.py:925
+#: data.py:921
 msgid "Final Score Possible"
 msgstr "امتیاز نهایی ممکن است"
 
-#: data.py:926
+#: data.py:922
 msgid "Feedback Statements Selected"
 msgstr "اظهارات بازخورد انتخاب شد"
 
-#: data.py:927
+#: data.py:923
 msgid "Feedback on Assessment"
 msgstr "بازخورد درباره ارزیابی"
 
-#: data.py:929
+#: data.py:925
 msgid "Response Files"
 msgstr "پرونده‌های پاسخ"
 
-#: data.py:1320
+#: data.py:1316
 msgid "No description provided."
 msgstr "هیچ توضیحی ارائه نشده‌است."
 
@@ -1085,15 +1085,15 @@ msgstr "این تکلیف چندین مرحله دارد. در مرحله اول
 msgid "Loading"
 msgstr "در حال بارگذاری"
 
-#: templates/openassessmentblock/oa_latex_preview.html:7
+#: templates/openassessmentblock/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
 msgstr "پیش‌نمایش در لاتکس"
 
-#: templates/openassessmentblock/oa_latex_preview.html:10
+#: templates/openassessmentblock/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
 msgstr "برای پیش‌نمایش مطالب ارسالی خود در LaTeX کلیک کنید."
 
-#: templates/openassessmentblock/oa_latex_preview.html:15
+#: templates/openassessmentblock/oa_latex_preview.html:14
 msgid "Preview Response"
 msgstr "پیش‌نمایش پاسخ"
 

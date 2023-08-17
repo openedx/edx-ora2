@@ -276,7 +276,7 @@
                                   {% trans "Supported file types: " %}{{ white_listed_file_types|join:", "}}
                                 </div>
                                 <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" {% if allow_multiple_files %}multiple=""{% endif %} accept="{{white_listed_file_types|join:", "}}">
-                                <button type="submit" class="file__upload action action--upload" disabled>
+                                <button type="submit" class="file__upload action action--upload">
                                   {% if allow_multiple_files %}
                                       {% trans "Upload files" %}
                                   {% else %}
@@ -324,7 +324,7 @@
                         <button type="submit" class="action action--submit step--response__submit"
                                 text_response="{{text_response}}"
                                 file_upload_response="{{file_upload_response}}"
-                                {{submit_enabled|yesno:",disabled" }}>
+                                >
                             {% trans "Submit your response and move to the next step" %}
                         </button>
                     </li>

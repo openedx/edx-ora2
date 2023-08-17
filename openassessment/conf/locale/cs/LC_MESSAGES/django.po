@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 18:36+0000\n"
+"POT-Creation-Date: 2023-08-13 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Jiří Podhorecký, 2023\n"
+"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2022-2023\n"
 "Language-Team: Czech (http://app.transifex.com/open-edx/edx-platform/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,76 +76,76 @@ msgstr "Střední skóre {number}"
 msgid "Feedback {number}"
 msgstr "Zpětná vazba {number}"
 
-#: data.py:870
+#: data.py:866
 msgid "Item ID"
 msgstr "ID položky"
 
-#: data.py:871
+#: data.py:867
 msgid "Submission ID"
 msgstr "ID příspěvku"
 
-#: data.py:883
+#: data.py:879
 msgid "Anonymized Student ID"
 msgstr "ID anonymizovaného studenta"
 
-#: data.py:914
+#: data.py:910
 msgid "Assessment ID"
 msgstr "ID hodnocení"
 
-#: data.py:915
+#: data.py:911
 msgid "Assessment Scored Date"
 msgstr "Bodované datum hodnocení"
 
-#: data.py:916
+#: data.py:912
 msgid "Assessment Scored Time"
 msgstr "Bodovaný čas hodnocení"
 
-#: data.py:917
+#: data.py:913
 msgid "Assessment Type"
 msgstr "Typ hodnocení"
 
-#: data.py:918
+#: data.py:914
 msgid "Anonymous Scorer Id"
 msgstr "ID anonymního střelce"
 
-#: data.py:920
+#: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr "Celková zpětná vazba"
 
-#: data.py:921
+#: data.py:917
 msgid "Assessment Score Earned"
 msgstr "Získané skóre hodnocení"
 
-#: data.py:922
+#: data.py:918
 msgid "Assessment Scored At"
 msgstr "Hodnocení bodováno v"
 
-#: data.py:923
+#: data.py:919
 msgid "Date/Time Final Score Given"
 msgstr "Datum/čas získaného konečného skóre"
 
-#: data.py:924
+#: data.py:920
 msgid "Final Score Earned"
 msgstr "Získané konečné skóre"
 
-#: data.py:925
+#: data.py:921
 msgid "Final Score Possible"
 msgstr "Možné konečné skóre"
 
-#: data.py:926
+#: data.py:922
 msgid "Feedback Statements Selected"
 msgstr "Vybráno vyjádření zpětné vazby"
 
-#: data.py:927
+#: data.py:923
 msgid "Feedback on Assessment"
 msgstr "Zpětná vazba k hodnocení"
 
-#: data.py:929
+#: data.py:925
 msgid "Response Files"
 msgstr "Soubory odpovědí"
 
-#: data.py:1320
+#: data.py:1316
 msgid "No description provided."
 msgstr "Nebyl poskytnut žádný popis."
 
@@ -1087,15 +1087,15 @@ msgstr "Toto zadání má několik kroků. V prvním kroku poskytnete odpověď 
 msgid "Loading"
 msgstr "Nahrávání"
 
-#: templates/openassessmentblock/oa_latex_preview.html:7
+#: templates/openassessmentblock/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
 msgstr "Náhled v LaTeXu"
 
-#: templates/openassessmentblock/oa_latex_preview.html:10
+#: templates/openassessmentblock/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
 msgstr "Kliknutím zobrazíte náhled příspěvku v LaTeXu."
 
-#: templates/openassessmentblock/oa_latex_preview.html:15
+#: templates/openassessmentblock/oa_latex_preview.html:14
 msgid "Preview Response"
 msgstr "Náhled odpovědi"
 
