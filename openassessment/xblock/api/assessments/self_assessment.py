@@ -60,15 +60,22 @@ class SelfAssessmentAPI:
 
     @property
     def submission(self):
-        return submission_api.get_submission(self._block.submission_uuid)
+        if (self._block.submission_uuid):
+            return submission_api.get_submission(self._block.submission_uuid)
+        return None
 
     @property
     def submission_dict(self):
-        return create_submission_dict(self.submission, self._block_api.prompts)
+        if (self.submission):
+            return create_submission_dict(self.submission, self._block_api.prompts)
+        return None
 
     @property
     def file_urls(self):
-        return self._block.get_download_urls_from_submission(self.submission)
+        if (self.submission):
+            return self._block.get_download_urls_from_submission(self.submission)
+        return None
+
 
     def create_assessment(self, data):
         return self_api.create_assessment(

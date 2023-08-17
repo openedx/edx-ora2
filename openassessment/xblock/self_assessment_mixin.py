@@ -70,7 +70,7 @@ class SelfAssessmentMixin:
         if step_data.is_not_available_yet:
             context["stelf_start"] = step_data.start_date
 
-        if with_sub:
+        if with_sub and step_data.submission:
             context["rubric_criteria"] = self.rubric_criteria_with_labels
             context["self_submission"] = step_data.submission_dict
             if self.rubric_feedback_prompt is not None:
