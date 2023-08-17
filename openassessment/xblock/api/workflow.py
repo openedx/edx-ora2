@@ -1,9 +1,6 @@
-from .block import BlockAPI
-
 class WorkflowAPI:
     def __init__(self, block):
         self._raw_block = block
-        self._block = BlockAPI(block)
 
     @property
     def has_workflow(self):

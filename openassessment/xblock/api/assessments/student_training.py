@@ -1,12 +1,11 @@
-from openassessment.assessment.api import student_training
+from openassessment.assessment.api.student_training import get_num_completed, get_training_example
 
 from openassessment.xblock.data_conversion import (
     convert_training_examples_list_to_dict,
     create_submission_dict
 )
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.api.block import BlockAPI
-from .problem_closed import ProblemClosedAPI
+from openassessment.xblock.api.assessments.problem_closed import ProblemClosedAPI
 
 class StudentTrainingAPI:
     def __init__(self, block):
@@ -60,7 +59,7 @@ class StudentTrainingAPI:
 
     @property
     def num_completed(self):
-        return student_training.get_num_completed(self._block.submission_uuid)
+        return get_num_completed(self._block.submission_uuid)
 
     @property
     def examples(self):
@@ -68,7 +67,7 @@ class StudentTrainingAPI:
 
     @property
     def example(self):
-        return student_training.get_training_example(
+        return get_training_example(
             self._block.submission_uuid,
             {'prompt': self._block.prompt, 'criteria': self._block.rubric_criteria_with_labels},
             self.examples
