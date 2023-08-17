@@ -146,7 +146,7 @@ class TeamMixin:
             usernames = list_to_conversational_format(usernames)
         context['team_usernames'] = usernames
 
-    def get_team_info(self):
+    def get_team_info(self, staff_or_preview_data=True):
         """
         Return a dict with team data if the user is on a team, or an
         empty dict otherwise.
@@ -154,7 +154,7 @@ class TeamMixin:
         render the page like a student would see
         """
         if self.in_studio_preview:
-            return self.STAFF_OR_PREVIEW_INFO
+            return self.STAFF_OR_PREVIEW_INFO if staff_or_preview_data else None
         elif self.has_team():
             student_item_dict = self.get_student_item_dict()
             previous_team_name = None
@@ -175,7 +175,7 @@ class TeamMixin:
                 'previous_team_name': previous_team_name,
             }
         elif self.is_course_staff:
-            return self.STAFF_OR_PREVIEW_INFO
+            return self.STAFF_OR_PREVIEW_INFO if staff_or_preview_data else None
         else:
             return {}
 
