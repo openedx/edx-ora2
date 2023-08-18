@@ -32,7 +32,7 @@ class SubmissionApi:
                 self.team_submission_uuid
             )
         else:
-            return self.get_workflow_cancellation_info(self.submission_uuid)
+            return self.workflow_info.get_workflow_cancellation_info(self.submission_uuid)
 
     @property
     def has_received_final_grade(self):
@@ -40,7 +40,7 @@ class SubmissionApi:
 
     @property
     def peer_step_incomplete(self):
-        return "peer" in self._workflow and not self.workflow_info.is_peer_complete
+        return "peer" in self.workflow_info.status_details and not self.workflow_info.is_peer_complete
 
     @property
     def self_step_incomplete(self):
@@ -140,9 +140,8 @@ class SubmissionApi:
     def team_submission_uuid(self):
         return self._workflow["team_submission_uuid"]
 
-    @property
-    def team_submission_context(self):
-        return self.block.get_team_submission_context()
+    def get_team_submission_context(self, context):
+        return self.block.get_team_submission_context(context)
 
     # Submission config
 

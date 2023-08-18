@@ -2,6 +2,7 @@
 Tests for peer assessment handlers in Open Assessment XBlock.
 """
 
+import logging
 
 from collections import namedtuple
 import copy
@@ -17,6 +18,8 @@ from openassessment.workflow import api as workflow_api
 from openassessment.xblock.data_conversion import create_submission_dict
 
 from .base import XBlockHandlerTestCase, scenario
+
+logger = logging.getLogger(__name__)
 
 
 class TestPeerAssessment(XBlockHandlerTestCase):
@@ -344,9 +347,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_timezone': pytz.utc,
             'user_language': 'en'
         }
+        logger.warn("before closed")
+        logger.warn("================================\n" * 10)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
         )
+        logger.warn("after closed")
 
     @scenario('data/peer_future_scenario.xml', user_id='Bob')
     def test_before_release(self, xblock):

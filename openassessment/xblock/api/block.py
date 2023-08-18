@@ -140,5 +140,9 @@ class BlockAPI:
         return self._block.xblock_id
 
     @property
+    def rubric_criteria(self):
+        return self._block.rubric_criteria
+
+    @property
     def rubric_criteria_with_labels(self):
         return self._block.rubric_criteria_with_labels

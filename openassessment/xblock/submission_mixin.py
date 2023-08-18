@@ -814,7 +814,7 @@ class SubmissionMixin:
 
         return self.render_assessment(path, context_dict=context)
 
-    def get_team_submission_context(self):
+    def get_team_submission_context(self, context):
         """
         Populate the passed context object with team info, including a set of students on
         the team with submissions to the current item from another team, under the key
@@ -827,7 +827,6 @@ class SubmissionMixin:
         """
 
         from submissions import team_api
-        team_info = {}
 
         try:
             team_info = self.get_team_info()
@@ -845,6 +844,7 @@ class SubmissionMixin:
                 team_info["team_members_with_external_submissions"] = list_to_conversational_format([
                     self.get_username(submission['student_id']) for submission in external_submissions
                 ])
+                context.update(team_info)
         except ObjectDoesNotExist:
             logger.error(
                 '%s: User associated with anonymous_user_id %s can not be found.',
@@ -853,8 +853,6 @@ class SubmissionMixin:
             )
         except NoSuchServiceError:
             logger.error('%s: Teams service is unavailable', str(self.location))
-
-        return team_info
 
     def get_allowed_file_types_or_preset(self):
         """
@@ -883,6 +881,11 @@ class SubmissionMixin:
                 submit_enabled = False
 
             return submit_enabled
+
+    def submission_path_and_context(self):
+        submission_info = SubmissionApi(self)
+        return self.submission_path(submission_info), self.submission_context(submission_info)
+
 
     def submission_path(self, submission_info):
         """
@@ -985,7 +988,7 @@ class SubmissionMixin:
             submission_context['saved_response'] = create_submission_dict(saved_response, self.prompts)
 
             if self.teams_enabled:
-                team_submission_context = submission_info.team_submission_context
+                submission_context.update(submission_info.get_team_submission_context(submission_context))
 
             # Determine UI states
             submission_context['save_status'] = self.save_status
