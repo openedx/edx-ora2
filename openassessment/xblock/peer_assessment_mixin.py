@@ -12,7 +12,12 @@ from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerA
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
-from .data_conversion import (verify_assessment_parameters)
+from .data_conversion import (
+    verify_assessment_parameters,
+    clean_criterion_feedback,
+    create_rubric_dict,
+    create_submission_dict,
+)
 from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -63,7 +68,9 @@ class PeerAssessmentMixin:
 
         """
         # Import is placed here to avoid model import at project startup.
-        from .api.assessments.peer_assessment import PeerAssessmentAPI
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.xblock.api.assessments.peer_assessment import PeerAssessmentAPI
+
         step_data = PeerAssessmentAPI(self)
         if self.submission_uuid is None:
             return {
@@ -82,10 +89,21 @@ class PeerAssessmentMixin:
                 "msg": self._("This feedback has already been submitted or the submission has been cancelled."),
             }
 
-        if step_data.assessment_ui_model:
+        if step_data.assessment:
             try:
                 # Create the assessment
-                assessment = step_data.create_assessment(data)
+                assessment = peer_api.create_assessment(
+                    self.submission_uuid,
+                    step_data.student_item["student_id"],
+                    data["options_selected"],
+                    clean_criterion_feedback(
+                        step_data.block.rubric_criteria_with_labels,
+                        data["criterion_feedback"]
+                    ),
+                    data["overall_feedback"],
+                    create_rubric_dict(step_data.block.prompts, step_data.block.rubric_criteria_with_labels),
+                    step_data.assessment["must_be_graded_by"]
+                )
 
                 # Emit analytics event...
                 self.publish_assessment_event("openassessmentblock.peer_assess", assessment)
@@ -230,6 +248,7 @@ class PeerAssessmentMixin:
         from .api.assessments.peer_assessment import PeerAssessmentAPI
         step_data = PeerAssessmentAPI(self, continue_grading)
 
+        logger.warn(step_data)
         if step_data.is_cancelled:
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
@@ -237,21 +256,24 @@ class PeerAssessmentMixin:
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.
-        elif (step_data.is_complete) and not step_data.continue_grading:
+        if (step_data.is_complete) and not step_data.continue_grading:
             return self._peer_path_and_context("complete", step_data)
 
         # Allow continued grading even if the problem due date has passed
-        elif step_data.continue_grading and step_data.student_item:
+        if step_data.continue_grading and step_data.student_item:
             peer_sub = self.get_peer_submission(step_data)
             if peer_sub:
                 return self._peer_path_and_context("turbo_mode", step_data, peer_sub)
             else:
                 return self._peer_path_and_context("turbo_mode_waiting", step_data)
-        elif step_data.is_past_due:
+
+        if step_data.is_past_due:
             return self._peer_path_and_context("closed", step_data)
-        elif step_data.is_not_available_yet:
+
+        if step_data.is_not_available_yet:
             return self._peer_path_and_context("unavailable", step_data)
-        elif step_data.is_peer or step_data.is_skipped:
+
+        if step_data.is_peer or step_data.is_skipped:
             peer_sub = self.get_peer_submission(step_data)
             if peer_sub:
                 # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
