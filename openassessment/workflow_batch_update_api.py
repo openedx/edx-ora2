@@ -220,7 +220,8 @@ def get_assessment_requirements_for_flex_peer_grading(peer_workflows):
 
     for peer_workflow in peer_workflows:
         try:
-            ora_block = _get_ora_block(peer_workflow, store)
+            block_key = UsageKey.from_string(peer_workflow.item_id)
+            ora_block = store.get_item(block_key)
 
             if is_flexible_peer_grading_on(ora_block):
                 workflow_requirements[peer_workflow.submission_uuid] = ora_block.workflow_requirements()
@@ -230,17 +231,3 @@ def get_assessment_requirements_for_flex_peer_grading(peer_workflows):
                 peer_workflow.item_id, str(e))
 
     return workflow_requirements
-
-
-def _get_ora_block(peer_workflow, store=None):
-    """
-    Returns ORA block for the given PeerWorkflow
-    """
-    if store is None:
-        store = modulestore()
-
-    if peer_workflow is not None:
-        block_key = UsageKey.from_string(peer_workflow.item_id)
-        return store.get_item(block_key)
-
-    return None
