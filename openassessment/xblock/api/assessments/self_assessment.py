@@ -59,9 +59,13 @@ class SelfAssessmentAPI:
         return self_api.get_assessment(self._workflow.workflow.get('submission_uuid'))
 
     @property
+    def submission_uuid(self):
+        return self._block.submission_uuid
+
+    @property
     def submission(self):
-        if (self._block.submission_uuid):
-            return submission_api.get_submission(self._block.submission_uuid)
+        if (self.submission_uuid):
+            return submission_api.get_submission(self.submission_uuid)
         return None
 
     @property
@@ -76,13 +80,18 @@ class SelfAssessmentAPI:
             return self._block.get_download_urls_from_submission(self.submission)
         return None
 
+    @property
+    def student_item_dict(self):
+        return self._block_api.student_item_dict
 
-    def create_assessment(self, data):
-        return self_api.create_assessment(
-            self._block.submission_uuid,
-            self._block_api.student_item_dict['student_id'],
-            data['options_selected'],
-            clean_criterion_feedback(self._block_api.rubric_criteria, data['criterion_feedback']),
-            data['overall_feedback'],
-            create_rubric_dict(self._block_api.prompts, self._block.rubric_criteria_with_labels)
-        )
+    @property
+    def rubric_criteria(self):
+        return self._block_api.rubric_criteria
+
+    @property
+    def rubric_criteria_with_labels(self):
+        return self._block_api.rubric_criteria
+
+    @property
+    def prompts(self):
+        return self._block_api.rubric_criteria

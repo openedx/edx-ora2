@@ -11,6 +11,10 @@ class BlockAPI:
     def course_id(self):
         return self._block.course_id
 
+    @course_id.setter
+    def course_id(self, value):
+        self._block.course_id = value
+
     @property
     def course(self):
         return self._block.course

@@ -68,7 +68,7 @@ class SelfAssessmentMixin:
             context['self_due'] = step_data.due_date
 
         if step_data.is_not_available_yet:
-            context["stelf_start"] = step_data.start_date
+            context["self_start"] = step_data.start_date
 
         if with_sub and step_data.submission:
             context["rubric_criteria"] = self.rubric_criteria_with_labels
@@ -82,6 +82,7 @@ class SelfAssessmentMixin:
             # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
             context["file_upload_type"] = self.file_upload_type
             context['self_file_urls'] = step_data.file_urls
+        return context
 
     def _self_path_and_context(self, key, step_data, with_sub=False):
         return self.SELF_TEMPLATE_PATHS[key], self.self_context(step_data, with_sub)
@@ -136,7 +137,9 @@ class SelfAssessmentMixin:
             and "msg" (unicode) containing additional information if an error occurs.
         """
         # Import is placed here to avoid model import at project startup.
-        from .api.assessments.self_assessment import SelfAssessmentAPI
+        from openassessment.xblock.api.assessments.self_assessment import SelfAssessmentAPI
+        step_data = SelfAssessmentAPI(self)
+
         if self.submission_uuid is None:
             return {
                 'success': False,
@@ -144,7 +147,14 @@ class SelfAssessmentMixin:
             }
 
         try:
-            assessment = SelfAssessmentAPI(self).create_assessment(data)
+            assessment = self_api.create_assessment(
+                step_data.submission_uuid,
+                step_data.student_item_dict['student_id'],
+                data['options_selected'],
+                clean_criterion_feedback(step_data.rubric_criteria, data['criterion_feedback']),
+                data['overall_feedback'],
+                create_rubric_dict(step_data.prompts, step_data.rubric_criteria_with_labels)
+            )
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)
 
             # After we've created the self-assessment, we need to update the workflow.
