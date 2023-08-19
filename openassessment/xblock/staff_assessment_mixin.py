@@ -138,34 +138,33 @@ class StaffAssessmentMixin:
 
         return self.render_assessment(path, context_dict)
 
-    def staff_path_and_context(self):
+    def staff_context(self):
         """
         Retrieve the correct template path and template context for the handler to render.
         """
-        workflow = self.get_workflow_info()
-        status = workflow.get('status')
-        path = 'openassessmentblock/staff/oa_staff_grade.html'
+        step_data = StaffAssessmentAPI(self)
+
         not_available_context = {
             'status_value': self._('Not Available'),
             'button_active': 'disabled=disabled aria-expanded=false',
             'step_classes': 'is--unavailable',
         }
 
-        if status == 'cancelled':
+        if step_data.is_cancelled:
             context = {
                 'status_value': self._('Cancelled'),
                 'icon_class': 'fa-exclamation-triangle',
                 'step_classes': 'is--unavailable',
                 'button_active': 'disabled=disabled aria-expanded=false',
             }
-        elif status == 'done':  # Staff grade exists and all steps completed.
+        elif step_data.is_done:  # Staff grade exists and all steps completed.
             context = {
                 'status_value': self._('Complete'),
                 'icon_class': 'fa-check',
                 'step_classes': 'is--complete is--empty',
                 'button_active': 'disabled=disabled aria-expanded=false',
             }
-        elif status == 'waiting':
+        elif step_data.is_waiting:
             # If we are in the 'waiting' workflow, this means that a staff grade cannot exist
             # (because if a staff grade did exist, we would be in 'done' regardless of whether other
             # peers have assessed). Therefore we show that we are waiting on staff to provide a grade.
@@ -178,7 +177,7 @@ class StaffAssessmentMixin:
                 'step_classes': 'is--showing',
                 'button_active': 'aria-expanded=true',
             }
-        elif status is None:  # not started
+        elif not step_data.has_status:
             context = not_available_context
         else:  # status is 'self' or 'peer', indicating that the student still has work to do.
             if self.staff_assessment_exists(self.submission_uuid):
@@ -196,4 +195,11 @@ class StaffAssessmentMixin:
                 context = not_available_context
 
         context['xblock_id'] = self.get_xblock_id()
-        return path, context
+        return context
+
+
+    def staff_path_and_context(self):
+        """
+        Retrieve the correct template path and template context for the handler to render.
+        """
+        return 'openassessmentblock/staff/oa_staff_grade.html', self.staff_context()
