@@ -29,6 +29,16 @@ class StudentTrainingMixin:
 
     """
 
+    TRAINING_TEMPLATE_PATHS = {
+        "unavailable": "openassessmentblock/student_training/student_training_unavailable.html",
+        "cancelled": "openassessmentblock/student_training/student_training_cancelled.html",
+        "complete": "openassessmentblock/student_training/student_training_complete.html",
+        "closed": "openassessmentblock/student_training/student_training_closed.html",
+        "training": "openassessmentblock/student_training/student_training.html",
+        "error": "openassessmentblock/student_training/student_training_error.html"
+    }
+
+
     @XBlock.handler
     def render_student_training(self, data, suffix=''):   # pylint:disable=W0613
         """
@@ -56,6 +66,66 @@ class StudentTrainingMixin:
         else:
             return self.render_assessment(path, context)
 
+    def training_context(self):
+        """
+        Return the template context used to render the student training step.
+
+        Returns:
+            context dict.
+        """
+        step_data = StudentTrainingAPI(self)
+
+        # Retrieve the status of the workflow.
+        # If no submissions have been created yet, the status will be None.
+
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
+
+        context = {"xblock_id": self.get_xblock_id()}
+
+        context['allow_multiple_files'] = self.allow_multiple_files
+        # add allow_latex field to the context
+        context['allow_latex'] = self.allow_latex
+        context['prompts_type'] = self.prompts_type
+        context['user_timezone'] = user_preferences['user_timezone']
+        context['user_language'] = user_preferences['user_language']
+
+        if not step_data.has_workflow:
+            return context
+
+        if step_data.is_cancelled or step_data.is_complete:
+            return context
+
+        # If the problem is closed, then do not allow students to access the training step
+        if step_data.is_not_available_yet:
+            context['training_start'] = step_data.start_date
+            return context
+        if step_data.is_past_due:
+            context['training_due'] = step_data.due_date
+            return context
+
+        if not step_data.training_module:
+            return context
+
+        if step_data.is_due:
+            context['training_due'] = step_data.due_date
+
+        # Report progress in the student training workflow (completed X out of Y)
+        context['training_num_available'] = step_data.num_available
+        context['training_num_completed'] = step_data.num_completed
+        context['training_num_current'] = context['training_num_completed'] + 1
+
+        # Retrieve the example essay for the student to submit
+        # This will contain the essay text, the rubric, and the options the instructor selected.
+        example_context = step_data.example_context
+        if not example_context['error_message']:
+            context['training_essay'] = example_context['essay_context']
+            context['training_rubric'] = step_data.example_rubric
+
+        return context
+
+    def _training_path_and_context(self, key):
+        return self.TRAINING_TEMPLATE_PATHS[key], self.training_context()
+
     def training_path_and_context(self):
         """
         Return the template path and context used to render the student training step.
@@ -66,24 +136,12 @@ class StudentTrainingMixin:
 
         """
         step_data = StudentTrainingAPI(self)
+        logger.warn(step_data)
 
         # Retrieve the status of the workflow.
         # If no submissions have been created yet, the status will be None.
-
-        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
-
-        context = {"xblock_id": self.get_xblock_id()}
-        template = 'openassessmentblock/student_training/student_training_unavailable.html'
-
-        context['allow_multiple_files'] = self.allow_multiple_files
-        # add allow_latex field to the context
-        context['allow_latex'] = self.allow_latex
-        context['prompts_type'] = self.prompts_type
-        context['user_timezone'] = user_preferences['user_timezone']
-        context['user_language'] = user_preferences['user_language']
-
         if not step_data.has_workflow:
-            return template, context
+            return self._training_path_and_context("unavailable")
 
         # If the student has completed the training step, then show that the step is complete.
         # We put this condition first so that if a student has completed the step, it *always*
@@ -91,44 +149,29 @@ class StudentTrainingMixin:
         # We're assuming here that the training step always precedes the other assessment steps
         # (peer/self) -- we may need to make this more flexible later.
         if step_data.is_cancelled:
-            template = 'openassessmentblock/student_training/student_training_cancelled.html'
-        elif step_data.is_complete:
-            template = 'openassessmentblock/student_training/student_training_complete.html'
+            return self._training_path_and_context("cancelled")
+        if step_data.is_complete:
+            return self._training_path_and_context("complete")
 
         # If the problem is closed, then do not allow students to access the training step
-        elif step_data.is_not_available_yet:
-            context['training_start'] = step_data.start_date
-            template = 'openassessmentblock/student_training/student_training_unavailable.html'
-        elif step_data.is_past_due:
-            context['training_due'] = step_data.due_date
-            template = 'openassessmentblock/student_training/student_training_closed.html'
+        if step_data.is_not_available_yet:
+            return self._training_path_and_context("unavailable")
+        if step_data.is_past_due:
+            return self._training_path_and_context("closed")
 
         # If we're on the training step, show the student an example
         # We do this last so we can avoid querying the student training API if possible.
+        if not step_data.training_module:
+            return self._training_path_and_context("unavailable")
+
+        # Retrieve the example essay for the student to submit
+        # This will contain the essay text, the rubric, and the options the instructor selected.
+        example_context = step_data.example_context
+        if example_context["error_message"]:
+            logger.error(example_context["error_message"])
+            return self._training_path_and_context("error")
         else:
-            if not step_data.training_module:
-                return template, context
-
-            if step_data.is_due:
-                context['training_due'] = step_data.due_date
-
-            # Report progress in the student training workflow (completed X out of Y)
-            context['training_num_available'] = step_data.num_available
-            context['training_num_completed'] = step_data.num_completed
-            context['training_num_current'] = context['training_num_completed'] + 1
-
-            # Retrieve the example essay for the student to submit
-            # This will contain the essay text, the rubric, and the options the instructor selected.
-            example_context = step_data.example_context
-            if example_context.error_message:
-                logger.error(example_context.error_message)
-                template = "openassessmentblock/student_training/student_training_error.html"
-            else:
-                context['training_essay'] = example_context.essay_context
-                context['training_rubric'] = step_data.example_rubric 
-                template = 'openassessmentblock/student_training/student_training.html'
-
-        return template, context
+            return self._training_path_and_context("training")
 
     @XBlock.json_handler
     def training_assess(self, data, suffix=''):  # pylint:disable=W0613

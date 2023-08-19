@@ -9,67 +9,48 @@ from openassessment.xblock.api.assessments.problem_closed import ProblemClosedAP
 
 class StudentTrainingAPI:
     def __init__(self, block):
-        self._raw_block = block
-        self._block = BlockAPI(block)
-        self._is_closed = ProblemClosedAPI(block, step="self-assessment")
+        self._block = block
+        self.block = BlockAPI(block)
+        self._is_closed = ProblemClosedAPI(block, step="student-training")
 
-    @property
-    def is_cancelled(self):
-        return self._block.workflow.is_cancelled
-
-    @property
-    def is_complete(self):
-        state = self._block.workflow
-        return state.has_status and not (state.is_cancelled or state.is_training)
-
-    def has_workflow(self):
-        return self._block.workflow.has_status
-
-    @property
-    def problem_closed(self):
-        return self._is_closed.problem_closed
+    def __repr__(self):
+        if (self.training_module):
+            return "{0}".format({
+                "is_closed": self._is_closed,
+                "due_date": self.due_date,
+                "has_workflow": self.has_workflow,
+                "is_cancelled": self.is_cancelled,
+                "is_complete": self.is_complete,
+                "is_due": self.is_due,
+                "is_not_available_yet": self.is_not_available_yet,
+                "is_past_due": self.is_past_due,
+                "num_available": self.num_available,
+                "num_completed": self.num_completed,
+                "start_date": self.start_date,
+                "training_module": self.training_module,
+            })
+        return "{0}".format({
+            "is_closed": self._is_closed,
+            "due_date": self.due_date,
+            "has_workflow": self.has_workflow,
+            "is_cancelled": self.is_cancelled,
+            "is_complete": self.is_complete,
+            "is_due": self.is_due,
+            "is_not_available_yet": self.is_not_available_yet,
+            "is_past_due": self.is_past_due,
+            "start_date": self.start_date,
+            "training_module": self.training_module,
+        })
 
     @property
     def due_date(self):
         return self._is_closed.due_date
 
     @property
-    def start_date(self):
-        return self._is_closed.start_date
-
-    @property
-    def is_due(self):
-        return self._is_closed.is_due
-
-    @property
-    def is_past_due(self):
-        return self._is_closed.is_past_due
-
-    @property
-    def is_not_available_yet(self):
-        return self._is_closed.is_not_available_yet
-
-    @property
-    def training_module(self):
-        return self._block.get_assessment_module('student_training')
-
-    @property
-    def num_available(self):
-        return len(self.training_module['examples'])
-
-    @property
-    def num_completed(self):
-        return get_num_completed(self._block.submission_uuid)
-
-    @property
-    def examples(self):
-        return convert_training_examples_list_to_dict(self.training_module['examples'])
-
-    @property
     def example(self):
         return get_training_example(
             self._block.submission_uuid,
-            {'prompt': self._block.prompt, 'criteria': self._block.rubric_criteria_with_labels},
+            {'prompt': self.block.prompt, 'criteria': self._block.rubric_criteria_with_labels},
             self.examples
         )
 
@@ -86,6 +67,55 @@ class StudentTrainingAPI:
         rubric = self.example['rubric']
         return {'criteria': rubric['criteria'], 'points_possible': rubric['points_possible']}
 
+    @property
+    def examples(self):
+        return convert_training_examples_list_to_dict(self.training_module['examples'])
+
+    @property
+    def has_workflow(self):
+        return self.block.workflow.has_status
+
+    @property
+    def is_cancelled(self):
+        return self.block.workflow.is_cancelled
+
+    @property
+    def is_complete(self):
+        state = self.block.workflow
+        return state.has_status and not (state.is_cancelled or state.is_training)
+
+    @property
+    def is_due(self):
+        return self._is_closed.is_due
+
+    @property
+    def is_not_available_yet(self):
+        return self._is_closed.is_not_available_yet
+
+    @property
+    def is_past_due(self):
+        return self._is_closed.is_past_due
+
+    @property
+    def num_available(self):
+        return len(self.training_module['examples'])
+
+    @property
+    def num_completed(self):
+        return get_num_completed(self._block.submission_uuid)
+
+    @property
+    def problem_closed(self):
+        return self._is_closed.problem_closed
+
+    @property
+    def start_date(self):
+        return self._is_closed.start_date
+
+    @property
+    def training_module(self):
+        return self.block.get_assessment_module('student-training')
+
     def _parse_answer_dict(self, answer):
         """
         Helper to parse answer as a fully-qualified dict.
@@ -93,7 +123,7 @@ class StudentTrainingAPI:
         parts = answer.get('parts', [])
         if parts and isinstance(parts[0], dict):
             if isinstance(parts[0].get('text'), str):
-                return create_submission_dict({'answer': answer}, self._block.prompts)
+                return create_submission_dict({'answer': answer}, self.block.prompts)
         return None
 
     def _parse_answer_list(self, answer):
@@ -110,7 +140,7 @@ class StudentTrainingAPI:
         """
         Helper to parse answer as a plain string
         """
-        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self._block.prompts)
+        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.block.prompts)
 
     def _parse_example(self, example):
         """
@@ -122,7 +152,12 @@ class StudentTrainingAPI:
         -just a string: {'answer': <response_string>}
         """
         if not example:
-            return None
+            return (
+                {},
+                "No training example was returned fromt he API for student with Submission UUID {}".format(
+                    self._block.submission_uuid
+                )
+            )
         answer = example['answer']
         submission_dict = None
         if isinstance(answer, str):
@@ -131,4 +166,7 @@ class StudentTrainingAPI:
             submission_dict = self._parse_answer_dict(answer)
         elif isinstance(answer, list):
             submission_dict = self._parse_answer_list(answer)
-        return submission_dict
+        return (submission_dict, "") or (
+            {},
+            f"Improperly formatted example, cannot render student training.  Example: {example}"
+        )
