@@ -44,7 +44,7 @@ class SubmissionApi:
 
     @property
     def self_step_incomplete(self):
-        return "self" in self._workflow and not self.workflow_info.is_self_complete
+        return "self" in self.workflow_info.status_details and not self.workflow_info.is_self_complete
 
     # Submission Access information
 
@@ -78,8 +78,8 @@ class SubmissionApi:
     @property
     def team_previously_submitted_without_student(self):
         """"""
-        if self.teams_enabled and not self.has_submitted:
-            if self.does_team_have_submission(self.team_id):
+        if self.block.teams_enabled and not self.has_submitted:
+            if self.block.does_team_have_submission(self.team_id):
                 return True
 
     # Submission / response data

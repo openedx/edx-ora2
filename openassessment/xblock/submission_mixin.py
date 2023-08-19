@@ -831,6 +831,7 @@ class SubmissionMixin:
         try:
             team_info = self.get_team_info()
             if team_info:
+                context.update(team_info)
                 if self.is_course_staff:
                     return
                 student_item_dict = self.get_student_item_dict()
@@ -841,10 +842,9 @@ class SubmissionMixin:
                     self.get_anonymous_user_ids_for_team()
                 )
 
-                team_info["team_members_with_external_submissions"] = list_to_conversational_format([
+                context["team_members_with_external_submissions"] = list_to_conversational_format([
                     self.get_username(submission['student_id']) for submission in external_submissions
                 ])
-                context.update(team_info)
         except ObjectDoesNotExist:
             logger.error(
                 '%s: User associated with anonymous_user_id %s can not be found.',
@@ -906,38 +906,40 @@ class SubmissionMixin:
             'graded': 'oa_response_graded',
             'submitted': 'oa_response_submitted'
         }
-
-        path = submission_template_paths['default']
+        full_paths = {
+            k: f'{template_dir}/{path}.html'
+            for (k, path) in submission_template_paths.items()
+        }
 
         # Response is unavailable (not yet open or past due date)
         if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
             if submission_info.problem_is_past_due:
-                path = submission_template_paths['closed']
-            elif submission_info.problem_is_not_available_yet:
-                path = submission_template_paths['unavailable']
+                return full_paths['closed']
+            if submission_info.problem_is_not_available_yet:
+                return full_paths['unavailable']
 
         # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
         elif submission_info.is_team_assignment and submission_info.team_id is None:
-            path = submission_template_paths['unavailable']
+            return full_paths['unavailable']
 
         # Response not yet submitted
         elif not submission_info.has_submitted:
             if self.teams_enabled and submission_info.team_previously_submitted_without_student:
-                path = submission_template_paths['team_already_submitted']
+                return full_paths['team_already_submitted']
 
         # Cancelled: Instructor has cancelled this response
         elif submission_info.has_been_cancelled:
-            path = submission_template_paths['cancelled']
+                return full_paths['cancelled']
 
         # Done: Submitted and received final grade
         elif submission_info.has_received_final_grade:
-            path = submission_template_paths['graded']
+                return full_paths['graded']
 
         # Submitted and waiting for a grade
         else:
-            path = submission_template_paths['submitted']
+            return full_paths['submitted']
 
-        return f'{template_dir}/{path}.html'
+        return full_paths['default']
 
     def submission_context(self, submission_info):
         """
@@ -972,9 +974,9 @@ class SubmissionMixin:
             submission_context.update(file_urls)
 
         # Get access information (whether problem is closed) and reasons
-        workflow_context = {
-            "submission_due": submission_info.due_date
-        }
+        workflow_context = {}
+        if (submission_info.due_date):
+            workflow_context["submission_due"] = submission_info.due_date
 
         # Response is unavailable (not yet open or past due date)
         if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
@@ -988,12 +990,12 @@ class SubmissionMixin:
             submission_context['saved_response'] = create_submission_dict(saved_response, self.prompts)
 
             if self.teams_enabled:
-                submission_context.update(submission_info.get_team_submission_context(submission_context))
+                submission_info.get_team_submission_context(submission_context)
 
             # Determine UI states
             submission_context['save_status'] = self.save_status
             submission_context['enable_delete_files'] = True
-            submission_context['submit_enabled'] = self._is_submit_button_enabled(saved_response, file_urls)
+            # submission_context['submit_enabled'] = self._is_submit_button_enabled(saved_response, file_urls)
 
         # Cancelled: Instructor has cancelled this response
         elif submission_info.has_been_cancelled:
