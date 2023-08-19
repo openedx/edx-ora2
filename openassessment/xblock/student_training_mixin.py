@@ -38,7 +38,6 @@ class StudentTrainingMixin:
         "error": "openassessmentblock/student_training/student_training_error.html"
     }
 
-
     @XBlock.handler
     def render_student_training(self, data, suffix=''):   # pylint:disable=W0613
         """
