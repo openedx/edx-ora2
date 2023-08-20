@@ -233,32 +233,32 @@ msgstr "Cancelar"
 #: xblock/static/js/src/lms/oa_response.js:253
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
-msgstr ""
+msgstr "Todavía hay una carga de archivos en curso. Por favor espere hasta que termine."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:243
 msgid "Cannot submit empty response even everything is optional."
-msgstr ""
+msgstr "No se puede enviar una respuesta vacía, incluso si todo es opcional."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:235
 msgid "Please upload a file."
-msgstr ""
+msgstr "Cargue un archivo."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:228
 msgid "Please provide a response."
-msgstr ""
+msgstr "Proporcione una respuesta."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:328
 msgid "No files selected for upload."
-msgstr ""
+msgstr "No hay archivos seleccionados para cargar."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:335
 msgid "Please provide a description for each file you are uploading."
-msgstr ""
+msgstr "Proporcione una descripción para cada archivo que está cargando."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:344
