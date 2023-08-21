@@ -347,12 +347,9 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_timezone': pytz.utc,
             'user_language': 'en'
         }
-        logger.warn("before closed")
-        logger.warn("================================\n" * 10)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
         )
-        logger.warn("after closed")
 
     @scenario('data/peer_future_scenario.xml', user_id='Bob')
     def test_before_release(self, xblock):
