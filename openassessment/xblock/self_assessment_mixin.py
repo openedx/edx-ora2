@@ -9,9 +9,8 @@ from xblock.core import XBlock
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 
-from .data_conversion import (clean_criterion_feedback, create_rubric_dict, create_submission_dict,
+from .data_conversion import (clean_criterion_feedback, create_rubric_dict,
                               verify_assessment_parameters)
-from .resolve_dates import DISTANT_FUTURE
 from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
