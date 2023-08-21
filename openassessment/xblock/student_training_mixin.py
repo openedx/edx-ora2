@@ -7,9 +7,9 @@ from xblock.core import XBlock
 
 from openassessment.assessment.api import student_training
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.api.assessments.student_training import StudentTrainingAPI
 
 from .user_data import get_user_preferences
-from openassessment.xblock.api.assessments.student_training import StudentTrainingAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -135,7 +135,6 @@ class StudentTrainingMixin:
 
         """
         step_data = StudentTrainingAPI(self)
-        logger.warn(step_data)
 
         # Retrieve the status of the workflow.
         # If no submissions have been created yet, the status will be None.

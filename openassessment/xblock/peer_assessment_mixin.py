@@ -16,7 +16,6 @@ from .data_conversion import (
     verify_assessment_parameters,
     clean_criterion_feedback,
     create_rubric_dict,
-    create_submission_dict,
 )
 from .user_data import get_user_preferences
 
@@ -248,7 +247,6 @@ class PeerAssessmentMixin:
         from .api.assessments.peer_assessment import PeerAssessmentAPI
         step_data = PeerAssessmentAPI(self, continue_grading)
 
-        logger.warn(step_data)
         if step_data.is_cancelled:
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
