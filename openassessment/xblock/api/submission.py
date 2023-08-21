@@ -2,21 +2,17 @@ from copy import deepcopy
 
 from submissions.team_api import get_team_submission
 
-from openassessment.xblock.api.assessments.problem_closed import ProblemClosedAPI
-from openassessment.xblock.api.workflow import WorkflowAPI
 from openassessment.xblock.data_conversion import update_saved_response_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.step_data_api import StepDataAPI
 
 
-class SubmissionApi:
+class SubmissionApi(StepDataAPI):
     def __init__(self, block):
-        self.block = block
-        self.workflow_info = WorkflowAPI(block)
-        self._workflow = self.workflow_info.workflow
-        self.problem_closed_info = ProblemClosedAPI(block, step="submission")
+        super().__init__(block, "submission")
+        self._workflow = self.workflow_data.workflow
 
     # Submission Statuses
-
     @property
     def has_submitted(self):
         return bool(self._workflow)
@@ -27,12 +23,12 @@ class SubmissionApi:
 
     @property
     def cancellation_info(self):
-        if self.block.teams_enabled:
-            return self.block.get_team_workflow_cancellation_info(
+        if self.config_data.teams_enabled:
+            return self._block.get_team_workflow_cancellation_info(
                 self.team_submission_uuid
             )
         else:
-            return self.workflow_info.get_workflow_cancellation_info(self.submission_uuid)
+            return self.workflow_data.get_workflow_cancellation_info(self.submission_uuid)
 
     @property
     def has_received_final_grade(self):
@@ -40,59 +36,50 @@ class SubmissionApi:
 
     @property
     def peer_step_incomplete(self):
-        return "peer" in self.workflow_info.status_details and not self.workflow_info.is_peer_complete
+        return "peer" in self.workflow_data.status_details and not self.workflow_data.is_peer_complete
 
     @property
     def self_step_incomplete(self):
-        return "self" in self.workflow_info.status_details and not self.workflow_info.is_self_complete
+        return "self" in self.workflow_data.status_details and not self.workflow_data.is_self_complete
 
     # Submission Access information
 
     @property
     def problem_is_inaccessible(self):
-        return self.problem_closed_info.problem_closed
+        return super().problem_closed
 
     @property
     def problem_inaccessible_reason(self):
-        return self.problem_closed_info.reason
+        return super().closed_reason
 
     @property
     def problem_is_past_due(self):
-        return self.problem_closed_info.is_past_due
-
-    @property
-    def problem_is_not_available_yet(self):
-        return self.problem_closed_info.is_not_available_yet
-
-    @property
-    def start_date(self):
-        return self.problem_closed_info.start_date
+        return super().is_past_due
 
     @property
     def due_date(self):
         """A problem due in the "distant future" has, in effect no due date"""
-        due_date = self.problem_closed_info.due_date
-        if due_date < DISTANT_FUTURE:
-            return due_date
+        if super().due_date < DISTANT_FUTURE:
+            return super().due_date
+        return None
 
     @property
     def team_previously_submitted_without_student(self):
-        """"""
-        if self.block.teams_enabled and not self.has_submitted:
-            if self.block.does_team_have_submission(self.team_id):
-                return True
+        return (self.config_data.teams_enabled and
+                not self.has_submitted and
+                self._block.does_team_have_submission(self.team_id))
 
     # Submission / response data
 
     @property
     def saved_response(self):
         """Return a saved response for a student / team when they haven't submitted"""
-        return update_saved_response_format(self.block.saved_response)
+        return update_saved_response_format(self.config_data.saved_response)
 
     @property
     def student_submission(self):
         """Return a saved response or a student / team submission"""
-        return self.block.get_user_submission(self._workflow["submission_uuid"])
+        return self._block.get_user_submission(self._workflow["submission_uuid"])
 
     @property
     def submission_uuid(self):
@@ -108,14 +95,15 @@ class SubmissionApi:
         * List(File descriptors) if ORA supports file uploads, can be empty.
         * None when file uploads not enabled.
         """
-        if self.block.file_upload_type:
-            file_urls = self.block.file_manager.file_descriptors(
+        if self._block.file_upload_type:
+            file_urls = self._block.file_manager.file_descriptors(
                 team_id=self.team_id, include_deleted=True
             )
-            team_file_urls = self.block.file_manager.team_file_descriptors(
+            team_file_urls = self._block.file_manager.team_file_descriptors(
                 team_id=self.team_id
             )
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
+        return None
 
     @property
     def team_id(self):
@@ -133,15 +121,16 @@ class SubmissionApi:
         """
         if self.is_team_assignment:
             if not self.has_submitted:
-                return self.block.get_team_info().get("team_id")
+                return self.config_data.get_team_info().get("team_id")
             return get_team_submission(self.team_submission_uuid).get("team_id")
+        return None
 
     @property
     def team_submission_uuid(self):
         return self._workflow["team_submission_uuid"]
 
     def get_team_submission_context(self, context):
-        return self.block.get_team_submission_context(context)
+        return self._block.get_team_submission_context(context)
 
     # Submission config
 
@@ -151,7 +140,7 @@ class SubmissionApi:
 
     @property
     def is_team_assignment(self):
-        return self.block.is_team_assignment()
+        return self.config_data.is_team_assignment()
 
     @property
     def response_config(self):
@@ -159,27 +148,27 @@ class SubmissionApi:
         Context needed to author a response
         """
         response_config = {
-            "prompts_type": self.block.prompts_type,
+            "prompts_type": self.config_data.prompts_type,
             # Response
-            "text_response": self.block.text_response,
-            "text_response_editor": self.block.text_response_editor,
-            "show_rubric_during_response": self.block.show_rubric_during_response,
-            "allow_latex": self.block.allow_latex,
+            "text_response": self.config_data.text_response,
+            "text_response_editor": self.config_data.text_response_editor,
+            "show_rubric_during_response": self.config_data.show_rubric_during_response,
+            "allow_latex": self.config_data.allow_latex,
             # File upload
             "enable_delete_files": False,
-            "file_upload_response": self.block.file_upload_response,
-            "file_upload_type": self.block.file_upload_type,
-            "allow_multiple_files": self.block.allow_multiple_files,
+            "file_upload_response": self.config_data.file_upload_response,
+            "file_upload_type": self.config_data.file_upload_type,
+            "allow_multiple_files": self.config_data.allow_multiple_files,
         }
 
-        if self.block.file_upload_type:
+        if self.config_data.file_upload_type:
             response_config["white_listed_file_types"] = [
-                "." + ext for ext in self.block.get_allowed_file_types_or_preset()
+                "." + ext for ext in self._block.get_allowed_file_types_or_preset()
             ]
 
-        if self.block.show_rubric_during_response:
+        if self.config_data.show_rubric_during_response:
             response_config["rubric_criteria"] = deepcopy(
-                self.block.rubric_criteria_with_labels
+                self.config_data.rubric_criteria_with_labels
             )
 
         return response_config

@@ -99,8 +99,7 @@ class SelfAssessmentMixin:
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
         # Import is placed here to avoid model import at project startup.
-        from .api.assessments.self_assessment import SelfAssessmentAPI
-        step_data = SelfAssessmentAPI(self)
+        step_data = self.self_data
 
         if step_data.is_cancelled:
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
@@ -136,8 +135,7 @@ class SelfAssessmentMixin:
             and "msg" (unicode) containing additional information if an error occurs.
         """
         # Import is placed here to avoid model import at project startup.
-        from openassessment.xblock.api.assessments.self_assessment import SelfAssessmentAPI
-        step_data = SelfAssessmentAPI(self)
+        step_data = self.self_data
 
         if self.submission_uuid is None:
             return {

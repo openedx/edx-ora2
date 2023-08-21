@@ -913,9 +913,9 @@ class SubmissionMixin:
 
         # Response is unavailable (not yet open or past due date)
         if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
-            if submission_info.problem_is_past_due:
+            if submission_info.is_past_due:
                 return full_paths['closed']
-            if submission_info.problem_is_not_available_yet:
+            if submission_info.is_not_available_yet:
                 return full_paths['unavailable']
 
         # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
@@ -980,7 +980,7 @@ class SubmissionMixin:
 
         # Response is unavailable (not yet open or past due date)
         if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
-            if submission_info.problem_is_not_available_yet:
+            if submission_info.is_not_available_yet:
                 workflow_context['submission_start'] = submission_info.start_date
 
         # Response not yet submitted: Get the saved response

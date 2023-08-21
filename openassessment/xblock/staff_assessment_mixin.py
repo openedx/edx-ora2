@@ -20,7 +20,6 @@ from .data_conversion import (
     verify_assessment_parameters,
 )
 from .staff_area_mixin import require_course_staff
-from .api.assessments.staff_assessment import StaffAssessmentAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -44,7 +43,7 @@ class StaffAssessmentMixin:
         if 'submission_uuid' not in data:
             return False, self._("The submission ID of the submission being assessed was not found.")
         try:
-            assessment = StaffAssessmentAPI(self).create_assessment(data)
+            assessment = self.staff_data.create_assessment(data)
             assess_type = data.get('assess_type', 'regrade')
             self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type=assess_type)
             workflow_api.update_from_assessments(
@@ -80,7 +79,7 @@ class StaffAssessmentMixin:
         if 'submission_uuid' not in data and team_submission_uuid is None:
             return False, self._("The submission ID of the submission being assessed was not found.")
         try:
-            assessment, team_submission_uuid = StaffAssessmentAPI(self).create_team_assessment(data)
+            assessment, team_submission_uuid = self.staff_data.create_team_assessment(data)
             assess_type = data.get('assess_type', 'regrade')
             self.publish_assessment_event("openassessmentblock.staff_assess", assessment[0], type=assess_type)
             team_workflow_api.update_from_assessments(
@@ -140,7 +139,7 @@ class StaffAssessmentMixin:
         """
         Retrieve the correct template path and template context for the handler to render.
         """
-        step_data = StaffAssessmentAPI(self)
+        step_data = self.staff_data
 
         not_available_context = {
             'status_value': self._('Not Available'),
