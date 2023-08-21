@@ -7,7 +7,6 @@ from xblock.core import XBlock
 
 from openassessment.assessment.api import student_training
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.api.assessments.student_training import StudentTrainingAPI
 
 from .user_data import get_user_preferences
 
@@ -72,7 +71,7 @@ class StudentTrainingMixin:
         Returns:
             context dict.
         """
-        step_data = StudentTrainingAPI(self)
+        step_data = self.student_training_data
 
         # Retrieve the status of the workflow.
         # If no submissions have been created yet, the status will be None.
@@ -134,7 +133,7 @@ class StudentTrainingMixin:
                 `context` is a dict.
 
         """
-        step_data = StudentTrainingAPI(self)
+        step_data = self.student_training_data
 
         # Retrieve the status of the workflow.
         # If no submissions have been created yet, the status will be None.

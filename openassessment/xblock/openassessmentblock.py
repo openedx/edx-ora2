@@ -54,6 +54,13 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.load_static import LoadStatic
 
+from openassessment.xblock.ora_config_api import ORAConfigAPI
+from openassessment.xblock.assessments.workflow import WorkflowAPI
+from openassessment.xblock.assessments.peer_assessment import PeerAssessmentAPI
+from openassessment.xblock.assessments.self_assessment import SelfAssessmentAPI
+from openassessment.xblock.assessments.staff_assessment import StaffAssessmentAPI
+from openassessment.xblock.assessments.student_training import StudentTrainingAPI
+
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -145,32 +152,10 @@ class OpenAssessmentBlock(
 
     public_dir = 'static'
 
-    submission_start = String(
-        default=DEFAULT_START, scope=Scope.settings,
-        help="ISO-8601 formatted string representing the submission start date."
-    )
-
-    submission_due = String(
-        default=DEFAULT_DUE, scope=Scope.settings,
-        help="ISO-8601 formatted string representing the submission due date."
-    )
-
-    text_response_raw = String(
-        help="Specify whether learners must include a text based response to this problem's prompt.",
-        default="required",
-        scope=Scope.settings
-    )
-
-    text_response_editor = String(
-        help="Select which editor learners will use to include a text based response to this problem's prompt.",
+    allow_latex = Boolean(
+        default=False,
         scope=Scope.settings,
-        default='text'
-    )
-
-    file_upload_response_raw = String(
-        help="Specify whether learners are able to upload files as a part of their response.",
-        default=None,
-        scope=Scope.settings
+        help="Latex rendering allowed with submission."
     )
 
     allow_file_upload = Boolean(
@@ -179,40 +164,46 @@ class OpenAssessmentBlock(
         help="Do not use. For backwards compatibility only."
     )
 
-    file_upload_type_raw = String(
-        default=None,
-        scope=Scope.content,
-        help="File upload to be included with submission (can be 'image', 'pdf-and-image', or 'custom')."
-    )
-
-    white_listed_file_types = List(
-        default=[],
-        scope=Scope.content,
-        help="Custom list of file types allowed with submission."
-    )
-
     allow_multiple_files = Boolean(
         default=True,
         scope=Scope.settings,
         help="Allow multiple files uploaded with submission (if file upload enabled)."
     )
 
-    allow_latex = Boolean(
-        default=False,
+    date_config_type = String(
+        default=DATE_CONFIG_MANUAL,
         scope=Scope.settings,
-        help="Latex rendering allowed with submission."
+        help="The type of date configuration. Possible values are 'manual', 'subsection', and 'course_end'."
     )
 
-    title = String(
-        default="Open Response Assessment",
+    file_upload_response_raw = String(
+        help="Specify whether learners are able to upload files as a part of their response.",
+        default=None,
+        scope=Scope.settings
+    )
+
+    file_upload_type_raw = String(
+        default=None,
         scope=Scope.content,
-        help="A title to display to a student (plain text)."
+        help="File upload to be included with submission (can be 'image', 'pdf-and-image', or 'custom')."
+    )
+
+    has_saved = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help="Indicates whether the user has saved a response."
     )
 
     leaderboard_show = Integer(
         default=0,
         scope=Scope.content,
         help="The number of leaderboard results to display (0 if none)"
+    )
+
+    no_peers = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help="Indicates whether or not there are peers to grade."
     )
 
     prompt = String(
@@ -251,24 +242,6 @@ class OpenAssessmentBlock(
         help="The requested set of assessments and the order in which to apply them."
     )
 
-    submission_uuid = String(
-        default=None,
-        scope=Scope.user_state,
-        help="The student's submission that others will be assessing."
-    )
-
-    has_saved = Boolean(
-        default=False,
-        scope=Scope.user_state,
-        help="Indicates whether the user has saved a response."
-    )
-
-    saved_response = String(
-        default="",
-        scope=Scope.user_state,
-        help="Saved response submission for the current user."
-    )
-
     saved_files_descriptions = String(
         default="",
         scope=Scope.user_state,
@@ -287,16 +260,10 @@ class OpenAssessmentBlock(
         help="Filesize of each uploaded file in bytes."
     )
 
-    no_peers = Boolean(
-        default=False,
+    saved_response = String(
+        default="",
         scope=Scope.user_state,
-        help="Indicates whether or not there are peers to grade."
-    )
-
-    teams_enabled = Boolean(
-        default=False,
-        scope=Scope.settings,
-        help="Whether team submissions are enabled for this case study.",
+        help="Saved response submission for the current user."
     )
 
     selected_teamset_id = String(
@@ -311,11 +278,75 @@ class OpenAssessmentBlock(
         help="Should the rubric be visible to learners in the response section?"
     )
 
-    date_config_type = String(
-        default=DATE_CONFIG_MANUAL,
-        scope=Scope.settings,
-        help="The type of date configuration. Possible values are 'manual', 'subsection', and 'course_end'."
+    submission_due = String(
+        default=DEFAULT_DUE, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the submission due date."
     )
+
+    submission_start = String(
+        default=DEFAULT_START, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the submission start date."
+    )
+
+    submission_uuid = String(
+        default=None,
+        scope=Scope.user_state,
+        help="The student's submission that others will be assessing."
+    )
+
+    teams_enabled = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Whether team submissions are enabled for this case study.",
+    )
+
+    text_response_raw = String(
+        help="Specify whether learners must include a text based response to this problem's prompt.",
+        default="required",
+        scope=Scope.settings
+    )
+
+    text_response_editor = String(
+        help="Select which editor learners will use to include a text based response to this problem's prompt.",
+        scope=Scope.settings,
+        default='text'
+    )
+
+    title = String(
+        default="Open Response Assessment",
+        scope=Scope.content,
+        help="A title to display to a student (plain text)."
+    )
+
+    white_listed_file_types = List(
+        default=[],
+        scope=Scope.content,
+        help="Custom list of file types allowed with submission."
+    )
+
+
+    @property
+    def config_data(self):
+      return ORAConfigAPI(self)
+
+    @property
+    def workflow_data(self):
+      return WorkflowAPI(self)
+
+    def peer_data(self, continue_grading = False):
+      return PeerAssessmentAPI(self, continue_grading)
+
+    @property
+    def self_data(self):
+      return SelfAssessmentAPI(self)
+
+    @property
+    def staff_data(self):
+      return StaffAssessmentAPI(self)
+
+    @property
+    def student_training_data(self):
+      return StudentTrainingAPI(self)
 
     @property
     def course_id(self):
@@ -896,28 +927,28 @@ class OpenAssessmentBlock(
             leaderboard_show=config['leaderboard_show']
         )
 
+        block.allow_file_upload = config['allow_file_upload']
+        block.allow_latex = config['allow_latex']
+        block.allow_multiple_files = config['allow_multiple_files']
+        block.file_upload_response = config['file_upload_response']
+        block.file_upload_type = config['file_upload_type']
+        block.group_access = config['group_access']
+        block.leaderboard_show = config['leaderboard_show']
+        block.prompts = config['prompts']
+        block.prompts_type = config['prompts_type']
         block.rubric_criteria = config['rubric_criteria']
         block.rubric_feedback_prompt = config['rubric_feedback_prompt']
         block.rubric_feedback_default_text = config['rubric_feedback_default_text']
         block.rubric_assessments = config['rubric_assessments']
-        block.submission_start = config['submission_start']
-        block.submission_due = config['submission_due']
-        block.title = config['title']
-        block.prompts = config['prompts']
-        block.prompts_type = config['prompts_type']
-        block.text_response = config['text_response']
-        block.text_response_editor = config['text_response_editor']
-        block.file_upload_response = config['file_upload_response']
-        block.allow_file_upload = config['allow_file_upload']
-        block.file_upload_type = config['file_upload_type']
-        block.white_listed_file_types_string = config['white_listed_file_types']
-        block.allow_multiple_files = config['allow_multiple_files']
-        block.allow_latex = config['allow_latex']
-        block.leaderboard_show = config['leaderboard_show']
-        block.group_access = config['group_access']
-        block.teams_enabled = config['teams_enabled']
         block.selected_teamset_id = config['selected_teamset_id']
         block.show_rubric_during_response = config['show_rubric_during_response']
+        block.submission_start = config['submission_start']
+        block.submission_due = config['submission_due']
+        block.teams_enabled = config['teams_enabled']
+        block.text_response = config['text_response']
+        block.text_response_editor = config['text_response_editor']
+        block.title = config['title']
+        block.white_listed_file_types_string = config['white_listed_file_types']
         return block
 
     @property

@@ -4,19 +4,15 @@ from openassessment.xblock.data_conversion import (
     convert_training_examples_list_to_dict,
     create_submission_dict
 )
-from openassessment.xblock.api.block import BlockAPI
-from openassessment.xblock.api.assessments.problem_closed import ProblemClosedAPI
+from openassessment.xblock.step_data_api import StepDataAPI
 
-class StudentTrainingAPI:
+class StudentTrainingAPI(StepDataAPI):
     def __init__(self, block):
-        self._block = block
-        self.block = BlockAPI(block)
-        self._is_closed = ProblemClosedAPI(block, step="student-training")
+        super().__init__(block, "student-training")
 
     def __repr__(self):
         if (self.training_module):
             return "{0}".format({
-                "is_closed": self._is_closed,
                 "due_date": self.due_date,
                 "has_workflow": self.has_workflow,
                 "is_cancelled": self.is_cancelled,
@@ -30,7 +26,6 @@ class StudentTrainingAPI:
                 "training_module": self.training_module,
             })
         return "{0}".format({
-            "is_closed": self._is_closed,
             "due_date": self.due_date,
             "has_workflow": self.has_workflow,
             "is_cancelled": self.is_cancelled,
@@ -43,14 +38,10 @@ class StudentTrainingAPI:
         })
 
     @property
-    def due_date(self):
-        return self._is_closed.due_date
-
-    @property
     def example(self):
         return get_training_example(
             self._block.submission_uuid,
-            {'prompt': self.block.prompt, 'criteria': self._block.rubric_criteria_with_labels},
+            {'prompt': self.config_data.prompt, 'criteria': self._block.rubric_criteria_with_labels},
             self.examples
         )
 
@@ -73,28 +64,17 @@ class StudentTrainingAPI:
 
     @property
     def has_workflow(self):
-        return self.block.workflow.has_status
+        return self.workflow_data.has_status
 
     @property
     def is_cancelled(self):
-        return self.block.workflow.is_cancelled
+        return self.workflow_data.is_cancelled
 
     @property
     def is_complete(self):
-        state = self.block.workflow
+        state = self.workflow_data
         return state.has_status and not (state.is_cancelled or state.is_training)
 
-    @property
-    def is_due(self):
-        return self._is_closed.is_due
-
-    @property
-    def is_not_available_yet(self):
-        return self._is_closed.is_not_available_yet
-
-    @property
-    def is_past_due(self):
-        return self._is_closed.is_past_due
 
     @property
     def num_available(self):
@@ -105,16 +85,8 @@ class StudentTrainingAPI:
         return get_num_completed(self._block.submission_uuid)
 
     @property
-    def problem_closed(self):
-        return self._is_closed.problem_closed
-
-    @property
-    def start_date(self):
-        return self._is_closed.start_date
-
-    @property
     def training_module(self):
-        return self.block.get_assessment_module('student-training')
+        return self.config_data.get_assessment_module('student-training')
 
     def _parse_answer_dict(self, answer):
         """
@@ -123,7 +95,7 @@ class StudentTrainingAPI:
         parts = answer.get('parts', [])
         if parts and isinstance(parts[0], dict):
             if isinstance(parts[0].get('text'), str):
-                return create_submission_dict({'answer': answer}, self.block.prompts)
+                return create_submission_dict({'answer': answer}, self.config_data.prompts)
         return None
 
     def _parse_answer_list(self, answer):
@@ -140,7 +112,10 @@ class StudentTrainingAPI:
         """
         Helper to parse answer as a plain string
         """
-        return create_submission_dict({'answer': {'parts': [{'text': answer}]}}, self.block.prompts)
+        return create_submission_dict(
+            {'answer': {'parts': [{'text': answer}]}},
+            self.config_data.prompts
+        )
 
     def _parse_example(self, example):
         """

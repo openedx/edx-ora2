@@ -315,7 +315,7 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
             'parts2_option_name': 'Yogi Berra'
         }
 
-    @patch('openassessment.xblock.staff_assessment_mixin.teams_api.create_assessment')
+    @patch('openassessment.xblock.assessments.staff_assessment.teams_api.create_assessment')
     @scenario('data/team_submission.xml', user_id='Bob')
     def test_staff_assess_handler_missing_id(self, xblock, mock_create_team_assessment):
         self.set_staff_access(xblock)
@@ -370,7 +370,7 @@ class TestStaffTeamAssessment(StaffAssessmentTestBase):
         submission = self._setup_xblock_and_create_team_submission(xblock)
         submission["uuid"] = str(submission["submission_uuids"][0])
 
-        with patch('openassessment.xblock.staff_assessment_mixin.teams_api') as mock_api:
+        with patch('openassessment.xblock.assessments.staff_assessment.teams_api') as mock_api:
             # Simulate an error
             mock_api.create_assessment.side_effect = teams_api.StaffAssessmentRequestError
             resp = self.request(xblock, 'staff_assess', json.dumps(TEAM_GOOD_ASSESSMENT), response_format='json')

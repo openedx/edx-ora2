@@ -68,9 +68,8 @@ class PeerAssessmentMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
-        from openassessment.xblock.api.assessments.peer_assessment import PeerAssessmentAPI
 
-        step_data = PeerAssessmentAPI(self)
+        step_data = self.peer_data()
         if self.submission_uuid is None:
             return {
                 "success": False, "msg": self._("You must submit a response before you can perform a peer assessment.")
@@ -96,11 +95,14 @@ class PeerAssessmentMixin:
                     step_data.student_item["student_id"],
                     data["options_selected"],
                     clean_criterion_feedback(
-                        step_data.block.rubric_criteria_with_labels,
+                        self.config_data.rubric_criteria_with_labels,
                         data["criterion_feedback"]
                     ),
                     data["overall_feedback"],
-                    create_rubric_dict(step_data.block.prompts, step_data.block.rubric_criteria_with_labels),
+                    create_rubric_dict(
+                        self.config_data.prompts,
+                        self.config_data.rubric_criteria_with_labels
+                    ),
                     step_data.assessment["must_be_graded_by"]
                 )
 
@@ -244,8 +246,7 @@ class PeerAssessmentMixin:
 
         """
         # Import is placed here to avoid model import at project startup.
-        from .api.assessments.peer_assessment import PeerAssessmentAPI
-        step_data = PeerAssessmentAPI(self, continue_grading)
+        step_data = self.peer_data(continue_grading)
 
         if step_data.is_cancelled:
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission

@@ -98,4 +98,4 @@ class WorkflowAPI:
         return self._block.get_team_workflow_status_counts()
 
     def get_team_workflow_cancellation_info(self, team_submission_uuid):
-        return self._block.get_team_workflow_cancellation_info
+        return self._block.get_team_workflow_cancellation_info(team_submission_uuid)
