@@ -154,7 +154,7 @@ install-osx-requirements: ## Install OSX specific requirements using Homebrew
 
 install-local-ora: ## installs your local ORA2 code into the LMS and Studio python virtualenvs
 	docker exec -t edx.devstack.lms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
-	docker exec -t edx.devstack.studio bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
+	docker exec -t edx.devstack.cms bash -c '. /edx/app/edxapp/venvs/edxapp/bin/activate && cd /edx/app/edxapp/edx-platform && pip uninstall -y ora2 && pip install -e /edx/src/edx-ora2 && pip freeze | grep ora2'
 
 install_transifex_client: ## Install the Transifex client
 	# Instaling client will skip CHANGELOG and LICENSE files from git changes

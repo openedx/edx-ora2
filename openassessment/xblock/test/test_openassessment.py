@@ -15,7 +15,7 @@ import pytz
 from freezegun import freeze_time
 from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock import openassessmentblock
+from openassessment.xblock import defaults, openassessmentblock
 from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 
 from .base import XBlockHandlerTestCase, scenario
@@ -1004,6 +1004,59 @@ class TestDates(XBlockHandlerTestCase):
             "self-assessment", False, None,
             DISTANT_PAST, DISTANT_FUTURE,
             course_staff=True
+        )
+
+    @scenario('data/basic_scenario.xml')
+    def test_date_config_type_course_end(self, xblock):
+        """
+        Test that the date config type field set to course end date
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_COURSE_END
+
+        mock_course = Mock()
+        mock_course.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
+        mock_course.end = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
+        xblock.course = mock_course
+
+        # The problem should always be not be close if now is before course start date
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "abitrary", False, None,
+            mock_course.start, mock_course.end
+        )
+
+        # The problem should be closed if now is after course end date
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 4, 1, 1, 1, 1, 2).replace(tzinfo=pytz.utc),
+            "abitrary", True, 'due',
+            mock_course.start, mock_course.end
+        )
+
+    @scenario('data/basic_scenario.xml')
+    def test_date_config_type_subsection(self, xblock):
+        """
+        Test that the date config type field set to section
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_SUBSECTION
+        xblock.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
+        xblock.due = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
+
+        # The problem should always be not be close if now is before section start date
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "abitrary", False, None,
+            xblock.start, xblock.due
+        )
+
+        # The problem should be closed if now is after section due date
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 4, 1, 1, 1, 1, 2).replace(tzinfo=pytz.utc),
+            "abitrary", True, 'due',
+            xblock.start, xblock.due
         )
 
     def assert_is_closed(

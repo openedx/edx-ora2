@@ -8,6 +8,7 @@
 # Bashir Mahmoudi <bashirmahmoudi@gmail.com>, 2015
 # Eisa rezaei <rezaeiphd@gmail.com>, 2016
 # Sajad Sepehri <sajad.ta@iranacademia.education>, 2021
+# SeyedMahdi Saeid <saeid@edspirit.com>, 2023
 # Sina Shirinpour <sshirinpoor@gmail.com>, 2017
 # Somaye Joolaee, 2022
 msgid ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-13 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
-"Last-Translator: Somaye Joolaee, 2022\n"
+"Last-Translator: SeyedMahdi Saeid <saeid@edspirit.com>, 2023\n"
 "Language-Team: Persian (Iran) (http://app.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "این پاسخ ارسال نشد"
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:1
 #: xblock/static/js/src/oa_server.js:237
 msgid "Please check your internet connection."
-msgstr ""
+msgstr "لطفا اتصال اینترنت خود را بررسی کنید."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:8
 #: xblock/static/dist/openassessment-studio.13c817d25360969539ff.js:1
@@ -228,32 +229,32 @@ msgstr "لغو"
 #: xblock/static/js/src/lms/oa_response.js:253
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
-msgstr ""
+msgstr "هنوز آپلود فایل در حال انجام است. لطفا صبر کنید تا تمام شود."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:243
 msgid "Cannot submit empty response even everything is optional."
-msgstr ""
+msgstr "نمی توان پاسخ خالی ارسال کرد حتی همه چیز اختیاری است."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:235
 msgid "Please upload a file."
-msgstr ""
+msgstr "لطفا یک فایل آپلود کنید"
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:228
 msgid "Please provide a response."
-msgstr ""
+msgstr "لطفا پاسخ دهید."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:328
 msgid "No files selected for upload."
-msgstr ""
+msgstr "هیچ فایلی برای آپلود انتخاب نشده است."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:335
 msgid "Please provide a description for each file you are uploading."
-msgstr ""
+msgstr "لطفاً توضیحی برای هر فایلی که آپلود می کنید ارائه دهید."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:344
@@ -263,7 +264,7 @@ msgstr "پرونده شما حذف‌شده یا مسیر دستیابی به آ
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving draft"
-msgstr ""
+msgstr "ذخیره پیش نویس"
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:446
@@ -275,12 +276,12 @@ msgstr "اگر این صفحه را بدون ذخیره کردن یا ارسال
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:461
 msgid "Saving draft..."
-msgstr ""
+msgstr "در حال ذخیره پیش نویس..."
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:477
 msgid "Draft saved!"
-msgstr ""
+msgstr "پیش نویس ذخیره شد!"
 
 #: xblock/static/dist/openassessment-lms.be19a29d1612e6f897fa.js:369
 #: xblock/static/js/src/lms/oa_response.js:490
