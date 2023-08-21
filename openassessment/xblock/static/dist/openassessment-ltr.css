@@ -4075,6 +4075,7 @@ hr.divider,
 }
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting input[type=radio] {
   height: 20px;
+  min-width: auto;
 }
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting input:disabled + label {
   color: #c8c9cb;
@@ -4083,6 +4084,16 @@ hr.divider,
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting .setting-label {
   width: auto;
   font-weight: normal;
+}
+@media (max-width: 992px) {
+  #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper {
+    flex-direction: column;
+    gap: 0;
+  }
+  #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting input[type=radio] {
+    margin: 5px;
+    width: auto;
+  }
 }
 #openassessment-editor #oa_schedule_editor_wrapper li:nth-child(2) {
   border-bottom: 1px solid #e5e5e5;
