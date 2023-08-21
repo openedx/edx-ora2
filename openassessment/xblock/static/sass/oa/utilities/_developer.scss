@@ -1015,9 +1015,12 @@
         min-width: unset;
         display: flex;
         align-items: center;
+
         input[type="radio"] {
           height: 20px;
           min-width: auto;
+          width: 20px;
+          margin: 0 8px;
         }
         
         input:disabled+label {
@@ -1038,8 +1041,8 @@
         gap: 0;
 
         .wrapper-comp-setting input[type="radio"] {
-          margin: 5px;
           width: auto;
+          margin: 0 5px;
         }
       }
     }
