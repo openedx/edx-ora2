@@ -1,3 +1,4 @@
+""" External API for ORA Configuration data """
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,17 +62,14 @@ class ORAConfigAPI:
             self.CONFIG_FIELDS +
             self.ORA_FIELDS
         ):
-            try:
-                setattr(self, field, getattr(block, field))
-            except:
-                logger.info("field not avilable on block: {}".format(field))
+            setattr(self, field, getattr(block, field))
 
     @property
     def course_id(self):
         if (self._block.xmodule_runtime):
             return self._block.course_Id
         return None
-    
+
     @property
     def student_item_dict(self):
         return self.get_student_item_dict()
