@@ -750,31 +750,6 @@ class SubmissionMixin:
 
         return file_uploads
 
-    @staticmethod
-    def get_user_submission(submission_uuid):
-        """Return the most recent submission by user in workflow
-
-        Return the most recent submission.  If no submission is available,
-        return None. All submissions are preserved, but only the most recent
-        will be returned in this function, since the active workflow will only
-        be concerned with the most recent submission.
-
-        Args:
-            submission_uuid (str): The uuid for the submission to retrieve.
-
-        Returns:
-            (dict): A dictionary representation of a submission to render to
-                the front end.
-
-        """
-        # Import is placed here to avoid model import at project startup.
-        from submissions import api
-        try:
-            return api.get_submission(submission_uuid)
-        except api.SubmissionRequestError:
-            # This error is actually ok.
-            return None
-
     @property
     def save_status(self):
         """
