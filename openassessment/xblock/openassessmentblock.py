@@ -718,8 +718,8 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
-        if hasattr(self, 'runtime'):
-            return self.runtime.get_real_user is not None  # pylint: disable=no-member
+        if hasattr(self, 'xmodule_runtime'):
+            return self.xmodule_runtime.get_real_user is not None  # pylint: disable=no-member
         return False
 
     @staticmethod
