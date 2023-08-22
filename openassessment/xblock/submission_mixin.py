@@ -8,7 +8,7 @@ from django.utils.functional import cached_property
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 
-from openassessment.xblock.api.submission import SubmissionApi
+from openassessment.xblock.api.submission import SubmissionAPI
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
@@ -137,12 +137,10 @@ class SubmissionMixin:
                 self._('To submit a response, view this component in Preview or Live mode.')
             )
 
-        workflow = self.get_workflow_info()
-
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
         status_text = self._('Multiple submissions are not allowed.')
 
-        if not workflow:
+        if not self.submission_data.has_submitted:
             try:
 
                 # a submission for a team generates matching submissions for all members
@@ -788,6 +786,23 @@ class SubmissionMixin:
         return self._('Draft saved!') if self.has_saved else self._(
             'Response not started.')
 
+
+    def _is_submit_button_enabled(self, has_saved_response, has_uploaded_files):
+            """
+            Helper function to condense the logic for when to enable the submit
+            button for a response.
+            """
+            submit_enabled = True
+            if self.text_response == 'required' and not has_saved_response:
+                submit_enabled = False
+            if self.file_upload_response == 'required' and not has_uploaded_files:
+                submit_enabled = False
+            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
+                    and not has_saved_response and not has_uploaded_files:
+                submit_enabled = False
+
+            return submit_enabled
+
     @XBlock.handler
     def render_submission(self, data, suffix=''):  # pylint: disable=unused-argument
         """Renders the Submission HTML section of the XBlock
@@ -807,7 +822,7 @@ class SubmissionMixin:
         Submitted and graded
 
         """
-        submission_info = SubmissionApi(self)
+        submission_info = SubmissionAPI(self)
 
         context = self.submission_context(submission_info)
         path = self.submission_path(submission_info)
@@ -866,24 +881,11 @@ class SubmissionMixin:
             return self.ALLOWED_FILE_EXTENSIONS
         return None
 
-    def _is_submit_button_enabled(self, has_saved_response, has_uploaded_files):
-            """
-            Helper function to condense the logic for when to enable the submit
-            button for a response.
-            """
-            submit_enabled = True
-            if self.text_response == 'required' and not has_saved_response:
-                submit_enabled = False
-            if self.file_upload_response == 'required' and not has_uploaded_files:
-                submit_enabled = False
-            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
-                    and not has_saved_response and not has_uploaded_files:
-                submit_enabled = False
-
-            return submit_enabled
-
     def submission_path_and_context(self):
-        submission_info = SubmissionApi(self)
+        """
+        Combine submission path and context for old method signature
+        """
+        submission_info = SubmissionAPI(self)
         return self.submission_path(submission_info), self.submission_context(submission_info)
 
 
