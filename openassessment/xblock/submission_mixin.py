@@ -8,7 +8,7 @@ from django.utils.functional import cached_property
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 
-from openassessment.xblock.api.submission import SubmissionAPI
+from openassessment.xblock.submissions.api import SubmissionAPI
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError

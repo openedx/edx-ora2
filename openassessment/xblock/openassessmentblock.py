@@ -23,7 +23,7 @@ from xblock.fields import Boolean, Integer, List, Scope, String
 
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.api.submission import SubmissionAPI
+from openassessment.xblock.submissions.api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.data_layer.data_layer_mixin import DataLayerMixin
