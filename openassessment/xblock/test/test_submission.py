@@ -1859,12 +1859,9 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         expected_context['xblock_id'] = xblock.scope_ids.usage_id
         path, context = xblock.submission_path_and_context()
         self.maxDiff = None  # pylint: disable=invalid-name
-        print({"path": path})
-        print({"expected_path": expected_path})
-        print({"context": context})
-        print({"expected_context": expected_context})
+
         self.assertEqual(path, expected_path)
-        self.assertEqual(context, expected_context)
+        self.assertDictEqual(context, expected_context)
 
         # Verify that we render without error
         resp = self.request(xblock, 'render_submission', json.dumps({}))
