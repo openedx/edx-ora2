@@ -1,11 +1,14 @@
+"""
+Tests batch ORA workflow update API
+"""
 import datetime
 import logging
 from django.utils import timezone
-from mock import patch, MagicMock
+from mock import patch
 
+from submissions import api as sub_api
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import PeerWorkflow
-from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.workflow import api as workflow_api
 from openassessment import workflow_batch_update_api as update_api
@@ -25,9 +28,9 @@ STEPS = ['peer', 'self']
 class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
     def test_get_blocked_peer_workflows(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
-        miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
-        pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")  # pylint: disable=unused-variable
+        self._create_student_and_submission("Miles", "Miles's answer")
+        pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")  # pylint: disable=unused-variable
 
         blocked = update_api.get_blocked_peer_workflows()
         # we expect 0 blocked submissions as they were just created
@@ -52,8 +55,11 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(blocked[0].student_id, 'Tim')
 
     def test_get_blocked_peer_workflows_for_course(self):
+        # pylint: disable=unused-variable
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        # pylint: disable=unused-variable
         miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
+        # pylint: disable=unused-variable
         pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
 
         blocked = update_api.get_blocked_peer_workflows_for_course("course_1")
@@ -82,8 +88,11 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(len(blocked), 0)
 
     def test_get_blocked_peer_workflows_for_ora_block(self):
+        # pylint: disable=unused-variable
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        # pylint: disable=unused-variable
         miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
+        # pylint: disable=unused-variable
         pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
 
         blocked = update_api.get_blocked_peer_workflows_for_ora_block("item_1")
@@ -101,7 +110,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         blocked = update_api.get_blocked_peer_workflows_for_ora_block("item_1")
         # we expect 1 blocked submission for "item_1"
-        self.assertEquals(len(blocked), 1)
+        self.assertEqual(len(blocked), 1)
 
         pw_miles = PeerWorkflow.objects.get(student_id=miles["student_id"])
         pw_miles.item_id = "item_2"
@@ -109,7 +118,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         blocked = update_api.get_blocked_peer_workflows_for_ora_block("item_2")
         # we expect 0 blocked submissions for "item_2"
-        self.assertEquals(len(blocked), 0)
+        self.assertEqual(len(blocked), 0)
 
     def test_is_flexible_peer_grading_on(self):
         workflow_requirements = {"peer": {
@@ -162,7 +171,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         try:
             mock_update_workflow_for_submission.side_effect = Exception()
             update_api.update_workflows(assessment_requirements_dict)
-        except Exception as e:
+        except Exception:  # pylint: disable=broad-except
             self.fail("Exception not expected")
 
     @patch('openassessment.workflow_batch_update_api.update_workflows')
@@ -180,7 +189,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         try:
             mock_get_blocked_peer_workflows_for_ora_block.side_effect = Exception()
             update_api.update_workflows_for_ora_block("some_item_id")
-        except Exception as e:
+        except Exception:   # pylint: disable=broad-except
             self.fail("Exception not expected")
 
     @patch('openassessment.workflow_batch_update_api.update_workflows')
@@ -198,7 +207,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         try:
             mock_get_blocked_peer_workflows_for_course.side_effect = Exception()
             update_api.update_workflows_for_ora_block("some_item_id")
-        except Exception as e:
+        except Exception:   # pylint: disable=broad-except
             self.fail("Exception not expected")
 
     @patch('openassessment.workflow_batch_update_api.update_workflows')
@@ -216,7 +225,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         try:
             mock_get_blocked_peer_workflows.side_effect = Exception()
             update_api.update_workflows_for_all_blocked_submissions()
-        except Exception as e:
+        except Exception:  # pylint: disable=broad-except
             self.fail("Exception not expected")
 
     @staticmethod
@@ -230,7 +239,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         return submission, new_student_item
 
 
-class MockOraBlock(object):
+class MockOraBlock:
     def __init__(self, requirements):
         self.requirements = requirements
 

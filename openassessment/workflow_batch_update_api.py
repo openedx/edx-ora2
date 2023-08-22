@@ -4,8 +4,8 @@ Provides functionality to batch update ORA workflows for different scopes
 
 import logging
 import time
-from django.utils import timezone
 import datetime
+from django.utils import timezone
 from celery import shared_task
 
 from opaque_keys.edx.keys import UsageKey
@@ -56,7 +56,7 @@ def update_workflows_for_ora_block(item_id):
             item_id,
             str(end - start))
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         logger.error(
             "Batch workflow update. Error occurred while updating workflows for ORA block submissions. "
             "item_id=%s  Error:%s",
@@ -85,7 +85,7 @@ def update_workflows_for_course(course_id):
             course_id,
             str(end - start))
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         logger.error(
             "Batch workflow update. Error occurred while updating workflows for all blocked submissions. "
             "course_id=%s Error:%s",
@@ -112,7 +112,7 @@ def update_workflows_for_all_blocked_submissions():
             "Batch workflow update for all blocked submissions completed successfully; processing_time=%s",
             str(end - start))
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         logger.error(
             "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  Error:%s",
             str(e))
@@ -131,7 +131,7 @@ def update_workflows(assessment_requirements_dict):
         for submission_uuid, assessment_requirements in assessment_requirements_dict.items():
             try:
                 update_workflow_for_submission(submission_uuid, assessment_requirements, None)
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 logger.warning(
                     "Batch workflow update. Error occurred while updating workflow for "
                     "submission_uuid=%s assessment_requirements=%s   Error:%s",
@@ -233,7 +233,7 @@ def get_assessment_requirements_for_flex_peer_grading(peer_workflows):
 
             if is_flexible_peer_grading_on(ora_block):
                 workflow_requirements[peer_workflow.submission_uuid] = ora_block.workflow_requirements()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             logger.warning(
                 "Batch workflow update. Error occurred while retrieving workflow requirements "
                 "for open assessment: %s  Error:%s",
