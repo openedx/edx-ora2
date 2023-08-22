@@ -15,6 +15,7 @@ from openassessment.workflow import api
 
 logger = logging.getLogger(__name__)
 
+
 @shared_task
 def update_workflow_for_submission(submission_uuid, assessment_requirements, course_override):
     """
@@ -24,12 +25,14 @@ def update_workflow_for_submission(submission_uuid, assessment_requirements, cou
     workflow = api.update_from_assessments(submission_uuid, assessment_requirements, course_override)
     end = time.time()
     logger.info(
-        "Update_workflow_for_submission completed successfully; submission_uuid=%s assessment_requirements=%s course_setttings=%s processing_time=%s",
+        "Update_workflow_for_submission completed successfully; "
+        "submission_uuid=%s assessment_requirements=%s course_setttings=%s processing_time=%s",
         submission_uuid,
         assessment_requirements,
         course_override,
         str(end - start))
     return workflow
+
 
 @shared_task
 def update_workflows_for_ora_block(item_id):
@@ -55,9 +58,11 @@ def update_workflows_for_ora_block(item_id):
 
     except Exception as e:
         logger.error(
-            "Batch workflow update. Error occurred while updating workflows for ORA block submissions. item_id=%s  Error:%s",
+            "Batch workflow update. Error occurred while updating workflows for ORA block submissions. "
+            "item_id=%s  Error:%s",
             item_id,
             str(e))
+
 
 @shared_task
 def update_workflows_for_course(course_id):
@@ -82,9 +87,11 @@ def update_workflows_for_course(course_id):
 
     except Exception as e:
         logger.error(
-            "Batch workflow update. Error occurred while updating workflows for all blocked submissions. course_id=%s Error:%s",
+            "Batch workflow update. Error occurred while updating workflows for all blocked submissions. "
+            "course_id=%s Error:%s",
             course_id,
             str(e))
+
 
 @shared_task
 def update_workflows_for_all_blocked_submissions():
@@ -126,7 +133,8 @@ def update_workflows(assessment_requirements_dict):
                 update_workflow_for_submission(submission_uuid, assessment_requirements, None)
             except Exception as e:
                 logger.warning(
-                    "Batch workflow update. Error occurred while updating workflow for submission_uuid=%s assessment_requirements=%s   Error:%s",
+                    "Batch workflow update. Error occurred while updating workflow for "
+                    "submission_uuid=%s assessment_requirements=%s   Error:%s",
                     submission_uuid, assessment_requirements, str(e))
 
 
@@ -227,7 +235,8 @@ def get_assessment_requirements_for_flex_peer_grading(peer_workflows):
                 workflow_requirements[peer_workflow.submission_uuid] = ora_block.workflow_requirements()
         except Exception as e:
             logger.warning(
-                "Batch workflow update. Error occurred while retrieving workflow requirements for open assessment: %s   Error:%s",
+                "Batch workflow update. Error occurred while retrieving workflow requirements "
+                "for open assessment: %s  Error:%s",
                 peer_workflow.item_id, str(e))
 
     return workflow_requirements
