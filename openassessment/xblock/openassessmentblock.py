@@ -20,10 +20,10 @@ from webob import Response
 from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 from xblock.fields import Boolean, Integer, List, Scope, String
-from web_fragments.fragment import Fragment
 
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.api.submission import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.data_layer.data_layer_mixin import DataLayerMixin
@@ -330,26 +330,30 @@ class OpenAssessmentBlock(
 
     @property
     def config_data(self):
-      return ORAConfigAPI(self)
+        return ORAConfigAPI(self)
 
     @property
     def workflow_data(self):
-      return WorkflowAPI(self)
+        return WorkflowAPI(self)
+
+    @property
+    def submission_data(self):
+        return SubmissionAPI(self)
 
     def peer_data(self, continue_grading = False):
-      return PeerAssessmentAPI(self, continue_grading)
+        return PeerAssessmentAPI(self, continue_grading)
 
     @property
     def self_data(self):
-      return SelfAssessmentAPI(self)
+        return SelfAssessmentAPI(self)
 
     @property
     def staff_data(self):
-      return StaffAssessmentAPI(self)
+        return StaffAssessmentAPI(self)
 
     @property
     def student_training_data(self):
-      return StudentTrainingAPI(self)
+        return StudentTrainingAPI(self)
 
     @property
     def course_id(self):

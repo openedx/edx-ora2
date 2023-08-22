@@ -8,7 +8,8 @@ from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.step_data_api import StepDataAPI
 
 
-class SubmissionApi(StepDataAPI):
+class SubmissionAPI(StepDataAPI):
+
     def __init__(self, block):
         super().__init__(block, "submission")
         self._workflow = self.workflow_data.workflow
