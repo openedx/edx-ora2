@@ -54,6 +54,8 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.load_static import LoadStatic
 
+from openassessment.xblock.ui_mixins.legacy.mixin import LegacyViewUIMixin
+
 from openassessment.xblock.ora_config_api import ORAConfigAPI
 from openassessment.xblock.assessments.workflow import WorkflowAPI
 from openassessment.xblock.assessments.peer_assessment import PeerAssessmentAPI
@@ -135,6 +137,7 @@ class OpenAssessmentBlock(
     RubricReuseMixin,
     StaffGraderMixin,
     DataLayerMixin,
+    LegacyViewUIMixin,
     XBlock,
 ):
     """Displays a prompt and provides an area where students can compose a response."""
