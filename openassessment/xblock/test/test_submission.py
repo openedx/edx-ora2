@@ -617,7 +617,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             self.assertEqual(context, {})
             logger.check_present(
                 (
-                    'openassessment.xblock.submission_mixin',
+                    'openassessment.xblock.ui_mixins.legacy.views.submission',
                     'ERROR',
                     '{}: Teams service is unavailable'.format(
                         xblock.location,
@@ -633,7 +633,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             self.assertEqual(context, {})
             logger.check_present(
                 (
-                    'openassessment.xblock.submission_mixin',
+                    'openassessment.xblock.ui_mixins.legacy.views.submission',
                     'ERROR',
                     '{}: User associated with anonymous_user_id {} can not be found.'.format(
                         xblock.location,
@@ -823,14 +823,13 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             }
         )
 
-    @patch('openassessment.xblock.submission_mixin.list_to_conversational_format')
     @patch('submissions.team_api.get_teammates_with_submissions_from_other_teams')
     @scenario('data/submission_open.xml', user_id="Red Five")
     def test_get_team_submission_context(
             self,
             xblock,
             mock_external_team_submissions,
-            mock_formatter):
+            ):
         team_info = {
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
@@ -869,10 +868,9 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             side_effect=lambda student_id: student_usernames[student_ids.index(student_id)]
         )
 
-        mock_formatter.side_effect = ','.join
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
         expected_context = {
-            'team_members_with_external_submissions': mock_formatter(student_usernames),
+            'team_members_with_external_submissions': f'{student_usernames[0]}, {student_usernames[1]}, and {student_usernames[2]}',
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
         }
