@@ -1,5 +1,5 @@
 """
-The Peer Assessment Mixin for all Peer Functionality.
+The Peer Assessment view Mixin
 
 """
 
@@ -7,21 +7,14 @@ import logging
 
 from webob import Response
 from xblock.core import XBlock
-from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerAssessmentRequestError,
-                                              PeerAssessmentWorkflowError)
-from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
-from openassessment.xblock.data_conversion import (
-    verify_assessment_parameters,
-    clean_criterion_feedback,
-    create_rubric_dict,
-)
 from openassessment.xblock.user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
-class LegacyViewMixin:
+class LegacyPeerAssessmentViewMixin:
     """The Peer Assessment Mixin for all Peer Functionality.
 
     Abstracts all functionality and handlers associated with Peer Assessment.
