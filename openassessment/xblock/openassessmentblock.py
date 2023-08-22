@@ -515,18 +515,6 @@ class OpenAssessmentBlock(
         }
         return student_item_dict
 
-    def add_javascript_files(self, fragment, item):
-        """
-        Add all the JavaScript files from a directory to the specified fragment
-        """
-        if pkg_resources.resource_isdir(__name__, item):
-            for child_item in pkg_resources.resource_listdir(__name__, item):
-                path = os.path.join(item, child_item)
-                if not pkg_resources.resource_isdir(__name__, path):
-                    fragment.add_javascript_url(self.runtime.local_resource_url(self, path))
-        else:
-            fragment.add_javascript_url(self.runtime.local_resource_url(self, item))
-
     @togglable_mobile_support
     def student_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
