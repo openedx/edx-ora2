@@ -17,6 +17,7 @@ from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import defaults, openassessmentblock
 from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.openassesment_template_mixin import UI_MODELS
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -145,7 +146,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # assessments from rubric are loaded into the ui model.
         models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 4)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], dict(
             xblock.rubric_assessments[0],
@@ -163,7 +163,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 2)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
 
@@ -173,7 +172,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.leaderboard_show = 10
         models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 5)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], dict(
             xblock.rubric_assessments[0],
@@ -193,7 +191,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
         self.assertEqual(len(models), 2)
-        UI_MODELS = openassessmentblock.UI_MODELS
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
 
