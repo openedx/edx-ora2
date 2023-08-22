@@ -1,5 +1,5 @@
-from .json_handlers import LegacyViewJSONHandlers
-from .view import LegacyView
+from .json_handlers import LegacyViewJSONHandlersMixin
+from .views import LegacyViewMixin
 
-class LegacyViewUIMixin(LegacyViewJSONHandlers, LegacyView):
+class LegacyViewUIMixin(LegacyViewJSONHandlersMixin, LegacyViewMixin):
     pass
