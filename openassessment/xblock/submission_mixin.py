@@ -1,27 +1,16 @@
 """ A Mixin for Response submissions. """
-import json
 import logging
-import os
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import cached_property
-from xblock.core import XBlock
-from xblock.exceptions import NoSuchServiceError
-
-from openassessment.xblock.submissions.api import SubmissionAPI
 
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
-from openassessment.workflow.errors import AssessmentWorkflowError
 
 from ..data import OraSubmissionAnswerFactory
 from .data_conversion import (
-    create_submission_dict,
-    list_to_conversational_format,
     prepare_submission_for_serialization,
 )
-from .user_data import get_user_preferences
-from .validation import validate_submission
+
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -35,7 +24,8 @@ class EmptySubmissionError(Exception):
 
 
 class SubmissionMixin:
-    """Submission Mixin introducing all Submission-related functionality.
+    """
+    Submission Mixin introducing all Submission-related functionality.
 
     Submission Mixin contains all logic and handlers associated with rendering
     the submission section of the front end, as well as making all API calls to
@@ -44,7 +34,6 @@ class SubmissionMixin:
     SubmissionMixin is a Mixin for the OpenAssessmentBlock. Functions in the
     SubmissionMixin call into the OpenAssessmentBlock functions and will not
     work outside the scope of OpenAssessmentBlock.
-
     """
 
     ALLOWED_IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png']  # pragma: no cover
@@ -84,244 +73,6 @@ class SubmissionMixin:
     @cached_property
     def file_manager(self):
         return file_upload_api.FileUploadManager(self)
-
-    @XBlock.json_handler
-    def submit(self, data, suffix=''):  # pylint: disable=unused-argument
-        """Place the submission text into Openassessment system
-
-        Allows submission of new responses.  Performs basic workflow validation
-        on any new submission to ensure it is acceptable to receive a new
-        response at this time.
-
-        Args:
-            data (dict): Data may contain two attributes: submission and
-                file_urls. submission is the response from the student which
-                should be stored in the Open Assessment system. file_urls is the
-                path to a related file for the submission. file_urls is optional.
-            suffix (str): Not used in this handler.
-
-        Returns:
-            (tuple | [tuple]): Returns the status (boolean) of this request, the
-                associated status tag (str), and status text (unicode).
-                This becomes an array of similarly structured tuples in the event
-                of a team submisison, one entry per student entry.
-
-        """
-        # Import is placed here to avoid model import at project startup.
-        from submissions import api
-        if 'submission' not in data:
-            return (
-                False,
-                'EBADARGS',
-                self._('"submission" required to submit answer.')
-            )
-
-        status = False
-        student_sub_data = data['submission']
-        success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-        if not success:
-            return (
-                False,
-                'EBADARGS',
-                msg
-            )
-
-        student_item_dict = self.get_student_item_dict()
-
-        # Short-circuit if no user is defined (as in Studio Preview mode)
-        # Since students can't submit, they will never be able to progress in the workflow
-        if self.in_studio_preview:
-            return (
-                False,
-                'ENOPREVIEW',
-                self._('To submit a response, view this component in Preview or Live mode.')
-            )
-
-        status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
-        status_text = self._('Multiple submissions are not allowed.')
-
-        if not self.submission_data.has_submitted:
-            try:
-
-                # a submission for a team generates matching submissions for all members
-                if self.is_team_assignment():
-                    submission = self.create_team_submission(student_sub_data)
-                else:
-                    submission = self.create_submission(student_item_dict, student_sub_data)
-                return self._create_submission_response(submission)
-
-            except api.SubmissionRequestError as err:
-
-                # Handle the case of an answer that's too long as a special case,
-                # so we can display a more specific error message.
-                # Although we limit the number of characters the user can
-                # enter on the client side, the submissions API uses the JSON-serialized
-                # submission to calculate length.  If each character submitted
-                # by the user takes more than 1 byte to encode (for example, double-escaped
-                # newline characters or non-ASCII unicode), then the user might
-                # exceed the limits set by the submissions API.  In that case,
-                # we display an error message indicating that the answer is too long.
-                answer_too_long = any(
-                    "maximum answer size exceeded" in answer_err.lower()
-                    for answer_err in err.field_errors.get('answer', [])
-                )
-                if answer_too_long:
-                    logger.exception(
-                        f"Response exceeds maximum allowed size: {student_item_dict}"
-                    )
-                    status_tag = 'EANSWERLENGTH'
-                    max_size = f"({int(api.Submission.MAXSIZE / 1024)} KB)"
-                    base_error = self._("Response exceeds maximum allowed size.")
-                    extra_info = self._(
-                        "Note: if you have a spellcheck or grammar check browser extension, "
-                        "try disabling, reloading, and reentering your response before submitting."
-                    )
-                    status_text = f"{base_error} {max_size} {extra_info}"
-                else:
-                    msg = (
-                        "The submissions API reported an invalid request error "
-                        "when submitting a response for the user: {student_item}"
-                    ).format(student_item=student_item_dict)
-                    logger.exception(msg)
-                    status_tag = 'EBADFORM'
-                    status_text = msg
-            except EmptySubmissionError:
-                msg = (
-                    "Attempted to submit submission for user {student_item}, "
-                    "but submission contained no content."
-                ).format(student_item=student_item_dict)
-                logger.exception(msg)
-                status_tag = 'EEMPTYSUB'
-                status_text = self._(
-                    'Submission cannot be empty. '
-                    'Please refresh the page and try again.'
-                )
-            except (api.SubmissionError, AssessmentWorkflowError, NoTeamToCreateSubmissionForError):
-                msg = (
-                    "An unknown error occurred while submitting "
-                    "a response for the user: {student_item}"
-                ).format(student_item=student_item_dict)
-                logger.exception(msg)
-                status_tag = 'EUNKNOWN'
-                status_text = self._('API returned unclassified exception.')
-
-        # error cases fall through to here
-        return status, status_tag, status_text
-
-    def _create_submission_response(self, submission):
-        """ Wrap submisison info for return to client
-
-            Returns:
-                (tuple): True (indicates success), student item, attempt number
-        """
-        status = True
-        status_tag = submission.get('student_item')
-        status_text = submission.get('attempt_number')
-
-        return (status, status_tag, status_text)
-
-    @XBlock.json_handler
-    def save_submission(self, data, suffix=''):  # pylint: disable=unused-argument
-        """
-        Save the current student's response submission.
-        If the student already has a response saved, this will overwrite it.
-
-        Args:
-            data (dict): Data should have a single key 'submission' that contains
-                the text of the student's response. Optionally, the data could
-                have a 'file_urls' key that is the path to an associated file for
-                this submission.
-            suffix (str): Not used.
-
-        Returns:
-            dict: Contains a bool 'success' and unicode string 'msg'.
-        """
-        if 'submission' in data:
-            student_sub_data = data['submission']
-            success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
-            if not success:
-                return {'success': False, 'msg': msg}
-            try:
-                self.saved_response = json.dumps(
-                    prepare_submission_for_serialization(student_sub_data)
-                )
-                self.has_saved = True
-
-                # Emit analytics event...
-                self.runtime.publish(
-                    self,
-                    "openassessmentblock.save_submission",
-                    {"saved_response": self.saved_response}
-                )
-            except Exception:  # pylint: disable=broad-except
-                return {'success': False, 'msg': self._("Please contact support staff.")}
-            else:
-                return {'success': True, 'msg': ''}
-        else:
-            return {'success': False, 'msg': self._("Submission data missing. Please contact support staff.")}
-
-    @XBlock.json_handler
-    def save_files_descriptions(self, data, suffix=''):  # pylint: disable=unused-argument
-        """
-        Save the metadata for each uploaded file.
-
-        Args:
-            data (dict): Data should have a single key 'fileMetadata' that contains
-                a list of dictionaries with the following keys: 'description','fileName', and 'fileSize'
-            each element of the list maps to a single file
-            suffix (str): Not used.
-
-        Returns:
-            dict: Contains a bool 'success' and unicode string 'msg'.
-        """
-        failure_response = {'success': False, 'msg': self._("Files descriptions were not submitted.")}
-
-        if 'fileMetadata' not in data:
-            return failure_response
-
-        if not isinstance(data['fileMetadata'], list):
-            return failure_response
-
-        file_data = [
-            {
-                'description': item['description'],
-                'name': item['fileName'],
-                'size': item['fileSize'],
-            } for item in data['fileMetadata']
-        ]
-
-        for new_upload in file_data:
-            if not all([
-                isinstance(new_upload['description'], str),
-                isinstance(new_upload['name'], str),
-                isinstance(new_upload['size'], int),
-            ]):
-                return failure_response
-
-        try:
-            self.file_manager.append_uploads(*file_data)
-            # Emit analytics event...
-            self.runtime.publish(
-                self,
-                "openassessmentblock.save_files_descriptions",
-                {"saved_response": self.saved_files_descriptions}
-            )
-        except FileUploadError as exc:
-            logger.exception(
-                "FileUploadError: file description for data %s failed with error %s",
-                data,
-                exc,
-                exc_info=True,
-            )
-            return {'success': False, 'msg': self._("Files metadata could not be saved.")}
-        except Exception as exc:  # pylint: disable=broad-except
-            logger.exception(
-                "FileUploadError: unhandled exception for data %s. Error: %s",
-                data,
-                exc,
-                exc_info=True,
-            )
-        return {'success': True, 'msg': ''}
 
     def create_team_submission(self, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
@@ -424,6 +175,8 @@ class SubmissionMixin:
         if not has_content:
             raise EmptySubmissionError
 
+    ### FILE UPLOADS ###
+
     def _collect_files_for_submission(self, student_sub_dict):
         """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
 
@@ -446,63 +199,6 @@ class SubmissionMixin:
 
         return student_sub_dict
 
-    @XBlock.json_handler
-    def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
-        """
-        Gets the username of the current student for use in team lookup.
-        """
-        anonymous_id = self.xmodule_runtime.anonymous_student_id
-        return {'username': self.get_username(anonymous_id)}
-
-    @XBlock.json_handler
-    def upload_url(self, data, suffix=''):  # pylint: disable=unused-argument
-        """
-        Request a URL to be used for uploading content related to this
-        submission.
-
-        Returns:
-            A URL to be used to upload content associated with this submission.
-
-        """
-        if 'contentType' not in data or 'filename' not in data:
-            return {'success': False, 'msg': self._("There was an error uploading your file.")}
-
-        if not self.allow_multiple_files:
-
-            # Here we check if there are existing file uploads by checking for
-            # an existing download url for any of the upload slots.
-            # Note that we can't use self.saved_files_descriptions because that
-            # is populated before files are uploaded
-            for i in range(self.MAX_FILES_COUNT):
-                file_url = self._get_download_url(i)
-                if file_url:
-                    return {'success': False,
-                            'msg': self._("Only a single file upload is allowed for this assessment.")}
-
-        file_num = int(data.get('filenum', 0))
-
-        _, file_ext = os.path.splitext(data['filename'])
-        file_ext = file_ext.strip('.') if file_ext else None
-        content_type = data['contentType']
-
-        # Validate that there are no data issues and file type is allowed
-        if not self.is_supported_upload_type(file_ext, content_type):
-            return {'success': False, 'msg': self._(
-                "File upload failed: unsupported file type."
-                "Only the supported file types can be uploaded."
-                "If you have questions, please reach out to the course team."
-            )}
-
-        # Attempt to upload
-        file_num = int(data.get('filenum', 0))
-        try:
-            key = self._get_student_item_key(file_num)
-            url = file_upload_api.get_upload_url(key, content_type)
-            return {'success': True, 'url': url}
-        except FileUploadError:
-            logger.exception("FileUploadError:Error retrieving upload URL for the data: %s.", data)
-            return {'success': False, 'msg': self._("Error retrieving upload URL.")}
-
     def is_supported_upload_type(self, file_ext, content_type):
         """
         Determine if the uploaded file type/extension is allowed for the configured file upload configuration
@@ -523,57 +219,6 @@ class SubmissionMixin:
             return False
 
         return True
-
-    @XBlock.json_handler
-    def download_url(self, data, suffix=''):  # pylint: disable=unused-argument
-        """
-        Request a download URL.
-
-        Returns:
-            A URL to be used for downloading content related to the submission.
-
-        """
-        file_num = int(data.get('filenum', 0))
-        return {'success': True, 'url': self._get_download_url(file_num)}
-
-    @XBlock.json_handler
-    def remove_uploaded_file(self, data, suffix=''):  # pylint: disable=unused-argument
-        """
-        Removes uploaded user file.
-        """
-        filenum = data.get('filenum', -1)
-        try:
-            filenum = int(filenum)
-        except ValueError:
-            filenum = -1
-        student_item_key = self._get_student_item_key(num=filenum)
-        if self._can_delete_file(filenum):
-            try:
-                self.file_manager.delete_upload(filenum)
-                # Emit analytics event...
-                self.runtime.publish(
-                    self,
-                    "openassessmentblock.remove_uploaded_file",
-                    {"student_item_key": student_item_key}
-                )
-                logger.debug("Deleted file %s", student_item_key)
-                return {'success': True}
-            except FileUploadError as exc:
-                logger.exception(
-                    "FileUploadError: Error when deleting file %s : %s",
-                    student_item_key,
-                    exc,
-                    exc_info=True
-                )
-            except Exception as exc:  # pylint: disable=broad-except
-                logger.exception(
-                    "FileUploadError: unhandled exception for data %s. Error: %s",
-                    data,
-                    exc,
-                    exc_info=True,
-                )
-
-        return {'success': False}
 
     def _can_delete_file(self, filenum):
         """
@@ -750,100 +395,6 @@ class SubmissionMixin:
 
         return file_uploads
 
-    @property
-    def save_status(self):
-        """
-        Return a string indicating whether the response has been saved.
-
-        Returns:
-            unicode
-        """
-        return self._('Draft saved!') if self.has_saved else self._(
-            'Response not started.')
-
-
-    def _is_submit_button_enabled(self, has_saved_response, has_uploaded_files):
-            """
-            Helper function to condense the logic for when to enable the submit
-            button for a response.
-            """
-            submit_enabled = True
-            if self.text_response == 'required' and not has_saved_response:
-                submit_enabled = False
-            if self.file_upload_response == 'required' and not has_uploaded_files:
-                submit_enabled = False
-            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
-                    and not has_saved_response and not has_uploaded_files:
-                submit_enabled = False
-
-            return submit_enabled
-
-    @XBlock.handler
-    def render_submission(self, data, suffix=''):  # pylint: disable=unused-argument
-        """Renders the Submission HTML section of the XBlock
-
-        Generates the submission HTML for the first section of an Open
-        Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
-        more information on rendering XBlock sections.
-
-        Needs to support the following scenarios:
-        Unanswered and Open
-        Unanswered and Closed
-        Saved
-        Saved and Closed
-        Submitted
-        Submitted and Closed
-        Submitted, waiting assessment
-        Submitted and graded
-
-        """
-        submission_info = SubmissionAPI(self)
-
-        context = self.submission_context(submission_info)
-        path = self.submission_path(submission_info)
-
-        return self.render_assessment(path, context_dict=context)
-
-    def get_team_submission_context(self, context):
-        """
-        Populate the passed context object with team info, including a set of students on
-        the team with submissions to the current item from another team, under the key
-        `team_members_with_external_submissions`.
-
-        Args:
-            context (dict): render context to add team submission context into
-        Returns
-            (dict): context arg with additional team-related fields
-        """
-
-        from submissions import team_api
-
-        try:
-            team_info = self.get_team_info()
-            if team_info:
-                context.update(team_info)
-                if self.is_course_staff:
-                    return
-                student_item_dict = self.get_student_item_dict()
-                external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
-                    self.course_id,
-                    student_item_dict["item_id"],
-                    team_info["team_id"],
-                    self.get_anonymous_user_ids_for_team()
-                )
-
-                context["team_members_with_external_submissions"] = list_to_conversational_format([
-                    self.get_username(submission['student_id']) for submission in external_submissions
-                ])
-        except ObjectDoesNotExist:
-            logger.error(
-                '%s: User associated with anonymous_user_id %s can not be found.',
-                str(self.location),
-                self.get_student_item_dict()['student_id'],
-            )
-        except NoSuchServiceError:
-            logger.error('%s: Teams service is unavailable', str(self.location))
-
     def get_allowed_file_types_or_preset(self):
         """
         If allowed files are not explicitly set for file uploads, use preset extensions
@@ -855,158 +406,3 @@ class SubmissionMixin:
         elif self.file_upload_type == 'pdf-and-image':
             return self.ALLOWED_FILE_EXTENSIONS
         return None
-
-    def submission_path_and_context(self):
-        """
-        Combine submission path and context for old method signature
-        """
-        submission_info = SubmissionAPI(self)
-        return self.submission_path(submission_info), self.submission_context(submission_info)
-
-
-    def submission_path(self, submission_info):
-        """
-        Given info about the submission, return the appropriate template path
-
-        Returns:
-        - path (String) to the template
-        """
-
-        # Template Paths
-        template_dir = 'openassessmentblock/response'
-        submission_template_paths = {
-            'default': 'oa_response',
-            'closed': 'oa_response_closed',
-            'unavailable': 'oa_response_unavailable',
-            'team_already_submitted': 'oa_response_team_already_submitted',
-            'cancelled': 'oa_response_cancelled',
-            'graded': 'oa_response_graded',
-            'submitted': 'oa_response_submitted'
-        }
-        full_paths = {
-            k: f'{template_dir}/{path}.html'
-            for (k, path) in submission_template_paths.items()
-        }
-
-        # Response is unavailable (not yet open or past due date)
-        if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
-            if submission_info.is_past_due:
-                return full_paths['closed']
-            if submission_info.is_not_available_yet:
-                return full_paths['unavailable']
-
-        # Response is unavailable (team assignment where user hasn't submitted and is not on a team)
-        elif submission_info.is_team_assignment and submission_info.team_id is None:
-            return full_paths['unavailable']
-
-        # Response not yet submitted
-        elif not submission_info.has_submitted:
-            if self.teams_enabled and submission_info.team_previously_submitted_without_student:
-                return full_paths['team_already_submitted']
-
-        # Cancelled: Instructor has cancelled this response
-        elif submission_info.has_been_cancelled:
-                return full_paths['cancelled']
-
-        # Done: Submitted and received final grade
-        elif submission_info.has_received_final_grade:
-                return full_paths['graded']
-
-        # Submitted and waiting for a grade
-        else:
-            return full_paths['submitted']
-
-        return full_paths['default']
-
-    def submission_context(self, submission_info):
-        """
-        Determine the context needed when rendering the response (submission) step.
-
-        Returns:
-        * Context (dict) - Context used for rendering the submission
-        """
-        # Get ORA Metadata
-        course_id = self.location.course_key if hasattr(self, 'location') else None
-        block_metadata = {
-            'xblock_id': self.get_xblock_id(),
-            'base_asset_url': self._get_base_url_path_for_course_assets(course_id)
-        }
-
-        # Get response config
-        response_config = submission_info.response_config
-
-        # Get user info / preferences
-        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
-        user_config = {
-            'has_real_user': self.has_real_user,
-            'user_language': user_preferences['user_language'],
-            'user_timezone': user_preferences['user_timezone'],
-        }
-
-        # Below here we determine submission status and template
-        submission_context = {}
-        team_submission_context = {}
-        file_urls = submission_info.uploaded_files
-        if file_urls:
-            submission_context.update(file_urls)
-
-        # Get access information (whether problem is closed) and reasons
-        workflow_context = {}
-        if (submission_info.due_date):
-            workflow_context["submission_due"] = submission_info.due_date
-
-        # Response is unavailable (not yet open or past due date)
-        if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
-            if submission_info.is_not_available_yet:
-                workflow_context['submission_start'] = submission_info.start_date
-
-        # Response not yet submitted: Get the saved response
-        elif not submission_info.has_submitted:
-            # Load the user/team saved response
-            saved_response = submission_info.saved_response
-            submission_context['saved_response'] = create_submission_dict(saved_response, self.prompts)
-
-            if self.teams_enabled:
-                submission_info.get_team_submission_context(submission_context)
-
-            # Determine UI states
-            submission_context['save_status'] = self.save_status
-            submission_context['enable_delete_files'] = True
-            # submission_context['submit_enabled'] = self._is_submit_button_enabled(saved_response, file_urls)
-
-        # Cancelled: Instructor has cancelled this response
-        elif submission_info.has_been_cancelled:
-
-            # Load user/team submission
-            submission_context["student_submission"] = submission_info.student_submission
-
-            # Get cancellation information
-            workflow_context["workflow_cancellation"] = submission_info.cancellation_info
-
-        # Done: Submitted and received final grade
-        elif submission_info.has_received_final_grade:
-            student_submission = submission_info.student_submission
-            submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-
-        # Submitted and waiting for a grade
-        else:
-
-            # Load user/team submission
-            student_submission = submission_info.student_submission
-            submission_context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-
-            # Get workflow context
-            workflow_context["peer_incomplete"] = submission_info.peer_step_incomplete
-            workflow_context["self_incomplete"] = submission_info.self_step_incomplete
-
-        # Assemble context
-        context = {
-            **block_metadata,
-            **response_config,
-            **user_config,
-            **workflow_context,
-            **submission_context,
-            **team_submission_context,
-        }
-
-        return context
