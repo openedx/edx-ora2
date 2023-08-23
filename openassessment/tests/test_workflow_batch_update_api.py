@@ -5,6 +5,7 @@ import datetime
 import logging
 from django.utils import timezone
 from mock import patch
+import pytest
 
 from submissions import api as sub_api
 from openassessment.test_utils import CacheResetTest
@@ -167,12 +168,33 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         mock_update_workflow_for_submission.assert_called_with("submission_uuid_2", {}, None)
         self.assertEqual(mock_update_workflow_for_submission.call_count, 2)
 
-        # exceptions for individual updates should not disrupt batch process:
+        # exception not expected because the error count threshold has not been exceeded:
         try:
             mock_update_workflow_for_submission.side_effect = Exception()
             update_api.update_workflows(assessment_requirements_dict)
         except Exception:  # pylint: disable=broad-except
             self.fail("Exception not expected")
+
+        # exception expected because the error count threshold has been exceeded:
+
+        assessment_requirements_dict = {
+            "submission_uuid_1": {},
+            "submission_uuid_2": {},
+            "submission_uuid_3": {},
+            "submission_uuid_4": {},
+            "submission_uuid_5": {},
+            "submission_uuid_6": {},
+            "submission_uuid_7": {},
+            "submission_uuid_8": {},
+            "submission_uuid_9": {},
+            "submission_uuid_10": {},
+            "submission_uuid_11": {},
+
+        }
+
+        mock_update_workflow_for_submission.side_effect = Exception()
+        with pytest.raises(update_api.OraWorkflowBatchUpdateErrorThresholdException):
+            update_api.update_workflows(assessment_requirements_dict)
 
     @patch('openassessment.workflow_batch_update_api.update_workflows')
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows_for_ora_block')
@@ -185,12 +207,10 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         mock_get_assessment_requirements_for_flex_peer_grading.assert_called_once()
         mock_update_workflows.assert_called_once()
 
-        # exceptions should not disrupt batch process:
-        try:
-            mock_get_blocked_peer_workflows_for_ora_block.side_effect = Exception()
+        # OraWorkflowBatchUpdateException expected
+        mock_get_blocked_peer_workflows_for_ora_block.side_effect = Exception()
+        with pytest.raises(update_api.OraWorkflowBatchUpdateException):
             update_api.update_workflows_for_ora_block("some_item_id")
-        except Exception:   # pylint: disable=broad-except
-            self.fail("Exception not expected")
 
     @patch('openassessment.workflow_batch_update_api.update_workflows')
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows_for_course')
@@ -203,12 +223,10 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         mock_get_assessment_requirements_for_flex_peer_grading.assert_called_once()
         mock_update_workflows.assert_called_once()
 
-        # exceptions should not disrupt batch process:
-        try:
-            mock_get_blocked_peer_workflows_for_course.side_effect = Exception()
-            update_api.update_workflows_for_ora_block("some_item_id")
-        except Exception:   # pylint: disable=broad-except
-            self.fail("Exception not expected")
+        # OraWorkflowBatchUpdateException expected
+        mock_get_blocked_peer_workflows_for_course.side_effect = Exception()
+        with pytest.raises(update_api.OraWorkflowBatchUpdateException):
+            update_api.update_workflows_for_course("some_course_id")
 
     @patch('openassessment.workflow_batch_update_api.update_workflows')
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
@@ -221,12 +239,10 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         mock_get_assessment_requirements_for_flex_peer_grading.assert_called_once()
         mock_update_workflows.assert_called_once()
 
-        # exceptions should not disrupt batch process:
-        try:
-            mock_get_blocked_peer_workflows.side_effect = Exception()
+        # OraWorkflowBatchUpdateException expected:
+        mock_get_blocked_peer_workflows.side_effect = Exception()
+        with pytest.raises(update_api.OraWorkflowBatchUpdateException):
             update_api.update_workflows_for_all_blocked_submissions()
-        except Exception:  # pylint: disable=broad-except
-            self.fail("Exception not expected")
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None, steps=None):

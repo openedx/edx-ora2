@@ -17,6 +17,133 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task
+def update_workflows_for_ora_block(item_id):
+    """
+    Updates ORA workflows created for the given ORA Block
+
+    Args:
+    item_id (str): Identifier for the ORA Block
+        e.g. 'block-v1:edX+DemoX+Demo_Course+type@openassessment+block@1676f4b05f0642249ff724e7c07d869e'
+
+    Raises:
+        OraWorkflowBatchUpdateException: If batch process fails and cannot continue, e.g. number of errors
+                                        threshold was exceeded, etc.
+    """
+    try:
+        start = time.time()
+
+        peer_workflows = get_blocked_peer_workflows_for_ora_block(item_id)
+        assessment_requirements_dict = get_assessment_requirements_for_flex_peer_grading(peer_workflows)
+        update_workflows(assessment_requirements_dict)
+
+        end = time.time()
+        logger.info(
+            "Batch workflow update for ORA block submissions completed successfully; item_id=%s ;  processing_time=%s",
+            item_id,
+            str(end - start))
+
+    except (OraWorkflowBatchUpdateErrorThresholdException, Exception) as e:  # pylint: disable=broad-except
+        logger.error(
+            "Batch workflow update failed. Error occurred while updating workflows for ORA block submissions. "
+            "item_id=%s  Error:%s",
+            item_id,
+            str(e))
+        raise OraWorkflowBatchUpdateException(str(e)) from e
+
+
+@shared_task
+def update_workflows_for_course(course_id):
+    """
+    Updates ORA workflows created for the given course
+
+    Args:
+        course_id (str): Course identifier
+
+    Raises:
+        OraWorkflowBatchUpdateException: If batch process fails and cannot continue, e.g. number of errors
+                                        threshold was exceeded, etc.
+    """
+    try:
+        start = time.time()
+
+        peer_workflows = get_blocked_peer_workflows_for_course(course_id)
+        assessment_requirements_dict = get_assessment_requirements_for_flex_peer_grading(peer_workflows)
+        update_workflows(assessment_requirements_dict)
+
+        end = time.time()
+        logger.info(
+            "Batch workflow update for course submissions completed successfully; course_id=%s ;  processing_time=%s",
+            course_id,
+            str(end - start))
+
+    except (OraWorkflowBatchUpdateErrorThresholdException, Exception) as e:  # pylint: disable=broad-except
+        logger.error(
+            "Batch ORA workflow update failed. Error occurred while updating workflows for all blocked submissions. "
+            "course_id=%s Error:%s",
+            course_id,
+            str(e))
+        raise OraWorkflowBatchUpdateException(str(e)) from e
+
+
+@shared_task
+def update_workflows_for_all_blocked_submissions():
+    """
+    Updates ORA workflows for submissions meeting following filtering criteria:
+     - Flexible Peer Grading ON
+     - ungraded submissions that are >7 days old
+
+     Raises:
+        OraWorkflowBatchUpdateException: If batch process fails and cannot continue, e.g. number of errors
+                                        threshold was exceeded, etc.
+    """
+    try:
+        start = time.time()
+
+        peer_workflows = get_blocked_peer_workflows()
+        assessment_requirements_dict = get_assessment_requirements_for_flex_peer_grading(peer_workflows)
+        update_workflows(assessment_requirements_dict)
+
+        end = time.time()
+        logger.info(
+            "Batch workflow update for all blocked submissions completed successfully; processing_time=%s",
+            str(end - start))
+
+    except (OraWorkflowBatchUpdateErrorThresholdException, Exception) as e:  # pylint: disable=broad-except
+        logger.error(
+            "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  Error:%s",
+            str(e))
+        raise OraWorkflowBatchUpdateException(str(e)) from e
+
+
+def update_workflows(assessment_requirements_dict, error_threshold=10):
+    """
+    Updates ORA workflows for the provided submission uuids provides in dictionary
+
+    Args:
+        assessment_requirements_dict (dict): <submission_uuid>:<assessment_requirements>
+        error_threshold (int): If the number of single ORA workflow update errors exceeds `error_threshold` value,
+                               batch process stops and `OraWorkflowBatchUpdateErrorThresholdException` is raised
+    Raises:
+        OraWorkflowBatchUpdateErrorThresholdException: if error threshold is exceeded
+    """
+
+    if assessment_requirements_dict is not None:
+        error_count = 0
+        for submission_uuid, assessment_requirements in assessment_requirements_dict.items():
+            try:
+                update_workflow_for_submission(submission_uuid, assessment_requirements, None)
+            except Exception as e:  # pylint: disable=broad-except
+                logger.warning(
+                    "Batch workflow update. Error occurred while updating workflow for "
+                    "submission_uuid=%s assessment_requirements=%s   Error:%s",
+                    submission_uuid, assessment_requirements, str(e))
+                error_count += 1
+                if error_count > error_threshold:
+                    # pylint: disable=raise-missing-from
+                    raise OraWorkflowBatchUpdateErrorThresholdException(
+                        "Number of errors exceeded {}.".format(error_threshold))
+
+
 def update_workflow_for_submission(submission_uuid, assessment_requirements, course_override):
     """
     Wrapper for `workflow.api.update_from_assessments(submission_uuid, assessment_requirements, course_override)`
@@ -32,110 +159,6 @@ def update_workflow_for_submission(submission_uuid, assessment_requirements, cou
         course_override,
         str(end - start))
     return workflow
-
-
-@shared_task
-def update_workflows_for_ora_block(item_id):
-    """
-    Updates ORA workflows created for the given ORA Block
-
-    Args:
-    item_id (str): Identifier for the ORA Block
-        e.g. 'block-v1:edX+DemoX+Demo_Course+type@openassessment+block@1676f4b05f0642249ff724e7c07d869e'
-    """
-    try:
-        start = time.time()
-
-        peer_workflows = get_blocked_peer_workflows_for_ora_block(item_id)
-        assessment_requirements_dict = get_assessment_requirements_for_flex_peer_grading(peer_workflows)
-        update_workflows(assessment_requirements_dict)
-
-        end = time.time()
-        logger.info(
-            "Batch workflow update for ORA block submissions completed successfully; item_id=%s ;  processing_time=%s",
-            item_id,
-            str(end - start))
-
-    except Exception as e:  # pylint: disable=broad-except
-        logger.error(
-            "Batch workflow update. Error occurred while updating workflows for ORA block submissions. "
-            "item_id=%s  Error:%s",
-            item_id,
-            str(e))
-
-
-@shared_task
-def update_workflows_for_course(course_id):
-    """
-    Updates ORA workflows created for the given course
-
-    Args:
-        course_id (str): Course identifier
-    """
-    try:
-        start = time.time()
-
-        peer_workflows = get_blocked_peer_workflows_for_course(course_id)
-        assessment_requirements_dict = get_assessment_requirements_for_flex_peer_grading(peer_workflows)
-        update_workflows(assessment_requirements_dict)
-
-        end = time.time()
-        logger.info(
-            "Batch workflow update for course submissions completed successfully; course_id=%s ;  processing_time=%s",
-            course_id,
-            str(end - start))
-
-    except Exception as e:  # pylint: disable=broad-except
-        logger.error(
-            "Batch workflow update. Error occurred while updating workflows for all blocked submissions. "
-            "course_id=%s Error:%s",
-            course_id,
-            str(e))
-
-
-@shared_task
-def update_workflows_for_all_blocked_submissions():
-    """
-    Updates ORA workflows for submissions meeting following filtering criteria:
-     - Flexible Peer Grading ON
-     - ungraded submissions that are >7 days old
-    """
-    try:
-        start = time.time()
-
-        peer_workflows = get_blocked_peer_workflows()
-        assessment_requirements_dict = get_assessment_requirements_for_flex_peer_grading(peer_workflows)
-        update_workflows(assessment_requirements_dict)
-
-        end = time.time()
-        logger.info(
-            "Batch workflow update for all blocked submissions completed successfully; processing_time=%s",
-            str(end - start))
-
-    except Exception as e:  # pylint: disable=broad-except
-        logger.error(
-            "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  Error:%s",
-            str(e))
-
-
-def update_workflows(assessment_requirements_dict):
-    """
-    Updates ORA workflows for the provided submission uuids provides in dictionary
-
-    Args:
-        assessment_requirements_dict (dict): Dictionary:   <submission_uuid>:<assessment_requirements>
-    """
-
-    if assessment_requirements_dict is not None:
-
-        for submission_uuid, assessment_requirements in assessment_requirements_dict.items():
-            try:
-                update_workflow_for_submission(submission_uuid, assessment_requirements, None)
-            except Exception as e:  # pylint: disable=broad-except
-                logger.warning(
-                    "Batch workflow update. Error occurred while updating workflow for "
-                    "submission_uuid=%s assessment_requirements=%s   Error:%s",
-                    submission_uuid, assessment_requirements, str(e))
 
 
 def is_flexible_peer_grading_on(openassessmentblock):
@@ -240,3 +263,11 @@ def get_assessment_requirements_for_flex_peer_grading(peer_workflows):
                 peer_workflow.item_id, str(e))
 
     return workflow_requirements
+
+
+class OraWorkflowBatchUpdateException(Exception):
+    """Raised when batch ORA workflow process failed"""
+
+
+class OraWorkflowBatchUpdateErrorThresholdException(Exception):
+    """Raised when number of individual ORA workflow updates errors exceeds set threshold"""
