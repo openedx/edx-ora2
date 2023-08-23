@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-21 13:22+0000\n"
+"POT-Creation-Date: 2023-08-23 14:25+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -569,27 +569,31 @@ msgstr ""
 msgid "Match deadlines to the course end date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:34
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+msgid "Learn more about open response date settings"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:47
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
 msgid "Response Start Time"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:64
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "Response Due Date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:77
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
 msgid "Response Due Time"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:86
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 
@@ -2527,30 +2531,30 @@ msgstr ""
 msgid "Your scores could not be checked."
 msgstr ""
 
-#: xblock/studio_mixin.py:232 xblock/studio_mixin.py:244
+#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
 msgid "Error updating XBlock configuration"
 msgstr ""
 
-#: xblock/studio_mixin.py:249
+#: xblock/studio_mixin.py:252
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr ""
-
-#: xblock/studio_mixin.py:253
-msgid ""
-"Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
 #: xblock/studio_mixin.py:256
 msgid ""
+"Error: When Text Response is disabled, File Upload Response must be Required"
+msgstr ""
+
+#: xblock/studio_mixin.py:259
+msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:280
+#: xblock/studio_mixin.py:283
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr ""
 
-#: xblock/studio_mixin.py:312
+#: xblock/studio_mixin.py:315
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 
