@@ -56,6 +56,8 @@ class StudioMixin:
 
     STUDIO_EDITING_TEMPLATE = 'openassessmentblock/edit/oa_edit.html'
 
+    ORA_SETTINGS_DOCUMENT_URL ='https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/CreateORAAssignment.html#specify-a-name-and-dates'
+
     BASE_EDITOR_ASSESSMENTS_ORDER = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
 
     # Since the XBlock problem definition contains only assessment
@@ -202,6 +204,7 @@ class StudioMixin:
                 'force_on_flexible_peer_openassessments', False
             ),
             'date_config_type': self.date_config_type,
+            'date_config_type_doc_url': self.ORA_SETTINGS_DOCUMENT_URL,
             'subsection_end_date': self.due,
             'course_end_date': None if not self.course else self.course.end,
         }

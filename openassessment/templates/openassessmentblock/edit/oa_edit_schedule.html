@@ -5,7 +5,7 @@
     <p class="openassessment_schedule_setting_header">{% trans "Deadlines Configuration" %}</p>
 
     <div class="list-input settings-list">
-        <div id="openassessment_date_config_radio" class="field comp-setting-entry">
+        <div id="openassessment_date_config_radio" class="openassessment_date_config_radio_container field comp-setting-entry">
             <h3 class="date_config_radio_header">{% trans "Select a deadline configuration option" %}</h3>
             <br/>
             <div class="openassessment_date_config_radio_wrapper">
@@ -22,6 +22,7 @@
                     <label class="setting-label" for="course_end_date_config_type">{% trans "Match deadlines to the course end date" %}</label>
                 </div>
             </div>
+            <a class="date_config_doc_link" target="_blank" href="{{ date_config_type_doc_url }}">{% trans "Learn more about open response date settings" %}</a>
         </div>
     </div>
 
