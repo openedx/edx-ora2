@@ -4070,7 +4070,7 @@ hr.divider,
   font-weight: 600;
 }
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .date_config_doc_link {
-  padding: 16px 0;
+  margin: 16px 0;
   color: #0075b4;
 }
 #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .date_config_doc_link :hover {
