@@ -150,8 +150,8 @@ class LegacySubmissionActions:
         # error cases fall through to here
         return status, status_tag, status_text
 
-    @XBlock.json_handler
-    def save_submission(self, data, suffix=""):  # pylint: disable=unused-argument
+    @classmethod
+    def save_submission(cls, block_config, submission_info, data):
         """
         Save the current student's response submission.
         If the student already has a response saved, this will overwrite it.
@@ -169,33 +169,32 @@ class LegacySubmissionActions:
         if "submission" in data:
             student_sub_data = data["submission"]
             success, msg = validate_submission(
-                student_sub_data, self.prompts, self._, self.text_response
+                student_sub_data, block_config.prompts, block_config.translate, block_config.text_response
             )
             if not success:
                 return {"success": False, "msg": msg}
             try:
-                self.saved_response = json.dumps(
+                submission_info.saved_response = json.dumps(
                     prepare_submission_for_serialization(student_sub_data)
                 )
-                self.has_saved = True
+                submission_info.has_saved = True
 
                 # Emit analytics event...
-                self.runtime.publish(
-                    self,
+                block_config.publish_event(
                     "openassessmentblock.save_submission",
-                    {"saved_response": self.saved_response},
+                    {"saved_response": submission_info.saved_response},
                 )
             except Exception:  # pylint: disable=broad-except
                 return {
                     "success": False,
-                    "msg": self._("Please contact support staff."),
+                    "msg": block_config.translate("Please contact support staff."),
                 }
             else:
                 return {"success": True, "msg": ""}
         else:
             return {
                 "success": False,
-                "msg": self._("Submission data missing. Please contact support staff."),
+                "msg": block_config.translate("Submission data missing. Please contact support staff."),
             }
 
     @staticmethod

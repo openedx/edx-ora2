@@ -74,9 +74,21 @@ class SubmissionAPI(StepDataAPI):
     # Submission / response data
 
     @property
+    def has_saved(self):
+        return self._block.has_saved
+
+    @has_saved.setter
+    def has_saved(self, value):
+        self._block.has_saved = value
+
+    @property
     def saved_response(self):
-        """Return a saved response for a student / team when they haven't submitted"""
+        """ Return a saved response for a student / team when they haven't submitted """
         return update_saved_response_format(self.config_data.saved_response)
+
+    @saved_response.setter
+    def saved_response(self, value):
+        self._block.saved_response = value
 
     @property
     def student_submission(self):
