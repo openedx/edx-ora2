@@ -3,6 +3,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class ORAConfigAPI:
     # xblock fields
     XBLOCK_FIELDS = [
@@ -57,20 +58,16 @@ class ORAConfigAPI:
     def __init__(self, block):
         self._block = block
 
-        for field in (
-            self.XBLOCK_FIELDS +
-            self.CONFIG_FIELDS +
-            self.ORA_FIELDS
-        ):
+        for field in self.XBLOCK_FIELDS + self.CONFIG_FIELDS + self.ORA_FIELDS:
             setattr(self, field, getattr(block, field))
 
     def translate(self, string):
-        """ Wrapper for ugettext """
+        """Wrapper for ugettext"""
         return self._block._(string)
 
     @property
     def course_id(self):
-        if (self._block.xmodule_runtime):
+        if self._block.xmodule_runtime:
             return self._block.course_Id
         return None
 
@@ -86,21 +83,27 @@ class ORAConfigAPI:
     @property
     def has_team(self):
         return self._block.has_team
+
     @property
     def is_team_assignment(self):
         return self._block.is_team_assignment
+
     @property
     def team(self):
         return self._block.team
+
     @property
     def teamset_config(self):
         return self._block.teamset_config
+
     @property
     def teams_configuration_service(self):
         return self._block.teams_configuration_service
+
     @property
     def teams_service(self):
         return self._block.teams_service
+
     @property
     def valid_access_to_team_assessment(self):
         return self._block.valid_access_to_team_assessment
@@ -131,7 +134,9 @@ class ORAConfigAPI:
         return self._block.should_get_all_files_urls(upload_urls)
 
     def get_student_item_dict_from_username_or_email(self, username_or_email):
-        return self._block.get_student_item_dict_from_username_or_email(username_or_email)
+        return self._block.get_student_item_dict_from_username_or_email(
+            username_or_email
+        )
 
     def is_closed(self, step=None, course_staff=None):
         return self._block.is_closed(step, course_staff)
@@ -152,13 +157,22 @@ class ORAConfigAPI:
         return self._block(anonymous_user_id)
 
     def add_team_submission_context(
-        self, context, team_submission_uuid=None, individual_submission_uuid=None, transform_usernames=False
+        self,
+        context,
+        team_submission_uuid=None,
+        individual_submission_uuid=None,
+        transform_usernames=False,
     ):
         self._block.add_submission_context(
-            context, team_submission_uuid, individual_submission_uuid, transform_usernames
+            context,
+            team_submission_uuid,
+            individual_submission_uuid,
+            transform_usernames,
         )
 
-    def get_team_submission_uuid_from_individual_submission_uuid(self, individual_submission_uuid):
+    def get_team_submission_uuid_from_individual_submission_uuid(
+        self, individual_submission_uuid
+    ):
         return self._block.get_tam_submission_uuid_from_individual_submission_uuid(
             individual_submission_uuid
         )
