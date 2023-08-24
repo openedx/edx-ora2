@@ -22,7 +22,7 @@ from openassessment.xblock.user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class LegacyPeerAssessmentHandlers:
+class LegacyPeerAssessmentActions:
     @XBlock.json_handler
     @verify_assessment_parameters
     def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument

@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 import ddt
 
 
-from openassessment.xblock.data_layer.serializers import (
+from openassessment.xblock.ui_mixins.mfe.serializers import (
     AssessmentStepsSerializer,
     LeaderboardConfigSerializer,
     RubricConfigSerializer,
