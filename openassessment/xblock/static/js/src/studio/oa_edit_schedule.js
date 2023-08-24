@@ -1,4 +1,5 @@
-import { DatetimeControl } from './oa_edit_fields';
+import { DatetimeControl, SelectControl } from './oa_edit_fields';
+import Notifier from './oa_edit_notifier';
 /**
 Editing interface for OpenAssessment schedule settings.
 
@@ -27,6 +28,25 @@ export class EditScheduleView {
       this.element,
       '#openassessment_submission_due_date',
       '#openassessment_submission_due_time',
+    ).install();
+
+    const configSettingsList = $('.schedule_setting_list ', this.element);
+
+    this.selectedDateConfigType = $('input[name="date_config_type"][type="radio"]:checked', this.element).val();
+
+    new SelectControl(
+      $('input[name="date_config_type"][type="radio"]', this.element),
+      (value) => {
+        configSettingsList.each((_, el) => {
+          if (el.id !== `${value}_schedule_settings_list`) {
+            $(el).addClass('is--hidden');
+          } else {
+            $(el).removeClass('is--hidden');
+          }
+        });
+        this.selectedDateConfigType = value;
+      },
+      new Notifier([]),
     ).install();
   }
 
@@ -65,6 +85,13 @@ export class EditScheduleView {
   }
 
   /**
+   *
+   */
+  dateConfigType() {
+    return this.selectedDateConfigType;
+  }
+
+  /**
     Mark validation errors.
 
     Returns:
@@ -75,8 +102,8 @@ export class EditScheduleView {
     // Validate the start and due datetime controls
     let isValid = true;
 
-    isValid = (this.startDatetimeControl.validate() && isValid);
-    isValid = (this.dueDatetimeControl.validate() && isValid);
+    isValid = this.startDatetimeControl.validate() && isValid;
+    isValid = this.dueDatetimeControl.validate() && isValid;
 
     // Validate assessment dates
     const peerStep = this.assessmentViews.oa_peer_assessment_editor;

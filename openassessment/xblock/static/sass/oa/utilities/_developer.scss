@@ -1005,6 +1005,64 @@
       @include margin(15px, 0, 10px, 30px);
     }
 
+    .openassessment_date_config_radio_container {
+      border-bottom: 1px solid #e5e5e5;
+
+      .date_config_radio_header {
+        font-size: 1.4em;
+        font-weight: 600;
+      }
+
+      .date_config_doc_link {
+        margin: 16px 0;
+        color: #0075b4;
+        :hover {
+          color: #065683;
+        }
+      }
+
+      .openassessment_date_config_radio_wrapper {      
+        display: flex;
+        gap: 1em;
+        padding: 10px 0;
+  
+        .wrapper-comp-setting {
+          min-width: unset;
+          display: flex;
+          align-items: center;
+  
+          input[type="radio"] {
+            height: 20px;
+            min-width: auto;
+            width: 20px;
+            margin: 0 8px;
+          }
+          
+          input:disabled+label {
+            color: $edx-gray-l2;
+            font-weight: normal;
+          }
+  
+          .setting-label {
+            width: auto;
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 992px) {
+      .openassessment_date_config_radio_wrapper {
+        flex-direction: column;
+        gap: 0;
+
+        .wrapper-comp-setting input[type="radio"] {
+          width: auto;
+          margin: 0 5px;
+        }
+      }
+    }
+
     li {
       &:nth-child(2) {
         border-bottom: 1px solid #e5e5e5;

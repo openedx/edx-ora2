@@ -240,6 +240,7 @@ export class StudioView {
       title: this.settingsView.displayName(),
       submissionStart: this.scheduleView.submissionStart(),
       submissionDue: this.scheduleView.submissionDue(),
+      dateConfigType: this.scheduleView.dateConfigType(),
       assessments: this.assessmentsStepsView.assessmentsDescription(),
       textResponse: this.settingsView.textResponseNecessity(),
       textResponseEditor: this.settingsView.textResponseEditor(),

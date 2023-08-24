@@ -16,6 +16,7 @@ from voluptuous import (
     Schema,
 )
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
+from openassessment.xblock.defaults import DATE_CONFIG_MANUAL, DATE_CONFIG_SUBSECTION, DATE_CONFIG_COURSE_END
 
 
 def utf8_validator(value):
@@ -94,6 +95,12 @@ VALID_UPLOAD_FILE_TYPES = [
     'custom'
 ]
 
+DATE_CONFIG_OPTIONS = [
+    DATE_CONFIG_MANUAL,
+    DATE_CONFIG_SUBSECTION,
+    DATE_CONFIG_COURSE_END,
+]
+
 # Schema definition for an update from the Studio JavaScript editor.
 EDITOR_UPDATE_SCHEMA = Schema({
     Required('prompts'): [
@@ -107,6 +114,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('feedback_default_text'): utf8_validator,
     Required('submission_start'): Any(datetime_validator, None),
     Required('submission_due'): Any(datetime_validator, None),
+    Required('date_config_type'): Any(All(utf8_validator, In(DATE_CONFIG_OPTIONS)), None),
     Required('text_response', default='required'): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
     Required('text_response_editor', default='text'): Any(All(utf8_validator, In(AVAILABLE_EDITOR_OPTIONS)), None),
     Required('file_upload_response', default=None): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),

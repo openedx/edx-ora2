@@ -52,6 +52,7 @@ describe("OpenAssessment.StudioView", function() {
         feedback_default_text: "Feedback default text",
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
+        dateConfigType: 'manual',
         fileUploadType: null,
         leaderboardNum: 12,
         showRubricDuringResponse: false,
@@ -161,6 +162,7 @@ describe("OpenAssessment.StudioView", function() {
         expect(server.receivedData.feedback_default_text).toEqual(EXPECTED_SERVER_DATA.feedback_default_text);
         expect(server.receivedData.submissionStart).toEqual(EXPECTED_SERVER_DATA.submissionStart);
         expect(server.receivedData.submissionDue).toEqual(EXPECTED_SERVER_DATA.submissionDue);
+        expect(server.receivedData.dateConfigType).toEqual(EXPECTED_SERVER_DATA.dateConfigType);
         expect(server.receivedData.fileUploadType).toEqual(EXPECTED_SERVER_DATA.fileUploadType);
         expect(server.receivedData.leaderboardNum).toEqual(EXPECTED_SERVER_DATA.leaderboardNum);
         expect(server.receivedData.showRubricDuringResponse).toEqual(EXPECTED_SERVER_DATA.showRubricDuringResponse)

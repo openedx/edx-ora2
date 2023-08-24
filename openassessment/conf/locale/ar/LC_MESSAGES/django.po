@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 18:36+0000\n"
+"POT-Creation-Date: 2023-08-20 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ghassan Maslamani <ghassan.maslamani@gmail.com>, 2022\n"
 "Language-Team: Arabic (http://app.transifex.com/open-edx/edx-platform/language/ar/)\n"
@@ -71,54 +71,54 @@ msgstr "ينقُصُ هذا المثال {example_number} خيارٌ لـ \"{cri
 #: data.py:533
 #, python-brace-format
 msgid "Criterion {number}: {label}"
-msgstr ""
+msgstr "المعيار {number}: {label}"
 
 #: data.py:535
 #, python-brace-format
 msgid "Points {number}"
-msgstr ""
+msgstr "النقاط {number}"
 
 #: data.py:536
 #, python-brace-format
 msgid "Median Score {number}"
-msgstr ""
+msgstr "متوسط النتيجة {number}"
 
 #: data.py:537
 #, python-brace-format
 msgid "Feedback {number}"
-msgstr ""
+msgstr "التعليقات {number}"
 
 #: data.py:866
 msgid "Item ID"
-msgstr ""
+msgstr "الرقم التعريفي للعنصر"
 
 #: data.py:867
 msgid "Submission ID"
-msgstr ""
+msgstr "معرّف الإرسال"
 
 #: data.py:879
 msgid "Anonymized Student ID"
-msgstr ""
+msgstr "معرف طالب مجهول"
 
 #: data.py:910
 msgid "Assessment ID"
-msgstr ""
+msgstr "معرف التقييم"
 
 #: data.py:911
 msgid "Assessment Scored Date"
-msgstr ""
+msgstr "تاريخ التقييم المسجل"
 
 #: data.py:912
 msgid "Assessment Scored Time"
-msgstr ""
+msgstr "الوقت المسجل في التقييم"
 
 #: data.py:913
 msgid "Assessment Type"
-msgstr ""
+msgstr "نوع التقييم"
 
 #: data.py:914
 msgid "Anonymous Scorer Id"
-msgstr ""
+msgstr "معرف مسجل مجهول"
 
 #: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
@@ -127,15 +127,15 @@ msgstr "الآراء والملاحظات بالإجمال"
 
 #: data.py:917
 msgid "Assessment Score Earned"
-msgstr ""
+msgstr "تم الحصول على درجة التقييم"
 
 #: data.py:918
 msgid "Assessment Scored At"
-msgstr ""
+msgstr "تقييم في"
 
 #: data.py:919
 msgid "Date/Time Final Score Given"
-msgstr ""
+msgstr "التاريخ / الوقت النتيجة النهائية الممنوحة"
 
 #: data.py:920
 msgid "Final Score Earned"
@@ -151,11 +151,11 @@ msgstr "تم تحديد بيانات الملاحظات"
 
 #: data.py:923
 msgid "Feedback on Assessment"
-msgstr ""
+msgstr "ردود الفعل على التقييم"
 
 #: data.py:925
 msgid "Response Files"
-msgstr ""
+msgstr "ملفات الاستجابة"
 
 #: data.py:1316
 msgid "No description provided."
@@ -203,7 +203,7 @@ msgstr "محرر الاستجابة"
 msgid ""
 "Select which editor learners will use to include a text based response to "
 "this problem's prompt."
-msgstr ""
+msgstr "حدد المحرر الذي سيستخدمه المتعلمون لتضمين استجابة نصية لمطالبة هذه المشكلة."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
@@ -302,7 +302,7 @@ msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr ""
+msgstr "حدد عدد الاستجابات ذات الدرجات الأعلى لعرضها بعد أن يقدم المتعلم إجابة. الأرقام الصالحة هي من 0 إلى 99. إذا كان الرقم هو 0 ، فلن يظهر قسم &quot;أفضل الردود&quot; للمتعلمين."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
@@ -322,13 +322,13 @@ msgstr "حدد ضبط-الفريق"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
-msgstr ""
+msgstr "إظهار القواعد أثناء الاستجابة"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:162
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
 "response."
-msgstr ""
+msgstr "حدد ما إذا كان بإمكان المتعلمين رؤية نموذج التقييم أثناء العمل على استجابتهم."
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: templates/openassessmentblock/staff_area/oa_student_info.html:122

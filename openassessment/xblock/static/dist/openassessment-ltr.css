@@ -4062,6 +4062,54 @@ hr.divider,
   font-size: 19px;
   margin: 15px 0 10px 30px;
 }
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container {
+  border-bottom: 1px solid #e5e5e5;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .date_config_radio_header {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .date_config_doc_link {
+  margin: 16px 0;
+  color: #0075b4;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .date_config_doc_link :hover {
+  color: #065683;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .openassessment_date_config_radio_wrapper {
+  display: flex;
+  gap: 1em;
+  padding: 10px 0;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .openassessment_date_config_radio_wrapper .wrapper-comp-setting {
+  min-width: unset;
+  display: flex;
+  align-items: center;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .openassessment_date_config_radio_wrapper .wrapper-comp-setting input[type=radio] {
+  height: 20px;
+  min-width: auto;
+  width: 20px;
+  margin: 0 8px;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .openassessment_date_config_radio_wrapper .wrapper-comp-setting input:disabled + label {
+  color: #c8c9cb;
+  font-weight: normal;
+}
+#openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_container .openassessment_date_config_radio_wrapper .wrapper-comp-setting .setting-label {
+  width: auto;
+  font-weight: normal;
+}
+@media (max-width: 992px) {
+  #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper {
+    flex-direction: column;
+    gap: 0;
+  }
+  #openassessment-editor #oa_schedule_editor_wrapper .openassessment_date_config_radio_wrapper .wrapper-comp-setting input[type=radio] {
+    width: auto;
+    margin: 0 5px;
+  }
+}
 #openassessment-editor #oa_schedule_editor_wrapper li:nth-child(2) {
   border-bottom: 1px solid #e5e5e5;
 }

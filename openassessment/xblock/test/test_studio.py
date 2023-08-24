@@ -40,6 +40,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "feedback_default_text": "Test feedback default text",
         "submission_start": "4014-02-10T09:46",
         "submission_due": "4014-02-27T09:46",
+        "date_config_type": "manual",
         "file_upload_type": None,
         "white_listed_file_types": '',
         "allow_multiple_files": True,

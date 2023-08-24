@@ -64,6 +64,19 @@ describe('OpenAssessment.EditScheduleView', function() {
         expect(view.submissionDue()).toEqual('2014-05-02T12:34');
     });
 
+    it('has working date config type', function() {
+        const expectedValue = $('input[name="date_config_type"][type="radio"]:checked', this.element).val();
+        expect(view.dateConfigType()).toEqual(expectedValue);
+
+        // if subsection_end_date is not defined, disable subsection option
+        const subsectionEl = $('input[name="date_config_type"][type="radio"][value="subsection"]', this.element);
+        expect(subsectionEl.prop('disabled')).toBe(true);
+
+        // if course_end_date is not defined, disable course end option
+        const courseEndEl = $('input[name="date_config_type"][type="radio"][value="course_end"]', this.element);
+        expect(courseEndEl.prop('disabled')).toBe(true);
+    });
+
     it('validates submission start datetime fields', function() {
         testValidateDate(
             view.startDatetimeControl,
