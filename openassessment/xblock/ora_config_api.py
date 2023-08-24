@@ -65,6 +65,9 @@ class ORAConfigAPI:
         """Wrapper for ugettext"""
         return self._block._(string)
 
+    def publish_event(self, function_name, data):
+        self._block.runtime.publish(self._block, function_name, data)
+
     @property
     def course_id(self):
         if self._block.xmodule_runtime:
