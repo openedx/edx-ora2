@@ -44,6 +44,8 @@ from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.team_mixin import TeamMixin
+from openassessment.xblock.ui_mixins.legacy.handlers_mixin import LegacyHandlersMixin
+from openassessment.xblock.ui_mixins.legacy.views_mixin import LegacyViewsMixin
 from openassessment.xblock.ui_mixins.mfe.mixin import MfeMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
@@ -52,8 +54,6 @@ from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTemplatesMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
-
-from openassessment.xblock.ui_mixins.legacy.mixin import LegacyViewUIMixin
 
 from openassessment.xblock.ora_config_api import ORAConfigAPI
 from openassessment.xblock.assessments.workflow import WorkflowAPI
@@ -97,7 +97,8 @@ class OpenAssessmentBlock(
     RubricReuseMixin,
     StaffGraderMixin,
     MfeMixin,
-    LegacyViewUIMixin,
+    LegacyViewsMixin,
+    LegacyHandlersMixin,
     XBlock,
 ):
     """Displays a prompt and provides an area where students can compose a response."""
