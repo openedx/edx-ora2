@@ -17,7 +17,7 @@ from openassessment.xblock.validation import validate_submission
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class LegacySubmissionHandlers:
+class LegacySubmissionActions:
     """
     Actions related to submissions
     """

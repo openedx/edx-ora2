@@ -617,7 +617,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             self.assertEqual(context, {})
             logger.check_present(
                 (
-                    'openassessment.xblock.ui_mixins.legacy.views.submission',
+                    'openassessment.xblock.ui_mixins.legacy.submissions.views',
                     'ERROR',
                     '{}: Teams service is unavailable'.format(
                         xblock.location,
@@ -633,7 +633,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
             self.assertEqual(context, {})
             logger.check_present(
                 (
-                    'openassessment.xblock.ui_mixins.legacy.views.submission',
+                    'openassessment.xblock.ui_mixins.legacy.submissions.views',
                     'ERROR',
                     '{}: User associated with anonymous_user_id {} can not be found.'.format(
                         xblock.location,
