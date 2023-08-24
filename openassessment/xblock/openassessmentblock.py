@@ -26,7 +26,6 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.submissions.api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
-from openassessment.xblock.data_layer.data_layer_mixin import DataLayerMixin
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
@@ -45,6 +44,7 @@ from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.team_mixin import TeamMixin
+from openassessment.xblock.ui_mixins.mfe.mixin import MfeMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
@@ -96,7 +96,7 @@ class OpenAssessmentBlock(
     OpenAssessmentTemplatesMixin,
     RubricReuseMixin,
     StaffGraderMixin,
-    DataLayerMixin,
+    MfeMixin,
     LegacyViewUIMixin,
     XBlock,
 ):
