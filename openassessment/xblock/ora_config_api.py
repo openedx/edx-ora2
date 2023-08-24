@@ -64,6 +64,10 @@ class ORAConfigAPI:
         ):
             setattr(self, field, getattr(block, field))
 
+    def translate(self, string):
+        """ Wrapper for ugettext """
+        return self._block._(string)
+
     @property
     def course_id(self):
         if (self._block.xmodule_runtime):

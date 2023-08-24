@@ -174,3 +174,13 @@ class SubmissionAPI(StepDataAPI):
             )
 
         return response_config
+
+    # Actions
+
+    def create_submission(self, submission_data):
+        student_item = self._block.get_student_item_dict()
+        return self._block.create_submission(student_item, submission_data)
+
+    def create_team_submission(self, submission_data):
+        return self._block.create_team_submission(submission_data)
+    
