@@ -2,16 +2,11 @@
 Student training step in the OpenAssessment XBlock.
 """
 import logging
+
 from webob import Response
-from xblock.core import XBlock
 
-from openassessment.assessment.api import student_training
-from openassessment.workflow.errors import AssessmentWorkflowError
-
-from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
-
 
 template_paths = {
     "unavailable": "openassessmentblock/student_training/student_training_unavailable.html",
@@ -21,6 +16,7 @@ template_paths = {
     "training": "openassessmentblock/student_training/student_training.html",
     "error": "openassessmentblock/student_training/student_training_error.html"
 }
+
 
 def render_student_training(api_data):
     """
