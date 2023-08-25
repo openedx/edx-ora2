@@ -17,123 +17,122 @@ from openassessment.xblock.data_conversion import (
     clean_criterion_feedback,
     create_rubric_dict,
 )
-from openassessment.xblock.user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
+messages = {
+    "must_submit": "You must submit a response before you can perform a peer assessment.",
+    "already_submitted": "This feedback has already been submitted or the submission has been cancelled.",
+    "could_not_submit": "Your peer assessment could not be submitted.",
+    "could_not_update": "Could not update workflow status.",
+    "could_not_load": "Could not load peer assessment.",
+}
 
-class LegacyPeerAssessmentActions:
-    @XBlock.json_handler
-    @verify_assessment_parameters
-    def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        """Place a peer assessment into OpenAssessment system
+def create_peer_assessment(api_data, data):
+    # Import is placed here to avoid model import at project startup.
+    from openassessment.assessment.api import peer as peer_api
+    config_data = api_data.config_data
+    submission_uuid = api_data.submission_data.submission_uuid
+    peer_data = api_data.peer_data
 
-        Assess a Peer Submission.  Performs basic workflow validation to ensure
-        that an assessment can be performed as this time.
+    # Create the assessment
+    assessment = peer_api.create_assessment(
+        submission_uuid,
+        peer_data.student_item["student_id"],
+        data["options_selected"],
+        clean_criterion_feedback(
+            config_data.rubric_criteria_with_labels,
+            data["criterion_feedback"],
+        ),
+        data["overall_feedback"],
+        create_rubric_dict(
+            config_data.prompts,
+            config_data.rubric_criteria_with_labels,
+        ),
+        peer_data.assessment["must_be_graded_by"],
+    )
 
-        Args:
-            data (dict): A dictionary containing information required to create
-                a new peer assessment.  This dict should have the following attributes:
-                `submission_uuid` (string): The unique identifier for the submission being assessed.
-                `options_selected` (dict): Dictionary mapping criterion names to option values.
-                `overall_feedback` (unicode): Written feedback for the submission as a whole.
-                `criterion_feedback` (unicode): Written feedback per the criteria for the submission.
+    return assessment
 
-        Returns:
-            Dict with keys "success" (bool) indicating success/failure.
-            and "msg" (unicode) containing additional information if an error occurs.
+def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
+    """Place a peer assessment into OpenAssessment system
 
-        """
-        # Import is placed here to avoid model import at project startup.
-        from openassessment.assessment.api import peer as peer_api
+    Assess a Peer Submission.  Performs basic workflow validation to ensure
+    that an assessment can be performed as this time.
 
-        step_data = self.peer_data()
-        if self.submission_uuid is None:
-            return {
-                "success": False,
-                "msg": self._(
-                    "You must submit a response before you can perform a peer assessment."
-                ),
-            }
+    Args:
+        data (dict): A dictionary containing information required to create
+            a new peer assessment.  This dict should have the following attributes:
+            `submission_uuid` (string): The unique identifier for the submission being assessed.
+            `options_selected` (dict): Dictionary mapping criterion names to option values.
+            `overall_feedback` (unicode): Written feedback for the submission as a whole.
+            `criterion_feedback` (unicode): Written feedback per the criteria for the submission.
 
-        uuid_server, uuid_client = self._get_server_and_client_submission_uuids(
-            step_data, data
+    Returns:
+        Dict with keys "success" (bool) indicating success/failure.
+        and "msg" (unicode) containing additional information if an error occurs.
+
+    """
+    translate = api_data.config_data.translate
+    submission_uuid = api_data.submission_data.submission_uuid
+
+    def failure_response(reason):
+        return { "success": False, "msg": translate(reason) }
+
+    if submission_uuid is None:
+        return failure_response(messages["must_submit"])
+
+    submission = api_data.peer_data.get_peer_submission() or {}
+    uuid_server = submission.get("uuid", None)
+    uuid_client = data.get("submission_uuid", None)
+
+    if uuid_server != uuid_client:
+        logger.warning(
+            "Irrelevant assessment submission: expected '%s', got '%s'",
+            uuid_server,
+            uuid_client,
         )
-        if uuid_server != uuid_client:
-            logger.warning(
-                "Irrelevant assessment submission: expected '%s', got '%s'",
-                uuid_server,
-                uuid_client,
+        return failure_response(messages["already_submitted"])
+
+    if api_data.peer_data.assessment:
+        try:
+            assessment = create_peer_assessment(api_data, data)
+            # Emit analytics event...
+            api_data.config_data.publish_assessment_event(
+                "openassessmentblock.peer_assess", assessment
             )
-            return {
-                "success": False,
-                "msg": self._(
-                    "This feedback has already been submitted or the submission has been cancelled."
-                ),
-            }
+        except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
+            logger.warning(
+                "Peer API error for submission UUID %s",
+                submission_uuid,
+                exc_info=True,
+            )
+            return failure_response(messages["could_not_submit"])
+        except PeerAssessmentInternalError:
+            logger.exception(
+                "Peer API internal error for submission UUID: %s",
+                submission_uuid,
+            )
+            return failure_response(messages["could_not_submit"])
 
-        if step_data.assessment:
-            try:
-                # Create the assessment
-                assessment = peer_api.create_assessment(
-                    self.submission_uuid,
-                    step_data.student_item["student_id"],
-                    data["options_selected"],
-                    clean_criterion_feedback(
-                        self.config_data.rubric_criteria_with_labels,
-                        data["criterion_feedback"],
-                    ),
-                    data["overall_feedback"],
-                    create_rubric_dict(
-                        self.config_data.prompts,
-                        self.config_data.rubric_criteria_with_labels,
-                    ),
-                    step_data.assessment["must_be_graded_by"],
-                )
+        # Update both the workflow that the submission we"re assessing
+        # belongs to, as well as our own (e.g. have we evaluated enough?)
+        try:
+            update = api_data.workflow_data.update_workflow_status
+            if assessment:
+                update(submission_uuid=assessment["submission_uuid"])
+            update()
+        except AssessmentWorkflowError:
+            logger.exception(
+                "Workflow error occurred when submitting peer assessment "
+                "for submission %s",
+                submission_uuid,
+            )
+            return failure_response(messages["could_not_update"])
 
-                # Emit analytics event...
-                self.publish_assessment_event(
-                    "openassessmentblock.peer_assess", assessment
-                )
+        # Temp kludge until we fix JSON serialization for datetime
+        assessment["scored_at"] = str(assessment["scored_at"])
 
-            except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
-                logger.warning(
-                    "Peer API error for submission UUID %s",
-                    self.submission_uuid,
-                    exc_info=True,
-                )
-                return {
-                    "success": False,
-                    "msg": self._("Your peer assessment could not be submitted."),
-                }
-            except PeerAssessmentInternalError:
-                logger.exception(
-                    "Peer API internal error for submission UUID: %s",
-                    self.submission_uuid,
-                )
-                msg = self._("Your peer assessment could not be submitted.")
-                return {"success": False, "msg": msg}
+        return {"success": True, "msg": ""}
 
-            # Update both the workflow that the submission we"re assessing
-            # belongs to, as well as our own (e.g. have we evaluated enough?)
-            try:
-                if assessment:
-                    self.update_workflow_status(
-                        submission_uuid=assessment["submission_uuid"]
-                    )
-                self.update_workflow_status()
-            except AssessmentWorkflowError:
-                logger.exception(
-                    "Workflow error occurred when submitting peer assessment "
-                    "for submission %s",
-                    self.submission_uuid,
-                )
-                msg = self._("Could not update workflow status.")
-                return {"success": False, "msg": msg}
-
-            # Temp kludge until we fix JSON serialization for datetime
-            assessment["scored_at"] = str(assessment["scored_at"])
-
-            return {"success": True, "msg": ""}
-
-        return {"success": False, "msg": self._("Could not load peer assessment.")}
+    return failure_response(messages["could_not_load"])

@@ -56,14 +56,14 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
 
 from openassessment.xblock.ora_config_api import ORAConfigAPI
-from openassessment.xblock.assessments.workflow import WorkflowAPI
-from openassessment.xblock.assessments.peer_assessment import PeerAssessmentAPI
-from openassessment.xblock.assessments.self_assessment import SelfAssessmentAPI
-from openassessment.xblock.assessments.staff_assessment import StaffAssessmentAPI
-from openassessment.xblock.assessments.student_training import StudentTrainingAPI
+from openassessment.xblock.workflow_api import WorkflowAPI
+from openassessment.xblock.assessments.peer_assessment_api import PeerAssessmentAPI
+from openassessment.xblock.assessments.self_assessment_api import SelfAssessmentAPI
+from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
+from openassessment.xblock.assessments.student_training_api import StudentTrainingAPI
+from openassessment.xblock.api_container import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
-
 
 def load(path):
     """Handy helper for getting resources from our kit."""
@@ -315,6 +315,10 @@ class OpenAssessmentBlock(
     @property
     def student_training_data(self):
         return StudentTrainingAPI(self)
+
+    @property
+    def api_data(self):
+        return ORADataAccessor(self)
 
     @property
     def course_id(self):
