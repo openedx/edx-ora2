@@ -136,7 +136,7 @@ class ORAConfigAPI:
         return self._block.get_team_for_anonymous_user(anonymous_user_id)
 
     def get_anonymous_user_ids_for_team(self):
-        return self._block.get_anonymous_user_ids_for_team
+        return self._block.get_anonymous_user_ids_for_team()
 
     def get_anonymous_user_id(self, username, course_id):
         return self._block.get_anonymous_user_id(self, username, course_id)
@@ -171,7 +171,7 @@ class ORAConfigAPI:
         self._block.publish_assessment_event(event_name, assessment, **kwargs)
 
     def get_username(self, anonymous_user_id):
-        return self._block(anonymous_user_id)
+        return self._block.get_username(anonymous_user_id)
 
     def add_team_submission_context(
         self,
