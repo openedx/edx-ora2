@@ -1,6 +1,8 @@
 """ External API for ORA Configuration data """
 import logging
 
+from openassessment.xblock.user_data import get_user_preferences
+
 logger = logging.getLogger(__name__)
 
 
@@ -209,3 +211,7 @@ class ORAConfigAPI:
 
     def render_error(self, error_msg):
         return self._block.render_error(error_msg)
+
+    @property
+    def user_preferences(self):
+        return get_user_preferences(self.user_service)

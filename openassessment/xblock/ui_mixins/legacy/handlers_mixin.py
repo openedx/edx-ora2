@@ -6,6 +6,7 @@ JSON handlers for the old-style ORA UI
 from xblock.core import XBlock
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
+from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.actions import (
     LegacySubmissionActions,
 )
@@ -27,6 +28,7 @@ class LegacyHandlersMixin(LegacySubmissionActions):
     def save_submission(self, data, suffix=""):  # pylint: disable=unused-argument
         """ Save a draft response for the student under data['submission'] """
         return LegacySubmissionActions.save_submission(self.config_data, self.submission_data, data)
+
     @XBlock.json_handler
     def peer_assess(self, data):
         return peer_assess(self.api_data, data)
@@ -34,3 +36,7 @@ class LegacyHandlersMixin(LegacySubmissionActions):
     @XBlock.json_handler
     def self_assess(self, data):
         return self_assess(self.api_data, data)
+
+    @XBlock.json_handler
+    def training_assess(self, data):
+        return training_assess(self.api_data, data)
