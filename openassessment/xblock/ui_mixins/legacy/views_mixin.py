@@ -38,6 +38,6 @@ class LegacyViewsMixin(LegacySubmissionViewsMixin):
             self.no_peers = True
         return render_self_assessment(self.api_data)
 
-    @XBlock.hander
+    @XBlock.handler
     def render_student_training(self):
         return render_student_training(self.api_data)

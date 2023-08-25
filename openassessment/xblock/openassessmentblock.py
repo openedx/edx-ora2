@@ -61,7 +61,7 @@ from openassessment.xblock.assessments.peer_assessment_api import PeerAssessment
 from openassessment.xblock.assessments.self_assessment_api import SelfAssessmentAPI
 from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
 from openassessment.xblock.assessments.student_training_api import StudentTrainingAPI
-from openassessment.xblock.api_container import ORADataAccessor
+from openassessment.xblock.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

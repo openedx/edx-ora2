@@ -2,13 +2,10 @@
 Student training step in the OpenAssessment XBlock.
 """
 import logging
-from webob import Response
-from xblock.core import XBlock
 
 from openassessment.assessment.api import student_training
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from .user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -19,6 +16,7 @@ messages = {
     "unexpected_error": "An unexpected error occurred.",
     "could_not_update": "Could not update workflow status.",
 }
+
 
 def training_assess(api_data, data):
     """
