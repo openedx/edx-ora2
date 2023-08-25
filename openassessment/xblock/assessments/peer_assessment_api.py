@@ -1,13 +1,21 @@
+import logging
+
+from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.assessment.api import peer as peer_api
 from openassessment.xblock.data_conversion import (
     create_submission_dict
 )
 from openassessment.xblock.step_data_api import StepDataAPI
 
+logger = logging.getLogger(__name__)
+
+
 class PeerAssessmentAPI(StepDataAPI):
     def __init__(self, block, continue_grading = False):
         super().__init__(block, "peer-assessment")
         self._continue_grading = continue_grading
+        self._submission_data = block.submission_data
+        self._config_data = block.config_data
 
     def __repr__(self):
         return "{0}".format({
@@ -84,7 +92,17 @@ class PeerAssessmentAPI(StepDataAPI):
         return self._block.get_download_urls_from_submission(peer_sub)
 
     def get_peer_submission(self):
-        return peer_api.get_submission_to_assess(
-            self._block.submission_uuid,
-            self.assessment["must_be_graded_by"]
-        )
+        peer_submission = False
+        try:
+            peer_submission = peer_api.get_submission_to_assess(
+                self._submission_data.submission_uuid,
+                self.assessment["must_be_graded_by"]
+            )
+            self._config_data.runtime.publish(
+                self._block,
+                "openassessmentblock.get_peer_submission",
+                self.format_submission_for_publish(peer_submission)
+            )
+        except PeerAssessmentWorkflowError as err:
+            logger.exception(err)
+        return peer_submission

@@ -108,8 +108,20 @@ class ORAConfigAPI:
         return self._block.teams_service
 
     @property
+    def user_service(self):
+        return self._block.runtime.service(self._block, 'user')
+
+    @property
+    def user_state_service(self):
+        return self._block.runtime.service(self._block, 'user_state')
+
+    @property
     def valid_access_to_team_assessment(self):
         return self._block.valid_access_to_team_assessment
+
+    @property
+    def runtime(self):
+        return self._block.runtime
 
     # Block methods
     def is_user_state_service_available(self):
@@ -188,3 +200,9 @@ class ORAConfigAPI:
 
     def get_student_item_dict(self, anonymous_user_id=None):
         return self._block.get_student_item_dict(anonymous_user_id)
+
+    def get_xblock_id(self):
+        return self._block.get_xblock_id()
+
+    def render_assessment(self, path, context_dict):
+        return self._block.render_assessment(path, context_dict)
