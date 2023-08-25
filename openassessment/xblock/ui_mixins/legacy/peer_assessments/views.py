@@ -96,7 +96,6 @@ def peer_path_and_context(api_data, continue_grading):
         tuple of (template_path, context_dict)
 
     """
-    # Import is placed here to avoid model import at project startup.
     step_data = api_data.peer_data(continue_grading)
 
     def path_and_context(path_key, peer_sub=None):
