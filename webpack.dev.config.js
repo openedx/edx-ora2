@@ -29,7 +29,7 @@ function getEntries(dir) {
         if ( filePathEntry.endsWith('index') ) {
           filePathEntry = filePathEntry.replace('/index', '');
         }
-        const relativePath = path.relative('openassessment/xblock/static/js/src/react/', filePathEntry);
+        const relativePath = path.join('pages', path.relative(dir, filePathEntry));
         entries[relativePath] = path.resolve(process.cwd(), filePath);
       }
     });
@@ -105,7 +105,8 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
-    ...getEntries('openassessment/xblock/static/js/src/react/'),
+    'react_base': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react/react_base.jsx'),
+    ...getEntries('openassessment/xblock/static/js/src/react/pages'),
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),

@@ -32,7 +32,7 @@ function getEntries(dir) {
         if ( filePathEntry.endsWith('index') ) {
           filePathEntry = filePathEntry.replace('/index', '');
         }
-        const relativePath = path.relative('openassessment/xblock/static/js/src/react/', filePathEntry);
+        const relativePath = path.join('pages', path.relative(dir, filePathEntry));
         entries[relativePath] = path.resolve(process.cwd(), filePath);
       }
     });
@@ -53,9 +53,9 @@ const modifiedCssRule = {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader', // translates CSS into CommonJS
-            options: {
-              sourceMap: true,
-            },
+            // options: {
+            //   sourceMap: true,
+            // },
           },
           {
             loader: 'postcss-loader',
@@ -72,7 +72,7 @@ const modifiedCssRule = {
           {
             loader: 'sass-loader', // compiles Sass to CSS
             options: {
-              sourceMap: true,
+              // sourceMap: true,
               sassOptions: {
                 includePaths: [
                   path.join(process.cwd(), 'node_modules'),
@@ -105,8 +105,11 @@ Object.assign(config, {
     'openassessment-ltr': path.resolve(process.cwd(), 'openassessment/xblock/static/sass/openassessment-ltr.scss'),
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
-    ...getEntries('openassessment/xblock/static/js/src/react/'),
+    'react_base': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/react/react_base.jsx'),
+    ...getEntries('openassessment/xblock/static/js/src/react/pages'),
   },
+  // remove source map from production build
+  devtool: false,
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
     chunkFilename: '[id].js',
@@ -118,7 +121,7 @@ Object.assign(config, {
   optimization: {},
   plugins: [
     // Cleans the dist directory before each build
-    ...process.env.npm_config_clean ? [new CleanWebpackPlugin()]: [],
+    new CleanWebpackPlugin(),
     new Dotenv({
       path: path.resolve(process.cwd(), '.env'),
       systemvars: true,
@@ -131,6 +134,10 @@ Object.assign(config, {
     }),
     new WebpackManifestPlugin(),
   ],
+  // externals: {
+  //   'react': 'React',
+  //   'react-dom': 'ReactDOM',
+  // }
 });
 
 config.resolve.modules = ['node_modules', path.resolve(__dirname, 'openassessment/xblock/static/js/src')];

@@ -672,7 +672,7 @@ class OpenAssessmentBlock(MessageMixin,
             additional_js_context=context_dict,
         )
 
-    def _render_react_page(self, page_name, props, on_mount_func=None, additional_js_context=None):
+    def _render_react_page(self, page_name, props, additional_js_context=None):
         template = get_template("openassessmentblock/react_template.html")
         fragment = Fragment(template.render())
 
@@ -708,7 +708,6 @@ class OpenAssessmentBlock(MessageMixin,
             "TEXT_RESPONSE_EDITOR": self.text_response_editor,
             "PROPS": props,
             "PAGE_NAME": page_name,
-            "ON_MOUNT_FUNC": on_mount_func,
             "IS_DEV_SERVER": LoadStatic.get_is_dev_server(),
             "DISABLE_DEFAULT_CSS": True,
         }
