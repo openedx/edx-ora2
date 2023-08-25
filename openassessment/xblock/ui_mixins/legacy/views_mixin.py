@@ -10,6 +10,9 @@ from openassessment.xblock.ui_mixins.legacy.peer_assessments.views import (
 from openassessment.xblock.ui_mixins.legacy.self_assessments.views import (
     render_self_assessment
 )
+from openassessment.xblock.ui_mixins.legacy.student_training.views import (
+    render_student_training
+)
 from openassessment.xblock.ui_mixins.legacy.submissions.views import (
     LegacySubmissionViewsMixin,
 )
@@ -34,3 +37,7 @@ class LegacyViewsMixin(LegacySubmissionViewsMixin):
         if self.self_data.is_cancelled:
             self.no_peers = True
         return render_self_assessment(self.api_data)
+
+    @XBlock.hander
+    def render_student_training(self):
+        return render_student_training(self.api_data)
