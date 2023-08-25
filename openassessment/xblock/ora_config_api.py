@@ -206,3 +206,6 @@ class ORAConfigAPI:
 
     def render_assessment(self, path, context_dict):
         return self._block.render_assessment(path, context_dict)
+
+    def render_error(self, error_msg):
+        return self._block.render_error(error_msg)
