@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 18:36+0000\n"
+"POT-Creation-Date: 2023-08-27 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Dmitry Broover, 2022\n"
 "Language-Team: Russian (http://app.transifex.com/open-edx/edx-platform/language/ru/)\n"
@@ -572,30 +572,50 @@ msgid ""
 msgstr "Введите пример отзыва, который слушатели увидят перед вводом собственного. Используйте данный отзыв для демонстрации слушателям хорошего примера взаимного оценивания."
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
-msgid "Course Deadlines"
+msgid "Deadlines Configuration"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+msgid "Configure deadlines manually"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+msgid "Match deadlines to the subsection due date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+msgid "Match deadlines to the course end date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+msgid "Learn more about open response date settings"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
 msgstr "Дата запуска задания"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:26
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
 msgid "Response Start Time"
 msgstr "Время запуска задания"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
 msgid "The date and time when learners can begin submitting responses."
 msgstr "Дата и время, когда слушатели смогут начать отправку ответов."
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:43
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "Response Due Date"
 msgstr "Дата завершения приёма ответов"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
 msgid "Response Due Time"
 msgstr "Время завершения приёма ответов"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
 msgid "The date and time when learners can no longer submit responses."
 msgstr "Дата и время, после которых слушатели больше не смогут отправлять свои ответы."
 
@@ -2476,30 +2496,30 @@ msgstr "options_selected должен иметь форму словаря"
 msgid "Your scores could not be checked."
 msgstr "Не удалось проверить ваши оценки."
 
-#: xblock/studio_mixin.py:229 xblock/studio_mixin.py:241
+#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
 msgid "Error updating XBlock configuration"
 msgstr "Ошибка при обновлении конфигурации XBlock"
 
-#: xblock/studio_mixin.py:246
+#: xblock/studio_mixin.py:252
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: xblock/studio_mixin.py:250
+#: xblock/studio_mixin.py:256
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:253
+#: xblock/studio_mixin.py:259
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:277
+#: xblock/studio_mixin.py:283
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "При проверке обнаружена ошибка: {error}"
 
-#: xblock/studio_mixin.py:308
+#: xblock/studio_mixin.py:315
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "XBlock для оценивания открытых ответов успешно обновлён"
 

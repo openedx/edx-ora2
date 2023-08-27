@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 18:36+0000\n"
+"POT-Creation-Date: 2023-08-27 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Zimeng Chen, 2023\n"
 "Language-Team: Spanish (Latin America) (http://app.transifex.com/open-edx/edx-platform/language/es_419/)\n"
@@ -579,30 +579,50 @@ msgid ""
 msgstr "Ingrese el texto que los estudiantes verán antes de ingresar su retroalimentación. Use este texto para mostrar a los estudiantes un buen ejemplo de calificación entre pares."
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
-msgid "Course Deadlines"
-msgstr "Fechas de Entrega del Curso"
+msgid "Deadlines Configuration"
+msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+msgid "Configure deadlines manually"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+msgid "Match deadlines to the subsection due date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+msgid "Match deadlines to the course end date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+msgid "Learn more about open response date settings"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
 msgstr "Fecha de inicio de respuestas"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:26
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
 msgid "Response Start Time"
 msgstr "Hora de inicio de respuestas"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
 msgid "The date and time when learners can begin submitting responses."
 msgstr "La fecha y hora cuando los estudiantes pueden empezar a enviar las respuestas."
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:43
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "Response Due Date"
 msgstr "Fecha límite de entrega de respuestas"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
 msgid "Response Due Time"
 msgstr "Hora de entrega de respuestas"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
 msgid "The date and time when learners can no longer submit responses."
 msgstr "Fecha y hora cuando los estudiantes ya no pueden enviar respuestas."
 
@@ -2481,30 +2501,30 @@ msgstr "options_selected debe ser un diccionario"
 msgid "Your scores could not be checked."
 msgstr "Sus puntajes no pudieron ser validados"
 
-#: xblock/studio_mixin.py:229 xblock/studio_mixin.py:241
+#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
 msgid "Error updating XBlock configuration"
 msgstr "Error al actualizar la configuración del XBlock"
 
-#: xblock/studio_mixin.py:246
+#: xblock/studio_mixin.py:252
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Error: Texto de Respuesta y Archivo de Respuesta Cargado no pueden ser ambos inhabilitados"
 
-#: xblock/studio_mixin.py:250
+#: xblock/studio_mixin.py:256
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Error: Cuando el Texto de Respuesta es inhabilitado, es requerido el Archivo de Respuesta Cargado"
 
-#: xblock/studio_mixin.py:253
+#: xblock/studio_mixin.py:259
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Error: Cuando el Archivo de Respuesta Cargado es inhabilitado, es requerido el Texto de Respuesta"
 
-#: xblock/studio_mixin.py:277
+#: xblock/studio_mixin.py:283
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Error de validación: {error}"
 
-#: xblock/studio_mixin.py:308
+#: xblock/studio_mixin.py:315
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Se actualizó correctamente el OpenAssessment XBlock"
 

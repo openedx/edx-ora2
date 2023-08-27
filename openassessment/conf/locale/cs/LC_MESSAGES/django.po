@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 18:36+0000\n"
+"POT-Creation-Date: 2023-08-27 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2022-2023\n"
 "Language-Team: Czech (http://app.transifex.com/open-edx/edx-platform/language/cs/)\n"
@@ -558,30 +558,50 @@ msgid ""
 msgstr "Zadejte text zpětné vazby, který studenti uvidí, než zadají vlastní zpětnou vazbu. Pomocí tohoto textu můžete studentům ukázat dobrý příklad vzájemného hodnocení."
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
-msgid "Course Deadlines"
-msgstr "Termíny kurzů"
+msgid "Deadlines Configuration"
+msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+msgid "Configure deadlines manually"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+msgid "Match deadlines to the subsection due date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+msgid "Match deadlines to the course end date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+msgid "Learn more about open response date settings"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
 msgstr "Datum zahájení odpovědi"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:26
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
 msgid "Response Start Time"
 msgstr "Čas zahájení odpovědi"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
 msgid "The date and time when learners can begin submitting responses."
 msgstr "Datum a čas, kdy mohou studenti začít odesílat odpovědi."
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:43
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "Response Due Date"
 msgstr "Datum platnosti odpovědi"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
 msgid "Response Due Time"
 msgstr "Čas platnosti odpovědi"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
 msgid "The date and time when learners can no longer submit responses."
 msgstr "Datum a čas, kdy studenti již nemohou odesílat odpovědi."
 
@@ -2462,30 +2482,30 @@ msgstr "options_selected musí být slovník"
 msgid "Your scores could not be checked."
 msgstr "Vaše skóre nebylo možné zkontrolovat."
 
-#: xblock/studio_mixin.py:229 xblock/studio_mixin.py:241
+#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
 msgid "Error updating XBlock configuration"
 msgstr "Chyba při aktualizaci konfigurace XBlock"
 
-#: xblock/studio_mixin.py:246
+#: xblock/studio_mixin.py:252
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Chyba: Textová odezva a odezva pro odesílání souborů nemohou být obě zakázány"
 
-#: xblock/studio_mixin.py:250
+#: xblock/studio_mixin.py:256
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Chyba: Když je textová odezva zakázána, musí být vyžadována odezva při nahrání souboru"
 
-#: xblock/studio_mixin.py:253
+#: xblock/studio_mixin.py:259
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Chyba: Když je odezva na nahrání souboru zakázána, musí být vyžadována textová odpověď"
 
-#: xblock/studio_mixin.py:277
+#: xblock/studio_mixin.py:283
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Chyba ověření: {error}"
 
-#: xblock/studio_mixin.py:308
+#: xblock/studio_mixin.py:315
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Úspěšně aktualizován OpenAssessment XBlock"
 

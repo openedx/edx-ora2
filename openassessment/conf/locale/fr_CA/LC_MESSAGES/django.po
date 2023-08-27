@@ -97,7 +97,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 18:36+0000\n"
+"POT-Creation-Date: 2023-08-27 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2016-2023\n"
 "Language-Team: French (Canada) (http://app.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -342,7 +342,7 @@ msgstr "Types de fichier"
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr "Entrez les extensions de fichiers, séparés par des virgules, que vous voulez que les apprenants puissent téléverser. Par exemple: pdf, doc, docx."
+msgstr "Entrez les extensions de fichiers, séparés par des virgules, que vous voulez que les apprenants puissent téléverser. Par exemple : pdf, doc, docx."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
 msgid ""
@@ -356,7 +356,7 @@ msgstr "Permettre les réponses en LaTeX"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr "Préciser si les étudiants peuvent écrire des chaînes de caractères formatées en lateX"
+msgstr "Préciser si les étudiants peuvent écrire des chaînes de caractères formatées en LaTeX"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:102
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
@@ -641,30 +641,50 @@ msgid ""
 msgstr "Entrez le texte de commentaire que les apprenants vont voir avant qu'ils entrent dans leurs propres commentaires. Utilisez ce texte pour afficher aux apprenants un exemple de bonne évaluation par les pairs."
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
-msgid "Course Deadlines"
-msgstr "Dates d'échéances du cours"
+msgid "Deadlines Configuration"
+msgstr "Configuration des dates limites"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr "Sélectionnez une option de configuration de date limite"
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+msgid "Configure deadlines manually"
+msgstr "Configurer les dates limites manuellement"
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+msgid "Match deadlines to the subsection due date"
+msgstr "Faire correspondre les dates limites avec la date d'échéance de la sous-section"
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+msgid "Match deadlines to the course end date"
+msgstr "Faire correspondre les dates limites à la date de fin du cours"
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+msgid "Learn more about open response date settings"
+msgstr "En savoir plus sur les paramètres de date de réponse ouverte"
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
 msgstr "Date de début pour la réponse"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:26
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
 msgid "Response Start Time"
 msgstr "Heure de début pour la réponse"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
 msgid "The date and time when learners can begin submitting responses."
 msgstr "La date et l'heure où les apprenants peuvent commencer à soumettre des réponses."
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:43
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "Response Due Date"
 msgstr "Date d'échéance des réponses"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
 msgid "Response Due Time"
 msgstr "Horaire limite de rendu des réponses"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
 msgid "The date and time when learners can no longer submit responses."
 msgstr "La date et l'heure auxquels les étudiants ne peuvent plus soumettre les réponses."
 
@@ -897,7 +917,7 @@ msgstr "Soumission de commentaires"
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr "Votre commentaire a été soumis.  Il sera accessible à aux membres de l'équipe d'enseignement lorsqu'ils examineront les traces enregistrées du cours."
+msgstr "Votre commentaire a été soumis. Il sera accessible à aux membres de l'équipe d'enseignement lorsqu'ils examineront les traces enregistrées du cours."
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
@@ -2543,30 +2563,30 @@ msgstr "options_selected doit être un dictionnaire"
 msgid "Your scores could not be checked."
 msgstr "Vos notes n'ont pu être vérifiés."
 
-#: xblock/studio_mixin.py:229 xblock/studio_mixin.py:241
+#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
 msgid "Error updating XBlock configuration"
 msgstr "Erreur lors de la mise à jour de la configuration du XBlock"
 
-#: xblock/studio_mixin.py:246
+#: xblock/studio_mixin.py:252
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Erreur : la réponse textuelle et la réponse avec téléchargement de fichier ne peuvent pas être toutes les deux désactivées"
 
-#: xblock/studio_mixin.py:250
+#: xblock/studio_mixin.py:256
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Erreur : lorsque la réponse textuelle est désactivée, la réponse de téléchargement avec fichier doit être requise"
 
-#: xblock/studio_mixin.py:253
+#: xblock/studio_mixin.py:259
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Erreur : lorsque la réponse avec téléchargement de fichier est désactivée, la réponse textuelle doit être requise"
 
-#: xblock/studio_mixin.py:277
+#: xblock/studio_mixin.py:283
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Erreur de validation : {error}"
 
-#: xblock/studio_mixin.py:308
+#: xblock/studio_mixin.py:315
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock a été correctement mis à jour"
 
@@ -2598,7 +2618,7 @@ msgstr "La soumission ne peut pas être vide. Veuillez actualiser la page et ré
 
 #: xblock/submission_mixin.py:210
 msgid "API returned unclassified exception."
-msgstr "l'API a renvoyé un code d'exception non classé"
+msgstr "API a renvoyé un code d'exception non classé"
 
 #: xblock/submission_mixin.py:261
 msgid "Please contact support staff."
@@ -2636,7 +2656,7 @@ msgstr "Une erreur s'est produite lors de la récupération de l'URL de chargeme
 
 #: xblock/submission_mixin.py:790
 msgid "Draft saved!"
-msgstr "Brouillon enregistré !"
+msgstr "Brouillon enregistré!"
 
 #: xblock/submission_mixin.py:791
 msgid "Response not started."
@@ -2694,7 +2714,7 @@ msgstr "L'identifiant de la grille est invalide."
 #: xblock/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr "Les options de '{criterion}' ont des nom(s) en double: {duplicates}"
+msgstr "Les options de '{criterion}' ont des nom(s) en double : {duplicates}"
 
 #: xblock/validation.py:204
 msgid "Criteria with no options must require written feedback."
