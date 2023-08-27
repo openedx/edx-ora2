@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-13 18:36+0000\n"
+"POT-Creation-Date: 2023-08-27 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Lasha Kokilashvili, 2018\n"
 "Language-Team: Georgian (http://app.transifex.com/open-edx/edx-platform/language/ka/)\n"
@@ -556,30 +556,50 @@ msgid ""
 msgstr "შეიყვანეთ უკუკავშირის ტექსტი, რომელსაც მსმენელები საკუთარი გამოხმაურების დაწერამდე დაინახავენ. გამოიყენეთ ეს ტექსტი მსმენელებისთვის ურთიერთშეფასების კარგი მაგალითის მისაცემად."
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
-msgid "Course Deadlines"
+msgid "Deadlines Configuration"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:9
+msgid "Select a deadline configuration option"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+msgid "Configure deadlines manually"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+msgid "Match deadlines to the subsection due date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+msgid "Match deadlines to the course end date"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+msgid "Learn more about open response date settings"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
 msgstr "პასუხების მიღების დაწყების თარიღი"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:26
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
 msgid "Response Start Time"
 msgstr "დავალების დაწყების დრო"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
 msgid "The date and time when learners can begin submitting responses."
 msgstr "მსმენელს მიერ პასუხების გაგზავნის დაწყების თარიღი და დრო."
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:43
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
 msgid "Response Due Date"
 msgstr "პასუხის საბოლოო თარიღი"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:56
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
 msgid "Response Due Time"
 msgstr "პასუხის საბოლოო ვადა"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
 msgid "The date and time when learners can no longer submit responses."
 msgstr "თარიღი და საათი, რომლის შემდეგაც მსმენელებს პასუხების გამოგზავნა აღარ შეეძლიებათ. "
 
@@ -2456,30 +2476,30 @@ msgstr "options_selected უნდა იყოს ლექსიკონი"
 msgid "Your scores could not be checked."
 msgstr "თქვენი ქულების შემოწმება ვერ მოხერხდა."
 
-#: xblock/studio_mixin.py:229 xblock/studio_mixin.py:241
+#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
 msgid "Error updating XBlock configuration"
 msgstr "XBlock-ის კონფიგურაციის განახლების შეცდომა"
 
-#: xblock/studio_mixin.py:246
+#: xblock/studio_mixin.py:252
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: xblock/studio_mixin.py:250
+#: xblock/studio_mixin.py:256
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:253
+#: xblock/studio_mixin.py:259
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:277
+#: xblock/studio_mixin.py:283
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "დადასტურების შეცდომა: {error}"
 
-#: xblock/studio_mixin.py:308
+#: xblock/studio_mixin.py:315
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock წარმატებით განახლდა"
 
