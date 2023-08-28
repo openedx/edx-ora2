@@ -100,6 +100,8 @@ class SubmissionAPI(StepDataAPI):
         """Return a submission_uuid or None if the user hasn't submitted"""
         return self._workflow.get("submission_uuid")
 
+    # File Uploads
+
     @property
     def uploaded_files(self):
         """
@@ -110,14 +112,22 @@ class SubmissionAPI(StepDataAPI):
         * None when file uploads not enabled.
         """
         if self._block.file_upload_type:
-            file_urls = self._block.file_manager.file_descriptors(
+            file_urls = self.file_manager.file_descriptors(
                 team_id=self.team_id, include_deleted=True
             )
-            team_file_urls = self._block.file_manager.team_file_descriptors(
+            team_file_urls = self.file_manager.team_file_descriptors(
                 team_id=self.team_id
             )
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
         return None
+
+    @property
+    def saved_files_descriptions(self):
+        return self._block.saved_files_descriptions
+
+    @property
+    def file_manager(self):
+        return self._block.file_manager
 
     @property
     def team_id(self):

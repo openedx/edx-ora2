@@ -212,25 +212,24 @@ class LegacySubmissionActions:
 
     ### FILE UPLOAD ###
 
-    @XBlock.json_handler
-    def save_files_descriptions(
-        self, data, suffix=""
-    ):  # pylint: disable=unused-argument
+    @classmethod
+    def save_files_descriptions(cls, block_config, submission_info, data):
         """
         Save the metadata for each uploaded file.
 
         Args:
+            block_config (ORAConfigAPI)
+            submission_info (SubmissionAPI)
             data (dict): Data should have a single key 'fileMetadata' that contains
                 a list of dictionaries with the following keys: 'description','fileName', and 'fileSize'
             each element of the list maps to a single file
-            suffix (str): Not used.
 
         Returns:
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         failure_response = {
             "success": False,
-            "msg": self._("Files descriptions were not submitted."),
+            "msg": block_config.translate("Files descriptions were not submitted."),
         }
 
         if "fileMetadata" not in data:
@@ -259,12 +258,11 @@ class LegacySubmissionActions:
                 return failure_response
 
         try:
-            self.file_manager.append_uploads(*file_data)
+            submission_info.file_manager.append_uploads(*file_data)
             # Emit analytics event...
-            self.runtime.publish(
-                self,
+            block_config.publish_event(
                 "openassessmentblock.save_files_descriptions",
-                {"saved_response": self.saved_files_descriptions},
+                {"saved_response": submission_info.saved_files_descriptions},
             )
         except FileUploadError as exc:
             logger.exception(
@@ -275,7 +273,7 @@ class LegacySubmissionActions:
             )
             return {
                 "success": False,
-                "msg": self._("Files metadata could not be saved."),
+                "msg": block_config._("Files metadata could not be saved."),
             }
         except Exception as exc:  # pylint: disable=broad-except
             logger.exception(
