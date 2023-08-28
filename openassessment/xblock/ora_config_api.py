@@ -1,10 +1,6 @@
 """ External API for ORA Configuration data """
-import logging
 
 from openassessment.xblock.user_data import get_user_preferences
-
-logger = logging.getLogger(__name__)
-
 
 class ORAConfigAPI:
     # xblock fields
@@ -75,7 +71,9 @@ class ORAConfigAPI:
 
     @property
     def course_id(self):
-    # NOTE - Do we need this? Is this the same as block ID?
+        # NOTE - Do we need this? Is this the same as block ID?
+        return self._block.course_id
+
     @property
     def location(self):
         return self._block.location

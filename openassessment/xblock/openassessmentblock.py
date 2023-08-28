@@ -79,7 +79,6 @@ def load(path):
 class OpenAssessmentBlock(
     MessageMixin,
     SubmissionMixin,
-    PeerAssessmentMixin,
     SelfAssessmentMixin,
     StaffAssessmentMixin,
     StudioMixin,
@@ -301,7 +300,7 @@ class OpenAssessmentBlock(
     def submission_data(self):
         return SubmissionAPI(self)
 
-    def peer_data(self, continue_grading = False):
+    def peer_assessment_data(self, continue_grading = False):
         return PeerAssessmentAPI(self, continue_grading)
 
     @property

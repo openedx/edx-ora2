@@ -69,7 +69,7 @@ class PeerAssessmentMixin:
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
 
-        step_data = self.peer_data()
+        step_data = self.peer_assessment_data()
         if self.submission_uuid is None:
             return {
                 "success": False, "msg": self._("You must submit a response before you can perform a peer assessment.")
@@ -246,7 +246,7 @@ class PeerAssessmentMixin:
 
         """
         # Import is placed here to avoid model import at project startup.
-        step_data = self.peer_data(continue_grading)
+        step_data = self.peer_assessment_data(continue_grading)
 
         if step_data.is_cancelled:
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission

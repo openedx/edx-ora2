@@ -1,5 +1,6 @@
 """ External api for ORA Submission data """
 from copy import deepcopy
+import logging
 
 from submissions.team_api import get_team_submission
 
@@ -7,21 +8,25 @@ from openassessment.xblock.data_conversion import update_saved_response_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.step_data_api import StepDataAPI
 
+logger = logging.getLogger(__name__)
+
 
 class SubmissionAPI(StepDataAPI):
-
     def __init__(self, block):
         super().__init__(block, "submission")
-        self._workflow = self.workflow_data.workflow
+
+    @property
+    def workflow(self):
+        return self._block.api_data.workflow_data.workflow
 
     # Submission Statuses
     @property
     def has_submitted(self):
-        return bool(self._workflow)
+        return bool(self.workflow)
 
     @property
     def has_been_cancelled(self):
-        return self._workflow and self._workflow["status"] == "cancelled"
+        return self.workflow and self.workflow["status"] == "cancelled"
 
     @property
     def cancellation_info(self):
@@ -34,7 +39,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def has_received_final_grade(self):
-        return self._workflow and self._workflow["status"] == "done"
+        return self.workflow and self.workflow["status"] == "done"
 
     @property
     def peer_step_incomplete(self):
@@ -93,12 +98,12 @@ class SubmissionAPI(StepDataAPI):
     @property
     def student_submission(self):
         """Return a saved response or a student / team submission"""
-        return self._block.get_user_submission(self._workflow["submission_uuid"])
+        return self._block.get_user_submission(self.workflow["submission_uuid"])
 
     @property
     def submission_uuid(self):
         """Return a submission_uuid or None if the user hasn't submitted"""
-        return self._workflow.get("submission_uuid")
+        return self.workflow.get("submission_uuid")
 
     # File Uploads
 
@@ -151,7 +156,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def team_submission_uuid(self):
-        return self._workflow["team_submission_uuid"]
+        return self.workflow["team_submission_uuid"]
 
     def get_team_submission_context(self, context):
         return self._block.get_team_submission_context(context)

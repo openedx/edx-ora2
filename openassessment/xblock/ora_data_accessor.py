@@ -34,5 +34,5 @@ class ORADataAccessor:
     def student_training_data(self):
         return StudentTrainingAPI(self._block)
 
-    def peer_assessment_data(self, continue_grading):
+    def peer_assessment_data(self, continue_grading=False):
         return PeerAssessmentAPI(self._block, continue_grading)

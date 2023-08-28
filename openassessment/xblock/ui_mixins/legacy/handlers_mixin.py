@@ -40,7 +40,7 @@ class LegacyHandlersMixin(LegacySubmissionActions):
     # Assessments
 
     @XBlock.json_handler
-    def peer_assess(self, data):
+    def peer_assess(self, data, suffix=""):
         return peer_assess(self.api_data, data)
 
     @XBlock.json_handler

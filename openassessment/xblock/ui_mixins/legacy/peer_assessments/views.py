@@ -1,15 +1,11 @@
 """
 The Peer Assessment view Mixin
 """
-
-import logging
-
 from webob import Response
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
 from openassessment.xblock.user_data import get_user_preferences
 
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 template_paths = {
     "unavailable": "openassessmentblock/peer/oa_peer_unavailable.html",
@@ -96,7 +92,7 @@ def peer_path_and_context(api_data, continue_grading):
         tuple of (template_path, context_dict)
 
     """
-    step_data = api_data.peer_data(continue_grading)
+    step_data = api_data.peer_assessment_data(continue_grading)
 
     def path_and_context(path_key, peer_sub=None):
         return (
