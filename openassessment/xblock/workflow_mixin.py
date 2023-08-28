@@ -1,7 +1,6 @@
 """
 Handle OpenAssessment XBlock requests to the Workflow API.
 """
-
 from xblock.core import XBlock
 from submissions.api import get_submissions, SubmissionInternalError, SubmissionNotFoundError
 
@@ -156,6 +155,7 @@ class WorkflowMixin:
 
         if submission_uuid is None:
             return {}
+
         return workflow_api.get_workflow_for_submission(
             submission_uuid,
             self.workflow_requirements(),

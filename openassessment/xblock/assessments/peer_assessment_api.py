@@ -14,24 +14,7 @@ class PeerAssessmentAPI(StepDataAPI):
     def __init__(self, block, continue_grading = False):
         super().__init__(block, "peer-assessment")
         self._continue_grading = continue_grading
-        self._submission_data = block.submission_data
-        self._config_data = block.config_data
-
-    def __repr__(self):
-        return "{0}".format({
-            "assessment": self.assessment,
-            "continue_grading": self.continue_grading,
-            "due_date": self.due_date,
-            "file_upload_type": self.file_upload_type,
-            "is_cancelled": self.is_cancelled,
-            "is_complete": self.is_complete,
-            "is_due": self.is_due,
-            "is_not_available_yet": self.is_not_available_yet,
-            "is_past_due": self.is_past_due,
-            "is_peer": self.is_peer,
-            "is_skipped": self.is_skipped,
-            "start_date": self.start_date,
-        })
+        self._submission_data = block.api_data.submission_data
 
     @property
     def assessment(self):
@@ -95,11 +78,10 @@ class PeerAssessmentAPI(StepDataAPI):
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
-                self._submission_data.submission_uuid,
+                self.workflow_data.submission_uuid,
                 self.assessment["must_be_graded_by"]
             )
-            self._config_data.runtime.publish(
-                self._block,
+            self.config_data.publish_event(
                 "openassessmentblock.get_peer_submission",
                 self.format_submission_for_publish(peer_submission)
             )

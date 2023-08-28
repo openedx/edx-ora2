@@ -33,7 +33,6 @@ class WorkflowAPI:
     def is_self_complete(self):
         return self.status_details.get('self', {}).get('complete', False)
 
-
     @property
     def is_cancelled(self):
         return self.status == 'cancelled'

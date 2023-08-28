@@ -32,13 +32,13 @@ def create_peer_assessment(api_data, data):
     # Import is placed here to avoid model import at project startup.
     from openassessment.assessment.api import peer as peer_api
     config_data = api_data.config_data
-    submission_uuid = api_data.submission_data.submission_uuid
-    peer_data = api_data.peer_data
+    submission_uuid = api_data.workflow_data.submission_uuid
+    peer_assessment_data = api_data.peer_assessment_data()
 
     # Create the assessment
     assessment = peer_api.create_assessment(
         submission_uuid,
-        peer_data.student_item["student_id"],
+        peer_assessment_data.student_item["student_id"],
         data["options_selected"],
         clean_criterion_feedback(
             config_data.rubric_criteria_with_labels,
@@ -49,7 +49,7 @@ def create_peer_assessment(api_data, data):
             config_data.prompts,
             config_data.rubric_criteria_with_labels,
         ),
-        peer_data.assessment["must_be_graded_by"],
+        peer_assessment_data.assessment["must_be_graded_by"],
     )
 
     return assessment
@@ -74,7 +74,7 @@ def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
 
     """
     translate = api_data.config_data.translate
-    submission_uuid = api_data.submission_data.submission_uuid
+    submission_uuid = api_data.workflow_data.submission_uuid
 
     def failure_response(reason):
         return { "success": False, "msg": translate(reason) }
@@ -82,7 +82,8 @@ def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
     if submission_uuid is None:
         return failure_response(messages["must_submit"])
 
-    submission = api_data.peer_data.get_peer_submission() or {}
+    step_data = api_data.peer_assessment_data()
+    submission = step_data.get_peer_submission() or {}
     uuid_server = submission.get("uuid", None)
     uuid_client = data.get("submission_uuid", None)
 
@@ -94,7 +95,7 @@ def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
         )
         return failure_response(messages["already_submitted"])
 
-    if api_data.peer_data.assessment:
+    if step_data.assessment:
         try:
             assessment = create_peer_assessment(api_data, data)
             # Emit analytics event...

@@ -20,11 +20,11 @@ class StepDataAPI:
 
     @property
     def config_data(self):
-        return self._block.config_data
+        return self._block.api_data.config_data
 
     @property
     def workflow_data(self):
-        return self._block.workflow_data
+        return self._block.api_data.workflow_data
 
     @property
     def problem_closed(self):
