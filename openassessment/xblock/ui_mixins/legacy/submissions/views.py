@@ -1,27 +1,25 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist
-from xblock.core import XBlock
 from xblock.exceptions import NoSuchServiceError
 
 from openassessment.xblock.data_conversion import (
     create_submission_dict,
     list_to_conversational_format,
 )
-from openassessment.xblock.submissions.api import SubmissionAPI
 from openassessment.xblock.user_data import get_user_preferences
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class LegacySubmissionViewsMixin:
+class LegacySubmissionViews:
     """
     Views related to submissions
     """
 
-    @XBlock.handler
-    def render_submission(self, data, suffix=""):  # pylint: disable=unused-argument
+    @classmethod
+    def render_submission(cls, config, submission_info):
         """
         Renders the Submission HTML section of the XBlock
 
@@ -39,23 +37,13 @@ class LegacySubmissionViewsMixin:
         - Submitted, waiting assessment
         - Submitted and graded
         """
-        submission_info = SubmissionAPI(self)
+        context = cls.submission_context(config, submission_info)
+        path = cls.submission_path(submission_info)
 
-        context = self.submission_context(submission_info)
-        path = self.submission_path(submission_info)
+        return config.render_assessment(path, context_dict=context)
 
-        return self.render_assessment(path, context_dict=context)
-
-    def submission_path_and_context(self):
-        """
-        Combine submission path and context for old method signature
-        """
-        submission_info = SubmissionAPI(self)
-        return self.submission_path(submission_info), self.submission_context(
-            submission_info
-        )
-
-    def submission_path(self, submission_info):
+    @classmethod
+    def submission_path(cls, submission_info):
         """
         Given info about the submission, return the appropriate template path
 
@@ -96,7 +84,7 @@ class LegacySubmissionViewsMixin:
         # Response not yet submitted
         elif not submission_info.has_submitted:
             if (
-                self.teams_enabled
+                submission_info.is_team_assignment
                 and submission_info.team_previously_submitted_without_student
             ):
                 return full_paths["team_already_submitted"]
@@ -115,74 +103,59 @@ class LegacySubmissionViewsMixin:
 
         return full_paths["default"]
 
-    def get_team_submission_context(self, context):
+    @classmethod
+    def get_team_submission_context(cls, config):
         """
         Populate the passed context object with team info, including a set of students on
         the team with submissions to the current item from another team, under the key
         `team_members_with_external_submissions`.
 
         Args:
-            context (dict): render context to add team submission context into
+            config: Access to ORA config API
         Returns
-            (dict): context arg with additional team-related fields
+            (dict): context with team-related fields
         """
         from submissions import team_api
 
+        team_context = {}
+
         try:
-            team_info = self.get_team_info()
+            team_info = config.get_team_info()
             if team_info:
-                context.update(team_info)
-                if self.is_course_staff:
-                    return
-                student_item_dict = self.get_student_item_dict()
+                team_context = team_info
+                if config.is_course_staff:
+                    return team_context
+                student_item_dict = config.get_student_item_dict()
                 external_submissions = (
                     team_api.get_teammates_with_submissions_from_other_teams(
-                        self.course_id,
+                        config.course_id,
                         student_item_dict["item_id"],
                         team_info["team_id"],
-                        self.get_anonymous_user_ids_for_team(),
+                        config.get_anonymous_user_ids_for_team(),
                     )
                 )
 
-                context[
+                team_context[
                     "team_members_with_external_submissions"
                 ] = list_to_conversational_format(
                     [
-                        self.get_username(submission["student_id"])
+                        config.get_username(submission["student_id"])
                         for submission in external_submissions
                     ]
                 )
         except ObjectDoesNotExist:
             logger.error(
                 "%s: User associated with anonymous_user_id %s can not be found.",
-                str(self.location),
-                self.get_student_item_dict()["student_id"],
+                str(config.location),
+                config.get_student_item_dict()["student_id"],
             )
         except NoSuchServiceError:
-            logger.error("%s: Teams service is unavailable", str(self.location))
+            logger.error("%s: Teams service is unavailable", str(config.location))
 
-    def _is_submit_button_enabled(self, has_saved_response, has_uploaded_files):
-        """
-        Helper function to condense the logic for when to enable the submit
-        button for a response.
-        """
-        submit_enabled = True
-        if self.text_response == "required" and not has_saved_response:
-            submit_enabled = False
-        if self.file_upload_response == "required" and not has_uploaded_files:
-            submit_enabled = False
-        if (
-            self.text_response == "optional"
-            and self.file_upload_response == "optional"
-            and not has_saved_response
-            and not has_uploaded_files
-        ):
-            submit_enabled = False
+        return team_context
 
-        return submit_enabled
-
-    @property
-    def save_status(self):
+    @classmethod
+    def save_status(cls, config, submission_info):
         """
         Return a string indicating whether the response has been saved.
 
@@ -190,12 +163,13 @@ class LegacySubmissionViewsMixin:
             unicode
         """
         return (
-            self._("Draft saved!")
-            if self.has_saved
-            else self._("Response not started.")
+            config.translate("Draft saved!")
+            if submission_info.has_saved
+            else config.translate("Response not started.")
         )
 
-    def submission_context(self, submission_info):
+    @classmethod
+    def submission_context(cls, config, submission_info):
         """
         Determine the context needed when rendering the response (submission) step.
 
@@ -203,19 +177,18 @@ class LegacySubmissionViewsMixin:
         * Context (dict) - Context used for rendering the submission
         """
         # Get ORA Metadata
-        course_id = self.location.course_key if hasattr(self, "location") else None
         block_metadata = {
-            "xblock_id": self.get_xblock_id(),
-            "base_asset_url": self._get_base_url_path_for_course_assets(course_id),
+            "xblock_id": config.get_xblock_id(),
+            "base_asset_url": config.base_asset_url,
         }
 
         # Get response config
         response_config = submission_info.response_config
 
         # Get user info / preferences
-        user_preferences = get_user_preferences(self.runtime.service(self, "user"))
+        user_preferences = get_user_preferences(config.user_service)
         user_config = {
-            "has_real_user": self.has_real_user,
+            "has_real_user": config.has_real_user,
             "user_language": user_preferences["user_language"],
             "user_timezone": user_preferences["user_timezone"],
         }
@@ -245,16 +218,16 @@ class LegacySubmissionViewsMixin:
             # Load the user/team saved response
             saved_response = submission_info.saved_response
             submission_context["saved_response"] = create_submission_dict(
-                saved_response, self.prompts
+                saved_response, config.prompts
             )
 
-            if self.teams_enabled:
-                submission_info.get_team_submission_context(submission_context)
+            if submission_info.is_team_assignment:
+                team_context = cls.get_team_submission_context(config)
+                submission_context.update(team_context)
 
             # Determine UI states
-            submission_context["save_status"] = self.save_status
+            submission_context["save_status"] = cls.save_status(config, submission_info)
             submission_context["enable_delete_files"] = True
-            # submission_context['submit_enabled'] = self._is_submit_button_enabled(saved_response, file_urls)
 
         # Cancelled: Instructor has cancelled this response
         elif submission_info.has_been_cancelled:
@@ -272,7 +245,7 @@ class LegacySubmissionViewsMixin:
         elif submission_info.has_received_final_grade:
             student_submission = submission_info.student_submission
             submission_context["student_submission"] = create_submission_dict(
-                student_submission, self.prompts
+                student_submission, config.prompts
             )
 
         # Submitted and waiting for a grade
@@ -280,7 +253,7 @@ class LegacySubmissionViewsMixin:
             # Load user/team submission
             student_submission = submission_info.student_submission
             submission_context["student_submission"] = create_submission_dict(
-                student_submission, self.prompts
+                student_submission, config.prompts
             )
 
             # Get workflow context

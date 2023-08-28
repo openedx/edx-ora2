@@ -70,11 +70,20 @@ class ORAConfigAPI:
     def publish_event(self, function_name, data):
         self._block.runtime.publish(self._block, function_name, data)
 
+    def render_assessment(self, path, context):
+        return self._block.render_assessment(path, context_dict=context)
+
     @property
     def course_id(self):
-        if self._block.xmodule_runtime:
-            return self._block.course_Id
-        return None
+    # NOTE - Do we need this? Is this the same as block ID?
+    @property
+    def location(self):
+        return self._block.location
+
+    @property
+    def base_asset_url(self):
+        course_key = self._block.location.course_key if hasattr(self._block, "location") else None
+        return self._block._get_base_url_path_for_course_assets(course_key)
 
     @property
     def student_item_dict(self):
