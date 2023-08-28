@@ -71,9 +71,9 @@ class ORAConfigAPI:
 
     @property
     def course_id(self):
-        # NOTE - Do we need this? Is this the same as block ID?
         return self._block.course_id
 
+    # NOTE - Do we need this? Is this the same as block ID?
     @property
     def location(self):
         return self._block.location
