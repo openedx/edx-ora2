@@ -29,6 +29,7 @@ from openassessment.workflow import (
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.submission_mixin import EmptySubmissionError
+from openassessment.xblock.ui_mixins.legacy.submissions.views import get_team_submission_context
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
@@ -612,8 +613,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         # If there's no teams config, just return without adding anyting to the context, but log an error
         with LogCapture() as logger:
             xblock.get_team_info = Mock(side_effect=NoSuchServiceError)
-            context = {}
-            xblock.get_team_submission_context(context)
+            context = get_team_submission_context(xblock.config_data)
             self.assertEqual(context, {})
             logger.check_present(
                 (
@@ -628,8 +628,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         # If we can't resolve the anonymous_id to a real user, again just don't do anything but log
         with LogCapture() as logger:
             xblock.get_team_info = Mock(side_effect=ObjectDoesNotExist)
-            context = {}
-            xblock.get_team_submission_context(context)
+            context = get_team_submission_context(xblock.config_data)
             self.assertEqual(context, {})
             logger.check_present(
                 (
@@ -872,8 +871,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
         }
-        context = {}
-        xblock.get_team_submission_context(context)
+        context = get_team_submission_context(xblock.config_data)
         mock_external_team_submissions.assert_called_with(
             COURSE_ID,
             usage_id,
@@ -889,8 +887,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             user_is_staff=False
         )
         xblock.get_team_info = Mock(return_value=team_info)
-        context = {}
-        xblock.get_team_submission_context(context)
+        context = get_team_submission_context(xblock.config_data)
         self.assertEqual(context, {})
 
     @scenario('data/submission_open.xml', user_id="Red Five")
@@ -906,8 +903,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             user_is_staff=True
         )
         xblock.get_team_info = Mock(return_value=team_info)
-        context = {}
-        xblock.get_team_submission_context(context)
+        context = get_team_submission_context(xblock.config_data)
         self.assertEqual(context, team_info)
 
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
@@ -1713,7 +1709,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
 
     @scenario('data/team_submission.xml', user_id="Red Five")
-    def test_get_sumbission_context_no_team(self, xblock):
+    def test_get_submission_context_no_team(self, xblock):
         """
         A student who tries to view a team assignment w/out being on a team will see the "response unavialable" view
         """
@@ -1727,7 +1723,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.runtime._services['user_state'] = UserStateService()
         xblock.runtime._services['teams'] = MockTeamsService(True)
 
-        # Assert that the xblock renders an unavailablbe submission
+        # Assert that the xblock renders an unavailable submission
         path, _ = xblock.submission_path_and_context()
         self.assertEqual(path, 'openassessmentblock/response/oa_response_unavailable.html')
 

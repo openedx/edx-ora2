@@ -7,18 +7,19 @@ from xblock.core import XBlock
 from .peer_assessments.views import render_peer_assessment
 from .self_assessments.views import render_self_assessment
 from .student_training.views import render_student_training
-from .submissions.views import LegacySubmissionViews
+from .submissions.views import render_submission, submission_path, submission_context
 
 
 class LegacyViewsMixin:
     @XBlock.handler
     def render_submission(self, data, suffix=""):  # pylint: disable=unused-argument
-        """ """
-        return LegacySubmissionViews.render_submission(self.config_data, self.submission_data)
+        return render_submission(self.config_data, self.submission_data)
 
     # NOTE - Temporary surfacing for testing / refactoring
     def submission_path_and_context(self):
-        return LegacySubmissionViews.submission_path(self.submission_data), LegacySubmissionViews.submission_context(self.config_data, self.submission_data)
+        return submission_path(self.submission_data), submission_context(
+            self.config_data, self.submission_data
+        )
 
     @XBlock.handler
     def render_peer_assessment(self, data):
