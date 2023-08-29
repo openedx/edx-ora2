@@ -12,15 +12,24 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 class FileAPI:
     def __init__(self, block, team_id):
         self._block = block
-
-        self._file_manager = block.file_manager
         self._workflow = block.workflow_data.workflow
-        self._file_upload_type = block.file_upload_type
         self._team_id = team_id
+
+    # Config
 
     @property
     def max_allowed_uploads(self):
         return self._block.MAX_FILES_COUNT
+    
+    @property
+    def file_upload_type(self):
+        return self._block.file_upload_type
+
+    @property
+    def file_manager(self):
+        return self._block.file_manager
+
+    # File Uploads
 
     @property
     def uploaded_files(self):
@@ -28,10 +37,13 @@ class FileAPI:
         Get files uploaded by users, where file uploads are enabled.
 
         Returns:
-        * List(File descriptors) if ORA supports file uploads, can be empty.
+        * file_urls (List of File descriptors): files uploaded by user,
+          can be empty
+        * team_file_urls (List of File descriptors): files uploaded by team,
+          can be empty.
         * None when file uploads not enabled.
         """
-        if self._file_upload_type:
+        if self.file_upload_type:
             file_urls = self.file_manager.file_descriptors(
                 team_id=self._team_id, include_deleted=True
             )
@@ -44,10 +56,6 @@ class FileAPI:
     @property
     def saved_files_descriptions(self):
         return self._block.saved_files_descriptions
-
-    @property
-    def file_manager(self):
-        return self._file_manager
 
     # Utils / Actions
 
@@ -64,8 +72,26 @@ class FileAPI:
         )
 
     def is_supported_upload_type(self, file_ext, content_type):
-        """Whether or not a particular file type is allowed for this ORA"""
-        return self._block.is_supported_upload_type(file_ext, content_type)
+        """
+        Determine if the uploaded file type/extension is allowed for the
+        configured file upload configuration.
+
+        Returns:
+            True/False if file type is supported/unsupported
+        """
+        if self.file_upload_type == 'image' and content_type not in self._block.ALLOWED_IMAGE_MIME_TYPES:
+            return False
+
+        elif self.file_upload_type == 'pdf-and-image' and content_type not in self._block.ALLOWED_FILE_MIME_TYPES:
+            return False
+
+        elif self.file_upload_type == 'custom' and file_ext.lower() not in self._block.white_listed_file_types:
+            return False
+
+        elif file_ext in self._block.FILE_EXT_BLACK_LIST:
+            return False
+
+        return True
 
     def get_file_key(self, file_number):
         """Get file key for {file_number} for current student"""
