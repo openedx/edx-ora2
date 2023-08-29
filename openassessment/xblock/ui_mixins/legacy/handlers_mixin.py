@@ -62,3 +62,12 @@ class LegacyHandlersMixin(LegacySubmissionActions):
     @XBlock.json_handler
     def training_assess(self, data):
         return training_assess(self.api_data, data)
+
+    # Utils
+    @XBlock.json_handler
+    def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
+        """
+        Gets the username of the current student for use in team lookup.
+        """
+        anonymous_id = self.xmodule_runtime.anonymous_student_id
+        return {"username": self.get_username(anonymous_id)}
