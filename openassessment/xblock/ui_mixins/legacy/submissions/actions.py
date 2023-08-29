@@ -351,17 +351,16 @@ class LegacySubmissionActions:
             )
             return {"success": False, "msg": block_config.translate("Error retrieving upload URL.")}
 
-    @XBlock.json_handler
-    def download_url(self, data, suffix=""):  # pylint: disable=unused-argument
+    @classmethod
+    def download_url(cls, submission_info, data):
         """
         Request a download URL.
 
         Returns:
             A URL to be used for downloading content related to the submission.
-
         """
         file_num = int(data.get("filenum", 0))
-        return {"success": True, "url": self._get_download_url(file_num)}
+        return {"success": True, "url": submission_info.files.get_download_url(file_num)}
 
     @XBlock.json_handler
     def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
