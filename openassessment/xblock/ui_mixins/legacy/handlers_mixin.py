@@ -10,6 +10,8 @@ from openassessment.xblock.ui_mixins.legacy.student_training.actions import trai
 from openassessment.xblock.ui_mixins.legacy.submissions.actions import (
     submit,
     save_submission,
+)
+from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
     save_files_descriptions,
     upload_url,
     download_url,
