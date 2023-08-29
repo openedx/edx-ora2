@@ -1,5 +1,5 @@
 from openassessment.xblock.ora_config_api import ORAConfigAPI
-from openassessment.xblock.submissions.api import SubmissionAPI
+from openassessment.xblock.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.workflow_api import WorkflowAPI
 from openassessment.xblock.assessments.peer_assessment_api import PeerAssessmentAPI
 from openassessment.xblock.assessments.self_assessment_api import SelfAssessmentAPI
