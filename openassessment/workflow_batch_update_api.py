@@ -6,7 +6,6 @@ import logging
 import time
 import datetime
 from django.utils import timezone
-from celery import shared_task
 
 from opaque_keys.edx.keys import UsageKey
 from openassessment.runtime_imports.functions import modulestore
@@ -16,7 +15,6 @@ from openassessment.workflow import api
 logger = logging.getLogger(__name__)
 
 
-@shared_task
 def update_workflows_for_ora_block(item_id):
     """
     Updates ORA workflows created for the given ORA Block
@@ -51,7 +49,6 @@ def update_workflows_for_ora_block(item_id):
         raise OraWorkflowBatchUpdateException(str(e)) from e
 
 
-@shared_task
 def update_workflows_for_course(course_id):
     """
     Updates ORA workflows created for the given course
@@ -85,7 +82,6 @@ def update_workflows_for_course(course_id):
         raise OraWorkflowBatchUpdateException(str(e)) from e
 
 
-@shared_task
 def update_workflows_for_all_blocked_submissions():
     """
     Updates ORA workflows for submissions meeting following filtering criteria:
