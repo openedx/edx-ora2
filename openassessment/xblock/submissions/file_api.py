@@ -41,10 +41,6 @@ class FileAPI:
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
         return None
 
-    def is_supported_upload_type(self, file_ext, content_type):
-        """Whether or not a particular file type is allowed for this ORA"""
-        return self._block.is_supported_upload_type(file_ext, content_type)
-
     @property
     def saved_files_descriptions(self):
         return self._block.saved_files_descriptions
@@ -53,7 +49,26 @@ class FileAPI:
     def file_manager(self):
         return self._file_manager
 
+    # Utils / Actions
+
+    def can_delete_file(self, file_index):
+        """
+        Helper function, wraps `file_upload_api.can_delete_file()`.
+        """
+        team_id = self._team_id
+        key = self.get_file_key(file_index)
+        current_user_id = self._block.get_student_item_dict()["student_id"]
+        teams_enabled = self._block.is_team_assignment
+        return file_upload_api.can_delete_file(
+            current_user_id, teams_enabled, key, team_id
+        )
+
+    def is_supported_upload_type(self, file_ext, content_type):
+        """Whether or not a particular file type is allowed for this ORA"""
+        return self._block.is_supported_upload_type(file_ext, content_type)
+
     def get_file_key(self, file_number):
+        """Get file key for {file_number} for current student"""
         student_item_dict = self._block.get_student_item_dict()
         return file_upload_api.get_student_file_key(
             student_item_dict, index=file_number
@@ -87,3 +102,6 @@ class FileAPI:
             )
 
         return url
+
+    def delete_uploaded_file(self, file_index):
+        self.file_manager.delete_upload(file_index)
