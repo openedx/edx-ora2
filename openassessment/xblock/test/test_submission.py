@@ -297,7 +297,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         )
 
         # Mock away any calls to the teams service
-        xblock._can_delete_file = Mock(return_value=True)  # pylint: disable=protected-access
+        xblock.submission_data.files.can_delete_file = Mock(return_value=True)
         xblock.has_team = Mock(return_value=False)
 
         file_metadata = [
@@ -1621,30 +1621,34 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('your response has been submitted', resp.decode('utf-8').lower())
 
-    @patch('openassessment.fileupload.api.can_delete_file', autospec=True)
-    @patch('openassessment.fileupload.api.get_student_file_key', autospec=True)
+    @patch('openassessment.xblock.submissions.file_api.file_upload_api', autospec=True)
     @scenario('data/submission_open.xml', user_id="Bob")
-    def test_can_delete_file(self, xblock, mock_get_student_file_key, mock_can_delete_file):
+    def test_can_delete_file(self, xblock, mock_file_api):
         xblock.get_team_info = Mock(return_value={'team_id': 'my-team-id'})
-        xblock.teams_enabled = True
+        xblock.is_team_assignment = Mock(return_value=True)
+
+        mock_can_delete_file = mock_file_api.can_delete_file
+        mock_get_student_file_key = mock_file_api.get_student_file_key
 
         self.assertEqual(
-            mock_can_delete_file.return_value,
-            xblock._can_delete_file(5),  # pylint: disable=protected-access
+            mock_file_api.can_delete_file.return_value,
+            xblock.submission_data.files.can_delete_file(5)
         )
         mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
         mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, 'my-team-id')
 
-    @patch('openassessment.fileupload.api.can_delete_file', autospec=True)
-    @patch('openassessment.fileupload.api.get_student_file_key', autospec=True)
+    @patch('openassessment.xblock.submissions.file_api.file_upload_api', autospec=True)
     @scenario('data/submission_open.xml', user_id="Bob")
-    def test_can_delete_file_no_team_info(self, xblock, mock_get_student_file_key, mock_can_delete_file):
+    def test_can_delete_file_no_team_info(self, xblock, mock_file_api):
         xblock.get_team_info = Mock(return_value={})
-        xblock.teams_enabled = True
+        xblock.is_team_assignment = Mock(return_value=True)
+
+        mock_can_delete_file = mock_file_api.can_delete_file
+        mock_get_student_file_key = mock_file_api.get_student_file_key
 
         self.assertEqual(
             mock_can_delete_file.return_value,
-            xblock._can_delete_file(5),  # pylint: disable=protected-access
+            xblock.submission_data.files.can_delete_file(5)
         )
         mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
         mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, None)

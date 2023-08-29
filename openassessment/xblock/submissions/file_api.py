@@ -61,12 +61,15 @@ class FileAPI:
 
     def can_delete_file(self, file_index):
         """
-        Helper function, wraps `file_upload_api.can_delete_file()`.
+        Is a user allowed to delete this file?
+
+        i.e. are they the uploader and still a member of the team that
+        uploaded the file?
         """
         team_id = self._team_id
         key = self.get_file_key(file_index)
         current_user_id = self._block.get_student_item_dict()["student_id"]
-        teams_enabled = self._block.is_team_assignment
+        teams_enabled = self._block.is_team_assignment()
         return file_upload_api.can_delete_file(
             current_user_id, teams_enabled, key, team_id
         )
