@@ -201,22 +201,23 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     @scenario('data/single_file_upload_scenario.xml')
-    def test_upload_url_single_file(self, xblock):
+    @patch('openassessment.xblock.submissions.api.file_upload_api.get_download_url')
+    def test_upload_url_single_file(self, xblock, mock_download_url):
         """ Test generate correct upload URL """
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
             anonymous_student_id='test_student',
         )
-        # _get_download_url is run by upload_url to check if any uploads exist.
-        # Set it to return some path so simulate a file already uploaded.
-        xblock._get_download_url = lambda x: "https://example.com/url"  # pylint: disable=protected-access
+
+        # Simulate a file already uploaded
+        mock_download_url.return_value = "https://example.com/url"
         resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
                                                               "filename": "test.jpg"}), response_format='json')
         self.assertFalse(resp['success'])
         self.assertIn('Only a single file upload is allowed', resp['msg'])
 
         # Now test that we can upload a file if no existing upload.
-        xblock._get_download_url = lambda x: None  # pylint: disable=protected-access
+        mock_download_url.return_value = None
         resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
                                                               "filename": "test.jpg"}), response_format='json')
         self.assertTrue(resp['success'])

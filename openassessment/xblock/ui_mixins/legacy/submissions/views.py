@@ -190,7 +190,7 @@ def submission_context(config, submission_info):
     # Below here we determine submission status and template
     submission_context = {}
     team_submission_context = {}
-    file_urls = submission_info.uploaded_files
+    file_urls = submission_info.files.uploaded_files
     if file_urls:
         submission_context.update(file_urls)
 
