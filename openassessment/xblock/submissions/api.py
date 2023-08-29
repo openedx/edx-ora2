@@ -4,6 +4,8 @@ import logging
 
 from submissions.team_api import get_team_submission
 
+from openassessment.fileupload import api as file_upload_api
+from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.data_conversion import update_saved_response_format
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.step_data_api import StepDataAPI
@@ -11,13 +13,94 @@ from openassessment.xblock.step_data_api import StepDataAPI
 logger = logging.getLogger(__name__)
 
 
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+
+class FileAPI:
+    def __init__(self, block, team_id):
+        self._block = block
+
+        self._file_manager = block.file_manager
+        self._workflow = block.workflow_data.workflow
+        self._file_upload_type = block.file_upload_type
+        self._team_id = team_id
+
+    @property
+    def max_allowed_uploads(self):
+        return self._block.MAX_FILES_COUNT
+
+    @property
+    def uploaded_files(self):
+        """
+        Get files uploaded by users, where file uploads are enabled.
+
+        Returns:
+        * List(File descriptors) if ORA supports file uploads, can be empty.
+        * None when file uploads not enabled.
+        """
+        if self._file_upload_type:
+            file_urls = self.file_manager.file_descriptors(
+                team_id=self._team_id, include_deleted=True
+            )
+            team_file_urls = self.file_manager.team_file_descriptors(
+                team_id=self._team_id
+            )
+            return {"file_urls": file_urls, "team_file_urls": team_file_urls}
+        return None
+
+    def is_supported_upload_type(self, file_ext, content_type):
+        """Whether or not a particular file type is allowed for this ORA"""
+        return self._block.is_supported_upload_type(file_ext, content_type)
+
+    @property
+    def saved_files_descriptions(self):
+        return self._block.saved_files_descriptions
+
+    @property
+    def file_manager(self):
+        return self._file_manager
+
+    def get_file_key(self, file_number):
+        student_item_dict = self._block.get_student_item_dict()
+        return file_upload_api.get_student_file_key(
+            student_item_dict, index=file_number
+        )
+
+    def get_upload_url(self, key, content_type):
+        """Returns key, potentially signed, to upload a file to the file backend"""
+        return file_upload_api.get_upload_url(key, content_type)
+
+    def get_download_url(self, file_number):
+        """
+        Get download URL for a given file number
+
+        Returns
+        * URL (string)
+
+        Raises:
+        * FileUploadError: when failing to get a download URL
+        """
+        file_key = self.get_file_key(file_number)
+        url = ""
+        try:
+            if file_key:
+                url = file_upload_api.get_download_url(file_key)
+        except FileUploadError as exc:
+            logger.exception(
+                "FileUploadError: Download url for file key %s failed with error %s",
+                file_key,
+                exc,
+                exc_info=True,
+            )
+
+        return url
+
+
 class SubmissionAPI(StepDataAPI):
     def __init__(self, block):
         super().__init__(block, "submission")
-
-    @property
-    def workflow(self):
-        return self._block.api_data.workflow_data.workflow
+        self._workflow = self.workflow_data.workflow
+        self.files = FileAPI(block, self.team_id)
 
     # Submission Statuses
     @property
@@ -35,7 +118,9 @@ class SubmissionAPI(StepDataAPI):
                 self.team_submission_uuid
             )
         else:
-            return self.workflow_data.get_workflow_cancellation_info(self.submission_uuid)
+            return self.workflow_data.get_workflow_cancellation_info(
+                self.submission_uuid
+            )
 
     @property
     def has_received_final_grade(self):
@@ -43,11 +128,17 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def peer_step_incomplete(self):
-        return "peer" in self.workflow_data.status_details and not self.workflow_data.is_peer_complete
+        return (
+            "peer" in self.workflow_data.status_details
+            and not self.workflow_data.is_peer_complete
+        )
 
     @property
     def self_step_incomplete(self):
-        return "self" in self.workflow_data.status_details and not self.workflow_data.is_self_complete
+        return (
+            "self" in self.workflow_data.status_details
+            and not self.workflow_data.is_self_complete
+        )
 
     # Submission Access information
 
@@ -72,9 +163,11 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def team_previously_submitted_without_student(self):
-        return (self.config_data.teams_enabled and
-                not self.has_submitted and
-                self._block.does_team_have_submission(self.team_id))
+        return (
+            self.config_data.teams_enabled
+            and not self.has_submitted
+            and self._block.does_team_have_submission(self.team_id)
+        )
 
     # Submission / response data
 
@@ -88,7 +181,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def saved_response(self):
-        """ Return a saved response for a student / team when they haven't submitted """
+        """Return a saved response for a student / team when they haven't submitted"""
         return update_saved_response_format(self.config_data.saved_response)
 
     @saved_response.setter
@@ -104,35 +197,6 @@ class SubmissionAPI(StepDataAPI):
     def submission_uuid(self):
         """Return a submission_uuid or None if the user hasn't submitted"""
         return self.workflow.get("submission_uuid")
-
-    # File Uploads
-
-    @property
-    def uploaded_files(self):
-        """
-        Get files uploaded by users, where file uploads are enabled.
-
-        Returns:
-        * List(File descriptors) if ORA supports file uploads, can be empty.
-        * None when file uploads not enabled.
-        """
-        if self._block.file_upload_type:
-            file_urls = self.file_manager.file_descriptors(
-                team_id=self.team_id, include_deleted=True
-            )
-            team_file_urls = self.file_manager.team_file_descriptors(
-                team_id=self.team_id
-            )
-            return {"file_urls": file_urls, "team_file_urls": team_file_urls}
-        return None
-
-    @property
-    def saved_files_descriptions(self):
-        return self._block.saved_files_descriptions
-
-    @property
-    def file_manager(self):
-        return self._block.file_manager
 
     @property
     def team_id(self):
@@ -157,9 +221,6 @@ class SubmissionAPI(StepDataAPI):
     @property
     def team_submission_uuid(self):
         return self.workflow["team_submission_uuid"]
-
-    def get_team_submission_context(self, context):
-        return self._block.get_team_submission_context(context)
 
     # Submission config
 
@@ -210,4 +271,3 @@ class SubmissionAPI(StepDataAPI):
 
     def create_team_submission(self, submission_data):
         return self._block.create_team_submission(submission_data)
-    

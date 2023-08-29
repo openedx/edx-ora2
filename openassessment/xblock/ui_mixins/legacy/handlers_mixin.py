@@ -37,6 +37,10 @@ class LegacyHandlersMixin(LegacySubmissionActions):
     def save_files_descriptions(self, data, suffix=""):  # pylint: disable=unused-argument
         return LegacySubmissionActions.save_files_descriptions(self.config_data, self.submission_data, data)
 
+    @XBlock.json_handler
+    def upload_url(self, data, suffix=""):  # pylint: disable=unused-argument
+        return LegacySubmissionActions.upload_url(self.config_data, self.submission_data, data)
+
     # Assessments
 
     @XBlock.json_handler

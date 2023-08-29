@@ -4,7 +4,6 @@ import os
 
 from xblock.core import XBlock
 
-from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
@@ -258,7 +257,7 @@ class LegacySubmissionActions:
                 return failure_response
 
         try:
-            submission_info.file_manager.append_uploads(*file_data)
+            submission_info.files.file_manager.append_uploads(*file_data)
             # Emit analytics event...
             block_config.publish_event(
                 "openassessmentblock.save_files_descriptions",
@@ -292,8 +291,8 @@ class LegacySubmissionActions:
         anonymous_id = self.xmodule_runtime.anonymous_student_id
         return {"username": self.get_username(anonymous_id)}
 
-    @XBlock.json_handler
-    def upload_url(self, data, suffix=""):  # pylint: disable=unused-argument
+    @classmethod
+    def upload_url(cls, block_config, submission_info, data):
         """
         Request a URL to be used for uploading content related to this
         submission.
@@ -305,20 +304,20 @@ class LegacySubmissionActions:
         if "contentType" not in data or "filename" not in data:
             return {
                 "success": False,
-                "msg": self._("There was an error uploading your file."),
+                "msg": block_config.translate("There was an error uploading your file."),
             }
 
-        if not self.allow_multiple_files:
+        if not block_config.allow_multiple_files:
             # Here we check if there are existing file uploads by checking for
             # an existing download url for any of the upload slots.
             # Note that we can't use self.saved_files_descriptions because that
             # is populated before files are uploaded
-            for i in range(self.MAX_FILES_COUNT):
-                file_url = self._get_download_url(i)
+            for file_index in range(submission_info.files.max_allowed_uploads):
+                file_url = submission_info.files.get_download_url(file_index)
                 if file_url:
                     return {
                         "success": False,
-                        "msg": self._(
+                        "msg": block_config.translate(
                             "Only a single file upload is allowed for this assessment."
                         ),
                     }
@@ -330,10 +329,10 @@ class LegacySubmissionActions:
         content_type = data["contentType"]
 
         # Validate that there are no data issues and file type is allowed
-        if not self.is_supported_upload_type(file_ext, content_type):
+        if not submission_info.files.is_supported_upload_type(file_ext, content_type):
             return {
                 "success": False,
-                "msg": self._(
+                "msg": block_config.translate(
                     "File upload failed: unsupported file type."
                     "Only the supported file types can be uploaded."
                     "If you have questions, please reach out to the course team."
@@ -343,14 +342,14 @@ class LegacySubmissionActions:
         # Attempt to upload
         file_num = int(data.get("filenum", 0))
         try:
-            key = self._get_student_item_key(file_num)
-            url = file_upload_api.get_upload_url(key, content_type)
+            key = submission_info.files.get_file_key(file_num)
+            url = submission_info.files.get_upload_url(key, content_type)
             return {"success": True, "url": url}
         except FileUploadError:
             logger.exception(
                 "FileUploadError:Error retrieving upload URL for the data: %s.", data
             )
-            return {"success": False, "msg": self._("Error retrieving upload URL.")}
+            return {"success": False, "msg": block_config.translate("Error retrieving upload URL.")}
 
     @XBlock.json_handler
     def download_url(self, data, suffix=""):  # pylint: disable=unused-argument
