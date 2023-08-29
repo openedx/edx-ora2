@@ -63,6 +63,7 @@ class SelfAssessmentMixin:
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context = {
+            "allow_custom_range": True, # Used in the template to determine if the user can select a custom range
             'allow_multiple_files': self.allow_multiple_files,
             'allow_latex': self.allow_latex,
             'prompts_type': self.prompts_type,

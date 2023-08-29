@@ -18,6 +18,35 @@
         {% endif %}
     </div>
 
+    <label for="useRange">Use Ranges:</label>
+    <input type="checkbox" id="useRange" onchange="toggleRange()" />
+
+    <br>
+
+    <label for="minValue">Minimum value:</label>
+    <input type="number" id="minValue" disabled />
+
+    <br>
+
+    <label for="maxValue">Maximum value:</label>
+    <input type="number" id="maxValue" disabled />
+
+    <script>
+        function toggleRange() {
+            const useRangeCheckbox = document.getElementById("useRange");
+            const minValueInput = document.getElementById("minValue");
+            const maxValueInput = document.getElementById("maxValue");
+
+            if (useRangeCheckbox.checked) {
+                minValueInput.disabled = false;
+                maxValueInput.disabled = false;
+            } else {
+                minValueInput.disabled = true;
+                maxValueInput.disabled = true;
+            }
+        }
+    </script>
+
     <ul id="openassessment_criterion_list" >
         {% for criterion in criteria %}
             {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name=criterion.name criterion_label=criterion.label criterion_prompt=criterion.prompt criterion_options=criterion.options criterion_feedback=criterion.feedback %}

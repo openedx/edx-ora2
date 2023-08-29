@@ -137,6 +137,7 @@ class GradeMixin:
         # It's possible for the score to be `None` even if the workflow status is "done"
         # when all the criteria in the rubric are feedback-only (no options).
         score = workflow['score']
+        score.update(points_earned=4.6) # Example of custom score
 
         context = {
             'score': score,

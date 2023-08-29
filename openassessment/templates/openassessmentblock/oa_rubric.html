@@ -3,6 +3,12 @@
 <div class="assessment__fields">
     <ol class="list list--fields assessment__rubric">
         {% for criterion in rubric_criteria %}
+
+        {% if allow_custom_range %}
+            <div>Custom range: {{ allow_custom_range }}</div>
+            <input type="number">
+        {% endif %}
+
         <li
             class="field field--radio is--required assessment__rubric__question is--showing ui-slidable__container {% if criterion.options %}has--options{% endif %} {{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
         >
