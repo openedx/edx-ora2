@@ -362,23 +362,23 @@ class LegacySubmissionActions:
         file_num = int(data.get("filenum", 0))
         return {"success": True, "url": submission_info.files.get_download_url(file_num)}
 
-    @XBlock.json_handler
-    def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
+    @classmethod
+    def remove_uploaded_file(cls, block_config, submission_info, data):
         """
         Removes uploaded user file.
         """
-        filenum = data.get("filenum", -1)
+        file_index = data.get("filenum", -1)
         try:
-            filenum = int(filenum)
+            file_index = int(file_index)
         except ValueError:
-            filenum = -1
-        student_item_key = self._get_student_item_key(num=filenum)
-        if self._can_delete_file(filenum):
+            file_index = -1
+        student_item_key = submission_info.files.get_file_key(file_index)
+        if submission_info.files.can_delete_file(file_index):
             try:
-                self.file_manager.delete_upload(filenum)
+                submission_info.files.delete_uploaded_file(file_index)
+
                 # Emit analytics event...
-                self.runtime.publish(
-                    self,
+                block_config.publish_event(
                     "openassessmentblock.remove_uploaded_file",
                     {"student_item_key": student_item_key},
                 )

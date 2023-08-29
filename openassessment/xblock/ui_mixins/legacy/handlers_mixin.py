@@ -45,6 +45,10 @@ class LegacyHandlersMixin(LegacySubmissionActions):
     def download_url(self, data, suffix=""):  # pylint: disable=unused-argument
         return LegacySubmissionActions.download_url(self.submission_data, data)
 
+    @XBlock.json_handler
+    def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
+        return LegacySubmissionActions.remove_uploaded_file(self.config_data, self.submission_data, data)
+
     # Assessments
 
     @XBlock.json_handler
