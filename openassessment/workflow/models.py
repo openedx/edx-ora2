@@ -72,6 +72,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         "waiting",
         "done",  # Complete
         "cancelled"  # User submission has been cancelled.
+        #"to_correct" # User submission has been market for re send
     ]
 
     STATUS_VALUES = STEPS + STATUSES

@@ -878,6 +878,8 @@ class SubmissionMixin:
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
         course_id = self.location.course_key if hasattr(self, 'location') else None
 
+        #workflow["status"] = "to_correct"  # test variable
+
         path = 'openassessmentblock/response/oa_response.html'
         context = {
             'enable_delete_files': False,
@@ -981,6 +983,28 @@ class SubmissionMixin:
             )
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_graded.html'
+
+        # Dado un nuevo estado llamado to_correct, el contexto agrupa todas las respuestas suministradas
+        # por el estudiante, se cambia el flag para activar el boton de eliminacion de archivos y
+        # finalmente selecciona el path al template correcto para renderizar las funcionalidades necesarias 
+        elif workflow["status"] == "to_correct":
+
+            student_submission = self.get_user_submission(
+                workflow["submission_uuid"]
+            )
+            peer_in_workflow = "peer" in workflow["status_details"]
+            self_in_workflow = "self" in workflow["status_details"]
+            context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
+            context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
+            context["enable_delete_files"] = True
+            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
+            path = 'openassessmentblock/response/oa_response.html'
+
+        # Esta solucion permite la edicion del archivo que se sube, sin embargo, existen varios casos y
+        # temas de Frontend que evaluar con detenimiento. El boton de Submit esta ligado por front a cada step
+        # de la actividad, por lo cual, lo recomendable es adaptar un poco la interface en un nuevo file para 
+        # eliminarlo 
+
         else:
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
@@ -991,5 +1015,6 @@ class SubmissionMixin:
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_submitted.html'
-
+            
+        print('\n\n\n', path,'\n\n\n')
         return path, context
