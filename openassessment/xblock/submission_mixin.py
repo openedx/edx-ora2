@@ -199,27 +199,6 @@ class SubmissionMixin:
 
         return student_sub_dict
 
-    def is_supported_upload_type(self, file_ext, content_type):
-        """
-        Determine if the uploaded file type/extension is allowed for the configured file upload configuration
-
-        Returns:
-            True/False if file type is supported/unsupported
-        """
-        if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
-            return False
-
-        elif self.file_upload_type == 'pdf-and-image' and content_type not in self.ALLOWED_FILE_MIME_TYPES:
-            return False
-
-        elif self.file_upload_type == 'custom' and file_ext.lower() not in self.white_listed_file_types:
-            return False
-
-        elif file_ext in self.FILE_EXT_BLACK_LIST:
-            return False
-
-        return True
-
     def _can_delete_file(self, filenum):
         """
         Helper function, wraps `file_upload_api.can_delete_file()`.
