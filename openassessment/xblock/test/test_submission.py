@@ -201,7 +201,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     @scenario('data/single_file_upload_scenario.xml')
-    @patch('openassessment.xblock.submissions.api.file_upload_api.get_download_url')
+    @patch('openassessment.xblock.submissions.file_api.file_upload_api.get_download_url')
     def test_upload_url_single_file(self, xblock, mock_download_url):
         """ Test generate correct upload URL """
         xblock.xmodule_runtime = Mock(
