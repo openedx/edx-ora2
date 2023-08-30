@@ -69,7 +69,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
         self._assert_path_and_context(xblock, unavailable_context)
 
         # Create a submission for the student
-        submission = xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         # Response has been created, waiting for self assessment (no staff assessment exists either)
         self._assert_path_and_context(xblock, unavailable_context)
@@ -166,11 +166,10 @@ class TestStaffAssessment(StaffAssessmentTestBase):
     @patch('openassessment.xblock.ui_mixins.legacy.staff_assessments.views.staff_api.create_assessment')
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_assess_handler_missing_id(self, xblock, mock_create_assessment):
-        student_item = xblock.get_student_item_dict()
         self.set_staff_access(xblock)
 
         # Create a submission for the student
-        xblock.create_submission(student_item, self.SUBMISSION)
+        self.create_test_submission(xblock)
 
         # Try to submit an assessment without providing a good submission UUID
         resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
@@ -184,10 +183,8 @@ class TestStaffAssessment(StaffAssessmentTestBase):
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_assess_handler(self, xblock):
-        student_item = xblock.get_student_item_dict()
-
         # Create a submission for the student
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         # Submit a staff-assessment
         self.submit_staff_assessment(xblock, submission, assessment=STAFF_GOOD_ASSESSMENT)
@@ -225,10 +222,8 @@ class TestStaffAssessment(StaffAssessmentTestBase):
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_assess_handler_regrade(self, xblock):
-        student_item = xblock.get_student_item_dict()
-
         # Create a submission for the student
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         assessment_copy = copy.copy(STAFF_GOOD_ASSESSMENT)
         assessment_copy['assess_type'] = 'regrade'
@@ -240,17 +235,14 @@ class TestStaffAssessment(StaffAssessmentTestBase):
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_permission_error(self, xblock):
         # Create a submission for the student
-        student_item = xblock.get_student_item_dict()
-        xblock.create_submission(student_item, self.SUBMISSION)
+        self.create_test_submission(xblock)
         resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT))
         self.assertIn("You do not have permission", resp.decode('utf-8'))
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_invalid_options(self, xblock):
-        student_item = xblock.get_student_item_dict()
-
         # Create a submission for the student
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         self.set_staff_access(xblock)
 
@@ -267,10 +259,8 @@ class TestStaffAssessment(StaffAssessmentTestBase):
 
     @scenario('data/self_assessment_scenario.xml', user_id='bob')
     def test_assessment_error(self, xblock):
-        student_item = xblock.get_student_item_dict()
-
         # Create a submission for the student
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         self.set_staff_access(xblock)
         assessment = copy.deepcopy(STAFF_GOOD_ASSESSMENT)
