@@ -39,7 +39,6 @@ from openassessment.xblock.resolve_dates import (
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
-from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.team_mixin import TeamMixin
@@ -85,7 +84,6 @@ class OpenAssessmentBlock(
     StaffAreaMixin,
     WorkflowMixin,
     TeamWorkflowMixin,
-    StudentTrainingMixin,
     LmsCompatibilityMixin,
     CourseItemsListingMixin,
     ConfigMixin,

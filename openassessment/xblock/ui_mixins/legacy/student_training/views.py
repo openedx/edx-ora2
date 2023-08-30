@@ -94,7 +94,7 @@ def training_context(api_data):
     context.update({
         "training_num_available": step_data.num_available,
         "training_num_completed": step_data.num_completed,
-        "training_num_current": context["training_num_completed"] + 1
+        "training_num_current": step_data.num_completed + 1
     })
 
     # Retrieve the example essay for the student to submit
