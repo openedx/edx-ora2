@@ -37,7 +37,6 @@ from openassessment.xblock.resolve_dates import (
     DateValidationError, DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
 )
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
-from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
@@ -79,7 +78,6 @@ def load(path):
 class OpenAssessmentBlock(
     MessageMixin,
     SubmissionMixin,
-    SelfAssessmentMixin,
     StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,

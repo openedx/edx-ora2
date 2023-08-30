@@ -151,7 +151,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
 
         # Submit a self-assessment
         # Simulate an error and expect a failure response
-        with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_api:
+        with mock.patch('openassessment.xblock.ui_mixins.legacy.self_assessments.actions.self_api') as mock_api:
             mock_api.SelfAssessmentRequestError = self_api.SelfAssessmentRequestError
             mock_api.create_assessment.side_effect = self_api.SelfAssessmentRequestError
             resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')

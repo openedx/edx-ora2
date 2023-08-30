@@ -11,6 +11,7 @@ from openassessment.xblock.ui_mixins.legacy.submissions.actions import (
     submit,
     save_submission,
 )
+from openassessment.xblock.data_conversion import verify_assessment_parameters
 from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
     save_files_descriptions,
     upload_url,
@@ -57,21 +58,24 @@ class LegacyHandlersMixin:
     # Assessments
 
     @XBlock.json_handler
+    @verify_assessment_parameters
     def peer_assess(self, data, suffix=""):
         return peer_assess(self.api_data, data)
 
     @XBlock.json_handler
-    def self_assess(self, data):
+    @verify_assessment_parameters
+    def self_assess(self, data, suffix=""):
         return self_assess(self.api_data, data)
 
     @XBlock.json_handler
-    def training_assess(self, data):
+    @verify_assessment_parameters
+    def training_assess(self, data, suffix=""):
         return training_assess(self.api_data, data)
 
     # Utils
 
     @XBlock.json_handler
-    def get_student_username(self, data, suffix):  # pylint: disable=unused-argument
+    def get_student_username(self, data, suffix=""):  # pylint: disable=unused-argument
         """
         Gets the username of the current student for use in team lookup.
         """

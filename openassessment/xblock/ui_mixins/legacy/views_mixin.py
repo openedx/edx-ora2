@@ -5,7 +5,7 @@ Views for the old-style ORA UI
 from xblock.core import XBlock
 
 from .peer_assessments.views import render_peer_assessment, peer_path_and_context
-from .self_assessments.views import render_self_assessment
+from .self_assessments.views import render_self_assessment, self_path_and_context
 from .student_training.views import render_student_training
 from .submissions.views import render_submission, submission_path, submission_context
 
@@ -38,12 +38,17 @@ class LegacyViewsMixin:
     def peer_path_and_context(self, continue_grading=False):
         return peer_path_and_context(self.api_data, continue_grading)
 
+    # NOTE - Temporary surfacing for testing / refactoring
+    def self_path_and_context(self):
+        return self_path_and_context(self.api_data)
+
     @XBlock.handler
-    def render_self_assessment(self):
-        if self.self_data.is_cancelled:
+    def render_self_assessment(self, data, suffix=""):
+        step_data = self.api_data.self_assessment_data
+        if step_data.is_cancelled:
             self.no_peers = True
         return render_self_assessment(self.api_data)
 
     @XBlock.handler
-    def render_student_training(self):
+    def render_student_training(self, data, suffix=""):
         return render_student_training(self.api_data)
