@@ -28,7 +28,7 @@ from openassessment.workflow import (
 )
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.submission_mixin import EmptySubmissionError
+from openassessment.xblock.submissions.errors import EmptySubmissionError
 from openassessment.xblock.ui_mixins.legacy.submissions.views import get_team_submission_context
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID

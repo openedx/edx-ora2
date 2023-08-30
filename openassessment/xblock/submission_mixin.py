@@ -15,14 +15,6 @@ from .data_conversion import (
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-class NoTeamToCreateSubmissionForError(Exception):
-    pass
-
-
-class EmptySubmissionError(Exception):
-    pass
-
-
 class SubmissionMixin:
     """
     Submission Mixin introducing all Submission-related functionality.
