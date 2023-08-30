@@ -13,6 +13,7 @@ from openassessment.xblock.defaults import (
     STAFF_ASSESSMENT_MODULES,
 )
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
+from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
 from openassessment.xblock.load_static import LoadStatic
 
 
@@ -170,7 +171,8 @@ class OpenAssessmentTemplatesMixin:
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
 
-        if not staff_assessment_required and self.staff_assessment_exists(self.submission_uuid):
+        staff_assessment_data = self.api_data.staff_assessment_data
+        if not staff_assessment_required and StaffAssessmentAPI.staff_assessment_exists(self.submission_uuid):
             ui_models.append(UI_MODELS["staff-assessment"])
 
         ui_models.append(UI_MODELS["grade"])

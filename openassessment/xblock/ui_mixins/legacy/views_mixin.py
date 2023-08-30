@@ -6,6 +6,7 @@ from xblock.core import XBlock
 
 from .peer_assessments.views import render_peer_assessment, peer_path_and_context
 from .self_assessments.views import render_self_assessment, self_path_and_context
+from .staff_assessments.views import render_staff_assessment, staff_path_and_context
 from .student_training.views import render_student_training, training_path_and_context
 from .submissions.views import render_submission, submission_path, submission_context
 
@@ -43,6 +44,10 @@ class LegacyViewsMixin:
         return self_path_and_context(self.api_data)
 
     # NOTE - Temporary surfacing for testing / refactoring
+    def staff_path_and_context(self):
+        return staff_path_and_context(self.api_data)
+
+    # NOTE - Temporary surfacing for testing / refactoring
     def training_path_and_context(self):
         return training_path_and_context(self.api_data)
 
@@ -52,6 +57,10 @@ class LegacyViewsMixin:
         if step_data.is_cancelled:
             self.no_peers = True
         return render_self_assessment(self.api_data)
+
+    @XBlock.handler
+    def render_staff_assessment(self, data, suffix=""):
+        return render_staff_assessment(self.api_data)
 
     @XBlock.handler
     def render_student_training(self, data, suffix=""):

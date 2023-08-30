@@ -59,5 +59,6 @@ class StaffAssessmentAPI(StepDataAPI):
             self.rubric_dict
         )
 
-    def staff_assessment_exists(self, submission_uuid):
+    @staticmethod
+    def staff_assessment_exists(submission_uuid):
         return staff_api.get_latest_staff_assessment(submission_uuid) is not None

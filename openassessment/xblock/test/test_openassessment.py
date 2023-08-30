@@ -18,6 +18,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import defaults, openassessmentblock
 from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.openassesment_template_mixin import UI_MODELS
+from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
 
 from .base import XBlockHandlerTestCase, scenario
 
@@ -538,7 +539,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_override(self, xblock):
         # Override the staff_assessment_exists function to always return True
-        xblock.staff_assessment_exists = lambda submission_uuid: True
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: True
 
         # Check that staff-assessment is in assessment_steps
         self.assertIn('staff-assessment', xblock.assessment_steps)
