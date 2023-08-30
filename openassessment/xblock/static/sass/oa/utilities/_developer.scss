@@ -1077,6 +1077,18 @@
         }
       }
     }
+
+    // TODO: Remove this in AU-1433
+    .date_config_radio_header {
+      display: inline;
+    }
+
+    #dates_config_new_badge {
+      background: limegreen;
+      border-radius: 5px;
+      padding: 3px;
+      margin: 5px;
+    }
   }
 
   hr{
