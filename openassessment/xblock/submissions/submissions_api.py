@@ -5,17 +5,26 @@ from copy import deepcopy
 
 from submissions.team_api import get_team_submission
 
-from openassessment.xblock.data_conversion import update_saved_response_format
+from openassessment.xblock.data_conversion import (
+    format_files_for_submission,
+    prepare_submission_for_serialization,
+    update_saved_response_format,
+)
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.step_data_api import StepDataAPI
+from openassessment.xblock.submission_mixin import EmptySubmissionError
 from openassessment.xblock.submissions.file_api import FileAPI
 
 
 class SubmissionAPI(StepDataAPI):
     def __init__(self, block):
         super().__init__(block, "submission")
-        self.workflow = self.workflow_data.workflow
+        self._workflow_data = block.workflow_data
         self.files = FileAPI(block, self.team_id)
+
+    @property
+    def workflow(self):
+        return self.workflow_data.workflow
 
     # Submission Statuses
 
@@ -181,9 +190,67 @@ class SubmissionAPI(StepDataAPI):
 
     # Actions
 
-    def create_submission(self, submission_data):
-        student_item = self._block.get_student_item_dict()
-        return self._block.create_submission(student_item, submission_data)
+    def _is_submission_empty(self, submission_dict):
+        """
+        Check if student_sub_dict has any submission content so that we don't
+        create empty submissions.
+
+        If there are no text responses and no file responses, raise an EmptySubmissionError
+
+        Args:
+        * submission_dict
+
+        Returns:
+        * Boolean - whether the submission is empty
+        """
+        has_content = False
+
+        # Does the student_sub_dict have any non-zero-length strings in 'parts'?
+        has_content |= any(
+            part.get("text", "") for part in submission_dict.get("parts", [])
+        )
+
+        # Are there any file_keys in student_sub_dict?
+        has_content |= len(submission_dict.get("file_keys", [])) > 0
+
+        return not has_content
+
+    def create_submission(self, student_item_dict, submission_data):
+        """Creates submission for the submitted assessment response or a list for a team assessment."""
+        # Import is placed here to avoid model import at project startup.
+        from submissions import api
+
+        # Serialize the submission
+        student_sub_dict = prepare_submission_for_serialization(submission_data)
+
+        # Add files
+        uploaded_files = self.files.get_uploads_for_submission()
+        student_sub_dict.update(format_files_for_submission(uploaded_files))
+
+        # Validate
+        if self._is_submission_empty(student_sub_dict):
+            raise EmptySubmissionError
+
+        # Create submission
+        submission = api.create_submission(student_item_dict, student_sub_dict)
+        self.workflow_data.create_workflow(submission["uuid"])
+
+        # Set student submission_uuid
+        self._block.submission_uuid = submission["uuid"]
+
+        # Emit analytics event...
+        self.config_data.publish_event(
+            "openassessmentblock.create_submission",
+            {
+                "submission_uuid": submission["uuid"],
+                "attempt_number": submission["attempt_number"],
+                "created_at": submission["created_at"],
+                "submitted_at": submission["submitted_at"],
+                "answer": submission["answer"],
+            },
+        )
+
+        return submission
 
     def create_team_submission(self, submission_data):
         return self._block.create_team_submission(submission_data)
