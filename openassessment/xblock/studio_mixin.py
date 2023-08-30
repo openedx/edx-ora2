@@ -192,7 +192,7 @@ class StudioMixin:
             ],
             'teams_feature_enabled': self.team_submissions_enabled,
             'teams_enabled': self.teams_enabled,
-            'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
+            'base_asset_url': self.get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
             'teamsets': self.get_teamsets(course_id),
             'selected_teamset_id': self.selected_teamset_id,
@@ -437,7 +437,7 @@ class StudioMixin:
                 superset[superset_index] = subset[index]
         return superset
 
-    def _get_base_url_path_for_course_assets(self, course_key):
+    def get_base_url_path_for_course_assets(self, course_key):
         """
         Returns base url path for course assets
         """

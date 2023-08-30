@@ -171,7 +171,6 @@ class OpenAssessmentTemplatesMixin:
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
 
-        staff_assessment_data = self.api_data.staff_assessment_data
         if not staff_assessment_required and StaffAssessmentAPI.staff_assessment_exists(self.submission_uuid):
             ui_models.append(UI_MODELS["staff-assessment"])
 

@@ -66,9 +66,6 @@ class ORAConfigAPI:
     def publish_event(self, function_name, data):
         self._block.runtime.publish(self._block, function_name, data)
 
-    def render_assessment(self, path, context):
-        return self._block.render_assessment(path, context_dict=context)
-
     @property
     def course_id(self):
         return self._block.course_id
@@ -81,7 +78,7 @@ class ORAConfigAPI:
     @property
     def base_asset_url(self):
         course_key = self._block.location.course_key if hasattr(self._block, "location") else None
-        return self._block._get_base_url_path_for_course_assets(course_key)
+        return self._block.get_base_url_path_for_course_assets(course_key) # pylint-ignore
 
     @property
     def student_item_dict(self):

@@ -1,10 +1,6 @@
-"""
-Collection of JSON handlers for legacy view
-
-"""
+"""Collection of JSON handlers for legacy view"""
 import logging
 
-from xblock.core import XBlock
 from openassessment.assessment.errors import (
     PeerAssessmentInternalError,
     PeerAssessmentRequestError,
@@ -13,7 +9,6 @@ from openassessment.assessment.errors import (
 from openassessment.workflow.errors import AssessmentWorkflowError
 
 from openassessment.xblock.data_conversion import (
-    verify_assessment_parameters,
     clean_criterion_feedback,
     create_rubric_dict,
 )

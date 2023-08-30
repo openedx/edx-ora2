@@ -23,7 +23,7 @@ class LegacyViewsMixin:
         )
 
     @XBlock.handler
-    def render_peer_assessment(self, data, suffix=""):
+    def render_peer_assessment(self, data, suffix=""): # pylint: disable=unused-argument
         continue_grading = data.params.get("continue_grading", False)
         peer_assessment_data = self.peer_assessment_data(continue_grading)
         if peer_assessment_data.is_cancelled:
@@ -52,16 +52,16 @@ class LegacyViewsMixin:
         return training_path_and_context(self.api_data)
 
     @XBlock.handler
-    def render_self_assessment(self, data, suffix=""):
+    def render_self_assessment(self, data, suffix=""): # pylint: disable=unused-argument
         step_data = self.api_data.self_assessment_data
         if step_data.is_cancelled:
             self.no_peers = True
         return render_self_assessment(self.api_data)
 
     @XBlock.handler
-    def render_staff_assessment(self, data, suffix=""):
+    def render_staff_assessment(self, data, suffix=""): # pylint: disable=unused-argument
         return render_staff_assessment(self.api_data)
 
     @XBlock.handler
-    def render_student_training(self, data, suffix=""):
+    def render_student_training(self, data, suffix=""): # pylint: disable=unused-argument
         return render_student_training(self.api_data)

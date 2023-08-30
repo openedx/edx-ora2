@@ -5,7 +5,6 @@ import datetime as dt
 from functools import cached_property
 import json
 import logging
-import os
 import re
 
 import pkg_resources

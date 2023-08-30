@@ -1,10 +1,8 @@
-"""
-JSON handlers for the old-style ORA UI
-"""
+"""JSON handlers for the old-style ORA UI"""
 
+import logging
 
 from xblock.core import XBlock
-import logging
 
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
@@ -64,22 +62,22 @@ class LegacyHandlersMixin:
 
     @XBlock.json_handler
     @verify_assessment_parameters
-    def peer_assess(self, data, suffix=""):
+    def peer_assess(self, data, suffix=""): # pylint: disable=unused-argument
         return peer_assess(self.api_data, data)
 
     @XBlock.json_handler
     @verify_assessment_parameters
-    def self_assess(self, data, suffix=""):
+    def self_assess(self, data, suffix=""): # pylint: disable=unused-argument
         return self_assess(self.api_data, data)
 
     @XBlock.json_handler
-    def training_assess(self, data, suffix=""):
+    def training_assess(self, data, suffix=""): # pylint: disable=unused-argument
         return training_assess(self.api_data, data)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO")
     @verify_assessment_parameters
-    def staff_assess(self, data, suffix=""):
+    def staff_assess(self, data, suffix=""): # pylint: disable=unused-argument
         return staff_assess(self.api_data, data)
 
     # NOTE - Temporary surfacing
