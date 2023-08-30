@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 class FileAPI:
     def __init__(self, block, team_id):
         self._block = block
-        self._workflow = block.workflow_data.workflow
         self._team_id = team_id
 
     # Config
@@ -20,7 +19,7 @@ class FileAPI:
     @property
     def max_allowed_uploads(self):
         return self._block.MAX_FILES_COUNT
-    
+
     @property
     def file_upload_type(self):
         return self._block.file_upload_type
@@ -52,6 +51,16 @@ class FileAPI:
             )
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
         return None
+
+    # TODO - Determine if we can combine this and uploaded_files
+    def get_uploads_for_submission(self):
+        """Get a list of uploads for a submission"""
+        uploads = self.file_manager.get_uploads(team_id=self._team_id)
+
+        if self._block.is_team_assignment():
+            uploads += self.file_manager.get_team_uploads(team_id=self._team_id)
+
+        return uploads
 
     @property
     def saved_files_descriptions(self):

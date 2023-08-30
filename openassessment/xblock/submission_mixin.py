@@ -125,37 +125,10 @@ class SubmissionMixin:
         )
         return submission
 
+    # TODO - Remove, temporarily surfacing to avoid test refactors
     def create_submission(self, student_item_dict, student_sub_data):
         """ Creates submission for the submitted assessment response or a list for a team assessment. """
-        # Import is placed here to avoid model import at project startup.
-        from submissions import api
-
-        # Store the student's response text in a JSON-encodable dict
-        # so that later we can add additional response fields.
-        student_sub_dict = prepare_submission_for_serialization(student_sub_data)
-
-        self._collect_files_for_submission(student_sub_dict)
-
-        self.check_for_empty_submission_and_raise_error(student_sub_dict)
-
-        submission = api.create_submission(student_item_dict, student_sub_dict)
-        self.create_workflow(submission["uuid"])
-        self.submission_uuid = submission["uuid"]
-
-        # Emit analytics event...
-        self.runtime.publish(
-            self,
-            "openassessmentblock.create_submission",
-            {
-                "submission_uuid": submission["uuid"],
-                "attempt_number": submission["attempt_number"],
-                "created_at": submission["created_at"],
-                "submitted_at": submission["submitted_at"],
-                "answer": submission["answer"],
-            }
-        )
-
-        return submission
+        return self.submission_data.create_submission(student_item_dict, student_sub_data)
 
     def check_for_empty_submission_and_raise_error(self, student_sub_dict):
         """

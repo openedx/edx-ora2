@@ -223,6 +223,35 @@ def prepare_submission_for_serialization(submission_data):
     }
 
 
+def format_files_for_submission(uploaded_files):
+    """
+    Format a list of FileDescriptors as separate lists of file metadata.
+
+    Args:
+    * uploaded_files (List FileDescriptors)
+
+    Returns:
+    {
+        "file_keys": (List of URLs)
+        "files_descriptions": (List of strings)
+        "files_names": (List of strings)
+        "files_sizes": (List of ints / bytes)
+    }
+    """
+
+    files_metadata = {}
+
+    for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
+        files_metadata[field] = []
+
+    for upload in uploaded_files:
+        files_metadata['file_keys'].append(upload.key)
+        files_metadata['files_descriptions'].append(upload.description)
+        files_metadata['files_names'].append(upload.name)
+        files_metadata['files_sizes'].append(upload.size)
+
+    return files_metadata
+
 def create_submission_dict(submission, prompts):
     """
     1. Convert from legacy format.
