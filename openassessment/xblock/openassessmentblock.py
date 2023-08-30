@@ -1138,11 +1138,15 @@ class OpenAssessmentBlock(
             return False, None, DISTANT_PAST, DISTANT_FUTURE
 
         if self.date_config_type == DATE_CONFIG_COURSE_END:
-            course = self.course
-            if course.start and course.end:
-                open_range = (course.start, course.end)
-        elif self.date_config_type == DATE_CONFIG_SUBSECTION and self.due:
-            open_range = (self.start, self.due)
+            open_range = (
+                self.course.start if self.course and self.course.start else DISTANT_PAST,
+                self.course.end if self.course and self.course.end else DISTANT_FUTURE
+            )
+        elif self.date_config_type == DATE_CONFIG_SUBSECTION:
+            open_range = (
+                self.start if self.start else DISTANT_PAST,
+                self.due if self.due else DISTANT_FUTURE
+            )
 
         if self.is_beta_tester:
             beta_start = self._adjust_start_date_for_beta_testers(open_range[0])

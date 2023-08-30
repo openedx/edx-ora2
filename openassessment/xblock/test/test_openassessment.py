@@ -1066,57 +1066,202 @@ class TestDates(XBlockHandlerTestCase):
 
 class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
 
-    @scenario('data/basic_scenario.xml')
-    def test_date_config_type_course_end(self, xblock):
+    DEFAULT_COURSE_START = dt.datetime(2023, 5, 1).replace(tzinfo=pytz.utc)
+    DEFAULT_COURSE_END = dt.datetime(2023, 12, 1).replace(tzinfo=pytz.utc)
+    DEFAULT_SUBSECTION_START = dt.datetime(2023, 7, 30).replace(tzinfo=pytz.utc)
+    DEFAULT_SUBSECTION_DUE = dt.datetime(2023, 8, 10).replace(tzinfo=pytz.utc)
+
+    def defined_manual_dates(self, xblock, step):
+        """
+        Helper to get an assessment's start and due dates as datetime object
+        """
+        if step == 'submission':
+            return (
+                dt.datetime.fromisoformat(xblock.submission_start),
+                dt.datetime.fromisoformat(xblock.submission_due)
+            )
+        for assessment in xblock.valid_assessments:
+            if assessment['name'] == step + '-assessment':
+                return (
+                    dt.datetime.fromisoformat(assessment.get('start')),
+                    dt.datetime.fromisoformat(assessment.get('due'))
+                )
+
+    def setup_dates(self, xblock, course_dates=None, subsection_dates=None):
+        """
+        Helper to set up course start and end dates and subsection start and due dates
+        """
+        mock_course = Mock()
+        if course_dates is None:
+            course_dates = (
+                self.DEFAULT_COURSE_START,
+                self.DEFAULT_COURSE_END
+            )
+        mock_course.start = course_dates[0]
+        mock_course.end = course_dates[1]
+        xblock.course = mock_course
+
+        if subsection_dates is None:
+            subsection_dates = (
+                self.DEFAULT_SUBSECTION_START,
+                self.DEFAULT_SUBSECTION_DUE
+            )
+        xblock.start = subsection_dates[0]
+        xblock.due = subsection_dates[1]
+
+    @scenario('data/date_config_scenario.xml')
+    def test_course_end(self, xblock):
         """
         Test that the date config type field set to course end date
         """
         xblock.date_config_type = defaults.DATE_CONFIG_COURSE_END
+        self.setup_dates(xblock)
 
-        mock_course = Mock()
-        mock_course.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
-        mock_course.end = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
-        xblock.course = mock_course
+        defined_submission_due = self.defined_manual_dates(xblock, 'submission')[1]
+        defined_peer_due = self.defined_manual_dates(xblock, 'peer')[1]
 
-        # The problem should always be not be close if now is before course start date
+        # The problem should not be closed if now is before course end date
         assert_is_closed(
             xblock,
-            dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "abitrary", False, None,
-            mock_course.start, mock_course.end
+            defined_peer_due + dt.timedelta(hours=3),
+            "peer",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(hours=3),
+            "peer",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            defined_submission_due + dt.timedelta(hours=3),
+            "submission",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(hours=3),
+            "submission",
+            False,
+            None,
+            xblock.course.start,
+            xblock.course.end
         )
 
         # The problem should be closed if now is after course end date
         assert_is_closed(
             xblock,
-            dt.datetime(2016, 4, 1, 1, 1, 1, 2).replace(tzinfo=pytz.utc),
-            "abitrary", True, 'due',
-            mock_course.start, mock_course.end
+            xblock.course.end + dt.timedelta(minutes=1),
+            "peer",
+            True,
+            'due',
+            xblock.course.start,
+            xblock.course.end
+        )
+        assert_is_closed(
+            xblock,
+            xblock.course.end + dt.timedelta(minutes=1),
+            "submission",
+            True,
+            'due',
+            xblock.course.start,
+            xblock.course.end
         )
 
-    @scenario('data/basic_scenario.xml')
-    def test_date_config_type_subsection(self, xblock):
+    @scenario('data/date_config_scenario.xml')
+    def test_subsection(self, xblock):
         """
-        Test that the date config type field set to section
+        Test that the date config type field set to submission due date
         """
         xblock.date_config_type = defaults.DATE_CONFIG_SUBSECTION
-        xblock.start = dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc)
-        xblock.due = dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc)
+        self.setup_dates(xblock)
+        defined_submission_due = self.defined_manual_dates(xblock, 'submission')[1]
+        defined_peer_due = self.defined_manual_dates(xblock, 'peer')[1]
 
-        # The problem should always be not be close if now is before section start date
+        # The problem should not be closed if now is before subsection due date
         assert_is_closed(
             xblock,
-            dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "abitrary", False, None,
-            xblock.start, xblock.due
+            defined_peer_due + dt.timedelta(hours=3),
+            "peer",
+            False,
+            None,
+            xblock.start,
+            xblock.due
+        )
+        assert_is_closed(
+            xblock,
+            defined_submission_due + dt.timedelta(hours=3),
+            "submission",
+            False,
+            None,
+            xblock.start,
+            xblock.due
         )
 
-        # The problem should be closed if now is after section due date
+        # The problem should be closed if now is after subsection due date
         assert_is_closed(
             xblock,
-            dt.datetime(2016, 4, 1, 1, 1, 1, 2).replace(tzinfo=pytz.utc),
-            "abitrary", True, 'due',
-            xblock.start, xblock.due
+            xblock.due + dt.timedelta(minutes=1),
+            "submission",
+            True,
+            'due',
+            xblock.start,
+            xblock.due
+        )
+        assert_is_closed(
+            xblock,
+            xblock.due + dt.timedelta(minutes=1),
+            "submission",
+            True,
+            'due',
+            xblock.start,
+            xblock.due
+        )
+
+    @scenario('data/date_config_scenario.xml')
+    def test_course_end_no_defined_course_end(self, xblock):
+        """
+        Test behavior for when course dates aren't set
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_COURSE_END
+        self.setup_dates(xblock, course_dates=(None, None))
+
+        assert_is_closed(
+            xblock,
+            xblock.due,
+            "submission",
+            False,
+            None,
+            DISTANT_PAST,
+            DISTANT_FUTURE,
+        )
+
+    @scenario('data/date_config_scenario.xml')
+    def test_subsection_none_defined(self, xblock):
+        """
+        Test behavior for when subsection dates aren't defined
+        """
+        xblock.date_config_type = defaults.DATE_CONFIG_SUBSECTION
+        self.setup_dates(xblock, subsection_dates=(None, None))
+
+        assert_is_closed(
+            xblock,
+            self.defined_manual_dates(xblock, 'submission')[1],
+            "submission",
+            False,
+            None,
+            DISTANT_PAST,
+            DISTANT_FUTURE,
         )
 
 
