@@ -6,8 +6,8 @@ from openassessment.workflow import api as workflow_api
 
 from openassessment.xblock.data_conversion import (
     clean_criterion_feedback,
-    create_rubric_dict,
-    verify_assessment_parameters)
+    create_rubric_dict
+)
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -16,8 +16,7 @@ messages = {
     "could_not_submit": "Your self assessment could not be submitted.",
 }
 
-@verify_assessment_parameters
-def self_assess(api_data, data):  # pylint: disable=unused-argument
+def self_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
     """
     Create a self-assessment for a submission.
 
@@ -39,7 +38,7 @@ def self_assess(api_data, data):  # pylint: disable=unused-argument
     if submission_uuid is None:
         return failure_response(messages["must_submit"])
 
-    step_data = api_data.self_data
+    step_data = api_data.self_assessment_data
     try:
         assessment = self_api.create_assessment(
             step_data.submission_uuid,

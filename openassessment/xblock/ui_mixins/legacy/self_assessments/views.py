@@ -43,7 +43,7 @@ def self_context(api_data, with_sub=False):
         'user_language': user_preferences['user_language']
     }
 
-    step_data = api_data.self_data
+    step_data = api_data.self_assessment_data
     # We display the due date whether the problem is open or closed.
     # If no date is set, it defaults to the distant future, in which
     # case we don't display the date.
@@ -80,12 +80,12 @@ def self_path_and_context(api_data):
         SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
     """
     # Import is placed here to avoid model import at project startup.
-    step_data = api_data.self_data
+    step_data = api_data.self_assessment_data
 
     def path_and_context(path_key, with_sub=False):
         return (
             template_paths[path_key],
-            self_context(api_data.config_data, step_data, with_sub)
+            self_context(api_data, with_sub)
         )
 
     if step_data.is_cancelled:
