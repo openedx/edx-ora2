@@ -66,79 +66,15 @@ class SubmissionMixin:
     def file_manager(self):
         return file_upload_api.FileUploadManager(self)
 
-    def create_team_submission(self, student_sub_data):
+    # TODO - Remove, temporarily surfacing to avoid test refactors
+    def create_team_submission(self, student_item_dict, student_sub_data):
         """ A student submitting for a team should generate matching submissions for every member of the team. """
-        if not self.has_team():
-            msg = "Student {} has no team for course {}".format(
-                self.get_student_item_dict()['student_id'],
-                self.course_id
-            )
-            logger.exception(msg)
-            raise NoTeamToCreateSubmissionForError(msg)
-
-        # Import is placed here to avoid model import at project startup.
-        from submissions import team_api
-
-        team_info = self.get_team_info()
-        # Store the student's response text in a JSON-encodable dict
-        # so that later we can add additional response fields.
-        student_sub_dict = prepare_submission_for_serialization(student_sub_data)
-
-        self._collect_files_for_submission(student_sub_dict)
-
-        self.check_for_empty_submission_and_raise_error(student_sub_dict)
-
-        submitter_anonymous_user_id = self.xmodule_runtime.anonymous_student_id
-        user = self.get_real_user(submitter_anonymous_user_id)
-        student_item_dict = self.get_student_item_dict(anonymous_user_id=submitter_anonymous_user_id)
-        anonymous_student_ids = self.get_anonymous_user_ids_for_team()
-        submission = team_api.create_submission_for_team(
-            self.course_id,
-            student_item_dict['item_id'],
-            team_info['team_id'],
-            user.id,
-            anonymous_student_ids,
-            student_sub_dict,
-        )
-
-        self.create_team_workflow(submission["team_submission_uuid"])
-        # Emit analytics event...
-        self.runtime.publish(
-            self,
-            "openassessmentblock.create_team_submission",
-            {
-                "submission_uuid": submission["team_submission_uuid"],
-                "team_id": team_info["team_id"],
-                "attempt_number": submission["attempt_number"],
-                "created_at": submission["created_at"],
-                "submitted_at": submission["submitted_at"],
-                "answer": submission["answer"],
-            }
-        )
-        return submission
+        return self.submission_data.create_team_submission(student_item_dict, student_sub_data)
 
     # TODO - Remove, temporarily surfacing to avoid test refactors
     def create_submission(self, student_item_dict, student_sub_data):
         """ Creates submission for the submitted assessment response or a list for a team assessment. """
         return self.submission_data.create_submission(student_item_dict, student_sub_data)
-
-    def check_for_empty_submission_and_raise_error(self, student_sub_dict):
-        """
-        Check if student_sub_dict has any submission content so that we don't
-        create empty submissions.
-
-        If there are no text responses and no file responses, raise an EmptySubmissionError
-        """
-        has_content = False
-
-        # Does the student_sub_dict have any non-zero-length strings in 'parts'?
-        has_content |= any(part.get('text', '') for part in student_sub_dict.get('parts', []))
-
-        # Are there any file_keys in student_sub_dict?
-        has_content |= len(student_sub_dict.get('file_keys', [])) > 0
-
-        if not has_content:
-            raise EmptySubmissionError
 
     ### FILE UPLOADS ###
 

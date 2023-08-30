@@ -7,7 +7,7 @@ import logging
 
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
-from openassessment.xblock.submission_mixin import (
+from openassessment.xblock.submissions.errors import (
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
 )
@@ -78,7 +78,7 @@ def submit(block_config, submission_info, data):
         try:
             # a submission for a team generates matching submissions for all members
             if block_config.is_team_assignment():
-                submission = submission_info.create_team_submission(student_sub_data)
+                submission = submission_info.create_team_submission(student_item_dict, student_sub_data)
             else:
                 submission = submission_info.create_submission(student_item_dict, student_sub_data)
             return _create_submission_response(submission)
