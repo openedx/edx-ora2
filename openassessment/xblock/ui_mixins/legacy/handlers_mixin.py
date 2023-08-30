@@ -9,7 +9,7 @@ import logging
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
-from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import staff_assess
+from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.actions import (
     submit,
@@ -81,6 +81,10 @@ class LegacyHandlersMixin:
     @verify_assessment_parameters
     def staff_assess(self, data, suffix=""):
         return staff_assess(self.api_data, data)
+
+    # NOTE - Temporary surfacing
+    def do_staff_assessment(self, data):
+        return do_staff_assessment(self.api_data, data)
 
     # Utils
 
