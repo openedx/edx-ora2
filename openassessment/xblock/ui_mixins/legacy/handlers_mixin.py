@@ -4,6 +4,7 @@ JSON handlers for the old-style ORA UI
 
 
 from xblock.core import XBlock
+import logging
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
@@ -19,6 +20,7 @@ from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
     remove_uploaded_file,
 )
 
+logger = logging.getLogger(__name__)
 
 class LegacyHandlersMixin:
     """
@@ -68,8 +70,8 @@ class LegacyHandlersMixin:
         return self_assess(self.api_data, data)
 
     @XBlock.json_handler
-    @verify_assessment_parameters
     def training_assess(self, data, suffix=""):
+        logger.warning("block.training_assess")
         return training_assess(self.api_data, data)
 
     # Utils

@@ -14,7 +14,6 @@ class PeerAssessmentAPI(StepDataAPI):
     def __init__(self, block, continue_grading = False):
         super().__init__(block, "peer-assessment")
         self._continue_grading = continue_grading
-        self._submission_data = block.api_data.submission_data
 
     @property
     def assessment(self):

@@ -6,7 +6,6 @@ import logging
 from openassessment.assessment.api import student_training
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 messages = {
@@ -42,7 +41,7 @@ def training_assess(api_data, data):
     """
 
     translate = api_data.config_data.translate
-    submission_uuid = api_data.submission_data.submission_uuid
+    submission_uuid = api_data.workflow_data.submission_uuid
 
     def failure_response(reason_key):
         return { "success": False, "msg": translate(messages[reason_key]) }
