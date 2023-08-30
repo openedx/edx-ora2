@@ -28,12 +28,11 @@ from openassessment.workflow import (
 )
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.submissions.errors import EmptySubmissionError
 from openassessment.xblock.ui_mixins.legacy.submissions.views import get_team_submission_context
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
-from .base import XBlockHandlerTestCase, scenario
+from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 from .test_staff_area import NullUserService, UserStateService
 
 COURSE_ID = 'test_course'
@@ -76,7 +75,7 @@ class SubmissionXBlockHandlerTestCase(XBlockHandlerTestCase):
 
 
 @ddt.ddt
-class SubmissionTest(SubmissionXBlockHandlerTestCase):
+class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     """ Test Submissions Api for Open Assessments. """
     SUBMISSION = json.dumps({
         "submission": ["This is my answer to the first prompt!", "This is my answer to the second prompt!"]
@@ -683,7 +682,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         self.assertIsNotNone(response[2])
 
 
-class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
+class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     """
     Test rendering of the submission step.
     To cover all states in a maintainable way, we mostly check the
@@ -722,10 +721,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         # even though the problem is unavailable.
         # In this case, we should continue showing that the student completed
         # the submission.
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
@@ -1291,7 +1287,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         """
         SubmissionTest.setup_mock_team(xblock)
         student_item_dict = xblock.get_student_item_dict()
-        xblock.create_team_submission(
+        xblock.submission_data.create_team_submission(
             student_item_dict,
             ('A man must have a code', 'A man must have an umbrella too.')
         )
@@ -1304,10 +1300,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_submitted(self, xblock):
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
@@ -1336,10 +1329,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         student_item = xblock.get_student_item_dict()
         mock_staff = Mock(name='Bob')
         xblock.get_username = Mock(return_value=mock_staff)
-        submission = xblock.create_submission(
-            student_item,
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        submission = self.create_test_submission(xblock)
         workflow_api.cancel_workflow(
             submission_uuid=submission['uuid'], comments='Inappropriate language',
             cancelled_by_id='Bob',
@@ -1388,7 +1378,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         xblock.is_team_assignment = Mock(return_value=True)
 
         student_item_dict = xblock.get_student_item_dict()
-        team_submission = xblock.create_team_submission(
+        team_submission = xblock.submission_data.create_team_submission(
             student_item_dict,
             ('a man must have a code', 'a man must also have a towel')
         )
@@ -1439,10 +1429,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @patch.object(OpenAssessmentBlock, 'get_user_submission')
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_submitted_old_format(self, xblock, mock_get_user_submission):
-        xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        self.create_test_submission(xblock)
 
         mock_get_user_submission.return_value = {"answer": {"text": "An old format response."}}
         xblock.prompts = [{'description': 'One prompt.'}]
@@ -1496,10 +1483,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
     @scenario('data/submission_closed.xml', user_id="Bob")
     def test_closed_submitted(self, xblock):
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
@@ -1526,10 +1510,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_graded(self, xblock):
         # Create a submission
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        submission = self.create_test_submission(xblock)
 
         # Simulate the user receiving a grade
         xblock.get_workflow_info = Mock(return_value={
@@ -1561,10 +1542,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
     @scenario('data/submission_closed.xml', user_id="Bob")
     def test_closed_graded(self, xblock):
         # Create a submission
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('A man must have a code', 'A man must have an umbrella too.')
-        )
+        submission = self.create_test_submission(xblock)
 
         # Simulate the user receiving a grade
         xblock.get_workflow_info = Mock(return_value={
@@ -1601,10 +1579,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
         self.assertIn('2999-05-06T00:00:00+00:00', resp.decode('utf-8'))
 
         # Create a submission for the user
-        xblock.create_submission(
-            xblock.get_student_item_dict(),
-            ('Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.', '∀ ɯɐu ɯnsʇ ɥɐʌǝ ɐu nɯqɹǝllɐ ʇoo˙'),
-        )
+        self.create_test_submission(xblock)
 
         # Expect that the response step is "submitted"
         resp = self.request(xblock, 'render_submission', json.dumps({}))

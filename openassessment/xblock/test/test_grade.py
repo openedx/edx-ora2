@@ -10,12 +10,20 @@ import ddt
 
 from openassessment.assessment.api import peer as peer_api
 
-from .base import (PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_BAD_ASSESSMENT, STAFF_GOOD_ASSESSMENT,
-                   SubmitAssessmentsMixin, XBlockHandlerTestCase, scenario)
+from .base import (
+    PEER_ASSESSMENTS,
+    SELF_ASSESSMENT,
+    STAFF_BAD_ASSESSMENT,
+    STAFF_GOOD_ASSESSMENT,
+    SubmissionTestMixin,
+    SubmitAssessmentsMixin,
+    XBlockHandlerTestCase,
+    scenario
+)
 
 
 @ddt.ddt
-class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin, SubmissionTestMixin):
     """
     View-level tests for the XBlock grade handlers.
     """
@@ -273,7 +281,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         student_id = student_item['student_id']
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock, student_item=student_item, submission_text=self.SUBMISSION)
 
         # Create submissions from other users
         scorer_subs = self.create_peer_submissions(student_item, self.PEERS, self.SUBMISSION)

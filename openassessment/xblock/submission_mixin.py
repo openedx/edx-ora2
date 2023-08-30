@@ -7,10 +7,6 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 
 from ..data import OraSubmissionAnswerFactory
-from .data_conversion import (
-    prepare_submission_for_serialization,
-)
-
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -65,16 +61,6 @@ class SubmissionMixin:
     @cached_property
     def file_manager(self):
         return file_upload_api.FileUploadManager(self)
-
-    # TODO - Remove, temporarily surfacing to avoid test refactors
-    def create_team_submission(self, student_item_dict, student_sub_data):
-        """ A student submitting for a team should generate matching submissions for every member of the team. """
-        return self.submission_data.create_team_submission(student_item_dict, student_sub_data)
-
-    # TODO - Remove, temporarily surfacing to avoid test refactors
-    def create_submission(self, student_item_dict, student_sub_data):
-        """ Creates submission for the submitted assessment response or a list for a team assessment. """
-        return self.submission_data.create_submission(student_item_dict, student_sub_data)
 
     ### FILE UPLOADS ###
 
