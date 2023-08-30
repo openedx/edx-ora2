@@ -78,28 +78,6 @@ class SubmissionMixin:
 
     ### FILE UPLOADS ###
 
-    def _collect_files_for_submission(self, student_sub_dict):
-        """ Collect files from CSM for individual submisisons or SharedFileUpload for team submisisons. """
-
-        if not self.file_upload_type:
-            return None
-
-        for field in ('file_keys', 'files_descriptions', 'files_names', 'files_sizes'):
-            student_sub_dict[field] = []
-
-        team_id = None if not self.has_team() else self.team.team_id
-        uploads = self.file_manager.get_uploads(team_id=team_id)
-        if self.is_team_assignment():
-            uploads += self.file_manager.get_team_uploads(team_id=team_id)
-
-        for upload in uploads:
-            student_sub_dict['file_keys'].append(upload.key)
-            student_sub_dict['files_descriptions'].append(upload.description)
-            student_sub_dict['files_names'].append(upload.name)
-            student_sub_dict['files_sizes'].append(upload.size)
-
-        return student_sub_dict
-
     def _can_delete_file(self, filenum):
         """
         Helper function, wraps `file_upload_api.can_delete_file()`.
