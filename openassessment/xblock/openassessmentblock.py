@@ -32,13 +32,11 @@ from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.mobile import togglable_mobile_support
-from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.resolve_dates import (
     DateValidationError, DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
 )
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
-from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.team_mixin import TeamMixin
@@ -77,7 +75,6 @@ def load(path):
 class OpenAssessmentBlock(
     MessageMixin,
     SubmissionMixin,
-    StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
@@ -899,7 +896,7 @@ class OpenAssessmentBlock(
         assessment_steps = []
         for assessment in self.valid_assessments:
             if assessment['name'] == 'staff-assessment' and assessment["required"] is False:
-                if not self.staff_assessment_exists(self.submission_uuid):
+                if not StaffAssessmentAPI.staff_assessment_exists(self.submission_uuid):
                     continue
             assessment_steps.append(assessment['name'])
         return assessment_steps

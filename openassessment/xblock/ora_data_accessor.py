@@ -28,7 +28,7 @@ class ORADataAccessor:
 
     @property
     def staff_assessment_data(self):
-        return StaffAssessmentAPI(self)
+        return StaffAssessmentAPI(self._block)
 
     @property
     def student_training_data(self):

@@ -449,8 +449,9 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         xblock.get_workflow_info = mock.Mock(return_value={'status': 'self'})
 
         # Simulate an error from the submission API
-        with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_self:
-            mock_self.get_assessment.side_effect = self_api.SelfAssessmentRequestError
+        with mock.patch('openassessment.xblock.ui_mixins.legacy.self_assessments.actions.self_api') as mock_api:
+
+            mock_api.get_assessment.side_effect = self_api.SelfAssessmentRequestError
             resp = self.request(xblock, 'render_self_assessment', json.dumps({}))
             self.assertIn('error', resp.decode('utf-8').lower())
 
