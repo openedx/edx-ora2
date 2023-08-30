@@ -213,6 +213,9 @@ class ORAConfigAPI:
     def get_xblock_id(self):
         return self._block.get_xblock_id()
 
+    def get_real_user(self, anonymous_user_id):
+        return self._block.get_real_user(anonymous_user_id)
+
     def render_assessment(self, path, context_dict):
         return self._block.render_assessment(path, context_dict)
 

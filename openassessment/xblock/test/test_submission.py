@@ -651,19 +651,16 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase):
         (['', '', ''], ['file_1_key'], False),
     )
     @ddt.unpack
-    def test_check_for_empty_submission_and_raise_error(self, xblock, parts, file_keys, expect_raises):
+    def test_submission_is_empty(self, xblock, parts, file_keys, expect_is_empty):
         """
-        Unit tests for check_for_empty_submission_and_raise_error
+        Unit tests for submission_is_empty
         """
         submission_dict = {'parts': [{'text': part} for part in parts]}
         if file_keys is not None:
             submission_dict['file_keys'] = file_keys
 
-        if expect_raises:
-            with self.assertRaises(EmptySubmissionError):
-                xblock.check_for_empty_submission_and_raise_error(submission_dict)
-        else:
-            xblock.check_for_empty_submission_and_raise_error(submission_dict)
+        is_empty = xblock.submission_data.submission_is_empty(submission_dict)
+        self.assertEqual(expect_is_empty, is_empty)
 
     @scenario('data/basic_scenario.xml', user_id='Red Five')
     @ddt.data(False, True)
@@ -1293,8 +1290,9 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
             on page load to see if a submisison has been created by a team member.
         """
         SubmissionTest.setup_mock_team(xblock)
-
+        student_item_dict = xblock.get_student_item_dict()
         xblock.create_team_submission(
+            student_item_dict,
             ('A man must have a code', 'A man must have an umbrella too.')
         )
 
@@ -1388,7 +1386,10 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase):
 
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
         xblock.is_team_assignment = Mock(return_value=True)
+
+        student_item_dict = xblock.get_student_item_dict()
         team_submission = xblock.create_team_submission(
+            student_item_dict,
             ('a man must have a code', 'a man must also have a towel')
         )
 
