@@ -1087,6 +1087,7 @@ class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
                     dt.datetime.fromisoformat(assessment.get('start')),
                     dt.datetime.fromisoformat(assessment.get('due'))
                 )
+        return None
 
     def setup_dates(self, xblock, course_dates=None, subsection_dates=None):
         """
