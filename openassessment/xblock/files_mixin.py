@@ -55,34 +55,6 @@ class FilesMixin:
         return file_upload_api.FileUploadManager(self)
 
     ### FILE UPLOADS ###
-
-    def _can_delete_file(self, filenum):
-        """
-        Helper function, wraps `file_upload_api.can_delete_file()`.
-        """
-        team_id = self.get_team_info().get('team_id')
-        key = self._get_student_item_key(filenum)
-        current_user_id = self.get_student_item_dict()['student_id']
-        return file_upload_api.can_delete_file(current_user_id, self.teams_enabled, key, team_id)
-
-    def _get_download_url(self, file_num=0):
-        """
-        Internal function for retrieving the download url.
-
-        """
-        return self._get_url_by_file_key(self._get_student_item_key(file_num))
-
-    def _get_student_item_key(self, num=0):
-        """
-        Simple utility method to generate a common file upload key based on
-        the student item.
-
-        Returns:
-            A string representation of the key.
-
-        """
-        return file_upload_api.get_student_file_key(self.get_student_item_dict(), index=num)
-
     @classmethod
     def _get_url_by_file_key(cls, key):
         """
