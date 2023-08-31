@@ -4,7 +4,7 @@ import logging
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     clean_criterion_feedback,
     create_rubric_dict
 )

@@ -1,5 +1,5 @@
 """ Base class for step data collations """
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE
 
 class StepDataAPI:
     def __init__(self, block, step=None):

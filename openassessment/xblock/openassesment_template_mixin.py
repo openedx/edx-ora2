@@ -5,16 +5,16 @@ Mixin to cover various template and UI related utilities
 from django.utils.translation import gettext as _
 from web_fragments.fragment import Fragment
 
-from openassessment.xblock.defaults import (
+from openassessment.xblock.utils.defaults import (
     PEER_ASSESSMENT_MODULES,
     SELF_ASSESSMENT_MODULES,
     SELF_TO_PEER_ASSESSMENT_MODULES,
     SELF_TO_STAFF_ASSESSMENT_MODULES,
     STAFF_ASSESSMENT_MODULES,
 )
-from openassessment.xblock.editor_config import AVAILABLE_EDITORS
+from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
-from openassessment.xblock.load_static import LoadStatic
+from openassessment.xblock.utils.load_static import LoadStatic
 
 
 UI_MODELS = {

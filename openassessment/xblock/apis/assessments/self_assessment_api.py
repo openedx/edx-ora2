@@ -1,7 +1,7 @@
 from openassessment.assessment.api import self as self_api
 from submissions import api as submission_api
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     create_submission_dict
 )
 from openassessment.xblock.apis.step_data_api import StepDataAPI

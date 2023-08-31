@@ -4,7 +4,7 @@ import logging
 
 from webob import Response
 
-from openassessment.xblock.user_data import get_user_preferences
+from openassessment.xblock.utils.user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

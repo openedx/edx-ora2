@@ -15,7 +15,7 @@ import pytz
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.workflow import api as workflow_api
-from openassessment.xblock.data_conversion import create_submission_dict
+from openassessment.xblock.utils.data_conversion import create_submission_dict
 
 from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 

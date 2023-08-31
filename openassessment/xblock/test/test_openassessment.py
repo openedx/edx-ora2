@@ -15,8 +15,9 @@ import pytz
 from freezegun import freeze_time
 from lxml import etree
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock import defaults, openassessmentblock
-from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock import openassessmentblock
+from openassessment.xblock.utils import defaults
+from openassessment.xblock.utils.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.openassesment_template_mixin import UI_MODELS
 from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
 
@@ -68,7 +69,7 @@ def assert_is_closed(
 class TestOpenAssessment(XBlockHandlerTestCase):
     """Test Open Asessessment Xblock functionality"""
 
-    TIME_ZONE_FN_PATH = 'openassessment.xblock.user_data.get_user_preferences'
+    TIME_ZONE_FN_PATH = 'openassessment.xblock.utils.user_data.get_user_preferences'
 
     @scenario('data/basic_scenario.xml')
     def test_load_student_view(self, xblock):
@@ -327,7 +328,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.
         """
-        with patch('openassessment.xblock.user_data.get_user_preferences') as time_zone_fn:
+        with patch('openassessment.xblock.utils.user_data.get_user_preferences') as time_zone_fn:
             time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self.load_scenario('data/dates_scenario.xml')

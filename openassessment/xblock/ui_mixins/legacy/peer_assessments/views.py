@@ -2,9 +2,9 @@
 The Peer Assessment view Mixin
 """
 from webob import Response
-from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
+from openassessment.xblock.utils.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
-from openassessment.xblock.user_data import get_user_preferences
+from openassessment.xblock.utils.user_data import get_user_preferences
 
 
 template_paths = {

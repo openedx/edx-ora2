@@ -26,7 +26,7 @@ from openassessment.workflow import (
     api as workflow_api,
     team_api as team_workflow_api
 )
-from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.ui_mixins.legacy.submissions.views import get_team_submission_context
 from openassessment.xblock.workflow_mixin import WorkflowMixin

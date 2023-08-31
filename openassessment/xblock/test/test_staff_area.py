@@ -24,7 +24,7 @@ from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.tests.factories import UserFactory
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow import team_api as team_workflow_api
-from openassessment.xblock.data_conversion import prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_team import (
     MockTeamsService,

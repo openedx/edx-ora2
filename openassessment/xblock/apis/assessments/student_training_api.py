@@ -1,6 +1,6 @@
 from openassessment.assessment.api.student_training import get_num_completed, get_training_example
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     convert_training_examples_list_to_dict,
     create_submission_dict
 )

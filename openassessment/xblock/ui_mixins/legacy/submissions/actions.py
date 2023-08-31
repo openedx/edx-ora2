@@ -6,12 +6,12 @@ import json
 import logging
 
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.data_conversion import prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
 )
-from openassessment.xblock.validation import validate_submission
+from openassessment.xblock.utils.validation import validate_submission
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

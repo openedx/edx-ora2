@@ -17,6 +17,7 @@ from voluptuous import (
 )
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.defaults import DATE_CONFIG_MANUAL, DATE_CONFIG_SUBSECTION, DATE_CONFIG_COURSE_END
+from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
 
 
 def utf8_validator(value):

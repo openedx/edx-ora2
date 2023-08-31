@@ -8,7 +8,7 @@ from openassessment.assessment.errors import (
 )
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     clean_criterion_feedback,
     create_rubric_dict,
 )

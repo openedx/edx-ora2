@@ -4,7 +4,7 @@ from openassessment.assessment.api import (
 )
 from submissions import team_api as team_sub_api
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     clean_criterion_feedback,
     create_rubric_dict
 )

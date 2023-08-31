@@ -24,15 +24,15 @@ from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
-from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
-from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.utils.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
+from openassessment.xblock.utils.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.files_mixin import FilesMixin
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.mobile import togglable_mobile_support
-from openassessment.xblock.resolve_dates import (
+from openassessment.xblock.utils.resolve_dates import (
     DateValidationError, DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
 )
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
@@ -42,12 +42,12 @@ from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.ui_mixins.legacy.handlers_mixin import LegacyHandlersMixin
 from openassessment.xblock.ui_mixins.legacy.views_mixin import LegacyViewsMixin
 from openassessment.xblock.ui_mixins.mfe.mixin import MfeMixin
-from openassessment.xblock.validation import validator
+from openassessment.xblock.utils.validation import validator
 from openassessment.xblock.config_mixin import ConfigMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.team_workflow_mixin import TeamWorkflowMixin
 from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTemplatesMixin
-from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+from openassessment.xblock.utils.xml import parse_from_xml, serialize_content_to_xml
 
 
 from openassessment.xblock.apis.ora_config_api import ORAConfigAPI

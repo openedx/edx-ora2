@@ -2,7 +2,7 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.assessment.api import peer as peer_api
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     create_submission_dict
 )
 from openassessment.xblock.apis.step_data_api import StepDataAPI

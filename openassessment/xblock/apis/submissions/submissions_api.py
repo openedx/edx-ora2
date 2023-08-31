@@ -6,12 +6,12 @@ import logging
 
 from submissions.team_api import get_team_submission
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     format_files_for_submission,
     prepare_submission_for_serialization,
     update_saved_response_format,
 )
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE
+from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.apis.step_data_api import StepDataAPI
 from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,

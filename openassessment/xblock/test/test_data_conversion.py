@@ -6,7 +6,7 @@ import ddt
 
 from django.test import TestCase
 
-from openassessment.xblock.data_conversion import (
+from openassessment.xblock.utils.data_conversion import (
     create_prompts_list, create_submission_dict,
     list_to_conversational_format,
     prepare_submission_for_serialization,

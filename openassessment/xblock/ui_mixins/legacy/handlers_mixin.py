@@ -13,7 +13,7 @@ from openassessment.xblock.ui_mixins.legacy.submissions.actions import (
     submit,
     save_submission,
 )
-from openassessment.xblock.data_conversion import verify_assessment_parameters
+from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
 from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
     save_files_descriptions,
     upload_url,

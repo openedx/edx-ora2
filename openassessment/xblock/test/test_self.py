@@ -12,7 +12,7 @@ import pytz
 
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
-from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.xblock.utils.data_conversion import create_rubric_dict
 
 from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 
