@@ -26,6 +26,7 @@ from openassessment.xblock.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.files_mixin import FilesMixin
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
@@ -37,7 +38,6 @@ from openassessment.xblock.resolve_dates import (
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.team_mixin import TeamMixin
 from openassessment.xblock.ui_mixins.legacy.handlers_mixin import LegacyHandlersMixin
 from openassessment.xblock.ui_mixins.legacy.views_mixin import LegacyViewsMixin
@@ -73,8 +73,8 @@ def load(path):
 @XBlock.needs("teams_configuration")
 class OpenAssessmentBlock(
     MessageMixin,
-    SubmissionMixin,
     StudioMixin,
+    FilesMixin,
     GradeMixin,
     LeaderboardMixin,
     StaffAreaMixin,
