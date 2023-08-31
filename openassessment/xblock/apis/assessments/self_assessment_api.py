@@ -4,7 +4,7 @@ from submissions import api as submission_api
 from openassessment.xblock.data_conversion import (
     create_submission_dict
 )
-from openassessment.xblock.step_data_api import StepDataAPI
+from openassessment.xblock.apis.step_data_api import StepDataAPI
 
 class SelfAssessmentAPI(StepDataAPI):
     def __init__(self, block):

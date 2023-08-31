@@ -8,7 +8,7 @@ from openassessment.xblock.data_conversion import (
     clean_criterion_feedback,
     create_rubric_dict
 )
-from openassessment.xblock.step_data_api import StepDataAPI
+from openassessment.xblock.apis.step_data_api import StepDataAPI
 
 class StaffAssessmentAPI(StepDataAPI):
     @property

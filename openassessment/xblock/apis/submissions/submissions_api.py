@@ -12,12 +12,12 @@ from openassessment.xblock.data_conversion import (
     update_saved_response_format,
 )
 from openassessment.xblock.resolve_dates import DISTANT_FUTURE
-from openassessment.xblock.step_data_api import StepDataAPI
-from openassessment.xblock.submissions.errors import (
+from openassessment.xblock.apis.step_data_api import StepDataAPI
+from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
 )
-from openassessment.xblock.submissions.file_api import FileAPI
+from openassessment.xblock.apis.submissions.file_api import FileAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

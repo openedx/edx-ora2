@@ -5,7 +5,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.xblock.data_conversion import (
     create_submission_dict
 )
-from openassessment.xblock.step_data_api import StepDataAPI
+from openassessment.xblock.apis.step_data_api import StepDataAPI
 
 logger = logging.getLogger(__name__)
 

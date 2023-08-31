@@ -22,7 +22,7 @@ from xblock.fields import Boolean, Integer, List, Scope, String
 
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.submissions.submissions_api import SubmissionAPI
+from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
@@ -50,13 +50,13 @@ from openassessment.xblock.openassesment_template_mixin import OpenAssessmentTem
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 
 
-from openassessment.xblock.ora_config_api import ORAConfigAPI
-from openassessment.xblock.workflow_api import WorkflowAPI
-from openassessment.xblock.assessments.peer_assessment_api import PeerAssessmentAPI
-from openassessment.xblock.assessments.self_assessment_api import SelfAssessmentAPI
-from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
-from openassessment.xblock.assessments.student_training_api import StudentTrainingAPI
-from openassessment.xblock.ora_data_accessor import ORADataAccessor
+from openassessment.xblock.apis.ora_config_api import ORAConfigAPI
+from openassessment.xblock.apis.workflow_api import WorkflowAPI
+from openassessment.xblock.apis.assessments.peer_assessment_api import PeerAssessmentAPI
+from openassessment.xblock.apis.assessments.self_assessment_api import SelfAssessmentAPI
+from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
+from openassessment.xblock.apis.assessments.student_training_api import StudentTrainingAPI
+from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

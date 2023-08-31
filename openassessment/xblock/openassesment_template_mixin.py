@@ -13,7 +13,7 @@ from openassessment.xblock.defaults import (
     STAFF_ASSESSMENT_MODULES,
 )
 from openassessment.xblock.editor_config import AVAILABLE_EDITORS
-from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
+from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
 from openassessment.xblock.load_static import LoadStatic
 
 

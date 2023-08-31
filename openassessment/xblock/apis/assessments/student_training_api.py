@@ -4,7 +4,7 @@ from openassessment.xblock.data_conversion import (
     convert_training_examples_list_to_dict,
     create_submission_dict
 )
-from openassessment.xblock.step_data_api import StepDataAPI
+from openassessment.xblock.apis.step_data_api import StepDataAPI
 
 class StudentTrainingAPI(StepDataAPI):
     def __init__(self, block):

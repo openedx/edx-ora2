@@ -18,7 +18,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock import defaults, openassessmentblock
 from openassessment.xblock.resolve_dates import DateValidationError, DISTANT_FUTURE, DISTANT_PAST
 from openassessment.xblock.openassesment_template_mixin import UI_MODELS
-from openassessment.xblock.assessments.staff_assessment_api import StaffAssessmentAPI
+from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
 
 from .base import XBlockHandlerTestCase, scenario
 

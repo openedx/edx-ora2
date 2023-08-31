@@ -7,7 +7,7 @@ import logging
 
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
-from openassessment.xblock.submissions.errors import (
+from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
 )

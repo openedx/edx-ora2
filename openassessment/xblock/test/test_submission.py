@@ -200,7 +200,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
     @scenario('data/single_file_upload_scenario.xml')
-    @patch('openassessment.xblock.submissions.file_api.file_upload_api.get_download_url')
+    @patch('openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url')
     def test_upload_url_single_file(self, xblock, mock_download_url):
         """ Test generate correct upload URL """
         xblock.xmodule_runtime = Mock(
@@ -1597,7 +1597,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         resp = self.request(xblock, 'render_submission', json.dumps({}))
         self.assertIn('your response has been submitted', resp.decode('utf-8').lower())
 
-    @patch('openassessment.xblock.submissions.file_api.file_upload_api', autospec=True)
+    @patch('openassessment.xblock.apis.submissions.file_api.file_upload_api', autospec=True)
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_can_delete_file(self, xblock, mock_file_api):
         xblock.get_team_info = Mock(return_value={'team_id': 'my-team-id'})
@@ -1613,7 +1613,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         mock_get_student_file_key.assert_called_once_with(xblock.get_student_item_dict(), index=5)
         mock_can_delete_file.assert_called_once_with('Bob', True, mock_get_student_file_key.return_value, 'my-team-id')
 
-    @patch('openassessment.xblock.submissions.file_api.file_upload_api', autospec=True)
+    @patch('openassessment.xblock.apis.submissions.file_api.file_upload_api', autospec=True)
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_can_delete_file_no_team_info(self, xblock, mock_file_api):
         xblock.get_team_info = Mock(return_value={})
