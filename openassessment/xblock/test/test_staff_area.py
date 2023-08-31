@@ -485,7 +485,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.submission_mixin.file_upload_api.get_download_url") as get_download_url:
+        with patch("openassessment.xblock.submissions.file_api.file_upload_api.get_download_url") as get_download_url:
             get_download_url.return_value = "http://www.example.com/image.jpeg"
 
             # also fake a file_upload_type so our patched url gets rendered
@@ -545,7 +545,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.submission_mixin.file_upload_api.get_download_url") as get_download_url:
+        with patch("openassessment.xblock.submissions.file_api.file_upload_api.get_download_url") as get_download_url:
             get_download_url.return_value = Mock()
             get_download_url.side_effect = lambda file_key: file_keys_with_images[file_key]
 
@@ -1508,7 +1508,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.submission_mixin.file_upload_api.get_download_url") as get_download_url:
+        with patch("openassessment.xblock.submissions.file_api.file_upload_api.get_download_url") as get_download_url:
             get_download_url.return_value = "http://www.example.com/image.jpeg"
             # also fake a file_upload_type so our patched url gets rendered
             xblock.file_upload_type_raw = 'image'
