@@ -1064,6 +1064,7 @@ class TestDates(XBlockHandlerTestCase):
 
         self.assertIsNone(xblock.get_username('unknown_id'))
 
+
 class IsClosedDateConfigTypeTestCase(XBlockHandlerTestCase):
 
     DEFAULT_COURSE_START = dt.datetime(2023, 5, 1).replace(tzinfo=pytz.utc)
