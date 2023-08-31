@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 class FileAPI:
     def __init__(self, block, team_id):
         self._block = block
-        self._team_id = team_id
+        self.team_id = team_id
+        self._config_data = block.api_data.config_data
 
     # Config
 
@@ -29,7 +30,6 @@ class FileAPI:
         return self._block.file_manager
 
     # File Uploads
-
     @property
     def uploaded_files(self):
         """
@@ -44,10 +44,10 @@ class FileAPI:
         """
         if self.file_upload_type:
             file_urls = self.file_manager.file_descriptors(
-                team_id=self._team_id, include_deleted=True
+                team_id=self.team_id, include_deleted=True
             )
             team_file_urls = self.file_manager.team_file_descriptors(
-                team_id=self._team_id
+                team_id=self.team_id
             )
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
         return None
@@ -55,16 +55,16 @@ class FileAPI:
     # TODO - Determine if we can combine this and uploaded_files
     def get_uploads_for_submission(self):
         """Get a list of uploads for a submission"""
-        uploads = self.file_manager.get_uploads(team_id=self._team_id)
+        uploads = self.file_manager.get_uploads(team_id=self.team_id)
 
         if self._block.is_team_assignment():
-            uploads += self.file_manager.get_team_uploads(team_id=self._team_id)
+            uploads += self.file_manager.get_team_uploads(team_id=self.team_id)
 
         return uploads
 
     @property
     def saved_files_descriptions(self):
-        return self._block.saved_files_descriptions
+        return self._config_data.saved_files_descriptions
 
     # Utils / Actions
 
@@ -75,7 +75,7 @@ class FileAPI:
         i.e. are they the uploader and still a member of the team that
         uploaded the file?
         """
-        team_id = self._team_id
+        team_id = self.team_id
         key = self.get_file_key(file_index)
         current_user_id = self._block.get_student_item_dict()["student_id"]
         teams_enabled = self._block.is_team_assignment()
@@ -143,3 +143,15 @@ class FileAPI:
 
     def delete_uploaded_file(self, file_index):
         self.file_manager.delete_upload(file_index)
+
+    def get_download_urls_from_submission(self, submission):
+        return self._block.get_download_urls_from_submission(submission)
+
+    def get_files_info_from_user_state(self, username):
+        return self._block.get_files_info_from_user_state(username)
+
+    def get_all_upload_urls_for_user(self, username_or_email):
+        return self._block.get_all_upload_urls_for_user(username_or_email)
+
+    def get_allowed_file_types_or_preset(self):
+        return self._block.get_allowed_file_types_or_preset
