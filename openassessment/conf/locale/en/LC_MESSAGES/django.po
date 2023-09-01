@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-30 16:41+0000\n"
+"POT-Creation-Date: 2023-09-01 16:00+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -557,47 +557,47 @@ msgstr ""
 msgid "Select a deadline configuration option"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:11
-msgid "NEW"
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+msgid " NEW"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:16
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:19
 msgid "Configure deadlines manually"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:20
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:23
 msgid "Match deadlines to the subsection due date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:24
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:27
 msgid "Match deadlines to the course end date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:27
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:30
 msgid "Learn more about open response date settings"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:37
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:50
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:59
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:67
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:80
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:89
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 
