@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-27 18:36+0000\n"
+"POT-Creation-Date: 2023-09-03 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: SeyedMahdi Saeid <saeid@edspirit.com>, 2023\n"
 "Language-Team: Persian (Iran) (http://app.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
@@ -560,27 +560,27 @@ msgstr "متن بازخورد را وارد کنید که یادگیرنده پ�
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
-msgstr ""
+msgstr "پیکربندی مهلت‌ها"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:9
 msgid "Select a deadline configuration option"
-msgstr ""
+msgstr "یک گزینه پیکربندی مهلت را انتخاب کنید"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:14
 msgid "Configure deadlines manually"
-msgstr ""
+msgstr "مهلت ها را به صورت دستی پیکربندی کنید"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:18
 msgid "Match deadlines to the subsection due date"
-msgstr ""
+msgstr "ضرب‌الاجل‌ها را با تاریخ سررسید بخش فرعی مطابقت دهید"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:22
 msgid "Match deadlines to the course end date"
-msgstr ""
+msgstr "ضرب الاجل ها را با تاریخ پایان دوره مطابقت دهید"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:25
 msgid "Learn more about open response date settings"
-msgstr ""
+msgstr "درباره تنظیمات تاریخ پاسخ باز بیشتر بیاموزید"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"
