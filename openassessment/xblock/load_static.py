@@ -3,7 +3,6 @@ Helper class for loading generated file from webpack.
 """
 import json
 import logging
-from urllib.parse import urlparse
 
 from pkg_resources import resource_string
 from django.conf import settings
@@ -53,8 +52,8 @@ class LoadStatic:
         get url from key
         """
         LoadStatic.reload_manifest()
-        url = LoadStatic._manifest[key] if key in LoadStatic._manifest else key
-        if LoadStatic._is_dev_server:
+        url = LoadStatic._manifest.get(key, key)
+        if LoadStatic.get_is_dev_server():
             return url
         return urljoin(settings.STATIC_URL, 'dist', url)
 
