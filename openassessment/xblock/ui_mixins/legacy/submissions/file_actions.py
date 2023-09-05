@@ -105,9 +105,7 @@ def upload_url(block_config, submission_info, data):
             if file_url:
                 return {
                     "success": False,
-                    "msg": block_config.translate(
-                        "Only a single file upload is allowed for this assessment."
-                    ),
+                    "msg": block_config.translate("Only a single file upload is allowed for this assessment."),
                 }
 
     file_num = int(data.get("filenum", 0))
@@ -134,9 +132,7 @@ def upload_url(block_config, submission_info, data):
         url = submission_info.files.get_upload_url(key, content_type)
         return {"success": True, "url": url}
     except FileUploadError:
-        logger.exception(
-            "FileUploadError:Error retrieving upload URL for the data: %s.", data
-        )
+        logger.exception("FileUploadError:Error retrieving upload URL for the data: %s.", data)
         return {
             "success": False,
             "msg": block_config.translate("Error retrieving upload URL."),

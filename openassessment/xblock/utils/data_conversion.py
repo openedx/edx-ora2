@@ -90,6 +90,7 @@ def list_to_conversational_format(str_list):
         return ' and '.join(str_list)
     return '{}, and {}'.format(', '.join(str_list[:-1]), str_list[-1])
 
+
 def update_saved_response_format(saved_response):
     """
     For backwards compatibility. Initially, problems had only one prompt and a
@@ -110,6 +111,7 @@ def update_saved_response_format(saved_response):
         }
 
     return updated_response_format
+
 
 def update_assessments_format(assessments):
     """
@@ -251,6 +253,7 @@ def format_files_for_submission(uploaded_files):
         files_metadata['files_sizes'].append(upload.size)
 
     return files_metadata
+
 
 def create_submission_dict(submission, prompts):
     """

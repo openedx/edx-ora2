@@ -44,32 +44,30 @@ def training_assess(api_data, data):
     submission_uuid = api_data.workflow_data.submission_uuid
 
     def failure_response(reason_key):
-        return { "success": False, "msg": translate(messages[reason_key]) }
+        return {"success": False, "msg": translate(messages[reason_key])}
 
-    if 'options_selected' not in data:
+    if "options_selected" not in data:
         return failure_response("missing_selected")
-    if not isinstance(data['options_selected'], dict):
+    if not isinstance(data["options_selected"], dict):
         return failure_response("selected_must_be_dict")
 
     # Check the student's scores against the course author's scores.
     # This implicitly updates the student training workflow (which example essay is shown)
     # as well as the assessment workflow (training/peer/self steps).
     try:
-        corrections = student_training.assess_training_example(
-            submission_uuid, data['options_selected']
-        )
+        corrections = student_training.assess_training_example(submission_uuid, data["options_selected"])
         api_data.config_data.publish_event(
             "openassessment.student_training_assess_example",
             {
                 "submission_uuid": submission_uuid,
                 "options_selected": data["options_selected"],
-                "corrections": corrections
-            }
+                "corrections": corrections,
+            },
         )
     except student_training.StudentTrainingRequestError:
-        msg = (
-            "Could not check learner training scores for the learner with submission UUID {uuid}"
-        ).format(uuid=submission_uuid)
+        msg = ("Could not check learner training scores for the learner with submission UUID {uuid}").format(
+            uuid=submission_uuid
+        )
         logger.warning(msg, exc_info=True)
 
         return failure_response("could_not_check")
@@ -84,7 +82,7 @@ def training_assess(api_data, data):
             logger.exception(translate(messages["could_not_update"]))
             return failure_response("could_not_update")
         return {
-            'success': True,
-            'msg': '',
-            'corrections': corrections,
+            "success": True,
+            "msg": "",
+            "corrections": corrections,
         }

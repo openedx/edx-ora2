@@ -23,9 +23,11 @@ messages = {
     "could_not_load": "Could not load peer assessment.",
 }
 
+
 def create_peer_assessment(api_data, data):
     # Import is placed here to avoid model import at project startup.
     from openassessment.assessment.api import peer as peer_api
+
     config_data = api_data.config_data
     submission_uuid = api_data.workflow_data.submission_uuid
     peer_assessment_data = api_data.peer_assessment_data()
@@ -48,6 +50,7 @@ def create_peer_assessment(api_data, data):
     )
 
     return assessment
+
 
 def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
     """Place a peer assessment into OpenAssessment system
@@ -72,7 +75,7 @@ def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
     submission_uuid = api_data.workflow_data.submission_uuid
 
     def failure_response(reason):
-        return { "success": False, "msg": translate(reason) }
+        return {"success": False, "msg": translate(reason)}
 
     if submission_uuid is None:
         return failure_response(messages["must_submit"])
@@ -94,9 +97,7 @@ def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
         try:
             assessment = create_peer_assessment(api_data, data)
             # Emit analytics event...
-            api_data.config_data.publish_assessment_event(
-                "openassessmentblock.peer_assess", assessment
-            )
+            api_data.config_data.publish_assessment_event("openassessmentblock.peer_assess", assessment)
         except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
             logger.warning(
                 "Peer API error for submission UUID %s",
@@ -120,8 +121,7 @@ def peer_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
             update()
         except AssessmentWorkflowError:
             logger.exception(
-                "Workflow error occurred when submitting peer assessment "
-                "for submission %s",
+                "Workflow error occurred when submitting peer assessment for submission %s",
                 submission_uuid,
             )
             return failure_response(messages["could_not_update"])

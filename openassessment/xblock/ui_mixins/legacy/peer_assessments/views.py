@@ -18,6 +18,7 @@ template_paths = {
     "waiting": "openassessmentblock/peer/oa_peer_waiting.html",
 }
 
+
 def peer_context(config_data, step_data, peer_sub=None):
     user_preferences = get_user_preferences(config_data.user_service)
     context_dict = {
@@ -49,37 +50,37 @@ def peer_context(config_data, step_data, peer_sub=None):
         count = step_data.has_finished[1]
 
         if step_data.continue_grading:
-            context_dict["submit_button_text"] = translate(
-                "Submit your assessment and review another response"
-            )
+            context_dict["submit_button_text"] = translate("Submit your assessment and review another response")
         elif assessment["must_grade"] - count == 1:
-            context_dict["submit_button_text"] = translate(
-                "Submit your assessment and move to next step"
-            )
+            context_dict["submit_button_text"] = translate("Submit your assessment and move to next step")
         else:
             context_dict["submit_button_text"] = translate(
                 "Submit your assessment and move to response #{response_number}"
             ).format(response_number=(count + 2))
 
-        context_dict.update({
-            "must_grade": assessment["must_grade"],
-            "graded": count,
-            "review_num": count + 1,
-        })
-
+        context_dict.update(
+            {
+                "must_grade": assessment["must_grade"],
+                "graded": count,
+                "review_num": count + 1,
+            }
+        )
 
     if step_data.is_not_available_yet:
         context_dict["peer_start"] = step_data.start_date
 
-    if (peer_sub):
-        context_dict.update({
-            "peer_submission": step_data.get_submission_dict(peer_sub),
-            # Determine if file upload is supported for this XBlock.
-            "file_upload_type": step_data.file_upload_type,
-            "peer_file_urls": step_data.get_download_urls(peer_sub),
-        })
+    if peer_sub:
+        context_dict.update(
+            {
+                "peer_submission": step_data.get_submission_dict(peer_sub),
+                # Determine if file upload is supported for this XBlock.
+                "file_upload_type": step_data.file_upload_type,
+                "peer_file_urls": step_data.get_download_urls(peer_sub),
+            }
+        )
 
     return context_dict
+
 
 def peer_path_and_context(api_data, continue_grading):
     """
@@ -97,7 +98,7 @@ def peer_path_and_context(api_data, continue_grading):
     def path_and_context(path_key, peer_sub=None):
         return (
             template_paths[path_key],
-            peer_context(api_data.config_data, step_data, peer_sub)
+            peer_context(api_data.config_data, step_data, peer_sub),
         )
 
     if step_data.is_cancelled:
@@ -130,6 +131,7 @@ def peer_path_and_context(api_data, continue_grading):
             return path_and_context("waiting")
 
     return path_and_context("unavailable")
+
 
 def render_peer_assessment(api_data, continue_grading):
     """Renders the Peer Assessment HTML section of the XBlock
