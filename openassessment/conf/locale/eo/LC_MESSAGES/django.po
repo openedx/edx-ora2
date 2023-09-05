@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-30 22:03+0000\n"
+"POT-Creation-Date: 2023-09-05 15:48+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -685,6 +685,10 @@ msgid "Select a deadline configuration option"
 msgstr ""
 "Séléçt ä déädlïné çönfïgürätïön öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html
+msgid " NEW"
+msgstr " NÉW Ⱡ'σяєм ι#"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html
 msgid "Configure deadlines manually"

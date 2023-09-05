@@ -7,6 +7,11 @@
     <div class="list-input settings-list">
         <div id="openassessment_date_config_radio" class="openassessment_date_config_radio_container field comp-setting-entry">
             <h3 class="date_config_radio_header">{% trans "Select a deadline configuration option" %}</h3>
+            {# TODO: Remove this in AU-1433 when the "new" icons are no longer desired #}
+            <span id="dates_config_new_badge">
+                <span class="icon fa fa-star" aria-hidden="true"></span>
+                {% trans " NEW" %}
+            </span>
             <br/>
             <div class="openassessment_date_config_radio_wrapper">
                 <div class="wrapper-comp-setting" >

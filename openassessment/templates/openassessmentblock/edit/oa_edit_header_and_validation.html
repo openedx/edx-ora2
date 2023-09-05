@@ -20,6 +20,8 @@
             <a href="#oa_schedule_editor_wrapper">
                 <span class="validation-warning" aria-label="">{% include 'openassessmentblock/icons/warning_filled.html' %}</span>
                 {% trans "Schedule" %}
+                {# TODO: Remove this in AU-1433 when the "new" icons are no longer desired #}
+                <span class="icon fa fa-star" aria-hidden="true"></span>
             </a>
             <span class="sr-only tab-error-count"></span>
         </li>

@@ -1077,6 +1077,19 @@
         }
       }
     }
+
+    // TODO: Remove this in AU-1433 when the "new" icons are no longer desired
+    .date_config_radio_header {
+      display: inline;
+    }
+
+    #dates_config_new_badge {
+      background: #00262B;
+      color: white;
+      border-radius: 5px;
+      padding: 3px;
+      margin: 5px;
+    }
   }
 
   hr{
