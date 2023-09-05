@@ -97,7 +97,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-27 18:36+0000\n"
+"POT-Creation-Date: 2023-09-03 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2016-2023\n"
 "Language-Team: French (Canada) (http://app.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -409,14 +409,14 @@ msgstr "Critère"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr "Vous ne pouvez pas effacer un critère après la publication du devoir."
+msgstr "Vous ne pouvez pas supprimer un critère après la publication du devoir."
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: templates/openassessmentblock/edit/oa_edit_option.html:7
 #: templates/openassessmentblock/edit/oa_edit_prompt.html:10
 #: templates/openassessmentblock/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr "Supprimer"
+msgstr "Retirer"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
@@ -1948,7 +1948,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr "\nRéponse de l'étudiant supprimée le %(removed_datetime)s"
+msgstr "\nRéponse de l'étudiant retirée le %(removed_datetime)s"
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:50
 #, python-format
@@ -2025,14 +2025,14 @@ msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "La réponse de l'étudiant a été supprimée de la notation par les pairs. L'étudiant obtient une note nulle à moins de réinitialiser l'état de l'exercice pour l'étudiant pour lui permettre de proposer un nouvelle réponse."
+msgstr "La réponse de l'étudiant a été retirée de la notation par les pairs. L'étudiant obtient une note nulle à moins de supprimer l'état de l'exercice pour l'étudiant afin de lui permettre de proposer une nouvelle réponse."
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
 " allow the team to resubmit a response."
-msgstr "La soumission de l'équipe a été supprimée de la notation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
+msgstr "La soumission de l'équipe a été retirée de la notation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
@@ -2073,7 +2073,7 @@ msgstr "Retirer la soumission de l'évaluation par les pairs"
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:232
 msgid "Remove Team Submission from Grading"
-msgstr "Supprimer la soumission d'équipe de l'évaluation"
+msgstr "Retirer la soumission d'équipe de l'évaluation"
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:242
 msgid "Caution: This Action Cannot Be Undone"
@@ -2097,7 +2097,7 @@ msgstr "Commentaires :"
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:261
 msgid "Remove submission"
-msgstr "Supprimer la réponse"
+msgstr "Retirer la réponse"
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
@@ -2494,7 +2494,7 @@ msgstr "Erreur lors de la récupération des notes attribuées par l'équipe pé
 
 #: xblock/staff_area_mixin.py:676
 msgid "Please enter valid reason to remove the submission."
-msgstr "Veuillez saisir une raison valide pour supprimer la réponse."
+msgstr "Veuillez saisir une raison valide pour retirer la réponse."
 
 #: xblock/staff_area_mixin.py:687
 msgid "Submission not found"
@@ -2509,14 +2509,14 @@ msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "La réponse de l'étudiant a été supprimée de la notation par les pairs. L'étudiant obtient une note nulle à moins de réinitialiser l'état de l'exercice pour l'étudiant pour lui permettre de proposer un nouvelle réponse."
+msgstr "La réponse de l'étudiant a été retirée de la notation par les pairs. L'étudiant obtient une note nulle à moins de supprimer l'état de l'exercice pour l'étudiant afin de lui permettre de proposer une nouvelle réponse."
 
 #: xblock/staff_area_mixin.py:762
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
-msgstr "La soumission de l'équipe a été supprimée de l'évaluation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
+msgstr "La soumission de l'équipe a été retirée de l'évaluation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
 
 #: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
 msgid "The submission ID of the submission being assessed was not found."
@@ -2722,7 +2722,7 @@ msgstr "Les critères sans option doivent demander une réponse écrite."
 
 #: xblock/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr "Les critères ne peuvent pas être modifiés ou supprimés après la publication d'un exercice."
+msgstr "Les critères ne peuvent pas être créés ou supprimés après la publication d'un exercice."
 
 #: xblock/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."

@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-27 18:36+0000\n"
+"POT-Creation-Date: 2023-09-03 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Zimeng Chen, 2023\n"
 "Language-Team: Spanish (Latin America) (http://app.transifex.com/open-edx/edx-platform/language/es_419/)\n"
@@ -580,27 +580,27 @@ msgstr "Ingrese el texto que los estudiantes verán antes de ingresar su retroal
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
-msgstr ""
+msgstr "Configuración de plazos"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:9
 msgid "Select a deadline configuration option"
-msgstr ""
+msgstr "Seleccione una opción de configuración de fecha límite"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:14
 msgid "Configure deadlines manually"
-msgstr ""
+msgstr "Configurar plazos manualmente"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:18
 msgid "Match deadlines to the subsection due date"
-msgstr ""
+msgstr "Hacer coincidir los plazos con la fecha de vencimiento de la subsección"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:22
 msgid "Match deadlines to the course end date"
-msgstr ""
+msgstr "Hacer coincidir los plazos con la fecha de finalización del curso."
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:25
 msgid "Learn more about open response date settings"
-msgstr ""
+msgstr "Obtenga más información sobre la configuración de fecha de respuesta abierta"
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:35
 msgid "Response Start Date"

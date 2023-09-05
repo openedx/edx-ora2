@@ -1,0 +1,37 @@
+<openassessment 
+    text_response="required"
+    prompts_type="text"
+    submission_start="2023-08-01"
+    submission_due="2023-08-03"
+>
+    <title>Open Assessment Test</title>
+    <prompts>
+        <prompt>
+            <description>
+            Timeline
+            ========
+            August  1 - Submission opens
+                    2 - Self Assessment opens
+                    3 - Peer Assessment opens and submission due
+                    5 - Self Assessment due
+                    8 - Peer Assessment due
+            </description>
+        </prompt>
+    </prompts>
+    <rubric>
+    </rubric>
+    <assessments>
+        <assessment 
+            name="self-assessment"
+            start="2023-08-02"
+            due="2023-08-05"
+        />
+        <assessment 
+            name="peer-assessment"
+            must_grade="5"
+            must_be_graded_by="3"
+            start="2023-08-03"
+            due="2023-08-08"
+        />
+    </assessments>
+</openassessment>

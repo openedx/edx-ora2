@@ -901,6 +901,7 @@ class SubmissionMixin:
         # If we don't add the date to the context, the template won't display it.
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
+            context["date_config_type"] = self.date_config_type
 
         # For team assignments, if a user submitted with a past team, that gets precidence.
         # So we first see if they have a submission and load context from that.
