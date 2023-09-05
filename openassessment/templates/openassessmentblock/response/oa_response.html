@@ -88,9 +88,13 @@
                   {% else %}
                     {% trans "Enter your response to the prompt." %}
                     {% if submission_due %}
-                      {% blocktrans %}
-                        Your work will save automatically and you can return to complete your response at any time before the due date
-                      {% endblocktrans %}
+                      {% if date_config_type == 'subsection' %}
+                        {% trans "Your work will save automatically and you can return to complete your response at any time before the subsection due date " %}
+                      {% elif date_config_type == 'course_end' %}
+                        {% trans "Your work will save automatically and you can return to complete your response at any time before the course ends " %}
+                      {% else %}
+                        {% trans "Your work will save automatically and you can return to complete your response at any time before the due date " %}
+                      {% endif %}
                       (<span class="step__deadline">
                           <span id="oa_step_deadline_response"
                             class="date ora-datetime"

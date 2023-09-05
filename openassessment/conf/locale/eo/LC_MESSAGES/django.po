@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-23 14:25+0000\n"
+"POT-Creation-Date: 2023-08-30 22:03+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1735,13 +1735,27 @@ msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html
 msgid ""
-"\n"
-"                        Your work will save automatically and you can return to complete your response at any time before the due date\n"
-"                      "
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
 msgstr ""
-"\n"
-"                        Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür réspönsé ät äný tïmé ßéföré thé düé däté\n"
-"                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт#"
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé ßéföré thé süßséçtïön düé däté  Ⱡ'σяєм ιρѕ#"
+
+#: templates/openassessmentblock/response/oa_response.html
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr ""
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé ßéföré thé çöürsé énds  Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/openassessmentblock/response/oa_response.html
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr ""
+"Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
+"réspönsé ät äný tïmé ßéföré thé düé däté  Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: templates/openassessmentblock/response/oa_response.html
 msgid ""
