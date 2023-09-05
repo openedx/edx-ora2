@@ -28,7 +28,7 @@ class LoadStatic:
     """
 
     _manifest = {}
-    _base_url = ''
+    _is_dev_server = False
     _is_loaded = False
 
     @staticmethod
@@ -36,33 +36,32 @@ class LoadStatic:
         """
         Reload from manifest file
         """
-        root_url, base_url = '', '/static/dist/'
-        base_url_override = ''
-
-        if hasattr(settings, 'LMS_ROOT_URL'):
-            root_url = settings.LMS_ROOT_URL
-        else:
-            logger.error('LMS_ROOT_URL is undefined')
-
+        # comment this out while developing
+        if (LoadStatic._is_loaded):
+            return
         try:
             json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")
             LoadStatic._manifest = json.loads(json_data)
-            base_url_override = LoadStatic._manifest.get('base_url', None)
+            LoadStatic._is_dev_server = LoadStatic._manifest.get('is_dev_server', False)
             LoadStatic._is_loaded = True
         except OSError:
             logger.error('Cannot find static/dist/manifest.json')
-        finally:
-            if base_url_override and urlparse(base_url_override).scheme:
-                LoadStatic._base_url = base_url_override
-            else:
-                LoadStatic._base_url = urljoin(root_url, base_url)
 
     @staticmethod
     def get_url(key):
         """
         get url from key
         """
-        if not LoadStatic._is_loaded:
-            LoadStatic.reload_manifest()
-        url = LoadStatic._manifest[key] if key in LoadStatic._manifest else key
-        return urljoin(LoadStatic._base_url, url)
+        LoadStatic.reload_manifest()
+        url = LoadStatic._manifest.get(key, key)
+        if LoadStatic.get_is_dev_server():
+            return url
+        return urljoin(settings.STATIC_URL, 'dist', url)
+
+    @staticmethod
+    def get_is_dev_server():
+        """
+        get is_dev_server
+        """
+        LoadStatic.reload_manifest()
+        return LoadStatic._is_dev_server

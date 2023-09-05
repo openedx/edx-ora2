@@ -1,7 +1,7 @@
 {
   "name": "edx-ora2",
-  "version": "5.2.5",
-  "repository": "https://github.com/openedx/edx-ora2.git",
+  "version": "0.0.0",
+  "repository": "https://github.com/leangseu-edx/edx-ora2.git",
   "dependencies": {
     "@edx/frontend-build": "^6.1.1",
     "@edx/paragon": "^20.9.2",
@@ -20,6 +20,12 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.1.0",
+    "@semantic-release/npm": "^9.0.2",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "@testing-library/react": "^12.1.2",
     "dotenv-expand": "^5.1.0",
     "dotenvi": "^0.9.1",
@@ -38,6 +44,8 @@
     "karma-spec-reporter": "^0.0.31",
     "karma-webpack": "^4.0.2",
     "phantomjs-prebuilt": "^2.1.14",
+    "semantic-release": "^19.0.5",
+    "semantic-release-pypi": "^2.5.0",
     "sinon": "^7.5.0",
     "webpack": "^4.46.0",
     "webpack-manifest-plugin": "^4.0.2"

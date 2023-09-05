@@ -76,6 +76,12 @@ Object.assign(config, {
     'openassessment-editor-textarea': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_textarea.js'),
     'openassessment-editor-tinymce': path.resolve(process.cwd(), 'openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js'),
   },
+  output: {
+    path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
+    chunkFilename: '[id].js',
+    filename: '[name].[hash].js',
+    publicPath: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/`: '',
+  },
   optimization: {},
   plugins: [
     // Cleans the dist directory before each build
@@ -85,16 +91,12 @@ Object.assign(config, {
       systemvars: true,
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[chunkhash].css',
+      filename: '[name].[hash].css',
     }),
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    new WebpackManifestPlugin({
-      seed: {
-        base_url: '/static/dist',
-      },
-    }),
+    new WebpackManifestPlugin(),
   ],
 });
 

@@ -78,6 +78,9 @@ Object.assign(config, {
   },
   output: {
     path: path.resolve(process.cwd(), 'openassessment/xblock/static/dist'),
+    chunkFilename: '[id].js',
+    filename: '[name].js',
+    publicPath: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${config.devServer.port}/`: '',
   },
   optimization: {},
   plugins: [
@@ -93,12 +96,12 @@ Object.assign(config, {
     new webpack.ProvidePlugin({
       Backgrid: path.resolve(path.join(__dirname, 'openassessment/xblock/static/js/lib/backgrid/backgrid')),
     }),
-    ...process.env.WEBPACK_DEV_SERVER ? [new WebpackManifestPlugin({
-      seed: {
-        base_url: `http://localhost:${config.devServer.port}/`
-      },
+    new WebpackManifestPlugin({
       writeToFileEmit: true,
-    })]: [],
+      seed: {
+        is_dev_server: process.env.WEBPACK_DEV_SERVER,
+      },
+    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 });

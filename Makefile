@@ -83,7 +83,7 @@ update-npm-requirements: ## update NPM requrements
 	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
 
 static: ## Webpack JavaScript and SASS source files
-	npm run dev && npm run build
+	npm run build
 
 ################
 #Translations Handling
@@ -112,6 +112,8 @@ push_translations: ## push source translation files (.po) to Transifex
 	tx push -s
 
 check_translations_up_to_date: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
+
+update_translations: extract_translations compile_translations generate_dummy_translations pull_translations ## extract, compile, and pull translations from Transifex
 
 ################
 #Tests and checks

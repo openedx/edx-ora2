@@ -1,5 +1,4 @@
 """
 Initialization Information for Open Assessment Module
 """
-
-__version__ = '5.2.5'
+__version__ = '0.0.0'
