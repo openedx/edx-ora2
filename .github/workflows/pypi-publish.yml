@@ -2,30 +2,81 @@ name: Publish package to PyPi
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - master
 
 jobs:
-
-  push:
+  release:
     runs-on: ubuntu-20.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: setup python
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install node packages
+        run: npm ci
+
+      - name: Build js
+        run: npm run build
+
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
-      - name: Install pip
-        run: pip install -r requirements/pip.txt
+      - name: Install python Dependencies
+        run: |
+          pip install -r requirements/pip.txt
+          pip install -r requirements/ci.txt
+          pip install -r requirements/test.txt
+          pip install -r requirements/quality.txt
+          pip install -r requirements/test-acceptance.txt
 
-      - name: Build package
+      - name: Install Transifex client
+        run: |
+          cd
+          curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
+          cat $GITHUB_PATH
+          echo $(pwd) >> $GITHUB_PATH
+          cat $GITHUB_PATH
+
+      - name: Install GNU gettext
+        run: sudo apt-get install gettext
+
+      - name: update translations
+        env:
+          TX_TOKEN: ${{ secrets.EDX_TRANSIFEX_BOT_GITHUB_TOKEN }}
+        run: |
+          make update_translations
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.CC_GITHUB_TOKEN }}
+        run: npx semantic-release
+
+      - name: Build python package
         run: python setup.py sdist bdist_wheel
 
       - name: Publish to PyPi
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
           password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+
+      # - name: Send failure notification
+      #   if: ${{ failure() }}
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: email-smtp.us-east-1.amazonaws.com
+      #     server_port: 465
+      #     username: ${{ secrets.EDX_SMTP_USERNAME }}
+      #     password: ${{ secrets.EDX_SMTP_PASSWORD }}
+      #     subject: Publish Pypi has failed in ${{github.repository}}
+      #     to: masters-grades@edx.org
+      #     from: github-actions <github-actions@edx.org>
+      #     body: Publish Pypi workflow in ${{github.repository}} failed!
+      #       For details see "github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

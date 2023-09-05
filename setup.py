@@ -52,11 +52,11 @@ VERSION = get_version("openassessment", "__init__.py")
 
 
 setup(
-    name='ora2',
+    name='lk-edx-ora2',
     version=VERSION,
     author='edX',
     author_email='oscm@edx.org',
-    url='http://github.com/openedx/edx-ora2',
+    url='http://github.com/leangseu-edx/edx-ora2',
     description='edx-ora2',
     license='AGPL',
     long_description=README,

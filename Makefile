@@ -113,6 +113,8 @@ push_translations: ## push source translation files (.po) to Transifex
 
 check_translations_up_to_date: extract_translations compile_translations generate_dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 
+update_translations: extract_translations compile_translations generate_dummy_translations pull_translations ## extract, compile, and pull translations from Transifex
+
 ################
 #Tests and checks
 ################
