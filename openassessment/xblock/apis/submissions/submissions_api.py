@@ -194,6 +194,9 @@ class SubmissionAPI(StepDataAPI):
                 self.config_data.rubric_criteria_with_labels
             )
 
+        if self.due_date is not None:
+            response_config["date_config_type"] = self.config_data.date_config_type
+
         return response_config
 
     # Actions
