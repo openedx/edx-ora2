@@ -36,7 +36,7 @@ class LoadStatic:
         Reload from manifest file
         """
         # comment this out while developing
-        if (LoadStatic._is_loaded):
+        if LoadStatic._is_loaded:
             return
         try:
             json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")

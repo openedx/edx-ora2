@@ -56,10 +56,10 @@ class TestLoadStatic(TestCase):
         resource_string.return_value = None
         key_url = 'some_url.js'
         with patch('json.loads') as jsondata:
-            jsondata.return_value = dict({
+            jsondata.return_value = {
                 'some_url.js': 'some_url.hash.js',
                 'is_dev_server': True
-            })
+            }
             self.assertEqual(LoadStatic.get_is_dev_server(), True)
             self.assertEqual(LoadStatic.get_url(key_url), 'some_url.hash.js')
 
