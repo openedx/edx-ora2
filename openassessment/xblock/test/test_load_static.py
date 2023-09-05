@@ -9,12 +9,11 @@ from openassessment.xblock.load_static import LoadStatic, urljoin
 
 class TestLoadStatic(TestCase):
     """Test load static class"""
-    default_base_url = '/static/dist/'
 
     def setUp(self):
         LoadStatic._manifest = {}   # pylint: disable=protected-access
         LoadStatic._is_loaded = False   # pylint: disable=protected-access
-        LoadStatic._base_url = ''   # pylint: disable=protected-access
+        LoadStatic._is_dev_server = False   # pylint: disable=protected-access
         return super().setUp()
 
     def test_urljoin(self):
@@ -45,60 +44,27 @@ class TestLoadStatic(TestCase):
 
     def test_get_url_default(self):
         key_url = 'some_url.js'
-        self.assertEqual(LoadStatic.get_url(key_url),
-                         urljoin(self.default_base_url, key_url))
+        self.assertEqual(LoadStatic.get_url(key_url), urljoin('/static', 'dist', key_url))
 
-    def test_get_url_absolute_base_url(self):
-        # Given my base_url is an absolute URL and is overridden (as in hot-reload
-        # local dev setup)
+    @override_settings(STATIC_URL='/cms')
+    def test_get_url_with_custom_static_url(self):
         key_url = 'some_url.js'
-        absolute_base_url = 'foo://bar'
-        loaded_key_url = '/some_url.hashchunk.js'
+        self.assertEqual(LoadStatic.get_url(key_url), urljoin('/cms', 'dist', key_url))
 
-        # When I get a static URL
+    @patch('pkg_resources.resource_string')
+    def test_is_dev_server_url(self, resource_string):
+        resource_string.return_value = None
+        key_url = 'some_url.js'
         with patch('json.loads') as jsondata:
-            jsondata.return_value = {
-                'base_url': absolute_base_url,
-                'some_url.js': loaded_key_url,
-            }
-            # Then I use the base URL instead of default LMS URL
-            self.assertEqual(LoadStatic.get_url(key_url), urljoin(
-                absolute_base_url, loaded_key_url))
+            jsondata.return_value = dict({
+                'some_url.js': 'some_url.hash.js',
+                'is_dev_server': True
+            })
+            self.assertEqual(LoadStatic.get_is_dev_server(), True)
+            self.assertEqual(LoadStatic.get_url(key_url), 'some_url.hash.js')
 
     @patch('pkg_resources.resource_string')
     def test_get_url_file_not_found(self, resource_string):
         key_url = 'some_url.js'
         resource_string.side_effect = IOError()
-        self.assertEqual(LoadStatic.get_url(key_url), urljoin(
-            self.default_base_url, 'some_url.js'))
-
-    @override_settings(LMS_ROOT_URL='localhost/')
-    @patch('pkg_resources.resource_string')
-    def test_get_url_file_not_found_with_root_url(self, resource_string):
-        key_url = 'some_url.js'
-        resource_string.side_effect = IOError()
-        self.assertEqual(LoadStatic.get_url(key_url), urljoin(
-            'localhost/', self.default_base_url, 'some_url.js'))
-
-    @patch('pkg_resources.resource_string')
-    def test_get_url_with_manifest(self, resource_string):
-        resource_string.return_value = None
-        key_url = 'some_url.js'
-        with patch('json.loads') as jsondata:
-            jsondata.return_value = {
-                'some_url.js': 'some_url.hashchunk.js'
-            }
-            self.assertEqual(LoadStatic.get_url(key_url), urljoin(
-                self.default_base_url, 'some_url.hashchunk.js'))
-
-    @override_settings(LMS_ROOT_URL='localhost/')
-    @patch('pkg_resources.resource_string')
-    def test_get_url_with_manifest_and_root_url(self, resource_string):
-        resource_string.return_value = None
-        key_url = 'some_url.js'
-        with patch('json.loads') as jsondata:
-            jsondata.return_value = {
-                'some_url.js': 'some_url.hashchunk.js'
-            }
-            self.assertEqual(LoadStatic.get_url(key_url), urljoin(
-                'localhost/', self.default_base_url, 'some_url.hashchunk.js'))
+        self.assertEqual(LoadStatic.get_url(key_url), urljoin('/static', 'dist', key_url))
