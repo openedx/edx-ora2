@@ -83,7 +83,7 @@ update-npm-requirements: ## update NPM requrements
 	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
 
 static: ## Webpack JavaScript and SASS source files
-	npm run dev && npm run build
+	npm run build
 
 ################
 #Translations Handling
