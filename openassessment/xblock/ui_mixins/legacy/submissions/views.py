@@ -34,13 +34,13 @@ def render_submission(config, submission_info):
     - Submitted, waiting assessment
     - Submitted and graded
     """
-    context = submission_context(config, submission_info)
-    path = submission_path(submission_info)
+    context = get_submission_context(config, submission_info)
+    path = get_submission_path(submission_info)
 
     return config.render_assessment(path, context_dict=context)
 
 
-def submission_path(submission_info):
+def get_submission_path(submission_info):
     """
     Given info about the submission, return the appropriate template path
 
@@ -146,7 +146,7 @@ def save_status(config, submission_info):
     return config.translate("Draft saved!") if submission_info.has_saved else config.translate("Response not started.")
 
 
-def submission_context(config, submission_info):
+def get_submission_context(config, submission_info):
     """
     Determine the context needed when rendering the response (submission) step.
 
