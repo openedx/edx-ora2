@@ -8,7 +8,7 @@ from .peer_assessments.views import render_peer_assessment, peer_path_and_contex
 from .self_assessments.views import render_self_assessment, self_path_and_context
 from .staff_assessments.views import render_staff_assessment, staff_path_and_context
 from .student_training.views import render_student_training, training_path_and_context
-from .submissions.views import render_submission, submission_path, submission_context
+from .submissions.views import render_submission, get_submission_path, get_submission_context
 
 
 class LegacyViewsMixin:
@@ -18,7 +18,7 @@ class LegacyViewsMixin:
 
     # NOTE - Temporary surfacing for testing / refactoring
     def submission_path_and_context(self):
-        return submission_path(self.submission_data), submission_context(self.config_data, self.submission_data)
+        return get_submission_path(self.submission_data), get_submission_context(self.config_data, self.submission_data)
 
     @XBlock.handler
     def render_peer_assessment(self, data, suffix=""):  # pylint: disable=unused-argument

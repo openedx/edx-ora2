@@ -122,7 +122,7 @@ def submit(block_config, submission_info, data):
             logger.exception(msg)
             status_tag = "EEMPTYSUB"
             status_text = block_config.translate(
-                "Submission cannot be empty. " "Please refresh the page and try again."
+                "Submission cannot be empty. Please refresh the page and try again."
             )
         except (
             api.SubmissionError,

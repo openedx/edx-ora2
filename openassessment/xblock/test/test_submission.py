@@ -1332,7 +1332,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_cancelled_submission(self, xblock):
-        student_item = xblock.get_student_item_dict()
         mock_staff = Mock(name='Bob')
         xblock.get_username = Mock(return_value=mock_staff)
         submission = self.create_test_submission(xblock)
