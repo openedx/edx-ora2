@@ -45,13 +45,9 @@ class SubmissionAPI(StepDataAPI):
     @property
     def cancellation_info(self):
         if self.config_data.is_team_assignment():
-            return self.workflow_data.get_team_workflow_cancellation_info(
-                self.team_submission_uuid
-            )
+            return self.workflow_data.get_team_workflow_cancellation_info(self.team_submission_uuid)
         else:
-            return self.workflow_data.get_workflow_cancellation_info(
-                self.submission_uuid
-            )
+            return self.workflow_data.get_workflow_cancellation_info(self.submission_uuid)
 
     @property
     def has_received_final_grade(self):
@@ -59,17 +55,11 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def peer_step_incomplete(self):
-        return (
-            "peer" in self.workflow_data.status_details
-            and not self.workflow_data.is_peer_complete
-        )
+        return "peer" in self.workflow_data.status_details and not self.workflow_data.is_peer_complete
 
     @property
     def self_step_incomplete(self):
-        return (
-            "self" in self.workflow_data.status_details
-            and not self.workflow_data.is_self_complete
-        )
+        return "self" in self.workflow_data.status_details and not self.workflow_data.is_self_complete
 
     # Submission Access information
 
@@ -95,9 +85,9 @@ class SubmissionAPI(StepDataAPI):
     @property
     def team_previously_submitted_without_student(self):
         return (
-            self.config_data.teams_enabled
-            and not self.has_submitted
-            and self._block.does_team_have_submission(self.team_id)
+            self.config_data.teams_enabled and
+            not self.has_submitted and
+            self._block.does_team_have_submission(self.team_id)
         )
 
     # Submission / response data
@@ -190,9 +180,7 @@ class SubmissionAPI(StepDataAPI):
             ]
 
         if self.config_data.show_rubric_during_response:
-            response_config["rubric_criteria"] = deepcopy(
-                self.config_data.rubric_criteria_with_labels
-            )
+            response_config["rubric_criteria"] = deepcopy(self.config_data.rubric_criteria_with_labels)
 
         if self.due_date is not None:
             response_config["date_config_type"] = self.config_data.date_config_type
@@ -217,9 +205,7 @@ class SubmissionAPI(StepDataAPI):
         has_content = False
 
         # Does the student_sub_dict have any non-zero-length strings in 'parts'?
-        has_content |= any(
-            part.get("text", "") for part in submission_dict.get("parts", [])
-        )
+        has_content |= any(part.get("text", "") for part in submission_dict.get("parts", []))
 
         # Are there any file_keys in student_sub_dict?
         has_content |= len(submission_dict.get("file_keys", [])) > 0
@@ -289,9 +275,7 @@ class SubmissionAPI(StepDataAPI):
         if self.submission_is_empty(submission_dict):
             raise EmptySubmissionError
 
-        submitter_anonymous_user_id = (
-            self.config_data.get_anonymous_user_id_from_xmodule_runtime()
-        )
+        submitter_anonymous_user_id = self.config_data.get_anonymous_user_id_from_xmodule_runtime()
         user = self.config_data.get_real_user(submitter_anonymous_user_id)
 
         anonymous_student_ids = self.config_data.get_anonymous_user_ids_for_team()

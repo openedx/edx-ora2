@@ -4,8 +4,13 @@ from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.apis.workflow_api import WorkflowAPI
 from openassessment.xblock.apis.assessments.peer_assessment_api import PeerAssessmentAPI
 from openassessment.xblock.apis.assessments.self_assessment_api import SelfAssessmentAPI
-from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
-from openassessment.xblock.apis.assessments.student_training_api import StudentTrainingAPI
+from openassessment.xblock.apis.assessments.staff_assessment_api import (
+    StaffAssessmentAPI,
+)
+from openassessment.xblock.apis.assessments.student_training_api import (
+    StudentTrainingAPI,
+)
+
 
 class ORADataAccessor:
     def __init__(self, block):

@@ -1,6 +1,7 @@
 """ Base class for step data collations """
 from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE
 
+
 class StepDataAPI:
     def __init__(self, block, step=None):
         self._block = block
@@ -11,12 +12,14 @@ class StepDataAPI:
         self._due_date = due_date
 
     def __repr__(self):
-        return "{0}".format({
-            "problem_closed": self.problem_closed,
-            "closed_reason": self.closed_reason,
-            "start_date": self.start_date,
-            "due_date": self.due_date,
-        })
+        return "{0}".format(
+            {
+                "problem_closed": self.problem_closed,
+                "closed_reason": self.closed_reason,
+                "start_date": self.start_date,
+                "due_date": self.due_date,
+            }
+        )
 
     @property
     def config_data(self):
