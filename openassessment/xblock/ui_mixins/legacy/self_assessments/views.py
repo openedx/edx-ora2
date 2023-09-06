@@ -16,6 +16,7 @@ template_paths = {
     "assessment": "openassessmentblock/self/oa_self_assessment.html",
 }
 
+
 def render_self_assessment(api_data):
     if "self-assessment" not in api_data.config_data.assessment_steps:
         return Response("")
@@ -31,16 +32,17 @@ def render_self_assessment(api_data):
     else:
         return api_data.config_data.render_assessment(path, context)
 
+
 def self_context(api_data, with_sub=False):
     config_data = api_data.config_data
     user_preferences = get_user_preferences(config_data.user_service)
     context = {
-        'allow_multiple_files': config_data.allow_multiple_files,
-        'allow_latex': config_data.allow_latex,
-        'prompts_type': config_data.prompts_type,
+        "allow_multiple_files": config_data.allow_multiple_files,
+        "allow_latex": config_data.allow_latex,
+        "prompts_type": config_data.prompts_type,
         "xblock_id": config_data.get_xblock_id(),
-        'user_timezone': user_preferences['user_timezone'],
-        'user_language': user_preferences['user_language']
+        "user_timezone": user_preferences["user_timezone"],
+        "user_language": user_preferences["user_language"],
     }
 
     step_data = api_data.self_assessment_data
@@ -48,7 +50,7 @@ def self_context(api_data, with_sub=False):
     # If no date is set, it defaults to the distant future, in which
     # case we don't display the date.
     if step_data.is_due:
-        context['self_due'] = step_data.due_date
+        context["self_due"] = step_data.due_date
 
     if step_data.is_not_available_yet:
         context["self_start"] = step_data.start_date
@@ -60,12 +62,13 @@ def self_context(api_data, with_sub=False):
             context["rubric_feedback_prompt"] = config_data.rubric_feedback_prompt
 
         if config_data.rubric_feedback_default_text is not None:
-            context['rubric_feedback_default_text'] = config_data.rubric_feedback_default_text
+            context["rubric_feedback_default_text"] = config_data.rubric_feedback_default_text
 
         # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
         context["file_upload_type"] = config_data.file_upload_type
-        context['self_file_urls'] = step_data.file_urls
+        context["self_file_urls"] = step_data.file_urls
     return context
+
 
 def self_path_and_context(api_data):
     """
@@ -83,10 +86,7 @@ def self_path_and_context(api_data):
     step_data = api_data.self_assessment_data
 
     def path_and_context(path_key, with_sub=False):
-        return (
-            template_paths[path_key],
-            self_context(api_data, with_sub)
-        )
+        return (template_paths[path_key], self_context(api_data, with_sub))
 
     if step_data.is_cancelled:
         return path_and_context("cancelled")

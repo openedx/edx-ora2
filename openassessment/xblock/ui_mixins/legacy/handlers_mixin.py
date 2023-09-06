@@ -7,8 +7,12 @@ from xblock.core import XBlock
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
-from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
+from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import (
+    do_staff_assessment,
+    staff_assess,
+)
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
+
 from openassessment.xblock.ui_mixins.legacy.submissions.actions import (
     submit,
     save_submission,
@@ -22,6 +26,7 @@ from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
 )
 
 logger = logging.getLogger(__name__)
+
 
 class LegacyHandlersMixin:
     """
@@ -62,22 +67,22 @@ class LegacyHandlersMixin:
 
     @XBlock.json_handler
     @verify_assessment_parameters
-    def peer_assess(self, data, suffix=""): # pylint: disable=unused-argument
+    def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument
         return peer_assess(self.api_data, data)
 
     @XBlock.json_handler
     @verify_assessment_parameters
-    def self_assess(self, data, suffix=""): # pylint: disable=unused-argument
+    def self_assess(self, data, suffix=""):  # pylint: disable=unused-argument
         return self_assess(self.api_data, data)
 
     @XBlock.json_handler
-    def training_assess(self, data, suffix=""): # pylint: disable=unused-argument
+    def training_assess(self, data, suffix=""):  # pylint: disable=unused-argument
         return training_assess(self.api_data, data)
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO")
     @verify_assessment_parameters
-    def staff_assess(self, data, suffix=""): # pylint: disable=unused-argument
+    def staff_assess(self, data, suffix=""):  # pylint: disable=unused-argument
         return staff_assess(self.api_data, data)
 
     # NOTE - Temporary surfacing

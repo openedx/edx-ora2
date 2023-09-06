@@ -59,10 +59,7 @@ def submission_path(submission_info):
         "graded": "oa_response_graded",
         "submitted": "oa_response_submitted",
     }
-    full_paths = {
-        k: f"{template_dir}/{path}.html"
-        for (k, path) in submission_template_paths.items()
-    }
+    full_paths = {k: f"{template_dir}/{path}.html" for (k, path) in submission_template_paths.items()}
 
     # Response is unavailable (not yet open or past due date)
     if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
@@ -77,10 +74,7 @@ def submission_path(submission_info):
 
     # Response not yet submitted
     elif not submission_info.has_submitted:
-        if (
-            submission_info.is_team_assignment
-            and submission_info.team_previously_submitted_without_student
-        ):
+        if submission_info.is_team_assignment and submission_info.team_previously_submitted_without_student:
             return full_paths["team_already_submitted"]
 
     # Cancelled: Instructor has cancelled this response
@@ -120,22 +114,15 @@ def get_team_submission_context(config):
             if config.is_course_staff:
                 return team_context
             student_item_dict = config.get_student_item_dict()
-            external_submissions = (
-                team_api.get_teammates_with_submissions_from_other_teams(
-                    config.course_id,
-                    student_item_dict["item_id"],
-                    team_info["team_id"],
-                    config.get_anonymous_user_ids_for_team(),
-                )
+            external_submissions = team_api.get_teammates_with_submissions_from_other_teams(
+                config.course_id,
+                student_item_dict["item_id"],
+                team_info["team_id"],
+                config.get_anonymous_user_ids_for_team(),
             )
 
-            team_context[
-                "team_members_with_external_submissions"
-            ] = list_to_conversational_format(
-                [
-                    config.get_username(submission["student_id"])
-                    for submission in external_submissions
-                ]
+            team_context["team_members_with_external_submissions"] = list_to_conversational_format(
+                [config.get_username(submission["student_id"]) for submission in external_submissions]
             )
     except ObjectDoesNotExist:
         logger.error(
@@ -156,11 +143,7 @@ def save_status(config, submission_info):
     Returns:
         unicode
     """
-    return (
-        config.translate("Draft saved!")
-        if submission_info.has_saved
-        else config.translate("Response not started.")
-    )
+    return config.translate("Draft saved!") if submission_info.has_saved else config.translate("Response not started.")
 
 
 def submission_context(config, submission_info):
@@ -208,9 +191,7 @@ def submission_context(config, submission_info):
     elif not submission_info.has_submitted:
         # Load the user/team saved response
         saved_response = submission_info.saved_response
-        submission_context["saved_response"] = create_submission_dict(
-            saved_response, config.prompts
-        )
+        submission_context["saved_response"] = create_submission_dict(saved_response, config.prompts)
 
         if submission_info.is_team_assignment:
             team_context = get_team_submission_context(config)
@@ -231,17 +212,13 @@ def submission_context(config, submission_info):
     # Done: Submitted and received final grade
     elif submission_info.has_received_final_grade:
         student_submission = submission_info.student_submission
-        submission_context["student_submission"] = create_submission_dict(
-            student_submission, config.prompts
-        )
+        submission_context["student_submission"] = create_submission_dict(student_submission, config.prompts)
 
     # Submitted and waiting for a grade
     else:
         # Load user/team submission
         student_submission = submission_info.student_submission
-        submission_context["student_submission"] = create_submission_dict(
-            student_submission, config.prompts
-        )
+        submission_context["student_submission"] = create_submission_dict(student_submission, config.prompts)
 
         # Get workflow context
         workflow_context["peer_incomplete"] = submission_info.peer_step_incomplete

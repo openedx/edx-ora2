@@ -6,7 +6,9 @@ import json
 import logging
 
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.utils.data_conversion import prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import (
+    prepare_submission_for_serialization,
+)
 from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
@@ -66,9 +68,7 @@ def submit(block_config, submission_info, data):
         return (
             False,
             "ENOPREVIEW",
-            block_config.translate(
-                "To submit a response, view this component in Preview or Live mode."
-            ),
+            block_config.translate("To submit a response, view this component in Preview or Live mode."),
         )
 
     status_tag = "ENOMULTI"  # It is an error to submit multiple times for the same item
@@ -98,14 +98,10 @@ def submit(block_config, submission_info, data):
                 for answer_err in err.field_errors.get("answer", [])
             )
             if answer_too_long:
-                logger.exception(
-                    f"Response exceeds maximum allowed size: {student_item_dict}"
-                )
+                logger.exception(f"Response exceeds maximum allowed size: {student_item_dict}")
                 status_tag = "EANSWERLENGTH"
                 max_size = f"({int(api.Submission.MAXSIZE / 1024)} KB)"
-                base_error = block_config.translate(
-                    "Response exceeds maximum allowed size."
-                )
+                base_error = block_config.translate("Response exceeds maximum allowed size.")
                 extra_info = block_config.translate(
                     "Note: if you have a spellcheck or grammar check browser extension, "
                     "try disabling, reloading, and reentering your response before submitting."
@@ -121,8 +117,7 @@ def submit(block_config, submission_info, data):
                 status_text = msg
         except EmptySubmissionError:
             msg = (
-                "Attempted to submit submission for user {student_item}, "
-                "but submission contained no content."
+                "Attempted to submit submission for user {student_item}, " "but submission contained no content."
             ).format(student_item=student_item_dict)
             logger.exception(msg)
             status_tag = "EEMPTYSUB"
@@ -134,10 +129,9 @@ def submit(block_config, submission_info, data):
             AssessmentWorkflowError,
             NoTeamToCreateSubmissionForError,
         ):
-            msg = (
-                "An unknown error occurred while submitting "
-                "a response for the user: {student_item}"
-            ).format(student_item=student_item_dict)
+            msg = ("An unknown error occurred while submitting " "a response for the user: {student_item}").format(
+                student_item=student_item_dict
+            )
             logger.exception(msg)
             status_tag = "EUNKNOWN"
             status_text = block_config.translate("API returned unclassified exception.")
@@ -172,9 +166,7 @@ def save_submission(block_config, submission_info, data):
         if not success:
             return {"success": False, "msg": msg}
         try:
-            submission_info.saved_response = json.dumps(
-                prepare_submission_for_serialization(student_sub_data)
-            )
+            submission_info.saved_response = json.dumps(prepare_submission_for_serialization(student_sub_data))
             submission_info.has_saved = True
 
             # Emit analytics event...
@@ -192,9 +184,7 @@ def save_submission(block_config, submission_info, data):
     else:
         return {
             "success": False,
-            "msg": block_config.translate(
-                "Submission data missing. Please contact support staff."
-            ),
+            "msg": block_config.translate("Submission data missing. Please contact support staff."),
         }
 
 
