@@ -85,9 +85,9 @@ class SubmissionAPI(StepDataAPI):
     @property
     def team_previously_submitted_without_student(self):
         return (
-            self.config_data.teams_enabled
-            and not self.has_submitted
-            and self._block.does_team_have_submission(self.team_id)
+            self.config_data.teams_enabled and
+            not self.has_submitted and
+            self._block.does_team_have_submission(self.team_id)
         )
 
     # Submission / response data
