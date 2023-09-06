@@ -1,10 +1,9 @@
 from openassessment.assessment.api import self as self_api
 from submissions import api as submission_api
 
-from openassessment.xblock.utils.data_conversion import (
-    create_submission_dict
-)
+from openassessment.xblock.utils.data_conversion import create_submission_dict
 from openassessment.xblock.apis.step_data_api import StepDataAPI
+
 
 class SelfAssessmentAPI(StepDataAPI):
     def __init__(self, block):
@@ -24,7 +23,7 @@ class SelfAssessmentAPI(StepDataAPI):
 
     @property
     def assessment(self):
-        return self_api.get_assessment(self.workflow_data.workflow.get('submission_uuid'))
+        return self_api.get_assessment(self.workflow_data.workflow.get("submission_uuid"))
 
     @property
     def submission_uuid(self):
@@ -32,19 +31,19 @@ class SelfAssessmentAPI(StepDataAPI):
 
     @property
     def submission(self):
-        if (self.submission_uuid):
+        if self.submission_uuid:
             return submission_api.get_submission(self.submission_uuid)
         return None
 
     @property
     def submission_dict(self):
-        if (self.submission):
+        if self.submission:
             return create_submission_dict(self.submission, self.config_data.prompts)
         return None
 
     @property
     def file_urls(self):
-        if (self.submission):
+        if self.submission:
             return self._block.get_download_urls_from_submission(self.submission)
         return None
 

@@ -2,16 +2,14 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.assessment.api import peer as peer_api
-from openassessment.xblock.utils.data_conversion import (
-    create_submission_dict
-)
+from openassessment.xblock.utils.data_conversion import create_submission_dict
 from openassessment.xblock.apis.step_data_api import StepDataAPI
 
 logger = logging.getLogger(__name__)
 
 
 class PeerAssessmentAPI(StepDataAPI):
-    def __init__(self, block, continue_grading = False):
+    def __init__(self, block, continue_grading=False):
         super().__init__(block, "peer-assessment")
         self._continue_grading = continue_grading
 
@@ -30,8 +28,7 @@ class PeerAssessmentAPI(StepDataAPI):
     @property
     def has_finished(self):
         finished, count = peer_api.has_finished_required_evaluating(
-            self._block.submission_uuid,
-            self.assessment["must_grade"]
+            self._block.submission_uuid, self.assessment["must_grade"]
         )
         return finished, count
 
@@ -77,12 +74,11 @@ class PeerAssessmentAPI(StepDataAPI):
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
-                self.workflow_data.submission_uuid,
-                self.assessment["must_be_graded_by"]
+                self.workflow_data.submission_uuid, self.assessment["must_be_graded_by"]
             )
             self.config_data.publish_event(
                 "openassessmentblock.get_peer_submission",
-                self.format_submission_for_publish(peer_submission)
+                self.format_submission_for_publish(peer_submission),
             )
         except PeerAssessmentWorkflowError as err:
             logger.exception(err)

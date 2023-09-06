@@ -2,6 +2,7 @@
 
 from openassessment.xblock.utils.user_data import get_user_preferences
 
+
 class ORAConfigAPI:
     # xblock fields
     XBLOCK_FIELDS = [
@@ -78,7 +79,7 @@ class ORAConfigAPI:
     @property
     def base_asset_url(self):
         course_key = self._block.location.course_key if hasattr(self._block, "location") else None
-        return self._block.get_base_url_path_for_course_assets(course_key) # pylint-ignore
+        return self._block.get_base_url_path_for_course_assets(course_key)  # pylint-ignore
 
     @property
     def student_item_dict(self):
@@ -115,11 +116,11 @@ class ORAConfigAPI:
 
     @property
     def user_service(self):
-        return self._block.runtime.service(self._block, 'user')
+        return self._block.runtime.service(self._block, "user")
 
     @property
     def user_state_service(self):
-        return self._block.runtime.service(self._block, 'user_state')
+        return self._block.runtime.service(self._block, "user_state")
 
     @property
     def valid_access_to_team_assessment(self):
@@ -155,9 +156,7 @@ class ORAConfigAPI:
         return self._block.should_get_all_files_urls(upload_urls)
 
     def get_student_item_dict_from_username_or_email(self, username_or_email):
-        return self._block.get_student_item_dict_from_username_or_email(
-            username_or_email
-        )
+        return self._block.get_student_item_dict_from_username_or_email(username_or_email)
 
     def is_closed(self, step=None, course_staff=None):
         return self._block.is_closed(step, course_staff)
@@ -191,12 +190,8 @@ class ORAConfigAPI:
             transform_usernames,
         )
 
-    def get_team_submission_uuid_from_individual_submission_uuid(
-        self, individual_submission_uuid
-    ):
-        return self._block.get_tam_submission_uuid_from_individual_submission_uuid(
-            individual_submission_uuid
-        )
+    def get_team_submission_uuid_from_individual_submission_uuid(self, individual_submission_uuid):
+        return self._block.get_tam_submission_uuid_from_individual_submission_uuid(individual_submission_uuid)
 
     def does_team_have_submission(self, team_id):
         return self._block.does_team_have_submission(team_id)

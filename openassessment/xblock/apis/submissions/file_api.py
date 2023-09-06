@@ -43,12 +43,8 @@ class FileAPI:
         * None when file uploads not enabled.
         """
         if self.file_upload_type:
-            file_urls = self.file_manager.file_descriptors(
-                team_id=self.team_id, include_deleted=True
-            )
-            team_file_urls = self.file_manager.team_file_descriptors(
-                team_id=self.team_id
-            )
+            file_urls = self.file_manager.file_descriptors(team_id=self.team_id, include_deleted=True)
+            team_file_urls = self.file_manager.team_file_descriptors(team_id=self.team_id)
             return {"file_urls": file_urls, "team_file_urls": team_file_urls}
         return None
 
@@ -79,9 +75,7 @@ class FileAPI:
         key = self.get_file_key(file_index)
         current_user_id = self._block.get_student_item_dict()["student_id"]
         teams_enabled = self._block.is_team_assignment()
-        return file_upload_api.can_delete_file(
-            current_user_id, teams_enabled, key, team_id
-        )
+        return file_upload_api.can_delete_file(current_user_id, teams_enabled, key, team_id)
 
     def is_supported_upload_type(self, file_ext, content_type):
         """
@@ -91,13 +85,13 @@ class FileAPI:
         Returns:
             True/False if file type is supported/unsupported
         """
-        if self.file_upload_type == 'image' and content_type not in self._block.ALLOWED_IMAGE_MIME_TYPES:
+        if self.file_upload_type == "image" and content_type not in self._block.ALLOWED_IMAGE_MIME_TYPES:
             return False
 
-        elif self.file_upload_type == 'pdf-and-image' and content_type not in self._block.ALLOWED_FILE_MIME_TYPES:
+        elif self.file_upload_type == "pdf-and-image" and content_type not in self._block.ALLOWED_FILE_MIME_TYPES:
             return False
 
-        elif self.file_upload_type == 'custom' and file_ext.lower() not in self._block.white_listed_file_types:
+        elif self.file_upload_type == "custom" and file_ext.lower() not in self._block.white_listed_file_types:
             return False
 
         elif file_ext in self._block.FILE_EXT_BLACK_LIST:
@@ -108,9 +102,7 @@ class FileAPI:
     def get_file_key(self, file_number):
         """Get file key for {file_number} for current student"""
         student_item_dict = self._block.get_student_item_dict()
-        return file_upload_api.get_student_file_key(
-            student_item_dict, index=file_number
-        )
+        return file_upload_api.get_student_file_key(student_item_dict, index=file_number)
 
     def get_upload_url(self, key, content_type):
         """Returns key, potentially signed, to upload a file to the file backend"""

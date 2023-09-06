@@ -1,6 +1,8 @@
 """
 Exposed api for ORA XBlock workflows.
 """
+
+
 class WorkflowAPI:
     def __init__(self, block):
         self._block = block
@@ -22,43 +24,43 @@ class WorkflowAPI:
 
     @property
     def status_details(self):
-        return self.workflow.get('status_details', {})
+        return self.workflow.get("status_details", {})
 
     @property
     def is_peer_complete(self):
-        return self.status_details.get('peer', {}).get('complete', False)
+        return self.status_details.get("peer", {}).get("complete", False)
 
     @property
     def is_peer_skipped(self):
-        return self.status_details.get('peer', {}).get('skipped', False)
+        return self.status_details.get("peer", {}).get("skipped", False)
 
     @property
     def is_self_complete(self):
-        return self.status_details.get('self', {}).get('complete', False)
+        return self.status_details.get("self", {}).get("complete", False)
 
     @property
     def is_cancelled(self):
-        return self.status == 'cancelled'
+        return self.status == "cancelled"
 
     @property
     def is_done(self):
-        return self.status == 'done'
+        return self.status == "done"
 
     @property
     def is_waiting(self):
-        return self.status == 'waiting'
+        return self.status == "waiting"
 
     @property
     def is_self(self):
-        return self.status == 'self'
+        return self.status == "self"
 
     @property
     def is_training(self):
-        return self.status == 'training'
+        return self.status == "training"
 
     @property
     def is_peer(self):
-        return self.status == 'peer'
+        return self.status == "peer"
 
     @property
     def submission_uuid(self):
