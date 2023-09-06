@@ -15,12 +15,20 @@ from xblock.fields import List, Scope
 from django.template.loader import get_template
 from django.utils.translation import gettext_lazy
 
-from openassessment.xblock.utils.data_conversion import (create_rubric_dict, make_django_template_key,
-                                                   update_assessments_format)
+from openassessment.xblock.utils.data_conversion import (
+    create_rubric_dict,
+    make_django_template_key,
+    update_assessments_format
+)
 from openassessment.xblock.utils.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.utils.load_static import LoadStatic
-from openassessment.xblock.utils.resolve_dates import DateValidationError, InvalidDateFormat, parse_date_value, resolve_dates
+from openassessment.xblock.utils.resolve_dates import (
+    DateValidationError,
+    InvalidDateFormat,
+    parse_date_value,
+    resolve_dates,
+)
 from openassessment.xblock.utils.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.utils.validation import validator
 

@@ -24,7 +24,11 @@ from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
-from openassessment.xblock.utils.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
+from openassessment.xblock.utils.data_conversion import (
+    create_prompts_list,
+    create_rubric_dict,
+    update_assessments_format,
+)
 from openassessment.xblock.utils.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.files_mixin import FilesMixin
 from openassessment.xblock.grade_mixin import GradeMixin
@@ -33,7 +37,11 @@ from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.mobile import togglable_mobile_support
 from openassessment.xblock.utils.resolve_dates import (
-    DateValidationError, DISTANT_FUTURE, DISTANT_PAST, parse_date_value, resolve_dates
+    DateValidationError,
+    DISTANT_FUTURE,
+    DISTANT_PAST,
+    parse_date_value,
+    resolve_dates,
 )
 from openassessment.xblock.rubric_reuse_mixin import RubricReuseMixin
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
@@ -59,6 +67,7 @@ from openassessment.xblock.apis.assessments.student_training_api import StudentT
 from openassessment.xblock.apis.ora_data_accessor import ORADataAccessor
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
 
 def load(path):
     """Handy helper for getting resources from our kit."""
@@ -279,7 +288,6 @@ class OpenAssessmentBlock(
         help="Custom list of file types allowed with submission."
     )
 
-
     @property
     def config_data(self):
         return ORAConfigAPI(self)
@@ -292,7 +300,7 @@ class OpenAssessmentBlock(
     def submission_data(self):
         return SubmissionAPI(self)
 
-    def peer_assessment_data(self, continue_grading = False):
+    def peer_assessment_data(self, continue_grading=False):
         return PeerAssessmentAPI(self, continue_grading)
 
     @property

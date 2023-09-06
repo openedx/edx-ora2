@@ -209,12 +209,16 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
 
         sally_student_item = copy.deepcopy(student_item)
         sally_student_item['student_id'] = "Sally"
-        sally_submission = self.create_test_submission(xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2"))
+        sally_submission = self.create_test_submission(
+            xblock, student_item=sally_student_item, submission_text=("Sally's answer 1", "Sally's answer 2")
+        )
 
         # Hal comes and submits a response.
         hal_student_item = copy.deepcopy(student_item)
         hal_student_item['student_id'] = "Hal"
-        hal_submission = self.create_test_submission(xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2"))
+        hal_submission = self.create_test_submission(
+            xblock, student_item=hal_student_item, submission_text=("Hal's answer 1", "Hal's answer 2")
+        )
 
         # Now Hal will assess Sally.
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -823,7 +827,6 @@ class TestPeerAssessHandler(XBlockHandlerTestCase, SubmissionTestMixin):
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = scorer_id
         another_submission = self.create_test_submission(xblock, student_item=another_student)
-
 
         # Pull the submission to assess
         peer_api.get_submission_to_assess(another_submission['uuid'], 3)

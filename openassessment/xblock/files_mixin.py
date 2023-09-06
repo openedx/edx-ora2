@@ -54,7 +54,7 @@ class FilesMixin:
     def file_manager(self):
         return file_upload_api.FileUploadManager(self)
 
-    ### FILE UPLOADS ###
+    # FILE UPLOADS
     @classmethod
     def _get_url_by_file_key(cls, key):
         """
