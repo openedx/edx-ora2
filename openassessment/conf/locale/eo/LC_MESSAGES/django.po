@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 15:48+0000\n"
+"POT-Creation-Date: 2023-09-06 21:24+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1546,7 +1546,6 @@ msgstr ""
 #: templates/openassessmentblock/response/oa_response_cancelled.html
 #: templates/openassessmentblock/self/oa_self_cancelled.html
 #: templates/openassessmentblock/student_training/student_training_cancelled.html
-#: xblock/staff_assessment_mixin.py
 msgid "Cancelled"
 msgstr "Çänçélléd Ⱡ'σяєм ιρѕυм ∂σł#"
 
@@ -1631,7 +1630,6 @@ msgstr ""
 #: templates/openassessmentblock/response/oa_response_unavailable.html
 #: templates/openassessmentblock/self/oa_self_unavailable.html
 #: templates/openassessmentblock/student_training/student_training_unavailable.html
-#: xblock/staff_assessment_mixin.py xblock/staff_assessment_mixin.py
 msgid "Not Available"
 msgstr "Nöt Àväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
@@ -2041,7 +2039,6 @@ msgstr ""
 #: templates/openassessmentblock/response/oa_response_submitted.html
 #: templates/openassessmentblock/self/oa_self_complete.html
 #: templates/openassessmentblock/student_training/student_training_complete.html
-#: xblock/staff_assessment_mixin.py xblock/staff_assessment_mixin.py
 msgid "Complete"
 msgstr "Çömplété Ⱡ'σяєм ιρѕυм ∂#"
 
@@ -2790,27 +2787,7 @@ msgstr ""
 "Thé Léärnér Träïnïng Stép öf thïs ässïgnmént çöüld nöt ßé löädéd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/data_conversion.py
-msgid "You must provide options selected in the assessment."
-msgstr ""
-"Ýöü müst prövïdé öptïöns séléçtéd ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/data_conversion.py
-msgid "You must provide overall feedback in the assessment."
-msgstr ""
-"Ýöü müst prövïdé övéräll féédßäçk ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/data_conversion.py
-msgid "You must provide feedback for criteria in the assessment."
-msgstr ""
-"Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
-" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
 #: xblock/grade_mixin.py xblock/leaderboard_mixin.py
-#: xblock/self_assessment_mixin.py xblock/student_training_mixin.py
-#: xblock/student_training_mixin.py
 msgid "An unexpected error occurred."
 msgstr "Àn ünéxpéçtéd érrör öççürréd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
@@ -2928,95 +2905,6 @@ msgid "Self Assessment to Staff Assessment"
 msgstr ""
 "Sélf Àsséssmént tö Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: xblock/peer_assessment_mixin.py
-msgid "You must submit a response before you can perform a peer assessment."
-msgstr ""
-"Ýöü müst süßmït ä réspönsé ßéföré ýöü çän pérförm ä péér ässéssmént. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-
-#: xblock/peer_assessment_mixin.py
-msgid ""
-"This feedback has already been submitted or the submission has been "
-"cancelled."
-msgstr ""
-"Thïs féédßäçk häs älréädý ßéén süßmïttéd ör thé süßmïssïön häs ßéén "
-"çänçélléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
-
-#: xblock/peer_assessment_mixin.py xblock/peer_assessment_mixin.py
-msgid "Your peer assessment could not be submitted."
-msgstr ""
-"Ýöür péér ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя #"
-
-#: xblock/peer_assessment_mixin.py xblock/student_training_mixin.py
-msgid "Could not update workflow status."
-msgstr ""
-"Çöüld nöt üpdäté wörkflöw stätüs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
-
-#: xblock/peer_assessment_mixin.py
-msgid "Could not load peer assessment."
-msgstr "Çöüld nöt löäd péér ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
-
-#: xblock/peer_assessment_mixin.py
-msgid "Submit your assessment and review another response"
-msgstr ""
-"Süßmït ýöür ässéssmént änd révïéw änöthér réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/peer_assessment_mixin.py
-msgid "Submit your assessment and move to next step"
-msgstr ""
-"Süßmït ýöür ässéssmént änd mövé tö néxt stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя #"
-
-#: xblock/peer_assessment_mixin.py
-#, python-brace-format
-msgid "Submit your assessment and move to response #{response_number}"
-msgstr ""
-"Süßmït ýöür ässéssmént änd mövé tö réspönsé #{response_number} Ⱡ'σяєм ιρѕυм "
-"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/resolve_dates.py
-#, python-brace-format
-msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr ""
-"'{date}' ïs än ïnvälïd däté förmät. Mäké süré thé däté ïs förmättéd äs ÝÝÝÝ-"
-"MM-DDTHH:MM:SS. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
-
-#: xblock/resolve_dates.py
-#, python-brace-format
-msgid "'{date}' must be a date string or datetime"
-msgstr ""
-"'{date}' müst ßé ä däté strïng ör dätétïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: xblock/resolve_dates.py
-#, python-brace-format
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr ""
-"Thïs stép's stärt däté '{start}' çännöt ßé éärlïér thän thé prévïöüs stép's "
-"stärt däté '{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-
-#: xblock/resolve_dates.py
-#, python-brace-format
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr ""
-"Thïs stép's düé däté '{due}' çännöt ßé lätér thän thé néxt stép's düé däté "
-"'{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
-
-#: xblock/resolve_dates.py
-#, python-brace-format
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr ""
-"Thé stärt däté '{start}' çännöt ßé lätér thän thé düé däté '{due}' Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
 #: xblock/rubric_reuse_mixin.py
 msgid "You must specify a block id from which to copy a rubric."
 msgstr ""
@@ -3034,18 +2922,6 @@ msgid ""
 msgstr ""
 "Nö Öpén Réspönsé Àsséssmént föünd ïn {course_id} wïth ßlöçk ïd {block_id} "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/self_assessment_mixin.py
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr ""
-"Ýöü müst süßmït ä réspönsé ßéföré ýöü çän pérförm ä sélf-ässéssmént. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-
-#: xblock/self_assessment_mixin.py xblock/self_assessment_mixin.py
-msgid "Your self assessment could not be submitted."
-msgstr ""
-"Ýöür sélf ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя #"
 
 #: xblock/staff_area_mixin.py
 msgid "You do not have permission to schedule training"
@@ -3172,80 +3048,6 @@ msgstr ""
 "∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
 " ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт,#"
 
-#: xblock/staff_assessment_mixin.py xblock/staff_assessment_mixin.py
-msgid "The submission ID of the submission being assessed was not found."
-msgstr ""
-"Thé süßmïssïön ÌD öf thé süßmïssïön ßéïng ässésséd wäs nöt föünd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/staff_assessment_mixin.py xblock/staff_assessment_mixin.py
-msgid "Your staff assessment could not be submitted."
-msgstr ""
-"Ýöür stäff ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя #"
-
-#: xblock/staff_assessment_mixin.py xblock/staff_assessment_mixin.py
-msgid "Your team assessment could not be submitted."
-msgstr ""
-"Ýöür téäm ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя #"
-
-#: xblock/staff_assessment_mixin.py
-msgid "Waiting for a Staff Grade"
-msgstr "Wäïtïng för ä Stäff Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-
-#: xblock/staff_assessment_mixin.py
-msgid ""
-"Check back later to see if a course staff member has assessed your response."
-" You will receive your grade after the assessment is complete."
-msgstr ""
-"Çhéçk ßäçk lätér tö séé ïf ä çöürsé stäff mémßér häs ässésséd ýöür réspönsé."
-" Ýöü wïll réçéïvé ýöür grädé äftér thé ässéssmént ïs çömplété. Ⱡ'σяєм ιρѕυм "
-"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
-"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαв#"
-
-#: xblock/staff_assessment_mixin.py
-msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr ""
-"Ýöü Müst Çömplété thé Stéps Àßövé tö Vïéw Ýöür Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/staff_assessment_mixin.py
-msgid ""
-"Although a course staff member has assessed your response, you will receive "
-"your grade only after you have completed all the required steps of this "
-"problem."
-msgstr ""
-"Àlthöügh ä çöürsé stäff mémßér häs ässésséd ýöür réspönsé, ýöü wïll réçéïvé "
-"ýöür grädé önlý äftér ýöü hävé çömplétéd äll thé réqüïréd stéps öf thïs "
-"prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
-"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
-" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
-"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
-" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
-"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσ#"
-
-#: xblock/student_training_mixin.py
-msgid "Missing options_selected key in request"
-msgstr ""
-"Mïssïng öptïöns_séléçtéd kéý ïn réqüést Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: xblock/student_training_mixin.py
-msgid "options_selected must be a dictionary"
-msgstr ""
-"öptïöns_séléçtéd müst ßé ä dïçtïönärý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυ#"
-
-#: xblock/student_training_mixin.py xblock/student_training_mixin.py
-msgid "Your scores could not be checked."
-msgstr ""
-"Ýöür sçörés çöüld nöt ßé çhéçkéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
-
 #: xblock/studio_mixin.py xblock/studio_mixin.py
 msgid "Error updating XBlock configuration"
 msgstr ""
@@ -3282,140 +3084,95 @@ msgstr ""
 "Süççéssfüllý üpdätéd ÖpénÀsséssmént XBlöçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: xblock/submission_mixin.py
-msgid "\"submission\" required to submit answer."
-msgstr ""
-"\"süßmïssïön\" réqüïréd tö süßmït änswér. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: xblock/submission_mixin.py
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr ""
-"Tö süßmït ä réspönsé, vïéw thïs çömpönént ïn Prévïéw ör Lïvé mödé. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-
-#: xblock/submission_mixin.py
-msgid "Multiple submissions are not allowed."
-msgstr ""
-"Mültïplé süßmïssïöns äré nöt ällöwéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυ#"
-
-#: xblock/submission_mixin.py
-msgid "Response exceeds maximum allowed size."
-msgstr ""
-"Réspönsé éxçééds mäxïmüm ällöwéd sïzé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: xblock/submission_mixin.py
-msgid ""
-"Note: if you have a spellcheck or grammar check browser extension, try "
-"disabling, reloading, and reentering your response before submitting."
-msgstr ""
-"Nöté: ïf ýöü hävé ä spéllçhéçk ör grämmär çhéçk ßröwsér éxténsïön, trý "
-"dïsäßlïng, rélöädïng, änd rééntérïng ýöür réspönsé ßéföré süßmïttïng. Ⱡ'σяєм"
-" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
-"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт ł#"
-
-#: xblock/submission_mixin.py
-msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr ""
-"Süßmïssïön çännöt ßé émptý. Pléäsé réfrésh thé pägé änd trý ägäïn. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-
-#: xblock/submission_mixin.py
-msgid "API returned unclassified exception."
-msgstr ""
-"ÀPÌ rétürnéd ünçlässïfïéd éxçéptïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυ#"
-
-#: xblock/submission_mixin.py
-msgid "Please contact support staff."
-msgstr "Pléäsé çöntäçt süppört stäff. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
-
-#: xblock/submission_mixin.py
-msgid "Submission data missing. Please contact support staff."
-msgstr ""
-"Süßmïssïön dätä mïssïng. Pléäsé çöntäçt süppört stäff. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: xblock/submission_mixin.py
-msgid "Files descriptions were not submitted."
-msgstr ""
-"Fïlés désçrïptïöns wéré nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: xblock/submission_mixin.py
+#: xblock/ui_mixins/legacy/submissions/file_actions.py
 msgid "Files metadata could not be saved."
 msgstr ""
 "Fïlés métädätä çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: xblock/submission_mixin.py
-msgid "There was an error uploading your file."
+#: xblock/utils/data_conversion.py
+msgid "You must provide options selected in the assessment."
 msgstr ""
-"Théré wäs än érrör üplöädïng ýöür fïlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
+"Ýöü müst prövïdé öptïöns séléçtéd ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/submission_mixin.py
-msgid "Only a single file upload is allowed for this assessment."
+#: xblock/utils/data_conversion.py
+msgid "You must provide overall feedback in the assessment."
 msgstr ""
-"Önlý ä sïnglé fïlé üplöäd ïs ällöwéd för thïs ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
+"Ýöü müst prövïdé övéräll féédßäçk ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/data_conversion.py
+msgid "You must provide feedback for criteria in the assessment."
+msgstr ""
+"Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/submission_mixin.py
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
 msgid ""
-"File upload failed: unsupported file type.Only the supported file types can "
-"be uploaded.If you have questions, please reach out to the course team."
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
 msgstr ""
-"Fïlé üplöäd fäïléd: ünsüppörtéd fïlé týpé.Önlý thé süppörtéd fïlé týpés çän "
-"ßé üplöädéd.Ìf ýöü hävé qüéstïöns, pléäsé réäçh öüt tö thé çöürsé téäm. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
-"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
-" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм #"
+"'{date}' ïs än ïnvälïd däté förmät. Mäké süré thé däté ïs förmättéd äs ÝÝÝÝ-"
+"MM-DDTHH:MM:SS. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: xblock/submission_mixin.py
-msgid "Error retrieving upload URL."
-msgstr "Érrör rétrïévïng üplöäd ÛRL. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr ""
+"'{date}' müst ßé ä däté strïng ör dätétïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: xblock/submission_mixin.py
-msgid "Draft saved!"
-msgstr "Dräft sävéd! Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr ""
+"Thïs stép's stärt däté '{start}' çännöt ßé éärlïér thän thé prévïöüs stép's "
+"stärt däté '{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: xblock/submission_mixin.py
-msgid "Response not started."
-msgstr "Réspönsé nöt stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr ""
+"Thïs stép's düé däté '{due}' çännöt ßé lätér thän thé néxt stép's düé däté "
+"'{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: xblock/validation.py
+#: xblock/utils/resolve_dates.py
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr ""
+"Thé stärt däté '{start}' çännöt ßé lätér thän thé düé däté '{due}' Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: xblock/utils/validation.py
 msgid "This problem must include at least one assessment."
 msgstr ""
 "Thïs prößlém müst ïnçlüdé ät léäst öné ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "The assessment order you selected is invalid."
 msgstr ""
 "Thé ässéssmént ördér ýöü séléçtéd ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 "Ìn péér ässéssmént, thé \"Müst Grädé\" välüé müst ßé ä pösïtïvé ïntégér. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr ""
 "Ìn péér ässéssmént, thé \"Grädéd Bý\" välüé müst ßé ä pösïtïvé ïntégér. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
@@ -3423,25 +3180,25 @@ msgstr ""
 "Ìn péér ässéssmént, thé \"Müst Grädé\" välüé müst ßé gréätér thän ör éqüäl "
 "tö thé \"Grädéd Bý\" välüé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 "Ýöü müst prövïdé ät léäst öné éxämplé réspönsé för léärnér träïnïng. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Each example response for learner training must be unique."
 msgstr ""
 "Éäçh éxämplé réspönsé för léärnér träïnïng müst ßé ünïqüé. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 "Thé \"réqüïréd\" välüé müst ßé trüé ïf stäff ässéssmént ïs thé önlý stép. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
@@ -3449,73 +3206,73 @@ msgstr ""
 "Thé nümßér öf ässéssménts çännöt ßé çhängéd äftér thé prößlém häs ßéén "
 "réléäséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr ""
 "Thé ässéssmént týpé çännöt ßé çhängéd äftér thé prößlém häs ßéén réléäséd. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "This rubric definition is not valid."
 msgstr ""
 "Thïs rüßrïç défïnïtïön ïs nöt välïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 "Öptïöns ïn '{criterion}' hävé düplïçäté nämé(s): {duplicates} Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 "Çrïtérïä wïth nö öptïöns müst réqüïré wrïttén féédßäçk. Ⱡ'σяєм ιρѕυм ∂σłσя "
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 "Prömpts çännöt ßé çréätéd ör délétéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 "Thé nümßér öf çrïtérïä çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм"
 " ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 "Çrïtérïä nämés çännöt ßé çhängéd äftér ä prößlém ïs réléäséd Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 "Thé nümßér öf öptïöns çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 "Pöïnt välüés çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Learner training must have at least one training example."
 msgstr ""
 "Léärnér träïnïng müst hävé ät léäst öné träïnïng éxämplé. Ⱡ'σяєм ιρѕυм ∂σłσя"
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "Leaderboard number is invalid."
 msgstr "Léädérßöärd nümßér ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: xblock/validation.py
+#: xblock/utils/validation.py
 msgid "The submission format is invalid."
 msgstr ""
 "Thé süßmïssïön förmät ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
