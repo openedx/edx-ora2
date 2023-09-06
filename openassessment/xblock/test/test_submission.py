@@ -862,9 +862,9 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         )
 
         xblock.get_anonymous_user_ids_for_team = Mock(return_value=student_ids)
-        expected_names = f"{student_usernames[0]}, {student_usernames[1]}, and {student_usernames[2]}",
+        expected_names = f"{student_usernames[0]}, {student_usernames[1]}, and {student_usernames[2]}"
         expected_context = {
-            "team_members_with_external_submissions": expected_names
+            "team_members_with_external_submissions": expected_names,
             "team_id": MOCK_TEAM_ID,
             "team_info_extra": "more team info",
         }
