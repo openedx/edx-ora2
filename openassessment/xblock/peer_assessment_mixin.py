@@ -166,7 +166,7 @@ class PeerAssessmentMixin:
         """
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
-        path = 'openassessmentblock/peer/oa_peer_unavailable.html'
+        path = 'legacy/peer/oa_peer_unavailable.html'
         finished = False
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
@@ -224,36 +224,36 @@ class PeerAssessmentMixin:
                 ).format(response_number=(count + 2))
 
         if workflow_status == "cancelled":
-            path = 'openassessmentblock/peer/oa_peer_cancelled.html'
+            path = 'legacy/peer/oa_peer_cancelled.html'
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.
         elif (workflow.get('status') == 'done' or finished) and not continue_grading:
-            path = "openassessmentblock/peer/oa_peer_complete.html"
+            path = "legacy/peer/oa_peer_complete.html"
 
         # Allow continued grading even if the problem due date has passed
         elif continue_grading and student_item:
             peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
-                path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
+                path = 'legacy/peer/oa_peer_turbo_mode.html'
                 context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
 
                 # Determine if file upload is supported for this XBlock.
                 context_dict["file_upload_type"] = self.file_upload_type
                 context_dict["peer_file_urls"] = self.get_download_urls_from_submission(peer_sub)
             else:
-                path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
+                path = 'legacy/peer/oa_peer_turbo_mode_waiting.html'
         elif reason == 'due' and problem_closed:
-            path = 'openassessmentblock/peer/oa_peer_closed.html'
+            path = 'legacy/peer/oa_peer_closed.html'
         elif reason == 'start' and problem_closed:
             context_dict["peer_start"] = start_date
-            path = 'openassessmentblock/peer/oa_peer_unavailable.html'
+            path = 'legacy/peer/oa_peer_unavailable.html'
         elif workflow.get("status") == "peer" or peer_skipped:
             peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
-                path = 'openassessmentblock/peer/oa_peer_assessment.html'
+                path = 'legacy/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
                 # Determine if file upload is supported for this XBlock.
                 context_dict["file_upload_type"] = self.file_upload_type
@@ -261,7 +261,7 @@ class PeerAssessmentMixin:
                 # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
                 self.no_peers = False
             else:
-                path = 'openassessmentblock/peer/oa_peer_waiting.html'
+                path = 'legacy/peer/oa_peer_waiting.html'
                 # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
                 self.no_peers = True
 

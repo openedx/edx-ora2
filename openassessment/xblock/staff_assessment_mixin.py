@@ -161,7 +161,7 @@ class StaffAssessmentMixin:
         """
         workflow = self.get_workflow_info()
         status = workflow.get('status')
-        path = 'openassessmentblock/staff/oa_staff_grade.html'
+        path = 'legacy/staff/oa_staff_grade.html'
         not_available_context = {
             'status_value': self._('Not Available'),
             'button_active': 'disabled=disabled aria-expanded=false',

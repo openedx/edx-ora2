@@ -55,7 +55,7 @@ class GradeMixin:
         # Render the grading section based on the status of the workflow
         try:
             if status == "cancelled":
-                path = 'openassessmentblock/grade/oa_grade_cancelled.html'
+                path = 'legacy/grade/oa_grade_cancelled.html'
                 context['score'] = workflow['score']
             elif status == "done":
                 path, context = self.render_grade_complete(workflow)
@@ -68,9 +68,9 @@ class GradeMixin:
                     context['is_waiting_staff'] = "is--waiting--staff"
                 context['score_explanation'] = self._get_score_explanation(workflow)
 
-                path = 'openassessmentblock/grade/oa_grade_waiting.html'
+                path = 'legacy/grade/oa_grade_waiting.html'
             elif status is None:
-                path = 'openassessmentblock/grade/oa_grade_not_started.html'
+                path = 'legacy/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_grade_incomplete(workflow)
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
@@ -159,7 +159,7 @@ class GradeMixin:
             'xblock_id': self.get_xblock_id()
         }
 
-        return ('openassessmentblock/grade/oa_grade_complete.html', context)
+        return ('legacy/grade/oa_grade_complete.html', context)
 
     def render_grade_incomplete(self, workflow):
         """
@@ -181,7 +181,7 @@ class GradeMixin:
             incomplete_steps.append(self._("Self Assessment"))
 
         return (
-            'openassessmentblock/grade/oa_grade_incomplete.html',
+            'legacy/grade/oa_grade_incomplete.html',
             {
                 'incomplete_steps': incomplete_steps,
                 'xblock_id': self.get_xblock_id(),

@@ -58,7 +58,7 @@ class SelfAssessmentMixin:
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
 
-        path = 'openassessmentblock/self/oa_self_unavailable.html'
+        path = 'legacy/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
@@ -83,23 +83,23 @@ class SelfAssessmentMixin:
         workflow_status = workflow.get('status')
         self_complete = workflow.get('status_details', {}).get('self', {}).get('complete', False)
         if workflow_status == 'cancelled':
-            path = 'openassessmentblock/self/oa_self_cancelled.html'
+            path = 'legacy/self/oa_self_cancelled.html'
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True
 
         elif self_complete:
-            path = 'openassessmentblock/self/oa_self_complete.html'
+            path = 'legacy/self/oa_self_complete.html'
         elif workflow_status == 'self' or problem_closed:
             assessment = self_api.get_assessment(workflow.get("submission_uuid"))
 
             if assessment is not None:
-                path = 'openassessmentblock/self/oa_self_complete.html'
+                path = 'legacy/self/oa_self_complete.html'
             elif problem_closed:
                 if reason == 'start':
                     context["self_start"] = start_date
-                    path = 'openassessmentblock/self/oa_self_unavailable.html'
+                    path = 'legacy/self/oa_self_unavailable.html'
                 elif reason == 'due':
-                    path = 'openassessmentblock/self/oa_self_closed.html'
+                    path = 'legacy/self/oa_self_closed.html'
             else:
                 submission = submission_api.get_submission(self.submission_uuid)
                 context["rubric_criteria"] = self.rubric_criteria_with_labels
@@ -114,10 +114,10 @@ class SelfAssessmentMixin:
                 context["file_upload_type"] = self.file_upload_type
                 context['self_file_urls'] = self.get_download_urls_from_submission(submission)
 
-                path = 'openassessmentblock/self/oa_self_assessment.html'
+                path = 'legacy/self/oa_self_assessment.html'
         else:
             # No submission yet or in peer assessment
-            path = 'openassessmentblock/self/oa_self_unavailable.html'
+            path = 'legacy/self/oa_self_unavailable.html'
 
         return path, context
 

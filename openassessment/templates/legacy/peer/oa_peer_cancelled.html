@@ -1,0 +1,26 @@
+{% extends "legacy/peer/oa_peer_assessment.html" %}
+{% load i18n %}
+{% load tz %}
+
+
+{% block list_item %}
+<li id="openassessment__peer-assessment__{{ xblock_id }}" class="openassessment__steps__step step--peer-assessment ui-slidable__container" tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" disabled>
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span id="oa_step_status_peer" class="step__status__value">
+      <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
+    <span class="copy">
+        {% trans "Cancelled" %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

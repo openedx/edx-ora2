@@ -52,7 +52,7 @@ class MessageMixin:
             if status is None:
                 path, context = self.render_message_no_team()
             else:
-                path, context = 'openassessmentblock/message/oa_message_unavailable.html', {}
+                path, context = 'legacy/message/oa_message_unavailable.html', {}
         elif status in ("done", "waiting"):
             path, context = self.render_message_complete(status_details)
         elif problem_is_closed or active_step_deadline_info.get('is_closed'):
@@ -66,7 +66,7 @@ class MessageMixin:
         else:
             # Default path leads to an "instruction-unavailable" block
             # Default context is empty
-            path, context = 'openassessmentblock/message/oa_message_unavailable.html', {}
+            path, context = 'legacy/message/oa_message_unavailable.html', {}
 
         context['xblock_id'] = self.get_xblock_id()
         return self.render_assessment(path, context)
@@ -94,7 +94,7 @@ class MessageMixin:
             "peer_not_available": self.no_peers,
         }
 
-        return 'openassessmentblock/message/oa_message_incomplete.html', context
+        return 'legacy/message/oa_message_incomplete.html', context
 
     def render_message_complete(self, status_details):
         """
@@ -110,7 +110,7 @@ class MessageMixin:
             "waiting": self.get_waiting_details(status_details),
         }
 
-        return 'openassessmentblock/message/oa_message_complete.html', context
+        return 'legacy/message/oa_message_complete.html', context
 
     def render_message_closed(self, status_info):
         """
@@ -129,7 +129,7 @@ class MessageMixin:
             "not_yet_open": (reason == "start")
         }
 
-        return 'openassessmentblock/message/oa_message_closed.html', context
+        return 'legacy/message/oa_message_closed.html', context
 
     def render_message_open(self, deadline_info):
         """
@@ -148,7 +148,7 @@ class MessageMixin:
             "approaching": submission_approaching
         }
 
-        return 'openassessmentblock/message/oa_message_open.html', context
+        return 'legacy/message/oa_message_open.html', context
 
     def render_message_cancelled(self):
         """
@@ -163,7 +163,7 @@ class MessageMixin:
         context = {
             "is_team_assignment": self.is_team_assignment()
         }
-        return 'openassessmentblock/message/oa_message_cancelled.html', context
+        return 'legacy/message/oa_message_cancelled.html', context
 
     def _get_deadline_info(self):
         """
@@ -265,4 +265,4 @@ class MessageMixin:
         else:
             teamset_name = '<id ' + self.selected_teamset_id + '>'
         context = {'teamset_name': teamset_name}
-        return 'openassessmentblock/message/oa_message_no_team.html', context
+        return 'legacy/message/oa_message_no_team.html', context

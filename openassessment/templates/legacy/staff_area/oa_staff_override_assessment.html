@@ -1,0 +1,65 @@
+{% load i18n %}
+{% spaceless %}
+
+    <div class="wrapper--staff-assessment">
+        <div class="step__instruction">
+            {% if not is_team_assignment %}
+                <p>{% trans "Override this learner's current grade using the problem's rubric." %}</p>
+            {% else %}
+                <p>{% trans "Override this team's current grade using the problem's rubric." %}</p>
+            {% endif %}
+        </div>
+
+        <div class="step__content">
+            <article class="staff-assessment">
+                <div class="staff-assessment__display">
+                    <header class="staff-assessment__display__header">
+                        <h3 class="staff-assessment__display__title">
+                            {% if not is_team_assignment %}
+                                {% if student_username %}
+                                    {% blocktrans %}
+                                        Response for: {{ student_username }}
+                                    {% endblocktrans %}
+                                {% else %}
+                                    {% trans "Learner Response" %}
+                                {% endif %}
+                            {% else %}
+                                {% trans "Team Response" %}
+                            {% endif %}
+                        </h3>
+                    </header>
+                    {% if not is_team_assignment %}
+                        {% trans "The learner's response to the prompt above" as translated_label %}
+                    {% else %}
+                        {% trans "The team's response to the prompt above" as translated_label %}
+                    {% endif %}
+                    {% include "legacy/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
+
+                    {% trans "Associated Files" as translated_header %}
+                    {% include "legacy/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=staff_file_urls header=translated_header class_prefix="staff-assessment" show_warning="true" including_template="staff_override_assessment" xblock_id=xblock_id %}
+                </div>
+
+                <form class="staff-assessment__assessment" method="post">
+                    {% include "legacy/oa_rubric.html" with rubric_type="staff-override" %}
+                </form>
+            </article>
+        </div>
+
+        <div class="step__actions">
+            <div class="message message--inline message--error message--error-server" tabindex="-1">
+                <h5 class="message__title">{% trans "We could not submit your assessment" %}</h5>
+                <div class="message__content"></div>
+            </div>
+
+            <ul class="list list--actions">
+                <li class="list--actions__item">
+                    <button type="submit" class="action action--submit" disabled>
+                        {% trans "Submit assessment" %}
+                    </button>
+
+                    <div class="staff-override-error"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endspaceless %}
