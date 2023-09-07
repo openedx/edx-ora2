@@ -326,7 +326,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+            xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
         )
 
     @scenario('data/peer_closed_scenario.xml', user_id='Bob')
@@ -345,7 +345,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
+            xblock, 'legacy/peer/oa_peer_closed.html', expected_context
         )
 
     @scenario('data/peer_future_scenario.xml', user_id='Bob')
@@ -364,7 +364,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+            xblock, 'legacy/peer/oa_peer_unavailable.html', expected_context
         )
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
@@ -386,7 +386,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_waiting.html',
+            xblock, 'legacy/peer/oa_peer_waiting.html',
             expected_context,
             workflow_status='peer',
             graded_enough=False,
@@ -429,7 +429,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_assessment.html',
+            xblock, 'legacy/peer/oa_peer_assessment.html',
             expected_context,
             workflow_status='peer',
         )
@@ -453,7 +453,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         }
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_cancelled.html',
+            xblock, 'legacy/peer/oa_peer_cancelled.html',
             expected_context,
             workflow_status='cancelled',
             graded_enough=True,
@@ -479,7 +479,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            xblock, 'legacy/peer/oa_peer_closed.html',
             expected_context,
             workflow_status='peer',
         )
@@ -518,7 +518,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            xblock, 'legacy/peer/oa_peer_closed.html',
             expected_context,
             workflow_status='peer',
         )
@@ -550,7 +550,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         }
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_complete.html',
+            xblock, 'legacy/peer/oa_peer_complete.html',
             expected_context,
             workflow_status=workflow_status,
             graded_enough=True,
@@ -585,7 +585,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html',
+            xblock, 'legacy/peer/oa_peer_turbo_mode_waiting.html',
             expected_context,
             continue_grading=True,
             workflow_status=workflow_status,
@@ -619,7 +619,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode.html',
+            xblock, 'legacy/peer/oa_peer_turbo_mode.html',
             expected_context,
             continue_grading=True,
             workflow_status='done',
@@ -644,7 +644,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'user_language': 'en'
         }
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html',
+            xblock, 'legacy/peer/oa_peer_unavailable.html',
             expected_context,
             continue_grading=True,
         )
