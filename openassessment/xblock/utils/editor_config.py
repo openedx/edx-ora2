@@ -2,7 +2,7 @@
 
 from django.conf import settings
 
-from openassessment.xblock.static.load_static import LoadStatic
+from openassessment.xblock.load_static import LoadStatic
 
 
 external_editors = getattr(settings, 'ORA_AVAILABLE_EDITORS', {})

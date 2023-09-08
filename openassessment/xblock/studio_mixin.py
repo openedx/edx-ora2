@@ -22,7 +22,7 @@ from openassessment.xblock.utils.data_conversion import (
 )
 from openassessment.xblock.utils.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
-from openassessment.xblock.static.load_static import LoadStatic
+from openassessment.xblock.load_static import LoadStatic
 from openassessment.xblock.utils.resolve_dates import (
     DateValidationError,
     InvalidDateFormat,
