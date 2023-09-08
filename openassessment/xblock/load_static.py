@@ -45,7 +45,7 @@ class LoadStatic:
             logger.error('LMS_ROOT_URL is undefined')
 
         try:
-            json_data = resource_string(__name__, 'dist/manifest.json').decode("utf8")
+            json_data = resource_string(__name__, 'static/dist/manifest.json').decode("utf8")
             LoadStatic._manifest = json.loads(json_data)
             base_url_override = LoadStatic._manifest.get('base_url', None)
             LoadStatic._is_loaded = True

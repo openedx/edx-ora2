@@ -4,7 +4,7 @@ Test load static class
 
 from unittest.mock import patch
 from django.test import TestCase, override_settings
-from openassessment.xblock.static.load_static import LoadStatic, urljoin
+from openassessment.xblock.load_static import LoadStatic, urljoin
 
 
 class TestLoadStatic(TestCase):

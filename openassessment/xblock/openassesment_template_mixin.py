@@ -14,7 +14,7 @@ from openassessment.xblock.utils.defaults import (
 )
 from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.apis.assessments.staff_assessment_api import StaffAssessmentAPI
-from openassessment.xblock.static.load_static import LoadStatic
+from openassessment.xblock.load_static import LoadStatic
 
 
 UI_MODELS = {
