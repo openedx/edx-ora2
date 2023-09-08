@@ -1,0 +1,36 @@
+name: Regenerate translations
+on:
+  workflow_dispatch:
+     inputs:
+       pull_request:
+         description: 'PR number to add translations update to'
+         required: true
+         type: string
+
+jobs:
+  regenerate-translations:
+    runs-on: ubuntu-20.04
+      python-version: ['3.8']
+        node-version: [16]
+    steps:
+    - name: Install pip
+      run: pip install -r requirements/pip.txt
+
+    - name: Set env variable
+      run: export AWS_CONFIG_FILE=/dev/null
+
+    - name: Install Dependencies
+      run: 
+        pip install -r requirements/ci.txt
+        pip install -r requirements/test.txt
+        pip install -r requirements/quality.txt
+        pip install -r requirements/test-acceptance.txt
+
+    - name: Install GNU gettext
+      run: sudo apt-get install gettext
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
