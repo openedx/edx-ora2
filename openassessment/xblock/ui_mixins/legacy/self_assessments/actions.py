@@ -57,7 +57,7 @@ def self_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
         workflow_api.AssessmentWorkflowRequestError,
     ):
         logger.warning(
-            "An error occurred while submitting a self assessment " "for the submission %s",
+            "An error occurred while submitting a self assessment for the submission %s",
             submission_uuid,
             exc_info=True,
         )
@@ -67,7 +67,7 @@ def self_assess(api_data, data, suffix=""):  # pylint: disable=unused-argument
         workflow_api.AssessmentWorkflowInternalError,
     ):
         logger.exception(
-            "An error occurred while submitting a self assessment " "for the submission %s",
+            "An error occurred while submitting a self assessment for the submission %s",
             submission_uuid,
         )
         return failure_response(messages["could_not_submit"])
