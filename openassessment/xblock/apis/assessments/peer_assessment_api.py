@@ -1,3 +1,6 @@
+"""
+External API for ORA Peer Assessment data
+"""
 import logging
 
 from openassessment.assessment.errors import PeerAssessmentWorkflowError

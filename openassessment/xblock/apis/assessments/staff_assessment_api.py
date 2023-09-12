@@ -1,3 +1,6 @@
+"""
+External API for ORA Staff Assessment data
+"""
 from submissions import team_api as team_sub_api
 
 from openassessment.assessment.api import staff as staff_api, teams as teams_api
