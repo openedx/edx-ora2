@@ -10,6 +10,7 @@ from openassessment.xblock.utils.data_conversion import (
     create_rubric_dict,
 )
 
+
 class StaffAssessmentAPI(StepDataAPI):
     @property
     def has_status(self):
