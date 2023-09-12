@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-03 18:36+0000\n"
+"POT-Creation-Date: 2023-09-10 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: SeyedMahdi Saeid <saeid@edspirit.com>, 2023\n"
 "Language-Team: Persian (Iran) (http://app.transifex.com/open-edx/edx-platform/language/fa_IR/)\n"
@@ -392,11 +392,11 @@ msgstr "راهنمای امتیازدهی"
 msgid "Schedule"
 msgstr "برنامه زمان‌بندی"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:29
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
 msgstr "گام‌های ارزیابی"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:36
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
 msgstr "تنظیمات"
 
@@ -566,43 +566,47 @@ msgstr "پیکربندی مهلت‌ها"
 msgid "Select a deadline configuration option"
 msgstr "یک گزینه پیکربندی مهلت را انتخاب کنید"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+msgid " NEW"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:19
 msgid "Configure deadlines manually"
 msgstr "مهلت ها را به صورت دستی پیکربندی کنید"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:23
 msgid "Match deadlines to the subsection due date"
 msgstr "ضرب‌الاجل‌ها را با تاریخ سررسید بخش فرعی مطابقت دهید"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:27
 msgid "Match deadlines to the course end date"
 msgstr "ضرب الاجل ها را با تاریخ پایان دوره مطابقت دهید"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:30
 msgid "Learn more about open response date settings"
 msgstr "درباره تنظیمات تاریخ پاسخ باز بیشتر بیاموزید"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
 msgstr "تاریخ آغاز پاسخگویی"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
 msgstr "زمان آغاز پاسخگویی"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
 msgstr "تاریخ و زمانی که یادگیرندگان می‌توانند ارسال پاسخ را آغاز کنند."
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
 msgstr "تاریخ پایان پاسخگویی"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
 msgstr "زمان پایان پاسخگویی"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
 msgstr "تاریخ و زمانی که یادگیرندگان، دیگر نمی توانند پاسخ ارسال کنند."
 
@@ -1347,40 +1351,51 @@ msgstr "پس از ارسال پاسخ از طرف تیم خود، آن را نم
 msgid "Enter your response to the prompt."
 msgstr "پاسخ خود را به درخواست وارد کنید."
 
-#: templates/openassessmentblock/response/oa_response.html:91
+#: templates/openassessmentblock/response/oa_response.html:92
 msgid ""
-"\n"
-"                        Your work will save automatically and you can return to complete your response at any time before the due date\n"
-"                      "
-msgstr "\n                        کار شما به طور خودکار ذخیره می شود و می توانید در هر زمان قبل از موعد مقرر برای تکمیل پاسخ تیم خود بازگردید\n                      "
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
+msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:104
+#: templates/openassessmentblock/response/oa_response.html:94
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr ""
+
+#: templates/openassessmentblock/response/oa_response.html:96
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr ""
+
+#: templates/openassessmentblock/response/oa_response.html:108
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time."
 msgstr "کار شما به طور خودکار ذخیره می شود و می توانید در هر زمان برای تکمیل پاسخ خود بازگردید."
 
-#: templates/openassessmentblock/response/oa_response.html:106
+#: templates/openassessmentblock/response/oa_response.html:110
 msgid "After you submit your response, you cannot edit it"
 msgstr "پس از ارسال پاسخ خود، نمی‌توانید آن را ویرایش کنید"
 
-#: templates/openassessmentblock/response/oa_response.html:116
+#: templates/openassessmentblock/response/oa_response.html:120
 msgid "What will this assignment be graded on?"
 msgstr "این تکلیف بر چه اساس نمره‌گذاری خواهد شد؟"
 
-#: templates/openassessmentblock/response/oa_response.html:130
+#: templates/openassessmentblock/response/oa_response.html:134
 msgid "The prompt for this section"
 msgstr "درخواست این بخش"
 
-#: templates/openassessmentblock/response/oa_response.html:144
+#: templates/openassessmentblock/response/oa_response.html:148
 msgid "You are on team "
 msgstr "شما در تیم هستید"
 
-#: templates/openassessmentblock/response/oa_response.html:146
+#: templates/openassessmentblock/response/oa_response.html:150
 msgid "Team Members: "
 msgstr "اعضای تیم:"
 
-#: templates/openassessmentblock/response/oa_response.html:151
+#: templates/openassessmentblock/response/oa_response.html:155
 #, python-format
 msgid ""
 "\n"
@@ -1390,25 +1405,25 @@ msgid ""
 "                                          "
 msgstr "\n%(team_members_with_external_submissions)s\nقبلاً پاسخی به این تکلیف\n از سوی تیم دیگری ارسال کرده‌اند، \nو بخشی از امتیاز\n ارسال یا تکلیف تیم شما محسوب نخواهد شد."
 
-#: templates/openassessmentblock/response/oa_response.html:167
+#: templates/openassessmentblock/response/oa_response.html:171
 msgid "Team Response "
 msgstr "پاسخ تیم"
 
-#: templates/openassessmentblock/response/oa_response.html:169
+#: templates/openassessmentblock/response/oa_response.html:173
 msgid "Your Response "
 msgstr "پاسخ شما"
 
-#: templates/openassessmentblock/response/oa_response.html:173
-#: templates/openassessmentblock/response/oa_response.html:243
+#: templates/openassessmentblock/response/oa_response.html:177
+#: templates/openassessmentblock/response/oa_response.html:247
 msgid "(Required)"
 msgstr "(الزامی)"
 
-#: templates/openassessmentblock/response/oa_response.html:175
-#: templates/openassessmentblock/response/oa_response.html:245
+#: templates/openassessmentblock/response/oa_response.html:179
+#: templates/openassessmentblock/response/oa_response.html:249
 msgid "(Optional)"
 msgstr "(اختیاری)"
 
-#: templates/openassessmentblock/response/oa_response.html:179
+#: templates/openassessmentblock/response/oa_response.html:183
 msgid ""
 "\n"
 "                                              Teams should designate one team member to submit a response on behalf of the\n"
@@ -1419,11 +1434,11 @@ msgid ""
 "                                          "
 msgstr "\nتیم‌ها باید یک عضو تیم را برای ارسال پاسخ، از طرف\n کل تیم تعیین کنند.همه اعضای تیم می‌توانند\n از این فضا برای کار بر روی پیش‌نویس پاسخ‌ها\nبهره ببرند، اما شما امکان مشاهده \nپیش‌نویس‌های \nهم‌تیمی‌های خود را در این فضا ندارید، بنابراین \nلطفاً برای تصمیم‌گیری درباره پاسخ نهایی که عضو تعیین‌شده\n باید ارسال کند، با آن‌ها هماهنگ کنید. ."
 
-#: templates/openassessmentblock/response/oa_response.html:193
+#: templates/openassessmentblock/response/oa_response.html:197
 msgid "Enter your response to the prompt above."
 msgstr "پاسخ خود را به درخواست بالا وارد کنید."
 
-#: templates/openassessmentblock/response/oa_response.html:207
+#: templates/openassessmentblock/response/oa_response.html:211
 #, python-format
 msgid ""
 "\n"
@@ -1435,19 +1450,19 @@ msgid ""
 "                                  "
 msgstr "\n شما در حال حاضر در تیم%(team_name)s هستید. از آنجایی که هنگام ارسال پاسخ به این تکلیف در تیم %(previous_team_name)sبودید، پاسخ تیم %(previous_team_name)sرا مشاهده می‌کنید و برای این تکلیف نمره مشابهی با هم تیمی‌های قبلی خود دریافت خواهید کرد. شما برای این تکلیف، بخشی از ارسال تیم %(team_name)s نخواهید بود و برای ارسال آن‌ها نمره‌ای دریافت نخواهد کرد."
 
-#: templates/openassessmentblock/response/oa_response.html:220
+#: templates/openassessmentblock/response/oa_response.html:224
 msgid "We could not save your progress"
 msgstr "امکان ذخیره میزان پیشرفت شما نیست"
 
-#: templates/openassessmentblock/response/oa_response.html:228
+#: templates/openassessmentblock/response/oa_response.html:232
 msgid "Status of Your Response"
 msgstr "وضعیت پاسخ شما"
 
-#: templates/openassessmentblock/response/oa_response.html:241
+#: templates/openassessmentblock/response/oa_response.html:245
 msgid "File Uploads "
 msgstr "پرونده بارگذاری‌می‌شود"
 
-#: templates/openassessmentblock/response/oa_response.html:249
+#: templates/openassessmentblock/response/oa_response.html:253
 msgid ""
 "\n"
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
@@ -1455,71 +1470,71 @@ msgid ""
 "                              "
 msgstr "\n                                   پرونده‌ها را بارگذاری کنید و پرونده‌های بارگذاری‌شده خود و هم‌تیمی‌هایتان را در زیر بررسی کنید. حتماً توضیحات \nرا به پرونده‌های خود اضافه کنید تا به هم تیمی‌هایتان در شناسایی آن‌ها کمک کند."
 
-#: templates/openassessmentblock/response/oa_response.html:257
+#: templates/openassessmentblock/response/oa_response.html:261
 msgid "We could not upload files"
 msgstr "ما نتوانستیم پرونده‌ها را بارگذاری کنیم"
 
-#: templates/openassessmentblock/response/oa_response.html:263
+#: templates/openassessmentblock/response/oa_response.html:267
 msgid "We could not delete files"
 msgstr "قادر به حذف این پرونده‌ها نیستیم"
 
-#: templates/openassessmentblock/response/oa_response.html:270
+#: templates/openassessmentblock/response/oa_response.html:274
 msgid "Select one or more files to upload for this submission."
 msgstr "یک یا چند پرونده را برای بارگذاری در این ارسال انتخاب کنید."
 
-#: templates/openassessmentblock/response/oa_response.html:272
+#: templates/openassessmentblock/response/oa_response.html:276
 msgid "Select a file to upload for this submission."
 msgstr "پرونده‌ای برای بارگذاری این ارسال برگزینید"
 
-#: templates/openassessmentblock/response/oa_response.html:276
+#: templates/openassessmentblock/response/oa_response.html:280
 msgid "Supported file types: "
 msgstr "انواع پرونده‌های پشتیبانی‌شده:"
 
-#: templates/openassessmentblock/response/oa_response.html:281
+#: templates/openassessmentblock/response/oa_response.html:285
 msgid "Upload files"
 msgstr "بارگذاری پرونده‌ها"
 
-#: templates/openassessmentblock/response/oa_response.html:283
+#: templates/openassessmentblock/response/oa_response.html:287
 msgid "Upload file"
 msgstr "بارگذاری پرونده"
 
-#: templates/openassessmentblock/response/oa_response.html:300
+#: templates/openassessmentblock/response/oa_response.html:304
 msgid "This is a team submission."
 msgstr "این ارسال مربوط به یک تیم است."
 
-#: templates/openassessmentblock/response/oa_response.html:302
+#: templates/openassessmentblock/response/oa_response.html:306
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr "یکی از اعضای تیم باید پاسخی با پرونده‌های به‌اشتراک‌گذاشته شده تیم و  پاسخ متنی از طرف کل تیم، ارسال کند."
 
-#: templates/openassessmentblock/response/oa_response.html:304
+#: templates/openassessmentblock/response/oa_response.html:308
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr "یکی از اعضای تیم باید از طرف کل تیم پاسخی را با پرونده‌های مشترک تیم ارسال کند."
 
-#: templates/openassessmentblock/response/oa_response.html:306
+#: templates/openassessmentblock/response/oa_response.html:310
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr "یک عضو تیم باید یک پاسخ متنی از طرف کل تیم ارسال کند."
 
-#: templates/openassessmentblock/response/oa_response.html:308
+#: templates/openassessmentblock/response/oa_response.html:312
 msgid "One team member should submit on behalf of the entire team."
 msgstr "یک عضو تیم باید به نمایندگی از کل تیم، مسوولیت ارسال  را برعهده بگیرد."
 
-#: templates/openassessmentblock/response/oa_response.html:310
+#: templates/openassessmentblock/response/oa_response.html:314
 msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
 msgstr "\nدر این قسمت اطلاعات بیشتری درباره تکالیف تیم خواهید یافت: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)"
 
-#: templates/openassessmentblock/response/oa_response.html:318
+#: templates/openassessmentblock/response/oa_response.html:322
 msgid "We could not submit your response"
 msgstr "ما نتوانستیم پاسخ شما را ثبت کنیم"
 
-#: templates/openassessmentblock/response/oa_response.html:328
+#: templates/openassessmentblock/response/oa_response.html:332
 msgid "Submit your response and move to the next step"
 msgstr "پاسخ خود را ارسال کنید و به مرحله بعد بروید"
 
