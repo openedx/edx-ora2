@@ -14,10 +14,10 @@ from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
-from openassessment.xblock.data_conversion import create_submission_dict
-from openassessment.xblock.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
+from openassessment.xblock.utils.data_conversion import create_submission_dict
+from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 
-from .user_data import get_user_preferences
+from .utils.user_data import get_user_preferences
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -293,6 +293,33 @@ class StaffAreaMixin:
         }
 
         return Response(json_body=waiting_step_data)
+
+    @staticmethod
+    def get_user_submission(submission_uuid):
+        """
+        Return the most recent submission by user in workflow
+
+        Return the most recent submission.  If no submission is available,
+        return None. All submissions are preserved, but only the most recent
+        will be returned in this function, since the active workflow will only
+        be concerned with the most recent submission.
+
+        NOTE that this doesn't do any access checking, so is only appropriate
+
+        Args:
+            submission_uuid (str): The uuid for the submission to retrieve.
+
+        Returns:
+            (dict): A dictionary representation of a submission to render to
+                the front end.
+        """
+        # Import is placed here to avoid model import at project startup.
+        from submissions import api
+        try:
+            return api.get_submission(submission_uuid)
+        except api.SubmissionRequestError:
+            # This error is actually ok.
+            return None
 
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")

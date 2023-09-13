@@ -12,12 +12,12 @@ import pytz
 
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
-from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.xblock.utils.data_conversion import create_rubric_dict
 
-from .base import XBlockHandlerTestCase, scenario
+from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 
 
-class TestSelfAssessment(XBlockHandlerTestCase):
+class TestSelfAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
     """
     Tests for the self-assessment XBlock handler.
     """
@@ -34,10 +34,8 @@ class TestSelfAssessment(XBlockHandlerTestCase):
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_handler(self, xblock):
-        student_item = xblock.get_student_item_dict()
-
         # Create a submission for the student
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         # Submit a self-assessment
         resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
@@ -73,8 +71,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     def test_self_assess_updates_workflow(self, xblock):
 
         # Create a submission for the student
-        student_item = xblock.get_student_item_dict()
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         with mock.patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
 
@@ -91,8 +88,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     @scenario('data/feedback_only_criterion_self.xml', user_id='Bob')
     def test_self_assess_feedback_only_criterion(self, xblock):
         # Create a submission for the student
-        student_item = xblock.get_student_item_dict()
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
 
         # Submit a self assessment for a rubric with a feedback-only criterion
         assessment_dict = {
@@ -120,8 +116,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_workflow_error(self, xblock):
         # Create a submission for the student
-        student_item = xblock.get_student_item_dict()
-        xblock.create_submission(student_item, self.SUBMISSION)
+        self.create_test_submission(xblock)
 
         with mock.patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
 
@@ -146,12 +141,11 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_api_error(self, xblock):
         # Create a submission for the student
-        student_item = xblock.get_student_item_dict()
-        xblock.create_submission(student_item, self.SUBMISSION)
+        self.create_test_submission(xblock)
 
         # Submit a self-assessment
         # Simulate an error and expect a failure response
-        with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_api:
+        with mock.patch('openassessment.xblock.ui_mixins.legacy.self_assessments.actions.self_api') as mock_api:
             mock_api.SelfAssessmentRequestError = self_api.SelfAssessmentRequestError
             mock_api.create_assessment.side_effect = self_api.SelfAssessmentRequestError
             resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
@@ -159,7 +153,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertFalse(resp['success'])
 
 
-class TestSelfAssessmentRender(XBlockHandlerTestCase):
+class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
     """
     Test rendering of the self-assessment step.
     The basic strategy is to verify that we're providing the right
@@ -217,9 +211,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
     def test_open_in_peer_step(self, xblock):
         # Make a submission, so we're in the peer-assessment step
-        xblock.create_submission(
-            xblock.get_student_item_dict(), ("ⱣȺꝑȺ đøn'ŧ ŧȺꝁɇ nø mɇss.", "Sample answer",)
-        )
+        self.create_test_submission(xblock)
 
         # Should still be able to access self-assessment because peer status can be skipped
         self._assert_path_and_context(
@@ -241,9 +233,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # In the peer-->self configuration, if we're done with the
         # self step, but not with the peer step (because we're waiting
         # to be assessed), then the self step should display as completed.
-        xblock.create_submission(
-            xblock.get_student_item_dict(), "𝓟𝓪𝓼𝓼 𝓽𝓱𝓮 𝓹𝓮𝓪𝓼"
-        )
+        self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
@@ -262,9 +252,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
 
     @scenario('data/self_then_peer.xml', user_id="The Bee Gees")
     def test_self_then_peer(self, xblock):
-        xblock.create_submission(
-            xblock.get_student_item_dict(), "Stayin' alive!"
-        )
+        self.create_test_submission(xblock)
 
         # In the self --> peer configuration, self can be complete
         # if our status is "peer"
@@ -288,9 +276,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
     def test_open_done_status(self, xblock):
         # Simulate the workflow status being "done"
-        xblock.create_submission(
-            xblock.get_student_item_dict(), ("Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ 1", "Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ 2")
-        )
+        self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
@@ -306,9 +292,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
     def test_open_cancelled_status(self, xblock):
         # Simulate the workflow status being "done"
-        xblock.create_submission(
-            xblock.get_student_item_dict(), "Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ"
-        )
+        self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_cancelled.html',
             {
@@ -324,9 +308,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
     def test_open_self_assessing(self, xblock):
         # Simulate the workflow being in the self assessment step
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(), ("Đøɨn' ɨŧ ŧø đɇȺŧħ 1", "Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
-        )
+        submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_assessment.html',
             {
@@ -348,9 +330,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     def test_open_completed_self_assessment(self, xblock):
         # Simulate the workflow being in the self assessment step
         # and we've created a self-assessment
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(), ("Đøɨn' ɨŧ ŧø đɇȺŧħ 1", "Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
-        )
+        submission = self.create_test_submission(xblock)
+
         self_api.create_assessment(
             submission['uuid'],
             xblock.get_student_item_dict()['student_id'],
@@ -375,9 +356,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     def test_started_and_past_due(self, xblock):
         # Simulate the workflow being in the self assessment step
         # Since we're past the due date, the step should appear closed.
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(), ("Đøɨn' ɨŧ ŧø đɇȺŧħ 1", "Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
-        )
+        submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/self/oa_self_closed.html',
@@ -398,9 +377,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # Simulate having completed self assessment
         # Even though the problem is closed, we should still see
         # that we completed the step.
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(), ("Đøɨn' ɨŧ ŧø đɇȺŧħ 1", "Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
-        )
+        submission = self.create_test_submission(xblock)
+
         self_api.create_assessment(
             submission['uuid'],
             xblock.get_student_item_dict()['student_id'],
@@ -431,9 +409,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     def test_integration(self, xblock):
         # Simulate the workflow being in the self assessment step
         # and we've created a self-assessment
-        submission = xblock.create_submission(
-            xblock.get_student_item_dict(), ("Test submission 1", "Test submission 2")
-        )
+        submission = self.create_test_submission(xblock, submission_text=("Test submission 1", "Test submission 2"))
 
         xblock.get_workflow_info = mock.Mock(return_value={
             'status': 'self', 'submission_uuid': submission['uuid']
@@ -449,8 +425,9 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         xblock.get_workflow_info = mock.Mock(return_value={'status': 'self'})
 
         # Simulate an error from the submission API
-        with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_self:
-            mock_self.get_assessment.side_effect = self_api.SelfAssessmentRequestError
+        with mock.patch('openassessment.xblock.ui_mixins.legacy.self_assessments.actions.self_api') as mock_api:
+
+            mock_api.get_assessment.side_effect = self_api.SelfAssessmentRequestError
             resp = self.request(xblock, 'render_self_assessment', json.dumps({}))
             self.assertIn('error', resp.decode('utf-8').lower())
 

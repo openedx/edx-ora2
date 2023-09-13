@@ -6,7 +6,7 @@ from unittest import mock
 
 import ddt
 
-from openassessment.xblock.data_conversion import prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import prepare_submission_for_serialization
 
 from .base import XBlockHandlerTestCase, scenario
 

@@ -24,7 +24,7 @@ from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.tests.factories import UserFactory
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow import team_api as team_workflow_api
-from openassessment.xblock.data_conversion import prepare_submission_for_serialization
+from openassessment.xblock.utils.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_team import (
     MockTeamsService,
@@ -485,7 +485,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.submission_mixin.file_upload_api.get_download_url") as get_download_url:
+        with patch("openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url") as \
+                get_download_url:
             get_download_url.return_value = "http://www.example.com/image.jpeg"
 
             # also fake a file_upload_type so our patched url gets rendered
@@ -545,7 +546,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.submission_mixin.file_upload_api.get_download_url") as get_download_url:
+        with patch("openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url") as \
+                get_download_url:
             get_download_url.return_value = Mock()
             get_download_url.side_effect = lambda file_key: file_keys_with_images[file_key]
 
@@ -1508,7 +1510,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.submission_mixin.file_upload_api.get_download_url") as get_download_url:
+        with patch("openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url") as \
+                get_download_url:
             get_download_url.return_value = "http://www.example.com/image.jpeg"
             # also fake a file_upload_type so our patched url gets rendered
             xblock.file_upload_type_raw = 'image'

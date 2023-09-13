@@ -15,17 +15,13 @@ from openassessment.assessment.models import StudentTrainingWorkflow
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from .base import XBlockHandlerTestCase, scenario
+from .base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 
 
-class StudentTrainingTest(XBlockHandlerTestCase):
+class StudentTrainingTest(XBlockHandlerTestCase, SubmissionTestMixin):
     """
     Base class for student training tests.
     """
-
-    SUBMISSION = {
-        'submission': 'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
-    }
 
     def assert_path_and_context(self, xblock, expected_path, expected_context):
         """
@@ -68,7 +64,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
     def test_correct(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         data["expected_context"]['user_timezone'] = None
         data["expected_context"]['user_language'] = None
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
@@ -90,7 +86,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
     def test_correct_with_error(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         data["expected_context"]['user_timezone'] = None
         data["expected_context"]['user_language'] = None
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
@@ -115,7 +111,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
     def test_incorrect(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         data["expected_context"]['user_timezone'] = None
         data["expected_context"]['user_language'] = None
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
@@ -139,7 +135,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     def test_updates_workflow(self, xblock, data):
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_context['user_timezone'] = None
         expected_context['user_language'] = None
         self.assert_path_and_context(xblock, expected_template, expected_context)
@@ -199,7 +195,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/feedback_only_criterion_student_training.xml', user_id='Bob')
     def test_feedback_only_criterion(self, xblock):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         self.request(xblock, 'render_student_training', json.dumps({}))
 
         # Agree with the course author's assessment
@@ -220,7 +216,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
     def test_request_error(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
         expected_context['user_timezone'] = None
@@ -239,7 +235,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
     def test_invalid_options_dict(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
         expected_context['user_timezone'] = None
@@ -309,7 +305,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
     """
     @scenario('data/basic_scenario.xml', user_id="Plato")
     def test_no_student_training_defined(self, xblock):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         resp = self.request(xblock, 'render_student_training', json.dumps({}))
         self.assertEqual("", resp.decode('utf-8'))
 
@@ -325,7 +321,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
 
     @scenario('data/student_training_due.xml', user_id="Plato")
     def test_past_due(self, xblock):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_template = "openassessmentblock/student_training/student_training_closed.html"
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00",
@@ -339,7 +335,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     def test_cancelled_submission(self, xblock):
-        submission = xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        submission = self.create_test_submission(xblock)
         xblock.get_workflow_info = Mock(return_value={
             'status': 'cancelled',
             'submission_uuid': submission['uuid']
@@ -358,13 +354,13 @@ class StudentTrainingRenderTest(StudentTrainingTest):
     @patch.object(StudentTrainingWorkflow, "get_workflow")
     def test_internal_error(self, xblock, mock_workflow):
         mock_workflow.side_effect = DatabaseError("Oh no.")
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         resp = self.request(xblock, 'render_student_training', json.dumps({}))
         self.assertIn("An unexpected error occurred.", resp.decode('utf-8'))
 
     @scenario('data/student_training_future.xml', user_id="Plato")
     def test_before_start(self, xblock):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_template = "openassessmentblock/student_training/student_training_unavailable.html"
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),

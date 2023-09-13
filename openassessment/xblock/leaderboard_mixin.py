@@ -13,7 +13,7 @@ from openassessment.assessment.errors import PeerAssessmentError, SelfAssessment
 from openassessment.data import OraSubmissionAnswerFactory
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
-from openassessment.xblock.data_conversion import create_submission_dict
+from openassessment.xblock.utils.data_conversion import create_submission_dict
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
