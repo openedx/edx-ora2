@@ -31,9 +31,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        log.info(args)
-        log.info(options)
         if options.get("course_id") and options.get("item_id"):
             raise CommandError("Only single scope limiting optional argument can be specified")
 

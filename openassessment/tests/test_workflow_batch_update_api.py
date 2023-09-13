@@ -63,7 +63,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         # pylint: disable=unused-variable
         pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
 
-        blocked = update_api.get_blocked_peer_workflows_for_course("course_1")
+        blocked = update_api.get_blocked_peer_workflows(course_id="course_1")
         # we expect 0 blocked submissions for "course_1"
         self.assertEqual(len(blocked), 0)
 
@@ -76,7 +76,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         pw_pat.course_id = "course_1"
         pw_pat.save()
 
-        blocked = update_api.get_blocked_peer_workflows_for_course("course_1")
+        blocked = update_api.get_blocked_peer_workflows(course_id="course_1")
         # we expect 1 blocked submission for "course_1"
         self.assertEqual(len(blocked), 1)
 
@@ -84,7 +84,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         pw_miles.course_id = "course_2"
         pw_miles.save()
 
-        blocked = update_api.get_blocked_peer_workflows_for_course("course_2")
+        blocked = update_api.get_blocked_peer_workflows(course_id="course_2")
         # we expect 0 blocked submissions for "course_2"
         self.assertEqual(len(blocked), 0)
 
@@ -96,7 +96,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         # pylint: disable=unused-variable
         pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
 
-        blocked = update_api.get_blocked_peer_workflows_for_ora_block("item_1")
+        blocked = update_api.get_blocked_peer_workflows(item_id="item_1")
         # we expect 0 blocked submissions for "item_1"
         self.assertEqual(len(blocked), 0)
 
@@ -109,7 +109,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         pw_pat.item_id = "item_1"
         pw_pat.save()
 
-        blocked = update_api.get_blocked_peer_workflows_for_ora_block("item_1")
+        blocked = update_api.get_blocked_peer_workflows(item_id="item_1")
         # we expect 1 blocked submission for "item_1"
         self.assertEqual(len(blocked), 1)
 
@@ -117,7 +117,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         pw_miles.item_id = "item_2"
         pw_miles.save()
 
-        blocked = update_api.get_blocked_peer_workflows_for_ora_block("item_2")
+        blocked = update_api.get_blocked_peer_workflows(item_id="item_2")
         # we expect 0 blocked submissions for "item_2"
         self.assertEqual(len(blocked), 0)
 
@@ -235,8 +235,8 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
             update_api.update_workflow_for_submission("submission_uuid", "assessment_requirements",
                                                       "course_override")
 
-    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows_for_ora_block')
-    def test_update_workflows_for_ora_block(self, mock_get_blocked_peer_workflows_for_ora_block):
+    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
+    def test_update_workflows_for_ora_block(self, mock_get_blocked_peer_workflows):
         workflow_update_parameters = {
             "courses": [
                 {
@@ -262,7 +262,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
             ]
         }
 
-        mock_get_blocked_peer_workflows_for_ora_block.return_value = "peer_workflows"
+        mock_get_blocked_peer_workflows.return_value = "peer_workflows"
         with patch(
                 'openassessment.workflow_batch_update_api.get_workflow_update_parameters') \
                 as mock_get_workflow_update_parameters:
@@ -274,7 +274,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 # test scenario when cached data is not passed
                 update_api.update_workflows_for_ora_block("item_id_12")
 
-                mock_get_blocked_peer_workflows_for_ora_block.assert_called_once_with("item_id_12")
+                mock_get_blocked_peer_workflows.assert_called_once_with(item_id="item_id_12")
                 mock_get_workflow_update_parameters.assert_called_once_with("peer_workflows")
                 mock_update_workflow_for_submission.assert_called_once_with(["submission_uuid_12", {'k12': 'v12'},
                                                                              {'k11': 'v11'}])
@@ -295,8 +295,8 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 with pytest.raises(update_api.UpdateWorkflowsForOraBlockException):
                     update_api.update_workflows_for_ora_block("item_id_0")
 
-    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows_for_course')
-    def test_update_workflows_for_course(self, mock_get_blocked_peer_workflows_for_course):
+    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
+    def test_update_workflows_for_course(self, mock_get_blocked_peer_workflows):
         workflow_update_parameters = {
             "courses": [
                 {
@@ -317,7 +317,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 }
             ]
         }
-        mock_get_blocked_peer_workflows_for_course.return_value = "mock_peer_workflows"
+        mock_get_blocked_peer_workflows.return_value = "mock_peer_workflows"
         with patch(
                 'openassessment.workflow_batch_update_api.get_workflow_update_parameters') \
                 as mock_get_workflow_update_parameters:
@@ -328,7 +328,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 # test scenario when cached data is not passed
                 update_api.update_workflows_for_course("course_id_11")
 
-                mock_get_blocked_peer_workflows_for_course.assert_called_once_with("course_id_11")
+                mock_get_blocked_peer_workflows.assert_called_once_with(course_id="course_id_11")
                 mock_get_workflow_update_parameters.assert_called_once_with("mock_peer_workflows")
 
                 mock_update_workflows_for_ora_block.assert_called_with(["item_id_12", workflow_update_parameters])

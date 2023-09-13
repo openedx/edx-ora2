@@ -148,7 +148,7 @@ def update_workflows_for_course(course_id, workflow_update_parameters=None):
         start = time.time()
 
         if workflow_update_parameters is None:
-            peer_workflows = get_blocked_peer_workflows_for_course(course_id)
+            peer_workflows = get_blocked_peer_workflows(course_id=course_id)
             workflow_update_parameters = get_workflow_update_parameters(peer_workflows)
 
         course_data = _get_course_object(workflow_update_parameters, course_id)
@@ -221,7 +221,7 @@ def update_workflows_for_ora_block(item_id, workflow_update_parameters=None):
         start = time.time()
 
         if workflow_update_parameters is None:
-            peer_workflows = get_blocked_peer_workflows_for_ora_block(item_id)
+            peer_workflows = get_blocked_peer_workflows(item_id=item_id)
             workflow_update_parameters = get_workflow_update_parameters(peer_workflows)
 
         course_settings = _get_course_settings_for_ora(workflow_update_parameters, item_id)
@@ -303,7 +303,7 @@ def is_flexible_peer_grading_on(openassessmentblock):
     return False
 
 
-def get_blocked_peer_workflows():
+def get_blocked_peer_workflows(course_id=None, item_id=None):
     """
     Retrieve ORA peer workflows not completed for >7 days
 
@@ -311,52 +311,16 @@ def get_blocked_peer_workflows():
         list (PeerWorkflow): list of workfows not completed for > 7 days
     """
 
-    peer_workflows = PeerWorkflow.objects.filter(
-        created_at__lte=(timezone.now() - datetime.timedelta(days=7))
-    ).exclude(
-        completed_at__isnull=False
-    )
-    return peer_workflows
+    filters = {
+        'created_at__lte': timezone.now() - datetime.timedelta(days=7),
+        'completed_at__isnull': True,
+    }
+    if course_id is not None:
+        filters['course_id'] = course_id
+    if item_id is not None:
+        filters['item_id'] = item_id
 
-
-def get_blocked_peer_workflows_for_course(course_id):
-    """
-    Retrieve ORA peer workflows not completed for >7 days for a given course
-
-    Args:
-        course_id (str): course identifier
-
-    Returns:
-        list (PeerWorkflow): list of workfows not completed for > 7 days
-    """
-    peer_workflows = PeerWorkflow.objects.filter(
-        created_at__lte=(timezone.now() - datetime.timedelta(days=7)),
-        course_id__exact=course_id
-    ).exclude(
-        completed_at__isnull=False
-    )
-    return peer_workflows
-
-
-def get_blocked_peer_workflows_for_ora_block(item_id):
-    """
-    Retrieve ORA peer workflows not completed for >7 days for a given ORA block id
-
-    Args:
-        item_id (str): Identifier of the ORA Block
-            e.g. 'block-v1:edX+DemoX+Demo_Course+type@openassessment+block@1676f4b05f0642249ff724e7c07d869e'
-
-    Returns:
-        list (PeerWorkflow): list of workfows not completed for > 7 days
-    """
-
-    peer_workflows = PeerWorkflow.objects.filter(
-        created_at__lte=(timezone.now() - datetime.timedelta(days=7)),
-        item_id__exact=item_id
-    ).exclude(
-        completed_at__isnull=False
-    )
-    return peer_workflows
+    return PeerWorkflow.objects.filter(**filters)
 
 
 def get_workflow_update_parameters(peer_workflows):
