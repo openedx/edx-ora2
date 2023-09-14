@@ -22,7 +22,7 @@ to that data and allow us to reuse that code across UI implementations.
 Decisions
 *********
 
-- We will standalone APIs for accessing data on an ORA block, placed in
+- We will create standalone APIs for accessing data on an ORA block, placed in
   ``openassessment/xblock/apis``. These APIs will be instantiated at block load and act
   as the primary way we access data / functions on the ORA block.
 - We will move existing presentation code into ``openassessment/xblock/ui_mixins/legacy``,
@@ -33,14 +33,14 @@ Decisions
 Consequences
 ************
 
-Standalone data / utility APIs
+Separate data / utility APIs
 ==============================
 
-Splitting the data / utilities out of existing mixins and into a standalone location
+Splitting the data / utilities out of existing mixins and into a separate location
 allows us to access that data across multiple contexts, without having to duplicate
 business logic.
 
-These APIs, in addition to serving our legacy UI views can also be leveraged in future
+These APIs, in addition to serving our legacy UI views, can also be leveraged in future
 UI views or other contexts that need access to that data or functions.
 
 Having those APIs and business logic in a single place will help us keep behavior from
