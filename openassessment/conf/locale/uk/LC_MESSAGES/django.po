@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-27 18:36+0000\n"
+"POT-Creation-Date: 2023-09-10 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Danylo Shcherbak <danylo.shcherbak@raccoongang.com>, 2021\n"
 "Language-Team: Ukrainian (http://app.transifex.com/open-edx/edx-platform/language/uk/)\n"
@@ -399,11 +399,11 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:29
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:36
+#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
 msgstr "Налаштування"
 
@@ -573,43 +573,47 @@ msgstr ""
 msgid "Select a deadline configuration option"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:14
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:13
+msgid " NEW"
+msgstr ""
+
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:19
 msgid "Configure deadlines manually"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:18
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:23
 msgid "Match deadlines to the subsection due date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:22
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:27
 msgid "Match deadlines to the course end date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:25
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:30
 msgid "Learn more about open response date settings"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:35
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:48
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:57
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:65
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:78
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
 msgstr ""
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html:87
+#: templates/openassessmentblock/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 
@@ -1356,40 +1360,51 @@ msgstr ""
 msgid "Enter your response to the prompt."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:91
+#: templates/openassessmentblock/response/oa_response.html:92
 msgid ""
-"\n"
-"                        Your work will save automatically and you can return to complete your response at any time before the due date\n"
-"                      "
+"Your work will save automatically and you can return to complete your "
+"response at any time before the subsection due date "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:104
+#: templates/openassessmentblock/response/oa_response.html:94
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the course ends "
+msgstr ""
+
+#: templates/openassessmentblock/response/oa_response.html:96
+msgid ""
+"Your work will save automatically and you can return to complete your "
+"response at any time before the due date "
+msgstr ""
+
+#: templates/openassessmentblock/response/oa_response.html:108
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:106
+#: templates/openassessmentblock/response/oa_response.html:110
 msgid "After you submit your response, you cannot edit it"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:116
+#: templates/openassessmentblock/response/oa_response.html:120
 msgid "What will this assignment be graded on?"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:130
+#: templates/openassessmentblock/response/oa_response.html:134
 msgid "The prompt for this section"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:144
+#: templates/openassessmentblock/response/oa_response.html:148
 msgid "You are on team "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:146
+#: templates/openassessmentblock/response/oa_response.html:150
 msgid "Team Members: "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:151
+#: templates/openassessmentblock/response/oa_response.html:155
 #, python-format
 msgid ""
 "\n"
@@ -1399,25 +1414,25 @@ msgid ""
 "                                          "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:167
+#: templates/openassessmentblock/response/oa_response.html:171
 msgid "Team Response "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:169
+#: templates/openassessmentblock/response/oa_response.html:173
 msgid "Your Response "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:173
-#: templates/openassessmentblock/response/oa_response.html:243
+#: templates/openassessmentblock/response/oa_response.html:177
+#: templates/openassessmentblock/response/oa_response.html:247
 msgid "(Required)"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:175
-#: templates/openassessmentblock/response/oa_response.html:245
+#: templates/openassessmentblock/response/oa_response.html:179
+#: templates/openassessmentblock/response/oa_response.html:249
 msgid "(Optional)"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:179
+#: templates/openassessmentblock/response/oa_response.html:183
 msgid ""
 "\n"
 "                                              Teams should designate one team member to submit a response on behalf of the\n"
@@ -1428,11 +1443,11 @@ msgid ""
 "                                          "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:193
+#: templates/openassessmentblock/response/oa_response.html:197
 msgid "Enter your response to the prompt above."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:207
+#: templates/openassessmentblock/response/oa_response.html:211
 #, python-format
 msgid ""
 "\n"
@@ -1444,19 +1459,19 @@ msgid ""
 "                                  "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:220
+#: templates/openassessmentblock/response/oa_response.html:224
 msgid "We could not save your progress"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:228
+#: templates/openassessmentblock/response/oa_response.html:232
 msgid "Status of Your Response"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:241
+#: templates/openassessmentblock/response/oa_response.html:245
 msgid "File Uploads "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:249
+#: templates/openassessmentblock/response/oa_response.html:253
 msgid ""
 "\n"
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
@@ -1464,71 +1479,71 @@ msgid ""
 "                              "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:257
+#: templates/openassessmentblock/response/oa_response.html:261
 msgid "We could not upload files"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:263
+#: templates/openassessmentblock/response/oa_response.html:267
 msgid "We could not delete files"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:270
+#: templates/openassessmentblock/response/oa_response.html:274
 msgid "Select one or more files to upload for this submission."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:272
+#: templates/openassessmentblock/response/oa_response.html:276
 msgid "Select a file to upload for this submission."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:276
+#: templates/openassessmentblock/response/oa_response.html:280
 msgid "Supported file types: "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:281
+#: templates/openassessmentblock/response/oa_response.html:285
 msgid "Upload files"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:283
+#: templates/openassessmentblock/response/oa_response.html:287
 msgid "Upload file"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:300
+#: templates/openassessmentblock/response/oa_response.html:304
 msgid "This is a team submission."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:302
+#: templates/openassessmentblock/response/oa_response.html:306
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:304
+#: templates/openassessmentblock/response/oa_response.html:308
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:306
+#: templates/openassessmentblock/response/oa_response.html:310
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:308
+#: templates/openassessmentblock/response/oa_response.html:312
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:310
+#: templates/openassessmentblock/response/oa_response.html:314
 msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:318
+#: templates/openassessmentblock/response/oa_response.html:322
 msgid "We could not submit your response"
 msgstr ""
 
-#: templates/openassessmentblock/response/oa_response.html:328
+#: templates/openassessmentblock/response/oa_response.html:332
 msgid "Submit your response and move to the next step"
 msgstr ""
 
