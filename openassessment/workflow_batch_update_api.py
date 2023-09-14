@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 @shared_task(bind=True,
              acks_late=True,
              autoretry_for=(Exception,),
-             max_retries=5,
+             max_retries=3,
              retry_backoff=True,
              retry_backoff_max=500,
              retry_jitter=True)
@@ -33,7 +33,7 @@ def update_workflows_for_all_blocked_submissions_task(self):  # pylint: disable=
 @shared_task(bind=True,
              acks_late=True,
              autoretry_for=(Exception,),
-             max_retries=5,
+             max_retries=3,
              retry_backoff=True,
              retry_backoff_max=500,
              retry_jitter=True)
@@ -47,7 +47,7 @@ def update_workflows_for_course_task(self, course_id):  # pylint: disable=unused
 @shared_task(bind=True,
              acks_late=True,
              autoretry_for=(Exception,),
-             max_retries=5,
+             max_retries=3,
              retry_backoff=True,
              retry_backoff_max=500,
              retry_jitter=True)
@@ -61,18 +61,39 @@ def update_workflows_for_ora_block_task(self, item_id):  # pylint: disable=unuse
 @shared_task(bind=True,
              acks_late=True,
              autoretry_for=(Exception,),
-             max_retries=5,
+             max_retries=3,
              retry_backoff=True,
-             retry_backoff_max=500,
+             retry_backoff_max=300,
              retry_jitter=True)
 # pylint: disable=unused-argument
-def update_workflow_for_submission_task(self, submission_uuid, assessment_requirements, course_settings):
+def update_workflow_for_submission_task(self, submission_uuid, assessment_requirements=None, course_settings=None):
     """
     Async task wrapper
     """
     return update_workflow_for_submission(submission_uuid, assessment_requirements, course_settings)
 
 
+def logging_decorator(func):
+    """
+    Does what it says. Expects `WorkflowUpdateResult` as a decorated function return value
+    """
+
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        log_message = ""
+        if result is not None:
+            for key, value in result.__dict__.items():
+                log_message = log_message + " " + str(key) + "=" + str(value)
+        log_message = log_message + " processing_time=" + str(round(end - start, 5))
+        logger.info(log_message)
+        return result
+
+    return wrapper
+
+
+@logging_decorator
 def update_workflows_for_all_blocked_submissions():
     """
     Updates ORA workflows for submissions meeting following filtering criteria:
@@ -84,8 +105,6 @@ def update_workflows_for_all_blocked_submissions():
                                         threshold was exceeded, etc.
     """
     try:
-        start = time.time()
-
         peer_workflows = get_blocked_peer_workflows()
         workflow_update_parameters = get_workflow_update_parameters(peer_workflows)
         if workflow_update_parameters.get("courses") is not None:
@@ -93,16 +112,14 @@ def update_workflows_for_all_blocked_submissions():
                 # execute asynchronously (submit Celery task)
                 update_workflows_for_course_task.apply_async([course_object["course_id"], workflow_update_parameters])
 
-            end = time.time()
-            logger.info(
-                "Batch workflow update tasks submitted successfully for each course id. "
-                "task_count=%s processing_time=%s",
-                len(workflow_update_parameters["courses"]),
-                str(end - start))
-        else:
-            logger.info("No blocked ORA submissions found. "
-                        "Batch workflow update completed without submitting any tasks.")
+            return WorkflowUpdateResult(message="Batch workflow update tasks submitted "
+                                                "successfully for each course id. ",
+                                        task_count=len(workflow_update_parameters["courses"]))
 
+        else:
+            return WorkflowUpdateResult(message="No blocked ORA submissions found. "
+                                                "Batch workflow update completed without submitting any tasks.",
+                                        task_count=0)
     except (UpdateWorkflowsForCourseException, Exception) as e:  # pylint: disable=broad-except
         logger.error(
             "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  Error:%s",
@@ -110,6 +127,7 @@ def update_workflows_for_all_blocked_submissions():
         raise UpdateWorkflowsForAllBlockedSubmissionsException(str(e)) from e
 
 
+@logging_decorator
 def update_workflows_for_course(course_id, workflow_update_parameters=None):
     """
     Updates ORA workflows created for the given course
@@ -145,8 +163,6 @@ def update_workflows_for_course(course_id, workflow_update_parameters=None):
         UpdateWorkflowsForCourseException: If batch process fails and cannot continue.
     """
     try:
-        start = time.time()
-
         if workflow_update_parameters is None:
             peer_workflows = get_blocked_peer_workflows(course_id=course_id)
             workflow_update_parameters = get_workflow_update_parameters(peer_workflows)
@@ -158,17 +174,15 @@ def update_workflows_for_course(course_id, workflow_update_parameters=None):
                 # execute asynchronously (submit Celery task)
                 update_workflows_for_ora_block_task.apply_async([item["item_id"], workflow_update_parameters])
 
-            end = time.time()
-            logger.info(
-                "Batch workflow tasks submitted successfully for each ORA item_id within course. "
-                "course_id=%s task_count=%s processing_time=%s",
-                course_id,
-                len(course_data["assessments"]),
-                str(end - start))
+            return WorkflowUpdateResult(message="Batch workflow tasks submitted successfully for "
+                                                "each ORA item_id within course. ",
+                                        course_id=course_id,
+                                        task_count=len(course_data["assessments"]))
         else:
-            logger.info("No blocked ORA submissions found for the course_id=%s . "
-                        "Batch workflow update completed without submitting any tasks.",
-                        course_id)
+            return WorkflowUpdateResult(message="No blocked ORA submissions found for the course."
+                                                "Batch workflow update completed without submitting any tasks.",
+                                        course_id=course_id,
+                                        task_count=0)
 
     except (UpdateWorkflowsForOraBlockException, Exception) as e:  # pylint: disable=broad-except
         logger.error(
@@ -179,6 +193,7 @@ def update_workflows_for_course(course_id, workflow_update_parameters=None):
         raise UpdateWorkflowsForCourseException(str(e)) from e
 
 
+@logging_decorator
 def update_workflows_for_ora_block(item_id, workflow_update_parameters=None):
     """
     Updates ORA workflows created for the given ORA Block
@@ -218,8 +233,6 @@ def update_workflows_for_ora_block(item_id, workflow_update_parameters=None):
                                         threshold was exceeded, etc.
     """
     try:
-        start = time.time()
-
         if workflow_update_parameters is None:
             peer_workflows = get_blocked_peer_workflows(item_id=item_id)
             workflow_update_parameters = get_workflow_update_parameters(peer_workflows)
@@ -236,19 +249,17 @@ def update_workflows_for_ora_block(item_id, workflow_update_parameters=None):
                 update_workflow_for_submission_task.apply_async(
                     [item["submission_uuid"], assessment_requirements, course_settings])
 
-            end = time.time()
-            logger.info(
-                "Batch workflow update for blocked ORA submissions completed successfully. "
-                "item_id=%s assessment_requirements=%s course_settings=%s submissions=%s processing_time=%s",
-                item_id,
-                assessment_requirements,
-                course_settings,
-                workflow_update_parameters_for_ora["submissions"],
-                str(end - start))
+            return WorkflowUpdateResult(message="Batch workflow update for blocked ORA "
+                                                "submissions completed successfully. ",
+                                        item_id=item_id,
+                                        assessment_requirements=assessment_requirements,
+                                        course_settings=course_settings,
+                                        task_count=len(workflow_update_parameters_for_ora["submissions"]))
         else:
-            logger.info("No blocked ORA submissions found for the ORA item_id=%s . "
-                        "Batch workflow update completed without submitting any tasks.",
-                        item_id)
+            return WorkflowUpdateResult(message="No blocked ORA submissions found for the ORA item. "
+                                                "Batch workflow update completed without submitting any tasks.",
+                                        item_id_id=item_id,
+                                        task_count=0)
 
     except (UpdateWorkflowForSubmissionException, Exception) as e:  # pylint: disable=broad-except
         logger.error(
@@ -259,22 +270,27 @@ def update_workflows_for_ora_block(item_id, workflow_update_parameters=None):
         raise UpdateWorkflowsForOraBlockException(str(e)) from e
 
 
-def update_workflow_for_submission(submission_uuid, assessment_requirements, course_settings):
+@logging_decorator
+def update_workflow_for_submission(submission_uuid, assessment_requirements=None, course_settings=None):
     """
     Wrapper for `workflow.api.update_from_assessments(submission_uuid, assessment_requirements, course_override)`
     """
     try:
-        start = time.time()
-        workflow = api.update_from_assessments(submission_uuid, assessment_requirements, course_settings)
-        end = time.time()
-        logger.info(
-            "ORA workflow update for a single blocked submission completed successfully. "
-            "submission_uuid=%s assessment_requirements=%s course_settings=%s processing_time=%s",
-            submission_uuid,
-            assessment_requirements,
-            course_settings,
-            str(end - start))
-        return workflow
+
+        if assessment_requirements is None or course_settings is None:
+            peer_workflows = get_blocked_peer_workflows(submission_uuid)
+            if peer_workflows is not None:
+                workflow_update_parameters = get_workflow_update_parameters(peer_workflows)
+                # only one course with one ORA item expected for a given submission
+                course_settings = workflow_update_parameters["courses"][0]["course_settings"]
+                assessment_requirements = workflow_update_parameters["courses"][0]["assessments"][0][
+                    "assessment_requirements"]
+
+        api.update_from_assessments(submission_uuid, assessment_requirements, course_settings)
+
+        return WorkflowUpdateResult(message="ORA workflow update for a single blocked submission "
+                                            "completed successfully. ",
+                                    submission_uuid=submission_uuid)
     except Exception as e:  # pylint: disable=broad-except
         logger.error(
             "ORA workflow update for a single submission failed. "
@@ -286,24 +302,28 @@ def update_workflow_for_submission(submission_uuid, assessment_requirements, cou
         raise UpdateWorkflowForSubmissionException(str(e)) from e
 
 
-def is_flexible_peer_grading_on(openassessmentblock):
+def is_flexible_peer_grading_on(ora_block, course_block):
     """
-    Is flexible peer grading set "ON" for provided ORA block
+    Verify on ORA and Course level if flexible peer grading is "ON"
 
     Args:
-        openassessmentblock (OpenAssessmentBlock): ORA block
+        ora_block (OpenAssessmentBlock): ORA block
+        course_block (CourseBlock): Course block
 
     Returns:
         bool: True if given ORA is configured with flexible peer grading set "ON"
     """
-    workflow_requirements = openassessmentblock.workflow_requirements()
-    if workflow_requirements.get('peer') and workflow_requirements['peer'].get('enable_flexible_grading'):
-        return True
+    if ora_block is not None:
+        workflow_requirements = ora_block.workflow_requirements()
+        if workflow_requirements.get('peer') and workflow_requirements['peer'].get('enable_flexible_grading'):
+            return True
+    if course_block is not None:
+        return course_block.force_on_flexible_peer_openassessments
 
     return False
 
 
-def get_blocked_peer_workflows(course_id=None, item_id=None):
+def get_blocked_peer_workflows(course_id=None, item_id=None, submission_uuid=None):
     """
     Retrieve ORA peer workflows not completed for >7 days
 
@@ -319,6 +339,8 @@ def get_blocked_peer_workflows(course_id=None, item_id=None):
         filters['course_id'] = course_id
     if item_id is not None:
         filters['item_id'] = item_id
+    if submission_uuid is not None:
+        filters['submission_uuid'] = item_id
 
     return PeerWorkflow.objects.filter(**filters)
 
@@ -364,7 +386,7 @@ def get_workflow_update_parameters(peer_workflows):
             course_block_key = UsageKey.from_string(peer_workflow.course_id)
             course_block = store.get_item(course_block_key)
 
-            if is_flexible_peer_grading_on(ora_block) or course_block.force_on_flexible_peer_openassessments:
+            if is_flexible_peer_grading_on(ora_block, course_block):
                 # we are interested only in submissions for ORA with flexible peer grading configured
                 course_settings = {
                     'force_on_flexible_peer_openassessments': course_block.force_on_flexible_peer_openassessments}
@@ -593,3 +615,15 @@ class UpdateWorkflowsForCourseException(Exception):
 
 class UpdateWorkflowsForAllBlockedSubmissionsException(Exception):
     """Raised when batch ORA workflows update for all blocked submissions failed"""
+
+
+class WorkflowUpdateResult:
+    """
+    Used mainly for the purpose of returning data needed to log completed execution.
+    All args will be concatenated to the log message as key:value pairs
+    """
+
+    def __init__(self, message=None, **kwargs):
+        self.message = message
+        for key, value in kwargs.items():
+            setattr(self, key, value)

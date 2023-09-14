@@ -128,19 +128,23 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
             "enable_flexible_grading": True
         }}
         ora_block = MockOraBlock(workflow_requirements)
-        self.assertTrue(update_api.is_flexible_peer_grading_on(ora_block))
+        course_block = MockCourseBlock(False)
+        self.assertTrue(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
         ora_block.requirements['peer']['enable_flexible_grading'] = False
-        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block))
+        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
         ora_block.requirements['peer']['enable_flexible_grading'] = False
-        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block))
+        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
         del (ora_block.requirements['peer']['enable_flexible_grading'])
-        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block))
+        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
         del (ora_block.requirements['peer'])
-        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block))
+        self.assertFalse(update_api.is_flexible_peer_grading_on(ora_block, course_block))
+
+        course_block.force_on_flexible_peer_openassessments = True
+        self.assertTrue(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
     # pylint: disable=protected-access
     def test_add_workflow_update_parameters(self):
@@ -219,15 +223,38 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         return [pw_tim, pw_miles, pw_pat]
 
+    @patch('openassessment.workflow_batch_update_api.get_workflow_update_parameters')
+    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
     @patch('openassessment.workflow.api.update_from_assessments')
-    def test_update_workflow_for_submission(self, mock_update_from_assessments):
+    def test_update_workflow_for_submission(self, mock_update_from_assessments,
+                                            mock_get_blocked_peer_workflows,
+                                            mock_get_workflow_update_parameters):
+        workflow_update_parameters = {
+            "courses": [
+                {
+                    "course_id": "course_id_1",
+                    "course_settings": {"k11": "v11"},
+                    "assessments": [
+                        {
+                            "item_id": "item_id_1",
+                            "assessment_requirements": {"k12": "v12"},
+                            "submissions": [{"submission_uuid": "submission_uuid_11"}]
+                        }
+                    ]
+                }
+            ]
+        }
+        mock_get_blocked_peer_workflows.return_value = "blocked_peer_workflows"
         mock_update_from_assessments.return_value = "workflow"
+        mock_get_workflow_update_parameters.return_value = workflow_update_parameters
 
-        workflow = update_api.update_workflow_for_submission("submission_uuid", "assessment_requirements",
-                                                             "course_override")
+        update_api.update_workflow_for_submission("submission_uuid", "assessment_requirements",
+                                                  "course_override")
         mock_update_from_assessments.assert_called_once_with("submission_uuid", "assessment_requirements",
                                                              "course_override")
-        self.assertEqual(workflow, "workflow")
+
+        update_api.update_workflow_for_submission("submission_uuid_1")
+        mock_update_from_assessments.assert_called_with("submission_uuid_1", {"k12": "v12"}, {"k11": "v11"})
 
         # UpdateWorkflowForSubmissionException expected to be raised
         mock_update_from_assessments.side_effect = Exception()
