@@ -146,53 +146,14 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         course_block.force_on_flexible_peer_openassessments = True
         self.assertTrue(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
-    # pylint: disable=protected-access
-    def test_add_workflow_update_parameters(self):
-        data = {}
-
-        update_api._add_workflow_update_parameters(data, "course_id_1", "item_id_1", "submission_uuid_1", {"k1": "v1"},
-                                                   {"k2": "v2"})
-
-        self.assertEqual(data["courses"][0]["course_id"], "course_id_1")
-        self.assertEqual(data["courses"][0]["course_settings"], {"k1": "v1"})
-        self.assertEqual(data["courses"][0]["assessments"][0]["item_id"], "item_id_1")
-        self.assertEqual(data["courses"][0]["assessments"][0]["assessment_requirements"], {"k2": "v2"})
-        self.assertEqual(data["courses"][0]["assessments"][0]["submissions"][0]["submission_uuid"], "submission_uuid_1")
-
-        # add another course
-        update_api._add_workflow_update_parameters(data, "course_id_2", "item_id_2", "submission_uuid_2",
-                                                   {"k21": "v21"},
-                                                   {"k22": "v22"})
-
-        # verify existing data was not affected
-        self.assertEqual(data["courses"][0]["course_id"], "course_id_1")
-        self.assertEqual(data["courses"][0]["course_settings"], {"k1": "v1"})
-        self.assertEqual(data["courses"][0]["assessments"][0]["item_id"], "item_id_1")
-        self.assertEqual(data["courses"][0]["assessments"][0]["assessment_requirements"], {"k2": "v2"})
-        self.assertEqual(data["courses"][0]["assessments"][0]["submissions"][0]["submission_uuid"], "submission_uuid_1")
-
-        # verify new course structure was added
-        self.assertEqual(data["courses"][1]["course_id"], "course_id_2")
-        self.assertEqual(data["courses"][1]["course_settings"], {"k21": "v21"})
-        self.assertEqual(data["courses"][1]["assessments"][0]["item_id"], "item_id_2")
-        self.assertEqual(data["courses"][1]["assessments"][0]["assessment_requirements"], {"k22": "v22"})
-        self.assertEqual(data["courses"][1]["assessments"][0]["submissions"][0]["submission_uuid"], "submission_uuid_2")
-
-        # add submission uuid
-        update_api._add_workflow_update_parameters(data, "course_id_1", "item_id_1", "submission_uuid_12", {"k1": "v1"},
-                                                   {"k2": "v2"})
-
-        self.assertEqual(data["courses"][0]["assessments"][0]["submissions"][1]["submission_uuid"],
-                         "submission_uuid_12")
-
     @patch('openassessment.workflow_batch_update_api.modulestore')
     @patch('openassessment.workflow_batch_update_api.UsageKey.from_string')
-    def test_get_workflow_update_parameters(self, mocked_from_string, mocked_modulestore):
+    def test_get_workflow_update_data(self, mocked_from_string, mocked_modulestore):
         mocked_modulestore.return_value = MockModulestore()
         mocked_from_string.side_effect = mock_from_string
         #
-        peer_workflows = self.get_peer_workflows_for_test_get_workflow_update_parameters()
-        wup = update_api.get_workflow_update_parameters(peer_workflows)
+        peer_workflows = self.get_peer_workflows_for_test_get_workflow_update_data()
+        wup = update_api.get_workflow_update_data(peer_workflows)
 
         #
         self.assertEqual(len(wup["courses"]), 2)
@@ -203,7 +164,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(wup["courses"][1]["assessments"][0]["item_id"], "item_id_3")
 
     # pylint: disable=unused-variable
-    def get_peer_workflows_for_test_get_workflow_update_parameters(self):
+    def get_peer_workflows_for_test_get_workflow_update_data(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
         miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
         pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
@@ -223,13 +184,13 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         return [pw_tim, pw_miles, pw_pat]
 
-    @patch('openassessment.workflow_batch_update_api.get_workflow_update_parameters')
+    @patch('openassessment.workflow_batch_update_api.get_workflow_update_data')
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
     @patch('openassessment.workflow.api.update_from_assessments')
     def test_update_workflow_for_submission(self, mock_update_from_assessments,
                                             mock_get_blocked_peer_workflows,
-                                            mock_get_workflow_update_parameters):
-        workflow_update_parameters = {
+                                            mock_get_workflow_update_data):
+        workflow_update_data = {
             "courses": [
                 {
                     "course_id": "course_id_1",
@@ -238,23 +199,25 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                         {
                             "item_id": "item_id_1",
                             "assessment_requirements": {"k12": "v12"},
-                            "submissions": [{"submission_uuid": "submission_uuid_11"}]
+                            "submissions": [{"submission_uuid": "submission_uuid_11"},
+                                            {"submission_uuid": "submission_uuid_12"}]
                         }
                     ]
                 }
             ]
         }
+
         mock_get_blocked_peer_workflows.return_value = "blocked_peer_workflows"
         mock_update_from_assessments.return_value = "workflow"
-        mock_get_workflow_update_parameters.return_value = workflow_update_parameters
+        mock_get_workflow_update_data.return_value = workflow_update_data
 
         update_api.update_workflow_for_submission("submission_uuid", "assessment_requirements",
                                                   "course_override")
         mock_update_from_assessments.assert_called_once_with("submission_uuid", "assessment_requirements",
                                                              "course_override")
+        update_api.update_workflow_for_submission("submission_uuid_11")
 
-        update_api.update_workflow_for_submission("submission_uuid_1")
-        mock_update_from_assessments.assert_called_with("submission_uuid_1", {"k12": "v12"}, {"k11": "v11"})
+        mock_update_from_assessments.assert_called_with("submission_uuid_11", {"k12": "v12"}, {"k11": "v11"})
 
         # UpdateWorkflowForSubmissionException expected to be raised
         mock_update_from_assessments.side_effect = Exception()
@@ -264,119 +227,100 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
     def test_update_workflows_for_ora_block(self, mock_get_blocked_peer_workflows):
-        workflow_update_parameters = {
-            "courses": [
-                {
-                    "course_id": "course_id_11",
-                    "course_settings": {"k11": "v11"},
-                    "assessments": [
-                        {
-                            "item_id": "item_id_11",
-                            "assessment_requirements": {"k12": "v12"},
-                            "submissions": [
-                                {"submission_uuid": "submission_uuid_11"}
-                            ]
-                        },
-                        {
-                            "item_id": "item_id_12",
-                            "assessment_requirements": {"k12": "v12"},
-                            "submissions": [
-                                {"submission_uuid": "submission_uuid_12"}
-                            ]
-                        }
-                    ]
-                }
-            ]
+        workflow_update_data = {
+            "course_id": "course_id_1",
+            "course_settings": {"k11": "v11"},
+            "item_id": "item_id_11",
+            "assessment_requirements": {"k12": "v12"},
+            "submissions": [{"submission_uuid": "submission_uuid_11"}]
         }
 
         mock_get_blocked_peer_workflows.return_value = "peer_workflows"
         with patch(
-                'openassessment.workflow_batch_update_api.get_workflow_update_parameters') \
-                as mock_get_workflow_update_parameters:
-            mock_get_workflow_update_parameters.return_value = workflow_update_parameters
+                'openassessment.workflow_batch_update_api._get_workflow_update_data_for_ora') \
+                as mock_get_workflow_update_data_for_ora:
+            mock_get_workflow_update_data_for_ora.return_value = workflow_update_data
 
             with patch(
                     'openassessment.workflow_batch_update_api.update_workflow_for_submission_task.apply_async') \
-                    as mock_update_workflow_for_submission:
+                    as mock_update_workflow_for_submission_async:
                 # test scenario when cached data is not passed
                 update_api.update_workflows_for_ora_block("item_id_12")
 
                 mock_get_blocked_peer_workflows.assert_called_once_with(item_id="item_id_12")
-                mock_get_workflow_update_parameters.assert_called_once_with("peer_workflows")
-                mock_update_workflow_for_submission.assert_called_once_with(["submission_uuid_12", {'k12': 'v12'},
-                                                                             {'k11': 'v11'}])
+                mock_get_workflow_update_data_for_ora.assert_called_once_with("peer_workflows", "item_id_12")
+                mock_update_workflow_for_submission_async.assert_called_once_with(["submission_uuid_11", {'k12': 'v12'},
+                                                                                   {'k11': 'v11'}])
 
                 # test scenario when cached data is passed
-                workflow_update_parameters["courses"][0]["assessments"][0]["item_id"] = "item_id_0"
-                workflow_update_parameters["courses"][0]["assessments"][0]["submissions"][0][
-                    "submission_uuid"] = "submission_uuid_0"
-                workflow_update_parameters["courses"][0]["course_settings"] = {'k0': 'v0'}
-                workflow_update_parameters["courses"][0]["assessments"][0]["assessment_requirements"] = {'k1': 'v1'}
+                workflow_update_data["item_id"] = "item_id_0"
+                workflow_update_data["submissions"][0]["submission_uuid"] = "submission_uuid_0"
+                workflow_update_data["course_settings"] = {'k0': 'v0'}
+                workflow_update_data["assessment_requirements"] = {'k1': 'v1'}
                 update_api.update_workflows_for_ora_block("item_id_0")
-                mock_update_workflow_for_submission.assert_called_with(["submission_uuid_0",
-                                                                        {'k1': 'v1'},
-                                                                        {'k0': 'v0'}])
+                mock_update_workflow_for_submission_async.assert_called_with(["submission_uuid_0",
+                                                                              {'k1': 'v1'},
+                                                                              {'k0': 'v0'}])
 
                 # UpdateWorkflowsForOraBlockException expected to be raised
-                mock_update_workflow_for_submission.side_effect = Exception()
+                mock_update_workflow_for_submission_async.side_effect = Exception()
                 with pytest.raises(update_api.UpdateWorkflowsForOraBlockException):
                     update_api.update_workflows_for_ora_block("item_id_0")
 
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
     def test_update_workflows_for_course(self, mock_get_blocked_peer_workflows):
-        workflow_update_parameters = {
-            "courses": [
+        workflow_update_data = {
+            "course_id": "course_id_11",
+            "course_settings": {"k11": "v11"},
+            "assessments": [
                 {
-                    "course_id": "course_id_11",
-                    "course_settings": {"k11": "v11"},
-                    "assessments": [
-                        {
-                            "item_id": "item_id_11",
-                            "assessment_requirements": {"k12": "v12"},
-                            "submissions": [{"submission_uuid": "submission_uuid_11"}]
-                        },
-                        {
-                            "item_id": "item_id_12",
-                            "assessment_requirements": {"k12": "v12"},
-                            "submissions": [{"submission_uuid": "submission_uuid_12"}]
-                        }
-                    ]
+                    "item_id": "item_id_11",
+                    "assessment_requirements": {"k12": "v12"},
+                    "submissions": [{"submission_uuid": "submission_uuid_11"}]
+                },
+                {
+                    "item_id": "item_id_12",
+                    "assessment_requirements": {"k12": "v12"},
+                    "submissions": [{"submission_uuid": "submission_uuid_12"}]
                 }
             ]
         }
+
         mock_get_blocked_peer_workflows.return_value = "mock_peer_workflows"
         with patch(
-                'openassessment.workflow_batch_update_api.get_workflow_update_parameters') \
-                as mock_get_workflow_update_parameters:
-            mock_get_workflow_update_parameters.return_value = workflow_update_parameters
+                'openassessment.workflow_batch_update_api._get_workflow_update_data_for_course') \
+                as mock_get_workflow_update_data_for_course:
+            mock_get_workflow_update_data_for_course.return_value = workflow_update_data
             with patch(
                     'openassessment.workflow_batch_update_api.update_workflows_for_ora_block_task.apply_async') \
-                    as mock_update_workflows_for_ora_block:
+                    as mock_update_workflows_for_ora_block_async:
                 # test scenario when cached data is not passed
                 update_api.update_workflows_for_course("course_id_11")
 
                 mock_get_blocked_peer_workflows.assert_called_once_with(course_id="course_id_11")
-                mock_get_workflow_update_parameters.assert_called_once_with("mock_peer_workflows")
-
-                mock_update_workflows_for_ora_block.assert_called_with(["item_id_12", workflow_update_parameters])
-                self.assertEqual(mock_update_workflows_for_ora_block.call_count, 2)
+                mock_get_workflow_update_data_for_course.assert_called_once_with("mock_peer_workflows",
+                                                                                 course_id="course_id_11")
+                ora_object = workflow_update_data["assessments"][1]
+                mock_update_workflows_for_ora_block_async.assert_called_with(["item_id_12", ora_object])
+                self.assertEqual(mock_update_workflows_for_ora_block_async.call_count, 2)
 
                 # test scenario when cached data is passed
-                workflow_update_parameters["courses"][0]["course_id"] = "course_id_0"
-                workflow_update_parameters["courses"][0]["assessments"][0]["item_id"] = "item_id_0"
-                workflow_update_parameters["courses"][0]["assessments"][1]["item_id"] = "item_id_01"
-                update_api.update_workflows_for_course("course_id_0", workflow_update_parameters)
-                mock_update_workflows_for_ora_block.assert_called_with(["item_id_01", workflow_update_parameters])
-                self.assertEqual(mock_update_workflows_for_ora_block.call_count, 4)
+                workflow_update_data["course_id"] = "course_id_0"
+                workflow_update_data["assessments"][0]["item_id"] = "item_id_0"
+                workflow_update_data["assessments"][1]["item_id"] = "item_id_01"
+                ora_object = workflow_update_data["assessments"][1]
+                update_api.update_workflows_for_course("course_id_0", workflow_update_data)
+                mock_update_workflows_for_ora_block_async.assert_called_with(["item_id_01", ora_object])
+                self.assertEqual(mock_update_workflows_for_ora_block_async.call_count, 4)
 
                 # UpdateWorkflowsForCourseException expected to be raised
-                mock_update_workflows_for_ora_block.side_effect = Exception()
+                mock_update_workflows_for_ora_block_async.side_effect = Exception()
                 with pytest.raises(update_api.UpdateWorkflowsForCourseException):
-                    update_api.update_workflows_for_course("course_id_0", workflow_update_parameters)
+                    update_api.update_workflows_for_course("course_id_0", workflow_update_data)
 
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
     def test_update_workflows_for_all_blocked_submissions(self, mock_get_blocked_peer_workflows):
-        workflow_update_parameters = {
+        workflow_update_data = {
             "courses": [
                 {
                     "course_id": "course_id_11",
@@ -387,118 +331,90 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         }
         mock_get_blocked_peer_workflows.return_value = "mock_peer_workflows"
         with patch(
-                'openassessment.workflow_batch_update_api.get_workflow_update_parameters') \
-                as mock_get_workflow_update_parameters:
-            mock_get_workflow_update_parameters.return_value = workflow_update_parameters
+                'openassessment.workflow_batch_update_api.get_workflow_update_data') \
+                as mock_get_workflow_update_data:
+            mock_get_workflow_update_data.return_value = workflow_update_data
 
             with patch(
                     'openassessment.workflow_batch_update_api.update_workflows_for_course_task.apply_async') \
                     as mock_update_workflows_for_course:
                 update_api.update_workflows_for_all_blocked_submissions()
                 mock_get_blocked_peer_workflows.assert_called_once()
-                mock_get_workflow_update_parameters.assert_called_once_with("mock_peer_workflows")
+                mock_get_workflow_update_data.assert_called_once_with("mock_peer_workflows")
 
-                mock_update_workflows_for_course.assert_called_once_with(["course_id_11", workflow_update_parameters])
+                mock_update_workflows_for_course.assert_called_once_with(["course_id_11", {
+                    "course_id": "course_id_11",
+                    "course_settings": {"k11": "v11"},
+                    "assessments": []
+                }])
 
-    def test_get_course_object(self):
-        workflow_update_parameters = {
+    # pylint: disable=protected-access
+    def test_get_course_data(self):
+        workflow_update_data = {
             "courses": [
                 {
                     "course_id": "course_id_1",
                     "course_settings": {"k1": "v1"},
                     "assessments": []
+                },
+                {
+                    "course_id": "course_id_12",
+                    "course_settings": {"k12": "v12"},
+                    "assessments": []
                 }
             ]
         }
-        course = update_api._get_course_object(workflow_update_parameters, "course_id_1")
+        course = update_api._get_course_data(workflow_update_data, "course_id_1")
         self.assertEqual(course["course_id"], "course_id_1")
 
-        course = update_api._get_course_object(workflow_update_parameters, "course_id_2")
+        course = update_api._get_course_data(workflow_update_data, "course_id_2")
+        self.assertIsNone(course)
+        course = update_api._get_course_data(workflow_update_data, None)
+        self.assertIsNone(course)
+        course = update_api._get_course_data(None, "course_id_2")
+        self.assertIsNone(course)
+        course = update_api._get_course_data({}, "course_id_2")
         self.assertIsNone(course)
 
     # pylint: disable=protected-access
-    def test_get_ora_object(self):
-        workflow_update_parameters = {
-            "courses": [
+    def test_get_ora_data(self):
+        workflow_update_data = {
+            "course_id": "course_id_11",
+            "course_settings": {"k11": "v11"},
+            "assessments": [
                 {
-                    "course_id": "course_id_11",
-                    "course_settings": {
-                        "k11": "v11"
-                    },
-                    "assessments": [
-                        {
-                            "item_id": "item_id_11",
-                            "assessment_requirements": {
-                                "k12": "v12"
-                            },
-                            "submissions": [
-                                {
-                                    "submission_uuid": "submission_uuid_11"
-                                }
-                            ]
-                        },
-                        {
-                            "item_id": "item_id_12",
-                            "assessment_requirements": {
-                                "k12": "v12"
-                            },
-                            "submissions": [
-                                {
-                                    "submission_uuid": "submission_uuid_12"
-                                },
-                                {
-                                    "submission_uuid": "submission_uuid_13"
-                                }
-                            ]
-                        }
+                    "item_id": "item_id_11",
+                    "assessment_requirements": {"k12": "v12"},
+                    "submissions": [{"submission_uuid": "submission_uuid_11"}]
+                },
+                {
+                    "item_id": "item_id_12",
+                    "assessment_requirements": {"k12": "v12"},
+                    "submissions": [
+                        {"submission_uuid": "submission_uuid_12"},
+                        {"submission_uuid": "submission_uuid_13"}
                     ]
                 }
             ]
         }
-        ora = update_api._get_ora_object(workflow_update_parameters, "item_id_12")
-        self.assertEqual(ora["item_id"], "item_id_12")
 
-        ora = update_api._get_ora_object(workflow_update_parameters, "item_id_12")
+        ora = update_api._get_ora_data(course_object=workflow_update_data, item_id="item_id_12")
+        self.assertEqual(ora["item_id"], "item_id_12")
         self.assertEqual(len(ora["submissions"]), 2)
 
-        ora = update_api._get_ora_object(workflow_update_parameters, "item_id_non_existing")
+        ora = update_api._get_ora_data(course_object=workflow_update_data, item_id="item_id_non_existing")
+        self.assertIsNone(ora)
+        ora = update_api._get_ora_data(course_object=workflow_update_data, item_id=None)
+        self.assertIsNone(ora)
+        ora = update_api._get_ora_data(course_object=None, item_id="item_id_non_existing")
+        self.assertIsNone(ora)
+        ora = update_api._get_ora_data(course_object=None, item_id=None)
+        self.assertIsNone(ora)
+        ora = update_api._get_ora_data(course_object={}, item_id="item_id_12")
         self.assertIsNone(ora)
 
-    def test_get_submission_object(self):
-        workflow_update_parameters = {
-            "courses": [
-                {
-                    "course_id": "course_id_11",
-                    "course_settings": {
-                        "k11": "v11"
-                    },
-                    "assessments": [
-                        {
-                            "item_id": "item_id_12",
-                            "assessment_requirements": {
-                                "k12": "v12"
-                            },
-                            "submissions": [
-                                {
-                                    "submission_uuid": "submission_uuid_12"
-                                },
-                                {
-                                    "submission_uuid": "submission_uuid_13"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-        submission = update_api._get_submission_object(workflow_update_parameters, "submission_uuid_12")
-        self.assertEqual(submission["submission_uuid"], "submission_uuid_12")
-
-        submission = update_api._get_submission_object(workflow_update_parameters, "non_existing")
-        self.assertIsNone(submission)
-
-    def test_get_course_settings_for_ora(self):
-        workflow_update_parameters = {
+    def test_get_submission_data(self):
+        workflow_update_data = {
             "courses": [
                 {
                     "course_id": "course_id_11",
@@ -516,11 +432,64 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 }
             ]
         }
-        course_settings = update_api._get_course_settings_for_ora(workflow_update_parameters, "item_id_12")
-        self.assertEqual(course_settings, {"k11": "v11"})
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     course_id="course_id_11",
+                                                     item_id="item_id_12",
+                                                     submission_uuid="submission_uuid_12")
+        self.assertEqual(submission["submission_uuid"], "submission_uuid_12")
+        self.assertEqual(submission["course_id"], "course_id_11")
+        self.assertEqual(submission["course_settings"], {"k11": "v11"})
+        self.assertEqual(submission["item_id"], "item_id_12")
+        self.assertEqual(submission["assessment_requirements"], {"k12": "v12"})
 
-        course_settings = update_api._get_course_settings_for_ora(workflow_update_parameters, "non_existing")
-        self.assertIsNone(course_settings)
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     course_id="course_id_11",
+                                                     submission_uuid="submission_uuid_12")
+        self.assertEqual(submission["submission_uuid"], "submission_uuid_12")
+
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     item_id="item_id_12",
+                                                     submission_uuid="submission_uuid_12")
+        self.assertEqual(submission["submission_uuid"], "submission_uuid_12")
+
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     submission_uuid="submission_uuid_12")
+        self.assertEqual(submission["submission_uuid"], "submission_uuid_12")
+        self.assertEqual(submission["course_id"], "course_id_11")
+        self.assertEqual(submission["course_settings"], {"k11": "v11"})
+        self.assertEqual(submission["item_id"], "item_id_12")
+        self.assertEqual(submission["assessment_requirements"], {"k12": "v12"})
+
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     course_id="course_id_11",
+                                                     item_id="item_id_12",
+                                                     submission_uuid="non_existing")
+        self.assertIsNone(submission)
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     course_id="course_id_11",
+                                                     item_id="item_id_12",
+                                                     submission_uuid=None)
+        self.assertIsNone(submission)
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     course_id="course_id_11",
+                                                     item_id=None,
+                                                     submission_uuid=None)
+        self.assertIsNone(submission)
+        submission = update_api._get_submission_data(workflow_update_data=workflow_update_data,
+                                                     course_id=None,
+                                                     item_id=None,
+                                                     submission_uuid=None)
+        self.assertIsNone(submission)
+        submission = update_api._get_submission_data(workflow_update_data=None,
+                                                     course_id=None,
+                                                     item_id=None,
+                                                     submission_uuid=None)
+        self.assertIsNone(submission)
+        submission = update_api._get_submission_data(workflow_update_data={},
+                                                     course_id=None,
+                                                     item_id=None,
+                                                     submission_uuid=None)
+        self.assertIsNone(submission)
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None, steps=None):
