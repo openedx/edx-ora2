@@ -84,9 +84,8 @@ def logging_decorator(func):
         end = time.time()
         log_message = ""
         if result is not None:
-            for key, value in result.__dict__.items():
-                log_message = log_message + " " + str(key) + "=" + str(value)
-        log_message = log_message + " processing_time=" + str(round(end - start, 5))
+            log_message += " ".join([f"{str(key)}={str(value)}" for key, value in result.__dict__.items()])
+        log_message += f" processing_time={(end - start):.5f} "
         logger.info(log_message)
         return result
 
