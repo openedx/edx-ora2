@@ -60,8 +60,8 @@ class TestLoadStatic(TestCase):
                 'some_url.js': 'some_url.hash.js',
                 'is_dev_server': True
             }
-            self.assertEqual(LoadStatic.get_is_dev_server(), True)
             self.assertEqual(LoadStatic.get_url(key_url), 'some_url.hash.js')
+            self.assertEqual(LoadStatic.get_is_dev_server(), True)
 
     @patch('pkg_resources.resource_string')
     def test_get_url_file_not_found(self, resource_string):
