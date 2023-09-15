@@ -73,16 +73,16 @@ def update_workflow_for_submission_task(self, submission_uuid, assessment_requir
     return update_workflow_for_submission(submission_uuid, assessment_requirements, course_settings)
 
 
-def logging_decorator(func):
+def log_task_info(func):
     """
-    Does what it says. Expects `WorkflowUpdateResult` as a decorated function return value
+    This decorator logs task info. Expects `WorkflowUpdateResult` as a decorated function return value
     """
 
     def wrapper(*args, **kwargs):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        log_message = ""
+        log_message = f"function_name={func.__name__} "
         if result is not None:
             log_message += " ".join([f"{str(key)}={str(value)}" for key, value in result.__dict__.items()])
         log_message += f" processing_time={(end - start):.5f} "
@@ -92,7 +92,7 @@ def logging_decorator(func):
     return wrapper
 
 
-@logging_decorator
+@log_task_info
 def update_workflows_for_all_blocked_submissions():
     """
     Updates ORA workflows for submissions meeting following filtering criteria:
@@ -125,7 +125,7 @@ def update_workflows_for_all_blocked_submissions():
         raise UpdateWorkflowsForAllBlockedSubmissionsException(str(e)) from e
 
 
-@logging_decorator
+@log_task_info
 def update_workflows_for_course(course_id, workflow_update_data=None):
     """
     Updates ORA workflows created for the given course
@@ -187,7 +187,7 @@ def update_workflows_for_course(course_id, workflow_update_data=None):
         raise UpdateWorkflowsForCourseException(str(e)) from e
 
 
-@logging_decorator
+@log_task_info
 def update_workflows_for_ora_block(item_id, workflow_update_data=None):
     """
     Updates ORA workflows created for the given ORA Block
@@ -251,7 +251,7 @@ def update_workflows_for_ora_block(item_id, workflow_update_data=None):
         raise UpdateWorkflowsForOraBlockException(str(e)) from e
 
 
-@logging_decorator
+@log_task_info
 def update_workflow_for_submission(submission_uuid, assessment_requirements=None, course_settings=None):
     """
     Updates ORA workflow created for a given submission
@@ -385,6 +385,8 @@ def get_workflow_update_data(peer_workflows):
                         course_settings=course_settings)
 
                 cache.add(peer_workflow.course_id)
+                cache.add(peer_workflow.item_id)
+
             elif peer_workflow.item_id not in cache:
                 # retrieve openassessment block
                 ora_block_key = UsageKey.from_string(peer_workflow.item_id)
@@ -395,6 +397,11 @@ def get_workflow_update_data(peer_workflows):
                                                      item_id=peer_workflow.item_id,
                                                      submission_uuid=peer_workflow.submission_uuid,
                                                      assessment_requirements=ora_block.workflow_requirements())
+            else:
+                workflow_update_data = _add_submission_data(workflow_update_data,
+                                                            course_id=peer_workflow.course_id,
+                                                            item_id=peer_workflow.item_id,
+                                                            submission_uuid=peer_workflow.submission_uuid)
 
         except Exception as e:  # pylint: disable=broad-except
             logger.warning(
@@ -435,6 +442,16 @@ def _add_ora_data(workflow_update_data, course_id, item_id, submission_uuid, ass
     _get_course_data(workflow_update_data, course_id).get("assessments").append(
         {"item_id": item_id, "assessment_requirements": assessment_requirements,
          "submissions": [{"submission_uuid": submission_uuid}]})
+    return workflow_update_data
+
+
+def _add_submission_data(workflow_update_data, course_id, item_id, submission_uuid):
+    """
+    Adds ORA data structure to the provided data cache dictionary
+    """
+    course_data = _get_course_data(workflow_update_data, course_id)
+    ora_data = _get_ora_data(course_data, item_id)
+    ora_data["submissions"].append({"submission_uuid": submission_uuid})
     return workflow_update_data
 
 

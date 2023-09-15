@@ -160,6 +160,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(wup["courses"][0]["course_id"], "course_id_1")
         self.assertEqual(wup["courses"][0]["assessments"][0]["item_id"], "item_id_1")
         self.assertEqual(wup["courses"][0]["assessments"][1]["item_id"], "item_id_2")
+        self.assertEqual(len(wup["courses"][0]["assessments"][0]["submissions"]),2)
         self.assertEqual(wup["courses"][1]["course_id"], "course_id_2")
         self.assertEqual(wup["courses"][1]["assessments"][0]["item_id"], "item_id_3")
 
@@ -168,6 +169,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
         miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
         pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
+        wayne_sub, wayne = self._create_student_and_submission("Wayne", "Wayne's answer")
 
         pw_tim = PeerWorkflow.objects.get(student_id=tim["student_id"])
         pw_tim.created_at = timezone.now() - datetime.timedelta(days=8)
@@ -181,8 +183,12 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_pat.course_id = "course_id_2"
         pw_pat.item_id = "item_id_3"
+        pw_wayne = PeerWorkflow.objects.get(student_id=wayne["student_id"])
+        pw_wayne.created_at = timezone.now() - datetime.timedelta(days=8)
+        pw_wayne.course_id = "course_id_1"
+        pw_wayne.item_id = "item_id_1"
 
-        return [pw_tim, pw_miles, pw_pat]
+        return [pw_tim, pw_miles, pw_pat, pw_wayne]
 
     @patch('openassessment.workflow_batch_update_api.get_workflow_update_data')
     @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
