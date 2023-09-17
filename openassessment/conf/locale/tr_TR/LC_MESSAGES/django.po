@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-10 18:36+0000\n"
+"POT-Creation-Date: 2023-09-17 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Ali Işıngör <ali@artistanbul.io>, 2018-2023\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
@@ -359,19 +359,19 @@ msgid "Feedback for This Criterion"
 msgstr "Bu Ölçüt için Dönüt"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: xblock/studio_mixin.py:49
+#: xblock/studio_mixin.py:57
 msgid "None"
 msgstr "Hiçbiri"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: xblock/studio_mixin.py:48
+#: xblock/studio_mixin.py:56
 msgid "Optional"
 msgstr "İsteğe Bağlı"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: templates/openassessmentblock/oa_rubric.html:13
 #: templates/openassessmentblock/student_training/student_training.html:93
-#: xblock/studio_mixin.py:47
+#: xblock/studio_mixin.py:55
 msgid "Required"
 msgstr "Gerekli"
 
@@ -1220,7 +1220,6 @@ msgstr "Ödevinizi gönderemiyoruz"
 #: templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: xblock/staff_assessment_mixin.py:173
 msgid "Cancelled"
 msgstr "İptal Edildi"
 
@@ -1279,7 +1278,6 @@ msgstr "Tüm gönderilen kişi cevapları değerlendirildi. Daha çok öğrencin
 #: templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: xblock/staff_assessment_mixin.py:166 xblock/staff_assessment_mixin.py:190
 msgid "Not Available"
 msgstr "Kullanılabilir değil"
 
@@ -1590,7 +1588,6 @@ msgstr "Teslim tarihinden ötürü bu adım geçmişte kaldı. Bu adım şu an k
 #: templates/openassessmentblock/response/oa_response_submitted.html:20
 #: templates/openassessmentblock/self/oa_self_complete.html:18
 #: templates/openassessmentblock/student_training/student_training_complete.html:17
-#: xblock/staff_assessment_mixin.py:180 xblock/staff_assessment_mixin.py:203
 msgid "Complete"
 msgstr "Tamamlanmış"
 
@@ -2163,21 +2160,7 @@ msgstr "Öğrenci Eğitim Örneklerini Yüklerken Hata"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Öğrenci Eğitim Adımındaki bu görev yüklenemedi."
 
-#: xblock/data_conversion.py:263
-msgid "You must provide options selected in the assessment."
-msgstr "Değerlendirme için gerekli seçenekleri sağlamalısınız."
-
-#: xblock/data_conversion.py:266
-msgid "You must provide overall feedback in the assessment."
-msgstr ""
-
-#: xblock/data_conversion.py:269
-msgid "You must provide feedback for criteria in the assessment."
-msgstr ""
-
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
-#: xblock/self_assessment_mixin.py:42 xblock/student_training_mixin.py:56
-#: xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "Beklenmeyen bir hata oluştu."
 
@@ -2261,91 +2244,25 @@ msgid ""
 " grade."
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:19
+#: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
 msgstr "Sadece Akran Değerlendirmesi"
 
-#: xblock/openassesment_template_mixin.py:20
+#: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
 msgstr "Sadece Öz Değerlendirme"
 
-#: xblock/openassesment_template_mixin.py:21
+#: xblock/openassesment_template_mixin.py:68
 msgid "Staff Assessment Only"
 msgstr "Sadece Personel Değerlendirmesi"
 
-#: xblock/openassesment_template_mixin.py:22
+#: xblock/openassesment_template_mixin.py:69
 msgid "Self Assessment to Peer Assessment"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:23
+#: xblock/openassesment_template_mixin.py:70
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
-
-#: xblock/peer_assessment_mixin.py:61
-msgid "You must submit a response before you can perform a peer assessment."
-msgstr ""
-
-#: xblock/peer_assessment_mixin.py:73
-msgid ""
-"This feedback has already been submitted or the submission has been "
-"cancelled."
-msgstr "Bu geri bildirim zaten gönderilmiş ya da gönderim iptal edilmiş."
-
-#: xblock/peer_assessment_mixin.py:99 xblock/peer_assessment_mixin.py:105
-msgid "Your peer assessment could not be submitted."
-msgstr "Eş-değerlendirmeniz gönderilemedi."
-
-#: xblock/peer_assessment_mixin.py:120 xblock/student_training_mixin.py:270
-msgid "Could not update workflow status."
-msgstr "İş akışı durumu güncellenemedi."
-
-#: xblock/peer_assessment_mixin.py:128
-msgid "Could not load peer assessment."
-msgstr "Eş değerlendirme yüklenemedi."
-
-#: xblock/peer_assessment_mixin.py:215
-msgid "Submit your assessment and review another response"
-msgstr "Değerlendirmenizi gönderin ve bir diğer cevabı inceleyin"
-
-#: xblock/peer_assessment_mixin.py:219
-msgid "Submit your assessment and move to next step"
-msgstr "Değerlendirmenizi gönderin ve sonraki adıma geçin"
-
-#: xblock/peer_assessment_mixin.py:223
-#, python-brace-format
-msgid "Submit your assessment and move to response #{response_number}"
-msgstr "Değerlendirmenizi gönderin ve #{response_number} numaralı cevaba geçin"
-
-#: xblock/resolve_dates.py:52
-#, python-brace-format
-msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr "'{date}' geçersiz tarih formatı. Tarih formatının GG-AA-YYYY SA:DK:SN olduğundan emin olun."
-
-#: xblock/resolve_dates.py:57
-#, python-brace-format
-msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' tarih dizgesi ya da tarih zamanı olmalı"
-
-#: xblock/resolve_dates.py:210
-#, python-brace-format
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr "Bu adımın başlangıç tarihi '{start}', önceki adımın başlangıç tarihinden '{prev}' önce olamaz"
-
-#: xblock/resolve_dates.py:218
-#, python-brace-format
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr "Bu adımın son tarihi '{due}' sonraki adımın son tarihi '{prev}'den sonra olamaz."
-
-#: xblock/resolve_dates.py:234
-#, python-brace-format
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "Başlangıç tarihi '{start}' son tarih '{due}'den sonra olamaz."
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
@@ -2360,14 +2277,6 @@ msgstr "Geçersiz block kimliği."
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
 msgstr ""
-
-#: xblock/self_assessment_mixin.py:142
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr "Bireysel-değerlendirme yapmadan önce cevap göndermelisiniz."
-
-#: xblock/self_assessment_mixin.py:165 xblock/self_assessment_mixin.py:173
-msgid "Your self assessment could not be submitted."
-msgstr "Kişisel değerlendirmeniz gönderilemedi."
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
@@ -2409,282 +2318,212 @@ msgstr "Gönderilmedi"
 msgid "Submitted"
 msgstr "Girildi"
 
-#: xblock/staff_area_mixin.py:315
+#: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
 msgstr "Öğrenci bilgisini alırken hata oluştu."
 
-#: xblock/staff_area_mixin.py:358
+#: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: xblock/staff_area_mixin.py:359
+#: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: xblock/staff_area_mixin.py:361
+#: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
 msgstr "Personel not bilgisini alırken hata oluştu."
 
-#: xblock/staff_area_mixin.py:382
+#: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: xblock/staff_area_mixin.py:676
+#: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
 msgstr "Gönderimi kaldırmak için geçerli bir sebep girin."
 
-#: xblock/staff_area_mixin.py:687
+#: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
 msgstr "Gönderim bulunamadı"
 
-#: xblock/staff_area_mixin.py:698
+#: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:727
+#: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Öğrenci gönderisi kişi değerlendirme sayfasından kaldırıldı. Eğer siz öğrencinin denemesini sıfırlayıp tekrar cevap göndermesine izin vermezseniz öğrenci sıfır puan alacak."
 
-#: xblock/staff_area_mixin.py:762
+#: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr ""
 
-#: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
-msgid "The submission ID of the submission being assessed was not found."
-msgstr ""
-
-#: xblock/staff_assessment_mixin.py:71 xblock/staff_assessment_mixin.py:79
-msgid "Your staff assessment could not be submitted."
-msgstr "Personel değerlendirmeniz gönderilemedi."
-
-#: xblock/staff_assessment_mixin.py:117 xblock/staff_assessment_mixin.py:125
-msgid "Your team assessment could not be submitted."
-msgstr "Takım değerlendirmeniz gönderilemedi."
-
-#: xblock/staff_assessment_mixin.py:191
-msgid "Waiting for a Staff Grade"
-msgstr "Personel Notu Bekleniyor"
-
-#: xblock/staff_assessment_mixin.py:192
-msgid ""
-"Check back later to see if a course staff member has assessed your response."
-" You will receive your grade after the assessment is complete."
-msgstr "Yanıtınızın bir akademik personel tarafından değerlendirip değerlendirmediğini görmek için daha sonra tekrar kontrol edin. Değerlendirmeniz tamamlandığında notunuzu alacaksınız."
-
-#: xblock/staff_assessment_mixin.py:205
-msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr "Notunuzu Görmek için Aşağıdaki Adımları Tamamlamanız Gerekiyor"
-
-#: xblock/staff_assessment_mixin.py:206
-msgid ""
-"Although a course staff member has assessed your response, you will receive "
-"your grade only after you have completed all the required steps of this "
-"problem."
-msgstr ""
-
-#: xblock/student_training_mixin.py:227
-msgid "Missing options_selected key in request"
-msgstr "İstekteki seçilmiş_seçenekler anahtarı kayıp"
-
-#: xblock/student_training_mixin.py:229
-msgid "options_selected must be a dictionary"
-msgstr "seçilmiş_seçenekler sözlük olmalıdır"
-
-#: xblock/student_training_mixin.py:254 xblock/student_training_mixin.py:259
-msgid "Your scores could not be checked."
-msgstr "Sonuçlarınız kontrol edilemedi."
-
-#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
 msgstr "XBlock yapılandırması güncellenirken hata"
 
-#: xblock/studio_mixin.py:252
+#: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Hata: Metin ve Dosya Yükleme yanıtlarının ikisi birden devre dışı bırakılamaz"
 
-#: xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Hata: Metin Yanıtı devre dışı bırakıldığında, Dosya Yükleme Yanıtı Gerekli Olmalıdır"
 
-#: xblock/studio_mixin.py:259
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Hata: Dosya Yükleme Yanıtı devre dışı bırakıldığında, Metin Yanıtı Gerekli Olmalıdır"
 
-#: xblock/studio_mixin.py:283
+#: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Doğrulama hatası: {error}"
 
-#: xblock/studio_mixin.py:315
+#: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock başarıyla yüklendi."
 
-#: xblock/submission_mixin.py:118
-msgid "\"submission\" required to submit answer."
-msgstr "Cevap göndermek için \"gönderim\" gereklidir."
-
-#: xblock/submission_mixin.py:139
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr "Cevap göndermek için, bu bileşeni Ön İzleme ve ya Canlı modda görüntüle."
-
-#: xblock/submission_mixin.py:145
-msgid "Multiple submissions are not allowed."
-msgstr "Çoklu gönderimlere izin verilmez."
-
-#: xblock/submission_mixin.py:178
-msgid "Response exceeds maximum allowed size."
-msgstr "Yanıt, izin verilen maksimum boyutu aşıyor."
-
-#: xblock/submission_mixin.py:180
-msgid ""
-"Note: if you have a spellcheck or grammar check browser extension, try "
-"disabling, reloading, and reentering your response before submitting."
-msgstr "Not: Bir yazım denetimi veya dilbilgisi denetimi tarayıcı uzantınız varsa yanıtınızı göndermeden önce uzantıyı devre dışı bırakmayı, sayfayı yeniden yüklemeyi ve yeniden girmeyi deneyin."
-
-#: xblock/submission_mixin.py:200
-msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr ""
-
-#: xblock/submission_mixin.py:210
-msgid "API returned unclassified exception."
-msgstr "API sınıflandırılmamiş ayrıcalık döndürdü."
-
-#: xblock/submission_mixin.py:261
-msgid "Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:265
-msgid "Submission data missing. Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:281
-msgid "Files descriptions were not submitted."
-msgstr "Dosya açıklamaları gönderilmedi."
-
-#: xblock/submission_mixin.py:320
+#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
 msgid "Files metadata could not be saved."
 msgstr "Dosya üst verileri kaydedilemedi."
 
-#: xblock/submission_mixin.py:472
-msgid "There was an error uploading your file."
-msgstr "Dosyanızı yüklerken hata oluştu."
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "Değerlendirme için gerekli seçenekleri sağlamalısınız."
 
-#: xblock/submission_mixin.py:484
-msgid "Only a single file upload is allowed for this assessment."
-msgstr "Bu değerlendirme için yalnızca tek bir dosya yüklemesine izin verilir."
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr ""
 
-#: xblock/submission_mixin.py:495
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr ""
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
 msgid ""
-"File upload failed: unsupported file type.Only the supported file types can "
-"be uploaded.If you have questions, please reach out to the course team."
-msgstr ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "'{date}' geçersiz tarih formatı. Tarih formatının GG-AA-YYYY SA:DK:SN olduğundan emin olun."
 
-#: xblock/submission_mixin.py:508
-msgid "Error retrieving upload URL."
-msgstr "URL yükleme alırken hata"
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "'{date}' tarih dizgesi ya da tarih zamanı olmalı"
 
-#: xblock/submission_mixin.py:790
-msgid "Draft saved!"
-msgstr ""
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "Bu adımın başlangıç tarihi '{start}', önceki adımın başlangıç tarihinden '{prev}' önce olamaz"
 
-#: xblock/submission_mixin.py:791
-msgid "Response not started."
-msgstr ""
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "Bu adımın son tarihi '{due}' sonraki adımın son tarihi '{prev}'den sonra olamaz."
 
-#: xblock/validation.py:118
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "Başlangıç tarihi '{start}' son tarih '{due}'den sonra olamaz."
+
+#: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "Bu sorun en azından bir değelendirme içermelidir."
 
-#: xblock/validation.py:122
+#: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "Seçtiğiniz değerlendirme sırası geçersiz."
 
-#: xblock/validation.py:132
+#: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Eş değerlendirmede, \"Puanlandırılmalı\" değeri pozitif tam sayı olmalıdır."
 
-#: xblock/validation.py:135
+#: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Eş değerlendirmede, \"Puanlandıran\" değeri pozitif tam sayı olmalıdır."
 
-#: xblock/validation.py:139
+#: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Eş değerlendirmede, \"Puanlandırılmalı\" değeri \"Puanlandırılan\" değerinden büyük ya da eşit olmalıdır."
 
-#: xblock/validation.py:148
+#: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "Öğrenci eğitimi için en az bir örnek cevap sağlamalısınız."
 
-#: xblock/validation.py:151
+#: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "Öğrenci eğitimi için olan her örnek cevap eşsiz olmalıdır."
 
-#: xblock/validation.py:158
+#: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 
-#: xblock/validation.py:162
+#: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Problem yayımlandıktan sonra değerlendirme sayısı değiştirilemez. "
 
-#: xblock/validation.py:167
+#: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Problem yayımlandıktan sonra değerlendirme tipi değiştirilemez."
 
-#: xblock/validation.py:190
+#: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "Bu rubrik tanımı geçerli değil."
 
-#: xblock/validation.py:196
+#: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "'{criterion}'daki seçenekler yinelenen isim(ler)e sahip: {duplicates}"
 
-#: xblock/validation.py:204
+#: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "Seçenekleri olmayan kriterler yazılı geri bildirim gerektirir."
 
-#: xblock/validation.py:213
+#: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Problem yayımlandıktan sonra komutlar oluşturulamaz ve silinemez."
 
-#: xblock/validation.py:217
+#: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Problem yayımlandıktan sonra kriter sayısı değiştirilemez."
 
-#: xblock/validation.py:230
+#: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Problem yayımlandıktan sonra kriter isimleri değiştirilemez."
 
-#: xblock/validation.py:235
+#: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Problem yayımlandıktan sonra seçeneklerin sayısı değiştirilemez."
 
-#: xblock/validation.py:240
+#: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Problem yayımlandıktan sonra nokta değerleri değiştirilemez."
 
-#: xblock/validation.py:291
+#: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr ""
 
-#: xblock/validation.py:356
+#: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "Afiş sayısı geçersiz."
 
-#: xblock/validation.py:379
+#: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
 msgstr "Gönderi formatı geçersiz."

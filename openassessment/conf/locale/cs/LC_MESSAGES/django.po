@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-10 18:36+0000\n"
+"POT-Creation-Date: 2023-09-17 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Jiří Podhorecký, 2023\n"
 "Language-Team: Czech (http://app.transifex.com/open-edx/edx-platform/language/cs/)\n"
@@ -352,19 +352,19 @@ msgid "Feedback for This Criterion"
 msgstr "Zpětná vazba pro toto kritérium"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: xblock/studio_mixin.py:49
+#: xblock/studio_mixin.py:57
 msgid "None"
 msgstr "Žádné"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: xblock/studio_mixin.py:48
+#: xblock/studio_mixin.py:56
 msgid "Optional"
 msgstr "Volitelný"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: templates/openassessmentblock/oa_rubric.html:13
 #: templates/openassessmentblock/student_training/student_training.html:93
-#: xblock/studio_mixin.py:47
+#: xblock/studio_mixin.py:55
 msgid "Required"
 msgstr "Povinný"
 
@@ -1215,7 +1215,6 @@ msgstr "Vaše hodnocení se nám nepodařilo odeslat"
 #: templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: xblock/staff_assessment_mixin.py:173
 msgid "Cancelled"
 msgstr "Zrušeno"
 
@@ -1274,7 +1273,6 @@ msgstr "Všechny odeslané odpovědi spolužáků byly posouzeny. Vraťte se poz
 #: templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: xblock/staff_assessment_mixin.py:166 xblock/staff_assessment_mixin.py:190
 msgid "Not Available"
 msgstr "Není dostupné"
 
@@ -1585,7 +1583,6 @@ msgstr "Termín pro tento krok uplynul. Tento krok je nyní uzavřen. Již nemů
 #: templates/openassessmentblock/response/oa_response_submitted.html:20
 #: templates/openassessmentblock/self/oa_self_complete.html:18
 #: templates/openassessmentblock/student_training/student_training_complete.html:17
-#: xblock/staff_assessment_mixin.py:180 xblock/staff_assessment_mixin.py:203
 msgid "Complete"
 msgstr "Dokončit"
 
@@ -2160,21 +2157,7 @@ msgstr "Chyba při načítání příkladů školení studentů"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Krok školení žáka tohoto úkolu nelze načíst."
 
-#: xblock/data_conversion.py:263
-msgid "You must provide options selected in the assessment."
-msgstr "Musíte poskytnout možnosti vybrané v hodnocení."
-
-#: xblock/data_conversion.py:266
-msgid "You must provide overall feedback in the assessment."
-msgstr "Musíte poskytnout celkovou zpětnou vazbu v hodnocení."
-
-#: xblock/data_conversion.py:269
-msgid "You must provide feedback for criteria in the assessment."
-msgstr "Musíte poskytnout zpětnou vazbu pro kritéria v hodnocení."
-
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
-#: xblock/self_assessment_mixin.py:42 xblock/student_training_mixin.py:56
-#: xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "Vyskytla se neočekávaná chyba."
 
@@ -2258,91 +2241,25 @@ msgid ""
 " grade."
 msgstr "Ještě jste neobdrželi všechna potřebná recenze od spolužáků k určení vaší konečné známky."
 
-#: xblock/openassesment_template_mixin.py:19
+#: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
 msgstr "Pouze vzájemné hodnocení"
 
-#: xblock/openassesment_template_mixin.py:20
+#: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
 msgstr "Pouze sebehodnocení"
 
-#: xblock/openassesment_template_mixin.py:21
+#: xblock/openassesment_template_mixin.py:68
 msgid "Staff Assessment Only"
 msgstr "Pouze hodnocení učitelů"
 
-#: xblock/openassesment_template_mixin.py:22
+#: xblock/openassesment_template_mixin.py:69
 msgid "Self Assessment to Peer Assessment"
 msgstr "Sebehodnocení ku vzájemného hodnocení"
 
-#: xblock/openassesment_template_mixin.py:23
+#: xblock/openassesment_template_mixin.py:70
 msgid "Self Assessment to Staff Assessment"
 msgstr "Sebehodnocení ku hodnocení učitelů"
-
-#: xblock/peer_assessment_mixin.py:61
-msgid "You must submit a response before you can perform a peer assessment."
-msgstr "Než budete moci provést vzájemné hodnocení, musíte odeslat odpověď."
-
-#: xblock/peer_assessment_mixin.py:73
-msgid ""
-"This feedback has already been submitted or the submission has been "
-"cancelled."
-msgstr "Tato zpětná vazba již byla odeslána nebo bylo odeslání zrušeno."
-
-#: xblock/peer_assessment_mixin.py:99 xblock/peer_assessment_mixin.py:105
-msgid "Your peer assessment could not be submitted."
-msgstr "Vaše vzájemné hodnocení nebylo možné odeslat."
-
-#: xblock/peer_assessment_mixin.py:120 xblock/student_training_mixin.py:270
-msgid "Could not update workflow status."
-msgstr "Stav pracovního postupu nelze aktualizovat."
-
-#: xblock/peer_assessment_mixin.py:128
-msgid "Could not load peer assessment."
-msgstr "Nepodařilo se načíst vzájemné hodnocení."
-
-#: xblock/peer_assessment_mixin.py:215
-msgid "Submit your assessment and review another response"
-msgstr "Odešlete své hodnocení a zkontrolujte další odpověď"
-
-#: xblock/peer_assessment_mixin.py:219
-msgid "Submit your assessment and move to next step"
-msgstr "Odešlete své hodnocení a přejděte k dalšímu kroku"
-
-#: xblock/peer_assessment_mixin.py:223
-#, python-brace-format
-msgid "Submit your assessment and move to response #{response_number}"
-msgstr "Odešlete své hodnocení a přejděte k odpovědi #{response_number}"
-
-#: xblock/resolve_dates.py:52
-#, python-brace-format
-msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr "'{date}' je neplatný formát data. Ujistěte se, že je datum ve formátu RRRR-MM-DDTHH:MM:SS."
-
-#: xblock/resolve_dates.py:57
-#, python-brace-format
-msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' musí být řetězec data nebo datetime"
-
-#: xblock/resolve_dates.py:210
-#, python-brace-format
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr "Datum zahájení tohoto kroku '{start}' nemůže být dřívější než datum zahájení předchozího kroku '{prev}'."
-
-#: xblock/resolve_dates.py:218
-#, python-brace-format
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr "Datum dokončení tohoto kroku '{due}' nemůže být pozdější než datum dokončení následujícího kroku '{prev}'."
-
-#: xblock/resolve_dates.py:234
-#, python-brace-format
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "Datum zahájení '{start}' nemůže být pozdější než datum platnosti '{due}'"
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
@@ -2357,14 +2274,6 @@ msgstr "Neplatné ID bloku."
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
 msgstr "V {course_id} s ID bloku {block_id} nebylo nalezeno žádné hodnocení otevřené odpovědi"
-
-#: xblock/self_assessment_mixin.py:142
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr "Než budete moci provést sebehodnocení, musíte odeslat odpověď."
-
-#: xblock/self_assessment_mixin.py:165 xblock/self_assessment_mixin.py:173
-msgid "Your self assessment could not be submitted."
-msgstr "Vaše sebehodnocení nebylo možné odeslat."
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
@@ -2406,282 +2315,212 @@ msgstr "Neodesláno"
 msgid "Submitted"
 msgstr "Odevzdáno"
 
-#: xblock/staff_area_mixin.py:315
+#: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
 msgstr "Chyba při získávání informací o studentovi."
 
-#: xblock/staff_area_mixin.py:358
+#: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
 msgstr "Chyba při načítání odpovědi odhlášeného studenta."
 
-#: xblock/staff_area_mixin.py:359
+#: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
 msgstr "V tuto chvíli nejsou k dispozici žádné další odpovědi studentů pro hodnocení."
 
-#: xblock/staff_area_mixin.py:361
+#: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
 msgstr "Chyba při získávání informací o hodnocení učitelů."
 
-#: xblock/staff_area_mixin.py:382
+#: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Chyba při získávání hodnocení učitelů bez hodnocení a počtů odhlášených."
 
-#: xblock/staff_area_mixin.py:676
+#: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
 msgstr "Zadejte prosím platný důvod pro odstranění příspěvku."
 
-#: xblock/staff_area_mixin.py:687
+#: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
 msgstr "Příspěvek nebyl nalezen"
 
-#: xblock/staff_area_mixin.py:698
+#: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
 msgstr "Příspěvek pro týmový úkol nemá přidružený týmový příspěvek"
 
-#: xblock/staff_area_mixin.py:727
+#: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Odeslaný příspěvek studenta byl odstraněn z vzájemného hodnocení. Student obdrží známku nula, pokud neodstraníte stav studenta pro daný problém, abyste mu umožnili znovu odeslat odpověď."
 
-#: xblock/staff_area_mixin.py:762
+#: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr "Příspěvek týmu byl odstraněn z hodnocení. Tým obdrží známku nula, pokud neodstraníte stav člena týmu pro problém, abyste týmu umožnili znovu odeslat odpověď."
 
-#: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
-msgid "The submission ID of the submission being assessed was not found."
-msgstr "ID podání posuzovaného podání nebylo nalezeno."
-
-#: xblock/staff_assessment_mixin.py:71 xblock/staff_assessment_mixin.py:79
-msgid "Your staff assessment could not be submitted."
-msgstr "Vaše hodnocení učitelů nebylo možné odeslat."
-
-#: xblock/staff_assessment_mixin.py:117 xblock/staff_assessment_mixin.py:125
-msgid "Your team assessment could not be submitted."
-msgstr "Vaše týmové hodnocení nebylo možné odeslat."
-
-#: xblock/staff_assessment_mixin.py:191
-msgid "Waiting for a Staff Grade"
-msgstr "Čekání na stupeň učitelů"
-
-#: xblock/staff_assessment_mixin.py:192
-msgid ""
-"Check back later to see if a course staff member has assessed your response."
-" You will receive your grade after the assessment is complete."
-msgstr "Vraťte se později a zjistěte, zda učitel kurzu vyhodnotil vaši odpověď. Známku obdržíte po dokončení hodnocení."
-
-#: xblock/staff_assessment_mixin.py:205
-msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr "Chcete-li zobrazit své hodnocení, musíte dokončit výše uvedené kroky"
-
-#: xblock/staff_assessment_mixin.py:206
-msgid ""
-"Although a course staff member has assessed your response, you will receive "
-"your grade only after you have completed all the required steps of this "
-"problem."
-msgstr "Přestože učitel kurzu vaši odpověď posoudil, svou známku obdržíte až poté, co dokončíte všechny požadované kroky tohoto problému."
-
-#: xblock/student_training_mixin.py:227
-msgid "Missing options_selected key in request"
-msgstr "V požadavku chybí klíč options_selected"
-
-#: xblock/student_training_mixin.py:229
-msgid "options_selected must be a dictionary"
-msgstr "options_selected musí být slovník"
-
-#: xblock/student_training_mixin.py:254 xblock/student_training_mixin.py:259
-msgid "Your scores could not be checked."
-msgstr "Vaše skóre nebylo možné zkontrolovat."
-
-#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
 msgstr "Chyba při aktualizaci konfigurace XBlock"
 
-#: xblock/studio_mixin.py:252
+#: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Chyba: Textová odezva a odezva pro odesílání souborů nemohou být obě zakázány"
 
-#: xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Chyba: Když je textová odezva zakázána, musí být vyžadována odezva při nahrání souboru"
 
-#: xblock/studio_mixin.py:259
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Chyba: Když je odezva na nahrání souboru zakázána, musí být vyžadována textová odpověď"
 
-#: xblock/studio_mixin.py:283
+#: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Chyba ověření: {error}"
 
-#: xblock/studio_mixin.py:315
+#: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "Úspěšně aktualizován OpenAssessment XBlock"
 
-#: xblock/submission_mixin.py:118
-msgid "\"submission\" required to submit answer."
-msgstr "\"submission\" nutné k odeslání odpovědi."
-
-#: xblock/submission_mixin.py:139
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr "Chcete-li odeslat odpověď, zobrazte tuto komponentu v režimu Náhled nebo Živě."
-
-#: xblock/submission_mixin.py:145
-msgid "Multiple submissions are not allowed."
-msgstr "Vícenásobné příspěvky nejsou povoleny."
-
-#: xblock/submission_mixin.py:178
-msgid "Response exceeds maximum allowed size."
-msgstr "Odpověď překračuje maximální povolenou velikost."
-
-#: xblock/submission_mixin.py:180
-msgid ""
-"Note: if you have a spellcheck or grammar check browser extension, try "
-"disabling, reloading, and reentering your response before submitting."
-msgstr "Poznámka: Pokud máte rozšíření prohlížeče pro kontrolu pravopisu nebo gramatiky, zkuste před odesláním svou odpověď deaktivovat, znovu načíst a znovu zadat."
-
-#: xblock/submission_mixin.py:200
-msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr "Příspěvek nemůže být prázdný. Obnovte stránku a zkuste to znovu."
-
-#: xblock/submission_mixin.py:210
-msgid "API returned unclassified exception."
-msgstr "API vrátilo neklasifikovanou výjimku."
-
-#: xblock/submission_mixin.py:261
-msgid "Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:265
-msgid "Submission data missing. Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:281
-msgid "Files descriptions were not submitted."
-msgstr "Popisy souborů nebyly odeslány."
-
-#: xblock/submission_mixin.py:320
+#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
 msgid "Files metadata could not be saved."
 msgstr "Metadata souborů se nepodařilo uložit."
 
-#: xblock/submission_mixin.py:472
-msgid "There was an error uploading your file."
-msgstr "Při nahrávání vašeho souboru došlo k chybě."
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "Musíte poskytnout možnosti vybrané v hodnocení."
 
-#: xblock/submission_mixin.py:484
-msgid "Only a single file upload is allowed for this assessment."
-msgstr "Pro toto hodnocení je povoleno nahrát pouze jeden soubor."
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "Musíte poskytnout celkovou zpětnou vazbu v hodnocení."
 
-#: xblock/submission_mixin.py:495
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "Musíte poskytnout zpětnou vazbu pro kritéria v hodnocení."
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
 msgid ""
-"File upload failed: unsupported file type.Only the supported file types can "
-"be uploaded.If you have questions, please reach out to the course team."
-msgstr "Nahrání souboru se nezdařilo: nepodporovaný typ souboru. Lze nahrát pouze podporované typy souborů. Máte-li dotazy, obraťte se na tým kurzu."
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "'{date}' je neplatný formát data. Ujistěte se, že je datum ve formátu RRRR-MM-DDTHH:MM:SS."
 
-#: xblock/submission_mixin.py:508
-msgid "Error retrieving upload URL."
-msgstr "Chyba při načítání adresy URL pro nahrání."
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "'{date}' musí být řetězec data nebo datetime"
 
-#: xblock/submission_mixin.py:790
-msgid "Draft saved!"
-msgstr ""
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "Datum zahájení tohoto kroku '{start}' nemůže být dřívější než datum zahájení předchozího kroku '{prev}'."
 
-#: xblock/submission_mixin.py:791
-msgid "Response not started."
-msgstr ""
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "Datum dokončení tohoto kroku '{due}' nemůže být pozdější než datum dokončení následujícího kroku '{prev}'."
 
-#: xblock/validation.py:118
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "Datum zahájení '{start}' nemůže být pozdější než datum platnosti '{due}'"
+
+#: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "Tento problém musí obsahovat alespoň jedno hodnocení."
 
-#: xblock/validation.py:122
+#: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "Příkaz k hodnocení který jste vybral je neplatný."
 
-#: xblock/validation.py:132
+#: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Ve vzájemném hodnocení musí být hodnota \"Musíte známkovat\"; kladné celé číslo."
 
-#: xblock/validation.py:135
+#: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Ve vzájemném hodnocení musí být hodnota \"Hodnozeno od\" kladné celé číslo."
 
-#: xblock/validation.py:139
+#: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Při vzájemném hodnocení musí být hodnota \"Musí být hodnocen\" větší nebo rovna hodnotě \"Hodnocení od\";."
 
-#: xblock/validation.py:148
+#: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "Pro školení studentů musíte poskytnout alespoň jeden příklad odpovědi."
 
-#: xblock/validation.py:151
+#: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "Každý příklad reakce na školení studentů musí být jedinečný."
 
-#: xblock/validation.py:158
+#: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "Pokud je hodnocení učitelů jediným krokem, musí být „požadovaná“ hodnota pravdivá."
 
-#: xblock/validation.py:162
+#: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Po uvolnění problému nelze počet hodnocení změnit."
 
-#: xblock/validation.py:167
+#: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Po uvolnění problému nelze typ posouzení změnit."
 
-#: xblock/validation.py:190
+#: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "Tato definice rubriky není platná."
 
-#: xblock/validation.py:196
+#: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "Možnosti v '{criterion}' mají duplicitní název (názvy): {duplicates}"
 
-#: xblock/validation.py:204
+#: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "Kritéria bez možnosti musí vyžadovat písemnou zpětnou vazbu."
 
-#: xblock/validation.py:213
+#: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Po uvolnění problému nelze výzvy vytvořit ani odstranit."
 
-#: xblock/validation.py:217
+#: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Po uvolnění problému nelze počet kritérií změnit."
 
-#: xblock/validation.py:230
+#: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Názvy kritérií nelze po uvolnění problému změnit"
 
-#: xblock/validation.py:235
+#: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Po uvolnění problému nelze počet možností změnit."
 
-#: xblock/validation.py:240
+#: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Bodové hodnoty nelze po uvolnění problému změnit."
 
-#: xblock/validation.py:291
+#: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "Školení žáka musí mít alespoň jeden příklad školení."
 
-#: xblock/validation.py:356
+#: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "Číslo žebříčku je neplatné."
 
-#: xblock/validation.py:379
+#: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
 msgstr "Formát odeslání je neplatný."

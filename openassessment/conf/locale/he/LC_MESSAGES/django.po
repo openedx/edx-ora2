@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-10 18:36+0000\n"
+"POT-Creation-Date: 2023-09-17 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Hodaya Zada <hodayaz@mse.gov.il>, 2019,2021\n"
 "Language-Team: Hebrew (http://app.transifex.com/open-edx/edx-platform/language/he/)\n"
@@ -358,19 +358,19 @@ msgid "Feedback for This Criterion"
 msgstr "משוב עבור קריטריון זה"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: xblock/studio_mixin.py:49
+#: xblock/studio_mixin.py:57
 msgid "None"
 msgstr "ללא"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: xblock/studio_mixin.py:48
+#: xblock/studio_mixin.py:56
 msgid "Optional"
 msgstr "רשות"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: templates/openassessmentblock/oa_rubric.html:13
 #: templates/openassessmentblock/student_training/student_training.html:93
-#: xblock/studio_mixin.py:47
+#: xblock/studio_mixin.py:55
 msgid "Required"
 msgstr "נדרש"
 
@@ -1221,7 +1221,6 @@ msgstr "לא הצלחנו להגיש את הערכתך"
 #: templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: xblock/staff_assessment_mixin.py:173
 msgid "Cancelled"
 msgstr "בוטל"
 
@@ -1280,7 +1279,6 @@ msgstr "כל תשובות העמיתים שנשלחו, הוערכו. בדוק מ
 #: templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: xblock/staff_assessment_mixin.py:166 xblock/staff_assessment_mixin.py:190
 msgid "Not Available"
 msgstr "לא זמין"
 
@@ -1591,7 +1589,6 @@ msgstr "תאריך היעד עבור שלב זה עבר. שלב זה סגור כ
 #: templates/openassessmentblock/response/oa_response_submitted.html:20
 #: templates/openassessmentblock/self/oa_self_complete.html:18
 #: templates/openassessmentblock/student_training/student_training_complete.html:17
-#: xblock/staff_assessment_mixin.py:180 xblock/staff_assessment_mixin.py:203
 msgid "Complete"
 msgstr "הושלם"
 
@@ -2166,21 +2163,7 @@ msgstr "שגיאה בעת טעינת דוגמאות לתרגול לומד"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "לא ניתן היה לטעון את שלב תרגול הלומד במשימה זו."
 
-#: xblock/data_conversion.py:263
-msgid "You must provide options selected in the assessment."
-msgstr "עליך לספק אפשרויות שנבחרו במשימה."
-
-#: xblock/data_conversion.py:266
-msgid "You must provide overall feedback in the assessment."
-msgstr "עליך לספק אפשרויות שנבחרו במשימה."
-
-#: xblock/data_conversion.py:269
-msgid "You must provide feedback for criteria in the assessment."
-msgstr "עליך לספק משוב עבור הקריטריונים בהערכה."
-
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
-#: xblock/self_assessment_mixin.py:42 xblock/student_training_mixin.py:56
-#: xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "אירעה שגיאה לא צפויה."
 
@@ -2264,91 +2247,25 @@ msgid ""
 " grade."
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:19
+#: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:20
+#: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:21
+#: xblock/openassesment_template_mixin.py:68
 msgid "Staff Assessment Only"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:22
+#: xblock/openassesment_template_mixin.py:69
 msgid "Self Assessment to Peer Assessment"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:23
+#: xblock/openassesment_template_mixin.py:70
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
-
-#: xblock/peer_assessment_mixin.py:61
-msgid "You must submit a response before you can perform a peer assessment."
-msgstr "עליך להגיש תשובה לפני שתוכל לבצע הערכת עמיתים."
-
-#: xblock/peer_assessment_mixin.py:73
-msgid ""
-"This feedback has already been submitted or the submission has been "
-"cancelled."
-msgstr "המשוב הוגש כבר או שבוטלה ההגשה ."
-
-#: xblock/peer_assessment_mixin.py:99 xblock/peer_assessment_mixin.py:105
-msgid "Your peer assessment could not be submitted."
-msgstr "לא ניתן היה להגיש את הערכת עמיתיך."
-
-#: xblock/peer_assessment_mixin.py:120 xblock/student_training_mixin.py:270
-msgid "Could not update workflow status."
-msgstr "לא ניתן לעדכן מצב זרימת העבודה."
-
-#: xblock/peer_assessment_mixin.py:128
-msgid "Could not load peer assessment."
-msgstr "לא ניתן לטעון הערכת עמיתים."
-
-#: xblock/peer_assessment_mixin.py:215
-msgid "Submit your assessment and review another response"
-msgstr "שלח את הערכתך וסקירתך לתשובה אחרת"
-
-#: xblock/peer_assessment_mixin.py:219
-msgid "Submit your assessment and move to next step"
-msgstr "שלח את הערכתך ועבור לשלב הבא"
-
-#: xblock/peer_assessment_mixin.py:223
-#, python-brace-format
-msgid "Submit your assessment and move to response #{response_number}"
-msgstr "שלח את הערכתך ועבור לתשובה מספר{response_number}"
-
-#: xblock/resolve_dates.py:52
-#, python-brace-format
-msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr "'{date}' הוא תבנית תאריך שאינה תקפה. ודא כי התאריך מובנה כדלקמן YYYY-MM-DDTHH:MM:SS."
-
-#: xblock/resolve_dates.py:57
-#, python-brace-format
-msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' חייב להיות מחרוזת תאריך או תאריך ושעה"
-
-#: xblock/resolve_dates.py:210
-#, python-brace-format
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr "תאריך התחלת שלב זה '{start}' אינו יכול להיות מוקדם יותר מתאריך ההתחלה של השלב הקודם  '{prev}'."
-
-#: xblock/resolve_dates.py:218
-#, python-brace-format
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr "תאריך היעד של שלב זה '{due}' אינו יכול להיות מאוחר יותר מתאריך היעד של השלב הבא '{prev}'."
-
-#: xblock/resolve_dates.py:234
-#, python-brace-format
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "תאריך ההתחלה '{start}' אינו יכול להיות מאוחר יותר מתאריך הסיום '{due}'."
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
@@ -2363,14 +2280,6 @@ msgstr ""
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
 msgstr ""
-
-#: xblock/self_assessment_mixin.py:142
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr "עליך להגיש תשובה בטרם תוכל לבצע הערכה עצמית."
-
-#: xblock/self_assessment_mixin.py:165 xblock/self_assessment_mixin.py:173
-msgid "Your self assessment could not be submitted."
-msgstr "לא ניתן היה להגיש את הערכתך העצמית."
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
@@ -2412,282 +2321,212 @@ msgstr ""
 msgid "Submitted"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:315
+#: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
 msgstr "שגיאה בעת השגת פרטי הלומד."
 
-#: xblock/staff_area_mixin.py:358
+#: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
 msgstr "שגיאה בעת טעינת תשובת הלומד שיצא."
 
-#: xblock/staff_area_mixin.py:359
+#: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
 msgstr "אין תשובות לומד זמינות אחרות לדירוג כעת."
 
-#: xblock/staff_area_mixin.py:361
+#: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
 msgstr "שגיאה בעת השגת פרטי דירוג הצוות."
 
-#: xblock/staff_area_mixin.py:382
+#: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "שגיאה בהשגת ביטול דירוג של דירוג הצוות וספירות שהסתיימו."
 
-#: xblock/staff_area_mixin.py:676
+#: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
 msgstr "אנא רשום סיבה תקפה לביטול ההגשה."
 
-#: xblock/staff_area_mixin.py:687
+#: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:698
+#: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:727
+#: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "הגשת הלומד הוסרה מהערכת העמיתים. הלומד קיבל ציון אפס אלא אם כן מחקת את מצב התלמיד לבעיה על מנת לאפשר לו להגיש תשובה מחדש."
 
-#: xblock/staff_area_mixin.py:762
+#: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr ""
 
-#: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
-msgid "The submission ID of the submission being assessed was not found."
-msgstr "לא נמצא מזהה ההגשה של ההגשה שעברה הערכה."
-
-#: xblock/staff_assessment_mixin.py:71 xblock/staff_assessment_mixin.py:79
-msgid "Your staff assessment could not be submitted."
-msgstr "לא ניתן היה לשלוח את הערכת הצוות."
-
-#: xblock/staff_assessment_mixin.py:117 xblock/staff_assessment_mixin.py:125
-msgid "Your team assessment could not be submitted."
-msgstr ""
-
-#: xblock/staff_assessment_mixin.py:191
-msgid "Waiting for a Staff Grade"
-msgstr "ממתין לדירוג צוות"
-
-#: xblock/staff_assessment_mixin.py:192
-msgid ""
-"Check back later to see if a course staff member has assessed your response."
-" You will receive your grade after the assessment is complete."
-msgstr "חזור ובדוק מאוחר יותר לראות אם חבר בצוות הקורס העריך את תשובתך. תוכל לקבל את הציון לאחר שתושלם ההערכה."
-
-#: xblock/staff_assessment_mixin.py:205
-msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr "עליך להשלים את השלבים שלעיל על מנת להציג את ציונך"
-
-#: xblock/staff_assessment_mixin.py:206
-msgid ""
-"Although a course staff member has assessed your response, you will receive "
-"your grade only after you have completed all the required steps of this "
-"problem."
-msgstr "על אף שחבר צוות בקורס העריך את תשובתך, תקבל את הציון רק לאחר שתשלים את כל השלבים הדרושים של בעיה זו."
-
-#: xblock/student_training_mixin.py:227
-msgid "Missing options_selected key in request"
-msgstr "חסר מפתח options_selected המבוקש"
-
-#: xblock/student_training_mixin.py:229
-msgid "options_selected must be a dictionary"
-msgstr "options_selected חייב להיות מילון"
-
-#: xblock/student_training_mixin.py:254 xblock/student_training_mixin.py:259
-msgid "Your scores could not be checked."
-msgstr "לא ניתן היה לבדוק את ציוניך."
-
-#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
 msgstr "שגיאה בעדכון תצורת XBLOCK"
 
-#: xblock/studio_mixin.py:252
+#: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:259
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:283
+#: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "שגיאת אימות: {error}"
 
-#: xblock/studio_mixin.py:315
+#: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock עודכן בהצלחה"
 
-#: xblock/submission_mixin.py:118
-msgid "\"submission\" required to submit answer."
-msgstr "דרושה \"הגשה\" על מנת להגיש תשובה."
-
-#: xblock/submission_mixin.py:139
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr "על מנת להגיש תשובה, ראה רכיב זה בתצוגה מקדימה או בזמן אמת."
-
-#: xblock/submission_mixin.py:145
-msgid "Multiple submissions are not allowed."
-msgstr "לא ניתן לבצע הגשות מרובות. "
-
-#: xblock/submission_mixin.py:178
-msgid "Response exceeds maximum allowed size."
-msgstr ""
-
-#: xblock/submission_mixin.py:180
-msgid ""
-"Note: if you have a spellcheck or grammar check browser extension, try "
-"disabling, reloading, and reentering your response before submitting."
-msgstr ""
-
-#: xblock/submission_mixin.py:200
-msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr ""
-
-#: xblock/submission_mixin.py:210
-msgid "API returned unclassified exception."
-msgstr "API החזיר חריג בלתי מסווג."
-
-#: xblock/submission_mixin.py:261
-msgid "Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:265
-msgid "Submission data missing. Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:281
-msgid "Files descriptions were not submitted."
-msgstr ""
-
-#: xblock/submission_mixin.py:320
+#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: xblock/submission_mixin.py:472
-msgid "There was an error uploading your file."
-msgstr "אירעה שגיאה בעת העלאת הקובץ שלך."
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "עליך לספק אפשרויות שנבחרו במשימה."
 
-#: xblock/submission_mixin.py:484
-msgid "Only a single file upload is allowed for this assessment."
-msgstr ""
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "עליך לספק אפשרויות שנבחרו במשימה."
 
-#: xblock/submission_mixin.py:495
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "עליך לספק משוב עבור הקריטריונים בהערכה."
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
 msgid ""
-"File upload failed: unsupported file type.Only the supported file types can "
-"be uploaded.If you have questions, please reach out to the course team."
-msgstr ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "'{date}' הוא תבנית תאריך שאינה תקפה. ודא כי התאריך מובנה כדלקמן YYYY-MM-DDTHH:MM:SS."
 
-#: xblock/submission_mixin.py:508
-msgid "Error retrieving upload URL."
-msgstr "שגיאה באחזור כתובת URL להעלאה."
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "'{date}' חייב להיות מחרוזת תאריך או תאריך ושעה"
 
-#: xblock/submission_mixin.py:790
-msgid "Draft saved!"
-msgstr ""
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "תאריך התחלת שלב זה '{start}' אינו יכול להיות מוקדם יותר מתאריך ההתחלה של השלב הקודם  '{prev}'."
 
-#: xblock/submission_mixin.py:791
-msgid "Response not started."
-msgstr ""
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "תאריך היעד של שלב זה '{due}' אינו יכול להיות מאוחר יותר מתאריך היעד של השלב הבא '{prev}'."
 
-#: xblock/validation.py:118
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "תאריך ההתחלה '{start}' אינו יכול להיות מאוחר יותר מתאריך הסיום '{due}'."
+
+#: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "בעיה זו צריכה לכלול לפחות הערכה אחת."
 
-#: xblock/validation.py:122
+#: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "פקודת ההערכה שבחרת אינה תקפה."
 
-#: xblock/validation.py:132
+#: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "בהערכת עמיתים, ערך ה\"חובה לדרג\" חייב להיות מספר שלם חיובי."
 
-#: xblock/validation.py:135
+#: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "בהערכת עמיתים, ערך \"דורג בידי\" חייב להיות מספר שלם חיובי."
 
-#: xblock/validation.py:139
+#: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "בהערכת עמיתים, ערך שדה \"חובה לדרג\" חייב להיות גדול או שווה לערך \"דורג בידי\". "
 
-#: xblock/validation.py:148
+#: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "עליך לספק לפחות דוגמה אחת לתשובה עבור תרגול הלומד."
 
-#: xblock/validation.py:151
+#: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "כל דוגמה לתשובה עבור תרגול הלומד חייבת להיות ייחודית."
 
-#: xblock/validation.py:158
+#: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "ערך ה\"דרוש\" חייב להיות נכון אם הערכת הצוות היא השלב היחיד."
 
-#: xblock/validation.py:162
+#: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "לא ניתן לשנות את מספר ההערכות לאחר פרסום הבעיה. "
 
-#: xblock/validation.py:167
+#: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "לא ניתן לשנות את סוג ההערכה לאחר פרסום הבעיה."
 
-#: xblock/validation.py:190
+#: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "הגדרת כותרת זו אינה תקפה."
 
-#: xblock/validation.py:196
+#: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "ב-'{criterion}' ישנן כפילויות בשמ(ות) האפשרויות : {duplicates}"
 
-#: xblock/validation.py:204
+#: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "קריטריונים ללא אפשרויות מחייבים משוב כתוב. "
 
-#: xblock/validation.py:213
+#: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "לא ניתן ליצור או למחוק הנחיות לאחר שהופצה בעיה."
 
-#: xblock/validation.py:217
+#: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "לא ניתן לשנות את מספר הקריטריונים לאחר פרסום הבעיה. "
 
-#: xblock/validation.py:230
+#: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "לא ניתן לשנות את שם הקריטריונים לאחר פרסום הבעיה."
 
-#: xblock/validation.py:235
+#: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "לא ניתן לשנות את מספר האפשרויות לאחר פרסום הבעיה. "
 
-#: xblock/validation.py:240
+#: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "לא ניתן לשנות את ערך הנקודות לאחר פרסום הבעיה. "
 
-#: xblock/validation.py:291
+#: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "לתרגול הלומד חייבת להיות לפחות דוגמת תרגול אחת"
 
-#: xblock/validation.py:356
+#: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "מספר לוח התוצאות אינו חוקי."
 
-#: xblock/validation.py:379
+#: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
 msgstr "פורמט ההגשה אינו חוקי"

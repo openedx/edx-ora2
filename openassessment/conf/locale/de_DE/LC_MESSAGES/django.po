@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-10 18:36+0000\n"
+"POT-Creation-Date: 2023-09-17 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Stefania Trabucchi <stefania.trabucchi@abstract-technology.de>, 2018-2021\n"
 "Language-Team: German (Germany) (http://app.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
@@ -368,19 +368,19 @@ msgid "Feedback for This Criterion"
 msgstr "Feedback zu diesem Kriterium"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: xblock/studio_mixin.py:49
+#: xblock/studio_mixin.py:57
 msgid "None"
 msgstr "Kein"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: xblock/studio_mixin.py:48
+#: xblock/studio_mixin.py:56
 msgid "Optional"
 msgstr "Optional"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: templates/openassessmentblock/oa_rubric.html:13
 #: templates/openassessmentblock/student_training/student_training.html:93
-#: xblock/studio_mixin.py:47
+#: xblock/studio_mixin.py:55
 msgid "Required"
 msgstr "Benötigt"
 
@@ -1229,7 +1229,6 @@ msgstr "Ihre Bewertung konnte nicht übermittelt werden"
 #: templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: xblock/staff_assessment_mixin.py:173
 msgid "Cancelled"
 msgstr "Abgebrochen"
 
@@ -1288,7 +1287,6 @@ msgstr "Diese Aufgabe ist fast fertig, alle eingereichten Antworten wurden bewer
 #: templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: xblock/staff_assessment_mixin.py:166 xblock/staff_assessment_mixin.py:190
 msgid "Not Available"
 msgstr "Nicht verfügbar"
 
@@ -1599,7 +1597,6 @@ msgstr "Das Fälligkeitsdatum für diese Aufgabe ist bereits überschritten. Sie
 #: templates/openassessmentblock/response/oa_response_submitted.html:20
 #: templates/openassessmentblock/self/oa_self_complete.html:18
 #: templates/openassessmentblock/student_training/student_training_complete.html:17
-#: xblock/staff_assessment_mixin.py:180 xblock/staff_assessment_mixin.py:203
 msgid "Complete"
 msgstr "Abgeschlossen"
 
@@ -2172,21 +2169,7 @@ msgstr "Fehler beim Laden der Lernerübungsbeispiele"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "Das Teilnehmer Training in dieser Aufgabe konnte nicht geladen werden."
 
-#: xblock/data_conversion.py:263
-msgid "You must provide options selected in the assessment."
-msgstr "In der Bewertung ausgewählte Optionen müssen angegeben werden"
-
-#: xblock/data_conversion.py:266
-msgid "You must provide overall feedback in the assessment."
-msgstr "Gesamtfeedback muss in der Bewertung angegeben werden"
-
-#: xblock/data_conversion.py:269
-msgid "You must provide feedback for criteria in the assessment."
-msgstr "Feedback für die Kriterien müssen in der Bewertung angegeben werden"
-
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
-#: xblock/self_assessment_mixin.py:42 xblock/student_training_mixin.py:56
-#: xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "Ein unerwarteter Fehler ist aufgetreten."
 
@@ -2270,91 +2253,25 @@ msgid ""
 " grade."
 msgstr "Du hast noch nicht alle erforderlichen Teilnehmerrezensionen erhalten, um deine Abschlussnote zu bestimmen."
 
-#: xblock/openassesment_template_mixin.py:19
+#: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
 msgstr "Ausschließlich Partnerbewertung"
 
-#: xblock/openassesment_template_mixin.py:20
+#: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
 msgstr "Ausschließlich Selbstbewertung"
 
-#: xblock/openassesment_template_mixin.py:21
+#: xblock/openassesment_template_mixin.py:68
 msgid "Staff Assessment Only"
 msgstr "Ausschließlich Dozentenbewertung"
 
-#: xblock/openassesment_template_mixin.py:22
+#: xblock/openassesment_template_mixin.py:69
 msgid "Self Assessment to Peer Assessment"
 msgstr "Selbstbewertung und Partnerbewertung"
 
-#: xblock/openassesment_template_mixin.py:23
+#: xblock/openassesment_template_mixin.py:70
 msgid "Self Assessment to Staff Assessment"
 msgstr "Selbstbewertung und Dozentenbewertung"
-
-#: xblock/peer_assessment_mixin.py:61
-msgid "You must submit a response before you can perform a peer assessment."
-msgstr "Sie müssen eine Antwort einreichen, bevor Sie eine Partnerbewertung durchführen können."
-
-#: xblock/peer_assessment_mixin.py:73
-msgid ""
-"This feedback has already been submitted or the submission has been "
-"cancelled."
-msgstr "Dieses Feedback wurde bereits übertragen oder die Übertragung wurde abgebrochen."
-
-#: xblock/peer_assessment_mixin.py:99 xblock/peer_assessment_mixin.py:105
-msgid "Your peer assessment could not be submitted."
-msgstr "Ihre Partnerbewertung konnte nicht übermittelt werden."
-
-#: xblock/peer_assessment_mixin.py:120 xblock/student_training_mixin.py:270
-msgid "Could not update workflow status."
-msgstr "Kann den Status des Arbeitsflusses nicht aktualisieren."
-
-#: xblock/peer_assessment_mixin.py:128
-msgid "Could not load peer assessment."
-msgstr "Konnte nicht die Partnerbewertung laden."
-
-#: xblock/peer_assessment_mixin.py:215
-msgid "Submit your assessment and review another response"
-msgstr "Bewertung abgeben und eine weitere Antwort bewerten"
-
-#: xblock/peer_assessment_mixin.py:219
-msgid "Submit your assessment and move to next step"
-msgstr "Bewertung abgeben und zum nächsten Schritt weitergehen. "
-
-#: xblock/peer_assessment_mixin.py:223
-#, python-brace-format
-msgid "Submit your assessment and move to response #{response_number}"
-msgstr "Reichen Sie Ihre Bewertung ein und gehen weiter zu Antwort #{response_number}"
-
-#: xblock/resolve_dates.py:52
-#, python-brace-format
-msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr "'{date}' ist nicht richtig formatiert. Stellen Sie sicher das das Datum folgendem Format entspricht: YYYY-MM-DDTHH:MM:SS."
-
-#: xblock/resolve_dates.py:57
-#, python-brace-format
-msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' must be a date string or datetime"
-
-#: xblock/resolve_dates.py:210
-#, python-brace-format
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr "Das Anfangsdatum dieses Schritts '{start}' kann nicht früher sein, als das des vorherigen Schritts '{prev}'."
-
-#: xblock/resolve_dates.py:218
-#, python-brace-format
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr "Das Fälligkeitsdatum dieses Schritts '{due}' kann nicht später liegen, als das des nächsten Schritts '{prev}'."
-
-#: xblock/resolve_dates.py:234
-#, python-brace-format
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "Das Anfangsdatum '{start}' darf nicht später liegen als das Fälligkeitsdatum '{due}'"
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
@@ -2369,14 +2286,6 @@ msgstr ""
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
 msgstr ""
-
-#: xblock/self_assessment_mixin.py:142
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr "Sie müssen eine Antwort einreichen, bevor Sie eine Selbstbewertung durchführen können."
-
-#: xblock/self_assessment_mixin.py:165 xblock/self_assessment_mixin.py:173
-msgid "Your self assessment could not be submitted."
-msgstr "Ihre Selbstbewertung konnte nicht übermittelt werden."
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
@@ -2418,282 +2327,212 @@ msgstr ""
 msgid "Submitted"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:315
+#: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
 msgstr "Fehler beim Laden der Lernerinformationen."
 
-#: xblock/staff_area_mixin.py:358
+#: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
 msgstr "Fehler beim Laden der geprüften Lernantwort."
 
-#: xblock/staff_area_mixin.py:359
+#: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
 msgstr "Es sind zur Zeit keine weiteren Antworten von Teilnehmern für die Bewertung vorhanden. "
 
-#: xblock/staff_area_mixin.py:361
+#: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
 msgstr "Fehler beim Laden der Mitarbeiterbenotungsinformationen."
 
-#: xblock/staff_area_mixin.py:382
+#: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "Fehler beim Laden der Mitarbeiterbenotungsinformationen."
 
-#: xblock/staff_area_mixin.py:676
+#: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
 msgstr "Geben Sie bitte einen zulässigen Grund für das Zurückziehen ihrer Einreichung an."
 
-#: xblock/staff_area_mixin.py:687
+#: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
 msgstr "Keine Antwort gefunden"
 
-#: xblock/staff_area_mixin.py:698
+#: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
 msgstr "Der Einreichung für die Teamzuweisung ist keiner Teameinreichung zugeordnet"
 
-#: xblock/staff_area_mixin.py:727
+#: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "Die Einreichung des Teilnehmers wurden von der Partnerbewertung entfernt. Der Teilnehmer erhält somit 0 Punkte. Sie können dem Teilnehmer auch erlauben, die Aufgabe zu Wiederholen. "
 
-#: xblock/staff_area_mixin.py:762
+#: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr "Die Eingabe des Teams wurde aus der Benotung entfernt. Das Team erhält die Note Null, es sei denn, Sie löschen den Status eines Teammitglieds für die Aufgabe, damit das Team erneut eine Antwort einreichen kann."
 
-#: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
-msgid "The submission ID of the submission being assessed was not found."
-msgstr "Die ID der zu bewertenden Einreichung wurde nicht gefunden."
-
-#: xblock/staff_assessment_mixin.py:71 xblock/staff_assessment_mixin.py:79
-msgid "Your staff assessment could not be submitted."
-msgstr "Ihre Mitarbeiterbewertung konnte nicht übermittelt werden. "
-
-#: xblock/staff_assessment_mixin.py:117 xblock/staff_assessment_mixin.py:125
-msgid "Your team assessment could not be submitted."
-msgstr "Ihre Teambewertung konnte nicht übermittelt werden."
-
-#: xblock/staff_assessment_mixin.py:191
-msgid "Waiting for a Staff Grade"
-msgstr "Warte auf Mitarbeiterbenotung"
-
-#: xblock/staff_assessment_mixin.py:192
-msgid ""
-"Check back later to see if a course staff member has assessed your response."
-" You will receive your grade after the assessment is complete."
-msgstr "Schauen Sie später noch einmal, ob Ihre Antwort bereits bewertet wurde. Sie werden Ihre Benotung erhalten, sobald die Bewertung durchgeführt wurde. "
-
-#: xblock/staff_assessment_mixin.py:205
-msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr "Sie müssen die obigen Schritte vervollständigen, um Ihre Note anzuschauen. "
-
-#: xblock/staff_assessment_mixin.py:206
-msgid ""
-"Although a course staff member has assessed your response, you will receive "
-"your grade only after you have completed all the required steps of this "
-"problem."
-msgstr "Ein Mitarbeiter hat Ihre Aufgabe bereits angeschaut. Ihre Bewertung erhalten Sie jedoch erst, wenn Sie alle nötigen Schritte dieser Aufgabenstellung abgeschlossen haben. "
-
-#: xblock/student_training_mixin.py:227
-msgid "Missing options_selected key in request"
-msgstr "Fehlender Schlüssel options_selected in der Anfrage"
-
-#: xblock/student_training_mixin.py:229
-msgid "options_selected must be a dictionary"
-msgstr "options_selected muss ein Wörterbuch sein"
-
-#: xblock/student_training_mixin.py:254 xblock/student_training_mixin.py:259
-msgid "Your scores could not be checked."
-msgstr "Ihr Punktestand konnte nicht überprüft werden."
-
-#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
 msgstr "Fehler beim Aktualisieren der XBlock-Einstellung"
 
-#: xblock/studio_mixin.py:252
+#: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr "Fehler: Die Texteingabe und der Datei-Upload können nicht beide deaktiviert werden."
 
-#: xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr "Fehler: Wenn die Texteingabe deaktiviert ist, muss der Datei-Upload aktiviert sein."
 
-#: xblock/studio_mixin.py:259
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr "Fehler: Wenn der Datei-Upload deaktiviert ist, muss die Texteingabe aktiviert sein."
 
-#: xblock/studio_mixin.py:283
+#: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Validierungsfehler: {error}"
 
-#: xblock/studio_mixin.py:315
+#: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock wurde erfolgreich aktualisiert"
 
-#: xblock/submission_mixin.py:118
-msgid "\"submission\" required to submit answer."
-msgstr "\"Einreichung\" wird benötigt um eine Antwort zu übermitteln."
-
-#: xblock/submission_mixin.py:139
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr "Um eine Antwort zu übermitteln, betrachte diese Komponente in der Vorschau oder im Live-Modus."
-
-#: xblock/submission_mixin.py:145
-msgid "Multiple submissions are not allowed."
-msgstr "Mehrfacheinreichungen sind nicht erlaubt."
-
-#: xblock/submission_mixin.py:178
-msgid "Response exceeds maximum allowed size."
-msgstr ""
-
-#: xblock/submission_mixin.py:180
-msgid ""
-"Note: if you have a spellcheck or grammar check browser extension, try "
-"disabling, reloading, and reentering your response before submitting."
-msgstr ""
-
-#: xblock/submission_mixin.py:200
-msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr "Die Eingabe darf nicht leer sein. Bitte laden Sie die Seite erneut und versuchen Sie es noch einmal."
-
-#: xblock/submission_mixin.py:210
-msgid "API returned unclassified exception."
-msgstr "API gab eine nicht klassifizierte Ausnahme zurück"
-
-#: xblock/submission_mixin.py:261
-msgid "Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:265
-msgid "Submission data missing. Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:281
-msgid "Files descriptions were not submitted."
-msgstr "Dateibeschreibungen wurden nicht eingereicht."
-
-#: xblock/submission_mixin.py:320
+#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
 msgid "Files metadata could not be saved."
 msgstr "Datei-Metadaten konnten nicht gespeichert werden."
 
-#: xblock/submission_mixin.py:472
-msgid "There was an error uploading your file."
-msgstr "Beim Hochladen ist ein Fehler aufgetreten."
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "In der Bewertung ausgewählte Optionen müssen angegeben werden"
 
-#: xblock/submission_mixin.py:484
-msgid "Only a single file upload is allowed for this assessment."
-msgstr "Sie können für diese Aufgabe nur einzelne Dateien hochladen."
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "Gesamtfeedback muss in der Bewertung angegeben werden"
 
-#: xblock/submission_mixin.py:495
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "Feedback für die Kriterien müssen in der Bewertung angegeben werden"
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
 msgid ""
-"File upload failed: unsupported file type.Only the supported file types can "
-"be uploaded.If you have questions, please reach out to the course team."
-msgstr "Das Hochladen der Datei ist fehlgeschlagen: Nicht unterstützter Dateityp. Es können nur die unterstützten Dateitypen hochgeladen werden. Wenn Sie Fragen haben, wenden Sie sich bitte an das Kursteam."
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "'{date}' ist nicht richtig formatiert. Stellen Sie sicher das das Datum folgendem Format entspricht: YYYY-MM-DDTHH:MM:SS."
 
-#: xblock/submission_mixin.py:508
-msgid "Error retrieving upload URL."
-msgstr "Fehler beim auflösen der URL zum hochladen."
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "'{date}' must be a date string or datetime"
 
-#: xblock/submission_mixin.py:790
-msgid "Draft saved!"
-msgstr ""
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "Das Anfangsdatum dieses Schritts '{start}' kann nicht früher sein, als das des vorherigen Schritts '{prev}'."
 
-#: xblock/submission_mixin.py:791
-msgid "Response not started."
-msgstr ""
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "Das Fälligkeitsdatum dieses Schritts '{due}' kann nicht später liegen, als das des nächsten Schritts '{prev}'."
 
-#: xblock/validation.py:118
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "Das Anfangsdatum '{start}' darf nicht später liegen als das Fälligkeitsdatum '{due}'"
+
+#: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "Diese Fragestellung muss in mindestens einer Bewertung vorkommen."
 
-#: xblock/validation.py:122
+#: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "Die Bewertungsreihenfolge, die Sie ausgewählt haben, ist ungültig."
 
-#: xblock/validation.py:132
+#: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Bei der Partnerbewertung muss der \"Zu Benoten\"-Wert eine positive Ganzzahl sein."
 
-#: xblock/validation.py:135
+#: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Bei der Partnerbewertung muss der \"Benotet von\"-Wert eine positive Ganzzahl sein."
 
-#: xblock/validation.py:139
+#: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Bei der Partnerbewertung muss der \"Zu Benoten\"-Wert größer oder gleich des \"Benotet von\"-Werts sein."
 
-#: xblock/validation.py:148
+#: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "Sie müssen wenigstens eine Beispielantwort für das Lernertraining bereitstellen."
 
-#: xblock/validation.py:151
+#: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "Jede Beispielantwort für das Lernerraining muss unterschiedlich sein."
 
-#: xblock/validation.py:158
+#: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "Die \"erforderlichen\" Werte müssen verifiziert sein."
 
-#: xblock/validation.py:162
+#: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Die Anzahl der Bewertungen kann nicht geändert werden, nachdem die Fragestellung veröffentlicht wurde."
 
-#: xblock/validation.py:167
+#: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Die Bewertungsart kann nach Veröffentlichung der Fragestellung nicht mehr geändert werden."
 
-#: xblock/validation.py:190
+#: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "Diese Bewertungsschemadefinition ist nicht zulässig."
 
-#: xblock/validation.py:196
+#: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "Einstellungen in '{criterion}' haben doppelte(2x) Namen: {duplicates}"
 
-#: xblock/validation.py:204
+#: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "Kriterien ohne Optionen benötigen schriftliche Rückmeldung."
 
-#: xblock/validation.py:213
+#: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Prompts können nicht erstellt oder gelöscht werden nachdem ein Problem veröffentlicht wurde."
 
-#: xblock/validation.py:217
+#: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Die Anzahl der Kriterien kann nach Veröffentlichnug der Fragestellung nicht mehr geändert werden."
 
-#: xblock/validation.py:230
+#: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Kriteriennamen können nicht geändert werden nachdem eine Fragestellung veröffentlicht wurde"
 
-#: xblock/validation.py:235
+#: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Die Anzahl der Einstellungen kann nach Veröffentlichnug der Fragestellung nicht mehr geändert werden."
 
-#: xblock/validation.py:240
+#: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Punktewerte können nach Veröffentlichung der Fragestellung nicht mehr geändert werden."
 
-#: xblock/validation.py:291
+#: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "Teilnehmer Training muss mindestens eine Trainingsbeispiel beinhalten."
 
-#: xblock/validation.py:356
+#: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "Die Nummer der Bestenliste ist ungültig."
 
-#: xblock/validation.py:379
+#: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
 msgstr "Das Übertragungsformat ist ungültig."

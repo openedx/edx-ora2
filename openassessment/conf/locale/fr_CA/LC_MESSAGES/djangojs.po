@@ -232,7 +232,7 @@ msgstr "En attente"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:314
 msgid "Staff"
-msgstr "Équipe pédagogique"
+msgstr "Personnel"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:314
 msgid "Final Grade Received"
@@ -463,7 +463,7 @@ msgstr "Temps écoulé sur l'étape courante"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Staff assessment"
-msgstr "Évaluation par l'équipe enseignante"
+msgstr "Évaluation par le personnel"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Grade Status"
@@ -485,7 +485,7 @@ msgstr "Il y a {stuck_learners} apprenants dans l'étape d'attente, c'est-à-dir
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par l'équipe de cours."
+msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par l'outil de remplacement du personnel."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Error while fetching student data."
