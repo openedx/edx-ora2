@@ -29,16 +29,16 @@ STEPS = ['peer', 'self']
 class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
     def test_get_blocked_peer_workflows(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")  # pylint: disable=unused-variable
+        _tim_sub, _tim = self._create_student_and_submission("Tim", "Tim's answer")
         self._create_student_and_submission("Miles", "Miles's answer")
-        pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")  # pylint: disable=unused-variable
+        _pat_sub, _pat = self._create_student_and_submission("Pat", "Pat's answer")
 
         blocked = update_api.get_blocked_peer_workflows()
         # we expect 0 blocked submissions as they were just created
         self.assertEqual(len(blocked), 0)
 
         # set Tim's submission create_at date to >7 days ago
-        pw_tim = PeerWorkflow.objects.get(student_id=tim["student_id"])
+        pw_tim = PeerWorkflow.objects.get(student_id=_tim["student_id"])
         pw_tim.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_tim.save()
         blocked = update_api.get_blocked_peer_workflows()
@@ -46,7 +46,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(len(blocked), 1)
 
         # set Pat's submission create_at date to >7 days ago and set completed_at date
-        pw_pat = PeerWorkflow.objects.get(student_id=pat["student_id"])
+        pw_pat = PeerWorkflow.objects.get(student_id=_pat["student_id"])
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_pat.completed_at = timezone.now() - datetime.timedelta(days=2)
         pw_pat.save()
@@ -56,22 +56,20 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(blocked[0].student_id, 'Tim')
 
     def test_get_blocked_peer_workflows_for_course(self):
-        # pylint: disable=unused-variable
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
-        # pylint: disable=unused-variable
-        miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
-        # pylint: disable=unused-variable
-        pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
+
+        _tim_sub, _tim = self._create_student_and_submission("Tim", "Tim's answer")
+        _miles_sub, _miles = self._create_student_and_submission("Miles", "Miles's answer")
+        _pat_sub, _pat = self._create_student_and_submission("Pat", "Pat's answer")
 
         blocked = update_api.get_blocked_peer_workflows(course_id="course_1")
         # we expect 0 blocked submissions for "course_1"
         self.assertEqual(len(blocked), 0)
 
-        pw_tim = PeerWorkflow.objects.get(student_id=tim["student_id"])
+        pw_tim = PeerWorkflow.objects.get(student_id=_tim["student_id"])
         pw_tim.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_tim.save()
 
-        pw_pat = PeerWorkflow.objects.get(student_id=pat["student_id"])
+        pw_pat = PeerWorkflow.objects.get(student_id=_pat["student_id"])
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_pat.course_id = "course_1"
         pw_pat.save()
@@ -80,7 +78,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         # we expect 1 blocked submission for "course_1"
         self.assertEqual(len(blocked), 1)
 
-        pw_miles = PeerWorkflow.objects.get(student_id=miles["student_id"])
+        pw_miles = PeerWorkflow.objects.get(student_id=_miles["student_id"])
         pw_miles.course_id = "course_2"
         pw_miles.save()
 
@@ -89,22 +87,20 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(len(blocked), 0)
 
     def test_get_blocked_peer_workflows_for_ora_block(self):
-        # pylint: disable=unused-variable
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
-        # pylint: disable=unused-variable
-        miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
-        # pylint: disable=unused-variable
-        pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
+
+        _tim_sub, _tim = self._create_student_and_submission("Tim", "Tim's answer")
+        _miles_sub, _miles = self._create_student_and_submission("Miles", "Miles's answer")
+        _pat_sub, _pat = self._create_student_and_submission("Pat", "Pat's answer")
 
         blocked = update_api.get_blocked_peer_workflows(item_id="item_1")
         # we expect 0 blocked submissions for "item_1"
         self.assertEqual(len(blocked), 0)
 
-        pw_tim = PeerWorkflow.objects.get(student_id=tim["student_id"])
+        pw_tim = PeerWorkflow.objects.get(student_id=_tim["student_id"])
         pw_tim.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_tim.save()
 
-        pw_pat = PeerWorkflow.objects.get(student_id=pat["student_id"])
+        pw_pat = PeerWorkflow.objects.get(student_id=_pat["student_id"])
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_pat.item_id = "item_1"
         pw_pat.save()
@@ -113,7 +109,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         # we expect 1 blocked submission for "item_1"
         self.assertEqual(len(blocked), 1)
 
-        pw_miles = PeerWorkflow.objects.get(student_id=miles["student_id"])
+        pw_miles = PeerWorkflow.objects.get(student_id=_miles["student_id"])
         pw_miles.item_id = "item_2"
         pw_miles.save()
 
@@ -160,30 +156,29 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(wup["courses"][0]["course_id"], "course_id_1")
         self.assertEqual(wup["courses"][0]["assessments"][0]["item_id"], "item_id_1")
         self.assertEqual(wup["courses"][0]["assessments"][1]["item_id"], "item_id_2")
-        self.assertEqual(len(wup["courses"][0]["assessments"][0]["submissions"]),2)
+        self.assertEqual(len(wup["courses"][0]["assessments"][0]["submissions"]), 2)
         self.assertEqual(wup["courses"][1]["course_id"], "course_id_2")
         self.assertEqual(wup["courses"][1]["assessments"][0]["item_id"], "item_id_3")
 
-    # pylint: disable=unused-variable
     def get_peer_workflows_for_test_get_workflow_update_data(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
-        miles_sub, miles = self._create_student_and_submission("Miles", "Miles's answer")
-        pat_sub, pat = self._create_student_and_submission("Pat", "Pat's answer")
-        wayne_sub, wayne = self._create_student_and_submission("Wayne", "Wayne's answer")
+        _tim_sub, _tim = self._create_student_and_submission("Tim", "Tim's answer")
+        _miles_sub, _miles = self._create_student_and_submission("Miles", "Miles's answer")
+        _pat_sub, _pat = self._create_student_and_submission("Pat", "Pat's answer")
+        _wayne_sub, _wayne = self._create_student_and_submission("Wayne", "Wayne's answer")
 
-        pw_tim = PeerWorkflow.objects.get(student_id=tim["student_id"])
+        pw_tim = PeerWorkflow.objects.get(student_id=_tim["student_id"])
         pw_tim.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_tim.course_id = "course_id_1"
         pw_tim.item_id = "item_id_1"
-        pw_miles = PeerWorkflow.objects.get(student_id=miles["student_id"])
+        pw_miles = PeerWorkflow.objects.get(student_id=_miles["student_id"])
         pw_miles.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_miles.course_id = "course_id_1"
         pw_miles.item_id = "item_id_2"
-        pw_pat = PeerWorkflow.objects.get(student_id=pat["student_id"])
+        pw_pat = PeerWorkflow.objects.get(student_id=_pat["student_id"])
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_pat.course_id = "course_id_2"
         pw_pat.item_id = "item_id_3"
-        pw_wayne = PeerWorkflow.objects.get(student_id=wayne["student_id"])
+        pw_wayne = PeerWorkflow.objects.get(student_id=_wayne["student_id"])
         pw_wayne.created_at = timezone.now() - datetime.timedelta(days=8)
         pw_wayne.course_id = "course_id_1"
         pw_wayne.item_id = "item_id_1"
