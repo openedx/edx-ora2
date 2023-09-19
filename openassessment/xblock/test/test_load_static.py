@@ -53,9 +53,10 @@ class TestLoadStatic(TestCase):
 
     @patch('pkg_resources.resource_string')
     def test_is_dev_server_url(self, resource_string):
+        # some unknown bug in python mock, need to call setUp() again
+        self.setUp()
         resource_string.return_value = None
         key_url = 'some_url.js'
-        print(LoadStatic._manifest)
         with patch('json.loads') as jsondata:
             manifest = {
                 'some_url.js': 'some_url.hash.js',
