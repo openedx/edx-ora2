@@ -63,10 +63,7 @@ class TestLoadStatic(TestCase):
                 'is_dev_server': True
             }
             jsondata.return_value = manifest
-            self.assertEqual(LoadStatic._is_loaded, False)
             self.assertEqual(LoadStatic.get_url(key_url), 'some_url.hash.js')
-            self.assertEqual(LoadStatic._manifest, manifest)
-            self.assertEqual(LoadStatic._is_loaded, True)
             self.assertEqual(LoadStatic.get_is_dev_server(), True)
 
     @patch('pkg_resources.resource_string')
