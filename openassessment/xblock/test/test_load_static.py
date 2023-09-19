@@ -10,12 +10,6 @@ from openassessment.xblock.load_static import LoadStatic, urljoin
 class TestLoadStatic(TestCase):
     """Test load static class"""
 
-    def setUp(self):
-        LoadStatic._manifest = {}   # pylint: disable=protected-access
-        LoadStatic._is_loaded = False   # pylint: disable=protected-access
-        LoadStatic._is_dev_server = False   # pylint: disable=protected-access
-        return super().setUp()
-
     def test_urljoin(self):
         expected_result_1 = 'path_1/path_2'
         expected_result_2 = 'path_1/path_2/'
@@ -52,9 +46,9 @@ class TestLoadStatic(TestCase):
         self.assertEqual(LoadStatic.get_url(key_url), urljoin('/cms', 'dist', key_url))
 
     @patch('pkg_resources.resource_string')
+    @patch.object(LoadStatic, '_is_loaded', False)
     def test_is_dev_server_url(self, resource_string):
         # some unknown bug in python mock, need to call setUp() again
-        self.setUp()
         resource_string.return_value = None
         key_url = 'some_url.js'
         with patch('json.loads') as jsondata:
