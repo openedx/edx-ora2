@@ -26,6 +26,8 @@ Returns:
     OpenAssessment.BaseView
 * */
 export class BaseView {
+    SHOW_NEW_EXPERIENCE = true
+
     IS_SHOWING_CLASS = 'is--showing';
 
     SLIDABLE_CLASS = 'ui-slidable';
@@ -42,20 +44,22 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      this.fileUploader = new FileUploader();
+      if (!this.SHOW_NEW_EXPERIENCE) {
+        this.fileUploader = new FileUploader();
 
-      this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
+        this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
 
-      this.responseView = new ResponseView(
-        this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
-      );
-      this.trainingView = new StudentTrainingView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.selfView = new SelfView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.peerView = new PeerView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.staffView = new StaffView(this.element, this.server, this);
-      this.gradeView = new GradeView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.leaderboardView = new LeaderboardView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.messageView = new MessageView(this.element, this.server, this);
+        this.responseView = new ResponseView(
+          this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
+        );
+        this.trainingView = new StudentTrainingView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.selfView = new SelfView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.peerView = new PeerView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.staffView = new StaffView(this.element, this.server, this);
+        this.gradeView = new GradeView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.leaderboardView = new LeaderboardView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.messageView = new MessageView(this.element, this.server, this);
+      }
       // Staff-only area with information and tools for managing student submissions
       this.staffAreaView = new StaffAreaView(this.element, this.server, this.responseEditorLoader, data, this);
       this.usageID = '';

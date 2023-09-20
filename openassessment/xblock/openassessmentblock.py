@@ -550,15 +550,23 @@ class OpenAssessmentBlock(
             logger.exception('An error occurred while updating the workflow on page load.')
 
         ui_models = self._create_ui_models()
-        # All data we intend to pass to the front end.
-        context_dict = {
-            "title": self.title,
-            "prompts": self.prompts,
-            "prompts_type": self.prompts_type,
-            "rubric_assessments": ui_models,
-            "show_staff_area": self.is_course_staff and not self.in_studio_preview,
-        }
-        template = get_template("legacy/oa_base.html")
+        if True:
+          # All data we intend to pass to the front end.
+          context_dict = {
+              "xblock_id": self.get_xblock_id(),
+              "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+          }
+          template = get_template("base.html")
+        else:
+          # All data we intend to pass to the front end.
+          context_dict = {
+              "title": self.title,
+              "prompts": self.prompts,
+              "prompts_type": self.prompts_type,
+              "rubric_assessments": ui_models,
+              "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+          }
+          template = get_template("legacy/oa_base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):
