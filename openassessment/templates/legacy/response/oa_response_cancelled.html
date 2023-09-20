@@ -1,0 +1,57 @@
+{% extends "legacy/response/oa_response.html" %}
+{% load i18n %}
+{% load tz %}
+
+{% block list_item %}
+    <li id="openassessment__response__{{ xblock_id }}"
+        class="openassessment__steps__step step--response has--error ui-slidable__container is--initially--collapsed"
+        tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content" aria-labeledby="oa_step_title_response">
+        <span class="icon fa fa-caret-right" aria-hidden="false"/>
+    </button>
+{% endblock %}
+
+{% block title %}
+    <span class="step__status">
+        <span id="oa_step_status_response" class="step__status__value">
+            <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
+            <span class="copy">{% trans "Cancelled" %}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block body %}
+    <div class="ui-slidable__content" aria-labelledby="oa_response_{{ xblock_id }}" id="oa_response_{{ xblock_id }}_content">
+        <div class="wrapper--step__content">
+
+            <div class="step__message message message--incomplete">
+                <h5 class="message__title">{% trans "Status" %}</h5>
+
+                <div class="message__content">
+                    {% trans "Your submission was cancelled. " %}
+                    <p>
+                        {% if workflow_cancellation.cancelled_by %}
+                            {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|timezone:"UTC"|date:"Y-m-d H:i e" removed_by_username=workflow_cancellation.cancelled_by %}
+                                Your submission has been cancelled by {{ removed_by_username }} on {{ removed_datetime }}
+                            {% endblocktrans %}
+                        {% else %}
+                            {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|timezone:"UTC"|date:"Y-m-d H:i e" %}
+                               Your submission was cancelled on {{ removed_datetime }}
+                            {% endblocktrans %}
+                        {% endif %}
+                    </p>
+                    <p>
+                        <!-- Comments: Reason for Cancellation-->
+                        {% blocktrans with comments=workflow_cancellation.comments %}
+                            Comments: {{ comments }}
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

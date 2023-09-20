@@ -1,0 +1,50 @@
+{%  extends "legacy/peer/oa_peer_assessment.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li id="openassessment__peer-assessment__{{ xblock_id }}" class="openassessment__steps__step step--peer-assessment is--complete is--initially--collapsed  ui-slidable__container" tabindex="-1">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span id="oa_step_status_peer" class="step__status__value">
+    <span class="icon fa fa-check" aria-hidden="true"></span>
+    <span class="copy">
+      <span class="step__status__value--completed">{{ graded }}</span> {% trans "Completed" %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content" aria-labeledby="oa_step_title_peer">
+        <span class="icon fa fa-caret-right" aria-hidden="false"/>
+    </button>
+{% endblock %}
+
+{% block body %}
+    <div role="region" class="ui-slidable__content" aria-labelledby="oa_peer_{{ xblock_id }}" id="oa_peer_{{ xblock_id }}_content">
+        <div class="wrapper--step__content">
+
+            <div class="step__message message message--complete">
+                <h5 class="message__title">{% trans "Status" %}</h5>
+                <div class="message__content">{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</div>
+            </div>
+
+            <div class="step__actions">
+                <div class="message message--inline message--error message--error-server" tabindex="-1">
+                    <h5 class="message__title">{% trans "We could not retrieve additional submissions for assessment" %}</h5>
+                    <div class="message__content"></div>
+                </div>
+
+                <ul class="list list--actions">
+                    <li class="list--actions__item">
+                        <button type="submit" class="action action--submit action--continue--grading">
+                            {%  trans "Continue Assessing Peers" %}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

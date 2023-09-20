@@ -194,7 +194,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
             'user_timezone': None,
             'user_language': None
         }
-        expected_template = "openassessmentblock/student_training/student_training_complete.html"
+        expected_template = "legacy/student_training/student_training_complete.html"
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
     @scenario('data/feedback_only_criterion_student_training.xml', user_id='Bob')
@@ -326,7 +326,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
     @scenario('data/student_training_due.xml', user_id="Plato")
     def test_past_due(self, xblock):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        expected_template = "openassessmentblock/student_training/student_training_closed.html"
+        expected_template = "legacy/student_training/student_training_closed.html"
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00",
             'allow_multiple_files': True,
@@ -344,7 +344,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
             'status': 'cancelled',
             'submission_uuid': submission['uuid']
         })
-        expected_template = "openassessmentblock/student_training/student_training_cancelled.html"
+        expected_template = "legacy/student_training/student_training_cancelled.html"
         expected_context = {
             'allow_multiple_files': True,
             'allow_latex': False,
@@ -365,7 +365,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
     @scenario('data/student_training_future.xml', user_id="Plato")
     def test_before_start(self, xblock):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        expected_template = "openassessmentblock/student_training/student_training_unavailable.html"
+        expected_template = "legacy/student_training/student_training_unavailable.html"
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),
             'allow_multiple_files': True,

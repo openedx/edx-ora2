@@ -9,7 +9,7 @@ Usage:
 where "templates.json" is a JSON file of the form:
     [
         {
-            "template": "openassessmentblock/oa_base.html",
+            "template": "legacy/oa_base.html",
             "context": {
                 "title": "Lorem",
                 "question": "Ipsum?"

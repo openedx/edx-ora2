@@ -878,7 +878,7 @@ class SubmissionMixin:
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
         course_id = self.location.course_key if hasattr(self, 'location') else None
 
-        path = 'openassessmentblock/response/oa_response.html'
+        path = 'legacy/response/oa_response.html'
         context = {
             'enable_delete_files': False,
             'file_upload_response': self.file_upload_response,
@@ -916,7 +916,7 @@ class SubmissionMixin:
 
             # If it's a team assignment, the user hasn't submitted and is not on a team, the assignment is unavailable.
             if team_id_for_current_submission is None:
-                path = 'openassessmentblock/response/oa_response_unavailable.html'
+                path = 'legacy/response/oa_response_unavailable.html'
                 return path, context
 
         context['file_upload_type'] = self.file_upload_type
@@ -934,14 +934,14 @@ class SubmissionMixin:
 
         if not workflow and problem_closed:
             if reason == 'due':
-                path = 'openassessmentblock/response/oa_response_closed.html'
+                path = 'legacy/response/oa_response_closed.html'
             elif reason == 'start':
                 context['submission_start'] = start_date
-                path = 'openassessmentblock/response/oa_response_unavailable.html'
+                path = 'legacy/response/oa_response_unavailable.html'
         elif not workflow:
             # For backwards compatibility. Initially, problems had only one prompt
             # and a string answer. We convert it to the appropriate dict.
-            no_workflow_path = "openassessmentblock/response/oa_response.html"
+            no_workflow_path = "legacy/response/oa_response.html"
 
             try:
                 json.loads(self.saved_response)
@@ -962,7 +962,7 @@ class SubmissionMixin:
             if self.teams_enabled:
                 self.get_team_submission_context(context)
                 if self.does_team_have_submission(context['team_id']):
-                    no_workflow_path = 'openassessmentblock/response/oa_response_team_already_submitted.html'
+                    no_workflow_path = 'legacy/response/oa_response_team_already_submitted.html'
 
             path = no_workflow_path
         elif workflow["status"] == "cancelled":
@@ -975,13 +975,13 @@ class SubmissionMixin:
             context["student_submission"] = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            path = 'openassessmentblock/response/oa_response_cancelled.html'
+            path = 'legacy/response/oa_response_cancelled.html'
         elif workflow["status"] == "done":
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-            path = 'openassessmentblock/response/oa_response_graded.html'
+            path = 'legacy/response/oa_response_graded.html'
         else:
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
@@ -991,6 +991,6 @@ class SubmissionMixin:
             context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
             context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
-            path = 'openassessmentblock/response/oa_response_submitted.html'
+            path = 'legacy/response/oa_response_submitted.html'
 
         return path, context

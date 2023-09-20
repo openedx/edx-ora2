@@ -129,7 +129,7 @@ class StudentTrainingMixin:
         user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context = {"xblock_id": self.get_xblock_id()}
-        template = 'openassessmentblock/student_training/student_training_unavailable.html'
+        template = 'legacy/student_training/student_training_unavailable.html'
 
         context['allow_multiple_files'] = self.allow_multiple_files
         # add allow_latex field to the context
@@ -147,17 +147,17 @@ class StudentTrainingMixin:
         # We're assuming here that the training step always precedes the other assessment steps
         # (peer/self) -- we may need to make this more flexible later.
         if workflow_status == 'cancelled':
-            template = 'openassessmentblock/student_training/student_training_cancelled.html'
+            template = 'legacy/student_training/student_training_cancelled.html'
         elif workflow_status and workflow_status != "training":
-            template = 'openassessmentblock/student_training/student_training_complete.html'
+            template = 'legacy/student_training/student_training_complete.html'
 
         # If the problem is closed, then do not allow students to access the training step
         elif problem_closed and reason == 'start':
             context['training_start'] = start_date
-            template = 'openassessmentblock/student_training/student_training_unavailable.html'
+            template = 'legacy/student_training/student_training_unavailable.html'
         elif problem_closed and reason == 'due':
             context['training_due'] = due_date
-            template = 'openassessmentblock/student_training/student_training_closed.html'
+            template = 'legacy/student_training/student_training_closed.html'
 
         # If we're on the training step, show the student an example
         # We do this last so we can avoid querying the student training API if possible.
@@ -189,14 +189,14 @@ class StudentTrainingMixin:
             training_essay_context, error_message = self._parse_example(example)
             if error_message:
                 logger.error(error_message)
-                template = "openassessmentblock/student_training/student_training_error.html"
+                template = "legacy/student_training/student_training_error.html"
             else:
                 context['training_essay'] = training_essay_context
                 context['training_rubric'] = {
                     'criteria': example['rubric']['criteria'],
                     'points_possible': example['rubric']['points_possible']
                 }
-                template = 'openassessmentblock/student_training/student_training.html'
+                template = 'legacy/student_training/student_training.html'
 
         return template, context
 

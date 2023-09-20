@@ -118,7 +118,7 @@ class LeaderboardMixin:
                    'file_upload_type': self.file_upload_type,
                    'xblock_id': self.get_xblock_id()}
 
-        return 'openassessmentblock/leaderboard/oa_leaderboard_show.html', context
+        return 'legacy/leaderboard/oa_leaderboard_show.html', context
 
     def render_leaderboard_incomplete(self):
         """
@@ -127,7 +127,7 @@ class LeaderboardMixin:
         Returns:
             template_path (string), tuple of context (dict)
         """
-        return 'openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {'xblock_id': self.get_xblock_id()}
+        return 'legacy/leaderboard/oa_leaderboard_waiting.html', {'xblock_id': self.get_xblock_id()}
 
     def _get_file_download_url(self, file_key):
         """

@@ -1,6 +1,6 @@
 [
     {
-        "template": "openassessmentblock/oa_base.html",
+        "template": "legacy/oa_base.html",
         "context": {
             "show_staff_area": false,
             "title": "Test title",
@@ -42,7 +42,7 @@
         "output": "oa_base.html"
     },
     {
-        "template": "openassessmentblock/oa_base.html",
+        "template": "legacy/oa_base.html",
         "context": {
             "show_staff_area": true,
             "title": "Test title",
@@ -84,7 +84,7 @@
         "output": "oa_base_course_staff.html"
     },
     {
-        "template": "openassessmentblock/response/oa_response.html",
+        "template": "legacy/response/oa_response.html",
         "context": {
             "text_response": "required",
             "file_upload_response": "optional",
@@ -106,7 +106,7 @@
         "output": "oa_response.html"
     },
     {
-        "template": "openassessmentblock/student_training/student_training.html",
+        "template": "legacy/student_training/student_training.html",
         "context": {
             "training_essay": {
                 "answer": {
@@ -196,7 +196,7 @@
         "output": "oa_student_training.html"
     },
     {
-        "template": "openassessmentblock/self/oa_self_assessment.html",
+        "template": "legacy/self/oa_self_assessment.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -273,7 +273,7 @@
         "output": "oa_self_assessment.html"
     },
     {
-        "template": "openassessmentblock/peer/oa_peer_assessment.html",
+        "template": "legacy/peer/oa_peer_assessment.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -350,12 +350,12 @@
         "output": "oa_peer_assessment.html"
     },
     {
-        "template": "openassessmentblock/peer/oa_peer_complete.html",
+        "template": "legacy/peer/oa_peer_complete.html",
         "context": {},
         "output": "oa_peer_complete.html"
     },
     {
-        "template": "openassessmentblock/grade/oa_grade_complete.html",
+        "template": "legacy/grade/oa_grade_complete.html",
         "context": {
             "score": "",
             "feedback_text": "",
@@ -420,7 +420,7 @@
         "output": "oa_grade_complete.html"
     },
     {
-        "template": "openassessmentblock/edit/oa_edit.html",
+        "template": "legacy/edit/oa_edit.html",
         "context": {
             "prompts": [{ "description": "How much do you like waffles?" }, { "description": "How much do you like waffles 2?" }],
             "title": "The most important of all questions.",
@@ -513,7 +513,7 @@
         "output": "oa_edit.html"
     },
     {
-        "template": "openassessmentblock/edit/oa_edit.html",
+        "template": "legacy/edit/oa_edit.html",
         "context": {
             "prompts": [{ "description": "How much do you like waffles?" }, { "description": "How much do you like waffles 2?" }],
             "title": "Test title",
@@ -679,7 +679,7 @@
         "output": "oa_edit_student_training.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
             "status_counts": {
                 "self": 1,
@@ -710,7 +710,7 @@
         "output": "oa_staff_area.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
             "staff_assessment_required": true,
             "staff_assessment_ungraded": 10,
@@ -744,7 +744,7 @@
         "output": "oa_staff_area_full_grading.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
             "staff_assessment_required": true,
             "staff_assessment_ungraded": 5,
@@ -778,7 +778,7 @@
         "output": "oa_staff_area_full_grading_2.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
             "is_enhanced_staff_grader_enabled": false,
             "staff_assessment_required": true,
@@ -813,7 +813,7 @@
         "output": "oa_staff_area_full_grading_esg_disabled.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
             "is_enhanced_staff_grader_enabled": true,
             "staff_assessment_required": true,
@@ -848,7 +848,7 @@
         "output": "oa_staff_area_full_grading_esg_enabled.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "template": "legacy/staff_area/oa_staff_area.html",
         "context": {
             "status_counts": {
                 "staff": 1,
@@ -874,7 +874,7 @@
         "output": "oa_staff_area_team_assignment.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_count.html",
+        "template": "legacy/staff_area/oa_staff_grade_learners_count.html",
         "context": {
             "staff_assessment_ungraded": 9,
             "staff_assessment_in_progress": 3
@@ -882,7 +882,7 @@
         "output": "oa_staff_grade_learners_count_1.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_count.html",
+        "template": "legacy/staff_area/oa_staff_grade_learners_count.html",
         "context": {
             "staff_assessment_ungraded": 9,
             "staff_assessment_in_progress": 2
@@ -890,7 +890,7 @@
         "output": "oa_staff_grade_learners_count_2.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "template": "legacy/staff_area/oa_student_info.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1000,7 +1000,7 @@
         "output": "oa_student_info.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "template": "legacy/staff_area/oa_student_info.html",
         "context": {
             "submission": {
                 "image_url": "/test-url",
@@ -1019,7 +1019,7 @@
         "output": "oa_staff_cancelled_submission.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "template": "legacy/staff_area/oa_student_info.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1080,7 +1080,7 @@
         "output": "oa_staff_graded_submission.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "template": "legacy/staff_area/oa_student_info.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1163,7 +1163,7 @@
         "output": "oa_student_info_team.html"
     },
     {
-        "template": "openassessmentblock/peer/oa_peer_assessment.html",
+        "template": "legacy/peer/oa_peer_assessment.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1214,7 +1214,7 @@
         "output": "oa_rubric.html"
     },
     {
-        "template": "openassessmentblock/peer/oa_peer_turbo_mode.html",
+        "template": "legacy/peer/oa_peer_turbo_mode.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1290,7 +1290,7 @@
         "output": "oa_turbo_mode.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html",
+        "template": "legacy/staff_area/oa_staff_grade_learners_assessment.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1347,7 +1347,7 @@
         "output": "oa_staff_grade_learners_assessment.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html",
+        "template": "legacy/staff_area/oa_staff_grade_learners_assessment.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1404,7 +1404,7 @@
         "output": "oa_staff_grade_learners_assessment_2.html"
     },
     {
-        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html",
+        "template": "legacy/staff_area/oa_staff_grade_learners_assessment.html",
         "context": {
             "rubric_criteria": [
                 {
@@ -1461,7 +1461,7 @@
         "output": "oa_staff_grade_team_assessment.html"
     },
     {
-        "template": "openassessmentblock/response/oa_response.html",
+        "template": "legacy/response/oa_response.html",
         "context": {
             "text_response": "required",
             "file_upload_response": "",
@@ -1480,7 +1480,7 @@
         "output": "oa_response_date.html"
     },
     {
-        "template": "openassessmentblock/instructor_dashboard/oa_grade_available_responses.html",
+        "template": "legacy/instructor_dashboard/oa_grade_available_responses.html",
         "context": {
             "title": "Test ABC",
             "staff_assessment_required": true,
@@ -1490,7 +1490,7 @@
         "output": "oa_grade_available_responses_separate_view.html"
     },
     {
-        "template": "openassessmentblock/instructor_dashboard/oa_listing.html",
+        "template": "legacy/instructor_dashboard/oa_listing.html",
         "context": {
             "ora_item_view_enabled": "1",
             "ora_items": ""
