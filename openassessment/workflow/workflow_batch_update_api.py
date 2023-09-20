@@ -6,71 +6,14 @@ import logging
 import time
 import datetime
 from django.utils import timezone
-from celery import shared_task
 
 from opaque_keys.edx.keys import UsageKey
 from openassessment.runtime_imports.functions import modulestore
 from openassessment.assessment.models import PeerWorkflow
 from openassessment.workflow import api
+from openassessment.workflow import tasks
 
 logger = logging.getLogger(__name__)
-
-
-@shared_task(bind=True,
-             acks_late=True,
-             autoretry_for=(Exception,),
-             max_retries=3,
-             retry_backoff=True,
-             retry_backoff_max=500,
-             retry_jitter=True)
-def update_workflows_for_all_blocked_submissions_task(self):  # pylint: disable=unused-argument
-    """
-    Async task wrapper
-    """
-    return update_workflows_for_all_blocked_submissions()
-
-
-@shared_task(bind=True,
-             acks_late=True,
-             autoretry_for=(Exception,),
-             max_retries=3,
-             retry_backoff=True,
-             retry_backoff_max=500,
-             retry_jitter=True)
-def update_workflows_for_course_task(self, course_id):  # pylint: disable=unused-argument
-    """
-    Async task wrapper
-    """
-    return update_workflows_for_course(course_id)
-
-
-@shared_task(bind=True,
-             acks_late=True,
-             autoretry_for=(Exception,),
-             max_retries=3,
-             retry_backoff=True,
-             retry_backoff_max=500,
-             retry_jitter=True)
-def update_workflows_for_ora_block_task(self, item_id):  # pylint: disable=unused-argument
-    """
-    Async task wrapper
-    """
-    return update_workflows_for_ora_block(item_id)
-
-
-@shared_task(bind=True,
-             acks_late=True,
-             autoretry_for=(Exception,),
-             max_retries=3,
-             retry_backoff=True,
-             retry_backoff_max=300,
-             retry_jitter=True)
-# pylint: disable=unused-argument
-def update_workflow_for_submission_task(self, submission_uuid, assessment_requirements=None, course_settings=None):
-    """
-    Async task wrapper
-    """
-    return update_workflow_for_submission(submission_uuid, assessment_requirements, course_settings)
 
 
 def log_task_info(func):
@@ -109,7 +52,7 @@ def update_workflows_for_all_blocked_submissions():
         if workflow_update_data.get("courses") is not None:
             for course_object in workflow_update_data.get("courses"):
                 # execute asynchronously (submit Celery task)
-                update_workflows_for_course_task.apply_async([course_object["course_id"], course_object])
+                tasks.update_workflows_for_course_task.apply_async([course_object["course_id"], course_object])
 
             return WorkflowUpdateResult(message="Batch workflow update tasks submitted "
                                                 "successfully for each course id. ",
@@ -166,7 +109,7 @@ def update_workflows_for_course(course_id, workflow_update_data=None):
             for item in workflow_update_data["assessments"]:
                 # execute asynchronously (submit Celery task)
                 ora_data = _get_ora_data(course_object=workflow_update_data, item_id=item["item_id"])
-                update_workflows_for_ora_block_task.apply_async([item["item_id"], ora_data])
+                tasks.update_workflows_for_ora_block_task.apply_async([item["item_id"], ora_data])
 
             return WorkflowUpdateResult(message="Batch workflow tasks submitted successfully for "
                                                 "each ORA item_id within course. ",
@@ -227,7 +170,7 @@ def update_workflows_for_ora_block(item_id, workflow_update_data=None):
 
             for item in workflow_update_data["submissions"]:
                 # execute asynchronously (submit Celery task)
-                update_workflow_for_submission_task.apply_async(
+                tasks.update_workflow_for_submission_task.apply_async(
                     [item["submission_uuid"], assessment_requirements, course_settings])
 
             return WorkflowUpdateResult(message="Batch workflow update for blocked ORA "

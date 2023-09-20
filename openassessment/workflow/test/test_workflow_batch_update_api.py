@@ -11,8 +11,7 @@ from submissions import api as sub_api
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import PeerWorkflow
 from openassessment.assessment.api import peer as peer_api
-from openassessment.workflow import api as workflow_api
-from openassessment import workflow_batch_update_api as update_api
+from openassessment.workflow import api as workflow_api, workflow_batch_update_api as update_api
 
 logger = logging.getLogger(__name__)
 
@@ -142,8 +141,8 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         course_block.force_on_flexible_peer_openassessments = True
         self.assertTrue(update_api.is_flexible_peer_grading_on(ora_block, course_block))
 
-    @patch('openassessment.workflow_batch_update_api.modulestore')
-    @patch('openassessment.workflow_batch_update_api.UsageKey.from_string')
+    @patch('openassessment.workflow.workflow_batch_update_api.modulestore')
+    @patch('openassessment.workflow.workflow_batch_update_api.UsageKey.from_string')
     def test_get_workflow_update_data(self, mocked_from_string, mocked_modulestore):
         mocked_modulestore.return_value = MockModulestore()
         mocked_from_string.side_effect = mock_from_string
@@ -185,8 +184,8 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         return [pw_tim, pw_miles, pw_pat, pw_wayne]
 
-    @patch('openassessment.workflow_batch_update_api.get_workflow_update_data')
-    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
+    @patch('openassessment.workflow.workflow_batch_update_api.get_workflow_update_data')
+    @patch('openassessment.workflow.workflow_batch_update_api.get_blocked_peer_workflows')
     @patch('openassessment.workflow.api.update_from_assessments')
     def test_update_workflow_for_submission(self, mock_update_from_assessments,
                                             mock_get_blocked_peer_workflows,
@@ -226,7 +225,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
             update_api.update_workflow_for_submission("submission_uuid", "assessment_requirements",
                                                       "course_override")
 
-    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
+    @patch('openassessment.workflow.workflow_batch_update_api.get_blocked_peer_workflows')
     def test_update_workflows_for_ora_block(self, mock_get_blocked_peer_workflows):
         workflow_update_data = {
             "course_id": "course_id_1",
@@ -238,12 +237,12 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         mock_get_blocked_peer_workflows.return_value = "peer_workflows"
         with patch(
-                'openassessment.workflow_batch_update_api._get_workflow_update_data_for_ora') \
+                'openassessment.workflow.workflow_batch_update_api._get_workflow_update_data_for_ora') \
                 as mock_get_workflow_update_data_for_ora:
             mock_get_workflow_update_data_for_ora.return_value = workflow_update_data
 
             with patch(
-                    'openassessment.workflow_batch_update_api.update_workflow_for_submission_task.apply_async') \
+                    'openassessment.workflow.tasks.update_workflow_for_submission_task.apply_async') \
                     as mock_update_workflow_for_submission_async:
                 # test scenario when cached data is not passed
                 update_api.update_workflows_for_ora_block("item_id_12")
@@ -268,7 +267,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 with pytest.raises(update_api.UpdateWorkflowsForOraBlockException):
                     update_api.update_workflows_for_ora_block("item_id_0")
 
-    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
+    @patch('openassessment.workflow.workflow_batch_update_api.get_blocked_peer_workflows')
     def test_update_workflows_for_course(self, mock_get_blocked_peer_workflows):
         workflow_update_data = {
             "course_id": "course_id_11",
@@ -289,11 +288,11 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         mock_get_blocked_peer_workflows.return_value = "mock_peer_workflows"
         with patch(
-                'openassessment.workflow_batch_update_api._get_workflow_update_data_for_course') \
+                'openassessment.workflow.workflow_batch_update_api._get_workflow_update_data_for_course') \
                 as mock_get_workflow_update_data_for_course:
             mock_get_workflow_update_data_for_course.return_value = workflow_update_data
             with patch(
-                    'openassessment.workflow_batch_update_api.update_workflows_for_ora_block_task.apply_async') \
+                    'openassessment.workflow.tasks.update_workflows_for_ora_block_task.apply_async') \
                     as mock_update_workflows_for_ora_block_async:
                 # test scenario when cached data is not passed
                 update_api.update_workflows_for_course("course_id_11")
@@ -319,7 +318,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
                 with pytest.raises(update_api.UpdateWorkflowsForCourseException):
                     update_api.update_workflows_for_course("course_id_0", workflow_update_data)
 
-    @patch('openassessment.workflow_batch_update_api.get_blocked_peer_workflows')
+    @patch('openassessment.workflow.workflow_batch_update_api.get_blocked_peer_workflows')
     def test_update_workflows_for_all_blocked_submissions(self, mock_get_blocked_peer_workflows):
         workflow_update_data = {
             "courses": [
@@ -332,12 +331,12 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         }
         mock_get_blocked_peer_workflows.return_value = "mock_peer_workflows"
         with patch(
-                'openassessment.workflow_batch_update_api.get_workflow_update_data') \
+                'openassessment.workflow.workflow_batch_update_api.get_workflow_update_data') \
                 as mock_get_workflow_update_data:
             mock_get_workflow_update_data.return_value = workflow_update_data
 
             with patch(
-                    'openassessment.workflow_batch_update_api.update_workflows_for_course_task.apply_async') \
+                    'openassessment.workflow.tasks.update_workflows_for_course_task.apply_async') \
                     as mock_update_workflows_for_course:
                 update_api.update_workflows_for_all_blocked_submissions()
                 mock_get_blocked_peer_workflows.assert_called_once()
