@@ -19,6 +19,10 @@ class WorkflowAPI:
         return bool(self.workflow)
 
     @property
+    def assessment_steps(self):
+        return self._block.assessment_steps
+
+    @property
     def has_status(self):
         return bool(self.status)
 
