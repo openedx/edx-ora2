@@ -5,7 +5,9 @@ XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
 from xblock.core import XBlock
 
-from openassessment.xblock.ui_mixins.mfe.serializers import OraBlockInfoSerializer
+from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import (
+    OraBlockInfoSerializer,
+)
 
 
 class MfeMixin:
