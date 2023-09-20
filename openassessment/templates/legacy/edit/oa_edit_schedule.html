@@ -1,0 +1,121 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+<div id="oa_schedule_editor_wrapper" class="oa_editor_content_wrapper wrapper-comp-settings">
+    <p class="openassessment_schedule_setting_header">{% trans "Deadlines Configuration" %}</p>
+
+    <div class="list-input settings-list">
+        <div id="openassessment_date_config_radio" class="openassessment_date_config_radio_container field comp-setting-entry">
+            <h3 class="date_config_radio_header">{% trans "Select a deadline configuration option" %}</h3>
+            {# TODO: Remove this in AU-1433 when the "new" icons are no longer desired #}
+            <span id="dates_config_new_badge">
+                <span class="icon fa fa-star" aria-hidden="true"></span>
+                {% trans " NEW" %}
+            </span>
+            <br/>
+            <div class="openassessment_date_config_radio_wrapper">
+                <div class="wrapper-comp-setting" >
+                    <input id="manual_date_config_type" name="date_config_type" type="radio" value="manual" {% if date_config_type == 'manual' %} checked="true" {% endif %}>
+                    <label class="setting-label" for="manual_date_config_type">{% trans "Configure deadlines manually" %}</label>
+                </div>
+                <div class="wrapper-comp-setting">
+                    <input id="subsection_date_config_type" name="date_config_type" type="radio" value="subsection" {% if date_config_type == 'subsection' %} checked="true" {% endif %} {% if not subsection_end_date %} disabled {% endif %}>
+                    <label class="setting-label" for="subsection_date_config_type">{% trans "Match deadlines to the subsection due date" %}</label>
+                </div>
+                <div class="wrapper-comp-setting">
+                    <input id="course_end_date_config_type" name="date_config_type" type="radio" value="course_end" {% if date_config_type == 'course_end' %} checked="true" {% endif %} {% if not course_end_date %} disabled {% endif %}>
+                    <label class="setting-label" for="course_end_date_config_type">{% trans "Match deadlines to the course end date" %}</label>
+                </div>
+            </div>
+            <a class="date_config_doc_link" target="_blank" href="{{ date_config_type_doc_url }}">{% trans "Learn more about open response date settings" %}</a>
+        </div>
+    </div>
+
+    <ul id="manual_schedule_settings_list" class="schedule_setting_list list-input settings-list {% if date_config_type != 'manual' %} is--hidden {% endif %}">
+        <li class="field comp-setting-entry">
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_start_date"
+                    class="setting-label">
+                    {% trans "Response Start Date" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_start_date"
+                    value="{{ submission_start|utc|date:"Y-m-d" }}"
+                >
+            </div>
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_start_time"
+                    class="setting-label">
+                    {% trans "Response Start Time" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_start_time"
+                    value="{{ submission_start|utc|date:"H:i" }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "The date and time when learners can begin submitting responses." %}</p>
+        </li>
+
+        <li class="field comp-setting-entry">
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_due_date"
+                    class="setting-label">
+                    {% trans "Response Due Date" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_due_date"
+                    value="{{ submission_due|utc|date:"Y-m-d" }}"
+                >
+            </div>
+            <div class="wrapper-comp-setting">
+                <label
+                    for="openassessment_submission_due_time"
+                    class="setting-label">
+                    {% trans "Response Due Time" %}
+                </label>
+                <input
+                    type="text"
+                    class="input setting-input"
+                    id="openassessment_submission_due_time"
+                    value="{{ submission_due|utc|date:"H:i" }}"
+                >
+            </div>
+            <p class="setting-help">{% trans "The date and time when learners can no longer submit responses." %}</p>
+        </li>
+
+        {% include "legacy/edit/oa_edit_peer_assessment_schedule.html" %}
+
+        {% include "legacy/edit/oa_edit_self_assessment_schedule.html" %}
+    </ul>
+
+    <div id="subsection_schedule_settings_list" class="schedule_setting_list list-input settings-list {% if date_config_type != 'subsection' %} is--hidden {% endif %}">
+        <div class="field comp-setting-entry">
+            <h3>Submission and assesssment due dates will align with the subsection due date.</h3>
+            <br/>
+            <h3>The subsection due date is currently {{ subsection_end_date|utc|date:"Y-m-d" }}</h3>
+            <br/>
+            <h3>Learners will have until the subsection is due to submit response and complete all assesment steps.</h3>
+        </div>
+    </div>
+
+    <div id="course_end_schedule_settings_list" class="schedule_setting_list list-input settings-list {% if date_config_type != 'course_end' %} is--hidden {% endif %}">
+        <div class="field comp-setting-entry">
+            <h3>Submission and assesssment due dates will align with the course end date.</h3>
+            <br/>
+            <h3>The course end date is currently {{ course_end_date|utc|date:"Y-m-d" }}</h3>
+            <br/>
+            <h3>Learners will have until the course ends to submit response and complete all assesment steps.</h3>
+        </div>
+    </div>
+
+</div>
+{% endspaceless %}

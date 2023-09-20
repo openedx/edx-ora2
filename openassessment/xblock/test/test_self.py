@@ -167,7 +167,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # Start date is in the future for this scenario
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/self/oa_self_unavailable.html',
+            'legacy/self/oa_self_unavailable.html',
             {
                 'self_start': datetime.datetime(5999, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_multiple_files': True,
@@ -183,7 +183,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # Due date is in the past for this scenario
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/self/oa_self_closed.html',
+            'legacy/self/oa_self_closed.html',
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_multiple_files': True,
@@ -198,7 +198,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
     def test_open_no_submission(self, xblock):
         # Without making a submission, this step should be unavailable
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_unavailable.html',
+            xblock, 'legacy/self/oa_self_unavailable.html',
             {
                 'allow_multiple_files': True,
                 'allow_latex': False,
@@ -215,7 +215,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
 
         # Should still be able to access self-assessment because peer status can be skipped
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_assessment.html', {
+            xblock, 'legacy/self/oa_self_assessment.html', {
                 'file_upload_type': True,
                 'self_submission': True,
                 'prompts_type': True,
@@ -235,7 +235,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # to be assessed), then the self step should display as completed.
         self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            xblock, 'legacy/self/oa_self_complete.html',
             {
                 'allow_multiple_files': True,
                 'allow_latex': False,
@@ -257,7 +257,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # In the self --> peer configuration, self can be complete
         # if our status is "peer"
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            xblock, 'legacy/self/oa_self_complete.html',
             {
                 'allow_multiple_files': True,
                 'allow_latex': False,
@@ -278,7 +278,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # Simulate the workflow status being "done"
         self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            xblock, 'legacy/self/oa_self_complete.html',
             {
                 'allow_multiple_files': True,
                 'allow_latex': False,
@@ -294,7 +294,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # Simulate the workflow status being "done"
         self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_cancelled.html',
+            xblock, 'legacy/self/oa_self_cancelled.html',
             {
                 'allow_multiple_files': True,
                 'allow_latex': False,
@@ -310,7 +310,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # Simulate the workflow being in the self assessment step
         submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_assessment.html',
+            xblock, 'legacy/self/oa_self_assessment.html',
             {
                 'rubric_criteria': xblock.rubric_criteria,
                 'self_submission': submission,
@@ -340,7 +340,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
             create_rubric_dict(xblock.prompts, xblock.rubric_criteria)
         )
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            xblock, 'legacy/self/oa_self_complete.html',
             {
                 'allow_multiple_files': True,
                 'allow_latex': False,
@@ -359,7 +359,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/self/oa_self_closed.html',
+            'legacy/self/oa_self_closed.html',
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_multiple_files': True,
@@ -392,7 +392,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase, SubmissionTestMixin):
         # We're checking it anyway to be overly defensive: if the user has made a self-assessment,
         # we ALWAYS show complete, even if the workflow tells us we're still have status 'self'.
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            xblock, 'legacy/self/oa_self_complete.html',
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_multiple_files': True,

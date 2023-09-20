@@ -1,0 +1,50 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+    <div class="drag-handle action"></div>
+
+    <div class="openassessment_inclusion_wrapper">
+        <input type="checkbox" id="include_student_training"
+            {% if assessments.student_training %} checked="true" {% endif %}>
+        <label for="include_student_training">{% trans "Step: Learner Training" %}</label>
+    </div>
+
+    <div class="openassessment_assessment_module_editor">
+        <p class="openassessment_description">
+            {% trans "Learner Training is used to help students practice grading a simulated peer submission in order to train them on the rubric and ensure learner's understand the rubric for either Self or Peer Assessment steps." %}
+        </p>
+        <p class="openassessment_description">
+            {% trans "Configuration: For this step to be fully configured you must provide one or more graded sample responses. Learners must then match this instructor score to advance and are provided feedback when their score doesn't match the sample response." %}
+        </p>
+        <div id="student_training_settings_editor" class="assessment_settings_wrapper {% if not assessments.student_training %} is--hidden {% endif %}">
+            <p class="openassessment_view_details">
+                <a id="student_training_settings_editor_show_details" class="{% if not assessments.student_training %} is--hidden {% endif %}" href="#">
+                    {% trans "View / Add Sample Responses" %}
+                </a>
+            </p>
+            <div id="student_training_settings_editor_details" class="{% if assessments.student_training %} is--hidden {% endif %}">
+                <ol id="openassessment_training_example_list">
+                    {% for example in assessments.training.examples %}
+                        {% include "legacy/edit/oa_training_example.html" with example=example %}
+                    {% endfor %}
+                </ol>
+                <div id="openassessment_add_training_example">
+                    <h2 class='openassessment_add_training_example'>{% trans "Add Sample Response" %}</h2>
+                </div>
+            </div>
+        </div>
+        <ol id="openassessment_training_example_template" class="is--hidden">
+            {% include "legacy/edit/oa_training_example.html" with example=assessments.training.template %}
+        </ol>
+        <ol id="openassessment_training_example_criterion_template" class="is--hidden">
+            {% include "legacy/edit/oa_training_example_criterion.html" %}
+        </ol>
+        <ol id="openassessment_training_example_part_template" class="is--hidden">
+            <li class="openassessment_training_example_essay_part">
+                <textarea maxlength="100000"></textarea>
+            </li>
+        </ol>
+    </div>
+
+</li>
+{% endspaceless %}

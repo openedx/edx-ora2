@@ -696,7 +696,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     @scenario('data/submission_unavailable.xml', user_id="Bob")
     def test_unavailable(self, xblock):
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_unavailable.html',
+            xblock, 'legacy/response/oa_response_unavailable.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -724,7 +724,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         # the submission.
         submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -748,7 +748,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_unanswered(self, xblock):
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -786,7 +786,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         xblock.user_state_upload_data_enabled = Mock(return_value=True)
         xblock.is_team_assignment = Mock(return_value=True)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -907,7 +907,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     @scenario('data/submission_no_deadline.xml', user_id="Bob")
     def test_open_no_deadline(self, xblock):
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -947,7 +947,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         del xblock.location  # self.request() inserts dummy location
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1108,7 +1108,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         del xblock.location  # self.request() inserts dummy location
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1259,7 +1259,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         xblock.has_saved = True
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1308,7 +1308,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     def test_open_submitted(self, xblock):
         submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1344,7 +1344,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         )
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_cancelled.html',
+            xblock, 'legacy/response/oa_response_cancelled.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1405,7 +1405,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         )
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_cancelled.html',
+            xblock, 'legacy/response/oa_response_cancelled.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1443,7 +1443,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         xblock.prompts = [{'description': 'One prompt.'}]
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1471,7 +1471,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     @scenario('data/submission_closed.xml', user_id="Bob")
     def test_closed_incomplete(self, xblock):
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_closed.html',
+            xblock, 'legacy/response/oa_response_closed.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1495,7 +1495,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     def test_closed_submitted(self, xblock):
         submission = self.create_test_submission(xblock)
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            xblock, 'legacy/response/oa_response_submitted.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1530,7 +1530,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         })
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_graded.html',
+            xblock, 'legacy/response/oa_response_graded.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1563,7 +1563,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         })
 
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_graded.html',
+            xblock, 'legacy/response/oa_response_graded.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,
@@ -1663,7 +1663,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         # Assert that the xblock will render Red Five's existing submission rather that
         # no submission (because TestTeam does not yet have a submission)
         path, context = xblock.submission_path_and_context()
-        self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
+        self.assertEqual(path, 'legacy/response/oa_response_submitted.html')
         self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
 
     @scenario('data/team_submission.xml', user_id="Red Five")
@@ -1699,7 +1699,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
 
         # Assert that the xblock will render Red Five's existing submission rather that no submission
         path, context = xblock.submission_path_and_context()
-        self.assertEqual(path, 'openassessmentblock/response/oa_response_submitted.html')
+        self.assertEqual(path, 'legacy/response/oa_response_submitted.html')
         self.assertEqual(context['student_submission'], create_submission_dict(individual_submission, xblock.prompts))
 
     @scenario('data/team_submission.xml', user_id="Red Five")
@@ -1719,7 +1719,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
 
         # Assert that the xblock renders an unavailable submission
         path, _ = xblock.submission_path_and_context()
-        self.assertEqual(path, 'openassessmentblock/response/oa_response_unavailable.html')
+        self.assertEqual(path, 'legacy/response/oa_response_unavailable.html')
 
     @scenario('data/team_submission.xml', user_id="Red Five")
     def test_team_has_already_submitted(self, xblock):
@@ -1747,7 +1747,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
 
         # Assert that we return the 'team already submitted' path
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response_team_already_submitted.html',
+            xblock, 'legacy/response/oa_response_team_already_submitted.html',
             {
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -1785,7 +1785,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         the context. This allows us to show what files types are allowed for any upload configuration.
         """
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/response/oa_response.html',
+            xblock, 'legacy/response/oa_response.html',
             {
                 'allow_latex': False,
                 'allow_multiple_files': True,

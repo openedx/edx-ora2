@@ -37,7 +37,7 @@ class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         """ Check Staff Assessment path and context correct. """
         path, context = xblock.staff_path_and_context()
 
-        self.assertEqual('openassessmentblock/staff/oa_staff_grade.html', path)
+        self.assertEqual('legacy/staff/oa_staff_grade.html', path)
         self.assertCountEqual(expected_context, context)
 
         # Verify that we render without error

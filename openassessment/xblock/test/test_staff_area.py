@@ -289,7 +289,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNotNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
         self.assertIsNone(context['staff_assessment'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
         # Bob still needs to assess other learners
         self.assertIsNone(context['grade_details'])
@@ -323,7 +323,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['peer_assessments'])
         self.assertIsNotNone(context['self_assessment'])
         self.assertIsNone(context['staff_assessment'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
         grade_details = context['grade_details']
         self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
@@ -392,7 +392,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
         self.assertIsNotNone(context['staff_assessment'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
         grade_details = context['grade_details']
         self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
@@ -431,7 +431,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEqual("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
-        self.assertEqual("openassessmentblock/staff_area/oa_student_info.html", path)
+        self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
@@ -463,7 +463,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         xblock.submission_uuid = submission["uuid"]
         path, _ = xblock.peer_path_and_context(False)
-        self.assertEqual("openassessmentblock/peer/oa_peer_cancelled.html", path)
+        self.assertEqual("legacy/peer/oa_peer_cancelled.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_image_submission(self, xblock):
@@ -1094,7 +1094,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             self._verify_staff_assessment_rendering(
                 xblock,
-                'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html',
+                'legacy/staff_area/oa_staff_grade_learners_assessment.html',
                 context,
                 FILE_URL,
             )
@@ -1411,7 +1411,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         new_context['staff_file_urls'] = staff_urls
         self._verify_staff_assessment_rendering(
             xblock,
-            'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html',
+            'legacy/staff_area/oa_staff_grade_learners_assessment.html',
             new_context,
             FILE_URL,
         )

@@ -35,7 +35,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         # Start date is in the future for this scenario
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/leaderboard/oa_leaderboard_waiting.html',
+            'legacy/leaderboard/oa_leaderboard_waiting.html',
             {'xblock_id': xblock.scope_ids.usage_id}
         )
         self._assert_leaderboard_visible(xblock, True)
@@ -286,7 +286,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         self._assert_path_and_context(
             xblock,
-            'openassessmentblock/leaderboard/oa_leaderboard_show.html',
+            'legacy/leaderboard/oa_leaderboard_show.html',
             {
                 'topscores': scores,
                 'allow_multiple_files': xblock.allow_multiple_files,
