@@ -1,3 +1,31 @@
-<div>
-  <h1>Hello world</h1>
+{% load i18n %}
+{% spaceless %}
+<div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
+      <script>
+        /*
+        if (window !== window.parent) {
+            window.parent.postMessage(
+                {
+                    'type': 'plugin.modal',
+                    'payload': {
+                        'url': 'http://localhost:1992/embedded/peer_assessment/23',
+                        'title': 'title',
+                        'height': '83vh',
+                    }
+                },
+                document.referrer
+            );
+        }
+       */
+      </script>
+    <div class="openassessment problem">
+          <iframe title="title" allow="microphone *; camera *; midi *; geolocation *; encrypted-media *, clipboard-write *" frameborder="0" src="http://localhost:1992/embedded/xblock/23"></iframe>
+        <div class="wrapper--grid">
+            {% if show_staff_area %}
+                <div class="openassessment__staff-area"></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="sr reader-feedback" aria-live="polite"></div>
 </div>
+{% endspaceless %}
