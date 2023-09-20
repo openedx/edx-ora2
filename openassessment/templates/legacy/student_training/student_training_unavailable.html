@@ -1,0 +1,22 @@
+{% extends "legacy/student_training/student_training.html" %}
+{% load i18n %}
+
+{% block list_item %}
+    <li class="openassessment__steps__step step--student-training is--empty is--unavailable ui-slidable__container"
+        tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" disabled>
+{% endblock %}
+
+{% block title %}
+    <span class="step__status">
+  <span id="oa_step_status" class="step__status__value">
+    <span class="copy">{% trans "Not Available" %}</span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

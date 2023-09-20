@@ -1,0 +1,37 @@
+{% extends "legacy/self/oa_self_assessment.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li id="openassessment__self-assessment__{{ xblock_id }}"
+    class="openassessment__steps__step step--self-assessment is--showing is--incomplete ui-slidable__container"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="true" id="oa_self_{{ xblock_id }}" aria-controls="oa_self_{{ xblock_id }}_content" aria-labeledby="oa_step_title_self">
+        <span class="icon fa fa-caret-right" aria-hidden="false"/>
+    </button>
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span id="oa_step_status_self" class="step__status__value">
+    <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
+    <span class="copy">{% trans "Incomplete" %}</span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="ui-slidable__content" aria-labelledby="oa_self_{{ xblock_id }}" id="oa_self_{{ xblock_id }}_content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--incomplete">
+            <h5 class="message__title">{% trans "Status" %}</h5>
+            <div class="message__content">
+                 <p>{% trans "The due date for this step has passed. This step is now closed. You can no longer complete a self assessment or continue with this assignment, and you will receive a grade of Incomplete." %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
