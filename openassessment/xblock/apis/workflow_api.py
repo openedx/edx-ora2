@@ -6,6 +6,7 @@ Exposed api for ORA XBlock workflows.
 class WorkflowAPI:
     def __init__(self, block):
         self._block = block
+        self.grades = self._block.grades_data
 
     def get_workflow_info(self, submission_uuid=None):
         return self._block.get_workflow_info(submission_uuid)
