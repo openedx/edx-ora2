@@ -3,6 +3,7 @@ Serializer for assessments
 """
 from rest_framework.serializers import Serializer
 
+
 class AssessmentResponseSerializer(Serializer):
     """
     Given we want to load an assessment response,
@@ -10,4 +11,5 @@ class AssessmentResponseSerializer(Serializer):
 
     Data same shape as Submission, but coming from different sources.
     """
+
     pass
