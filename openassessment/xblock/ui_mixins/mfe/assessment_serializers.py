@@ -1,6 +1,8 @@
 """
 Serializer for assessments
 """
+# pylint: disable=abstract-method
+
 from rest_framework.serializers import Serializer
 
 
