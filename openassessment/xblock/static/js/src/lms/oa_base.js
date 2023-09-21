@@ -26,8 +26,6 @@ Returns:
     OpenAssessment.BaseView
 * */
 export class BaseView {
-    SHOW_NEW_EXPERIENCE = true
-
     IS_SHOWING_CLASS = 'is--showing';
 
     SLIDABLE_CLASS = 'ui-slidable';
@@ -44,7 +42,10 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      if (!this.SHOW_NEW_EXPERIENCE) {
+      this.isMobile = window.navigator.userAgent.includes('org.edx.mobile');
+      this.show_mfe_views = data.mfe_views;
+
+      if (!this.show_mfe_views || this.isMobile) {
         this.fileUploader = new FileUploader();
 
         this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);

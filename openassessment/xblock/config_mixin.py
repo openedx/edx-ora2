@@ -14,9 +14,11 @@ TEAM_SUBMISSIONS = 'team_submissions'
 USER_STATE_UPLOAD_DATA = 'user_state_upload_data'
 RUBRIC_REUSE = 'rubric_reuse'
 ENHANCED_STAFF_GRADER = 'enhanced_staff_grader'
+MFE_VIEWS = 'mfe_views'
 
 FEATURE_TOGGLES_BY_FLAG_NAME = {
     ALL_FILES_URLS: 'ENABLE_ORA_ALL_FILE_URLS',
+    MFE_VIEWS: 'ENABLE_ORA_MFE_VIEWS',
     TEAM_SUBMISSIONS: 'ENABLE_ORA_TEAM_SUBMISSIONS',
     USER_STATE_UPLOAD_DATA: 'ENABLE_ORA_USER_STATE_UPLOAD_DATA',
     RUBRIC_REUSE: 'ENABLE_ORA_RUBRIC_REUSE',
@@ -88,6 +90,13 @@ class ConfigMixin:
             return True
 
         return False
+
+    @cached_property
+    def mfe_views_enabled(self):
+        """
+        Returns a boolean specifying if mfe views are enabled.
+        """
+        return self.is_feature_enabled(MFE_VIEWS)
 
     @cached_property
     def team_submissions_enabled(self):
