@@ -3,6 +3,7 @@ Submission-related serializers for ORA's BFF.
 
 These are the response shapes that power the MFE implementation of the ORA UI.
 """
+# pylint: disable=abstract-method
 
 from rest_framework.serializers import (
     Serializer,
