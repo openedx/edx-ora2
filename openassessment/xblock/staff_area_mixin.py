@@ -14,6 +14,7 @@ from submissions.errors import SubmissionNotFoundError
 from openassessment.assessment.errors import PeerAssessmentInternalError
 from openassessment.fileupload.api import delete_shared_files_for_team, remove_file
 from openassessment.workflow.errors import AssessmentWorkflowError, AssessmentWorkflowInternalError
+from openassessment.xblock.ui_mixins.legacy import peer_assessments
 from openassessment.xblock.utils.data_conversion import create_submission_dict
 from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE, DISTANT_PAST
 
@@ -599,12 +600,18 @@ class StaffAreaMixin:
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
 
+    def unsubmit(self, user_id, course_id, item_id, requesting_user_id):
+        self._reset_submission(user_id, course_id, item_id, requesting_user_id, "Response unsubmitted", False)
+
     def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
         """
         This xblock method is called (from our LMS runtime, which defines this method signature) to clear student state
         for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
         and pass through to the submissions API to orphan the submission so that the user can create a new one.
         """
+        self._reset_submission(user_id, course_id, item_id, requesting_user_id, "Student state cleared", True)
+    
+    def _reset_submission(self, user_id, course_id, item_id, requesting_user_id, reason, delete_files):
         # Import is placed here to avoid model import at project startup.
         from submissions import api as submission_api
         # Note that student_item cannot be constructed using get_student_item_dict, since we're in a staff context
@@ -614,30 +621,37 @@ class StaffAreaMixin:
             'item_id': item_id,
             'item_type': 'openassessment',
         }
-        submissions = submission_api.get_submissions(student_item)
+        try:
+            submission = submission_api.get_submissions(student_item)[0]
+        except submission_api.SubmissionNotFoundError:
+            # No submission, nothing to do
+            return
 
         if self.is_team_assignment():
-            self.clear_team_state(user_id, course_id, item_id, requesting_user_id, submissions)
+            self._reset_submission_for_team(user_id, course_id, item_id, requesting_user_id, submission, reason, delete_files)
         else:
-            # There *should* only be one submission, but the logic is easy to extend for multiples so we may as well
-            for sub in submissions:
-                # Remove the submission from grading pools
-                self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
+            self._reset_submission_for_learner(user_id, course_id, item_id, requesting_user_id, submission, reason, delete_files)
 
-                # Delete files from the backend
-                if 'file_keys' in sub['answer']:
-                    for key in sub['answer']['file_keys']:
-                        remove_file(key)
+    def _reset_submission_for_learner(self, user_id, course_id, item_id, requesting_user_id, submission, reason, delete_files):
+        # Remove the submission from grading pools
+        self._cancel_workflow(submission['uuid'], reason, requesting_user_id=requesting_user_id)
 
-                # Tell the submissions API to orphan the submission to prevent it from being accessed
-                submission_api.reset_score(
-                    user_id,
-                    course_id,
-                    item_id,
-                    clear_state=True
-                )
+        if delete_files:
+            # Delete files from the backend
+            if 'file_keys' in submission['answer']:
+                for key in submission['answer']['file_keys']:
+                    remove_file(key)
 
-    def clear_team_state(self, user_id, course_id, item_id, requesting_user_id, submissions):
+        # Tell the submissions API to orphan the submission to prevent it from being accessed
+        from submissions import api as submission_api
+        submission_api.reset_score(
+            user_id,
+            course_id,
+            item_id,
+            clear_state=True
+        )
+
+    def _reset_submission_for_team(self, user_id, course_id, item_id, requesting_user_id, submission, reason, delete_files):
         """
         This is called from clear_student_state (which is called from the LMS runtime) when the xblock is a team
         assignment, to clear student state for an entire team for a given problem. It will cancel the workflow
@@ -646,13 +660,10 @@ class StaffAreaMixin:
         """
         student_item_string = f"course {course_id} item {item_id} user {user_id}"
 
-        if not submissions:
+        if not submission:
             logger.warning('Attempted to reset team state for %s but no submission was found', student_item_string)
             return
-        if len(submissions) != 1:
-            logger.warning('Unexpected multiple individual submissions for team assignment. %s', student_item_string)
 
-        submission = submissions[0]
         team_submission_uuid = str(submission.get('team_submission_uuid', None))
         if not team_submission_uuid:
             logger.warning(
@@ -664,15 +675,16 @@ class StaffAreaMixin:
         # Remove the submission from grading pool
         self._cancel_team_workflow(
             team_submission_uuid,
-            "Student and team state cleared",
+            reason,
             requesting_user_id
         )
 
         from submissions import team_api as team_submissions_api
 
-        # Clean up shared files for the team
-        team_id = team_submissions_api.get_team_submission(team_submission_uuid).get('team_id', None)
-        delete_shared_files_for_team(course_id, item_id, team_id)
+        if delete_files:
+            # Clean up shared files for the team
+            team_id = team_submissions_api.get_team_submission(team_submission_uuid).get('team_id', None)
+            delete_shared_files_for_team(course_id, item_id, team_id)
 
         # Tell the submissions API to orphan the submissions to prevent them from being accessed
         team_submissions_api.reset_scores(team_submission_uuid, clear_state=True)

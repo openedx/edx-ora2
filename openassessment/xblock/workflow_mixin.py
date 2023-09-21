@@ -149,7 +149,6 @@ class WorkflowMixin:
             else:
                 team_submission_uuid = None
             return self.get_team_workflow_info(team_submission_uuid)
-
         if submission_uuid is None:
             submission_uuid = self.get_submission_uuid()
 

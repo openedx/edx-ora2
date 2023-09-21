@@ -181,7 +181,7 @@ def get_submission_context(config, submission_info):
     workflow_context = {}
     if submission_info.due_date:
         workflow_context["submission_due"] = submission_info.due_date
-
+    breakpoint()
     # Response is unavailable (not yet open or past due date)
     if not submission_info.has_submitted and submission_info.problem_is_inaccessible:
         if submission_info.is_not_available_yet:
