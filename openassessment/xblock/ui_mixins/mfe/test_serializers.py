@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 import ddt
 
 
-from openassessment.xblock.ui_mixins.mfe.serializers import (
+from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import (
     AssessmentStepsSerializer,
     LeaderboardConfigSerializer,
     RubricConfigSerializer,
