@@ -54,7 +54,7 @@ class GradesAPI:
             submission_uuid, peer_requirements, course_settings
         )
 
-        if assessment is not None:
+        if peer_score is not None:
             return {
                 "points_earned": peer_score["points_earned"],
                 "points_possible": peer_score["points_possible"],
