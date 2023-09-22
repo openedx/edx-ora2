@@ -27,10 +27,13 @@ class GradesAPI:
         """
         submission_uuid = self._get_submission_uuid()
         assessment = self_api.get_assessment(submission_uuid)
-        return {
-            "points_earned": assessment["points_earned"],
-            "points_possible": assessment["points_possible"],
-        }
+
+        if assessment is not None:
+            return {
+                "points_earned": assessment["points_earned"],
+                "points_possible": assessment["points_possible"],
+            }
+        return None
 
     @property
     def peer_score(self):
@@ -51,10 +54,12 @@ class GradesAPI:
             submission_uuid, peer_requirements, course_settings
         )
 
-        return {
-            "points_earned": peer_score["points_earned"],
-            "points_possible": peer_score["points_possible"],
-        }
+        if assessment is not None:
+            return {
+                "points_earned": peer_score["points_earned"],
+                "points_possible": peer_score["points_possible"],
+            }
+        return None
 
     @property
     def staff_score(self):
@@ -70,10 +75,9 @@ class GradesAPI:
         submission_uuid = self._get_submission_uuid()
         assessment = staff_api.get_latest_staff_assessment(submission_uuid)
 
-        if not assessment:
-            return {}
-
-        return {
-            "points_earned": assessment["points_earned"],
-            "points_possible": assessment["points_possible"],
-        }
+        if assessment is not None:
+            return {
+                "points_earned": assessment["points_earned"],
+                "points_possible": assessment["points_possible"],
+            }
+        return None
