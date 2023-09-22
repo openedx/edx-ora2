@@ -150,7 +150,7 @@ class ActiveStepInfoSerializer(Serializer):
         elif active_step in ("submission", "done"):
             return {}
         else:
-            #  pylint: disable=broad-exception-raised
+            # pylint: disable=broad-exception-raised
             raise Exception(f"Bad step name: {active_step}")
 
 
@@ -217,5 +217,5 @@ class PageDataSerializer(Serializer):
         elif self.context.get("view") == "assessment":
             return AssessmentResponseSerializer(instance.api_data, context=self.context).data
         else:
-            #  pylint: disable=broad-exception-raised
+            # pylint: disable=broad-exception-raised
             raise Exception("Missing view context for page")
