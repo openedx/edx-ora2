@@ -13,5 +13,3 @@ class AssessmentResponseSerializer(Serializer):
 
     Data same shape as Submission, but coming from different sources.
     """
-
-    pass

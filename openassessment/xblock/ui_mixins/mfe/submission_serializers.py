@@ -27,5 +27,3 @@ class SubmissionSerializer(Serializer):
         response: (Object)
     }
     """
-
-    pass
