@@ -69,54 +69,54 @@ def update_workflows_for_all_blocked_submissions():
 
 
 @log_task_info
-def update_workflows_for_course(course_id, workflow_update_data=None):
+def update_workflows_for_course(course_id, workflow_update_data_for_course=None):
     """
     Updates ORA workflows created for the given course
 
     Args:
         course_id (str): Course identifier
-        workflow_update_data (dict): optional dictionary containing data required to
+
+        workflow_update_data_for_course (dict): optional dictionary containing data required to
         update ORA workflow for submission. If not passed, data will be retrieved from DB
 
         Sample structure (assessment_requirements and course_settings content omitted):
        ```
         {
-          "course_id": "value",
+          "course_id": str,
           "course_settings": {},
           "assessments": [
             {
-              "item_id": "value",
+              "item_id": str,
               "assessment_requirements": {},
-              "submissions": [
-                {
-                  "submission_uuid": "value"
-                }
-              ]
+              "submissions": [str]
             }
           ]
         }
-
     ```
     Raises:
         UpdateWorkflowsForCourseException: If batch process fails and cannot continue.
     """
     try:
-        if workflow_update_data is None:
+        if workflow_update_data_for_course is None:
             peer_workflows = get_blocked_peer_workflows(course_id=course_id)
-            workflow_update_data = _get_workflow_update_data_for_course(peer_workflows, course_id=course_id)
+            data = get_workflow_update_data(peer_workflows)
+            workflow_update_data_for_course = _get_course_data(data, course_id)
 
-        if workflow_update_data is not None and workflow_update_data.get("assessments") is not None:
-            for item in workflow_update_data["assessments"]:
+        if workflow_update_data_for_course is not None and workflow_update_data_for_course.get(
+                "assessments") is not None:
+            for assessment in workflow_update_data_for_course["assessments"]:
                 # execute asynchronously (submit Celery task)
-                ora_data = _get_ora_data(course_object=workflow_update_data, item_id=item["item_id"])
-                tasks.update_workflows_for_ora_block_task.apply_async([item["item_id"], ora_data])
+
+                tasks.update_workflows_for_ora_block_task.apply_async(
+                    [assessment["item_id"], assessment,
+                     workflow_update_data_for_course["course_settings"]])
 
             return WorkflowUpdateResult(message="Batch workflow tasks submitted successfully for "
                                                 "each ORA item_id within course. ",
                                         course_id=course_id,
-                                        task_count=len(workflow_update_data["assessments"]))
+                                        task_count=len(workflow_update_data_for_course["assessments"]))
         else:
-            return WorkflowUpdateResult(message="No blocked ORA submissions found for the course."
+            return WorkflowUpdateResult(message="No blocked ORA submissions found for the course. "
                                                 "Batch workflow update completed without submitting any tasks.",
                                         course_id=course_id,
                                         task_count=0)
@@ -131,7 +131,7 @@ def update_workflows_for_course(course_id, workflow_update_data=None):
 
 
 @log_task_info
-def update_workflows_for_ora_block(item_id, workflow_update_data=None):
+def update_workflows_for_ora_block(item_id, workflow_update_data_for_ora=None, course_settings=None):
     """
     Updates ORA workflows created for the given ORA Block
 
@@ -139,46 +139,50 @@ def update_workflows_for_ora_block(item_id, workflow_update_data=None):
     item_id (str): Identifier for the ORA Block
         e.g. 'block-v1:edX+DemoX+Demo_Course+type@openassessment+block@1676f4b05f0642249ff724e7c07d869e'
 
-    workflow_update_data (dict): optional dictionary containing data required to
+    workflow_update_data_for_ora (dict): optional dictionary containing data required to
         update ORA workflow for submission. If not passed, data will be retrieved from DB
 
         Sample structure (assessment_requirements and course_settings content omitted):
         ```
             {
-              "course_id" = "value",
-              "course_settings" = {}
-              "item_id": "value",
+              "item_id": str,
               "assessment_requirements": {},
-              "submissions": [
-                {"submission_uuid": "value"}
-              ]
+              "submissions": [str]
             }
-    ```
+        ```
+    course_settings (dict) - course block overrides/settings containing flexible peer grading override flag,
+        e.g.
+        ```
+             {
+                'force_on_flexible_peer_openassessments': True
+             }
+        ```
 
     Raises:
         OraWorkflowBatchUpdateException: If batch process fails and cannot continue, e.g. number of errors
                                         threshold was exceeded, etc.
     """
     try:
-        if workflow_update_data is None:
+        if workflow_update_data_for_ora is None or course_settings is None:
             peer_workflows = get_blocked_peer_workflows(item_id=item_id)
-            workflow_update_data = _get_workflow_update_data_for_ora(peer_workflows, item_id)
+            workflow_update_data_for_ora, course_settings = \
+                _get_workflow_update_data_and_course_settings(peer_workflows, item_id)
 
-        if workflow_update_data is not None and workflow_update_data.get('assessment_requirements') is not None:
-            assessment_requirements = workflow_update_data['assessment_requirements']
-            course_settings = workflow_update_data['course_settings']
+        if workflow_update_data_for_ora is not None and workflow_update_data_for_ora.get(
+                'assessment_requirements') is not None:
+            assessment_requirements = workflow_update_data_for_ora['assessment_requirements']
 
-            for item in workflow_update_data["submissions"]:
+            for submission_uuid in workflow_update_data_for_ora["submissions"]:
                 # execute asynchronously (submit Celery task)
                 tasks.update_workflow_for_submission_task.apply_async(
-                    [item["submission_uuid"], assessment_requirements, course_settings])
+                    [submission_uuid, assessment_requirements, course_settings])
 
             return WorkflowUpdateResult(message="Batch workflow update for blocked ORA "
                                                 "submissions completed successfully. ",
                                         item_id=item_id,
                                         assessment_requirements=assessment_requirements,
                                         course_settings=course_settings,
-                                        task_count=len(workflow_update_data["submissions"]))
+                                        task_count=len(workflow_update_data_for_ora["submissions"]))
         else:
             return WorkflowUpdateResult(message="No blocked ORA submissions found for the ORA item. "
                                                 "Batch workflow update completed without submitting any tasks.",
@@ -205,12 +209,8 @@ def update_workflow_for_submission(submission_uuid, assessment_requirements=None
         if assessment_requirements is None or course_settings is None:
             peer_workflows = get_blocked_peer_workflows(submission_uuid)
             if peer_workflows is not None:
-                workflow_update_data = get_workflow_update_data(peer_workflows)
-                submission_data = _get_submission_data(workflow_update_data, submission_uuid=submission_uuid)
-
-                # only one course with one ORA item expected for a given submission
-                course_settings = submission_data["course_settings"]
-                assessment_requirements = submission_data["assessment_requirements"]
+                course_settings, assessment_requirements = \
+                    _get_course_settings_and_assessment_requirements(peer_workflows, submission_uuid)
 
         api.update_from_assessments(submission_uuid, assessment_requirements, course_settings)
 
@@ -228,23 +228,26 @@ def update_workflow_for_submission(submission_uuid, assessment_requirements=None
         raise UpdateWorkflowForSubmissionException(str(e)) from e
 
 
-def is_flexible_peer_grading_on(ora_block, course_block):
+def is_flexible_peer_grading_on(assessment_requirements, course_settings):
     """
     Verify on ORA and Course level if flexible peer grading is "ON"
 
     Args:
-        ora_block (OpenAssessmentBlock): ORA block
-        course_block (CourseBlock): Course block
+        assessment_requirements (dict): retrieved from ORA block
+        course_settings (dict): Course overrides retrieved from course block. Must contain flexible peer grading
+                                override flag, e.g.
+                                ```
+                                {'force_on_flexible_peer_openassessments': True}
+                                ```
 
     Returns:
         bool: True if given ORA is configured with flexible peer grading set "ON"
     """
-    if ora_block is not None:
-        workflow_requirements = ora_block.workflow_requirements()
-        if workflow_requirements.get('peer') and workflow_requirements['peer'].get('enable_flexible_grading'):
-            return True
-    if course_block is not None:
-        return course_block.force_on_flexible_peer_openassessments
+
+    if assessment_requirements.get('peer') and assessment_requirements['peer'].get('enable_flexible_grading') is True:
+        return True
+    if course_settings is not None:
+        return course_settings.get('force_on_flexible_peer_openassessments')
 
     return False
 
@@ -259,7 +262,7 @@ def get_blocked_peer_workflows(course_id=None, item_id=None, submission_uuid=Non
 
     filters = {
         'created_at__lte': timezone.now() - datetime.timedelta(days=7),
-        'completed_at__isnull': True,
+        'grading_completed_at__isnull': True,
     }
     if course_id is not None:
         filters['course_id'] = course_id
@@ -282,17 +285,13 @@ def get_workflow_update_data(peer_workflows):
     {
       "courses": [
         {
-          "course_id": "value",
+          "course_id": str,
           "course_settings": {},
           "assessments": [
             {
-              "item_id": "value",
+              "item_id": str,
               "assessment_requirements": {},
-              "submissions": [
-                {
-                  "submission_uuid": "value"
-                }
-              ]
+              "submissions": [str]
             }
           ]
         }
@@ -300,108 +299,149 @@ def get_workflow_update_data(peer_workflows):
     }
     ```
     """
+
     workflow_update_data = {}
     store = modulestore()
-    cache = set([])
+    # temp cache to optimize number of DB lookups for course blocks
+    course_settings_cache = {}
+    # temp cache to optimize number of DB lookups for ora blocks
+    assessment_requirements_cache = {}
+
+    submissions_cache = set([])
+
     for peer_workflow in peer_workflows:
+
         try:
-            if peer_workflow.course_id not in cache:
-                # retrieve course block
+            # pylint: disable=consider-iterating-dictionary
+            if peer_workflow.course_id not in course_settings_cache.keys():
+                # retrieve course block from DB
                 course_block_key = UsageKey.from_string(peer_workflow.course_id)
                 course_block = store.get_item(course_block_key)
+                # add course settings to temp cache
+                course_settings_cache[peer_workflow.course_id] = {
+                    'force_on_flexible_peer_openassessments': course_block.force_on_flexible_peer_openassessments}
 
-                # retrieve openassessment block
+            # pylint: disable=consider-iterating-dictionary
+            if peer_workflow.item_id not in assessment_requirements_cache.keys():
+                # retrieve openassessment block from DB
                 ora_block_key = UsageKey.from_string(peer_workflow.item_id)
                 ora_block = store.get_item(ora_block_key)
+                # add assessment requirements to temp cache
+                assessment_requirements_cache[peer_workflow.item_id] = ora_block.workflow_requirements()
 
-                if is_flexible_peer_grading_on(ora_block, course_block):
-                    # we are interested only in submissions for ORA with flexible peer grading configured
-                    course_settings = {
-                        'force_on_flexible_peer_openassessments': course_block.force_on_flexible_peer_openassessments}
-
-                    workflow_update_data = _add_course_data(
+            if peer_workflow.submission_uuid not in submissions_cache:
+                if is_flexible_peer_grading_on(assessment_requirements_cache.get(peer_workflow.item_id),
+                                               course_settings_cache.get(peer_workflow.course_id)):
+                    workflow_update_data = _add_data(
                         workflow_update_data=workflow_update_data,
                         course_id=peer_workflow.course_id,
                         item_id=peer_workflow.item_id,
                         submission_uuid=peer_workflow.submission_uuid,
-                        assessment_requirements=ora_block.workflow_requirements(),
-                        course_settings=course_settings)
+                        assessment_requirements=assessment_requirements_cache.get(peer_workflow.item_id),
+                        course_settings=course_settings_cache.get(peer_workflow.course_id))
 
-                cache.add(peer_workflow.course_id)
-                cache.add(peer_workflow.item_id)
-
-            elif peer_workflow.item_id not in cache:
-                # retrieve openassessment block
-                ora_block_key = UsageKey.from_string(peer_workflow.item_id)
-                ora_block = store.get_item(ora_block_key)
-
-                workflow_update_data = _add_ora_data(workflow_update_data=workflow_update_data,
-                                                     course_id=peer_workflow.course_id,
-                                                     item_id=peer_workflow.item_id,
-                                                     submission_uuid=peer_workflow.submission_uuid,
-                                                     assessment_requirements=ora_block.workflow_requirements())
-            else:
-                workflow_update_data = _add_submission_data(workflow_update_data,
-                                                            course_id=peer_workflow.course_id,
-                                                            item_id=peer_workflow.item_id,
-                                                            submission_uuid=peer_workflow.submission_uuid)
+                submissions_cache.add(peer_workflow.submission_uuid)
 
         except Exception as e:  # pylint: disable=broad-except
             logger.warning(
-                "Error occurred while constructing workflow update data"
+                "Error occurred while constructing workflow update data "
                 "for open assessment: %s  Error:%s",
                 peer_workflow.item_id, str(e))
 
     return workflow_update_data
 
 
-def _get_workflow_update_data_for_course(peer_workflows, course_id):
-    data = get_workflow_update_data(peer_workflows)
-    return _get_course_data(data, course_id)
-
-
-def _get_workflow_update_data_for_ora(peer_workflows, item_id):
-    data = get_workflow_update_data(peer_workflows)
-    return _get_ora_data(data, item_id)
-
-
-def _add_course_data(workflow_update_data, course_id, item_id, submission_uuid, course_settings,
-                     assessment_requirements):
+def _get_workflow_update_data_and_course_settings(peer_workflows, item_id):
     """
-    Adds course data structure to the provided data cache dictionary
+    Helper to provide data required for ora scope workflows update
+
+    Returns:
+        openassessment scope data (dict)
+        course settings (dict)
+    """
+    data = get_workflow_update_data(peer_workflows)
+    if data is not None and data.get("courses") is not None:
+        for course in data.get("courses"):
+            for ora in course.get("assessments"):
+                if ora.get("item_id") == item_id:
+                    return ora, course["course_settings"]
+    return None
+
+
+def _get_course_settings_and_assessment_requirements(peer_workflows, submission_uuid):
+    """
+    Helper providing data required for a workflow update for a single submission
+    Returns:
+        course_settings (dict)
+        assessment_requirements (dict)
+
+    """
+    data = get_workflow_update_data(peer_workflows)
+    if data is not None and data.get("courses") is not None:
+        for course in data.get("courses"):
+            for ora in course.get("assessments"):
+                if submission_uuid in ora["submissions"]:
+                    return course["course_settings"], ora["assessment_requirements"]
+    return None
+
+
+def _add_data(workflow_update_data, course_id, item_id, submission_uuid, course_settings, assessment_requirements):
+    """
+    Adds provided data to the data cache dictionary.
+
+    `workflow_update_data` structure:
+    ```
+       {
+      "courses": [
+        {
+          "course_id": str,
+          "course_settings": {},
+          "assessments": [
+            {
+              "item_id": str,
+              "assessment_requirements": {},
+              "submissions": [str]
+            }
+          ]
+        }
+      ]
+    }
+    ```
+
     """
     if workflow_update_data is None or workflow_update_data.get("courses") is None:
         workflow_update_data = {"courses": []}
-    workflow_update_data["courses"].append({"course_id": course_id, "course_settings": course_settings, "assessments": [
-        {"item_id": item_id, "assessment_requirements": assessment_requirements,
-         "submissions": [{"submission_uuid": submission_uuid}]}]})
-    return workflow_update_data
-
-
-def _add_ora_data(workflow_update_data, course_id, item_id, submission_uuid, assessment_requirements):
-    """
-    Adds ORA data structure to the provided data cache dictionary
-    """
-    _get_course_data(workflow_update_data, course_id).get("assessments").append(
-        {"item_id": item_id, "assessment_requirements": assessment_requirements,
-         "submissions": [{"submission_uuid": submission_uuid}]})
-    return workflow_update_data
-
-
-def _add_submission_data(workflow_update_data, course_id, item_id, submission_uuid):
-    """
-    Adds ORA data structure to the provided data cache dictionary
-    """
     course_data = _get_course_data(workflow_update_data, course_id)
-    ora_data = _get_ora_data(course_data, item_id)
-    ora_data["submissions"].append({"submission_uuid": submission_uuid})
+
+    if course_data is None:
+        course_data = {"course_id": course_id, "course_settings": course_settings, "assessments": [
+            {"item_id": item_id, "assessment_requirements": assessment_requirements,
+             "submissions": [submission_uuid]}]}
+        workflow_update_data["courses"].append(course_data)
+
+    ora_data = None
+    for ora_object in course_data.get("assessments"):
+        if ora_object["item_id"] == item_id:
+            ora_data = ora_object
+
+    if ora_data is None:
+        ora_data = {"item_id": item_id,
+                    "assessment_requirements": assessment_requirements,
+                    "submissions": [submission_uuid]}
+        course_data.get("assessments").append(ora_data)
+
+    if submission_uuid in ora_data.get("submissions"):
+        return workflow_update_data
+
+    ora_data["submissions"].append(submission_uuid)
+
     return workflow_update_data
 
 
 def _get_course_data(workflow_update_data, course_id):
     """
-    Helper function to return `update_workflow_data` dict object structure
-    representing specified course.
+    Helper function to extract dict object structure representing specified course
+    from the `update_workflow_data` dictionary
     E.g.  for requested "course_id_1"
 
     input:
@@ -415,9 +455,7 @@ def _get_course_data(workflow_update_data, course_id):
             {
               "item_id": "item_id_1",
               "assessment_requirements": {},
-              "submissions": [
-                {"submission_uuid": "submission_uuid_1"}
-              ]
+              "submissions": ["submission_uuid_1"]
             }
           ]
         }
@@ -434,9 +472,7 @@ def _get_course_data(workflow_update_data, course_id):
         {
           "item_id": "item_id_1",
           "assessment_requirements": {},
-          "submissions": [
-            {"submission_uuid": "submission_uuid_1"}
-          ]
+          "submissions": ["submission_uuid_1"]
         }
       ]
     }
@@ -447,124 +483,6 @@ def _get_course_data(workflow_update_data, course_id):
         for course_object in workflow_update_data.get("courses"):
             if course_object["course_id"] == course_id:
                 return course_object
-    return None
-
-
-def _get_ora_data(course_object, item_id):
-    """
-    Helper function to return `update_workflow_data` dict object structure
-    representing specified ORA item.
-    E.g.  for requested "item_id_1"
-
-        input:
-
-        ```
-        {
-          "course_id": "course_id_1",
-          "course_settings": {},
-          "assessments": [
-            {
-              "item_id": "item_id_1",
-              "assessment_requirements": {},
-              "submissions": [
-                {"submission_uuid": "submission_uuid_1"}
-              ]
-            }
-          ]
-        }
-        ```
-
-        return value:
-
-        ```
-        {
-          "item_id": "item_id_1",
-          "assessment_requirements": {},
-          "submissions": [
-            {"submission_uuid": "submission_uuid_1"}
-          ]
-        }
-        ```
-    """
-
-    if course_object is not None and course_object.get("assessments"):
-        for assessment_object in course_object.get("assessments"):
-            if assessment_object["item_id"] == item_id:
-                assessment_object["course_id"] = course_object["course_id"]
-                assessment_object["course_settings"] = course_object["course_settings"]
-                return assessment_object
-
-    return None
-
-
-def _get_submission_data(workflow_update_data, submission_uuid, course_id=None, item_id=None):
-    """
-    Helper function to return `update_workflow_data` dict object structure
-    representing specified submission.
-    To optimize search `course_id` and `item_id` can be provided
-
-    E.g.  for requested "submission_uuid_1"
-        input:
-        ```
-        {
-          "courses": [
-            {
-              "course_id": "course_id_1",
-              "course_settings": {},
-              "assessments": [
-                {
-                  "item_id": "item_id_1",
-                  "assessment_requirements": {},
-                  "submissions": [
-                    {
-                    "submission_uuid": "submission_uuid_1"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-        ```
-    return value:
-        ```
-        {   "course_id": "course_id_1",
-            "course_settings": {},
-            "item_id": "item_id_1",
-            "assessment_requirements": {},
-            "submission_uuid": "submission_uuid_1"
-        }
-        ```
-    """
-
-    if workflow_update_data is None or workflow_update_data.get("courses") is None:
-        return None
-
-    if item_id is not None and course_id is not None:
-        course_object = _get_course_data(workflow_update_data, course_id=course_id)
-        ora_object = _get_ora_data(course_object, item_id=item_id)
-        for submission_object in ora_object.get("submissions"):
-            if submission_object["submission_uuid"] == submission_uuid:
-                return {
-                    "course_id": course_id,
-                    "course_settings": course_object.get("course_settings"),
-                    "item_id": item_id,
-                    "assessment_requirements": ora_object.get("assessment_requirements"),
-                    "submission_uuid": submission_uuid,
-                }
-
-    else:
-        for course_object in workflow_update_data.get("courses"):
-            for ora_object in course_object.get("assessments"):
-                for submission_object in ora_object.get("submissions"):
-                    if submission_object["submission_uuid"] == submission_uuid:
-                        return {
-                            "course_id": course_object.get("course_id"),
-                            "course_settings": course_object.get("course_settings"),
-                            "item_id": ora_object.get("item_id"),
-                            "assessment_requirements": ora_object.get("assessment_requirements"),
-                            "submission_uuid": submission_uuid,
-                        }
     return None
 
 

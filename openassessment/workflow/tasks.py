@@ -27,12 +27,13 @@ def update_workflows_for_all_blocked_submissions_task(self):  # pylint: disable=
              retry_backoff=True,
              retry_backoff_max=500,
              retry_jitter=True)
-def update_workflows_for_course_task(self, course_id):  # pylint: disable=unused-argument
+# pylint: disable=unused-argument
+def update_workflows_for_course_task(self, course_id, workflow_update_data_for_course=None):
     """
     Async task wrapper
     """
     from openassessment.workflow.workflow_batch_update_api import update_workflows_for_course
-    return update_workflows_for_course(course_id)
+    return update_workflows_for_course(course_id, workflow_update_data_for_course)
 
 
 @shared_task(bind=True,
@@ -42,12 +43,13 @@ def update_workflows_for_course_task(self, course_id):  # pylint: disable=unused
              retry_backoff=True,
              retry_backoff_max=500,
              retry_jitter=True)
-def update_workflows_for_ora_block_task(self, item_id):  # pylint: disable=unused-argument
+# pylint: disable=unused-argument
+def update_workflows_for_ora_block_task(self, item_id, workflow_update_data_for_ora=None, course_settings=None):
     """
     Async task wrapper
     """
     from openassessment.workflow.workflow_batch_update_api import update_workflows_for_ora_block
-    return update_workflows_for_ora_block(item_id)
+    return update_workflows_for_ora_block(item_id, workflow_update_data_for_ora, course_settings)
 
 
 @shared_task(bind=True,
