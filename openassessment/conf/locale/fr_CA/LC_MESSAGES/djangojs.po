@@ -58,7 +58,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-10 18:36+0000\n"
+"POT-Creation-Date: 2023-09-24 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2016,2018-2023\n"
 "Language-Team: French (Canada) (http://app.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -232,7 +232,7 @@ msgstr "En attente"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:314
 msgid "Staff"
-msgstr "Équipe pédagogique"
+msgstr "Personnel"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:314
 msgid "Final Grade Received"
@@ -443,7 +443,7 @@ msgstr "Si vous quittez cette page sans soumettre votre évaluation des pairs, v
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Refresh"
-msgstr "Actualiser"
+msgstr "Rafraîchir"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Username"
@@ -463,7 +463,7 @@ msgstr "Temps écoulé sur l'étape courante"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Staff assessment"
-msgstr "Évaluation par l'équipe enseignante"
+msgstr "Évaluation par le personnel"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Grade Status"
@@ -485,7 +485,7 @@ msgstr "Il y a {stuck_learners} apprenants dans l'étape d'attente, c'est-à-dir
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par l'équipe de cours."
+msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par l'outil de remplacement du personnel."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Error while fetching student data."

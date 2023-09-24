@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-10 18:36+0000\n"
+"POT-Creation-Date: 2023-09-17 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: 亚峰 乔 <qiao_yafeng@qq.com>, 2019\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -377,19 +377,19 @@ msgid "Feedback for This Criterion"
 msgstr "此得分点的评语"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:54
-#: xblock/studio_mixin.py:49
+#: xblock/studio_mixin.py:57
 msgid "None"
 msgstr "无"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: xblock/studio_mixin.py:48
+#: xblock/studio_mixin.py:56
 msgid "Optional"
 msgstr "可选的"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: templates/openassessmentblock/oa_rubric.html:13
 #: templates/openassessmentblock/student_training/student_training.html:93
-#: xblock/studio_mixin.py:47
+#: xblock/studio_mixin.py:55
 msgid "Required"
 msgstr "必要的"
 
@@ -1237,7 +1237,6 @@ msgstr "我们无法提交您的评判。"
 #: templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: templates/openassessmentblock/student_training/student_training_cancelled.html:18
-#: xblock/staff_assessment_mixin.py:173
 msgid "Cancelled"
 msgstr "已取消"
 
@@ -1296,7 +1295,6 @@ msgstr "所有同学提交的回复均被评分。稍后返回查看是否有更
 #: templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: templates/openassessmentblock/student_training/student_training_unavailable.html:16
-#: xblock/staff_assessment_mixin.py:166 xblock/staff_assessment_mixin.py:190
 msgid "Not Available"
 msgstr "操作条件不满足"
 
@@ -1607,7 +1605,6 @@ msgstr "截止日期已过，该步骤已关闭。您已无法提交回复或继
 #: templates/openassessmentblock/response/oa_response_submitted.html:20
 #: templates/openassessmentblock/self/oa_self_complete.html:18
 #: templates/openassessmentblock/student_training/student_training_complete.html:17
-#: xblock/staff_assessment_mixin.py:180 xblock/staff_assessment_mixin.py:203
 msgid "Complete"
 msgstr "已经完成"
 
@@ -2179,21 +2176,7 @@ msgstr "加载学员训练示例错误"
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr "不能加载此任务的学员训练步骤。"
 
-#: xblock/data_conversion.py:263
-msgid "You must provide options selected in the assessment."
-msgstr "您必须在评估中提供选择的选项。"
-
-#: xblock/data_conversion.py:266
-msgid "You must provide overall feedback in the assessment."
-msgstr "您必须在评估中提供整体反馈。"
-
-#: xblock/data_conversion.py:269
-msgid "You must provide feedback for criteria in the assessment."
-msgstr "您必须在评估中提供对标准的反馈。"
-
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
-#: xblock/self_assessment_mixin.py:42 xblock/student_training_mixin.py:56
-#: xblock/student_training_mixin.py:264
 msgid "An unexpected error occurred."
 msgstr "发生了意外错误。"
 
@@ -2277,91 +2260,25 @@ msgid ""
 " grade."
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:19
+#: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:20
+#: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:21
+#: xblock/openassesment_template_mixin.py:68
 msgid "Staff Assessment Only"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:22
+#: xblock/openassesment_template_mixin.py:69
 msgid "Self Assessment to Peer Assessment"
 msgstr ""
 
-#: xblock/openassesment_template_mixin.py:23
+#: xblock/openassesment_template_mixin.py:70
 msgid "Self Assessment to Staff Assessment"
 msgstr ""
-
-#: xblock/peer_assessment_mixin.py:61
-msgid "You must submit a response before you can perform a peer assessment."
-msgstr "在进行同伴评分之前必须提交回复"
-
-#: xblock/peer_assessment_mixin.py:73
-msgid ""
-"This feedback has already been submitted or the submission has been "
-"cancelled."
-msgstr "这个反馈已经提交，或者提交已被取消。"
-
-#: xblock/peer_assessment_mixin.py:99 xblock/peer_assessment_mixin.py:105
-msgid "Your peer assessment could not be submitted."
-msgstr "您的学生互评无法提交"
-
-#: xblock/peer_assessment_mixin.py:120 xblock/student_training_mixin.py:270
-msgid "Could not update workflow status."
-msgstr "无法更新工作流状态。"
-
-#: xblock/peer_assessment_mixin.py:128
-msgid "Could not load peer assessment."
-msgstr "无法加载学生互评。"
-
-#: xblock/peer_assessment_mixin.py:215
-msgid "Submit your assessment and review another response"
-msgstr "提交您的评分并查看另一个人的回复。"
-
-#: xblock/peer_assessment_mixin.py:219
-msgid "Submit your assessment and move to next step"
-msgstr "提交您的评分并进行下一步"
-
-#: xblock/peer_assessment_mixin.py:223
-#, python-brace-format
-msgid "Submit your assessment and move to response #{response_number}"
-msgstr "提交您的评分并跳转到第{response_number}个回复"
-
-#: xblock/resolve_dates.py:52
-#, python-brace-format
-msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr "“{date}”是一个无效的日期格式，请确保日期的格式为“YYYY-MM-DDTHH:MM:SS”。"
-
-#: xblock/resolve_dates.py:57
-#, python-brace-format
-msgid "'{date}' must be a date string or datetime"
-msgstr "“{date}”必须是日期字符串或日期时间"
-
-#: xblock/resolve_dates.py:210
-#, python-brace-format
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr "这一步的开始日期“{start}”不能早于上一步骤的开始日期“{prev}”。"
-
-#: xblock/resolve_dates.py:218
-#, python-brace-format
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr "这一步的截止日期“{due}”不能晚于下一个步骤的截止日期“{prev}”。"
-
-#: xblock/resolve_dates.py:234
-#, python-brace-format
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "起始日期“{start}”不能晚于到截止日期“{due}”"
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
@@ -2376,14 +2293,6 @@ msgstr ""
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
 msgstr ""
-
-#: xblock/self_assessment_mixin.py:142
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr "在进行自我评分之前您必须提交自己的答案"
-
-#: xblock/self_assessment_mixin.py:165 xblock/self_assessment_mixin.py:173
-msgid "Your self assessment could not be submitted."
-msgstr "自我评分无法提交"
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
@@ -2425,282 +2334,212 @@ msgstr ""
 msgid "Submitted"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:315
+#: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
 msgstr "无法获取学生列表"
 
-#: xblock/staff_area_mixin.py:358
+#: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
 msgstr "无法加载已读学生回复"
 
-#: xblock/staff_area_mixin.py:359
+#: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
 msgstr "目前没有可用的学生回复"
 
-#: xblock/staff_area_mixin.py:361
+#: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
 msgstr "无法获取教员评分信息"
 
-#: xblock/staff_area_mixin.py:382
+#: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr "获得不合格和已检验的员工评分计数出现错误。"
 
-#: xblock/staff_area_mixin.py:676
+#: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
 msgstr "请输入合理的理由以移除该提交。"
 
-#: xblock/staff_area_mixin.py:687
+#: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:698
+#: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
 msgstr ""
 
-#: xblock/staff_area_mixin.py:727
+#: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "学员提交已从同学评估中删除。除非您删除该问题的学员状态，让他们重新提交回复，否则学员的评分为 0。"
 
-#: xblock/staff_area_mixin.py:762
+#: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
 msgstr ""
 
-#: xblock/staff_assessment_mixin.py:46 xblock/staff_assessment_mixin.py:89
-msgid "The submission ID of the submission being assessed was not found."
-msgstr "未找到正在评估的提交的提交 ID。"
-
-#: xblock/staff_assessment_mixin.py:71 xblock/staff_assessment_mixin.py:79
-msgid "Your staff assessment could not be submitted."
-msgstr "无法提交您的员工评估。"
-
-#: xblock/staff_assessment_mixin.py:117 xblock/staff_assessment_mixin.py:125
-msgid "Your team assessment could not be submitted."
-msgstr ""
-
-#: xblock/staff_assessment_mixin.py:191
-msgid "Waiting for a Staff Grade"
-msgstr "等待员工评分"
-
-#: xblock/staff_assessment_mixin.py:192
-msgid ""
-"Check back later to see if a course staff member has assessed your response."
-" You will receive your grade after the assessment is complete."
-msgstr "稍后返回检查，以查看课程工作人员是否已评估您的回复。您将在评估完成后获得您的评分。"
-
-#: xblock/staff_assessment_mixin.py:205
-msgid "You Must Complete the Steps Above to View Your Grade"
-msgstr "您必须完成上述步骤才可查看您的评分"
-
-#: xblock/staff_assessment_mixin.py:206
-msgid ""
-"Although a course staff member has assessed your response, you will receive "
-"your grade only after you have completed all the required steps of this "
-"problem."
-msgstr "虽然课程工作人员已评估了您的回复，但是只有在您已完成此问题的全部所需步骤后，您才能获得评分。"
-
-#: xblock/student_training_mixin.py:227
-msgid "Missing options_selected key in request"
-msgstr "请求中缺少可选选项"
-
-#: xblock/student_training_mixin.py:229
-msgid "options_selected must be a dictionary"
-msgstr "选中的分值必须是一个字典"
-
-#: xblock/student_training_mixin.py:254 xblock/student_training_mixin.py:259
-msgid "Your scores could not be checked."
-msgstr "无法查看您的得分。"
-
-#: xblock/studio_mixin.py:235 xblock/studio_mixin.py:247
+#: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
 msgstr "更新XBlock配置出错"
 
-#: xblock/studio_mixin.py:252
+#: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
 msgstr ""
 
-#: xblock/studio_mixin.py:256
+#: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:259
+#: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
 msgstr ""
 
-#: xblock/studio_mixin.py:283
+#: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
 msgstr "验证错误: {error}"
 
-#: xblock/studio_mixin.py:315
+#: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "成功更新开放评分XBlock"
 
-#: xblock/submission_mixin.py:118
-msgid "\"submission\" required to submit answer."
-msgstr "要交答案，必须有“submission\"。"
-
-#: xblock/submission_mixin.py:139
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr "要提交答案，请在预览或实时模式查看该组件。"
-
-#: xblock/submission_mixin.py:145
-msgid "Multiple submissions are not allowed."
-msgstr "不允许批量提交。"
-
-#: xblock/submission_mixin.py:178
-msgid "Response exceeds maximum allowed size."
-msgstr ""
-
-#: xblock/submission_mixin.py:180
-msgid ""
-"Note: if you have a spellcheck or grammar check browser extension, try "
-"disabling, reloading, and reentering your response before submitting."
-msgstr ""
-
-#: xblock/submission_mixin.py:200
-msgid "Submission cannot be empty. Please refresh the page and try again."
-msgstr ""
-
-#: xblock/submission_mixin.py:210
-msgid "API returned unclassified exception."
-msgstr "API返回的未分类的异常"
-
-#: xblock/submission_mixin.py:261
-msgid "Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:265
-msgid "Submission data missing. Please contact support staff."
-msgstr ""
-
-#: xblock/submission_mixin.py:281
-msgid "Files descriptions were not submitted."
-msgstr "文件描述未能提交。"
-
-#: xblock/submission_mixin.py:320
+#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
 msgid "Files metadata could not be saved."
 msgstr ""
 
-#: xblock/submission_mixin.py:472
-msgid "There was an error uploading your file."
-msgstr "您的文件上传出现一个错误。"
+#: xblock/utils/data_conversion.py:315
+msgid "You must provide options selected in the assessment."
+msgstr "您必须在评估中提供选择的选项。"
 
-#: xblock/submission_mixin.py:484
-msgid "Only a single file upload is allowed for this assessment."
-msgstr ""
+#: xblock/utils/data_conversion.py:318
+msgid "You must provide overall feedback in the assessment."
+msgstr "您必须在评估中提供整体反馈。"
 
-#: xblock/submission_mixin.py:495
+#: xblock/utils/data_conversion.py:321
+msgid "You must provide feedback for criteria in the assessment."
+msgstr "您必须在评估中提供对标准的反馈。"
+
+#: xblock/utils/resolve_dates.py:52
+#, python-brace-format
 msgid ""
-"File upload failed: unsupported file type.Only the supported file types can "
-"be uploaded.If you have questions, please reach out to the course team."
-msgstr ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "“{date}”是一个无效的日期格式，请确保日期的格式为“YYYY-MM-DDTHH:MM:SS”。"
 
-#: xblock/submission_mixin.py:508
-msgid "Error retrieving upload URL."
-msgstr "上传URL不正确。"
+#: xblock/utils/resolve_dates.py:57
+#, python-brace-format
+msgid "'{date}' must be a date string or datetime"
+msgstr "“{date}”必须是日期字符串或日期时间"
 
-#: xblock/submission_mixin.py:790
-msgid "Draft saved!"
-msgstr ""
+#: xblock/utils/resolve_dates.py:210
+#, python-brace-format
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr "这一步的开始日期“{start}”不能早于上一步骤的开始日期“{prev}”。"
 
-#: xblock/submission_mixin.py:791
-msgid "Response not started."
-msgstr ""
+#: xblock/utils/resolve_dates.py:218
+#, python-brace-format
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr "这一步的截止日期“{due}”不能晚于下一个步骤的截止日期“{prev}”。"
 
-#: xblock/validation.py:118
+#: xblock/utils/resolve_dates.py:234
+#, python-brace-format
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr "起始日期“{start}”不能晚于到截止日期“{due}”"
+
+#: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
 msgstr "该题目至少应包括一项评估。"
 
-#: xblock/validation.py:122
+#: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
 msgstr "您选择的评分次序无效。"
 
-#: xblock/validation.py:132
+#: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "在学生互评中，“须评”值必须为正整数。"
 
-#: xblock/validation.py:135
+#: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "在学生互评中，“被评”的值必须为正整数。"
 
-#: xblock/validation.py:139
+#: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "在学生互评中，“须评”的值必须大于或等于“被评”的值。"
 
-#: xblock/validation.py:148
+#: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
 msgstr "您必须为学员训练提供至少一个示例回复。"
 
-#: xblock/validation.py:151
+#: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
 msgstr "学员训练的每一个示例回复必须独一无二。"
 
-#: xblock/validation.py:158
+#: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr "如果员工评估是唯一步骤，则\"要求\"值必须为真值。"
 
-#: xblock/validation.py:162
+#: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "题目公开之后，不能再修改评分次数。"
 
-#: xblock/validation.py:167
+#: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "题目公开之后，不能再修改评分类型。"
 
-#: xblock/validation.py:190
+#: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
 msgstr "这个评分标准的定义无效。"
 
-#: xblock/validation.py:196
+#: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "得分点“{criterion}”中存在重复分值(名称)：{duplicates}"
 
-#: xblock/validation.py:204
+#: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
 msgstr "没有分值的得分点必须要求填写评语。"
 
-#: xblock/validation.py:213
+#: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "无法在一道题目已经公开之后创建或删除提示。"
 
-#: xblock/validation.py:217
+#: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "题目公开后，得分点的数量不能被修改。"
 
-#: xblock/validation.py:230
+#: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "题目公开后，得分点的名称不能被修改。"
 
-#: xblock/validation.py:235
+#: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "题目公开后，分值的数目不能被修改。"
 
-#: xblock/validation.py:240
+#: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
 msgstr "题目公开后，各评分点的分值不能再改变了。"
 
-#: xblock/validation.py:291
+#: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
 msgstr "学员训练至少须有一个训练示例。"
 
-#: xblock/validation.py:356
+#: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
 msgstr "排行榜号码是无效的。"
 
-#: xblock/validation.py:379
+#: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
 msgstr "提交的格式不正确"
