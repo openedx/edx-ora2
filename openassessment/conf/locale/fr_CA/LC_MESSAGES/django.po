@@ -97,7 +97,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-01 18:36+0000\n"
+"POT-Creation-Date: 2023-09-17 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2016-2023\n"
 "Language-Team: French (Canada) (http://app.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -921,7 +921,7 @@ msgstr "Soumission de commentaires"
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr "Votre rétroaction a été soumise. Elle sera accessible à au personnel du cours lorsqu'ils examineront les dossiers du cours."
+msgstr "Votre rétroaction a été soumise. Elle sera accessible à aux membres de du personnel du cours lorsqu'ils examineront les dossiers du cours."
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
@@ -2410,7 +2410,7 @@ msgstr "Aucune autre réponse d'apprenant disponible pour notation en ce moment.
 
 #: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
-msgstr "Erreur lors de la récupération des notes attribuées par le personnel et leur compte."
+msgstr "Erreur lors de la récupération de la note du personnel."
 
 #: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
