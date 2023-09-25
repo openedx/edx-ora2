@@ -37,8 +37,10 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
         self.assertEqual(len(blocked), 0)
 
         # set Tim's submission create_at date to >7 days ago
+        # set Tim's peer workflow completion at 3 days ago
         pw_tim = PeerWorkflow.objects.get(student_id=_tim["student_id"])
         pw_tim.created_at = timezone.now() - datetime.timedelta(days=8)
+        pw_tim.completed_at = timezone.now() - datetime.timedelta(days=3)
         pw_tim.save()
         blocked = update_api.get_blocked_peer_workflows()
         # we expect 1 blocked submission
@@ -69,6 +71,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         pw_pat = PeerWorkflow.objects.get(student_id=_pat["student_id"])
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
+        pw_pat.completed_at = timezone.now() - datetime.timedelta(days=3)
         pw_pat.course_id = "course_1"
         pw_pat.save()
 
@@ -99,6 +102,7 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
         pw_pat = PeerWorkflow.objects.get(student_id=_pat["student_id"])
         pw_pat.created_at = timezone.now() - datetime.timedelta(days=8)
+        pw_pat.completed_at = timezone.now() - datetime.timedelta(days=3)
         pw_pat.item_id = "item_1"
         pw_pat.save()
 

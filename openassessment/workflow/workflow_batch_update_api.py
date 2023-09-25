@@ -263,6 +263,7 @@ def get_blocked_peer_workflows(course_id=None, item_id=None, submission_uuid=Non
     filters = {
         'created_at__lte': timezone.now() - datetime.timedelta(days=7),
         'grading_completed_at__isnull': True,
+        'completed_at__isnull': False
     }
     if course_id is not None:
         filters['course_id'] = course_id
@@ -312,8 +313,7 @@ def get_workflow_update_data(peer_workflows):
     for peer_workflow in peer_workflows:
 
         try:
-            # pylint: disable=consider-iterating-dictionary
-            if peer_workflow.course_id not in course_settings_cache.keys():
+            if peer_workflow.course_id not in course_settings_cache:
                 # retrieve course block from DB
                 course_block_key = UsageKey.from_string(peer_workflow.course_id)
                 course_block = store.get_item(course_block_key)
@@ -321,8 +321,7 @@ def get_workflow_update_data(peer_workflows):
                 course_settings_cache[peer_workflow.course_id] = {
                     'force_on_flexible_peer_openassessments': course_block.force_on_flexible_peer_openassessments}
 
-            # pylint: disable=consider-iterating-dictionary
-            if peer_workflow.item_id not in assessment_requirements_cache.keys():
+            if peer_workflow.item_id not in assessment_requirements_cache:
                 # retrieve openassessment block from DB
                 ora_block_key = UsageKey.from_string(peer_workflow.item_id)
                 ora_block = store.get_item(ora_block_key)
