@@ -16,7 +16,7 @@ from submissions import api as sub_api
 from openassessment.assessment.api import staff as staff_api
 from openassessment.runtime_imports.functions import anonymous_id_for_user, modulestore
 from openassessment.workflow import api as workflow_api
-from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.xblock.utils.data_conversion import create_rubric_dict
 from openassessment.staffgrader.models import SubmissionGradingLock
 
 log = logging.getLogger('create_oa_submissions_from_file')

@@ -15,14 +15,22 @@ from xblock.fields import List, Scope
 from django.template.loader import get_template
 from django.utils.translation import gettext_lazy
 
-from openassessment.xblock.data_conversion import (create_rubric_dict, make_django_template_key,
-                                                   update_assessments_format)
-from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
-from openassessment.xblock.editor_config import AVAILABLE_EDITORS
+from openassessment.xblock.utils.data_conversion import (
+    create_rubric_dict,
+    make_django_template_key,
+    update_assessments_format
+)
+from openassessment.xblock.utils.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
+from openassessment.xblock.utils.editor_config import AVAILABLE_EDITORS
 from openassessment.xblock.load_static import LoadStatic
-from openassessment.xblock.resolve_dates import DateValidationError, InvalidDateFormat, parse_date_value, resolve_dates
-from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
-from openassessment.xblock.validation import validator
+from openassessment.xblock.utils.resolve_dates import (
+    DateValidationError,
+    InvalidDateFormat,
+    parse_date_value,
+    resolve_dates,
+)
+from openassessment.xblock.utils.schema import EDITOR_UPDATE_SCHEMA
+from openassessment.xblock.utils.validation import validator
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -192,7 +200,7 @@ class StudioMixin:
             ],
             'teams_feature_enabled': self.team_submissions_enabled,
             'teams_enabled': self.teams_enabled,
-            'base_asset_url': self._get_base_url_path_for_course_assets(course_id),
+            'base_asset_url': self.get_base_url_path_for_course_assets(course_id),
             'is_released': self.is_released(),
             'teamsets': self.get_teamsets(course_id),
             'selected_teamset_id': self.selected_teamset_id,
@@ -437,7 +445,7 @@ class StudioMixin:
                 superset[superset_index] = subset[index]
         return superset
 
-    def _get_base_url_path_for_course_assets(self, course_key):
+    def get_base_url_path_for_course_assets(self, course_key):
         """
         Returns base url path for course assets
         """

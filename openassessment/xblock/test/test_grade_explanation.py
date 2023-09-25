@@ -8,12 +8,19 @@ from unittest.mock import patch
 
 from ddt import ddt, data
 
-from .base import (PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_GOOD_ASSESSMENT,
-                   SubmitAssessmentsMixin, XBlockHandlerTestCase, scenario)
+from .base import (
+    PEER_ASSESSMENTS,
+    SELF_ASSESSMENT,
+    STAFF_GOOD_ASSESSMENT,
+    SubmissionTestMixin,
+    SubmitAssessmentsMixin,
+    XBlockHandlerTestCase,
+    scenario
+)
 
 
 @ddt
-class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin, SubmissionTestMixin):
     """
     Tests for grade explanation in Open Response Assessment XBlock.
     """
@@ -51,9 +58,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             'openassessment.workflow.models.AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY',
             assessment_score_priority
         ):
-            student_item = xblock.get_student_item_dict()
-
-            submission = xblock.create_submission(student_item, self.SUBMISSION)
+            submission = self.create_test_submission(xblock)
             self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
             resp = self.request(xblock, 'render_grade', json.dumps({}))
 
@@ -158,9 +163,7 @@ class TestGradeExplanation(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             'openassessment.workflow.models.AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY',
             assessment_score_priority
         ):
-            student_item = xblock.get_student_item_dict()
-
-            xblock.create_submission(student_item, self.SUBMISSION)
+            self.create_test_submission(xblock)
             resp = self.request(xblock, 'render_grade', json.dumps({}))
 
             self.assertIn(self.second_sentences_options["staff"], resp.decode('utf-8'))
