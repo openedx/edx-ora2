@@ -557,6 +557,10 @@ class OpenAssessmentBlock(
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
+        if any(model.name == "leaderboard" for model in ui_models):
+            context_dict["leaderboard_ui_model"] = [
+                model for model in ui_models if model.name == "leaderboard"
+            ][0]
         template = get_template("base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
@@ -596,6 +600,10 @@ class OpenAssessmentBlock(
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
             "xblock_id": self.get_xblock_id(),
         }
+        if any(model.name == "leaderboard" for model in ui_models):
+            context_dict["leaderboard_ui_model"] = [
+                model for model in ui_models if model.name == "leaderboard"
+            ][0]
         template = get_template("base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
