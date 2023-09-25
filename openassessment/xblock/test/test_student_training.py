@@ -321,7 +321,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
 
     @scenario('data/student_training_due.xml', user_id="Plato")
     def test_past_due(self, xblock):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_template = "legacy/student_training/student_training_closed.html"
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00",
@@ -360,7 +360,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
 
     @scenario('data/student_training_future.xml', user_id="Plato")
     def test_before_start(self, xblock):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.create_test_submission(xblock)
         expected_template = "legacy/student_training/student_training_unavailable.html"
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),
