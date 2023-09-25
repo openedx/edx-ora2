@@ -11,22 +11,13 @@ from rest_framework.serializers import (
     IntegerField,
     Serializer,
     CharField,
-    ListField,
     SerializerMethodField,
 )
 
-
-class CharListField(ListField):
-    child = CharField()
-
-
-class IsRequiredField(BooleanField):
-    """
-    Utility for checking if a field is "required" to reduce repeated code.
-    """
-
-    def to_representation(self, value):
-        return value == "required"
+from openassessment.xblock.ui_mixins.mfe.serializer_utils import (
+    CharListField,
+    IsRequiredField,
+)
 
 
 class TextResponseConfigSerializer(Serializer):
