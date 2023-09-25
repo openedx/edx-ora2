@@ -56,6 +56,28 @@
             src="http://localhost:1992/embedded/xblock/23"
             style="width: 100%; height: 100%"
           ></iframe>
+          {% if leadership_ui_model %}
+              <ol class="openassessment__steps">
+                  <li class="{{ leadership_ui_model.class_id }} openassessment__steps__step is--loading">
+                      <header class="step__header ui-slidable__container">
+                          <h4 class="step__title">
+                              <button class="ui-slidable" aria-expanded="false" aria-describedby="oa_step_status oa_step_deadline" disabled>
+                                  <span class="step__counter"></span>
+                                  <span class="wrapper--copy">
+                                      <span class="step__label">{% trans leadership_ui_model.title %}</span>
+                                  </span>
+                              </button>
+                          </h4>
+                          <span class="step__status">
+                              <span id="oa_step_status" class="step__status__value">
+                                <span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span>
+                                <span class="copy">{% trans "Loading" %}</span>
+                              </span>
+                          </span>
+                      </header>
+                  </li>
+              </ol>
+          {% endif %}
           <div class="wrapper--grid">
               {% if show_staff_area %}
                   <div class="openassessment__staff-area"></div>
