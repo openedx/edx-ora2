@@ -8,14 +8,14 @@ from openassessment.xblock.utils.user_data import get_user_preferences
 
 
 template_paths = {
-    "unavailable": "openassessmentblock/peer/oa_peer_unavailable.html",
-    "cancelled": "openassessmentblock/peer/oa_peer_cancelled.html",
-    "complete": "openassessmentblock/peer/oa_peer_complete.html",
-    "turbo_mode": "openassessmentblock/peer/oa_peer_turbo_mode.html",
-    "turbo_mode_waiting": "openassessmentblock/peer/oa_peer_turbo_mode_waiting.html",
-    "closed": "openassessmentblock/peer/oa_peer_closed.html",
-    "assessment": "openassessmentblock/peer/oa_peer_assessment.html",
-    "waiting": "openassessmentblock/peer/oa_peer_waiting.html",
+    "unavailable": "legacy/peer/oa_peer_unavailable.html",
+    "cancelled": "legacy/peer/oa_peer_cancelled.html",
+    "complete": "legacy/peer/oa_peer_complete.html",
+    "turbo_mode": "legacy/peer/oa_peer_turbo_mode.html",
+    "turbo_mode_waiting": "legacy/peer/oa_peer_turbo_mode_waiting.html",
+    "closed": "legacy/peer/oa_peer_closed.html",
+    "assessment": "legacy/peer/oa_peer_assessment.html",
+    "waiting": "legacy/peer/oa_peer_waiting.html",
 }
 
 

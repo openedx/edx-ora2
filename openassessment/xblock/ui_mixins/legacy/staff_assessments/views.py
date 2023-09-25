@@ -22,7 +22,7 @@ def staff_path_and_context(api_data):
     """
     Retrieve the correct template path and template context for the handler to render.
     """
-    return "openassessmentblock/staff/oa_staff_grade.html", staff_context(api_data)
+    return "legacy/staff/oa_staff_grade.html", staff_context(api_data)
 
 
 def render_staff_assessment(api_data):

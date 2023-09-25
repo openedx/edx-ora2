@@ -119,8 +119,7 @@ msgstr "Àsséssmént Týpé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 msgid "Anonymous Scorer Id"
 msgstr "Ànönýmöüs Sçörér Ìd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: data.py
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: data.py templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Overall Feedback"
 msgstr "Övéräll Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
@@ -160,15 +159,15 @@ msgstr "Réspönsé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 msgid "No description provided."
 msgstr "Nö désçrïptïön prövïdéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/edit/oa_edit.html
+#: templates/legacy/edit/oa_edit.html
 msgid "Save"
 msgstr "Sävé Ⱡ'σяєм ι#"
 
-#: templates/openassessmentblock/edit/oa_edit.html
+#: templates/legacy/edit/oa_edit.html
 msgid "Cancel"
 msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_assessment_steps.html
+#: templates/legacy/edit/oa_edit_assessment_steps.html
 msgid ""
 "Open Response Assessments allow you to configure single or multiple steps in"
 " a rubric based open response assessment sequence. The steps available below"
@@ -184,21 +183,21 @@ msgstr ""
 "¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
 " єѕѕє ¢ιłłυм ∂σłσяє#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Display Name "
 msgstr "Dïspläý Nämé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "The display name for this component."
 msgstr ""
 "Thé dïspläý nämé för thïs çömpönént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Text Response"
 msgstr "Téxt Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
@@ -206,11 +205,11 @@ msgstr ""
 "Spéçïfý whéthér léärnérs müst ïnçlüdé ä téxt ßäséd réspönsé tö thïs "
 "prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Response Editor"
 msgstr "Réspönsé Édïtör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Select which editor learners will use to include a text based response to "
 "this problem's prompt."
@@ -218,11 +217,11 @@ msgstr ""
 "Séléçt whïçh édïtör léärnérs wïll üsé tö ïnçlüdé ä téxt ßäséd réspönsé tö "
 "thïs prößlém's prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "File Uploads Response"
 msgstr "Fïlé Ûplöäds Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
@@ -230,27 +229,27 @@ msgstr ""
 "Spéçïfý whéthér léärnérs äré äßlé tö üplöäd fïlés äs ä pärt öf théïr "
 "réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Allow Multiple Files"
 msgstr "Àllöw Mültïplé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "False"
 msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "True"
 msgstr "Trüé Ⱡ'σяєм ι#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners can upload more than one file. This has no effect "
 "if File Uploads Response is set to None. This is automatically set to True "
@@ -265,34 +264,34 @@ msgstr ""
 "νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
 "σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "File Upload Types"
 msgstr "Fïlé Ûplöäd Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "PDF or Image Files"
 msgstr "PDF ör Ìmägé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Image Files"
 msgstr "Ìmägé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Custom File Types"
 msgstr "Çüstöm Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners can submit files along with their text responses."
 msgstr ""
 "Spéçïfý whéthér léärnérs çän süßmït fïlés älöng wïth théïr téxt réspönsés. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "File Types"
 msgstr "Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
@@ -300,7 +299,7 @@ msgstr ""
 "Éntér thé fïlé éxténsïöns, sépärätéd ßý çömmäs, thät ýöü wänt léärnérs tö ßé"
 " äßlé tö üplöäd. För éxämplé: pdf,döç,döçx. Ⱡ'σяєм ιρѕυм#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "To add more file extensions, select Custom File Types and enter the full "
 "list of acceptable file extensions to be included."
@@ -308,27 +307,27 @@ msgstr ""
 "Tö ädd möré fïlé éxténsïöns, séléçt Çüstöm Fïlé Týpés änd éntér thé füll "
 "lïst öf äççéptäßlé fïlé éxténsïöns tö ßé ïnçlüdéd. Ⱡ'σяєм ιρ#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Allow LaTeX Responses"
 msgstr "Àllöw LäTéX Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr ""
 "Spéçïfý whéthér léärnérs çän wrïté LäTéX förmättéd strïngs Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
-#: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
-#: templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/leaderboard/oa_leaderboard_show.html
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html
 msgid "Top Responses"
 msgstr "Töp Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid " (Disabled)"
 msgstr " (Dïsäßléd) Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
@@ -343,31 +342,31 @@ msgstr ""
 "αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
 "ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
 msgstr ""
 "Whén Téäms Énäßléd ïs sét tö trüé, Töp Réspönsés wïll ßé dïsäßléd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Teams Enabled"
 msgstr "Téäms Énäßléd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Specify whether team submissions are allowed for this response."
 msgstr ""
 "Spéçïfý whéthér téäm süßmïssïöns äré ällöwéd för thïs réspönsé. Ⱡ'σяєм ιρѕυм"
 " ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Select Team-Set"
 msgstr "Séléçt Téäm-Sét Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid "Show Rubric During Response"
 msgstr "Shöw Rüßrïç Dürïng Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html
+#: templates/legacy/edit/oa_edit_basic_settings_list.html
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
 "response."
@@ -375,59 +374,57 @@ msgstr ""
 "Spéçïfý whéthér léärnérs çän séé thé rüßrïç whïlé théý äré wörkïng ön théïr "
 "réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
-#: templates/openassessmentblock/staff_area/oa_student_info.html
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/edit/oa_edit_criterion.html
+#: templates/legacy/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Criterion"
 msgstr "Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_criterion.html
 msgid "You cannot delete a criterion after the assignment has been released."
 msgstr ""
 "Ýöü çännöt délété ä çrïtérïön äftér thé ässïgnmént häs ßéén réléäséd. Ⱡ'σяєм"
 " ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
-#: templates/openassessmentblock/edit/oa_edit_option.html
-#: templates/openassessmentblock/edit/oa_edit_prompt.html
-#: templates/openassessmentblock/edit/oa_training_example.html
+#: templates/legacy/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_option.html
+#: templates/legacy/edit/oa_edit_prompt.html
+#: templates/legacy/edit/oa_training_example.html
 msgid "Remove"
 msgstr "Rémövé Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_criterion.html
 msgid "Criterion Name"
 msgstr "Çrïtérïön Nämé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_criterion.html
 msgid "Criterion Prompt"
 msgstr "Çrïtérïön Prömpt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_criterion.html
 msgid "Add Option"
 msgstr "Àdd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_criterion.html
 msgid "Feedback for This Criterion"
 msgstr "Féédßäçk för Thïs Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
-#: xblock/studio_mixin.py
+#: templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
 msgid "None"
 msgstr "Nöné Ⱡ'σяєм ι#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
-#: xblock/studio_mixin.py
+#: templates/legacy/edit/oa_edit_criterion.html xblock/studio_mixin.py
 msgid "Optional"
 msgstr "Öptïönäl Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
-#: templates/openassessmentblock/oa_rubric.html
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/edit/oa_edit_criterion.html
+#: templates/legacy/oa_rubric.html
+#: templates/legacy/student_training/student_training.html
 #: xblock/studio_mixin.py
 msgid "Required"
 msgstr "Réqüïréd Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_edit_criterion.html
+#: templates/legacy/edit/oa_edit_criterion.html
 msgid ""
 "Select one of the options above. This describes whether or not the reviewer "
 "will have to provide criterion feedback."
@@ -435,52 +432,52 @@ msgstr ""
 "Séléçt öné öf thé öptïöns äßövé. Thïs désçrïßés whéthér ör nöt thé révïéwér "
 "wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σ#"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_header_and_validation.html
 msgid "Open Response Assessment"
 msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html
-#: templates/openassessmentblock/edit/oa_edit_prompt.html
+#: templates/legacy/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_prompt.html
 msgid "Prompt"
 msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_header_and_validation.html
 msgid "Rubric"
 msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_header_and_validation.html
 msgid "Schedule"
 msgstr "Sçhédülé Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_header_and_validation.html
 msgid "Assessment steps"
 msgstr "Àsséssmént stéps Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/edit/oa_edit_header_and_validation.html
+#: templates/legacy/edit/oa_edit_header_and_validation.html
 msgid "Settings"
 msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_edit_option.html
+#: templates/legacy/edit/oa_edit_option.html
 msgid "Option"
 msgstr "Öptïön Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_option.html
+#: templates/legacy/edit/oa_edit_option.html
 msgid "Option Name"
 msgstr "Öptïön Nämé Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/edit/oa_edit_option.html
+#: templates/legacy/edit/oa_edit_option.html
 msgid "Option Points"
 msgstr "Öptïön Pöïnts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/edit/oa_edit_option.html
+#: templates/legacy/edit/oa_edit_option.html
 msgid "Option Explanation"
 msgstr "Öptïön Éxplänätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "Step: Peer Assessment"
 msgstr "Stép: Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid ""
 "Peer Assessment allows students to provide feedback to other students and "
 "also receive feedback from others in their final grade. Often, though not "
@@ -495,7 +492,7 @@ msgstr ""
 "¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid ""
 "Configuration: For this step to be configured you must specify the number of"
 " peer reviews a student will be assessed with, and the number of peer a "
@@ -510,15 +507,15 @@ msgstr ""
 "αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
 "ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "View Options & Configuration"
 msgstr "Vïéw Öptïöns & Çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "Must Grade"
 msgstr "Müst Grädé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 1 to 99."
@@ -526,11 +523,11 @@ msgstr ""
 "Spéçïfý thé nümßér öf péér ässéssménts thät éäçh léärnér müst çömplété. "
 "Välïd nümßérs äré 1 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "Graded By"
 msgstr "Grädéd Bý Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 1 to 99."
@@ -538,13 +535,13 @@ msgstr ""
 "Spéçïfý thé nümßér öf léärnérs thät éäçh réspönsé müst ßé ässésséd ßý. Välïd"
 " nümßérs äré 1 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid "Enable Flexible Peer Grade Averaging"
 msgstr ""
 "Énäßlé Fléxïßlé Péér Grädé Àvérägïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 #, python-format
 msgid ""
 "When enabled, learners who have received at least 30%% of the required \\"
@@ -552,7 +549,7 @@ msgstr ""
 "Whén énäßléd, léärnérs whö hävé réçéïvéd ät léäst 30%% öf thé réqüïréd \\ "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: templates/legacy/edit/oa_edit_peer_assessment.html
 msgid ""
 "This feature is being enabled by the course-level setting. It can be found "
 "under the Open Response Assessment Settings card on the Pages & Resources "
@@ -567,50 +564,50 @@ msgstr ""
 "νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
 "¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕє#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
 msgid "Peer Assessment Deadlines"
 msgstr "Péér Àsséssmént Déädlïnés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
 msgid "Start Date"
 msgstr "Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
 msgid "Start Time"
 msgstr "Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
 msgid "The date and time when learners can begin assessing peer responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän ßégïn ässéssïng péér réspönsés. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Due Date"
 msgstr "Düé Däté Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
 msgid "Due Time"
 msgstr "Düé Tïmé Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_peer_assessment_schedule.html
 msgid "The date and time when all peer assessments must be complete."
 msgstr ""
 "Thé däté änd tïmé whén äll péér ässéssménts müst ßé çömplété. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_edit_prompt.html
+#: templates/legacy/edit/oa_edit_prompt.html
 msgid "You cannot delete a prompt after the assignment has been released."
 msgstr ""
 "Ýöü çännöt délété ä prömpt äftér thé ässïgnmént häs ßéén réléäséd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_prompts.html
+#: templates/legacy/edit/oa_edit_prompts.html
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
@@ -618,11 +615,11 @@ msgstr ""
 "Prömpts. Répläçé thé sämplé téxt wïth ýöür öwn téxt. För möré ïnförmätïön, "
 "séé thé ÖRÀ döçüméntätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/edit/oa_edit_prompts.html
+#: templates/legacy/edit/oa_edit_prompts.html
 msgid "Add Prompt"
 msgstr "Àdd Prömpt Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid ""
 "Rubrics are made up of criteria, which usually contain one or more options. "
 "Each option has a point value. This template contains two sample criteria "
@@ -638,19 +635,19 @@ msgstr ""
 "υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
 "∂σł#"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid "Add Criterion"
 msgstr "Àdd Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid "Feedback for This Response"
 msgstr "Féédßäçk för Thïs Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid "Feedback Instructions"
 msgstr "Féédßäçk Ìnstrüçtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
@@ -658,11 +655,11 @@ msgstr ""
 "Énçöürägé léärnérs tö prövïdé féédßäçk ön thé réspönsé théý hävé grädéd. Ýöü"
 " çän répläçé thé sämplé téxt wïth ýöür öwn. Ⱡ'σяєм ιρѕυм#"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid "Default Feedback Text"
 msgstr "Défäült Féédßäçk Téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_rubric.html
+#: templates/legacy/edit/oa_edit_rubric.html
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
@@ -676,75 +673,75 @@ msgstr ""
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕ#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Deadlines Configuration"
 msgstr "Déädlïnés Çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Select a deadline configuration option"
 msgstr ""
 "Séléçt ä déädlïné çönfïgürätïön öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid " NEW"
 msgstr " NÉW Ⱡ'σяєм ι#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Configure deadlines manually"
 msgstr "Çönfïgüré déädlïnés mänüällý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Match deadlines to the subsection due date"
 msgstr ""
 "Mätçh déädlïnés tö thé süßséçtïön düé däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Match deadlines to the course end date"
 msgstr ""
 "Mätçh déädlïnés tö thé çöürsé énd däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Learn more about open response date settings"
 msgstr ""
 "Léärn möré äßöüt öpén réspönsé däté séttïngs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Response Start Date"
 msgstr "Réspönsé Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Response Start Time"
 msgstr "Réspönsé Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän ßégïn süßmïttïng réspönsés. Ⱡ'σяєм ιρѕυм"
 " ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Response Due Date"
 msgstr "Réspönsé Düé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "Response Due Time"
 msgstr "Réspönsé Düé Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/edit/oa_edit_schedule.html
+#: templates/legacy/edit/oa_edit_schedule.html
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän nö löngér süßmït réspönsés. Ⱡ'σяєм ιρѕυм"
 " ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_edit_self_assessment.html
+#: templates/legacy/edit/oa_edit_self_assessment.html
 msgid "Step: Self Assessment"
 msgstr "Stép: Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/edit/oa_edit_self_assessment.html
+#: templates/legacy/edit/oa_edit_self_assessment.html
 msgid ""
 "Self Assessment asks learners to grade their own submissions against the "
 "rubric."
@@ -752,27 +749,27 @@ msgstr ""
 "Sélf Àsséssmént äsks léärnérs tö grädé théïr öwn süßmïssïöns ägäïnst thé "
 "rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
 msgid "Self Assessment Deadlines"
 msgstr "Sélf Àsséssmént Déädlïnés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
 msgid "The date and time when learners can begin assessing their responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän ßégïn ässéssïng théïr réspönsés. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html
+#: templates/legacy/edit/oa_edit_self_assessment_schedule.html
 msgid "The date and time when all self assessments must be complete."
 msgstr ""
 "Thé däté änd tïmé whén äll sélf ässéssménts müst ßé çömplété. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_edit_staff_assessment.html
+#: templates/legacy/edit/oa_edit_staff_assessment.html
 msgid "Step: Staff Assessment"
 msgstr "Stép: Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_staff_assessment.html
+#: templates/legacy/edit/oa_edit_staff_assessment.html
 msgid ""
 "Staff Assessment gates sets the final grade for students if enabled with "
 "other steps, though it can also be used as a standalone step."
@@ -786,11 +783,11 @@ msgstr ""
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαвσяυм#"
 
-#: templates/openassessmentblock/edit/oa_edit_student_training.html
+#: templates/legacy/edit/oa_edit_student_training.html
 msgid "Step: Learner Training"
 msgstr "Stép: Léärnér Träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/edit/oa_edit_student_training.html
+#: templates/legacy/edit/oa_edit_student_training.html
 msgid ""
 "Learner Training is used to help students practice grading a simulated peer "
 "submission in order to train them on the rubric and ensure learner's "
@@ -805,7 +802,7 @@ msgstr ""
 "¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕ#"
 
-#: templates/openassessmentblock/edit/oa_edit_student_training.html
+#: templates/legacy/edit/oa_edit_student_training.html
 msgid ""
 "Configuration: For this step to be fully configured you must provide one or "
 "more graded sample responses. Learners must then match this instructor score"
@@ -821,19 +818,19 @@ msgstr ""
 "єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє"
 " νєłιт#"
 
-#: templates/openassessmentblock/edit/oa_edit_student_training.html
+#: templates/legacy/edit/oa_edit_student_training.html
 msgid "View / Add Sample Responses"
 msgstr "Vïéw / Àdd Sämplé Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: templates/openassessmentblock/edit/oa_edit_student_training.html
+#: templates/legacy/edit/oa_edit_student_training.html
 msgid "Add Sample Response"
 msgstr "Àdd Sämplé Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid "Clone Rubric"
 msgstr "Çlöné Rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid ""
 "To clone a rubric from an existing published or unpublished draft, you can "
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
@@ -849,53 +846,53 @@ msgstr ""
 "υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
 "∂σłσя ιη #"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid "Block ID For this ORA:"
 msgstr "Blöçk ÌD För thïs ÖRÀ: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid "Block ID"
 msgstr "Blöçk ÌD Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid "No other Open Response Assessments found in course"
 msgstr ""
 "Nö öthér Öpén Réspönsé Àsséssménts föünd ïn çöürsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid "Clone"
 msgstr "Çlöné Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/edit/oa_rubric_reuse.html
+#: templates/legacy/edit/oa_rubric_reuse.html
 msgid "Rubric Successfully Cloned from Block ID: "
 msgstr ""
 "Rüßrïç Süççéssfüllý Çlönéd fröm Blöçk ÌD:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/edit/oa_training_example.html
+#: templates/legacy/edit/oa_training_example.html
 msgid "Scored Response"
 msgstr "Sçöréd Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/edit/oa_training_example.html
+#: templates/legacy/edit/oa_training_example.html
 msgid "Response Score"
 msgstr "Réspönsé Sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/edit/oa_training_example.html
+#: templates/legacy/edit/oa_training_example.html
 msgid "Response"
 msgstr "Réspönsé Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/edit/oa_training_example_criterion.html
+#: templates/legacy/edit/oa_training_example_criterion.html
 msgid "Not Selected"
 msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/edit/oa_training_example_criterion.html
-#: templates/openassessmentblock/oa_rubric.html
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/edit/oa_training_example_criterion.html
+#: templates/legacy/oa_rubric.html
+#: templates/legacy/student_training/student_training.html
 msgid "points"
 msgstr "pöïnts Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/grade/oa_assessment_feedback.html
+#: templates/legacy/grade/oa_assessment_feedback.html
 #, python-format
 msgid ""
 "\n"
@@ -906,7 +903,7 @@ msgstr ""
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "               Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/grade/oa_assessment_title.html
+#: templates/legacy/grade/oa_assessment_title.html
 #, python-format
 msgid ""
 "\n"
@@ -925,21 +922,21 @@ msgstr[1] ""
 "                      %(assessment_title)s - %(points)s pöïnts\n"
 "                   Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/grade/oa_assessment_title.html
+#: templates/legacy/grade/oa_assessment_title.html
 #, python-format
 msgid "More information about %(name)s"
 msgstr "Möré ïnförmätïön äßöüt %(name)s Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/grade/oa_grade_cancelled.html
-#: templates/openassessmentblock/grade/oa_grade_complete.html
-#: templates/openassessmentblock/grade/oa_grade_complete.html
-#: templates/openassessmentblock/grade/oa_grade_incomplete.html
-#: templates/openassessmentblock/grade/oa_grade_not_started.html
-#: templates/openassessmentblock/grade/oa_grade_waiting.html
+#: templates/legacy/grade/oa_grade_cancelled.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_incomplete.html
+#: templates/legacy/grade/oa_grade_not_started.html
+#: templates/legacy/grade/oa_grade_waiting.html
 msgid "Your Grade"
 msgstr "Ýöür Grädé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/grade/oa_grade_cancelled.html
+#: templates/legacy/grade/oa_grade_cancelled.html
 #, python-format
 msgid ""
 "\n"
@@ -950,12 +947,12 @@ msgstr ""
 "                                        %(points_earned)s öüt öf %(points_possible)s\n"
 "                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/grade/oa_grade_cancelled.html
+#: templates/legacy/grade/oa_grade_cancelled.html
 msgid "Your submission has been cancelled."
 msgstr ""
 "Ýöür süßmïssïön häs ßéén çänçélléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 #, python-format
 msgid ""
 "\n"
@@ -966,67 +963,67 @@ msgstr ""
 "                                            %(points_earned)s öüt öf %(points_possible)s\n"
 "                                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/response/oa_response.html
 msgid "Your Response"
 msgstr "Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Your Upload"
 msgstr "Ýöür Ûplöäd Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Assessments of Your Response"
 msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
-#: templates/openassessmentblock/grade/oa_grade_complete.html
-#: templates/openassessmentblock/grade/oa_grade_incomplete.html
-#: templates/openassessmentblock/grade/oa_grade_waiting.html
-#: templates/openassessmentblock/message/oa_message_cancelled.html
-#: templates/openassessmentblock/message/oa_message_closed.html
-#: templates/openassessmentblock/message/oa_message_complete.html
-#: templates/openassessmentblock/message/oa_message_incomplete.html
-#: templates/openassessmentblock/peer/oa_peer_closed.html
-#: templates/openassessmentblock/peer/oa_peer_complete.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
-#: templates/openassessmentblock/peer/oa_peer_waiting.html
-#: templates/openassessmentblock/response/oa_response_cancelled.html
-#: templates/openassessmentblock/response/oa_response_closed.html
-#: templates/openassessmentblock/response/oa_response_submitted.html
-#: templates/openassessmentblock/response/oa_response_team_already_submitted.html
-#: templates/openassessmentblock/self/oa_self_closed.html
-#: templates/openassessmentblock/student_training/student_training_closed.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_incomplete.html
+#: templates/legacy/grade/oa_grade_waiting.html
+#: templates/legacy/message/oa_message_cancelled.html
+#: templates/legacy/message/oa_message_closed.html
+#: templates/legacy/message/oa_message_complete.html
+#: templates/legacy/message/oa_message_incomplete.html
+#: templates/legacy/peer/oa_peer_closed.html
+#: templates/legacy/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
+#: templates/legacy/peer/oa_peer_waiting.html
+#: templates/legacy/response/oa_response_cancelled.html
+#: templates/legacy/response/oa_response_closed.html
+#: templates/legacy/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_team_already_submitted.html
+#: templates/legacy/self/oa_self_closed.html
+#: templates/legacy/student_training/student_training_closed.html
 msgid "Status"
 msgstr "Stätüs Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Overall Grade"
 msgstr "Övéräll Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/grade/oa_grade_complete.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Points"
 msgstr "Pöïnts Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Additional comments on your response"
 msgstr ""
 "Àddïtïönäl çömménts ön ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Provide feedback on peer assessments"
 msgstr ""
 "Prövïdé féédßäçk ön péér ässéssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Submitting Feedback"
 msgstr "Süßmïttïng Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
@@ -1034,7 +1031,7 @@ msgstr ""
 "Ýöür féédßäçk häs ßéén süßmïttéd. Çöürsé stäff wïll ßé äßlé tö séé thïs "
 "féédßäçk whén théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
@@ -1042,7 +1039,7 @@ msgstr ""
 "Çöürsé stäff wïll ßé äßlé tö séé äný féédßäçk thät ýöü prövïdé héré whén "
 "théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
@@ -1050,75 +1047,75 @@ msgstr ""
 "Séléçt thé stätéménts ßélöw thät ßést réfléçt ýöür éxpérïénçé wïth péér "
 "ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "These assessments were useful."
 msgstr "Thésé ässéssménts wéré üséfül. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "These assessments were not useful."
 msgstr ""
 "Thésé ässéssménts wéré nöt üséfül. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr ""
 "Ì dïsägréé wïth öné ör möré öf thé péér ässéssménts öf mý réspönsé. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Some comments I received were inappropriate."
 msgstr ""
 "Sömé çömménts Ì réçéïvéd wéré ïnäppröprïäté. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr ""
 "Prövïdé féédßäçk ön thé grädé ör çömménts thät ýöü réçéïvéd fröm ýöür péérs."
 " Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "I feel the feedback I received was..."
 msgstr ""
 "Ì féél thé féédßäçk Ì réçéïvéd wäs... Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "We could not submit your feedback"
 msgstr ""
 "Wé çöüld nöt süßmït ýöür féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/grade/oa_grade_complete.html
+#: templates/legacy/grade/oa_grade_complete.html
 msgid "Submit feedback on peer assessments"
 msgstr ""
 "Süßmït féédßäçk ön péér ässéssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/grade/oa_grade_incomplete.html
+#: templates/legacy/grade/oa_grade_incomplete.html
 msgid "Not Completed"
 msgstr "Nöt Çömplétéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/grade/oa_grade_incomplete.html
+#: templates/legacy/grade/oa_grade_incomplete.html
 msgid "You have not completed all the steps of this problem."
 msgstr ""
 "Ýöü hävé nöt çömplétéd äll thé stéps öf thïs prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт"
 " αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/grade/oa_grade_not_started.html
+#: templates/legacy/grade/oa_grade_not_started.html
 msgid "Not Started"
 msgstr "Nöt Stärtéd Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/grade/oa_grade_not_started.html
+#: templates/legacy/grade/oa_grade_not_started.html
 msgid "You have not started this problem yet."
 msgstr ""
 "Ýöü hävé nöt stärtéd thïs prößlém ýét. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/grade/oa_grade_waiting.html
+#: templates/legacy/grade/oa_grade_waiting.html
 msgid "Waiting for Assessments"
 msgstr "Wäïtïng för Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: templates/openassessmentblock/grade/oa_grade_waiting.html
+#: templates/legacy/grade/oa_grade_waiting.html
 msgid ""
 "You have completed your steps in the assignment, but some assessments still "
 "need to be done on your response. When the assessments of your response are "
@@ -1133,14 +1130,14 @@ msgstr ""
 "∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
 "υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυ#"
 
-#: templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Grade Available Responses"
 msgstr "Grädé Àväïläßlé Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html
+#: templates/legacy/instructor_dashboard/oa_grade_available_responses.html
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
@@ -1148,15 +1145,15 @@ msgstr ""
 "Grädé Àväïläßlé Réspönsés ïs ünäväïläßlé. Thïs ïtém ïs nöt çönfïgüréd för "
 "Stäff Àsséssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/instructor_dashboard/oa_listing.html
+#: templates/legacy/instructor_dashboard/oa_listing.html
 msgid "Please wait"
 msgstr "Pléäsé wäït Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html
 msgid "Waiting Step Details"
 msgstr "Wäïtïng Stép Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html
+#: templates/legacy/instructor_dashboard/oa_waiting_step_details.html
 msgid ""
 "Waiting Step details view is unavailable. This item is not configured for "
 "peer assessments."
@@ -1164,20 +1161,20 @@ msgstr ""
 "Wäïtïng Stép détäïls vïéw ïs ünäväïläßlé. Thïs ïtém ïs nöt çönfïgüréd för "
 "péér ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
+#: templates/legacy/leaderboard/oa_leaderboard_show.html
 #, python-format
 msgid "%(num_points)s points"
 msgstr "%(num_points)s pöïnts Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: templates/legacy/leaderboard/oa_leaderboard_show.html
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
 msgid "Your peer's response to the prompt above"
 msgstr ""
 "Ýöür péér's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
+#: templates/legacy/leaderboard/oa_leaderboard_waiting.html
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
@@ -1185,7 +1182,7 @@ msgstr ""
 "Àftér ýöü çömplété äll thé stéps öf thïs ässïgnmént, ýöü çän séé thé töp-"
 "sçörïng réspönsés fröm ýöür péérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/message/oa_message_cancelled.html
+#: templates/legacy/message/oa_message_cancelled.html
 msgid ""
 "Your team’s submission has been cancelled. Your team will receive a grade of"
 " zero unless course staff resets your assessment to allow the team to "
@@ -1200,7 +1197,7 @@ msgstr ""
 "νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
 "σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ι#"
 
-#: templates/openassessmentblock/message/oa_message_cancelled.html
+#: templates/legacy/message/oa_message_cancelled.html
 msgid ""
 "Your submission has been cancelled. You will receive a grade of zero unless "
 "course staff resets your assessment to allow you to resubmit a response."
@@ -1214,7 +1211,7 @@ msgstr ""
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
 
-#: templates/openassessmentblock/message/oa_message_closed.html
+#: templates/legacy/message/oa_message_closed.html
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
@@ -1222,7 +1219,7 @@ msgstr ""
 "Thïs täsk ïs nöt ýét äväïläßlé. Çhéçk ßäçk tö çömplété thé ässïgnmént önçé "
 "thïs séçtïön häs öpénéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/message/oa_message_closed.html
+#: templates/legacy/message/oa_message_closed.html
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
@@ -1236,7 +1233,7 @@ msgstr ""
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт ł#"
 
-#: templates/openassessmentblock/message/oa_message_complete.html
+#: templates/legacy/message/oa_message_complete.html
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
@@ -1244,7 +1241,7 @@ msgstr ""
 "Ýöü hävé çömplétéd thïs ässïgnmént. Ýöür fïnäl grädé wïll ßé äväïläßlé whén "
 "thé ässéssménts öf ýöür réspönsé äré çömplété. Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/message/oa_message_complete.html
+#: templates/legacy/message/oa_message_complete.html
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
@@ -1252,7 +1249,7 @@ msgstr ""
 "Ýöü hävé çömplétéd thïs ässïgnmént. Révïéw ýöür grädé änd ýöür ässéssmént "
 "détäïls. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
@@ -1260,7 +1257,7 @@ msgstr ""
 "Thïs ässïgnmént ïs ïn prögréss. Léärnér träïnïng wïll çlösé söön. Çömplété "
 "thé léärnér träïnïng stép tö mövé ön. Ⱡ'σяєм ιρѕυм ∂σłσя#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
@@ -1268,8 +1265,8 @@ msgstr ""
 "Thïs ässïgnmént ïs ïn prögréss. Çömplété thé léärnér träïnïng stép tö mövé "
 "ön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
@@ -1277,7 +1274,7 @@ msgstr ""
 "Thïs ässïgnmént ïs ïn prögréss. Çhéçk ßäçk lätér whén thé ässéssmént pérïöd "
 "häs stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 #, python-format
 msgid ""
 "\n"
@@ -1288,7 +1285,7 @@ msgstr ""
 "                                    %(start_strong)sThïs ässïgnmént ïs ïn prögréss. Thé sélf ässéssmént stép wïll çlösé söön.%(end_strong)s Ýöü stïll nééd tö çömplété thé %(start_link)ssélf ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕ#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 #, python-format
 msgid ""
 "\n"
@@ -1299,7 +1296,7 @@ msgstr ""
 "                                    Thïs ässïgnmént ïs ïn prögréss. Ýöü stïll nééd tö çömplété thé %(start_link)ssélf ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυ#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 #, python-format
 msgid ""
 "\n"
@@ -1310,7 +1307,7 @@ msgstr ""
 "                                    Thïs ässïgnmént ïs ïn prögréss.%(start_strong)sThé péér ässéssmént stép wïll çlösé söön.%(end_strong)s Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf möré léärnérs hävé süßmïttéd réspönsés. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιq#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 #, python-format
 msgid ""
 "\n"
@@ -1321,7 +1318,7 @@ msgstr ""
 "                                    Thïs ässïgnmént ïs ïn prögréss. Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf möré léärnérs hävé süßmïttéd réspönsés. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ #"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 #, python-format
 msgid ""
 "\n"
@@ -1332,7 +1329,7 @@ msgstr ""
 "                                    Thïs ässïgnmént ïs ïn prögréss. %(start_strong)sThé péér ässéssmént stép wïll çlösé söön.%(end_strong)s Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕ#"
 
-#: templates/openassessmentblock/message/oa_message_incomplete.html
+#: templates/legacy/message/oa_message_incomplete.html
 #, python-format
 msgid ""
 "\n"
@@ -1343,13 +1340,13 @@ msgstr ""
 "                                    Thïs ässïgnmént ïs ïn prögréss. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
 "                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυ#"
 
-#: templates/openassessmentblock/message/oa_message_no_team.html
+#: templates/legacy/message/oa_message_no_team.html
 msgid "Team membership is required to view this assignment"
 msgstr ""
 "Téäm mémßérshïp ïs réqüïréd tö vïéw thïs ässïgnmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/message/oa_message_no_team.html
+#: templates/legacy/message/oa_message_no_team.html
 #, python-format
 msgid ""
 "\n"
@@ -1364,7 +1361,7 @@ msgstr ""
 "            Ýöü müst ßé ön ä téäm ïn téäm-sét \"%(teamset_name)s\" tö äççéss thïs téäm ässïgnmént.\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяι#"
 
-#: templates/openassessmentblock/message/oa_message_open.html
+#: templates/legacy/message/oa_message_open.html
 #, python-format
 msgid ""
 "\n"
@@ -1375,7 +1372,7 @@ msgstr ""
 "                    Àssïgnmént süßmïssïöns wïll çlösé söön. Tö réçéïvé ä grädé, fïrst prövïdé ä réspönsé tö thé prömpt, thén çömplété thé stéps ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
 "                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υ#"
 
-#: templates/openassessmentblock/message/oa_message_open.html
+#: templates/legacy/message/oa_message_open.html
 #, python-format
 msgid ""
 "\n"
@@ -1386,17 +1383,17 @@ msgstr ""
 "                    Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
 "                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
-#: templates/openassessmentblock/message/oa_message_unavailable.html
+#: templates/legacy/message/oa_message_unavailable.html
 msgid "Instructions Unavailable"
 msgstr "Ìnstrüçtïöns Ûnäväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/message/oa_message_unavailable.html
+#: templates/legacy/message/oa_message_unavailable.html
 msgid "The instructions for this step could not be loaded."
 msgstr ""
 "Thé ïnstrüçtïöns för thïs stép çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/oa_base.html
+#: templates/legacy/oa_base.html
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
@@ -1411,55 +1408,55 @@ msgstr ""
 " єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
 "¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
 
-#: templates/openassessmentblock/oa_base.html
+#: templates/legacy/oa_base.html
 msgid "Loading"
 msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
 
-#: templates/openassessmentblock/oa_latex_preview.html
+#: templates/legacy/oa_latex_preview.html
 msgid "Preview in LaTeX"
 msgstr "Prévïéw ïn LäTéX Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/oa_latex_preview.html
+#: templates/legacy/oa_latex_preview.html
 msgid "Click to preview your submission in LaTeX."
 msgstr ""
 "Çlïçk tö prévïéw ýöür süßmïssïön ïn LäTéX. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/oa_latex_preview.html
+#: templates/legacy/oa_latex_preview.html
 msgid "Preview Response"
 msgstr "Prévïéw Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/oa_rubric.html
+#: templates/legacy/oa_rubric.html
 msgid "Comments"
 msgstr "Çömménts Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/oa_submission_answer.html
+#: templates/legacy/oa_submission_answer.html
 msgid "The question for this section"
 msgstr "Thé qüéstïön för thïs séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/oa_team_uploaded_files.html
+#: templates/legacy/oa_team_uploaded_files.html
 msgid "Files that were uploaded by your teammates:"
 msgstr ""
 "Fïlés thät wéré üplöädéd ßý ýöür téämmätés: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/oa_team_uploaded_files.html
-#: templates/openassessmentblock/oa_uploaded_file.html
+#: templates/legacy/oa_team_uploaded_files.html
+#: templates/legacy/oa_uploaded_file.html
 msgid "View the files associated with this submission:"
 msgstr ""
 "Vïéw thé fïlés ässöçïätéd wïth thïs süßmïssïön: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
 " ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/oa_team_uploaded_files.html
+#: templates/legacy/oa_team_uploaded_files.html
 msgid "Uploaded by"
 msgstr "Ûplöädéd ßý Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/oa_uploaded_file.html
+#: templates/legacy/oa_uploaded_file.html
 msgid "Files that were uploaded by you:"
 msgstr ""
 "Fïlés thät wéré üplöädéd ßý ýöü: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/oa_uploaded_file.html
+#: templates/legacy/oa_uploaded_file.html
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
@@ -1474,14 +1471,14 @@ msgstr ""
 "¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρт#"
 
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_assessment.html
 msgid "Assess Peers"
 msgstr "Àsséss Péérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
 #. 5 days and 45 minutes)"
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_assessment.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1495,7 +1492,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
 #. and 45 minutes)"
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_assessment.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1506,7 +1503,7 @@ msgstr ""
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_assessment.html
 #, python-format
 msgid ""
 "\n"
@@ -1517,27 +1514,27 @@ msgstr ""
 "                    Ìn Prögréss (%(review_number)s öf %(num_must_grade)s)\n"
 "                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
 msgid "Read and assess the following response from one of your peers."
 msgstr ""
 "Réäd änd ässéss thé föllöwïng réspönsé fröm öné öf ýöür péérs. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
-#: templates/openassessmentblock/self/oa_self_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/self/oa_self_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Associated Files"
 msgstr "Àssöçïätéd Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/peer/oa_peer_assessment.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
-#: templates/openassessmentblock/self/oa_self_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/peer/oa_peer_assessment.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/self/oa_self_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 msgid "We could not submit your assessment"
 msgstr ""
 "Wé çöüld nöt süßmït ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
@@ -1549,7 +1546,7 @@ msgstr ""
 msgid "Cancelled"
 msgstr "Çänçélléd Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/peer/oa_peer_closed.html
+#: templates/legacy/peer/oa_peer_closed.html
 #, python-format
 msgid ""
 "\n"
@@ -1560,7 +1557,7 @@ msgstr ""
 "            Ìnçömplété (%(num_graded)s öf %(num_must_grade)s)\n"
 "         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/peer/oa_peer_closed.html
+#: templates/legacy/peer/oa_peer_closed.html
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
@@ -1575,13 +1572,13 @@ msgstr ""
 "яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
 "ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт#"
 
-#: templates/openassessmentblock/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_complete.html
 msgid "Completed"
 msgstr "Çömplétéd Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/peer/oa_peer_complete.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
+#: templates/legacy/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
 msgid ""
 "You have successfully completed all of the required peer assessments for "
 "this assignment. You may assess additional peer responses if you want to. "
@@ -1596,18 +1593,18 @@ msgstr ""
 "¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
 "¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. є#"
 
-#: templates/openassessmentblock/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_complete.html
 msgid "We could not retrieve additional submissions for assessment"
 msgstr ""
 "Wé çöüld nöt rétrïévé äddïtïönäl süßmïssïöns för ässéssmént Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/peer/oa_peer_complete.html
+#: templates/legacy/peer/oa_peer_complete.html
 msgid "Continue Assessing Peers"
 msgstr "Çöntïnüé Àsséssïng Péérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode.html
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
+#: templates/legacy/peer/oa_peer_turbo_mode.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
 #, python-format
 msgid ""
 "\n"
@@ -1618,7 +1615,7 @@ msgstr ""
 "        Çömplété (%(num_graded)s)\n"
 "       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
+#: templates/legacy/peer/oa_peer_turbo_mode_waiting.html
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
@@ -1633,7 +1630,7 @@ msgstr ""
 msgid "Not Available"
 msgstr "Nöt Àväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/peer/oa_peer_waiting.html
+#: templates/legacy/peer/oa_peer_waiting.html
 #, python-format
 msgid ""
 "\n"
@@ -1644,7 +1641,7 @@ msgstr ""
 "          Ìn Prögréss (%(review_number)s öf %(num_must_grade)s)\n"
 "         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/peer/oa_peer_waiting.html
+#: templates/legacy/peer/oa_peer_waiting.html
 msgid ""
 "All available peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses. You will receive your grade after "
@@ -1660,14 +1657,14 @@ msgstr ""
 "єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє"
 " νєłιт#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Your Team's Response"
 msgstr "Ýöür Téäm's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1681,7 +1678,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -1692,18 +1689,18 @@ msgstr ""
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/response/oa_response.html
-#: templates/openassessmentblock/self/oa_self_assessment.html
+#: templates/legacy/response/oa_response.html
+#: templates/legacy/self/oa_self_assessment.html
 msgid "In Progress"
 msgstr "Ìn Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Enter your team's response to the prompt."
 msgstr ""
 "Éntér ýöür téäm's réspönsé tö thé prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time before the due date\n"
@@ -1713,7 +1710,7 @@ msgstr ""
 "                        Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür téäm's réspönsé ät äný tïmé ßéföré thé düé däté\n"
 "                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "\n"
 "                        Your work will save automatically and you can return to complete your team's response at any time.\n"
@@ -1723,19 +1720,19 @@ msgstr ""
 "                        Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür téäm's réspönsé ät äný tïmé.\n"
 "                       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "After you submit a response on behalf of your team, it cannot be edited."
 msgstr ""
 "Àftér ýöü süßmït ä réspönsé ön ßéhälf öf ýöür téäm, ït çännöt ßé édïtéd. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Enter your response to the prompt."
 msgstr ""
 "Éntér ýöür réspönsé tö thé prömpt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the subsection due date "
@@ -1743,7 +1740,7 @@ msgstr ""
 "Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
 "réspönsé ät äný tïmé ßéföré thé süßséçtïön düé däté  Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the course ends "
@@ -1751,7 +1748,7 @@ msgstr ""
 "Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
 "réspönsé ät äný tïmé ßéföré thé çöürsé énds  Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time before the due date "
@@ -1759,7 +1756,7 @@ msgstr ""
 "Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
 "réspönsé ät äný tïmé ßéföré thé düé däté  Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "Your work will save automatically and you can return to complete your "
 "response at any time."
@@ -1767,31 +1764,31 @@ msgstr ""
 "Ýöür wörk wïll sävé äütömätïçällý änd ýöü çän rétürn tö çömplété ýöür "
 "réspönsé ät äný tïmé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "After you submit your response, you cannot edit it"
 msgstr ""
 "Àftér ýöü süßmït ýöür réspönsé, ýöü çännöt édït ït Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "What will this assignment be graded on?"
 msgstr ""
 "Whät wïll thïs ässïgnmént ßé grädéd ön? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "The prompt for this section"
 msgstr "Thé prömpt för thïs séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "You are on team "
 msgstr "Ýöü äré ön téäm  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Team Members: "
 msgstr "Téäm Mémßérs:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 #, python-format
 msgid ""
 "\n"
@@ -1806,25 +1803,25 @@ msgstr ""
 "                                              änd wïll nöt ßé ä pärt öf ýöür téäm's süßmïssïön ör ässïgnmént grädé.\n"
 "                                           Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє є#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Team Response "
 msgstr "Téäm Réspönsé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Your Response "
 msgstr "Ýöür Réspönsé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/response/oa_response.html
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "(Required)"
 msgstr "(Réqüïréd) Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/response/oa_response.html
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "(Optional)"
 msgstr "(Öptïönäl) Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "\n"
 "                                              Teams should designate one team member to submit a response on behalf of the\n"
@@ -1842,13 +1839,13 @@ msgstr ""
 "                                              mémßér shöüld süßmït.\n"
 "                                          #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Enter your response to the prompt above."
 msgstr ""
 "Éntér ýöür réspönsé tö thé prömpt äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 #, python-format
 msgid ""
 "\n"
@@ -1867,19 +1864,19 @@ msgstr ""
 "                                      réçéïvé ä grädé för théïr süßmïssïön.\n"
 "                                  #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "We could not save your progress"
 msgstr "Wé çöüld nöt sävé ýöür prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Status of Your Response"
 msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "File Uploads "
 msgstr "Fïlé Ûplöäds  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "\n"
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
@@ -1891,43 +1888,43 @@ msgstr ""
 "                                  désçrïptïöns tö ýöür fïlés tö hélp ýöür téämmätés ïdéntïfý thém.\n"
 "                               Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "We could not upload files"
 msgstr "Wé çöüld nöt üplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "We could not delete files"
 msgstr "Wé çöüld nöt délété fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Select one or more files to upload for this submission."
 msgstr ""
 "Séléçt öné ör möré fïlés tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя "
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Select a file to upload for this submission."
 msgstr ""
 "Séléçt ä fïlé tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Supported file types: "
 msgstr "Süppörtéd fïlé týpés:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Upload files"
 msgstr "Ûplöäd fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Upload file"
 msgstr "Ûplöäd fïlé Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "This is a team submission."
 msgstr "Thïs ïs ä téäm süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
@@ -1935,7 +1932,7 @@ msgstr ""
 "Öné téäm mémßér shöüld süßmït ä réspönsé wïth thé téäm’s shäréd fïlés änd ä "
 "téxt réspönsé ön ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
@@ -1943,20 +1940,20 @@ msgstr ""
 "Öné téäm mémßér shöüld süßmït ä réspönsé wïth thé téäm’s shäréd fïlés ön "
 "ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
 msgstr ""
 "Öné téäm mémßér shöüld süßmït ä téxt réspönsé ön ßéhälf öf thé éntïré téäm. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "One team member should submit on behalf of the entire team."
 msgstr ""
 "Öné téäm mémßér shöüld süßmït ön ßéhälf öf thé éntïré téäm. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
@@ -1966,22 +1963,22 @@ msgstr ""
 "                  Léärn möré äßöüt téäm ässïgnménts héré: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">lïnk</a>)\n"
 "                   Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "We could not submit your response"
 msgstr ""
 "Wé çöüld nöt süßmït ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/response/oa_response.html
+#: templates/legacy/response/oa_response.html
 msgid "Submit your response and move to the next step"
 msgstr ""
 "Süßmït ýöür réspönsé änd mövé tö thé néxt stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/response/oa_response_cancelled.html
+#: templates/legacy/response/oa_response_cancelled.html
 msgid "Your submission was cancelled. "
 msgstr "Ýöür süßmïssïön wäs çänçélléd.  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/response/oa_response_cancelled.html
+#: templates/legacy/response/oa_response_cancelled.html
 #, python-format
 msgid ""
 "\n"
@@ -1992,7 +1989,7 @@ msgstr ""
 "                                Ýöür süßmïssïön häs ßéén çänçélléd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
 "                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/response/oa_response_cancelled.html
+#: templates/legacy/response/oa_response_cancelled.html
 #, python-format
 msgid ""
 "\n"
@@ -2003,7 +2000,7 @@ msgstr ""
 "                               Ýöür süßmïssïön wäs çänçélléd ön %(removed_datetime)s\n"
 "                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/response/oa_response_cancelled.html
+#: templates/legacy/response/oa_response_cancelled.html
 #, python-format
 msgid ""
 "\n"
@@ -2014,13 +2011,13 @@ msgstr ""
 "                            Çömménts: %(comments)s\n"
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/response/oa_response_closed.html
-#: templates/openassessmentblock/self/oa_self_closed.html
-#: templates/openassessmentblock/student_training/student_training_closed.html
+#: templates/legacy/response/oa_response_closed.html
+#: templates/legacy/self/oa_self_closed.html
+#: templates/legacy/student_training/student_training_closed.html
 msgid "Incomplete"
 msgstr "Ìnçömplété Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: templates/openassessmentblock/response/oa_response_closed.html
+#: templates/legacy/response/oa_response_closed.html
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer submit a response or continue with this problem, and you will receive"
@@ -2042,18 +2039,18 @@ msgstr ""
 msgid "Complete"
 msgstr "Çömplété Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/response/oa_response_graded.html
-#: templates/openassessmentblock/response/oa_response_submitted.html
-#: templates/openassessmentblock/self/oa_self_assessment.html
+#: templates/legacy/response/oa_response_graded.html
+#: templates/legacy/response/oa_response_submitted.html
+#: templates/legacy/self/oa_self_assessment.html
 msgid "Your response"
 msgstr "Ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/response/oa_response_graded.html
-#: templates/openassessmentblock/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_graded.html
+#: templates/legacy/response/oa_response_submitted.html
 msgid "Your Uploaded Files"
 msgstr "Ýöür Ûplöädéd Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_submitted.html
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
@@ -2061,7 +2058,7 @@ msgstr ""
 "Ýöür réspönsé häs ßéén süßmïttéd. Ýöü wïll réçéïvé ýöür grädé äftér äll "
 "stéps äré çömplété änd ýöür réspönsé ïs füllý ässésséd. Ⱡ'σяє#"
 
-#: templates/openassessmentblock/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_submitted.html
 #, python-format
 msgid ""
 "\n"
@@ -2072,7 +2069,7 @@ msgstr ""
 "                        Ýöü stïll nééd tö çömplété thé %(peer_start_tag)spéér ässéssmént%(end_tag)s änd %(self_start_tag)ssélf ässéssmént%(end_tag)s stéps.\n"
 "                     Ⱡ#"
 
-#: templates/openassessmentblock/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_submitted.html
 #, python-format
 msgid ""
 "\n"
@@ -2083,7 +2080,7 @@ msgstr ""
 "                        Ýöü stïll nééd tö çömplété thé %(start_tag)spéér ässéssmént%(end_tag)s stép.\n"
 "                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/response/oa_response_submitted.html
+#: templates/legacy/response/oa_response_submitted.html
 #, python-format
 msgid ""
 "\n"
@@ -2094,11 +2091,11 @@ msgstr ""
 "                        Ýöü stïll nééd tö çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
 "                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/response/oa_response_team_already_submitted.html
+#: templates/legacy/response/oa_response_team_already_submitted.html
 msgid "Error"
 msgstr "Érrör Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/response/oa_response_team_already_submitted.html
+#: templates/legacy/response/oa_response_team_already_submitted.html
 #, python-format
 msgid ""
 "\n"
@@ -2115,14 +2112,14 @@ msgstr ""
 "                            öptïöns för thïs ässïgnmént.\n"
 "                        #"
 
-#: templates/openassessmentblock/self/oa_self_assessment.html
+#: templates/legacy/self/oa_self_assessment.html
 msgid "Assess Your Response"
 msgstr "Àsséss Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: templates/openassessmentblock/self/oa_self_assessment.html
+#: templates/legacy/self/oa_self_assessment.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -2136,7 +2133,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: templates/openassessmentblock/self/oa_self_assessment.html
+#: templates/legacy/self/oa_self_assessment.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -2147,11 +2144,11 @@ msgstr ""
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/self/oa_self_assessment.html
+#: templates/legacy/self/oa_self_assessment.html
 msgid "Submit your assessment"
 msgstr "Süßmït ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/self/oa_self_closed.html
+#: templates/legacy/self/oa_self_closed.html
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
@@ -2166,110 +2163,109 @@ msgstr ""
 "яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
 "ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂є#"
 
-#: templates/openassessmentblock/staff/oa_staff_grade.html
-#: xblock/grade_mixin.py
+#: templates/legacy/staff/oa_staff_grade.html xblock/grade_mixin.py
 msgid "Staff Grade"
 msgstr "Stäff Grädé Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Manage Individual Learners"
 msgstr "Mänägé Ìndïvïdüäl Léärnérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Manage Team Responses"
 msgstr "Mänägé Téäm Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "View Assignment Statistics"
 msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Demo the new Grading Experience"
 msgstr "Démö thé néw Grädïng Éxpérïénçé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "View ORA in Studio"
 msgstr "Vïéw ÖRÀ ïn Stüdïö Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Close"
 msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Manage Teams"
 msgstr "Mänägé Téäms Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Enter an individual learner's username or email"
 msgstr ""
 "Éntér än ïndïvïdüäl léärnér's üsérnämé ör émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
 " ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Enter a team member's username or edX email"
 msgstr ""
 "Éntér ä téäm mémßér's üsérnämé ör édX émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Submit"
 msgstr "Süßmït Ⱡ'σяєм ιρѕυ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Response total"
 msgstr "Réspönsé tötäl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Location"
 msgstr "Löçätïön Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Learner Progress"
 msgstr "Léärnér Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Problem Step"
 msgstr "Prößlém Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Active Learners in Step"
 msgstr "Àçtïvé Léärnérs ïn Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Dates"
 msgstr "Dätés Ⱡ'σяєм ιρѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "Release Date"
 msgstr "Réléäsé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
-#: templates/openassessmentblock/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
+#: templates/legacy/staff_area/oa_staff_area.html
 msgid "N/A"
 msgstr "N/À Ⱡ'σяєм#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners.html
+#: templates/legacy/staff_area/oa_staff_grade_learners.html
 msgid "Staff Assessment"
 msgstr "Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
 msgid "Give this team a grade using the problem's rubric."
 msgstr ""
 "Gïvé thïs téäm ä grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
 msgid "Give this learner a grade using the problem's rubric."
 msgstr ""
 "Gïvé thïs léärnér ä grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт"
 " αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
 #, python-format
 msgid ""
 "\n"
@@ -2280,8 +2276,8 @@ msgstr ""
 "                                        Réspönsé för: %(team_name)s wïth %(team_usernames)s\n"
 "                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 #, python-format
 msgid ""
 "\n"
@@ -2292,37 +2288,37 @@ msgstr ""
 "                                        Réspönsé för: %(student_username)s\n"
 "                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 msgid "Learner Response"
 msgstr "Léärnér Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
 msgid "The teams's response to the prompt above"
 msgstr ""
 "Thé téäms's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "The learner's response to the prompt above"
 msgstr ""
 "Thé léärnér's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 msgid "Submit assessment"
 msgstr "Süßmït ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_assessment.html
 msgid "Submit assessment and continue grading"
 msgstr ""
 "Süßmït ässéssmént änd çöntïnüé grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html
+#: templates/legacy/staff_area/oa_staff_grade_learners_count.html
 #, python-format
 msgid ""
 "\n"
@@ -2333,30 +2329,30 @@ msgstr ""
 "                %(ungraded)s Àväïläßlé änd %(in_progress)s Çhéçkéd Öüt\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 msgid "Override this learner's current grade using the problem's rubric."
 msgstr ""
 "Övérrïdé thïs léärnér's çürrént grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 msgid "Override this team's current grade using the problem's rubric."
 msgstr ""
 "Övérrïdé thïs téäm's çürrént grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
 msgid "Team Response"
 msgstr "Téäm Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_staff_override_assessment.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "The team's response to the prompt above"
 msgstr ""
 "Thé téäm's réspönsé tö thé prömpt äßövé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2367,7 +2363,7 @@ msgstr ""
 "                    Vïéwïng léärnér: %(learner)s\n"
 "                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2378,15 +2374,15 @@ msgstr ""
 "                    Vïéwïng téäm: %(team)s\n"
 "                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Learner's Response"
 msgstr "Léärnér's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Team's Response"
 msgstr "Téäm's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2397,7 +2393,7 @@ msgstr ""
 "                            Léärnér süßmïssïön rémövéd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2408,7 +2404,7 @@ msgstr ""
 "                            Léärnér süßmïssïön rémövéd ön %(removed_datetime)s\n"
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2419,39 +2415,39 @@ msgstr ""
 "                        Çömménts: %(comments)s\n"
 "                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Peer Assessments for This Learner"
 msgstr ""
 "Péér Àsséssménts för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Peer Assessments Completed by This Learner"
 msgstr ""
 "Péér Àsséssménts Çömplétéd ßý Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Learner's Self Assessment"
 msgstr "Léärnér's Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Staff Assessment for This Learner"
 msgstr ""
 "Stäff Àsséssmént för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Staff Assessment for this Team"
 msgstr "Stäff Àsséssmént för thïs Téäm Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Learner's Final Grade"
 msgstr "Léärnér's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Team's Final Grade"
 msgstr "Téäm's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2462,11 +2458,11 @@ msgstr ""
 "                            Fïnäl grädé: %(points_earned)s öüt öf %(points_possible)s\n"
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Final Grade Details"
 msgstr "Fïnäl Grädé Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -2485,17 +2481,17 @@ msgstr[1] ""
 "                                        %(assessment_label)s - %(points)s pöïnts\n"
 "                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Feedback Recorded"
 msgstr "Féédßäçk Réçördéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "The submission is waiting for assessments."
 msgstr ""
 "Thé süßmïssïön ïs wäïtïng för ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -2510,7 +2506,7 @@ msgstr ""
 "∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
 " ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
@@ -2525,31 +2521,31 @@ msgstr ""
 "∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
 " ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσ#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "The problem has not been started."
 msgstr ""
 "Thé prößlém häs nöt ßéén stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "The problem has not been completed."
 msgstr ""
 "Thé prößlém häs nöt ßéén çömplétéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Submit Assessment Grade Override"
 msgstr ""
 "Süßmït Àsséssmént Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Submit Team Grade Override"
 msgstr "Süßmït Téäm Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Unable to perform grade override"
 msgstr ""
 "Ûnäßlé tö pérförm grädé övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid ""
 "Grades are frozen. Grades are automatically frozen 30 days after the course "
 "end date."
@@ -2557,7 +2553,7 @@ msgstr ""
 "Grädés äré frözén. Grädés äré äütömätïçällý frözén 30 däýs äftér thé çöürsé "
 "énd däté. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid ""
 "This submission has been cancelled and cannot recieve a grade. Refer to "
 "documentation for how to delete the learner’s state for this problem to "
@@ -2572,23 +2568,23 @@ msgstr ""
 "νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт "
 "σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Remove Submission From Peer Grading"
 msgstr ""
 "Rémövé Süßmïssïön Fröm Péér Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Remove Team Submission from Grading"
 msgstr ""
 "Rémövé Téäm Süßmïssïön fröm Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Caution: This Action Cannot Be Undone"
 msgstr ""
 "Çäütïön: Thïs Àçtïön Çännöt Bé Ûndöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυ#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
@@ -2596,7 +2592,7 @@ msgstr ""
 "Rémövïng ä léärnér's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
 "çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid ""
 "Removing a team's submission cannot be undone and should be done with "
 "caution."
@@ -2604,21 +2600,21 @@ msgstr ""
 "Rémövïng ä téäm's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
 "çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Comments:"
 msgstr "Çömménts: Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "Remove submission"
 msgstr "Rémövé süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info.html
+#: templates/legacy/staff_area/oa_student_info.html
 msgid "A response was not found for this learner."
 msgstr ""
 "À réspönsé wäs nöt föünd för thïs léärnér. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 #, python-format
 msgid ""
 "\n"
@@ -2629,27 +2625,27 @@ msgstr ""
 "                            Àsséssmént %(assessment_num)s:\n"
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Assessment Details"
 msgstr "Àsséssmént Détäïls Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Selected Option"
 msgstr "Séléçtéd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Feedback"
 msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
 
-#: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html
+#: templates/legacy/staff_area/oa_student_info_assessment_detail.html
 msgid "Points Possible"
 msgstr "Pöïnts Pössïßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "Learn to Assess Responses"
 msgstr "Léärn tö Àsséss Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 #, python-format
 msgid ""
 "\n"
@@ -2663,7 +2659,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -2677,7 +2673,7 @@ msgstr ""
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -2688,12 +2684,12 @@ msgstr ""
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/student_training/student_training.html
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "Learning to Assess Responses"
 msgstr "Léärnïng tö Àsséss Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid ""
 "Before you begin to assess your peers' responses, you'll learn how to "
 "complete peer assessments by reviewing responses that instructors have "
@@ -2708,7 +2704,7 @@ msgstr ""
 "sämé öptïöns, ýöü'll révïéw thé réspönsé änd trý ägäïn. Ⱡ'σяєм ιρѕυм ∂σłσя "
 "ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єι#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
@@ -2723,44 +2719,44 @@ msgstr ""
 "∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
 " ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "The response to the prompt above:"
 msgstr ""
 "Thé réspönsé tö thé prömpt äßövé: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "Selected Options Agree"
 msgstr "Séléçtéd Öptïöns Àgréé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "The option you selected is the option that the instructor selected."
 msgstr ""
 "Thé öptïön ýöü séléçtéd ïs thé öptïön thät thé ïnstrüçtör séléçtéd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "Selected Options Differ"
 msgstr "Séléçtéd Öptïöns Dïffér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr ""
 "Thé öptïön ýöü séléçtéd ïs nöt thé öptïön thät thé ïnstrüçtör séléçtéd. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "We could not check your assessment"
 msgstr ""
 "Wé çöüld nöt çhéçk ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: templates/openassessmentblock/student_training/student_training.html
+#: templates/legacy/student_training/student_training.html
 msgid "Compare your selections with the instructor's selections"
 msgstr ""
 "Çömpäré ýöür séléçtïöns wïth thé ïnstrüçtör's séléçtïöns Ⱡ'σяєм ιρѕυм ∂σłσя "
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/openassessmentblock/student_training/student_training_closed.html
+#: templates/legacy/student_training/student_training_closed.html
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
@@ -2775,13 +2771,13 @@ msgstr ""
 "νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
 "¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσ#"
 
-#: templates/openassessmentblock/student_training/student_training_error.html
+#: templates/legacy/student_training/student_training_error.html
 msgid "Error Loading Learner Training Examples"
 msgstr ""
 "Érrör Löädïng Léärnér Träïnïng Éxämplés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
-#: templates/openassessmentblock/student_training/student_training_error.html
+#: templates/legacy/student_training/student_training_error.html
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr ""
 "Thé Léärnér Träïnïng Stép öf thïs ässïgnmént çöüld nöt ßé löädéd. Ⱡ'σяєм "

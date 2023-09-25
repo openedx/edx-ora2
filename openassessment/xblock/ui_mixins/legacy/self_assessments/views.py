@@ -9,11 +9,11 @@ from openassessment.xblock.utils.user_data import get_user_preferences
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 template_paths = {
-    "unavailable": "openassessmentblock/self/oa_self_unavailable.html",
-    "cancelled": "openassessmentblock/self/oa_self_cancelled.html",
-    "complete": "openassessmentblock/self/oa_self_complete.html",
-    "closed": "openassessmentblock/self/oa_self_closed.html",
-    "assessment": "openassessmentblock/self/oa_self_assessment.html",
+    "unavailable": "legacy/self/oa_self_unavailable.html",
+    "cancelled": "legacy/self/oa_self_cancelled.html",
+    "complete": "legacy/self/oa_self_complete.html",
+    "closed": "legacy/self/oa_self_closed.html",
+    "assessment": "legacy/self/oa_self_assessment.html",
 }
 
 

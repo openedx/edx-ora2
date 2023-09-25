@@ -22,6 +22,7 @@ from xblock.fields import Boolean, Integer, List, Scope, String
 
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.apis.grades_api import GradesAPI
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.utils.data_conversion import (
@@ -314,6 +315,10 @@ class OpenAssessmentBlock(
     @property
     def student_training_data(self):
         return StudentTrainingAPI(self)
+
+    @property
+    def grades_data(self):
+        return GradesAPI(self)
 
     @property
     def api_data(self):

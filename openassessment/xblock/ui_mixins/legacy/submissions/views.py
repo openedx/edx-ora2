@@ -49,7 +49,7 @@ def get_submission_path(submission_info):
     """
 
     # Template Paths
-    template_dir = "openassessmentblock/response"
+    template_dir = "legacy/response"
     submission_template_paths = {
         "default": "oa_response",
         "closed": "oa_response_closed",

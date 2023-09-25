@@ -17,6 +17,10 @@ class PeerAssessmentAPI(StepDataAPI):
         self._continue_grading = continue_grading
 
     @property
+    def submission_uuid(self):
+        return self.workflow_data.submission_uuid
+
+    @property
     def assessment(self):
         return self.config_data.get_assessment_module("peer-assessment")
 
@@ -29,9 +33,33 @@ class PeerAssessmentAPI(StepDataAPI):
         return self.config_data.file_upload_type
 
     @property
+    def num_completed(self):
+        _, count = self.has_finished
+        return count
+
+    @property
+    def num_received(self):
+        """
+        Return number of peer assessments this submission has received
+        or None if submission not found.
+        """
+        return peer_api.get_graded_by_count(self.submission_uuid)
+
+    @property
+    def waiting_for_submissions_to_assess(self):
+        """
+        Determine if the student is blocked, waiting on submissions to assess.
+        """
+        peer_submission = peer_api.get_submission_to_assess(
+            self.submission_uuid, self.assessment["must_be_graded_by"],
+            peek=True
+        )
+        return not bool(peer_submission)
+
+    @property
     def has_finished(self):
         finished, count = peer_api.has_finished_required_evaluating(
-            self._block.submission_uuid, self.assessment["must_grade"]
+            self.submission_uuid, self.assessment["must_grade"]
         )
         return finished, count
 
@@ -77,7 +105,7 @@ class PeerAssessmentAPI(StepDataAPI):
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
-                self.workflow_data.submission_uuid, self.assessment["must_be_graded_by"]
+                self.submission_uuid, self.assessment["must_be_graded_by"]
             )
             self.config_data.publish_event(
                 "openassessmentblock.get_peer_submission",

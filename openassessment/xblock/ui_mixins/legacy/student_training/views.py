@@ -9,12 +9,12 @@ from webob import Response
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 template_paths = {
-    "unavailable": "openassessmentblock/student_training/student_training_unavailable.html",
-    "cancelled": "openassessmentblock/student_training/student_training_cancelled.html",
-    "complete": "openassessmentblock/student_training/student_training_complete.html",
-    "closed": "openassessmentblock/student_training/student_training_closed.html",
-    "training": "openassessmentblock/student_training/student_training.html",
-    "error": "openassessmentblock/student_training/student_training_error.html",
+    "unavailable": "legacy/student_training/student_training_unavailable.html",
+    "cancelled": "legacy/student_training/student_training_cancelled.html",
+    "complete": "legacy/student_training/student_training_complete.html",
+    "closed": "legacy/student_training/student_training_closed.html",
+    "training": "legacy/student_training/student_training.html",
+    "error": "legacy/student_training/student_training_error.html",
 }
 
 
