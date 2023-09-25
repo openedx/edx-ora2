@@ -217,9 +217,7 @@ class OraBlockInfoSerializer(Serializer):
 
     def get_baseAssetUrl(self, block):
         # pylint: disable=protected-access
-        return block._get_base_url_path_for_course_assets(
-            block.course.id
-        )
+        return block.get_base_url_path_for_course_assets(block.course.id)
 
     def get_prompts(self, block):
         return [prompt["description"] for prompt in block.prompts]

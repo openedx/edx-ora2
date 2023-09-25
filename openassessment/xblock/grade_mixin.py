@@ -12,7 +12,7 @@ from django.utils.translation import gettext as _
 
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 
-from .data_conversion import create_submission_dict
+from .utils.data_conversion import create_submission_dict
 
 
 class GradeMixin:

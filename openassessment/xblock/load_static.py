@@ -16,10 +16,10 @@ def urljoin(*args):
     Joining multiple url continuously. The default behavior from os.path.join
     would completely reset the path if the second path start with '/'.
     """
-    begining_slash = '/' if args[0].startswith('/') else ''
+    beginning_slash = '/' if args[0].startswith('/') else ''
     trailing_slash = '/' if args[-1].endswith('/') else ''
     joined_path = '/'.join(map(lambda x: str(x).strip('/'), args))
-    return begining_slash + joined_path + trailing_slash
+    return beginning_slash + joined_path + trailing_slash
 
 
 class LoadStatic:

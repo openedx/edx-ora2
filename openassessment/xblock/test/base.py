@@ -316,7 +316,39 @@ class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCa
     """
 
 
-class SubmitAssessmentsMixin:
+class SubmissionTestMixin:
+    """
+    Mixin for creating test submissions
+    """
+
+    DEFAULT_TEST_SUBMISSION_TEXT = ('A man must have a code', 'A man must have an umbrella too.')
+
+    def create_test_submission(self, xblock, student_item=None, submission_text=None):
+        """
+        Helper for creating test submissions
+
+        Args:
+        * xblock: The XBlock to create the submission under
+
+        Kwargs:
+        * student_item (Dict): Student item dict. Where not specified, will
+          collect from the xblock
+        * submission_text (List(str)): Allows specifying submission text (or
+          empty submission). Otherwise, will use default text.
+
+        Returns:
+        * submission
+        """
+
+        if student_item is None:
+            student_item = xblock.get_student_item_dict()
+        if submission_text is None:
+            submission_text = self.DEFAULT_TEST_SUBMISSION_TEXT
+
+        return xblock.submission_data.create_submission(student_item, submission_text)
+
+
+class SubmitAssessmentsMixin(SubmissionTestMixin):
     """
     A mixin for creating a submission and peer/self assessments so that the user can
     receive a grade. This is useful for getting into the "waiting for peer assessment" state.
@@ -353,7 +385,7 @@ class SubmitAssessmentsMixin:
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         student_id = student_item['student_id']
-        submission = xblock.create_submission(student_item, submission_text)
+        submission = self.create_test_submission(xblock, student_item=student_item, submission_text=submission_text)
 
         if peers:
             # Create submissions and (optionally) assessments from other users

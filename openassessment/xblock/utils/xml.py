@@ -12,7 +12,7 @@ import defusedxml.ElementTree as safe_etree
 import pytz
 
 from lxml import etree
-from openassessment.xblock.data_conversion import update_assessments_format
+from openassessment.xblock.utils.data_conversion import update_assessments_format
 from openassessment.xblock.lms_mixin import GroupAccessDict
 
 log = logging.getLogger(__name__)

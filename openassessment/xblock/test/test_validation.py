@@ -11,8 +11,14 @@ import pytz
 from django.test import TestCase
 
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.validation import (validate_assessment_examples, validate_assessments, validate_dates,
-                                              validate_rubric, validate_submission, validator)
+from openassessment.xblock.utils.validation import (
+    validate_assessment_examples,
+    validate_assessments,
+    validate_dates,
+    validate_rubric,
+    validate_submission,
+    validator
+)
 
 
 def STUB_I18N(x):

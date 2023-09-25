@@ -12,12 +12,20 @@ import pytz
 from django.test import TestCase
 
 from lxml import etree
-from openassessment.xblock.data_conversion import create_prompts_list
+from openassessment.xblock.utils.data_conversion import create_prompts_list
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.xml import (UpdateFromXmlError, _parse_prompts_xml, parse_assessments_xml,
-                                       parse_examples_xml, parse_from_xml_str, parse_rubric_xml,
-                                       serialize_assessments_to_xml_str, serialize_content,
-                                       serialize_examples_to_xml_str, serialize_rubric_to_xml_str)
+from openassessment.xblock.utils.xml import (
+    UpdateFromXmlError,
+    _parse_prompts_xml,
+    parse_assessments_xml,
+    parse_examples_xml,
+    parse_from_xml_str,
+    parse_rubric_xml,
+    serialize_assessments_to_xml_str,
+    serialize_content,
+    serialize_examples_to_xml_str,
+    serialize_rubric_to_xml_str,
+)
 
 
 def _parse_date(value):

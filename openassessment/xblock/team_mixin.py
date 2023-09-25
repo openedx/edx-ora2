@@ -13,7 +13,7 @@ from submissions.team_api import (
 )
 from submissions.errors import TeamSubmissionNotFoundError
 
-from openassessment.xblock.data_conversion import list_to_conversational_format
+from openassessment.xblock.utils.data_conversion import list_to_conversational_format
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
