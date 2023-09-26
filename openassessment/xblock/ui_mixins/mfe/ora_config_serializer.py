@@ -188,6 +188,7 @@ class PeerSettingsSerializer(AssessmentStepSettingsSerializer):
         source="enable_flexible_grading", required=False
     )
 
+    gradingStrategy = CharField(source="grading_strategy")
 
 class StaffSettingsSerializer(AssessmentStepSettingsSerializer):
     STEP_NAME = 'staff-assessment'
