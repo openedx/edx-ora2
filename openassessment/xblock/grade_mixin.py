@@ -9,6 +9,7 @@ from lazy import lazy
 from xblock.core import XBlock
 
 from django.utils.translation import gettext as _
+from openassessment.assessment.api.peer import get_peer_grading_strategy
 
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
 
@@ -301,7 +302,8 @@ class GradeMixin:
         if staff_assessment:
             median_scores = staff_api.get_assessment_scores_by_criteria(submission_uuid)
         elif "peer-assessment" in assessment_steps:
-            median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+            grading_strategy = get_peer_grading_strategy(self.workflow_requirements()["peer"])
+            median_scores = peer_api.get_peer_assessment_scores(submission_uuid, grading_strategy)
         elif "self-assessment" in assessment_steps:
             median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
 
@@ -367,9 +369,10 @@ class GradeMixin:
             criterion_name,
             staff_assessment
         )
+        grading_strategy = get_peer_grading_strategy(self.workflow_requirements()["peer"])
         if "peer-assessment" in assessment_steps:
             peer_assessment_part = {
-                'title': _('Peer Median Grade'),
+                'title': _(f'Peer {grading_strategy.capitalize()} Grade'),
                 'criterion': criterion,
                 'option': self._peer_median_option(submission_uuid, criterion),
                 'individual_assessments': [
@@ -424,7 +427,8 @@ class GradeMixin:
         # Import is placed here to avoid model import at project startup.
         from openassessment.assessment.api import peer as peer_api
 
-        median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+        grading_strategy = get_peer_grading_strategy(self.workflow_requirements()["peer"])
+        median_scores = peer_api.get_peer_assessment_scores(submission_uuid, grading_strategy)
         median_score = median_scores.get(criterion['name'], None)
         median_score = -1 if median_score is None else median_score
 
@@ -650,11 +654,11 @@ class GradeMixin:
         complete = score is not None
 
         assessment_type = self._get_assessment_type(workflow)
-
+        grading_strategy = get_peer_grading_strategy(self.workflow_requirements()["peer"])
         sentences = {
             "staff": _("The grade for this problem is determined by your Staff Grade."),
             "peer": _(
-                "The grade for this problem is determined by the median score of "
+                f"The grade for this problem is determined by the {grading_strategy} score of "
                 "your Peer Assessments."
             ),
             "self": _("The grade for this problem is determined by your Self Assessment.")

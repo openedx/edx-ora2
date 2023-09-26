@@ -91,6 +91,7 @@ export class EditPeerAssessmentView {
       must_grade: this.mustGradeNum(),
       must_be_graded_by: this.mustBeGradedByNum(),
       enable_flexible_grading: this.enableFlexibleGrading(),
+      grading_strategy: this.gradingStrategy(),
       start: this.startDatetime(),
       due: this.dueDatetime(),
     };
@@ -162,6 +163,23 @@ export class EditPeerAssessmentView {
     }
     return self.val() === '1';
   }
+
+  /**
+     Get or set the mean grading setting to enabled/disabled
+
+     Args:
+     enabled (bool, optional): If provided, set `grading_strategy` to the given value
+
+     Returns:
+     boolean
+     * */
+     gradingStrategy(strategy) {
+      const self = $('#peer_assessment_grading_strategy', this.element);
+      if (strategy !== undefined) {
+        self.val(strategy);
+      }
+      return self.val();
+    }
 
   /**
      Get or set the start date and time of the assessment.

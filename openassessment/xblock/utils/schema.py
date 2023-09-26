@@ -4,6 +4,7 @@ Schema for validating and sanitizing data received from the JavaScript client.
 
 import dateutil
 from pytz import utc
+from openassessment.assessment.api.peer import GradingStrategy
 
 from voluptuous import (
     All,
@@ -135,6 +136,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             'must_grade': All(int, Range(min=0)),
             'must_be_graded_by': All(int, Range(min=0)),
             Required('enable_flexible_grading', default=False): bool,
+            Optional('grading_strategy', default=GradingStrategy.MEDIAN): str,
             'examples': [
                 Schema({
                     Required('answer'): [utf8_validator],

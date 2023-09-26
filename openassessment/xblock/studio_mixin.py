@@ -215,6 +215,7 @@ class StudioMixin:
             'date_config_type_doc_url': self.ORA_SETTINGS_DOCUMENT_URL,
             'subsection_end_date': self.due,
             'course_end_date': None if not self.course else self.course.end,
+            'enable_peer_configurable_grading': self.enable_peer_configurable_grading,
         }
 
     @XBlock.json_handler

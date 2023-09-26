@@ -938,7 +938,7 @@ class OraAggregateData:
         )
         if assessments:
             scores = Assessment.scores_by_criterion(assessments)
-            median_scores = Assessment.get_median_score_dict(scores)
+            median_scores = Assessment.get_score_dict(scores)
         else:
             # If no assessments, just report submission data.
             median_scores = []
