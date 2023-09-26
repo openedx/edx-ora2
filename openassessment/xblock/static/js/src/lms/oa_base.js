@@ -42,22 +42,29 @@ export class BaseView {
       this.runtime = runtime;
       this.element = element;
       this.server = server;
-      this.fileUploader = new FileUploader();
+      this.isMobile = window.navigator.userAgent.includes('org.edx.mobile');
+      this.show_mfe_views = data.mfe_views;
 
-      this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
+      if (!this.show_mfe_views || this.isMobile) {
+        this.fileUploader = new FileUploader();
 
-      this.responseView = new ResponseView(
-        this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
-      );
-      this.trainingView = new StudentTrainingView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.selfView = new SelfView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.peerView = new PeerView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.staffView = new StaffView(this.element, this.server, this);
-      this.gradeView = new GradeView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.responseEditorLoader = new ResponseEditorLoader(data.AVAILABLE_EDITORS);
+
+        this.responseView = new ResponseView(
+          this.element, this.server, this.fileUploader, this.responseEditorLoader, this, data,
+        );
+        this.trainingView = new StudentTrainingView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.selfView = new SelfView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.peerView = new PeerView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.staffView = new StaffView(this.element, this.server, this);
+        this.gradeView = new GradeView(this.element, this.server, this.responseEditorLoader, data, this);
+        this.messageView = new MessageView(this.element, this.server, this);
+      }
+
       this.leaderboardView = new LeaderboardView(this.element, this.server, this.responseEditorLoader, data, this);
-      this.messageView = new MessageView(this.element, this.server, this);
       // Staff-only area with information and tools for managing student submissions
       this.staffAreaView = new StaffAreaView(this.element, this.server, this.responseEditorLoader, data, this);
+
       this.usageID = '';
       this.srStatusUpdates = [];
 

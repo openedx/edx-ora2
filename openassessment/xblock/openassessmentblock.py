@@ -525,6 +525,50 @@ class OpenAssessmentBlock(
         return student_item_dict
 
     @togglable_mobile_support
+    def author_view(self, context=None):  # pylint: disable=unused-argument
+        """The main view of OpenAssessmentBlock, displayed when viewing courses.
+
+        View which displays the legacy UI for authoring in Studio.
+
+        Args:
+            context: Not used for this view.
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock, which determines the
+            general frame of the Open Ended Assessment Question.
+        """
+        # On page load, update the workflow status.
+        # We need to do this here because peers may have graded us, in which
+        # case we may have a score available.
+
+        try:
+            self.update_workflow_status()
+        except AssessmentWorkflowError:
+            # Log the exception, but continue loading the page
+            logger.exception('An error occurred while updating the workflow on page load.')
+
+        ui_models = self._create_ui_models()
+
+        leaderboard_model = None
+        for model in ui_models:
+            if model["name"] == "leaderboard":
+                leaderboard_model = model
+
+        # All data we intend to pass to the front end.
+        context_dict = {
+            "mfe_views": False,
+            "leaderboard_modal": leaderboard_model,
+            "prompts": self.prompts,
+            "prompts_type": self.prompts_type,
+            "rubric_assessments": ui_models,
+            "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "title": self.title,
+            "xblock_id": self.get_xblock_id(),
+        }
+        template = get_template("base.html")
+        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+
+    @togglable_mobile_support
     def student_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
@@ -550,15 +594,24 @@ class OpenAssessmentBlock(
             logger.exception('An error occurred while updating the workflow on page load.')
 
         ui_models = self._create_ui_models()
+
+        leaderboard_model = None
+        for model in ui_models:
+            if model["name"] == "leaderboard":
+                leaderboard_model = model
+
         # All data we intend to pass to the front end.
         context_dict = {
-            "title": self.title,
+            "leaderboard_modal": leaderboard_model,
+            "mfe_views": self.mfe_views_enabled,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "title": self.title,
+            "xblock_id": self.get_xblock_id(),
         }
-        template = get_template("legacy/oa_base.html")
+        template = get_template("base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):

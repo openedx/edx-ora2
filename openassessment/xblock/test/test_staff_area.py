@@ -197,6 +197,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
+        xblock.mfe_views_enabled = False
 
         # If the client requests the staff info directly, they should get an error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
