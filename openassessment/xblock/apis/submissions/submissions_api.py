@@ -40,7 +40,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def has_been_cancelled(self):
-        return self.workflow and self.workflow["status"] == "cancelled"
+        return bool(self.workflow and self.workflow["status"] == "cancelled")
 
     @property
     def cancellation_info(self):
@@ -51,7 +51,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def has_received_final_grade(self):
-        return self.workflow and self.workflow["status"] == "done"
+        return bool(self.workflow and self.workflow["status"] == "done")
 
     @property
     def peer_step_incomplete(self):
