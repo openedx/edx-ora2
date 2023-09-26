@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-06 21:24+0000\n"
+"POT-Creation-Date: 2023-09-25 18:28+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -158,6 +158,25 @@ msgstr "Réspönsé Fïlés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 #: data.py
 msgid "No description provided."
 msgstr "Nö désçrïptïön prövïdéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: templates/base.html templates/legacy/oa_base.html
+msgid ""
+"This assignment has several steps. In the first step, you'll provide a "
+"response to the prompt. The other steps appear below the Your Response "
+"field."
+msgstr ""
+"Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä "
+"réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé Ýöür Réspönsé "
+"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
+
+#: templates/base.html templates/legacy/oa_base.html
+msgid "Loading"
+msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
 
 #: templates/legacy/edit/oa_edit.html
 msgid "Save"
@@ -1392,25 +1411,6 @@ msgid "The instructions for this step could not be loaded."
 msgstr ""
 "Thé ïnstrüçtïöns för thïs stép çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
 "αмєт, ¢σηѕє¢тєтυя α#"
-
-#: templates/legacy/oa_base.html
-msgid ""
-"This assignment has several steps. In the first step, you'll provide a "
-"response to the prompt. The other steps appear below the Your Response "
-"field."
-msgstr ""
-"Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä "
-"réspönsé tö thé prömpt. Thé öthér stéps äppéär ßélöw thé Ýöür Réspönsé "
-"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
-"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
-" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
-"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
-" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
-"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
-
-#: templates/legacy/oa_base.html
-msgid "Loading"
-msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
 
 #: templates/legacy/oa_latex_preview.html
 msgid "Preview in LaTeX"
