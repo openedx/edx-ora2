@@ -548,19 +548,23 @@ class OpenAssessmentBlock(
             logger.exception('An error occurred while updating the workflow on page load.')
 
         ui_models = self._create_ui_models()
+
+        leaderboard_model = None
+        for model in ui_models:
+            if model["name"] == "leaderboard":
+                leaderboard_model = model
+
         # All data we intend to pass to the front end.
         context_dict = {
             "mfe_views": False,
-            "title": self.title,
+            "leaderboard_modal": leaderboard_model,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "title": self.title,
+            "xblock_id": self.get_xblock_id(),
         }
-        if any(model.name == "leaderboard" for model in ui_models):
-            context_dict["leaderboard_ui_model"] = [
-                model for model in ui_models if model.name == "leaderboard"
-            ][0]
         template = get_template("base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
@@ -590,20 +594,23 @@ class OpenAssessmentBlock(
             logger.exception('An error occurred while updating the workflow on page load.')
 
         ui_models = self._create_ui_models()
+
+        leaderboard_model = None
+        for model in ui_models:
+            if model["name"] == "leaderboard":
+                leaderboard_model = model
+
         # All data we intend to pass to the front end.
         context_dict = {
+            "leaderboard_modal": leaderboard_model,
             "mfe_views": self.mfe_views_enabled,
-            "title": self.title,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "title": self.title,
             "xblock_id": self.get_xblock_id(),
         }
-        if any(model.name == "leaderboard" for model in ui_models):
-            context_dict["leaderboard_ui_model"] = [
-                model for model in ui_models if model.name == "leaderboard"
-            ][0]
         template = get_template("base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
