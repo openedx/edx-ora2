@@ -147,7 +147,7 @@ class ActiveStepInfoSerializer(Serializer):
             return TrainingStepInfoSerializer(instance.student_training_data).data
         elif active_step == "peer":
             return PeerStepInfoSerializer(instance.peer_assessment_data()).data
-        elif active_step in ("submission", "done"):
+        elif active_step in ("submission", "waiting", "done"):
             return {}
         else:
             raise Exception(f"Bad step name: {active_step}")  # pylint: disable=broad-exception-raised
