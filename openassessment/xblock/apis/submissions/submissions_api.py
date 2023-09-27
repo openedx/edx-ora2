@@ -126,6 +126,17 @@ class SubmissionAPI(StepDataAPI):
     # Team Info
 
     @property
+    def team_info(self):
+        """
+        Returns info about the team, if on a team
+        """
+        if self.is_team_assignment:
+            if not self.has_submitted:
+                return self.config_data.get_team_info()
+            return get_team_submission(self.team_submission_uuid).get("team_id")
+        return None
+
+    @property
     def team_id(self):
         """
         Return the Team ID for this user / submission.
