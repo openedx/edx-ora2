@@ -74,7 +74,7 @@ def get_submission_path(submission_info):
 
     # Response not yet submitted
     elif not submission_info.has_submitted:
-        if submission_info.is_team_assignment and submission_info.team_previously_submitted_without_student:
+        if submission_info.is_team_assignment and submission_info.has_team_submitted:
             return full_paths["team_already_submitted"]
 
     # Cancelled: Instructor has cancelled this response

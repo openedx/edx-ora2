@@ -83,10 +83,12 @@ class SubmissionAPI(StepDataAPI):
         return None
 
     @property
-    def team_previously_submitted_without_student(self):
+    def has_team_submitted(self):
         """
-        Determine if student has joined a team that already submitted without them.
-        They would be blocked from submitting or joining this submission.
+        Determine if team has already submitted.
+        We use this in conjunction with whether or not a student has submitted
+        to determine edge cases like if the student is trying to submit on a
+        team that has already submitted without them.
         """
         if not self.config_data.teams_enabled:
             return False
