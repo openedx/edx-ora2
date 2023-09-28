@@ -69,6 +69,8 @@ class SubmittedResponseSerializer(Serializer):
                 "file_size": instance["answer"]["files_sizes"][i],
             }
 
+            files.append(file_data)
+
         return [SubmissionFileSerializer(file).data for file in files]
 
 
