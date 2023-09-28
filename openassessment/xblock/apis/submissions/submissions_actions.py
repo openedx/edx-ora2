@@ -8,6 +8,7 @@ from submissions.api import Submission, SubmissionError, SubmissionRequestError
 from openassessment.fileupload.exceptions import FileUploadError
 
 from openassessment.xblock.apis.submissions.errors import (
+    CannotDeleteFileException,
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
     DraftSaveException,
@@ -287,5 +288,38 @@ def append_file_data(block_config, submission_info, file_data):
     except Exception as exc:  # pylint: disable=broad-except
         logger.exception(
             "append_file_data: unhandled exception for data %s. Error: %s", file_data, exc, exc_info=True
+        )
+        raise FileUploadError(exc) from exc
+
+
+def remove_uploaded_file(block_config, submission_info, file_index):
+    """
+    Removes uploaded user file.
+    """
+    file_key = submission_info.files.get_file_key(file_index)
+    if not submission_info.files.can_delete_file(file_index):
+        raise CannotDeleteFileException()
+    try:
+        submission_info.files.delete_uploaded_file(file_index)
+        # Emit analytics event...
+        block_config.publish_event(
+            "openassessmentblock.remove_uploaded_file",
+            {"student_item_key": file_key},
+        )
+        logger.debug("Deleted file %s", file_key)
+    except FileUploadError as exc:
+        logger.exception(
+            "FileUploadError: Error when deleting file %s : %s",
+            file_key,
+            exc,
+            exc_info=True,
+        )
+        raise
+    except Exception as exc:  # pylint: disable=broad-except
+        logger.exception(
+            "FileUploadError: unhandled exception for %s. Error: %s",
+            file_key,
+            exc,
+            exc_info=True,
         )
         raise FileUploadError(exc) from exc

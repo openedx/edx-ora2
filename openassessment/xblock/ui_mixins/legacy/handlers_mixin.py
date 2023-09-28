@@ -8,6 +8,7 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
+    CannotDeleteFileException,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
@@ -22,7 +23,6 @@ from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
     download_url,
-    remove_uploaded_file,
     upload_url
 )
 from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
@@ -30,6 +30,16 @@ from openassessment.xblock.utils.data_conversion import verify_assessment_parame
 from submissions import api as submissions_api
 
 logger = logging.getLogger(__name__)
+
+
+def _safe_read_file_index(data):
+    """ Helper for remove_uploaded_file handler """
+    file_index = data.get("filenum", -1)
+    try:
+        file_index = int(file_index)
+    except ValueError:
+        file_index = -1
+    return file_index
 
 
 class LegacyHandlersMixin:
@@ -142,10 +152,15 @@ class LegacyHandlersMixin:
 
     @XBlock.json_handler
     def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
-        return remove_uploaded_file(self.config_data, self.submission_data, data)
+        file_index = _safe_read_file_index(data)
+        try:
+            submissions_actions.remove_uploaded_file(self.config_data, self.submission_data, file_index)
+        except (FileUploadError, CannotDeleteFileException):
+            return {'success': False}
+        else:
+            return {'success': True}
 
     # Assessments
-
     @XBlock.json_handler
     @verify_assessment_parameters
     def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument

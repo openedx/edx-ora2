@@ -33,3 +33,7 @@ class StudioPreviewException(Exception):
 
 class MultipleSubmissionsException(Exception):
     pass
+
+
+class CannotDeleteFileException(Exception):
+    pass
