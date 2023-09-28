@@ -20,3 +20,12 @@ class IsRequiredField(BooleanField):
 
     def to_representation(self, value):
         return value == "required"
+
+
+class NullField(CharField):
+    """
+    A field which returns a Null/None value
+    """
+
+    def to_representation(self, value):
+        return None
