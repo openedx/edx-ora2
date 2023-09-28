@@ -5,6 +5,7 @@ Base stateless API actions for acting upon learner submissions
 import json
 import logging
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
+from openassessment.fileupload.exceptions import FileUploadError
 
 from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,
@@ -256,3 +257,35 @@ def save_submission_draft(student_submission_data, block_config_data, block_subm
         )
     except Exception as e:  # pylint: disable=broad-except
         raise DraftSaveException from e
+
+
+def append_file_data(block_config, submission_info, file_data):
+    """
+    Appends a list of file data to the current block state
+
+    Args:
+        block_config (ORAConfigAPI)
+        submission_info (SubmissionAPI)
+        files_to_append (list of {
+            'description': (str)
+            'name': (str)
+            'size': (int)
+        })
+    """
+    try:
+        submission_info.files.file_manager.append_uploads(*file_data)
+        # Emit analytics event...
+        block_config.publish_event(
+            "openassessmentblock.save_files_descriptions",
+            {"saved_response": submission_info.files.saved_files_descriptions},
+        )
+    except FileUploadError as exc:
+        logger.exception(
+            "append_file_data: file description for data %s failed with error %s", file_data, exc, exc_info=True
+        )
+        raise
+    except Exception as exc:  # pylint: disable=broad-except
+        logger.exception(
+            "append_file_data: unhandled exception for data %s. Error: %s", file_data, exc, exc_info=True
+        )
+        raise FileUploadError(exc) from exc

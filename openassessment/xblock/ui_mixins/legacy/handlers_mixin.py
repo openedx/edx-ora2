@@ -3,33 +3,31 @@
 import logging
 
 from xblock.core import XBlock
-from submissions import api as submissions_api
 
+from openassessment.fileupload.exceptions import FileUploadError
+from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
-    EmptySubmissionError,
-    DraftSaveException,
-    SubmissionValidationException,
     AnswerTooLongException,
-    SubmitInternalError,
+    DraftSaveException,
+    EmptySubmissionError,
+    MultipleSubmissionsException,
     StudioPreviewException,
-    MultipleSubmissionsException
+    SubmissionValidationException,
+    SubmitInternalError
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
-from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import (
-    do_staff_assessment,
-    staff_assess,
-)
+from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
-from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
 from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
-    save_files_descriptions,
-    upload_url,
     download_url,
     remove_uploaded_file,
+    upload_url
 )
-from openassessment.xblock.apis.submissions import submissions_actions
+from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
+from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
+from submissions import api as submissions_api
 
 logger = logging.getLogger(__name__)
 
@@ -111,10 +109,28 @@ class LegacyHandlersMixin:
             return {'success': True, 'msg': ''}
 
     # File uploads
-
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=""):  # pylint: disable=unused-argument
-        return save_files_descriptions(self.config_data, self.submission_data, data)
+        serializer = SaveFilesDescriptionRequestSerializer(data=data)
+        if not serializer.is_valid():
+            return {
+                'success': False,
+                'msg': self.config_data.translate('File descriptions were not submitted.'),
+            }
+
+        try:
+            submissions_actions.append_file_data(
+                self.config_data,
+                self.submission_data,
+                serializer.validated_data['fileMetadata']
+            )
+        except FileUploadError:
+            return {
+                'success': False,
+                'msg': self.config_data.translate("Files metadata could not be saved.")
+            }
+        else:
+            return {'success': True, 'msg': ''}
 
     @XBlock.json_handler
     def upload_url(self, data, suffix=""):  # pylint: disable=unused-argument
