@@ -3,6 +3,7 @@
 import logging
 
 from xblock.core import XBlock
+from submissions import api as submissions_api
 
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.apis.submissions import submissions_actions
@@ -25,7 +26,6 @@ from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
-from submissions import api as submissions_api
 
 logger = logging.getLogger(__name__)
 

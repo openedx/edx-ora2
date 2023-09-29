@@ -7,8 +7,10 @@ from unittest.mock import Mock, patch
 
 import ddt
 from django.contrib.auth import get_user_model
-from openassessment.fileupload.exceptions import FileUploadError
+from submissions import api as submission_api
+from submissions import team_api as submission_team_api
 
+from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.tests.factories import SharedFileUploadFactory, UserFactory
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow import team_api as team_workflow_api
@@ -27,8 +29,6 @@ from openassessment.xblock.test.test_staff_area import NullUserService, UserStat
 from openassessment.xblock.test.test_submission import COURSE_ID, setup_mock_team
 from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
 from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes, HandlerSuffixes
-from submissions import api as submission_api
-from submissions import team_api as submission_team_api
 from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import PageDataSubmissionSerializer
 
 
