@@ -65,14 +65,3 @@ def upload_url(block_config, submission_info, data):
             "success": False,
             "msg": block_config.translate("Error retrieving upload URL."),
         }
-
-
-def download_url(submission_info, data):
-    """
-    Request a download URL.
-
-    Returns:
-        A URL to be used for downloading content related to the submission.
-    """
-    file_num = int(data.get("filenum", 0))
-    return {"success": True, "url": submission_info.files.get_download_url(file_num)}

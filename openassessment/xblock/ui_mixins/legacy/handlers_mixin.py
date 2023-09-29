@@ -12,19 +12,17 @@ from openassessment.xblock.apis.submissions.errors import (
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
+    OnlyOneFileAllowedException,
     StudioPreviewException,
     SubmissionValidationException,
-    SubmitInternalError
+    SubmitInternalError,
+    UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
 from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
-from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
-    download_url,
-    upload_url
-)
 from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
 from submissions import api as submissions_api
@@ -32,13 +30,13 @@ from submissions import api as submissions_api
 logger = logging.getLogger(__name__)
 
 
-def _safe_read_file_index(data):
+def _safe_read_file_index(data, default):
     """ Helper for remove_uploaded_file handler """
-    file_index = data.get("filenum", -1)
+    file_index = data.get("filenum", default)
     try:
         file_index = int(file_index)
     except ValueError:
-        file_index = -1
+        file_index = default
     return file_index
 
 
@@ -144,15 +142,55 @@ class LegacyHandlersMixin:
 
     @XBlock.json_handler
     def upload_url(self, data, suffix=""):  # pylint: disable=unused-argument
-        return upload_url(self.config_data, self.submission_data, data)
+        if "contentType" not in data or "filename" not in data:
+            return {
+                "success": False,
+                "msg": self.config_data.translate("There was an error uploading your file."),
+            }
+        file_index = _safe_read_file_index(data, 0)
+        try:
+            url = submissions_actions.get_upload_url(
+                self.config_data,
+                self.submission_data,
+                data['contentType'],
+                data['filename'],
+                file_index
+            )
+        except OnlyOneFileAllowedException:
+            return {
+                "success": False,
+                "msg": self.config_data.translate("Only a single file upload is allowed for this assessment."),
+            }
+        except UnsupportedFileTypeException:
+            return {
+                "success": False,
+                "msg": self.config_data.translate(
+                    "File upload failed: unsupported file type."
+                    "Only the supported file types can be uploaded."
+                    "If you have questions, please reach out to the course team."
+                ),
+            }
+
+        except FileUploadError:
+            return {
+                "success": False,
+                "msg": self.config_data.translate("Error retrieving upload URL."),
+            }
+        else:
+            return {'success': True, 'url': url}
 
     @XBlock.json_handler
     def download_url(self, data, suffix=""):  # pylint: disable=unused-argument
-        return download_url(self.submission_data, data)
+        file_index = _safe_read_file_index(data, 0)
+        file_url = self.submission_data.files.get_download_url(file_index)
+        if file_url:
+            return {"success": True, "url": file_url}
+        else:
+            return {"success": False}
 
     @XBlock.json_handler
     def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
-        file_index = _safe_read_file_index(data)
+        file_index = _safe_read_file_index(data, -1)
         try:
             submissions_actions.remove_uploaded_file(self.config_data, self.submission_data, file_index)
         except (FileUploadError, CannotDeleteFileException):

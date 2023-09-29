@@ -4,6 +4,7 @@ Base stateless API actions for acting upon learner submissions
 
 import json
 import logging
+import os
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
 from openassessment.fileupload.exceptions import FileUploadError
 
@@ -12,11 +13,13 @@ from openassessment.xblock.apis.submissions.errors import (
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
     DraftSaveException,
+    OnlyOneFileAllowedException,
     SubmissionValidationException,
     AnswerTooLongException,
     StudioPreviewException,
     MultipleSubmissionsException,
-    SubmitInternalError
+    SubmitInternalError,
+    UnsupportedFileTypeException
 )
 from openassessment.xblock.utils.validation import validate_submission
 
@@ -323,3 +326,37 @@ def remove_uploaded_file(block_config, submission_info, file_index):
             exc_info=True,
         )
         raise FileUploadError(exc) from exc
+
+def get_upload_url(block_config, submission_info, content_type, file_name, file_index=0):
+    """
+    Request a URL to be used for uploading content for a given file
+
+    Returns:
+        A URL to be used to upload content associated with this submission.
+
+    """
+    if not block_config.allow_multiple_files:
+        # Here we check if there are existing file uploads by checking for
+        # an existing download url for any of the upload slots.
+        # Note that we can't use self.saved_files_descriptions because that
+        # is populated before files are uploaded
+        for file_index in range(submission_info.files.max_allowed_uploads):
+            file_url = submission_info.files.get_download_url(file_index)
+            if file_url:
+                raise OnlyOneFileAllowedException()
+
+    _, file_ext = os.path.splitext(file_name)
+    file_ext = file_ext.strip(".") if file_ext else None
+
+    # Validate that there are no data issues and file type is allowed
+    if not submission_info.files.is_supported_upload_type(file_ext, content_type):
+        raise UnsupportedFileTypeException()
+
+    # Attempt to upload
+    try:
+        key = submission_info.files.get_file_key(file_index)
+        url = submission_info.files.get_upload_url(key, content_type)
+        return url
+    except FileUploadError:
+        logger.exception("FileUploadError:Error retrieving upload URL")
+        raise
