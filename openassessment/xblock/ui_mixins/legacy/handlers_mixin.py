@@ -128,9 +128,9 @@ class LegacyHandlersMixin:
 
         try:
             submissions_actions.append_file_data(
+                serializer.validated_data['fileMetadata'],
                 self.config_data,
                 self.submission_data,
-                serializer.validated_data['fileMetadata']
             )
         except FileUploadError:
             return {
@@ -150,11 +150,11 @@ class LegacyHandlersMixin:
         file_index = _safe_read_file_index(data, 0)
         try:
             url = submissions_actions.get_upload_url(
-                self.config_data,
-                self.submission_data,
                 data['contentType'],
                 data['filename'],
-                file_index
+                file_index,
+                self.config_data,
+                self.submission_data,
             )
         except OnlyOneFileAllowedException:
             return {
@@ -189,7 +189,7 @@ class LegacyHandlersMixin:
     def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
         file_index = _safe_read_file_index(data, -1)
         try:
-            submissions_actions.remove_uploaded_file(self.config_data, self.submission_data, file_index)
+            submissions_actions.remove_uploaded_file(file_index, self.config_data, self.submission_data, )
         except (FileUploadError, CannotDeleteFileException):
             return {'success': False}
         else:

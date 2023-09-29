@@ -5,10 +5,12 @@ XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
+from openassessment.fileupload.exceptions import FileUploadError
 
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
+    CannotDeleteFileException,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
@@ -19,6 +21,7 @@ from openassessment.xblock.apis.submissions.errors import (
 from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes, HandlerSuffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
+from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import UploadFileRequestSerializer
 
 
 class OraApiException(JsonHandlerError):
@@ -94,10 +97,33 @@ class MfeMixin:
             raise OraApiException(404, ErrorCodes.UNKNOWN_SUFFIX)
 
     def _file_delete(self, data):
-        pass
+        try:
+            file_index = int(data['fileIndex'])
+        except (KeyError, ValueError) as e:
+            raise OraApiException(400, ErrorCodes.INCORRECT_PARAMETERS) from e
+        try:
+            submissions_actions.remove_uploaded_file(
+                file_index,
+                self.config_data,
+                self.submission_data,
+            )
+        except CannotDeleteFileException as e:
+            raise OraApiException(400, ErrorCodes.DELETE_NOT_ALLOWED) from e
+        except FileUploadError as e:
+            raise OraApiException(500, ErrorCodes.INTERNAL_EXCEPTION, str(e)) from e
 
     def _file_upload(self, data):
-        pass
+        serializer = UploadFileRequestSerializer(data=data)
+        if not serializer.is_valid():
+            raise OraApiException(400, ErrorCodes.INCORRECT_PARAMETERS, serializer.errors)
+        try:
+            submissions_actions.append_file_data(
+                serializer.validated_data['uploadedFiles'],
+                self.config_data,
+                self.submission_data,
+            )
+        except FileUploadError as e:
+            raise OraApiException(500, ErrorCodes.INTERNAL_EXCEPTION, str(e)) from e
 
     @XBlock.json_handler
     def file(self, data, suffix=""):

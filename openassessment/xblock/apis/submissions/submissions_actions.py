@@ -263,7 +263,7 @@ def save_submission_draft(student_submission_data, block_config_data, block_subm
         raise DraftSaveException from e
 
 
-def append_file_data(block_config, submission_info, file_data):
+def append_file_data(file_data, block_config, submission_info):
     """
     Appends a list of file data to the current block state
 
@@ -295,7 +295,7 @@ def append_file_data(block_config, submission_info, file_data):
         raise FileUploadError(exc) from exc
 
 
-def remove_uploaded_file(block_config, submission_info, file_index):
+def remove_uploaded_file(file_index, block_config, submission_info):
     """
     Removes uploaded user file.
     """
@@ -328,7 +328,7 @@ def remove_uploaded_file(block_config, submission_info, file_index):
         raise FileUploadError(exc) from exc
 
 
-def get_upload_url(block_config, submission_info, content_type, file_name, file_index=0):
+def get_upload_url(content_type, file_name, file_index, block_config, submission_info):
     """
     Request a URL to be used for uploading content for a given file
 

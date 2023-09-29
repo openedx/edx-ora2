@@ -5,13 +5,16 @@ from contextlib import contextmanager
 import json
 from unittest.mock import Mock, patch
 
+import ddt
 from django.contrib.auth import get_user_model
+from openassessment.fileupload.exceptions import FileUploadError
 
 from openassessment.tests.factories import SharedFileUploadFactory, UserFactory
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow import team_api as team_workflow_api
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
+    CannotDeleteFileException,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
@@ -48,6 +51,7 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
 
     DEFAULT_DRAFT_VALUE = {'response': {'text_responses': ['hi']}}
     DEFAULT_SUBMIT_VALUE = {'response': {'text_responses': ['Hello World', 'Goodbye World']}}
+    DEFAULT_DELETE_FILE_VALUE = {'fileIndex': 1}
 
     def request_create_submission(self, xblock, payload=None):
         if payload is None:
@@ -76,6 +80,26 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             'submission',
             json.dumps(payload),
             suffix=HandlerSuffixes.SUBMISSION_DRAFT,
+            response_format='response'
+        )
+
+    def request_upload_files(self, xblock, payload):
+        return super().request(
+            xblock,
+            'file',
+            json.dumps(payload),
+            suffix=HandlerSuffixes.FILE_UPLOAD,
+            response_format='response'
+        )
+
+    def request_delete_file(self, xblock, payload=None):
+        if payload is None:
+            payload = self.DEFAULT_DELETE_FILE_VALUE
+        return super().request(
+            xblock,
+            'file',
+            json.dumps(payload),
+            suffix=HandlerSuffixes.FILE_DELETE,
             response_format='response'
         )
 
@@ -524,3 +548,127 @@ class SubmissionCreateTest(MFEHandlersTestBase):
             resp = self.request_create_submission(xblock)
             assert resp.status_code == 200
             assert_called_once_with_helper(mock_submit, self.DEFAULT_SUBMIT_VALUE, 3)
+
+
+@ddt.ddt
+class FileUploadTest(MFEHandlersTestBase):
+    VALID_FILE_UPLOAD_PAYLOAD = {
+        'uploadedFiles': [
+            {
+                'fileDescription': 'd1',
+                'fileName': 'n1',
+                'fileSize': 100
+            },
+            {
+                'fileDescription': 'desc2',
+                'fileName': 'name2',
+                'fileSize': 2222
+            },
+            {
+                'fileDescription': 'threed',
+                'fileName': 'threename',
+                'fileSize': 3
+            },
+        ]
+    }
+
+    @contextmanager
+    def _mock_append_file_data(self, **kwargs):
+        with patch('openassessment.xblock.ui_mixins.mfe.mixin.submissions_actions') as mock_submission_actions:
+            mock_submission_actions.append_file_data.configure_mock(**kwargs)
+            yield mock_submission_actions.append_file_data
+
+    @ddt.data(
+        ({}, ),
+        {'uploadedFiles': 1},
+        {'uploadedFiles': ["one", "two"]},
+        {'uploadedFiles': [{'fileDescription': 'only description'}]},
+        {'uploadedFiles': [
+            {
+                'fileDescription': 'd1',
+                'fileName': 'n1',
+                'fileSize': 'safsdfasd'
+            }
+        ]},
+        {'uploadedFiles': [
+            {
+                'fileDescription': 'd1',
+                'fileName': 'n1',
+                'fileSize': -1
+            }
+        ]},
+        {'uploadedFiles': [
+            {
+                'fileDescription': 'd1',
+                'fileName': 'n1',
+                'fileSize': 100
+            },
+            "asdfasdfasd"
+        ]},
+    )
+    @scenario("data/basic_scenario.xml")
+    def test_bad_inputs(self, xblock, payload):
+        resp = self.request_upload_files(xblock, payload)
+        assert resp.status_code == 400
+        assert resp.json['error']['error_code'] == ErrorCodes.INCORRECT_PARAMETERS
+
+    @scenario("data/basic_scenario.xml")
+    def test_file_upload_error(self, xblock):
+        error = FileUploadError('oh no!!!!')
+        with self._mock_append_file_data(side_effect=error):
+            resp = self.request_upload_files(xblock, self.VALID_FILE_UPLOAD_PAYLOAD)
+        assert_error_response(resp, 500, ErrorCodes.INTERNAL_EXCEPTION, str(error))
+
+    @scenario("data/basic_scenario.xml")
+    def test_upload_files(self, xblock):
+        with self._mock_append_file_data() as mock_append_file_data:
+            resp = self.request_upload_files(xblock, self.VALID_FILE_UPLOAD_PAYLOAD)
+        assert resp.status_code == 200
+        assert_called_once_with_helper(
+            mock_append_file_data,
+            [
+                {
+                    'name': payload_file['fileName'],
+                    'description': payload_file['fileDescription'],
+                    'size': payload_file['fileSize'],
+                }
+                for payload_file in self.VALID_FILE_UPLOAD_PAYLOAD['uploadedFiles']
+            ],
+            2
+        )
+
+
+@ddt.ddt
+class FileDeleteTest(MFEHandlersTestBase):
+
+    @contextmanager
+    def _mock_remove_uploaded_file(self, **kwargs):
+        with patch('openassessment.xblock.ui_mixins.mfe.mixin.submissions_actions') as mock_submission_actions:
+            mock_submission_actions.remove_uploaded_file.configure_mock(**kwargs)
+            yield mock_submission_actions.remove_uploaded_file
+
+    @ddt.data({}, {'fileIndex': 'hello'})
+    @scenario("data/basic_scenario.xml")
+    def test_invalid_parameters(self, xblock, payload):
+        resp = self.request_delete_file(xblock, payload)
+        assert_error_response(resp, 400, ErrorCodes.INCORRECT_PARAMETERS)
+
+    @scenario("data/basic_scenario.xml")
+    def test_cannot_delete_file(self, xblock):
+        with self._mock_remove_uploaded_file(side_effect=CannotDeleteFileException()):
+            resp = self.request_delete_file(xblock)
+        assert_error_response(resp, 400, ErrorCodes.DELETE_NOT_ALLOWED)
+
+    @scenario("data/basic_scenario.xml")
+    def test_file_upload_error(self, xblock):
+        error = FileUploadError('oh no!!!!')
+        with self._mock_remove_uploaded_file(side_effect=error):
+            resp = self.request_delete_file(xblock)
+        assert_error_response(resp, 500, ErrorCodes.INTERNAL_EXCEPTION, str(error))
+
+    @scenario("data/basic_scenario.xml")
+    def test_delete_file(self, xblock):
+        with self._mock_remove_uploaded_file() as mock_remove_file:
+            resp = self.request_delete_file(xblock)
+        assert resp.status_code == 200
+        assert_called_once_with_helper(mock_remove_file, 1, 2)
