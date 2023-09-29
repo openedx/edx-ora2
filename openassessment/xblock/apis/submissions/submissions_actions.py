@@ -337,14 +337,8 @@ def get_upload_url(block_config, submission_info, content_type, file_name, file_
 
     """
     if not block_config.allow_multiple_files:
-        # Here we check if there are existing file uploads by checking for
-        # an existing download url for any of the upload slots.
-        # Note that we can't use self.saved_files_descriptions because that
-        # is populated before files are uploaded
-        for potential_file_index in range(submission_info.files.max_allowed_uploads):
-            file_url = submission_info.files.get_download_url(potential_file_index)
-            if file_url:
-                raise OnlyOneFileAllowedException()
+        if submission_info.files.has_any_file_in_upload_space():
+            raise OnlyOneFileAllowedException()
 
     _, file_ext = os.path.splitext(file_name)
     file_ext = file_ext.strip(".") if file_ext else None
