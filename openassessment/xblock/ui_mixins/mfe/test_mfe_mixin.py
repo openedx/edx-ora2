@@ -14,7 +14,7 @@ from openassessment.workflow import api as workflow_api
 from openassessment.workflow import team_api as team_workflow_api
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
-    CannotDeleteFileException,
+    DeleteNotAllowed,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
@@ -655,7 +655,7 @@ class FileDeleteTest(MFEHandlersTestBase):
 
     @scenario("data/basic_scenario.xml")
     def test_cannot_delete_file(self, xblock):
-        with self._mock_remove_uploaded_file(side_effect=CannotDeleteFileException()):
+        with self._mock_remove_uploaded_file(side_effect=DeleteNotAllowed()):
             resp = self.request_delete_file(xblock)
         assert_error_response(resp, 400, ErrorCodes.DELETE_NOT_ALLOWED)
 

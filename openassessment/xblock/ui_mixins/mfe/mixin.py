@@ -10,7 +10,7 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
-    CannotDeleteFileException,
+    DeleteNotAllowed,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
@@ -107,7 +107,7 @@ class MfeMixin:
                 self.config_data,
                 self.submission_data,
             )
-        except CannotDeleteFileException as e:
+        except DeleteNotAllowed as e:
             raise OraApiException(400, ErrorCodes.DELETE_NOT_ALLOWED) from e
         except FileUploadError as e:
             raise OraApiException(500, ErrorCodes.INTERNAL_EXCEPTION, str(e)) from e

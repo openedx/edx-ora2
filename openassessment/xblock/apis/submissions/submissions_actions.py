@@ -9,7 +9,7 @@ from submissions.api import Submission, SubmissionError, SubmissionRequestError
 from openassessment.fileupload.exceptions import FileUploadError
 
 from openassessment.xblock.apis.submissions.errors import (
-    CannotDeleteFileException,
+    DeleteNotAllowed,
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
     DraftSaveException,
@@ -301,7 +301,7 @@ def remove_uploaded_file(file_index, block_config, submission_info):
     """
     file_key = submission_info.files.get_file_key(file_index)
     if not submission_info.files.can_delete_file(file_index):
-        raise CannotDeleteFileException()
+        raise DeleteNotAllowed()
     try:
         submission_info.files.delete_uploaded_file(file_index)
         # Emit analytics event...

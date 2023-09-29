@@ -35,7 +35,7 @@ class MultipleSubmissionsException(Exception):
     pass
 
 
-class CannotDeleteFileException(Exception):
+class DeleteNotAllowed(Exception):
     pass
 
 

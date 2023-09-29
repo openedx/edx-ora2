@@ -8,7 +8,7 @@ from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
-    CannotDeleteFileException,
+    DeleteNotAllowed,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
@@ -190,7 +190,7 @@ class LegacyHandlersMixin:
         file_index = _safe_read_file_index(data, -1)
         try:
             submissions_actions.remove_uploaded_file(file_index, self.config_data, self.submission_data, )
-        except (FileUploadError, CannotDeleteFileException):
+        except (FileUploadError, DeleteNotAllowed):
             return {'success': False}
         else:
             return {'success': True}
