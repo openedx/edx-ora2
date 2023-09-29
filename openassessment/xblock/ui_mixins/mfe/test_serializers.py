@@ -5,13 +5,21 @@ Tests for data layer of ORA XBlock
 from unittest.mock import MagicMock
 
 import ddt
-
+from django.test import TestCase
 
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import (
     AssessmentStepsSerializer,
     LeaderboardConfigSerializer,
     RubricConfigSerializer,
     SubmissionConfigSerializer,
+)
+from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
+    ProgressSerializer,
+    PageDataSerializer,
+    SubmissionSerializer,
+    AssessmentResponseSerializer,
+    AssessmentScoreSerializer,
+    PeerStepInfoSerializer,
 )
 from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 
@@ -439,3 +447,72 @@ class TestLeaderboardConfigSerializer(XBlockHandlerTestCase):
         # Then I get the expected config
         self.assertFalse(leaderboard_config["enabled"])
         self.assertEqual(leaderboard_config["numberOfEntries"], 0)
+
+
+class TestPageDataSerializer(XBlockHandlerTestCase):
+    """
+    Test for PageDataSerializer
+    """
+
+    @scenario("data/basic_scenario.xml")
+    def test_page_data_submission(self, xblock):
+        context = {"view": "submission"}
+        page_data = PageDataSerializer(xblock, context=context).data
+
+        self.assertEqual(page_data['submission'], SubmissionSerializer(xblock).data)
+
+    @scenario("data/basic_scenario.xml")
+    def test_page_data_assessment(self, xblock):
+        context = {"view": "assessment"}
+        page_data = PageDataSerializer(xblock, context=context).data
+
+        self.assertEqual(page_data['submission'], AssessmentResponseSerializer(xblock).data)
+
+    @scenario("data/basic_scenario.xml")
+    def test_page_data_unkown_view(self, xblock):
+        context = {"view": "foo"}
+        with self.assertRaises(Exception):
+            page_data = PageDataSerializer(xblock, context=context).data
+            page_data['submission']  # pylint: disable=pointless-statement
+
+    @scenario("data/basic_scenario.xml")
+    def test_page_data_rubric(self, xblock):
+        context = {"view": "submission"}
+        page_data = PageDataSerializer(xblock, context=context).data
+
+        self.assertEqual(page_data['rubric'], RubricConfigSerializer(xblock).data)
+
+    @scenario("data/basic_scenario.xml")
+    def test_page_data_progress(self, xblock):
+        context = {"view": "submission", "step": "peer"}
+        page_data = PageDataSerializer(xblock, context=context).data
+
+        self.assertEqual(page_data['progress'], ProgressSerializer(xblock, context=context).data)
+
+
+class TestAssessmentScoreSerializer(TestCase):
+    """
+    Test for AssessmentScoreSerializer
+    """
+    def test_assessment_score(self):
+        assessment_score = AssessmentScoreSerializer({
+            "points_earned": 5,
+            "points_possible": 10,
+        }).data
+        self.assertEqual(assessment_score['earned'], 5)
+        self.assertEqual(assessment_score['possible'], 10)
+
+
+class TestPeerStepInfoSerializer(TestCase):
+    """
+    Test for PeerStepInfoSerializer
+    """
+    def test_peer_step_info(self):
+        peer_step_info = PeerStepInfoSerializer({
+            "num_completed": 5,
+            "num_received": 10,
+            "waiting_for_submissions_to_assess": True,
+        }).data
+        self.assertEqual(peer_step_info['numberOfAssessmentsCompleted'], 5)
+        self.assertEqual(peer_step_info['numberOfReceivedAssessments'], 10)
+        self.assertTrue(peer_step_info['isWaitingForSubmissions'])
