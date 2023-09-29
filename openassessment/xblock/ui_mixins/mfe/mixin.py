@@ -16,7 +16,7 @@ from openassessment.xblock.apis.submissions.errors import (
     SubmissionValidationException,
     SubmitInternalError
 )
-from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes
+from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes, HandlerSuffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
 
@@ -86,10 +86,25 @@ class MfeMixin:
 
     @XBlock.json_handler
     def submission(self, data, suffix=""):
-        if suffix == 'draft':
+        if suffix == HandlerSuffixes.SUBMISSION_DRAFT:
             return self._submission_draft(data)
-        elif suffix == "create":
+        elif suffix == HandlerSuffixes.SUBMISSION_SUBMIT:
             return self._submission_create(data)
+        else:
+            raise OraApiException(404, ErrorCodes.UNKNOWN_SUFFIX)
+
+    def _file_delete(self, data):
+        pass
+
+    def _file_upload(self, data):
+        pass
+
+    @XBlock.json_handler
+    def file(self, data, suffix=""):
+        if suffix == HandlerSuffixes.FILE_DELETE:
+            return self._file_delete(data)
+        elif suffix == HandlerSuffixes.FILE_UPLOAD:
+            return self._file_upload(data)
         else:
             raise OraApiException(404, ErrorCodes.UNKNOWN_SUFFIX)
 

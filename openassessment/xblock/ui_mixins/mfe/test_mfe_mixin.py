@@ -23,7 +23,7 @@ from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_staff_area import NullUserService, UserStateService
 from openassessment.xblock.test.test_submission import COURSE_ID, setup_mock_team
 from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
-from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes
+from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes, HandlerSuffixes
 from submissions import api as submission_api
 from submissions import team_api as submission_team_api
 from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import PageDataSubmissionSerializer
@@ -56,7 +56,7 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             xblock,
             'submission',
             json.dumps(payload),
-            suffix='create',
+            suffix=HandlerSuffixes.SUBMISSION_SUBMIT,
             response_format='response'
         )
 
@@ -75,7 +75,7 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             xblock,
             'submission',
             json.dumps(payload),
-            suffix='draft',
+            suffix=HandlerSuffixes.SUBMISSION_DRAFT,
             response_format='response'
         )
 

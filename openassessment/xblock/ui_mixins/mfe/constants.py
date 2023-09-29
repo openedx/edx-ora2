@@ -14,3 +14,10 @@ class ErrorCodes:
     SUBMISSION_API_ERROR = "ERR_SUBMISSION_API"
     EMPTY_ANSWER = "ERR_EMPTY_ANSWER"
     UNKNOWN_ERROR = "ERR_UNKNOWN"
+
+
+class HandlerSuffixes:
+    SUBMISSION_DRAFT = 'draft'
+    SUBMISSION_SUBMIT = 'submit'
+    FILE_UPLOAD = 'upload'
+    FILE_DELETE = 'delete'
