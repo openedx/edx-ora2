@@ -327,6 +327,7 @@ def remove_uploaded_file(block_config, submission_info, file_index):
         )
         raise FileUploadError(exc) from exc
 
+
 def get_upload_url(block_config, submission_info, content_type, file_name, file_index=0):
     """
     Request a URL to be used for uploading content for a given file
@@ -340,8 +341,8 @@ def get_upload_url(block_config, submission_info, content_type, file_name, file_
         # an existing download url for any of the upload slots.
         # Note that we can't use self.saved_files_descriptions because that
         # is populated before files are uploaded
-        for file_index in range(submission_info.files.max_allowed_uploads):
-            file_url = submission_info.files.get_download_url(file_index)
+        for potential_file_index in range(submission_info.files.max_allowed_uploads):
+            file_url = submission_info.files.get_download_url(potential_file_index)
             if file_url:
                 raise OnlyOneFileAllowedException()
 

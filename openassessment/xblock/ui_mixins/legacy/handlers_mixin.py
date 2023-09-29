@@ -183,10 +183,7 @@ class LegacyHandlersMixin:
     def download_url(self, data, suffix=""):  # pylint: disable=unused-argument
         file_index = _safe_read_file_index(data, 0)
         file_url = self.submission_data.files.get_download_url(file_index)
-        if file_url:
-            return {"success": True, "url": file_url}
-        else:
-            return {"success": False}
+        return {"success": True, "url": file_url}
 
     @XBlock.json_handler
     def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
