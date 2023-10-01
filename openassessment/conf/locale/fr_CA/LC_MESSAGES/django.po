@@ -97,7 +97,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 18:36+0000\n"
+"POT-Creation-Date: 2023-10-01 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2016-2023\n"
 "Language-Team: French (Canada) (http://app.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -311,7 +311,7 @@ msgid ""
 "Specify whether learners can upload more than one file. This has no effect "
 "if File Uploads Response is set to None. This is automatically set to True "
 "for Team Assignments. "
-msgstr "Indiquez si les apprenants peuvent télécharger plusieurs fichiers. Cela n'a aucun effet si la réponse aux téléchargements de fichiers est définie sur None. Ceci est automatiquement défini sur True pour les affectations d'équipe."
+msgstr "Indiquez si les apprenants peuvent téleverser plusieurs fichiers. Cela n'a aucun effet si la réponse aux téléversements de fichiers est définie sur None. Ceci est automatiquement défini sur True pour les affectations d'équipe."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
@@ -921,7 +921,7 @@ msgstr "Soumission de commentaires"
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr "Votre rétroaction a été soumise. Elle sera accessible à aux membres de du personnel du cours lorsqu'ils examineront les dossiers du cours."
+msgstr "Votre rétroaction a été soumise. Elle sera accessible à au personnel du cours lorsqu'ils examineront les dossiers du cours."
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
@@ -1541,7 +1541,7 @@ msgstr "État de votre réponse"
 
 #: templates/openassessmentblock/response/oa_response.html:245
 msgid "File Uploads "
-msgstr "Téléchargements de fichiers"
+msgstr "Téléversements de fichiers"
 
 #: templates/openassessmentblock/response/oa_response.html:253
 msgid ""
@@ -1960,7 +1960,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr "\nRéponse de l'étudiant retirée le %(removed_datetime)s"
+msgstr "\nRéponse de l'étudiant supprimée le %(removed_datetime)s"
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:50
 #, python-format
@@ -2037,14 +2037,14 @@ msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "La réponse de l'étudiant a été retirée de la notation par les pairs. L'étudiant obtient une note nulle à moins de supprimer l'état de l'exercice pour l'étudiant afin de lui permettre de proposer une nouvelle réponse."
+msgstr "La réponse de l'étudiant a été supprimée de la notation par les pairs. L'étudiant obtient une note nulle à moins de supprimer l'état de l'exercice pour l'étudiant afin de lui permettre de proposer une nouvelle réponse."
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
 " allow the team to resubmit a response."
-msgstr "La soumission de l'équipe a été retirée de la notation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
+msgstr "La soumission de l'équipe a été supprimée de la notation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
@@ -2410,7 +2410,7 @@ msgstr "Aucune autre réponse d'apprenant disponible pour notation en ce moment.
 
 #: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
-msgstr "Erreur lors de la récupération de la note du personnel."
+msgstr "Erreur lors de la récupération des notes attribuées par le personnel et leur compte."
 
 #: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
@@ -2433,14 +2433,14 @@ msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "La réponse de l'étudiant a été retirée de la notation par les pairs. L'étudiant obtient une note nulle à moins de supprimer l'état de l'exercice pour l'étudiant afin de lui permettre de proposer une nouvelle réponse."
+msgstr "La réponse de l'étudiant a été supprimée de la notation par les pairs. L'étudiant obtient une note nulle à moins de supprimer l'état de l'exercice pour l'étudiant afin de lui permettre de proposer une nouvelle réponse."
 
 #: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
-msgstr "La soumission de l'équipe a été retirée de l'évaluation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
+msgstr "La soumission de l'équipe a été supprimée de l'évaluation. L’équipe reçoit une note de zéro, sauf si vous supprimez l’état d’un membre de l’équipe pour le problème afin de permettre à l’équipe de renvoyer une réponse."
 
 #: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
@@ -2448,17 +2448,17 @@ msgstr "Erreur lors de la mise à jour de la configuration du XBlock"
 
 #: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr "Erreur : la réponse textuelle et la réponse avec téléchargement de fichier ne peuvent pas être toutes les deux désactivées"
+msgstr "Erreur : la réponse textuelle et la réponse avec téléversement de fichier ne peuvent pas être toutes les deux désactivées"
 
 #: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
-msgstr "Erreur : lorsque la réponse textuelle est désactivée, la réponse de téléchargement avec fichier doit être requise"
+msgstr "Erreur : lorsque la réponse textuelle est désactivée, la réponse de téléversement avec fichier doit être requise"
 
 #: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
-msgstr "Erreur : lorsque la réponse avec téléchargement de fichier est désactivée, la réponse textuelle doit être requise"
+msgstr "Erreur : lorsque la réponse avec téléversement de fichier est désactivée, la réponse textuelle doit être requise"
 
 #: xblock/studio_mixin.py:291
 #, python-brace-format
@@ -2526,17 +2526,17 @@ msgstr "L'ordre de l'évaluation que vous avez sélectionné est invalide."
 
 #: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr "Dans l'évaluation par les pair, la valeur \"Doit Noter\" doit être une valeur entière et positive."
+msgstr "Dans l'évaluation par les pairs, la valeur \"Doit Noter\" doit être une valeur entière et positive."
 
 #: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
-msgstr "Dans l'évaluation par les pair, la valeur \"Noté Par\" doit être une valeur entière et positive."
+msgstr "Dans l'évaluation par les pairs, la valeur \"Noté Par\" doit être une valeur entière et positive."
 
 #: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
-msgstr "Dans l'évaluation par les pair, la valeur \"Doit Noter\" doit être une valeur plus grande ou égale à celle de la valeur \"Noté Par\"."
+msgstr "Dans l'évaluation par les pairs, la valeur \"Doit Noter\" doit être une valeur plus grande ou égale à celle de la valeur \"Noté Par\"."
 
 #: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
@@ -2584,7 +2584,7 @@ msgstr "Le nombre de critères ne peut pas être modifié une fois le problème 
 
 #: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr "Les noms des critères ne peuvent pas être changés après que le problème ait été publié"
+msgstr "Les noms des critères ne peuvent pas être modifiés après que le problème ait été publié"
 
 #: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."

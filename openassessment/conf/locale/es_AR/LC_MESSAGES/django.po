@@ -4,158 +4,153 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Aleš Fiala <f.ales1@seznam.cz>, 2022-2023
-# Anna Chromá <anicka.chroma@gmail.com>, 2017
-# Jiří Podhorecký, 2023
-# Jiří Šedý <jsedy7@gmail.com>, 2015
-# Jiří Podhorecký, 2022-2023
-# TomHermanek <T.Hermanovsky@seznam.cz>, 2014
+# Jesica Greco, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-01 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Jiří Podhorecký, 2023\n"
-"Language-Team: Czech (http://app.transifex.com/open-edx/edx-platform/language/cs/)\n"
+"Last-Translator: Jesica Greco, 2023\n"
+"Language-Team: Spanish (Argentina) (http://app.transifex.com/open-edx/edx-platform/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Language: es_AR\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: assessment/api/student_training.py:179
 msgid "Could not parse serialized rubric"
-msgstr "Nebylo možné analyzovat serializovanou rubriku"
+msgstr "No se pudo analizar la rúbrica serializada"
 
 #: assessment/api/student_training.py:191
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
-msgstr "Pokud váš úkol zahrnuje krok školení žáka, musí mít rubrika alespoň jedno kritérium a toto kritérium musí mít alespoň jednu možnost."
+msgstr "Si su tarea incluye un paso de capacitación del alumno, la rúbrica debe tener al menos un criterio y ese criterio debe tener al menos una opción."
 
 #: assessment/api/student_training.py:203
 #, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
-msgstr "Příklad {example_number} má chybu ověření: {error}"
+msgstr "El ejemplo {example_number} tiene un error de validación: {error}"
 
 #: assessment/api/student_training.py:217
 #, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
-msgstr "Příklad {example_number} má neplatnou možnost pro \"{criterion_name}\": \"{option_name}\""
+msgstr "El ejemplo {example_number} tiene una opción no válida para \"{criterion_name}\": \"{option_name}\""
 
 #: assessment/api/student_training.py:227
 #, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
-msgstr "Příklad {example_number} má další možnost pro \"{criterion_name}\""
+msgstr "Ejemplo {example_number} tiene una opción extra para \"{criterion_name}\""
 
 #: assessment/api/student_training.py:240
 #, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
-msgstr "V příkladu {example_number} chybí možnost pro \"{criterion_name}\""
+msgstr "Al ejemplo {example_number} le falta una opción de \"{criterion_name}\""
 
 #: data.py:533
 #, python-brace-format
 msgid "Criterion {number}: {label}"
-msgstr "Kritérium {number}: {label}"
+msgstr "Criterio {número}: {label}"
 
 #: data.py:535
 #, python-brace-format
 msgid "Points {number}"
-msgstr "Body {number}"
+msgstr "Puntos {number}"
 
 #: data.py:536
 #, python-brace-format
 msgid "Median Score {number}"
-msgstr "Střední skóre {number}"
+msgstr "Puntuación media {number}"
 
 #: data.py:537
 #, python-brace-format
 msgid "Feedback {number}"
-msgstr "Zpětná vazba {number}"
+msgstr "Feedback {number}"
 
 #: data.py:866
 msgid "Item ID"
-msgstr "ID položky"
+msgstr "ID del elemento"
 
 #: data.py:867
 msgid "Submission ID"
-msgstr "ID příspěvku"
+msgstr "ID de envío"
 
 #: data.py:879
 msgid "Anonymized Student ID"
-msgstr "ID anonymizovaného studenta"
+msgstr "ID del estudiante anonimizado"
 
 #: data.py:910
 msgid "Assessment ID"
-msgstr "ID hodnocení"
+msgstr "ID de evaluación"
 
 #: data.py:911
 msgid "Assessment Scored Date"
-msgstr "Bodované datum hodnocení"
+msgstr "Fecha de puntuación de la evaluación"
 
 #: data.py:912
 msgid "Assessment Scored Time"
-msgstr "Bodovaný čas hodnocení"
+msgstr "Evaluación Tiempo puntuado"
 
 #: data.py:913
 msgid "Assessment Type"
-msgstr "Typ hodnocení"
+msgstr "Tipo de evaluación"
 
 #: data.py:914
 msgid "Anonymous Scorer Id"
-msgstr "ID anonymního střelce"
+msgstr "Identificación del goleador anónimo"
 
 #: data.py:916
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
-msgstr "Celková zpětná vazba"
+msgstr "Comentarios generales"
 
 #: data.py:917
 msgid "Assessment Score Earned"
-msgstr "Získané skóre hodnocení"
+msgstr "Puntuación de evaluación obtenida"
 
 #: data.py:918
 msgid "Assessment Scored At"
-msgstr "Hodnocení bodováno v"
+msgstr "Evaluación puntuada en"
 
 #: data.py:919
 msgid "Date/Time Final Score Given"
-msgstr "Datum/čas získaného konečného skóre"
+msgstr "Fecha/Hora Puntuación final otorgada"
 
 #: data.py:920
 msgid "Final Score Earned"
-msgstr "Získané konečné skóre"
+msgstr "Puntuación final obtenida"
 
 #: data.py:921
 msgid "Final Score Possible"
-msgstr "Možné konečné skóre"
+msgstr "Puntuación final posible"
 
 #: data.py:922
 msgid "Feedback Statements Selected"
-msgstr "Vybráno vyjádření zpětné vazby"
+msgstr "Declaraciones de comentarios seleccionadas"
 
 #: data.py:923
 msgid "Feedback on Assessment"
-msgstr "Zpětná vazba k hodnocení"
+msgstr "Comentarios sobre la evaluación"
 
 #: data.py:925
 msgid "Response Files"
-msgstr "Soubory odpovědí"
+msgstr "Archivos de respuesta"
 
 #: data.py:1316
 msgid "No description provided."
-msgstr "Nebyl poskytnut žádný popis."
+msgstr "No se proporciona descripción."
 
 #: templates/openassessmentblock/edit/oa_edit.html:28
 msgid "Save"
-msgstr "Uložit"
+msgstr "Guardar"
 
 #: templates/openassessmentblock/edit/oa_edit.html:32
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Cancelar"
 
 #: templates/openassessmentblock/edit/oa_edit_assessment_steps.html:6
 msgid ""
@@ -163,49 +158,49 @@ msgid ""
 " a rubric based open response assessment sequence. The steps available below"
 " can be enabled, disable, and ordered for a flexible set of pedagogical "
 "needs."
-msgstr "Otevřená hodnocení odezvy vám umožňují konfigurovat jeden nebo více kroků v sekvenci otevřeného hodnocení odezvy založené na rubrice. Níže dostupné kroky lze povolit, zakázat a objednat pro flexibilní sadu pedagogických potřeb."
+msgstr "Las evaluaciones de respuesta abierta le permiten configurar uno o varios pasos en una secuencia de evaluación de respuesta abierta basada en rúbricas. Los pasos disponibles a continuación se pueden habilitar, deshabilitar y ordenar para un conjunto flexible de necesidades pedagógicas."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:5
 msgid "Display Name "
-msgstr "Zobrazovaný název"
+msgstr "Nombre para mostrar"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:8
 msgid "The display name for this component."
-msgstr "Zobrazovaný název této komponenty."
+msgstr "El nombre para mostrar de este componente."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:12
 msgid "Text Response"
-msgstr "Textová odpověď"
+msgstr "Respuesta de texto"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:20
 msgid ""
 "Specify whether learners must include a text based response to this "
 "problem's prompt."
-msgstr "Určete, zda studenti musí zahrnout textovou odpověď na výzvu k tomuto problému."
+msgstr "Especifique si los alumnos deben incluir una respuesta basada en texto al mensaje de este problema."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:25
 msgid "Response Editor"
-msgstr "Editor odpovědí"
+msgstr "Editor de respuestas"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:33
 msgid ""
 "Select which editor learners will use to include a text based response to "
 "this problem's prompt."
-msgstr "Vyberte, který editor budou studenti používat k zahrnutí textové odpovědi na výzvu k tomuto problému."
+msgstr "Seleccione qué editor utilizarán los alumnos para incluir una respuesta basada en texto al mensaje de este problema."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:38
 msgid "File Uploads Response"
-msgstr "Nahrání souboru do odpovědi"
+msgstr "Respuesta de carga de archivos"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:46
 msgid ""
 "Specify whether learners are able to upload files as a part of their "
 "response."
-msgstr "Určete, zda mohou studenti vkládat soubory jako součást své odpovědi."
+msgstr "Especifique si los alumnos pueden cargar archivos como parte de su respuesta."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:50
 msgid "Allow Multiple Files"
-msgstr "Povolit více souborů"
+msgstr "Permitir múltiples archivos"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:52
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:93
@@ -213,7 +208,7 @@ msgstr "Povolit více souborů"
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:157
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
 msgid "False"
-msgstr "Špatně"
+msgstr "Falso"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:53
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:94
@@ -221,251 +216,251 @@ msgstr "Špatně"
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:158
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:46
 msgid "True"
-msgstr "Správně"
+msgstr "Verdadero"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:56
 msgid ""
 "Specify whether learners can upload more than one file. This has no effect "
 "if File Uploads Response is set to None. This is automatically set to True "
 "for Team Assignments. "
-msgstr "Určete, zda mohou studenti nahrát více než jeden soubor. Toto nemá žádný účinek, pokud je Odezva při odesílání souborů nastavena na Žádná. Toto je automaticky nastaveno na True pro týmová přiřazení."
+msgstr "Especifique si los alumnos pueden cargar más de un archivo. Esto no tiene ningún efecto si la Respuesta de carga de archivos está configurada en Ninguna. Esto se establece automáticamente en Verdadero para las asignaciones de equipo."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:58
 msgid "File Upload Types"
-msgstr "Typy nahrávání souborů"
+msgstr "Tipos de carga de archivos"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:60
 msgid "PDF or Image Files"
-msgstr "PDF nebo obrázkové soubory"
+msgstr "Archivos PDF o de imagen"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:61
 msgid "Image Files"
-msgstr "Soubory obrázků"
+msgstr "Archivos de imagen"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:62
 msgid "Custom File Types"
-msgstr "Vlastní typy souborů"
+msgstr "Tipos de archivos personalizados"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:66
 msgid ""
 "Specify whether learners can submit files along with their text responses."
-msgstr "Určete, zda mohou studenti odesílat soubory spolu se svými textovými odpověďmi."
+msgstr "Especifique si los alumnos pueden enviar archivos junto con sus respuestas de texto."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:70
 msgid "File Types"
-msgstr "Typy souborů"
+msgstr "Tipos de archivo"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:79
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr "Zadejte přípony souborů oddělené čárkami, které chcete, aby studenti mohli nahrávat. Například: pdf,doc,docx."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
 msgid ""
 "To add more file extensions, select Custom File Types and enter the full "
 "list of acceptable file extensions to be included."
-msgstr "Chcete-li přidat další přípony souborů, vyberte Vlastní typy souborů a zadejte úplný seznam přípon souborů, které chcete zahrnout."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
-msgstr "Povolit odpovědi LaTeXu"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr "Určete, zda mohou studenti psát řetězce ve formátu LaTeX"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:102
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:10
 msgid "Top Responses"
-msgstr "Nejlepší odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:104
 msgid " (Disabled)"
-msgstr "(Zakázáno)"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:117
 msgid ""
 "Specify the number of top scoring responses to display after the learner has"
 " submitted a response. Valid numbers are 0 to 99. If the number is 0, the "
 "Top Responses section does not appear to learners."
-msgstr "Zadejte počet odpovědí s nejvyšším skóre, které se mají zobrazit poté, co student odešle odpověď. Platná čísla jsou 0 až 99. Pokud je číslo 0, část Nejlepší odpovědi se studentům nezobrazí."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:122
 msgid "When Teams Enabled is set to true, Top Responses will be disabled."
-msgstr "Když je Teams Enabled nastaveno na hodnotu true, budou nejlepší odpovědi zakázány."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:129
 msgid "Teams Enabled"
-msgstr "Týmy povoleny"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:136
 msgid "Specify whether team submissions are allowed for this response."
-msgstr "Určete, zda jsou pro tuto odpověď povoleny týmové příspěvky."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:141
 msgid "Select Team-Set"
-msgstr "Vyberte Team-Set"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:155
 msgid "Show Rubric During Response"
-msgstr "Zobrazit rubriku během odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:162
 msgid ""
 "Specify whether learners can see the rubric while they are working on their "
 "response."
-msgstr "Určete, zda studenti mohou rubriku vidět, když pracují na své odpovědi."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:6
 #: templates/openassessmentblock/staff_area/oa_student_info.html:122
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Criterion"
-msgstr "Kritérium"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:7
 msgid "You cannot delete a criterion after the assignment has been released."
-msgstr "Po uvolnění úkolu nemůžete smazat kritérium."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:9
 #: templates/openassessmentblock/edit/oa_edit_option.html:7
 #: templates/openassessmentblock/edit/oa_edit_prompt.html:10
 #: templates/openassessmentblock/edit/oa_training_example.html:10
 msgid "Remove"
-msgstr "Odstranit"
+msgstr "Quitar"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:17
 msgid "Criterion Name"
-msgstr "Název kritéria"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:29
 msgid "Criterion Prompt"
-msgstr "Výzva ke kritériu"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:44
 msgid "Add Option"
-msgstr "Přidat možnost"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:52
 msgid "Feedback for This Criterion"
-msgstr "Zpětná vazba pro toto kritérium"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:54
 #: xblock/studio_mixin.py:57
 msgid "None"
-msgstr "Žádné"
+msgstr "Nada"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:55
 #: xblock/studio_mixin.py:56
 msgid "Optional"
-msgstr "Volitelný"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: templates/openassessmentblock/oa_rubric.html:13
 #: templates/openassessmentblock/student_training/student_training.html:93
 #: xblock/studio_mixin.py:55
 msgid "Required"
-msgstr "Povinný"
+msgstr "Requerido"
 
 #: templates/openassessmentblock/edit/oa_edit_criterion.html:61
 msgid ""
 "Select one of the options above. This describes whether or not the reviewer "
 "will have to provide criterion feedback."
-msgstr "Vyberte jednu z výše uvedených možností. To popisuje, zda recenzent bude muset poskytnout zpětnou vazbu ke kritériu."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:3
 msgid "Open Response Assessment"
-msgstr "Otevřené hodnocení odpovědi"
+msgstr "Evaluación de respuesta abierta"
 
 #: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:8
 #: templates/openassessmentblock/edit/oa_edit_prompt.html:7
 msgid "Prompt"
-msgstr "Výzva"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:15
 msgid "Rubric"
-msgstr "Rubrika"
+msgstr "Rúbrica"
 
 #: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:22
 msgid "Schedule"
-msgstr "Rozvrh"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:31
 msgid "Assessment steps"
-msgstr "Kroky hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_header_and_validation.html:38
 msgid "Settings"
-msgstr "Nastavení"
+msgstr "Configuración"
 
 #: templates/openassessmentblock/edit/oa_edit_option.html:5
 msgid "Option"
-msgstr "Možnost"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_option.html:16
 msgid "Option Name"
-msgstr "Název možnosti"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_option.html:29
 msgid "Option Points"
-msgstr "Body možnosti"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_option.html:42
 msgid "Option Explanation"
-msgstr "Vysvětlení možnosti"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:10
 msgid "Step: Peer Assessment"
-msgstr "Krok: Vzájemné hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:15
 msgid ""
 "Peer Assessment allows students to provide feedback to other students and "
 "also receive feedback from others in their final grade. Often, though not "
 "always, this step is preceded by Self Assessment or Learner Training steps."
-msgstr "Vzájemné hodnocení umožňuje studentům poskytovat zpětnou vazbu ostatním studentům a také přijímat zpětnou vazbu od ostatních v jejich závěrečné známce. Často, i když ne vždy, tomuto kroku předcházejí kroky sebehodnocení nebo školení žáka."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:18
 msgid ""
 "Configuration: For this step to be configured you must specify the number of"
 " peer reviews a student will be assessed with, and the number of peer a "
 "student must grade. Additional options can be specified."
-msgstr "Konfigurace: Aby byl tento krok nakonfigurován, musíte zadat počet recenzí od spolužáků, kterými bude student hodnocen, a počet spolužáků, které musí student ohodnotit. Lze zadat další možnosti."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:23
 msgid "View Options & Configuration"
-msgstr "Zobrazit možnosti a konfiguraci"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Must Grade"
-msgstr "Musí oznámkovat"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 1 to 99."
-msgstr "Určete počet vzájemných hodnocení, které musí každý student absolvovat. Platná čísla jsou 1 až 99."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 msgid "Graded By"
-msgstr "Známkován od"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:39
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 1 to 99."
-msgstr "Určete počet studentů, kteří musí každou odpověď vyhodnotit. Platná čísla jsou 1 až 99."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:43
 msgid "Enable Flexible Peer Grade Averaging"
-msgstr "Povolit flexibilní průměrování rovnocenného hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:49
 #, python-format
 msgid ""
 "When enabled, learners who have received at least 30%% of the required \\"
-msgstr "Když je tato možnost povolena, studenti, kteří obdrželi alespoň 30%% požadovaného \\"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
 msgid ""
@@ -476,50 +471,50 @@ msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:5
 msgid "Peer Assessment Deadlines"
-msgstr "Termíny Vzájemného hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:10
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:10
 msgid "Start Date"
-msgstr "Počáteční datum"
+msgstr "Fecha de inicio"
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:19
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:19
 msgid "Start Time"
-msgstr "Počáteční čas"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing peer responses."
-msgstr "Datum a čas, kdy mohou studenti začít s hodnocením reakcí spolužáků."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:31
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:31
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:119
 msgid "Due Date"
-msgstr "Koncové datum"
+msgstr "Fecha de vencimiento"
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:40
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:40
 msgid "Due Time"
-msgstr "Koncový čas"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_peer_assessment_schedule.html:48
 msgid "The date and time when all peer assessments must be complete."
-msgstr "Datum a čas, kdy musí být dokončena všechna vzájemná hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr "Po uvolnění úkolu nelze výzvu odstranit."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr "Výzvy. Nahraďte ukázkový text vlastním textem. Další informace naleznete v dokumentaci ORA."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
-msgstr "Přidat výzvu"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:14
 msgid ""
@@ -527,35 +522,35 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr "Rubriky se skládají z kritérií, která obvykle obsahují jednu nebo více možností. Každá možnost má bodovou hodnotu. Tato šablona obsahuje dvě vzorová kritéria a jejich možnosti. Nahraďte ukázkový text vlastním textem. Další informace naleznete v dokumentaci ORA."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:29
 msgid "Add Criterion"
-msgstr "Přidat kritérium"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:35
 msgid "Feedback for This Response"
-msgstr "Zpětná vazba pro tuto odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:40
 msgid "Feedback Instructions"
-msgstr "Pokyny pro zpětnou vazbu"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:44
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr "Povzbuďte studenty, aby poskytli zpětnou vazbu na odpověď, kterou ohodnotili. Ukázkový text můžete nahradit svým vlastním."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:49
 msgid "Default Feedback Text"
-msgstr "Výchozí text zpětné vazby"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_rubric.html:53
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
-msgstr "Zadejte text zpětné vazby, který studenti uvidí, než zadají vlastní zpětnou vazbu. Pomocí tohoto textu můžete studentům ukázat dobrý příklad vzájemného hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:5
 msgid "Deadlines Configuration"
@@ -587,70 +582,70 @@ msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:40
 msgid "Response Start Date"
-msgstr "Datum zahájení odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:53
 msgid "Response Start Time"
-msgstr "Čas zahájení odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:62
 msgid "The date and time when learners can begin submitting responses."
-msgstr "Datum a čas, kdy mohou studenti začít odesílat odpovědi."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:70
 msgid "Response Due Date"
-msgstr "Datum platnosti odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:83
 msgid "Response Due Time"
-msgstr "Čas platnosti odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_schedule.html:92
 msgid "The date and time when learners can no longer submit responses."
-msgstr "Datum a čas, kdy studenti již nemohou odesílat odpovědi."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_self_assessment.html:8
 msgid "Step: Self Assessment"
-msgstr "Krok: Sebehodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_self_assessment.html:12
 msgid ""
 "Self Assessment asks learners to grade their own submissions against the "
 "rubric."
-msgstr "Sebehodnocení žádá studenty, aby ohodnotili své vlastní příspěvky podle rubriky."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:5
 msgid "Self Assessment Deadlines"
-msgstr "Termíny sebehodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:27
 msgid "The date and time when learners can begin assessing their responses."
-msgstr "Datum a čas, kdy mohou studenti začít vyhodnocovat své odpovědi."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_self_assessment_schedule.html:48
 msgid "The date and time when all self assessments must be complete."
-msgstr "Datum a čas, kdy musí být všechna sebehodnocení dokončena."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
-msgstr "Krok: Hodnocení učitelů"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_staff_assessment.html:12
 msgid ""
 "Staff Assessment gates sets the final grade for students if enabled with "
 "other steps, though it can also be used as a standalone step."
-msgstr "Brány hodnocení učitelů nastavují konečnou známku pro studenty, pokud jsou povoleny s dalšími kroky, i když je lze použít také jako samostatný krok."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_student_training.html:9
 msgid "Step: Learner Training"
-msgstr "Krok: Školení studenta"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_student_training.html:14
 msgid ""
 "Learner Training is used to help students practice grading a simulated peer "
 "submission in order to train them on the rubric and ensure learner's "
 "understand the rubric for either Self or Peer Assessment steps."
-msgstr "Školení žáka se používá k tomu, aby studentům pomohlo procvičit si hodnocení simulovaného odevzdání spolužáků, aby je proškolili v rubrice a zajistili, že žák porozumí rubrice při krocích sebe nebo vzájemného hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_student_training.html:17
 msgid ""
@@ -658,19 +653,19 @@ msgid ""
 "more graded sample responses. Learners must then match this instructor score"
 " to advance and are provided feedback when their score doesn't match the "
 "sample response."
-msgstr "Konfigurace: Aby byl tento krok plně nakonfigurován, musíte poskytnout jednu nebo více odstupňovaných vzorových odpovědí. Studenti se pak musí shodovat s tímto skóre instruktora, aby postoupili a dostanou zpětnou vazbu, když jejich skóre neodpovídá vzorové odpovědi."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_student_training.html:22
 msgid "View / Add Sample Responses"
-msgstr "Zobrazit / Přidat vzorové odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_edit_student_training.html:32
 msgid "Add Sample Response"
-msgstr "Přidat ukázkovou odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:4
 msgid "Clone Rubric"
-msgstr "Rubrika klonování"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:7
 msgid ""
@@ -678,49 +673,49 @@ msgid ""
 "search by the Block ID. Note that cloning is one-way, meaning changes made "
 "after cloning will only affect the rubric being modified, and will not "
 "modify any rubric it was cloned from."
-msgstr "Chcete-li klonovat rubriku z existujícího publikovaného nebo nepublikovaného konceptu, můžete hledat podle ID bloku. Všimněte si, že klonování je jednosměrné, což znamená, že změny provedené po klonování ovlivní pouze upravovanou rubriku a nezmění žádnou rubriku, ze které byla klonována."
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:9
 msgid "Block ID For this ORA:"
-msgstr "ID bloku pro tento ORA:"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:19
 msgid "Block ID"
-msgstr "ID bloku"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:21
 msgid "No other Open Response Assessments found in course"
-msgstr "V kurzu nebyla nalezena žádná další otevřená hodnocení odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:31
 msgid "Clone"
-msgstr "Klonovat"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_rubric_reuse.html:37
 msgid "Rubric Successfully Cloned from Block ID: "
-msgstr "Rubrika byla úspěšně naklonována z ID bloku:"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_training_example.html:7
 msgid "Scored Response"
-msgstr "Bodovaná odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_training_example.html:16
 msgid "Response Score"
-msgstr "Skóre odezvy"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_training_example.html:27
 msgid "Response"
-msgstr "Odezva"
+msgstr ""
 
 #: templates/openassessmentblock/edit/oa_training_example_criterion.html:10
 msgid "Not Selected"
-msgstr "Nevybraný"
+msgstr "No seleccionado"
 
 #: templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: templates/openassessmentblock/oa_rubric.html:43
 #: templates/openassessmentblock/student_training/student_training.html:128
 msgid "points"
-msgstr "body"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_assessment_feedback.html:8
 #, python-format
@@ -728,7 +723,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr "\n                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n              "
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
@@ -740,15 +735,14 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] "\n                      %(assessment_title)s - %(points)s bod\n                  "
-msgstr[1] "\n                      %(assessment_title)s - %(points)s body\n                  "
-msgstr[2] "\n                      %(assessment_title)s - %(points)s bodů\n                  "
-msgstr[3] "\n                      %(assessment_title)s - %(points)s bodů\n                  "
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr "Další informace o %(name)s"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_cancelled.html:14
 #: templates/openassessmentblock/grade/oa_grade_complete.html:15
@@ -757,7 +751,7 @@ msgstr "Další informace o %(name)s"
 #: templates/openassessmentblock/grade/oa_grade_not_started.html:14
 #: templates/openassessmentblock/grade/oa_grade_waiting.html:14
 msgid "Your Grade"
-msgstr "Vaše známka"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_cancelled.html:19
 #, python-format
@@ -765,11 +759,11 @@ msgid ""
 "\n"
 "                                        %(points_earned)s out of %(points_possible)s\n"
 "                                    "
-msgstr "\n                                        %(points_earned)s z %(points_possible)s\n                                    "
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_cancelled.html:38
 msgid "Your submission has been cancelled."
-msgstr "Váš příspěvek byl zrušen."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:19
 #, python-format
@@ -777,20 +771,20 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr "\n%(points_earned)s z %(points_possible)s"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:38
 #: templates/openassessmentblock/response/oa_response.html:29
 msgid "Your Response"
-msgstr "Vaše odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:41
 msgid "Your Upload"
-msgstr "Vaše nahrání"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:46
 msgid "Assessments of Your Response"
-msgstr "Hodnocení vaší odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:50
 #: templates/openassessmentblock/grade/oa_grade_complete.html:132
@@ -812,99 +806,99 @@ msgstr "Hodnocení vaší odpovědi"
 #: templates/openassessmentblock/self/oa_self_closed.html:30
 #: templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr "Stav"
+msgstr "Estado"
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:65
 msgid "Overall Grade"
-msgstr "Celková známka"
+msgstr "Nota global"
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:70
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:28
 msgid "Points"
-msgstr "Body"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:96
 msgid "Additional comments on your response"
-msgstr "Další komentáře k vaší odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:117
 msgid "Provide feedback on peer assessments"
-msgstr "Poskytněte zpětnou vazbu k vzájemnému hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:126
 msgid "Submitting Feedback"
-msgstr "Odeslání zpětné vazby"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:134
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr "Vaše zpětná vazba byla odeslána. Učitelé kurzu budou moci tuto zpětnou vazbu vidět při kontrole záznamů kurzu."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:140
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
-msgstr "Učitelé kurzu budou moci vidět jakoukoli zpětnou vazbu, kterou zde poskytnete, když budou kontrolovat záznamy kurzu."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:146
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr "Níže vyberte tvrzení, která nejlépe odpovídají vašim zkušenostem s vzájemným hodnocením."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:155
 msgid "These assessments were useful."
-msgstr "Tato hodnocení byla užitečná."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:164
 msgid "These assessments were not useful."
-msgstr "Tato hodnocení nebyla užitečná."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:173
 msgid "I disagree with one or more of the peer assessments of my response."
-msgstr "Nesouhlasím s jedním nebo více názory spolužáků na mou odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:182
 msgid "Some comments I received were inappropriate."
-msgstr "Některé komentáře, které jsem obdržel, byly nevhodné."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:187
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
-msgstr "Poskytněte zpětnou vazbu ke známce nebo komentářům, které jste obdrželi od svých spolužáků."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "I feel the feedback I received was..."
-msgstr "Mám pocit, že zpětná vazba, kterou jsem dostal, byla..."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:200
 msgid "We could not submit your feedback"
-msgstr "Vaši zpětnou vazbu jsme nemohli odeslat"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_complete.html:206
 msgid "Submit feedback on peer assessments"
-msgstr "Odešlete zpětnou vazbu ke vzájemnému hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_incomplete.html:16
 msgid "Not Completed"
-msgstr "Nedokončeno"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_incomplete.html:33
 msgid "You have not completed all the steps of this problem."
-msgstr "Nedokončili jste všechny kroky tohoto problému."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_not_started.html:16
 msgid "Not Started"
-msgstr "Nezačalo"
+msgstr "No empezado"
 
 #: templates/openassessmentblock/grade/oa_grade_not_started.html:27
 msgid "You have not started this problem yet."
-msgstr "Tento problém jste ještě nezačali."
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_waiting.html:16
 msgid "Waiting for Assessments"
-msgstr "Čekání na hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/grade/oa_grade_waiting.html:33
 msgid ""
@@ -912,107 +906,107 @@ msgid ""
 "need to be done on your response. When the assessments of your response are "
 "complete, you will see feedback from everyone who assessed your response, "
 "and you will receive your final grade."
-msgstr "Dokončili jste své kroky v úkolu, ale ještě je třeba provést některá hodnocení vaší odpovědi. Po dokončení hodnocení vaší odpovědi uvidíte zpětnou vazbu od všech, kteří vaši odpověď hodnotili, a obdržíte konečnou známku."
+msgstr ""
 
 #: templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:16
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:18
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:153
 msgid "Grade Available Responses"
-msgstr "Známka dostupné odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
 msgid ""
 "Grade Available Responses is unavailable. This item is not configured for "
 "Staff Assessment."
-msgstr "Hodnocení dostupné odpovědi není k dispozici. Tato položka není nakonfigurována pro hodnocení učitelů."
+msgstr ""
 
 #: templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
 msgid "Please wait"
-msgstr "Čekejte prosím"
+msgstr "Espere por favor"
 
 #: templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:15
 msgid "Waiting Step Details"
-msgstr "Podrobnosti o kroku čekání"
+msgstr ""
 
 #: templates/openassessmentblock/instructor_dashboard/oa_waiting_step_details.html:24
 msgid ""
 "Waiting Step details view is unavailable. This item is not configured for "
 "peer assessments."
-msgstr "Zobrazení podrobností o kroku čekání není k dispozici. Tato položka není nakonfigurována pro vzájemné hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
-msgstr "%(num_points)s bodů"
+msgstr ""
 
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:24
 #: templates/openassessmentblock/peer/oa_peer_assessment.html:74
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the prompt above"
-msgstr "Odpověď vašeho spolužáka na výzvu výše"
+msgstr ""
 
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:19
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
-msgstr "Až dokončíte všechny kroky tohoto úkolu, uvidíte odpovědi svých spolužáků s nejvyšším skóre."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_cancelled.html:8
 msgid ""
 "Your team’s submission has been cancelled. Your team will receive a grade of"
 " zero unless course staff resets your assessment to allow the team to "
 "resubmit a response."
-msgstr "Odeslání vašeho týmu bylo zrušeno. Váš tým obdrží známku nula, pokud učitel kurzu vaše hodnocení nezresetuje, aby týmu umožnil znovu odeslat odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_cancelled.html:10
 msgid ""
 "Your submission has been cancelled. You will receive a grade of zero unless "
 "course staff resets your assessment to allow you to resubmit a response."
-msgstr "Váš příspěvek byl zrušen. Dostanete známku nula, pokud učitel kurzu vaše hodnocení nezresetuje, aby vám umožnil znovu odeslat odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_closed.html:8
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr "Tento úkol zatím není k dispozici. Jakmile se tato sekce otevře, vraťte se k dokončení úkolu."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr "Tento úkol byl uzavřen. Uplynul jeden nebo více termínů pro tento úkol. Za tento úkol dostanete neúplnou známku."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr "Tento úkol jste dokončili. Vaše konečná známka bude k dispozici, až bude hodnocení vaší odpovědi dokončeno."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr "Tento úkol jste dokončili. Zkontrolujte svou známku a podrobnosti o hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr "Tento úkol se zpracovává. Školení studentů brzy skončí. Dokončete krok školení žáka, abyste mohli pokračovat."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr "Tento úkol se zpracovává. Dokončete krok školení žáka, abyste mohli pokračovat."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: templates/openassessmentblock/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr "Tento úkol se zpracovává. Vraťte se později, až začne období hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
@@ -1020,7 +1014,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    %(start_strong)sTento úkol se zpracovává. Krok sebehodnocení bude brzy uzavřen.%(end_strong)s Stále musíte dokončit krok %(start_link)ssebehodnocení%(end_link)s.\n                                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
@@ -1028,7 +1022,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    Tento úkol se zpracovává. Stále musíte dokončit krok %(start_link)ssebehodnocení%(end_link)s.\n                                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -1036,7 +1030,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    Tento úkol se zpracovává.%(start_strong)sKrok vzájemného hodnocení bude brzy uzavřen.%(end_strong)s Všechny odeslané odpovědi spolužáků byly posouzeny. Vraťte se později, abyste zjistili, zda odpovědi zaslalo více studentů. Stále musíte dokončit krok %(start_link)svzájemného hodnocení%(end_link)s.\n                                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -1044,7 +1038,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    Tento úkol se zpracovává. Všechny odeslané odpovědi spolužáků byly posouzeny. Vraťte se později, abyste zjistili, zda odpovědi zaslalo více studentů. Stále musíte dokončit krok %(start_link)svzájemného hodnocení%(end_link)s.\n                                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -1052,7 +1046,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    Tento úkol se zpracovává. %(start_strong)sKrok vzájemného hodnocení bude brzy uzavřen.%(end_strong)s Stále musíte dokončit krok %(start_link)svzájemného hodnocení%(end_link)s.\n                                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
@@ -1060,11 +1054,11 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr "\n                                    Tento úkol se zpracovává. Stále musíte dokončit krok %(start_link)svzájemného hodnocení%(end_link)s.\n                                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_no_team.html:4
 msgid "Team membership is required to view this assignment"
-msgstr "K zobrazení tohoto úkolu je vyžadováno členství v týmu"
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_no_team.html:7
 #, python-format
@@ -1074,7 +1068,7 @@ msgid ""
 "            You are currently not on a team in team-set \"%(teamset_name)s\".\n"
 "            You must be on a team in team-set \"%(teamset_name)s\" to access this team assignment.\n"
 "            "
-msgstr "\n            Toto je týmový úkol pro sadu týmů „%(teamset_name)s“.\n            Momentálně nejste v týmu v sadě týmů „%(teamset_name)s“.\n            Pro přístup k tomuto týmovému úkolu musíte být v týmu v sadě týmu „%(teamset_name)s“.\n            "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -1082,7 +1076,7 @@ msgid ""
 "\n"
 "                    Assignment submissions will close soon. To receive a grade, first provide a response to the prompt, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\nOdesílání úkolů bude brzy uzavřeno. Chcete-li získat známku, nejprve poskytněte odpověď na výzvu a poté proveďte kroky uvedené níže v poli %(start_tag)sVaše Reakce%(end_tag)s."
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_open.html:11
 #, python-format
@@ -1090,74 +1084,74 @@ msgid ""
 "\n"
 "                    This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
-msgstr "\n                    Toto zadání má několik kroků. V prvním kroku poskytnete odpověď na výzvu. Další kroky se zobrazí pod polem %(start_tag)sYour Response%(end_tag)s.\n                "
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_unavailable.html:4
 msgid "Instructions Unavailable"
-msgstr "Pokyny nejsou k dispozici"
+msgstr ""
 
 #: templates/openassessmentblock/message/oa_message_unavailable.html:6
 msgid "The instructions for this step could not be loaded."
-msgstr "Pokyny pro tento krok nelze načíst."
+msgstr ""
 
 #: templates/openassessmentblock/oa_base.html:15
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response "
 "field."
-msgstr "Toto zadání má několik kroků. V prvním kroku poskytnete odpověď na výzvu. Další kroky se zobrazí pod polem Vaše odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/oa_base.html:36
 msgid "Loading"
-msgstr "Nahrávání"
+msgstr "Cargando"
 
 #: templates/openassessmentblock/oa_latex_preview.html:6
 msgid "Preview in LaTeX"
-msgstr "Náhled v LaTeXu"
+msgstr ""
 
 #: templates/openassessmentblock/oa_latex_preview.html:9
 msgid "Click to preview your submission in LaTeX."
-msgstr "Kliknutím zobrazíte náhled příspěvku v LaTeXu."
+msgstr ""
 
 #: templates/openassessmentblock/oa_latex_preview.html:14
 msgid "Preview Response"
-msgstr "Náhled odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/oa_rubric.html:53
 msgid "Comments"
-msgstr "Komentáře"
+msgstr "Comentarios"
 
 #: templates/openassessmentblock/oa_submission_answer.html:8
 msgid "The question for this section"
-msgstr "Otázka pro tuto sekci"
+msgstr ""
 
 #: templates/openassessmentblock/oa_team_uploaded_files.html:9
 msgid "Files that were uploaded by your teammates:"
-msgstr "Soubory, které nahráli vaši spoluhráči:"
+msgstr ""
 
 #: templates/openassessmentblock/oa_team_uploaded_files.html:28
 #: templates/openassessmentblock/oa_uploaded_file.html:34
 msgid "View the files associated with this submission:"
-msgstr "Zobrazit soubory spojené s tímto příspěvkem:"
+msgstr ""
 
 #: templates/openassessmentblock/oa_team_uploaded_files.html:32
 msgid "Uploaded by"
-msgstr "Nahráno"
+msgstr "Subido por"
 
 #: templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "Files that were uploaded by you:"
-msgstr "Soubory, které jste nahráli:"
+msgstr ""
 
 #: templates/openassessmentblock/oa_uploaded_file.html:48
 msgid ""
 "Caution: These files were uploaded by another course learner and have not "
 "been verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you access the files, you do so at your own risk.)"
-msgstr "Upozornění: Tyto soubory byly nahrány jiným účastníkem kurzu a nebyly ověřeny, prověřeny, schváleny, zkontrolovány nebo odsouhlaseny administrátorem webu. Pokud k souborům přistupujete, činíte tak na vlastní riziko.)"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_assessment.html:26
 msgid "Assess Peers"
-msgstr "Posuďte spolužáky"
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 00:00 UTC (in
@@ -1168,7 +1162,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -1179,7 +1173,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_peer\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_assessment.html:51
 #, python-format
@@ -1187,12 +1181,12 @@ msgid ""
 "\n"
 "                    In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                "
-msgstr "\nProbíhá (%(review_number)s z %(num_must_grade)s)"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_assessment.html:65
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:45
 msgid "Read and assess the following response from one of your peers."
-msgstr "Přečtěte si a zhodnoťte následující odpověď od jednoho z vašich spolužáků."
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_assessment.html:77
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
@@ -1201,7 +1195,7 @@ msgstr "Přečtěte si a zhodnoťte následující odpověď od jednoho z vašic
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:38
 #: templates/openassessmentblock/staff_area/oa_student_info.html:63
 msgid "Associated Files"
-msgstr "Přidružené soubory"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_assessment.html:91
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
@@ -1209,14 +1203,14 @@ msgstr "Přidružené soubory"
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:57
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:50
 msgid "We could not submit your assessment"
-msgstr "Vaše hodnocení se nám nepodařilo odeslat"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_cancelled.html:19
 #: templates/openassessmentblock/response/oa_response_cancelled.html:21
 #: templates/openassessmentblock/self/oa_self_cancelled.html:21
 #: templates/openassessmentblock/student_training/student_training_cancelled.html:18
 msgid "Cancelled"
-msgstr "Zrušeno"
+msgstr "Cancelado"
 
 #: templates/openassessmentblock/peer/oa_peer_closed.html:20
 #, python-format
@@ -1224,18 +1218,18 @@ msgid ""
 "\n"
 "            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
 "        "
-msgstr "\nNeúplné (%(num_graded)s z %(num_must_grade)s)\n   "
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_closed.html:35
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr "Termín pro tento krok uplynul. Tento krok je nyní uzavřen. Již nemůžete dokončit vzájemného hodnocení nebo pokračovat v tomto úkolu a dostanete známku Nedokončeno."
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
-msgstr "Dokončeno"
+msgstr "Terminado"
 
 #: templates/openassessmentblock/peer/oa_peer_complete.html:31
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:41
@@ -1244,15 +1238,15 @@ msgid ""
 "You have successfully completed all of the required peer assessments for "
 "this assignment. You may assess additional peer responses if you want to. "
 "Completing additional assessments will not affect your final grade."
-msgstr "Úspěšně jste dokončili všechna požadovaná vzájemná hodnocení pro tento úkol. Pokud chcete, můžete posoudit další odpovědi spolužáků. Dokončení dodatečných hodnocení neovlivní vaši konečnou známku."
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_complete.html:36
 msgid "We could not retrieve additional submissions for assessment"
-msgstr "Nepodařilo se nám získat další příspěvky k posouzení"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_complete.html:43
 msgid "Continue Assessing Peers"
-msgstr "Pokračujte v vzájemného hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode.html:26
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:20
@@ -1261,20 +1255,20 @@ msgid ""
 "\n"
 "        Complete (%(num_graded)s)\n"
 "      "
-msgstr "\nDokončeno (%(num_graded)s)\n     "
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:38
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr "Všechny odeslané odpovědi spolužáků byly posouzeny. Vraťte se později, abyste zjistili, zda odpovědi zaslalo více studentů."
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: templates/openassessmentblock/response/oa_response_unavailable.html:17
 #: templates/openassessmentblock/self/oa_self_unavailable.html:17
 #: templates/openassessmentblock/student_training/student_training_unavailable.html:16
 msgid "Not Available"
-msgstr "Není dostupné"
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_waiting.html:20
 #, python-format
@@ -1282,7 +1276,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr "\n          Probíhá (%(review_number)s z %(num_must_grade)s)\n        "
+msgstr ""
 
 #: templates/openassessmentblock/peer/oa_peer_waiting.html:37
 msgid ""
@@ -1290,11 +1284,11 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr "Byly posouzeny všechny dostupné odpovědi spolužáků. Vraťte se později, abyste zjistili, zda odpovědi zaslalo více studentů. Hodnocení obdržíte poté, co dokončíte všechny kroky k tomuto problému a vaši spolužáci zhodnotí vaši odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:27
 msgid "Your Team's Response"
-msgstr "Odpověď vašeho týmu"
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1305,7 +1299,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1316,16 +1310,16 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline_response\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:54
 #: templates/openassessmentblock/self/oa_self_assessment.html:46
 msgid "In Progress"
-msgstr "Ve zpracování"
+msgstr "En progreso"
 
 #: templates/openassessmentblock/response/oa_response.html:66
 msgid "Enter your team's response to the prompt."
-msgstr "Zadejte odpověď svého týmu na výzvu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:68
 msgid ""
@@ -1348,7 +1342,7 @@ msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:89
 msgid "Enter your response to the prompt."
-msgstr "Zadejte svou odpověď na výzvu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:92
 msgid ""
@@ -1376,23 +1370,23 @@ msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:110
 msgid "After you submit your response, you cannot edit it"
-msgstr "Poté, co odešlete svou odpověď, nemůžete ji upravit"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:120
 msgid "What will this assignment be graded on?"
-msgstr "Podle čeho bude tento úkol hodnocen?"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:134
 msgid "The prompt for this section"
-msgstr "Výzva pro tuto sekci"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:148
 msgid "You are on team "
-msgstr "Jste v týmu"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:150
 msgid "Team Members: "
-msgstr "Členové týmu:"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:155
 #, python-format
@@ -1402,25 +1396,25 @@ msgid ""
 "                                              have/has already submitted a response to this assignment with another team,\n"
 "                                              and will not be a part of your team's submission or assignment grade.\n"
 "                                          "
-msgstr "\n                                              %(team_members_with_external_submissions)s již odeslal(a)/odeslali odpověď na tento úkol s jiným týme\n                                              a nebude součástí odevzdání ani hodnocení úkolu vašeho týmu.\n                                          "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:171
 msgid "Team Response "
-msgstr "Týmová odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:173
 msgid "Your Response "
-msgstr "Tvoje odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:177
 #: templates/openassessmentblock/response/oa_response.html:247
 msgid "(Required)"
-msgstr "(Požadované)"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:179
 #: templates/openassessmentblock/response/oa_response.html:249
 msgid "(Optional)"
-msgstr "(Volitelné)"
+msgstr "(Opcional)"
 
 #: templates/openassessmentblock/response/oa_response.html:183
 msgid ""
@@ -1431,11 +1425,11 @@ msgid ""
 "                                              please coordinate with them to decide on the final response the designated team\n"
 "                                              member should submit.\n"
 "                                          "
-msgstr "\n                                              Týmy by měly určit jednoho člena týmu, který odešle odpověď jménem\n                                              celého týmu. Všichni členové týmu mohou tento prostor používat k práci\n                                              na konceptech odpovědí, ale v tomto prostoru neuvidíte koncepty svých\n                                              kolegů, takže se s nimi prosím dohodněte na konečné odpovědi, kterou by měl\n                                              určený člen týmu odeslat.\n                                          "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:197
 msgid "Enter your response to the prompt above."
-msgstr "Zadejte svou odpověď na výzvu výše."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:211
 #, python-format
@@ -1447,19 +1441,19 @@ msgid ""
 "                                      You will not be part of Team %(team_name)s’s submission for this assignment and will not\n"
 "                                      receive a grade for their submission.\n"
 "                                  "
-msgstr "\n                                      Momentálně jste v týmu %(team_name)s. Protože jste byli v týmu %(previous_team_name)s,\n                                      když odeslali odpověď na tento úkol, zobrazí se vám odpověď týmu %(previous_team_name)s\n                                      a za tento úkol dostanete stejnou známku jako vaši bývalí spoluhráči.\n                                      Nebudete součástí odevzdané práce týmu %(team_name)s pro tento úkol a za odevzdanou\n                                      práci nedostanete žádné hodnocení.\n                                  "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:224
 msgid "We could not save your progress"
-msgstr "Nepodařilo se nám uložit váš postup"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:232
 msgid "Status of Your Response"
-msgstr ""
+msgstr "Estado de su respuesta"
 
 #: templates/openassessmentblock/response/oa_response.html:245
 msgid "File Uploads "
-msgstr "Nahrání souborů"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:253
 msgid ""
@@ -1467,79 +1461,79 @@ msgid ""
 "                                  Upload files and review files uploaded by you and your teammates below. Be sure to add\n"
 "                                  descriptions to your files to help your teammates identify them.\n"
 "                              "
-msgstr "\n                                  Níže nahrajte soubory a recenzní soubory nahrané vámi a vašimi spoluhráči. Nezapomeňte\n                                  ke svým souborům přidat popisy, abyste je pomohli spoluhráčům identifikovat.\n                              "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:261
 msgid "We could not upload files"
-msgstr "Soubory se nepodařilo nahrát"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:267
 msgid "We could not delete files"
-msgstr "Soubory se nepodařilo smazat"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:274
 msgid "Select one or more files to upload for this submission."
-msgstr "Vyberte jeden nebo více souborů, které chcete nahrát pro tento příspěvek."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:276
 msgid "Select a file to upload for this submission."
-msgstr "Vyberte soubor, který chcete nahrát pro tento příspěvek."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:280
 msgid "Supported file types: "
-msgstr "Podporované typy souborů:"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:285
 msgid "Upload files"
-msgstr "Nahrát soubory"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:287
 msgid "Upload file"
-msgstr "Nahrát soubor"
+msgstr "Cargar archivo"
 
 #: templates/openassessmentblock/response/oa_response.html:304
 msgid "This is a team submission."
-msgstr "Toto je týmové podání."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:306
 msgid ""
 "One team member should submit a response with the team’s shared files and a "
 "text response on behalf of the entire team."
-msgstr "Jeden člen týmu by měl odeslat odpověď se sdílenými soubory týmu a textovou odpovědí jménem celého týmu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:308
 msgid ""
 "One team member should submit a response with the team’s shared files on "
 "behalf of the entire team."
-msgstr "Jeden člen týmu by měl odeslat odpověď se sdílenými soubory týmu jménem celého týmu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:310
 msgid ""
 "One team member should submit a text response on behalf of the entire team."
-msgstr "Jeden člen týmu by měl odeslat textovou odpověď jménem celého týmu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:312
 msgid "One team member should submit on behalf of the entire team."
-msgstr "Jeden člen týmu by měl podat jménem celého týmu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:314
 msgid ""
 "\n"
 "                  Learn more about team assignments here: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">link</a>)\n"
 "                  "
-msgstr "\n                  Více o týmových úkolech se dozvíte zde: (<a target=\"_blank\" href=\"https://support.edx.org/hc/en-us/articles/360000191067-Submit-your-response#h_01FVD8SXM9E5H2DNAG87X25ZHR\">odkaz</a>)\n                  "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:322
 msgid "We could not submit your response"
-msgstr "Vaši odpověď se nepodařilo odeslat"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response.html:332
 msgid "Submit your response and move to the next step"
-msgstr "Odešlete svou odpověď a přejděte k dalšímu kroku"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_cancelled.html:34
 msgid "Your submission was cancelled. "
-msgstr "Váš příspěvek byl zrušen. "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_cancelled.html:37
 #, python-format
@@ -1547,7 +1541,7 @@ msgid ""
 "\n"
 "                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                            "
-msgstr "\n                                Váš příspěvek byl zrušen uživatelem %(removed_by_username)s dne %(removed_datetime)s\n                            "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_cancelled.html:41
 #, python-format
@@ -1555,7 +1549,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr "\n                               Váš příspěvek byl zrušen dne %(removed_datetime)s\n                            "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_cancelled.html:48
 #, python-format
@@ -1563,13 +1557,13 @@ msgid ""
 "\n"
 "                            Comments: %(comments)s\n"
 "                        "
-msgstr "\nKomentáře: %(comments)s"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_closed.html:19
 #: templates/openassessmentblock/self/oa_self_closed.html:20
 #: templates/openassessmentblock/student_training/student_training_closed.html:17
 msgid "Incomplete"
-msgstr "Neúplný"
+msgstr "Incompleto"
 
 #: templates/openassessmentblock/response/oa_response_closed.html:32
 msgid ""
@@ -1577,31 +1571,31 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr "Termín pro tento krok uplynul. Tento krok je nyní uzavřen. Již nemůžete odeslat odpověď nebo pokračovat v tomto problému a obdržíte známku Nedokončeno. Pokud jste uložili, ale neodeslali jste odpověď, odpověď se objeví v záznamech kurzu."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_graded.html:20
 #: templates/openassessmentblock/response/oa_response_submitted.html:20
 #: templates/openassessmentblock/self/oa_self_complete.html:18
 #: templates/openassessmentblock/student_training/student_training_complete.html:17
 msgid "Complete"
-msgstr "Dokončit"
+msgstr "Completo"
 
 #: templates/openassessmentblock/response/oa_response_graded.html:30
 #: templates/openassessmentblock/response/oa_response_submitted.html:51
 #: templates/openassessmentblock/self/oa_self_assessment.html:57
 msgid "Your response"
-msgstr "Vaše odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_graded.html:33
 #: templates/openassessmentblock/response/oa_response_submitted.html:54
 msgid "Your Uploaded Files"
-msgstr "Vaše nahrané soubory"
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_submitted.html:32
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr "Vaše odpověď byla odeslána. Hodnocení obdržíte po dokončení všech kroků a úplném vyhodnocení vaší odpovědi."
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_submitted.html:34
 #, python-format
@@ -1609,7 +1603,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
 "                    "
-msgstr "\n                        Stále musíte dokončit kroky %(peer_start_tag)svzájemného hodnocení%(end_tag)s a %(self_start_tag)ssebehodnocení%(end_tag)s.\n                    "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_submitted.html:38
 #, python-format
@@ -1617,7 +1611,7 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
 "                    "
-msgstr "\n                        Stále musíte dokončit krok %(start_tag)svzájemného hodnocení%(end_tag)s.\n                    "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_submitted.html:42
 #, python-format
@@ -1625,11 +1619,11 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
-msgstr "\n                        Stále musíte dokončit krok %(start_tag)ssebehodnocení%(end_tag)s.\n                    "
+msgstr ""
 
 #: templates/openassessmentblock/response/oa_response_team_already_submitted.html:15
 msgid "Error"
-msgstr "Chyba"
+msgstr "Error"
 
 #: templates/openassessmentblock/response/oa_response_team_already_submitted.html:29
 #, python-format
@@ -1640,11 +1634,11 @@ msgid ""
 "                            a response to this assignment with another team. Please contact course staff to discuss your\n"
 "                            options for this assignment.\n"
 "                        "
-msgstr "\n                            Připojili jste se k týmu %(team_name)s poté, co odeslal odpověď na tento úkol,\n                            a vy za jeho odpověď nedostanete známku. Také jste dříve neodeslali odpověď\n                            na tento úkol s jiným týmem. Kontaktujte prosím učitele kurzu a prodiskutujte své\n                            možnosti pro tento úkol.\n                        "
+msgstr ""
 
 #: templates/openassessmentblock/self/oa_self_assessment.html:23
 msgid "Assess Your Response"
-msgstr "Zhodnoťte svou odpověď"
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1655,7 +1649,7 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr "\n               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n           "
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1666,96 +1660,96 @@ msgid ""
 "\n"
 "               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "           "
-msgstr "\n               <span id=\"oa_step_deadline_self\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n           "
+msgstr ""
 
 #: templates/openassessmentblock/self/oa_self_assessment.html:78
 msgid "Submit your assessment"
-msgstr "Odeslat své hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/self/oa_self_closed.html:32
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr "Termín pro tento krok uplynul. Tento krok je nyní uzavřen. Již nemůžete dokončit sebehodnocení nebo pokračovat v tomto úkolu a dostanete známku Nedokončeno."
+msgstr ""
 
 #: templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: xblock/grade_mixin.py:365
 msgid "Staff Grade"
-msgstr "Stupeň učitelů"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:8
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:35
 msgid "Manage Individual Learners"
-msgstr "Správa jednotlivých studentů"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:10
 msgid "Manage Team Responses"
-msgstr "Správa týmových odpovědí"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:13
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:71
 msgid "View Assignment Statistics"
-msgstr "Zobrazit statistiky přiřazení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:22
 msgid "Demo the new Grading Experience"
-msgstr "Předveďte nové hodnocení"
+msgstr "Demostración de la nueva experiencia de calificación"
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "View ORA in Studio"
-msgstr "Zobrazit ORA ve Studiu"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:31
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:69
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:151
 msgid "Close"
-msgstr "Zavřít"
+msgstr "Cerrar"
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:37
 msgid "Manage Teams"
-msgstr "Spravovat týmy"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:50
 msgid "Enter an individual learner's username or email"
-msgstr "Zadejte uživatelské jméno nebo e-mail jednotlivého studenta"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:52
 msgid "Enter a team member's username or edX email"
-msgstr "Zadejte uživatelské jméno člena týmu nebo e-mail edX"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:56
 msgid "Submit"
-msgstr "Zaslat"
+msgstr "Enviar"
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:78
 msgid "Response total"
-msgstr "Odezva celkem"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:84
 msgid "Location"
-msgstr "Místo"
+msgstr "Ubicación"
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:90
 msgid "Learner Progress"
-msgstr "Pokrok studenta"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:94
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:117
 msgid "Problem Step"
-msgstr "Problémový krok"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:95
 msgid "Active Learners in Step"
-msgstr "Aktivní studenti v Kroku"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:113
 msgid "Dates"
-msgstr "Termíny"
+msgstr "fechas"
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:118
 msgid "Release Date"
-msgstr "Datum vydání"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:131
 #: templates/openassessmentblock/staff_area/oa_staff_area.html:137
@@ -1764,15 +1758,15 @@ msgstr "N/A"
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners.html:7
 msgid "Staff Assessment"
-msgstr "Hodnocení učitelů"
+msgstr "Evaluación del equipo "
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:14
 msgid "Give this team a grade using the problem's rubric."
-msgstr "Dejte tomuto týmu známku pomocí rubriky problému."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 msgid "Give this learner a grade using the problem's rubric."
-msgstr "Dejte tomuto studentovi známku pomocí rubriky problému."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:26
 #, python-format
@@ -1780,7 +1774,7 @@ msgid ""
 "\n"
 "                                        Response for: %(team_name)s with %(team_usernames)s\n"
 "                                    "
-msgstr "\n                                        Odpověď pro: %(team_name)s s %(team_usernames)s\n                                    "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:30
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
@@ -1789,31 +1783,31 @@ msgid ""
 "\n"
 "                                        Response for: %(student_username)s\n"
 "                                    "
-msgstr "\n                                        Odpověď pro: %(student_username)s\n                                    "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:34
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 msgid "Learner Response"
-msgstr "Odpověď studenta"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:39
 msgid "The teams's response to the prompt above"
-msgstr "Odpověď týmů na výzvu výše"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:41
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:32
 #: templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "The learner's response to the prompt above"
-msgstr "Odpověď studenta na výzvu výše"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:64
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:57
 msgid "Submit assessment"
-msgstr "Odeslat hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:70
 msgid "Submit assessment and continue grading"
-msgstr "Odešlete hodnocení a pokračujte v hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html:6
 #, python-format
@@ -1821,24 +1815,24 @@ msgid ""
 "\n"
 "                %(ungraded)s Available and %(in_progress)s Checked Out\n"
 "            "
-msgstr "\n                %(ungraded)s k dispozici a %(in_progress)s zkontrolováno\n            "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:7
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr "Přepište aktuální známku tohoto studenta pomocí rubriky problému."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:9
 msgid "Override this team's current grade using the problem's rubric."
-msgstr "Přepište aktuální hodnocení tohoto týmu pomocí rubriky problému."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 msgid "Team Response"
-msgstr "Týmová odpověď"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:34
 #: templates/openassessmentblock/staff_area/oa_student_info.html:59
 msgid "The team's response to the prompt above"
-msgstr "Odpověď týmu na výzvu výše"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:11
 #, python-format
@@ -1846,7 +1840,7 @@ msgid ""
 "\n"
 "                    Viewing learner: %(learner)s\n"
 "                "
-msgstr "\n                    Prohlížení studenta: %(learner)s\n                "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:15
 #, python-format
@@ -1854,15 +1848,15 @@ msgid ""
 "\n"
 "                    Viewing team: %(team)s\n"
 "                "
-msgstr "\nProhlížecí tým: %(team)s\n "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:28
 msgid "Learner's Response"
-msgstr "Odpověď studenta"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:30
 msgid "Team's Response"
-msgstr "Odpověď týmu"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:39
 #, python-format
@@ -1870,7 +1864,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr "\n                            Příspěvek studenta odstraněn uživatelem %(removed_by_username)s dne %(removed_datetime)s\n                        "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:43
 #, python-format
@@ -1878,7 +1872,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr "\n                            Příspěvek studenta odstraněn dne %(removed_datetime)s\n                        "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:50
 #, python-format
@@ -1886,35 +1880,35 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr "\n                        Komentáře: %(comments)s\n                    "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:71
 msgid "Peer Assessments for This Learner"
-msgstr "Vzájemné hodnocení pro tohoto studenta"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:76
 msgid "Peer Assessments Completed by This Learner"
-msgstr "Vzájemné hodnocení vyplněná tímto studentem"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:81
 msgid "Learner's Self Assessment"
-msgstr "Studentovo sebehodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:87
 msgid "Staff Assessment for This Learner"
-msgstr "Učitelské hodnocení pro tohoto studenta"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:89
 msgid "Staff Assessment for this Team"
-msgstr "Hodnocení učitelů pro tento tým"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:100
 msgid "Learner's Final Grade"
-msgstr "Studentovo závěrečné hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Team's Final Grade"
-msgstr "Konečná známka týmu"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:112
 #, python-format
@@ -1922,11 +1916,11 @@ msgid ""
 "\n"
 "                            Final grade: %(points_earned)s out of %(points_possible)s\n"
 "                        "
-msgstr "\nZávěrečné hodnocení: %(points_earned)sz%(points_possible)s"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:119
 msgid "Final Grade Details"
-msgstr "Detaily závěrečného hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:139
 #, python-format
@@ -1938,101 +1932,100 @@ msgid_plural ""
 "\n"
 "                                        %(assessment_label)s - %(points)s points\n"
 "                                    "
-msgstr[0] "\n%(assessment_label)s–%(points)sbod"
-msgstr[1] "\n%(assessment_label)s–%(points)sbody"
-msgstr[2] "\n%(assessment_label)s–%(points)sbodů"
-msgstr[3] "\n%(assessment_label)s–%(points)sbodů"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:154
 msgid "Feedback Recorded"
-msgstr "Zaznamenaná zpětná vazba"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:165
 msgid "The submission is waiting for assessments."
-msgstr "Řešení čeká na hodnocení."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:170
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "Odeslaný příspěvek studenta byl odstraněn z vzájemného hodnocení. Student obdrží známku nula, pokud neodstraníte stav studenta pro daný problém, abyste mu umožnili znovu odeslat odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete the a team member’s state for the problem to"
 " allow the team to resubmit a response."
-msgstr "Příspěvek týmu byl odstraněn z hodnocení. Tým obdrží známku nula, pokud neodstraníte stav člena týmu pro problém, abyste týmu umožnili znovu odeslat odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:177
 msgid "The problem has not been started."
-msgstr "Problém nebyl spuštěn."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:181
 msgid "The problem has not been completed."
-msgstr "Problém nebyl dokončen."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:193
 msgid "Submit Assessment Grade Override"
-msgstr "Odeslat přepsání hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:195
 msgid "Submit Team Grade Override"
-msgstr "Odeslat přepsání týmového hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:204
 msgid "Unable to perform grade override"
-msgstr "Nelze provést přepsání stupně"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:207
 msgid ""
 "Grades are frozen. Grades are automatically frozen 30 days after the course "
 "end date."
-msgstr "Známky jsou zmrazené. Hodnocení se automaticky zmrazí 30 dní po datu ukončení kurzu."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid ""
 "This submission has been cancelled and cannot recieve a grade. Refer to "
 "documentation for how to delete the learner’s state for this problem to "
 "allow them to resubmit."
-msgstr "Tento příspěvek byl zrušen a nemůže získat hodnocení. Podívejte se do dokumentace, jak odstranit stav studenta pro tento problém, aby mohl znovu odeslat."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:230
 msgid "Remove Submission From Peer Grading"
-msgstr "Odebrat příspěvek ze vzájemného hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:232
 msgid "Remove Team Submission from Grading"
-msgstr "Odebrat týmové odeslání z hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:242
 msgid "Caution: This Action Cannot Be Undone"
-msgstr "Upozornění: Tuto akci nelze vrátit zpět"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:244
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
-msgstr "Odebrání příspěvku studenta nelze vrátit zpět a mělo by být prováděno opatrně."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:246
 msgid ""
 "Removing a team's submission cannot be undone and should be done with "
 "caution."
-msgstr "Odstranění příspěvku týmu nelze vrátit zpět a mělo by být prováděno opatrně."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:252
 msgid "Comments:"
-msgstr "komentáře:"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:261
 msgid "Remove submission"
-msgstr "Odebrat podání"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info.html:276
 msgid "A response was not found for this learner."
-msgstr "Pro tohoto studenta nebyla nalezena odpověď."
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:16
 #, python-format
@@ -2040,27 +2033,27 @@ msgid ""
 "\n"
 "                            Assessment %(assessment_num)s:\n"
 "                        "
-msgstr "\n                            Hodnocení %(assessment_num)s:\n                        "
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
 msgid "Assessment Details"
-msgstr "Podrobnosti hodnocení"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr "Vybraná možnost"
+msgstr ""
 
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
-msgstr "Zpětná vazba"
+msgstr "Comentarios"
 
 #: templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:29
 msgid "Points Possible"
-msgstr "Možných bodů"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:18
 msgid "Learn to Assess Responses"
-msgstr "Naučte se hodnotit odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:27
 #, python-format
@@ -2068,7 +2061,7 @@ msgid ""
 "\n"
 "                      In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                  "
-msgstr "\nProbíhá (%(current_progress_num)s z %(training_available_num)s)"
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -2079,7 +2072,7 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -2090,12 +2083,12 @@ msgid ""
 "\n"
 "            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "            "
-msgstr "\n            <span id=\"oa_step_deadline\" class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n            "
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:58
 #: templates/openassessmentblock/student_training/student_training.html:66
 msgid "Learning to Assess Responses"
-msgstr "Učení se hodnotit odpovědi"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:61
 msgid ""
@@ -2104,423 +2097,423 @@ msgid ""
 "already assessed. If you select the same options for the response that the "
 "instructor selected, you'll move to the next step. If you don't select the "
 "same options, you'll review the response and try again."
-msgstr "Než začnete hodnotit odpovědi svých spolužákych, naučíte se, jak dokončit vzájemného hodnocení tím, že si projdete odpovědi, které již vyhodnotili instruktoři. Pokud pro odpověď vyberete stejné možnosti, jaké vybral instruktor, přejdete k dalšímu kroku. Pokud nevyberete stejné možnosti, zkontrolujete odpověď a zkuste to znovu."
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:69
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
 "differently. Then, try the assessment again."
-msgstr "Vaše hodnocení se liší od hodnocení této odpovědi instruktorem. Zkontrolujte odpověď a zvažte, proč ji instruktor mohl posoudit jinak. Poté zkuste hodnocení znovu."
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:76
 msgid "The response to the prompt above:"
-msgstr "Odpověď na výzvu výše:"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:98
 msgid "Selected Options Agree"
-msgstr "Vybrané možnosti se shodují"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:101
 msgid "The option you selected is the option that the instructor selected."
-msgstr "Možnost, kterou jste vybrali, je možnost, kterou vybral instruktor."
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:105
 msgid "Selected Options Differ"
-msgstr "Vybrané možnosti se liší"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:108
 msgid ""
 "The option you selected is not the option that the instructor selected."
-msgstr "Volba, kterou jste vybrali, není volba, kterou vybral instruktor."
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:144
 msgid "We could not check your assessment"
-msgstr "Vaše hodnocení jsme nemohli zkontrolovat"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training.html:151
 msgid "Compare your selections with the instructor's selections"
-msgstr "Porovnejte svůj výběr s výběrem instruktora"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training_closed.html:29
 msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
-msgstr "Termín pro tento krok uplynul. Tento krok je nyní uzavřen. V tomto úkolu již nemůžete pokračovat a dostanete známku Nedokončeno."
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
-msgstr "Chyba při načítání příkladů školení studentů"
+msgstr ""
 
 #: templates/openassessmentblock/student_training/student_training_error.html:21
 msgid "The Learner Training Step of this assignment could not be loaded."
-msgstr "Krok školení žáka tohoto úkolu nelze načíst."
+msgstr ""
 
 #: xblock/grade_mixin.py:77 xblock/leaderboard_mixin.py:61
 msgid "An unexpected error occurred."
-msgstr "Vyskytla se neočekávaná chyba."
+msgstr ""
 
 #: xblock/grade_mixin.py:179
 msgid "Peer Assessment"
-msgstr "Vzájemné hodnocení"
+msgstr "Evaluación de pares"
 
 #: xblock/grade_mixin.py:181
 msgid "Self Assessment"
-msgstr "Sebehodnocení"
+msgstr "Autoevaluación"
 
 #: xblock/grade_mixin.py:221
 msgid "Assessment feedback could not be saved."
-msgstr "Zpětnou vazbu k hodnocení se nepodařilo uložit."
+msgstr ""
 
 #: xblock/grade_mixin.py:232
 msgid "Feedback saved."
-msgstr "Zpětná vazba byla uložena."
+msgstr ""
 
 #: xblock/grade_mixin.py:366 xblock/grade_mixin.py:512
 msgid "Staff Comments"
-msgstr "Komentáře učitelů"
+msgstr ""
 
 #: xblock/grade_mixin.py:372
 msgid "Peer Median Grade"
-msgstr "Medián známkování spolužáků"
+msgstr ""
 
 #: xblock/grade_mixin.py:377 xblock/grade_mixin.py:519
 #, python-brace-format
 msgid "Peer {peer_index}"
-msgstr "Spolužáci {peer_index}"
+msgstr ""
 
 #: xblock/grade_mixin.py:378
 msgid "Peer Comments"
-msgstr "Komentáře spolužáků"
+msgstr ""
 
 #: xblock/grade_mixin.py:388
 msgid "Self Assessment Grade"
-msgstr "Stupeň sebehodnocení"
+msgstr ""
 
 #: xblock/grade_mixin.py:388
 msgid "Your Self Assessment"
-msgstr "Vaše sebehodnocení"
+msgstr ""
 
 #: xblock/grade_mixin.py:389 xblock/grade_mixin.py:531
 msgid "Your Comments"
-msgstr "Vaše komentáře"
+msgstr ""
 
 #: xblock/grade_mixin.py:485
 msgid "Waiting for peer reviews"
-msgstr "Čekání na recenze od spolužáků"
+msgstr ""
 
 #: xblock/grade_mixin.py:524
 msgid "Peer"
-msgstr "Spolužáci"
+msgstr "Par"
 
 #: xblock/grade_mixin.py:655
 msgid "The grade for this problem is determined by your Staff Grade."
-msgstr "Známka pro tento problém je určena vaší klasifikací."
+msgstr ""
 
 #: xblock/grade_mixin.py:657
 msgid ""
 "The grade for this problem is determined by the median score of your Peer "
 "Assessments."
-msgstr "Známka za tento problém je určena středním skóre vašeho vzájemného hodnocení."
+msgstr ""
 
 #: xblock/grade_mixin.py:660
 msgid "The grade for this problem is determined by your Self Assessment."
-msgstr "Známka tohoto problému je určena vaším sebehodnocením."
+msgstr ""
 
 #: xblock/grade_mixin.py:666
 #, python-brace-format
 msgid ""
 "You have successfully completed this problem and received a "
 "{earned_points}/{total_points}."
-msgstr "Úspěšně jste dokončili tento problém a obdrželi jste {earned_points}/{total_points}."
+msgstr ""
 
 #: xblock/grade_mixin.py:674
 msgid ""
 "You have not yet received all necessary peer reviews to determine your final"
 " grade."
-msgstr "Ještě jste neobdrželi všechna potřebná recenze od spolužáků k určení vaší konečné známky."
+msgstr ""
 
 #: xblock/openassesment_template_mixin.py:66
 msgid "Peer Assessment Only"
-msgstr "Pouze vzájemné hodnocení"
+msgstr "Solo Evaluación Par"
 
 #: xblock/openassesment_template_mixin.py:67
 msgid "Self Assessment Only"
-msgstr "Pouze sebehodnocení"
+msgstr ""
 
 #: xblock/openassesment_template_mixin.py:68
 msgid "Staff Assessment Only"
-msgstr "Pouze hodnocení učitelů"
+msgstr ""
 
 #: xblock/openassesment_template_mixin.py:69
 msgid "Self Assessment to Peer Assessment"
-msgstr "Sebehodnocení ku vzájemného hodnocení"
+msgstr ""
 
 #: xblock/openassesment_template_mixin.py:70
 msgid "Self Assessment to Staff Assessment"
-msgstr "Sebehodnocení ku hodnocení učitelů"
+msgstr ""
 
 #: xblock/rubric_reuse_mixin.py:62
 msgid "You must specify a block id from which to copy a rubric."
-msgstr "Musíte zadat ID bloku, ze kterého chcete rubriku zkopírovat."
+msgstr ""
 
 #: xblock/rubric_reuse_mixin.py:66
 msgid "Invalid block id."
-msgstr "Neplatné ID bloku."
+msgstr ""
 
 #: xblock/rubric_reuse_mixin.py:72
 #, python-brace-format
 msgid ""
 "No Open Response Assessment found in {course_id} with block id {block_id}"
-msgstr "V {course_id} s ID bloku {block_id} nebylo nalezeno žádné hodnocení otevřené odpovědi"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:42
 msgid "You do not have permission to schedule training"
-msgstr "Nemáte oprávnění plánovat trénink"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:43
 msgid "You do not have permission to reschedule tasks."
-msgstr "Nemáte oprávnění přeplánovat úkoly."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:69
 msgid "You do not have permission to access the ORA staff area"
-msgstr "Nemáte oprávnění pro přístup do prostoru pro učitele ORA"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:70
 msgid "You do not have permission to access ORA learner information."
-msgstr "Nemáte oprávnění pro přístup k informacím o studentech ORA."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:71
 msgid "You do not have permission to access ORA staff grading."
-msgstr "Nemáte oprávnění pro přístup k hodnocení učitelů ORA."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:242
 msgid "Pending"
-msgstr "Čekání"
+msgstr "Pendiente"
 
 #: xblock/staff_area_mixin.py:243
 msgid "Complete/Overwritten"
-msgstr "Dokončeno/Přepsáno"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr "Nelze použít"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"
-msgstr "Neodesláno"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:248
 msgid "Submitted"
-msgstr "Odevzdáno"
+msgstr "Presentado"
 
 #: xblock/staff_area_mixin.py:342
 msgid "Error getting learner information."
-msgstr "Chyba při získávání informací o studentovi."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:385
 msgid "Error loading the checked out learner response."
-msgstr "Chyba při načítání odpovědi odhlášeného studenta."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:386
 msgid "No other learner responses are available for grading at this time."
-msgstr "V tuto chvíli nejsou k dispozici žádné další odpovědi studentů pro hodnocení."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:388
 msgid "Error getting staff grade information."
-msgstr "Chyba při získávání informací o hodnocení učitelů."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:409
 msgid "Error getting staff grade ungraded and checked out counts."
-msgstr "Chyba při získávání hodnocení učitelů bez hodnocení a počtů odhlášených."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:703
 msgid "Please enter valid reason to remove the submission."
-msgstr "Zadejte prosím platný důvod pro odstranění příspěvku."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:714
 msgid "Submission not found"
-msgstr "Příspěvek nebyl nalezen"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:725
 msgid "Submission for team assignment has no associated team submission"
-msgstr "Příspěvek pro týmový úkol nemá přidružený týmový příspěvek"
+msgstr ""
 
 #: xblock/staff_area_mixin.py:754
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
-msgstr "Odeslaný příspěvek studenta byl odstraněn z vzájemného hodnocení. Student obdrží známku nula, pokud neodstraníte stav studenta pro daný problém, abyste mu umožnili znovu odeslat odpověď."
+msgstr ""
 
 #: xblock/staff_area_mixin.py:789
 msgid ""
 "The team’s submission has been removed from grading. The team receives a "
 "grade of zero unless you delete a team member’s state for the problem to "
 "allow the team to resubmit a response."
-msgstr "Příspěvek týmu byl odstraněn z hodnocení. Tým obdrží známku nula, pokud neodstraníte stav člena týmu pro problém, abyste týmu umožnili znovu odeslat odpověď."
+msgstr ""
 
 #: xblock/studio_mixin.py:243 xblock/studio_mixin.py:255
 msgid "Error updating XBlock configuration"
-msgstr "Chyba při aktualizaci konfigurace XBlock"
+msgstr ""
 
 #: xblock/studio_mixin.py:260
 msgid "Error: Text Response and File Upload Response cannot both be disabled"
-msgstr "Chyba: Textová odezva a odezva pro odesílání souborů nemohou být obě zakázány"
+msgstr ""
 
 #: xblock/studio_mixin.py:264
 msgid ""
 "Error: When Text Response is disabled, File Upload Response must be Required"
-msgstr "Chyba: Když je textová odezva zakázána, musí být vyžadována odezva při nahrání souboru"
+msgstr ""
 
 #: xblock/studio_mixin.py:267
 msgid ""
 "Error: When File Upload Response is disabled, Text Response must be Required"
-msgstr "Chyba: Když je odezva na nahrání souboru zakázána, musí být vyžadována textová odpověď"
+msgstr ""
 
 #: xblock/studio_mixin.py:291
 #, python-brace-format
 msgid "Validation error: {error}"
-msgstr "Chyba ověření: {error}"
+msgstr ""
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr "Úspěšně aktualizován OpenAssessment XBlock"
+msgstr ""
 
 #: xblock/ui_mixins/legacy/submissions/file_actions.py:71
 msgid "Files metadata could not be saved."
-msgstr "Metadata souborů se nepodařilo uložit."
+msgstr ""
 
 #: xblock/utils/data_conversion.py:315
 msgid "You must provide options selected in the assessment."
-msgstr "Musíte poskytnout možnosti vybrané v hodnocení."
+msgstr ""
 
 #: xblock/utils/data_conversion.py:318
 msgid "You must provide overall feedback in the assessment."
-msgstr "Musíte poskytnout celkovou zpětnou vazbu v hodnocení."
+msgstr ""
 
 #: xblock/utils/data_conversion.py:321
 msgid "You must provide feedback for criteria in the assessment."
-msgstr "Musíte poskytnout zpětnou vazbu pro kritéria v hodnocení."
+msgstr ""
 
 #: xblock/utils/resolve_dates.py:52
 #, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
-msgstr "'{date}' je neplatný formát data. Ujistěte se, že je datum ve formátu RRRR-MM-DDTHH:MM:SS."
+msgstr ""
 
 #: xblock/utils/resolve_dates.py:57
 #, python-brace-format
 msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' musí být řetězec data nebo datetime"
+msgstr ""
 
 #: xblock/utils/resolve_dates.py:210
 #, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
-msgstr "Datum zahájení tohoto kroku '{start}' nemůže být dřívější než datum zahájení předchozího kroku '{prev}'."
+msgstr ""
 
 #: xblock/utils/resolve_dates.py:218
 #, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
-msgstr "Datum dokončení tohoto kroku '{due}' nemůže být pozdější než datum dokončení následujícího kroku '{prev}'."
+msgstr ""
 
 #: xblock/utils/resolve_dates.py:234
 #, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr "Datum zahájení '{start}' nemůže být pozdější než datum platnosti '{due}'"
+msgstr ""
 
 #: xblock/utils/validation.py:118
 msgid "This problem must include at least one assessment."
-msgstr "Tento problém musí obsahovat alespoň jedno hodnocení."
+msgstr ""
 
 #: xblock/utils/validation.py:122
 msgid "The assessment order you selected is invalid."
-msgstr "Příkaz k hodnocení který jste vybral je neplatný."
+msgstr ""
 
 #: xblock/utils/validation.py:132
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr "Ve vzájemném hodnocení musí být hodnota \"Musíte známkovat\"; kladné celé číslo."
+msgstr ""
 
 #: xblock/utils/validation.py:135
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
-msgstr "Ve vzájemném hodnocení musí být hodnota \"Hodnozeno od\" kladné celé číslo."
+msgstr ""
 
 #: xblock/utils/validation.py:139
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
-msgstr "Při vzájemném hodnocení musí být hodnota \"Musí být hodnocen\" větší nebo rovna hodnotě \"Hodnocení od\";."
+msgstr ""
 
 #: xblock/utils/validation.py:148
 msgid "You must provide at least one example response for learner training."
-msgstr "Pro školení studentů musíte poskytnout alespoň jeden příklad odpovědi."
+msgstr ""
 
 #: xblock/utils/validation.py:151
 msgid "Each example response for learner training must be unique."
-msgstr "Každý příklad reakce na školení studentů musí být jedinečný."
+msgstr ""
 
 #: xblock/utils/validation.py:158
 msgid "The \"required\" value must be true if staff assessment is the only step."
-msgstr "Pokud je hodnocení učitelů jediným krokem, musí být „požadovaná“ hodnota pravdivá."
+msgstr ""
 
 #: xblock/utils/validation.py:162
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr "Po uvolnění problému nelze počet hodnocení změnit."
+msgstr ""
 
 #: xblock/utils/validation.py:167
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr "Po uvolnění problému nelze typ posouzení změnit."
+msgstr ""
 
 #: xblock/utils/validation.py:190
 msgid "This rubric definition is not valid."
-msgstr "Tato definice rubriky není platná."
+msgstr ""
 
 #: xblock/utils/validation.py:196
 #, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr "Možnosti v '{criterion}' mají duplicitní název (názvy): {duplicates}"
+msgstr ""
 
 #: xblock/utils/validation.py:204
 msgid "Criteria with no options must require written feedback."
-msgstr "Kritéria bez možnosti musí vyžadovat písemnou zpětnou vazbu."
+msgstr ""
 
 #: xblock/utils/validation.py:213
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr "Po uvolnění problému nelze výzvy vytvořit ani odstranit."
+msgstr ""
 
 #: xblock/utils/validation.py:217
 msgid "The number of criteria cannot be changed after a problem is released."
-msgstr "Po uvolnění problému nelze počet kritérií změnit."
+msgstr ""
 
 #: xblock/utils/validation.py:230
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr "Názvy kritérií nelze po uvolnění problému změnit"
+msgstr ""
 
 #: xblock/utils/validation.py:235
 msgid "The number of options cannot be changed after a problem is released."
-msgstr "Po uvolnění problému nelze počet možností změnit."
+msgstr ""
 
 #: xblock/utils/validation.py:240
 msgid "Point values cannot be changed after a problem is released."
-msgstr "Bodové hodnoty nelze po uvolnění problému změnit."
+msgstr ""
 
 #: xblock/utils/validation.py:291
 msgid "Learner training must have at least one training example."
-msgstr "Školení žáka musí mít alespoň jeden příklad školení."
+msgstr ""
 
 #: xblock/utils/validation.py:356
 msgid "Leaderboard number is invalid."
-msgstr "Číslo žebříčku je neplatné."
+msgstr ""
 
 #: xblock/utils/validation.py:379
 msgid "The submission format is invalid."
-msgstr "Formát odeslání je neplatný."
+msgstr ""
