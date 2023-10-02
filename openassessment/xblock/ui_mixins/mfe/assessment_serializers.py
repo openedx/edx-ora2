@@ -63,11 +63,16 @@ class SubmittedResponseSerializer(Serializer):
 
         for i, file_key in enumerate(instance["answer"]["file_keys"]):
             file_data = {
-                "file_url": file_key,
+                "file_key": file_key,
                 "file_description": instance["answer"]["files_descriptions"][i],
                 "file_name": instance["answer"]["files_names"][i],
                 "file_size": instance["answer"]["files_sizes"][i],
+                "file_index": i
             }
+
+            # Don't serialize deleted / missing files
+            if not file_data["file_name"] and not file_data["file_description"]:
+                continue
 
             files.append(file_data)
 
