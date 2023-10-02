@@ -117,22 +117,10 @@ class AssessmentResponseSerializer(Serializer):
 
     response = SerializerMethodField()
 
-    def get_response(self, instance):
-        active_step = self.context.get("step")
-
-        if active_step == "submission":
-            raise Exception(
-                "Cannot view assessments without having completed submission."
-            )
-        elif active_step == "training":
-            response = instance.student_training_data.example
-            return SubmittedResponseSerializer(response).data
-        elif active_step == "peer":
-            response = instance.peer_assessment_data().get_peer_submission()
-            if not response:
-                return {}
-            return SubmittedResponseSerializer(response).data
-        elif active_step in ("staff", "waiting", "done"):
+    def get_response(self, instance):  # pylint: disable=unused-argument
+        # Response is passed in through context, so we don't have to fetch it
+        # in multiple locations.
+        response = self.context.get("response")
+        if not response:
             return {}
-        else:
-            raise Exception(f"Bad step name: {active_step}")
+        return SubmittedResponseSerializer(response).data
