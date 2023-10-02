@@ -7,7 +7,7 @@ import time
 import datetime
 from django.utils import timezone
 
-from opaque_keys.edx.keys import UsageKey
+from opaque_keys.edx.keys import UsageKey, CourseKey
 from openassessment.runtime_imports.functions import modulestore
 from openassessment.assessment.models import PeerWorkflow
 from openassessment.workflow import api
@@ -315,7 +315,7 @@ def get_workflow_update_data(peer_workflows):
         try:
             if peer_workflow.course_id not in course_settings_cache:
                 # retrieve course block from DB
-                course_block_key = UsageKey.from_string(peer_workflow.course_id)
+                course_block_key = CourseKey.from_string(peer_workflow.course_id)
                 course_block = store.get_item(course_block_key)
                 # add course settings to temp cache
                 course_settings_cache[peer_workflow.course_id] = {
