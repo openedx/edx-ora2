@@ -145,9 +145,14 @@ class TestWorkflowBatchUpdateAPI(CacheResetTest):
 
     @patch('openassessment.workflow.workflow_batch_update_api.modulestore')
     @patch('openassessment.workflow.workflow_batch_update_api.UsageKey.from_string')
-    def test_get_workflow_update_data(self, mocked_from_string, mocked_modulestore):
+    @patch('openassessment.workflow.workflow_batch_update_api.CourseKey.from_string')
+    def test_get_workflow_update_data(self,
+                                      mocked_usage_key_from_string,
+                                      mocked_course_key_from_string,
+                                      mocked_modulestore):
         mocked_modulestore.return_value = MockModulestore()
-        mocked_from_string.side_effect = mock_from_string
+        mocked_usage_key_from_string.side_effect = mock_from_string
+        mocked_course_key_from_string.side_effect = mock_from_string
 
         peer_workflows = self.get_peer_workflows()
         wup = update_api.get_workflow_update_data(peer_workflows)
