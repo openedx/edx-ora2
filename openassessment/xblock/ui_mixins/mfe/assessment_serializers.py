@@ -67,7 +67,7 @@ class SubmittedResponseSerializer(Serializer):
                 "file_description": instance["answer"]["files_descriptions"][i],
                 "file_name": instance["answer"]["files_names"][i],
                 "file_size": instance["answer"]["files_sizes"][i],
-                "file_index": i
+                "file_index": i,
             }
 
             # Don't serialize deleted / missing files
