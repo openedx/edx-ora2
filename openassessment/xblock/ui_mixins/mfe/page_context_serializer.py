@@ -210,6 +210,7 @@ class PageDataSerializer(Serializer):
         1) In the "submission" view, we get the user's draft / complete submission.
         2) In the "assessment" view, we get an assessment for the current assessment step.
         """
+        # pylint: disable=broad-exception-raised
         active_step = self.context["step"]
 
         # Submission Views
@@ -219,7 +220,7 @@ class PageDataSerializer(Serializer):
         # Assessment Views
         elif self.context.get("view") == "assessment":
             if active_step == "submission":
-                raise Exception("Cannot view assessments without having completed submission.")  # pylint: disable=broad-exception-raised
+                raise Exception("Cannot view assessments without having completed submission.")  
             if active_step == "training":
                 response = instance.student_training_data.example
             elif active_step == "peer":
@@ -227,10 +228,10 @@ class PageDataSerializer(Serializer):
             elif active_step in ("staff", "waiting", "done"):
                 response = None
             else:
-                raise Exception(f"Bad step name: {active_step}")  # pylint: disable=broad-exception-raised
+                raise Exception(f"Bad step name: {active_step}")
 
             self.context["response"] = response
 
             return AssessmentResponseSerializer(instance.api_data, context=self.context).data
         else:
-            raise Exception("Missing view context for page")  # pylint: disable=broad-exception-raised
+            raise Exception("Missing view context for page")
