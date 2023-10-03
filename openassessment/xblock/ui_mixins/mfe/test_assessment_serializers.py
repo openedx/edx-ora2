@@ -141,8 +141,8 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         context = {"response": submission}
         data = AssessmentResponseSerializer(xblock.api_data, context=context).data
 
-        # I get the appropriate response
-        expected_url = "Alan/edX/Enchantment_101/April_1/.openassessment.d0.u0"
+        # I get the appropriate response (test URLs use usage ID)
+        expected_url = f"Alan/edX/Enchantment_101/April_1/{xblock.scope_ids.usage_id}"
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": [
