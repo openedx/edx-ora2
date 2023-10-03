@@ -316,7 +316,7 @@ def get_workflow_update_data(peer_workflows):
             if peer_workflow.course_id not in course_settings_cache:
                 # retrieve course block from DB
                 course_block_key = CourseKey.from_string(peer_workflow.course_id)
-                course_block = store.get_item(course_block_key)
+                course_block = store.get_course(course_block_key)
                 # add course settings to temp cache
                 course_settings_cache[peer_workflow.course_id] = {
                     'force_on_flexible_peer_openassessments': course_block.force_on_flexible_peer_openassessments}
