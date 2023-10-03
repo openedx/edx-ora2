@@ -1,3 +1,6 @@
+"""
+Tests for PageDataSerializer
+"""
 from copy import deepcopy
 
 from openassessment.xblock.test.base import (
@@ -27,7 +30,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I load my response
         # Then I get an Exception
         with self.assertRaises(Exception):
-            PageDataSerializer(xblock, context=self.context).data
+            PageDataSerializer(xblock, context=self.context)
 
     @scenario("data/student_training.xml", user_id="Alan")
     def test_student_training(self, xblock):
@@ -60,7 +63,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         other_student_item = deepcopy(student_item)
         other_student_item["student_id"] = "Joan"
         other_text_responses = ["Answer 1", "Answer 2"]
-        other_submission = self.create_test_submission(
+        self.create_test_submission(
             xblock,
             student_item=other_student_item,
             submission_text=other_text_responses,

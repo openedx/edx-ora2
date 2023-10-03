@@ -219,15 +219,15 @@ class PageDataSerializer(Serializer):
         # Assessment Views
         elif self.context.get("view") == "assessment":
             if active_step == "submission":
-                raise Exception("Cannot view assessments without having completed submission.")
-            elif active_step == "training":
+                raise Exception("Cannot view assessments without having completed submission.")  # pylint: disable=broad-exception-raised
+            if active_step == "training":
                 response = instance.student_training_data.example
             elif active_step == "peer":
                 response = instance.peer_assessment_data().get_peer_submission()
             elif active_step in ("staff", "waiting", "done"):
                 response = None
             else:
-                raise Exception(f"Bad step name: {active_step}")
+                raise Exception(f"Bad step name: {active_step}")  # pylint: disable=broad-exception-raised
 
             self.context["response"] = response
 

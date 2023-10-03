@@ -1,3 +1,6 @@
+"""
+Tests for AssessmentResponseSerializer
+"""
 from unittest.mock import patch
 
 from openassessment.fileupload.api import FileUpload
@@ -66,8 +69,6 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
     def test_files_empty(self, xblock):
         # Given we have a response
         submission_text = ["Foo", "Bar"]
-        xblock.submission_data.files
-
         submission = self.create_test_submission(
             xblock, submission_text=submission_text
         )
