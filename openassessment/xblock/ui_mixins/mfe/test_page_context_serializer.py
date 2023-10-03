@@ -4,6 +4,7 @@ Tests for PageDataSerializer
 from copy import deepcopy
 
 from openassessment.xblock.test.base import (
+    PEER_ASSESSMENTS,
     SELF_ASSESSMENT,
     SubmitAssessmentsMixin,
     XBlockHandlerTestCase,
@@ -30,7 +31,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I load my response
         # Then I get an Exception
         with self.assertRaises(Exception):
-            PageDataSerializer(xblock, context=self.context)
+            PageDataSerializer(xblock, context=self.context).data
 
     @scenario("data/student_training.xml", user_id="Alan")
     def test_student_training(self, xblock):
@@ -158,3 +159,57 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # Then I get an empty object
         expected_response = {}
         self.assertDictEqual(expected_response, response_data["response"])
+
+    @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
+    def test_jump_to_peer_response(self, xblock):
+        student_item = xblock.get_student_item_dict()
+
+        # Given responses available for peer grading
+        other_student_item = deepcopy(student_item)
+        other_student_item["student_id"] = "Joan"
+        other_text_responses = ["Answer 1", "Answer 2"]
+        self.create_test_submission(
+            xblock,
+            student_item=other_student_item,
+            submission_text=other_text_responses,
+        )
+
+        # ... and I have completed the peer step of an ORA
+        self.create_submission_and_assessments(xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None)
+
+        # When I try to jump back to that step
+        self.context["jump_to_step"] = "peer"
+        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+
+        # Then I can continue to receive peer responses to grade
+        expected_response = {
+            "textResponses": other_text_responses,
+            "uploadedFiles": None,
+        }
+        self.assertDictEqual(expected_response, response_data["response"])
+
+    @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
+    def test_jump_to_bad_step(self, xblock):
+        # Given I'm on assessment steps
+        self.create_test_submission(xblock)
+
+        # When I try to jump to a bad step
+        self.context["jump_to_step"] = "to the left"
+
+        # Then I expect the serializer to raise an exception
+        # NOTE - this is exceedingly unlikely since the handler should only add
+        # this context when the step name is valid.
+        with self.assertRaises(Exception):
+            PageDataSerializer(xblock, context=self.context).data
+
+    @scenario("data/student_training.xml", user_id="Bernard")
+    def test_jump_to_inaccessible_step(self, xblock):
+        # Given I'm on an early step like student training
+        self.create_test_submission(xblock)
+
+        # When I try to jump ahead to a step I can't yet access
+        self.context["jump_to_step"] = "peer"
+
+        # Then I expect the serializer to raise an exception
+        with self.assertRaises(Exception):
+            PageDataSerializer(xblock, context=self.context).data
