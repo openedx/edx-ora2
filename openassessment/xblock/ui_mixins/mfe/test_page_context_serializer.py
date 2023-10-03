@@ -31,7 +31,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I load my response
         # Then I get an Exception
         with self.assertRaises(Exception):
-            PageDataSerializer(xblock, context=self.context).data
+            _ = PageDataSerializer(xblock, context=self.context).data
 
     @scenario("data/student_training.xml", user_id="Alan")
     def test_student_training(self, xblock):
@@ -200,7 +200,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # NOTE - this is exceedingly unlikely since the handler should only add
         # this context when the step name is valid.
         with self.assertRaises(Exception):
-            PageDataSerializer(xblock, context=self.context).data
+            _ = PageDataSerializer(xblock, context=self.context).data
 
     @scenario("data/student_training.xml", user_id="Bernard")
     def test_jump_to_inaccessible_step(self, xblock):
@@ -212,4 +212,4 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
         # Then I expect the serializer to raise an exception
         with self.assertRaises(Exception):
-            PageDataSerializer(xblock, context=self.context).data
+            _ = PageDataSerializer(xblock, context=self.context).data

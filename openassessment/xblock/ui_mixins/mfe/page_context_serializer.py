@@ -150,9 +150,7 @@ class ActiveStepInfoSerializer(Serializer):
         elif active_step in ("submission", "waiting", "done"):
             return {}
         else:
-            raise Exception(
-                f"Bad step name: {active_step}"
-            )  # pylint: disable=broad-exception-raised
+            raise Exception(f"Bad step name: {active_step}")  # pylint: disable=broad-exception-raised
 
 
 class ProgressSerializer(Serializer):
