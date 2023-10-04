@@ -76,7 +76,7 @@ class WorkflowAPI:
 
     @property
     def workflow_requirements(self):
-        return self._block.workflow_requirements
+        return self._block.workflow_requirements()
 
     @property
     def status(self):

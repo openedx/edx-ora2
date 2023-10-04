@@ -4,9 +4,20 @@ import logging
 
 from xblock.core import XBlock
 from submissions import api as submissions_api
-
+from openassessment.assessment.errors.peer import (
+    PeerAssessmentInternalError,
+    PeerAssessmentRequestError,
+    PeerAssessmentWorkflowError,
+)
 from openassessment.fileupload.exceptions import FileUploadError
+from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.apis.assessments.errors import (
+    ReviewerMustHaveSubmittedException,
+    ServerClientUUIDMismatchException,
+    StepConfigurationNotFound,
+)
 from openassessment.xblock.apis.submissions import submissions_actions
+from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
     DeleteNotAllowed,
@@ -20,7 +31,6 @@ from openassessment.xblock.apis.submissions.errors import (
     UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
 from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
@@ -199,7 +209,61 @@ class LegacyHandlersMixin:
     @XBlock.json_handler
     @verify_assessment_parameters
     def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return peer_assess(self.api_data, data)
+        """Place a peer assessment into OpenAssessment system
+
+        Assess a Peer Submission.  Performs basic workflow validation to ensure
+        that an assessment can be performed as this time.
+
+        Args:
+            data (dict): A dictionary containing information required to create
+                a new peer assessment.  This dict should have the following attributes:
+                `submission_uuid` (string): The unique identifier for the submission being assessed.
+                `options_selected` (dict): Dictionary mapping criterion names to option values.
+                `overall_feedback` (unicode): Written feedback for the submission as a whole.
+                `criterion_feedback` (unicode): Written feedback per the criteria for the submission.
+
+        Returns:
+            Dict with keys "success" (bool) indicating success/failure.
+            and "msg" (unicode) containing additional information if an error occurs.
+        """
+        try:
+            peer_assess(
+                data['submission_uuid'],
+                data['options_selected'],
+                data['overall_feedback'],
+                data['criterion_feedback'],
+                self.config_data,
+                self.workflow_data,
+                self.peer_assessment_data(),
+            )
+        except ReviewerMustHaveSubmittedException:
+            return {
+                'success': False,
+                'msg': self.config_data.translate(
+                    'You must submit a response before you can perform a peer assessment.'
+                )
+            }
+        except ServerClientUUIDMismatchException:
+            return {
+                'success': False,
+                'msg': self.config_data.translate(
+                    'This feedback has already been submitted or the submission has been cancelled.'
+                )
+            }
+        except (PeerAssessmentRequestError, PeerAssessmentWorkflowError, PeerAssessmentInternalError):
+            return {
+                'success': False,
+                'msg': self.config_data.translate('Your peer assessment could not be submitted.')
+            }
+        except AssessmentWorkflowError:
+            return {'success': False, 'msg': self.config_data.translate('Could not update workflow status.')}
+        except StepConfigurationNotFound:
+            return {
+                'success': False,
+                'msg': self.config_data.translate('Could not load peer assessment.')
+            }
+        else:
+            return {"success": True, "msg": ""}
 
     @XBlock.json_handler
     @verify_assessment_parameters
