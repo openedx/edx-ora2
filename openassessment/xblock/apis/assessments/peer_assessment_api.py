@@ -161,7 +161,7 @@ def peer_assess(
 
     Returns:
         None
-    
+
     Raises:
         ReviewerMustHaveSubmittedException
         ServerClientUUIDMismatchException
