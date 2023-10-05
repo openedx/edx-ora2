@@ -63,8 +63,9 @@ def update_workflows_for_all_blocked_submissions():
                                         task_count=0)
     except (UpdateWorkflowsForCourseException, Exception) as e:  # pylint: disable=broad-except
         logger.error(
-            "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  Error:%s",
-            str(e))
+            "Batch workflow update. Error occurred while updating workflows for all blocked submissions.  "
+            "error_message=%s",
+            str(e), exc_info=True)
         raise UpdateWorkflowsForAllBlockedSubmissionsException(str(e)) from e
 
 
@@ -124,9 +125,10 @@ def update_workflows_for_course(course_id, workflow_update_data_for_course=None)
     except (UpdateWorkflowsForOraBlockException, Exception) as e:  # pylint: disable=broad-except
         logger.error(
             "Batch workflow update for course blocked submissions failed. "
-            "course_id=%s Error:%s",
+            "course_id=%s error_message=%s",
             course_id,
-            str(e))
+            str(e),
+            exc_info=True)
         raise UpdateWorkflowsForCourseException(str(e)) from e
 
 
@@ -194,7 +196,8 @@ def update_workflows_for_ora_block(item_id, workflow_update_data_for_ora=None, c
             "Batch workflow update for ORA block failed. "
             "item_id=%s error_message:%s",
             item_id,
-            str(e))
+            str(e),
+            exc_info=True)
         raise UpdateWorkflowsForOraBlockException(str(e)) from e
 
 
@@ -224,7 +227,8 @@ def update_workflow_for_submission(submission_uuid, assessment_requirements=None
             submission_uuid,
             assessment_requirements,
             course_settings,
-            str(e))
+            str(e),
+            exc_info=True)
         raise UpdateWorkflowForSubmissionException(str(e)) from e
 
 
@@ -343,9 +347,13 @@ def get_workflow_update_data(peer_workflows):
 
         except Exception as e:  # pylint: disable=broad-except
             logger.warning(
-                "Error occurred while constructing workflow update data "
-                "for open assessment: %s  Error:%s",
-                peer_workflow.item_id, str(e))
+                "Error occurred while constructing workflow update data for "
+                "course_id=%s  item_id=%s  submission_uuid=%s   error_message=%s",
+                peer_workflow.course_id,
+                peer_workflow.item_id,
+                peer_workflow.submission_uuid,
+                str(e),
+                exc_info=True)
 
     return workflow_update_data
 
