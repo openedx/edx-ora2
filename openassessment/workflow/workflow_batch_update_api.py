@@ -353,8 +353,7 @@ def get_workflow_update_data(peer_workflows):
                 peer_workflow.item_id,
                 peer_workflow.submission_uuid,
                 str(e),
-                exc_info=True
-                )
+                exc_info=True)
 
     return workflow_update_data
 
