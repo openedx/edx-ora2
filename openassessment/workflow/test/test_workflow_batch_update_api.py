@@ -427,3 +427,6 @@ class MockModulestore:
             return MockCourseBlock(False)
 
         return None
+
+    def get_course(self, block_key):
+        return self.get_item(block_key)
