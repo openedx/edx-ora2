@@ -238,7 +238,7 @@ class ProgressSerializer(Serializer):
     stepInfo = StepInfoSerializer(source="*")
 
     def get_activeStepName(self, instance):
-        """Return the active step name: one of 'submission"""
+        """Return the active step name"""
         if not instance.workflow_data.has_workflow:
             return "submission"
         else:
