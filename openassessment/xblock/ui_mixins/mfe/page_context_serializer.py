@@ -15,9 +15,22 @@ from rest_framework.serializers import (
 from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
 )
-from openassessment.xblock.ui_mixins.mfe.submission_serializers import SubmissionSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
+    SubmissionSerializer,
+)
 
 from .ora_config_serializer import RubricConfigSerializer
+
+STEP_NAME_SERIALIZATION = {
+    "submission": "submission",
+    "peer": "peer",
+    "training": "studentTraining",
+    "self": "self",
+    "staff": "staff",
+    "ai": "ai",
+    "waiting": "waiting",
+    "done": "done",
+}
 
 
 class AssessmentScoreSerializer(Serializer):
@@ -70,7 +83,33 @@ class ReceivedGradesSerializer(Serializer):
         return super().to_representation(instance)
 
 
-class TrainingStepInfoSerializer(Serializer):
+class ClosedInfoSerializer(Serializer):
+    """Serialize closed info from a given assessment step API"""
+
+    closed = BooleanField(source="problem_closed")
+    closedReason = SerializerMethodField()
+
+    def get_closedReason(self, instance):
+        closed_reason = instance.closed_reason
+
+        if closed_reason == "start":
+            return "notAvailableYet"
+        if closed_reason == "due":
+            return "pastDue"
+        return None
+
+
+class StepInfoBaseSerializer(ClosedInfoSerializer):
+    """Fields and logic shared for info of all assessment steps"""
+
+    def to_representation(self, instance):
+        # When we haven't reached this step, don't return any info
+        if not instance.has_reached_step:
+            return None
+        return super().to_representation(instance)
+
+
+class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
         {
@@ -110,7 +149,7 @@ class TrainingStepInfoSerializer(Serializer):
         return options_selected
 
 
-class PeerStepInfoSerializer(Serializer):
+class PeerStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
         {
@@ -125,7 +164,20 @@ class PeerStepInfoSerializer(Serializer):
     numberOfReceivedAssessments = IntegerField(source="num_received")
 
 
-class ActiveStepInfoSerializer(Serializer):
+class SelfStepInfoSerializer(StepInfoBaseSerializer):
+    """
+    Extra info required for the Self Step
+
+    Returns {
+        "closed"
+        "closedReason"
+    }
+    """
+
+    pass
+
+
+class StepInfoSerializer(Serializer):
     """
     Required context:
     * step - The active workflow step
@@ -137,20 +189,30 @@ class ActiveStepInfoSerializer(Serializer):
 
     require_context = True
 
+    studentTraining = StudentTrainingStepInfoSerializer(source="student_training_data")
+    peer = PeerStepInfoSerializer(source="peer_assessment_data")
+    _self = SelfStepInfoSerializer(source="self_data")
+
+    def get_fields(self):
+        # Hack to name one of the output fields "self", a reserved word
+        result = super().get_fields()
+        _self = result.pop("_self", None)
+        result["self"] = _self
+        return result
+
     def to_representation(self, instance):
         """
         Hook output to remove fields that are not part of the active step.
         """
-        active_step = self.context["step"]
 
-        if active_step == "training":
-            return TrainingStepInfoSerializer(instance.student_training_data).data
-        elif active_step == "peer":
-            return PeerStepInfoSerializer(instance.peer_assessment_data()).data
-        elif active_step in ("submission", "waiting", "done"):
-            return {}
-        else:
-            raise Exception(f"Bad step name: {active_step}")  # pylint: disable=broad-exception-raised
+        if "student-training" not in instance.assessment_steps:
+            self.fields.pop("studentTraining")
+        if "peer-assessment" not in instance.assessment_steps:
+            self.fields.pop("peer")
+        if "self-assessment" not in instance.assessment_steps:
+            self.fields.pop("self")
+
+        return super().to_representation(instance)
 
 
 class ProgressSerializer(Serializer):
@@ -162,7 +224,7 @@ class ProgressSerializer(Serializer):
     Returns:
     {
         // What step are we on? An index to the configuration from ORA config call.
-        activeStepName: (String) one of ["training", "peer", "self", "staff"]
+        activeStepName: (String) one of ["studentTraining", "peer", "self", "staff"]
 
         hasReceivedFinalGrade: (Bool) // In effect, is the ORA complete?
         receivedGrades: (Object) Staff grade data, when there is a completed staff grade.
@@ -173,14 +235,14 @@ class ProgressSerializer(Serializer):
     activeStepName = SerializerMethodField()
     hasReceivedFinalGrade = BooleanField(source="workflow_data.is_done")
     receivedGrades = ReceivedGradesSerializer(source="workflow_data")
-    activeStepInfo = ActiveStepInfoSerializer(source="*")
+    stepInfo = StepInfoSerializer(source="*")
 
     def get_activeStepName(self, instance):
         """Return the active step name: one of 'submission"""
         if not instance.workflow_data.has_workflow:
             return "submission"
         else:
-            return instance.workflow_data.status
+            return STEP_NAME_SERIALIZATION[instance.workflow_data.status]
 
 
 class PageDataSerializer(Serializer):
@@ -251,7 +313,7 @@ class PageDataSerializer(Serializer):
                 response = instance.student_training_data.example
             elif active_step == "peer":
                 response = instance.peer_assessment_data().get_peer_submission()
-            elif active_step in ("staff", "waiting", "done"):
+            elif active_step in ("self", "staff", "ai", "waiting", "done"):
                 response = None
             else:
                 raise Exception(f"Bad step name: {active_step}")
