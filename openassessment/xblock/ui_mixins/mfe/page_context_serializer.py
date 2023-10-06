@@ -15,22 +15,12 @@ from rest_framework.serializers import (
 from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
 )
+from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     SubmissionSerializer,
 )
 
 from .ora_config_serializer import RubricConfigSerializer
-
-STEP_NAME_SERIALIZATION = {
-    "submission": "submission",
-    "peer": "peer",
-    "training": "studentTraining",
-    "self": "self",
-    "staff": "staff",
-    "ai": "ai",
-    "waiting": "waiting",
-    "done": "done",
-}
 
 
 class AssessmentScoreSerializer(Serializer):
@@ -242,7 +232,7 @@ class ProgressSerializer(Serializer):
         if not instance.workflow_data.has_workflow:
             return "submission"
         else:
-            return STEP_NAME_SERIALIZATION[instance.workflow_data.status]
+            return STEP_NAME_MAPPINGS[instance.workflow_data.status]
 
 
 class PageDataSerializer(Serializer):
