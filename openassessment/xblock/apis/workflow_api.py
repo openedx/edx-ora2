@@ -149,16 +149,16 @@ class WorkflowStep:
     @property
     def assessment_module_name(self):
         """ Get the assessment module name for the step """
-        for assessment, canonical_step in self._assessment_module_mappings:
+        for assessment_step, canonical_step in self._assessment_module_mappings.items():
             if canonical_step == self.canonical_step:
-                return self._assessment_module_mappings[assessment]
+                return assessment_step
 
     @property
     def workflow_step_name(self):
         """ Get the workflow step name for the step """
-        for workflow_step, canonical_step in self._assessment_module_mappings:
+        for workflow_step, canonical_step in self._workflow_step_mappings.items():
             if canonical_step == self.canonical_step:
-                return self._workflow_step_mappings[workflow_step]
+                return workflow_step
 
     def __init__(self, step_name):
         # Get the "canonical" step from any representation of the step name
