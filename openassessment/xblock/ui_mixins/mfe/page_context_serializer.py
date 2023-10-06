@@ -301,9 +301,7 @@ class PageDataSerializer(Serializer):
             # If the student is trying to jump to a step, verify they can
             jump_to_step = self.context.get("jump_to_step")
             workflow_step = self.context["step"]
-            if jump_to_step and not self._can_jump_to_step(
-                workflow_step, instance.workflow_data, jump_to_step
-            ):
+            if jump_to_step and not self._can_jump_to_step(workflow_step, instance.workflow_data, jump_to_step):
                 raise Exception(f"Can't jump to {jump_to_step} step before completion")
 
             # Go to the current step, or jump to the selected step
