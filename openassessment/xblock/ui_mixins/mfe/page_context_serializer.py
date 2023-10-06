@@ -147,7 +147,7 @@ class ActiveStepInfoSerializer(Serializer):
             return TrainingStepInfoSerializer(instance.student_training_data).data
         elif active_step == "peer":
             return PeerStepInfoSerializer(instance.peer_assessment_data()).data
-        elif active_step in ("submission", "done"):
+        elif active_step in ("submission", "waiting", "done"):
             return {}
         else:
             raise Exception(f"Bad step name: {active_step}")  # pylint: disable=broad-exception-raised
@@ -199,10 +199,24 @@ class PageDataSerializer(Serializer):
     def to_representation(self, instance):
         # Loading workflow status causes a workflow refresh
         # ... limit this to one refresh per page call
-        active_step = instance.workflow_data.status or "submission"
+        workflow_step = instance.workflow_data.status or "submission"
 
-        self.context.update({"step": active_step})
+        self.context.update({"step": workflow_step})
         return super().to_representation(instance)
+
+    def _can_jump_to_step(self, workflow_step, workflow_data, step_name):
+        """
+        Helper to determine if a student can jump to a specific step:
+        1) Student is on that step.
+        2) Student has completed that step.
+
+        NOTE that this should probably happen at the handler level, but for
+        added safety, check here as well.
+        """
+        if step_name == workflow_step:
+            return True
+        step_status = workflow_data.status_details.get(step_name, {})
+        return step_status.get("complete", False)
 
     def get_submission(self, instance):
         """
@@ -210,10 +224,40 @@ class PageDataSerializer(Serializer):
         1) In the "submission" view, we get the user's draft / complete submission.
         2) In the "assessment" view, we get an assessment for the current assessment step.
         """
+        # pylint: disable=broad-exception-raised
 
+        # Submission Views
         if self.context.get("view") == "submission":
             return SubmissionSerializer(instance.submission_data).data
+
+        # Assessment Views
         elif self.context.get("view") == "assessment":
+            # Can't view assessments without completing submission
+            if self.context["step"] == "submission":
+                raise Exception("Cannot view assessments without having completed submission.")
+
+            # If the student is trying to jump to a step, verify they can
+            jump_to_step = self.context.get("jump_to_step")
+            workflow_step = self.context["step"]
+            if jump_to_step and not self._can_jump_to_step(
+                workflow_step, instance.workflow_data, jump_to_step
+            ):
+                raise Exception(f"Can't jump to {jump_to_step} step before completion")
+
+            # Go to the current step, or jump to the selected step
+            active_step = jump_to_step or workflow_step
+
+            if active_step == "training":
+                response = instance.student_training_data.example
+            elif active_step == "peer":
+                response = instance.peer_assessment_data().get_peer_submission()
+            elif active_step in ("staff", "waiting", "done"):
+                response = None
+            else:
+                raise Exception(f"Bad step name: {active_step}")
+
+            self.context["response"] = response
+
             return AssessmentResponseSerializer(instance.api_data, context=self.context).data
         else:
-            raise Exception("Missing view context for page")  # pylint: disable=broad-exception-raised
+            raise Exception("Missing view context for page")

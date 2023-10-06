@@ -28,5 +28,13 @@ class MfeMixin:
     @XBlock.json_handler
     def get_block_learner_assessment_data(self, data, suffix=""):  # pylint: disable=unused-argument
         serializer_context = {"view": "assessment"}
+
+        # Allow jumping to a specific step, within our allowed steps
+        # NOTE should probably also verify this step is in our assessment steps
+        # though the serializer also covers for this currently
+        jumpable_steps = "peer"
+        if suffix in jumpable_steps:
+            serializer_context.update({"jump_to_step": suffix})
+
         page_context = PageDataSerializer(self, context=serializer_context)
         return page_context.data
