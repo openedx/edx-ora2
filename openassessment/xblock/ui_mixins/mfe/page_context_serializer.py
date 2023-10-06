@@ -164,8 +164,6 @@ class SelfStepInfoSerializer(StepInfoBaseSerializer):
     }
     """
 
-    pass
-
 
 class StepInfoSerializer(Serializer):
     """

@@ -7,8 +7,6 @@ from json import dumps, loads
 from unittest.mock import patch
 
 
-from openassessment.assessment.api import student_training
-from openassessment.assessment.test.constants import RUBRIC, EXAMPLES
 from openassessment.xblock.test.base import (
     PEER_ASSESSMENTS,
     SELF_ASSESSMENT,
@@ -28,7 +26,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         context = {"view": "submission"}
 
         # When I ask for my submission data
-        PageDataSerializer(xblock, context=context).data
+        _ = PageDataSerializer(xblock, context=context).data
 
         # Then I use the correct serializer and the call doesn't fail
         mock_submission_serializer.assert_called_once()
@@ -43,7 +41,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         context = {"view": "assessment"}
 
         # When I ask for assessment data
-        PageDataSerializer(xblock, context=context).data
+        _ = PageDataSerializer(xblock, context=context).data
 
         # Then I use the correct serializer and the call doesn't fail
         mock_assessment_serializer.assert_called_once()
