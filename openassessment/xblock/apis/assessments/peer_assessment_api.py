@@ -25,6 +25,10 @@ class PeerAssessmentAPI(StepDataAPI):
         return self.config_data.get_assessment_module("peer-assessment")
 
     @property
+    def assessments(self):
+        return peer_api.get_assessments(self.submission_uuid)
+
+    @property
     def continue_grading(self):
         return self._continue_grading and self.workflow_data.is_peer_complete
 

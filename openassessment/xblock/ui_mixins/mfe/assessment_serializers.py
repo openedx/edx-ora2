@@ -3,15 +3,59 @@ Serializer for assessments
 """
 # pylint: disable=abstract-method
 
-from rest_framework.fields import (
+from rest_framework.serializers import (
     CharField,
     IntegerField,
     SerializerMethodField,
     URLField,
+    Serializer,
 )
-from rest_framework.serializers import Serializer
-
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
+
+
+class AssessmentScoreSerializer(Serializer):
+    """
+    Returns:
+    {
+        earned: (Int) How many points were you awarded by peers?
+        possible: (Int) What was the max possible grade?
+    }
+    """
+
+    earned = IntegerField(source="points_earned", required=False)
+    possible = IntegerField(source="points_possible", required=False)
+
+
+class AssessmentDataSerializer(Serializer):
+    """
+    Assessment data serializer
+    """
+    optionsSelected = SerializerMethodField()
+    criterionFeedback = SerializerMethodField()
+    overallFeedback = SerializerMethodField()
+
+    def get_optionsSelected(self, instance):
+        result = {}
+        for part in instance['parts']:
+            result[part['option']['name']] = part['option']['label']
+        return result
+
+    def get_overallFeedback(self, instance):
+        return instance['feedback']
+
+    def get_criterionFeedback(self, instance):
+        result = {}
+        for part in instance['parts']:
+            result[part['criterion']['name']] = part['feedback']
+        return result
+
+
+class AssessmentStepSerializer(Serializer):
+    """
+    Assessment step serializer
+    """
+    stepScore = AssessmentScoreSerializer(source="*")
+    assessment = AssessmentDataSerializer(source="*")
 
 
 class SubmissionFileSerializer(Serializer):
@@ -79,6 +123,33 @@ class SubmittedResponseSerializer(Serializer):
         return [SubmissionFileSerializer(file).data for file in files]
 
 
+class AssessmentGradeSerializer(Serializer):
+    """
+    Given we want to load an assessment response,
+    gather the appropriate response and serialize.
+
+    Data same shape as Submission, but coming from different sources.
+
+    Returns:
+    {
+        effectiveAssessmentType: String
+        self: AssessmentStepSerializer
+        staff: AssessmentStepSerializer
+        peers: AssessmentStepSerializer[]
+    }
+    """
+    effectiveAssessmentType = SerializerMethodField()
+    self = AssessmentStepSerializer(source="self_assessment_data.assessment")
+    staff = AssessmentStepSerializer(source="staff_assessment_data.assessment")
+    peers = AssessmentStepSerializer(source="peer_assessment_data.assessments", many=True)
+
+    def get_effectiveAssessmentType(self, instance):  # pylint: disable=unused-argument
+        """
+        Get effective assessment type
+        """
+        return self.context["step"]
+
+
 class AssessmentResponseSerializer(Serializer):
     """
     Given we want to load an assessment response,
@@ -112,7 +183,6 @@ class AssessmentResponseSerializer(Serializer):
                 }
             ]
         }
-    }
     """
 
     hasSubmitted = NullField(source="*")
