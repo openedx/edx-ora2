@@ -13,8 +13,10 @@ from rest_framework.serializers import (
     CharField,
     SerializerMethodField,
 )
+from openassessment.xblock.apis.workflow_api import WorkflowStep
 
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import (
+    STEP_NAME_MAPPINGS,
     CharListField,
     IsRequiredField,
 )
@@ -161,7 +163,7 @@ class AssessmentStepSettingsSerializer(Serializer):
 
 
 class AssessmentStepsSettingsSerializer(Serializer):
-    training = AssessmentStepSettingsSerializer(
+    studentTraining = AssessmentStepSettingsSerializer(
         step_name="student-training", source="rubric_assessments"
     )
     peer = AssessmentStepSettingsSerializer(
@@ -181,7 +183,10 @@ class AssessmentStepsSerializer(Serializer):
     settings = AssessmentStepsSettingsSerializer(source="*")
 
     def get_order(self, block):
-        return [step["name"] for step in block.rubric_assessments]
+        return [
+            STEP_NAME_MAPPINGS[WorkflowStep(step["name"]).workflow_step_name]
+            for step in block.rubric_assessments
+        ]
 
 
 class LeaderboardConfigSerializer(Serializer):
