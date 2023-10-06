@@ -12,7 +12,12 @@ from submissions import api as submissions_api
 
 from openassessment.assessment.errors import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection, StaffWorkflow
-from openassessment.assessment.serializers import InvalidRubric, full_assessment_dict, rubric_from_dict
+from openassessment.assessment.serializers import (
+    InvalidRubric,
+    full_assessment_dict,
+    rubric_from_dict,
+    serialize_assessments,
+)
 from openassessment.assessment.score_type_constants import STAFF_TYPE
 
 
@@ -462,3 +467,34 @@ def bulk_retrieve_workflow_status(course_id, item_id, submission_uuids=None):
     return StaffWorkflow.bulk_retrieve_workflow_status(
         course_id, item_id, submission_uuids
     )
+
+
+def get_assessment(submission_uuid):
+    """
+    Retrieve a staff-assessment for a submission_uuid.
+
+    Args:
+        submission_uuid (str): The submission UUID for we want information for
+            regarding staff assessment.
+
+    Returns:
+        assessment (dict) is a serialized Assessment model, or None (if the user has not yet self-assessed)
+        If multiple submissions or staff-assessments are found, returns the most recent one.
+    """
+    # Retrieve assessments for the submission UUID
+    # We weakly enforce that number of staff-assessments per submission is <= 1,
+    # but not at the database level.  Someone could take advantage of the race condition
+    # between checking the number of staff-assessments and creating a new staff-assessment.
+    # To be safe, we retrieve just the most recent submission.
+    serialized_assessments = serialize_assessments(Assessment.objects.filter(
+        score_type=STAFF_TYPE, submission_uuid=submission_uuid
+    ).order_by('-scored_at')[:1])
+
+    if not serialized_assessments:
+        logger.info("No staff-assessment found for submission %s", submission_uuid)
+        return None
+
+    serialized_assessment = serialized_assessments[0]
+    logger.info("Retrieved staff-assessment for submission %s", submission_uuid)
+
+    return serialized_assessment

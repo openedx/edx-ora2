@@ -85,7 +85,7 @@ class RubricCriterionSerializer(Serializer):
     name = CharField(source="label")
     description = CharField(source="prompt")
     feedbackEnabled = SerializerMethodField()
-    feedbackRequired = IsRequiredField(source="feedback")
+    feedbackRequired = SerializerMethodField()
     options = RubricCriterionOptionSerializer(many=True)
 
     @staticmethod
@@ -96,6 +96,10 @@ class RubricCriterionSerializer(Serializer):
     def get_feedbackEnabled(self, criterion):
         # Feedback can be specified as optional or required
         return self._feedback(criterion) != "disabled"
+
+    def get_feedbackRequired(self, criterion):
+        # Feedback can be specified as optional or required
+        return self._feedback(criterion) == "required"
 
 
 class RubricConfigSerializer(Serializer):

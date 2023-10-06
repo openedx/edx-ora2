@@ -12,6 +12,7 @@ from rest_framework.serializers import (
     SerializerMethodField,
 )
 from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
+    AssessmentGradeSerializer,
     AssessmentResponseSerializer,
 )
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
@@ -153,7 +154,6 @@ class PeerStepInfoSerializer(StepInfoBaseSerializer):
 class SelfStepInfoSerializer(StepInfoBaseSerializer):
     """
     Extra info required for the Self Step
-
     Returns {
         "closed"
         "closedReason"
@@ -241,13 +241,15 @@ class PageDataSerializer(Serializer):
     progress = ProgressSerializer(source="*")
     submission = SerializerMethodField()
     rubric = RubricConfigSerializer(source="*")
+    assessment = SerializerMethodField()
 
     def to_representation(self, instance):
         # Loading workflow status causes a workflow refresh
         # ... limit this to one refresh per page call
-        workflow_step = instance.workflow_data.status or "submission"
+        if not self.context.get("step"):
+            active_step = instance.workflow_data.status or "submission"
+            self.context.update({"step": active_step})
 
-        self.context.update({"step": workflow_step})
         return super().to_representation(instance)
 
     def _can_jump_to_step(self, workflow_step, workflow_data, step_name):
@@ -266,15 +268,14 @@ class PageDataSerializer(Serializer):
 
     def get_submission(self, instance):
         """
-        Has the following different use-cases:
-        1) In the "submission" view, we get the user's draft / complete submission.
-        2) In the "assessment" view, we get an assessment for the current assessment step.
+        we get the user's draft / complete submission.
         """
         # pylint: disable=broad-exception-raised
         # Submission Views
         if self.context.get("view") == "submission":
             learner_page_data_submission_data = instance.get_learner_submission_data()
             return PageDataSubmissionSerializer(learner_page_data_submission_data).data
+        # Assessment Views
         elif self.context.get("view") == "assessment":
             # Can't view assessments without completing submission
             if self.context["step"] == "submission":
@@ -303,3 +304,13 @@ class PageDataSerializer(Serializer):
             return AssessmentResponseSerializer(instance.api_data, context=self.context).data
         else:
             raise Exception("Missing view context for page")
+
+    def get_assessment(self, instance):
+        """
+         we get an assessment for the current assessment step.
+        """
+        # Assessment Views
+        if self.context.get("view") == "assessment":
+            return AssessmentGradeSerializer(instance.api_data, context=self.context).data
+        else:
+            return None
