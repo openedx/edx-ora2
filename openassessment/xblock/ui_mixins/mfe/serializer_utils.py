@@ -4,6 +4,18 @@ Some custom serializer types and utils we use across our MFE
 
 from rest_framework.fields import BooleanField, CharField, ListField
 
+# Map workflow step name to serialized values
+STEP_NAME_MAPPINGS = {
+    "submission": "submission",
+    "peer": "peer",
+    "training": "studentTraining",
+    "self": "self",
+    "staff": "staff",
+    "ai": "ai",
+    "waiting": "waiting",
+    "done": "done",
+}
+
 
 class CharListField(ListField):
     """

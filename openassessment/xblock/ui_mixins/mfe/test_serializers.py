@@ -263,8 +263,8 @@ class TestAssessmentStepsSerializer(XBlockHandlerTestCase):
     @scenario("data/basic_scenario.xml")
     def test_order(self, xblock):
         # Given a basic setup
-        expected_order = ["peer-assessment", "self-assessment"]
-        expected_step_keys = {"training", "peer", "self", "staff"}
+        expected_order = ["peer", "self"]
+        expected_step_keys = {"studentTraining", "peer", "self", "staff"}
 
         # When I ask for assessment step config
         steps_config = AssessmentStepsSerializer(xblock).data
@@ -328,7 +328,7 @@ class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
     Test for TrainingSettingsSerializer
     """
 
-    step_config_key = "training"
+    step_config_key = "studentTraining"
 
     @scenario("data/student_training.xml")
     def test_enabled(self, xblock):
