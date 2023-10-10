@@ -3,6 +3,9 @@ Exposed api for ORA XBlock workflows.
 """
 
 
+from enum import Enum
+
+
 class WorkflowAPI:
     def __init__(self, block):
         self._block = block
@@ -108,3 +111,64 @@ class WorkflowAPI:
 
     def get_team_workflow_cancellation_info(self, team_submission_uuid):
         return self._block.get_team_workflow_cancellation_info(team_submission_uuid)
+
+
+class WorkflowStep:
+    """Utility class for comparing and serializing steps"""
+
+    # Store one disambiguated step
+    canonical_step = None
+    step_name = None
+
+    # Enum of workflow steps, used for canonical mapping of steps
+    class Step(Enum):
+        SUBMISSION = "submission"
+        PEER = "peer"
+        STUDENT_TRAINING = "training"
+        STAFF = "staff"
+        SELF = "self"
+        AI = "ai"
+
+    _assessment_module_mappings = {
+        "peer-assessment": Step.PEER,
+        "student-training": Step.STUDENT_TRAINING,
+        "staff-assessment": Step.STAFF,
+        "self-assessment": Step.SELF,
+    }
+
+    _workflow_step_mappings = {
+        "submission": Step.SUBMISSION,
+        "training": Step.STUDENT_TRAINING,
+        "peer": Step.PEER,
+        "self": Step.SELF,
+        "staff": Step.STAFF,
+    }
+
+    _step_mappings = {**_assessment_module_mappings, **_workflow_step_mappings}
+
+    @property
+    def assessment_module_name(self):
+        """ Get the assessment module name for the step """
+        for assessment_step, canonical_step in self._assessment_module_mappings.items():
+            if canonical_step == self.canonical_step:
+                return assessment_step
+        return "unknown"
+
+    @property
+    def workflow_step_name(self):
+        """ Get the workflow step name for the step """
+        for workflow_step, canonical_step in self._workflow_step_mappings.items():
+            if canonical_step == self.canonical_step:
+                return workflow_step
+        return "unknown"
+
+    def __init__(self, step_name):
+        # Get the "canonical" step from any representation of the step name
+        self.step_name = step_name
+        self.canonical_step = self._step_mappings.get(step_name)
+
+    def __eq__(self, __value: object) -> bool:
+        return self.canonical_step == self._step_mappings.get(__value)
+
+    def __repr__(self) -> str:
+        return str(self.canonical_step)
