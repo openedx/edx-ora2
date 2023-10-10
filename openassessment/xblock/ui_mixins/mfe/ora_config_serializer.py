@@ -13,7 +13,11 @@ from rest_framework.serializers import (
     CharField,
     SerializerMethodField,
 )
-
+from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import (
+    InProgressResponseSerializer,
+    TeamInfoSerializer,
+    SubmissionSerializer,
+)
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import (
     CharListField,
     IsRequiredField,
@@ -218,6 +222,7 @@ class GetBlockLearnerSubmissionDataSerializer(Serializer):
     """
     Main serializer for learner submission status / info
     """
+
     hasSubmitted = BooleanField(source="workflow.has_submitted")
     hasCancelled = BooleanField(source="workflow.has_cancelled", default=False)
     hasRecievedGrade = BooleanField(source="workflow.has_recieved_grade", default=False)
@@ -226,6 +231,6 @@ class GetBlockLearnerSubmissionDataSerializer(Serializer):
 
     def get_response(self, data):
         # The source data is different if we have an in-progress response vs a submitted response
-        if data['workflow']['has_submitted']:
-            return SubmissionSerializer(data['response']).data
+        if data["workflow"]["has_submitted"]:
+            return SubmissionSerializer(data["response"]).data
         return InProgressResponseSerializer(data).data
