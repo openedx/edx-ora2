@@ -1,4 +1,5 @@
 """ Base class for step data collations """
+from openassessment.xblock.apis.workflow_api import WorkflowStep
 from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE
 
 
@@ -10,6 +11,7 @@ class StepDataAPI:
         self._closed_reason = closed_reason
         self._start_date = start_date
         self._due_date = due_date
+        self._step = WorkflowStep(step)
 
     def __repr__(self):
         return "{0}".format(
@@ -28,6 +30,16 @@ class StepDataAPI:
     @property
     def workflow_data(self):
         return self._block.api_data.workflow_data
+
+    @property
+    def has_reached_step(self):
+        """Util for determining if we have reached or surpassed this step"""
+        if self.workflow_data.status == self._step:
+            return True
+        step_info = self.workflow_data.status_details.get(str(self._step), {})
+        if step_info.get("complete"):
+            return True
+        return False
 
     @property
     def problem_closed(self):

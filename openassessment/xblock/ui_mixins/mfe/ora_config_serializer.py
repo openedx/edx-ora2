@@ -13,12 +13,10 @@ from rest_framework.serializers import (
     CharField,
     SerializerMethodField,
 )
-from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import (
-    TeamInfoSerializer,
-    SubmissionSerializer,
-    InProgressResponseSerializer,
-)
+from openassessment.xblock.apis.workflow_api import WorkflowStep
+
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import (
+    STEP_NAME_MAPPINGS,
     CharListField,
     IsRequiredField,
 )
@@ -165,7 +163,7 @@ class AssessmentStepSettingsSerializer(Serializer):
 
 
 class AssessmentStepsSettingsSerializer(Serializer):
-    training = AssessmentStepSettingsSerializer(
+    studentTraining = AssessmentStepSettingsSerializer(
         step_name="student-training", source="rubric_assessments"
     )
     peer = AssessmentStepSettingsSerializer(
@@ -185,7 +183,10 @@ class AssessmentStepsSerializer(Serializer):
     settings = AssessmentStepsSettingsSerializer(source="*")
 
     def get_order(self, block):
-        return [step["name"] for step in block.rubric_assessments]
+        return [
+            STEP_NAME_MAPPINGS[WorkflowStep(step["name"]).workflow_step_name]
+            for step in block.rubric_assessments
+        ]
 
 
 class LeaderboardConfigSerializer(Serializer):
@@ -216,20 +217,3 @@ class OraBlockInfoSerializer(Serializer):
 
     def get_prompts(self, block):
         return [prompt["description"] for prompt in block.prompts]
-
-
-class ResponseDataSerializer(Serializer):
-    """
-    Main serializer for learner submission status / info
-    """
-    hasSubmitted = BooleanField(source="workflow.has_submitted")
-    hasCancelled = BooleanField(source="workflow.has_cancelled", default=False)
-    hasRecievedGrade = BooleanField(source="workflow.has_recieved_grade", default=False)
-    teamInfo = TeamInfoSerializer(source="team_info")
-    response = SerializerMethodField(source="*")
-
-    def get_response(self, data):
-        # The source data is different if we have an in-progress response vs a submitted response
-        if data['workflow']['has_submitted']:
-            return SubmissionSerializer(data['response']).data
-        return InProgressResponseSerializer(data).data

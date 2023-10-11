@@ -26,7 +26,7 @@ from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
 from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes
 from submissions import api as submission_api
 from submissions import team_api as submission_team_api
-from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import PageDataSubmissionSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
 
 
 class MFEHandlersTestBase(XBlockHandlerTestCase):
