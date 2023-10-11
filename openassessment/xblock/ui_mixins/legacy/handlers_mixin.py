@@ -41,7 +41,7 @@ from openassessment.xblock.apis.submissions.errors import (
     UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
+from openassessment.xblock.ui_mixins.legacy.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
 
 logger = logging.getLogger(__name__)

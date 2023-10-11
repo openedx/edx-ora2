@@ -163,7 +163,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
 class TestStaffAssessment(StaffAssessmentTestBase):
     """ Test Staff Assessment Workflow. """
 
-    @patch('openassessment.xblock.ui_mixins.legacy.staff_assessments.views.staff_api.create_assessment')
+    @patch('openassessment.xblock.ui_mixins.legacy.views.staff.staff_api.create_assessment')
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_assess_handler_missing_id(self, xblock, mock_create_assessment):
         self.set_staff_access(xblock)
@@ -266,7 +266,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         assessment = copy.deepcopy(STAFF_GOOD_ASSESSMENT)
         assessment['submission_uuid'] = submission['uuid']
 
-        with patch('openassessment.xblock.ui_mixins.legacy.staff_assessments.views.staff_api') as mock_api:
+        with patch('openassessment.xblock.ui_mixins.legacy.views.staff.staff_api') as mock_api:
             #  Simulate a error
             mock_api.create_assessment.side_effect = staff_api.StaffAssessmentRequestError
             resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
