@@ -22,6 +22,10 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageData
 
 
 class OraApiException(JsonHandlerError):
+    """
+    JsonHandlerError subclass that when thrown results in a response with the
+    given HTTP status code, and a body consisting of the given error code and context.
+    """
     def __init__(self, status_code, error_code, error_context=''):
         super().__init__(
             status_code,
@@ -50,7 +54,7 @@ class MfeMixin:
         page_context = PageDataSerializer(self, context=serializer_context)
         return page_context.data
 
-    def _submission_draft(self, data):
+    def _submission_draft_handler(self, data):
         try:
             student_submission_data = data['response']['text_responses']
             submissions_actions.save_submission_draft(student_submission_data, self.config_data, self.submission_data)
@@ -61,7 +65,7 @@ class MfeMixin:
         except DraftSaveException as e:
             raise OraApiException(500, ErrorCodes.INTERNAL_EXCEPTION) from e
 
-    def _submission_create(self, data):
+    def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
             submissions_actions.submit(data, self.config_data, self.submission_data, self.workflow_data)
@@ -87,9 +91,9 @@ class MfeMixin:
     @XBlock.json_handler
     def submission(self, data, suffix=""):
         if suffix == 'draft':
-            return self._submission_draft(data)
+            return self._submission_draft_handler(data)
         elif suffix == "create":
-            return self._submission_create(data)
+            return self._submission_create_handler(data)
         else:
             raise OraApiException(404, ErrorCodes.UNKNOWN_SUFFIX)
 

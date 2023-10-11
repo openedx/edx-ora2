@@ -224,7 +224,7 @@ class OraBlockInfoSerializer(Serializer):
         return [prompt["description"] for prompt in block.prompts]
 
 
-class GetBlockLearnerSubmissionDataSerializer(Serializer):
+class ResponseDataSerializer(Serializer):
     """
     Main serializer for learner submission status / info
     """
