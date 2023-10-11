@@ -11,6 +11,7 @@ from openassessment.assessment.errors.peer import (
 )
 from openassessment.assessment.errors.self import SelfAssessmentInternalError, SelfAssessmentRequestError
 from openassessment.assessment.errors.staff import StaffAssessmentInternalError, StaffAssessmentRequestError
+from openassessment.assessment.errors.student_training import StudentTrainingError
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import (
     AssessmentWorkflowError,
@@ -26,6 +27,7 @@ from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
 from openassessment.xblock.apis.assessments.self_assessment_api import self_assess
 from openassessment.xblock.apis.assessments.staff_assessment_api import staff_assess
+from openassessment.xblock.apis.assessments.student_training_api import training_assess
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
     DeleteNotAllowed,
@@ -39,7 +41,6 @@ from openassessment.xblock.apis.submissions.errors import (
     UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
 
@@ -311,7 +312,49 @@ class LegacyHandlersMixin:
 
     @XBlock.json_handler
     def training_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return training_assess(self.api_data, data)
+        """
+        Compare the scores given by the student with those given by the course author.
+        If they match, update the training workflow.  The client can then reload this
+        step to view the next essay or the completed step.
+
+        Currently, we return a boolean indicating whether the student assessed correctly
+        or not.  However, the student training API provides the exact criteria that the student
+        scored incorrectly, as well as the "correct" options for those criteria.
+        In the future, we may expose this in the UI to provide more detailed feedback.
+
+        Args:
+            data (dict): Must have the following keys:
+                options_selected (dict): Dictionary mapping criterion names to option values.
+
+        Returns:
+            Dict with keys:
+                * "success" (bool) indicating success or error
+                * "msg" (unicode) containing additional information if an error occurs.
+                * "correct" (bool) indicating whether the student scored the assessment correctly.
+
+        """
+        def failure_response(message):
+            return {"success": False, "msg": self.config_data.translate(message)}
+
+        if "options_selected" not in data:
+            return failure_response("Missing options_selected key in request.")
+        if not isinstance(data["options_selected"], dict):
+            return failure_response("options_selected must be a dictionary.")
+
+        try:
+            corrections = training_assess(data['options_selected'], self.config_data, self.workflow_data)
+        except StudentTrainingError:
+            return failure_response("Your scores could not be checked.")
+        except AssessmentWorkflowError:
+            return failure_response("Could not update workflow status.")
+        except Exception:  # pylint: disable=broad-except
+            return failure_response("An unexpected error occurred.")
+
+        return {
+            "success": True,
+            "msg": "",
+            "corrections": corrections,
+        }
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO")
