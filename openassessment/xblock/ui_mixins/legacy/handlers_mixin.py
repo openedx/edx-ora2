@@ -10,6 +10,7 @@ from openassessment.assessment.errors.peer import (
     PeerAssessmentWorkflowError,
 )
 from openassessment.assessment.errors.self import SelfAssessmentInternalError, SelfAssessmentRequestError
+from openassessment.assessment.errors.staff import StaffAssessmentInternalError, StaffAssessmentRequestError
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import (
     AssessmentWorkflowError,
@@ -24,6 +25,7 @@ from openassessment.xblock.apis.assessments.errors import (
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
 from openassessment.xblock.apis.assessments.self_assessment_api import self_assess
+from openassessment.xblock.apis.assessments.staff_assessment_api import staff_assess
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
     DeleteNotAllowed,
@@ -37,7 +39,6 @@ from openassessment.xblock.apis.submissions.errors import (
     UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
@@ -316,11 +317,28 @@ class LegacyHandlersMixin:
     @require_course_staff("STUDENT_INFO")
     @verify_assessment_parameters
     def staff_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return staff_assess(self.api_data, data)
+        """
+        Create a staff assessment for a team or individual submission.
+        """
+        def failure_response(reason):
+            return {'success': False, 'msg': self.config_data.translate(reason)}
 
-    # NOTE - Temporary surfacing
-    def do_staff_assessment(self, data):
-        return do_staff_assessment(self.api_data, data)
+        if 'submission_uuid' not in data:
+            return failure_response('The submission ID of the submission being assessed was not found.')
+
+        try:
+            staff_assess(
+                data['submission_uuid'],
+                data['options_selected'],
+                data['criterion_feedback'],
+                data['overall_feedback'],
+                data.get('assess_type', 'regrade'),
+                self.config_data,
+                self.staff_data,
+            )
+        except (StaffAssessmentRequestError, StaffAssessmentInternalError):
+            return failure_response('Your team assessment could not be submitted.')
+        return {'success': True, 'msg': ''}
 
     # Utils
 
