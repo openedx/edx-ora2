@@ -196,8 +196,8 @@ class ORAConfigAPI:
     def does_team_have_submission(self, team_id):
         return self._block.does_team_have_submission(team_id)
 
-    def get_team_info(self):
-        return self._block.get_team_info()
+    def get_team_info(self, staff_or_preview_data=True):
+        return self._block.get_team_info(staff_or_preview_data)
 
     def get_student_item_dict(self, anonymous_user_id=None):
         return self._block.get_student_item_dict(anonymous_user_id)

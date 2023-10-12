@@ -4,19 +4,17 @@ External API for ORA Submission data
 from copy import deepcopy
 import logging
 
+from submissions.api import get_submission
 from submissions.team_api import get_team_submission
+from openassessment.data import OraSubmissionAnswerFactory
+
 
 from openassessment.xblock.utils.data_conversion import (
-    format_files_for_submission,
-    prepare_submission_for_serialization,
+    create_submission_dict,
     update_saved_response_format,
 )
 from openassessment.xblock.utils.resolve_dates import DISTANT_FUTURE
 from openassessment.xblock.apis.step_data_api import StepDataAPI
-from openassessment.xblock.apis.submissions.errors import (
-    EmptySubmissionError,
-    NoTeamToCreateSubmissionForError,
-)
 from openassessment.xblock.apis.submissions.file_api import FileAPI
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -121,6 +119,38 @@ class SubmissionAPI(StepDataAPI):
         """Return a submission_uuid or None if the user hasn't submitted"""
         return self.workflow.get("submission_uuid")
 
+    @property
+    def saved_response_submission_dict(self):
+        """Return the current saved response in an expected format"""
+        return create_submission_dict(
+            self.saved_response,
+            self.config_data.prompts
+        )
+
+    def get_submission(self, submission_uuid):
+        """
+        Get a serialized representation of an ORA submission.
+        Returns:
+            {
+                "text_responses": (list) [text responses]
+                "uploaded_files": (list) [
+                    {
+                        "download_url": (url)
+                        "description": (str)
+                        "name": (str)
+                        "size": (int)
+                    }
+                ]
+            }
+
+        Raises:
+            submissions.errors.SubmissionError: If there was an error loading the submission
+            openassessment.data.VersionNotFoundException: If the submission did not match any known
+                                                          ORA answer version
+        """
+        submission = get_submission(submission_uuid)
+        return OraSubmissionAnswerFactory.parse_submission_raw_answer(submission.get('answer'))
+
     # Team Info
 
     @property
@@ -146,6 +176,30 @@ class SubmissionAPI(StepDataAPI):
     @property
     def team_submission_uuid(self):
         return self.workflow.get("team_submission_uuid")
+
+    def get_submission_team_info(self, workflow):
+        if not self.is_team_assignment:
+            return {}, None
+
+        team_info = self.config_data.get_team_info(staff_or_preview_data=False)
+        if team_info is None:
+            team_info = {}
+
+        # Get the id of the team the learner is currently on
+        team_id = team_info.get('team_id', None)
+        if team_id:
+            # Has the team the learner is currently on already submitted?
+            team_info['has_submitted'] = self.config_data.does_team_have_submission(team_id)
+
+        if workflow:
+            # If the learner has submitted, use the team id on the learner's submission later
+            # for shared files lookup. If the learner has submitted already for a different team
+            # and then joined another team, we should show the submission that they are actually a part of,
+            # rather than just their current team. If they have a submission (and therefore a workflow) then
+            # that takes precidence.
+            team_submission = get_team_submission(workflow['team_submission_uuid'])
+            team_id = team_submission['team_id']
+        return team_info, team_id
 
     # Submission config
 
@@ -213,95 +267,3 @@ class SubmissionAPI(StepDataAPI):
         has_content |= len(submission_dict.get("file_keys", [])) > 0
 
         return not has_content
-
-    def create_submission(self, student_item_dict, submission_data):
-        """Creates submission for the submitted assessment response or a list for a team assessment."""
-        # Import is placed here to avoid model import at project startup.
-        from submissions import api
-
-        # Serialize the submission
-        submission_dict = prepare_submission_for_serialization(submission_data)
-
-        # Add files
-        uploaded_files = self.files.get_uploads_for_submission()
-        submission_dict.update(format_files_for_submission(uploaded_files))
-
-        # Validate
-        if self.submission_is_empty(submission_dict):
-            raise EmptySubmissionError
-
-        # Create submission
-        submission = api.create_submission(student_item_dict, submission_dict)
-        self.workflow_data.create_workflow(submission["uuid"])
-
-        # Set student submission_uuid
-        self._block.submission_uuid = submission["uuid"]
-
-        # Emit analytics event...
-        self.config_data.publish_event(
-            "openassessmentblock.create_submission",
-            {
-                "submission_uuid": submission["uuid"],
-                "attempt_number": submission["attempt_number"],
-                "created_at": submission["created_at"],
-                "submitted_at": submission["submitted_at"],
-                "answer": submission["answer"],
-            },
-        )
-
-        return submission
-
-    def create_team_submission(self, student_item_dict, submission_data):
-        """A student submitting for a team should generate matching submissions for every member of the team."""
-
-        if not self.config_data.has_team:
-            student_id = student_item_dict["student_id"]
-            course_id = self.config_data.course_id
-            msg = f"Student {student_id} has no team for course {course_id}"
-            logger.exception(msg)
-            raise NoTeamToCreateSubmissionForError(msg)
-
-        # Import is placed here to avoid model import at project startup.
-        from submissions import team_api
-
-        team_info = self.config_data.get_team_info()
-
-        # Serialize the submission
-        submission_dict = prepare_submission_for_serialization(submission_data)
-
-        # Add files
-        uploaded_files = self.files.get_uploads_for_submission()
-        submission_dict.update(format_files_for_submission(uploaded_files))
-
-        # Validate
-        if self.submission_is_empty(submission_dict):
-            raise EmptySubmissionError
-
-        submitter_anonymous_user_id = self.config_data.get_anonymous_user_id_from_xmodule_runtime()
-        user = self.config_data.get_real_user(submitter_anonymous_user_id)
-
-        anonymous_student_ids = self.config_data.get_anonymous_user_ids_for_team()
-        submission = team_api.create_submission_for_team(
-            self.config_data.course_id,
-            student_item_dict["item_id"],
-            team_info["team_id"],
-            user.id,
-            anonymous_student_ids,
-            submission_dict,
-        )
-
-        self.workflow_data.create_team_workflow(submission["team_submission_uuid"])
-
-        # Emit analytics event...
-        self.config_data.publish_event(
-            "openassessmentblock.create_team_submission",
-            {
-                "submission_uuid": submission["team_submission_uuid"],
-                "team_id": team_info["team_id"],
-                "attempt_number": submission["attempt_number"],
-                "created_at": submission["created_at"],
-                "submitted_at": submission["submitted_at"],
-                "answer": submission["answer"],
-            },
-        )
-        return submission

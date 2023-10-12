@@ -3,7 +3,6 @@ Tests for data layer of ORA XBlock
 """
 
 from unittest.mock import MagicMock
-
 import ddt
 
 

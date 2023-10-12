@@ -11,6 +11,7 @@ from pytz import UTC
 
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentFeedbackOption, AssessmentPart,
                                               Criterion, CriterionOption, Rubric, StaffWorkflow, TeamStaffWorkflow)
+from openassessment.assessment.models.base import SharedFileUpload
 
 User = get_user_model()
 
@@ -165,3 +166,18 @@ class UserFactory(DjangoModelFactory):
     is_superuser = False
     last_login = datetime.datetime(2012, 1, 1, tzinfo=UTC)
     date_joined = datetime.datetime(2011, 1, 1, tzinfo=UTC)
+
+
+class SharedFileUploadFactory(DjangoModelFactory):
+    """ Create SharedFileUploads for testing """
+    class Meta:
+        model = SharedFileUpload
+
+    team_id = factory.Sequence(lambda n: f'default_team_{n}')
+    course_id = factory.Sequence(lambda n: f'default_course_{n}')
+    item_id = factory.Sequence(lambda n: f'default_item_{n}')
+    owner_id = None
+    file_key = factory.Sequence(lambda n: f'shared_file_key_{n}')
+    description = factory.Sequence(lambda n: f'shared_file_desc_{n}')
+    size = factory.Sequence(lambda n: 10 + int(n))
+    name = factory.Sequence(lambda n: f'shared_file_name_{n}')

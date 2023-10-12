@@ -92,12 +92,11 @@ class FilesMixin:
         urls = []
         raw_answer = submission.get('answer')
         answer = OraSubmissionAnswerFactory.parse_submission_raw_answer(raw_answer)
-        for file_upload in answer.get_file_uploads(missing_blank=True):
-            file_download_url = cls._get_url_by_file_key(file_upload.key)
-            if file_download_url:
+        for file_upload in answer.get_file_uploads(missing_blank=True, generate_urls=True):
+            if file_upload.url:
                 urls.append(
                     file_upload_api.FileDescriptor(
-                        download_url=file_download_url,
+                        download_url=file_upload.url,
                         description=file_upload.description,
                         name=file_upload.name,
                         size=file_upload.size,

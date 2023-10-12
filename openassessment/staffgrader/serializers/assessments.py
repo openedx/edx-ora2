@@ -11,7 +11,7 @@ class SubmissionDetailFileSerilaizer(serializers.Serializer):
     """
     Serialized info about a single file
     """
-    download_url = serializers.URLField()
+    download_url = serializers.URLField(source="url")
     description = serializers.CharField()
     name = serializers.CharField()
     size = serializers.IntegerField()
