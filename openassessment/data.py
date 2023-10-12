@@ -21,6 +21,7 @@ import requests
 
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
+from openassessment.fileupload.exceptions import FileUploadInternalError
 from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
 from openassessment.runtime_imports.functions import get_course_blocks, modulestore
 from openassessment.assessment.api import peer as peer_api
@@ -1315,11 +1316,12 @@ class SubmissionFileUpload:
 
     DEFAULT_DESCRIPTION = _("No description provided.")
 
-    def __init__(self, key, name=None, description=None, size=0):
+    def __init__(self, key, name=None, description=None, size=0, url=None):
         self.key = key
         self.name = name if name is not None else SubmissionFileUpload.generate_name_from_key(key)
         self.description = description if description is not None else SubmissionFileUpload.DEFAULT_DESCRIPTION
         self.size = size
+        self.url = url
 
     @staticmethod
     def generate_name_from_key(key):
@@ -1367,7 +1369,7 @@ class OraSubmissionAnswer:
         """
         raise NotImplementedError()
 
-    def get_file_uploads(self, missing_blank=False):
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         """
         Get the list of FileUploads for this submission
         """
@@ -1393,7 +1395,7 @@ class TextOnlySubmissionAnswer(OraSubmissionAnswer):
             self.text_responses = [part.get('text') for part in self.raw_answer.get('parts', [])]
         return self.text_responses
 
-    def get_file_uploads(self, missing_blank=False):
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         return []
 
 
@@ -1510,7 +1512,20 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
         except IndexError:
             return default
 
-    def get_file_uploads(self, missing_blank=False):
+    def _safe_get_download_url(self, key):
+        """ Helper to get a download URL """
+        try:
+            return get_download_url(key)
+        except FileUploadInternalError as exc:
+            logger.exception(
+                "FileUploadError: Download url for file key %s failed with error %s",
+                key,
+                exc,
+                exc_info=True
+            )
+            return None
+
+    def get_file_uploads(self, missing_blank=False, generate_urls=False):
         """
         Parse and cache file upload responses from the raw_answer
         """
@@ -1530,8 +1545,14 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
                 name = self._index_safe_get(i, file_names, default_missing_value)
                 description = self._index_safe_get(i, file_descriptions, default_missing_value)
                 size = self._index_safe_get(i, file_sizes, 0)
-
-                file_upload = SubmissionFileUpload(key, name=name, description=description, size=size)
+                url = None if not generate_urls else self._safe_get_download_url(key)
+                file_upload = SubmissionFileUpload(
+                    key,
+                    name=name,
+                    description=description,
+                    size=size,
+                    url=url
+                )
                 files.append(file_upload)
             self.file_uploads = files
         return self.file_uploads

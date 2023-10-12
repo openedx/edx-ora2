@@ -372,7 +372,7 @@ class StaffGraderMixin:
         return {
             'files': [
                 SubmissionDetailFileSerilaizer(file_data).data
-                for file_data in self.get_download_urls_from_submission(submission)
+                for file_data in answer.get_file_uploads(generate_urls=True)
             ],
             'text': answer.get_text_responses()
         }

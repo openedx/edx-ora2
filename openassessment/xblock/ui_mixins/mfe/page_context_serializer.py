@@ -11,15 +11,11 @@ from rest_framework.serializers import (
     Serializer,
     SerializerMethodField,
 )
-
 from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
 )
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
-from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
-    SubmissionSerializer,
-)
-
 from .ora_config_serializer import RubricConfigSerializer
 
 
@@ -275,12 +271,10 @@ class PageDataSerializer(Serializer):
         2) In the "assessment" view, we get an assessment for the current assessment step.
         """
         # pylint: disable=broad-exception-raised
-
         # Submission Views
         if self.context.get("view") == "submission":
-            return SubmissionSerializer(instance.submission_data).data
-
-        # Assessment Views
+            learner_page_data_submission_data = instance.get_learner_submission_data()
+            return PageDataSubmissionSerializer(learner_page_data_submission_data).data
         elif self.context.get("view") == "assessment":
             # Can't view assessments without completing submission
             if self.context["step"] == "submission":

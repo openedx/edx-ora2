@@ -19,7 +19,7 @@ from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageData
 
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.AssessmentResponseSerializer")
-    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.SubmissionSerializer")
+    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.PageDataSubmissionSerializer")
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_submission_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the submission view
@@ -33,7 +33,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         mock_assessment_serializer.assert_not_called()
 
     @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.AssessmentResponseSerializer")
-    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.SubmissionSerializer")
+    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.PageDataSubmissionSerializer")
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_assessment_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the assessment view
