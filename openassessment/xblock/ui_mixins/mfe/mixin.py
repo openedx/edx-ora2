@@ -23,7 +23,7 @@ from openassessment.xblock.apis.submissions.errors import (
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
-from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import UploadFileRequestSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import AddFileRequestSerializer
 
 
 class OraApiException(JsonHandlerError):
@@ -137,7 +137,7 @@ class MfeMixin:
         return None
 
     def _file_add(self, data):
-        serializer = UploadFileRequestSerializer(data=data)
+        serializer = AddFileRequestSerializer(data=data)
         if not serializer.is_valid():
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
         file_to_add = serializer.validated_data
