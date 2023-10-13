@@ -78,7 +78,7 @@ class MfeMixin:
         except DraftSaveException as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION) from e
 
-    def _submission_create(self, data):
+    def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
             submissions_actions.submit(data, self.config_data, self.submission_data, self.workflow_data)

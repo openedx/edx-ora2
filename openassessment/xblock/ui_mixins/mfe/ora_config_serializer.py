@@ -20,7 +20,7 @@ from openassessment.xblock.ui_mixins.mfe.serializer_utils import (
     CharListField,
     IsRequiredField,
 )
-from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import (
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     InProgressResponseSerializer,
     SubmissionSerializer,
     TeamInfoSerializer,
