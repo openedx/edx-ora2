@@ -277,12 +277,7 @@ def append_file_data(file_data, block_config, submission_info):
         })
     """
     try:
-        submission_info.files.file_manager.append_uploads(*file_data)
-        # Emit analytics event...
-        block_config.publish_event(
-            "openassessmentblock.save_files_descriptions",
-            {"saved_response": submission_info.files.saved_files_descriptions},
-        )
+        new_files = submission_info.files.file_manager.append_uploads(*file_data)
     except FileUploadError as exc:
         logger.exception(
             "append_file_data: file description for data %s failed with error %s", file_data, exc, exc_info=True
@@ -293,6 +288,13 @@ def append_file_data(file_data, block_config, submission_info):
             "append_file_data: unhandled exception for data %s. Error: %s", file_data, exc, exc_info=True
         )
         raise FileUploadError(exc) from exc
+
+    # Emit analytics event...
+    block_config.publish_event(
+        "openassessmentblock.save_files_descriptions",
+        {"saved_response": submission_info.files.saved_files_descriptions},
+    )
+    return new_files
 
 
 def remove_uploaded_file(file_index, block_config, submission_info):
@@ -345,7 +347,7 @@ def get_upload_url(content_type, file_name, file_index, block_config, submission
 
     # Validate that there are no data issues and file type is allowed
     if not submission_info.files.is_supported_upload_type(file_ext, content_type):
-        raise UnsupportedFileTypeException()
+        raise UnsupportedFileTypeException(file_ext)
 
     # Attempt to upload
     try:
