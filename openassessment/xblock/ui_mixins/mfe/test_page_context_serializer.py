@@ -84,7 +84,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... along with these always-none fields assessments
         self.assertIsNone(response_data["hasSubmitted"])
         self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["hasReceivedGrade"])
         self.assertIsNone(response_data["teamInfo"])
 
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
@@ -119,7 +118,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... along with these always-none fields assessments
         self.assertIsNone(response_data["hasSubmitted"])
         self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["hasReceivedGrade"])
         self.assertIsNone(response_data["teamInfo"])
 
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
@@ -139,7 +137,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... along with these always-none fields assessments
         self.assertIsNone(response_data["hasSubmitted"])
         self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["hasReceivedGrade"])
         self.assertIsNone(response_data["teamInfo"])
 
     @scenario("data/staff_grade_scenario.xml", user_id="Alan")

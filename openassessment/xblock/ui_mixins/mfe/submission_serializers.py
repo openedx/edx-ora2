@@ -98,7 +98,6 @@ class PageDataSubmissionSerializer(Serializer):
     """
     hasSubmitted = BooleanField(source="workflow.has_submitted")
     hasCancelled = BooleanField(source="workflow.has_cancelled", default=False)
-    hasRecievedGrade = BooleanField(source="workflow.has_recieved_grade", default=False)
     teamInfo = TeamInfoSerializer(source="team_info")
     response = SerializerMethodField(source="*")
 

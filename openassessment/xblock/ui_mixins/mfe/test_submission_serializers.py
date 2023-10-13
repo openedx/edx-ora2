@@ -239,7 +239,6 @@ class TestPageDataSubmissionSerializer(TestCase):
         assert PageDataSubmissionSerializer(data).data == {
             'hasSubmitted': False,
             'hasCancelled': False,
-            'hasRecievedGrade': False,
             'teamInfo': {
                 'teamName': 'Team1',
                 'teamUsernames': ['Bob', 'Alice'],
@@ -291,7 +290,6 @@ class TestPageDataSubmissionSerializer(TestCase):
             'workflow': {
                 'has_submitted': True,
                 'has_cancelled': False,
-                'has_recieved_grade': True,
             },
             'team_info': {
                 'team_name': 'Team1',
@@ -316,7 +314,6 @@ class TestPageDataSubmissionSerializer(TestCase):
         assert PageDataSubmissionSerializer(data).data == {
             'hasSubmitted': True,
             'hasCancelled': False,
-            'hasRecievedGrade': True,
             'teamInfo': {
                 'teamName': 'Team1',
                 'teamUsernames': ['Bob', 'Alice'],
