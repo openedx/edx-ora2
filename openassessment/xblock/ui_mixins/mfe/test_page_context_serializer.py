@@ -252,7 +252,16 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             "activeStepName": "submission",
             "hasReceivedFinalGrade": False,
             "receivedGrades": {},
-            "stepInfo": {"peer": None, "self": None},
+            "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": False,
+                    "hasCancelled": False,
+                },
+                "peer": None,
+                "self": None
+            },
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
@@ -275,6 +284,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "studentTraining": {
                     "closed": False,
                     "closedReason": None,
@@ -311,6 +326,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": True,
+                    "closedReason": "pastDue",
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "studentTraining": {
                     "closed": True,
                     "closedReason": "pastDue",
@@ -347,6 +368,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "studentTraining": {
                     "closed": True,
                     "closedReason": "notAvailableYet",
@@ -383,6 +410,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "peer": {
                     "closed": False,
                     "closedReason": None,
@@ -413,6 +446,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "self": {
                     "closed": False,
                     "closedReason": None,
@@ -441,6 +480,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": True,
+                    "closedReason": "pastDue",
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "peer": None,
                 "self": {
                     "closed": True,
@@ -470,6 +515,12 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                },
                 "peer": None,
                 "self": {
                     "closed": True,

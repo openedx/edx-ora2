@@ -96,8 +96,6 @@ class PageDataSubmissionSerializer(Serializer):
     """
     Main serializer for learner submission status / info
     """
-    hasSubmitted = BooleanField(source="workflow.has_submitted")
-    hasCancelled = BooleanField(source="workflow.has_cancelled", default=False)
     teamInfo = TeamInfoSerializer(source="team_info")
     response = SerializerMethodField(source="*")
 

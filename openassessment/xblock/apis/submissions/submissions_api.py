@@ -38,7 +38,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def has_been_cancelled(self):
-        return self.workflow and self.workflow["status"] == "cancelled"
+        return bool(self.workflow) and self.workflow["status"] == "cancelled"
 
     @property
     def cancellation_info(self):

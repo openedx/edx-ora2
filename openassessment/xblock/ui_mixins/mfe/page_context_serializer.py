@@ -95,6 +95,19 @@ class StepInfoBaseSerializer(ClosedInfoSerializer):
         return super().to_representation(instance)
 
 
+class SubmissionStepInfoSerializer(ClosedInfoSerializer):
+    """
+    Returns:
+        {
+            hasSubmitted: (Bool, Null for Assessment)
+            hasCancelled: (Bool, Null for Assessment)
+        }
+    """
+
+    hasSubmitted = BooleanField(source="has_submitted")
+    hasCancelled = BooleanField(source="has_been_cancelled", default=False)
+
+
 class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
@@ -172,6 +185,7 @@ class StepInfoSerializer(Serializer):
 
     require_context = True
 
+    submission = SubmissionStepInfoSerializer(source="submission_data")
     studentTraining = StudentTrainingStepInfoSerializer(source="student_training_data")
     peer = PeerStepInfoSerializer(source="peer_assessment_data")
     _self = SelfStepInfoSerializer(source="self_data")
@@ -207,7 +221,7 @@ class ProgressSerializer(Serializer):
     Returns:
     {
         // What step are we on? An index to the configuration from ORA config call.
-        activeStepName: (String) one of ["studentTraining", "peer", "self", "staff"]
+        activeStepName: (String) one of ["submission", "studentTraining", "peer", "self", "staff", "done]
 
         hasReceivedFinalGrade: (Bool) // In effect, is the ORA complete?
         receivedGrades: (Object) Staff grade data, when there is a completed staff grade.

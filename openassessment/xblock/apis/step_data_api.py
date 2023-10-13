@@ -34,6 +34,8 @@ class StepDataAPI:
     @property
     def has_reached_step(self):
         """Util for determining if we have reached or surpassed this step"""
+        if self._step == "submission":
+            return True
         if self.workflow_data.status == self._step:
             return True
         step_info = self.workflow_data.status_details.get(str(self._step), {})
