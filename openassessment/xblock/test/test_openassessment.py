@@ -148,6 +148,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # always include grade and submission.
         # assessments from rubric are loaded into the ui model.
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 4)
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], dict(
@@ -165,6 +166,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # peer and self assessment types are not included in VALID_ASSESSMENT_TYPES_FOR_TEAMS
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 2)
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
@@ -193,6 +195,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.leaderboard_show = 10
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         self.assertEqual(len(models), 2)
         self.assertEqual(models[0], UI_MODELS["submission"])
         self.assertEqual(models[1], UI_MODELS["grade"])
@@ -581,6 +584,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_not_required(self, xblock):
         xblock.mfe_views_enabled = True
+        StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
 

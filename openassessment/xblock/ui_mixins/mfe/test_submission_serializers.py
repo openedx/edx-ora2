@@ -3,7 +3,7 @@ from unittest import TestCase
 import ddt
 
 from openassessment.fileupload.api import FileDescriptor, TeamFileDescriptor
-from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers import (
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     InProgressResponseSerializer,
     SubmissionSerializer,
     TeamInfoSerializer,

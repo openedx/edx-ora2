@@ -27,6 +27,10 @@ from openassessment.xblock.ui_mixins.mfe.serializers.submission_serializers impo
 
 
 class OraApiException(JsonHandlerError):
+    """
+    JsonHandlerError subclass that when thrown results in a response with the
+    given HTTP status code, and a body consisting of the given error code and context.
+    """
     def __init__(self, status_code, error_code, error_context=''):
         super().__init__(
             status_code,
@@ -51,11 +55,19 @@ class MfeMixin:
 
     @XBlock.json_handler
     def get_block_learner_assessment_data(self, data, suffix=""):  # pylint: disable=unused-argument
-        serializer_context = {"view": "assessment"}
+        serializer_context = {"view": "assessment", "step": suffix}
+
+        # Allow jumping to a specific step, within our allowed steps
+        # NOTE should probably also verify this step is in our assessment steps
+        # though the serializer also covers for this currently
+        jumpable_steps = "peer"
+        if suffix in jumpable_steps:
+            serializer_context.update({"jump_to_step": suffix})
+
         page_context = PageDataSerializer(self, context=serializer_context)
         return page_context.data
 
-    def _submission_draft(self, data):
+    def _submission_draft_handler(self, data):
         try:
             student_submission_data = data['response']['text_responses']
             submissions_actions.save_submission_draft(student_submission_data, self.config_data, self.submission_data)
@@ -92,9 +104,9 @@ class MfeMixin:
     @XBlock.json_handler
     def submission(self, data, suffix=""):
         if suffix == handler_suffixes.SUBMISSION_DRAFT:
-            return self._submission_draft(data)
+            return self._submission_draft_handler(data)
         elif suffix == handler_suffixes.SUBMISSION_SUBMIT:
-            return self._submission_create(data)
+            return self._submission_create_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 

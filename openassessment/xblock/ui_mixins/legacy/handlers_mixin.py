@@ -26,6 +26,7 @@ from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
 from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
+from openassessment.xblock.apis.submissions import submissions_actions
 
 logger = logging.getLogger(__name__)
 

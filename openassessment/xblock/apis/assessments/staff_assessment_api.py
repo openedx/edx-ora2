@@ -38,6 +38,10 @@ class StaffAssessmentAPI(StepDataAPI):
             self.config_data.prompts, self.config_data.rubric_criteria_with_labels
         )
 
+    @property
+    def assessment(self):
+        return staff_api.get_assessment(self.workflow_data.workflow.get("submission_uuid"))
+
     def create_team_assessment(self, data):
         team_submission = team_sub_api.get_team_submission_from_individual_submission(
             data["submission_uuid"]
