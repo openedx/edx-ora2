@@ -110,7 +110,7 @@ class MfeMixin:
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 
-    def _file_delete(self, data):
+    def _file_delete_handler(self, data):
         try:
             file_index = int(data['fileIndex'])
         except (KeyError, ValueError) as e:
@@ -136,7 +136,7 @@ class MfeMixin:
                 return file_entry
         return None
 
-    def _file_add(self, data):
+    def _file_add_handler(self, data):
         serializer = AddFileRequestSerializer(data=data)
         if not serializer.is_valid():
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
@@ -184,9 +184,9 @@ class MfeMixin:
     @XBlock.json_handler
     def file(self, data, suffix=""):
         if suffix == handler_suffixes.FILE_DELETE:
-            return self._file_delete(data)
+            return self._file_delete_handler(data)
         elif suffix == handler_suffixes.FILE_ADD:
-            return self._file_add(data)
+            return self._file_add_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 
