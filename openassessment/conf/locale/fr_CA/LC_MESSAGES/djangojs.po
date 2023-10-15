@@ -58,7 +58,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-24 18:36+0000\n"
+"POT-Creation-Date: 2023-10-01 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:04+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2016,2018-2023\n"
 "Language-Team: French (Canada) (http://app.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -272,7 +272,7 @@ msgstr "Annuler"
 #: xblock/static/js/src/lms/oa_response.js:253
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
-msgstr "Le téléchargement du fichier est toujours en cours. Veuillez patienter jusqu'à ce qu'il soit terminé."
+msgstr "Le téléversement du fichier est toujours en cours. Veuillez patienter jusqu'à ce qu'il soit terminé."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:243
@@ -282,7 +282,7 @@ msgstr "Impossible de soumettre une réponse vide même si tout est facultatif."
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:235
 msgid "Please upload a file."
-msgstr "Veuillez télécharger un fichier."
+msgstr "Veuillez téléverser un fichier."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:228
@@ -292,12 +292,12 @@ msgstr "Veuillez fournir une réponse."
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:328
 msgid "No files selected for upload."
-msgstr "Aucun fichier sélectionné pour le téléchargement."
+msgstr "Aucun fichier sélectionné pour le téléversement."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:335
 msgid "Please provide a description for each file you are uploading."
-msgstr "Veuillez fournir une description pour chaque fichier que vous téléchargez."
+msgstr "Veuillez fournir une description pour chaque fichier que vous téléversez."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:344
@@ -307,7 +307,7 @@ msgstr "Votre fichier a été supprimé ou le chemin a été modifié :"
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:439
 msgid "Saving draft"
-msgstr "Enregistrer le brouillon"
+msgstr "Enregistrement du brouillon"
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:369
 #: xblock/static/js/src/lms/oa_response.js:446
@@ -485,7 +485,7 @@ msgstr "Il y a {stuck_learners} apprenants dans l'étape d'attente, c'est-à-dir
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
-msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par l'outil de remplacement du personnel."
+msgstr "Toutefois, {overwritten_count} étudiants ont déjà reçu une note fournie par le personnel."
 
 #: xblock/static/dist/openassessment-lms.d876ac9af6fabe98df40.js:375
 msgid "Error while fetching student data."
