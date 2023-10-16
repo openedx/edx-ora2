@@ -5,6 +5,7 @@ These are the response shapes that power the MFE implementation of the ORA UI.
 """
 # pylint: disable=abstract-method
 
+from rest_framework.fields import ValidationError
 from rest_framework.serializers import (
     BooleanField,
     IntegerField,
@@ -256,50 +257,33 @@ class PageDataSerializer(Serializer):
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
-        # Loading workflow status causes a workflow refresh
-        # ... limit this to one refresh per page call
-        if not self.context.get("step"):
-            active_step = instance.workflow_data.status or "submission"
-            self.context.update({"step": active_step})
+        if not "step" in self.context:
+            raise ValidationError(f"Missing required context: step")
+        if not "view" in self.context:
+            raise ValidationError(f"Missing required context: view")
 
         return super().to_representation(instance)
-
-    def _can_jump_to_step(self, workflow_step, workflow_data, step_name):
-        """
-        Helper to determine if a student can jump to a specific step:
-        1) Student is on that step.
-        2) Student has completed that step.
-
-        NOTE that this should probably happen at the handler level, but for
-        added safety, check here as well.
-        """
-        if step_name == workflow_step:
-            return True
-        step_status = workflow_data.status_details.get(step_name, {})
-        return step_status.get("complete", False)
 
     def get_response(self, instance):
         """
         we get the user's draft / complete submission.
         """
         # pylint: disable=broad-exception-raised
+
         # Submission Views
         if self.context.get("view") == "submission":
             learner_page_data_submission_data = instance.get_learner_submission_data()
             return PageDataSubmissionSerializer(learner_page_data_submission_data).data
+
         # Assessment Views
         elif self.context.get("view") == "assessment":
             # Can't view assessments without completing submission
             if self.context["step"] == "submission":
                 raise Exception("Cannot view assessments without having completed submission.")
 
-            # If the student is trying to jump to a step, verify they can
-            jump_to_step = self.context.get("jump_to_step")
-            workflow_step = self.context["step"]
-            if jump_to_step and not self._can_jump_to_step(workflow_step, instance.workflow_data, jump_to_step):
-                raise Exception(f"Can't jump to {jump_to_step} step before completion")
-
             # Go to the current step, or jump to the selected step
+            jump_to_step = self.context.get("jump_to_step", None)
+            workflow_step = self.context["step"]
             active_step = jump_to_step or workflow_step
 
             if active_step == "training":

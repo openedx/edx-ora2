@@ -23,7 +23,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_submission_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the submission view
-        context = {"view": "submission"}
+        context = {"view": "submission", "step": "submission"}
 
         # When I ask for my submission data
         _ = PageDataSerializer(xblock, context=context).data
@@ -38,7 +38,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     def test_assessment_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the assessment view
         self.create_test_submission(xblock)
-        context = {"view": "assessment"}
+        context = {"view": "assessment", "step": "peer"}
 
         # When I ask for assessment data
         _ = PageDataSerializer(xblock, context=context).data
@@ -61,6 +61,8 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_submission(self, xblock):
         # Given we are asking for assessment data too early (still on submission step)
+        self.context = {"view": "assessment", "step": "submission"}
+
         # When I load my response
         # Then I get an Exception
         with self.assertRaises(Exception):
@@ -70,6 +72,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     def test_student_training(self, xblock):
         # Given we are on the student training step
         self.create_test_submission(xblock)
+        self.context = {"view": "assessment", "step": "training"}
 
         # When I load my response
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
@@ -106,6 +109,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock, student_item=student_item, submission_text=text_responses)
 
         # When I load my response
+        self.context = {"view": "assessment", "step": "peer"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
@@ -128,6 +132,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... but with no responses to assess
 
         # When I load my response
+        self.context = {"view": "assessment", "step": "peer"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
@@ -145,6 +150,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
+        self.context = {"view": "assessment", "step": "staff"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
@@ -157,6 +163,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
+        self.context = {"view": "assessment", "step": "staff"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
@@ -167,7 +174,9 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     def test_done_response(self, xblock):
         # Given I'm on the done step
         self.create_submission_and_assessments(xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT)
+
         # When I load my response
+        self.context = {"view": "assessment", "step": "done"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
@@ -192,6 +201,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_submission_and_assessments(xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None)
 
         # When I try to jump back to that step
+        self.context = {"view": "assessment", "step": "done"}
         self.context["jump_to_step"] = "peer"
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
@@ -208,6 +218,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I try to jump to a bad step
+        self.context = {"view": "assessment", "step": "peer"}
         self.context["jump_to_step"] = "to the left"
 
         # Then I expect the serializer to raise an exception
@@ -215,19 +226,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # this context when the step name is valid.
         with self.assertRaises(Exception):
             _ = PageDataSerializer(xblock, context=self.context).data
-
-    @scenario("data/student_training.xml", user_id="Bernard")
-    def test_jump_to_inaccessible_step(self, xblock):
-        # Given I'm on an early step like student training
-        self.create_test_submission(xblock)
-
-        # When I try to jump ahead to a step I can't yet access
-        self.context["jump_to_step"] = "peer"
-
-        # Then I expect the serializer to raise an exception
-        with self.assertRaises(Exception):
-            _ = PageDataSerializer(xblock, context=self.context).data
-
 
 class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     # Show full dict diffs
