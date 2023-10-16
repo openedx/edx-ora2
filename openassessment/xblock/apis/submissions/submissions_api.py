@@ -196,7 +196,7 @@ class SubmissionAPI(StepDataAPI):
             # for shared files lookup. If the learner has submitted already for a different team
             # and then joined another team, we should show the submission that they are actually a part of,
             # rather than just their current team. If they have a submission (and therefore a workflow) then
-            # that takes precidence.
+            # that takes precedence.
             team_submission = get_team_submission(workflow['team_submission_uuid'])
             team_id = team_submission['team_id']
         return team_info, team_id
