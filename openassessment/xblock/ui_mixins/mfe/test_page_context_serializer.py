@@ -4,7 +4,12 @@ Tests for PageDataSerializer
 from copy import deepcopy
 
 from json import dumps, loads
-from unittest.mock import patch
+from unittest import TestCase
+from unittest.case import skip
+from unittest.mock import Mock, patch
+from uuid import uuid4
+from openassessment.fileupload.api import TeamFileDescriptor
+from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
 
 
 from openassessment.xblock.test.base import (
@@ -14,7 +19,8 @@ from openassessment.xblock.test.base import (
     XBlockHandlerTestCase,
     scenario,
 )
-from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer, ProgressSerializer
+from openassessment.xblock.test.test_submission import setup_mock_team
+from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer, ProgressSerializer, TeamInfoSerializer
 
 
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
@@ -256,6 +262,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": False,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "peer": None,
                 "self": None
@@ -287,6 +294,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "studentTraining": {
                     "closed": False,
@@ -329,6 +337,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": "pastDue",
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "studentTraining": {
                     "closed": True,
@@ -371,6 +380,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "studentTraining": {
                     "closed": True,
@@ -413,6 +423,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "peer": {
                     "closed": False,
@@ -449,6 +460,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "self": {
                     "closed": False,
@@ -483,6 +495,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": "pastDue",
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "peer": None,
                 "self": {
@@ -518,6 +531,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "teamInfo": {},
                 },
                 "peer": None,
                 "self": {
@@ -528,3 +542,88 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
+
+    @skip
+    @scenario("data/team_submission.xml", user_id="Alan")
+    def test_team_assignment(self, xblock):
+        # Given I am on a team assignment
+        setup_mock_team(xblock)
+        xblock.is_team_assignment = Mock(return_value=True)
+        self.create_test_submission(xblock)
+
+        create_team_submission(
+            xblock.get_student_item_dict(),
+            {"answer": {"parts": ["a", "b"]}},
+            xblock.config_data,
+            xblock.submission_data,
+            xblock.workflow_data
+        )
+
+        # When I ask for progress
+        context = {"step": "staff"}
+        progress_data = ProgressSerializer(xblock, context=context).data
+
+        # Then I get the expected shapes
+        expected_data = {
+            "activeStepName": "staff",
+            "hasReceivedFinalGrade": False,
+            "receivedGrades": {
+                # NOTE - Teams actually have a different step type that should go here
+            },
+            "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {
+                        "teamName": "Red Squadron",
+                        "teamUsernames": ["Red Leader", "Red Two", "Red Five"],
+                        "previousTeamName": None,
+                        "hasSubmitted": True,
+                    },
+                },
+            },
+        }
+
+        self.assertNestedDictEquals(expected_data, progress_data)
+
+class TestTeamInfoSerializer(TestCase):
+    def test_serialize(self):
+        team_info = {
+            'team_name': 'Team1',
+            'team_usernames': ['Bob', 'Alice'],
+            'previous_team_name': 'Team4',
+            'has_submitted': True,
+            'team_uploaded_files': [
+                TeamFileDescriptor('www.example.com/files/123', 'desc-123', 'name-123', 123, 'Chrissy')._asdict(),
+                TeamFileDescriptor('www.example.com/files/5555', 'desc-5555', 'name-5555', 5555, 'Billy')._asdict(),
+            ]
+        }
+        assert TeamInfoSerializer(team_info).data == {
+            'teamName': 'Team1',
+            'teamUsernames': ['Bob', 'Alice'],
+            'previousTeamName': 'Team4',
+            'hasSubmitted': True,
+        }
+
+    def test_no_team(self):
+        team_info = {
+            'team_uploaded_files': []
+        }
+        assert not TeamInfoSerializer(team_info).data
+
+    def test_no_files(self):
+        team_info = {
+            'team_name': 'Team1',
+            'team_usernames': ['Bob', 'Alice'],
+            'previous_team_name': None,
+            'has_submitted': False,
+            'team_uploaded_files': []
+        }
+        assert TeamInfoSerializer(team_info).data == {
+            'teamName': 'Team1',
+            'teamUsernames': ['Bob', 'Alice'],
+            'previousTeamName': None,
+            'hasSubmitted': False,
+        }

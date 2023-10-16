@@ -6,7 +6,6 @@ from openassessment.fileupload.api import FileDescriptor, TeamFileDescriptor
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
     InProgressResponseSerializer,
     SubmissionSerializer,
-    TeamInfoSerializer,
     PageDataSubmissionSerializer
 )
 from openassessment.data import OraSubmissionAnswer, SubmissionFileUpload
@@ -139,63 +138,6 @@ class TestInProgressResponseSerializer(TestCase):
         }
 
 
-class TestTeamInfoSerializer(TestCase):
-    def test_serialize(self):
-        team_info = {
-            'team_name': 'Team1',
-            'team_usernames': ['Bob', 'Alice'],
-            'previous_team_name': 'Team4',
-            'has_submitted': True,
-            'team_uploaded_files': [
-                TeamFileDescriptor('www.mysite.com/files/123', 'desc-123', 'name-123', 123, 'Chrissy')._asdict(),
-                TeamFileDescriptor('www.mysite.com/files/5555', 'desc-5555', 'name-5555', 5555, 'Billy')._asdict(),
-            ]
-        }
-        assert TeamInfoSerializer(team_info).data == {
-            'teamName': 'Team1',
-            'teamUsernames': ['Bob', 'Alice'],
-            'previousTeamName': 'Team4',
-            'hasSubmitted': True,
-            'teamUploadedFiles': [
-                {
-                    'fileUrl': 'www.mysite.com/files/123',
-                    'fileDescription': 'desc-123',
-                    'fileName': 'name-123',
-                    'fileSize': 123,
-                    'uploadedBy': 'Chrissy'
-                },
-                {
-                    'fileUrl': 'www.mysite.com/files/5555',
-                    'fileDescription': 'desc-5555',
-                    'fileName': 'name-5555',
-                    'fileSize': 5555,
-                    'uploadedBy': 'Billy'
-                }
-            ]
-        }
-
-    def test_no_team(self):
-        team_info = {
-            'team_uploaded_files': []
-        }
-        assert not TeamInfoSerializer(team_info).data
-
-    def test_no_files(self):
-        team_info = {
-            'team_name': 'Team1',
-            'team_usernames': ['Bob', 'Alice'],
-            'previous_team_name': None,
-            'has_submitted': False,
-            'team_uploaded_files': []
-        }
-        assert TeamInfoSerializer(team_info).data == {
-            'teamName': 'Team1',
-            'teamUsernames': ['Bob', 'Alice'],
-            'previousTeamName': None,
-            'hasSubmitted': False,
-            'teamUploadedFiles': [],
-        }
-
 
 @ddt.ddt
 class TestPageDataSubmissionSerializer(TestCase):
@@ -237,28 +179,6 @@ class TestPageDataSubmissionSerializer(TestCase):
             ]
         }
         assert PageDataSubmissionSerializer(data).data == {
-            'teamInfo': {
-                'teamName': 'Team1',
-                'teamUsernames': ['Bob', 'Alice'],
-                'previousTeamName': None,
-                'hasSubmitted': False,
-                'teamUploadedFiles': [
-                    {
-                        'fileUrl': 'www.mysite.com/files/123',
-                        'fileDescription': 'desc-123',
-                        'fileName': 'name-123',
-                        'fileSize': 123,
-                        'uploadedBy': 'Bob'
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/5555',
-                        'fileDescription': 'desc-5555',
-                        'fileName': 'name-5555',
-                        'fileSize': 5555,
-                        'uploadedBy': 'Billy'
-                    }
-                ]
-            },
             'response': {
                 'textResponses': [
                     'Response to prompt 1',
@@ -279,6 +199,22 @@ class TestPageDataSubmissionSerializer(TestCase):
                         'fileSize': 22,
                         'fileIndex': 1
                     }
+                    # 'teamUploadedFiles': [
+                    #     {
+                    #         'fileUrl': 'www.mysite.com/files/123',
+                    #         'fileDescription': 'desc-123',
+                    #         'fileName': 'name-123',
+                    #         'fileSize': 123,
+                    #         'uploadedBy': 'Bob'
+                    #     },
+                    #     {
+                    #         'fileUrl': 'www.mysite.com/files/5555',
+                    #         'fileDescription': 'desc-5555',
+                    #         'fileName': 'name-5555',
+                    #         'fileSize': 5555,
+                    #         'uploadedBy': 'Billy'
+                    #     }
+                    # ]
                 ]
             }
         }
@@ -311,12 +247,6 @@ class TestPageDataSubmissionSerializer(TestCase):
             'file_data': []
         }
         assert PageDataSubmissionSerializer(data).data == {
-            'teamInfo': {
-                'teamName': 'Team1',
-                'teamUsernames': ['Bob', 'Alice'],
-                'previousTeamName': None,
-                'hasSubmitted': True,
-            },
             'response': {
                 'textResponses': [
                     'Response to prompt 1',

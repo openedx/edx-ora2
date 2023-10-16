@@ -5,7 +5,7 @@ These are the response shapes that power the MFE implementation of the ORA UI.
 """
 # pylint: disable=abstract-method
 
-from rest_framework.fields import ValidationError
+from rest_framework.fields import ValidationError, CharField
 from rest_framework.serializers import (
     BooleanField,
     IntegerField,
@@ -17,7 +17,7 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
 )
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
-from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
+from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS, CharListField
 
 
 class AssessmentScoreSerializer(Serializer):
@@ -47,6 +47,7 @@ class ReceivedGradesSerializer(Serializer):
     self = AssessmentScoreSerializer(source="grades.self_score")
     peer = AssessmentScoreSerializer(source="grades.peer_score")
     staff = AssessmentScoreSerializer(source="grades.staff_score")
+    # teams = AssessmentGradeSerializer(source="grades.teams_score")
 
     def to_representation(self, instance):
         """
@@ -96,20 +97,64 @@ class StepInfoBaseSerializer(ClosedInfoSerializer):
         return super().to_representation(instance)
 
 
+class TeamInfoSerializer(Serializer):
+    """
+    Returns: Empty object for individual assignments, or the below for team assignments
+    {
+        teamName: (String)
+        teamUsernames: (Array [String])
+
+        // Learner submitted on a previous team
+        previousTeamName: (String / Nullable)
+
+        // Current team has submitted response (learner may not have)
+        hasSubmitted: (Bool)
+    }
+    """
+    teamName = CharField(source="team_name")
+    teamUsernames = CharListField(source="team_usernames")
+    previousTeamName = CharField(source="previous_team_name", allow_null=True)
+    hasSubmitted = BooleanField(source="has_submitted")
+
+    def to_representation(self, instance):
+        # If there's no team name, there's no team info to show
+        if 'team_name' not in instance:
+            return {}
+        return super().to_representation(instance)
+
+
 class SubmissionStepInfoSerializer(ClosedInfoSerializer):
     """
     Returns:
         {
-            hasSubmitted: (Bool, Null for Assessment)
-            hasCancelled: (Bool, Null for Assessment)
             closed: (Bool / Null for Assessment)
             closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
+
+            hasSubmitted: (Bool, Null for Assessment)
+            hasCancelled: (Bool, Null for Assessment)
+
+            // Team info needed for team responses - Empty object for individual submissions
+            teamInfo: (Object, can be empty / Null for assessment)
+            {
+                See TeamInfoSerializer
+            }
         }
     """
 
     hasSubmitted = BooleanField(source="has_submitted")
     hasCancelled = BooleanField(source="has_been_cancelled", default=False)
 
+    teamInfo = SerializerMethodField()
+
+    def to_representation(self, instance):
+        return super().to_representation(instance)
+
+    def get_teamInfo(self, instance):
+        if not instance.is_team_assignment:
+            return {}
+        team_info, _ = instance.get_submission_team_info(instance.workflow)
+
+        return TeamInfoSerializer(team_info).data
 
 class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
     """

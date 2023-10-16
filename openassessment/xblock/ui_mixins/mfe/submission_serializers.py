@@ -65,38 +65,10 @@ class InProgressResponseSerializer(Serializer):
         return result
 
 
-class TeamFileDescriptorSerializer(Serializer):
-    fileUrl = URLField(source='download_url')
-    fileDescription = CharField(source='description')
-    fileName = CharField(source='name')
-    fileSize = IntegerField(source='size')
-    uploadedBy = CharField(source="uploaded_by")
-
-
-class TeamInfoSerializer(Serializer):
-    teamName = CharField(source="team_name")
-    teamUsernames = CharListField(source="team_usernames")
-    previousTeamName = CharField(source="previous_team_name", allow_null=True)
-    hasSubmitted = BooleanField(source="has_submitted")
-    teamUploadedFiles = ListField(
-        source="team_uploaded_files",
-        allow_empty=True,
-        child=TeamFileDescriptorSerializer(),
-        required=False
-    )
-
-    def to_representation(self, instance):
-        # If there's no team name, there's no team info to show
-        if 'team_name' not in instance:
-            return {}
-        return super().to_representation(instance)
-
-
 class PageDataSubmissionSerializer(Serializer):
     """
     Main serializer for learner submission status / info
     """
-    teamInfo = TeamInfoSerializer(source="team_info")
     response = SerializerMethodField(source="*")
 
     def get_response(self, data):

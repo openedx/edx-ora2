@@ -160,10 +160,6 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
             learner_submission_data = xblock.get_learner_submission_data()
             data = PageDataSubmissionSerializer(learner_submission_data).data
         assert data == {
-            'hasSubmitted': False,
-            'hasCancelled': False,
-            'hasRecievedGrade': False,
-            'teamInfo': {},
             'response': {
                 'textResponses': ['', ''],
                 'uploadedFiles': []
@@ -187,10 +183,6 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
             learner_submission_data = xblock.get_learner_submission_data()
             data = PageDataSubmissionSerializer(learner_submission_data).data
         assert data == {
-            'hasSubmitted': False,
-            'hasCancelled': False,
-            'hasRecievedGrade': False,
-            'teamInfo': {},
             'response': {
                 'textResponses': ['hello world', 'goodnight moon'],
                 'uploadedFiles': [
@@ -233,10 +225,6 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
             learner_submission_data = xblock.get_learner_submission_data()
             data = PageDataSubmissionSerializer(learner_submission_data).data
         assert data == {
-            'hasSubmitted': True,
-            'hasCancelled': False,
-            'hasRecievedGrade': False,
-            'teamInfo': {},
             'response': {
                 'textResponses': ['hello world', 'goodnight world'],
                 'uploadedFiles': [
@@ -277,19 +265,10 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
             learner_submission_data = xblock.get_learner_submission_data()
             data = PageDataSubmissionSerializer(learner_submission_data).data
         assert data == {
-            'hasSubmitted': False,
-            'hasCancelled': False,
-            'hasRecievedGrade': False,
-            'teamInfo': {
-                'teamName': 'Red Squadron',
-                'teamUsernames': ['Red Leader', 'Red Two', 'Red Five'],
-                'previousTeamName': None,
-                'hasSubmitted': False,
-                'teamUploadedFiles': [],
-            },
             'response': {
                 'textResponses': ['', ''],
-                'uploadedFiles': []
+                'uploadedFiles': [],
+                # 'teamUploadedFiles': []
             },
         }
 
@@ -331,31 +310,6 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
             learner_submission_data = xblock.get_learner_submission_data()
             data = PageDataSubmissionSerializer(learner_submission_data).data
         assert data == {
-            'hasSubmitted': False,
-            'hasCancelled': False,
-            'hasRecievedGrade': False,
-            'teamInfo': {
-                'teamName': 'Red Squadron',
-                'teamUsernames': ['Red Leader', 'Red Two', 'Red Five'],
-                'previousTeamName': None,
-                'hasSubmitted': False,
-                'teamUploadedFiles': [
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/shared1',
-                        'fileName': shared_file_1.name,
-                        'fileDescription': shared_file_1.description,
-                        'fileSize': shared_file_1.size,
-                        'uploadedBy': r1.username,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/shared2',
-                        'fileName': shared_file_2.name,
-                        'fileDescription': shared_file_2.description,
-                        'fileSize': shared_file_2.size,
-                        'uploadedBy': r2.username,
-                    },
-                ],
-            },
             'response': {
                 'textResponses': ['hello world', 'goodnight moon'],
                 'uploadedFiles': [
@@ -373,7 +327,23 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
                         'fileSize': 3,
                         'fileIndex': 1,
                     },
-                ]
+                ],
+                # 'teamUploadedFiles': [
+                #     {
+                #         'fileUrl': 'www.downloadfiles.xyz/shared1',
+                #         'fileName': shared_file_1.name,
+                #         'fileDescription': shared_file_1.description,
+                #         'fileSize': shared_file_1.size,
+                #         'uploadedBy': r1.username,
+                #     },
+                #     {
+                #         'fileUrl': 'www.downloadfiles.xyz/shared2',
+                #         'fileName': shared_file_2.name,
+                #         'fileDescription': shared_file_2.description,
+                #         'fileSize': shared_file_2.size,
+                #         'uploadedBy': r2.username,
+                #     },
+                # ],
             }
         }
 
@@ -399,15 +369,6 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
             learner_submission_data = xblock.get_learner_submission_data()
             data = PageDataSubmissionSerializer(learner_submission_data).data
         assert data == {
-            'hasSubmitted': True,
-            'hasCancelled': False,
-            'hasRecievedGrade': False,
-            'teamInfo': {
-                'teamName': 'Red Squadron',
-                'teamUsernames': ['Red Leader', 'Red Two', 'Red Five'],
-                'previousTeamName': None,
-                'hasSubmitted': True,
-            },
             'response': {
                 'textResponses': ['This is the answer'],
                 'uploadedFiles': [
