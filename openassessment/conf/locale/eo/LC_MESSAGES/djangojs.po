@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-25 18:28+0000\n"
+"POT-Creation-Date: 2023-10-16 10:26-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js xblock/static/js/src/oa_server.js
 #: xblock/static/js/src/oa_server.js
@@ -27,6 +28,7 @@ msgstr ""
 "Thïs séçtïön çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "The staff assessment form could not be loaded."
@@ -35,6 +37,7 @@ msgstr ""
 "¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "The display of ungraded and checked out responses could not be loaded."
@@ -43,6 +46,7 @@ msgstr ""
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "This response could not be submitted."
@@ -51,6 +55,7 @@ msgstr ""
 "¢σηѕє¢тєтυ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Please check your internet connection."
@@ -59,6 +64,7 @@ msgstr ""
 "¢σηѕє¢тєтυя#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "This feedback could not be submitted."
@@ -67,6 +73,7 @@ msgstr ""
 "¢σηѕє¢тєтυ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js xblock/static/js/src/oa_server.js
 #: xblock/static/js/src/oa_server.js
@@ -76,6 +83,7 @@ msgstr ""
 "¢σηѕє¢тєтυя#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "One or more rescheduling tasks failed."
@@ -84,6 +92,7 @@ msgstr ""
 "¢σηѕє¢тєтυя#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "This problem could not be saved."
@@ -91,6 +100,7 @@ msgstr ""
 "Thïs prößlém çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "The server could not be contacted."
@@ -98,18 +108,21 @@ msgstr ""
 "Thé sérvér çöüld nöt ßé çöntäçtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Could not retrieve upload url."
 msgstr "Çöüld nöt rétrïévé üplöäd ürl. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js xblock/static/js/src/oa_server.js
 msgid "Server error."
 msgstr "Sérvér érrör. Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Could not retrieve download url."
@@ -117,6 +130,7 @@ msgstr ""
 "Çöüld nöt rétrïévé döwnlöäd ürl. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "The submission could not be removed from the grading pool."
@@ -125,6 +139,7 @@ msgstr ""
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Multiple teams returned for course"
@@ -132,6 +147,7 @@ msgstr ""
 "Mültïplé téäms rétürnéd för çöürsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Could not load teams information."
@@ -139,101 +155,119 @@ msgstr ""
 "Çöüld nöt löäd téäms ïnförmätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "User lookup failed"
 msgstr "Ûsér lööküp fäïléd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Error when looking up username"
 msgstr "Érrör whén löökïng üp üsérnämé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/dist/openassessment-studio.979e8b88dd0d9cee68f7.js
 #: xblock/static/js/src/oa_server.js
 msgid "Failed to clone rubric"
 msgstr "Fäïléd tö çlöné rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "View and grade responses"
 msgstr "Vïéw änd grädé réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Demo the new Grading Experience"
 msgstr "Démö thé néw Grädïng Éxpérïénçé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Unit Name"
 msgstr "Ûnït Nämé Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Units"
 msgstr "Ûnïts Ⱡ'σяєм ιρѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Assessment"
 msgstr "Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Assessments"
 msgstr "Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Total Responses"
 msgstr "Tötäl Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Training"
 msgstr "Träïnïng Ⱡ'σяєм ιρѕυм ∂#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Peer"
 msgstr "Péér Ⱡ'σяєм ι#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Self"
 msgstr "Sélf Ⱡ'σяєм ι#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Waiting"
 msgstr "Wäïtïng Ⱡ'σяєм ιρѕυм #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Staff"
 msgstr "Stäff Ⱡ'σяєм ιρѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Final Grade Received"
 msgstr "Fïnäl Grädé Réçéïvéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Staff Grader"
 msgstr "Stäff Grädér Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "List of Open Assessments is unavailable"
 msgstr ""
@@ -241,32 +275,38 @@ msgstr ""
 "¢σηѕє¢тєтυя#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Please wait"
 msgstr "Pléäsé wäït Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Block view is unavailable"
 msgstr "Blöçk vïéw ïs ünäväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Back to Full List"
 msgstr "Bäçk tö Füll Lïst Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_confirmation_alert.js
 msgid "Confirm"
 msgstr "Çönfïrm Ⱡ'σяєм ιρѕυм #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_confirmation_alert.js
 msgid "Cancel"
 msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid ""
 "There is still file upload in progress. Please wait until it is finished."
@@ -275,6 +315,7 @@ msgstr ""
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Cannot submit empty response even everything is optional."
 msgstr ""
@@ -282,21 +323,25 @@ msgstr ""
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Please upload a file."
 msgstr "Pléäsé üplöäd ä fïlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Please provide a response."
 msgstr "Pléäsé prövïdé ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "No files selected for upload."
 msgstr "Nö fïlés séléçtéd för üplöäd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Please provide a description for each file you are uploading."
 msgstr ""
@@ -304,6 +349,7 @@ msgstr ""
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Your file has been deleted or path has been changed: "
 msgstr ""
@@ -311,11 +357,13 @@ msgstr ""
 " αмєт, ¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Saving draft"
 msgstr "Sävïng dräft Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
@@ -325,26 +373,31 @@ msgstr ""
 "lösé äný wörk ýöü hävé döné ön thé réspönsé. Ⱡ'σяєм ιρѕυ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Saving draft..."
 msgstr "Sävïng dräft... Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Draft saved!"
 msgstr "Dräft sävéd! Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Error"
 msgstr "Érrör Ⱡ'σяєм ιρѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Confirm Submit Response"
 msgstr "Çönfïrm Süßmït Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
@@ -360,6 +413,7 @@ msgstr ""
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαвσяυ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Individual file size must be {max_files_mb}MB or less."
 msgstr ""
@@ -367,6 +421,7 @@ msgstr ""
 "ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid ""
 "File upload failed: unsupported file type. Only the supported file types can"
@@ -382,6 +437,7 @@ msgstr ""
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηι#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "The maximum number files that can be saved is "
 msgstr ""
@@ -389,27 +445,32 @@ msgstr ""
 "¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Describe "
 msgstr "Désçrïßé  Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "(required):"
 msgstr "(réqüïréd): Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Thumbnail view of "
 msgstr "Thümßnäïl vïéw öf  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid "Confirm Delete Uploaded File"
 msgstr "Çönfïrm Délété Ûplöädéd Fïlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_response.js
 msgid ""
 "Are you sure you want to delete the following file? It cannot be restored.\n"
@@ -419,6 +480,7 @@ msgstr ""
 "Fïlé:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_self.js
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
@@ -428,18 +490,21 @@ msgstr ""
 "lösé äný wörk ýöü hävé döné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 msgid "Unexpected server error."
 msgstr "Ûnéxpéçtéd sérvér érrör. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 msgid "You must provide a learner name."
 msgstr ""
 "Ýöü müst prövïdé ä léärnér nämé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 msgid ""
 "This grade will be applied to all members of the team. Do you want to "
@@ -449,11 +514,13 @@ msgstr ""
 "çöntïnüé? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 msgid "Confirm Grade Team Submission"
 msgstr "Çönfïrm Grädé Téäm Süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 msgid "Error getting the number of ungraded responses"
 msgstr ""
@@ -461,6 +528,7 @@ msgstr ""
 "¢σηѕє¢тєтυя α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_staff_area.js
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
@@ -470,12 +538,14 @@ msgstr ""
 "lösé äný wörk ýöü hävé döné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_training.js
 msgid "Feedback available for selection."
 msgstr ""
 "Féédßäçk äväïläßlé för séléçtïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_peer.js
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
@@ -485,34 +555,42 @@ msgstr ""
 "lösé äný wörk ýöü hävé döné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Refresh"
 msgstr "Réfrésh Ⱡ'σяєм ιρѕυм #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Username"
 msgstr "Ûsérnämé Ⱡ'σяєм ιρѕυм ∂#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Peers Assessed"
 msgstr "Péérs Àssésséd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Peer Responses Received"
 msgstr "Péér Réspönsés Réçéïvéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Time Spent On Current Step"
 msgstr "Tïmé Spént Ön Çürrént Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Staff assessment"
 msgstr "Stäff ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Grade Status"
 msgstr "Grädé Stätüs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid ""
 "The \"{name}\" problem is configured to require a minimum of {min_grades} "
 "peer grades, and asks to review {min_graded} peers."
@@ -522,6 +600,7 @@ msgstr ""
 "αм#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid ""
 "There are currently {stuck_learners} learners in the waiting state, meaning "
 "they have not yet met all requirements for Peer Assessment. "
@@ -530,6 +609,7 @@ msgstr ""
 "théý hävé nöt ýét mét äll réqüïréménts för Péér Àsséssmént.  Ⱡ'σяєм ιρ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid ""
 "However, {overwritten_count} of these students have received a grade through"
 " the staff grade override tool already."
@@ -538,11 +618,13 @@ msgstr ""
 " thé stäff grädé övérrïdé tööl älréädý. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 msgid "Error while fetching student data."
 msgstr ""
 "Érrör whïlé fétçhïng stüdént dätä. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
+#: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
 #: xblock/static/js/src/lms/oa_base.js
 msgid "Unable to load"
 msgstr "Ûnäßlé tö löäd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
