@@ -107,3 +107,13 @@ class PageDataSubmissionSerializer(Serializer):
         if data['workflow']['has_submitted']:
             return SubmissionSerializer(data['response']).data
         return InProgressResponseSerializer(data).data
+
+
+class AddFileRequestSerializer(Serializer):
+    """
+    Input serializer for file/add handler
+    """
+    fileDescription = CharField(source='description')
+    fileName = CharField(source='name')
+    fileSize = IntegerField(source='size', min_value=0)
+    contentType = CharField()

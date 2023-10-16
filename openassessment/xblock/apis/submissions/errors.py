@@ -33,3 +33,15 @@ class StudioPreviewException(Exception):
 
 class MultipleSubmissionsException(Exception):
     pass
+
+
+class DeleteNotAllowed(Exception):
+    pass
+
+
+class OnlyOneFileAllowedException(Exception):
+    pass
+
+
+class UnsupportedFileTypeException(Exception):
+    pass

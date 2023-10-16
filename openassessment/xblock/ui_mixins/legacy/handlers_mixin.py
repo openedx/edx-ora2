@@ -5,33 +5,39 @@ import logging
 from xblock.core import XBlock
 from submissions import api as submissions_api
 
+from openassessment.fileupload.exceptions import FileUploadError
+from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
-    EmptySubmissionError,
-    DraftSaveException,
-    SubmissionValidationException,
     AnswerTooLongException,
-    SubmitInternalError,
+    DeleteNotAllowed,
+    DraftSaveException,
+    EmptySubmissionError,
+    MultipleSubmissionsException,
+    OnlyOneFileAllowedException,
     StudioPreviewException,
-    MultipleSubmissionsException
+    SubmissionValidationException,
+    SubmitInternalError,
+    UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
 from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
 from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
-from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import (
-    do_staff_assessment,
-    staff_assess,
-)
+from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
 from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
+from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
-from openassessment.xblock.ui_mixins.legacy.submissions.file_actions import (
-    save_files_descriptions,
-    upload_url,
-    download_url,
-    remove_uploaded_file,
-)
-from openassessment.xblock.apis.submissions import submissions_actions
 
 logger = logging.getLogger(__name__)
+
+
+def _safe_read_file_index(data, default):
+    """ Helper for remove_uploaded_file handler """
+    file_index = data.get("filenum", default)
+    try:
+        file_index = int(file_index)
+    except ValueError:
+        file_index = default
+    return file_index
 
 
 class LegacyHandlersMixin:
@@ -111,25 +117,85 @@ class LegacyHandlersMixin:
             return {'success': True, 'msg': ''}
 
     # File uploads
-
     @XBlock.json_handler
     def save_files_descriptions(self, data, suffix=""):  # pylint: disable=unused-argument
-        return save_files_descriptions(self.config_data, self.submission_data, data)
+        serializer = SaveFilesDescriptionRequestSerializer(data=data)
+        if not serializer.is_valid():
+            return {
+                'success': False,
+                'msg': self.config_data.translate('File descriptions were not submitted.'),
+            }
+
+        try:
+            submissions_actions.append_file_data(
+                serializer.validated_data['fileMetadata'],
+                self.config_data,
+                self.submission_data,
+            )
+        except FileUploadError:
+            return {
+                'success': False,
+                'msg': self.config_data.translate("Files metadata could not be saved.")
+            }
+        else:
+            return {'success': True, 'msg': ''}
 
     @XBlock.json_handler
     def upload_url(self, data, suffix=""):  # pylint: disable=unused-argument
-        return upload_url(self.config_data, self.submission_data, data)
+        if "contentType" not in data or "filename" not in data:
+            return {
+                "success": False,
+                "msg": self.config_data.translate("There was an error uploading your file."),
+            }
+        file_index = _safe_read_file_index(data, 0)
+        try:
+            url = submissions_actions.get_upload_url(
+                data['contentType'],
+                data['filename'],
+                file_index,
+                self.config_data,
+                self.submission_data,
+            )
+        except OnlyOneFileAllowedException:
+            return {
+                "success": False,
+                "msg": self.config_data.translate("Only a single file upload is allowed for this assessment."),
+            }
+        except UnsupportedFileTypeException:
+            return {
+                "success": False,
+                "msg": self.config_data.translate(
+                    "File upload failed: unsupported file type."
+                    "Only the supported file types can be uploaded."
+                    "If you have questions, please reach out to the course team."
+                ),
+            }
+
+        except FileUploadError:
+            return {
+                "success": False,
+                "msg": self.config_data.translate("Error retrieving upload URL."),
+            }
+        else:
+            return {'success': True, 'url': url}
 
     @XBlock.json_handler
     def download_url(self, data, suffix=""):  # pylint: disable=unused-argument
-        return download_url(self.submission_data, data)
+        file_index = _safe_read_file_index(data, 0)
+        file_url = self.submission_data.files.get_download_url(file_index)
+        return {"success": True, "url": file_url}
 
     @XBlock.json_handler
     def remove_uploaded_file(self, data, suffix=""):  # pylint: disable=unused-argument
-        return remove_uploaded_file(self.config_data, self.submission_data, data)
+        file_index = _safe_read_file_index(data, -1)
+        try:
+            submissions_actions.remove_uploaded_file(file_index, self.config_data, self.submission_data, )
+        except (FileUploadError, DeleteNotAllowed):
+            return {'success': False}
+        else:
+            return {'success': True}
 
     # Assessments
-
     @XBlock.json_handler
     @verify_assessment_parameters
     def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument
