@@ -7,6 +7,7 @@ from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
 from unittest.mock import Mock, patch
+from uuid import uuid4
 from openassessment.fileupload.api import TeamFileDescriptor
 from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
 
@@ -19,11 +20,7 @@ from openassessment.xblock.test.base import (
     scenario,
 )
 from openassessment.xblock.test.test_submission import setup_mock_team
-from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
-    PageDataSerializer,
-    ProgressSerializer,
-    TeamInfoSerializer,
-)
+from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer, ProgressSerializer, TeamInfoSerializer
 
 
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
@@ -591,7 +588,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
-
 
 class TestTeamInfoSerializer(TestCase):
     def test_serialize(self):
