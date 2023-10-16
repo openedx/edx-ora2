@@ -183,7 +183,7 @@ class StepInfoSerializer(Serializer):
     * Empty dict for remaining steps
     """
 
-    require_context = True
+    requires_context = True
 
     submission = SubmissionStepInfoSerializer(source="submission_data")
     studentTraining = StudentTrainingStepInfoSerializer(source="student_training_data")
@@ -249,7 +249,7 @@ class PageDataSerializer(Serializer):
     Requires context to differentiate between Assessment and Submission views
     """
 
-    require_context = True
+    requires_context = True
 
     progress = ProgressSerializer(source="*")
     response = SerializerMethodField()
