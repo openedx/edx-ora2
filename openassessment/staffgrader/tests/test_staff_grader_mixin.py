@@ -2,17 +2,22 @@
 Tests for Staff Grader mixin
 """
 import copy
-from datetime import timedelta
 import json
+from datetime import timedelta
+from http import HTTPStatus
 from unittest.mock import Mock, patch
 from uuid import uuid4
 
 from freezegun import freeze_time
-from openassessment.assessment.errors.staff import StaffAssessmentError
 
+from openassessment.assessment.errors.staff import StaffAssessmentError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.tests.factories import UserFactory
-from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario, STAFF_GOOD_ASSESSMENT
+from openassessment.xblock.test.base import (
+    STAFF_GOOD_ASSESSMENT,
+    XBlockHandlerTestCase,
+    scenario,
+)
 
 
 @freeze_time("1969-07-20T22:56:00-04:00")
@@ -230,6 +235,73 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response_body)
+
+    @patch("openassessment.staffgrader.staff_grader_mixin.generate_received_assessment_data")
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_list_assessments_received(self, xblock, received_assessment_data_mock: Mock):
+        """ List assessments returns received assessments """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+        received_assessment_data_mock.return_value = {"assessments": []}
+        request_data = {
+            "item_id": "test_item_id",
+            "submission_uuid": uuid4().hex,
+            "assessment_type": "received",
+        }
+        response = self.request(
+            xblock,
+            "list_assessments",
+            json.dumps(request_data),
+            response_format="response",
+        )
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertIsInstance(response_body, dict)
+
+    @patch("openassessment.staffgrader.staff_grader_mixin.generate_given_assessment_data")
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_list_assessments_given(self, xblock, given_assessment_data_mock: Mock):
+        """ List assessments returns given assessments """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+        given_assessment_data_mock.return_value = {"assessments": []}
+        request_data = {
+            "item_id": "test_item_id",
+            "submission_uuid": uuid4().hex,
+            "assessment_type": "given",
+        }
+        response = self.request(
+            xblock,
+            "list_assessments",
+            json.dumps(request_data),
+            response_format="response",
+        )
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertIsInstance(response_body, dict)
+
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_list_assessments_bad_param(self, xblock):
+        """ List assessments fails if assessment_type is not a string or is not valid """
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+
+        request_data = {
+            "item_id": "test_item_id",
+            "submission_uuid": uuid4().hex,
+            "assessment_type": "foo",
+        }
+        response = self.request(
+            xblock,
+            'list_assessments',
+            json.dumps(request_data),
+            response_format='response',
+        )
+        response_body = json.loads(response.body.decode('utf-8'))
+
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+        self.assertDictEqual(response_body, {
+            "error": "Invalid assessment_type value"
+        })
 
     @scenario('data/basic_scenario.xml', user_id="staff")
     def test_batch_delete_submission_locks_bad_param(self, xblock):

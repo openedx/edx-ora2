@@ -2,6 +2,7 @@
 API endpoints for enhanced staff grader
 """
 from functools import wraps
+from http import HTTPStatus
 import logging
 
 from django.db.models import Case, OuterRef, Prefetch, Subquery, Value, When
@@ -15,7 +16,13 @@ from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_
 from openassessment.assessment.errors.staff import StaffAssessmentError
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
-from openassessment.data import map_anonymized_ids_to_usernames, OraSubmissionAnswerFactory, VersionNotFoundException
+from openassessment.data import (
+    OraSubmissionAnswerFactory,
+    VersionNotFoundException,
+    map_anonymized_ids_to_user_data,
+    generate_received_assessment_data,
+    generate_given_assessment_data
+)
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -194,6 +201,39 @@ class StaffGraderMixin:
                 log.exception("Failed to serialize workflow %d: %s", staff_workflow.id, str(e), exc_info=True)
         return result
 
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    def list_assessments(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        List the assessments grades based on the type (received or given) for a specific submission.
+
+        Args:
+            data (dict): Contains the necessary information to fetch the assessments.
+                - 'item_id': The ID of the xblock/item.
+                - 'submission_uuid': The UUID of the submission.
+                - 'assessment_type': A string, either "received" or any other
+                    value to determine the type of assessments to retrieve.
+
+        Returns:
+            list[dict]: A list of dictionaries, each representing an assessment's data.
+
+        Note:
+            - If 'assessment_type' is "received", the function fetches assessments received
+            for the given 'submission_uuid'.
+            - For any other value of 'assessment_type', the function fetches assessments
+            given by the owner of the 'submission_uuid' for other submissions in the same item.
+        """
+        item_id = data['item_id']
+        submission_uuid = data['submission_uuid']
+        assessment_type = data['assessment_type']
+
+        if assessment_type == "received":
+            return generate_received_assessment_data(submission_uuid)
+        elif assessment_type == "given":
+            return generate_given_assessment_data(item_id, submission_uuid)
+        else:
+            raise JsonHandlerError(HTTPStatus.BAD_REQUEST, "Invalid assessment_type value")
+
     def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """
         Fetch additional required data and models to serialize the response
@@ -206,6 +246,8 @@ class StaffGraderMixin:
                 workflow_scorer_ids.add(workflow.scorer_id)
         course_id = self.get_student_item_dict()['course_id']
 
+        context = {}
+
         # Fetch user identifier mappings
         if is_team_assignment:
             # Look up the team IDs for submissions so we can later map to team names
@@ -214,39 +256,42 @@ class StaffGraderMixin:
             # Look up names for teams
             topic_id = self.selected_teamset_id
             team_id_to_team_name = self.teams_service.get_team_names(course_id, topic_id)
-
-            # Do bulk lookup for scorer anonymous ids (submitting team name is a separate lookup)
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(set(workflow_scorer_ids))
-
-            context = {
+            context.update({
                 'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
                 'team_id_to_team_name': team_id_to_team_name,
-            }
+            })
         else:
             # When we look up usernames we want to include all connected learner student ids
             submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
                 course_id,
                 submission_uuids,
             )
+            context['submission_uuid_to_student_id'] = submission_uuid_to_student_id
 
-            # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
-            # `gradedBy` and `username` fields
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(
-                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-            )
+        all_anonymous_ids = set(workflow_scorer_ids)
+        if not is_team_assignment:
+            all_anonymous_ids |= set(context['submission_uuid_to_student_id'].values())
 
-            context = {
-                'submission_uuid_to_student_id': submission_uuid_to_student_id,
-            }
+        anonymous_id_to_user_data = map_anonymized_ids_to_user_data(all_anonymous_ids)
+
+        anonymous_id_to_username, anonymous_id_to_email, anonymous_id_to_fullname = {}, {}, {}
+        for anonymous_id, user_data in anonymous_id_to_user_data.items():
+            anonymous_id_to_username[anonymous_id] = user_data["username"]
+            anonymous_id_to_email[anonymous_id] = user_data["email"]
+            anonymous_id_to_fullname[anonymous_id] = user_data["fullname"]
 
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models
         submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(staff_workflows)
 
-        context.update({
-            'anonymous_id_to_username': anonymous_id_to_username,
-            'submission_uuid_to_assessment': submission_uuid_to_assessment,
-        })
+        context.update(
+            {
+                "anonymous_id_to_username": anonymous_id_to_username,
+                "anonymous_id_to_email": anonymous_id_to_email,
+                "anonymous_id_to_fullname": anonymous_id_to_fullname,
+                "submission_uuid_to_assessment": submission_uuid_to_assessment,
+            }
+        )
 
         return context
 
