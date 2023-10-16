@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-25 18:28+0000\n"
+"POT-Creation-Date: 2023-10-16 10:26-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -49,106 +49,107 @@ msgstr ""
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 
-#: data.py:533
+#: data.py:534
 #, python-brace-format
 msgid "Criterion {number}: {label}"
 msgstr ""
 
-#: data.py:535
+#: data.py:536
 #, python-brace-format
 msgid "Points {number}"
 msgstr ""
 
-#: data.py:536
+#: data.py:537
 #, python-brace-format
 msgid "Median Score {number}"
 msgstr ""
 
-#: data.py:537
+#: data.py:538
 #, python-brace-format
 msgid "Feedback {number}"
 msgstr ""
 
-#: data.py:866
+#: data.py:867
 msgid "Item ID"
 msgstr ""
 
-#: data.py:867
+#: data.py:868
 msgid "Submission ID"
 msgstr ""
 
-#: data.py:879
+#: data.py:880
 msgid "Anonymized Student ID"
 msgstr ""
 
-#: data.py:910
+#: data.py:911
 msgid "Assessment ID"
 msgstr ""
 
-#: data.py:911
+#: data.py:912
 msgid "Assessment Scored Date"
 msgstr ""
 
-#: data.py:912
+#: data.py:913
 msgid "Assessment Scored Time"
 msgstr ""
 
-#: data.py:913
+#: data.py:914
 msgid "Assessment Type"
 msgstr ""
 
-#: data.py:914
+#: data.py:915
 msgid "Anonymous Scorer Id"
 msgstr ""
 
-#: data.py:916
+#: data.py:917
 #: templates/legacy/staff_area/oa_student_info_assessment_detail.html:59
 msgid "Overall Feedback"
 msgstr ""
 
-#: data.py:917
+#: data.py:918
 msgid "Assessment Score Earned"
 msgstr ""
 
-#: data.py:918
+#: data.py:919
 msgid "Assessment Scored At"
 msgstr ""
 
-#: data.py:919
+#: data.py:920
 msgid "Date/Time Final Score Given"
 msgstr ""
 
-#: data.py:920
+#: data.py:921
 msgid "Final Score Earned"
 msgstr ""
 
-#: data.py:921
+#: data.py:922
 msgid "Final Score Possible"
 msgstr ""
 
-#: data.py:922
+#: data.py:923
 msgid "Feedback Statements Selected"
 msgstr ""
 
-#: data.py:923
+#: data.py:924
 msgid "Feedback on Assessment"
 msgstr ""
 
-#: data.py:925
+#: data.py:926
 msgid "Response Files"
 msgstr ""
 
-#: data.py:1316
+#: data.py:1317
 msgid "No description provided."
 msgstr ""
 
-#: templates/base.html:16 templates/legacy/oa_base.html:15
+#: templates/base.html:21 templates/legacy/oa_base.html:15
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response field."
 msgstr ""
 
-#: templates/base.html:37 templates/legacy/oa_base.html:36
+#: templates/base.html:42 templates/base.html:80
+#: templates/legacy/oa_base.html:36
 msgid "Loading"
 msgstr ""
 
@@ -2432,10 +2433,6 @@ msgstr ""
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
-
-#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
-msgid "Files metadata could not be saved."
 msgstr ""
 
 #: xblock/utils/data_conversion.py:315

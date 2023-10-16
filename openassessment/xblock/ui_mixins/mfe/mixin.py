@@ -5,20 +5,25 @@ XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
+from openassessment.fileupload.exceptions import FileUploadError
 
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
+    DeleteNotAllowed,
     DraftSaveException,
     EmptySubmissionError,
     MultipleSubmissionsException,
+    OnlyOneFileAllowedException,
     StudioPreviewException,
     SubmissionValidationException,
-    SubmitInternalError
+    SubmitInternalError,
+    UnsupportedFileTypeException
 )
-from openassessment.xblock.ui_mixins.mfe.constants import ErrorCodes
+from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import AddFileRequestSerializer
 
 
 class OraApiException(JsonHandlerError):
@@ -67,43 +72,123 @@ class MfeMixin:
             student_submission_data = data['response']['text_responses']
             submissions_actions.save_submission_draft(student_submission_data, self.config_data, self.submission_data)
         except KeyError as e:
-            raise OraApiException(400, ErrorCodes.INCORRECT_PARAMETERS) from e
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e
         except SubmissionValidationException as exc:
-            raise OraApiException(400, ErrorCodes.INVALID_RESPONSE_SHAPE, str(exc)) from exc
+            raise OraApiException(400, error_codes.INVALID_RESPONSE_SHAPE, str(exc)) from exc
         except DraftSaveException as e:
-            raise OraApiException(500, ErrorCodes.INTERNAL_EXCEPTION) from e
+            raise OraApiException(500, error_codes.INTERNAL_EXCEPTION) from e
 
     def _submission_create_handler(self, data):
         from submissions import api as submission_api
         try:
             submissions_actions.submit(data, self.config_data, self.submission_data, self.workflow_data)
         except KeyError as e:
-            raise OraApiException(400, ErrorCodes.INCORRECT_PARAMETERS) from e
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e
         except SubmissionValidationException as e:
-            raise OraApiException(400, ErrorCodes.INVALID_RESPONSE_SHAPE, str(e)) from e
+            raise OraApiException(400, error_codes.INVALID_RESPONSE_SHAPE, str(e)) from e
         except StudioPreviewException as e:
-            raise OraApiException(400, ErrorCodes.IN_STUDIO_PREVIEW) from e
+            raise OraApiException(400, error_codes.IN_STUDIO_PREVIEW) from e
         except MultipleSubmissionsException as e:
-            raise OraApiException(400, ErrorCodes.MULTIPLE_SUBMISSIONS) from e
+            raise OraApiException(400, error_codes.MULTIPLE_SUBMISSIONS) from e
         except AnswerTooLongException as e:
-            raise OraApiException(400, ErrorCodes.SUBMISSION_TOO_LONG, {
+            raise OraApiException(400, error_codes.SUBMISSION_TOO_LONG, {
                 'maxsize': submission_api.Submission.MAXSIZE
             }) from e
         except submission_api.SubmissionRequestError as e:
-            raise OraApiException(400, ErrorCodes.SUBMISSION_API_ERROR, str(e)) from e
+            raise OraApiException(400, error_codes.SUBMISSION_API_ERROR, str(e)) from e
         except EmptySubmissionError as e:
-            raise OraApiException(400, ErrorCodes.EMPTY_ANSWER) from e
+            raise OraApiException(400, error_codes.EMPTY_ANSWER) from e
         except SubmitInternalError as e:
-            raise OraApiException(500, ErrorCodes.UNKNOWN_ERROR, str(e)) from e
+            raise OraApiException(500, error_codes.UNKNOWN_ERROR, str(e)) from e
 
     @XBlock.json_handler
     def submission(self, data, suffix=""):
-        if suffix == 'draft':
+        if suffix == handler_suffixes.SUBMISSION_DRAFT:
             return self._submission_draft_handler(data)
-        elif suffix == "create":
+        elif suffix == handler_suffixes.SUBMISSION_SUBMIT:
             return self._submission_create_handler(data)
         else:
-            raise OraApiException(404, ErrorCodes.UNKNOWN_SUFFIX)
+            raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
+
+    def _file_delete_handler(self, data):
+        try:
+            file_index = int(data['fileIndex'])
+        except (KeyError, ValueError) as e:
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS) from e
+        try:
+            submissions_actions.remove_uploaded_file(
+                file_index,
+                self.config_data,
+                self.submission_data,
+            )
+        except DeleteNotAllowed as e:
+            raise OraApiException(400, error_codes.DELETE_NOT_ALLOWED) from e
+        except FileUploadError as e:
+            raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
+
+    def _get_new_file_from_list(self, file_to_add, new_list):
+        for file_entry in new_list:
+            if all((
+                file_entry.name == file_to_add['name'],
+                file_entry.description == file_to_add['description'],
+                file_entry.size == file_to_add['size']
+            )):
+                return file_entry
+        return None
+
+    def _file_add_handler(self, data):
+        serializer = AddFileRequestSerializer(data=data)
+        if not serializer.is_valid():
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
+        file_to_add = serializer.validated_data
+        try:
+            new_files = submissions_actions.append_file_data(
+                [file_to_add],
+                self.config_data,
+                self.submission_data,
+            )
+        except FileUploadError as e:
+            raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
+
+        newly_added_file = self._get_new_file_from_list(file_to_add, new_files)
+        if newly_added_file is None:
+            raise OraApiException(500, error_codes.INTERNAL_EXCEPTION)
+
+        try:
+            try:
+                url = submissions_actions.get_upload_url(
+                    file_to_add['contentType'],
+                    newly_added_file.name,
+                    newly_added_file.index,
+                    self.config_data,
+                    self.submission_data,
+                )
+                if url is None:
+                    raise OraApiException(500, error_codes.UNABLE_TO_GENERATE_UPLOAD_URL)
+            except OnlyOneFileAllowedException as e:
+                raise OraApiException(400, error_codes.TOO_MANY_UPLOADS) from e
+            except UnsupportedFileTypeException as e:
+                raise OraApiException(400, error_codes.UNSUPPORTED_FILETYPE, str(e)) from e
+            except FileUploadError as e:
+                raise OraApiException(500, error_codes.UNABLE_TO_GENERATE_UPLOAD_URL, str(e)) from e
+        except OraApiException:
+            # If we've raised an OraApiException for any reason, remove the bad file from the user metadata
+            self.submission_data.files.delete_uploaded_file(newly_added_file.index)
+            raise
+
+        return {
+            'fileUrl': url,
+            'fileIndex': newly_added_file.index,
+        }
+
+    @XBlock.json_handler
+    def file(self, data, suffix=""):
+        if suffix == handler_suffixes.FILE_DELETE:
+            return self._file_delete_handler(data)
+        elif suffix == handler_suffixes.FILE_ADD:
+            return self._file_add_handler(data)
+        else:
+            raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 
     def _get_in_progress_file_upload_data(self, team_id=None):
         if not self.file_upload_type:

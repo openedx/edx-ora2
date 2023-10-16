@@ -17,6 +17,7 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
 )
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
+
 from .ora_config_serializer import RubricConfigSerializer
 
 

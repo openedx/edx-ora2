@@ -4,21 +4,26 @@ Base stateless API actions for acting upon learner submissions
 
 import json
 import logging
+import os
 from submissions.api import Submission, SubmissionError, SubmissionRequestError
 
+from openassessment.fileupload.exceptions import FileUploadError
+from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.submissions.errors import (
+    DeleteNotAllowed,
     EmptySubmissionError,
     NoTeamToCreateSubmissionForError,
     DraftSaveException,
+    OnlyOneFileAllowedException,
     SubmissionValidationException,
     AnswerTooLongException,
     StudioPreviewException,
     MultipleSubmissionsException,
-    SubmitInternalError
+    SubmitInternalError,
+    UnsupportedFileTypeException
 )
-from openassessment.xblock.utils.validation import validate_submission
 
-from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.utils.validation import validate_submission
 from openassessment.xblock.utils.data_conversion import (
     format_files_for_submission,
     prepare_submission_for_serialization,
@@ -256,3 +261,99 @@ def save_submission_draft(student_submission_data, block_config_data, block_subm
         )
     except Exception as e:  # pylint: disable=broad-except
         raise DraftSaveException from e
+
+
+def append_file_data(file_data, block_config, submission_info):
+    """
+    Appends a list of file data to the current block state
+
+    Args:
+        block_config (ORAConfigAPI)
+        submission_info (SubmissionAPI)
+        files_to_append (list of {
+            'description': (str)
+            'name': (str)
+            'size': (int)
+        })
+    """
+    try:
+        new_files = submission_info.files.file_manager.append_uploads(*file_data)
+    except FileUploadError as exc:
+        logger.exception(
+            "append_file_data: file description for data %s failed with error %s", file_data, exc, exc_info=True
+        )
+        raise
+    except Exception as exc:  # pylint: disable=broad-except
+        logger.exception(
+            "append_file_data: unhandled exception for data %s. Error: %s", file_data, exc, exc_info=True
+        )
+        raise FileUploadError(exc) from exc
+
+    # Emit analytics event...
+    block_config.publish_event(
+        "openassessmentblock.save_files_descriptions",
+        {"saved_response": submission_info.files.saved_files_descriptions},
+    )
+    return new_files
+
+
+def remove_uploaded_file(file_index, block_config, submission_info):
+    """
+    Removes uploaded user file.
+    """
+    file_key = submission_info.files.get_file_key(file_index)
+    if not submission_info.files.can_delete_file(file_index):
+        raise DeleteNotAllowed()
+    try:
+        submission_info.files.delete_uploaded_file(file_index)
+        # Emit analytics event...
+        block_config.publish_event(
+            "openassessmentblock.remove_uploaded_file",
+            {"student_item_key": file_key},
+        )
+        logger.debug("Deleted file %s", file_key)
+    except FileUploadError as exc:
+        logger.exception(
+            "FileUploadError: Error when deleting file %s : %s",
+            file_key,
+            exc,
+            exc_info=True,
+        )
+        raise
+    except Exception as exc:  # pylint: disable=broad-except
+        logger.exception(
+            "FileUploadError: unhandled exception for %s. Error: %s",
+            file_key,
+            exc,
+            exc_info=True,
+        )
+        raise FileUploadError(exc) from exc
+
+
+def get_upload_url(content_type, file_name, file_index, block_config, submission_info):
+    """
+    Request a URL to be used for uploading content for a given file
+
+    Returns:
+        A URL to be used to upload content associated with this submission.
+
+    """
+    if not block_config.allow_multiple_files:
+        if submission_info.files.has_any_file_in_upload_space():
+            raise OnlyOneFileAllowedException()
+
+    _, file_ext = os.path.splitext(file_name)
+    file_ext = file_ext.strip(".") if file_ext else None
+
+    # Validate that there are no data issues and file type is allowed
+    if not submission_info.files.is_supported_upload_type(file_ext, content_type):
+        raise UnsupportedFileTypeException(file_ext)
+
+    # Attempt to upload
+    try:
+        key = submission_info.files.get_file_key(file_index)
+        url = submission_info.files.get_upload_url(key, content_type)
+        return url
+    except FileUploadError:
+        logger.exception("FileUploadError:Error retrieving upload URL")
+        raise
