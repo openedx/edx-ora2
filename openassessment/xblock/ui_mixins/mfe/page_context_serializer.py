@@ -102,6 +102,8 @@ class SubmissionStepInfoSerializer(ClosedInfoSerializer):
         {
             hasSubmitted: (Bool, Null for Assessment)
             hasCancelled: (Bool, Null for Assessment)
+            closed: (Bool / Null for Assessment)
+            closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
         }
     """
 
@@ -113,6 +115,8 @@ class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
         {
+            closed: (Bool)
+            closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
             numberOfAssessmentsCompleted: (Int), progress through required assessments
             expectedRubricSelections: (List of rubric names and selections)
         }
@@ -153,6 +157,8 @@ class PeerStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
         {
+            closed: (Bool)
+            closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
             numberOfAssessmentsCompleted: (Int) Progress through required assessments
             isWaitingForSubmissions: (Bool) We've run out of peers to grade, waiting for more submissions
             numberOfReceivedAssessments: (Int) How many assessments has this response received
