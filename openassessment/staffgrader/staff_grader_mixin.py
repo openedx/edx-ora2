@@ -15,7 +15,8 @@ from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
-from openassessment.data import map_anonymized_ids_to_usernames, OraSubmissionAnswerFactory, VersionNotFoundException
+from openassessment.data import (OraSubmissionAnswerFactory, VersionNotFoundException, map_anonymized_ids_to_emails,
+                                 map_anonymized_ids_to_fullname, map_anonymized_ids_to_usernames)
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -215,7 +216,15 @@ class StaffGraderMixin:
             team_id_to_team_name = self.teams_service.get_team_names(course_id, topic_id)
 
             # Do bulk lookup for scorer anonymous ids (submitting team name is a separate lookup)
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(set(workflow_scorer_ids))
+            anonymous_id_to_username = map_anonymized_ids_to_usernames(
+                set(workflow_scorer_ids)
+            )
+            anonymous_id_to_email = map_anonymized_ids_to_emails(
+                set(workflow_scorer_ids)
+            )
+            anonymous_id_to_fullname = map_anonymized_ids_to_fullname(
+                set(workflow_scorer_ids)
+            )
 
             context = {
                 'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
@@ -233,6 +242,13 @@ class StaffGraderMixin:
             anonymous_id_to_username = map_anonymized_ids_to_usernames(
                 set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
             )
+            anonymous_id_to_email = map_anonymized_ids_to_emails(
+                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
+            )
+
+            anonymous_id_to_fullname = map_anonymized_ids_to_fullname(
+                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
+            )
 
             context = {
                 'submission_uuid_to_student_id': submission_uuid_to_student_id,
@@ -242,11 +258,14 @@ class StaffGraderMixin:
         # Rubric, Criteria, and Option models
         submission_uuid_to_assessment = self.bulk_deep_fetch_assessments(staff_workflows)
 
-        context.update({
-            'anonymous_id_to_username': anonymous_id_to_username,
-            'submission_uuid_to_assessment': submission_uuid_to_assessment,
-        })
-
+        context.update(
+            {
+                "anonymous_id_to_username": anonymous_id_to_username,
+                "anonymous_id_to_email": anonymous_id_to_email,
+                "anonymous_id_to_fullname": anonymous_id_to_fullname,
+                "submission_uuid_to_assessment": submission_uuid_to_assessment,
+            }
+        )
         return context
 
     def _bulk_fetch_annotated_staff_workflows(self, is_team_assignment=False):

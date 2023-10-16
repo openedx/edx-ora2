@@ -95,6 +95,48 @@ def map_anonymized_ids_to_usernames(anonymized_ids):
 
     return anonymous_id_to_username_mapping
 
+def map_anonymized_ids_to_emails(anonymized_ids):
+    """
+    Args:
+        anonymized_ids - list of anonymized user ids.
+    Returns:
+        dictionary, that contains mapping between anonymized user ids and
+        actual user emails.
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+        .values("email", "anonymous_id")
+    )
+    anonymous_id_to_email_mapping = {
+        user["anonymous_id"]: user["email"] for user in users
+    }
+    return anonymous_id_to_email_mapping
+
+
+def map_anonymized_ids_to_fullname(anonymized_ids):
+    """
+    Args:
+        anonymized_ids - list of anonymized user ids.
+    Returns:
+        dictionary, that contains mapping between anonymized user ids and
+        actual user fullname.
+    """
+    User = get_user_model()
+
+    users = _use_read_replica(
+        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .select_related("profile")
+        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
+        .values("profile__name", "anonymous_id")
+    )
+
+    anonymous_id_to_fullname_mapping = {
+        user["anonymous_id"]: user["profile__name"] for user in users
+    }
+    return anonymous_id_to_fullname_mapping
 
 class CsvWriter:
     """

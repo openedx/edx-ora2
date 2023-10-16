@@ -30,7 +30,9 @@ class SubmissionListSerializer(serializers.ModelSerializer):
             'gradedBy',
             'username',
             'teamName',
-            'score'
+            'score',
+            "email",
+            "fullname",
         ]
         read_only_fields = fields
 
@@ -40,17 +42,23 @@ class SubmissionListSerializer(serializers.ModelSerializer):
     CONTEXT_ANON_ID_TO_USERNAME = 'anonymous_id_to_username'
     CONTEXT_SUB_TO_ASSESSMENT = 'submission_uuid_to_assessment'
     CONTEXT_SUB_TO_ANON_ID = 'submission_uuid_to_student_id'
+    CONTEXT_ANON_ID_TO_EMAIL = "anonymous_id_to_email"
+    CONTEXT_ANON_ID_TO_FULLNAME = "anonymous_id_to_fullname"
 
     def _verify_required_context(self, context):
         """Verify that required individual or team context is present for serialization"""
         context_keys = set(context.keys())
 
         # Required context for individual submissions
-        required_context = set([
-            self.CONTEXT_ANON_ID_TO_USERNAME,
-            self.CONTEXT_SUB_TO_ASSESSMENT,
-            self.CONTEXT_SUB_TO_ANON_ID
-        ])
+        required_context = set(
+            [
+                self.CONTEXT_ANON_ID_TO_USERNAME,
+                self.CONTEXT_SUB_TO_ASSESSMENT,
+                self.CONTEXT_SUB_TO_ANON_ID,
+                self.CONTEXT_ANON_ID_TO_EMAIL,
+                self.CONTEXT_ANON_ID_TO_FULLNAME,
+            ]
+        )
 
         missing_context = required_context - context_keys
         if missing_context:
@@ -70,6 +78,8 @@ class SubmissionListSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     teamName = serializers.SerializerMethodField()
     score = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
+    fullname = serializers.SerializerMethodField()
 
     def _get_username_from_context(self, anonymous_user_id):
         try:
@@ -85,6 +95,22 @@ class SubmissionListSerializer(serializers.ModelSerializer):
                 f"No submitter anonymous user id found for submission uuid {submission_uuid}"
             ) from e
 
+    def _get_email_from_context(self, anonymous_user_id):
+        try:
+            return self.context[self.CONTEXT_ANON_ID_TO_EMAIL][anonymous_user_id]
+        except KeyError as e:
+            raise MissingContextException(
+                f"Email not found for anonymous user id {anonymous_user_id}"
+            ) from e
+
+    def _get_fullname_from_context(self, anonymous_user_id):
+        try:
+            return self.context[self.CONTEXT_ANON_ID_TO_FULLNAME][anonymous_user_id]
+        except KeyError as e:
+            raise MissingContextException(
+                f"fullname not found for anonymous user id {anonymous_user_id}"
+            ) from e
+
     def get_dateGraded(self, workflow):
         return str(workflow.grading_completed_at)
 
@@ -96,6 +122,16 @@ class SubmissionListSerializer(serializers.ModelSerializer):
 
     def get_username(self, workflow):
         return self._get_username_from_context(
+            self._get_anonymous_id_from_context(workflow.identifying_uuid)
+        )
+
+    def get_email(self, workflow):
+        return self._get_email_from_context(
+            self._get_anonymous_id_from_context(workflow.identifying_uuid)
+        )
+
+    def get_fullname(self, workflow):
+        return self._get_fullname_from_context(
             self._get_anonymous_id_from_context(workflow.identifying_uuid)
         )
 
@@ -123,12 +159,16 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
     CONTEXT_SUB_TO_ASSESSMENT = 'submission_uuid_to_assessment'
     CONTEXT_SUB_TO_TEAM_ID = 'team_submission_uuid_to_team_id'
     CONTEXT_TEAM_ID_TO_TEAM_NAME = 'team_id_to_team_name'
+    CONTEXT_ANON_ID_TO_EMAIL = "anonymous_id_to_email"
+    CONTEXT_ANON_ID_TO_FULLNAME = "anonymous_id_to_fullname"
 
     REQUIRED_CONTEXT_KEYS = [
         CONTEXT_ANON_ID_TO_USERNAME,
         CONTEXT_SUB_TO_ASSESSMENT,
         CONTEXT_SUB_TO_TEAM_ID,
         CONTEXT_TEAM_ID_TO_TEAM_NAME,
+        CONTEXT_ANON_ID_TO_EMAIL,
+        CONTEXT_ANON_ID_TO_FULLNAME,
     ]
 
     def _verify_required_context(self, context):
@@ -159,6 +199,15 @@ class TeamSubmissionListSerializer(SubmissionListSerializer):
     def get_username(self, workflow):  # pylint: disable=unused-argument
         # For team submissions, this is intentionally empty
         return None
+
+    def get_email(self, workflow):  # pylint: disable=unused-argument
+        # For team submissions, this is intentionally empty
+        return None
+
+    def get_fullname(self, workflow):  # pylint: disable=unused-argument
+        # For team submissions, this is intentionally empty
+        return None
+
 
     def get_teamName(self, workflow):
         return self._get_team_name_from_context(
