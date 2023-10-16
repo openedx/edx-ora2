@@ -72,7 +72,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
         expected_response = {
@@ -106,7 +106,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock, student_item=student_item, submission_text=text_responses)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
         expected_response = {
@@ -128,7 +128,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... but with no responses to assess
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
         expected_response = {}
@@ -145,7 +145,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
         expected_response = {}
@@ -157,7 +157,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
         expected_response = {}
@@ -168,7 +168,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # Given I'm on the done step
         self.create_submission_and_assessments(xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT)
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
         expected_response = {}
@@ -193,7 +193,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
         # When I try to jump back to that step
         self.context["jump_to_step"] = "peer"
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I can continue to receive peer responses to grade
         expected_response = {

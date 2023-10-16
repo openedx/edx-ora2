@@ -252,7 +252,7 @@ class PageDataSerializer(Serializer):
     require_context = True
 
     progress = ProgressSerializer(source="*")
-    submission = SerializerMethodField()
+    response = SerializerMethodField()
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
@@ -278,7 +278,7 @@ class PageDataSerializer(Serializer):
         step_status = workflow_data.status_details.get(step_name, {})
         return step_status.get("complete", False)
 
-    def get_submission(self, instance):
+    def get_response(self, instance):
         """
         we get the user's draft / complete submission.
         """
