@@ -10,6 +10,7 @@ from rest_framework.serializers import (
     URLField,
     Serializer,
     DictField,
+    BooleanField,
 )
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
 
@@ -207,3 +208,4 @@ class AssessmentSubmitRequestSerializer(Serializer):
     optionsSelected = DictField(child=CharField(), allow_empty=True)
     criterionFeedback = DictField(child=CharField(), allow_empty=True)
     overallFeedback = CharField(allow_blank=True)
+    continueGrading = BooleanField(required=False, default=False)

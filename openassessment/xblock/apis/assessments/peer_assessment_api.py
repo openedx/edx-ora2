@@ -6,7 +6,6 @@ import logging
 from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors.peer import PeerAssessmentInternalError, PeerAssessmentRequestError
-from openassessment.workflow.api import update_from_assessments
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.assessments.errors import (
     ReviewerMustHaveSubmittedException,

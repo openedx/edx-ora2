@@ -1,6 +1,7 @@
 """
 Tests for XBlock handlers for the ORA MFE BFF
 """
+from collections import namedtuple
 from contextlib import contextmanager
 import json
 from unittest.mock import Mock, patch
@@ -9,6 +10,10 @@ import ddt
 from django.contrib.auth import get_user_model
 from submissions import api as submission_api
 from submissions import team_api as submission_team_api
+
+from openassessment.assessment.errors.base import AssessmentError
+from openassessment.xblock.apis.assessments.peer_assessment_api import PeerAssessmentAPI
+from openassessment.xblock.apis.workflow_api import WorkflowAPI
 from openassessment.fileupload.api import FileUpload
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.tests.factories import SharedFileUploadFactory, UserFactory
@@ -55,6 +60,11 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
     DEFAULT_DRAFT_VALUE = {'response': {'text_responses': ['hi']}}
     DEFAULT_SUBMIT_VALUE = {'response': {'text_responses': ['Hello World', 'Goodbye World']}}
     DEFAULT_DELETE_FILE_VALUE = {'fileIndex': 1}
+    DEFAULT_ASSESSMENT_SUBMIT_VALUE = {
+        'optionsSelected': {'ferocity': 'fine', 'color': 'blue', 'element': 'volcano'},
+        'criterionFeedback': {'ferocity': 'rawr!', 'color': ':)', 'element': 'i prefer lead'},
+        'overallFeedback': 'i have no strong feelings',
+    }
 
     def request_create_submission(self, xblock, payload=None):
         if payload is None:
@@ -103,6 +113,17 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             'file',
             json.dumps(payload),
             suffix=handler_suffixes.FILE_DELETE,
+            response_format='response'
+        )
+
+    def request_assessment_submit(self, xblock, payload=None):
+        if payload is None:
+            payload = self.DEFAULT_ASSESSMENT_SUBMIT_VALUE
+        return super().request(
+            xblock,
+            'assessment',
+            json.dumps(payload),
+            suffix=handler_suffixes.ASSESSMENT_SUBMIT,
             response_format='response'
         )
 
@@ -711,3 +732,115 @@ class FileDeleteTest(MFEHandlersTestBase):
             resp = self.request_delete_file(xblock)
         assert resp.status_code == 200
         assert_called_once_with_helper(mock_remove_file, 1, 2)
+
+
+AssessMocks = namedtuple('AssessMocks', ['self', 'training', 'peer'])
+
+
+class AssessmentSubmitTest(MFEHandlersTestBase):
+
+    STATUSES = ['cancelled', 'done', 'waiting', 'self', 'training', 'peer']
+
+    @contextmanager
+    def mock_workflow_status(self, return_value):
+        with patch.object(WorkflowAPI, 'status', return_value=return_value) as m:
+            yield m
+
+    @contextmanager
+    def mock_continue_grading(self, return_value):
+        with patch.object(PeerAssessmentAPI, 'continue_grading', return_value=return_value) as m:
+            yield m
+
+    @contextmanager
+    def mock_assess_functions(self, self_kwargs=None, training_kwargs=None, peer_kwargs=None):
+        self_kwargs = self_kwargs or {}
+        training_kwargs = training_kwargs or {}
+        peer_kwargs = peer_kwargs or {}
+
+        base_path = 'openassessment.xblock.ui_mixins.mixin.'
+        with patch(base_path + 'self_assess', **self_kwargs) as mock_self:
+            with patch(base_path + 'training_assess', **training_kwargs) as mock_training:
+                with patch(base_path + 'peer_assess', **peer_kwargs) as mock_peer:
+                    yield AssessMocks(mock_self, mock_training, mock_peer)
+
+    @ddt.data(
+        {},
+        {
+            'criterionFeedback': {},
+            'overallFeedback': '',
+        },
+        {
+            'optionsSelected': ['this is a list'],
+            'criterionFeedback': 67,
+            'overallFeedback': '',
+        }
+    )
+    @scenario("data/basic_scenario.xml")
+    def test_incorrect_params(self, xblock, payload):
+        resp = self.request_assessment_submit(xblock, payload)
+        assert resp.status_code == 400
+        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+
+    @ddt.data(None, 'cancelled', 'done', 'ai')
+    @scenario("data/basic_scenario.xml")
+    def test_not_allowed_step_error(self, xblock, status):
+        with self.mock_workflow_status(status):
+            resp = self.request_assessment_submit(xblock)
+        assert resp.status_code == 400
+        assert resp.json['error']['error_code'] == error_codes.INVALID_STATE_TO_ASSESS
+
+    def test_peer_assess(self, xblock):
+        with self.mock_workflow_status('peer'):
+            with self.mock_assess_functions() as assess_mocks:
+                resp = self.request_assessment_submit(xblock)
+        assert resp.status_code == 200
+        assess_mocks.self.assert_not_called()
+        assess_mocks.training.assert_not_called()
+        assess_mocks.peer.assert_called()
+
+    @ddt.unpack
+    @ddt.data(
+        ('self', True, False, False),
+        ('training', False, True, False),
+        ('peer', False, False, True)
+    )
+    @scenario("data/basic_scenario.xml")
+    def test_assess(self, xblock, step, expect_self, expect_training, expect_peer):
+        with self.mock_workflow_status(step):
+            with self.mock_assess_functions() as assess_mocks:
+                resp = self.request_assessment_submit(xblock)
+        assert resp.status_code == 200
+        assert assess_mocks.self.called == expect_self
+        assert assess_mocks.training.called == expect_training
+        assert assess_mocks.peer.called == expect_peer
+
+    @ddt.data(None, 'cancelled', 'waiting', 'self', 'training', 'done')
+    @scenario("data/basic_scenario.xml")
+    def test_continue_grading(self, xblock, step):
+        with self.mock_assess_functions() as assess_mocks:
+            with self.mock_workflow_status(step):
+                with self.mock_continue_grading(True):
+                    resp = self.request_assessment_submit(xblock)
+
+        assert resp.status_code == 200
+        assess_mocks.self.assert_not_called()
+        assess_mocks.training.assert_not_called()
+        assess_mocks.peer.assert_called()
+
+    @ddt.data('self', 'training', 'peer')
+    @scenario("data/basic_scenario.xml")
+    def test_assess_error(self, xblock, step):
+        error = AssessmentError("there was a problem")
+        with self.mock_workflow_status(step):
+            with self.mock_assess_functions(**{step + '_kwargs': {'side_effect': error}}):
+                resp = self.request_assessment_submit(xblock)
+        assert_error_response(resp, 500, error_codes.INTERNAL_EXCEPTION, str(error))
+
+    @scenario("data/basic_scenario.xml")
+    def test_training_assess_corrections(self, xblock):
+        corrections = {'ferocity': 'sublime', 'element': 'hydrogen'}
+        with self.mock_workflow_status('training'):
+            with self.mock_assess_functions(training_kwargs={'return_value': corrections}):
+                resp = self.request_assessment_submit(xblock)
+
+        assert_error_response(resp, 400, error_codes.TRAINING_ANSWER_INCORRECT, corrections)
