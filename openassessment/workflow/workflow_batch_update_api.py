@@ -267,7 +267,8 @@ def get_blocked_peer_workflows(course_id=None, item_id=None, submission_uuid=Non
     filters = {
         'created_at__lte': timezone.now() - datetime.timedelta(days=7),
         'grading_completed_at__isnull': True,
-        'completed_at__isnull': False
+        'completed_at__isnull': False,
+        'cancelled_at__isnull': True
     }
     if course_id is not None:
         filters['course_id'] = course_id
