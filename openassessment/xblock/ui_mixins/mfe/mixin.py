@@ -247,9 +247,9 @@ class MfeMixin:
                     data['criterionFeedback'],
                     self.config_data,
                     self.workflow_data,
-                    self.peer_step_data,
+                    peer_data,
                 )
-            if self.workflow_data.is_self:
+            elif self.workflow_data.is_self:
                 self_assess(
                     data['optionsSelected'],
                     data['criterionFeedback'],
@@ -258,7 +258,7 @@ class MfeMixin:
                     self.workflow_data,
                     self.self_data
                 )
-            if self.workflow_data.is_training:
+            elif self.workflow_data.is_training:
                 corrections = training_assess(
                     data['optionsSelected'],
                     self.config_data,
@@ -275,7 +275,7 @@ class MfeMixin:
                 'student_item': self.config_data.student_item_dict,
                 'workflow': self.workflow_data.workflow,
             }
-            raise OraApiException(500, error_codes.INVALID_STATE_TO_ASSESS, context) from e
+            raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
 

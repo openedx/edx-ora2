@@ -4,7 +4,7 @@ Tests for XBlock handlers for the ORA MFE BFF
 from collections import namedtuple
 from contextlib import contextmanager
 import json
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, PropertyMock, patch
 
 import ddt
 from django.contrib.auth import get_user_model
@@ -737,27 +737,30 @@ class FileDeleteTest(MFEHandlersTestBase):
 AssessMocks = namedtuple('AssessMocks', ['self', 'training', 'peer'])
 
 
+@ddt.ddt
 class AssessmentSubmitTest(MFEHandlersTestBase):
 
     STATUSES = ['cancelled', 'done', 'waiting', 'self', 'training', 'peer']
 
     @contextmanager
     def mock_workflow_status(self, return_value):
-        with patch.object(WorkflowAPI, 'status', return_value=return_value) as m:
+        with patch.object(WorkflowAPI, 'status', new_callable=PropertyMock) as m:
+            m.return_value = return_value
             yield m
 
     @contextmanager
     def mock_continue_grading(self, return_value):
-        with patch.object(PeerAssessmentAPI, 'continue_grading', return_value=return_value) as m:
+        with patch.object(PeerAssessmentAPI, 'continue_grading', new_callable=PropertyMock) as m:
+            m.return_value = return_value
             yield m
 
     @contextmanager
     def mock_assess_functions(self, self_kwargs=None, training_kwargs=None, peer_kwargs=None):
         self_kwargs = self_kwargs or {}
-        training_kwargs = training_kwargs or {}
+        training_kwargs = training_kwargs or {'return_value': None}
         peer_kwargs = peer_kwargs or {}
 
-        base_path = 'openassessment.xblock.ui_mixins.mixin.'
+        base_path = 'openassessment.xblock.ui_mixins.mfe.mixin.'
         with patch(base_path + 'self_assess', **self_kwargs) as mock_self:
             with patch(base_path + 'training_assess', **training_kwargs) as mock_training:
                 with patch(base_path + 'peer_assess', **peer_kwargs) as mock_peer:
@@ -788,15 +791,6 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
             resp = self.request_assessment_submit(xblock)
         assert resp.status_code == 400
         assert resp.json['error']['error_code'] == error_codes.INVALID_STATE_TO_ASSESS
-
-    def test_peer_assess(self, xblock):
-        with self.mock_workflow_status('peer'):
-            with self.mock_assess_functions() as assess_mocks:
-                resp = self.request_assessment_submit(xblock)
-        assert resp.status_code == 200
-        assess_mocks.self.assert_not_called()
-        assess_mocks.training.assert_not_called()
-        assess_mocks.peer.assert_called()
 
     @ddt.unpack
     @ddt.data(
