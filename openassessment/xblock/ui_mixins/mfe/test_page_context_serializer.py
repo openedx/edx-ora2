@@ -7,7 +7,6 @@ from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
 from unittest.mock import Mock, patch
-from uuid import uuid4
 from openassessment.fileupload.api import TeamFileDescriptor
 from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
 
