@@ -48,9 +48,23 @@ class FileDescriptorSerializer(Serializer):
     fileIndex = IntegerField(source="file_index")
 
 
+class TeamFileDescriptorSerializer(Serializer):
+    fileUrl = URLField(source='download_url')
+    fileDescription = CharField(source='description')
+    fileName = CharField(source='name')
+    fileSize = IntegerField(source='size')
+    uploadedBy = CharField(source="uploaded_by")
+
+
 class InProgressResponseSerializer(Serializer):
     textResponses = SerializerMethodField()
     uploadedFiles = SerializerMethodField()
+    teamUploadedFiles = ListField(
+        source="team_info.team_uploaded_files",
+        allow_empty=True,
+        child=TeamFileDescriptorSerializer(),
+        required=False
+    )
 
     def get_textResponses(self, data):
         return [

@@ -199,22 +199,22 @@ class TestPageDataSubmissionSerializer(TestCase):
                         'fileSize': 22,
                         'fileIndex': 1
                     }
-                    # 'teamUploadedFiles': [
-                    #     {
-                    #         'fileUrl': 'www.mysite.com/files/123',
-                    #         'fileDescription': 'desc-123',
-                    #         'fileName': 'name-123',
-                    #         'fileSize': 123,
-                    #         'uploadedBy': 'Bob'
-                    #     },
-                    #     {
-                    #         'fileUrl': 'www.mysite.com/files/5555',
-                    #         'fileDescription': 'desc-5555',
-                    #         'fileName': 'name-5555',
-                    #         'fileSize': 5555,
-                    #         'uploadedBy': 'Billy'
-                    #     }
-                    # ]
+                ],
+                'teamUploadedFiles': [
+                    {
+                        'fileUrl': 'www.mysite.com/files/123',
+                        'fileDescription': 'desc-123',
+                        'fileName': 'name-123',
+                        'fileSize': 123,
+                        'uploadedBy': 'Bob'
+                    },
+                    {
+                        'fileUrl': 'www.mysite.com/files/5555',
+                        'fileDescription': 'desc-5555',
+                        'fileName': 'name-5555',
+                        'fileSize': 5555,
+                        'uploadedBy': 'Billy'
+                    }
                 ]
             }
         }
