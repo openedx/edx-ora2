@@ -74,25 +74,13 @@ class TeamFileDescriptorSerializer(Serializer):
     uploadedBy = CharField(source="uploaded_by")
 
 
-class DraftResponseSerializer(Serializer):
-    """
-    Args:
-    * get_learner_submission_data shape
-
-    Returns:
-    {
-        textResponses
-        uploadedFiles
-        teamUploadedFiles
-    }
-    """
+class InProgressResponseSerializer(Serializer):
     textResponses = SerializerMethodField()
     uploadedFiles = SerializerMethodField()
     teamUploadedFiles = ListField(
         source="team_info.team_uploaded_files",
         allow_empty=True,
         child=TeamFileDescriptorSerializer(),
-        default=None,
         required=False
     )
 

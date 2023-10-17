@@ -173,7 +173,8 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
         assert data == {
             'response': {
                 'textResponses': ['', ''],
-                'uploadedFiles': []
+                'uploadedFiles': [],
+                'teamUploadedFiles': [],
             }
         }
 
@@ -188,7 +189,7 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
         student_item = xblock.get_student_item_dict()
         base_key = f'{student_item["student_id"]}/{student_item["course_id"]}/{student_item["item_id"]}'
         with self.mock_get_url({
-            base_key: 'www.downloadfiles.xyz/0',
+            base_key: 'www.example.xyz/0',
             base_key + '/1': 'www.downloadfiles.xyz/1'
         }):
             learner_submission_data = xblock.get_learner_submission_data()
@@ -211,7 +212,8 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
                         'fileSize': 3,
                         'fileIndex': 1,
                     },
-                ]
+                ],
+                'teamUploadedFiles': [],
             }
         }
 
@@ -279,7 +281,7 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
             'response': {
                 'textResponses': ['', ''],
                 'uploadedFiles': [],
-                # 'teamUploadedFiles': []
+                'teamUploadedFiles': []
             },
         }
 
@@ -339,22 +341,22 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
                         'fileIndex': 1,
                     },
                 ],
-                # 'teamUploadedFiles': [
-                #     {
-                #         'fileUrl': 'www.downloadfiles.xyz/shared1',
-                #         'fileName': shared_file_1.name,
-                #         'fileDescription': shared_file_1.description,
-                #         'fileSize': shared_file_1.size,
-                #         'uploadedBy': r1.username,
-                #     },
-                #     {
-                #         'fileUrl': 'www.downloadfiles.xyz/shared2',
-                #         'fileName': shared_file_2.name,
-                #         'fileDescription': shared_file_2.description,
-                #         'fileSize': shared_file_2.size,
-                #         'uploadedBy': r2.username,
-                #     },
-                # ],
+                'teamUploadedFiles': [
+                    {
+                        'fileUrl': 'www.downloadfiles.xyz/shared1',
+                        'fileName': shared_file_1.name,
+                        'fileDescription': shared_file_1.description,
+                        'fileSize': shared_file_1.size,
+                        'uploadedBy': r1.username,
+                    },
+                    {
+                        'fileUrl': 'www.downloadfiles.xyz/shared2',
+                        'fileName': shared_file_2.name,
+                        'fileDescription': shared_file_2.description,
+                        'fileSize': shared_file_2.size,
+                        'uploadedBy': r2.username,
+                    },
+                ],
             }
         }
 
