@@ -212,45 +212,43 @@ class TestPageDataResponseSerializer(TestCase):
                 FileDescriptor('www.mysite.com/files/22', 'desc-22', 'name-22', 22, True)._asdict(),
             ]
         }
-        assert PageDataSubmissionSerializer(data).data == {
-            'response': {
-                'textResponses': [
-                    'Response to prompt 1',
-                    'Response to prompt 2'
-                ],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.mysite.com/files/1',
-                        'fileDescription': 'desc-1',
-                        'fileName': 'name-1',
-                        'fileSize': 1,
-                        'fileIndex': 0
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/22',
-                        'fileDescription': 'desc-22',
-                        'fileName': 'name-22',
-                        'fileSize': 22,
-                        'fileIndex': 1
-                    }
-                ],
-                'teamUploadedFiles': [
-                    {
-                        'fileUrl': 'www.mysite.com/files/123',
-                        'fileDescription': 'desc-123',
-                        'fileName': 'name-123',
-                        'fileSize': 123,
-                        'uploadedBy': 'Bob'
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/5555',
-                        'fileDescription': 'desc-5555',
-                        'fileName': 'name-5555',
-                        'fileSize': 5555,
-                        'uploadedBy': 'Billy'
-                    }
-                ]
-            }
+        assert DraftResponseSerializer(data).data == {
+            'textResponses': [
+                'Response to prompt 1',
+                'Response to prompt 2'
+            ],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.mysite.com/files/1',
+                    'fileDescription': 'desc-1',
+                    'fileName': 'name-1',
+                    'fileSize': 1,
+                    'fileIndex': 0
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/22',
+                    'fileDescription': 'desc-22',
+                    'fileName': 'name-22',
+                    'fileSize': 22,
+                    'fileIndex': 1
+                }
+            ],
+            'teamUploadedFiles': [
+                {
+                    'fileUrl': 'www.mysite.com/files/123',
+                    'fileDescription': 'desc-123',
+                    'fileName': 'name-123',
+                    'fileSize': 123,
+                    'uploadedBy': 'Bob'
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/5555',
+                    'fileDescription': 'desc-5555',
+                    'fileName': 'name-5555',
+                    'fileSize': 5555,
+                    'uploadedBy': 'Billy'
+                }
+            ]
         }
 
     def test_integration_submitted(self):

@@ -2,7 +2,6 @@
 # pylint: disable=abstract-method
 
 from rest_framework.serializers import (
-    BooleanField,
     IntegerField,
     Serializer,
     CharField,
@@ -50,6 +49,12 @@ class SubmissionSerializer(Serializer):
         for index, uploaded_file in enumerate(response.get_file_uploads(generate_urls=True)):
             result.append(SubmissionFileSerializer(({'file': uploaded_file, 'file_index': index})).data)
         return result
+    
+    def to_representation(self, instance):
+        # Unpack response.
+        # This is to keep signature similar between the draft and submitted responses.
+        response = instance["response"]
+        return super().to_representation(response)
 
     def to_representation(self, instance):
         # Unpack response.
@@ -74,13 +79,25 @@ class TeamFileDescriptorSerializer(Serializer):
     uploadedBy = CharField(source="uploaded_by")
 
 
-class InProgressResponseSerializer(Serializer):
+class DraftResponseSerializer(Serializer):
+    """
+    Args:
+    * get_learner_submission_data shape
+
+    Returns:
+    {
+        textResponses
+        uploadedFiles
+        teamUploadedFiles
+    }
+    """
     textResponses = SerializerMethodField()
     uploadedFiles = SerializerMethodField()
     teamUploadedFiles = ListField(
         source="team_info.team_uploaded_files",
         allow_empty=True,
         child=TeamFileDescriptorSerializer(),
+        default=None,
         required=False
     )
 
