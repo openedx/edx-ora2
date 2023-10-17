@@ -261,7 +261,7 @@ class MfeMixin:
             'workflow': {
                 'has_submitted': self.submission_data.has_submitted,
                 'has_cancelled': self.workflow_data.is_cancelled,
-                'has_recieved_grade': self.workflow_data.has_recieved_grade,
+                'has_received_grade': self.workflow_data.has_received_grade,
             },
             'team_info': team_info,
             'response': response,

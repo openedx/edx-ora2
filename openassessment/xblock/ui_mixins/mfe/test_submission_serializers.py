@@ -147,7 +147,7 @@ class TestPageDataSubmissionSerializer(TestCase):
             'workflow': {
                 'has_submitted': False,
                 'has_cancelled': False,
-                'has_recieved_grade': False,
+                'has_received_grade': False,
             },
             'team_info': {
                 'team_name': 'Team1',
@@ -224,7 +224,7 @@ class TestPageDataSubmissionSerializer(TestCase):
             'workflow': {
                 'has_submitted': True,
                 'has_cancelled': False,
-                'has_recieved_grade': True,
+                'has_received_grade': True,
             },
             'team_info': {
                 'team_name': 'Team1',
