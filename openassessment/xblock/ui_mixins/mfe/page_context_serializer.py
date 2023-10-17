@@ -156,6 +156,7 @@ class SubmissionStepInfoSerializer(ClosedInfoSerializer):
 
         return TeamInfoSerializer(team_info).data
 
+
 class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
@@ -308,9 +309,9 @@ class PageDataSerializer(Serializer):
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
-        if not "step" in self.context:
+        if "step" not in self.context:
             raise ValidationError(f"Missing required context: step")
-        if not "view" in self.context:
+        if "view" not in self.context:
             raise ValidationError(f"Missing required context: view")
 
         return super().to_representation(instance)

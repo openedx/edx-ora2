@@ -170,7 +170,6 @@ class TestDraftResponseSerializer(TestCase):
         }
 
 
-
 @ddt.ddt
 class TestPageDataResponseSerializer(TestCase):
 

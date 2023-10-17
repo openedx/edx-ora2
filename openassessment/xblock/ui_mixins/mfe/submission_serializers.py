@@ -49,7 +49,7 @@ class SubmissionSerializer(Serializer):
         for index, uploaded_file in enumerate(response.get_file_uploads(generate_urls=True)):
             result.append(SubmissionFileSerializer(({'file': uploaded_file, 'file_index': index})).data)
         return result
-    
+
     def to_representation(self, instance):
         # Unpack response.
         # This is to keep signature similar between the draft and submitted responses.
