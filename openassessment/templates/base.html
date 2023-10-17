@@ -59,7 +59,7 @@
           title="title"
           allow="microphone *; camera *; midi *; geolocation *; encrypted-media *, clipboard-write *"
           frameborder="0"
-          id="ora-iframe-{{xblock_id}}"
+          id="ora-iframe"
           src="http://localhost:1992/xblock/{course_id}/{xblock_id}"
           style="width: 100%; height: 100%;"
           onload="loadResizeEvent()"
@@ -103,7 +103,7 @@
   function loadResizeEvent() {
     window.addEventListener('message', function(event) {
       if (event.data.type === 'ora-resize') {
-        const iframe = document.getElementById('ora-iframe-{{xblock}}');
+        const iframe = document.getElementById('ora-iframe');
         const { height } = event.data.payload;
         iframe.height = height;
       }
