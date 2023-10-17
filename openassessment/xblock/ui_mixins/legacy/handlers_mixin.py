@@ -235,13 +235,13 @@ class LegacyHandlersMixin:
         """
         try:
             peer_assess(
-                data['submission_uuid'],
                 data['options_selected'],
                 data['overall_feedback'],
                 data['criterion_feedback'],
                 self.config_data,
                 self.workflow_data,
                 self.peer_assessment_data(),
+                assessed_submission_uuid=data['submission_uuid'],
             )
         except ReviewerMustHaveSubmittedException:
             return {

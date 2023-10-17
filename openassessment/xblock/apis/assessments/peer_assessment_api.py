@@ -135,15 +135,27 @@ class PeerAssessmentAPI(StepDataAPI):
             logger.exception(err)
         return peer_submission
 
+    def assert_assessed_submission_uuid_matches(self, uuid_client):
+        submission = self.get_peer_submission() or {}
+        uuid_server = submission.get("uuid", None)
+
+        if uuid_server != uuid_client:
+            logger.warning(
+                "Irrelevant assessment submission: expected '%s', got '%s'",
+                uuid_server,
+                uuid_client,
+            )
+            raise ServerClientUUIDMismatchException()
+
 
 def peer_assess(
-    assessed_submission_uuid,
     options_selected,
     overall_feedback,
     criterion_feedback,
     config_data,
     workflow_data,
     peer_step_data,
+    assessed_submission_uuid=None,
 ):
     """Place a peer assessment into OpenAssessment system
 
@@ -175,18 +187,8 @@ def peer_assess(
     if not workflow_data.has_workflow:
         raise ReviewerMustHaveSubmittedException()
 
-    # TODO: clean this
-    submission = peer_step_data.get_peer_submission() or {}
-    uuid_server = submission.get("uuid", None)
-    uuid_client = assessed_submission_uuid
-
-    if uuid_server != uuid_client:
-        logger.warning(
-            "Irrelevant assessment submission: expected '%s', got '%s'",
-            uuid_server,
-            uuid_client,
-        )
-        raise ServerClientUUIDMismatchException()
+    if assessed_submission_uuid:
+        peer_step_data.assert_assessed_submission_uuid_matches(assessed_submission_uuid)
 
     if not peer_step_data.assessment:
         raise StepConfigurationNotFound()
@@ -212,32 +214,23 @@ def peer_assess(
     except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
         logger.warning(
             "Peer API error for submission UUID %s",
-            assessed_submission_uuid,
+            scorer_submission_uuid,
             exc_info=True,
         )
         raise
     except PeerAssessmentInternalError:
         logger.exception(
             "Peer API internal error for submission UUID: %s",
-            assessed_submission_uuid,
+            scorer_submission_uuid,
         )
         raise
 
     # Update both the workflow that the submission we"re assessing
     # belongs to, as well as our own (e.g. have we evaluated enough?)
-    course_settings = workflow_data.get_course_workflow_settings()
     try:
         if assessment:
-            update_from_assessments(
-                assessed_submission_uuid,
-                workflow_data.workflow_requirements,
-                course_settings
-            )
-        update_from_assessments(
-            scorer_submission_uuid,
-            workflow_data.workflow_requirements,
-            course_settings
-        )
+            workflow_data.update_workflow_status(assessment['submission_uuid'])
+        workflow_data.update_workflow_status(scorer_submission_uuid)
     except AssessmentWorkflowError:
         logger.exception(
             "Workflow error occurred when submitting peer assessment for submission %s",
