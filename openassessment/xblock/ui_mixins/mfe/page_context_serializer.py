@@ -307,9 +307,9 @@ class PageDataSerializer(Serializer):
 
     def to_representation(self, instance):
         if "step" not in self.context:
-            raise ValidationError("Missing required context: step")
+            raise ValidationError(f"Missing required context: step")
         if "view" not in self.context:
-            raise ValidationError("Missing required context: view")
+            raise ValidationError(f"Missing required context: view")
 
         return super().to_representation(instance)
 

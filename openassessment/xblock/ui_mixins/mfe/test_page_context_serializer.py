@@ -20,7 +20,11 @@ from openassessment.xblock.test.base import (
     scenario,
 )
 from openassessment.xblock.test.test_submission import setup_mock_team
-from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer, ProgressSerializer, TeamInfoSerializer
+from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
+    PageDataSerializer,
+    ProgressSerializer,
+    TeamInfoSerializer,
+)
 
 
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
@@ -588,6 +592,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
+
 
 class TestTeamInfoSerializer(TestCase):
     def test_serialize(self):
