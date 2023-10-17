@@ -178,6 +178,9 @@ class SubmissionAPI(StepDataAPI):
         return self.workflow.get("team_submission_uuid")
 
     def get_submission_team_info(self, workflow):
+        """
+        Returns tuple (team info, team ID)
+        """
         if not self.is_team_assignment:
             return {}, None
 
