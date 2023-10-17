@@ -2,14 +2,20 @@
 Assessment API Errors
 """
 
+from openassessment.assessment.errors import AssessmentError
 
-class ReviewerMustHaveSubmittedException(Exception):
+
+class InvalidStateToAssess(AssessmentError):
     pass
 
 
-class ServerClientUUIDMismatchException(Exception):
+class ReviewerMustHaveSubmittedException(InvalidStateToAssess):
     pass
 
 
-class StepConfigurationNotFound(Exception):
+class ServerClientUUIDMismatchException(AssessmentError):
+    pass
+
+
+class StepConfigurationNotFound(AssessmentError):
     pass

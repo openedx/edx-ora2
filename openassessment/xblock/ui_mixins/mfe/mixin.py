@@ -3,20 +3,14 @@ Data layer for ORA
 
 XBlock handlers which surface info about an ORA, instead of being tied to views.
 """
-from openassessment.assessment.errors.base import AssessmentError
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from openassessment.fileupload.exceptions import FileUploadError
-from openassessment.xblock.apis.assessments.errors import (
-    ReviewerMustHaveSubmittedException,
-    ServerClientUUIDMismatchException,
-    StepConfigurationNotFound,
-)
-
+from openassessment.assessment.errors import AssessmentError
+from openassessment.xblock.apis.assessments.errors import InvalidStateToAssess
 from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
 from openassessment.xblock.apis.assessments.self_assessment_api import self_assess
 from openassessment.xblock.apis.assessments.student_training_api import training_assess
-
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
@@ -35,12 +29,8 @@ from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_s
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import AddFileRequestSerializer
-from openassessment.assessment.errors import (
-    PeerAssessmentError,
-    SelfAssessmentError,
-    StudentTrainingError,
-)
 from openassessment.workflow.errors import AssessmentWorkflowError
+
 
 class OraApiException(JsonHandlerError):
     """
@@ -257,9 +247,9 @@ class MfeMixin:
                     data['criterionFeedback'],
                     self.config_data,
                     self.workflow_data,
-                    self.peer_step_data,
+                    peer_data,
                 )
-            if self.workflow_data.is_self:
+            elif self.workflow_data.is_self:
                 self_assess(
                     data['optionsSelected'],
                     data['criterionFeedback'],
@@ -268,7 +258,7 @@ class MfeMixin:
                     self.workflow_data,
                     self.self_data
                 )
-            if self.workflow_data.is_training:
+            elif self.workflow_data.is_training:
                 corrections = training_assess(
                     data['optionsSelected'],
                     self.config_data,
@@ -277,14 +267,17 @@ class MfeMixin:
                 if corrections:
                     raise OraApiException(400, error_codes.TRAINING_ANSWER_INCORRECT, corrections)
             else:
-                context = {
-                    'student_item': self.config_data.student_item_dict(),
-                    'workflow': self.workflow_data.workflow,
-                }
-                raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context)
+                raise InvalidStateToAssess()
+        except InvalidStateToAssess as e:
+            # This catches the error we explicitly raise, as well as any that may be raised from within
+            # the assessment logic itself
+            context = {
+                'student_item': self.config_data.student_item_dict,
+                'workflow': self.workflow_data.workflow,
+            }
+            raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
         except (AssessmentError, AssessmentWorkflowError) as e:
-            raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e))
-
+            raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
 
     @XBlock.json_handler
     def assessment(self, data, suffix=""):
