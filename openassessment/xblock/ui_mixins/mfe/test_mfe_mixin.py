@@ -32,7 +32,7 @@ from openassessment.xblock.test.test_staff_area import NullUserService, UserStat
 from openassessment.xblock.test.test_submission import COURSE_ID, setup_mock_team
 from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
-from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
 
 
 class MFEHandlersTestBase(XBlockHandlerTestCase):
@@ -146,6 +146,8 @@ def assert_called_once_with_helper(mock, expected_first_arg, expected_additional
 
 class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
 
+    maxDiff = None
+
     def setup_xblock(self, xblock):
         xblock.xmodule_runtime = Mock(
             user_is_staff=False,
@@ -158,13 +160,11 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
     def test_nothing(self, xblock):
         with self.mock_get_url():
             learner_submission_data = xblock.get_learner_submission_data()
-            data = PageDataSubmissionSerializer(learner_submission_data).data
+            data = DraftResponseSerializer(learner_submission_data).data
         assert data == {
-            'response': {
-                'textResponses': ['', ''],
-                'uploadedFiles': [],
-                'teamUploadedFiles': [],
-            }
+            'textResponses': ['', ''],
+            'uploadedFiles': [],
+            'teamUploadedFiles': [],
         }
 
     @scenario("data/file_upload_scenario.xml", user_id='r5')
@@ -178,32 +178,30 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
         student_item = xblock.get_student_item_dict()
         base_key = f'{student_item["student_id"]}/{student_item["course_id"]}/{student_item["item_id"]}'
         with self.mock_get_url({
-            base_key: 'www.example.xyz/0',
+            base_key: 'www.downloadfiles.xyz/0',
             base_key + '/1': 'www.downloadfiles.xyz/1'
         }):
             learner_submission_data = xblock.get_learner_submission_data()
-            data = PageDataSubmissionSerializer(learner_submission_data).data
+            data = DraftResponseSerializer(learner_submission_data).data
         assert data == {
-            'response': {
-                'textResponses': ['hello world', 'goodnight moon'],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/0',
-                        'fileName': 'file1.ppt',
-                        'fileDescription': 'my presentation',
-                        'fileSize': 2,
-                        'fileIndex': 0,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/1',
-                        'fileName': 'file3.mp4',
-                        'fileDescription': 'video of presentation',
-                        'fileSize': 3,
-                        'fileIndex': 1,
-                    },
-                ],
-                'teamUploadedFiles': [],
-            }
+            'textResponses': ['hello world', 'goodnight moon'],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/0',
+                    'fileName': 'file1.ppt',
+                    'fileDescription': 'my presentation',
+                    'fileSize': 2,
+                    'fileIndex': 0,
+                },
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/1',
+                    'fileName': 'file3.mp4',
+                    'fileDescription': 'video of presentation',
+                    'fileSize': 3,
+                    'fileIndex': 1,
+                },
+            ],
+            'teamUploadedFiles': [],
         }
 
     @scenario("data/file_upload_scenario.xml", user_id='r5')
@@ -225,27 +223,26 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
 
         with self.mock_get_url():
             learner_submission_data = xblock.get_learner_submission_data()
-            data = PageDataSubmissionSerializer(learner_submission_data).data
+            data = SubmissionSerializer(learner_submission_data).data
         assert data == {
-            'response': {
-                'textResponses': ['hello world', 'goodnight world'],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/f1',
-                        'fileName': 'f1.txt',
-                        'fileDescription': 'file1',
-                        'fileSize': 10,
-                        'fileIndex': 0,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/f2',
-                        'fileName': 'f2.pdf',
-                        'fileDescription': 'file2',
-                        'fileSize': 300,
-                        'fileIndex': 1,
-                    },
-                ]
-            }
+            'textResponses': ['hello world', 'goodnight world'],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/f1',
+                    'fileName': 'f1.txt',
+                    'fileDescription': 'file1',
+                    'fileSize': 10,
+                    'fileIndex': 0,
+                },
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/f2',
+                    'fileName': 'f2.pdf',
+                    'fileDescription': 'file2',
+                    'fileSize': 300,
+                    'fileIndex': 1,
+                },
+            ],
+            'teamUploadedFiles': None,
         }
 
 
@@ -265,13 +262,11 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
         self.setup_xblock(xblock)
         with self.mock_get_url():
             learner_submission_data = xblock.get_learner_submission_data()
-            data = PageDataSubmissionSerializer(learner_submission_data).data
+            data = DraftResponseSerializer(learner_submission_data).data
         assert data == {
-            'response': {
-                'textResponses': ['', ''],
-                'uploadedFiles': [],
-                'teamUploadedFiles': []
-            },
+            'textResponses': ['', ''],
+            'uploadedFiles': [],
+            'teamUploadedFiles': [],
         }
 
     @scenario("data/team_submission_file_scenario.xml", user_id='r5')
@@ -310,43 +305,41 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
             shared_file_2_key: 'www.downloadfiles.xyz/shared2',
         }):
             learner_submission_data = xblock.get_learner_submission_data()
-            data = PageDataSubmissionSerializer(learner_submission_data).data
+            data = DraftResponseSerializer(learner_submission_data).data
         assert data == {
-            'response': {
-                'textResponses': ['hello world', 'goodnight moon'],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/0',
-                        'fileName': 'file1.ppt',
-                        'fileDescription': 'my presentation',
-                        'fileSize': 2,
-                        'fileIndex': 0,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/1',
-                        'fileName': 'file3.mp4',
-                        'fileDescription': 'video of presentation',
-                        'fileSize': 3,
-                        'fileIndex': 1,
-                    },
-                ],
-                'teamUploadedFiles': [
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/shared1',
-                        'fileName': shared_file_1.name,
-                        'fileDescription': shared_file_1.description,
-                        'fileSize': shared_file_1.size,
-                        'uploadedBy': r1.username,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/shared2',
-                        'fileName': shared_file_2.name,
-                        'fileDescription': shared_file_2.description,
-                        'fileSize': shared_file_2.size,
-                        'uploadedBy': r2.username,
-                    },
-                ],
-            }
+            'textResponses': ['hello world', 'goodnight moon'],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/0',
+                    'fileName': 'file1.ppt',
+                    'fileDescription': 'my presentation',
+                    'fileSize': 2,
+                    'fileIndex': 0,
+                },
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/1',
+                    'fileName': 'file3.mp4',
+                    'fileDescription': 'video of presentation',
+                    'fileSize': 3,
+                    'fileIndex': 1,
+                },
+            ],
+            'teamUploadedFiles': [
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/shared1',
+                    'fileName': shared_file_1.name,
+                    'fileDescription': shared_file_1.description,
+                    'fileSize': shared_file_1.size,
+                    'uploadedBy': r1.username,
+                },
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/shared2',
+                    'fileName': shared_file_2.name,
+                    'fileDescription': shared_file_2.description,
+                    'fileSize': shared_file_2.size,
+                    'uploadedBy': r2.username,
+                },
+            ],
         }
 
     @scenario("data/team_submission_file_scenario.xml", user_id='r5')
@@ -369,34 +362,33 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
         )
         with self.mock_get_url():
             learner_submission_data = xblock.get_learner_submission_data()
-            data = PageDataSubmissionSerializer(learner_submission_data).data
+            data = SubmissionSerializer(learner_submission_data).data
         assert data == {
-            'response': {
-                'textResponses': ['This is the answer'],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/k1',
-                        'fileName': '1.txt',
-                        'fileDescription': '1',
-                        'fileSize': 12,
-                        'fileIndex': 0,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/k2',
-                        'fileName': '2.txt',
-                        'fileDescription': '2',
-                        'fileSize': 1,
-                        'fileIndex': 1,
-                    },
-                    {
-                        'fileUrl': 'www.downloadfiles.xyz/k3',
-                        'fileName': '3.txt',
-                        'fileDescription': '3',
-                        'fileSize': 56,
-                        'fileIndex': 2,
-                    },
-                ]
-            }
+            'textResponses': ['This is the answer'],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/k1',
+                    'fileName': '1.txt',
+                    'fileDescription': '1',
+                    'fileSize': 12,
+                    'fileIndex': 0,
+                },
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/k2',
+                    'fileName': '2.txt',
+                    'fileDescription': '2',
+                    'fileSize': 1,
+                    'fileIndex': 1,
+                },
+                {
+                    'fileUrl': 'www.downloadfiles.xyz/k3',
+                    'fileName': '3.txt',
+                    'fileDescription': '3',
+                    'fileSize': 56,
+                    'fileIndex': 2,
+                },
+            ],
+            'teamUploadedFiles': None,
         }
 
     def _create_team_submission_and_workflow(

@@ -16,7 +16,7 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentGradeSerializer,
     AssessmentResponseSerializer,
 )
-from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS, CharListField
 
 
@@ -324,7 +324,13 @@ class PageDataSerializer(Serializer):
         # Submission Views
         if self.context.get("view") == "submission":
             learner_page_data_submission_data = instance.get_learner_submission_data()
-            return PageDataSubmissionSerializer(learner_page_data_submission_data).data
+
+            # Draft response
+            if not instance.submission_data.has_submitted:
+                return DraftResponseSerializer(learner_page_data_submission_data).data
+
+            # Submitted response
+            return SubmissionSerializer(learner_page_data_submission_data).data
 
         # Assessment Views
         elif self.context.get("view") == "assessment":

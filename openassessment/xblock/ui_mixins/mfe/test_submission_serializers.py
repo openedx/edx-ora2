@@ -4,9 +4,8 @@ import ddt
 
 from openassessment.fileupload.api import FileDescriptor, TeamFileDescriptor
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
-    InProgressResponseSerializer,
-    SubmissionSerializer,
-    PageDataSubmissionSerializer
+    DraftResponseSerializer,
+    SubmissionSerializer
 )
 from openassessment.data import OraSubmissionAnswer, SubmissionFileUpload
 
@@ -40,8 +39,22 @@ class TestSubmissionSerializer(TestCase):
         mock_uploaded_files = [
             _mock_uploaded_file(file_id) for file_id in [1, 22]
         ]
-        mock_submission_answer = MockOraSubmissionAnswer(mock_text_responses, mock_uploaded_files)
-        assert SubmissionSerializer(mock_submission_answer).data == {
+        data = {
+            'workflow': {
+                'has_submitted': True,
+                'has_cancelled': False,
+                'has_received_grade': True,
+            },
+            'team_info': {
+                'team_name': 'Team1',
+                'team_usernames': ['Bob', 'Alice'],
+                'previous_team_name': None,
+                'has_submitted': True,
+            },
+            'response': MockOraSubmissionAnswer(mock_text_responses, mock_uploaded_files),
+            'file_data': []
+        }
+        assert SubmissionSerializer(data).data == {
             'textResponses': mock_text_responses,
             'uploadedFiles': [
                 {
@@ -58,18 +71,35 @@ class TestSubmissionSerializer(TestCase):
                     'fileSize': 22,
                     'fileIndex': 1
                 }
-            ]
+            ],
+            "teamUploadedFiles": None
         }
 
     def test_empty(self):
-        mock_submission_answer = MockOraSubmissionAnswer([], [])
-        assert SubmissionSerializer(mock_submission_answer).data == {
+        data = {
+            'workflow': {
+                'has_submitted': True,
+                'has_cancelled': False,
+                'has_received_grade': True,
+            },
+            'team_info': {
+                'team_name': 'Team1',
+                'team_usernames': ['Bob', 'Alice'],
+                'previous_team_name': None,
+                'has_submitted': True,
+            },
+            'response': MockOraSubmissionAnswer([], []),
+            'file_data': []
+        }
+        assert SubmissionSerializer(data).data == {
             'textResponses': [],
-            'uploadedFiles': []
+            'uploadedFiles': [],
+            'teamUploadedFiles': None
         }
 
 
-class TestInProgressResponseSerializer(TestCase):
+class TestDraftResponseSerializer(TestCase):
+
     def test_serializer(self):
         data = {
             'response': {
@@ -91,7 +121,7 @@ class TestInProgressResponseSerializer(TestCase):
                 FileDescriptor('www.mysite.com/files/22', 'desc-22', 'name-22', 22, True)._asdict(),
             ]
         }
-        assert InProgressResponseSerializer(data).data == {
+        assert DraftResponseSerializer(data).data == {
             'textResponses': [
                 'Response to prompt 1',
                 'Response to prompt 2'
@@ -111,7 +141,8 @@ class TestInProgressResponseSerializer(TestCase):
                     'fileSize': 22,
                     'fileIndex': 1
                 }
-            ]
+            ],
+            'teamUploadedFiles': None,
         }
 
     def test_empty(self):
@@ -132,15 +163,19 @@ class TestInProgressResponseSerializer(TestCase):
             },
             'file_data': []
         }
-        assert InProgressResponseSerializer(data).data == {
+        assert DraftResponseSerializer(data).data == {
             'textResponses': ['', ''],
             'uploadedFiles': [],
+            'teamUploadedFiles': None,
         }
 
 
 
 @ddt.ddt
-class TestPageDataSubmissionSerializer(TestCase):
+class TestPageDataResponseSerializer(TestCase):
+
+    # Show full dictionary diffs
+    maxDiff = None
 
     def test_integration_not_submitted(self):
         data = {
@@ -178,45 +213,43 @@ class TestPageDataSubmissionSerializer(TestCase):
                 FileDescriptor('www.mysite.com/files/22', 'desc-22', 'name-22', 22, True)._asdict(),
             ]
         }
-        assert PageDataSubmissionSerializer(data).data == {
-            'response': {
-                'textResponses': [
-                    'Response to prompt 1',
-                    'Response to prompt 2'
-                ],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.mysite.com/files/1',
-                        'fileDescription': 'desc-1',
-                        'fileName': 'name-1',
-                        'fileSize': 1,
-                        'fileIndex': 0
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/22',
-                        'fileDescription': 'desc-22',
-                        'fileName': 'name-22',
-                        'fileSize': 22,
-                        'fileIndex': 1
-                    }
-                ],
-                'teamUploadedFiles': [
-                    {
-                        'fileUrl': 'www.mysite.com/files/123',
-                        'fileDescription': 'desc-123',
-                        'fileName': 'name-123',
-                        'fileSize': 123,
-                        'uploadedBy': 'Bob'
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/5555',
-                        'fileDescription': 'desc-5555',
-                        'fileName': 'name-5555',
-                        'fileSize': 5555,
-                        'uploadedBy': 'Billy'
-                    }
-                ]
-            }
+        assert DraftResponseSerializer(data).data == {
+            'textResponses': [
+                'Response to prompt 1',
+                'Response to prompt 2'
+            ],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.mysite.com/files/1',
+                    'fileDescription': 'desc-1',
+                    'fileName': 'name-1',
+                    'fileSize': 1,
+                    'fileIndex': 0
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/22',
+                    'fileDescription': 'desc-22',
+                    'fileName': 'name-22',
+                    'fileSize': 22,
+                    'fileIndex': 1
+                }
+            ],
+            'teamUploadedFiles': [
+                {
+                    'fileUrl': 'www.mysite.com/files/123',
+                    'fileDescription': 'desc-123',
+                    'fileName': 'name-123',
+                    'fileSize': 123,
+                    'uploadedBy': 'Bob'
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/5555',
+                    'fileDescription': 'desc-5555',
+                    'fileName': 'name-5555',
+                    'fileSize': 5555,
+                    'uploadedBy': 'Billy'
+                }
+            ]
         }
 
     def test_integration_submitted(self):
@@ -246,41 +279,40 @@ class TestPageDataSubmissionSerializer(TestCase):
             ),
             'file_data': []
         }
-        assert PageDataSubmissionSerializer(data).data == {
-            'response': {
-                'textResponses': [
-                    'Response to prompt 1',
-                    'Response to prompt 2'
-                ],
-                'uploadedFiles': [
-                    {
-                        'fileUrl': 'www.mysite.com/files/1',
-                        'fileDescription': 'desc-1',
-                        'fileName': 'name-1',
-                        'fileSize': 1,
-                        'fileIndex': 0
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/22',
-                        'fileDescription': 'desc-22',
-                        'fileName': 'name-22',
-                        'fileSize': 22,
-                        'fileIndex': 1
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/123',
-                        'fileDescription': 'desc-123',
-                        'fileName': 'name-123',
-                        'fileSize': 123,
-                        'fileIndex': 2
-                    },
-                    {
-                        'fileUrl': 'www.mysite.com/files/5555',
-                        'fileDescription': 'desc-5555',
-                        'fileName': 'name-5555',
-                        'fileSize': 5555,
-                        'fileIndex': 3
-                    }
-                ]
-            }
+        assert SubmissionSerializer(data).data == {
+            'textResponses': [
+                'Response to prompt 1',
+                'Response to prompt 2'
+            ],
+            'uploadedFiles': [
+                {
+                    'fileUrl': 'www.mysite.com/files/1',
+                    'fileDescription': 'desc-1',
+                    'fileName': 'name-1',
+                    'fileSize': 1,
+                    'fileIndex': 0
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/22',
+                    'fileDescription': 'desc-22',
+                    'fileName': 'name-22',
+                    'fileSize': 22,
+                    'fileIndex': 1
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/123',
+                    'fileDescription': 'desc-123',
+                    'fileName': 'name-123',
+                    'fileSize': 123,
+                    'fileIndex': 2
+                },
+                {
+                    'fileUrl': 'www.mysite.com/files/5555',
+                    'fileDescription': 'desc-5555',
+                    'fileName': 'name-5555',
+                    'fileSize': 5555,
+                    'fileIndex': 3
+                }
+            ],
+            "teamUploadedFiles": None,
         }
