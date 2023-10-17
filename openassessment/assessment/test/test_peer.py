@@ -2054,6 +2054,61 @@ class TestPeerApi(CacheResetTest):
         )
         assert result == expected_flexible
 
+    def test_get_active_assessment(self):
+        """
+        Test for behavior of get_active_assessment
+        """
+        # Three learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, _ = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+        carlos_sub, _ = self._create_student_and_submission('carlos', 'carlos sub', steps=['peer'])
+
+        # No one has any active assessment currently
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+        assert peer_api.get_active_assessment_submission(bob_sub['uuid']) is None
+        assert peer_api.get_active_assessment_submission(carlos_sub['uuid']) is None
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Alice's active assessment is now Bob, and Bob is unaffected
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid'])['uuid'] == bob_sub['uuid']
+        assert peer_api.get_active_assessment_submission(bob_sub['uuid']) is None
+
+        # Alice assesses Bob and then should have no active assessment
+        peer_api.create_assessment(
+            alice_sub['uuid'],
+            'alice',
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            3
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+        # Alice requests a new peer to assess and gets Carlos, who is now her active assessment
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == carlos_sub['uuid']
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid'])['uuid'] == carlos_sub['uuid']
+
+        # Assess Carlos, active assessment is now None
+        peer_api.create_assessment(
+            alice_sub['uuid'],
+            'alice',
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            3
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+        # There are no more peers to assess, and the returned None does not affect the active assessment
+        assert peer_api.get_submission_to_assess(alice_sub['uuid'], 3) is None
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
 
 class PeerWorkflowTest(CacheResetTest):
     """

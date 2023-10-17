@@ -120,6 +120,15 @@ class PeerAssessmentAPI(StepDataAPI):
     def get_download_urls(self, peer_sub):
         return self._block.get_download_urls_from_submission(peer_sub)
 
+    def get_active_assessment_submission(self):
+        try:
+            return peer_api.get_active_assessment_submission(
+                self.submission_uuid
+            )
+        except PeerAssessmentWorkflowError as err:
+            logger.exception(err)
+            return None
+
     def get_peer_submission(self):
         peer_submission = False
         try:

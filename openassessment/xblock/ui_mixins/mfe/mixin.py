@@ -279,9 +279,23 @@ class MfeMixin:
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
 
+    def _assessment_get_peer_handler(self):
+        # Call get_peer_submission to grab a new peer submission
+        self.peer_assessment_data().get_peer_submission()
+
+        # Then, just return page data
+        serializer_context = {
+            "view": "assessment",
+            "step": "peer",
+        }
+        page_context = PageDataSerializer(self, context=serializer_context)
+        return page_context.data
+
     @XBlock.json_handler
     def assessment(self, data, suffix=""):
         if suffix == handler_suffixes.ASSESSMENT_SUBMIT:
             return self._assessment_submit_handler(data)
+        elif suffix == handler_suffixes.ASSESSMENT_GET_PEER:
+            return self._assessment_get_peer_handler()
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)

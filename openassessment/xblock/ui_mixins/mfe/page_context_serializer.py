@@ -294,7 +294,7 @@ class PageDataSerializer(Serializer):
             if active_step == "training":
                 response = instance.student_training_data.example
             elif active_step == "peer":
-                response = instance.peer_assessment_data().get_peer_submission()
+                response = instance.peer_assessment_data().get_active_assessment_submission()
             elif active_step in ("self", "staff", "ai", "waiting", "done"):
                 response = None
             else:
