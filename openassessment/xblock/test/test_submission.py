@@ -4,18 +4,18 @@ Test submission to the OpenAssessment XBlock.
 
 import datetime as dt
 import json
-
 from unittest.mock import ANY, Mock, call, patch
 from testfixtures import LogCapture
-import ddt
 import pytz
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.test.utils import override_settings
-
 import boto3
+import ddt
 from moto import mock_s3
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
+from django.test.utils import override_settings
+from freezegun import freeze_time
+
 from xblock.exceptions import NoSuchServiceError
 from submissions import api as sub_api
 from submissions import team_api as team_sub_api
@@ -225,6 +225,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
             resp['url']
         )
 
+    @freeze_time('2023-10-17 12:00:01')
     @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
