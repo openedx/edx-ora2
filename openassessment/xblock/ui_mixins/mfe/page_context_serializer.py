@@ -47,7 +47,6 @@ class ReceivedGradesSerializer(Serializer):
     self = AssessmentScoreSerializer(source="grades.self_score")
     peer = AssessmentScoreSerializer(source="grades.peer_score")
     staff = AssessmentScoreSerializer(source="grades.staff_score")
-    # teams = AssessmentGradeSerializer(source="grades.teams_score")
 
     def to_representation(self, instance):
         """
