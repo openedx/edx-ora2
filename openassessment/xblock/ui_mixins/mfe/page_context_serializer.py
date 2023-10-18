@@ -321,14 +321,14 @@ class PageDataSerializer(Serializer):
 
         # Submission Views
         if self.context.get("view") == "submission":
-            learner_page_data_submission_data = instance.get_learner_submission_data()
+            learner_submission_data = instance.get_learner_submission_data()
 
             # Draft response
             if not instance.submission_data.has_submitted:
-                return DraftResponseSerializer(learner_page_data_submission_data).data
+                return DraftResponseSerializer(learner_submission_data).data
 
             # Submitted response
-            return SubmissionSerializer(learner_page_data_submission_data).data
+            return SubmissionSerializer(learner_submission_data).data
 
         # Assessment Views
         elif self.context.get("view") == "assessment":
