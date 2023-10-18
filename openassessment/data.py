@@ -19,6 +19,7 @@ from django.db.models.functions import Coalesce
 from django.utils.translation import gettext as _
 import requests
 
+from submissions.models import Submission
 from submissions import api as sub_api
 from submissions.errors import SubmissionNotFoundError
 from openassessment.runtime_imports.classes import import_block_structure_transformers, import_external_id
@@ -27,6 +28,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart
 from openassessment.fileupload.api import get_download_url
 from openassessment.workflow.models import AssessmentWorkflow, TeamAssessmentWorkflow
+from openassessment.assessment.score_type_constants import PEER_TYPE, SELF_TYPE, STAFF_TYPE
 
 logger = logging.getLogger(__name__)
 
@@ -1577,3 +1579,122 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
                 files.append(file_upload)
             self.file_uploads = files
         return self.file_uploads
+
+
+def score_type_to_string(score_type):
+    """
+    Converts the given score type into its string representation.
+    """
+    SCORE_TYPE_MAP = {
+        PEER_TYPE: "Peer",
+        SELF_TYPE: "Self",
+        STAFF_TYPE: "Staff",
+        }
+    return SCORE_TYPE_MAP.get(score_type, "Unknown")
+
+def parts_summary(assessment_obj):
+    """
+    Retrieves a summary of the parts from a given assessment object.
+    """
+    return [
+        {
+            'type': part.criterion.name,
+            'score': part.points_earned,
+            'score_type': part.option.name if part.option else "None",
+        }
+        for part in assessment_obj.parts.all()
+    ]
+
+def get_scorer_data(anonymous_scorer_id):
+    """
+    Retrieves the grader's data (full name, username, and email) based on their anonymous ID.
+    """
+    scorer_username = map_anonymized_ids_to_usernames([anonymous_scorer_id]).get(anonymous_scorer_id, "Unknown")
+    scorer_name = map_anonymized_ids_to_fullname([anonymous_scorer_id]).get(anonymous_scorer_id, "Unknown")
+    scorer_email = map_anonymized_ids_to_emails([anonymous_scorer_id]).get(anonymous_scorer_id, "Unknown")
+    return scorer_name, scorer_username, scorer_email
+
+def generate_assessment_data(assessment_list):
+    results = []
+    for assessment in assessment_list:
+
+        scorer_name, scorer_username, scorer_email = get_scorer_data(assessment.scorer_id)
+
+        assessment_data = {
+            "idAssessment": str(assessment.id),
+            "grader_name": scorer_name,
+            "grader_username": scorer_username,
+            "grader_email": scorer_email,
+            "assesmentDate": assessment.scored_at.strftime('%d-%m-%Y'),
+            "assesmentScores": parts_summary(assessment),
+            "problemStep": score_type_to_string(assessment.score_type),
+            "feedback": assessment.feedback or ''
+        }
+
+        results.append(assessment_data)
+    return results
+
+def generate_received_assessment_data(submission_uuid=None):
+    """
+    Generates a list of received assessments data based on the submission UUID.
+
+    Args:
+        submission_uuid (str, optional): The UUID of the submission. Defaults to None.
+
+    Returns:
+        list[dict]: A list containing assessment data dictionaries.
+    """
+
+    results = []
+
+    submission = None
+    if submission_uuid:
+        submission = sub_api.get_submission_and_student(submission_uuid)
+
+    if not submission:
+        return results
+
+    assessments = _use_read_replica(
+        Assessment.objects.prefetch_related('parts').
+        prefetch_related('rubric').
+        filter(
+            submission_uuid=submission['uuid']
+        )
+    )
+    return generate_assessment_data(assessments)
+
+
+def generate_given_assessment_data(item_id=None, submission_uuid=None):
+    """
+    Generates a list of given assessments data based on the submission UUID as scorer.
+
+    Args:
+        submission_uuid (str, optional): The UUID of the submission. Defaults to None.
+
+    Returns:
+        list[dict]: A list containing assessment data dictionaries.
+    """
+    results = []
+    # Getting the scorer student id
+    primary_submission = sub_api.get_submission_and_student(submission_uuid)
+
+    if not primary_submission:
+        return results
+
+    scorer_student_id = primary_submission['student_item']['student_id']
+    submissions = None
+    if item_id:
+        submissions = Submission.objects.filter(student_item__item_id=item_id).values('uuid')
+        submission_uuids = [sub['uuid'] for sub in submissions]
+
+    if not submission_uuids or not submissions:
+        return results
+
+    # Now fetch all assessments made by this student for these submissions
+    assessments_made_by_student = _use_read_replica(
+        Assessment.objects.prefetch_related('parts')
+        .prefetch_related('rubric')
+        .filter(scorer_id=scorer_student_id, submission_uuid__in=submission_uuids)
+    )
+
+    return generate_assessment_data(assessments_made_by_student)

@@ -16,7 +16,7 @@ from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
 from openassessment.data import (OraSubmissionAnswerFactory, VersionNotFoundException, map_anonymized_ids_to_emails,
-                                 map_anonymized_ids_to_fullname, map_anonymized_ids_to_usernames)
+                                 map_anonymized_ids_to_fullname, map_anonymized_ids_to_usernames, generate_received_assessment_data, generate_given_assessment_data)
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -193,6 +193,39 @@ class StaffGraderMixin:
             except MissingContextException as e:
                 log.exception("Failed to serialize workflow %d: %s", staff_workflow.id, str(e), exc_info=True)
         return result
+
+
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_GRADE")
+    def list_assessments_grades(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        List the assessments' grades based on the type (received or given) for a specific submission.
+
+        Args:
+            data (dict): Contains the necessary information to fetch the assessments.
+                        - 'item_id': The ID of the xblock/item.
+                        - 'submission_uuid': The UUID of the submission.
+                        - 'assessment_type': A string, either "received" or any other value 
+                                            to determine the type of assessments to retrieve.
+
+        Returns:
+            list[dict]: A list of dictionaries, each representing an assessment's data.
+
+        Note:
+            - If 'assessment_type' is "received", the function fetches assessments received 
+            for the given 'submission_uuid'.
+            - For any other value of 'assessment_type', the function fetches assessments 
+            given by the owner of the 'submission_uuid' for other submissions in the same item.
+        """
+        item_id = data['item_id']
+        subission_uuid = data['submission_uuid']
+
+        if data['assessment_type'] == "received":
+            return generate_received_assessment_data(subission_uuid)
+        else:
+            return generate_given_assessment_data(item_id, subission_uuid)
+
 
     def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):
         """
