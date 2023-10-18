@@ -60,7 +60,7 @@
           allow="microphone *; camera *; midi *; geolocation *; encrypted-media *, clipboard-write *"
           frameborder="0"
           id="ora-iframe"
-          src="http://localhost:1992/xblock/{course_id}/{xblock_id}"
+          src="http://localhost:1992/xblock/{{course_id}}/{{xblock_id}}"
           style="width: 100%"
           onload="loadResizeEvent()"
         ></iframe>
@@ -99,9 +99,11 @@
   const mfe_views = ("{{mfe_views}}" === 'True') || isMobile;
   const toHide = mfe_views ? 'ora-legacy-view' : 'ora-view';
   document.getElementById(toHide).style.display = 'none';
-
   function loadResizeEvent() {
     window.addEventListener('message', function(event) {
+      if (event.data.type === 'plugin.modal') {
+        window.parent.postMessage(event.data, document.referrer);
+      }
       if (event.data.type === 'ora-resize') {
         const iframe = document.getElementById('ora-iframe');
         const { height } = event.data.payload;
