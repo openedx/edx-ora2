@@ -113,15 +113,15 @@ class RubricConfigSerializer(Serializer):
 class SelfSettingsSerializer(Serializer):
     required = BooleanField(default=True)
 
-    startTime = DateTimeField(source="start")
-    endTime = DateTimeField(source="due")
+    startDatetime = DateTimeField(source="start")
+    endDatetime = DateTimeField(source="due")
 
 
 class PeerSettingsSerializer(Serializer):
     required = BooleanField(default=True)
 
-    startTime = DateTimeField(source="start")
-    endTime = DateTimeField(source="due")
+    startDatetime = DateTimeField(source="start")
+    endDatetime = DateTimeField(source="due")
 
     minNumberToGrade = IntegerField(source="must_grade")
     minNumberToBeGradedBy = IntegerField(source="must_be_graded_by")

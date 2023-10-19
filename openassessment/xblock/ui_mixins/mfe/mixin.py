@@ -48,24 +48,65 @@ class MfeMixin:
         return block_info.data
 
     @XBlock.json_handler
-    def get_block_learner_submission_data(self, data, suffix=""):  # pylint: disable=unused-argument
-        serializer_context = {"view": "submission"}
-        page_context = PageDataSerializer(self, context=serializer_context)
-        return page_context.data
-
-    @XBlock.json_handler
-    def get_block_learner_assessment_data(self, data, suffix=""):  # pylint: disable=unused-argument
-        serializer_context = {"view": "assessment", "step": suffix}
+    def get_learner_data(self, data, suffix=""):  # pylint: disable=unused-argument
+        """
+        Get data for the user / step of the ORA
+        - If no step provided, go to current workflow step
+            - If not submitted, load draft submission
+            - If submitted, load fir
+        - If user provides jumpable step
+            - Check if we can get to that step
+            - If we can, go to that step
+            - Otherwise, raise an error
+        """
+        workflow_step = self.workflow_data.status or "submission"
+        jump_step = suffix
+        serializer_context = {"step": workflow_step}
 
         # Allow jumping to a specific step, within our allowed steps
-        # NOTE should probably also verify this step is in our assessment steps
-        # though the serializer also covers for this currently
-        jumpable_steps = "peer"
-        if suffix in jumpable_steps:
-            serializer_context.update({"jump_to_step": suffix})
+        if jump_step:
+            jumpable_steps = ("submission", "peer", "grades")
+            if jump_step not in jumpable_steps:
+                return JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
+            if self._can_jump_to_step(workflow_step, jump_step):
+                serializer_context.update({"jump_to_step": suffix})
+            else:
+                return JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
+
+        # Determine which mode we are viewing in, since data comes from different sources
+        if workflow_step or jump_step == "submission":
+            has_submitted = self.workflow_data.has_submitted
+
+            # View our submitted response
+            if has_submitted:
+                serializer_context.update({"view": "submission"})
+
+            # View our draft response
+            else:
+                serializer_context.update({"view": "draft"})
+
+        # View the selected assessment step
+        else:
+            serializer_context.update({"view": "assessment"})
 
         page_context = PageDataSerializer(self, context=serializer_context)
         return page_context.data
+
+    def _can_jump_to_step(self, workflow_step, jump_step):
+        """ A helper to determine if we can jump to a step or not """
+
+        if jump_step == workflow_step:
+            return True
+
+        jump_step_to_workflow_step = {
+            "submission": "submission",
+            "peer": "peer",
+            "grades": "done"
+        }
+        jump_step_name = jump_step_to_workflow_step[jump_step]
+
+        step_status = self.workflow_data.status_details.get(jump_step_name, {})
+        return step_status.get("complete", False)
 
     def _submission_draft_handler(self, data):
         try:
@@ -201,9 +242,11 @@ class MfeMixin:
         return self.submission_data.files.file_manager.team_file_descriptors(team_id=team_id)
 
     def get_learner_submission_data(self):
+        # TODO - Move this out of mixin, this is only here because it accesses
+        # private functions in the mixin but should actually be in SubmissionAPI
         workflow = self.get_team_workflow_info() if self.is_team_assignment() else self.get_workflow_info()
         team_info, team_id = self.submission_data.get_submission_team_info(workflow)
-        # If there is a submission, we do not need to load file upload data seprately because files
+        # If there is a submission, we do not need to load file upload data separately because files
         # will already have been gathered into the submission. If there is no submission, we need to
         # load file data from learner state and the SharedUpload db model
         if self.submission_data.has_submitted:
@@ -220,7 +263,7 @@ class MfeMixin:
             'workflow': {
                 'has_submitted': self.submission_data.has_submitted,
                 'has_cancelled': self.workflow_data.is_cancelled,
-                'has_recieved_grade': self.workflow_data.has_recieved_grade,
+                'has_received_grade': self.workflow_data.has_received_grade,
             },
             'team_info': team_info,
             'response': response,

@@ -83,7 +83,7 @@ class WorkflowAPI:
         return self.workflow.get("status")
 
     @property
-    def has_recieved_grade(self):
+    def has_received_grade(self):
         return bool(self.workflow.get('score'))
 
     def get_workflow_status_counts(self):

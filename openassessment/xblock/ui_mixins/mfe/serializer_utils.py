@@ -10,9 +10,10 @@ STEP_NAME_MAPPINGS = {
     "peer": "peer",
     "training": "studentTraining",
     "self": "self",
-    "staff": "staff",
+    "teams": "teams",
     "ai": "ai",
     "waiting": "waiting",
+    "staff": "staff",
     "done": "done",
 }
 
