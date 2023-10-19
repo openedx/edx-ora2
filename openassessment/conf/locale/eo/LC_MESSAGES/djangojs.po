@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-16 10:26-0400\n"
+"POT-Creation-Date: 2023-10-17 17:46+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -189,86 +189,66 @@ msgstr "Démö thé néw Grädïng Éxpérïénçé Ⱡ'σяєм ιρѕυм ∂�
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Unit Name"
 msgstr "Ûnït Nämé Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Units"
 msgstr "Ûnïts Ⱡ'σяєм ιρѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Assessment"
 msgstr "Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Assessments"
 msgstr "Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Total Responses"
 msgstr "Tötäl Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Training"
 msgstr "Träïnïng Ⱡ'σяєм ιρѕυм ∂#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Peer"
 msgstr "Péér Ⱡ'σяєм ι#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Self"
 msgstr "Sélf Ⱡ'σяєм ι#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Waiting"
 msgstr "Wäïtïng Ⱡ'σяєм ιρѕυм #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Staff"
 msgstr "Stäff Ⱡ'σяєм ιρѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Final Grade Received"
 msgstr "Fïnäl Grädé Réçéïvéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Staff Grader"
 msgstr "Stäff Grädér Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "List of Open Assessments is unavailable"
 msgstr ""
 "Lïst öf Öpén Àsséssménts ïs ünäväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
@@ -276,20 +256,16 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Please wait"
 msgstr "Pléäsé wäït Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Block view is unavailable"
 msgstr "Blöçk vïéw ïs ünäväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_course_items_listing.js
 msgid "Back to Full List"
 msgstr "Bäçk tö Füll Lïst Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
@@ -529,7 +505,6 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_staff_area.js
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -625,7 +600,6 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js
-#: xblock/static/js/src/lms/oa_base.js
 msgid "Unable to load"
 msgstr "Ûnäßlé tö löäd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 

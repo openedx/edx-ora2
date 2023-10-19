@@ -1,0 +1,51 @@
+{% load i18n %}
+{% spaceless %}
+<div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
+    <div class="openassessment problem">
+        <div class="wrapper--grid">
+            {% if title %}
+                <h3 class="openassessment__title problem__header">{% trans title %}</h3>
+            {% endif %}
+
+            <div class="wrapper-openassessment__message">
+
+                {% block message %}
+                <div class="openassessment__message message">
+                    <div class="message__content">
+                        <p>{% trans "This assignment has several steps. In the first step, you'll provide a response to the prompt. The other steps appear below the Your Response field." %}</p>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+
+            <ol class="openassessment__steps">
+                {% for assessment in rubric_assessments %}
+                    <li class="{{ assessment.class_id }} openassessment__steps__step is--loading">
+                        <header class="step__header ui-slidable__container">
+                            <h4 class="step__title">
+                                <button class="ui-slidable" aria-expanded="false" aria-describedby="oa_step_status oa_step_deadline" disabled>
+                                    <span class="step__counter"></span>
+                                    <span class="wrapper--copy">
+                                        <span class="step__label">{% trans assessment.title %}</span>
+                                    </span>
+                                </button>
+                            </h4>
+                            <span class="step__status">
+                                <span id="oa_step_status" class="step__status__value">
+                                  <span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span>
+                                  <span class="copy">{% trans "Loading" %}</span>
+                                </span>
+                            </span>
+                        </header>
+                    </li>
+                {% endfor %}
+            </ol>
+
+            {% if show_staff_area %}
+                <div class="openassessment__staff-area"></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="sr reader-feedback" aria-live="polite"></div>
+</div>
+{% endspaceless %}
