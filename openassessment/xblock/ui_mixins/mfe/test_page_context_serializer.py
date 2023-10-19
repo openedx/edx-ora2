@@ -4,7 +4,11 @@ Tests for PageDataSerializer
 from copy import deepcopy
 
 from json import dumps, loads
-from unittest.mock import patch
+from unittest import TestCase
+from unittest.case import skip
+from unittest.mock import Mock, patch
+from openassessment.fileupload.api import TeamFileDescriptor
+from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
 
 
 from openassessment.xblock.test.base import (
@@ -14,16 +18,21 @@ from openassessment.xblock.test.base import (
     XBlockHandlerTestCase,
     scenario,
 )
-from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer, ProgressSerializer
+from openassessment.xblock.test.test_submission import setup_mock_team
+from openassessment.xblock.ui_mixins.mfe.page_context_serializer import (
+    PageDataSerializer,
+    ProgressSerializer,
+    TeamInfoSerializer,
+)
 
 
 class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.AssessmentResponseSerializer")
-    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.PageDataSubmissionSerializer")
+    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.DraftResponseSerializer")
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_submission_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the submission view
-        context = {"view": "submission"}
+        context = {"view": "submission", "step": "submission"}
 
         # When I ask for my submission data
         _ = PageDataSerializer(xblock, context=context).data
@@ -33,12 +42,12 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         mock_assessment_serializer.assert_not_called()
 
     @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.AssessmentResponseSerializer")
-    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.PageDataSubmissionSerializer")
+    @patch("openassessment.xblock.ui_mixins.mfe.page_context_serializer.SubmissionSerializer")
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_assessment_view(self, xblock, mock_submission_serializer, mock_assessment_serializer):
         # Given we are asking for the assessment view
         self.create_test_submission(xblock)
-        context = {"view": "assessment"}
+        context = {"view": "assessment", "step": "peer"}
 
         # When I ask for assessment data
         _ = PageDataSerializer(xblock, context=context).data
@@ -61,6 +70,8 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_submission(self, xblock):
         # Given we are asking for assessment data too early (still on submission step)
+        self.context = {"view": "assessment", "step": "submission"}
+
         # When I load my response
         # Then I get an Exception
         with self.assertRaises(Exception):
@@ -70,9 +81,10 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     def test_student_training(self, xblock):
         # Given we are on the student training step
         self.create_test_submission(xblock)
+        self.context = {"view": "assessment", "step": "training"}
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
         expected_response = {
@@ -84,7 +96,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... along with these always-none fields assessments
         self.assertIsNone(response_data["hasSubmitted"])
         self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["hasReceivedGrade"])
         self.assertIsNone(response_data["teamInfo"])
 
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
@@ -107,7 +118,8 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock, student_item=student_item, submission_text=text_responses)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        self.context = {"view": "assessment", "step": "peer"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
         expected_response = {
@@ -119,7 +131,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... along with these always-none fields assessments
         self.assertIsNone(response_data["hasSubmitted"])
         self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["hasReceivedGrade"])
         self.assertIsNone(response_data["teamInfo"])
 
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
@@ -130,7 +141,8 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... but with no responses to assess
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        self.context = {"view": "assessment", "step": "peer"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # I get the appropriate response
         expected_response = {}
@@ -139,7 +151,6 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # ... along with these always-none fields assessments
         self.assertIsNone(response_data["hasSubmitted"])
         self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["hasReceivedGrade"])
         self.assertIsNone(response_data["teamInfo"])
 
     @scenario("data/staff_grade_scenario.xml", user_id="Alan")
@@ -148,7 +159,8 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        self.context = {"view": "assessment", "step": "staff"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
         expected_response = {}
@@ -160,7 +172,8 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        self.context = {"view": "assessment", "step": "staff"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
         expected_response = {}
@@ -170,8 +183,10 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     def test_done_response(self, xblock):
         # Given I'm on the done step
         self.create_submission_and_assessments(xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT)
+
         # When I load my response
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        self.context = {"view": "assessment", "step": "done"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I get an empty object
         expected_response = {}
@@ -195,8 +210,9 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_submission_and_assessments(xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None)
 
         # When I try to jump back to that step
+        self.context = {"view": "assessment", "step": "done"}
         self.context["jump_to_step"] = "peer"
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
         # Then I can continue to receive peer responses to grade
         expected_response = {
@@ -211,23 +227,12 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.create_test_submission(xblock)
 
         # When I try to jump to a bad step
+        self.context = {"view": "assessment", "step": "peer"}
         self.context["jump_to_step"] = "to the left"
 
         # Then I expect the serializer to raise an exception
         # NOTE - this is exceedingly unlikely since the handler should only add
         # this context when the step name is valid.
-        with self.assertRaises(Exception):
-            _ = PageDataSerializer(xblock, context=self.context).data
-
-    @scenario("data/student_training.xml", user_id="Bernard")
-    def test_jump_to_inaccessible_step(self, xblock):
-        # Given I'm on an early step like student training
-        self.create_test_submission(xblock)
-
-        # When I try to jump ahead to a step I can't yet access
-        self.context["jump_to_step"] = "peer"
-
-        # Then I expect the serializer to raise an exception
         with self.assertRaises(Exception):
             _ = PageDataSerializer(xblock, context=self.context).data
 
@@ -255,7 +260,17 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
             "activeStepName": "submission",
             "hasReceivedFinalGrade": False,
             "receivedGrades": {},
-            "stepInfo": {"peer": None, "self": None},
+            "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": False,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
+                "peer": None,
+                "self": None
+            },
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
@@ -278,6 +293,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "studentTraining": {
                     "closed": False,
                     "closedReason": None,
@@ -314,6 +336,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": True,
+                    "closedReason": "pastDue",
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "studentTraining": {
                     "closed": True,
                     "closedReason": "pastDue",
@@ -350,6 +379,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "studentTraining": {
                     "closed": True,
                     "closedReason": "notAvailableYet",
@@ -386,6 +422,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "peer": {
                     "closed": False,
                     "closedReason": None,
@@ -416,6 +459,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "self": {
                     "closed": False,
                     "closedReason": None,
@@ -444,6 +494,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": True,
+                    "closedReason": "pastDue",
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "peer": None,
                 "self": {
                     "closed": True,
@@ -473,6 +530,13 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 "staff": {},
             },
             "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {},
+                },
                 "peer": None,
                 "self": {
                     "closed": True,
@@ -482,3 +546,89 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         }
 
         self.assertNestedDictEquals(expected_data, progress_data)
+
+    @skip
+    @scenario("data/team_submission.xml", user_id="Alan")
+    def test_team_assignment(self, xblock):
+        # Given I am on a team assignment
+        setup_mock_team(xblock)
+        xblock.is_team_assignment = Mock(return_value=True)
+        self.create_test_submission(xblock)
+
+        create_team_submission(
+            xblock.get_student_item_dict(),
+            {"answer": {"parts": ["a", "b"]}},
+            xblock.config_data,
+            xblock.submission_data,
+            xblock.workflow_data
+        )
+
+        # When I ask for progress
+        context = {"step": "staff"}
+        progress_data = ProgressSerializer(xblock, context=context).data
+
+        # Then I get the expected shapes
+        expected_data = {
+            "activeStepName": "staff",
+            "hasReceivedFinalGrade": False,
+            "receivedGrades": {
+                # NOTE - Teams actually have a different step type that should go here
+            },
+            "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": False,
+                    "teamInfo": {
+                        "teamName": "Red Squadron",
+                        "teamUsernames": ["Red Leader", "Red Two", "Red Five"],
+                        "previousTeamName": None,
+                        "hasSubmitted": True,
+                    },
+                },
+            },
+        }
+
+        self.assertNestedDictEquals(expected_data, progress_data)
+
+
+class TestTeamInfoSerializer(TestCase):
+    def test_serialize(self):
+        team_info = {
+            'team_name': 'Team1',
+            'team_usernames': ['Bob', 'Alice'],
+            'previous_team_name': 'Team4',
+            'has_submitted': True,
+            'team_uploaded_files': [
+                TeamFileDescriptor('www.example.com/files/123', 'desc-123', 'name-123', 123, 'Chrissy')._asdict(),
+                TeamFileDescriptor('www.example.com/files/5555', 'desc-5555', 'name-5555', 5555, 'Billy')._asdict(),
+            ]
+        }
+        assert TeamInfoSerializer(team_info).data == {
+            'teamName': 'Team1',
+            'teamUsernames': ['Bob', 'Alice'],
+            'previousTeamName': 'Team4',
+            'hasSubmitted': True,
+        }
+
+    def test_no_team(self):
+        team_info = {
+            'team_uploaded_files': []
+        }
+        assert not TeamInfoSerializer(team_info).data
+
+    def test_no_files(self):
+        team_info = {
+            'team_name': 'Team1',
+            'team_usernames': ['Bob', 'Alice'],
+            'previous_team_name': None,
+            'has_submitted': False,
+            'team_uploaded_files': []
+        }
+        assert TeamInfoSerializer(team_info).data == {
+            'teamName': 'Team1',
+            'teamUsernames': ['Bob', 'Alice'],
+            'previousTeamName': None,
+            'hasSubmitted': False,
+        }

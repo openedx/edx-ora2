@@ -38,7 +38,7 @@ class SubmissionAPI(StepDataAPI):
 
     @property
     def has_been_cancelled(self):
-        return self.workflow and self.workflow["status"] == "cancelled"
+        return bool(self.workflow) and self.workflow["status"] == "cancelled"
 
     @property
     def cancellation_info(self):
@@ -178,6 +178,9 @@ class SubmissionAPI(StepDataAPI):
         return self.workflow.get("team_submission_uuid")
 
     def get_submission_team_info(self, workflow):
+        """
+        Returns tuple (team info, team ID)
+        """
         if not self.is_team_assignment:
             return {}, None
 
@@ -196,7 +199,7 @@ class SubmissionAPI(StepDataAPI):
             # for shared files lookup. If the learner has submitted already for a different team
             # and then joined another team, we should show the submission that they are actually a part of,
             # rather than just their current team. If they have a submission (and therefore a workflow) then
-            # that takes precidence.
+            # that takes precedence.
             team_submission = get_team_submission(workflow['team_submission_uuid'])
             team_id = team_submission['team_id']
         return team_info, team_id
