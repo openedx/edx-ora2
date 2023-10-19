@@ -106,6 +106,15 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             response_format='response'
         )
 
+    def request_file_callback(self, xblock, payload):
+        return super().request(
+            xblock,
+            'file',
+            json.dumps(payload),
+            suffix=handler_suffixes.FILE_UPLOAD_CALLBACK,
+            response_format='response'
+        )
+
 
 def assert_error_response(response, status_code, error_code, context=''):
     assert response.status_code == status_code
@@ -666,3 +675,59 @@ class FileDeleteTest(MFEHandlersTestBase):
             resp = self.request_delete_file(xblock)
         assert resp.status_code == 200
         assert_called_once_with_helper(mock_remove_file, 1, 2)
+
+
+@ddt.ddt
+class FileCallbackTests(MFEHandlersTestBase):
+
+    @contextmanager
+    def _mock_delete_uploaded_file(self):
+        with patch.object(FileAPI, 'delete_uploaded_file') as mock_delete_file:
+            yield mock_delete_file
+
+    @contextmanager
+    def _mock_get_download_url(self, **kwargs):
+        with patch.object(FileAPI, 'get_download_url', **kwargs) as mock_get_url:
+            yield mock_get_url
+
+    @ddt.data(
+        {},
+        {'fileIndex': 1},
+        {'success': False},
+        {
+            'success': True,
+            'fileIndex': -30
+        }
+    )
+    @scenario("data/basic_scenario.xml")
+    def test_bad_params(self, xblock, payload):
+        resp = self.request_file_callback(xblock, payload)
+        assert resp.status_code == 400
+        assert resp.json['error']['error_code'] == error_codes.INCORRECT_PARAMETERS
+
+    @scenario("data/basic_scenario.xml")
+    def test_success(self, xblock):
+        test_url = 'www.xyz-123/file123423452'
+        with self._mock_get_download_url(return_value=test_url):
+            with self._mock_delete_uploaded_file() as mock_delete_file:
+                resp = self.request_file_callback(xblock, {'success': True, 'fileIndex': 1})
+        assert resp.status_code == 200
+        assert resp.json == {'downloadUrl': test_url}
+        mock_delete_file.assert_not_called()
+
+    @scenario("data/basic_scenario.xml")
+    def test_success_file_not_found(self, xblock):
+        with self._mock_get_download_url(return_value=None):
+            with self._mock_delete_uploaded_file() as mock_delete_file:
+                resp = self.request_file_callback(xblock, {'success': True, 'fileIndex': 6})
+        assert_error_response(resp, 404, error_codes.FILE_NOT_FOUND)
+        mock_delete_file.assert_called_once_with(6)
+
+    @scenario("data/basic_scenario.xml")
+    def test_faliure(self, xblock):
+        with self._mock_get_download_url() as mock_get_download_url:
+            with self._mock_delete_uploaded_file() as mock_delete_file:
+                resp = self.request_file_callback(xblock, {'success': False, 'fileIndex': 4})
+        assert resp.status_code == 200
+        mock_get_download_url.assert_not_called()
+        mock_delete_file.assert_called_once_with(4)

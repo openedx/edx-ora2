@@ -23,7 +23,10 @@ from openassessment.xblock.apis.submissions.errors import (
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
-from openassessment.xblock.ui_mixins.mfe.submission_serializers import AddFileRequestSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import (
+    AddFileRequestSerializer,
+    FileUploadCallbackRequestSerializer
+)
 
 
 class OraApiException(JsonHandlerError):
@@ -222,12 +225,30 @@ class MfeMixin:
             'fileIndex': newly_added_file.index,
         }
 
+    def _file_upload_callback_handler(self, data):
+        serializer = FileUploadCallbackRequestSerializer(data=data)
+        if not serializer.is_valid():
+            raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
+        fileIndex = serializer.validated_data['fileIndex']
+
+        if not serializer.validated_data['success']:
+            self.submission_data.files.delete_uploaded_file(fileIndex)
+            return None
+
+        url = self.submission_data.files.get_download_url(fileIndex)
+        if url is None:
+            self.submission_data.files.delete_uploaded_file(fileIndex)
+            raise OraApiException(404, error_codes.FILE_NOT_FOUND)
+        return {'downloadUrl': url}
+
     @XBlock.json_handler
     def file(self, data, suffix=""):
         if suffix == handler_suffixes.FILE_DELETE:
             return self._file_delete_handler(data)
         elif suffix == handler_suffixes.FILE_ADD:
             return self._file_add_handler(data)
+        elif suffix == handler_suffixes.FILE_UPLOAD_CALLBACK:
+            return self._file_upload_callback_handler(data)
         else:
             raise OraApiException(404, error_codes.UNKNOWN_SUFFIX)
 
