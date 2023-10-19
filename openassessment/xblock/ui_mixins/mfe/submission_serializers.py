@@ -116,3 +116,11 @@ class AddFileRequestSerializer(Serializer):
     fileName = CharField(source='name')
     fileSize = IntegerField(source='size', min_value=0)
     contentType = CharField()
+
+
+class FileUploadCallbackRequestSerializer(Serializer):
+    """
+    Input request serializer for file upload callback handler
+    """
+    fileIndex = IntegerField(min_value=0)
+    success = BooleanField()
