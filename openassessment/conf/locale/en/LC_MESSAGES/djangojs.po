@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-16 10:26-0400\n"
+"POT-Creation-Date: 2023-10-17 17:46+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -167,105 +167,81 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:97
 msgid "Unit Name"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:98
 msgid "Units"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:105
 msgid "Assessment"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:106
 msgid "Assessments"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:113
-#: xblock/static/js/src/lms/oa_course_items_listing.js:114
 msgid "Total Responses"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:121
-#: xblock/static/js/src/lms/oa_course_items_listing.js:122
 msgid "Training"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:129
-#: xblock/static/js/src/lms/oa_course_items_listing.js:130
 msgid "Peer"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:137
-#: xblock/static/js/src/lms/oa_course_items_listing.js:138
 msgid "Self"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:145
-#: xblock/static/js/src/lms/oa_course_items_listing.js:146
 msgid "Waiting"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:153
-#: xblock/static/js/src/lms/oa_course_items_listing.js:154
 msgid "Staff"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:161
-#: xblock/static/js/src/lms/oa_course_items_listing.js:162
 msgid "Final Grade Received"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:169
 msgid "Staff Grader"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:200
 msgid "List of Open Assessments is unavailable"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:302
-#: xblock/static/js/src/lms/oa_course_items_listing.js:353
 msgid "Please wait"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:326
 msgid "Block view is unavailable"
 msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:314
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:314
-#: xblock/static/js/src/lms/oa_course_items_listing.js:338
 msgid "Back to Full List"
 msgstr ""
 
@@ -466,7 +442,6 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:369
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:369
-#: xblock/static/js/src/lms/oa_staff_area.js:538
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
@@ -549,7 +524,6 @@ msgstr ""
 
 #: xblock/static/dist/openassessment-lms.692d92a6c84a3a501206.js:375
 #: xblock/static/dist/openassessment-lms.983dceadf8449ca82c4f.js:375
-#: xblock/static/js/src/lms/oa_base.js:350
 msgid "Unable to load"
 msgstr ""
 
