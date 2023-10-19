@@ -306,8 +306,8 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         ]
 
         # Then I get the right dates
-        self.assertEqual(peer_config["startTime"], expected_start)
-        self.assertEqual(peer_config["endTime"], expected_due)
+        self.assertEqual(peer_config["startDatetime"], expected_start)
+        self.assertEqual(peer_config["endDatetime"], expected_due)
 
     @scenario("data/peer_assessment_flex_grading_scenario.xml")
     def test_flex_grading(self, xblock):

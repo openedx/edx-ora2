@@ -565,7 +565,7 @@ class OpenAssessmentBlock(
             "title": self.title,
             "xblock_id": self.get_xblock_id(),
         }
-        template = get_template("base.html")
+        template = get_template("openassessmentblock/base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     @togglable_mobile_support
@@ -610,8 +610,9 @@ class OpenAssessmentBlock(
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
             "title": self.title,
             "xblock_id": self.get_xblock_id(),
+            "course_id": self.course_id,
         }
-        template = get_template("base.html")
+        template = get_template("openassessmentblock/base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):

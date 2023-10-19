@@ -5,6 +5,7 @@ These are the response shapes that power the MFE implementation of the ORA UI.
 """
 # pylint: disable=abstract-method
 
+from rest_framework.fields import ValidationError, CharField
 from rest_framework.serializers import (
     BooleanField,
     IntegerField,
@@ -15,10 +16,8 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentGradeSerializer,
     AssessmentResponseSerializer,
 )
-from openassessment.xblock.ui_mixins.mfe.submission_serializers import PageDataSubmissionSerializer
-from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS
-
-from .ora_config_serializer import RubricConfigSerializer
+from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
+from openassessment.xblock.ui_mixins.mfe.serializer_utils import STEP_NAME_MAPPINGS, CharListField
 
 
 class AssessmentScoreSerializer(Serializer):
@@ -97,10 +96,69 @@ class StepInfoBaseSerializer(ClosedInfoSerializer):
         return super().to_representation(instance)
 
 
+class TeamInfoSerializer(Serializer):
+    """
+    Returns: Empty object for individual assignments, or the below for team assignments
+    {
+        teamName: (String)
+        teamUsernames: (Array [String])
+
+        // Learner submitted on a previous team
+        previousTeamName: (String / Nullable)
+
+        // Current team has submitted response (learner may not have)
+        hasSubmitted: (Bool)
+    }
+    """
+    teamName = CharField(source="team_name")
+    teamUsernames = CharListField(source="team_usernames")
+    previousTeamName = CharField(source="previous_team_name", allow_null=True)
+    hasSubmitted = BooleanField(source="has_submitted")
+
+    def to_representation(self, instance):
+        # If there's no team name, there's no team info to show
+        if 'team_name' not in instance:
+            return {}
+        return super().to_representation(instance)
+
+
+class SubmissionStepInfoSerializer(ClosedInfoSerializer):
+    """
+    Returns:
+        {
+            closed: (Bool / Null for Assessment)
+            closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
+
+            hasSubmitted: (Bool, Null for Assessment)
+            hasCancelled: (Bool, Null for Assessment)
+
+            // Team info needed for team responses - Empty object for individual submissions
+            teamInfo: (Object, can be empty / Null for assessment)
+            {
+                See TeamInfoSerializer
+            }
+        }
+    """
+
+    hasSubmitted = BooleanField(source="has_submitted")
+    hasCancelled = BooleanField(source="has_been_cancelled", default=False)
+
+    teamInfo = SerializerMethodField()
+
+    def get_teamInfo(self, instance):
+        if not instance.is_team_assignment:
+            return {}
+        team_info, _ = instance.get_submission_team_info(instance.workflow)
+
+        return TeamInfoSerializer(team_info).data
+
+
 class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
         {
+            closed: (Bool)
+            closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
             numberOfAssessmentsCompleted: (Int), progress through required assessments
             expectedRubricSelections: (List of rubric names and selections)
         }
@@ -141,6 +199,8 @@ class PeerStepInfoSerializer(StepInfoBaseSerializer):
     """
     Returns:
         {
+            closed: (Bool)
+            closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
             numberOfAssessmentsCompleted: (Int) Progress through required assessments
             isWaitingForSubmissions: (Bool) We've run out of peers to grade, waiting for more submissions
             numberOfReceivedAssessments: (Int) How many assessments has this response received
@@ -172,8 +232,9 @@ class StepInfoSerializer(Serializer):
     * Empty dict for remaining steps
     """
 
-    require_context = True
+    requires_context = True
 
+    submission = SubmissionStepInfoSerializer(source="submission_data")
     studentTraining = StudentTrainingStepInfoSerializer(source="student_training_data")
     peer = PeerStepInfoSerializer(source="peer_assessment_data")
     _self = SelfStepInfoSerializer(source="self_data")
@@ -209,7 +270,7 @@ class ProgressSerializer(Serializer):
     Returns:
     {
         // What step are we on? An index to the configuration from ORA config call.
-        activeStepName: (String) one of ["studentTraining", "peer", "self", "staff"]
+        activeStepName: (String) one of ["submission", "studentTraining", "peer", "self", "staff", "done]
 
         hasReceivedFinalGrade: (Bool) // In effect, is the ORA complete?
         receivedGrades: (Object) Staff grade data, when there is a completed staff grade.
@@ -237,58 +298,46 @@ class PageDataSerializer(Serializer):
     Requires context to differentiate between Assessment and Submission views
     """
 
-    require_context = True
+    requires_context = True
 
     progress = ProgressSerializer(source="*")
-    submission = SerializerMethodField()
-    rubric = RubricConfigSerializer(source="*")
+    response = SerializerMethodField()
     assessment = SerializerMethodField()
 
     def to_representation(self, instance):
-        # Loading workflow status causes a workflow refresh
-        # ... limit this to one refresh per page call
-        if not self.context.get("step"):
-            active_step = instance.workflow_data.status or "submission"
-            self.context.update({"step": active_step})
+        if "step" not in self.context:
+            raise ValidationError("Missing required context: step")
+        if "view" not in self.context:
+            raise ValidationError("Missing required context: view")
 
         return super().to_representation(instance)
 
-    def _can_jump_to_step(self, workflow_step, workflow_data, step_name):
-        """
-        Helper to determine if a student can jump to a specific step:
-        1) Student is on that step.
-        2) Student has completed that step.
-
-        NOTE that this should probably happen at the handler level, but for
-        added safety, check here as well.
-        """
-        if step_name == workflow_step:
-            return True
-        step_status = workflow_data.status_details.get(step_name, {})
-        return step_status.get("complete", False)
-
-    def get_submission(self, instance):
+    def get_response(self, instance):
         """
         we get the user's draft / complete submission.
         """
         # pylint: disable=broad-exception-raised
+
         # Submission Views
         if self.context.get("view") == "submission":
-            learner_page_data_submission_data = instance.get_learner_submission_data()
-            return PageDataSubmissionSerializer(learner_page_data_submission_data).data
+            learner_submission_data = instance.get_learner_submission_data()
+
+            # Draft response
+            if not instance.submission_data.has_submitted:
+                return DraftResponseSerializer(learner_submission_data).data
+
+            # Submitted response
+            return SubmissionSerializer(learner_submission_data).data
+
         # Assessment Views
         elif self.context.get("view") == "assessment":
             # Can't view assessments without completing submission
             if self.context["step"] == "submission":
                 raise Exception("Cannot view assessments without having completed submission.")
 
-            # If the student is trying to jump to a step, verify they can
-            jump_to_step = self.context.get("jump_to_step")
-            workflow_step = self.context["step"]
-            if jump_to_step and not self._can_jump_to_step(workflow_step, instance.workflow_data, jump_to_step):
-                raise Exception(f"Can't jump to {jump_to_step} step before completion")
-
             # Go to the current step, or jump to the selected step
+            jump_to_step = self.context.get("jump_to_step", None)
+            workflow_step = self.context["step"]
             active_step = jump_to_step or workflow_step
 
             if active_step == "training":
