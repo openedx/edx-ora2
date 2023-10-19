@@ -115,14 +115,11 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I load my response
         response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
 
-        # I get the appropriate response
-        if request_peer:
-            expected_response = {
-                "textResponses": other_text_responses,
-                "uploadedFiles": None,
-            }
-        else:
-            expected_response = {}
+        # I get my current assessment, if I had one, and if I didn't, one is assigned to me
+        expected_response = {
+            "textResponses": other_text_responses,
+            "uploadedFiles": None,
+        }
         self.assertDictEqual(expected_response, response_data["response"])
 
         # ... along with these always-none fields assessments
