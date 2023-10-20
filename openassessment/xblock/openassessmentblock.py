@@ -327,6 +327,10 @@ class OpenAssessmentBlock(
     @property
     def course_id(self):
         return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+    
+    @property
+    def anonymous_user_id(self):
+        return self.scope_ids.usage_id.user_id
 
     @cached_property
     def course(self):
@@ -406,7 +410,7 @@ class OpenAssessmentBlock(
         self.white_listed_file_types = [file_type.strip().strip('.').lower()
                                         for file_type in value.split(',')] if value else None
 
-    def get_anonymous_user_id(self, username, course_id):
+    def get_anonymous_user_id(self, username):
         """
         Get the anonymous user id from Xblock user service.
 
@@ -417,7 +421,7 @@ class OpenAssessmentBlock(
         Returns:
             A unique id for (user, course) pair
         """
-        return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id)
+        return self.runtime.service(self, 'user').get_anonymous_user_id(username, self.course_id)
 
     def is_user_state_service_available(self):
         """
@@ -479,13 +483,8 @@ class OpenAssessmentBlock(
         """
         Get the item dict for a given username or email in the parent course of block.
         """
-        anonymous_user_id = self.get_anonymous_user_id(username_or_email, self.course_id)
+        anonymous_user_id = self.get_anonymous_user_id(username_or_email)
         return self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
-
-    def get_anonymous_user_id_from_xmodule_runtime(self):
-        if hasattr(self, "xmodule_runtime"):
-            return self.xmodule_runtime.anonymous_student_id  # pylint:disable=E1101
-        return None
 
     def get_student_item_dict(self, anonymous_user_id=None):
         """Create a student_item_dict from our surrounding context.
@@ -500,21 +499,8 @@ class OpenAssessmentBlock(
         """
 
         item_id = str(self.scope_ids.usage_id)
-
-        # This is not the real way course_ids should work, but this is a
-        # temporary expediency for LMS integration
-        if hasattr(self, "xmodule_runtime"):
-            course_id = self.course_id
-            if anonymous_user_id:
-                student_id = anonymous_user_id
-            else:
-                student_id = self.xmodule_runtime.anonymous_student_id  # pylint:disable=E1101
-        else:
-            course_id = "edX/Enchantment_101/April_1"
-            if self.scope_ids.user_id is None:
-                student_id = None
-            else:
-                student_id = str(self.scope_ids.user_id)
+        course_id = self.course_id
+        student_id = anonymous_user_id or self.anonymous_user_id
 
         student_item_dict = {
             "student_id": student_id,

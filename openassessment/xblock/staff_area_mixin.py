@@ -481,7 +481,7 @@ class StaffAreaMixin:
         submission_uuid = None
 
         if student_username:
-            anonymous_user_id = self.get_anonymous_user_id(student_username, self.course_id)
+            anonymous_user_id = self.get_anonymous_user_id(student_username)
             student_item = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
 
         if anonymous_user_id:

@@ -197,10 +197,9 @@ def create_team_submission(
     if block_submission_data.submission_is_empty(submission_dict):
         raise EmptySubmissionError
 
-    submitter_anonymous_user_id = block_config_data.get_anonymous_user_id_from_xmodule_runtime()
-    user = block_config_data.get_real_user(submitter_anonymous_user_id)
+    user = block_config_data.get_real_user(block_config_data.anonymous_user_id)
 
-    anonymous_student_ids = block_config_data.get_anonymous_user_ids_for_team()
+    anonymous_student_ids = block_config_data.get_s_for_team()
     submission = team_api.create_submission_for_team(
         block_config_data.course_id,
         student_item_dict["item_id"],

@@ -77,9 +77,7 @@ class TeamMixin:
             - ObjectDoesNotExist if the user associated with `anonymous_user_id`
                                     can not be found
         """
-        return self.get_team_for_anonymous_user(
-            self.get_anonymous_user_id_from_xmodule_runtime()
-        )
+        return self.get_team_for_anonymous_user(self.anonymous_user_id)
 
     @cached_property
     def teamset_config(self):
@@ -181,9 +179,7 @@ class TeamMixin:
 
     def get_anonymous_user_ids_for_team(self):
         if self.has_team():
-            anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-            user = self.get_real_user(anonymous_user_id)
-
+            user = self.get_real_user(self.anonymous_user_id)
             return self.teams_service.get_anonymous_user_ids_for_team(user, self.team)
         return None
 

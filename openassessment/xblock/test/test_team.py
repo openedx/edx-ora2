@@ -103,7 +103,7 @@ class MockBlock(TeamMixin):
     """
     location = mock.MagicMock()
     selected_teamset_id = TEAMSET_ID
-    get_anonymous_user_id_from_xmodule_runtime = mock.MagicMock()
+    anonymous_user_id = mock.MagicMock()
     course_id = mock.MagicMock()
     is_course_staff = False
     in_studio_preview = False

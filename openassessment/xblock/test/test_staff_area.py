@@ -74,7 +74,7 @@ class NullUserService:
     A simple implementation of the runtime "user" service.
     """
     @staticmethod
-    def get_anonymous_user_id(username, _):
+    def get_anonymous_user_id(username):
         """
         A convenience method.
         """
@@ -1638,7 +1638,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
                     return MOCK_TEAM_MEMBER_USERNAMES[MOCK_TEAM_MEMBER_STUDENT_IDS.index(student_id)]
                 return student_id
 
-            def mock_get_anonymous_id(username, _):
+            def mock_get_anonymous_id(username):
                 if username in MOCK_TEAM_MEMBER_USERNAMES:
                     return MOCK_TEAM_MEMBER_STUDENT_IDS[MOCK_TEAM_MEMBER_USERNAMES.index(username)]
                 return username

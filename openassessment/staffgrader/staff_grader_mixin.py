@@ -83,8 +83,7 @@ class StaffGraderMixin:
         Returns:
         - Serialized submission lock info.
         """
-        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-        context = {'user_id': anonymous_user_id}
+        context = {'user_id': self.anonymous_user_id}
 
         submission_lock = SubmissionGradingLock.get_submission_lock(submission_uuid) or {}
         return SubmissionLockSerializer(submission_lock, context=context).data
@@ -102,11 +101,9 @@ class StaffGraderMixin:
         Raises:
         - 403 in the case of a contested lock
         """
-        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-        context = {'user_id': anonymous_user_id}
-
+        context = {'user_id': self.anonymous_user_id}
         try:
-            submission_lock = SubmissionGradingLock.claim_submission_lock(submission_uuid, anonymous_user_id)
+            submission_lock = SubmissionGradingLock.claim_submission_lock(submission_uuid, self.anonymous_user_id)
             return SubmissionLockSerializer(submission_lock, context=context).data
         except SubmissionLockContestedError as err:
             raise JsonHandlerError(403, err.get_error_code()) from err
@@ -124,11 +121,10 @@ class StaffGraderMixin:
         Raises:
         - 403 in the case of a contested lock
         """
-        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-        context = {'user_id': anonymous_user_id}
+        context = {'user_id': self.anonymous_user_id}
 
         try:
-            SubmissionGradingLock.clear_submission_lock(submission_uuid, anonymous_user_id)
+            SubmissionGradingLock.clear_submission_lock(submission_uuid, self.anonymous_user_id)
             return SubmissionLockSerializer({}, context=context).data
         except SubmissionLockContestedError as err:
             raise JsonHandlerError(403, err.get_error_code()) from err
@@ -149,13 +145,12 @@ class StaffGraderMixin:
         if not isinstance(submission_uuids, list):
             raise JsonHandlerError(400, "Body must contain a submission_uuids list")
 
-        anonymous_user_id = self.get_anonymous_user_id_from_xmodule_runtime()
-        if not anonymous_user_id:
+        if not self.anonymous_user_id:
             raise JsonHandlerError(500, "Failed to get anonymous user ID")
 
         try:
             SubmissionGradingLock.batch_clear_submission_locks(
-                submission_uuids, anonymous_user_id
+                submission_uuids, self.anonymous_user_id
             )
         except Exception as err:
             raise JsonHandlerError(500, str(err)) from err

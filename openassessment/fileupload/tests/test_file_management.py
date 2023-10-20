@@ -19,6 +19,7 @@ class MockBlock:
 
     def __init__(self, number, team_id=None, descriptions=None, sizes=None, names=None, max_items=25):
         self.student_id = MockBlock.STUDENT_ID + str(number)
+        self.anonymous_user_id = self.student_id
         self.course_id = MockBlock.COURSE_ID + str(number)
         self.item_id = MockBlock.ITEM_ID + str(number)
 
@@ -43,9 +44,6 @@ class MockBlock:
 
     def is_team_assignment(self):
         return bool(self.team)
-
-    def get_anonymous_user_id_from_xmodule_runtime(self):
-        return self.student_id
 
     def get_xblock_id(self):
         return self.item_id

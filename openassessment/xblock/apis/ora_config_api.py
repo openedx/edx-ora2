@@ -85,10 +85,6 @@ class ORAConfigAPI:
     def student_item_dict(self):
         return self.get_student_item_dict()
 
-    @property
-    def anonymous_user_id_from_xmodule_runtime(self):
-        return self.anonymous_user_id_from_xmodule_runtime()
-
     # Team Properties
     @property
     def has_team(self):
@@ -130,12 +126,13 @@ class ORAConfigAPI:
     def runtime(self):
         return self._block.runtime
 
+    @property
+    def anonymous_user_id(self):
+        return self._block.anonymous_user_id
+
     # Block methods
     def is_user_state_service_available(self):
         return self._block.is_user_state_service_available()
-
-    def get_anonymous_user_id_from_xmodule_runtime(self):
-        return self._block.get_anonymous_user_id_from_xmodule_runtime()
 
     def get_team_for_anonymous_user(self, anonymous_user_id):
         return self._block.get_team_for_anonymous_user(anonymous_user_id)
@@ -143,8 +140,8 @@ class ORAConfigAPI:
     def get_anonymous_user_ids_for_team(self):
         return self._block.get_anonymous_user_ids_for_team()
 
-    def get_anonymous_user_id(self, username, course_id):
-        return self._block.get_anonymous_user_id(self, username, course_id)
+    def get_anonymous_user_id(self, username):
+        return self._block.get_anonymous_user_id(username)
 
     def get_user_state(self, username):
         return self._block.get_user_state(username)
