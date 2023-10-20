@@ -67,30 +67,6 @@ class SubmissionFileSerializer(Serializer):
     fileIndex = IntegerField(source="file_index")
 
 
-class SubmittedResponseSerializer(Serializer):
-    """
-    Data for a submitted response
-
-    Returns:
-    {
-        textResponses: (Array [String])
-        [
-            (String) Matched with prompts
-        ],
-        uploaded_files: (Array [Object])
-        [
-            {
-                fileUrl: (URL) S3 location
-                fileDescription: (String)
-                fileName: (String)
-                fileSize: (Bytes?)
-                fileIndex: (Integer, positive)
-            }
-        ]
-    }
-    """
-
-
 class AssessmentGradeSerializer(Serializer):
     """
     Given we want to load an assessment response,
