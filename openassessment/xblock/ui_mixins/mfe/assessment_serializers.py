@@ -131,7 +131,7 @@ class AssessmentResponseSerializer(Serializer):
     uploadedFiles = SerializerMethodField()
     teamUploadedFiles = NullField(source="*")
 
-    def __init__(self, instance=None, *args, **kwargs):
+    def __init__(self, instance=None, *args, **kwargs):  # pylint: disable=keyword-arg-before-vararg
         # Very weird workaround to control serialization for None input as data
         # since DRF doesn't run to_representation when None is passed as data
         if instance is None:

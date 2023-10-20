@@ -57,12 +57,6 @@ class SubmissionSerializer(Serializer):
         response = instance["response"]
         return super().to_representation(response)
 
-    def to_representation(self, instance):
-        # Unpack response.
-        # This is to keep signature similar between the draft and submitted responses.
-        response = instance["response"]
-        return super().to_representation(response)
-
 
 class FileDescriptorSerializer(Serializer):
     fileUrl = URLField(source='file.download_url')
