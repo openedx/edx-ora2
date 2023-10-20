@@ -54,6 +54,7 @@ class AssessmentStepSerializer(Serializer):
     """
     Assessment step serializer
     """
+
     stepScore = AssessmentScoreSerializer(source="*")
     assessment = AssessmentDataSerializer(source="*")
 
