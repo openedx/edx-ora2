@@ -33,7 +33,7 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
     maxDiff = None
 
     @scenario("data/basic_scenario.xml", user_id="Alan")
-    def test_no_response(self, xblock):  # pylint: disable=unused-variable
+    def test_no_response(self, xblock):  # pylint: disable=unused-argument
         # Given we don't have a response to serialize
         response = None
 
