@@ -4,7 +4,7 @@ Celery task wrappers to execute batch ORA workflow update
 
 from celery import shared_task
 
-from edx_django_utils.monitoring import set_code_owner_attribute
+from edx_django_utils.monitoring import set_code_owner_attribute_from_module
 
 
 @shared_task(bind=True,
@@ -14,11 +14,11 @@ from edx_django_utils.monitoring import set_code_owner_attribute
              retry_backoff=True,
              retry_backoff_max=500,
              retry_jitter=True)
-@set_code_owner_attribute
 def update_workflows_for_all_blocked_submissions_task(self):  # pylint: disable=unused-argument
     """
     Async task wrapper
     """
+    set_code_owner_attribute_from_module(__name__)
     from openassessment.workflow.workflow_batch_update_api import update_workflows_for_all_blocked_submissions
     return update_workflows_for_all_blocked_submissions()
 
@@ -36,6 +36,7 @@ def update_workflows_for_course_task(self, course_id, workflow_update_data_for_c
     """
     Async task wrapper
     """
+    set_code_owner_attribute_from_module(__name__)
     from openassessment.workflow.workflow_batch_update_api import update_workflows_for_course
     return update_workflows_for_course(course_id, workflow_update_data_for_course)
 
@@ -53,6 +54,7 @@ def update_workflows_for_ora_block_task(self, item_id, workflow_update_data_for_
     """
     Async task wrapper
     """
+    set_code_owner_attribute_from_module(__name__)
     from openassessment.workflow.workflow_batch_update_api import update_workflows_for_ora_block
     return update_workflows_for_ora_block(item_id, workflow_update_data_for_ora, course_settings)
 
@@ -70,5 +72,6 @@ def update_workflow_for_submission_task(self, submission_uuid, assessment_requir
     """
     Async task wrapper
     """
+    set_code_owner_attribute_from_module(__name__)
     from openassessment.workflow.workflow_batch_update_api import update_workflow_for_submission
     return update_workflow_for_submission(submission_uuid, assessment_requirements, course_settings)
