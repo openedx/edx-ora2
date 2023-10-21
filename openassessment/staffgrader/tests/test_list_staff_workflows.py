@@ -154,6 +154,28 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         ) as patched_map:
             yield patched_map
 
+    @contextmanager
+    def _mock_map_anonymized_ids_to_user_data(self):
+        """
+        Context manager that patches map_anonymized_ids_to_user_data and returns a mapping from student IDs to a dictionary
+        containing username, email, and fullname.
+        """
+        # Creamos un diccionario simulado que represente lo que la función real devuelve
+        mock_data = {
+            student_id: {
+                "username": self.student_id_to_username_map.get(student_id, ""),
+                "email": "mocked_email@example.com",  # O quizás puedes usar un mapa similar para emails si es necesario
+                "fullname": "Mocked Full Name"  # O quizás puedes usar un mapa similar para nombres completos si es necesario
+            }
+            for student_id in self.student_id_to_username_map
+        }
+
+        with patch(
+            'openassessment.staffgrader.staff_grader_mixin.map_anonymized_ids_to_user_data',
+            return_value=mock_data
+        ) as patched_map:
+            yield patched_map
+
     def submit_staff_assessment(self, xblock, student, grader, option, option_2=None):
         """
         Helper method to submit a staff assessment
@@ -601,20 +623,18 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
     def test_get_list_workflows_serializer_context(self, xblock):
         """ Unit test for _get_list_workflows_serializer_context """
         self.set_staff_user(xblock)
-        # Set up the mock return_value for bulk_deep_fetch_assessments.
-        # submissions 0 and 3 are the only ones assessed
+
         mock_staff_workflows = [
             Mock(scorer_id=self.course_staff[1].student_id),
             Mock(assessment=None, scorer_id=None),
             Mock(assessment=None, scorer_id=None),
             Mock(scorer_id=self.course_staff[2].student_id),
         ]
+
         with self._mock_get_student_ids_by_submission_uuid() as mock_get_student_ids:
-            # with self._mock_get_team_ids_by_team_submission_uuid() as mock_get_team_ids:
-            with self._mock_map_anonymized_ids_to_usernames() as mock_map_ids:
+            with self._mock_map_anonymized_ids_to_user_data() as mock_map_data:  # Cambio importante aquí
                 with patch.object(xblock, 'bulk_deep_fetch_assessments') as mock_bulk_fetch_assessments:
-                    # pylint: disable=protected-access
-                    context = xblock._get_list_workflows_serializer_context(mock_staff_workflows)
+                    context = xblock._get_list_workflows_serializer_context(mock_staff_workflows)  # pylint: disable=protected-access
 
         mock_get_student_ids.assert_called_once_with(
             self.course_id,
@@ -627,12 +647,14 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         expected_anonymous_id_lookups.update(
             {self.course_staff[1].student_id, self.course_staff[2].student_id}
         )
-        mock_map_ids.assert_called_once_with(expected_anonymous_id_lookups)
+        mock_map_data.assert_called_once_with(expected_anonymous_id_lookups)  # Cambio importante aquí
         mock_bulk_fetch_assessments.assert_called_once_with(mock_staff_workflows)
 
         expected_context = {
             'submission_uuid_to_student_id': mock_get_student_ids.return_value,
-            'anonymous_id_to_username': mock_map_ids.return_value,
+            'anonymous_id_to_username': {k: v["username"] for k, v in mock_map_data.return_value.items()},
+            'anonymous_id_to_email': {k: v["email"] for k, v in mock_map_data.return_value.items()},
+            'anonymous_id_to_fullname': {k: v["fullname"] for k, v in mock_map_data.return_value.items()},
             'submission_uuid_to_assessment': mock_bulk_fetch_assessments.return_value,
         }
 

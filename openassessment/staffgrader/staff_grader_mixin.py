@@ -15,8 +15,13 @@ from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_
 
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
-from openassessment.data import (OraSubmissionAnswerFactory, VersionNotFoundException, map_anonymized_ids_to_emails,
-                                 map_anonymized_ids_to_fullname, map_anonymized_ids_to_usernames, generate_received_assessment_data, generate_given_assessment_data)
+from openassessment.data import (
+    OraSubmissionAnswerFactory,
+    VersionNotFoundException,
+    map_anonymized_ids_to_user_data,
+    generate_received_assessment_data,
+    generate_given_assessment_data
+)
 from openassessment.staffgrader.errors.submission_lock import SubmissionLockContestedError
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.staffgrader.serializers import (
@@ -198,7 +203,7 @@ class StaffGraderMixin:
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_GRADE")
-    def list_assessments_grades(self, data, suffix=''):  # pylint: disable=unused-argument
+    def list_assessments(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         List the assessments' grades based on the type (received or given) for a specific submission.
 
@@ -239,7 +244,8 @@ class StaffGraderMixin:
                 workflow_scorer_ids.add(workflow.scorer_id)
         course_id = self.get_student_item_dict()['course_id']
 
-        # Fetch user identifier mappings
+        context = {}
+
         if is_team_assignment:
             # Look up the team IDs for submissions so we can later map to team names
             team_submission_uuid_to_team_id = get_team_ids_by_team_submission_uuid(submission_uuids)
@@ -247,45 +253,26 @@ class StaffGraderMixin:
             # Look up names for teams
             topic_id = self.selected_teamset_id
             team_id_to_team_name = self.teams_service.get_team_names(course_id, topic_id)
-
-            # Do bulk lookup for scorer anonymous ids (submitting team name is a separate lookup)
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(
-                set(workflow_scorer_ids)
-            )
-            anonymous_id_to_email = map_anonymized_ids_to_emails(
-                set(workflow_scorer_ids)
-            )
-            anonymous_id_to_fullname = map_anonymized_ids_to_fullname(
-                set(workflow_scorer_ids)
-            )
-
-            context = {
+            context.update({
                 'team_submission_uuid_to_team_id': team_submission_uuid_to_team_id,
                 'team_id_to_team_name': team_id_to_team_name,
-            }
+            })
         else:
             # When we look up usernames we want to include all connected learner student ids
             submission_uuid_to_student_id = get_student_ids_by_submission_uuid(
                 course_id,
                 submission_uuids,
             )
+            context['submission_uuid_to_student_id'] = submission_uuid_to_student_id
 
-            # Do bulk lookup for all anonymous ids (submitters and scoreres). This is used for the
-            # `gradedBy` and `username` fields
-            anonymous_id_to_username = map_anonymized_ids_to_usernames(
-                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-            )
-            anonymous_id_to_email = map_anonymized_ids_to_emails(
-                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-            )
+        all_anonymous_ids = set(workflow_scorer_ids)
+        if not is_team_assignment:
+            all_anonymous_ids |= set(context['submission_uuid_to_student_id'].values())
 
-            anonymous_id_to_fullname = map_anonymized_ids_to_fullname(
-                set(submission_uuid_to_student_id.values()) | workflow_scorer_ids
-            )
-
-            context = {
-                'submission_uuid_to_student_id': submission_uuid_to_student_id,
-            }
+        anonymous_id_to_user_data = map_anonymized_ids_to_user_data(all_anonymous_ids)
+        anonymous_id_to_username = {key: val["username"] for key, val in anonymous_id_to_user_data.items()}
+        anonymous_id_to_email = {key: val["email"] for key, val in anonymous_id_to_user_data.items()}
+        anonymous_id_to_fullname = {key: val["fullname"] for key, val in anonymous_id_to_user_data.items()}
 
         # Do a bulk fetch of the assessments linked to the workflows, including all connected
         # Rubric, Criteria, and Option models

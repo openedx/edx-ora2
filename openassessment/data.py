@@ -97,48 +97,34 @@ def map_anonymized_ids_to_usernames(anonymized_ids):
 
     return anonymous_id_to_username_mapping
 
-def map_anonymized_ids_to_emails(anonymized_ids):
+def map_anonymized_ids_to_user_data(anonymized_ids):
     """
     Args:
         anonymized_ids - list of anonymized user ids.
     Returns:
-        dictionary, that contains mapping between anonymized user ids and
-        actual user emails.
-    """
+        dict {
+           <anonymous_user_id> : {
+               'email': (str) <user.email>
+               'username': (str) <user.username>
+               'fullname': (str) <user.profile.name>
+            }
+        }
+        """
     User = get_user_model()
-
     users = _use_read_replica(
         User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
+        .select_related("profile")  # Optional, based on performance testing
         .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
-        .values("email", "anonymous_id")
-    )
-    anonymous_id_to_email_mapping = {
-        user["anonymous_id"]: user["email"] for user in users
+    ).values("username", "email", "profile__name", "anonymous_id")
+
+    anonymous_id_to_user_info_mapping = {
+        user["anonymous_id"]: {
+            "username": user["username"],
+            "email": user["email"],
+            "fullname": user["profile__name"]
+        } for user in users
     }
-    return anonymous_id_to_email_mapping
-
-
-def map_anonymized_ids_to_fullname(anonymized_ids):
-    """
-    Args:
-        anonymized_ids - list of anonymized user ids.
-    Returns:
-        dictionary, that contains mapping between anonymized user ids and
-        actual user fullname.
-    """
-    User = get_user_model()
-
-    users = _use_read_replica(
-        User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
-        .select_related("profile")
-        .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
-        .values("profile__name", "anonymous_id")
-    )
-
-    anonymous_id_to_fullname_mapping = {
-        user["anonymous_id"]: user["profile__name"] for user in users
-    }
-    return anonymous_id_to_fullname_mapping
+    return anonymous_id_to_user_info_mapping
 
 class CsvWriter:
     """
@@ -1598,36 +1584,37 @@ def parts_summary(assessment_obj):
     """
     return [
         {
-            'type': part.criterion.name,
-            'score': part.points_earned,
+            'criterion_name': part.criterion.name,
+            'score_earned': part.points_earned,
             'score_type': part.option.name if part.option else "None",
         }
         for part in assessment_obj.parts.all()
     ]
 
-def get_scorer_data(anonymous_scorer_id):
+def get_scorer_data(anonymous_scorer_id, user_data_mapping):
     """
-    Retrieves the grader's data (full name, username, and email) based on their anonymous ID.
+    Retrieves the scorer's data (full name, username, and email) based on their anonymous ID.
     """
-    scorer_username = map_anonymized_ids_to_usernames([anonymous_scorer_id]).get(anonymous_scorer_id, "Unknown")
-    scorer_name = map_anonymized_ids_to_fullname([anonymous_scorer_id]).get(anonymous_scorer_id, "Unknown")
-    scorer_email = map_anonymized_ids_to_emails([anonymous_scorer_id]).get(anonymous_scorer_id, "Unknown")
+    scorer_data = user_data_mapping.get(anonymous_scorer_id, {})
+    scorer_name = scorer_data.get('fullname', "Unknown")
+    scorer_username = scorer_data.get('username', "Unknown")
+    scorer_email = scorer_data.get('email', "Unknown")
     return scorer_name, scorer_username, scorer_email
 
-def generate_assessment_data(assessment_list):
+def generate_assessment_data(assessment_list, user_data_mapping):
     results = []
     for assessment in assessment_list:
 
-        scorer_name, scorer_username, scorer_email = get_scorer_data(assessment.scorer_id)
+        scorer_name, scorer_username, scorer_email = get_scorer_data(assessment.scorer_id, user_data_mapping)
 
         assessment_data = {
-            "idAssessment": str(assessment.id),
-            "grader_name": scorer_name,
-            "grader_username": scorer_username,
-            "grader_email": scorer_email,
-            "assesmentDate": assessment.scored_at.strftime('%d-%m-%Y'),
-            "assesmentScores": parts_summary(assessment),
-            "problemStep": score_type_to_string(assessment.score_type),
+            "id_assessment": str(assessment.id),
+            "scorer_name": scorer_name,
+            "scorer_username": scorer_username,
+            "scorer_email": scorer_email,
+            "assesment_date": assessment.scored_at.strftime('%d-%m-%Y'),
+            "assesment_scores": parts_summary(assessment),
+            "problem_step": score_type_to_string(assessment.score_type),
             "feedback": assessment.feedback or ''
         }
 
@@ -1661,7 +1648,8 @@ def generate_received_assessment_data(submission_uuid=None):
             submission_uuid=submission['uuid']
         )
     )
-    return generate_assessment_data(assessments)
+    user_data_mapping = map_anonymized_ids_to_user_data([assessment.scorer_id for assessment in assessments])
+    return generate_assessment_data(assessments, user_data_mapping)
 
 
 def generate_given_assessment_data(item_id=None, submission_uuid=None):
@@ -1676,12 +1664,12 @@ def generate_given_assessment_data(item_id=None, submission_uuid=None):
     """
     results = []
     # Getting the scorer student id
-    primary_submission = sub_api.get_submission_and_student(submission_uuid)
+    scorer_submission = sub_api.get_submission_and_student(submission_uuid)
 
-    if not primary_submission:
+    if not scorer_submission:
         return results
 
-    scorer_student_id = primary_submission['student_item']['student_id']
+    scorer_id = scorer_submission['student_item']['student_id']
     submissions = None
     if item_id:
         submissions = Submission.objects.filter(student_item__item_id=item_id).values('uuid')
@@ -1694,7 +1682,8 @@ def generate_given_assessment_data(item_id=None, submission_uuid=None):
     assessments_made_by_student = _use_read_replica(
         Assessment.objects.prefetch_related('parts')
         .prefetch_related('rubric')
-        .filter(scorer_id=scorer_student_id, submission_uuid__in=submission_uuids)
+        .filter(scorer_id=scorer_id, submission_uuid__in=submission_uuids)
     )
 
-    return generate_assessment_data(assessments_made_by_student)
+    user_data_mapping = map_anonymized_ids_to_user_data([assessment.scorer_id for assessment in assessments_made_by_student])
+    return generate_assessment_data(assessments_made_by_student, user_data_mapping)
