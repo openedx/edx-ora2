@@ -71,10 +71,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             submission_uuid=self.test_other_submission_uuid,
         )
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_check_submission_lock_none(self, xblock):
         """ A check for submission lock where there is no lock should return empty dict """
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
         request_data = {'submission_uuid': self.test_submission_uuid_unlocked}
         response = self.request(xblock, 'check_submission_lock', json.dumps(request_data), response_format='json')
 
@@ -82,10 +81,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "lock_status": "unlocked",
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_check_submission_lock(self, xblock):
         """ A check for submission lock returns the matching submission lock """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
         request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'check_submission_lock', json.dumps(request_data), response_format='json')
 
@@ -97,11 +95,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_claim_submission_lock(self, xblock, _):
         """ A submission lock can be claimed on a submission w/out an active lock """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         request_data = {'submission_uuid': self.test_submission_uuid_unlocked}
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='json')
 
@@ -113,11 +109,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_reclaim_submission_lock(self, xblock, _):
         """ A lock owner can re-claim a submission lock, updating the timestamp """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         # Modify the original timestamp for testing
         lock = SubmissionGradingLock.objects.get(submission_uuid=self.test_submission_uuid)
         lock.created_at = lock.created_at - timedelta(hours=2)
@@ -134,11 +128,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="other-staff-user-id", is_staff=True)
     def test_claim_submission_lock_contested(self, xblock, _):
         """ Trying to claim a lock on a submission with an active lock raises an error """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
-
         request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'claim_submission_lock', json.dumps(request_data), response_format='response')
         response_body = json.loads(response.body.decode('utf-8'))
@@ -148,11 +140,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "error": "ERR_LOCK_CONTESTED"
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_delete_submission_lock(self, xblock):
         """ The lock owner can clear a submission lock if it exists """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='json')
 
@@ -160,11 +150,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "lock_status": "unlocked"
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="other-staff-user-id", is_staff=True)
     def test_delete_submission_lock_contested(self, xblock):
         """ Users cannot clear a lock owned by another user """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id='other-staff-user-id')
-
         request_data = {'submission_uuid': self.test_submission_uuid}
         response = self.request(xblock, 'delete_submission_lock', json.dumps(request_data), response_format='response')
         response_body = json.loads(response.body.decode('utf-8'))
@@ -174,11 +162,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "error": "ERR_LOCK_CONTESTED"
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id=None, is_staff=True)
     def test_batch_delete_submission_locks_no_id(self, xblock):
-        """ If, somehow, the runtime fails to give us a user ID, break """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=None)
-
+        """ If, somehow, the user service fails to give us a user ID, break """
         request_data = {'submission_uuids': ['foo']}
         response = self.request(
             xblock,
@@ -193,11 +179,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "error": "Failed to get anonymous user ID",
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_batch_delete_submission_locks_no_param(self, xblock):
         """ Batch delete fails if submission_uuids not supplied """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         request_data = {}
         response = self.request(
             xblock,
@@ -212,11 +196,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "error": "Body must contain a submission_uuids list"
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_batch_delete_submission_locks_empty(self, xblock):
         """ An empty list of submisison UUIDs is silly, but should pass """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         request_data = {'submission_uuids': []}
         response = self.request(
             xblock,
@@ -230,10 +212,8 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         self.assertIsNone(response_body)
 
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_batch_delete_submission_locks_bad_param(self, xblock):
+    def test_batch_delete_submission_locks_bad_param(self, xblock, is_staff=True):
         """ Batch delete fails if submission_uuids is not a list """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         request_data = {'submission_uuids': 'foo'}
         response = self.request(
             xblock,
@@ -248,11 +228,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
             "error": "Body must contain a submission_uuids list"
         })
 
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_batch_delete_submission_locks(self, xblock):
         """ Batch delete clears submission locks we own """
-        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
-
         request_data = {'submission_uuids': [self.test_submission_uuid, self.test_other_submission_uuid]}
         response = self.request(
             xblock,
@@ -273,10 +251,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         ).exists()
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
-    @scenario('data/basic_scenario.xml', user_id="staff")
+    @scenario('data/basic_scenario.xml', user_id="staff", is_staff=True)
     def test_submit_staff_assessment(self, xblock, _):
         """Simple connectivity and routing test for submit staff assessment"""
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
         xblock.is_team_assignment = Mock(return_value=False)
         xblock.do_staff_assessment = Mock(return_value=(True, ''))
 
@@ -290,10 +267,9 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_team_submission')
-    @scenario('data/team_submission.xml', user_id="staff")
+    @scenario('data/team_submission.xml', user_id="staff", is_staff=True)
     def test_submit_team_staff_assessment(self, xblock, _):
         """Simple connectivity and routing test for submit team staff assessment"""
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
         xblock.is_team_assignment = Mock(return_value=True)
         xblock.do_team_staff_assessment = Mock(return_value=(True, ''))
 

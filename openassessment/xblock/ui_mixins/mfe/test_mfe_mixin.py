@@ -157,14 +157,6 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
 
     maxDiff = None
 
-    def setup_xblock(self, xblock):
-        xblock.xmodule_runtime = Mock(
-            user_is_staff=False,
-            user_is_beta_tester=False,
-            course_id=COURSE_ID,
-            anonymous_student_id='r5'
-        )
-
     @scenario("data/file_upload_scenario.xml", user_id='r5')
     def test_nothing(self, xblock):
         with self.mock_get_url():
@@ -178,7 +170,6 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
 
     @scenario("data/file_upload_scenario.xml", user_id='r5')
     def test_not_yet_submitted(self, xblock):
-        self.setup_xblock(xblock)
         xblock.saved_response = json.dumps({'parts': [{'text': 'hello world'}, {'text': 'goodnight moon'}]})
         xblock.file_manager.append_uploads(
             {'description': 'my presentation', 'name': 'file1.ppt', 'size': 2},
@@ -215,7 +206,6 @@ class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
 
     @scenario("data/file_upload_scenario.xml", user_id='r5')
     def test_submitted(self, xblock):
-        self.setup_xblock(xblock)
         create_student_and_submission(
             'bob',
             xblock.course_id,
@@ -259,7 +249,6 @@ class PageDataSubmissionSerializerTest(MFEHandlersTestBase):
     def setup_xblock(self, xblock):
         setup_mock_team(xblock)
         # pylint: disable=protected-access
-        xblock.runtime._services['user'] = NullUserService()
         xblock.runtime._services['user_state'] = UserStateService()
         xblock.runtime._services['teams'] = MockTeamsService(True)
 

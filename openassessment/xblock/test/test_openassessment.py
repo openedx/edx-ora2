@@ -362,12 +362,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Helper function to set up start date early for beta testers
         """
         xblock.days_early_for_beta = days_early
-        xblock.xmodule_runtime = Mock(
-            course_id='test_course',
-            anonymous_student_id='test_student',
-            user_is_staff=False,
-            user_is_beta_tester=True
-        )
+        self.set_user('test_student')
+        self.set_special_course_access(is_beta_tester=True)
 
     def _set_up_end_date(self, end_date):
         """
@@ -536,18 +532,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         student_item = xblock.get_student_item_dict()
         self.assertEqual(student_item['student_id'], '2')
         self.assertIsInstance(student_item['item_id'], str)
-
-    @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_use_xmodule_runtime(self, xblock):
-        # Prefer course ID and student ID provided by the XModule runtime
-        xblock.xmodule_runtime = Mock(
-            course_id='test_course',
-            anonymous_student_id='test_student'
-        )
-
-        student_item = xblock.get_student_item_dict()
-        self.assertEqual(student_item['course_id'], 'test_course')
-        self.assertEqual(student_item['student_id'], 'test_student')
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_ignore_unknown_assessment_types(self, xblock):
@@ -930,10 +914,9 @@ class TestDates(XBlockHandlerTestCase):
     def test_is_released_no_ms(self, xblock):
         self.assertTrue(xblock.is_released())
 
-    @scenario('data/basic_scenario.xml')
+    @scenario('data/basic_scenario.xml', is_staff=True)
     def test_is_released_course_staff(self, xblock):
         # Simulate being course staff
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
 
         # Published, should be released
         self.assertTrue(xblock.is_released())

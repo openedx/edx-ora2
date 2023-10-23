@@ -18,17 +18,15 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
     """ Tests for the get_assessment_info handler"""
     handler_name = 'get_assessment_info'
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_no_submission_uuid(self, xblock):
         """ How does the endpoint behave when we don't give it a submission_uuid? """
-        self.set_staff_user(xblock, 'Bob')
         response = self.request(xblock, {})
         self.assert_response(response, 400, {"error": "Body must contain a submission_uuid"})
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_no_access(self, xblock):
         """ How does the endpoint behave when the requester doesn't have proper permissions? """
-        xblock.xmodule_runtime = Mock(user_is_staff=False)
         response = self.request(xblock, {'submission_uuid': 'meaningless-value'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('You do not have permission to access ORA staff grading.', response.body.decode('UTF-8'))
@@ -81,11 +79,9 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
             )
         return assessment
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_no_staff_workflow(self, xblock):
         """ What hppens when there's no Staff Workflow associated with a submission uuid? """
-        course_id, item_id, student_id = ('TestCourse', 'TestItem', 'Bob')
-        self.set_staff_user(xblock, student_id, course_id, item_id)
         submission_uuid = str(uuid4())
         with self._mock_get_staff_workflow(side_effect=StaffWorkflow.DoesNotExist):
             with self._mock_get_submission():
@@ -94,13 +90,17 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
         self.assert_response(
             response,
             404,
-            {'error': f"No gradeable submission found with uuid={submission_uuid} in course={course_id} item={item_id}"}
+            {
+                'error': (
+                    f"No gradeable submission found with uuid={submission_uuid} in course={xblock.course_id}"
+                    f" item={xblock.item_id}"
+                )
+            }
         )
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_no_assessment(self, xblock):
         """ What happens when the submission uuid we provide has no associated Assessment? """
-        self.set_staff_user(xblock, 'Bob')
         submission_uuid = str(uuid4())
         mock_staff_workflow = Mock(assessment=None)
 
@@ -110,12 +110,11 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
 
         self.assert_response(response, 200, {})
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_multiple_bulk_assessments(self, xblock):
         """ What happens if `bulk_deep_fetch_assessments` returns multiple assessments? """
         submission_uuid = str(uuid4())
         mock_staff_workflow = Mock(assessment=str(Mock()))
-        self.set_staff_user(xblock, 'Bob')
         self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: Mock(), Mock(): Mock()})
         with self._mock_get_staff_workflow(return_value=mock_staff_workflow):
             with self._mock_get_submission():
@@ -123,12 +122,11 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
 
         self.assert_response(response, 500, {'error': 'Error looking up assessments'})
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_get_assessment_info(self, xblock):
         """ Unit test for basic get_assessment_info behavior """
         assessment = self._create_full_assessment()
         submission_uuid = str(uuid4())
-        self.set_staff_user(xblock, 'Bob')
         self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: assessment})
         with self._mock_get_staff_workflow():
             with self._mock_get_submission():
@@ -152,23 +150,20 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
 
         self.assert_response(response, 200, expected_assessment_info)
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Staff 1', is_staff=True)
     def test_get_assessment_info__integration(self, xblock):
         """ Full DB test for get_assessment_info """
-        student_id = 'Bob'
         overall_feedback = 'Overall Feedback HellOTheRe'
         criterion_feedback = {'Criterion 1': "Test Crit1 Feedback"}
-        submission, student_item_dict = self._create_student_and_submission(student_id, {'parts': [{'text': 'answer'}]})
+        submission, _ = self._create_student_and_submission('Bob', {'parts': [{'text': 'answer'}]})
         self.submit_staff_assessment(
             xblock,
             submission['uuid'],
-            'Staff-1',
             'Three',
             option_2="Two",
             criterion_feedback=criterion_feedback,
             overall_feedback=overall_feedback
         )
-        self.set_staff_user(xblock, student_id, student_item_dict['course_id'], student_item_dict['item_id'])
         with self.assertNumQueries(5):
             # 1 - Workflow
             # 2 - Assessment
@@ -201,7 +196,7 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
 
         self.assert_response(response, 200, expected_assessment_info)
 
-    @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob')
+    @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob', is_staff=True)
     def test_get_assessment_info__feedback_only(self, xblock):
         """ Unit test for get_assessment_info for a feedback-only Criterion """
         # Create an Assessment with multiple parts that are feedback-only
@@ -216,7 +211,6 @@ class GetAssessmentInfoTests(StaffGraderMixinTestBase):
             )
 
         submission_uuid = str(uuid4())
-        self.set_staff_user(xblock, 'Bob')
         self._mock_bulk_deep_fetch_assessments(xblock, return_value={submission_uuid: assessment})
         with self._mock_get_staff_workflow():
             with self._mock_get_submission():

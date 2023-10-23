@@ -227,5 +227,4 @@ class LegacyHandlersMixin:
         """
         Gets the username of the current student for use in team lookup.
         """
-        anonymous_id = self.xmodule_runtime.anonymous_student_id
-        return {"username": self.get_username(anonymous_id)}
+        return {"username": self.get_username(self.anonymous_student_id)}

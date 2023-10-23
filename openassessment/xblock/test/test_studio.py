@@ -395,12 +395,8 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertTrue(frag.body_html().find('teamset_name_a'))
         self.assertTrue(frag.body_html().find('teamset_id_a'))
 
-    @scenario('data/basic_scenario.xml')
+    @scenario('data/basic_scenario.xml', user_id='test_student')
     def test_get_teamsets(self, xblock):
-        xblock.xmodule_runtime = Mock(
-            course_id='test_course',
-            anonymous_student_id='test_student',
-        )
         xblock.runtime = Mock()
         mock_teams_config = Mock(
             teamsets=[Mock(name="tset1"), Mock(name="tset2")]
@@ -409,7 +405,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         mock_team_configuration_service.get_teams_configuration.return_value = mock_teams_config
         xblock.runtime.service.return_value = mock_team_configuration_service
 
-        teamsets = xblock.get_teamsets("test_course")
+        teamsets = xblock.get_teamsets(xblock.course_id)
         self.assertEqual([ts.name for ts in teamsets], [ts.name for ts in mock_teams_config.teamsets])
 
     def _mock_teamsets(self, xblock):

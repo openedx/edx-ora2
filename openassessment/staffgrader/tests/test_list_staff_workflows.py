@@ -116,18 +116,6 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         return new_student_item
 
     @classmethod
-    def set_staff_user(cls, xblock, user=None):
-        """
-        Mock the runtime to say that the current user is course staff and is logged in as the given user.
-        Additionally, mock the xblock's get_student_item_dict to return the value we want,
-        rather than the values that are mocked upstream by "handle"
-        """
-        staff_id = (user or cls.course_staff[0]).student_id
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
-        xblock.xmodule_runtime.anonymous_student_id = staff_id
-        xblock.get_student_item_dict = Mock(return_value=cls._student_item(staff_id))
-
-    @classmethod
     def set_team_assignment(cls, xblock, is_team_assignment=True):
         """Helper to turn on team assignments without a context manager"""
         xblock.is_team_assignment = Mock(return_value=is_team_assignment)
@@ -288,10 +276,9 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
     to cleanly create AnonymousUserId test models.
     """
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID, is_staff=True)
     def test_no_grades_or_locks(self, xblock):
         """ Test for the result of calling the view for an ORA with no grades or locks"""
-        self.set_staff_user(xblock)
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
         expected_response = {}
@@ -300,13 +287,12 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.assertDictEqual(response, expected_response)
 
     @freeze_time(TEST_START_DATE)
-    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID, is_staff=True)
     def test_graded(self, xblock):
         """ Test for the result of calling the view for an ORA with some grades"""
         grading_config = [(0, 0, "Three"), (1, 1, "Two"), (2, 2, "One")]
         self.setup_completed_assessments(xblock, grading_config)
 
-        self.set_staff_user(xblock)
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
 
@@ -319,13 +305,12 @@ class StaffWorkflowListViewIntegrationTests(TestStaffWorkflowListViewBase):
         self.assertDictEqual(response, expected)
 
     @freeze_time(TEST_START_DATE)
-    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID, is_staff=True)
     def test_locked(self, xblock):
         """ Test for the result of calling the view for an ORA with some locked submissions"""
         lock_config = [(0, 2), (1, 1), (2, 0)]
         self.setup_active_locks(lock_config)
 
-        self.set_staff_user(xblock)
         with self._mock_map_anonymized_ids_to_usernames():
             response = self.request(xblock, 'list_staff_workflows', json.dumps({}), response_format='json')
 
@@ -415,9 +400,8 @@ class StaffWorkflowListViewTeamTests(TestStaffWorkflowListViewBase):
         }
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_team_ids_by_team_submission_uuid')
-    @scenario('data/team_submission.xml', user_id=STAFF_ID)
+    @scenario('data/team_submission.xml', user_id=STAFF_ID, is_staff=True)
     def test_teams(self, xblock, mock_get_team_ids_by_submission):
-        self.set_staff_user(xblock)
         self.set_team_assignment(xblock)
 
         mock_get_team_ids_by_submission.return_value = self.team_ids_by_submission_id
@@ -532,7 +516,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
 
     @ddt.data((True, True), (True, False), (False, True), (False, False))
     @ddt.unpack
-    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID, is_staff=True)
     @freeze_time(TEST_START_DATE)
     def test_bulk_fetch_annotated_staff_workflows(self, xblock, set_up_grades, set_up_locks):
         """ Unit test for bulk_fetch_annotated_staff_workflows """
@@ -543,7 +527,6 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         if set_up_locks:
             # If we are locking, student_0 locked by staff_1 and student_1 locked by staff_0
             self.setup_active_locks([(0, 1), (1, 0)])
-        self.set_staff_user(xblock)
 
         with self.assertNumQueries(1):
             annotated_workflows = xblock._bulk_fetch_annotated_staff_workflows()  # pylint: disable=protected-access
@@ -596,11 +579,10 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
             for i, (expected, actual) in enumerate(zip(expected_annotated_workflows, annotated_workflows)):
                 self.assert_annotated_staff_workflow_equal(expected, actual, i)
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID)
+    @scenario('data/simple_self_staff_scenario.xml', user_id=STAFF_ID, is_staff=True)
     @freeze_time(TEST_START_DATE)
     def test_get_list_workflows_serializer_context(self, xblock):
         """ Unit test for _get_list_workflows_serializer_context """
-        self.set_staff_user(xblock)
         # Set up the mock return_value for bulk_deep_fetch_assessments.
         # submissions 0 and 3 are the only ones assessed
         mock_staff_workflows = [

@@ -45,31 +45,20 @@ def setup_mock_team(xblock):
         Returns:
             the mock team for use in test validation
     """
-
-    xblock.xmodule_runtime = Mock(
-        user_is_staff=False,
-        user_is_beta_tester=False,
-        course_id=COURSE_ID,
-        anonymous_student_id='r5'
-    )
-
     mock_team = {
         'team_id': MOCK_TEAM_ID,
         'team_name': 'Red Squadron',
         'team_usernames': ['Red Leader', 'Red Two', 'Red Five'],
         'team_url': 'rebel_alliance.org'
     }
-
     xblock.teams_enabled = True
     xblock.team_submissions_enabled = True
-
     xblock.has_team = Mock(return_value=True)
     xblock.get_team_info = Mock(return_value=mock_team)
     xblock.get_anonymous_user_ids_for_team = Mock(return_value=['rl', 'r5', 'r2'])
     password = 'password'
     user = get_user_model().objects.create_user(username='Red Five', password=password)
     xblock.get_real_user = Mock(return_value=user)
-
     return mock_team
 
 
@@ -186,10 +175,6 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
     @scenario('data/file_upload_scenario.xml')
     def test_upload_url(self, xblock):
         """ Test generate correct upload URL """
-        xblock.xmodule_runtime = Mock(
-            course_id=COURSE_ID,
-            anonymous_student_id='test_student',
-        )
         resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
                                                               "filename": "test.jpg"}), response_format='json')
         self.assertTrue(resp['success'])
@@ -204,15 +189,10 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @scenario('data/single_file_upload_scenario.xml')
+    @scenario('data/single_file_upload_scenario.xml' user_id='test_student', course_id='test_course')
     @patch('openassessment.xblock.apis.submissions.file_api.file_upload_api.get_download_url')
     def test_upload_url_single_file(self, xblock, mock_download_url):
         """ Test generate correct upload URL """
-        xblock.xmodule_runtime = Mock(
-            course_id='test_course',
-            anonymous_student_id='test_student',
-        )
-
         # Simulate a file already uploaded
         mock_download_url.return_value = "https://example.com/url"
         resp = self.request(xblock, 'upload_url', json.dumps({"contentType": "image/jpeg",
@@ -236,40 +216,38 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @scenario('data/file_upload_scenario.xml')
+    @scenario('data/file_upload_scenario.xml', user_id='test_student')
     def test_download_url(self, xblock):
         """ Test generate correct download URL with existing file. should create a file and get the download URL """
         conn = boto3.client("s3")
         conn.create_bucket(Bucket="mybucket")
-        key = "submissions_attachments/test_student/test_course/" + xblock.scope_ids.usage_id
+        key = self._get_student_item_key(0, xblock.scope_ids.usage_id)
         conn.put_object(
             Bucket="mybucket",
             Key=key,
             Body=b"How d'ya do?"
         )
-        download_url = api.get_download_url("test_student/test_course/" + xblock.scope_ids.usage_id)
-
-        xblock.xmodule_runtime = Mock(
-            course_id=COURSE_ID,
-            anonymous_student_id='test_student',
-        )
-
+        download_url = api.get_download_url("/".join(["test_student", xblock.course_id, xblock.item_id]))
         resp = self.request(xblock, 'download_url', json.dumps({}), response_format='json')
-
         self.assertTrue(resp['success'])
         self.assertEqual(str(download_url), str(resp['url']))
 
-    def _get_student_item_key(self, num, usage_id):
-        key = "submissions_attachments/test_student/test_course/" + usage_id
+    def _get_student_item_key(self, xblock, num=0):
+        elements = [
+            "submissions_attachments",
+            "test_student",
+            xblock.course_id,
+            xblock.item_id,
+        ]
         if num > 0:
-            key = key + "/" + str(num)
-        return key
+            elements.append(num)
+        return "/".join(elements)
 
-    def _create_uploaded_files(self, num_files, usage_key):
+    def _create_uploaded_files(self, xblock, num_files):
         conn = boto3.client("s3")
         conn.create_bucket(Bucket="mybucket")
         for file_num in range(num_files):
-            key = self._get_student_item_key(file_num, usage_key)
+            key = self._get_student_item_key(xblock, file_num)
             conn.put_object(
                 Bucket="mybucket",
                 Key=key,
@@ -294,12 +272,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         """
         Test that after deleting a file, the remaining files are correctly submitted.
         """
-        self._create_uploaded_files(5, xblock.scope_ids.usage_id)
-        xblock.xmodule_runtime = Mock(
-            course_id=COURSE_ID,
-            anonymous_student_id='test_student',
-        )
-
+        self._create_uploaded_files(xblock, 5)
         # Mock away any calls to the teams service
         xblock.submission_data.files.can_delete_file = Mock(return_value=True)
         xblock.has_team = Mock(return_value=False)
@@ -385,20 +358,16 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
         AWS_SECRET_ACCESS_KEY='bizbaz',
         FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
     )
-    @scenario('data/custom_file_upload.xml')
+    @scenario('data/custom_file_upload.xml', user_id='test_student')
     def test_upload_files_with_uppercase_ext(self, xblock):
         """
         Tests that files with upper case extention uploaded successfully
         """
-        xblock.xmodule_runtime = Mock(
-            course_id=COURSE_ID,
-            anonymous_student_id='test_student',
-        )
         resp = self.request(xblock, 'upload_url', json.dumps({'contentType': 'filename',
                                                               'filename': 'test.PDF'}), response_format='json')
         self.assertTrue(resp['success'])
         self.assertIn(
-            '/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id,
+            '/submissions_attachments/test_student/'+ xblock.course_id +'/' + xblock.item_id,
             resp['url']
         )
 
@@ -639,9 +608,8 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
                 (
                     'openassessment.xblock.ui_mixins.legacy.submissions.views',
                     'ERROR',
-                    '{}: User associated with anonymous_user_id {} can not be found.'.format(
+                    '{}: User associated with anonymous_user_id Red Five can not be found.'.format(
                         xblock.location,
-                        xblock.xmodule_runtime.anonymous_student_id
                     )
                 )
             )
@@ -832,10 +800,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
         }
-        usage_id = xblock.scope_ids.usage_id
-        student_item_dict = {
-            'item_id': usage_id
-        }
         student_ids = ['11111111111111', '222222222222222', '333333333333']
         student_usernames = ['User 1', 'User 2', 'User 3']
         external_submissions = [
@@ -854,14 +818,7 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         ]
 
         mock_external_team_submissions.return_value = external_submissions
-
         xblock.get_team_info = Mock(return_value=team_info)
-        xblock.xmodule_runtime = Mock(
-            course_id=COURSE_ID,
-            anonymous_student_id="Red Five",
-            user_is_staff=False
-        )
-        xblock.get_student_item_dict = Mock(return_value=student_item_dict)
         xblock.get_username = Mock(
             side_effect=lambda student_id: student_usernames[student_ids.index(student_id)]
         )
@@ -875,8 +832,8 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         }
         context = get_team_submission_context(xblock.config_data)
         mock_external_team_submissions.assert_called_with(
-            COURSE_ID,
-            usage_id,
+            xblock.course_id,
+            xblock.item_id,
             MOCK_TEAM_ID,
             student_ids
         )
@@ -885,14 +842,11 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
     @scenario('data/submission_open.xml', user_id="Red Five")
     def test_get_team_submission_context__no_team(self, xblock):
         team_info = None
-        xblock.xmodule_runtime = Mock(
-            user_is_staff=False
-        )
         xblock.get_team_info = Mock(return_value=team_info)
         context = get_team_submission_context(xblock.config_data)
         self.assertEqual(context, {})
 
-    @scenario('data/submission_open.xml', user_id="Red Five")
+    @scenario('data/submission_open.xml', user_id="Red Five", is_staff=True)
     def test_get_team_submission_context__staff_view(self, xblock):
         # In staff view, team info is available, but not submission info.
         # verify that the team info is loaded into context, and nothing else,
@@ -901,9 +855,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
             'team_id': MOCK_TEAM_ID,
             'team_info_extra': 'more team info'
         }
-        xblock.xmodule_runtime = Mock(
-            user_is_staff=True
-        )
         xblock.get_team_info = Mock(return_value=team_info)
         context = get_team_submission_context(xblock.config_data)
         self.assertEqual(context, team_info)
@@ -1020,13 +971,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         ]
 
         xblock.file_manager.append_uploads(*file_uploads)
-
-        xblock.xmodule_runtime = Mock(
-            user_is_staff=False,
-            user_is_beta_tester=False,
-            course_id='test_course',
-            anonymous_student_id='Pmn'
-        )
 
         # delete file-2
         with patch('openassessment.fileupload.api.remove_file'):
@@ -1228,13 +1172,6 @@ class SubmissionRenderTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin)
         ])
 
         mock_get_download_url.side_effect = ['file-1-url', 'file-5-url']
-
-        xblock.xmodule_runtime = Mock(
-            user_is_staff=False,
-            user_is_beta_tester=False,
-            course_id='test_course',
-            anonymous_student_id='Pmn'
-        )
 
         # assert that there's an entry with the correct index in the rendered HTML
         # we should have an index for all files ever uploaded, even the deleted one

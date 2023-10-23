@@ -92,7 +92,14 @@ STAFF_BAD_ASSESSMENT = {
 }
 
 
-def scenario(scenario_path, user_id=None):
+def scenario(
+    scenario_path,
+    user_id=None,
+    is_admin=False,
+    is_staff=False,
+    is_beta_tester=False,
+    course_id=None,
+):
     """
     Method decorator to load a scenario for a test case.
     Must be called on an `XBlockHandlerTestCase` subclass, or
@@ -132,9 +139,12 @@ def scenario(scenario_path, user_id=None):
 
                     # Configure the runtime with our user id
                     self.set_user(user_id)
+                    self.set_special_course_access(is_admin, is_staff, is_beta_tester)
 
                     # Load the scenario
                     xblock = self.load_scenario(scenario_path)
+                    if course_id:
+                        xblock.scope_ids.usage_id.context_key = course_id
 
                     # Pass the XBlock as the first argument to the decorated method (after `self`)
                     args = list(args)
@@ -158,18 +168,24 @@ class XBlockHandlerTestCaseMixin:
         self.runtime = WorkbenchRuntime()
         mock_publish = mock.MagicMock(side_effect=self.runtime.publish)
         self.runtime.publish = mock_publish
+        self._mocked_services = {}
 
-    def set_user(self, user_id):
-        """
-        Provide a user ID to the runtime.
+    def mock_service(self, service_name):
+        if service_name not in self._mocked_services:
+            self.runtime._services[service_name] = mock.MagicMock()
+            self._mocked_services.add(service_name)
+        return self.runtime._services[service_name]
 
-        Args:
-            user_id (str): a user ID.
+    def _set_user_service_user_opt_attr(self, attr, value):
+         self.runtime._services['user']._user.opt_attrs[attr] = value
 
-        Returns:
-            None
-        """
-        self.runtime.user_id = user_id
+    def set_user(self, anonymous_user_id):
+        self._set_user_service_user_opt_attr('edx-platform.anonymous_user_id', anonymous_user_id)
+
+    def set_special_course_access(self, is_admin=False, is_staff=False, is_beta_tester=True):
+        self._set_user_service_user_opt_attr('edx-platform.user_is_global_staff', is_admin)
+        self._set_user_service_user_opt_attr('edx-platform.user_is_staff', is_staff)
+        self._set_user_service_user_opt_attr('edx-platform.user_is_beta_tester', is_beta_tester)
 
     def load_scenario(self, xml_path):
         """

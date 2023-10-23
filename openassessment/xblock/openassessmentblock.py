@@ -326,11 +326,15 @@ class OpenAssessmentBlock(
 
     @property
     def course_id(self):
-        return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
-    
+        return str(self.scope_ids.usage_id.context_key)
+
     @property
     def anonymous_user_id(self):
-        return self.scope_ids.usage_id.user_id
+        return self.config_data.user_service.get_current_user().opt_attrs.get("ATTR_KEY_ANONYMOUS_USER_ID")
+
+    @property
+    def item_id(self):
+        return str(self.scope_ids.usage_id)
 
     @cached_property
     def course(self):
@@ -497,18 +501,12 @@ class OpenAssessmentBlock(
             (dict): The student item associated with this XBlock instance. This
                 includes the student id, item id, and course id.
         """
-
-        item_id = str(self.scope_ids.usage_id)
-        course_id = self.course_id
-        student_id = anonymous_user_id or self.anonymous_user_id
-
-        student_item_dict = {
-            "student_id": student_id,
-            "item_id": item_id,
-            "course_id": course_id,
+        return {
+            "student_id": anonymous_user_id or self.anonymous_user_id,
+            "item_id": self.item_id,
+            "course_id": self.course_id,
             "item_type": 'openassessment'
         }
-        return student_item_dict
 
     @togglable_mobile_support
     def author_view(self, context=None):  # pylint: disable=unused-argument
@@ -717,9 +715,7 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
-        if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_admin', False)  # pylint: disable=no-member
-        return False
+        self.config_data.user_service.get_current_user().opt_attrs.get("edx-platform.user_is_global_staff")
 
     @property
     def is_course_staff(self):
@@ -729,9 +725,7 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
-        if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_staff', False)  # pylint: disable=no-member
-        return False
+        self.config_data.user_service.get_current_user().opt_attrs.get("edx-platform.user_is_staff")
 
     @property
     def is_beta_tester(self):
@@ -741,9 +735,7 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
-        if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_beta_tester', False)  # pylint: disable=no-member
-        return False
+        self.config_data.user_service.get_current_user().opt_attrs.get("edx-platform.user_is_beta_tester")
 
     @property
     def in_studio_preview(self):
@@ -754,9 +746,6 @@ class OpenAssessmentBlock(
             bool
 
         """
-        # When we're running in Studio Preview mode, the XBlock won't provide us with a user ID.
-        # (Note that `self.xmodule_runtime` will still provide an anonymous
-        # student ID, so we can't rely on that)
         return self.scope_ids.user_id is None
 
     @property
@@ -767,9 +756,7 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
-        if hasattr(self, 'xmodule_runtime'):
-            return self.xmodule_runtime.get_real_user is not None  # pylint: disable=no-member
-        return False
+        return self.config_data.user_service.get_user_by_anonymous_id() is not None
 
     @staticmethod
     def workbench_scenarios():
@@ -1291,16 +1278,13 @@ class OpenAssessmentBlock(
             returns None and logs the error.
 
         """
-        if hasattr(self, "xmodule_runtime"):
-            if self.xmodule_runtime.get_real_user is None:  # pylint: disable=no-member
-                return None
-            user = self.xmodule_runtime.get_real_user(anonymous_user_id)  # pylint: disable=no-member
-            if user:
-                return user
+        user = self.config_data.user_service.get_user_by_anonymous_id(anonymous_user_id)  # pylint: disable=no-member
+        if not user:
             logger.exception(
                 "XBlock service could not find user for anonymous_user_id '%s'", anonymous_user_id
             )
-        return None
+            return None
+        return user
 
     def get_username(self, anonymous_user_id):
         """

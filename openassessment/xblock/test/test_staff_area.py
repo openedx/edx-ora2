@@ -116,40 +116,35 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # If the LMS runtime tells us we're not course staff,
         # we shouldn't be course staff.
-        xblock.xmodule_runtime = Mock(user_is_staff=False)
+        self.set_special_course_access(is_staff=False)
         self.assertFalse(xblock.is_course_staff)
 
         # If the LMS runtime tells us that we ARE course staff,
         # then we're course staff.
-        xblock.xmodule_runtime.user_is_staff = True
+        self.set_special_course_access(is_staff=True)
         self.assertTrue(xblock.is_course_staff)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_staff_area(self, xblock):
         # If we're not course staff, we shouldn't see the staff area
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, "Bob"
-        )
+        self.set_special_course_access(is_staff=False)
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertNotIn("view assignment statistics", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the debug info
-        xblock.xmodule_runtime.user_is_staff = True
+        self.set_special_course_access(is_staff=True)
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_view_in_studio_button(self, xblock):
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, "Bob"
-        )
-
         # If we are not course staff,then we should NOT see the studio link
+        self.set_special_course_access(is_staff=False)
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertNotIn("view ora in studio", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the studio link
-        xblock.xmodule_runtime.user_is_staff = True
+        self.set_special_course_access(is_staff=True)
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertIn("view ora in studio", resp.decode('utf-8').lower())
 
@@ -157,13 +152,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         HTTPS='on',
         CMS_BASE="studio",
     )
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_get_studio_url(self, xblock):
         # Given we are staff viewing an ORA
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-
         # Mock the location of the vertical, returned when we run str(block)
         xblock.parent = 'vertical-location'
 
@@ -178,14 +169,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_student_debug_info(self, xblock):
         # If we're not course staff, we shouldn't see the debug info
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, "Bob"
-        )
+        self.set_special_course_access(is_staff=True)
         resp = self.request(xblock, 'render_student_info', json.dumps({}))
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the debug info
-        xblock.xmodule_runtime.user_is_staff = True
+        self.set_special_course_access(is_staff=True)
         resp = self.request(xblock, 'render_student_info', json.dumps({}))
         self.assertIn("a response was not found for this learner.", resp.decode('utf-8').lower())
 
@@ -194,6 +183,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # If we are in Studio preview mode, don't show the staff area.
         # In this case, the runtime will tell us that we're staff,
         # but no user ID will be set.
+        
+        #TODO: unsure
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
@@ -208,13 +199,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock_fragment = self.runtime.render(xblock, 'student_view')
         self.assertNotIn('staff-info', xblock_fragment.body_html())
 
-    @scenario('data/staff_dates_scenario.xml', user_id='Bob')
+    @scenario('data/staff_dates_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_dates_table(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         decoded_response = resp.decode('utf-8').lower()
@@ -230,38 +217,26 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("april 1, 2015", decoded_response)
         self.assertIn("april 1, 2016", decoded_response)
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_dates_distant_past_and_future(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
         self.assertIn("n/a", resp.decode('utf-8').lower())
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_no_submission(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
         request = namedtuple('Request', 'params')
         request.params = {"student_id": "test_student"}
         # Verify that we can render without error
         resp = xblock.render_student_info(request)
         self.assertIn("a response was not found for this learner.", resp.body.decode('utf-8').lower())
 
-    @scenario('data/peer_only_scenario.xml', user_id='Bob')
+    @scenario('data/peer_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_peer_only(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
-
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -295,13 +270,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Bob still needs to assess other learners
         self.assertIsNone(context['grade_details'])
 
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_self_only(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -330,13 +301,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
         self.assertEqual('Self Assessment Grade', grade_details['criteria'][0]['assessments'][0]['title'])
 
-    @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob')
+    @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_staff_only_no_options(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -364,13 +332,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
             ).decode('utf-8')
         )
 
-    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_staff_only(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
@@ -399,7 +364,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(1, len(grade_details['criteria'][0]['assessments']))
         self.assertEqual('Staff Grade', grade_details['criteria'][0]['assessments'][0]['title'])
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_with_cancelled_submission(self, xblock):
         requirements = {
             "peer": {
@@ -409,10 +374,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }
 
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -434,13 +395,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNotNone(context['workflow_cancellation'])
         self.assertEqual("legacy/staff_area/oa_student_info.html", path)
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
         # Test that peer assessment path should be oa_peer_cancelled.html for a cancelled submission.
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -466,13 +424,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, _ = xblock.peer_path_and_context(False)
         self.assertEqual("legacy/peer/oa_peer_cancelled.html", path)
 
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_image_submission(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -517,16 +471,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertIn("http://www.example.com/image.jpeg", resp)
             self.assertIn("test_description", resp)
 
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_many_images_submission(self, xblock):
         """
         Test multiple file uploads support
         """
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -579,13 +529,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
                 self.assertIn("http://www.example.com/image%d.jpeg" % i, resp)
                 self.assertIn("test_description%d" % i, resp)
 
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_file_download_url_error(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -611,13 +557,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
             resp = self.request(xblock, "render_student_info", payload).decode('utf-8')
             self.assertIn("Bob Answer", resp)
 
-    @scenario('data/grade_scenario.xml', user_id='Bob')
+    @scenario('data/grade_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_area_student_info_full_workflow(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         # Commonly chosen options for assessments
         options_selected = {
@@ -670,30 +612,24 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("bob answer", resp.body.decode('utf-8').lower())
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=False)
     def test_cancel_submission_without_reason(self, xblock):
         # If we're not course staff, we shouldn't be able to see the
         # cancel submission option
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, "Bob"
-        )
 
         resp = self.request(xblock, 'cancel_submission', json.dumps({}))
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the cancel submission option
         # with valid error message.
-        xblock.xmodule_runtime.user_is_staff = True
+        self.set_special_course_access(is_staff=True)
         resp = self.request(xblock, 'cancel_submission', json.dumps({}), response_format='json')
         self.assertIn("Please enter valid reason", resp['msg'])
         self.assertEqual(False, resp['success'])
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_cancel_submission_full_flow(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -818,7 +754,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNotNone(context['score'])
         self.assertEqual(context['score']['annotations'][0]['creator'], 'StaffMember')
 
-    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_assessment_counts(self, xblock):
         """
         Verify the staff assessment counts (ungraded and checked out)
@@ -827,11 +763,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.is_enhanced_staff_grader_enabled = False
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 0)
-
-        # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -847,19 +778,16 @@ class TestCourseStaff(XBlockHandlerTestCase):
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 1)
 
-    @scenario('data/grade_scenario.xml', user_id='Bob')
+    @scenario('data/grade_scenario.xml', user_id='Bob', is_staff=True, is_admin=True)
     def test_staff_assessment_counts_not_required(self, xblock):
         """
         Verify the staff assessment counts (ungraded and checked out) are
         not present in the context when staff assessment is not required.
         """
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, True, "Bob"
-        )
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, False)
 
-    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_assessment_form(self, xblock):
         """
         Smoke test that the staff assessment form renders when staff assessment
@@ -873,11 +801,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertIn(permission_denied, resp)
         self.assertNotIn(no_submissions_available, resp)
-
-        # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertNotIn(permission_denied, resp)
@@ -914,13 +837,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn(team_name_query, resp)
         self.assertIn(team_usernames_query, resp)
 
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_delete_student_state(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, 'Bob'
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -951,13 +870,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("response was not found", resp.body.decode('utf-8').lower())
 
     @patch('openassessment.xblock.staff_area_mixin.remove_file')
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_staff_delete_student_state_with_files(self, xblock, remove_file_patch):
         # Given we are course staff...
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, 'Bob'
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -1016,14 +931,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(xblock.get_team_workflow_info(), {})
 
     @patch('openassessment.xblock.staff_area_mixin.delete_shared_files_for_team')
-    @scenario('data/team_submission.xml', user_id='Bob')
+    @scenario('data/team_submission.xml', user_id='Bob', is_staff=True)
     def test_staff_clear_team_state_with_submission_clears_files(self, xblock, delete_files_patch):
-        # Given we are staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, 'Bob'
-        )
-
-        # ... on a team ORA w/ a team submission (which presumably also has files)
+        # Given we are staff on a team ORA w/ a team submission (which presumably also has files)
         self._setup_xblock_and_create_submission(xblock)
 
         # When we clear team state
@@ -1038,14 +948,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         delete_files_patch.assert_called_with(STUDENT_ITEM['course_id'], xblock.scope_ids.usage_id, MOCK_TEAM_ID)
 
     @patch('openassessment.xblock.staff_area_mixin.delete_shared_files_for_team')
-    @scenario('data/team_submission.xml', user_id='Bob')
+    @scenario('data/team_submission.xml', user_id='Bob', is_staff=True)
     def test_staff_clear_team_state_without_submission(self, xblock, delete_files_patch):
-        # Given we are staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, 'Bob'
-        )
-
-        # ... on a team ORA w/out a team submission
+        # Given we are staff on a team ORA w/out a team submission
         xblock.is_team_assignment = Mock(return_value=True)
 
         # When we clear team state
@@ -1162,13 +1067,11 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['team_name'])
 
     @patch('openassessment.data.map_anonymized_ids_to_usernames')
-    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob', is_staff=True)
     def test_waiting_step_details_api(self, xblock, username_map_patch):
         """
         Test the waiting step details JSON API response.
         """
-        # Set mocks
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
         username_map_patch.return_value = {"Bob": "bob_username"}
 
         # Make a submission, but no peer assessments available
@@ -1223,12 +1126,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
         username_map_patch.return_value = {}
 
         # If user is not staff, API is not available
-        xblock.xmodule_runtime = Mock(user_is_staff=False)
+        self.set_special_course_access(is_staff=False)
         resp = self.request(xblock, 'waiting_step_data', json.dumps({}))
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
 
         # If it's course staff then display API results
-        xblock.xmodule_runtime.user_is_staff = True
+        self.set_special_course_access(is_staff=True)
         resp = self.request(xblock, 'waiting_step_data', json.dumps({}))
         body = json.loads(resp.decode('utf-8'))
 
@@ -1485,16 +1388,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
         return team_submission
 
     @ddt.data('files_names', 'files_name')
-    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    @scenario('data/self_only_scenario.xml', user_id='Bob', is_staff=True)
     def test_file_name_is_rendered_on_template(self, xblock, key):
         """
         This test Validates the file name is visible to staff when viewing individual submission.
         """
         # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -1543,17 +1442,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
         (True, True),
     )
     @ddt.unpack
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/basic_scenario.xml', user_id='Bob', is_staff=True)
     def test_show_unavailable_staff_override_section(self, xblock, cancelled_submission, grades_frozen):
         """
         If grades are frozen or a submission is cancelled, we want to show the override dropdown,
         but show a warning rather than the override form
         """
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
-
         # Create a submission
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id

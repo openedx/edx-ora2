@@ -15,17 +15,15 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
 
     handler_name = 'get_submission_info'
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_no_submission_uuid(self, xblock):
         """ How does the endpoint behave when we don't give it a submission_uuid? """
-        self.set_staff_user(xblock, 'Bob')
         response = self.request(xblock, {})
         self.assert_response(response, 400, {"error": "Body must contain a submission_uuid"})
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=False)
     def test_no_access(self, xblock):
         """ How does the endpoint behave when the requester doesn't have proper permissions? """
-        xblock.xmodule_runtime = Mock(user_is_staff=False)
         response = self.request(xblock, {'submission_uuid': 'meaningless-value'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('You do not have permission to access ORA staff grading.', response.body.decode('UTF-8'))
@@ -45,25 +43,23 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         with patch("openassessment.data.get_download_url", **kwargs) as mock_get_download_url:
             yield mock_get_download_url
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_get_submission_error(self, xblock):
         """ What happens when there's an exception when we attempt to look up the submission? """
         submission_uuid = str(uuid4())
         err_msg = str(Mock())
 
-        self.set_staff_user(xblock, 'Bob')
         with self._mock_get_submission(side_effect=sub_api.SubmissionError(err_msg)):
             response = self.request(xblock, {'submission_uuid': submission_uuid})
 
         self.assert_response(response, 500, {"error": "Internal error getting submission info"})
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_answer_version_unknown(self, xblock):
         """ What happens when the raw answer we look up doesn't parse correctly? """
         submission_uuid = str(uuid4())
         mock_submission = Mock()
         mock_exception = VersionNotFoundException("No version found!!!!11")
-        self.set_staff_user(xblock, 'Bob')
         with self._mock_get_submission(return_value=mock_submission):
             with self._mock_parse_submission_raw_answer(side_effect=mock_exception):
                 response = self.request(xblock, {'submission_uuid': submission_uuid})
@@ -71,7 +67,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         self.assertEqual(response.status_code, 500)
         self.assertIn(str(mock_exception), response.body.decode('UTF-8'))
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_get_submission_info(self, xblock):
         """ Unit test for normal behavior of get_submission_info """
         text_responses = [
@@ -101,7 +97,6 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         mock_answer = Mock()
         mock_answer.get_text_responses.return_value = text_responses
         mock_answer.get_file_uploads.return_value = file_uploads
-        self.set_staff_user(xblock, 'Bob')
         with self._mock_get_submission(return_value=mock_submission):
             with self._mock_parse_submission_raw_answer(return_value=mock_answer):
                 with self._mock_get_download_urls():
@@ -116,7 +111,7 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
             }
         )
 
-    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob')
+    @scenario('data/simple_self_staff_scenario.xml', user_id='Bob', is_staff=True)
     def test_get_submission_info__integration(self, xblock):
         """ Test of full behavior of get_submission_info """
         student_id = 'test-student-id-1010101'
@@ -133,7 +128,6 @@ class GetSubmissionInfoTests(StaffGraderMixinTestBase):
         }
         submission, _ = self._create_student_and_submission(student_id, test_answer)
 
-        self.set_staff_user(xblock, 'Bob')
         with self._mock_get_download_url():
             response = self.request(xblock, {'submission_uuid': submission['uuid']})
 

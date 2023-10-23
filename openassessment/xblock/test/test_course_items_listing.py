@@ -31,8 +31,6 @@ class TestCourseItemsListingHandlers(XBlockHandlerTestCase, SubmitAssessmentsMix
 
         """
         self.set_staff_access(xblock)
-        xblock.xmodule_runtime.course_id = 'test_course'
-
         return_data = [{'id': 'test_1', 'title': 'title_1'},
                        {'id': 'test_2', 'title': 'title_2'}]
         with patch("openassessment.data.OraAggregateData.collect_ora2_responses", return_value=return_data):

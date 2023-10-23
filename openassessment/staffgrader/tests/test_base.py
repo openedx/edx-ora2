@@ -33,18 +33,6 @@ class StaffGraderMixinTestBase(XBlockHandlerTestCase):
         ) as mock_get:
             yield mock_get
 
-    def set_staff_user(self, xblock, staff_id, course_id=None, item_id=None):
-        """
-        Mock the runtime to say that the current user is course staff and is logged in as the given user.
-        Additionally, mock the xblock's get_student_item_dict to return the value we want,
-        rather than the values that are mocked upstream by "handle"
-        """
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
-        xblock.xmodule_runtime.anonymous_student_id = staff_id
-        xblock.get_student_item_dict = Mock(
-            return_value=self._student_item_dict(staff_id, course_id=course_id, item_id=item_id)
-        )
-
     def request(self, xblock, payload):  # pylint: disable=arguments-differ
         """ Helper to candle calling the `get_submission_and_assessment_info` handler """
         assert self.handler_name is not None, "Subclass must specify handler_name"
@@ -88,7 +76,7 @@ class StaffGraderMixinTestBase(XBlockHandlerTestCase):
         return submission, new_student_item
 
     def submit_staff_assessment(
-        self, xblock, submission_uuid, grader, option, option_2=None, criterion_feedback=None, overall_feedback=None
+        self, xblock, submission_uuid, option, option_2=None, criterion_feedback=None, overall_feedback=None
     ):
         """
         Helper method to submit a staff assessment
@@ -110,6 +98,5 @@ class StaffGraderMixinTestBase(XBlockHandlerTestCase):
             'assess_type': 'full-grade',
             'submission_uuid': submission_uuid
         }
-        self.set_staff_user(xblock, grader)
         resp = super().request(xblock, 'submit_staff_assessment', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])

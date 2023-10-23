@@ -24,7 +24,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'save_files_descriptions', json.dumps({}))
         self.assertIn('descriptions were not submitted', resp.decode('utf-8'))
 
-    @scenario('data/save_scenario.xml', user_id="Perleman")
+    @scenario('data/save_scenario.xml', user_id="Pmn")
     def test_save_files_descriptions(self, xblock):
         """
         Checks ability to call handler with descriptions and then saved texts should be available after xblock render.
@@ -32,13 +32,6 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         """
         # We're not worried about looking up shared uploads in this test
         xblock.has_team = mock.Mock(return_value=False)
-
-        xblock.xmodule_runtime = mock.Mock(
-            user_is_staff=False,
-            user_is_beta_tester=False,
-            course_id='test_course',
-            anonymous_student_id='Pmn'
-        )
 
         # Save the response
         descriptions = [{'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
@@ -57,7 +50,7 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         self.assertIn(descriptions[0]['description'], resp.decode('utf-8'))
         self.assertIn(descriptions[1]['description'], resp.decode('utf-8'))
 
-    @scenario('data/save_scenario.xml', user_id="Valchek")
+    @scenario('data/save_scenario.xml', user_id="Pmn")
     def test_append_files_descriptions(self, xblock):
         """
         Checks ability to to append additional files
@@ -65,13 +58,6 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
         """
         # We're not worried about looking up shared uploads in this test
         xblock.has_team = mock.Mock(return_value=False)
-
-        xblock.xmodule_runtime = mock.Mock(
-            user_is_staff=False,
-            user_is_beta_tester=False,
-            course_id='test_course',
-            anonymous_student_id='Pmn'
-        )
 
         descriptions1 = [
             {'description': "Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", 'fileName': 'fname1', 'fileSize': 1000},
