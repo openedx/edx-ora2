@@ -30,23 +30,21 @@ class AssessmentDataSerializer(Serializer):
     """
     Assessment data serializer
     """
-    optionsSelected = SerializerMethodField()
-    criterionFeedback = SerializerMethodField()
     overallFeedback = SerializerMethodField()
-
-    def get_optionsSelected(self, instance):
-        result = {}
-        for part in instance['parts']:
-            result[part['option']['name']] = part['option']['label']
-        return result
+    responseCriterions = SerializerMethodField()
 
     def get_overallFeedback(self, instance):
         return instance['feedback']
 
-    def get_criterionFeedback(self, instance):
-        result = {}
+    def get_responseCriterions(self, instance):
+        result = []
         for part in instance['parts']:
-            result[part['criterion']['name']] = part['feedback']
+            result.append({
+                "name": part['criterion']['name'],
+                "selectedOption": part['option']['label'],
+                "selectedPoints": part['option']['points'],
+                "feedback": part['feedback'],
+            })
         return result
 
 
