@@ -253,8 +253,6 @@ class SubmissionAPI(StepDataAPI):
         Check if student_sub_dict has any submission content so that we don't
         create empty submissions.
 
-        If there are no text responses and no file responses, raise an EmptySubmissionError
-
         Args:
         * submission_dict
 

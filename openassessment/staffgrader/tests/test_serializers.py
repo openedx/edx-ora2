@@ -22,7 +22,7 @@ from openassessment.test_utils import CacheResetTest
 TEST_TIME = datetime(2020, 8, 29, 2, 14, tzinfo=timezone(offset=timedelta(hours=-4)))
 
 
-@freeze_time(TEST_TIME, tz_offset=-4)
+@freeze_time(TEST_TIME)
 class TestSubmissionLockSerializer(CacheResetTest):
     """ Tests for SubmissionLockSerializer """
 
