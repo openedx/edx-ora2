@@ -2,6 +2,7 @@
 # pylint: disable=abstract-method
 
 from rest_framework.serializers import (
+    BooleanField,
     IntegerField,
     Serializer,
     CharField,

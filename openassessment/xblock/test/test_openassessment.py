@@ -79,6 +79,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.
         """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         xblock.mfe_views_enabled = True
         xblock_fragment = self.runtime.render(xblock, "student_view")
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
@@ -284,6 +287,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
         xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Verify that prompts intentionally left empty don't create DOM elements
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
@@ -294,6 +300,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_page_load_updates_workflow(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         xblock.mfe_views_enabled = True
 
         # No submission made, so don't update the workflow
@@ -315,6 +324,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml')
     def test_student_view_workflow_error(self, xblock):
         xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
 
         # Simulate an error from updating the workflow
         xblock.submission_uuid = 'test_submission'
@@ -339,6 +351,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self.load_scenario('data/dates_scenario.xml')
+            xblock.xmodule_runtime = self._create_mock_runtime(
+                xblock.scope_ids.usage_id, False, False, "Bob"
+            )
             xblock.mfe_views_enabled = True
             xblock_fragment = self.runtime.render(xblock, "student_view")
             self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
@@ -520,7 +535,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
-
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Reset all fields in the XBlock to their default values
         for field_name, field in xblock.fields.items():
             setattr(xblock, field_name, field.default)
@@ -552,6 +569,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_ignore_unknown_assessment_types(self, xblock):
         xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # If the XBlock contains an unknown assessment type
         # (perhaps after a roll-back), it should ignore it.
         xblock.rubric_assessments.append({'name': 'unknown'})
@@ -565,6 +585,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_staff.xml', user_id='Bob')
     def test_assessment_type_with_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         xblock.mfe_views_enabled = True
         # Check that staff-assessment is in assessment_steps
         self.assertIn('staff-assessment', xblock.assessment_steps)
@@ -574,6 +597,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/grade_scenario_self_only.xml', user_id='Bob')
     def test_assessment_type_without_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         xblock.mfe_views_enabled = True
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
@@ -584,6 +610,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_not_required(self, xblock):
         xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: False
         # Check that staff-assessment is not in assessment_steps
         self.assertNotIn('staff-assessment', xblock.assessment_steps)
@@ -594,6 +623,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/grade_scenario_self_staff_not_required.xml', user_id='Bob')
     def test_assessment_type_with_staff_override(self, xblock):
         xblock.mfe_views_enabled = True
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
         # Override the staff_assessment_exists function to always return True
         StaffAssessmentAPI.staff_assessment_exists = lambda submission_uuid: True
 
