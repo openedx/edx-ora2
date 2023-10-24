@@ -1437,30 +1437,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertEqual(in_progress, context['staff_assessment_in_progress'])
 
     @staticmethod
-    def _create_mock_runtime(
-            item_id,
-            is_staff,
-            is_admin,
-            anonymous_user_id,
-            user_is_beta=False,
-    ):
-        """
-        Internal helper to define a mock runtime.
-        """
-        mock_runtime = Mock(
-            course_id='test_course',
-            item_id=item_id,
-            anonymous_student_id=anonymous_user_id,
-            user_is_staff=is_staff,
-            user_is_admin=is_admin,
-            user_is_beta=user_is_beta,
-            service=lambda self, service: Mock(
-                get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
-            )
-        )
-        return mock_runtime
-
-    @staticmethod
     def _create_submission(item, values, types):
         """ Create a submission and corresponding workflow. """
         submission = sub_api.create_submission(item, values)
