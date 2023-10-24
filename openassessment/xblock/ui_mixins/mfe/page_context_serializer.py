@@ -340,6 +340,7 @@ class PageDataSerializer(Serializer):
             workflow_step = self.context["step"]
             active_step = jump_to_step or workflow_step
 
+            # Fetch the response for the given step
             if active_step == "training":
                 response = instance.student_training_data.example
             elif active_step == "peer":
@@ -349,9 +350,8 @@ class PageDataSerializer(Serializer):
             else:
                 raise Exception(f"Bad step name: {active_step}")
 
-            self.context["response"] = response
+            return AssessmentResponseSerializer(response).data
 
-            return AssessmentResponseSerializer(instance.api_data, context=self.context).data
         else:
             raise Exception("Missing view context for page")
 

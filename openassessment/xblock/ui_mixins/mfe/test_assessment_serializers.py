@@ -33,22 +33,16 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
     maxDiff = None
 
     @scenario("data/basic_scenario.xml", user_id="Alan")
-    def test_no_response(self, xblock):
-        # Given we are asking for assessment data too early (still on submission step)
-        context = {"response": None, "step": "submission"}
+    def test_no_response(self, xblock):  # pylint: disable=unused-argument
+        # Given we don't have a response to serialize
+        response = None
 
         # When I load my response
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(response).data
 
         # I get the appropriate response
         expected_response = {}
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_response(self, xblock):
@@ -57,23 +51,17 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         submission = self.create_test_submission(
             xblock, submission_text=submission_text
         )
-        context = {"response": submission, "step": "self"}
 
         # When I load my response
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
     @scenario("data/file_upload_scenario.xml", user_id="Alan")
     def test_files_empty(self, xblock):
@@ -82,23 +70,17 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         submission = self.create_test_submission(
             xblock, submission_text=submission_text
         )
-        context = {"response": submission, "step": "self"}
 
         # When I load my response
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
     def _mock_file(self, xblock, student_item_dict=None, **file_data):
         """Turn mock file data into a FileUpload for testing"""
@@ -148,8 +130,7 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         )
 
         # When I load my response
-        context = {"response": submission, "step": "self"}
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response (test URLs use usage ID)
         expected_url = f"Alan/edX/Enchantment_101/April_1/{xblock.scope_ids.usage_id}"
@@ -171,14 +152,9 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
                     "fileIndex": 2,
                 },
             ],
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
 
 class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):

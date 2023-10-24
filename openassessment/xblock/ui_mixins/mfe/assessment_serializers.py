@@ -54,6 +54,7 @@ class AssessmentStepSerializer(Serializer):
     """
     Assessment step serializer
     """
+
     stepScore = AssessmentScoreSerializer(source="*")
     assessment = AssessmentDataSerializer(source="*")
 
@@ -66,9 +67,45 @@ class SubmissionFileSerializer(Serializer):
     fileIndex = IntegerField(source="file_index")
 
 
-class SubmittedResponseSerializer(Serializer):
+class AssessmentGradeSerializer(Serializer):
     """
-    Data for a submitted response
+    Given we want to load an assessment response,
+    gather the appropriate response and serialize.
+
+    Data same shape as Submission, but coming from different sources.
+
+    Returns:
+    {
+        effectiveAssessmentType: String
+        self: AssessmentStepSerializer
+        staff: AssessmentStepSerializer
+        peers: AssessmentStepSerializer[]
+    }
+    """
+
+    effectiveAssessmentType = SerializerMethodField()
+    self = AssessmentStepSerializer(source="self_assessment_data.assessment")
+    staff = AssessmentStepSerializer(source="staff_assessment_data.assessment")
+    peers = AssessmentStepSerializer(
+        source="peer_assessment_data.assessments", many=True
+    )
+
+    def get_effectiveAssessmentType(self, instance):  # pylint: disable=unused-argument
+        """
+        Get effective assessment type
+        """
+        return self.context["step"]
+
+
+class AssessmentResponseSerializer(Serializer):
+    """
+    Given we want to load an assessment response,
+    gather the appropriate response and serialize.
+
+    Data same shape as Submission, but coming from different sources.
+
+    Args:
+    * Response - All assessment responses have the same data
 
     Returns:
     {
@@ -76,7 +113,7 @@ class SubmittedResponseSerializer(Serializer):
         [
             (String) Matched with prompts
         ],
-        uploaded_files: (Array [Object])
+        uploadedFiles: (Array [Object])
         [
             {
                 fileUrl: (URL) S3 location
@@ -85,12 +122,21 @@ class SubmittedResponseSerializer(Serializer):
                 fileSize: (Bytes?)
                 fileIndex: (Integer, positive)
             }
-        ]
+        ],
+        teamUploadedFiles: Null
     }
     """
 
     textResponses = SerializerMethodField()
     uploadedFiles = SerializerMethodField()
+    teamUploadedFiles = NullField(source="*")
+
+    def __init__(self, instance=None, *args, **kwargs):  # pylint: disable=keyword-arg-before-vararg
+        # Very weird workaround to control serialization for None input as data
+        # since DRF doesn't run to_representation when None is passed as data
+        if instance is None:
+            self.fields = {}
+        super().__init__(instance, *args, **kwargs)
 
     def get_textResponses(self, instance):
         # An empty response has a different format from a saved response
@@ -121,81 +167,3 @@ class SubmittedResponseSerializer(Serializer):
             files.append(file_data)
 
         return [SubmissionFileSerializer(file).data for file in files]
-
-
-class AssessmentGradeSerializer(Serializer):
-    """
-    Given we want to load an assessment response,
-    gather the appropriate response and serialize.
-
-    Data same shape as Submission, but coming from different sources.
-
-    Returns:
-    {
-        effectiveAssessmentType: String
-        self: AssessmentStepSerializer
-        staff: AssessmentStepSerializer
-        peers: AssessmentStepSerializer[]
-    }
-    """
-    effectiveAssessmentType = SerializerMethodField()
-    self = AssessmentStepSerializer(source="self_assessment_data.assessment")
-    staff = AssessmentStepSerializer(source="staff_assessment_data.assessment")
-    peers = AssessmentStepSerializer(source="peer_assessment_data.assessments", many=True)
-
-    def get_effectiveAssessmentType(self, instance):  # pylint: disable=unused-argument
-        """
-        Get effective assessment type
-        """
-        return self.context["step"]
-
-
-class AssessmentResponseSerializer(Serializer):
-    """
-    Given we want to load an assessment response,
-    gather the appropriate response and serialize.
-
-    Data same shape as Submission, but coming from different sources.
-
-    Returns:
-    {
-        // Null for Assessments
-        hasSubmitted: None
-        hasCancelled: None
-        hasReceivedGrade: None
-        teamInfo: None
-
-        // The actual response to view
-        response: (Object)
-        {
-            textResponses: (Array [String])
-            [
-                (String) Matched with prompts
-            ],
-            uploadedFiles: (Array [Object])
-            [
-                {
-                    fileUrl: (URL) S3 location
-                    fileDescription: (String)
-                    fileName: (String)
-                    fileSize: (Bytes?)
-                    fileIndex: (Integer, positive)
-                }
-            ]
-        }
-    """
-
-    hasSubmitted = NullField(source="*")
-    hasCancelled = NullField(source="*")
-    hasReceivedGrade = NullField(source="*")
-    teamInfo = NullField(source="*")
-
-    response = SerializerMethodField()
-
-    def get_response(self, instance):  # pylint: disable=unused-argument
-        # Response is passed in through context, so we don't have to fetch it
-        # in multiple locations.
-        response = self.context.get("response")
-        if not response:
-            return {}
-        return SubmittedResponseSerializer(response).data
