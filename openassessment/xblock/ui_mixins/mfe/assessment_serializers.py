@@ -26,28 +26,28 @@ class AssessmentScoreSerializer(Serializer):
     possible = IntegerField(source="points_possible", required=False)
 
 
+class AssessmentCriterionSerializer(Serializer):
+    """
+    returns:
+    {
+        name: (String) Name of the criterion
+        selectedOption: (String) Label of the selected option
+        selectedPoints: (Int) Points awarded for selected option
+        feedback: (String) Feedback for the selected option
+    }
+    """
+    name = CharField(source="criterion.name")
+    selectedOption = CharField(source="option.label")
+    selectedPoints = IntegerField(source="option.points")
+    feedback = CharField()
+
+
 class AssessmentDataSerializer(Serializer):
     """
     Assessment data serializer
     """
-    optionsSelected = SerializerMethodField()
-    criterionFeedback = SerializerMethodField()
-    overallFeedback = SerializerMethodField()
-
-    def get_optionsSelected(self, instance):
-        result = {}
-        for part in instance['parts']:
-            result[part['option']['name']] = part['option']['label']
-        return result
-
-    def get_overallFeedback(self, instance):
-        return instance['feedback']
-
-    def get_criterionFeedback(self, instance):
-        result = {}
-        for part in instance['parts']:
-            result[part['criterion']['name']] = part['feedback']
-        return result
+    overallFeedback = CharField(source="feedback")
+    assessmentCriterions = AssessmentCriterionSerializer(source="parts", many=True)
 
 
 class AssessmentStepSerializer(Serializer):
