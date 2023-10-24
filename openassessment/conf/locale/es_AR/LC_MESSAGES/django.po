@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-15 18:36+0000\n"
+"POT-Creation-Date: 2023-10-22 18:36+0000\n"
 "PO-Revision-Date: 2014-06-11 13:03+0000\n"
-"Last-Translator: Leangseu Kim, 2023\n"
+"Last-Translator: Jesica Greco, 2023\n"
 "Language-Team: Spanish (Argentina) (http://app.transifex.com/open-edx/edx-platform/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -255,21 +255,21 @@ msgstr "Tipos de archivo"
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
-msgstr ""
+msgstr "Introduce las extensiones de fichero, separadas por comas, que permitirás cargar a tus estudiantes. Por ejemplo: pdf,doc,docx."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:84
 msgid ""
 "To add more file extensions, select Custom File Types and enter the full "
 "list of acceptable file extensions to be included."
-msgstr ""
+msgstr "Para agregar más extensiones de archivo, seleccione Tipos de archivos personalizados e ingrese la lista completa de extensiones de archivos aceptables para incluir."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:91
 msgid "Allow LaTeX Responses"
-msgstr ""
+msgstr "Permitir respuestas LaTeX"
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:97
 msgid "Specify whether learners can write LaTeX formatted strings"
-msgstr ""
+msgstr "Especificar si los alumnos pueden escribir cadenas formateadas en LaTeX."
 
 #: templates/openassessmentblock/edit/oa_edit_basic_settings_list.html:102
 #: templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:8
@@ -2299,7 +2299,7 @@ msgstr ""
 
 #: xblock/staff_area_mixin.py:246
 msgid "Not applicable"
-msgstr ""
+msgstr "No aplica"
 
 #: xblock/staff_area_mixin.py:247
 msgid "Not submitted"

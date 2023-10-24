@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-17 17:46+0000\n"
+"POT-Creation-Date: 2023-10-24 13:27+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1409,6 +1409,7 @@ msgstr ""
 "¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм#"
 
 #: templates/legacy/oa_base.html templates/openassessmentblock/base.html
+#: templates/openassessmentblock/base.html
 msgid "Loading"
 msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
 
@@ -3079,6 +3080,11 @@ msgid "Successfully updated OpenAssessment XBlock"
 msgstr ""
 "Süççéssfüllý üpdätéd ÖpénÀsséssmént XBlöçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя #"
+
+#: xblock/ui_mixins/legacy/submissions/file_actions.py
+msgid "Files metadata could not be saved."
+msgstr ""
+"Fïlés métädätä çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: xblock/utils/data_conversion.py
 msgid "You must provide options selected in the assessment."

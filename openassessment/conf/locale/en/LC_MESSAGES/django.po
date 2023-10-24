@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-ora2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-17 17:46+0000\n"
+"POT-Creation-Date: 2023-10-24 13:27+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: Muhammad Ayub khan <ayubkhan@edx.org>\n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -1110,13 +1110,14 @@ msgstr ""
 msgid "The instructions for this step could not be loaded."
 msgstr ""
 
-#: templates/legacy/oa_base.html:15 templates/openassessmentblock/base.html:15
+#: templates/legacy/oa_base.html:15 templates/openassessmentblock/base.html:21
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the prompt. The other steps appear below the Your Response field."
 msgstr ""
 
-#: templates/legacy/oa_base.html:36 templates/openassessmentblock/base.html:36
+#: templates/legacy/oa_base.html:36 templates/openassessmentblock/base.html:42
+#: templates/openassessmentblock/base.html:82
 msgid "Loading"
 msgstr ""
 
@@ -2431,6 +2432,10 @@ msgstr ""
 
 #: xblock/studio_mixin.py:323
 msgid "Successfully updated OpenAssessment XBlock"
+msgstr ""
+
+#: xblock/ui_mixins/legacy/submissions/file_actions.py:71
+msgid "Files metadata could not be saved."
 msgstr ""
 
 #: xblock/utils/data_conversion.py:315
