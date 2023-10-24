@@ -716,7 +716,6 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         expected_supported = not mock_teams_assignment
         self.assertEqual(xblock._mfe_views_supported, expected_supported)
 
-
     @scenario('data/assessment_steps_reordered.xml')
     def test__mfe_views_supported__rearranged_steps(self, xblock):
         # Given this ORA has rearranged our assessment steps
