@@ -243,6 +243,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.assertIsNotNone(sub)
 
         # When I try to jump back to that step
+        self.context = {"view": "assessment", "step": "done"}
         self.context["jump_to_step"] = "peer"
         response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
 
