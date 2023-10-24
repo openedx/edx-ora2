@@ -4,6 +4,7 @@ Tests for AssessmentResponseSerializer
 import json
 from unittest.mock import patch
 
+from django.test import TestCase
 from openassessment.fileupload.api import FileUpload
 from openassessment.xblock.test.base import (
     PEER_ASSESSMENTS,
@@ -17,6 +18,9 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
     AssessmentStepSerializer,
     AssessmentGradeSerializer,
+    AssessmentScoreSerializer,
+    AssessmentDataSerializer,
+    AssessmentCriterionSerializer,
 )
 
 
@@ -29,22 +33,16 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
     maxDiff = None
 
     @scenario("data/basic_scenario.xml", user_id="Alan")
-    def test_no_response(self, xblock):
-        # Given we are asking for assessment data too early (still on submission step)
-        context = {"response": None, "step": "submission"}
+    def test_no_response(self, xblock):  # pylint: disable=unused-argument
+        # Given we don't have a response to serialize
+        response = None
 
         # When I load my response
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(response).data
 
         # I get the appropriate response
         expected_response = {}
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
     @scenario("data/basic_scenario.xml", user_id="Alan")
     def test_response(self, xblock):
@@ -53,23 +51,17 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         submission = self.create_test_submission(
             xblock, submission_text=submission_text
         )
-        context = {"response": submission, "step": "self"}
 
         # When I load my response
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
     @scenario("data/file_upload_scenario.xml", user_id="Alan")
     def test_files_empty(self, xblock):
@@ -78,23 +70,17 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         submission = self.create_test_submission(
             xblock, submission_text=submission_text
         )
-        context = {"response": submission, "step": "self"}
 
         # When I load my response
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
     def _mock_file(self, xblock, student_item_dict=None, **file_data):
         """Turn mock file data into a FileUpload for testing"""
@@ -144,8 +130,7 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         )
 
         # When I load my response
-        context = {"response": submission, "step": "self"}
-        data = AssessmentResponseSerializer(xblock.api_data, context=context).data
+        data = AssessmentResponseSerializer(submission).data
 
         # I get the appropriate response (test URLs use usage ID)
         expected_url = f"Alan/edX/Enchantment_101/April_1/{xblock.scope_ids.usage_id}"
@@ -167,14 +152,9 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
                     "fileIndex": 2,
                 },
             ],
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(data["hasSubmitted"])
-        self.assertIsNone(data["hasCancelled"])
-        self.assertIsNone(data["hasReceivedGrade"])
-        self.assertIsNone(data["teamInfo"])
+        self.assertDictEqual(expected_response, data)
 
 
 class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
@@ -272,3 +252,109 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
             ).data
             self.assertEqual(serialize_peer["stepScore"], peer["stepScore"])
             self.assertEqual(serialize_peer["assessment"], serialize_peer["assessment"])
+
+    @scenario("data/grade_scenario.xml", user_id="Alan")
+    def test_assessment_step_score(self, xblock):
+        submission_text = ["Foo", "Bar"]
+        submission = self.create_test_submission(
+            xblock, submission_text=submission_text
+        )
+
+        self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
+
+        context = {"response": submission, "step": "staff"}
+        # When I load my response
+        data = AssessmentGradeSerializer(xblock.api_data, context=context).data
+
+        # I get the appropriate response
+        self.assertEqual(context["step"], data["effectiveAssessmentType"])
+
+        step_score = AssessmentScoreSerializer(
+            xblock.api_data.staff_assessment_data.assessment, context=context
+        ).data
+
+        self.assertEqual(data["staff"]["stepScore"], step_score)
+
+    @scenario("data/grade_scenario.xml", user_id="Alan")
+    def test_assessment_step_assessment_data(self, xblock):
+        submission_text = ["Foo", "Bar"]
+        submission = self.create_test_submission(
+            xblock, submission_text=submission_text
+        )
+
+        self.submit_staff_assessment(xblock, submission, STAFF_GOOD_ASSESSMENT)
+
+        context = {"response": submission, "step": "staff"}
+        # When I load my response
+        data = AssessmentGradeSerializer(xblock.api_data, context=context).data
+
+        # I get the appropriate response
+        self.assertEqual(context["step"], data["effectiveAssessmentType"])
+
+        assessment_data = AssessmentDataSerializer(
+            xblock.api_data.staff_assessment_data.assessment, context=context
+        ).data
+
+        self.assertEqual(data["staff"]["assessment"], assessment_data)
+
+
+class TestAssessmentScoreSerializer(TestCase):
+    """
+    Test for AssessmentScoreSerializer
+    """
+
+    def test_assessment_score(self):
+        score = AssessmentScoreSerializer({
+            "points_earned": 5,
+            "points_possible": 10,
+        }).data
+        self.assertEqual(score["earned"], 5)
+        self.assertEqual(score["possible"], 10)
+
+
+class TestAssessmentCriterionSerializer(TestCase):
+    """
+    Test for AssessmentCriterionSerializer
+    """
+
+    def test_assessment_criterion(self):
+        criterion = AssessmentCriterionSerializer({
+            "criterion": {
+                "name": "Foo",
+            },
+            "option": {
+                "label": "Bar",
+                "points": 5,
+            },
+            "feedback": "Baz",
+        }).data
+        self.assertEqual(criterion["name"], "Foo")
+        self.assertEqual(criterion["selectedOption"], "Bar")
+        self.assertEqual(criterion["selectedPoints"], 5)
+        self.assertEqual(criterion["feedback"], "Baz")
+
+
+class TestAssessmentDataSerializer(TestCase):
+    """
+    Test for AssessmentDataSerializer
+    """
+
+    def test_assessment_data(self):
+        assessment_data = AssessmentDataSerializer({
+            "feedback": "Foo",
+            "parts": [
+                {
+                    "criterion": {
+                        "name": "Bar",
+                    },
+                    "option": {
+                        "label": "Baz",
+                        "points": 5,
+                    },
+                    "feedback": "Buzz",
+                },
+            ],
+        }).data
+
+        self.assertEqual(assessment_data["overallFeedback"], "Foo")
+        self.assertEqual(len(assessment_data["assessmentCriterions"]), 1)

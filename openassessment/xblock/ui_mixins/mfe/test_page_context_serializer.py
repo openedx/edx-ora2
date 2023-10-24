@@ -89,13 +89,9 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         expected_response = {
             "textResponses": ["This is my answer."],
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, response_data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(response_data["hasSubmitted"])
-        self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["teamInfo"])
+        self.assertDictEqual(expected_response, response_data)
 
     @ddt.data(True, False)
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
@@ -129,13 +125,9 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         expected_response = {
             "textResponses": other_text_responses,
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, response_data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(response_data["hasSubmitted"])
-        self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["teamInfo"])
+        self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
     def test_peer_response_not_available(self, xblock):
@@ -150,12 +142,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
         # I get the appropriate response
         expected_response = {}
-        self.assertDictEqual(expected_response, response_data["response"])
-
-        # ... along with these always-none fields assessments
-        self.assertIsNone(response_data["hasSubmitted"])
-        self.assertIsNone(response_data["hasCancelled"])
-        self.assertIsNone(response_data["teamInfo"])
+        self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/staff_grade_scenario.xml", user_id="Alan")
     def test_staff_response(self, xblock):
@@ -168,7 +155,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
         # Then I get an empty object
         expected_response = {}
-        self.assertDictEqual(expected_response, response_data["response"])
+        self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/staff_grade_scenario.xml", user_id="Alan")
     def test_waiting_response(self, xblock):
@@ -181,7 +168,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
         # Then I get an empty object
         expected_response = {}
-        self.assertDictEqual(expected_response, response_data["response"])
+        self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/self_assessment_scenario.xml", user_id="Alan")
     def test_done_response(self, xblock):
@@ -194,7 +181,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
 
         # Then I get an empty object
         expected_response = {}
-        self.assertDictEqual(expected_response, response_data["response"])
+        self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
     def test_jump_to_peer_response__no_active_assessment(self, xblock):
@@ -216,7 +203,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I try to jump back to that step
         self.context = {"view": "assessment", "step": "done"}
         self.context["jump_to_step"] = "peer"
-        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
+        response_data = PageDataSerializer(xblock, context=self.context).data
 
         # I recieve an empty response because I have not yet requested a submission to assess
         self.assertDictEqual({}, response_data["response"])
@@ -245,12 +232,13 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I try to jump back to that step
         self.context = {"view": "assessment", "step": "done"}
         self.context["jump_to_step"] = "peer"
-        response_data = PageDataSerializer(xblock, context=self.context).data["submission"]
+        response_data = PageDataSerializer(xblock, context=self.context).data
 
         # Then I can continue to receive peer responses to grade
         expected_response = {
             "textResponses": other_text_responses,
             "uploadedFiles": None,
+            "teamUploadedFiles": None,
         }
         self.assertDictEqual(expected_response, response_data["response"])
 

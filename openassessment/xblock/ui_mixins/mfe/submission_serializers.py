@@ -1,8 +1,8 @@
 """ MFE Serializers related to submissions """
 # pylint: disable=abstract-method
 
+from rest_framework.fields import BooleanField
 from rest_framework.serializers import (
-    BooleanField,
     IntegerField,
     Serializer,
     CharField,
