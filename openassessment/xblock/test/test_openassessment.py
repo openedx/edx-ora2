@@ -707,21 +707,21 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @ddt.data(True, False)
     @scenario('data/basic_scenario.xml')
-    def test__mfe_views_supported__teams(self, xblock, mock_teams_assignment):
+    def test_mfe_views_supported__teams(self, xblock, mock_teams_assignment):
         # Given I'm on / not on a team assignment
         xblock.is_team_assignment = Mock(return_value=mock_teams_assignment)
 
         # When I see if MFE views are supported
         # Then they are unsupported for team assignments
         expected_supported = not mock_teams_assignment
-        self.assertEqual(xblock._mfe_views_supported, expected_supported)
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
 
     @scenario('data/assessment_steps_reordered.xml')
-    def test__mfe_views_supported__rearranged_steps(self, xblock):
+    def test_mfe_views_supported__rearranged_steps(self, xblock):
         # Given this ORA has rearranged our assessment steps
         # When I see if MFE views are supported
         # Then they are unsupported for team assignments
-        self.assertFalse(xblock._mfe_views_supported)
+        self.assertFalse(xblock.mfe_views_supported)
 
 
 class TestDates(XBlockHandlerTestCase):

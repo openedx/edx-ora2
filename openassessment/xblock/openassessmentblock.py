@@ -600,7 +600,7 @@ class OpenAssessmentBlock(
             if model["name"] == "leaderboard":
                 leaderboard_model = model
 
-        use_mfe_views = self.mfe_views_enabled and self._mfe_views_supported
+        use_mfe_views = self.mfe_views_enabled and self.mfe_views_supported
 
         # All data we intend to pass to the front end.
         context_dict = {
@@ -618,7 +618,7 @@ class OpenAssessmentBlock(
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     @property
-    def _mfe_views_supported(self):
+    def mfe_views_supported(self):
         """
         Currently, there are some unsupported use-cases for ORA MFE views.
 
