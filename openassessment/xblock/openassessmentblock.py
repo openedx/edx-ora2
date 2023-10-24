@@ -635,11 +635,21 @@ class OpenAssessmentBlock(
         if self.is_team_assignment():
             return False
 
-        # Assessment step reordering is currently unsupported
+        # Determine if our steps have been reordered (omission of steps is fine)
         default_assessment_order = copy.copy(self.VALID_ASSESSMENT_TYPES)
         current_assessment_order = self.assessment_steps
-        is_default_order = all(a <= b for a, b in zip(current_assessment_order, default_assessment_order[1:]))
+        is_default_order = True
 
+        last_step_index = 0
+        for assessment_step in current_assessment_order:
+            step_index = default_assessment_order.index(assessment_step)
+
+            if step_index < last_step_index:
+                is_default_order = False
+                break
+            last_step_index = step_index
+
+        # Assessment step reordering is currently unsupported
         if not is_default_order:
             return False
 
