@@ -13,6 +13,7 @@ from pytest import raises
 
 from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.errors.peer import PeerAssessmentWorkflowError
 from openassessment.assessment.models import (
     Assessment,
     AssessmentFeedback,
@@ -2053,6 +2054,104 @@ class TestPeerApi(CacheResetTest):
             {"force_on_flexible_peer_openassessments": course_override}
         )
         assert result == expected_flexible
+
+    def test_get_active_assessment(self):
+        """
+        Test for behavior of get_active_assessment
+        """
+        # Three learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, _ = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+        carlos_sub, _ = self._create_student_and_submission('carlos', 'carlos sub', steps=['peer'])
+
+        # No one has any active assessment currently
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+        assert peer_api.get_active_assessment_submission(bob_sub['uuid']) is None
+        assert peer_api.get_active_assessment_submission(carlos_sub['uuid']) is None
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Alice's active assessment is now Bob, and Bob is unaffected
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid'])['uuid'] == bob_sub['uuid']
+        assert peer_api.get_active_assessment_submission(bob_sub['uuid']) is None
+
+        # Alice assesses Bob and then should have no active assessment
+        peer_api.create_assessment(
+            alice_sub['uuid'],
+            'alice',
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            3
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+        # Alice requests a new peer to assess and gets Carlos, who is now her active assessment
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == carlos_sub['uuid']
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid'])['uuid'] == carlos_sub['uuid']
+
+        # Assess Carlos, active assessment is now None
+        peer_api.create_assessment(
+            alice_sub['uuid'],
+            'alice',
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            3
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+        # There are no more peers to assess, and the returned None does not affect the active assessment
+        assert peer_api.get_submission_to_assess(alice_sub['uuid'], 3) is None
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+    def test_get_active_assessment_cancelled(self):
+        # Two learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, _ = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Alice is then cancelled, so then her active assessment is None
+        workflow_api.cancel_workflow(
+            alice_sub['uuid'], "cancel", "1", STEP_REQUIREMENTS, COURSE_SETTINGS
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+    def test_get_active_assessment_nonexistant(self):
+        # If we request the active assessment submission for a nonexistant workflow,
+        # raise an error
+        with self.assertRaises(PeerAssessmentWorkflowError):
+            peer_api.get_active_assessment_submission('nonexistant-uuid')
+
+    def test_get_active_assessment_error(self):
+        # Two learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, bob_item = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Delete bob's submission to induce an error
+        sub_api.reset_score(
+            bob_item['student_id'],
+            bob_item['course_id'],
+            bob_item['item_id'],
+            clear_state=True,
+            emit_signal=False
+        )
+
+        # Expected error is raised
+        with self.assertRaises(PeerAssessmentWorkflowError):
+            peer_api.get_active_assessment_submission(alice_sub['uuid'])
 
 
 class PeerWorkflowTest(CacheResetTest):

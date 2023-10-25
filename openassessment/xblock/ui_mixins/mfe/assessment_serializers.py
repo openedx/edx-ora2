@@ -9,6 +9,8 @@ from rest_framework.serializers import (
     SerializerMethodField,
     URLField,
     Serializer,
+    DictField,
+    BooleanField,
 )
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
 
@@ -167,3 +169,11 @@ class AssessmentResponseSerializer(Serializer):
             files.append(file_data)
 
         return [SubmissionFileSerializer(file).data for file in files]
+
+
+class AssessmentSubmitRequestSerializer(Serializer):
+    """" Serializer for validating request shape """
+    optionsSelected = DictField(child=CharField(), allow_empty=True)
+    criterionFeedback = DictField(child=CharField(), allow_empty=True)
+    overallFeedback = CharField(allow_blank=True)
+    continueGrading = BooleanField(required=False, default=False)

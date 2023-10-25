@@ -5,8 +5,18 @@ import logging
 
 from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.errors.peer import PeerAssessmentInternalError, PeerAssessmentRequestError
+from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.apis.assessments.errors import (
+    ReviewerMustHaveSubmittedException,
+    ServerClientUUIDMismatchException,
+)
 from openassessment.xblock.utils.data_conversion import create_submission_dict
 from openassessment.xblock.apis.step_data_api import StepDataAPI
+from openassessment.xblock.utils.data_conversion import (
+    clean_criterion_feedback,
+    create_rubric_dict,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +100,10 @@ class PeerAssessmentAPI(StepDataAPI):
     def student_item(self):
         return self.config_data.student_item_dict
 
+    @property
+    def must_be_graded_by(self):
+        return self.assessment['must_be_graded_by']
+
     def format_submission_for_publish(self, peer_submission):
         student_item_dict = self.config_data.student_item_dict
         return {
@@ -105,6 +119,15 @@ class PeerAssessmentAPI(StepDataAPI):
     def get_download_urls(self, peer_sub):
         return self._block.get_download_urls_from_submission(peer_sub)
 
+    def get_active_assessment_submission(self):
+        try:
+            return peer_api.get_active_assessment_submission(
+                self.submission_uuid
+            )
+        except PeerAssessmentWorkflowError as err:
+            logger.exception(err)
+            return None
+
     def get_peer_submission(self):
         peer_submission = False
         try:
@@ -118,3 +141,102 @@ class PeerAssessmentAPI(StepDataAPI):
         except PeerAssessmentWorkflowError as err:
             logger.exception(err)
         return peer_submission
+
+    def assert_assessed_submission_uuid_matches(self, uuid_client):
+        submission = self.get_peer_submission() or {}
+        uuid_server = submission.get("uuid", None)
+
+        if uuid_server != uuid_client:
+            logger.warning(
+                "Irrelevant assessment submission: expected '%s', got '%s'",
+                uuid_server,
+                uuid_client,
+            )
+            raise ServerClientUUIDMismatchException()
+
+
+def peer_assess(
+    options_selected,
+    overall_feedback,
+    criterion_feedback,
+    config_data,
+    workflow_data,
+    peer_step_data,
+    assessed_submission_uuid=None,
+):
+    """Place a peer assessment into OpenAssessment system
+
+    Assess a Peer Submission.  Performs basic workflow validation to ensure
+    that an assessment can be performed as this time.
+
+    Args:
+        `assessed_submission_uuid` (string): The unique identifier for the submission being assessed.
+        `options_selected` (dict): Dictionary mapping criterion names to option values.
+        `overall_feedback` (unicode): Written feedback for the submission as a whole.
+        `criterion_feedback` (unicode): Written feedback per the criteria for the submission.
+        `config_data`: ORA Config Data object
+        `workflow_data`: ORA Workflow Data object
+        `peer_step_data`: ORA Peer Step Data object
+
+    Returns:
+        None
+
+    Raises:
+        ReviewerMustHaveSubmittedException
+        ServerClientUUIDMismatchException
+        PeerAssessmentRequestError
+        PeerAssessmentWorkflowError
+        PeerAssessmentInternalError
+        AssessmentWorkflowError
+    """
+    scorer_submission_uuid = workflow_data.submission_uuid
+    if not workflow_data.has_workflow:
+        raise ReviewerMustHaveSubmittedException()
+
+    if assessed_submission_uuid:
+        peer_step_data.assert_assessed_submission_uuid_matches(assessed_submission_uuid)
+
+    try:
+        assessment = peer_api.create_assessment(
+            scorer_submission_uuid,
+            config_data.student_item_dict["student_id"],
+            options_selected,
+            clean_criterion_feedback(
+                config_data.rubric_criteria_with_labels,
+                criterion_feedback,
+            ),
+            overall_feedback,
+            create_rubric_dict(
+                config_data.prompts,
+                config_data.rubric_criteria_with_labels,
+            ),
+            peer_step_data.must_be_graded_by,
+        )
+        # Emit analytics event...
+        config_data.publish_assessment_event("openassessmentblock.peer_assess", assessment)
+    except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
+        logger.warning(
+            "Peer API error for submission UUID %s",
+            scorer_submission_uuid,
+            exc_info=True,
+        )
+        raise
+    except PeerAssessmentInternalError:
+        logger.exception(
+            "Peer API internal error for submission UUID: %s",
+            scorer_submission_uuid,
+        )
+        raise
+
+    # Update both the workflow that the submission we"re assessing
+    # belongs to, as well as our own (e.g. have we evaluated enough?)
+    try:
+        if assessment:
+            workflow_data.update_workflow_status(assessment['submission_uuid'])
+        workflow_data.update_workflow_status(scorer_submission_uuid)
+    except AssessmentWorkflowError:
+        logger.exception(
+            "Workflow error occurred when submitting peer assessment for submission %s",
+            assessed_submission_uuid,
+        )
+        raise

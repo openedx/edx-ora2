@@ -2,15 +2,13 @@
 Tests for PageDataSerializer
 """
 from copy import deepcopy
-
 from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
 from unittest.mock import Mock, patch
+import ddt
 from openassessment.fileupload.api import TeamFileDescriptor
 from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
-
-
 from openassessment.xblock.test.base import (
     PEER_ASSESSMENTS,
     SELF_ASSESSMENT,
@@ -57,6 +55,7 @@ class TestPageContextSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         mock_submission_serializer.assert_not_called()
 
 
+@ddt.ddt
 class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     """
     Test for PageDataSerializer: Assessment view
@@ -94,8 +93,9 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         }
         self.assertDictEqual(expected_response, response_data)
 
+    @ddt.data(True, False)
     @scenario("data/peer_only_scenario.xml", user_id="Alan")
-    def test_peer_response(self, xblock):
+    def test_peer_response(self, xblock, request_peer):
         student_item = xblock.get_student_item_dict()
 
         # Given responses available for peer grading
@@ -113,11 +113,15 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         text_responses = ["Answer A", "Answer B"]
         self.create_test_submission(xblock, student_item=student_item, submission_text=text_responses)
 
+        # ... and I do or do not have a submission assigned to me for grading
+        if request_peer:
+            xblock.peer_assessment_data().get_peer_submission()
+
         # When I load my response
         self.context = {"view": "assessment", "step": "peer"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
-        # I get the appropriate response
+        # I get my current assessment, if I had one, and if I didn't, one is assigned to me
         expected_response = {
             "textResponses": other_text_responses,
             "uploadedFiles": None,
@@ -180,7 +184,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
-    def test_jump_to_peer_response(self, xblock):
+    def test_jump_to_peer_response__no_active_assessment(self, xblock):
         student_item = xblock.get_student_item_dict()
 
         # Given responses available for peer grading
@@ -199,7 +203,36 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # When I try to jump back to that step
         self.context = {"view": "assessment", "step": "done"}
         self.context["jump_to_step"] = "peer"
-        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
+        response_data = PageDataSerializer(xblock, context=self.context).data
+
+        # I recieve an empty response because I have not yet requested a submission to assess
+        self.assertDictEqual({}, response_data["response"])
+
+    @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
+    def test_jump_to_peer_response__active_assessment(self, xblock):
+        student_item = xblock.get_student_item_dict()
+
+        # Given responses available for peer grading
+        other_student_item = deepcopy(student_item)
+        other_student_item["student_id"] = "Joan"
+        other_text_responses = ["Answer 1", "Answer 2"]
+        self.create_test_submission(
+            xblock,
+            student_item=other_student_item,
+            submission_text=other_text_responses,
+        )
+
+        # ... and I have completed the peer step of an ORA
+        self.create_submission_and_assessments(xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, None)
+
+        # ... and I have been assigned a peer submission to review
+        sub = xblock.peer_assessment_data().get_peer_submission()
+        self.assertIsNotNone(sub)
+
+        # When I try to jump back to that step
+        self.context = {"view": "assessment", "step": "done"}
+        self.context["jump_to_step"] = "peer"
+        response_data = PageDataSerializer(xblock, context=self.context).data
 
         # Then I can continue to receive peer responses to grade
         expected_response = {
@@ -207,7 +240,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
             "uploadedFiles": None,
             "teamUploadedFiles": None,
         }
-        self.assertDictEqual(expected_response, response_data)
+        self.assertDictEqual(expected_response, response_data["response"])
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
     def test_jump_to_bad_step(self, xblock):

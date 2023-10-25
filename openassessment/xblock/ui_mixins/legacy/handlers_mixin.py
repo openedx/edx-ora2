@@ -4,9 +4,29 @@ import logging
 
 from xblock.core import XBlock
 from submissions import api as submissions_api
-
+from openassessment.assessment.errors.peer import (
+    PeerAssessmentInternalError,
+    PeerAssessmentRequestError,
+    PeerAssessmentWorkflowError,
+)
+from openassessment.assessment.errors.self import SelfAssessmentInternalError, SelfAssessmentRequestError
+from openassessment.assessment.errors.staff import StaffAssessmentInternalError, StaffAssessmentRequestError
+from openassessment.assessment.errors.student_training import StudentTrainingError
 from openassessment.fileupload.exceptions import FileUploadError
+from openassessment.workflow.errors import (
+    AssessmentWorkflowError,
+    AssessmentWorkflowInternalError,
+    AssessmentWorkflowRequestError
+)
+from openassessment.xblock.apis.assessments.errors import (
+    ReviewerMustHaveSubmittedException,
+    ServerClientUUIDMismatchException,
+)
 from openassessment.xblock.apis.submissions import submissions_actions
+from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
+from openassessment.xblock.apis.assessments.self_assessment_api import self_assess
+from openassessment.xblock.apis.assessments.staff_assessment_api import staff_assess
+from openassessment.xblock.apis.assessments.student_training_api import training_assess
 from openassessment.xblock.apis.submissions.errors import (
     AnswerTooLongException,
     DeleteNotAllowed,
@@ -20,11 +40,7 @@ from openassessment.xblock.apis.submissions.errors import (
     UnsupportedFileTypeException
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
-from openassessment.xblock.ui_mixins.legacy.peer_assessments.actions import peer_assess
-from openassessment.xblock.ui_mixins.legacy.self_assessments.actions import self_assess
-from openassessment.xblock.ui_mixins.legacy.staff_assessments.actions import do_staff_assessment, staff_assess
-from openassessment.xblock.ui_mixins.legacy.student_training.actions import training_assess
-from openassessment.xblock.ui_mixins.legacy.submissions.serializers import SaveFilesDescriptionRequestSerializer
+from openassessment.xblock.ui_mixins.legacy.serializers import SaveFilesDescriptionRequestSerializer
 from openassessment.xblock.utils.data_conversion import verify_assessment_parameters
 
 logger = logging.getLogger(__name__)
@@ -199,26 +215,167 @@ class LegacyHandlersMixin:
     @XBlock.json_handler
     @verify_assessment_parameters
     def peer_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return peer_assess(self.api_data, data)
+        """Place a peer assessment into OpenAssessment system
+
+        Assess a Peer Submission.  Performs basic workflow validation to ensure
+        that an assessment can be performed as this time.
+
+        Args:
+            data (dict): A dictionary containing information required to create
+                a new peer assessment.  This dict should have the following attributes:
+                `submission_uuid` (string): The unique identifier for the submission being assessed.
+                `options_selected` (dict): Dictionary mapping criterion names to option values.
+                `overall_feedback` (unicode): Written feedback for the submission as a whole.
+                `criterion_feedback` (unicode): Written feedback per the criteria for the submission.
+
+        Returns:
+            Dict with keys "success" (bool) indicating success/failure.
+            and "msg" (unicode) containing additional information if an error occurs.
+        """
+        try:
+            peer_assess(
+                data['options_selected'],
+                data['overall_feedback'],
+                data['criterion_feedback'],
+                self.config_data,
+                self.workflow_data,
+                self.peer_assessment_data(),
+                assessed_submission_uuid=data['submission_uuid'],
+            )
+        except ReviewerMustHaveSubmittedException:
+            return {
+                'success': False,
+                'msg': self.config_data.translate(
+                    'You must submit a response before you can perform a peer assessment.'
+                )
+            }
+        except ServerClientUUIDMismatchException:
+            return {
+                'success': False,
+                'msg': self.config_data.translate(
+                    'This feedback has already been submitted or the submission has been cancelled.'
+                )
+            }
+        except (PeerAssessmentRequestError, PeerAssessmentWorkflowError, PeerAssessmentInternalError):
+            return {
+                'success': False,
+                'msg': self.config_data.translate('Your peer assessment could not be submitted.')
+            }
+        except AssessmentWorkflowError:
+            return {'success': False, 'msg': self.config_data.translate('Could not update workflow status.')}
+        else:
+            return {"success": True, "msg": ""}
 
     @XBlock.json_handler
     @verify_assessment_parameters
     def self_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return self_assess(self.api_data, data)
+        """
+        Create a self-assessment for a submission.
+
+        Args:
+            data (dict): Must have the following keys:
+                options_selected (dict): Dictionary mapping criterion names to option values.
+
+        Returns:
+            Dict with keys "success" (bool) indicating success/failure
+            and "msg" (unicode) containing additional information if an error occurs.
+        """
+        def failure_response(reason):
+            return {'success': False, 'msg': self.config_data.translate(reason)}
+
+        try:
+            self_assess(
+                data['options_selected'],
+                data['criterion_feedback'],
+                data['overall_feedback'],
+                self.config_data,
+                self.workflow_data,
+                self.self_data,
+            )
+        except ReviewerMustHaveSubmittedException:
+            return failure_response('You must submit a response before you can perform a self-assessment.')
+        except (
+            SelfAssessmentRequestError,
+            AssessmentWorkflowRequestError,
+            SelfAssessmentInternalError,
+            AssessmentWorkflowInternalError
+        ):
+            return failure_response('Your self assessment could not be submitted.')
+        else:
+            return {'success': True, 'msg': ''}
 
     @XBlock.json_handler
     def training_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return training_assess(self.api_data, data)
+        """
+        Compare the scores given by the student with those given by the course author.
+        If they match, update the training workflow.  The client can then reload this
+        step to view the next essay or the completed step.
+
+        Currently, we return a boolean indicating whether the student assessed correctly
+        or not.  However, the student training API provides the exact criteria that the student
+        scored incorrectly, as well as the "correct" options for those criteria.
+        In the future, we may expose this in the UI to provide more detailed feedback.
+
+        Args:
+            data (dict): Must have the following keys:
+                options_selected (dict): Dictionary mapping criterion names to option values.
+
+        Returns:
+            Dict with keys:
+                * "success" (bool) indicating success or error
+                * "msg" (unicode) containing additional information if an error occurs.
+                * "correct" (bool) indicating whether the student scored the assessment correctly.
+
+        """
+        def failure_response(message):
+            return {"success": False, "msg": self.config_data.translate(message)}
+
+        if "options_selected" not in data:
+            return failure_response("Missing options_selected key in request.")
+        if not isinstance(data["options_selected"], dict):
+            return failure_response("options_selected must be a dictionary.")
+
+        try:
+            corrections = training_assess(data['options_selected'], self.config_data, self.workflow_data)
+        except StudentTrainingError:
+            return failure_response("Your scores could not be checked.")
+        except AssessmentWorkflowError:
+            return failure_response("Could not update workflow status.")
+        except Exception:  # pylint: disable=broad-except
+            return failure_response("An unexpected error occurred.")
+
+        return {
+            "success": True,
+            "msg": "",
+            "corrections": corrections,
+        }
 
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO")
     @verify_assessment_parameters
     def staff_assess(self, data, suffix=""):  # pylint: disable=unused-argument
-        return staff_assess(self.api_data, data)
+        """
+        Create a staff assessment for a team or individual submission.
+        """
+        def failure_response(reason):
+            return {'success': False, 'msg': self.config_data.translate(reason)}
 
-    # NOTE - Temporary surfacing
-    def do_staff_assessment(self, data):
-        return do_staff_assessment(self.api_data, data)
+        if 'submission_uuid' not in data:
+            return failure_response('The submission ID of the submission being assessed was not found.')
+
+        try:
+            staff_assess(
+                data['submission_uuid'],
+                data['options_selected'],
+                data['criterion_feedback'],
+                data['overall_feedback'],
+                data.get('assess_type', 'regrade'),
+                self.config_data,
+                self.staff_data,
+            )
+        except (StaffAssessmentRequestError, StaffAssessmentInternalError):
+            return failure_response('Your team assessment could not be submitted.')
+        return {'success': True, 'msg': ''}
 
     # Utils
 

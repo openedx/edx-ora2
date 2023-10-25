@@ -687,6 +687,36 @@ def get_submitted_assessments(submission_uuid, limit=None):
         raise PeerAssessmentInternalError(error_message) from ex
 
 
+def get_active_assessment_submission(submission_uuid):
+    """
+    Gets the current active submission being assessed, or None if there is
+    no active assessment. This will not find a new submission to assess, for
+    that, call `get_submission_to_assess`.
+    """
+    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+
+    if not workflow:
+        raise PeerAssessmentWorkflowError(
+            "A Peer Assessment Workflow does not exist for the student "
+            "with submission UUID {}".format(submission_uuid)
+        )
+
+    if workflow.is_cancelled:
+        return None
+
+    active_assessment = workflow.find_active_assessments()
+    if not active_assessment:
+        return None
+
+    try:
+        return sub_api.get_submission(active_assessment.submission_uuid)
+    except sub_api.SubmissionNotFoundError as ex:
+        error_message = "Could not find a submission with the uuid %s for student %s in the peer workflow."
+        error_message_args = (active_assessment.submission_uuid, workflow.student_id)
+        logger.exception(error_message, error_message_args[0], error_message_args[1])
+        raise PeerAssessmentWorkflowError(error_message % error_message_args) from ex
+
+
 def get_submission_to_assess(submission_uuid, graded_by, peek=False):
     """Get a submission to peer evaluate.
 
