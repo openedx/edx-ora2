@@ -47,6 +47,20 @@ class SubmissionAPI(StepDataAPI):
         else:
             return self.workflow_data.get_workflow_cancellation_info(self.submission_uuid)
 
+    def _safe_get_cancellation_info_field(self, field):
+        cancellation_info = self.cancellation_info
+        if cancellation_info is None:
+            return None
+        return cancellation_info.get(field)
+
+    @property
+    def cancelled_by(self):
+        return self._safe_get_cancellation_info_field('cancelled_by')
+
+    @property
+    def cancelled_at(self):
+        return self._safe_get_cancellation_info_field('cancelled_at')
+
     @property
     def has_received_final_grade(self):
         return self.workflow and self.workflow["status"] == "done"

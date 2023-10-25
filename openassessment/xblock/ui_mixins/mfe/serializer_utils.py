@@ -15,6 +15,7 @@ STEP_NAME_MAPPINGS = {
     "waiting": "waiting",
     "staff": "staff",
     "done": "done",
+    "cancelled": "submission",
 }
 
 
