@@ -493,7 +493,7 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
         # Then I get the expected shapes
         expected_data = {
-            "activeStepName": "cancelled",
+            "activeStepName": "submission",
             "hasReceivedFinalGrade": False,
             "receivedGrades": {
                 "peer": {},
