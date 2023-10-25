@@ -67,7 +67,7 @@ def assert_is_closed(
 
 @ddt.ddt
 class TestOpenAssessment(XBlockHandlerTestCase):
-    """Test Open Asessessment Xblock functionality"""
+    """Test Open Assessment XBlock functionality"""
 
     TIME_ZONE_FN_PATH = 'openassessment.xblock.utils.user_data.get_user_preferences'
 
@@ -194,7 +194,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test__create_ui_models__no_leaderboard_if_teams_enabled(self, xblock):
-        # do not show leaderboard in teams ORAS, even if leaderboard_show is set.
+        # do not show leaderboard in teams ORAs, even if leaderboard_show is set.
         xblock.leaderboard_show = 10
         xblock.teams_enabled = True
         models = xblock._create_ui_models()  # pylint: disable=protected-access
@@ -366,7 +366,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     def _set_up_start_date(self, start_date):
         """
-        Helper function to set up start date for xblocks
+        Helper function to set up start date for XBlocks
         """
         xblock = self.load_scenario('data/basic_scenario.xml')
         xblock.start = start_date
@@ -386,7 +386,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
     def _set_up_end_date(self, end_date):
         """
-        Helper function to set up end date for xblocks
+        Helper function to set up end date for XBlocks
         """
         xblock = self.load_scenario('data/basic_scenario.xml')
         xblock.due = end_date
@@ -704,6 +704,24 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Ensure that when an ORA w/ file uploads is loaded, it maintains its custom allowed file types
         """
         self.assertEqual(xblock.white_listed_file_types, ["pdf"])
+
+    @ddt.data(True, False)
+    @scenario('data/basic_scenario.xml')
+    def test_mfe_views_supported__teams(self, xblock, mock_teams_assignment):
+        # Given I'm on / not on a team assignment
+        xblock.is_team_assignment = Mock(return_value=mock_teams_assignment)
+
+        # When I see if MFE views are supported
+        # Then they are unsupported for team assignments
+        expected_supported = not mock_teams_assignment
+        self.assertEqual(xblock.mfe_views_supported, expected_supported)
+
+    @scenario('data/assessment_steps_reordered.xml')
+    def test_mfe_views_supported__rearranged_steps(self, xblock):
+        # Given this ORA has rearranged our assessment steps
+        # When I see if MFE views are supported
+        # Then they are unsupported for team assignments
+        self.assertFalse(xblock.mfe_views_supported)
 
 
 class TestDates(XBlockHandlerTestCase):
