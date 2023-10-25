@@ -9,11 +9,11 @@ import pytz
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
-from openassessment.assessment.errors.peer import PeerAssessmentWorkflowError
 from pytest import raises
 
 from submissions import api as sub_api
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.errors.peer import PeerAssessmentWorkflowError
 from openassessment.assessment.models import (
     Assessment,
     AssessmentFeedback,
@@ -2131,7 +2131,7 @@ class TestPeerApi(CacheResetTest):
         with self.assertRaises(PeerAssessmentWorkflowError):
             peer_api.get_active_assessment_submission('nonexistant-uuid')
 
-    def test_get_active_assessment_nonexistant(self):
+    def test_get_active_assessment_error(self):
         # Two learners and submissions
         alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
         bob_sub, bob_item = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
