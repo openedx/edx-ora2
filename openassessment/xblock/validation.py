@@ -189,6 +189,10 @@ def validate_rubric(rubric_dict, current_rubric, is_released, _):
     except InvalidRubric:
         return False, _('This rubric definition is not valid.')
 
+    if not rubric_dict['prompts']:
+        return False, _("You must provide at least one prompt.")
+
+
     for criterion in rubric_dict['criteria']:
         # No duplicate option names within a criterion
         duplicates = _duplicates([option['name'] for option in criterion['options']])
@@ -324,18 +328,18 @@ def validator(oa_block, _, strict_post_release=True):
 
         is_released = strict_post_release and oa_block.is_released()
 
-        # Assessments
-        current_assessments = oa_block.rubric_assessments
-        success, msg = validate_assessments(assessments, current_assessments, is_released, _)
-        if not success:
-            return False, msg
-
         # Rubric
         current_rubric = {
             'prompts': oa_block.prompts,
             'criteria': oa_block.rubric_criteria
         }
         success, msg = validate_rubric(rubric_dict, current_rubric, is_released, _)
+        if not success:
+            return False, msg
+
+        # Assessments
+        current_assessments = oa_block.rubric_assessments
+        success, msg = validate_assessments(assessments, current_assessments, is_released, _)
         if not success:
             return False, msg
 

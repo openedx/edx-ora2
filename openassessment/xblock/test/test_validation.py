@@ -111,6 +111,16 @@ class RubricValidationTest(TestCase):
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
+    @ddt.file_data('data/invalid_rubrics_no_prompts.json')
+    def test_invalid_rubrics_no_prompts(self, data):
+        current_rubric = data.get('current_rubric')
+        is_released = data.get('is_released', False)
+        success, msg = validate_rubric(
+            data['rubric'], current_rubric, is_released, STUB_I18N
+        )
+        self.assertFalse(success)
+        self.assertGreater(len(msg), 0)
+
 
 @ddt.ddt
 class AssessmentExamplesValidationTest(TestCase):
