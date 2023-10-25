@@ -344,7 +344,13 @@ class PageDataSerializer(Serializer):
             if active_step == "training":
                 response = instance.student_training_data.example
             elif active_step == "peer":
-                response = instance.peer_assessment_data().get_peer_submission()
+                if workflow_step == "peer":
+                    # If we are on the peer step, grab a submission automatically
+                    response = instance.peer_assessment_data().get_peer_submission()
+                elif jump_to_step == "peer":
+                    # If we are jumping to the peer step grab any existing assessments but
+                    # don't get a new one automatically
+                    response = instance.peer_assessment_data().get_active_assessment_submission()
             elif active_step in ("self", "staff", "ai", "waiting", "done"):
                 response = None
             else:

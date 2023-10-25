@@ -1,16 +1,23 @@
 """
 External API for ORA Student Training data
 """
+
+import logging
 from openassessment.assessment.api.student_training import (
     get_num_completed,
     get_training_example,
+    assess_training_example,
 )
-
+from openassessment.assessment.errors.student_training import StudentTrainingError
+from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.utils.data_conversion import (
     convert_training_examples_list_to_dict,
     create_submission_dict,
 )
 from openassessment.xblock.apis.step_data_api import StepDataAPI
+
+
+logger = logging.getLogger(__name__)
 
 
 class StudentTrainingAPI(StepDataAPI):
@@ -155,3 +162,54 @@ class StudentTrainingAPI(StepDataAPI):
             {},
             f"Improperly formatted example, cannot render student training.  Example: {example}",
         )
+
+
+def training_assess(
+    options_selected,
+    config_data,
+    workflow_data,
+):
+    """
+    Compare the scores given by the student with those given by the course author.
+    If they match, update the training workflow.  The client can then reload this
+    step to view the next essay or the completed step.
+
+    Args:
+        options_selected: (dict) Mapping of criterion name to selected option name
+        config_data: ConfigDataApi Object
+        workflow_data: WorkflowDataApi Object
+
+    Returns:
+        (dict) Mapping of criterion name to defined "correct" option name, for any criterion in options_selected
+        that does not match the defined answers
+
+    Raises:
+        StudentTrainingError
+        AssessmentWorkflowError
+        Exception
+    """
+    # Check the student's scores against the course author's scores.
+    # This implicitly updates the student training workflow (which example essay is shown)
+    # as well as the assessment workflow (training/peer/self steps).
+    submission_uuid = workflow_data.submission_uuid
+    try:
+        corrections = assess_training_example(submission_uuid, options_selected)
+        config_data.publish_event(
+            "openassessment.student_training_assess_example",
+            {
+                "submission_uuid": submission_uuid,
+                "options_selected": options_selected,
+                "corrections": corrections,
+            },
+        )
+    except StudentTrainingError:
+        msg = "Could not check learner training scores for the learner with submission UUID %s"
+        logger.warning(msg, submission_uuid, exc_info=True)
+        raise
+
+    try:
+        workflow_data.update_workflow_status()
+    except AssessmentWorkflowError:
+        logger.exception("Could not update workflow status for submission uuid %s", submission_uuid)
+        raise
+    return corrections

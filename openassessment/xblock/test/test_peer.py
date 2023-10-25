@@ -129,7 +129,9 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_before_submission(self, xblock):
         # Submit a peer assessment without a submission
-        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        assessment['submission_uuid'] = 'some-uuid'
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
 
@@ -140,7 +142,9 @@ class TestPeerAssessment(XBlockHandlerTestCase, SubmissionTestMixin):
 
         # Attempt to assess a peer without first leasing their submission
         # (usually occurs by rendering the peer assessment step)
-        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        assessment['submission_uuid'] = 'some-uuid'
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
 
@@ -786,13 +790,13 @@ class TestPeerAssessHandler(XBlockHandlerTestCase, SubmissionTestMixin):
             expect_failure=True
         )
 
-    @mock.patch('openassessment.assessment.api.peer')
+    @mock.patch('openassessment.xblock.apis.assessments.peer_assessment_api.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_request_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentRequestError
         self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
 
-    @mock.patch('openassessment.assessment.api.peer')
+    @mock.patch('openassessment.xblock.apis.assessments.peer_assessment_api.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_internal_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentInternalError

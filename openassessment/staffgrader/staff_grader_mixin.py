@@ -12,7 +12,7 @@ from xblock.exceptions import JsonHandlerError
 from submissions.api import get_student_ids_by_submission_uuid, get_submission
 from submissions.errors import SubmissionInternalError, SubmissionNotFoundError, SubmissionRequestError, SubmissionError
 from submissions.team_api import get_team_ids_by_team_submission_uuid, get_team_submission
-
+from openassessment.assessment.errors.staff import StaffAssessmentError
 from openassessment.assessment.models.base import Assessment, AssessmentPart
 from openassessment.assessment.models.staff import StaffWorkflow, TeamStaffWorkflow
 from openassessment.data import map_anonymized_ids_to_usernames, OraSubmissionAnswerFactory, VersionNotFoundException
@@ -27,6 +27,7 @@ from openassessment.staffgrader.serializers import (
     TeamSubmissionListSerializer,
 )
 from openassessment.xblock.staff_area_mixin import require_course_staff
+from openassessment.xblock.apis.assessments.staff_assessment_api import do_staff_assessment, do_team_staff_assessment
 
 
 log = logging.getLogger(__name__)
@@ -450,9 +451,23 @@ class StaffGraderMixin:
             'msg': String/Empty - error string, if failure occurred
         }
         """
-        if self.is_team_assignment():
-            success, err_msg = self.do_team_staff_assessment(data, team_submission_uuid=submission_uuid)
-        else:
-            success, err_msg = self.do_staff_assessment(data)
-
-        return {'success': success, 'msg': err_msg}
+        try:
+            args = (
+                submission_uuid,
+                data['options_selected'],
+                data['criterion_feedback'],
+                data['overall_feedback'],
+                data.get('assess_type', 'regrade'),
+                self.config_data,
+                self.staff_data,
+            )
+            if self.is_team_assignment():
+                do_team_staff_assessment(*args, team_submission_uuid=submission_uuid)
+            else:
+                do_staff_assessment(*args)
+        except StaffAssessmentError:
+            return {
+                'success': False,
+                'msg': self.config_data.translate('Your team assessment could not be submitted.')
+            }
+        return {'success': True, 'msg': ''}

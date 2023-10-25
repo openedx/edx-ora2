@@ -29,7 +29,7 @@ from openassessment.workflow import (
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.utils.data_conversion import create_submission_dict, prepare_submission_for_serialization
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.ui_mixins.legacy.submissions.views import get_team_submission_context
+from openassessment.xblock.ui_mixins.legacy.views.submission import get_team_submission_context
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.xblock.test.test_team import MockTeamsService, MOCK_TEAM_ID
 
@@ -623,7 +623,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
             self.assertEqual(context, {})
             logger.check_present(
                 (
-                    'openassessment.xblock.ui_mixins.legacy.submissions.views',
+                    'openassessment.xblock.ui_mixins.legacy.views.submission',
                     'ERROR',
                     '{}: Teams service is unavailable'.format(
                         xblock.location,
@@ -638,7 +638,7 @@ class SubmissionTest(SubmissionXBlockHandlerTestCase, SubmissionTestMixin):
             self.assertEqual(context, {})
             logger.check_present(
                 (
-                    'openassessment.xblock.ui_mixins.legacy.submissions.views',
+                    'openassessment.xblock.ui_mixins.legacy.views.submission',
                     'ERROR',
                     '{}: User associated with anonymous_user_id {} can not be found.'.format(
                         xblock.location,

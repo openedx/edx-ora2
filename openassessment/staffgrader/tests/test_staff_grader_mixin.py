@@ -1,16 +1,18 @@
 """
 Tests for Staff Grader mixin
 """
+import copy
 from datetime import timedelta
 import json
 from unittest.mock import Mock, patch
 from uuid import uuid4
 
 from freezegun import freeze_time
+from openassessment.assessment.errors.staff import StaffAssessmentError
 
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.tests.factories import UserFactory
-from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario, STAFF_GOOD_ASSESSMENT
 
 
 @freeze_time("1969-07-20T22:56:00-04:00")
@@ -273,37 +275,74 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         ).exists()
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
+    @patch('openassessment.staffgrader.staff_grader_mixin.do_staff_assessment')
     @scenario('data/basic_scenario.xml', user_id="staff")
-    def test_submit_staff_assessment(self, xblock, _):
+    def test_submit_staff_assessment(self, xblock, mock_do_assessment, _):
         """Simple connectivity and routing test for submit staff assessment"""
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
         xblock.is_team_assignment = Mock(return_value=False)
-        xblock.do_staff_assessment = Mock(return_value=(True, ''))
 
-        request_data = {'submission_uuid': self.test_submission_uuid, 'foo': 'bar'}
+        request_data = copy.deepcopy(STAFF_GOOD_ASSESSMENT)
+        request_data['submission_uuid'] = self.test_submission_uuid
         response = self.request(xblock, 'submit_staff_assessment', json.dumps(request_data), response_format='json')
 
-        xblock.do_staff_assessment.assert_called_once_with(request_data)
+        mock_do_assessment.assert_called_once()
+        assert len(mock_do_assessment.call_args.args) == 7
+        assert mock_do_assessment.call_args.args[0:5] == (
+            self.test_submission_uuid,
+            request_data['options_selected'],
+            request_data['criterion_feedback'],
+            request_data['overall_feedback'],
+            request_data['assess_type'],
+        )
+        assert not mock_do_assessment.call_args.kwargs
+
         self.assertDictEqual(response, {
             'success': True,
             'msg': ''
         })
 
     @patch('openassessment.staffgrader.staff_grader_mixin.get_team_submission')
+    @patch('openassessment.staffgrader.staff_grader_mixin.do_team_staff_assessment')
     @scenario('data/team_submission.xml', user_id="staff")
-    def test_submit_team_staff_assessment(self, xblock, _):
+    def test_submit_team_staff_assessment(self, xblock, mock_do_assessment, _):
         """Simple connectivity and routing test for submit team staff assessment"""
-        xblock.xmodule_runtime = Mock(user_is_staff=True)
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
         xblock.is_team_assignment = Mock(return_value=True)
-        xblock.do_team_staff_assessment = Mock(return_value=(True, ''))
 
-        request_data = {'submission_uuid': self.test_team_submission_uuid, 'foo': 'bar'}
+        request_data = copy.deepcopy(STAFF_GOOD_ASSESSMENT)
+        request_data['submission_uuid'] = self.test_team_submission_uuid
         response = self.request(xblock, 'submit_staff_assessment', json.dumps(request_data), response_format='json')
 
-        xblock.do_team_staff_assessment.assert_called_once_with(
-            request_data, team_submission_uuid=self.test_team_submission_uuid
+        mock_do_assessment.assert_called_once()
+        assert len(mock_do_assessment.call_args.args) == 7
+        assert mock_do_assessment.call_args.args[0:5] == (
+            self.test_team_submission_uuid,
+            request_data['options_selected'],
+            request_data['criterion_feedback'],
+            request_data['overall_feedback'],
+            request_data['assess_type'],
         )
+        assert mock_do_assessment.call_args.kwargs['team_submission_uuid'] == self.test_team_submission_uuid
+
         self.assertDictEqual(response, {
             'success': True,
             'msg': ''
+        })
+
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
+    @patch('openassessment.staffgrader.staff_grader_mixin.do_staff_assessment')
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_submit_staff_assessment__error(self, xblock, mock_do_assessment, _):
+        """Error case for submit_staff_assessment"""
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+        xblock.is_team_assignment = Mock(return_value=False)
+        mock_do_assessment.side_effect = StaffAssessmentError()
+
+        request_data = copy.deepcopy(STAFF_GOOD_ASSESSMENT)
+        request_data['submission_uuid'] = self.test_submission_uuid
+        response = self.request(xblock, 'submit_staff_assessment', json.dumps(request_data), response_format='json')
+        self.assertDictEqual(response, {
+            'success': False,
+            'msg': 'Your team assessment could not be submitted.'
         })

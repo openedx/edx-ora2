@@ -4,11 +4,11 @@ Views for the old-style ORA UI
 
 from xblock.core import XBlock
 
-from .peer_assessments.views import render_peer_assessment, peer_path_and_context
-from .self_assessments.views import render_self_assessment, self_path_and_context
-from .staff_assessments.views import render_staff_assessment, staff_path_and_context
-from .student_training.views import render_student_training, training_path_and_context
-from .submissions.views import render_submission, get_submission_path, get_submission_context
+from .views.peer import render_peer_assessment, peer_path_and_context
+from .views.self import render_self_assessment, self_path_and_context
+from .views.staff import render_staff_assessment, staff_path_and_context
+from .views.training import render_student_training, training_path_and_context
+from .views.submission import render_submission, get_submission_path, get_submission_context
 
 
 class LegacyViewsMixin:
