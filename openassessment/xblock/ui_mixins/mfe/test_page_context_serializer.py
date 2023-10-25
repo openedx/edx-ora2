@@ -5,10 +5,12 @@ from copy import deepcopy
 from json import dumps, loads
 from unittest import TestCase
 from unittest.case import skip
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, PropertyMock, patch
 import ddt
 from openassessment.fileupload.api import TeamFileDescriptor
+from openassessment.workflow.api import cancel_workflow
 from openassessment.xblock.apis.submissions.submissions_actions import create_team_submission
+from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.test.base import (
     PEER_ASSESSMENTS,
     SELF_ASSESSMENT,
@@ -287,6 +289,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": False,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "peer": None,
@@ -319,6 +323,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "studentTraining": {
@@ -362,6 +368,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": "pastDue",
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "studentTraining": {
@@ -405,6 +413,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "studentTraining": {
@@ -448,6 +458,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "peer": {
@@ -457,6 +469,47 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "isWaitingForSubmissions": True,
                     "numberOfReceivedAssessments": 0,
                 }
+            },
+        }
+
+        self.assertNestedDictEquals(expected_data, progress_data)
+
+    @scenario("data/peer_only_scenario.xml", user_id="Alan")
+    def test_peer_assessment__cancelled(self, xblock):
+        # Given I am on the peer step and then get cancelled
+        submission = self.create_test_submission(xblock)
+        staff_id, staff_username = 'staff12341234', 'Staff 1234'
+        cancel_workflow(submission['uuid'], "Test Cancel", staff_id, {}, {})
+
+        mock_cancellation_info = {
+            "cancelled_by": staff_username,
+            "cancelled_at": "2023-10-25T10:27:04.432546",
+        }
+        mock_get_cancellation_info = PropertyMock(return_value=mock_cancellation_info)
+        with patch.object(SubmissionAPI, 'cancellation_info', new_callable=mock_get_cancellation_info):
+            # When I ask for progress
+            context = {"step": "peer"}
+            progress_data = ProgressSerializer(xblock, context=context).data
+
+        # Then I get the expected shapes
+        expected_data = {
+            "activeStepName": "submission",
+            "hasReceivedFinalGrade": False,
+            "receivedGrades": {
+                "peer": {},
+                "staff": {},
+            },
+            "stepInfo": {
+                "submission": {
+                    "closed": False,
+                    "closedReason": None,
+                    "hasSubmitted": True,
+                    "hasCancelled": True,
+                    "cancelledAt": mock_cancellation_info["cancelled_at"],
+                    "cancelledBy": staff_username,
+                    "teamInfo": {},
+                },
+                "peer": None,
             },
         }
 
@@ -485,6 +538,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "self": {
@@ -520,6 +575,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": "pastDue",
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "peer": None,
@@ -556,6 +613,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {},
                 },
                 "peer": None,
@@ -601,6 +660,8 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closedReason": None,
                     "hasSubmitted": True,
                     "hasCancelled": False,
+                    "cancelledAt": None,
+                    "cancelledBy": None,
                     "teamInfo": {
                         "teamName": "Red Squadron",
                         "teamUsernames": ["Red Leader", "Red Two", "Red Five"],
