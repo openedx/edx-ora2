@@ -211,25 +211,28 @@ class StaffGraderMixin:
             data (dict): Contains the necessary information to fetch the assessments.
                         - 'item_id': The ID of the xblock/item.
                         - 'submission_uuid': The UUID of the submission.
-                        - 'assessment_type': A string, either "received" or any other value 
+                        - 'assessment_filter': A string, either "received" or any other value
                                             to determine the type of assessments to retrieve.
 
         Returns:
             list[dict]: A list of dictionaries, each representing an assessment's data.
 
         Note:
-            - If 'assessment_type' is "received", the function fetches assessments received 
+            - If 'assessment_filter' is "received", the function fetches assessments received
             for the given 'submission_uuid'.
-            - For any other value of 'assessment_type', the function fetches assessments 
+            - For any other value of 'assessment_filter', the function fetches assessments
             given by the owner of the 'submission_uuid' for other submissions in the same item.
         """
         item_id = data['item_id']
         subission_uuid = data['submission_uuid']
+        filter_value = data['assessment_filter']
 
-        if data['assessment_type'] == "received":
+        if filter_value == "received":
             return generate_received_assessment_data(subission_uuid)
-        else:
+        elif filter_value == "given":
             return generate_given_assessment_data(item_id, subission_uuid)
+        else:
+            raise ValueError("Invalid assessment_filter value")
 
 
     def _get_list_workflows_serializer_context(self, staff_workflows, is_team_assignment=False):

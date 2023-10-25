@@ -113,7 +113,7 @@ def map_anonymized_ids_to_user_data(anonymized_ids):
     User = get_user_model()
     users = _use_read_replica(
         User.objects.filter(anonymoususerid__anonymous_user_id__in=anonymized_ids)
-        .select_related("profile")  # Optional, based on performance testing
+        .select_related("profile")
         .annotate(anonymous_id=F("anonymoususerid__anonymous_user_id"))
     ).values("username", "email", "profile__name", "anonymous_id")
 
@@ -1570,6 +1570,12 @@ class ZippedListSubmissionAnswer(OraSubmissionAnswer):
 def score_type_to_string(score_type):
     """
     Converts the given score type into its string representation.
+
+    Args:
+        score_type <str>: System representation of the score type.
+
+    Returns:
+        <str>: string representation of score_type as needed in Staff Grader Template.
     """
     SCORE_TYPE_MAP = {
         PEER_TYPE: "Peer",
@@ -1581,6 +1587,12 @@ def score_type_to_string(score_type):
 def parts_summary(assessment_obj):
     """
     Retrieves a summary of the parts from a given assessment object.
+
+    Args:
+        assessment_obj: assessment object.
+
+    Returns:
+        list[dict]: A list containing assessment parts summary data dictionaries.
     """
     return [
         {
@@ -1594,21 +1606,53 @@ def parts_summary(assessment_obj):
 def get_scorer_data(anonymous_scorer_id, user_data_mapping):
     """
     Retrieves the scorer's data (full name, username, and email) based on their anonymous ID.
+
+    Args:
+        anonymous_scorer_id <str>: Scorer's anonymous_user_id.
+        user_data_mapping: User data by anonymous_user_id
+            dict {
+            <anonymous_user_id> : {
+                'email': (str) <user.email>
+                'username': (str) <user.username>
+                'fullname': (str) <user.profile.name>
+                }
+            }
+
+    Returns:
+        fullname, username, email <str>: user data values.
     """
     scorer_data = user_data_mapping.get(anonymous_scorer_id, {})
-    scorer_name = scorer_data.get('fullname', "Unknown")
-    scorer_username = scorer_data.get('username', "Unknown")
-    scorer_email = scorer_data.get('email', "Unknown")
-    return scorer_name, scorer_username, scorer_email
+    return (
+        scorer_data.get('fullname', ""),
+        scorer_data.get('username', ""),
+        scorer_data.get('email', "")
+        )
 
 def generate_assessment_data(assessment_list, user_data_mapping):
-    results = []
+    """
+    Creates the list of Assessment's data dictionaries.
+
+    Args:
+        assessment_list: assessment objects queryset.
+        user_data_mapping: User data by anonymous_user_id
+            dict {
+            <anonymous_user_id> : {
+                'email': (str) <user.email>
+                'username': (str) <user.username>
+                'fullname': (str) <user.profile.name>
+                }
+            }
+
+    Returns:
+        list[dict]: A list containing assessment data dictionaries.
+    """
+    assessment_data_list = []
     for assessment in assessment_list:
 
         scorer_name, scorer_username, scorer_email = get_scorer_data(assessment.scorer_id, user_data_mapping)
 
-        assessment_data = {
-            "id_assessment": str(assessment.id),
+        assessment_data_list.append({
+            "assessment_id": str(assessment.id),
             "scorer_name": scorer_name,
             "scorer_username": scorer_username,
             "scorer_email": scorer_email,
@@ -1616,12 +1660,10 @@ def generate_assessment_data(assessment_list, user_data_mapping):
             "assesment_scores": parts_summary(assessment),
             "problem_step": score_type_to_string(assessment.score_type),
             "feedback": assessment.feedback or ''
-        }
+        })
+    return assessment_data_list
 
-        results.append(assessment_data)
-    return results
-
-def generate_received_assessment_data(submission_uuid=None):
+def generate_received_assessment_data(submission_uuid):
     """
     Generates a list of received assessments data based on the submission UUID.
 
@@ -1632,14 +1674,11 @@ def generate_received_assessment_data(submission_uuid=None):
         list[dict]: A list containing assessment data dictionaries.
     """
 
-    results = []
 
-    submission = None
-    if submission_uuid:
-        submission = sub_api.get_submission_and_student(submission_uuid)
+    submission = sub_api.get_submission_and_student(submission_uuid)
 
     if not submission:
-        return results
+        return []
 
     assessments = _use_read_replica(
         Assessment.objects.prefetch_related('parts').
@@ -1652,33 +1691,30 @@ def generate_received_assessment_data(submission_uuid=None):
     return generate_assessment_data(assessments, user_data_mapping)
 
 
-def generate_given_assessment_data(item_id=None, submission_uuid=None):
+def generate_given_assessment_data(item_id, submission_uuid):
     """
     Generates a list of given assessments data based on the submission UUID as scorer.
 
     Args:
-        submission_uuid (str, optional): The UUID of the submission. Defaults to None.
+        item_id (str): The ID of the item.
+        submission_uuid (str): The UUID of the submission.
 
     Returns:
         list[dict]: A list containing assessment data dictionaries.
     """
-    results = []
-    # Getting the scorer student id
     scorer_submission = sub_api.get_submission_and_student(submission_uuid)
 
     if not scorer_submission:
-        return results
+        return []
 
     scorer_id = scorer_submission['student_item']['student_id']
-    submissions = None
-    if item_id:
-        submissions = Submission.objects.filter(student_item__item_id=item_id).values('uuid')
-        submission_uuids = [sub['uuid'] for sub in submissions]
+
+    submissions = Submission.objects.filter(student_item__item_id=item_id).values('uuid')
+    submission_uuids = [sub['uuid'] for sub in submissions]
 
     if not submission_uuids or not submissions:
-        return results
+        return []
 
-    # Now fetch all assessments made by this student for these submissions
     assessments_made_by_student = _use_read_replica(
         Assessment.objects.prefetch_related('parts')
         .prefetch_related('rubric')
