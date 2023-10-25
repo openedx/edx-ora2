@@ -8,6 +8,7 @@ These are the response shapes that power the MFE implementation of the ORA UI.
 from rest_framework.fields import ValidationError, CharField
 from rest_framework.serializers import (
     BooleanField,
+    DateTimeField,
     IntegerField,
     Serializer,
     SerializerMethodField,
@@ -142,7 +143,8 @@ class SubmissionStepInfoSerializer(ClosedInfoSerializer):
 
     hasSubmitted = BooleanField(source="has_submitted")
     hasCancelled = BooleanField(source="has_been_cancelled", default=False)
-
+    cancelledBy = CharField(source="cancelled_by")
+    cancelledAt = DateTimeField(source="cancelled_at")
     teamInfo = SerializerMethodField()
 
     def get_teamInfo(self, instance):
