@@ -21,7 +21,6 @@ from openassessment.workflow.errors import (
 from openassessment.xblock.apis.assessments.errors import (
     ReviewerMustHaveSubmittedException,
     ServerClientUUIDMismatchException,
-    StepConfigurationNotFound,
 )
 from openassessment.xblock.apis.submissions import submissions_actions
 from openassessment.xblock.apis.assessments.peer_assessment_api import peer_assess
@@ -264,11 +263,6 @@ class LegacyHandlersMixin:
             }
         except AssessmentWorkflowError:
             return {'success': False, 'msg': self.config_data.translate('Could not update workflow status.')}
-        except StepConfigurationNotFound:
-            return {
-                'success': False,
-                'msg': self.config_data.translate('Could not load peer assessment.')
-            }
         else:
             return {"success": True, "msg": ""}
 

@@ -15,7 +15,3 @@ class ReviewerMustHaveSubmittedException(InvalidStateToAssess):
 
 class ServerClientUUIDMismatchException(AssessmentError):
     pass
-
-
-class StepConfigurationNotFound(AssessmentError):
-    pass

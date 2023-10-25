@@ -9,6 +9,7 @@ import pytz
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
+from openassessment.assessment.errors.peer import PeerAssessmentWorkflowError
 from pytest import raises
 
 from submissions import api as sub_api
@@ -2108,6 +2109,49 @@ class TestPeerApi(CacheResetTest):
         # There are no more peers to assess, and the returned None does not affect the active assessment
         assert peer_api.get_submission_to_assess(alice_sub['uuid'], 3) is None
         assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+    def test_get_active_assessment_cancelled(self):
+        # Two learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, _ = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Alice is then cancelled, so then her active assessment is None
+        workflow_api.cancel_workflow(
+            alice_sub['uuid'], "cancel", "1", STEP_REQUIREMENTS, COURSE_SETTINGS
+        )
+        assert peer_api.get_active_assessment_submission(alice_sub['uuid']) is None
+
+    def test_get_active_assessment_nonexistant(self):
+        # If we request the active assessment submission for a nonexistant workflow,
+        # raise an error
+        with self.assertRaises(PeerAssessmentWorkflowError):
+            peer_api.get_active_assessment_submission('nonexistant-uuid')
+
+    def test_get_active_assessment_nonexistant(self):
+        # Two learners and submissions
+        alice_sub, _ = self._create_student_and_submission('alice', 'alice sub', steps=['peer'])
+        bob_sub, bob_item = self._create_student_and_submission('bob', 'bob sub', steps=['peer'])
+
+        # Alice requests a peer to grade and is assigned bob
+        sub = peer_api.get_submission_to_assess(alice_sub['uuid'], 3)
+        assert sub['uuid'] == bob_sub['uuid']
+
+        # Delete bob's submission to induce an error
+        sub_api.reset_score(
+            bob_item['student_id'],
+            bob_item['course_id'],
+            bob_item['item_id'],
+            clear_state=True,
+            emit_signal=False
+        )
+
+        # Expected error is raised
+        with self.assertRaises(PeerAssessmentWorkflowError):
+            peer_api.get_active_assessment_submission(alice_sub['uuid'])
 
 
 class PeerWorkflowTest(CacheResetTest):

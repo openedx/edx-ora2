@@ -8,6 +8,7 @@ from unittest.mock import Mock, patch
 from uuid import uuid4
 
 from freezegun import freeze_time
+from openassessment.assessment.errors.staff import StaffAssessmentError
 
 from openassessment.staffgrader.models.submission_lock import SubmissionGradingLock
 from openassessment.tests.factories import UserFactory
@@ -327,4 +328,21 @@ class TestStaffGraderMixin(XBlockHandlerTestCase):
         self.assertDictEqual(response, {
             'success': True,
             'msg': ''
+        })
+
+    @patch('openassessment.staffgrader.staff_grader_mixin.get_submission')
+    @patch('openassessment.staffgrader.staff_grader_mixin.do_staff_assessment')
+    @scenario('data/basic_scenario.xml', user_id="staff")
+    def test_submit_staff_assessment__error(self, xblock, mock_do_assessment, _):
+        """Error case for submit_staff_assessment"""
+        xblock.xmodule_runtime = Mock(user_is_staff=True, anonymous_student_id=self.staff_user_id)
+        xblock.is_team_assignment = Mock(return_value=False)
+        mock_do_assessment.side_effect = StaffAssessmentError()
+
+        request_data = copy.deepcopy(STAFF_GOOD_ASSESSMENT)
+        request_data['submission_uuid'] = self.test_submission_uuid
+        response = self.request(xblock, 'submit_staff_assessment', json.dumps(request_data), response_format='json')
+        self.assertDictEqual(response, {
+            'success': False,
+            'msg': 'Your team assessment could not be submitted.'
         })

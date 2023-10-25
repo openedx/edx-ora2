@@ -10,7 +10,6 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.assessments.errors import (
     ReviewerMustHaveSubmittedException,
     ServerClientUUIDMismatchException,
-    StepConfigurationNotFound,
 )
 from openassessment.xblock.utils.data_conversion import create_submission_dict
 from openassessment.xblock.apis.step_data_api import StepDataAPI
@@ -185,7 +184,6 @@ def peer_assess(
     Raises:
         ReviewerMustHaveSubmittedException
         ServerClientUUIDMismatchException
-        StepConfigurationNotFound
         PeerAssessmentRequestError
         PeerAssessmentWorkflowError
         PeerAssessmentInternalError
@@ -197,9 +195,6 @@ def peer_assess(
 
     if assessed_submission_uuid:
         peer_step_data.assert_assessed_submission_uuid_matches(assessed_submission_uuid)
-
-    if not peer_step_data.assessment:
-        raise StepConfigurationNotFound()
 
     try:
         assessment = peer_api.create_assessment(
