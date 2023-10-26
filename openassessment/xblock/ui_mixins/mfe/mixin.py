@@ -84,9 +84,8 @@ class MfeMixin:
 
         # Determine which mode we are viewing in, since data comes from different sources
         if workflow_step or jump_step == "submission":
-            has_submitted = self.workflow_data.has_submitted
             # View our submitted response
-            if has_submitted:
+            if self.submission_data.has_submitted:
                 serializer_context.update({"view": "submission"})
 
             # View our draft response
