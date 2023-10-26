@@ -319,18 +319,12 @@ class TestAssessmentCriterionSerializer(TestCase):
 
     def test_assessment_criterion(self):
         criterion = AssessmentCriterionSerializer({
-            "criterion": {
-                "name": "Foo",
-            },
             "option": {
-                "label": "Bar",
-                "points": 5,
+                "order_num": 3,
             },
             "feedback": "Baz",
         }).data
-        self.assertEqual(criterion["name"], "Foo")
-        self.assertEqual(criterion["selectedOption"], "Bar")
-        self.assertEqual(criterion["selectedPoints"], 5)
+        self.assertEqual(criterion["selectedOption"], 3)
         self.assertEqual(criterion["feedback"], "Baz")
 
 
@@ -344,14 +338,10 @@ class TestAssessmentDataSerializer(TestCase):
             "feedback": "Foo",
             "parts": [
                 {
-                    "criterion": {
-                        "name": "Bar",
-                    },
                     "option": {
-                        "label": "Baz",
-                        "points": 5,
+                        "order_num": 3,
                     },
-                    "feedback": "Buzz",
+                    "feedback": "Baz",
                 },
             ],
         }).data

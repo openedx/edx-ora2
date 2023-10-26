@@ -32,15 +32,11 @@ class AssessmentCriterionSerializer(Serializer):
     """
     returns:
     {
-        name: (String) Name of the criterion
-        selectedOption: (String) Label of the selected option
-        selectedPoints: (Int) Points awarded for selected option
+        selectedOption: (Int) Order of the selected option
         feedback: (String) Feedback for the selected option
     }
     """
-    name = CharField(source="criterion.name")
-    selectedOption = CharField(source="option.label")
-    selectedPoints = IntegerField(source="option.points")
+    selectedOption = IntegerField(source="option.order_num")
     feedback = CharField()
 
 
