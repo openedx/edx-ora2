@@ -160,12 +160,11 @@ class TestStaffWorkflowListViewBase(XBlockHandlerTestCase):
         Context manager that patches map_anonymized_ids_to_user_data and returns a mapping from student IDs to a dictionary
         containing username, email, and fullname.
         """
-        # Creamos un diccionario simulado que represente lo que la función real devuelve
         mock_data = {
             student_id: {
                 "username": self.student_id_to_username_map.get(student_id, ""),
-                "email": "mocked_email@example.com",  # O quizás puedes usar un mapa similar para emails si es necesario
-                "fullname": "Mocked Full Name"  # O quizás puedes usar un mapa similar para nombres completos si es necesario
+                "email": "mocked_email@example.com",
+                "fullname": "Mocked Full Name"
             }
             for student_id in self.student_id_to_username_map
         }
@@ -632,7 +631,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         ]
 
         with self._mock_get_student_ids_by_submission_uuid() as mock_get_student_ids:
-            with self._mock_map_anonymized_ids_to_user_data() as mock_map_data:  # Cambio importante aquí
+            with self._mock_map_anonymized_ids_to_user_data() as mock_map_data:
                 with patch.object(xblock, 'bulk_deep_fetch_assessments') as mock_bulk_fetch_assessments:
                     context = xblock._get_list_workflows_serializer_context(mock_staff_workflows)  # pylint: disable=protected-access
 
@@ -647,7 +646,7 @@ class StaffWorkflowListViewUnitTests(TestStaffWorkflowListViewBase):
         expected_anonymous_id_lookups.update(
             {self.course_staff[1].student_id, self.course_staff[2].student_id}
         )
-        mock_map_data.assert_called_once_with(expected_anonymous_id_lookups)  # Cambio importante aquí
+        mock_map_data.assert_called_once_with(expected_anonymous_id_lookups)
         mock_bulk_fetch_assessments.assert_called_once_with(mock_staff_workflows)
 
         expected_context = {
