@@ -83,7 +83,8 @@ class MfeMixin:
                 raise JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
 
         # Determine which mode we are viewing in, since data comes from different sources
-        if workflow_step or jump_step == "submission":
+        if workflow_step == "submission" or jump_step == "submission":
+
             # View our submitted response
             if self.submission_data.has_submitted:
                 serializer_context.update({"view": "submission"})
@@ -91,7 +92,8 @@ class MfeMixin:
             # View our draft response
             else:
                 serializer_context.update({"view": "draft"})
-        # View the selected assessment step
+
+        # View the current assessment step
         else:
             serializer_context.update({"view": "assessment"})
 
