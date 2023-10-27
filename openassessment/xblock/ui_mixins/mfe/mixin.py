@@ -103,17 +103,24 @@ class MfeMixin:
     def _can_jump_to_step(self, workflow_step, jump_step):
         """ A helper to determine if we can jump to a step or not """
 
-        if jump_step == workflow_step:
-            return True
-
-        jump_step_to_workflow_step = {
+        step_name_mappings = {
             "submission": "submission",
             "peer": "peer",
             "grades": "done"
         }
-        jump_step_name = jump_step_to_workflow_step[jump_step]
 
-        step_status = self.workflow_data.status_details.get(jump_step_name, {})
+        workflow_step_to_jump_to = step_name_mappings[jump_step]
+
+        # Can always "jump" to submission
+        if workflow_step_to_jump_to == "submission":
+            return True
+
+        # Can always "jump" to the step you're on
+        if jump_step == workflow_step:
+            return True
+
+        # Can jump to a step you've completed
+        step_status = self.workflow_data.status_details.get(workflow_step_to_jump_to, {})
         return step_status.get("complete", False)
 
     def _submission_draft_handler(self, data):
