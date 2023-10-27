@@ -165,7 +165,7 @@ def assert_error_response(response, status_code, error_code, context=''):
 
 
 def create_student_and_submission(student, course, item, answer, xblock=None):
-    """ Creats a student and submission for tests. """
+    """ Creates a student and submission for tests. """
     submission = submission_api.create_submission(
         {
             'student_id': student,
