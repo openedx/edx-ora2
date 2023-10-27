@@ -76,11 +76,11 @@ class MfeMixin:
         if jump_step:
             jumpable_steps = ("submission", "peer", "grades")
             if jump_step not in jumpable_steps:
-                return JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
+                raise JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
             if self._can_jump_to_step(workflow_step, jump_step):
                 serializer_context.update({"jump_to_step": suffix})
             else:
-                return JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
+                raise JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
 
         # Determine which mode we are viewing in, since data comes from different sources
         if workflow_step or jump_step == "submission":
