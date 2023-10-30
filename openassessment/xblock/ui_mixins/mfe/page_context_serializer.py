@@ -298,6 +298,15 @@ class PageDataSerializer(Serializer):
     Data for rendering a page in the ORA MFE
 
     Requires context to differentiate between Assessment and Submission views
+
+    Args:
+    * ORA XBlock (self)
+
+    Context:
+    * step - The Workflow step
+    * view - One of "submission" when drafting / viewing a submission or "assessment"
+             assessing responses / viewing grades.
+    * jump_to_step (Optional) - Allowing user to jump back to view a previous step.
     """
 
     requires_context = True

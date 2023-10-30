@@ -240,7 +240,7 @@ class XBlockHandlerTestCaseMixin:
             raise NotImplementedError(f"Response format '{response_format}' not supported")
 
     def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
-        """ Checks assessment event published successfuly. """
+        """ Checks assessment event published successfully. """
         parts_list = []
         for part in assessment["parts"]:
             # Some assessment parts do not include point values,

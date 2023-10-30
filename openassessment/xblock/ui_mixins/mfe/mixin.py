@@ -76,14 +76,15 @@ class MfeMixin:
         if jump_step:
             jumpable_steps = ("submission", "peer", "grades")
             if jump_step not in jumpable_steps:
-                return JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
+                raise JsonHandlerError(404, f"Invalid jump to step: {jump_step}")
             if self._can_jump_to_step(workflow_step, jump_step):
                 serializer_context.update({"jump_to_step": suffix})
             else:
-                return JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
+                raise JsonHandlerError(400, f"Cannot jump to step: {jump_step}")
 
         # Determine which mode we are viewing in, since data comes from different sources
-        if workflow_step or jump_step == "submission":
+        if workflow_step == "submission" or jump_step == "submission":
+
             # View our submitted response
             if self.submission_data.has_submitted:
                 serializer_context.update({"view": "submission"})
@@ -91,7 +92,8 @@ class MfeMixin:
             # View our draft response
             else:
                 serializer_context.update({"view": "draft"})
-        # View the selected assessment step
+
+        # View the current assessment step
         else:
             serializer_context.update({"view": "assessment"})
 
@@ -101,17 +103,24 @@ class MfeMixin:
     def _can_jump_to_step(self, workflow_step, jump_step):
         """ A helper to determine if we can jump to a step or not """
 
-        if jump_step == workflow_step:
-            return True
-
-        jump_step_to_workflow_step = {
+        step_name_mappings = {
             "submission": "submission",
             "peer": "peer",
             "grades": "done"
         }
-        jump_step_name = jump_step_to_workflow_step[jump_step]
 
-        step_status = self.workflow_data.status_details.get(jump_step_name, {})
+        workflow_step_to_jump_to = step_name_mappings[jump_step]
+
+        # Can always "jump" to submission
+        if workflow_step_to_jump_to == "submission":
+            return True
+
+        # Can always "jump" to the step you're on
+        if jump_step == workflow_step:
+            return True
+
+        # Can jump to a step you've completed
+        step_status = self.workflow_data.status_details.get(workflow_step_to_jump_to, {})
         return step_status.get("complete", False)
 
     def _submission_draft_handler(self, data):
