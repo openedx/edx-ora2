@@ -41,12 +41,14 @@ from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
 
+
 class MockSerializer(MagicMock):
     """ Hack to get JSON-serializable response from serializer """
 
     @property
     def data(self):
         return {}
+
 
 class MFEHandlersTestBase(XBlockHandlerTestCase):
 
