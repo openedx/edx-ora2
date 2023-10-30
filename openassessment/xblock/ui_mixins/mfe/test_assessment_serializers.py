@@ -245,8 +245,7 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
 
         # I get the appropriate response
         self.assertEqual(context["step"], data["effectiveAssessmentType"])
-        for i in range(len(data["peers"])):
-            peer = data["peers"][i]
+        for i, peer in enumerate(data["peer"]):
             serialize_peer = AssessmentStepSerializer(
                 xblock.api_data.peer_assessment_data().assessments[i], context=context
             ).data

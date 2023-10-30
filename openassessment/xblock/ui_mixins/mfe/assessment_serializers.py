@@ -88,7 +88,7 @@ class AssessmentGradeSerializer(Serializer):
     effectiveAssessmentType = SerializerMethodField()
     self = AssessmentStepSerializer(source="self_assessment_data.assessment")
     staff = AssessmentStepSerializer(source="staff_assessment_data.assessment")
-    peers = AssessmentStepSerializer(
+    peer = AssessmentStepSerializer(
         source="peer_assessment_data.assessments", many=True
     )
 
