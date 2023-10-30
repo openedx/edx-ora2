@@ -9,6 +9,7 @@ from uuid import uuid4
 
 import ddt
 from django.contrib.auth import get_user_model
+from mock import MagicMock
 from submissions import api as submission_api
 from submissions import team_api as submission_team_api
 
@@ -33,12 +34,20 @@ from openassessment.xblock.apis.submissions.errors import (
     UnsupportedFileTypeException
 )
 from openassessment.xblock.apis.submissions.file_api import FileAPI
-from openassessment.xblock.test.base import XBlockHandlerTestCase, scenario
+from openassessment.xblock.test.base import SubmissionTestMixin, XBlockHandlerTestCase, scenario
 from openassessment.xblock.test.test_staff_area import NullUserService, UserStateService
 from openassessment.xblock.test.test_submission import COURSE_ID, setup_mock_team
 from openassessment.xblock.test.test_team import MOCK_TEAM_ID, MockTeamsService
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.submission_serializers import DraftResponseSerializer, SubmissionSerializer
+
+
+class MockSerializer(MagicMock):
+    """ Hack to get JSON-serializable response from serializer """
+
+    @property
+    def data(self):
+        return {}
 
 
 class MFEHandlersTestBase(XBlockHandlerTestCase):
@@ -78,12 +87,14 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
             response_format='response'
         )
 
-    def request_learner_submission_info(self, xblock):
+    def request_get_learner_data(self, xblock, suffix=None):
         return super().request(
             xblock,
-            'get_block_learner_submission_data',
-            '',
-            response_format='response'
+            'get_learner_data',
+            "{}",
+            request_method="POST",
+            response_format='response',
+            suffix=suffix,
         )
 
     def request_save_draft(self, xblock, payload=None):
@@ -156,7 +167,7 @@ def assert_error_response(response, status_code, error_code, context=''):
 
 
 def create_student_and_submission(student, course, item, answer, xblock=None):
-    """ Creats a student and submission for tests. """
+    """ Creates a student and submission for tests. """
     submission = submission_api.create_submission(
         {
             'student_id': student,
@@ -182,6 +193,100 @@ def assert_called_once_with_helper(mock, expected_first_arg, expected_additional
     assert mock.call_args.args[0] == expected_first_arg
     assert len(mock.call_args.args) == expected_additional_args_count + 1
     assert not mock.call_args.kwargs
+
+
+@ddt.ddt
+class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
+    """ Tests for routing / validation on get_learner_data """
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml")
+    def test_start_submission(self, xblock, mock_serializer):
+        # Given we haven't started a submission
+        mock_serializer.return_value = MockSerializer()
+
+        # When I ask for learner data
+        _ = self.request_get_learner_data(xblock)
+
+        # Then I get submission
+        expected_context = {
+            "step": "submission",
+            "view": "draft",
+        }
+        mock_serializer.assert_called_once_with(xblock, context={**expected_context})
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml")
+    def test_bad_jump_step(self, xblock, mock_serializer):
+        # Given any state
+        mock_serializer.return_value = MockSerializer()
+
+        # When I try to jump to a bad step
+        response = self.request_get_learner_data(xblock, suffix="asdf")
+
+        # Then I get an error and don't return data
+        mock_serializer.assert_not_called()
+
+        expected_status = 404
+        self.assertEqual(expected_status, response.status_code)
+
+        expected_body = {'error': 'Invalid jump to step: asdf'}
+        self.assertDictEqual(expected_body, json.loads(response.body))
+
+    @ddt.data("peer", "grades")
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml")
+    def test_jump_to_inaccessible_step(self, xblock, inaccessible_step, mock_serializer):
+        # Given I'm on an early step
+        mock_serializer.return_value = MockSerializer()
+
+        # When I try to jump to a step I can't access
+        response = self.request_get_learner_data(xblock, suffix=inaccessible_step)
+
+        # Then I get an error and don't return data
+        mock_serializer.assert_not_called()
+
+        expected_status = 400
+        self.assertEqual(expected_status, response.status_code)
+
+        expected_body = {'error': f'Cannot jump to step: {inaccessible_step}'}
+        self.assertDictEqual(expected_body, json.loads(response.body))
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml", user_id="Alice")
+    def test_assessment_step(self, xblock, mock_serializer):
+        # Given I've completed my submission
+        self.create_test_submission(xblock)
+        mock_serializer.return_value = MockSerializer()
+
+        # When I try to load my data
+        _ = self.request_get_learner_data(xblock, suffix=None)
+
+        # Then I am routed to the correct assessment step
+        expected_context = {
+            "step": "self",
+            "view": "assessment",
+        }
+        mock_serializer.assert_called_once_with(xblock, context={**expected_context})
+
+    @patch("openassessment.xblock.ui_mixins.mfe.mixin.PageDataSerializer")
+    @scenario("data/basic_scenario.xml", user_id="Alice")
+    def test_jump_back_to_submission_step(self, xblock, mock_serializer):
+        # Given I've completed my submission
+        # xblock.get_student_item
+        self.create_test_submission(xblock)
+        mock_serializer.return_value = MockSerializer()
+
+        # When I try to jump back to submission
+        _ = self.request_get_learner_data(xblock, suffix="submission")
+
+        # Then I am routed to the correct view
+        expected_context = {
+            "step": "self",
+            "jump_to_step": "submission",
+            "view": "submission",
+        }
+        mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
 
 class GetLearnerSubmissionDataIndividualSubmissionTest(MFEHandlersTestBase):
