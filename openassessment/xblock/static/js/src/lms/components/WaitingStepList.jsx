@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Button, DataTable } from '@edx/paragon';
+import { Button, DataTable } from '@openedx/paragon';
 
 const getReadableTime = (timestamp) => moment(timestamp).fromNow(true);
 

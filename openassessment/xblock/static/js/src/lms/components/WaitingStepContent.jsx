@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 import WaitingStepList from './WaitingStepList';
 
 const WaitingStepContent = ({ waitingStepDetails, refreshData }) => {
