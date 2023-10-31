@@ -47,7 +47,13 @@ class GradesAPI:
         }
         """
         submission_uuid = self._get_submission_uuid()
-        peer_requirements = self._block.workflow_requirements()["peer"]
+        if submission_uuid is None:
+            return None
+
+        peer_requirements = self._block.workflow_requirements().get('peer')
+        if peer_requirements is None:
+            return None
+
         course_settings = self._block.get_course_workflow_settings()
 
         peer_score = peer_api.get_score(

@@ -61,6 +61,32 @@ class AssessmentStepSerializer(Serializer):
     assessment = AssessmentDataSerializer(source="*")
 
 
+class PeerAssessmentsSerializer(Serializer):
+    """
+    Assessment step serializer for peer step
+    """
+
+    stepScore = AssessmentScoreSerializer(source='peer_grade')
+    assessments = AssessmentDataSerializer(
+        source="scored_assessments",
+        many=True,
+        allow_empty=True
+    )
+
+
+class UnweightedPeerAssessmentsSerializer(Serializer):
+    """
+    Assessment step serializer for peer step
+    """
+
+    stepScore = NullField(source='*')
+    assessments = AssessmentDataSerializer(
+        source="unscored_assessments",
+        many=True,
+        allow_empty=True
+    )
+
+
 class SubmissionFileSerializer(Serializer):
     fileUrl = URLField(source="file_key")
     fileDescription = CharField(source="file_description")
@@ -88,9 +114,8 @@ class AssessmentGradeSerializer(Serializer):
     effectiveAssessmentType = SerializerMethodField()
     self = AssessmentStepSerializer(source="self_assessment_data.assessment")
     staff = AssessmentStepSerializer(source="staff_assessment_data.assessment")
-    peer = AssessmentStepSerializer(
-        source="peer_assessment_data.assessments", many=True
-    )
+    peer = PeerAssessmentsSerializer(source="peer_assessment_data")
+    peerUnweighted = UnweightedPeerAssessmentsSerializer(source="peer_assessment_data")
 
     def get_effectiveAssessmentType(self, instance):  # pylint: disable=unused-argument
         """

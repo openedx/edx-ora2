@@ -6,6 +6,8 @@ import logging
 from openassessment.assessment.errors import PeerAssessmentWorkflowError
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors.peer import PeerAssessmentInternalError, PeerAssessmentRequestError
+from openassessment.assessment.models.peer import PeerWorkflowItem
+from openassessment.assessment.serializers.base import serialize_assessments
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.apis.assessments.errors import (
     ReviewerMustHaveSubmittedException,
@@ -37,6 +39,18 @@ class PeerAssessmentAPI(StepDataAPI):
     @property
     def assessments(self):
         return peer_api.get_assessments(self.submission_uuid)
+
+    @property
+    def scored_assessments(self):
+        return serialize_assessments(PeerWorkflowItem.get_scored_assessments(self.submission_uuid))
+
+    @property
+    def unscored_assessments(self):
+        return serialize_assessments(PeerWorkflowItem.get_unscored_assessments(self.submission_uuid))
+
+    @property
+    def peer_grade(self):
+        return self._block.grades_data.peer_score
 
     @property
     def continue_grading(self):
