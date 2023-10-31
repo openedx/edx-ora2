@@ -5,6 +5,7 @@ import json
 from unittest.mock import patch
 
 from django.test import TestCase
+from openassessment.workflow import api as workflow_api
 from openassessment.fileupload.api import FileUpload
 from openassessment.xblock.test.base import (
     PEER_ASSESSMENTS,
@@ -157,6 +158,58 @@ class TestAssessmentResponseSerializer(XBlockHandlerTestCase, SubmissionTestMixi
         self.assertDictEqual(expected_response, data)
 
 
+class TestPeerSplit(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+    ASSESSMENT = {
+        'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ﻉซƈﻉɭɭﻉกՇ', 'Form': 'Fair'},
+        'criterion_feedback': {},
+        'overall_feedback': ""
+    }
+
+    @scenario("data/grade_scenario.xml", user_id="Bernard")
+    def test_scored_unscored(self, xblock):
+        student_item = xblock.get_student_item_dict()
+        submission = self.create_test_submission(
+            xblock, student_item=student_item, submission_text=self.SUBMISSION
+        )
+
+        other_learners = ['u1', 'u2', 'u3', 'u4']
+        # Create submissions from other users
+        scorer_subs = self.create_peer_submissions(
+            student_item, other_learners, self.SUBMISSION
+        )
+
+        # All four assess the target learner even though we only need two
+        for scorer_sub, scorer_name in list(zip(scorer_subs, other_learners)):
+            self.create_peer_assessment(
+                scorer_sub,
+                scorer_name,
+                submission,
+                self.ASSESSMENT,
+                xblock.rubric_criteria,
+                2,
+            )
+
+        # Have the target learner submit one assessment so they can recieve a grade, and update their status
+        self.create_peer_assessment(submission, 'Bernard', scorer_subs[0], self.ASSESSMENT, xblock.rubric_criteria, 2)
+        workflow_api.update_from_assessments(
+            submission['uuid'],
+            {'peer': {'must_be_graded_by': 2, 'must_grade': 1}},
+            {}
+        )
+
+        context = {"response": submission, "step": "peer"}
+
+        # When I load my response
+        data = AssessmentGradeSerializer(xblock.api_data, context=context).data
+
+        # I get the appropriate response
+        self.assertEqual(context["step"], data["effectiveAssessmentType"])
+        self.assertEqual(data["peer"]["stepScore"], {'earned': 5, 'possible': 6})
+        self.assertEqual(len(data["peer"]["assessments"]), 2)
+        self.assertIsNone(data["peerUnweighted"]["stepScore"])
+        self.assertEqual(len(data["peerUnweighted"]["assessments"]), 2)
+
+
 class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     ASSESSMENT = {
         'options_selected': {'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': 'ﻉซƈﻉɭɭﻉกՇ', 'Form': 'Fair'},
@@ -228,7 +281,7 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
         graded_by = xblock.get_assessment_module("peer-assessment")["must_be_graded_by"]
         for scorer_sub, scorer_name, assessment in list(
             zip(scorer_subs, self.PEERS, PEER_ASSESSMENTS)
-        )[:-1]:
+        ):
             self.create_peer_assessment(
                 scorer_sub,
                 scorer_name,
@@ -245,13 +298,9 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
 
         # I get the appropriate response
         self.assertEqual(context["step"], data["effectiveAssessmentType"])
-        for i in range(len(data["peers"])):
-            peer = data["peers"][i]
-            serialize_peer = AssessmentStepSerializer(
-                xblock.api_data.peer_assessment_data().assessments[i], context=context
-            ).data
-            self.assertEqual(serialize_peer["stepScore"], peer["stepScore"])
-            self.assertEqual(serialize_peer["assessment"], serialize_peer["assessment"])
+        self.assertEqual(data["peer"], {'stepScore': None, 'assessments': []})
+        self.assertIsNone(data["peerUnweighted"]['stepScore'])
+        self.assertEqual(len(data["peerUnweighted"]['assessments']), len(self.PEERS))
 
     @scenario("data/grade_scenario.xml", user_id="Alan")
     def test_assessment_step_score(self, xblock):
