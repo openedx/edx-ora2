@@ -189,6 +189,7 @@ class TestPeerSplit(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 2,
             )
 
+        # Have the target learner submit one assessment so they can recieve a grade, and update their status
         self.create_peer_assessment(submission, 'Bernard', scorer_subs[0], self.ASSESSMENT, xblock.rubric_criteria, 2)
         workflow_api.update_from_assessments(
             submission['uuid'],
