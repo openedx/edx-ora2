@@ -211,7 +211,7 @@ class GetLearnerDataRoutingTest(MFEHandlersTestBase, SubmissionTestMixin):
         # Then I get submission
         expected_context = {
             "step": "submission",
-            "view": "draft",
+            "view": "submission",
         }
         mock_serializer.assert_called_once_with(xblock, context={**expected_context})
 
