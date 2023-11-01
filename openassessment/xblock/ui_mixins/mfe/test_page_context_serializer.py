@@ -304,8 +304,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "submission",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {},
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -335,11 +333,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "studentTraining",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -380,11 +373,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "studentTraining",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": True,
@@ -425,11 +413,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "studentTraining",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -470,11 +453,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "peer",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -517,11 +495,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "submission",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -550,11 +523,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "self",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "self": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -586,12 +554,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "self",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "self": {},
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": True,
@@ -624,12 +586,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "self",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                "self": {},
-                "peer": {},
-                "staff": {},
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,
@@ -673,10 +629,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Then I get the expected shapes
         expected_data = {
             "activeStepName": "staff",
-            "hasReceivedFinalGrade": False,
-            "receivedGrades": {
-                # NOTE - Teams actually have a different step type that should go here
-            },
             "stepInfo": {
                 "submission": {
                     "closed": False,

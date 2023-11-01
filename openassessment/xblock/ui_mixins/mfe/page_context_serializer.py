@@ -34,43 +34,6 @@ class AssessmentScoreSerializer(Serializer):
     possible = IntegerField(source="points_possible", required=False)
 
 
-class ReceivedGradesSerializer(Serializer):
-    """
-    Received grades for each of the applicable graded steps
-    Returns:
-    {
-        self: (Assessment score object)
-        peer: (Assessment score object)
-        staff: (Assessment score object)
-    }
-    """
-
-    self = AssessmentScoreSerializer(source="grades.self_score")
-    peer = AssessmentScoreSerializer(source="grades.peer_score")
-    staff = AssessmentScoreSerializer(source="grades.staff_score")
-
-    def to_representation(self, instance):
-        """
-        Hook output to remove steps that are not part of the assignment.
-
-        Grades are not released for steps until all steps are completed.
-        """
-        step_names = ["self", "peer", "staff"]
-
-        # NOTE - cache this so we don't update the workflow
-        configured_steps = instance.status_details.keys()
-        is_done = instance.is_done
-
-        for step in step_names:
-            if step not in configured_steps:
-                self.fields.pop(step)
-
-        if not is_done:
-            return {field: {} for field in self.fields}
-
-        return super().to_representation(instance)
-
-
 class ClosedInfoSerializer(Serializer):
     """Serialize closed info from a given assessment step API"""
 
@@ -273,16 +236,11 @@ class ProgressSerializer(Serializer):
     {
         // What step are we on? An index to the configuration from ORA config call.
         activeStepName: (String) one of ["submission", "studentTraining", "peer", "self", "staff", "done]
-
-        hasReceivedFinalGrade: (Bool) // In effect, is the ORA complete?
-        receivedGrades: (Object) Staff grade data, when there is a completed staff grade.
         activeStepInfo: (Object) Specific info for the active step
     }
     """
 
     activeStepName = SerializerMethodField()
-    hasReceivedFinalGrade = BooleanField(source="workflow_data.is_done")
-    receivedGrades = ReceivedGradesSerializer(source="workflow_data")
     stepInfo = StepInfoSerializer(source="*")
 
     def get_activeStepName(self, instance):
