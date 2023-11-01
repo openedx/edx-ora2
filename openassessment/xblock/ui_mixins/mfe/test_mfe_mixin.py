@@ -935,13 +935,22 @@ class AssessmentSubmitTest(MFEHandlersTestBase):
     )
     @scenario("data/basic_scenario.xml")
     def test_assess(self, xblock, step, expect_self, expect_training, expect_peer):
+        # Given a self / training / peer step
         with self.mock_workflow_status(step):
             with self.mock_assess_functions() as assess_mocks:
-                resp = self.request_assessment_submit(xblock)
+                # When I call the assessment endpoint
+                assessment = self.DEFAULT_ASSESSMENT_SUBMIT_VALUE
+                resp = self.request_assessment_submit(xblock, payload=assessment)
+
+        # Then I assess a response for the correct step
         assert resp.status_code == 200
         assert assess_mocks.self.called == expect_self
         assert assess_mocks.training.called == expect_training
         assert assess_mocks.peer.called == expect_peer
+
+        # And get the assessment data returned to the frontend
+        response_body = json.loads(resp.body)
+        self.assertDictEqual(response_body, assessment)
 
     @ddt.data(None, 'cancelled', 'waiting', 'self', 'training', 'done')
     @scenario("data/basic_scenario.xml")

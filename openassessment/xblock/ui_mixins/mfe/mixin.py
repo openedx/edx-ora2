@@ -304,6 +304,13 @@ class MfeMixin:
         }
 
     def _assessment_submit_handler(self, data):
+        """
+        Args:
+        * AssessmentSubmitRequestData
+
+        Returns:
+        * Assessment Data
+        """
         serializer = AssessmentSubmitRequestSerializer(data=data)
         if not serializer.is_valid():
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
@@ -348,6 +355,14 @@ class MfeMixin:
             raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
+
+        # Return assessment data for the frontend
+        # TODO - this should be updated to new assessment shape & serializer
+        return {
+            "optionsSelected": data["optionsSelected"],
+            "criterionFeedback": data["criterionFeedback"],
+            "overallFeedback": data["overallFeedback"],
+        }
 
     def _assessment_get_peer_handler(self):
         # Call get_peer_submission to grab a new peer submission
