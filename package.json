@@ -3,7 +3,7 @@
   "version": "5.5.6",
   "repository": "https://github.com/openedx/edx-ora2.git",
   "dependencies": {
-    "@edx/frontend-build": "^6.1.1",
+    "@edx/frontend-build": "13.0.4",
     "@edx/paragon": "^20.9.2",
     "backbone": "^1.2.3",
     "backgrid": "~0.3.8",
@@ -36,10 +36,10 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.5",
     "karma-spec-reporter": "^0.0.31",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.0",
     "phantomjs-prebuilt": "^2.1.14",
     "sinon": "^7.5.0",
-    "webpack": "^4.46.0",
+    "webpack": "5.88.2",
     "webpack-manifest-plugin": "^4.0.2"
   },
   "scripts": {
