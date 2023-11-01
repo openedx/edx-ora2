@@ -146,18 +146,16 @@ export class ToggleControl {
      OpenAssessment.ToggleControl
      * */
   install() {
-    this.checkbox.change(
-      this, function (event) {
-        const control = event.data;
-        if (this.checked) {
-          control.notifier.notificationFired('toggleOn', {});
-          control.show();
-        } else {
-          control.notifier.notificationFired('toggleOff', {});
-          control.hide();
-        }
-      },
-    );
+    this.checkbox.change(this, function (event) {
+      const control = event.data;
+      if (this.checked) {
+        control.notifier.notificationFired('toggleOn', {});
+        control.show();
+      } else {
+        control.notifier.notificationFired('toggleOff', {});
+        control.hide();
+      }
+    });
     return this;
   }
 
@@ -334,13 +332,11 @@ export class SelectControl {
      OpenAssessment.ToggleControl
      * */
   install() {
-    this.select.change(
-      this, function (event) {
-        const control = event.data;
-        control.notifier.notificationFired('selectionChanged', { selected: this.value });
-        control.change(this.value);
-      },
-    );
+    this.select.change(this, function (event) {
+      const control = event.data;
+      control.notifier.notificationFired('selectionChanged', { selected: this.value });
+      control.change(this.value);
+    });
     return this;
   }
 
