@@ -1,873 +1,1185 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	function hotDisposeChunk(chunkId) {
-/******/ 		delete installedChunks[chunkId];
-/******/ 	}
-/******/ 	var parentHotUpdateCallback = window["webpackHotUpdate"];
-/******/ 	window["webpackHotUpdate"] = // eslint-disable-next-line no-unused-vars
-/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) {
-/******/ 		hotAddUpdateChunk(chunkId, moreModules);
-/******/ 		if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
-/******/ 	} ;
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotDownloadUpdateChunk(chunkId) {
-/******/ 		var script = document.createElement("script");
-/******/ 		script.charset = "utf-8";
-/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
-/******/ 		if (null) script.crossOrigin = null;
-/******/ 		document.head.appendChild(script);
-/******/ 	}
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotDownloadManifest(requestTimeout) {
-/******/ 		requestTimeout = requestTimeout || 10000;
-/******/ 		return new Promise(function(resolve, reject) {
-/******/ 			if (typeof XMLHttpRequest === "undefined") {
-/******/ 				return reject(new Error("No browser support"));
-/******/ 			}
-/******/ 			try {
-/******/ 				var request = new XMLHttpRequest();
-/******/ 				var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
-/******/ 				request.open("GET", requestPath, true);
-/******/ 				request.timeout = requestTimeout;
-/******/ 				request.send(null);
-/******/ 			} catch (err) {
-/******/ 				return reject(err);
-/******/ 			}
-/******/ 			request.onreadystatechange = function() {
-/******/ 				if (request.readyState !== 4) return;
-/******/ 				if (request.status === 0) {
-/******/ 					// timeout
-/******/ 					reject(
-/******/ 						new Error("Manifest request to " + requestPath + " timed out.")
-/******/ 					);
-/******/ 				} else if (request.status === 404) {
-/******/ 					// no update available
-/******/ 					resolve();
-/******/ 				} else if (request.status !== 200 && request.status !== 304) {
-/******/ 					// other failure
-/******/ 					reject(new Error("Manifest request to " + requestPath + " failed."));
-/******/ 				} else {
-/******/ 					// success
-/******/ 					try {
-/******/ 						var update = JSON.parse(request.responseText);
-/******/ 					} catch (e) {
-/******/ 						reject(e);
-/******/ 						return;
-/******/ 					}
-/******/ 					resolve(update);
-/******/ 				}
-/******/ 			};
-/******/ 		});
-/******/ 	}
-/******/
-/******/ 	var hotApplyOnUpdate = true;
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "9f178f80778ef11c1723";
-/******/ 	var hotRequestTimeout = 10000;
-/******/ 	var hotCurrentModuleData = {};
-/******/ 	var hotCurrentChildModule;
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentParents = [];
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentParentsTemp = [];
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotCreateRequire(moduleId) {
-/******/ 		var me = installedModules[moduleId];
-/******/ 		if (!me) return __webpack_require__;
-/******/ 		var fn = function(request) {
-/******/ 			if (me.hot.active) {
-/******/ 				if (installedModules[request]) {
-/******/ 					if (installedModules[request].parents.indexOf(moduleId) === -1) {
-/******/ 						installedModules[request].parents.push(moduleId);
-/******/ 					}
-/******/ 				} else {
-/******/ 					hotCurrentParents = [moduleId];
-/******/ 					hotCurrentChildModule = request;
-/******/ 				}
-/******/ 				if (me.children.indexOf(request) === -1) {
-/******/ 					me.children.push(request);
-/******/ 				}
-/******/ 			} else {
-/******/ 				console.warn(
-/******/ 					"[HMR] unexpected require(" +
-/******/ 						request +
-/******/ 						") from disposed module " +
-/******/ 						moduleId
-/******/ 				);
-/******/ 				hotCurrentParents = [];
-/******/ 			}
-/******/ 			return __webpack_require__(request);
-/******/ 		};
-/******/ 		var ObjectFactory = function ObjectFactory(name) {
-/******/ 			return {
-/******/ 				configurable: true,
-/******/ 				enumerable: true,
-/******/ 				get: function() {
-/******/ 					return __webpack_require__[name];
-/******/ 				},
-/******/ 				set: function(value) {
-/******/ 					__webpack_require__[name] = value;
-/******/ 				}
-/******/ 			};
-/******/ 		};
-/******/ 		for (var name in __webpack_require__) {
-/******/ 			if (
-/******/ 				Object.prototype.hasOwnProperty.call(__webpack_require__, name) &&
-/******/ 				name !== "e" &&
-/******/ 				name !== "t"
-/******/ 			) {
-/******/ 				Object.defineProperty(fn, name, ObjectFactory(name));
-/******/ 			}
-/******/ 		}
-/******/ 		fn.e = function(chunkId) {
-/******/ 			if (hotStatus === "ready") hotSetStatus("prepare");
-/******/ 			hotChunksLoading++;
-/******/ 			return __webpack_require__.e(chunkId).then(finishChunkLoading, function(err) {
-/******/ 				finishChunkLoading();
-/******/ 				throw err;
-/******/ 			});
-/******/
-/******/ 			function finishChunkLoading() {
-/******/ 				hotChunksLoading--;
-/******/ 				if (hotStatus === "prepare") {
-/******/ 					if (!hotWaitingFilesMap[chunkId]) {
-/******/ 						hotEnsureUpdateChunk(chunkId);
-/******/ 					}
-/******/ 					if (hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/ 						hotUpdateDownloaded();
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 		fn.t = function(value, mode) {
-/******/ 			if (mode & 1) value = fn(value);
-/******/ 			return __webpack_require__.t(value, mode & ~1);
-/******/ 		};
-/******/ 		return fn;
-/******/ 	}
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotCreateModule(moduleId) {
-/******/ 		var hot = {
-/******/ 			// private stuff
-/******/ 			_acceptedDependencies: {},
-/******/ 			_declinedDependencies: {},
-/******/ 			_selfAccepted: false,
-/******/ 			_selfDeclined: false,
-/******/ 			_selfInvalidated: false,
-/******/ 			_disposeHandlers: [],
-/******/ 			_main: hotCurrentChildModule !== moduleId,
-/******/
-/******/ 			// Module API
-/******/ 			active: true,
-/******/ 			accept: function(dep, callback) {
-/******/ 				if (dep === undefined) hot._selfAccepted = true;
-/******/ 				else if (typeof dep === "function") hot._selfAccepted = dep;
-/******/ 				else if (typeof dep === "object")
-/******/ 					for (var i = 0; i < dep.length; i++)
-/******/ 						hot._acceptedDependencies[dep[i]] = callback || function() {};
-/******/ 				else hot._acceptedDependencies[dep] = callback || function() {};
-/******/ 			},
-/******/ 			decline: function(dep) {
-/******/ 				if (dep === undefined) hot._selfDeclined = true;
-/******/ 				else if (typeof dep === "object")
-/******/ 					for (var i = 0; i < dep.length; i++)
-/******/ 						hot._declinedDependencies[dep[i]] = true;
-/******/ 				else hot._declinedDependencies[dep] = true;
-/******/ 			},
-/******/ 			dispose: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			addDisposeHandler: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			removeDisposeHandler: function(callback) {
-/******/ 				var idx = hot._disposeHandlers.indexOf(callback);
-/******/ 				if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
-/******/ 			},
-/******/ 			invalidate: function() {
-/******/ 				this._selfInvalidated = true;
-/******/ 				switch (hotStatus) {
-/******/ 					case "idle":
-/******/ 						hotUpdate = {};
-/******/ 						hotUpdate[moduleId] = modules[moduleId];
-/******/ 						hotSetStatus("ready");
-/******/ 						break;
-/******/ 					case "ready":
-/******/ 						hotApplyInvalidatedModule(moduleId);
-/******/ 						break;
-/******/ 					case "prepare":
-/******/ 					case "check":
-/******/ 					case "dispose":
-/******/ 					case "apply":
-/******/ 						(hotQueuedInvalidatedModules =
-/******/ 							hotQueuedInvalidatedModules || []).push(moduleId);
-/******/ 						break;
-/******/ 					default:
-/******/ 						// ignore requests in error states
-/******/ 						break;
-/******/ 				}
-/******/ 			},
-/******/
-/******/ 			// Management API
-/******/ 			check: hotCheck,
-/******/ 			apply: hotApply,
-/******/ 			status: function(l) {
-/******/ 				if (!l) return hotStatus;
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			addStatusHandler: function(l) {
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			removeStatusHandler: function(l) {
-/******/ 				var idx = hotStatusHandlers.indexOf(l);
-/******/ 				if (idx >= 0) hotStatusHandlers.splice(idx, 1);
-/******/ 			},
-/******/
-/******/ 			//inherit from previous dispose call
-/******/ 			data: hotCurrentModuleData[moduleId]
-/******/ 		};
-/******/ 		hotCurrentChildModule = undefined;
-/******/ 		return hot;
-/******/ 	}
-/******/
-/******/ 	var hotStatusHandlers = [];
-/******/ 	var hotStatus = "idle";
-/******/
-/******/ 	function hotSetStatus(newStatus) {
-/******/ 		hotStatus = newStatus;
-/******/ 		for (var i = 0; i < hotStatusHandlers.length; i++)
-/******/ 			hotStatusHandlers[i].call(null, newStatus);
-/******/ 	}
-/******/
-/******/ 	// while downloading
-/******/ 	var hotWaitingFiles = 0;
-/******/ 	var hotChunksLoading = 0;
-/******/ 	var hotWaitingFilesMap = {};
-/******/ 	var hotRequestedFilesMap = {};
-/******/ 	var hotAvailableFilesMap = {};
-/******/ 	var hotDeferred;
-/******/
-/******/ 	// The update info
-/******/ 	var hotUpdate, hotUpdateNewHash, hotQueuedInvalidatedModules;
-/******/
-/******/ 	function toModuleId(id) {
-/******/ 		var isNumber = +id + "" === id;
-/******/ 		return isNumber ? +id : id;
-/******/ 	}
-/******/
-/******/ 	function hotCheck(apply) {
-/******/ 		if (hotStatus !== "idle") {
-/******/ 			throw new Error("check() is only allowed in idle status");
-/******/ 		}
-/******/ 		hotApplyOnUpdate = apply;
-/******/ 		hotSetStatus("check");
-/******/ 		return hotDownloadManifest(hotRequestTimeout).then(function(update) {
-/******/ 			if (!update) {
-/******/ 				hotSetStatus(hotApplyInvalidatedModules() ? "ready" : "idle");
-/******/ 				return null;
-/******/ 			}
-/******/ 			hotRequestedFilesMap = {};
-/******/ 			hotWaitingFilesMap = {};
-/******/ 			hotAvailableFilesMap = update.c;
-/******/ 			hotUpdateNewHash = update.h;
-/******/
-/******/ 			hotSetStatus("prepare");
-/******/ 			var promise = new Promise(function(resolve, reject) {
-/******/ 				hotDeferred = {
-/******/ 					resolve: resolve,
-/******/ 					reject: reject
-/******/ 				};
-/******/ 			});
-/******/ 			hotUpdate = {};
-/******/ 			var chunkId = "openassessment-editor-tinymce";
-/******/ 			// eslint-disable-next-line no-lone-blocks
-/******/ 			{
-/******/ 				hotEnsureUpdateChunk(chunkId);
-/******/ 			}
-/******/ 			if (
-/******/ 				hotStatus === "prepare" &&
-/******/ 				hotChunksLoading === 0 &&
-/******/ 				hotWaitingFiles === 0
-/******/ 			) {
-/******/ 				hotUpdateDownloaded();
-/******/ 			}
-/******/ 			return promise;
-/******/ 		});
-/******/ 	}
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotAddUpdateChunk(chunkId, moreModules) {
-/******/ 		if (!hotAvailableFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
-/******/ 			return;
-/******/ 		hotRequestedFilesMap[chunkId] = false;
-/******/ 		for (var moduleId in moreModules) {
-/******/ 			if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				hotUpdate[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
-/******/ 			hotUpdateDownloaded();
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotEnsureUpdateChunk(chunkId) {
-/******/ 		if (!hotAvailableFilesMap[chunkId]) {
-/******/ 			hotWaitingFilesMap[chunkId] = true;
-/******/ 		} else {
-/******/ 			hotRequestedFilesMap[chunkId] = true;
-/******/ 			hotWaitingFiles++;
-/******/ 			hotDownloadUpdateChunk(chunkId);
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotUpdateDownloaded() {
-/******/ 		hotSetStatus("ready");
-/******/ 		var deferred = hotDeferred;
-/******/ 		hotDeferred = null;
-/******/ 		if (!deferred) return;
-/******/ 		if (hotApplyOnUpdate) {
-/******/ 			// Wrap deferred object in Promise to mark it as a well-handled Promise to
-/******/ 			// avoid triggering uncaught exception warning in Chrome.
-/******/ 			// See https://bugs.chromium.org/p/chromium/issues/detail?id=465666
-/******/ 			Promise.resolve()
-/******/ 				.then(function() {
-/******/ 					return hotApply(hotApplyOnUpdate);
-/******/ 				})
-/******/ 				.then(
-/******/ 					function(result) {
-/******/ 						deferred.resolve(result);
-/******/ 					},
-/******/ 					function(err) {
-/******/ 						deferred.reject(err);
-/******/ 					}
-/******/ 				);
-/******/ 		} else {
-/******/ 			var outdatedModules = [];
-/******/ 			for (var id in hotUpdate) {
-/******/ 				if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 					outdatedModules.push(toModuleId(id));
-/******/ 				}
-/******/ 			}
-/******/ 			deferred.resolve(outdatedModules);
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotApply(options) {
-/******/ 		if (hotStatus !== "ready")
-/******/ 			throw new Error("apply() is only allowed in ready status");
-/******/ 		options = options || {};
-/******/ 		return hotApplyInternal(options);
-/******/ 	}
-/******/
-/******/ 	function hotApplyInternal(options) {
-/******/ 		hotApplyInvalidatedModules();
-/******/
-/******/ 		var cb;
-/******/ 		var i;
-/******/ 		var j;
-/******/ 		var module;
-/******/ 		var moduleId;
-/******/
-/******/ 		function getAffectedStuff(updateModuleId) {
-/******/ 			var outdatedModules = [updateModuleId];
-/******/ 			var outdatedDependencies = {};
-/******/
-/******/ 			var queue = outdatedModules.map(function(id) {
-/******/ 				return {
-/******/ 					chain: [id],
-/******/ 					id: id
-/******/ 				};
-/******/ 			});
-/******/ 			while (queue.length > 0) {
-/******/ 				var queueItem = queue.pop();
-/******/ 				var moduleId = queueItem.id;
-/******/ 				var chain = queueItem.chain;
-/******/ 				module = installedModules[moduleId];
-/******/ 				if (
-/******/ 					!module ||
-/******/ 					(module.hot._selfAccepted && !module.hot._selfInvalidated)
-/******/ 				)
-/******/ 					continue;
-/******/ 				if (module.hot._selfDeclined) {
-/******/ 					return {
-/******/ 						type: "self-declined",
-/******/ 						chain: chain,
-/******/ 						moduleId: moduleId
-/******/ 					};
-/******/ 				}
-/******/ 				if (module.hot._main) {
-/******/ 					return {
-/******/ 						type: "unaccepted",
-/******/ 						chain: chain,
-/******/ 						moduleId: moduleId
-/******/ 					};
-/******/ 				}
-/******/ 				for (var i = 0; i < module.parents.length; i++) {
-/******/ 					var parentId = module.parents[i];
-/******/ 					var parent = installedModules[parentId];
-/******/ 					if (!parent) continue;
-/******/ 					if (parent.hot._declinedDependencies[moduleId]) {
-/******/ 						return {
-/******/ 							type: "declined",
-/******/ 							chain: chain.concat([parentId]),
-/******/ 							moduleId: moduleId,
-/******/ 							parentId: parentId
-/******/ 						};
-/******/ 					}
-/******/ 					if (outdatedModules.indexOf(parentId) !== -1) continue;
-/******/ 					if (parent.hot._acceptedDependencies[moduleId]) {
-/******/ 						if (!outdatedDependencies[parentId])
-/******/ 							outdatedDependencies[parentId] = [];
-/******/ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
-/******/ 						continue;
-/******/ 					}
-/******/ 					delete outdatedDependencies[parentId];
-/******/ 					outdatedModules.push(parentId);
-/******/ 					queue.push({
-/******/ 						chain: chain.concat([parentId]),
-/******/ 						id: parentId
-/******/ 					});
-/******/ 				}
-/******/ 			}
-/******/
-/******/ 			return {
-/******/ 				type: "accepted",
-/******/ 				moduleId: updateModuleId,
-/******/ 				outdatedModules: outdatedModules,
-/******/ 				outdatedDependencies: outdatedDependencies
-/******/ 			};
-/******/ 		}
-/******/
-/******/ 		function addAllToSet(a, b) {
-/******/ 			for (var i = 0; i < b.length; i++) {
-/******/ 				var item = b[i];
-/******/ 				if (a.indexOf(item) === -1) a.push(item);
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// at begin all updates modules are outdated
-/******/ 		// the "outdated" status can propagate to parents if they don't accept the children
-/******/ 		var outdatedDependencies = {};
-/******/ 		var outdatedModules = [];
-/******/ 		var appliedUpdate = {};
-/******/
-/******/ 		var warnUnexpectedRequire = function warnUnexpectedRequire() {
-/******/ 			console.warn(
-/******/ 				"[HMR] unexpected require(" + result.moduleId + ") to disposed module"
-/******/ 			);
-/******/ 		};
-/******/
-/******/ 		for (var id in hotUpdate) {
-/******/ 			if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 				moduleId = toModuleId(id);
-/******/ 				/** @type {TODO} */
-/******/ 				var result;
-/******/ 				if (hotUpdate[id]) {
-/******/ 					result = getAffectedStuff(moduleId);
-/******/ 				} else {
-/******/ 					result = {
-/******/ 						type: "disposed",
-/******/ 						moduleId: id
-/******/ 					};
-/******/ 				}
-/******/ 				/** @type {Error|false} */
-/******/ 				var abortError = false;
-/******/ 				var doApply = false;
-/******/ 				var doDispose = false;
-/******/ 				var chainInfo = "";
-/******/ 				if (result.chain) {
-/******/ 					chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
-/******/ 				}
-/******/ 				switch (result.type) {
-/******/ 					case "self-declined":
-/******/ 						if (options.onDeclined) options.onDeclined(result);
-/******/ 						if (!options.ignoreDeclined)
-/******/ 							abortError = new Error(
-/******/ 								"Aborted because of self decline: " +
-/******/ 									result.moduleId +
-/******/ 									chainInfo
-/******/ 							);
-/******/ 						break;
-/******/ 					case "declined":
-/******/ 						if (options.onDeclined) options.onDeclined(result);
-/******/ 						if (!options.ignoreDeclined)
-/******/ 							abortError = new Error(
-/******/ 								"Aborted because of declined dependency: " +
-/******/ 									result.moduleId +
-/******/ 									" in " +
-/******/ 									result.parentId +
-/******/ 									chainInfo
-/******/ 							);
-/******/ 						break;
-/******/ 					case "unaccepted":
-/******/ 						if (options.onUnaccepted) options.onUnaccepted(result);
-/******/ 						if (!options.ignoreUnaccepted)
-/******/ 							abortError = new Error(
-/******/ 								"Aborted because " + moduleId + " is not accepted" + chainInfo
-/******/ 							);
-/******/ 						break;
-/******/ 					case "accepted":
-/******/ 						if (options.onAccepted) options.onAccepted(result);
-/******/ 						doApply = true;
-/******/ 						break;
-/******/ 					case "disposed":
-/******/ 						if (options.onDisposed) options.onDisposed(result);
-/******/ 						doDispose = true;
-/******/ 						break;
-/******/ 					default:
-/******/ 						throw new Error("Unexception type " + result.type);
-/******/ 				}
-/******/ 				if (abortError) {
-/******/ 					hotSetStatus("abort");
-/******/ 					return Promise.reject(abortError);
-/******/ 				}
-/******/ 				if (doApply) {
-/******/ 					appliedUpdate[moduleId] = hotUpdate[moduleId];
-/******/ 					addAllToSet(outdatedModules, result.outdatedModules);
-/******/ 					for (moduleId in result.outdatedDependencies) {
-/******/ 						if (
-/******/ 							Object.prototype.hasOwnProperty.call(
-/******/ 								result.outdatedDependencies,
-/******/ 								moduleId
-/******/ 							)
-/******/ 						) {
-/******/ 							if (!outdatedDependencies[moduleId])
-/******/ 								outdatedDependencies[moduleId] = [];
-/******/ 							addAllToSet(
-/******/ 								outdatedDependencies[moduleId],
-/******/ 								result.outdatedDependencies[moduleId]
-/******/ 							);
-/******/ 						}
-/******/ 					}
-/******/ 				}
-/******/ 				if (doDispose) {
-/******/ 					addAllToSet(outdatedModules, [result.moduleId]);
-/******/ 					appliedUpdate[moduleId] = warnUnexpectedRequire;
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Store self accepted outdated modules to require them later by the module system
-/******/ 		var outdatedSelfAcceptedModules = [];
-/******/ 		for (i = 0; i < outdatedModules.length; i++) {
-/******/ 			moduleId = outdatedModules[i];
-/******/ 			if (
-/******/ 				installedModules[moduleId] &&
-/******/ 				installedModules[moduleId].hot._selfAccepted &&
-/******/ 				// removed self-accepted modules should not be required
-/******/ 				appliedUpdate[moduleId] !== warnUnexpectedRequire &&
-/******/ 				// when called invalidate self-accepting is not possible
-/******/ 				!installedModules[moduleId].hot._selfInvalidated
-/******/ 			) {
-/******/ 				outdatedSelfAcceptedModules.push({
-/******/ 					module: moduleId,
-/******/ 					parents: installedModules[moduleId].parents.slice(),
-/******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
-/******/ 				});
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Now in "dispose" phase
-/******/ 		hotSetStatus("dispose");
-/******/ 		Object.keys(hotAvailableFilesMap).forEach(function(chunkId) {
-/******/ 			if (hotAvailableFilesMap[chunkId] === false) {
-/******/ 				hotDisposeChunk(chunkId);
-/******/ 			}
-/******/ 		});
-/******/
-/******/ 		var idx;
-/******/ 		var queue = outdatedModules.slice();
-/******/ 		while (queue.length > 0) {
-/******/ 			moduleId = queue.pop();
-/******/ 			module = installedModules[moduleId];
-/******/ 			if (!module) continue;
-/******/
-/******/ 			var data = {};
-/******/
-/******/ 			// Call dispose handlers
-/******/ 			var disposeHandlers = module.hot._disposeHandlers;
-/******/ 			for (j = 0; j < disposeHandlers.length; j++) {
-/******/ 				cb = disposeHandlers[j];
-/******/ 				cb(data);
-/******/ 			}
-/******/ 			hotCurrentModuleData[moduleId] = data;
-/******/
-/******/ 			// disable module (this disables requires from this module)
-/******/ 			module.hot.active = false;
-/******/
-/******/ 			// remove module from cache
-/******/ 			delete installedModules[moduleId];
-/******/
-/******/ 			// when disposing there is no need to call dispose handler
-/******/ 			delete outdatedDependencies[moduleId];
-/******/
-/******/ 			// remove "parents" references from all children
-/******/ 			for (j = 0; j < module.children.length; j++) {
-/******/ 				var child = installedModules[module.children[j]];
-/******/ 				if (!child) continue;
-/******/ 				idx = child.parents.indexOf(moduleId);
-/******/ 				if (idx >= 0) {
-/******/ 					child.parents.splice(idx, 1);
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// remove outdated dependency from module children
-/******/ 		var dependency;
-/******/ 		var moduleOutdatedDependencies;
-/******/ 		for (moduleId in outdatedDependencies) {
-/******/ 			if (
-/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
-/******/ 			) {
-/******/ 				module = installedModules[moduleId];
-/******/ 				if (module) {
-/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 					for (j = 0; j < moduleOutdatedDependencies.length; j++) {
-/******/ 						dependency = moduleOutdatedDependencies[j];
-/******/ 						idx = module.children.indexOf(dependency);
-/******/ 						if (idx >= 0) module.children.splice(idx, 1);
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Now in "apply" phase
-/******/ 		hotSetStatus("apply");
-/******/
-/******/ 		if (hotUpdateNewHash !== undefined) {
-/******/ 			hotCurrentHash = hotUpdateNewHash;
-/******/ 			hotUpdateNewHash = undefined;
-/******/ 		}
-/******/ 		hotUpdate = undefined;
-/******/
-/******/ 		// insert new code
-/******/ 		for (moduleId in appliedUpdate) {
-/******/ 			if (Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
-/******/ 				modules[moduleId] = appliedUpdate[moduleId];
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// call accept handlers
-/******/ 		var error = null;
-/******/ 		for (moduleId in outdatedDependencies) {
-/******/ 			if (
-/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
-/******/ 			) {
-/******/ 				module = installedModules[moduleId];
-/******/ 				if (module) {
-/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 					var callbacks = [];
-/******/ 					for (i = 0; i < moduleOutdatedDependencies.length; i++) {
-/******/ 						dependency = moduleOutdatedDependencies[i];
-/******/ 						cb = module.hot._acceptedDependencies[dependency];
-/******/ 						if (cb) {
-/******/ 							if (callbacks.indexOf(cb) !== -1) continue;
-/******/ 							callbacks.push(cb);
-/******/ 						}
-/******/ 					}
-/******/ 					for (i = 0; i < callbacks.length; i++) {
-/******/ 						cb = callbacks[i];
-/******/ 						try {
-/******/ 							cb(moduleOutdatedDependencies);
-/******/ 						} catch (err) {
-/******/ 							if (options.onErrored) {
-/******/ 								options.onErrored({
-/******/ 									type: "accept-errored",
-/******/ 									moduleId: moduleId,
-/******/ 									dependencyId: moduleOutdatedDependencies[i],
-/******/ 									error: err
-/******/ 								});
-/******/ 							}
-/******/ 							if (!options.ignoreErrored) {
-/******/ 								if (!error) error = err;
-/******/ 							}
-/******/ 						}
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Load self accepted modules
-/******/ 		for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
-/******/ 			var item = outdatedSelfAcceptedModules[i];
-/******/ 			moduleId = item.module;
-/******/ 			hotCurrentParents = item.parents;
-/******/ 			hotCurrentChildModule = moduleId;
-/******/ 			try {
-/******/ 				__webpack_require__(moduleId);
-/******/ 			} catch (err) {
-/******/ 				if (typeof item.errorHandler === "function") {
-/******/ 					try {
-/******/ 						item.errorHandler(err);
-/******/ 					} catch (err2) {
-/******/ 						if (options.onErrored) {
-/******/ 							options.onErrored({
-/******/ 								type: "self-accept-error-handler-errored",
-/******/ 								moduleId: moduleId,
-/******/ 								error: err2,
-/******/ 								originalError: err
-/******/ 							});
-/******/ 						}
-/******/ 						if (!options.ignoreErrored) {
-/******/ 							if (!error) error = err2;
-/******/ 						}
-/******/ 						if (!error) error = err;
-/******/ 					}
-/******/ 				} else {
-/******/ 					if (options.onErrored) {
-/******/ 						options.onErrored({
-/******/ 							type: "self-accept-errored",
-/******/ 							moduleId: moduleId,
-/******/ 							error: err
-/******/ 						});
-/******/ 					}
-/******/ 					if (!options.ignoreErrored) {
-/******/ 						if (!error) error = err;
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// handle errors in accept handlers and self accepted module load
-/******/ 		if (error) {
-/******/ 			hotSetStatus("fail");
-/******/ 			return Promise.reject(error);
-/******/ 		}
-/******/
-/******/ 		if (hotQueuedInvalidatedModules) {
-/******/ 			return hotApplyInternal(options).then(function(list) {
-/******/ 				outdatedModules.forEach(function(moduleId) {
-/******/ 					if (list.indexOf(moduleId) < 0) list.push(moduleId);
-/******/ 				});
-/******/ 				return list;
-/******/ 			});
-/******/ 		}
-/******/
-/******/ 		hotSetStatus("idle");
-/******/ 		return new Promise(function(resolve) {
-/******/ 			resolve(outdatedModules);
-/******/ 		});
-/******/ 	}
-/******/
-/******/ 	function hotApplyInvalidatedModules() {
-/******/ 		if (hotQueuedInvalidatedModules) {
-/******/ 			if (!hotUpdate) hotUpdate = {};
-/******/ 			hotQueuedInvalidatedModules.forEach(hotApplyInvalidatedModule);
-/******/ 			hotQueuedInvalidatedModules = undefined;
-/******/ 			return true;
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotApplyInvalidatedModule(moduleId) {
-/******/ 		if (!Object.prototype.hasOwnProperty.call(hotUpdate, moduleId))
-/******/ 			hotUpdate[moduleId] = modules[moduleId];
-/******/ 	}
-/******/
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {},
-/******/ 			hot: hotCreateModule(moduleId),
-/******/ 			parents: (hotCurrentParentsTemp = hotCurrentParents, hotCurrentParents = [], hotCurrentParentsTemp),
-/******/ 			children: []
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// __webpack_hash__
-/******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire("./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js")(__webpack_require__.s = "./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js":
 /*!******************************************************************************!*\
   !*** ./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js ***!
   \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (() => {
 
-eval("function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n/**\n Handles Response Editor of tinymce type.\n * */\n(function (define) {\n  var dependencies = []; // Create a flag to determine if we are in lms\n\n  var isLMS = typeof window.LmsRuntime !== 'undefined'; // Determine which css file should be loaded to style text in the editor\n\n  var baseUrl = '/static/studio/js/vendor/tinymce/js/tinymce/';\n\n  if (isLMS) {\n    baseUrl = '/static/js/vendor/tinymce/js/tinymce/';\n  }\n\n  if (typeof window.tinymce === 'undefined') {\n    // If tinymce is not available, we need to load it\n    dependencies.push('tinymce');\n    dependencies.push('jquery.tinymce');\n  }\n\n  define(dependencies, function () {\n    var EditorTinymce = /*#__PURE__*/function () {\n      function EditorTinymce() {\n        _classCallCheck(this, EditorTinymce);\n\n        _defineProperty(this, \"editorInstances\", []);\n      }\n\n      _createClass(EditorTinymce, [{\n        key: \"getTinyMCEConfig\",\n        value:\n        /**\n         Build and return TinyMCE Configuration.\n         * */\n        function getTinyMCEConfig(readonly) {\n          var config = {\n            menubar: false,\n            statusbar: false,\n            base_url: baseUrl,\n            theme: 'silver',\n            skin: 'studio-tmce5',\n            content_css: 'studio-tmce5',\n            height: '300',\n            schema: 'html5',\n            plugins: 'code image link lists',\n            toolbar: 'formatselect | bold italic underline | link blockquote image | numlist bullist outdent indent | strikethrough | code | undo redo'\n          }; // if readonly hide toolbar, menubar and statusbar\n\n          if (readonly) {\n            config = Object.assign(config, {\n              toolbar: false,\n              readonly: 1\n            });\n          }\n\n          return config;\n        }\n        /**\n         Loads TinyMCE editor.\n         Args:\n         elements (object): editor elements selected by jQuery\n         * */\n\n      }, {\n        key: \"load\",\n        value: function load(elements) {\n          this.elements = elements;\n          var ctrl = this;\n          return Promise.all(this.elements.map(function () {\n            var _this = this;\n\n            // check if it's readonly\n            var disabled = $(this).attr('disabled'); // In LMS with multiple Unit containing ORA Block with tinyMCE enabled,\n            // We need to destroy if any previously intialized editor exists for current element.\n\n            var id = $(this).attr('id');\n\n            if (id !== undefined) {\n              var existingEditor = tinymce.get(id); // eslint-disable-line\n\n              if (existingEditor) {\n                existingEditor.destroy();\n              }\n            }\n\n            var config = ctrl.getTinyMCEConfig(disabled);\n            return new Promise(function (resolve) {\n              config.setup = function (editor) {\n                return editor.on('init', function () {\n                  ctrl.editorInstances.push(editor);\n                  resolve();\n                });\n              };\n\n              $(_this).tinymce(config);\n            });\n          }));\n        }\n        /**\n         Set on change listener to the editor.\n         Args:\n         handler (Function)\n         * */\n\n      }, {\n        key: \"setOnChangeListener\",\n        value: function setOnChangeListener(handler) {\n          var _this2 = this;\n\n          ['change', 'keyup', 'drop', 'paste'].forEach(function (eventName) {\n            _this2.editorInstances.forEach(function (editor) {\n              editor.on(eventName, handler);\n            });\n          });\n        }\n        /**\n         Set the response texts.\n         Retrieve the response texts.\n         Args:\n         texts (array of strings): If specified, the texts to set for the response.\n         Returns:\n         array of strings: The current response texts.\n         * */\n\n        /* eslint-disable-next-line consistent-return */\n\n      }, {\n        key: \"response\",\n        value: function response(texts) {\n          if (typeof texts === 'undefined') {\n            return this.editorInstances.map(function (editor) {\n              return editor.getContent();\n            });\n          }\n\n          this.editorInstances.forEach(function (editor, index) {\n            editor.setContent(texts[index]);\n          });\n        }\n      }]);\n\n      return EditorTinymce;\n    }(); // return a function, to be able to create new instance every time.\n\n\n    return function () {\n      return new EditorTinymce();\n    };\n  });\n}).call(window, window.define || window.RequireJS.define);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9vcGVuYXNzZXNzbWVudC94YmxvY2svc3RhdGljL2pzL3NyYy9sbXMvZWRpdG9ycy9vYV9lZGl0b3JfdGlueW1jZS5qcz82MmZhIl0sIm5hbWVzIjpbImRlZmluZSIsImRlcGVuZGVuY2llcyIsImlzTE1TIiwid2luZG93IiwiTG1zUnVudGltZSIsImJhc2VVcmwiLCJ0aW55bWNlIiwicHVzaCIsIkVkaXRvclRpbnltY2UiLCJyZWFkb25seSIsImNvbmZpZyIsIm1lbnViYXIiLCJzdGF0dXNiYXIiLCJiYXNlX3VybCIsInRoZW1lIiwic2tpbiIsImNvbnRlbnRfY3NzIiwiaGVpZ2h0Iiwic2NoZW1hIiwicGx1Z2lucyIsInRvb2xiYXIiLCJPYmplY3QiLCJhc3NpZ24iLCJlbGVtZW50cyIsImN0cmwiLCJQcm9taXNlIiwiYWxsIiwibWFwIiwiZGlzYWJsZWQiLCIkIiwiYXR0ciIsImlkIiwidW5kZWZpbmVkIiwiZXhpc3RpbmdFZGl0b3IiLCJnZXQiLCJkZXN0cm95IiwiZ2V0VGlueU1DRUNvbmZpZyIsInJlc29sdmUiLCJzZXR1cCIsImVkaXRvciIsIm9uIiwiZWRpdG9ySW5zdGFuY2VzIiwiaGFuZGxlciIsImZvckVhY2giLCJldmVudE5hbWUiLCJ0ZXh0cyIsImdldENvbnRlbnQiLCJpbmRleCIsInNldENvbnRlbnQiLCJjYWxsIiwiUmVxdWlyZUpTIl0sIm1hcHBpbmdzIjoiOzs7Ozs7OztBQUFBOzs7QUFJQSxDQUFDLFVBQVVBLE1BQVYsRUFBa0I7QUFDakIsTUFBTUMsWUFBWSxHQUFHLEVBQXJCLENBRGlCLENBR2pCOztBQUNBLE1BQU1DLEtBQUssR0FBRyxPQUFPQyxNQUFNLENBQUNDLFVBQWQsS0FBNkIsV0FBM0MsQ0FKaUIsQ0FNakI7O0FBQ0EsTUFBSUMsT0FBTyxHQUFHLDhDQUFkOztBQUNBLE1BQUlILEtBQUosRUFBVztBQUNURyxXQUFPLEdBQUcsdUNBQVY7QUFDRDs7QUFFRCxNQUFJLE9BQU9GLE1BQU0sQ0FBQ0csT0FBZCxLQUEwQixXQUE5QixFQUEyQztBQUN6QztBQUNBTCxnQkFBWSxDQUFDTSxJQUFiLENBQWtCLFNBQWxCO0FBQ0FOLGdCQUFZLENBQUNNLElBQWIsQ0FBa0IsZ0JBQWxCO0FBQ0Q7O0FBRURQLFFBQU0sQ0FBQ0MsWUFBRCxFQUFlLFlBQU07QUFBQSxRQUNuQk8sYUFEbUI7QUFBQTtBQUFBOztBQUFBLGlEQUVMLEVBRks7QUFBQTs7QUFBQTtBQUFBO0FBQUE7QUFJdkI7OztBQUdBLGtDQUFpQkMsUUFBakIsRUFBMkI7QUFDekIsY0FBSUMsTUFBTSxHQUFHO0FBQ1hDLG1CQUFPLEVBQUUsS0FERTtBQUVYQyxxQkFBUyxFQUFFLEtBRkE7QUFHWEMsb0JBQVEsRUFBRVIsT0FIQztBQUlYUyxpQkFBSyxFQUFFLFFBSkk7QUFLWEMsZ0JBQUksRUFBRSxjQUxLO0FBTVhDLHVCQUFXLEVBQUUsY0FORjtBQU9YQyxrQkFBTSxFQUFFLEtBUEc7QUFRWEMsa0JBQU0sRUFBRSxPQVJHO0FBU1hDLG1CQUFPLEVBQUUsdUJBVEU7QUFVWEMsbUJBQU8sRUFBRTtBQVZFLFdBQWIsQ0FEeUIsQ0FjekI7O0FBQ0EsY0FBSVgsUUFBSixFQUFjO0FBQ1pDLGtCQUFNLEdBQUdXLE1BQU0sQ0FBQ0MsTUFBUCxDQUFjWixNQUFkLEVBQXNCO0FBQzdCVSxxQkFBTyxFQUFFLEtBRG9CO0FBRTdCWCxzQkFBUSxFQUFFO0FBRm1CLGFBQXRCLENBQVQ7QUFJRDs7QUFFRCxpQkFBT0MsTUFBUDtBQUNEO0FBRUQ7Ozs7OztBQWhDdUI7QUFBQTtBQUFBLGVBcUN2QixjQUFLYSxRQUFMLEVBQWU7QUFDYixlQUFLQSxRQUFMLEdBQWdCQSxRQUFoQjtBQUVBLGNBQU1DLElBQUksR0FBRyxJQUFiO0FBRUEsaUJBQU9DLE9BQU8sQ0FBQ0MsR0FBUixDQUFZLEtBQUtILFFBQUwsQ0FBY0ksR0FBZCxDQUFrQixZQUFZO0FBQUE7O0FBQy9DO0FBQ0EsZ0JBQU1DLFFBQVEsR0FBR0MsQ0FBQyxDQUFDLElBQUQsQ0FBRCxDQUFRQyxJQUFSLENBQWEsVUFBYixDQUFqQixDQUYrQyxDQUkvQztBQUNBOztBQUNBLGdCQUFNQyxFQUFFLEdBQUdGLENBQUMsQ0FBQyxJQUFELENBQUQsQ0FBUUMsSUFBUixDQUFhLElBQWIsQ0FBWDs7QUFDQSxnQkFBSUMsRUFBRSxLQUFLQyxTQUFYLEVBQXNCO0FBQ3BCLGtCQUFNQyxjQUFjLEdBQUczQixPQUFPLENBQUM0QixHQUFSLENBQVlILEVBQVosQ0FBdkIsQ0FEb0IsQ0FDb0I7O0FBQ3hDLGtCQUFJRSxjQUFKLEVBQW9CO0FBQ2xCQSw4QkFBYyxDQUFDRSxPQUFmO0FBQ0Q7QUFDRjs7QUFFRCxnQkFBTXpCLE1BQU0sR0FBR2MsSUFBSSxDQUFDWSxnQkFBTCxDQUFzQlIsUUFBdEIsQ0FBZjtBQUNBLG1CQUFPLElBQUlILE9BQUosQ0FBWSxVQUFBWSxPQUFPLEVBQUk7QUFDNUIzQixvQkFBTSxDQUFDNEIsS0FBUCxHQUFlLFVBQUFDLE1BQU07QUFBQSx1QkFBSUEsTUFBTSxDQUFDQyxFQUFQLENBQVUsTUFBVixFQUFrQixZQUFNO0FBQy9DaEIsc0JBQUksQ0FBQ2lCLGVBQUwsQ0FBcUJsQyxJQUFyQixDQUEwQmdDLE1BQTFCO0FBQ0FGLHlCQUFPO0FBQ1IsaUJBSHdCLENBQUo7QUFBQSxlQUFyQjs7QUFJQVIsZUFBQyxDQUFDLEtBQUQsQ0FBRCxDQUFRdkIsT0FBUixDQUFnQkksTUFBaEI7QUFDRCxhQU5NLENBQVA7QUFPRCxXQXRCa0IsQ0FBWixDQUFQO0FBdUJEO0FBRUQ7Ozs7OztBQW5FdUI7QUFBQTtBQUFBLGVBd0V2Qiw2QkFBb0JnQyxPQUFwQixFQUE2QjtBQUFBOztBQUMzQixXQUFDLFFBQUQsRUFBVyxPQUFYLEVBQW9CLE1BQXBCLEVBQTRCLE9BQTVCLEVBQXFDQyxPQUFyQyxDQUE2QyxVQUFBQyxTQUFTLEVBQUk7QUFDeEQsa0JBQUksQ0FBQ0gsZUFBTCxDQUFxQkUsT0FBckIsQ0FBNkIsVUFBQUosTUFBTSxFQUFJO0FBQ3JDQSxvQkFBTSxDQUFDQyxFQUFQLENBQVVJLFNBQVYsRUFBcUJGLE9BQXJCO0FBQ0QsYUFGRDtBQUdELFdBSkQ7QUFLRDtBQUVEOzs7Ozs7Ozs7QUFRQTs7QUF4RnVCO0FBQUE7QUFBQSxlQXlGdkIsa0JBQVNHLEtBQVQsRUFBZ0I7QUFDZCxjQUFJLE9BQU9BLEtBQVAsS0FBaUIsV0FBckIsRUFBa0M7QUFDaEMsbUJBQU8sS0FBS0osZUFBTCxDQUFxQmQsR0FBckIsQ0FBeUIsVUFBQVksTUFBTTtBQUFBLHFCQUFJQSxNQUFNLENBQUNPLFVBQVAsRUFBSjtBQUFBLGFBQS9CLENBQVA7QUFDRDs7QUFDRCxlQUFLTCxlQUFMLENBQXFCRSxPQUFyQixDQUE2QixVQUFDSixNQUFELEVBQVNRLEtBQVQsRUFBbUI7QUFDOUNSLGtCQUFNLENBQUNTLFVBQVAsQ0FBa0JILEtBQUssQ0FBQ0UsS0FBRCxDQUF2QjtBQUNELFdBRkQ7QUFHRDtBQWhHc0I7O0FBQUE7QUFBQSxTQW1HekI7OztBQUNBLFdBQU8sWUFBWTtBQUNqQixhQUFPLElBQUl2QyxhQUFKLEVBQVA7QUFDRCxLQUZEO0FBR0QsR0F2R0ssQ0FBTjtBQXdHRCxDQTFIRCxFQTBIR3lDLElBMUhILENBMEhROUMsTUExSFIsRUEwSGdCQSxNQUFNLENBQUNILE1BQVAsSUFBaUJHLE1BQU0sQ0FBQytDLFNBQVAsQ0FBaUJsRCxNQTFIbEQiLCJmaWxlIjoiLi9vcGVuYXNzZXNzbWVudC94YmxvY2svc3RhdGljL2pzL3NyYy9sbXMvZWRpdG9ycy9vYV9lZGl0b3JfdGlueW1jZS5qcy5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxuIEhhbmRsZXMgUmVzcG9uc2UgRWRpdG9yIG9mIHRpbnltY2UgdHlwZS5cbiAqICovXG5cbihmdW5jdGlvbiAoZGVmaW5lKSB7XG4gIGNvbnN0IGRlcGVuZGVuY2llcyA9IFtdO1xuXG4gIC8vIENyZWF0ZSBhIGZsYWcgdG8gZGV0ZXJtaW5lIGlmIHdlIGFyZSBpbiBsbXNcbiAgY29uc3QgaXNMTVMgPSB0eXBlb2Ygd2luZG93Lkxtc1J1bnRpbWUgIT09ICd1bmRlZmluZWQnO1xuXG4gIC8vIERldGVybWluZSB3aGljaCBjc3MgZmlsZSBzaG91bGQgYmUgbG9hZGVkIHRvIHN0eWxlIHRleHQgaW4gdGhlIGVkaXRvclxuICBsZXQgYmFzZVVybCA9ICcvc3RhdGljL3N0dWRpby9qcy92ZW5kb3IvdGlueW1jZS9qcy90aW55bWNlLyc7XG4gIGlmIChpc0xNUykge1xuICAgIGJhc2VVcmwgPSAnL3N0YXRpYy9qcy92ZW5kb3IvdGlueW1jZS9qcy90aW55bWNlLyc7XG4gIH1cblxuICBpZiAodHlwZW9mIHdpbmRvdy50aW55bWNlID09PSAndW5kZWZpbmVkJykge1xuICAgIC8vIElmIHRpbnltY2UgaXMgbm90IGF2YWlsYWJsZSwgd2UgbmVlZCB0byBsb2FkIGl0XG4gICAgZGVwZW5kZW5jaWVzLnB1c2goJ3RpbnltY2UnKTtcbiAgICBkZXBlbmRlbmNpZXMucHVzaCgnanF1ZXJ5LnRpbnltY2UnKTtcbiAgfVxuXG4gIGRlZmluZShkZXBlbmRlbmNpZXMsICgpID0+IHtcbiAgICBjbGFzcyBFZGl0b3JUaW55bWNlIHtcbiAgICAgIGVkaXRvckluc3RhbmNlcyA9IFtdO1xuXG4gICAgICAvKipcbiAgICAgICBCdWlsZCBhbmQgcmV0dXJuIFRpbnlNQ0UgQ29uZmlndXJhdGlvbi5cbiAgICAgICAqICovXG4gICAgICBnZXRUaW55TUNFQ29uZmlnKHJlYWRvbmx5KSB7XG4gICAgICAgIGxldCBjb25maWcgPSB7XG4gICAgICAgICAgbWVudWJhcjogZmFsc2UsXG4gICAgICAgICAgc3RhdHVzYmFyOiBmYWxzZSxcbiAgICAgICAgICBiYXNlX3VybDogYmFzZVVybCxcbiAgICAgICAgICB0aGVtZTogJ3NpbHZlcicsXG4gICAgICAgICAgc2tpbjogJ3N0dWRpby10bWNlNScsXG4gICAgICAgICAgY29udGVudF9jc3M6ICdzdHVkaW8tdG1jZTUnLFxuICAgICAgICAgIGhlaWdodDogJzMwMCcsXG4gICAgICAgICAgc2NoZW1hOiAnaHRtbDUnLFxuICAgICAgICAgIHBsdWdpbnM6ICdjb2RlIGltYWdlIGxpbmsgbGlzdHMnLFxuICAgICAgICAgIHRvb2xiYXI6ICdmb3JtYXRzZWxlY3QgfCBib2xkIGl0YWxpYyB1bmRlcmxpbmUgfCBsaW5rIGJsb2NrcXVvdGUgaW1hZ2UgfCBudW1saXN0IGJ1bGxpc3Qgb3V0ZGVudCBpbmRlbnQgfCBzdHJpa2V0aHJvdWdoIHwgY29kZSB8IHVuZG8gcmVkbycsXG4gICAgICAgIH07XG5cbiAgICAgICAgLy8gaWYgcmVhZG9ubHkgaGlkZSB0b29sYmFyLCBtZW51YmFyIGFuZCBzdGF0dXNiYXJcbiAgICAgICAgaWYgKHJlYWRvbmx5KSB7XG4gICAgICAgICAgY29uZmlnID0gT2JqZWN0LmFzc2lnbihjb25maWcsIHtcbiAgICAgICAgICAgIHRvb2xiYXI6IGZhbHNlLFxuICAgICAgICAgICAgcmVhZG9ubHk6IDEsXG4gICAgICAgICAgfSk7XG4gICAgICAgIH1cblxuICAgICAgICByZXR1cm4gY29uZmlnO1xuICAgICAgfVxuXG4gICAgICAvKipcbiAgICAgICBMb2FkcyBUaW55TUNFIGVkaXRvci5cbiAgICAgICBBcmdzOlxuICAgICAgIGVsZW1lbnRzIChvYmplY3QpOiBlZGl0b3IgZWxlbWVudHMgc2VsZWN0ZWQgYnkgalF1ZXJ5XG4gICAgICAgKiAqL1xuICAgICAgbG9hZChlbGVtZW50cykge1xuICAgICAgICB0aGlzLmVsZW1lbnRzID0gZWxlbWVudHM7XG5cbiAgICAgICAgY29uc3QgY3RybCA9IHRoaXM7XG5cbiAgICAgICAgcmV0dXJuIFByb21pc2UuYWxsKHRoaXMuZWxlbWVudHMubWFwKGZ1bmN0aW9uICgpIHtcbiAgICAgICAgICAvLyBjaGVjayBpZiBpdCdzIHJlYWRvbmx5XG4gICAgICAgICAgY29uc3QgZGlzYWJsZWQgPSAkKHRoaXMpLmF0dHIoJ2Rpc2FibGVkJyk7XG5cbiAgICAgICAgICAvLyBJbiBMTVMgd2l0aCBtdWx0aXBsZSBVbml0IGNvbnRhaW5pbmcgT1JBIEJsb2NrIHdpdGggdGlueU1DRSBlbmFibGVkLFxuICAgICAgICAgIC8vIFdlIG5lZWQgdG8gZGVzdHJveSBpZiBhbnkgcHJldmlvdXNseSBpbnRpYWxpemVkIGVkaXRvciBleGlzdHMgZm9yIGN1cnJlbnQgZWxlbWVudC5cbiAgICAgICAgICBjb25zdCBpZCA9ICQodGhpcykuYXR0cignaWQnKTtcbiAgICAgICAgICBpZiAoaWQgIT09IHVuZGVmaW5lZCkge1xuICAgICAgICAgICAgY29uc3QgZXhpc3RpbmdFZGl0b3IgPSB0aW55bWNlLmdldChpZCk7IC8vIGVzbGludC1kaXNhYmxlLWxpbmVcbiAgICAgICAgICAgIGlmIChleGlzdGluZ0VkaXRvcikge1xuICAgICAgICAgICAgICBleGlzdGluZ0VkaXRvci5kZXN0cm95KCk7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgfVxuXG4gICAgICAgICAgY29uc3QgY29uZmlnID0gY3RybC5nZXRUaW55TUNFQ29uZmlnKGRpc2FibGVkKTtcbiAgICAgICAgICByZXR1cm4gbmV3IFByb21pc2UocmVzb2x2ZSA9PiB7XG4gICAgICAgICAgICBjb25maWcuc2V0dXAgPSBlZGl0b3IgPT4gZWRpdG9yLm9uKCdpbml0JywgKCkgPT4ge1xuICAgICAgICAgICAgICBjdHJsLmVkaXRvckluc3RhbmNlcy5wdXNoKGVkaXRvcik7XG4gICAgICAgICAgICAgIHJlc29sdmUoKTtcbiAgICAgICAgICAgIH0pO1xuICAgICAgICAgICAgJCh0aGlzKS50aW55bWNlKGNvbmZpZyk7XG4gICAgICAgICAgfSk7XG4gICAgICAgIH0pKTtcbiAgICAgIH1cblxuICAgICAgLyoqXG4gICAgICAgU2V0IG9uIGNoYW5nZSBsaXN0ZW5lciB0byB0aGUgZWRpdG9yLlxuICAgICAgIEFyZ3M6XG4gICAgICAgaGFuZGxlciAoRnVuY3Rpb24pXG4gICAgICAgKiAqL1xuICAgICAgc2V0T25DaGFuZ2VMaXN0ZW5lcihoYW5kbGVyKSB7XG4gICAgICAgIFsnY2hhbmdlJywgJ2tleXVwJywgJ2Ryb3AnLCAncGFzdGUnXS5mb3JFYWNoKGV2ZW50TmFtZSA9PiB7XG4gICAgICAgICAgdGhpcy5lZGl0b3JJbnN0YW5jZXMuZm9yRWFjaChlZGl0b3IgPT4ge1xuICAgICAgICAgICAgZWRpdG9yLm9uKGV2ZW50TmFtZSwgaGFuZGxlcik7XG4gICAgICAgICAgfSk7XG4gICAgICAgIH0pO1xuICAgICAgfVxuXG4gICAgICAvKipcbiAgICAgICBTZXQgdGhlIHJlc3BvbnNlIHRleHRzLlxuICAgICAgIFJldHJpZXZlIHRoZSByZXNwb25zZSB0ZXh0cy5cbiAgICAgICBBcmdzOlxuICAgICAgIHRleHRzIChhcnJheSBvZiBzdHJpbmdzKTogSWYgc3BlY2lmaWVkLCB0aGUgdGV4dHMgdG8gc2V0IGZvciB0aGUgcmVzcG9uc2UuXG4gICAgICAgUmV0dXJuczpcbiAgICAgICBhcnJheSBvZiBzdHJpbmdzOiBUaGUgY3VycmVudCByZXNwb25zZSB0ZXh0cy5cbiAgICAgICAqICovXG4gICAgICAvKiBlc2xpbnQtZGlzYWJsZS1uZXh0LWxpbmUgY29uc2lzdGVudC1yZXR1cm4gKi9cbiAgICAgIHJlc3BvbnNlKHRleHRzKSB7XG4gICAgICAgIGlmICh0eXBlb2YgdGV4dHMgPT09ICd1bmRlZmluZWQnKSB7XG4gICAgICAgICAgcmV0dXJuIHRoaXMuZWRpdG9ySW5zdGFuY2VzLm1hcChlZGl0b3IgPT4gZWRpdG9yLmdldENvbnRlbnQoKSk7XG4gICAgICAgIH1cbiAgICAgICAgdGhpcy5lZGl0b3JJbnN0YW5jZXMuZm9yRWFjaCgoZWRpdG9yLCBpbmRleCkgPT4ge1xuICAgICAgICAgIGVkaXRvci5zZXRDb250ZW50KHRleHRzW2luZGV4XSk7XG4gICAgICAgIH0pO1xuICAgICAgfVxuICAgIH1cblxuICAgIC8vIHJldHVybiBhIGZ1bmN0aW9uLCB0byBiZSBhYmxlIHRvIGNyZWF0ZSBuZXcgaW5zdGFuY2UgZXZlcnkgdGltZS5cbiAgICByZXR1cm4gZnVuY3Rpb24gKCkge1xuICAgICAgcmV0dXJuIG5ldyBFZGl0b3JUaW55bWNlKCk7XG4gICAgfTtcbiAgfSk7XG59KS5jYWxsKHdpbmRvdywgd2luZG93LmRlZmluZSB8fCB3aW5kb3cuUmVxdWlyZUpTLmRlZmluZSk7XG4iXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js\n");
+eval("function _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && \"function\" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? \"symbol\" : typeof o; }, _typeof(o); }\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, \"prototype\", { writable: false }); return Constructor; }\nfunction _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\nfunction _toPropertyKey(arg) { var key = _toPrimitive(arg, \"string\"); return _typeof(key) === \"symbol\" ? key : String(key); }\nfunction _toPrimitive(input, hint) { if (_typeof(input) !== \"object\" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || \"default\"); if (_typeof(res) !== \"object\") return res; throw new TypeError(\"@@toPrimitive must return a primitive value.\"); } return (hint === \"string\" ? String : Number)(input); }\n/**\n Handles Response Editor of tinymce type.\n * */\n\n(function (define) {\n  var dependencies = [];\n\n  // Create a flag to determine if we are in lms\n  var isLMS = typeof window.LmsRuntime !== 'undefined';\n\n  // Determine which css file should be loaded to style text in the editor\n  var baseUrl = '/static/studio/js/vendor/tinymce/js/tinymce/';\n  if (isLMS) {\n    baseUrl = '/static/js/vendor/tinymce/js/tinymce/';\n  }\n  if (typeof window.tinymce === 'undefined') {\n    // If tinymce is not available, we need to load it\n    dependencies.push('tinymce');\n    dependencies.push('jquery.tinymce');\n  }\n  define(dependencies, function () {\n    var EditorTinymce = /*#__PURE__*/function () {\n      function EditorTinymce() {\n        _classCallCheck(this, EditorTinymce);\n        _defineProperty(this, \"editorInstances\", []);\n      }\n      _createClass(EditorTinymce, [{\n        key: \"getTinyMCEConfig\",\n        value:\n        /**\n         Build and return TinyMCE Configuration.\n         * */\n        function getTinyMCEConfig(readonly) {\n          var config = {\n            menubar: false,\n            statusbar: false,\n            base_url: baseUrl,\n            theme: 'silver',\n            skin: 'studio-tmce5',\n            content_css: 'studio-tmce5',\n            height: '300',\n            schema: 'html5',\n            plugins: 'code image link lists',\n            toolbar: 'formatselect | bold italic underline | link blockquote image | numlist bullist outdent indent | strikethrough | code | undo redo'\n          };\n\n          // if readonly hide toolbar, menubar and statusbar\n          if (readonly) {\n            config = Object.assign(config, {\n              toolbar: false,\n              readonly: 1\n            });\n          }\n          return config;\n        }\n\n        /**\n         Loads TinyMCE editor.\n         Args:\n         elements (object): editor elements selected by jQuery\n         * */\n      }, {\n        key: \"load\",\n        value: function load(elements) {\n          this.elements = elements;\n          var ctrl = this;\n          return Promise.all(this.elements.map(function () {\n            var _this = this;\n            // check if it's readonly\n            var disabled = $(this).attr('disabled');\n\n            // In LMS with multiple Unit containing ORA Block with tinyMCE enabled,\n            // We need to destroy if any previously intialized editor exists for current element.\n            var id = $(this).attr('id');\n            if (id !== undefined) {\n              var existingEditor = tinymce.get(id); // eslint-disable-line\n              if (existingEditor) {\n                existingEditor.destroy();\n              }\n            }\n            var config = ctrl.getTinyMCEConfig(disabled);\n            return new Promise(function (resolve) {\n              config.setup = function (editor) {\n                return editor.on('init', function () {\n                  ctrl.editorInstances.push(editor);\n                  resolve();\n                });\n              };\n              $(_this).tinymce(config);\n            });\n          }));\n        }\n\n        /**\n         Set on change listener to the editor.\n         Args:\n         handler (Function)\n         * */\n      }, {\n        key: \"setOnChangeListener\",\n        value: function setOnChangeListener(handler) {\n          var _this2 = this;\n          ['change', 'keyup', 'drop', 'paste'].forEach(function (eventName) {\n            _this2.editorInstances.forEach(function (editor) {\n              editor.on(eventName, handler);\n            });\n          });\n        }\n\n        /**\n         Set the response texts.\n         Retrieve the response texts.\n         Args:\n         texts (array of strings): If specified, the texts to set for the response.\n         Returns:\n         array of strings: The current response texts.\n         * */\n        /* eslint-disable-next-line consistent-return */\n      }, {\n        key: \"response\",\n        value: function response(texts) {\n          if (typeof texts === 'undefined') {\n            return this.editorInstances.map(function (editor) {\n              return editor.getContent();\n            });\n          }\n          this.editorInstances.forEach(function (editor, index) {\n            editor.setContent(texts[index]);\n          });\n        }\n      }]);\n      return EditorTinymce;\n    }(); // return a function, to be able to create new instance every time.\n    return function () {\n      return new EditorTinymce();\n    };\n  });\n}).call(window, window.define || window.RequireJS.define);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJkZWZpbmUiLCJkZXBlbmRlbmNpZXMiLCJpc0xNUyIsIndpbmRvdyIsIkxtc1J1bnRpbWUiLCJiYXNlVXJsIiwidGlueW1jZSIsInB1c2giLCJFZGl0b3JUaW55bWNlIiwiX2NsYXNzQ2FsbENoZWNrIiwiX2RlZmluZVByb3BlcnR5IiwiX2NyZWF0ZUNsYXNzIiwia2V5IiwidmFsdWUiLCJnZXRUaW55TUNFQ29uZmlnIiwicmVhZG9ubHkiLCJjb25maWciLCJtZW51YmFyIiwic3RhdHVzYmFyIiwiYmFzZV91cmwiLCJ0aGVtZSIsInNraW4iLCJjb250ZW50X2NzcyIsImhlaWdodCIsInNjaGVtYSIsInBsdWdpbnMiLCJ0b29sYmFyIiwiT2JqZWN0IiwiYXNzaWduIiwibG9hZCIsImVsZW1lbnRzIiwiY3RybCIsIlByb21pc2UiLCJhbGwiLCJtYXAiLCJfdGhpcyIsImRpc2FibGVkIiwiJCIsImF0dHIiLCJpZCIsInVuZGVmaW5lZCIsImV4aXN0aW5nRWRpdG9yIiwiZ2V0IiwiZGVzdHJveSIsInJlc29sdmUiLCJzZXR1cCIsImVkaXRvciIsIm9uIiwiZWRpdG9ySW5zdGFuY2VzIiwic2V0T25DaGFuZ2VMaXN0ZW5lciIsImhhbmRsZXIiLCJfdGhpczIiLCJmb3JFYWNoIiwiZXZlbnROYW1lIiwicmVzcG9uc2UiLCJ0ZXh0cyIsImdldENvbnRlbnQiLCJpbmRleCIsInNldENvbnRlbnQiLCJjYWxsIiwiUmVxdWlyZUpTIl0sInNvdXJjZXMiOlsid2VicGFjazovL2VkeC1vcmEyLy4vb3BlbmFzc2Vzc21lbnQveGJsb2NrL3N0YXRpYy9qcy9zcmMvbG1zL2VkaXRvcnMvb2FfZWRpdG9yX3RpbnltY2UuanM/NjJmYSJdLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiBIYW5kbGVzIFJlc3BvbnNlIEVkaXRvciBvZiB0aW55bWNlIHR5cGUuXG4gKiAqL1xuXG4oZnVuY3Rpb24gKGRlZmluZSkge1xuICBjb25zdCBkZXBlbmRlbmNpZXMgPSBbXTtcblxuICAvLyBDcmVhdGUgYSBmbGFnIHRvIGRldGVybWluZSBpZiB3ZSBhcmUgaW4gbG1zXG4gIGNvbnN0IGlzTE1TID0gdHlwZW9mIHdpbmRvdy5MbXNSdW50aW1lICE9PSAndW5kZWZpbmVkJztcblxuICAvLyBEZXRlcm1pbmUgd2hpY2ggY3NzIGZpbGUgc2hvdWxkIGJlIGxvYWRlZCB0byBzdHlsZSB0ZXh0IGluIHRoZSBlZGl0b3JcbiAgbGV0IGJhc2VVcmwgPSAnL3N0YXRpYy9zdHVkaW8vanMvdmVuZG9yL3RpbnltY2UvanMvdGlueW1jZS8nO1xuICBpZiAoaXNMTVMpIHtcbiAgICBiYXNlVXJsID0gJy9zdGF0aWMvanMvdmVuZG9yL3RpbnltY2UvanMvdGlueW1jZS8nO1xuICB9XG5cbiAgaWYgKHR5cGVvZiB3aW5kb3cudGlueW1jZSA9PT0gJ3VuZGVmaW5lZCcpIHtcbiAgICAvLyBJZiB0aW55bWNlIGlzIG5vdCBhdmFpbGFibGUsIHdlIG5lZWQgdG8gbG9hZCBpdFxuICAgIGRlcGVuZGVuY2llcy5wdXNoKCd0aW55bWNlJyk7XG4gICAgZGVwZW5kZW5jaWVzLnB1c2goJ2pxdWVyeS50aW55bWNlJyk7XG4gIH1cblxuICBkZWZpbmUoZGVwZW5kZW5jaWVzLCAoKSA9PiB7XG4gICAgY2xhc3MgRWRpdG9yVGlueW1jZSB7XG4gICAgICBlZGl0b3JJbnN0YW5jZXMgPSBbXTtcblxuICAgICAgLyoqXG4gICAgICAgQnVpbGQgYW5kIHJldHVybiBUaW55TUNFIENvbmZpZ3VyYXRpb24uXG4gICAgICAgKiAqL1xuICAgICAgZ2V0VGlueU1DRUNvbmZpZyhyZWFkb25seSkge1xuICAgICAgICBsZXQgY29uZmlnID0ge1xuICAgICAgICAgIG1lbnViYXI6IGZhbHNlLFxuICAgICAgICAgIHN0YXR1c2JhcjogZmFsc2UsXG4gICAgICAgICAgYmFzZV91cmw6IGJhc2VVcmwsXG4gICAgICAgICAgdGhlbWU6ICdzaWx2ZXInLFxuICAgICAgICAgIHNraW46ICdzdHVkaW8tdG1jZTUnLFxuICAgICAgICAgIGNvbnRlbnRfY3NzOiAnc3R1ZGlvLXRtY2U1JyxcbiAgICAgICAgICBoZWlnaHQ6ICczMDAnLFxuICAgICAgICAgIHNjaGVtYTogJ2h0bWw1JyxcbiAgICAgICAgICBwbHVnaW5zOiAnY29kZSBpbWFnZSBsaW5rIGxpc3RzJyxcbiAgICAgICAgICB0b29sYmFyOiAnZm9ybWF0c2VsZWN0IHwgYm9sZCBpdGFsaWMgdW5kZXJsaW5lIHwgbGluayBibG9ja3F1b3RlIGltYWdlIHwgbnVtbGlzdCBidWxsaXN0IG91dGRlbnQgaW5kZW50IHwgc3RyaWtldGhyb3VnaCB8IGNvZGUgfCB1bmRvIHJlZG8nLFxuICAgICAgICB9O1xuXG4gICAgICAgIC8vIGlmIHJlYWRvbmx5IGhpZGUgdG9vbGJhciwgbWVudWJhciBhbmQgc3RhdHVzYmFyXG4gICAgICAgIGlmIChyZWFkb25seSkge1xuICAgICAgICAgIGNvbmZpZyA9IE9iamVjdC5hc3NpZ24oY29uZmlnLCB7XG4gICAgICAgICAgICB0b29sYmFyOiBmYWxzZSxcbiAgICAgICAgICAgIHJlYWRvbmx5OiAxLFxuICAgICAgICAgIH0pO1xuICAgICAgICB9XG5cbiAgICAgICAgcmV0dXJuIGNvbmZpZztcbiAgICAgIH1cblxuICAgICAgLyoqXG4gICAgICAgTG9hZHMgVGlueU1DRSBlZGl0b3IuXG4gICAgICAgQXJnczpcbiAgICAgICBlbGVtZW50cyAob2JqZWN0KTogZWRpdG9yIGVsZW1lbnRzIHNlbGVjdGVkIGJ5IGpRdWVyeVxuICAgICAgICogKi9cbiAgICAgIGxvYWQoZWxlbWVudHMpIHtcbiAgICAgICAgdGhpcy5lbGVtZW50cyA9IGVsZW1lbnRzO1xuXG4gICAgICAgIGNvbnN0IGN0cmwgPSB0aGlzO1xuXG4gICAgICAgIHJldHVybiBQcm9taXNlLmFsbCh0aGlzLmVsZW1lbnRzLm1hcChmdW5jdGlvbiAoKSB7XG4gICAgICAgICAgLy8gY2hlY2sgaWYgaXQncyByZWFkb25seVxuICAgICAgICAgIGNvbnN0IGRpc2FibGVkID0gJCh0aGlzKS5hdHRyKCdkaXNhYmxlZCcpO1xuXG4gICAgICAgICAgLy8gSW4gTE1TIHdpdGggbXVsdGlwbGUgVW5pdCBjb250YWluaW5nIE9SQSBCbG9jayB3aXRoIHRpbnlNQ0UgZW5hYmxlZCxcbiAgICAgICAgICAvLyBXZSBuZWVkIHRvIGRlc3Ryb3kgaWYgYW55IHByZXZpb3VzbHkgaW50aWFsaXplZCBlZGl0b3IgZXhpc3RzIGZvciBjdXJyZW50IGVsZW1lbnQuXG4gICAgICAgICAgY29uc3QgaWQgPSAkKHRoaXMpLmF0dHIoJ2lkJyk7XG4gICAgICAgICAgaWYgKGlkICE9PSB1bmRlZmluZWQpIHtcbiAgICAgICAgICAgIGNvbnN0IGV4aXN0aW5nRWRpdG9yID0gdGlueW1jZS5nZXQoaWQpOyAvLyBlc2xpbnQtZGlzYWJsZS1saW5lXG4gICAgICAgICAgICBpZiAoZXhpc3RpbmdFZGl0b3IpIHtcbiAgICAgICAgICAgICAgZXhpc3RpbmdFZGl0b3IuZGVzdHJveSgpO1xuICAgICAgICAgICAgfVxuICAgICAgICAgIH1cblxuICAgICAgICAgIGNvbnN0IGNvbmZpZyA9IGN0cmwuZ2V0VGlueU1DRUNvbmZpZyhkaXNhYmxlZCk7XG4gICAgICAgICAgcmV0dXJuIG5ldyBQcm9taXNlKHJlc29sdmUgPT4ge1xuICAgICAgICAgICAgY29uZmlnLnNldHVwID0gZWRpdG9yID0+IGVkaXRvci5vbignaW5pdCcsICgpID0+IHtcbiAgICAgICAgICAgICAgY3RybC5lZGl0b3JJbnN0YW5jZXMucHVzaChlZGl0b3IpO1xuICAgICAgICAgICAgICByZXNvbHZlKCk7XG4gICAgICAgICAgICB9KTtcbiAgICAgICAgICAgICQodGhpcykudGlueW1jZShjb25maWcpO1xuICAgICAgICAgIH0pO1xuICAgICAgICB9KSk7XG4gICAgICB9XG5cbiAgICAgIC8qKlxuICAgICAgIFNldCBvbiBjaGFuZ2UgbGlzdGVuZXIgdG8gdGhlIGVkaXRvci5cbiAgICAgICBBcmdzOlxuICAgICAgIGhhbmRsZXIgKEZ1bmN0aW9uKVxuICAgICAgICogKi9cbiAgICAgIHNldE9uQ2hhbmdlTGlzdGVuZXIoaGFuZGxlcikge1xuICAgICAgICBbJ2NoYW5nZScsICdrZXl1cCcsICdkcm9wJywgJ3Bhc3RlJ10uZm9yRWFjaChldmVudE5hbWUgPT4ge1xuICAgICAgICAgIHRoaXMuZWRpdG9ySW5zdGFuY2VzLmZvckVhY2goZWRpdG9yID0+IHtcbiAgICAgICAgICAgIGVkaXRvci5vbihldmVudE5hbWUsIGhhbmRsZXIpO1xuICAgICAgICAgIH0pO1xuICAgICAgICB9KTtcbiAgICAgIH1cblxuICAgICAgLyoqXG4gICAgICAgU2V0IHRoZSByZXNwb25zZSB0ZXh0cy5cbiAgICAgICBSZXRyaWV2ZSB0aGUgcmVzcG9uc2UgdGV4dHMuXG4gICAgICAgQXJnczpcbiAgICAgICB0ZXh0cyAoYXJyYXkgb2Ygc3RyaW5ncyk6IElmIHNwZWNpZmllZCwgdGhlIHRleHRzIHRvIHNldCBmb3IgdGhlIHJlc3BvbnNlLlxuICAgICAgIFJldHVybnM6XG4gICAgICAgYXJyYXkgb2Ygc3RyaW5nczogVGhlIGN1cnJlbnQgcmVzcG9uc2UgdGV4dHMuXG4gICAgICAgKiAqL1xuICAgICAgLyogZXNsaW50LWRpc2FibGUtbmV4dC1saW5lIGNvbnNpc3RlbnQtcmV0dXJuICovXG4gICAgICByZXNwb25zZSh0ZXh0cykge1xuICAgICAgICBpZiAodHlwZW9mIHRleHRzID09PSAndW5kZWZpbmVkJykge1xuICAgICAgICAgIHJldHVybiB0aGlzLmVkaXRvckluc3RhbmNlcy5tYXAoZWRpdG9yID0+IGVkaXRvci5nZXRDb250ZW50KCkpO1xuICAgICAgICB9XG4gICAgICAgIHRoaXMuZWRpdG9ySW5zdGFuY2VzLmZvckVhY2goKGVkaXRvciwgaW5kZXgpID0+IHtcbiAgICAgICAgICBlZGl0b3Iuc2V0Q29udGVudCh0ZXh0c1tpbmRleF0pO1xuICAgICAgICB9KTtcbiAgICAgIH1cbiAgICB9XG5cbiAgICAvLyByZXR1cm4gYSBmdW5jdGlvbiwgdG8gYmUgYWJsZSB0byBjcmVhdGUgbmV3IGluc3RhbmNlIGV2ZXJ5IHRpbWUuXG4gICAgcmV0dXJuIGZ1bmN0aW9uICgpIHtcbiAgICAgIHJldHVybiBuZXcgRWRpdG9yVGlueW1jZSgpO1xuICAgIH07XG4gIH0pO1xufSkuY2FsbCh3aW5kb3csIHdpbmRvdy5kZWZpbmUgfHwgd2luZG93LlJlcXVpcmVKUy5kZWZpbmUpO1xuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7QUFDQTtBQUNBOztBQUVBLENBQUMsVUFBVUEsTUFBTSxFQUFFO0VBQ2pCLElBQU1DLFlBQVksR0FBRyxFQUFFOztFQUV2QjtFQUNBLElBQU1DLEtBQUssR0FBRyxPQUFPQyxNQUFNLENBQUNDLFVBQVUsS0FBSyxXQUFXOztFQUV0RDtFQUNBLElBQUlDLE9BQU8sR0FBRyw4Q0FBOEM7RUFDNUQsSUFBSUgsS0FBSyxFQUFFO0lBQ1RHLE9BQU8sR0FBRyx1Q0FBdUM7RUFDbkQ7RUFFQSxJQUFJLE9BQU9GLE1BQU0sQ0FBQ0csT0FBTyxLQUFLLFdBQVcsRUFBRTtJQUN6QztJQUNBTCxZQUFZLENBQUNNLElBQUksQ0FBQyxTQUFTLENBQUM7SUFDNUJOLFlBQVksQ0FBQ00sSUFBSSxDQUFDLGdCQUFnQixDQUFDO0VBQ3JDO0VBRUFQLE1BQU0sQ0FBQ0MsWUFBWSxFQUFFLFlBQU07SUFBQSxJQUNuQk8sYUFBYTtNQUFBLFNBQUFBLGNBQUE7UUFBQUMsZUFBQSxPQUFBRCxhQUFBO1FBQUFFLGVBQUEsMEJBQ0MsRUFBRTtNQUFBO01BQUFDLFlBQUEsQ0FBQUgsYUFBQTtRQUFBSSxHQUFBO1FBQUFDLEtBQUE7UUFFcEI7QUFDTjtBQUNBO1FBQ00sU0FBQUMsaUJBQWlCQyxRQUFRLEVBQUU7VUFDekIsSUFBSUMsTUFBTSxHQUFHO1lBQ1hDLE9BQU8sRUFBRSxLQUFLO1lBQ2RDLFNBQVMsRUFBRSxLQUFLO1lBQ2hCQyxRQUFRLEVBQUVkLE9BQU87WUFDakJlLEtBQUssRUFBRSxRQUFRO1lBQ2ZDLElBQUksRUFBRSxjQUFjO1lBQ3BCQyxXQUFXLEVBQUUsY0FBYztZQUMzQkMsTUFBTSxFQUFFLEtBQUs7WUFDYkMsTUFBTSxFQUFFLE9BQU87WUFDZkMsT0FBTyxFQUFFLHVCQUF1QjtZQUNoQ0MsT0FBTyxFQUFFO1VBQ1gsQ0FBQzs7VUFFRDtVQUNBLElBQUlYLFFBQVEsRUFBRTtZQUNaQyxNQUFNLEdBQUdXLE1BQU0sQ0FBQ0MsTUFBTSxDQUFDWixNQUFNLEVBQUU7Y0FDN0JVLE9BQU8sRUFBRSxLQUFLO2NBQ2RYLFFBQVEsRUFBRTtZQUNaLENBQUMsQ0FBQztVQUNKO1VBRUEsT0FBT0MsTUFBTTtRQUNmOztRQUVBO0FBQ047QUFDQTtBQUNBO0FBQ0E7TUFKTTtRQUFBSixHQUFBO1FBQUFDLEtBQUEsRUFLQSxTQUFBZ0IsS0FBS0MsUUFBUSxFQUFFO1VBQ2IsSUFBSSxDQUFDQSxRQUFRLEdBQUdBLFFBQVE7VUFFeEIsSUFBTUMsSUFBSSxHQUFHLElBQUk7VUFFakIsT0FBT0MsT0FBTyxDQUFDQyxHQUFHLENBQUMsSUFBSSxDQUFDSCxRQUFRLENBQUNJLEdBQUcsQ0FBQyxZQUFZO1lBQUEsSUFBQUMsS0FBQTtZQUMvQztZQUNBLElBQU1DLFFBQVEsR0FBR0MsQ0FBQyxDQUFDLElBQUksQ0FBQyxDQUFDQyxJQUFJLENBQUMsVUFBVSxDQUFDOztZQUV6QztZQUNBO1lBQ0EsSUFBTUMsRUFBRSxHQUFHRixDQUFDLENBQUMsSUFBSSxDQUFDLENBQUNDLElBQUksQ0FBQyxJQUFJLENBQUM7WUFDN0IsSUFBSUMsRUFBRSxLQUFLQyxTQUFTLEVBQUU7Y0FDcEIsSUFBTUMsY0FBYyxHQUFHbkMsT0FBTyxDQUFDb0MsR0FBRyxDQUFDSCxFQUFFLENBQUMsQ0FBQyxDQUFDO2NBQ3hDLElBQUlFLGNBQWMsRUFBRTtnQkFDbEJBLGNBQWMsQ0FBQ0UsT0FBTyxDQUFDLENBQUM7Y0FDMUI7WUFDRjtZQUVBLElBQU0zQixNQUFNLEdBQUdlLElBQUksQ0FBQ2pCLGdCQUFnQixDQUFDc0IsUUFBUSxDQUFDO1lBQzlDLE9BQU8sSUFBSUosT0FBTyxDQUFDLFVBQUFZLE9BQU8sRUFBSTtjQUM1QjVCLE1BQU0sQ0FBQzZCLEtBQUssR0FBRyxVQUFBQyxNQUFNO2dCQUFBLE9BQUlBLE1BQU0sQ0FBQ0MsRUFBRSxDQUFDLE1BQU0sRUFBRSxZQUFNO2tCQUMvQ2hCLElBQUksQ0FBQ2lCLGVBQWUsQ0FBQ3pDLElBQUksQ0FBQ3VDLE1BQU0sQ0FBQztrQkFDakNGLE9BQU8sQ0FBQyxDQUFDO2dCQUNYLENBQUMsQ0FBQztjQUFBO2NBQ0ZQLENBQUMsQ0FBQ0YsS0FBSSxDQUFDLENBQUM3QixPQUFPLENBQUNVLE1BQU0sQ0FBQztZQUN6QixDQUFDLENBQUM7VUFDSixDQUFDLENBQUMsQ0FBQztRQUNMOztRQUVBO0FBQ047QUFDQTtBQUNBO0FBQ0E7TUFKTTtRQUFBSixHQUFBO1FBQUFDLEtBQUEsRUFLQSxTQUFBb0Msb0JBQW9CQyxPQUFPLEVBQUU7VUFBQSxJQUFBQyxNQUFBO1VBQzNCLENBQUMsUUFBUSxFQUFFLE9BQU8sRUFBRSxNQUFNLEVBQUUsT0FBTyxDQUFDLENBQUNDLE9BQU8sQ0FBQyxVQUFBQyxTQUFTLEVBQUk7WUFDeERGLE1BQUksQ0FBQ0gsZUFBZSxDQUFDSSxPQUFPLENBQUMsVUFBQU4sTUFBTSxFQUFJO2NBQ3JDQSxNQUFNLENBQUNDLEVBQUUsQ0FBQ00sU0FBUyxFQUFFSCxPQUFPLENBQUM7WUFDL0IsQ0FBQyxDQUFDO1VBQ0osQ0FBQyxDQUFDO1FBQ0o7O1FBRUE7QUFDTjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtRQUNNO01BQUE7UUFBQXRDLEdBQUE7UUFBQUMsS0FBQSxFQUNBLFNBQUF5QyxTQUFTQyxLQUFLLEVBQUU7VUFDZCxJQUFJLE9BQU9BLEtBQUssS0FBSyxXQUFXLEVBQUU7WUFDaEMsT0FBTyxJQUFJLENBQUNQLGVBQWUsQ0FBQ2QsR0FBRyxDQUFDLFVBQUFZLE1BQU07Y0FBQSxPQUFJQSxNQUFNLENBQUNVLFVBQVUsQ0FBQyxDQUFDO1lBQUEsRUFBQztVQUNoRTtVQUNBLElBQUksQ0FBQ1IsZUFBZSxDQUFDSSxPQUFPLENBQUMsVUFBQ04sTUFBTSxFQUFFVyxLQUFLLEVBQUs7WUFDOUNYLE1BQU0sQ0FBQ1ksVUFBVSxDQUFDSCxLQUFLLENBQUNFLEtBQUssQ0FBQyxDQUFDO1VBQ2pDLENBQUMsQ0FBQztRQUNKO01BQUM7TUFBQSxPQUFBakQsYUFBQTtJQUFBLEtBR0g7SUFDQSxPQUFPLFlBQVk7TUFDakIsT0FBTyxJQUFJQSxhQUFhLENBQUMsQ0FBQztJQUM1QixDQUFDO0VBQ0gsQ0FBQyxDQUFDO0FBQ0osQ0FBQyxFQUFFbUQsSUFBSSxDQUFDeEQsTUFBTSxFQUFFQSxNQUFNLENBQUNILE1BQU0sSUFBSUcsTUFBTSxDQUFDeUQsU0FBUyxDQUFDNUQsTUFBTSxDQUFDIiwiZmlsZSI6Ii4vb3BlbmFzc2Vzc21lbnQveGJsb2NrL3N0YXRpYy9qcy9zcmMvbG1zL2VkaXRvcnMvb2FfZWRpdG9yX3RpbnltY2UuanMiLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js\n");
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			if (cachedModule.error !== undefined) throw cachedModule.error;
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		try {
+/******/ 			var execOptions = { id: moduleId, module: module, factory: __webpack_modules__[moduleId], require: __webpack_require__ };
+/******/ 			__webpack_require__.i.forEach(function(handler) { handler(execOptions); });
+/******/ 			module = execOptions.module;
+/******/ 			execOptions.factory.call(module.exports, module, module.exports, execOptions.require);
+/******/ 		} catch(e) {
+/******/ 			module.error = e;
+/******/ 			throw e;
+/******/ 		}
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = __webpack_module_cache__;
+/******/ 	
+/******/ 	// expose the module execution interceptor
+/******/ 	__webpack_require__.i = [];
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/get javascript update chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference all chunks
+/******/ 		__webpack_require__.hu = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + "." + __webpack_require__.h() + ".hot-update.js";
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get mini-css chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference all chunks
+/******/ 		__webpack_require__.miniCssF = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return undefined;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get update manifest filename */
+/******/ 	(() => {
+/******/ 		__webpack_require__.hmrF = () => ("openassessment-editor-tinymce." + __webpack_require__.h() + ".hot-update.json");
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/getFullHash */
+/******/ 	(() => {
+/******/ 		__webpack_require__.h = () => ("db0ab770823fcdf9420b")
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		var dataWebpackPrefix = "edx-ora2:";
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url || s.getAttribute("data-webpack") == dataWebpackPrefix + key) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 		
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hot module replacement */
+/******/ 	(() => {
+/******/ 		var currentModuleData = {};
+/******/ 		var installedModules = __webpack_require__.c;
+/******/ 		
+/******/ 		// module and require creation
+/******/ 		var currentChildModule;
+/******/ 		var currentParents = [];
+/******/ 		
+/******/ 		// status
+/******/ 		var registeredStatusHandlers = [];
+/******/ 		var currentStatus = "idle";
+/******/ 		
+/******/ 		// while downloading
+/******/ 		var blockingPromises = 0;
+/******/ 		var blockingPromisesWaiting = [];
+/******/ 		
+/******/ 		// The update info
+/******/ 		var currentUpdateApplyHandlers;
+/******/ 		var queuedInvalidatedModules;
+/******/ 		
+/******/ 		// eslint-disable-next-line no-unused-vars
+/******/ 		__webpack_require__.hmrD = currentModuleData;
+/******/ 		
+/******/ 		__webpack_require__.i.push(function (options) {
+/******/ 			var module = options.module;
+/******/ 			var require = createRequire(options.require, options.id);
+/******/ 			module.hot = createModuleHotObject(options.id, module);
+/******/ 			module.parents = currentParents;
+/******/ 			module.children = [];
+/******/ 			currentParents = [];
+/******/ 			options.require = require;
+/******/ 		});
+/******/ 		
+/******/ 		__webpack_require__.hmrC = {};
+/******/ 		__webpack_require__.hmrI = {};
+/******/ 		
+/******/ 		function createRequire(require, moduleId) {
+/******/ 			var me = installedModules[moduleId];
+/******/ 			if (!me) return require;
+/******/ 			var fn = function (request) {
+/******/ 				if (me.hot.active) {
+/******/ 					if (installedModules[request]) {
+/******/ 						var parents = installedModules[request].parents;
+/******/ 						if (parents.indexOf(moduleId) === -1) {
+/******/ 							parents.push(moduleId);
+/******/ 						}
+/******/ 					} else {
+/******/ 						currentParents = [moduleId];
+/******/ 						currentChildModule = request;
+/******/ 					}
+/******/ 					if (me.children.indexOf(request) === -1) {
+/******/ 						me.children.push(request);
+/******/ 					}
+/******/ 				} else {
+/******/ 					console.warn(
+/******/ 						"[HMR] unexpected require(" +
+/******/ 							request +
+/******/ 							") from disposed module " +
+/******/ 							moduleId
+/******/ 					);
+/******/ 					currentParents = [];
+/******/ 				}
+/******/ 				return require(request);
+/******/ 			};
+/******/ 			var createPropertyDescriptor = function (name) {
+/******/ 				return {
+/******/ 					configurable: true,
+/******/ 					enumerable: true,
+/******/ 					get: function () {
+/******/ 						return require[name];
+/******/ 					},
+/******/ 					set: function (value) {
+/******/ 						require[name] = value;
+/******/ 					}
+/******/ 				};
+/******/ 			};
+/******/ 			for (var name in require) {
+/******/ 				if (Object.prototype.hasOwnProperty.call(require, name) && name !== "e") {
+/******/ 					Object.defineProperty(fn, name, createPropertyDescriptor(name));
+/******/ 				}
+/******/ 			}
+/******/ 			fn.e = function (chunkId) {
+/******/ 				return trackBlockingPromise(require.e(chunkId));
+/******/ 			};
+/******/ 			return fn;
+/******/ 		}
+/******/ 		
+/******/ 		function createModuleHotObject(moduleId, me) {
+/******/ 			var _main = currentChildModule !== moduleId;
+/******/ 			var hot = {
+/******/ 				// private stuff
+/******/ 				_acceptedDependencies: {},
+/******/ 				_acceptedErrorHandlers: {},
+/******/ 				_declinedDependencies: {},
+/******/ 				_selfAccepted: false,
+/******/ 				_selfDeclined: false,
+/******/ 				_selfInvalidated: false,
+/******/ 				_disposeHandlers: [],
+/******/ 				_main: _main,
+/******/ 				_requireSelf: function () {
+/******/ 					currentParents = me.parents.slice();
+/******/ 					currentChildModule = _main ? undefined : moduleId;
+/******/ 					__webpack_require__(moduleId);
+/******/ 				},
+/******/ 		
+/******/ 				// Module API
+/******/ 				active: true,
+/******/ 				accept: function (dep, callback, errorHandler) {
+/******/ 					if (dep === undefined) hot._selfAccepted = true;
+/******/ 					else if (typeof dep === "function") hot._selfAccepted = dep;
+/******/ 					else if (typeof dep === "object" && dep !== null) {
+/******/ 						for (var i = 0; i < dep.length; i++) {
+/******/ 							hot._acceptedDependencies[dep[i]] = callback || function () {};
+/******/ 							hot._acceptedErrorHandlers[dep[i]] = errorHandler;
+/******/ 						}
+/******/ 					} else {
+/******/ 						hot._acceptedDependencies[dep] = callback || function () {};
+/******/ 						hot._acceptedErrorHandlers[dep] = errorHandler;
+/******/ 					}
+/******/ 				},
+/******/ 				decline: function (dep) {
+/******/ 					if (dep === undefined) hot._selfDeclined = true;
+/******/ 					else if (typeof dep === "object" && dep !== null)
+/******/ 						for (var i = 0; i < dep.length; i++)
+/******/ 							hot._declinedDependencies[dep[i]] = true;
+/******/ 					else hot._declinedDependencies[dep] = true;
+/******/ 				},
+/******/ 				dispose: function (callback) {
+/******/ 					hot._disposeHandlers.push(callback);
+/******/ 				},
+/******/ 				addDisposeHandler: function (callback) {
+/******/ 					hot._disposeHandlers.push(callback);
+/******/ 				},
+/******/ 				removeDisposeHandler: function (callback) {
+/******/ 					var idx = hot._disposeHandlers.indexOf(callback);
+/******/ 					if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
+/******/ 				},
+/******/ 				invalidate: function () {
+/******/ 					this._selfInvalidated = true;
+/******/ 					switch (currentStatus) {
+/******/ 						case "idle":
+/******/ 							currentUpdateApplyHandlers = [];
+/******/ 							Object.keys(__webpack_require__.hmrI).forEach(function (key) {
+/******/ 								__webpack_require__.hmrI[key](
+/******/ 									moduleId,
+/******/ 									currentUpdateApplyHandlers
+/******/ 								);
+/******/ 							});
+/******/ 							setStatus("ready");
+/******/ 							break;
+/******/ 						case "ready":
+/******/ 							Object.keys(__webpack_require__.hmrI).forEach(function (key) {
+/******/ 								__webpack_require__.hmrI[key](
+/******/ 									moduleId,
+/******/ 									currentUpdateApplyHandlers
+/******/ 								);
+/******/ 							});
+/******/ 							break;
+/******/ 						case "prepare":
+/******/ 						case "check":
+/******/ 						case "dispose":
+/******/ 						case "apply":
+/******/ 							(queuedInvalidatedModules = queuedInvalidatedModules || []).push(
+/******/ 								moduleId
+/******/ 							);
+/******/ 							break;
+/******/ 						default:
+/******/ 							// ignore requests in error states
+/******/ 							break;
+/******/ 					}
+/******/ 				},
+/******/ 		
+/******/ 				// Management API
+/******/ 				check: hotCheck,
+/******/ 				apply: hotApply,
+/******/ 				status: function (l) {
+/******/ 					if (!l) return currentStatus;
+/******/ 					registeredStatusHandlers.push(l);
+/******/ 				},
+/******/ 				addStatusHandler: function (l) {
+/******/ 					registeredStatusHandlers.push(l);
+/******/ 				},
+/******/ 				removeStatusHandler: function (l) {
+/******/ 					var idx = registeredStatusHandlers.indexOf(l);
+/******/ 					if (idx >= 0) registeredStatusHandlers.splice(idx, 1);
+/******/ 				},
+/******/ 		
+/******/ 				//inherit from previous dispose call
+/******/ 				data: currentModuleData[moduleId]
+/******/ 			};
+/******/ 			currentChildModule = undefined;
+/******/ 			return hot;
+/******/ 		}
+/******/ 		
+/******/ 		function setStatus(newStatus) {
+/******/ 			currentStatus = newStatus;
+/******/ 			var results = [];
+/******/ 		
+/******/ 			for (var i = 0; i < registeredStatusHandlers.length; i++)
+/******/ 				results[i] = registeredStatusHandlers[i].call(null, newStatus);
+/******/ 		
+/******/ 			return Promise.all(results);
+/******/ 		}
+/******/ 		
+/******/ 		function unblock() {
+/******/ 			if (--blockingPromises === 0) {
+/******/ 				setStatus("ready").then(function () {
+/******/ 					if (blockingPromises === 0) {
+/******/ 						var list = blockingPromisesWaiting;
+/******/ 						blockingPromisesWaiting = [];
+/******/ 						for (var i = 0; i < list.length; i++) {
+/******/ 							list[i]();
+/******/ 						}
+/******/ 					}
+/******/ 				});
+/******/ 			}
+/******/ 		}
+/******/ 		
+/******/ 		function trackBlockingPromise(promise) {
+/******/ 			switch (currentStatus) {
+/******/ 				case "ready":
+/******/ 					setStatus("prepare");
+/******/ 				/* fallthrough */
+/******/ 				case "prepare":
+/******/ 					blockingPromises++;
+/******/ 					promise.then(unblock, unblock);
+/******/ 					return promise;
+/******/ 				default:
+/******/ 					return promise;
+/******/ 			}
+/******/ 		}
+/******/ 		
+/******/ 		function waitForBlockingPromises(fn) {
+/******/ 			if (blockingPromises === 0) return fn();
+/******/ 			return new Promise(function (resolve) {
+/******/ 				blockingPromisesWaiting.push(function () {
+/******/ 					resolve(fn());
+/******/ 				});
+/******/ 			});
+/******/ 		}
+/******/ 		
+/******/ 		function hotCheck(applyOnUpdate) {
+/******/ 			if (currentStatus !== "idle") {
+/******/ 				throw new Error("check() is only allowed in idle status");
+/******/ 			}
+/******/ 			return setStatus("check")
+/******/ 				.then(__webpack_require__.hmrM)
+/******/ 				.then(function (update) {
+/******/ 					if (!update) {
+/******/ 						return setStatus(applyInvalidatedModules() ? "ready" : "idle").then(
+/******/ 							function () {
+/******/ 								return null;
+/******/ 							}
+/******/ 						);
+/******/ 					}
+/******/ 		
+/******/ 					return setStatus("prepare").then(function () {
+/******/ 						var updatedModules = [];
+/******/ 						currentUpdateApplyHandlers = [];
+/******/ 		
+/******/ 						return Promise.all(
+/******/ 							Object.keys(__webpack_require__.hmrC).reduce(function (
+/******/ 								promises,
+/******/ 								key
+/******/ 							) {
+/******/ 								__webpack_require__.hmrC[key](
+/******/ 									update.c,
+/******/ 									update.r,
+/******/ 									update.m,
+/******/ 									promises,
+/******/ 									currentUpdateApplyHandlers,
+/******/ 									updatedModules
+/******/ 								);
+/******/ 								return promises;
+/******/ 							},
+/******/ 							[])
+/******/ 						).then(function () {
+/******/ 							return waitForBlockingPromises(function () {
+/******/ 								if (applyOnUpdate) {
+/******/ 									return internalApply(applyOnUpdate);
+/******/ 								} else {
+/******/ 									return setStatus("ready").then(function () {
+/******/ 										return updatedModules;
+/******/ 									});
+/******/ 								}
+/******/ 							});
+/******/ 						});
+/******/ 					});
+/******/ 				});
+/******/ 		}
+/******/ 		
+/******/ 		function hotApply(options) {
+/******/ 			if (currentStatus !== "ready") {
+/******/ 				return Promise.resolve().then(function () {
+/******/ 					throw new Error(
+/******/ 						"apply() is only allowed in ready status (state: " +
+/******/ 							currentStatus +
+/******/ 							")"
+/******/ 					);
+/******/ 				});
+/******/ 			}
+/******/ 			return internalApply(options);
+/******/ 		}
+/******/ 		
+/******/ 		function internalApply(options) {
+/******/ 			options = options || {};
+/******/ 		
+/******/ 			applyInvalidatedModules();
+/******/ 		
+/******/ 			var results = currentUpdateApplyHandlers.map(function (handler) {
+/******/ 				return handler(options);
+/******/ 			});
+/******/ 			currentUpdateApplyHandlers = undefined;
+/******/ 		
+/******/ 			var errors = results
+/******/ 				.map(function (r) {
+/******/ 					return r.error;
+/******/ 				})
+/******/ 				.filter(Boolean);
+/******/ 		
+/******/ 			if (errors.length > 0) {
+/******/ 				return setStatus("abort").then(function () {
+/******/ 					throw errors[0];
+/******/ 				});
+/******/ 			}
+/******/ 		
+/******/ 			// Now in "dispose" phase
+/******/ 			var disposePromise = setStatus("dispose");
+/******/ 		
+/******/ 			results.forEach(function (result) {
+/******/ 				if (result.dispose) result.dispose();
+/******/ 			});
+/******/ 		
+/******/ 			// Now in "apply" phase
+/******/ 			var applyPromise = setStatus("apply");
+/******/ 		
+/******/ 			var error;
+/******/ 			var reportError = function (err) {
+/******/ 				if (!error) error = err;
+/******/ 			};
+/******/ 		
+/******/ 			var outdatedModules = [];
+/******/ 			results.forEach(function (result) {
+/******/ 				if (result.apply) {
+/******/ 					var modules = result.apply(reportError);
+/******/ 					if (modules) {
+/******/ 						for (var i = 0; i < modules.length; i++) {
+/******/ 							outdatedModules.push(modules[i]);
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 			});
+/******/ 		
+/******/ 			return Promise.all([disposePromise, applyPromise]).then(function () {
+/******/ 				// handle errors in accept handlers and self accepted module load
+/******/ 				if (error) {
+/******/ 					return setStatus("fail").then(function () {
+/******/ 						throw error;
+/******/ 					});
+/******/ 				}
+/******/ 		
+/******/ 				if (queuedInvalidatedModules) {
+/******/ 					return internalApply(options).then(function (list) {
+/******/ 						outdatedModules.forEach(function (moduleId) {
+/******/ 							if (list.indexOf(moduleId) < 0) list.push(moduleId);
+/******/ 						});
+/******/ 						return list;
+/******/ 					});
+/******/ 				}
+/******/ 		
+/******/ 				return setStatus("idle").then(function () {
+/******/ 					return outdatedModules;
+/******/ 				});
+/******/ 			});
+/******/ 		}
+/******/ 		
+/******/ 		function applyInvalidatedModules() {
+/******/ 			if (queuedInvalidatedModules) {
+/******/ 				if (!currentUpdateApplyHandlers) currentUpdateApplyHandlers = [];
+/******/ 				Object.keys(__webpack_require__.hmrI).forEach(function (key) {
+/******/ 					queuedInvalidatedModules.forEach(function (moduleId) {
+/******/ 						__webpack_require__.hmrI[key](
+/******/ 							moduleId,
+/******/ 							currentUpdateApplyHandlers
+/******/ 						);
+/******/ 					});
+/******/ 				});
+/******/ 				queuedInvalidatedModules = undefined;
+/******/ 				return true;
+/******/ 			}
+/******/ 		}
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/css loading */
+/******/ 	(() => {
+/******/ 		var createStylesheet = (chunkId, fullhref, resolve, reject) => {
+/******/ 			var linkTag = document.createElement("link");
+/******/ 		
+/******/ 			linkTag.rel = "stylesheet";
+/******/ 			linkTag.type = "text/css";
+/******/ 			var onLinkComplete = (event) => {
+/******/ 				// avoid mem leaks.
+/******/ 				linkTag.onerror = linkTag.onload = null;
+/******/ 				if (event.type === 'load') {
+/******/ 					resolve();
+/******/ 				} else {
+/******/ 					var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 					var realHref = event && event.target && event.target.href || fullhref;
+/******/ 					var err = new Error("Loading CSS chunk " + chunkId + " failed.\n(" + realHref + ")");
+/******/ 					err.code = "CSS_CHUNK_LOAD_FAILED";
+/******/ 					err.type = errorType;
+/******/ 					err.request = realHref;
+/******/ 					linkTag.parentNode.removeChild(linkTag)
+/******/ 					reject(err);
+/******/ 				}
+/******/ 			}
+/******/ 			linkTag.onerror = linkTag.onload = onLinkComplete;
+/******/ 			linkTag.href = fullhref;
+/******/ 		
+/******/ 			document.head.appendChild(linkTag);
+/******/ 			return linkTag;
+/******/ 		};
+/******/ 		var findStylesheet = (href, fullhref) => {
+/******/ 			var existingLinkTags = document.getElementsByTagName("link");
+/******/ 			for(var i = 0; i < existingLinkTags.length; i++) {
+/******/ 				var tag = existingLinkTags[i];
+/******/ 				var dataHref = tag.getAttribute("data-href") || tag.getAttribute("href");
+/******/ 				if(tag.rel === "stylesheet" && (dataHref === href || dataHref === fullhref)) return tag;
+/******/ 			}
+/******/ 			var existingStyleTags = document.getElementsByTagName("style");
+/******/ 			for(var i = 0; i < existingStyleTags.length; i++) {
+/******/ 				var tag = existingStyleTags[i];
+/******/ 				var dataHref = tag.getAttribute("data-href");
+/******/ 				if(dataHref === href || dataHref === fullhref) return tag;
+/******/ 			}
+/******/ 		};
+/******/ 		var loadStylesheet = (chunkId) => {
+/******/ 			return new Promise((resolve, reject) => {
+/******/ 				var href = __webpack_require__.miniCssF(chunkId);
+/******/ 				var fullhref = __webpack_require__.p + href;
+/******/ 				if(findStylesheet(href, fullhref)) return resolve();
+/******/ 				createStylesheet(chunkId, fullhref, resolve, reject);
+/******/ 			});
+/******/ 		}
+/******/ 		// no chunk loading
+/******/ 		
+/******/ 		var oldTags = [];
+/******/ 		var newTags = [];
+/******/ 		var applyHandler = (options) => {
+/******/ 			return { dispose: () => {
+/******/ 				for(var i = 0; i < oldTags.length; i++) {
+/******/ 					var oldTag = oldTags[i];
+/******/ 					if(oldTag.parentNode) oldTag.parentNode.removeChild(oldTag);
+/******/ 				}
+/******/ 				oldTags.length = 0;
+/******/ 			}, apply: () => {
+/******/ 				for(var i = 0; i < newTags.length; i++) newTags[i].rel = "stylesheet";
+/******/ 				newTags.length = 0;
+/******/ 			} };
+/******/ 		}
+/******/ 		__webpack_require__.hmrC.miniCss = (chunkIds, removedChunks, removedModules, promises, applyHandlers, updatedModulesList) => {
+/******/ 			applyHandlers.push(applyHandler);
+/******/ 			chunkIds.forEach((chunkId) => {
+/******/ 				var href = __webpack_require__.miniCssF(chunkId);
+/******/ 				var fullhref = __webpack_require__.p + href;
+/******/ 				var oldTag = findStylesheet(href, fullhref);
+/******/ 				if(!oldTag) return;
+/******/ 				promises.push(new Promise((resolve, reject) => {
+/******/ 					var tag = createStylesheet(chunkId, fullhref, () => {
+/******/ 						tag.as = "style";
+/******/ 						tag.rel = "preload";
+/******/ 						resolve();
+/******/ 					}, reject);
+/******/ 					oldTags.push(oldTag);
+/******/ 					newTags.push(tag);
+/******/ 				}));
+/******/ 			});
+/******/ 		}
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = __webpack_require__.hmrS_jsonp = __webpack_require__.hmrS_jsonp || {
+/******/ 			"openassessment-editor-tinymce": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		var currentUpdatedModulesList;
+/******/ 		var waitingUpdateResolves = {};
+/******/ 		function loadUpdateChunk(chunkId, updatedModulesList) {
+/******/ 			currentUpdatedModulesList = updatedModulesList;
+/******/ 			return new Promise((resolve, reject) => {
+/******/ 				waitingUpdateResolves[chunkId] = resolve;
+/******/ 				// start update chunk loading
+/******/ 				var url = __webpack_require__.p + __webpack_require__.hu(chunkId);
+/******/ 				// create error before stack unwound to get useful stacktrace later
+/******/ 				var error = new Error();
+/******/ 				var loadingEnded = (event) => {
+/******/ 					if(waitingUpdateResolves[chunkId]) {
+/******/ 						waitingUpdateResolves[chunkId] = undefined
+/******/ 						var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 						var realSrc = event && event.target && event.target.src;
+/******/ 						error.message = 'Loading hot update chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 						error.name = 'ChunkLoadError';
+/******/ 						error.type = errorType;
+/******/ 						error.request = realSrc;
+/******/ 						reject(error);
+/******/ 					}
+/******/ 				};
+/******/ 				__webpack_require__.l(url, loadingEnded);
+/******/ 			});
+/******/ 		}
+/******/ 		
+/******/ 		self["webpackHotUpdateedx_ora2"] = (chunkId, moreModules, runtime) => {
+/******/ 			for(var moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					currentUpdate[moduleId] = moreModules[moduleId];
+/******/ 					if(currentUpdatedModulesList) currentUpdatedModulesList.push(moduleId);
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) currentUpdateRuntime.push(runtime);
+/******/ 			if(waitingUpdateResolves[chunkId]) {
+/******/ 				waitingUpdateResolves[chunkId]();
+/******/ 				waitingUpdateResolves[chunkId] = undefined;
+/******/ 			}
+/******/ 		};
+/******/ 		
+/******/ 		var currentUpdateChunks;
+/******/ 		var currentUpdate;
+/******/ 		var currentUpdateRemovedChunks;
+/******/ 		var currentUpdateRuntime;
+/******/ 		function applyHandler(options) {
+/******/ 			if (__webpack_require__.f) delete __webpack_require__.f.jsonpHmr;
+/******/ 			currentUpdateChunks = undefined;
+/******/ 			function getAffectedModuleEffects(updateModuleId) {
+/******/ 				var outdatedModules = [updateModuleId];
+/******/ 				var outdatedDependencies = {};
+/******/ 		
+/******/ 				var queue = outdatedModules.map(function (id) {
+/******/ 					return {
+/******/ 						chain: [id],
+/******/ 						id: id
+/******/ 					};
+/******/ 				});
+/******/ 				while (queue.length > 0) {
+/******/ 					var queueItem = queue.pop();
+/******/ 					var moduleId = queueItem.id;
+/******/ 					var chain = queueItem.chain;
+/******/ 					var module = __webpack_require__.c[moduleId];
+/******/ 					if (
+/******/ 						!module ||
+/******/ 						(module.hot._selfAccepted && !module.hot._selfInvalidated)
+/******/ 					)
+/******/ 						continue;
+/******/ 					if (module.hot._selfDeclined) {
+/******/ 						return {
+/******/ 							type: "self-declined",
+/******/ 							chain: chain,
+/******/ 							moduleId: moduleId
+/******/ 						};
+/******/ 					}
+/******/ 					if (module.hot._main) {
+/******/ 						return {
+/******/ 							type: "unaccepted",
+/******/ 							chain: chain,
+/******/ 							moduleId: moduleId
+/******/ 						};
+/******/ 					}
+/******/ 					for (var i = 0; i < module.parents.length; i++) {
+/******/ 						var parentId = module.parents[i];
+/******/ 						var parent = __webpack_require__.c[parentId];
+/******/ 						if (!parent) continue;
+/******/ 						if (parent.hot._declinedDependencies[moduleId]) {
+/******/ 							return {
+/******/ 								type: "declined",
+/******/ 								chain: chain.concat([parentId]),
+/******/ 								moduleId: moduleId,
+/******/ 								parentId: parentId
+/******/ 							};
+/******/ 						}
+/******/ 						if (outdatedModules.indexOf(parentId) !== -1) continue;
+/******/ 						if (parent.hot._acceptedDependencies[moduleId]) {
+/******/ 							if (!outdatedDependencies[parentId])
+/******/ 								outdatedDependencies[parentId] = [];
+/******/ 							addAllToSet(outdatedDependencies[parentId], [moduleId]);
+/******/ 							continue;
+/******/ 						}
+/******/ 						delete outdatedDependencies[parentId];
+/******/ 						outdatedModules.push(parentId);
+/******/ 						queue.push({
+/******/ 							chain: chain.concat([parentId]),
+/******/ 							id: parentId
+/******/ 						});
+/******/ 					}
+/******/ 				}
+/******/ 		
+/******/ 				return {
+/******/ 					type: "accepted",
+/******/ 					moduleId: updateModuleId,
+/******/ 					outdatedModules: outdatedModules,
+/******/ 					outdatedDependencies: outdatedDependencies
+/******/ 				};
+/******/ 			}
+/******/ 		
+/******/ 			function addAllToSet(a, b) {
+/******/ 				for (var i = 0; i < b.length; i++) {
+/******/ 					var item = b[i];
+/******/ 					if (a.indexOf(item) === -1) a.push(item);
+/******/ 				}
+/******/ 			}
+/******/ 		
+/******/ 			// at begin all updates modules are outdated
+/******/ 			// the "outdated" status can propagate to parents if they don't accept the children
+/******/ 			var outdatedDependencies = {};
+/******/ 			var outdatedModules = [];
+/******/ 			var appliedUpdate = {};
+/******/ 		
+/******/ 			var warnUnexpectedRequire = function warnUnexpectedRequire(module) {
+/******/ 				console.warn(
+/******/ 					"[HMR] unexpected require(" + module.id + ") to disposed module"
+/******/ 				);
+/******/ 			};
+/******/ 		
+/******/ 			for (var moduleId in currentUpdate) {
+/******/ 				if (__webpack_require__.o(currentUpdate, moduleId)) {
+/******/ 					var newModuleFactory = currentUpdate[moduleId];
+/******/ 					/** @type {TODO} */
+/******/ 					var result;
+/******/ 					if (newModuleFactory) {
+/******/ 						result = getAffectedModuleEffects(moduleId);
+/******/ 					} else {
+/******/ 						result = {
+/******/ 							type: "disposed",
+/******/ 							moduleId: moduleId
+/******/ 						};
+/******/ 					}
+/******/ 					/** @type {Error|false} */
+/******/ 					var abortError = false;
+/******/ 					var doApply = false;
+/******/ 					var doDispose = false;
+/******/ 					var chainInfo = "";
+/******/ 					if (result.chain) {
+/******/ 						chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
+/******/ 					}
+/******/ 					switch (result.type) {
+/******/ 						case "self-declined":
+/******/ 							if (options.onDeclined) options.onDeclined(result);
+/******/ 							if (!options.ignoreDeclined)
+/******/ 								abortError = new Error(
+/******/ 									"Aborted because of self decline: " +
+/******/ 										result.moduleId +
+/******/ 										chainInfo
+/******/ 								);
+/******/ 							break;
+/******/ 						case "declined":
+/******/ 							if (options.onDeclined) options.onDeclined(result);
+/******/ 							if (!options.ignoreDeclined)
+/******/ 								abortError = new Error(
+/******/ 									"Aborted because of declined dependency: " +
+/******/ 										result.moduleId +
+/******/ 										" in " +
+/******/ 										result.parentId +
+/******/ 										chainInfo
+/******/ 								);
+/******/ 							break;
+/******/ 						case "unaccepted":
+/******/ 							if (options.onUnaccepted) options.onUnaccepted(result);
+/******/ 							if (!options.ignoreUnaccepted)
+/******/ 								abortError = new Error(
+/******/ 									"Aborted because " + moduleId + " is not accepted" + chainInfo
+/******/ 								);
+/******/ 							break;
+/******/ 						case "accepted":
+/******/ 							if (options.onAccepted) options.onAccepted(result);
+/******/ 							doApply = true;
+/******/ 							break;
+/******/ 						case "disposed":
+/******/ 							if (options.onDisposed) options.onDisposed(result);
+/******/ 							doDispose = true;
+/******/ 							break;
+/******/ 						default:
+/******/ 							throw new Error("Unexception type " + result.type);
+/******/ 					}
+/******/ 					if (abortError) {
+/******/ 						return {
+/******/ 							error: abortError
+/******/ 						};
+/******/ 					}
+/******/ 					if (doApply) {
+/******/ 						appliedUpdate[moduleId] = newModuleFactory;
+/******/ 						addAllToSet(outdatedModules, result.outdatedModules);
+/******/ 						for (moduleId in result.outdatedDependencies) {
+/******/ 							if (__webpack_require__.o(result.outdatedDependencies, moduleId)) {
+/******/ 								if (!outdatedDependencies[moduleId])
+/******/ 									outdatedDependencies[moduleId] = [];
+/******/ 								addAllToSet(
+/******/ 									outdatedDependencies[moduleId],
+/******/ 									result.outdatedDependencies[moduleId]
+/******/ 								);
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 					if (doDispose) {
+/******/ 						addAllToSet(outdatedModules, [result.moduleId]);
+/******/ 						appliedUpdate[moduleId] = warnUnexpectedRequire;
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 			currentUpdate = undefined;
+/******/ 		
+/******/ 			// Store self accepted outdated modules to require them later by the module system
+/******/ 			var outdatedSelfAcceptedModules = [];
+/******/ 			for (var j = 0; j < outdatedModules.length; j++) {
+/******/ 				var outdatedModuleId = outdatedModules[j];
+/******/ 				var module = __webpack_require__.c[outdatedModuleId];
+/******/ 				if (
+/******/ 					module &&
+/******/ 					(module.hot._selfAccepted || module.hot._main) &&
+/******/ 					// removed self-accepted modules should not be required
+/******/ 					appliedUpdate[outdatedModuleId] !== warnUnexpectedRequire &&
+/******/ 					// when called invalidate self-accepting is not possible
+/******/ 					!module.hot._selfInvalidated
+/******/ 				) {
+/******/ 					outdatedSelfAcceptedModules.push({
+/******/ 						module: outdatedModuleId,
+/******/ 						require: module.hot._requireSelf,
+/******/ 						errorHandler: module.hot._selfAccepted
+/******/ 					});
+/******/ 				}
+/******/ 			}
+/******/ 		
+/******/ 			var moduleOutdatedDependencies;
+/******/ 		
+/******/ 			return {
+/******/ 				dispose: function () {
+/******/ 					currentUpdateRemovedChunks.forEach(function (chunkId) {
+/******/ 						delete installedChunks[chunkId];
+/******/ 					});
+/******/ 					currentUpdateRemovedChunks = undefined;
+/******/ 		
+/******/ 					var idx;
+/******/ 					var queue = outdatedModules.slice();
+/******/ 					while (queue.length > 0) {
+/******/ 						var moduleId = queue.pop();
+/******/ 						var module = __webpack_require__.c[moduleId];
+/******/ 						if (!module) continue;
+/******/ 		
+/******/ 						var data = {};
+/******/ 		
+/******/ 						// Call dispose handlers
+/******/ 						var disposeHandlers = module.hot._disposeHandlers;
+/******/ 						for (j = 0; j < disposeHandlers.length; j++) {
+/******/ 							disposeHandlers[j].call(null, data);
+/******/ 						}
+/******/ 						__webpack_require__.hmrD[moduleId] = data;
+/******/ 		
+/******/ 						// disable module (this disables requires from this module)
+/******/ 						module.hot.active = false;
+/******/ 		
+/******/ 						// remove module from cache
+/******/ 						delete __webpack_require__.c[moduleId];
+/******/ 		
+/******/ 						// when disposing there is no need to call dispose handler
+/******/ 						delete outdatedDependencies[moduleId];
+/******/ 		
+/******/ 						// remove "parents" references from all children
+/******/ 						for (j = 0; j < module.children.length; j++) {
+/******/ 							var child = __webpack_require__.c[module.children[j]];
+/******/ 							if (!child) continue;
+/******/ 							idx = child.parents.indexOf(moduleId);
+/******/ 							if (idx >= 0) {
+/******/ 								child.parents.splice(idx, 1);
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					// remove outdated dependency from module children
+/******/ 					var dependency;
+/******/ 					for (var outdatedModuleId in outdatedDependencies) {
+/******/ 						if (__webpack_require__.o(outdatedDependencies, outdatedModuleId)) {
+/******/ 							module = __webpack_require__.c[outdatedModuleId];
+/******/ 							if (module) {
+/******/ 								moduleOutdatedDependencies =
+/******/ 									outdatedDependencies[outdatedModuleId];
+/******/ 								for (j = 0; j < moduleOutdatedDependencies.length; j++) {
+/******/ 									dependency = moduleOutdatedDependencies[j];
+/******/ 									idx = module.children.indexOf(dependency);
+/******/ 									if (idx >= 0) module.children.splice(idx, 1);
+/******/ 								}
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 				},
+/******/ 				apply: function (reportError) {
+/******/ 					// insert new code
+/******/ 					for (var updateModuleId in appliedUpdate) {
+/******/ 						if (__webpack_require__.o(appliedUpdate, updateModuleId)) {
+/******/ 							__webpack_require__.m[updateModuleId] = appliedUpdate[updateModuleId];
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					// run new runtime modules
+/******/ 					for (var i = 0; i < currentUpdateRuntime.length; i++) {
+/******/ 						currentUpdateRuntime[i](__webpack_require__);
+/******/ 					}
+/******/ 		
+/******/ 					// call accept handlers
+/******/ 					for (var outdatedModuleId in outdatedDependencies) {
+/******/ 						if (__webpack_require__.o(outdatedDependencies, outdatedModuleId)) {
+/******/ 							var module = __webpack_require__.c[outdatedModuleId];
+/******/ 							if (module) {
+/******/ 								moduleOutdatedDependencies =
+/******/ 									outdatedDependencies[outdatedModuleId];
+/******/ 								var callbacks = [];
+/******/ 								var errorHandlers = [];
+/******/ 								var dependenciesForCallbacks = [];
+/******/ 								for (var j = 0; j < moduleOutdatedDependencies.length; j++) {
+/******/ 									var dependency = moduleOutdatedDependencies[j];
+/******/ 									var acceptCallback =
+/******/ 										module.hot._acceptedDependencies[dependency];
+/******/ 									var errorHandler =
+/******/ 										module.hot._acceptedErrorHandlers[dependency];
+/******/ 									if (acceptCallback) {
+/******/ 										if (callbacks.indexOf(acceptCallback) !== -1) continue;
+/******/ 										callbacks.push(acceptCallback);
+/******/ 										errorHandlers.push(errorHandler);
+/******/ 										dependenciesForCallbacks.push(dependency);
+/******/ 									}
+/******/ 								}
+/******/ 								for (var k = 0; k < callbacks.length; k++) {
+/******/ 									try {
+/******/ 										callbacks[k].call(null, moduleOutdatedDependencies);
+/******/ 									} catch (err) {
+/******/ 										if (typeof errorHandlers[k] === "function") {
+/******/ 											try {
+/******/ 												errorHandlers[k](err, {
+/******/ 													moduleId: outdatedModuleId,
+/******/ 													dependencyId: dependenciesForCallbacks[k]
+/******/ 												});
+/******/ 											} catch (err2) {
+/******/ 												if (options.onErrored) {
+/******/ 													options.onErrored({
+/******/ 														type: "accept-error-handler-errored",
+/******/ 														moduleId: outdatedModuleId,
+/******/ 														dependencyId: dependenciesForCallbacks[k],
+/******/ 														error: err2,
+/******/ 														originalError: err
+/******/ 													});
+/******/ 												}
+/******/ 												if (!options.ignoreErrored) {
+/******/ 													reportError(err2);
+/******/ 													reportError(err);
+/******/ 												}
+/******/ 											}
+/******/ 										} else {
+/******/ 											if (options.onErrored) {
+/******/ 												options.onErrored({
+/******/ 													type: "accept-errored",
+/******/ 													moduleId: outdatedModuleId,
+/******/ 													dependencyId: dependenciesForCallbacks[k],
+/******/ 													error: err
+/******/ 												});
+/******/ 											}
+/******/ 											if (!options.ignoreErrored) {
+/******/ 												reportError(err);
+/******/ 											}
+/******/ 										}
+/******/ 									}
+/******/ 								}
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					// Load self accepted modules
+/******/ 					for (var o = 0; o < outdatedSelfAcceptedModules.length; o++) {
+/******/ 						var item = outdatedSelfAcceptedModules[o];
+/******/ 						var moduleId = item.module;
+/******/ 						try {
+/******/ 							item.require(moduleId);
+/******/ 						} catch (err) {
+/******/ 							if (typeof item.errorHandler === "function") {
+/******/ 								try {
+/******/ 									item.errorHandler(err, {
+/******/ 										moduleId: moduleId,
+/******/ 										module: __webpack_require__.c[moduleId]
+/******/ 									});
+/******/ 								} catch (err2) {
+/******/ 									if (options.onErrored) {
+/******/ 										options.onErrored({
+/******/ 											type: "self-accept-error-handler-errored",
+/******/ 											moduleId: moduleId,
+/******/ 											error: err2,
+/******/ 											originalError: err
+/******/ 										});
+/******/ 									}
+/******/ 									if (!options.ignoreErrored) {
+/******/ 										reportError(err2);
+/******/ 										reportError(err);
+/******/ 									}
+/******/ 								}
+/******/ 							} else {
+/******/ 								if (options.onErrored) {
+/******/ 									options.onErrored({
+/******/ 										type: "self-accept-errored",
+/******/ 										moduleId: moduleId,
+/******/ 										error: err
+/******/ 									});
+/******/ 								}
+/******/ 								if (!options.ignoreErrored) {
+/******/ 									reportError(err);
+/******/ 								}
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 		
+/******/ 					return outdatedModules;
+/******/ 				}
+/******/ 			};
+/******/ 		}
+/******/ 		__webpack_require__.hmrI.jsonp = function (moduleId, applyHandlers) {
+/******/ 			if (!currentUpdate) {
+/******/ 				currentUpdate = {};
+/******/ 				currentUpdateRuntime = [];
+/******/ 				currentUpdateRemovedChunks = [];
+/******/ 				applyHandlers.push(applyHandler);
+/******/ 			}
+/******/ 			if (!__webpack_require__.o(currentUpdate, moduleId)) {
+/******/ 				currentUpdate[moduleId] = __webpack_require__.m[moduleId];
+/******/ 			}
+/******/ 		};
+/******/ 		__webpack_require__.hmrC.jsonp = function (
+/******/ 			chunkIds,
+/******/ 			removedChunks,
+/******/ 			removedModules,
+/******/ 			promises,
+/******/ 			applyHandlers,
+/******/ 			updatedModulesList
+/******/ 		) {
+/******/ 			applyHandlers.push(applyHandler);
+/******/ 			currentUpdateChunks = {};
+/******/ 			currentUpdateRemovedChunks = removedChunks;
+/******/ 			currentUpdate = removedModules.reduce(function (obj, key) {
+/******/ 				obj[key] = false;
+/******/ 				return obj;
+/******/ 			}, {});
+/******/ 			currentUpdateRuntime = [];
+/******/ 			chunkIds.forEach(function (chunkId) {
+/******/ 				if (
+/******/ 					__webpack_require__.o(installedChunks, chunkId) &&
+/******/ 					installedChunks[chunkId] !== undefined
+/******/ 				) {
+/******/ 					promises.push(loadUpdateChunk(chunkId, updatedModulesList));
+/******/ 					currentUpdateChunks[chunkId] = true;
+/******/ 				} else {
+/******/ 					currentUpdateChunks[chunkId] = false;
+/******/ 				}
+/******/ 			});
+/******/ 			if (__webpack_require__.f) {
+/******/ 				__webpack_require__.f.jsonpHmr = function (chunkId, promises) {
+/******/ 					if (
+/******/ 						currentUpdateChunks &&
+/******/ 						__webpack_require__.o(currentUpdateChunks, chunkId) &&
+/******/ 						!currentUpdateChunks[chunkId]
+/******/ 					) {
+/******/ 						promises.push(loadUpdateChunk(chunkId));
+/******/ 						currentUpdateChunks[chunkId] = true;
+/******/ 					}
+/******/ 				};
+/******/ 			}
+/******/ 		};
+/******/ 		
+/******/ 		__webpack_require__.hmrM = () => {
+/******/ 			if (typeof fetch === "undefined") throw new Error("No browser support: need fetch API");
+/******/ 			return fetch(__webpack_require__.p + __webpack_require__.hmrF()).then((response) => {
+/******/ 				if(response.status === 404) return; // no update available
+/******/ 				if(!response.ok) throw new Error("Failed to fetch update manifest " + response.statusText);
+/******/ 				return response.json();
+/******/ 			});
+/******/ 		};
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// no jsonp function
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// module cache are used so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	var __webpack_exports__ = __webpack_require__("./openassessment/xblock/static/js/src/lms/editors/oa_editor_tinymce.js");
+/******/ 	
+/******/ })()
+;
