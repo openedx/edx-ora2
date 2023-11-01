@@ -259,6 +259,24 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         with self.assertRaises(Exception):
             _ = PageDataSerializer(xblock, context=self.context).data
 
+    @scenario("data/self_only_scenario.xml", user_id="Alan")
+    def test_self_response(self, xblock):
+        # Given I am on the self grading step
+        submission_text = ["This is MYYYYYY submissionnninoinoioin", "also this"]
+        self.create_test_submission(xblock, submission_text=submission_text)
+
+        # When I load my response
+        self.context = {"view": "assessment", "step": "self"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
+
+        # I get the appropriate response
+        expected_response = {
+            "textResponses": submission_text,
+            "uploadedFiles": [],
+            "teamUploadedFiles": None,
+        }
+        self.assertDictEqual(expected_response, response_data)
+
 
 class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     # Show full dict diffs
