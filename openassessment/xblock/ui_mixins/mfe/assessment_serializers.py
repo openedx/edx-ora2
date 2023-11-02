@@ -211,7 +211,7 @@ class AssessmentSubmitRequestSerializer(MfeAssessmentDataSerializer):
                 feedback: (String / Empty) Feedback for the selected option
             }
             ...
-        ],  
+        ],
         overallFeedback: (String / Empty)
     }
     """
