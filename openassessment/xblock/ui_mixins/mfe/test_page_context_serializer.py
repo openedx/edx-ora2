@@ -175,14 +175,19 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     @scenario("data/self_assessment_scenario.xml", user_id="Alan")
     def test_done_response(self, xblock):
         # Given I'm on the done step
-        self.create_submission_and_assessments(xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT)
+        submission_text = ["Danger", "Will Robinson"]
+        self.create_submission_and_assessments(xblock, submission_text, [], [], SELF_ASSESSMENT)
 
         # When I load my response
         self.context = {"view": "assessment", "step": "done"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
-        # Then I get an empty object
-        expected_response = {}
+        # Then I get my response back
+        expected_response = {
+            "textResponses": submission_text,
+            "uploadedFiles": [],
+            "teamUploadedFiles": None,
+        }
         self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
@@ -207,7 +212,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.context["jump_to_step"] = "peer"
         response_data = PageDataSerializer(xblock, context=self.context).data
 
-        # I recieve an empty response because I have not yet requested a submission to assess
+        # I receive an empty response because I have not yet requested a submission to assess
         self.assertDictEqual({}, response_data["response"])
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
@@ -258,6 +263,24 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         # this context when the step name is valid.
         with self.assertRaises(Exception):
             _ = PageDataSerializer(xblock, context=self.context).data
+
+    @scenario("data/self_only_scenario.xml", user_id="Alan")
+    def test_self_response(self, xblock):
+        # Given I am on the self grading step
+        submission_text = ["This is MYYYYYY submissionnninoinoioin", "also this"]
+        self.create_test_submission(xblock, submission_text=submission_text)
+
+        # When I load my response
+        self.context = {"view": "assessment", "step": "self"}
+        response_data = PageDataSerializer(xblock, context=self.context).data["response"]
+
+        # I get my response back
+        expected_response = {
+            "textResponses": submission_text,
+            "uploadedFiles": [],
+            "teamUploadedFiles": None,
+        }
+        self.assertDictEqual(expected_response, response_data)
 
 
 class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):

@@ -362,7 +362,10 @@ class PageDataSerializer(Serializer):
                     # If we are jumping to the peer step grab any existing assessments but
                     # don't get a new one automatically
                     response = instance.peer_assessment_data().get_active_assessment_submission()
-            elif active_step in ("self", "staff", "ai", "waiting", "done"):
+            elif active_step in ("self", "done"):
+                learner_submission_data = instance.get_learner_submission_data()
+                return SubmissionSerializer(learner_submission_data).data
+            elif active_step in ("staff", "ai", "waiting"):
                 response = None
             else:
                 raise Exception(f"Bad step name: {active_step}")
