@@ -25,7 +25,10 @@ from openassessment.xblock.apis.submissions.errors import (
     SubmitInternalError,
     UnsupportedFileTypeException
 )
-from openassessment.xblock.ui_mixins.mfe.assessment_serializers import AssessmentSubmitRequestSerializer
+from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
+    AssessmentSubmitRequestSerializer,
+    MfeAssessmentDataSerializer,
+)
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
@@ -307,30 +310,30 @@ class MfeMixin:
         serializer = AssessmentSubmitRequestSerializer(data=data)
         if not serializer.is_valid():
             raise OraApiException(400, error_codes.INCORRECT_PARAMETERS, serializer.errors)
-        data = serializer.validated_data
-        peer_data = self.peer_assessment_data(data['continueGrading'])
+        assessment_data = serializer.to_legacy_format(self)
+        peer_data = self.peer_assessment_data(serializer.data['continueGrading'])
         try:
             if peer_data.continue_grading or self.workflow_data.is_peer:
                 peer_assess(
-                    data['optionsSelected'],
-                    data['overallFeedback'],
-                    data['criterionFeedback'],
+                    assessment_data['options_selected'],
+                    assessment_data['feedback'],
+                    assessment_data['criterion_feedback'],
                     self.config_data,
                     self.workflow_data,
                     peer_data,
                 )
             elif self.workflow_data.is_self:
                 self_assess(
-                    data['optionsSelected'],
-                    data['criterionFeedback'],
-                    data['overallFeedback'],
+                    assessment_data['options_selected'],
+                    assessment_data['criterion_feedback'],
+                    assessment_data['feedback'],
                     self.config_data,
                     self.workflow_data,
                     self.self_data
                 )
             elif self.workflow_data.is_training:
                 corrections = training_assess(
-                    data['optionsSelected'],
+                    assessment_data['options_selected'],
                     self.config_data,
                     self.workflow_data,
                 )
@@ -348,6 +351,9 @@ class MfeMixin:
             raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
+
+        # Return assessment data for the frontend
+        return MfeAssessmentDataSerializer(data).data
 
     def _assessment_get_peer_handler(self):
         # Call get_peer_submission to grab a new peer submission

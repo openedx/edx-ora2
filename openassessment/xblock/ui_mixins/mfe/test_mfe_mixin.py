@@ -70,10 +70,23 @@ class MFEHandlersTestBase(XBlockHandlerTestCase):
     DEFAULT_DRAFT_VALUE = {'response': {'text_responses': ['hi']}}
     DEFAULT_SUBMIT_VALUE = {'response': {'text_responses': ['Hello World', 'Goodbye World']}}
     DEFAULT_DELETE_FILE_VALUE = {'fileIndex': 1}
+
     DEFAULT_ASSESSMENT_SUBMIT_VALUE = {
-        'optionsSelected': {'ferocity': 'fine', 'color': 'blue', 'element': 'volcano'},
-        'criterionFeedback': {'ferocity': 'rawr!', 'color': ':)', 'element': 'i prefer lead'},
-        'overallFeedback': 'i have no strong feelings',
+        "criteria": [
+            {
+                "selectedOption": 2,
+                "feedback": "rawr!",
+            },
+            {
+                "selectedOption": 0,
+                "feedback": ":)",
+            },
+            {
+                "selectedOption": 1,
+                "feedback": "i prefer lead",
+            }
+        ],
+        "overallFeedback": "i have no strong feelings",
     }
 
     def request_create_submission(self, xblock, payload=None):

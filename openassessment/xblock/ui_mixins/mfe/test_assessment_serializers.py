@@ -22,6 +22,7 @@ from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentScoreSerializer,
     AssessmentDataSerializer,
     AssessmentCriterionSerializer,
+    AssessmentSubmitRequestSerializer,
 )
 
 
@@ -396,4 +397,26 @@ class TestAssessmentDataSerializer(TestCase):
         }).data
 
         self.assertEqual(assessment_data["overallFeedback"], "Foo")
-        self.assertEqual(len(assessment_data["assessmentCriterions"]), 1)
+        self.assertEqual(len(assessment_data["criteria"]), 1)
+
+
+class TestAssessmentSubmitRequestSerializer(TestCase):
+    """
+    Test for AssessmentSubmitRequestSerializer
+    """
+
+    def test_assessment_data(self):
+        assessment_submit_request_data = AssessmentSubmitRequestSerializer({
+            "criteria": [
+                {
+                    "selectedOption": 3,
+                    "feedback": "Baz",
+                }
+            ],
+            "overallFeedback": "Foo",
+            "continueGrading": True,
+        }).data
+
+        self.assertEqual(assessment_submit_request_data["overallFeedback"], "Foo")
+        self.assertEqual(len(assessment_submit_request_data["criteria"]), 1)
+        self.assertTrue(assessment_submit_request_data["continueGrading"])

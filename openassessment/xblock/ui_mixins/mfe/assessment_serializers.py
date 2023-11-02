@@ -9,7 +9,6 @@ from rest_framework.serializers import (
     SerializerMethodField,
     URLField,
     Serializer,
-    DictField,
     BooleanField,
 )
 from openassessment.xblock.ui_mixins.mfe.serializer_utils import NullField
@@ -30,7 +29,9 @@ class AssessmentScoreSerializer(Serializer):
 
 class AssessmentCriterionSerializer(Serializer):
     """
-    returns:
+    Serialize assessment criterion values from DB representation to frontend data structure.
+
+    Returns:
     {
         selectedOption: (Int) Order of the selected option
         feedback: (String) Feedback for the selected option
@@ -42,10 +43,16 @@ class AssessmentCriterionSerializer(Serializer):
 
 class AssessmentDataSerializer(Serializer):
     """
-    Assessment data serializer
+    Serialize assessment data from DB representation to frontend data structure.
+
+    Returns:
+    {
+        criteria: [ AssessmentCriterionSerializer ]
+        overallFeedback: (String / Empty)
+    }
     """
     overallFeedback = CharField(source="feedback")
-    assessmentCriterions = AssessmentCriterionSerializer(source="parts", many=True)
+    criteria = AssessmentCriterionSerializer(source="parts", many=True)
 
 
 class AssessmentStepSerializer(Serializer):
@@ -192,9 +199,73 @@ class AssessmentResponseSerializer(Serializer):
         return [SubmissionFileSerializer(file).data for file in files]
 
 
-class AssessmentSubmitRequestSerializer(Serializer):
-    """" Serializer for validating request shape """
-    optionsSelected = DictField(child=CharField(), allow_empty=True)
-    criterionFeedback = DictField(child=CharField(), allow_empty=True)
+class MfeAssessmentCriterionSerializer(Serializer):
+    """
+    Frontend's view of rubric criterion values for an assessment
+
+    {
+        selectedOption: (Int) Order of the selected option
+        feedback: (String / Empty) Feedback for the selected option
+    }
+    """
+    selectedOption = IntegerField()
+    feedback = CharField()
+
+
+class MfeAssessmentDataSerializer(Serializer):
+    """
+    Frontend's view of Assessment Data.
+
+    criteria: [ MfeAssessmentCriterion ],
+    overallFeedback: (String / Empty) Feedback for the Assessment
+    """
+    criteria = MfeAssessmentCriterionSerializer(many=True)
     overallFeedback = CharField(allow_blank=True)
+
+
+class AssessmentSubmitRequestSerializer(MfeAssessmentDataSerializer):
+    """"
+    Serializer for validating request shape and unpacking data for assessment APIs.
+
+    Args: Data in the form
+    {
+        criteria: [
+            // Rubric criterion
+            {
+                selectedOption: (Int) Order of the selected option
+                feedback: (String / Empty) Feedback for the selected option
+            }
+            ...
+        ],
+        overallFeedback: (String / Empty)
+    }
+    """
+
     continueGrading = BooleanField(required=False, default=False)
+
+    def to_legacy_format(self, xblock):
+        """
+        Converts given assessment format to format needed for submitting an assessment:
+
+        >>> options_selected = {"clarity": "Very clear", "precision": "Somewhat precise"}
+        >>> criterion_feedback = {"clarity": "I thought this essay was very clear."}
+        >>> feedback = "Your submission was thrilling."
+        """
+        options_selected = {}
+        criterion_feedback = {}
+
+        for i, criterion_data in enumerate(self.data['criteria']):
+
+            # Look up the name and value for each given rubric selection
+            criterion_name = xblock.rubric_criteria[i]['name']
+            selected_value = xblock.rubric_criteria[i]['options'][criterion_data['selectedOption']]['name']
+            options_selected[criterion_name] = selected_value
+
+            # Attach feedback for the criterion
+            criterion_feedback[criterion_name] = criterion_data['feedback']
+
+        return {
+            "options_selected": options_selected,
+            "criterion_feedback": criterion_feedback,
+            "feedback": self.data["overallFeedback"]
+        }
