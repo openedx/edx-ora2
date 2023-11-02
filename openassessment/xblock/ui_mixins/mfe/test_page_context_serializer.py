@@ -212,7 +212,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.context["jump_to_step"] = "peer"
         response_data = PageDataSerializer(xblock, context=self.context).data
 
-        # I recieve an empty response because I have not yet requested a submission to assess
+        # I receive an empty response because I have not yet requested a submission to assess
         self.assertDictEqual({}, response_data["response"])
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
@@ -274,7 +274,7 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
         self.context = {"view": "assessment", "step": "self"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
-        # I get the appropriate response
+        # I get my response back
         expected_response = {
             "textResponses": submission_text,
             "uploadedFiles": [],
