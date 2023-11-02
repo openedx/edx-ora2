@@ -175,14 +175,19 @@ class TestPageDataSerializerAssessment(XBlockHandlerTestCase, SubmitAssessmentsM
     @scenario("data/self_assessment_scenario.xml", user_id="Alan")
     def test_done_response(self, xblock):
         # Given I'm on the done step
-        self.create_submission_and_assessments(xblock, self.SUBMISSION, [], [], SELF_ASSESSMENT)
+        submission_text = ["Danger", "Will Robinson"]
+        self.create_submission_and_assessments(xblock, submission_text, [], [], SELF_ASSESSMENT)
 
         # When I load my response
         self.context = {"view": "assessment", "step": "done"}
         response_data = PageDataSerializer(xblock, context=self.context).data["response"]
 
-        # Then I get an empty object
-        expected_response = {}
+        # Then I get my response back
+        expected_response = {
+            "textResponses": submission_text,
+            "uploadedFiles": [],
+            "teamUploadedFiles": None,
+        }
         self.assertDictEqual(expected_response, response_data)
 
     @scenario("data/grade_scenario_peer_only.xml", user_id="Bernard")
