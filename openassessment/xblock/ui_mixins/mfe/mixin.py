@@ -25,7 +25,10 @@ from openassessment.xblock.apis.submissions.errors import (
     SubmitInternalError,
     UnsupportedFileTypeException
 )
-from openassessment.xblock.ui_mixins.mfe.assessment_serializers import AssessmentDataSerializer, AssessmentSubmitRequestSerializer, MfeAssessmentDataSerializer
+from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
+    AssessmentSubmitRequestSerializer,
+    MfeAssessmentDataSerializer,
+)
 from openassessment.xblock.ui_mixins.mfe.constants import error_codes, handler_suffixes
 from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import OraBlockInfoSerializer
 from openassessment.xblock.ui_mixins.mfe.page_context_serializer import PageDataSerializer
@@ -348,7 +351,6 @@ class MfeMixin:
             raise OraApiException(400, error_codes.INVALID_STATE_TO_ASSESS, context) from e
         except (AssessmentError, AssessmentWorkflowError) as e:
             raise OraApiException(500, error_codes.INTERNAL_EXCEPTION, str(e)) from e
-
 
         # Return assessment data for the frontend
         return MfeAssessmentDataSerializer(data).data
