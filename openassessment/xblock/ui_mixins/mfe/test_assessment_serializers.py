@@ -230,7 +230,7 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
 
         # The self-only example uses a different rubric
         self_assessment = {
-            'options_selected': { 'Concise': 'Robert Heinlein', 'Clear-headed': 'Spock', 'Form': 'Reddit' },
+            'options_selected': {'Concise': 'Robert Heinlein', 'Clear-headed': 'Spock', 'Form': 'Reddit'},
             'criterion_feedback': {},
             'overall_feedback': "",
         }
