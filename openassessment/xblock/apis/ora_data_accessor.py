@@ -1,4 +1,5 @@
 """API Data wrapper for exposed APIs within ORA XBlock"""
+from openassessment.xblock.apis.grades_api import GradesAPI
 from openassessment.xblock.apis.ora_config_api import ORAConfigAPI
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.apis.workflow_api import WorkflowAPI
@@ -27,6 +28,10 @@ class ORADataAccessor:
     @property
     def workflow_data(self):
         return WorkflowAPI(self._block)
+
+    @property
+    def grades_data(self):
+        return GradesAPI(self._block)
 
     @property
     def self_assessment_data(self):

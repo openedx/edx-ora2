@@ -15,6 +15,23 @@ class GradesAPI:
         return self._block.submission_uuid
 
     @property
+    def effective_assessment_type(self):
+        """
+        Determine which assessment step we will use as our "graded" step.
+
+        This follows the order:
+        1) Staff (if assessment received)
+        2) Peer (if assessment step configured)
+        3) Self (if assessment step configured)
+        """
+        if self.staff_score is not None:
+            return "staff"
+        elif "peer-assessment" in self._block.assessment_steps:
+            return "peer"
+        elif "self-assessment" in self._block.assessment_steps:
+            return "self"
+
+    @property
     def self_score(self):
         """
         Get self score.

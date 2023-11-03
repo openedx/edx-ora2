@@ -114,17 +114,11 @@ class AssessmentGradeSerializer(Serializer):
     }
     """
 
-    effectiveAssessmentType = SerializerMethodField()
+    effectiveAssessmentType = CharField(source="grades_data.effective_assessment_type")
     self = AssessmentStepSerializer(source="self_assessment_data.assessment")
     staff = AssessmentStepSerializer(source="staff_assessment_data.assessment")
     peer = PeerAssessmentsSerializer(source="peer_assessment_data")
     peerUnweighted = UnweightedPeerAssessmentsSerializer(source="peer_assessment_data")
-
-    def get_effectiveAssessmentType(self, instance):  # pylint: disable=unused-argument
-        """
-        Get effective assessment type
-        """
-        return self.context["step"]
 
 
 class AssessmentResponseSerializer(Serializer):
