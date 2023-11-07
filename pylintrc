@@ -258,6 +258,7 @@ enable =
 	unrecognized-inline-option,
 	useless-suppression,
 disable = 
+	no-self-use,
 	bad-indentation,
 	consider-using-f-string,
 	duplicate-code,

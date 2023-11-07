@@ -1,0 +1,83 @@
+{% extends "legacy/peer/oa_peer_assessment.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li
+    id="openassessment__peer-assessment__{{ xblock_id }}"
+    class="openassessment__steps__step step--peer-assessment is--complete ui-slidable__container is--showing"
+    data-submission-uuid="{{ peer_submission.uuid }}"
+    tabindex="-1"
+>
+{% endblock %}
+
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="true" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content" aria-labeledby="oa_step_title_peer">
+        <span class="icon fa fa-caret-right" aria-hidden="false"/>
+    </button>
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span id="oa_step_status_peer" class="step__status__value">
+    <span class="icon fa fa-check" aria-hidden="true"></span>
+    <span class="copy">
+      {% with graded_string=graded|stringformat:"s" %}
+      {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:'</span>'|safe %}
+        Complete ({{ num_graded }})
+      {% endblocktrans %}
+      {% endwith %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+<div role="region" class="ui-slidable__content" aria-labelledby="oa_peer_{{ xblock_id }}" id="oa_peer_{{ xblock_id }}_content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--complete">
+            <h5 class="message__title">{% trans "Status" %}</h5>
+            <div class="message__content">{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</div>
+        </div>
+
+        <div class="step__instruction">
+            <p>{% trans "Read and assess the following response from one of your peers." %}</p>
+        </div>
+
+        <div class="step__content">
+            <ul class="list--peer-assessments">
+                <li class="list--peer-assessments__item">
+                    <article class="peer-assessment peer-assessment--001">
+                        <div class="peer-assessment__display">
+                            {% trans "Your peer's response to the prompt above" as translated_label %}
+                            {% include "legacy/oa_submission_answer.html" with answer=peer_submission.answer answer_text_label=translated_label %}
+
+                            {% trans "Associated Files" as translated_header %}
+                            {% include "legacy/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=peer_file_urls header=translated_header class_prefix="peer-assessment" show_warning="true" including_template="peer_turbo_mode" xblock_id=xblock_id %}
+                        </div>
+
+                        <form class="peer-assessment--001__assessment peer-assessment__assessment" method="post">
+                            {% include "legacy/oa_rubric.html" with rubric_type="peer" submission=peer_submission %}
+                        </form>
+                    </article>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step__actions">
+            <div class="message message--inline message--error message--error-server" tabindex="-1">
+                <h5 class="message__title">{% trans "We could not submit your assessment" %}</h5>
+            </div>
+
+            <ul class="list list--actions">
+                <li class="list--actions__item">
+                    <button type="submit" class="peer-assessment--001__assessment__submit action action--submit" disabled>
+                        {{ submit_button_text }}
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,11 +3,10 @@ Tests for data layer of ORA XBlock
 """
 
 from unittest.mock import MagicMock
-
 import ddt
 
 
-from openassessment.xblock.ui_mixins.mfe.serializers import (
+from openassessment.xblock.ui_mixins.mfe.ora_config_serializer import (
     AssessmentStepsSerializer,
     LeaderboardConfigSerializer,
     RubricConfigSerializer,
@@ -263,8 +262,8 @@ class TestAssessmentStepsSerializer(XBlockHandlerTestCase):
     @scenario("data/basic_scenario.xml")
     def test_order(self, xblock):
         # Given a basic setup
-        expected_order = ["peer-assessment", "self-assessment"]
-        expected_step_keys = {"training", "peer", "self", "staff"}
+        expected_order = ["peer", "self"]
+        expected_step_keys = {"studentTraining", "peer", "self", "staff"}
 
         # When I ask for assessment step config
         steps_config = AssessmentStepsSerializer(xblock).data
@@ -307,8 +306,8 @@ class TestPeerSettingsSerializer(XBlockHandlerTestCase):
         ]
 
         # Then I get the right dates
-        self.assertEqual(peer_config["startTime"], expected_start)
-        self.assertEqual(peer_config["endTime"], expected_due)
+        self.assertEqual(peer_config["startDatetime"], expected_start)
+        self.assertEqual(peer_config["endDatetime"], expected_due)
 
     @scenario("data/peer_assessment_flex_grading_scenario.xml")
     def test_flex_grading(self, xblock):
@@ -328,7 +327,7 @@ class TestTrainingSettingsSerializer(XBlockHandlerTestCase):
     Test for TrainingSettingsSerializer
     """
 
-    step_config_key = "training"
+    step_config_key = "studentTraining"
 
     @scenario("data/student_training.xml")
     def test_enabled(self, xblock):

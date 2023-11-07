@@ -17,6 +17,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.apis.submissions import submissions_actions
 
 # Sample peer assessments
 PEER_ASSESSMENTS = [
@@ -186,7 +187,16 @@ class XBlockHandlerTestCaseMixin:
         )
         return self.runtime.get_block(block_id)
 
-    def request(self, xblock, handler_name, content, request_method="POST", response_format=None, use_runtime=True):
+    def request(
+        self,
+        xblock,
+        handler_name,
+        content,
+        request_method="POST",
+        response_format=None,
+        use_runtime=True,
+        suffix=''
+    ):
         """
         Make a request to an XBlock handler.
 
@@ -215,7 +225,7 @@ class XBlockHandlerTestCaseMixin:
 
         # Send the request to the XBlock handler
         if use_runtime:
-            response = self.runtime.handle(xblock, handler_name, request)
+            response = self.runtime.handle(xblock, handler_name, request, suffix=suffix)
         else:
             response = getattr(xblock, handler_name)(request)
 
@@ -230,7 +240,7 @@ class XBlockHandlerTestCaseMixin:
             raise NotImplementedError(f"Response format '{response_format}' not supported")
 
     def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
-        """ Checks assessment event published successfuly. """
+        """ Checks assessment event published successfully. """
         parts_list = []
         for part in assessment["parts"]:
             # Some assessment parts do not include point values,
@@ -300,6 +310,30 @@ class XBlockHandlerTestCaseMixin:
         with open(os.path.join(base_dir, path)) as file_handle:
             return file_handle.read()
 
+    @staticmethod
+    def _create_mock_runtime(
+            item_id,
+            is_staff,
+            is_admin,
+            anonymous_user_id,
+            user_is_beta=False,
+    ):
+        """
+        Internal helper to define a mock runtime.
+        """
+        mock_runtime = mock.Mock(
+            course_id='test_course',
+            item_id=item_id,
+            anonymous_student_id=anonymous_user_id,
+            user_is_staff=is_staff,
+            user_is_admin=is_admin,
+            user_is_beta=user_is_beta,
+            service=lambda self, service: mock.Mock(
+                get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
+            )
+        )
+        return mock_runtime
+
 
 class XBlockHandlerTestCase(XBlockHandlerTestCaseMixin, CacheResetTest):
     """
@@ -345,7 +379,13 @@ class SubmissionTestMixin:
         if submission_text is None:
             submission_text = self.DEFAULT_TEST_SUBMISSION_TEXT
 
-        return xblock.submission_data.create_submission(student_item, submission_text)
+        return submissions_actions.create_submission(
+            student_item,
+            submission_text,
+            xblock.config_data,
+            xblock.submission_data,
+            xblock.workflow_data
+        )
 
 
 class SubmitAssessmentsMixin(SubmissionTestMixin):

@@ -687,7 +687,37 @@ def get_submitted_assessments(submission_uuid, limit=None):
         raise PeerAssessmentInternalError(error_message) from ex
 
 
-def get_submission_to_assess(submission_uuid, graded_by):
+def get_active_assessment_submission(submission_uuid):
+    """
+    Gets the current active submission being assessed, or None if there is
+    no active assessment. This will not find a new submission to assess, for
+    that, call `get_submission_to_assess`.
+    """
+    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+
+    if not workflow:
+        raise PeerAssessmentWorkflowError(
+            "A Peer Assessment Workflow does not exist for the student "
+            "with submission UUID {}".format(submission_uuid)
+        )
+
+    if workflow.is_cancelled:
+        return None
+
+    active_assessment = workflow.find_active_assessments()
+    if not active_assessment:
+        return None
+
+    try:
+        return sub_api.get_submission(active_assessment.submission_uuid)
+    except sub_api.SubmissionNotFoundError as ex:
+        error_message = "Could not find a submission with the uuid %s for student %s in the peer workflow."
+        error_message_args = (active_assessment.submission_uuid, workflow.student_id)
+        logger.exception(error_message, error_message_args[0], error_message_args[1])
+        raise PeerAssessmentWorkflowError(error_message % error_message_args) from ex
+
+
+def get_submission_to_assess(submission_uuid, graded_by, peek=False):
     """Get a submission to peer evaluate.
 
     Retrieves a submission for assessment for the given student. This will
@@ -705,6 +735,8 @@ def get_submission_to_assess(submission_uuid, graded_by):
             associated Peer Workflow.
         graded_by (int): The number of assessments a submission
             requires before it has completed the peer assessment process.
+        peek (bool): When True, will verify a submission is available, without
+            creating a workflow to begin grading.
 
     Returns:
         dict: A peer submission for assessment. This contains a 'student_item',
@@ -754,14 +786,15 @@ def get_submission_to_assess(submission_uuid, graded_by):
     if peer_submission_uuid:
         try:
             submission_data = sub_api.get_submission(peer_submission_uuid)
-            PeerWorkflow.create_item(workflow, peer_submission_uuid)
-            _log_workflow(peer_submission_uuid, workflow)
+            if not peek:
+                PeerWorkflow.create_item(workflow, peer_submission_uuid)
+                _log_workflow(peer_submission_uuid, workflow)
             return submission_data
         except sub_api.SubmissionNotFoundError as ex:
             error_message = "Could not find a submission with the uuid %s for student %s in the peer workflow."
-            error_meesage_args = (peer_submission_uuid, workflow.student_id)
-            logger.exception(error_message, error_meesage_args[0], error_meesage_args[1])
-            raise PeerAssessmentWorkflowError(error_message % error_meesage_args) from ex
+            error_message_args = (peer_submission_uuid, workflow.student_id)
+            logger.exception(error_message, error_message_args[0], error_message_args[1])
+            raise PeerAssessmentWorkflowError(error_message % error_message_args) from ex
     else:
         logger.info(
             "No submission found for %s to assess (%s, %s)",

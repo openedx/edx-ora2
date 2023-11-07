@@ -22,6 +22,7 @@ from xblock.fields import Boolean, Integer, List, Scope, String
 
 from openassessment.staffgrader.staff_grader_mixin import StaffGraderMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.apis.grades_api import GradesAPI
 from openassessment.xblock.apis.submissions.submissions_api import SubmissionAPI
 from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 from openassessment.xblock.utils.data_conversion import (
@@ -316,6 +317,10 @@ class OpenAssessmentBlock(
         return StudentTrainingAPI(self)
 
     @property
+    def grades_data(self):
+        return GradesAPI(self)
+
+    @property
     def api_data(self):
         return ORADataAccessor(self)
 
@@ -520,6 +525,50 @@ class OpenAssessmentBlock(
         return student_item_dict
 
     @togglable_mobile_support
+    def author_view(self, context=None):  # pylint: disable=unused-argument
+        """The main view of OpenAssessmentBlock, displayed when viewing courses.
+
+        View which displays the legacy UI for authoring in Studio.
+
+        Args:
+            context: Not used for this view.
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock, which determines the
+            general frame of the Open Ended Assessment Question.
+        """
+        # On page load, update the workflow status.
+        # We need to do this here because peers may have graded us, in which
+        # case we may have a score available.
+
+        try:
+            self.update_workflow_status()
+        except AssessmentWorkflowError:
+            # Log the exception, but continue loading the page
+            logger.exception('An error occurred while updating the workflow on page load.')
+
+        ui_models = self._create_ui_models()
+
+        leaderboard_model = None
+        for model in ui_models:
+            if model["name"] == "leaderboard":
+                leaderboard_model = model
+
+        # All data we intend to pass to the front end.
+        context_dict = {
+            "mfe_views": False,
+            "leaderboard_modal": leaderboard_model,
+            "prompts": self.prompts,
+            "prompts_type": self.prompts_type,
+            "rubric_assessments": ui_models,
+            "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "title": self.title,
+            "xblock_id": self.get_xblock_id(),
+        }
+        template = get_template("openassessmentblock/base.html")
+        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+
+    @togglable_mobile_support
     def student_view(self, context=None):  # pylint: disable=unused-argument
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
@@ -545,16 +594,67 @@ class OpenAssessmentBlock(
             logger.exception('An error occurred while updating the workflow on page load.')
 
         ui_models = self._create_ui_models()
+
+        leaderboard_model = None
+        for model in ui_models:
+            if model["name"] == "leaderboard":
+                leaderboard_model = model
+
+        use_mfe_views = self.mfe_views_enabled and self.mfe_views_supported
+
         # All data we intend to pass to the front end.
         context_dict = {
-            "title": self.title,
+            "leaderboard_modal": leaderboard_model,
+            "mfe_views": use_mfe_views,
             "prompts": self.prompts,
             "prompts_type": self.prompts_type,
             "rubric_assessments": ui_models,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
+            "title": self.title,
+            "xblock_id": self.get_xblock_id(),
+            "course_id": self.course_id,
         }
-        template = get_template("openassessmentblock/oa_base.html")
+        template = get_template("openassessmentblock/base.html")
         return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
+
+    @property
+    def uses_default_assessment_order(self):
+        """
+        Determine if our steps have been reordered (omission of steps is fine)
+        """
+        last_step_index = 0
+        for assessment_step in self.assessment_steps:
+            step_index = self.VALID_ASSESSMENT_TYPES.index(assessment_step)
+
+            if step_index < last_step_index:
+                return False
+            last_step_index = step_index
+
+        return True
+
+    @property
+    def mfe_views_supported(self):
+        """
+        Currently, there are some unsupported use-cases for ORA MFE views.
+
+        Unsupported use-cases:
+        1) Team assignments
+        2) Assignments with reordered assessment steps
+
+        Returns:
+        - False if we are in one of these unsupported configurations.
+        - True otherwise.
+        """
+
+        # Team assessments are currently unsupported
+        if self.is_team_assignment():
+            return False
+
+        # Assessment step reordering is currently unsupported
+        if not self.uses_default_assessment_order:
+            return False
+
+        return True
 
     def ora_blocks_listing_view(self, context=None):
         """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
@@ -584,7 +684,7 @@ class OpenAssessmentBlock(
             "ora_item_view_enabled": ora_item_view_enabled
         }
 
-        template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
+        template = get_template('legacy/instructor_dashboard/oa_listing.html')
 
         min_postfix = '.min' if settings.DEBUG else ''
 
@@ -625,7 +725,7 @@ class OpenAssessmentBlock(
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
 
-        template = get_template('openassessmentblock/instructor_dashboard/oa_grade_available_responses.html')
+        template = get_template('legacy/instructor_dashboard/oa_grade_available_responses.html')
 
         return self._create_fragment(template, context_dict, initialize_js_func='StaffAssessmentBlock')
 
@@ -655,7 +755,7 @@ class OpenAssessmentBlock(
                 self, "waiting_step_data",
             )
 
-        template = get_template('openassessmentblock/instructor_dashboard/oa_waiting_step_details.html')
+        template = get_template('legacy/instructor_dashboard/oa_waiting_step_details.html')
 
         return self._create_fragment(
             template,
@@ -977,7 +1077,7 @@ class OpenAssessmentBlock(
             Response: A response object with an HTML body.
         """
         context = {'error_msg': error_msg}
-        template = get_template('openassessmentblock/oa_error.html')
+        template = get_template('legacy/oa_error.html')
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
     def is_closed(self, step=None, course_staff=None):
