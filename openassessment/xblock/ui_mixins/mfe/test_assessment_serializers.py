@@ -265,7 +265,7 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
                 {"selectedOption": 2, "feedback": ""},
             ]
         })
-        self.assertDictEqual(score_details["stepScore"], { "earned": 15, "possible": 20 })
+        self.assertDictEqual(score_details["stepScore"], {"earned": 15, "possible": 20})
 
     @scenario("data/grade_scenario.xml", user_id="Alan")
     def test_staff_assessment_step(self, xblock):
@@ -299,7 +299,7 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
                 }
             ]
         })
-        self.assertDictEqual(score_details["stepScore"], { "earned": 5, "possible": 6 })
+        self.assertDictEqual(score_details["stepScore"], {"earned": 5, "possible": 6})
 
     @scenario("data/grade_scenario.xml", user_id="Bernard")
     def test_peer_assessment_steps(self, xblock):
@@ -395,7 +395,7 @@ class TestAssessmentGradeSerializer(XBlockHandlerTestCase, SubmitAssessmentsMixi
                 }
             ]
         })
-        self.assertDictEqual(score_details["stepScore"], { "earned": 5, "possible": 6 })
+        self.assertDictEqual(score_details["stepScore"], {"earned": 5, "possible": 6})
 
         # With peer responses all listed as unweighted
         self.assertDictEqual(data["peer"], {'stepScore': None, 'assessments': []})
