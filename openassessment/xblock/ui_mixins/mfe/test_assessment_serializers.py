@@ -17,7 +17,6 @@ from openassessment.xblock.test.base import (
 )
 from openassessment.xblock.ui_mixins.mfe.assessment_serializers import (
     AssessmentResponseSerializer,
-    AssessmentStepSerializer,
     AssessmentGradeSerializer,
     AssessmentScoreSerializer,
     AssessmentDataSerializer,
