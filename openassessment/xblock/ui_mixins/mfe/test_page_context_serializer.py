@@ -347,7 +347,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closed": False,
                     "closedReason": None,
                     "numberOfAssessmentsCompleted": 0,
-                    "numberOfExamples": 2,
                     "expectedRubricSelections": [
                         {
                             "name": "Vocabulary",
@@ -388,7 +387,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closed": True,
                     "closedReason": "pastDue",
                     "numberOfAssessmentsCompleted": 0,
-                    "numberOfExamples": 2,
                     "expectedRubricSelections": [
                         {
                             "name": "Vocabulary",
@@ -429,7 +427,6 @@ class TestPageContextProgress(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     "closed": True,
                     "closedReason": "notAvailableYet",
                     "numberOfAssessmentsCompleted": 0,
-                    "numberOfExamples": 2,
                     "expectedRubricSelections": [
                         {
                             "name": "Vocabulary",

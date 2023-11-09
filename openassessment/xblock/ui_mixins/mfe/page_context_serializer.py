@@ -125,17 +125,12 @@ class StudentTrainingStepInfoSerializer(StepInfoBaseSerializer):
             closed: (Bool)
             closedReason: (Enum/ Null if open), one of "notAvailable", "pastDue"
             numberOfAssessmentsCompleted: (Int), progress through required assessments
-            numberOfExamples: (Int), number of total examples
             expectedRubricSelections: (List of rubric names and selections)
         }
     """
 
     numberOfAssessmentsCompleted = IntegerField(source="num_completed")
-    numberOfExamples = SerializerMethodField()
     expectedRubricSelections = SerializerMethodField()
-
-    def get_numberOfExamples(self, instance):
-        return len(instance.examples)
 
     def get_expectedRubricSelections(self, instance):
         """
