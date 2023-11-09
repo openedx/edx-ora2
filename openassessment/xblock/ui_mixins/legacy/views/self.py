@@ -36,6 +36,12 @@ def render_self_assessment(api_data):
 def self_context(api_data, with_sub=False):
     config_data = api_data.config_data
     user_preferences = get_user_preferences(config_data.user_service)
+
+    is_peer = "peer-assessment" in config_data.assessment_steps
+    is_self = "self-assessment" in config_data.assessment_steps
+    is_self_complete = api_data.self_assessment_data.is_self_complete
+    show_survey = is_self and is_self_complete and not is_peer
+
     context = {
         "allow_multiple_files": config_data.allow_multiple_files,
         "allow_latex": config_data.allow_latex,
@@ -43,6 +49,7 @@ def self_context(api_data, with_sub=False):
         "xblock_id": config_data.get_xblock_id(),
         "user_timezone": user_preferences["user_timezone"],
         "user_language": user_preferences["user_language"],
+        "show_survey": show_survey,
     }
 
     step_data = api_data.self_assessment_data
